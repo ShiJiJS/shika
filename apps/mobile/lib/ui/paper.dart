@@ -1,6 +1,22 @@
 import 'package:flutter/material.dart';
 
+class PaperPalette {
+  const PaperPalette(this.dark);
+  final bool dark;
+  Color get background => dark ? const Color(0xff141914) : Paper.background;
+  Color get ink => dark ? const Color(0xffe4e9df) : Paper.ink;
+  Color get olive => dark ? const Color(0xffb1c5a0) : Paper.olive;
+  Color get soft => dark ? const Color(0xff293329) : Paper.soft;
+  Color get line => dark ? const Color(0xff354135) : Paper.line;
+  Color get danger => dark ? const Color(0xffeda699) : Paper.danger;
+  Color get muted => dark ? const Color(0xff9aa494) : const Color(0xff7a8172);
+  Color get videoSurface => dark ? Colors.black : const Color(0xffe6e4db);
+  TextStyle get title => Paper.title.copyWith(color: ink);
+}
+
 abstract final class Paper {
+  static PaperPalette of(BuildContext context) =>
+      PaperPalette(Theme.of(context).brightness == Brightness.dark);
   static const background = Color(0xfffaf8f3),
       ink = Color(0xff29332a),
       olive = Color(0xff53664a),
@@ -13,72 +29,87 @@ abstract final class Paper {
     fontSize: 23,
     color: ink,
   );
-  static ThemeData get theme => ThemeData(
-    useMaterial3: true,
-    scaffoldBackgroundColor: background,
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: olive,
-      primary: olive,
-      surface: background,
-      error: danger,
-    ),
-    dividerColor: line,
-    textTheme: const TextTheme(
-      bodyMedium: TextStyle(fontSize: 14, color: ink),
-      bodySmall: TextStyle(fontSize: 12, color: olive),
-    ),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: background,
-      foregroundColor: ink,
-      elevation: 0,
-      scrolledUnderElevation: 0,
-    ),
-    iconTheme: const IconThemeData(color: olive, size: 22),
-    inputDecorationTheme: InputDecorationTheme(
-      isDense: true,
-      filled: true,
-      fillColor: Colors.white.withValues(alpha: .55),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(7),
-        borderSide: const BorderSide(color: line),
+  static ThemeData get theme => _theme(false);
+  static ThemeData get darkTheme => _theme(true);
+  static ThemeData _theme(bool dark) {
+    final p = PaperPalette(dark);
+    return ThemeData(
+      useMaterial3: true,
+      brightness: dark ? Brightness.dark : Brightness.light,
+      scaffoldBackgroundColor: p.background,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: olive,
+        brightness: dark ? Brightness.dark : Brightness.light,
+        primary: p.olive,
+        surface: p.background,
+        error: p.danger,
+        onSurface: p.ink,
+        onSurfaceVariant: p.olive,
+        outline: p.line,
+        surfaceContainerHighest: p.soft,
       ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(7),
-        borderSide: const BorderSide(color: Color(0xffbac5af)),
+      dividerColor: p.line,
+      textTheme: TextTheme(
+        bodyMedium: TextStyle(fontSize: 14, color: p.ink),
+        bodySmall: TextStyle(fontSize: 12, color: p.olive),
       ),
-    ),
-    filledButtonTheme: FilledButtonThemeData(
-      style: FilledButton.styleFrom(
-        backgroundColor: olive,
-        foregroundColor: background,
-        minimumSize: const Size(44, 44),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+      appBarTheme: AppBarTheme(
+        backgroundColor: p.background,
+        foregroundColor: p.ink,
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
-    ),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(
-        minimumSize: const Size(44, 44),
-        side: const BorderSide(color: Color(0xffbac5af)),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+      iconTheme: IconThemeData(color: p.olive, size: 22),
+      inputDecorationTheme: InputDecorationTheme(
+        isDense: true,
+        filled: true,
+        fillColor: p.soft.withValues(alpha: .55),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 13,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(7),
+          borderSide: BorderSide(color: p.line),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(7),
+          borderSide: BorderSide(color: p.olive.withValues(alpha: .5)),
+        ),
       ),
-    ),
-    textButtonTheme: TextButtonThemeData(
-      style: TextButton.styleFrom(minimumSize: const Size(44, 44)),
-    ),
-    snackBarTheme: const SnackBarThemeData(
-      backgroundColor: ink,
-      actionTextColor: soft,
-      behavior: SnackBarBehavior.floating,
-    ),
-    bottomSheetTheme: const BottomSheetThemeData(
-      backgroundColor: background,
-      showDragHandle: false,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(21)),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: p.olive,
+          foregroundColor: p.background,
+          minimumSize: const Size(44, 44),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+        ),
       ),
-    ),
-  );
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          minimumSize: const Size(44, 44),
+          side: BorderSide(color: p.olive.withValues(alpha: .5)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(minimumSize: const Size(44, 44)),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: dark ? p.soft : ink,
+        contentTextStyle: const TextStyle(color: Color(0xfff0f3eb)),
+        actionTextColor: dark ? p.olive : soft,
+        behavior: SnackBarBehavior.floating,
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: p.background,
+        showDragHandle: false,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(21)),
+        ),
+      ),
+    );
+  }
 }
 
 Widget iconAction(String label, IconData icon, VoidCallback? onTap) =>
@@ -93,11 +124,17 @@ Widget actionLabel(IconData icon, String label) => Row(
   mainAxisSize: MainAxisSize.min,
   children: [Icon(icon, size: 18), const SizedBox(width: 7), Text(label)],
 );
-Widget note(String text) => Padding(
-  padding: const EdgeInsets.symmetric(vertical: 12),
-  child: Text(
-    text,
-    style: const TextStyle(fontSize: 12, height: 1.7, color: Paper.olive),
+Widget note(String text) => Builder(
+  builder: (context) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 12),
+    child: Text(
+      text,
+      style: TextStyle(
+        fontSize: 12,
+        height: 1.7,
+        color: Paper.of(context).olive,
+      ),
+    ),
   ),
 );
 
@@ -165,7 +202,10 @@ class SheetFrame extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: Text(title, style: Paper.title.copyWith(fontSize: 21)),
+                  child: Text(
+                    title,
+                    style: Paper.of(context).title.copyWith(fontSize: 21),
+                  ),
                 ),
                 iconAction('关闭面板', Icons.close, () => Navigator.pop(context)),
               ],

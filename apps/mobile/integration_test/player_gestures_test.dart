@@ -105,6 +105,8 @@ void main() {
       expect(player(t).value.playbackSpeed, 1);
       expect(find.byKey(const Key('hold-speed-hint')), findsNothing);
       await pausedHold.up();
+      await t.drag(surface, const Offset(70, 0));
+      await t.pump(const Duration(milliseconds: 300));
       await tap(t, find.byTooltip('播放速度'));
       await tap(t, find.text('1.5×').last);
       await until(t, () => player(t).value.playbackSpeed == 1.5);
@@ -196,7 +198,10 @@ void main() {
         t,
         () => t.view.physicalSize.width > t.view.physicalSize.height,
       );
-      await until(t, () => find.text('返回').evaluate().isNotEmpty);
+      await until(
+        t,
+        () => find.byKey(const Key('fullscreen-exit')).evaluate().isNotEmpty,
+      );
       await holdAndRelease(t, 1);
       final hold = await t.startGesture(t.getCenter(surface));
       await until(t, () => controller.value.playbackSpeed == 2);
@@ -205,7 +210,16 @@ void main() {
       expect(controller.value.isPlaying, isFalse);
       await hold.cancel();
       t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-      await tap(t, find.text('返回'));
+      final exit = find.byKey(const Key('fullscreen-exit'));
+      final opacity = t
+          .widget<AnimatedOpacity>(
+            find
+                .ancestor(of: exit, matching: find.byType(AnimatedOpacity))
+                .first,
+          )
+          .opacity;
+      if (opacity == 0) await tap(t, surface);
+      await tap(t, exit);
       await until(
         t,
         () => t.view.physicalSize.height > t.view.physicalSize.width,

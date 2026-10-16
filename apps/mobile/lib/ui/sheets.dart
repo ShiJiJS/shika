@@ -123,14 +123,14 @@ class _ScopeSheetState extends State<ScopeSheet> {
     children: [
       note('只查看同时满足条件的视频。'),
       Container(
-        color: Paper.soft,
+        color: Paper.of(context).soft,
         padding: const EdgeInsets.only(left: 12),
         child: Row(
           children: [
             Expanded(
               child: Text(
                 draft.folder.isEmpty ? '全部媒体目录' : draft.folder,
-                style: const TextStyle(fontSize: 12, color: Paper.olive),
+                style: TextStyle(fontSize: 12, color: Paper.of(context).olive),
               ),
             ),
             TextButton(
@@ -160,7 +160,7 @@ class _ScopeSheetState extends State<ScopeSheet> {
               (tag) => FilterChip(
                 label: Text(tag),
                 selected: draft.tags.contains(tag),
-                backgroundColor: Paper.soft,
+                backgroundColor: Paper.of(context).soft,
                 side: BorderSide.none,
                 onSelected: (yes) => setState(() {
                   final tags = {...draft.tags};
@@ -263,7 +263,7 @@ class _TagEditorState extends State<TagEditor> {
               (tag) => FilterChip(
                 label: Text(tag),
                 selected: selected.contains(tag),
-                backgroundColor: Paper.soft,
+                backgroundColor: Paper.of(context).soft,
                 side: BorderSide.none,
                 onSelected: busy
                     ? null

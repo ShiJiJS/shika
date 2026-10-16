@@ -138,7 +138,12 @@ void main() {
       await tap(t, find.byKey(const Key('video-stage')));
       expect(controller.value.isPlaying, isFalse);
       await t.drag(
-        find.byKey(const Key('video-progress')),
+        find.byKey(const Key('video-gesture-surface')).last,
+        const Offset(70, 0),
+      );
+      await t.pump(const Duration(milliseconds: 200));
+      await t.drag(
+        find.byKey(const Key('video-progress-touch')),
         const Offset(90, 0),
       );
       await t.pump(const Duration(milliseconds: 250));
@@ -195,8 +200,8 @@ void main() {
         () => t.view.physicalSize.width > t.view.physicalSize.height,
         reason: 'Android landscape orientation',
       );
-      expect(find.text('返回'), findsOneWidget);
-      await textTap(t, '返回');
+      expect(find.byKey(const Key('fullscreen-exit')), findsOneWidget);
+      await tap(t, find.byKey(const Key('fullscreen-exit')));
       await until(
         t,
         () => t.view.physicalSize.height > t.view.physicalSize.width,

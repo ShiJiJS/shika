@@ -9,6 +9,7 @@ import '../library/repository.dart';
 import 'paper.dart';
 import 'player.dart';
 import 'sheets.dart';
+import 'preferences.dart';
 
 abstract interface class BackupFiles {
   Future<bool> save(String text);
@@ -47,10 +48,12 @@ class LibraryHome extends StatefulWidget {
     required this.repository,
     this.initialError,
     this.backupFiles,
+    required this.preferences,
   });
   final LibraryRepository repository;
   final String? initialError;
   final BackupFiles? backupFiles;
+  final UiPreferences preferences;
   @override
   State<LibraryHome> createState() => _LibraryHomeState();
 }
@@ -86,7 +89,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     0,
     12,
     page == 'browse'
-        ? (review ? 120 : 60)
+        ? (review ? 180 : 120)
         : ['library', 'trash'].contains(page)
         ? 100
         : 16,
@@ -281,7 +284,10 @@ class _LibraryHomeState extends State<LibraryHome> {
       return await showDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text(heading, style: Paper.title.copyWith(fontSize: 21)),
+              title: Text(
+                heading,
+                style: Paper.of(context).title.copyWith(fontSize: 21),
+              ),
               content: Text(text),
               actions: [
                 TextButton(
@@ -290,7 +296,9 @@ class _LibraryHomeState extends State<LibraryHome> {
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context, true),
-                  style: TextButton.styleFrom(foregroundColor: Paper.danger),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Paper.of(context).danger,
+                  ),
                   child: Text(action),
                 ),
               ],
@@ -306,6 +314,10 @@ class _LibraryHomeState extends State<LibraryHome> {
     setState(() => obscured = false);
     final current = repo.current;
     switch (action) {
+      case 'theme':
+        await perform(
+          () => widget.preferences.setDark(!widget.preferences.dark),
+        );
       case 'tag':
         if (current != null) await tag({current.id});
       case 'details':
@@ -314,13 +326,19 @@ class _LibraryHomeState extends State<LibraryHome> {
             SheetFrame(
               title: '视频详情',
               children: [
-                Text(current.name, style: Paper.title.copyWith(fontSize: 17)),
+                Text(
+                  current.name,
+                  style: Paper.of(context).title.copyWith(fontSize: 17),
+                ),
                 note(
                   '${current.portrait ? '竖版' : '横版'} · ${current.seconds} 秒 · ${current.type}',
                 ),
                 SelectableText(
                   current.path,
-                  style: const TextStyle(fontSize: 12, color: Paper.olive),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Paper.of(context).olive,
+                  ),
                 ),
                 const SizedBox(height: 24),
               ],
@@ -385,7 +403,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: Paper.title,
+                        style: Paper.of(context).title,
                       ),
                     ),
                     if (mediaPage) ...[
@@ -394,10 +412,10 @@ class _LibraryHomeState extends State<LibraryHome> {
                         child: Text(
                           '${data.round.isEmpty ? '00' : (data.position + 1).toString().padLeft(2, '0')} / ${data.round.length.toString().padLeft(2, '0')}',
                           key: const Key('round-position'),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'serif',
                             fontSize: 13,
-                            color: Paper.olive,
+                            color: Paper.of(context).olive,
                           ),
                         ),
                       ),
@@ -423,46 +441,62 @@ class _LibraryHomeState extends State<LibraryHome> {
                       padding: EdgeInsets.zero,
                       icon: const Icon(Icons.more_horiz),
                       constraints: const BoxConstraints(minWidth: 190),
-                      itemBuilder: (_) => page == 'browse'
-                          ? [
-                              if (repo.current != null)
-                                const PopupMenuItem(
-                                  value: 'tag',
-                                  child: Text('打标签'),
-                                ),
-                              if (repo.current != null)
-                                const PopupMenuItem(
-                                  value: 'details',
-                                  child: Text('视频详情'),
-                                ),
-                              PopupMenuItem(
-                                value: 'review',
-                                child: Text(review ? '返回日常浏览' : '进入快速整理'),
-                              ),
-                              const PopupMenuItem(
-                                value: 'round',
-                                child: Text('开始新一轮'),
-                              ),
-                              if (repo.current != null)
-                                const PopupMenuItem(
-                                  value: 'delete',
-                                  child: Text(
-                                    '移入回收站',
-                                    style: TextStyle(color: Paper.danger),
+                      itemBuilder: (_) => [
+                        PopupMenuItem(
+                          value: 'theme',
+                          child: actionLabel(
+                            widget.preferences.dark
+                                ? Icons.light_mode_outlined
+                                : Icons.dark_mode_outlined,
+                            widget.preferences.dark ? '切换浅色模式' : '切换暗黑模式',
+                          ),
+                        ),
+                        ...(page == 'browse'
+                            ? [
+                                if (repo.current != null)
+                                  const PopupMenuItem(
+                                    value: 'tag',
+                                    child: Text('打标签'),
                                   ),
+                                if (repo.current != null)
+                                  const PopupMenuItem(
+                                    value: 'details',
+                                    child: Text('视频详情'),
+                                  ),
+                                PopupMenuItem(
+                                  value: 'review',
+                                  child: Text(review ? '返回日常浏览' : '进入快速整理'),
                                 ),
-                            ]
-                          : const [
-                              PopupMenuItem(
-                                value: 'roots',
-                                child: Text('媒体目录'),
-                              ),
-                              PopupMenuItem(value: 'trash', child: Text('回收站')),
-                              PopupMenuItem(
-                                value: 'backup',
-                                child: Text('备份与恢复'),
-                              ),
-                            ],
+                                const PopupMenuItem(
+                                  value: 'round',
+                                  child: Text('开始新一轮'),
+                                ),
+                                if (repo.current != null)
+                                  PopupMenuItem(
+                                    value: 'delete',
+                                    child: Text(
+                                      '移入回收站',
+                                      style: TextStyle(
+                                        color: Paper.of(context).danger,
+                                      ),
+                                    ),
+                                  ),
+                              ]
+                            : const [
+                                PopupMenuItem(
+                                  value: 'roots',
+                                  child: Text('媒体目录'),
+                                ),
+                                PopupMenuItem(
+                                  value: 'trash',
+                                  child: Text('回收站'),
+                                ),
+                                PopupMenuItem(
+                                  value: 'backup',
+                                  child: Text('备份与恢复'),
+                                ),
+                              ]),
+                      ],
                     ),
                   ],
                 ),
@@ -472,11 +506,11 @@ class _LibraryHomeState extends State<LibraryHome> {
               height: 2,
               child: busy
                   ? const LinearProgressIndicator(minHeight: 2)
-                  : const ColoredBox(color: Paper.line),
+                  : ColoredBox(color: Paper.of(context).line),
             ),
             if (error.isNotEmpty)
               Container(
-                color: const Color(0xfff4e8e2),
+                color: Theme.of(context).colorScheme.errorContainer,
                 padding: const EdgeInsets.only(left: 16),
                 child: Row(
                   children: [
@@ -484,8 +518,8 @@ class _LibraryHomeState extends State<LibraryHome> {
                       child: Text(
                         error,
                         key: const Key('operation-error'),
-                        style: const TextStyle(
-                          color: Paper.danger,
+                        style: TextStyle(
+                          color: Paper.of(context).danger,
                           fontSize: 12,
                         ),
                       ),
@@ -518,8 +552,8 @@ class _LibraryHomeState extends State<LibraryHome> {
   );
 
   Widget bottomNav() => Container(
-    decoration: const BoxDecoration(
-      border: Border(top: BorderSide(color: Paper.line)),
+    decoration: BoxDecoration(
+      border: Border(top: BorderSide(color: Paper.of(context).line)),
     ),
     child: Center(
       heightFactor: 1,
@@ -545,8 +579,8 @@ class _LibraryHomeState extends State<LibraryHome> {
                         tab.$3,
                         size: 19,
                         color: page == tab.$1
-                            ? Paper.olive
-                            : const Color(0xff7a8172),
+                            ? Paper.of(context).olive
+                            : Paper.of(context).muted,
                       ),
                       const SizedBox(height: 2),
                       Text(
@@ -554,8 +588,8 @@ class _LibraryHomeState extends State<LibraryHome> {
                         style: TextStyle(
                           fontSize: 10,
                           color: page == tab.$1
-                              ? Paper.olive
-                              : const Color(0xff7a8172),
+                              ? Paper.of(context).olive
+                              : Paper.of(context).muted,
                         ),
                       ),
                       AnimatedContainer(
@@ -564,7 +598,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                         width: 18,
                         height: 2,
                         color: page == tab.$1
-                            ? Paper.olive
+                            ? Paper.of(context).olive
                             : Colors.transparent,
                       ),
                     ],
@@ -576,9 +610,74 @@ class _LibraryHomeState extends State<LibraryHome> {
       ),
     ),
   );
+  Widget browseCaption(LibraryVideo video) {
+    final tags = {...video.tags, ...data.query.tags};
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          video.name,
+          key: const Key('browse-video-name'),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 13,
+            shadows: [Shadow(blurRadius: 5)],
+          ),
+        ),
+        if (tags.isNotEmpty)
+          SizedBox(
+            height: 38,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.zero,
+              children: [
+                for (final tag in tags)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 6, top: 4),
+                    child: TextButton(
+                      key: Key('filter-tag-$tag'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size(40, 30),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        backgroundColor: data.query.tags.contains(tag)
+                            ? const Color(0xb353664a)
+                            : const Color(0x55000000),
+                        side: data.query.tags.contains(tag)
+                            ? const BorderSide(color: Colors.white54)
+                            : BorderSide.none,
+                        shape: const StadiumBorder(),
+                      ),
+                      onPressed: busy
+                          ? null
+                          : () => perform(() async {
+                              final chosen = {...data.query.tags};
+                              chosen.contains(tag)
+                                  ? chosen.remove(tag)
+                                  : chosen.add(tag);
+                              await repo.setScope(
+                                data.query.copy(tags: chosen),
+                              );
+                              playerEpoch++;
+                            }),
+                      child: Text(
+                        '${data.query.tags.contains(tag) ? '✓' : '#'} $tag',
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
   Widget browsing() {
     final current = repo.current;
-    final tagNames = {...?current?.tags, ...data.query.tags};
     return Column(
       children: [
         Expanded(
@@ -601,59 +700,15 @@ class _LibraryHomeState extends State<LibraryHome> {
                   index: data.position,
                   onStep: step,
                   suspended: obscured,
+                  footerBuilder: browseCaption,
                 ),
-        ),
-        SizedBox(
-          height: 46,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            children: [
-              if (data.query.folder.isNotEmpty)
-                TextButton(
-                  onPressed: folder,
-                  child: actionLabel(
-                    Icons.folder_outlined,
-                    basename(data.query.folder),
-                  ),
-                ),
-              for (final t in tagNames)
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 1,
-                    vertical: 4,
-                  ),
-                  child: TextButton(
-                    key: Key('filter-tag-$t'),
-                    style: TextButton.styleFrom(
-                      backgroundColor: data.query.tags.contains(t)
-                          ? Paper.soft
-                          : Colors.transparent,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                    ),
-                    onPressed: busy
-                        ? null
-                        : () => perform(() async {
-                            final tags = {...data.query.tags};
-                            tags.contains(t) ? tags.remove(t) : tags.add(t);
-                            await repo.setScope(data.query.copy(tags: tags));
-                            playerEpoch++;
-                          }),
-                    child: Text(
-                      '${data.query.tags.contains(t) ? '✓' : '#'} $t',
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ),
-                ),
-            ],
-          ),
         ),
         if (review)
           Container(
             key: const Key('review-actions'),
             padding: const EdgeInsets.fromLTRB(12, 7, 16, 9),
-            decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: Paper.line)),
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: Paper.of(context).line)),
             ),
             child: Row(
               children: [
@@ -678,7 +733,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                   child: FilledButton(
                     key: const Key('quick-delete'),
                     style: FilledButton.styleFrom(
-                      backgroundColor: Paper.danger,
+                      backgroundColor: Paper.of(context).danger,
                     ),
                     onPressed: busy || current == null
                         ? null
@@ -706,7 +761,10 @@ class _LibraryHomeState extends State<LibraryHome> {
                 child: Text(
                   '$total 个视频',
                   key: const Key('library-count'),
-                  style: const TextStyle(color: Paper.olive, fontSize: 12),
+                  style: TextStyle(
+                    color: Paper.of(context).olive,
+                    fontSize: 12,
+                  ),
                 ),
               ),
               TextButton(
@@ -775,7 +833,10 @@ class _LibraryHomeState extends State<LibraryHome> {
                         data.query.duration == 'short' ? '10 秒以内' : '10 秒以上',
                       data.query.type,
                     ].where((s) => s.isNotEmpty).join(' · '),
-                    style: const TextStyle(fontSize: 12, color: Paper.olive),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Paper.of(context).olive,
+                    ),
                   ),
                 ),
                 TextButton(
@@ -863,16 +924,16 @@ class _LibraryHomeState extends State<LibraryHome> {
                                       child: CircleAvatar(
                                         radius: 12,
                                         backgroundColor: selected.contains(v.id)
-                                            ? Paper.olive
-                                            : Paper.background,
+                                            ? Paper.of(context).olive
+                                            : Paper.of(context).background,
                                         child: Icon(
                                           selected.contains(v.id)
                                               ? Icons.check
                                               : Icons.circle_outlined,
                                           size: 18,
                                           color: selected.contains(v.id)
-                                              ? Colors.white
-                                              : Paper.olive,
+                                              ? Paper.of(context).background
+                                              : Paper.of(context).olive,
                                         ),
                                       ),
                                     ),
@@ -884,22 +945,23 @@ class _LibraryHomeState extends State<LibraryHome> {
                               v.name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: Paper.title.copyWith(fontSize: 14),
+                              style: Paper.of(context).title
+                                  .copyWith(fontSize: 14),
                             ),
                             Text(
                               '${v.portrait ? '竖版' : '横版'} · ${v.type}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
-                                color: Paper.olive,
+                                color: Paper.of(context).olive,
                               ),
                             ),
                             Text(
                               v.tags.map((t) => '# $t').join('   '),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 11,
-                                color: Paper.olive,
+                                color: Paper.of(context).olive,
                               ),
                             ),
                           ],
@@ -921,7 +983,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         Expanded(
           child: Text(
             '已选 ${selected.length}',
-            style: const TextStyle(fontSize: 12, color: Paper.olive),
+            style: TextStyle(fontSize: 12, color: Paper.of(context).olive),
           ),
         ),
         TextButton(
@@ -930,7 +992,9 @@ class _LibraryHomeState extends State<LibraryHome> {
         ),
         TextButton(
           onPressed: busy || selected.isEmpty ? null : () => remove(selected),
-          style: TextButton.styleFrom(foregroundColor: Paper.danger),
+          style: TextButton.styleFrom(
+            foregroundColor: Paper.of(context).danger,
+          ),
           child: const Text('移入回收站'),
         ),
       ],
@@ -967,13 +1031,16 @@ class _LibraryHomeState extends State<LibraryHome> {
                     .where((t) => t.contains(tagSearch))
                     .map(
                       (t) => ListTile(
-                        leading: const Text(
+                        leading: Text(
                           '#',
-                          style: TextStyle(color: Paper.olive, fontSize: 19),
+                          style: TextStyle(
+                            color: Paper.of(context).olive,
+                            fontSize: 19,
+                          ),
                         ),
                         title: Text(
                           t,
-                          style: Paper.title.copyWith(fontSize: 17),
+                          style: Paper.of(context).title.copyWith(fontSize: 17),
                         ),
                         subtitle: Text(
                           '${data.videos.where((v) => v.status != VideoStatus.trash && v.tags.contains(t)).length} 个视频',
@@ -1080,7 +1147,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             ? null
             : Text(
                 subtitle,
-                style: const TextStyle(fontSize: 12, color: Paper.olive),
+                style: TextStyle(fontSize: 12, color: Paper.of(context).olive),
               ),
         trailing: const Icon(Icons.chevron_right, size: 19),
         onTap: busy ? null : action,
@@ -1115,6 +1182,17 @@ class _LibraryHomeState extends State<LibraryHome> {
       settingRow(Icons.save_outlined, '备份与恢复', '导出标签和管理记录', () => go('backup')),
       const SizedBox(height: 14),
       note('偏好'),
+      SwitchListTile(
+        key: const Key('dark-mode-setting'),
+        contentPadding: EdgeInsets.zero,
+        secondary: const Icon(Icons.dark_mode_outlined),
+        title: const Text('暗黑模式'),
+        value: widget.preferences.dark,
+        onChanged: busy
+            ? null
+            : (value) => perform(() => widget.preferences.setDark(value)),
+      ),
+      const Divider(height: 1),
       settingRow(
         Icons.shuffle,
         '播放顺序',
@@ -1136,7 +1214,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   Widget connection() => ListView(
     padding: const EdgeInsets.all(20),
     children: [
-      Text('连接你的视频库', style: Paper.title),
+      Text('连接你的视频库', style: Paper.of(context).title),
       const SizedBox(height: 26),
       TextField(
         controller: address,
@@ -1194,7 +1272,9 @@ class _LibraryHomeState extends State<LibraryHome> {
             '${r.path}\n${r.available ? '可访问 · ${r.lastScan}' : '目录暂不可用'}',
             style: TextStyle(
               fontSize: 12,
-              color: r.available ? Paper.olive : Paper.danger,
+              color: r.available
+                  ? Paper.of(context).olive
+                  : Paper.of(context).danger,
             ),
           ),
           trailing: iconAction(
@@ -1214,7 +1294,7 @@ class _LibraryHomeState extends State<LibraryHome> {
       ),
       if (data.videos.any((v) => v.status == VideoStatus.missing)) ...[
         const SizedBox(height: 30),
-        Text('缺失视频', style: Paper.title.copyWith(fontSize: 20)),
+        Text('缺失视频', style: Paper.of(context).title.copyWith(fontSize: 20)),
         note('保留标签记录，重新找到同一文件后继续关联。'),
         for (final v in data.videos.where(
           (v) => v.status == VideoStatus.missing,
@@ -1226,7 +1306,10 @@ class _LibraryHomeState extends State<LibraryHome> {
               '${v.path}\n${v.tags.join(' · ')}',
               style: const TextStyle(fontSize: 12),
             ),
-            trailing: const Text('缺失', style: TextStyle(color: Paper.danger)),
+            trailing: Text(
+              '缺失',
+              style: TextStyle(color: Paper.of(context).danger),
+            ),
           ),
       ],
       const SizedBox(height: 20),
@@ -1359,7 +1442,9 @@ class _LibraryHomeState extends State<LibraryHome> {
                           }
                         }
                       },
-                style: TextButton.styleFrom(foregroundColor: Paper.danger),
+                style: TextButton.styleFrom(
+                  foregroundColor: Paper.of(context).danger,
+                ),
                 child: const Text('永久删除'),
               ),
             ],
@@ -1372,7 +1457,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   Widget backup() => ListView(
     padding: const EdgeInsets.all(20),
     children: [
-      Text('保存你的整理成果', style: Paper.title.copyWith(fontSize: 21)),
+      Text('保存你的整理成果', style: Paper.of(context).title.copyWith(fontSize: 21)),
       note('备份标签、视频关联、媒体目录映射、回收站索引和播放轮次，不包含原视频及访问口令。'),
       const SizedBox(height: 14),
       FilledButton(
