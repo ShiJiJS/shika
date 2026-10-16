@@ -14,9 +14,16 @@ class Playback:
 
     def eligible(self, session, round):
         scope = round.scope
-        candidates = (
-            self.catalog.video_statement(session, **scope).with_only_columns(Video.id).subquery()
-        )
+        try:
+            candidates = (
+                self.catalog.video_statement(session, **scope)
+                .with_only_columns(Video.id)
+                .subquery()
+            )
+        except LibraryError as error:
+            if error.code == "directory_not_found":
+                return []
+            raise
         return list(
             session.execute(
                 select(RoundEntry.ordinal, RoundEntry.video_id)
@@ -32,7 +39,16 @@ class Playback:
         with self.db.write() as session:
             return self.create_in_session(session, order, scope, anchor_video_id, request_id)
 
-    def create_in_session(self, session, order, scope, anchor_video_id=None, request_id=None):
+    def create_in_session(
+        self,
+        session,
+        order,
+        scope,
+        anchor_video_id=None,
+        request_id=None,
+        *,
+        allow_missing_scope=False,
+    ):
         request_hash = hashlib.sha256(
             json.dumps(
                 {"order": order, "scope": scope, "anchor": anchor_video_id}, sort_keys=True
@@ -46,13 +62,18 @@ class Playback:
             if previous.request_hash != request_hash:
                 raise LibraryError("idempotency_conflict", "请求标识已用于不同的轮次操作")
             return self.summary(session, previous)
-        candidates = list(
-            session.scalars(
-                self.catalog.video_statement(session, **scope)
-                .order_by(Video.path, Video.id)
-                .with_only_columns(Video.id)
+        try:
+            candidates = list(
+                session.scalars(
+                    self.catalog.video_statement(session, **scope)
+                    .order_by(Video.path, Video.id)
+                    .with_only_columns(Video.id)
+                )
             )
-        )
+        except LibraryError as error:
+            if not allow_missing_scope or error.code != "directory_not_found":
+                raise
+            candidates = []
         if anchor_video_id and anchor_video_id not in candidates:
             raise LibraryError("video_outside_scope", "该视频不在当前可播放范围内", 422)
         if order == "random":

@@ -9,6 +9,7 @@ from sqlalchemy import delete, select, update
 
 from .errors import LibraryError
 from .file_state import path_reserved, reserved_video_ids
+from .identity import publish_discoveries
 from .media import fingerprint, inspect_media
 from .models import Directory, Observation, Root, Task, Video
 from .paths import VIDEO_EXTENSIONS, beneath, excluded, open_directory, open_video, signature
@@ -99,6 +100,8 @@ class Scanner:
             "deferred": 0,
             "failed": 0,
             "missing": 0,
+            "identity_matched": 0,
+            "identity_ambiguous": 0,
             "roots": [],
             "issues": [],
         }
@@ -109,6 +112,16 @@ class Scanner:
             for root in roots:
                 self.check_stop()
                 self.scan_root(task_id, root, roots, result)
+            self.check_stop()
+            self.change_task(task_id, phase="reconciling_identities")
+            publish_discoveries(
+                self.db,
+                self.settings,
+                task_id,
+                [root["id"] for root in result["roots"] if root["status"] == "completed"],
+                result,
+                self.check_stop,
+            )
             self.change_task(
                 task_id,
                 status="completed",
@@ -282,7 +295,10 @@ class Scanner:
         if not existing or path_reserved(session, path):
             return False
         stored = session.get(Video, existing.id)
-        if stored.status != "available" or stored.generation != existing.generation:
+        if (
+            stored.status not in ("available", "discovered")
+            or stored.generation != existing.generation
+        ):
             return False
         stored.seen_scan, stored.error = task_id, error
         return True
@@ -341,7 +357,10 @@ class Scanner:
                 path_reserved(session, path)
                 or (
                     stored
-                    and (stored.generation != existing.generation or stored.status != "available")
+                    and (
+                        stored.generation != existing.generation
+                        or stored.status not in ("available", "discovered")
+                    )
                 )
                 or (not existing and concurrent)
             ):
@@ -358,7 +377,7 @@ class Scanner:
                     path=str(path),
                     location_key=str(path),
                     name=path.name,
-                    status="available",
+                    status="discovered",
                     sha256=digest,
                     quick_hash=quick,
                     type=path.suffix[1:].upper(),

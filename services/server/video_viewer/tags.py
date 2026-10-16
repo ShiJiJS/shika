@@ -98,7 +98,11 @@ class Tags:
                         "tag_ids": [tag for tag in round.scope["tag_ids"] if tag != tag_id],
                     }
                     replacement = self.playback.create_in_session(
-                        session, round.order, scope, request_id="tag-delete:" + request_id
+                        session,
+                        round.order,
+                        scope,
+                        request_id="tag-delete:" + request_id,
+                        allow_missing_scope=True,
                     )["id"]
                 return {"id": tag_id, "deleted": True, "replacement_round_id": replacement}
 

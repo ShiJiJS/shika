@@ -233,6 +233,7 @@ def test_scan_merge_foreground_queries_and_interruption(environment, samples):
     put(samples / "h264.mov", media / "old.mov")
     client, token = connect(settings)
     scan(client)
+    old_id = client.get("/api/v1/videos").json()["items"][0]["id"]
     (media / "old.mov").unlink()
     put(samples / "h264.mov", media / "new.mov")
     job = client.post("/api/v1/scans").json()
@@ -245,7 +246,8 @@ def test_scan_merge_foreground_queries_and_interruption(environment, samples):
     assert client.get("/api/v1/videos", params={"status": "missing"}).json()["total"] == 0
     scan(client)
     assert client.get("/api/v1/videos").json()["total"] == 1
-    assert client.get("/api/v1/videos", params={"status": "missing"}).json()["total"] == 1
+    assert client.get("/api/v1/videos").json()["items"][0]["id"] == old_id
+    assert client.get("/api/v1/videos", params={"status": "missing"}).json()["total"] == 0
     client.__exit__(None, None, None)
 
 
