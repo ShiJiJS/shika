@@ -5,7 +5,7 @@ window.paperViewer = () => ({
     {id:'macro',name:'花间微风_03.mp4',orientation:'9:16',src:'assets/flower-portrait.mp4',poster:'assets/flower-portrait.jpg',tags:['自然','微距']}
   ],
   filters: [], index: 0, menu: false, panel: '', paused: true, time: 0,
-  duration: 5, speed: 1, mediaError: false, draftTags: [], deleted: null,
+  duration: 5, speed: 1, mediaError: false, draftTags: [], draftFilters: [], deleted: null,
   pointer: null, justSwiped: false, lastWheel: 0, loadVersion: 0,
   allTags: ['自然','花卉','微距','庭院'],
   get results() { return this.clips.filter(c => this.filters.every(t => c.tags.includes(t))); },
@@ -53,12 +53,16 @@ window.paperViewer = () => ({
     this.lastWheel=Date.now(); this.step(event.deltaY>0 ? 1 : -1);
   },
   toggleFilter(tag) {
+    this.setFilters(this.filters.includes(tag) ? this.filters.filter(t=>t!==tag) : [...this.filters,tag]);
+  },
+  setFilters(tags) {
     const currentId=this.current?.id;
-    this.filters=this.filters.includes(tag) ? this.filters.filter(t=>t!==tag) : [...this.filters,tag];
+    this.filters=[...tags];
     const match=this.results.findIndex(c=>c.id===currentId);
     this.index=Math.max(0,match);
     if (this.current?.id!==currentId) this.$nextTick(() => this.loadClip(false));
   },
+  openFilters() { this.menu=false;this.draftFilters=[...this.filters];this.panel='filters';this.$nextTick(() => document.querySelector('.sheet .close').focus()); },
   editTags() { this.menu=false; this.draftTags=[...(this.current?.tags || [])]; this.panel='tags'; this.$nextTick(() => document.querySelector('.sheet .close').focus()); },
   saveTags() {
     if (this.current) this.current.tags=[...this.draftTags];
