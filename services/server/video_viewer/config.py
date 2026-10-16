@@ -22,6 +22,7 @@ class Settings:
     startup_scan: bool = True
     token_seconds: int = 30 * 24 * 3600
     media_streams: int = 4
+    trash_dir: Path | None = None
 
     def __post_init__(self):
         if len(self.passphrase) < 8:
@@ -39,6 +40,16 @@ class Settings:
             raise ValueError("Invalid scan timings")
         if not 1 <= self.media_streams <= 32:
             raise ValueError("media_streams must be between 1 and 32")
+        if self.trash_dir and (not self.trash_dir.is_absolute() or self.trash_dir == Path("/")):
+            raise ValueError("trash_dir must be an absolute non-root directory")
+        if self.trash_dir and (
+            ".." in self.trash_dir.parts
+            or "\x00" in str(self.trash_dir)
+            or any(
+                m.path == self.trash_dir or self.trash_dir in m.path.parents for m in self.mounts
+            )
+        ):
+            raise ValueError("trash_dir cannot contain a media mount or parent components")
 
     @classmethod
     def from_env(cls):
@@ -53,4 +64,5 @@ class Settings:
             stability_seconds=float(os.environ.get("VV_STABILITY_SECONDS", "2")),
             probe_timeout=float(os.environ.get("VV_PROBE_TIMEOUT", "20")),
             media_streams=int(os.environ.get("VV_MEDIA_STREAMS", "4")),
+            trash_dir=Path(os.environ["VV_TRASH_DIR"]) if os.environ.get("VV_TRASH_DIR") else None,
         )

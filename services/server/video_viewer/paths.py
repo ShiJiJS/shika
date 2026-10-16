@@ -27,6 +27,8 @@ def beneath(path: Path, parent: Path):
 
 
 def validate_path(path: str, mounts):
+    if "\x00" in path:
+        raise LibraryError("invalid_path", "目录路径不合法", 422)
     candidate = Path(path)
     if not candidate.is_absolute() or ".." in candidate.parts:
         raise LibraryError("path_outside_mounts", "只能选择已挂载媒体目录内的位置", 422)
@@ -56,6 +58,12 @@ def open_directory(path: Path):
 @contextmanager
 def open_video(path: Path, mounts):
     validate_path(str(path), mounts)
+    with open_regular(path) as fd:
+        yield fd
+
+
+@contextmanager
+def open_regular(path: Path):
     with open_directory(path.parent) as parent_fd:
         fd = os.open(path.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=parent_fd)
         try:
@@ -78,3 +86,21 @@ def signature(info):
 
 def excluded(path: Path, data_dir: Path):
     return any(p in EXCLUDED_NAMES for p in path.parts) or beneath(path, data_dir)
+
+
+@contextmanager
+def make_directory(path: Path):
+    fd = os.open("/", os.O_RDONLY | os.O_DIRECTORY)
+    try:
+        for component in path.parts[1:]:
+            try:
+                os.mkdir(component, mode=0o700, dir_fd=fd)
+                os.fsync(fd)
+            except FileExistsError:
+                pass
+            next_fd = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)
+            os.close(fd)
+            fd = next_fd
+        yield fd
+    finally:
+        os.close(fd)

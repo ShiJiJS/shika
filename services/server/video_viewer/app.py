@@ -9,12 +9,15 @@ from fastapi import Depends, FastAPI, Header, Query, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, model_validator
+from sqlalchemy import select
 
 from .catalog import Catalog
 from .config import Settings
 from .db import Database
 from .errors import LibraryError
-from .models import Root, Setting, Video
+from .file_operations import FileOperations
+from .file_state import reserved_video_ids
+from .models import FileOperation, Root, Setting, Video
 from .playback import Playback
 from .scanner import Scanner
 from .security import Authentication
@@ -80,7 +83,23 @@ class TagAssignment(WriteInput):
     mode: Literal["add", "remove", "replace"] = "add"
 
 
-def create_app(settings: Settings | None = None):
+class DeleteInput(WriteInput):
+    video_ids: list[Annotated[str, Field(min_length=1, max_length=128)]] = Field(
+        min_length=1, max_length=1000
+    )
+
+
+class TrashInput(WriteInput):
+    trash_ids: list[Annotated[str, Field(min_length=1, max_length=128)]] = Field(
+        min_length=1, max_length=1000
+    )
+
+
+class PermanentInput(TrashInput):
+    confirmed: Literal[True]
+
+
+def create_app(settings: Settings | None = None, file_fault_hook=None):
     @asynccontextmanager
     async def lifespan(app):
         configured = settings or Settings.from_env()
@@ -94,13 +113,18 @@ def create_app(settings: Settings | None = None):
         app.state.streams = MediaStreams(db, configured)
         app.state.playback = Playback(db, catalog, app.state.streams)
         app.state.tags = Tags(db, app.state.playback)
+        app.state.files = FileOperations(
+            db, configured, catalog, app.state.playback, file_fault_hook
+        )
         app.state.login_attempts = {}
         app.state.login_lock = threading.Lock()
+        app.state.files.start()
         scanner.start()
         try:
             yield
         finally:
             scanner.close()
+            app.state.files.close()
             db.close()
 
     app = FastAPI(title="Video Viewer", version="0.1.0", lifespan=lifespan)
@@ -183,6 +207,11 @@ def create_app(settings: Settings | None = None):
         with scanner.lock:
             if scanner.future and not scanner.future.done():
                 raise LibraryError("scan_busy", "扫描进行中，请完成后再修改媒体目录")
+            with request.app.state.db.read() as session:
+                if session.scalar(
+                    select(Video.id).where(Video.id.in_(reserved_video_ids())).limit(1)
+                ):
+                    raise LibraryError("operation_busy", "文件操作进行中，请完成后再修改媒体目录")
             return request.app.state.catalog.save_root(body.name, body.path, root_id)
 
     @app.post("/api/v1/roots", dependencies=auth_required, status_code=201)
@@ -312,5 +341,54 @@ def create_app(settings: Settings | None = None):
         return request.app.state.tags.assign(
             body.video_ids, body.tag_ids, body.mode, body.request_id
         )
+
+    @app.get("/api/v1/trash", dependencies=auth_required)
+    def trash(
+        request: Request,
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int, Query(ge=1, le=200)] = 50,
+    ):
+        return request.app.state.files.trash(offset, limit)
+
+    def operation_task(request, operation_id):
+        return request.app.state.scanner.task(operation_id)
+
+    @app.post("/api/v1/videos/trash", dependencies=auth_required, status_code=202)
+    def delete_videos(body: DeleteInput, request: Request):
+        return operation_task(
+            request, request.app.state.files.submit("trash", body.video_ids, body.request_id)
+        )
+
+    @app.post("/api/v1/trash/restore", dependencies=auth_required, status_code=202)
+    def restore_trash(body: TrashInput, request: Request):
+        return operation_task(
+            request, request.app.state.files.submit("restore", body.trash_ids, body.request_id)
+        )
+
+    @app.post("/api/v1/trash/permanent", dependencies=auth_required, status_code=202)
+    def permanent_trash(body: PermanentInput, request: Request):
+        return operation_task(
+            request, request.app.state.files.submit("permanent", body.trash_ids, body.request_id)
+        )
+
+    @app.post("/api/v1/operations/{operation_id}/undo", dependencies=auth_required, status_code=202)
+    def undo_delete(operation_id: str, body: WriteInput, request: Request):
+        return operation_task(
+            request,
+            request.app.state.files.submit("undo", [], body.request_id, undo_of=operation_id),
+        )
+
+    @app.post(
+        "/api/v1/operations/{operation_id}/retry", dependencies=auth_required, status_code=202
+    )
+    def retry_operation(operation_id: str, body: WriteInput, request: Request):
+        return operation_task(request, request.app.state.files.retry(operation_id, body.request_id))
+
+    @app.get("/api/v1/operations/{operation_id}", dependencies=auth_required)
+    def operation(operation_id: str, request: Request):
+        with request.app.state.db.read() as session:
+            if not session.get(FileOperation, operation_id):
+                raise LibraryError("operation_not_found", "文件操作不存在", 404)
+        return operation_task(request, operation_id)
 
     return app

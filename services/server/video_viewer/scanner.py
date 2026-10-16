@@ -8,6 +8,7 @@ from pathlib import Path
 from sqlalchemy import delete, select, update
 
 from .errors import LibraryError
+from .file_state import path_reserved, reserved_video_ids
 from .media import fingerprint, inspect_media
 from .models import Directory, Observation, Root, Task, Video
 from .paths import VIDEO_EXTENSIONS, beneath, excluded, open_directory, open_video, signature
@@ -26,7 +27,7 @@ class Scanner:
         with db.write() as session:
             session.execute(
                 update(Task)
-                .where(Task.status.in_(["queued", "running"]))
+                .where(Task.kind == "scan", Task.status.in_(["queued", "running"]))
                 .values(
                     status="interrupted",
                     phase="interrupted",
@@ -169,13 +170,17 @@ class Scanner:
         if remaining > 0 and self.stop.wait(remaining):
             raise InterruptedError("scan_stopped")
         self.change_task(task_id, phase="processing_media")
-        for path, first_signature, _since in entries:
+        for path, first_signature, stable_since in entries:
             self.check_stop()
             owner = min(
                 (r for r in roots if beneath(path, Path(r.path))), key=lambda r: len(r.path)
             )
+            with self.db.read() as session:
+                existing = session.scalar(select(Video).where(Video.location_key == str(path)))
             try:
-                self.scan_file(path, first_signature, owner, task_id, result)
+                self.scan_file(
+                    path, first_signature, owner, task_id, result, existing, stable_since
+                )
             except InterruptedError:
                 raise
             except (
@@ -192,9 +197,7 @@ class Scanner:
                         {"root_id": root.id, "name": path.name, "code": "media_probe_failed"}
                     )
                 with self.db.write() as session:
-                    video = session.scalar(select(Video).where(Video.location_key == str(path)))
-                    if video:
-                        video.seen_scan, video.error = task_id, "media_probe_failed"
+                    self.record_state(session, existing, path, task_id, "media_probe_failed")
         self.check_stop()
         try:
             with open_directory(base) as fd:
@@ -216,6 +219,7 @@ class Scanner:
                     Video.status == "available",
                     Video.path.startswith(str(base) + "/", autoescape=True),
                     Video.seen_scan != task_id,
+                    Video.id.not_in(reserved_video_ids()),
                 )
             )
             for video in unseen:
@@ -242,7 +246,11 @@ class Scanner:
             for child in children:
                 self.check_stop()
                 full = path / child.name
-                if excluded(full, self.settings.data_dir) or child.is_symlink():
+                if (
+                    excluded(full, self.settings.data_dir)
+                    or (self.settings.trash_dir and beneath(full, self.settings.trash_dir))
+                    or child.is_symlink()
+                ):
                     continue
                 if child.is_dir(follow_symlinks=False):
                     nested = os.open(
@@ -269,21 +277,27 @@ class Scanner:
                         stable_since = previous.stable_since
                     entries.append((full, observed, stable_since))
 
-    def scan_file(self, path, observed, root, task_id, result):
+    @staticmethod
+    def record_state(session, existing, path, task_id, error):
+        if not existing or path_reserved(session, path):
+            return False
+        stored = session.get(Video, existing.id)
+        if stored.status != "available" or stored.generation != existing.generation:
+            return False
+        stored.seen_scan, stored.error = task_id, error
+        return True
+
+    def scan_file(self, path, observed, root, task_id, result, existing, stable_since):
         thumbnail = None
+        with self.db.read() as session:
+            if path_reserved(session, path):
+                result["deferred"] += 1
+                return
         with open_video(path, self.settings.mounts) as fd:
             current = signature(os.fstat(fd))
-            with self.db.read() as session:
-                observation = session.get(Observation, str(path))
-                existing = session.scalar(select(Video).where(Video.location_key == str(path)))
-            if (
-                current != observed
-                or time.time() - observation.stable_since < self.settings.stability_seconds
-            ):
+            if current != observed or time.time() - stable_since < self.settings.stability_seconds:
                 with self.db.write() as session:
-                    if existing:
-                        stored = session.get(Video, existing.id)
-                        stored.seen_scan, stored.error = task_id, "file_changing"
+                    self.record_state(session, existing, path, task_id, "file_changing")
                 result["deferred"] += 1
                 return
             if (
@@ -300,8 +314,7 @@ class Scanner:
                 and (self.settings.data_dir / "thumbnails" / existing.thumbnail).is_file()
             ):
                 with self.db.write() as session:
-                    stored = session.get(Video, existing.id)
-                    stored.seen_scan, stored.error = task_id, None
+                    self.record_state(session, existing, path, task_id, None)
                 result["unchanged"] += 1
                 return
             digest, quick = fingerprint(fd, self.stop)
@@ -315,8 +328,7 @@ class Scanner:
                 result["deferred"] += 1
                 if existing:
                     with self.db.write() as session:
-                        stored = session.get(Video, existing.id)
-                        stored.seen_scan, stored.error = task_id, "file_changing"
+                        self.record_state(session, existing, path, task_id, "file_changing")
                 return
             with open_video(path, self.settings.mounts) as fresh:
                 if signature(os.fstat(fresh)) != current:
@@ -324,6 +336,18 @@ class Scanner:
                     raise OSError("file_replaced_during_probe")
         with self.db.write() as session:
             stored = session.get(Video, existing.id) if existing else None
+            concurrent = session.scalar(select(Video).where(Video.location_key == str(path)))
+            if (
+                path_reserved(session, path)
+                or (
+                    stored
+                    and (stored.generation != existing.generation or stored.status != "available")
+                )
+                or (not existing and concurrent)
+            ):
+                (self.settings.data_dir / "thumbnails" / thumbnail).unlink(missing_ok=True)
+                result["deferred"] += 1
+                return
             if stored and stored.sha256 != digest:
                 stored.status, stored.location_key = "missing", None
                 session.flush()

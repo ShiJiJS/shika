@@ -54,6 +54,7 @@ class Video(Base):
     name: Mapped[str] = mapped_column(String)
     status: Mapped[str] = mapped_column(String, default="available", index=True)
     error: Mapped[str | None] = mapped_column(String, nullable=True)
+    generation: Mapped[int] = mapped_column(Integer, default=0)
     size: Mapped[int] = mapped_column(Integer)
     device: Mapped[str] = mapped_column(String)
     inode: Mapped[str] = mapped_column(String)
@@ -140,3 +141,53 @@ class RequestRecord(Base):
     fingerprint: Mapped[str] = mapped_column(String)
     result: Mapped[dict] = mapped_column(JSON)
     created_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
+class FileOperation(Base):
+    __tablename__ = "file_operations"
+    id: Mapped[str] = mapped_column(ForeignKey("tasks.id"), primary_key=True)
+    request_key: Mapped[str] = mapped_column(String, unique=True)
+    request_hash: Mapped[str] = mapped_column(String)
+    kind: Mapped[str] = mapped_column(String)
+    undo_of: Mapped[str | None] = mapped_column(String, nullable=True)
+    round_snapshot: Mapped[dict] = mapped_column(JSON, default=dict)
+    historical: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class FileStep(Base):
+    __tablename__ = "file_steps"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    operation_id: Mapped[str] = mapped_column(ForeignKey("file_operations.id"), index=True)
+    requested_id: Mapped[str] = mapped_column(String)
+    video_id: Mapped[str | None] = mapped_column(ForeignKey("videos.id"), nullable=True, index=True)
+    trash_id: Mapped[str | None] = mapped_column(String, nullable=True)
+    original_status: Mapped[str] = mapped_column(String, default="available")
+    root_path: Mapped[str] = mapped_column(Text, default="")
+    original_path: Mapped[str] = mapped_column(Text, default="")
+    source: Mapped[str] = mapped_column(Text, default="")
+    destination: Mapped[str] = mapped_column(Text, default="")
+    staging: Mapped[str] = mapped_column(Text, default="")
+    copy_path: Mapped[str] = mapped_column(Text, default="")
+    expected_hash: Mapped[str] = mapped_column(String, default="")
+    expected_size: Mapped[int] = mapped_column(Integer, default=0)
+    source_signature: Mapped[list] = mapped_column(JSON, default=list)
+    claimed_identity: Mapped[list] = mapped_column(JSON, default=list)
+    published_identity: Mapped[list] = mapped_column(JSON, default=list)
+    copy_identity: Mapped[list] = mapped_column(JSON, default=list)
+    phase: Mapped[str] = mapped_column(String, default="prepared", index=True)
+    outcome: Mapped[str] = mapped_column(String, default="pending")
+    error: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class TrashItem(Base):
+    __tablename__ = "trash_items"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    video_id: Mapped[str] = mapped_column(ForeignKey("videos.id"), index=True)
+    operation_id: Mapped[str] = mapped_column(ForeignKey("file_operations.id"))
+    root_path: Mapped[str] = mapped_column(Text)
+    original_path: Mapped[str] = mapped_column(Text)
+    trash_path: Mapped[str] = mapped_column(Text)
+    sha256: Mapped[str] = mapped_column(String)
+    size: Mapped[int] = mapped_column(Integer)
+    status: Mapped[str] = mapped_column(String, default="active", index=True)
+    deleted_at: Mapped[float] = mapped_column(Float, default=time.time)

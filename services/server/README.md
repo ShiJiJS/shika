@@ -1,6 +1,6 @@
 # Video Viewer 服务端
 
-当前完成 S1–S3：口令认证、多媒体目录扫描、目录层级、媒体信息、缩略图、分页查询、持久化扫描任务、授权原文件流、随机/顺序轮次与标签管理。S4–S6 和 Flutter 真实联调继续按 [技术方案](../../docs/server-plan.md) 推进，已完成能力与证据见 [服务端验证记录](../../docs/server-validation.md)。
+当前完成 S1–S4：口令认证、多媒体目录扫描、目录层级、媒体信息、缩略图、分页查询、持久化扫描任务、授权原文件流、随机/顺序轮次、标签管理和真实回收站文件操作。S5–S6 和 Flutter 真实联调继续按 [技术方案](../../docs/server-plan.md) 推进，已完成能力与证据见 [服务端验证记录](../../docs/server-validation.md)。
 
 ## 本机 WSL2 开发
 
@@ -71,6 +71,13 @@ NAS 部署时从 `.env.example` 设置 NAS 本地数据路径、视频挂载路�
 | `PATCH /api/v1/tags/{id}` | 使用 request_id 与 name 改名，保留稳定 ID 和关联 |
 | `DELETE /api/v1/tags/{id}` | JSON request_id 删除标签及关联，原文件保留 |
 | `PATCH /api/v1/video-tags` | request_id、video_ids、tag_ids、mode 批量关联；mode 为 add/remove/replace |
+| `POST /api/v1/videos/trash` | request_id、video_ids 移入回收站，202 返回任务 |
+| `GET /api/v1/trash` | 分页列出活动回收条目，保留视频 ID 与标签 |
+| `POST /api/v1/trash/restore` | request_id、trash_ids 按条目恢复原路径，冲突不覆盖 |
+| `POST /api/v1/trash/permanent` | request_id、trash_ids、confirmed=true 永久删除指定条目 |
+| `POST /api/v1/operations/{id}/undo` | request_id 精确撤销最近成功删除，旧操作返回冲突 |
+| `POST /api/v1/operations/{id}/retry` | request_id 重试该操作未完成条目，成功项不重做 |
+| `GET /api/v1/operations/{id}` | 文件操作任务、阶段和逐项成功/失败结果 |
 
 分页为 offset/limit，默认 50、最多 200；返回 items/total/offset/limit。目录范围包含子树，名称按字面查找，排序为路径与稳定 ID。视频摘要包含实际视频/音频编码、容器、时长、旋转后的尺寸、媒体入口与 tag_ids；标签列表返回稳定 ID 和名称。完整参数可在 `/docs` 和 `/openapi.json` 查看。
 
@@ -93,6 +100,16 @@ NAS 部署时从 `.env.example` 设置 NAS 本地数据路径、视频挂载路�
 批量单次最多 1000 个视频、256 个标签，重复 ID 按集合处理。add 追加、remove 仅移除明确指定的标签，replace 精确替换；replace 的空标签集合表示清空所选视频标签。未知视频/标签会让整次关联操作失败并回滚。标签与关联的写操作都使用 request_id，重试返回原操作结果；客户端随后刷新权威标签列表或相关分页，不把历史结果当作当前完整状态。
 
 改名保留标签 ID，轮次筛选不变；删除活动筛选中的标签会在同一事务中解除关联、移除该筛选条件并建立新轮次，保留其他范围条件。批量打标和标签维护只修改管理数据，目录名不会自动转标签，原视频位置与字节保持。
+
+## 文件操作与恢复
+
+文件操作先持久化意图，再由单个执行器处理。202 表示已接受，客户端轮询任务直到完成，检查 result.items 的逐项结果和 partial；只有物理操作完成且数据库提交后才报告成功。同一视频操作互斥，重试复用 request_id；撤销绑定原删除操作 ID。
+
+默认回收位置为各接入目录的 `.video-viewer-trash/<条目ID>/<原文件名>`。临时中间区为源/目标父目录的 `.video-viewer-tmp`，两者均从扫描排除。不自动清空。原目录已有同名文件、来源被替换或路径为链接时拒绝执行，保留冲突等待处理。恢复成功保留稳定视频 ID 和标签；撤销在原范围和目标仍有效时恢复原轮次位置。
+
+同文件系统使用 Linux renameat2 的不覆盖移动；文件系统不支持时返回 filesystem_unsupported，保留原文件。跨文件系统先复制、fsync 和完整 SHA-256 校验，再发布目标并清除受控中间区来源。异常时优先恢复完整来源，无法核对的副本保留并报告冲突。重启核对未完成阶段后接续；历史成功步骤不重复操作。
+
+可用容器内绝对路径环境变量 `VV_TRASH_DIR` 指定独立回收位置（自定义 Compose 环境与卷），默认 Compose 不设置。它不能包含媒体挂载根，若位于媒体范围内也从扫描排除。路径调整不会自动迁移已有回收内容，请保留原挂载和配置直到条目处理完毕。真实 NAS 文件系统能力仍须 V1 验证。
 
 ## Docker 内验证
 
