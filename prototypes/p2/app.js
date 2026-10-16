@@ -8,30 +8,29 @@ const initialData = () => ({
     {id:'v2',name:'庭院片段_01.mp4',path:'/videos/收集/花草/横版/庭院片段_01.mp4',root:'r1',orientation:'landscape',duration:5,type:'MP4',tags:['自然','花卉','庭院'],asset:'flower-landscape',status:'available'},
     {id:'v3',name:'花苞近景_03.mp4',path:'/videos/收集/花草/竖版/花苞近景_03.mp4',root:'r1',orientation:'portrait',duration:5,type:'MP4',tags:['自然','微距'],asset:'flower-portrait',frame:'portrait-late',status:'available'},
     {id:'v4',name:'公园花草_04.mp4',path:'/videos/旅行/公园/公园花草_04.mp4',root:'r1',orientation:'landscape',duration:5,type:'MP4',tags:['自然','花卉','散步'],asset:'flower-landscape',frame:'landscape-late',status:'available'},
-    {id:'v5',name:'庭院随拍_05.mp4',path:'/collection/待归档/庭院随拍_05.mp4',root:'r2',orientation:'portrait',duration:5,type:'MP4',tags:['庭院'],asset:'flower-portrait',frame:'portrait-early',status:'available'},
-    {id:'v6',name:'植物细节_06.mp4',path:'/collection/待归档/植物细节_06.mp4',root:'r2',orientation:'landscape',duration:5,type:'MP4',tags:['自然','微距'],asset:'flower-landscape',frame:'landscape-early',status:'available'},
+    {id:'v5',name:'庭院随拍_05.mp4',path:'/collection/新收藏/庭院随拍_05.mp4',root:'r2',orientation:'portrait',duration:5,type:'MP4',tags:['庭院'],asset:'flower-portrait',frame:'portrait-early',status:'available'},
+    {id:'v6',name:'植物细节_06.mp4',path:'/collection/新收藏/植物细节_06.mp4',root:'r2',orientation:'landscape',duration:5,type:'MP4',tags:['自然','微距'],asset:'flower-landscape',frame:'landscape-early',status:'available'},
     {id:'v7',name:'去年花开_07.mp4',path:'/videos/收集/去年花开_07.mp4',root:'r1',orientation:'portrait',duration:5,type:'MP4',tags:['自然','花卉'],asset:'flower-portrait',status:'missing'},
     {id:'v8',name:'窗边花草_08.mp4',path:'/videos/收集/窗边花草_08.mp4',originalPath:'/videos/收集/窗边花草_08.mp4',root:'r1',orientation:'landscape',duration:5,type:'MP4',tags:['庭院'],asset:'flower-landscape',status:'trash'}
   ],
   tags:['自然','花卉','庭院','微距','散步'],
   roots:[{id:'r1',name:'视频收藏',path:'/videos',status:'available',lastScan:'今天 09:20'},{id:'r2',name:'收集目录',path:'/collection',status:'available',lastScan:'今天 09:20'}],
-  categories:[{id:'c1',name:'花草',path:'/videos/归档/花草'},{id:'c2',name:'旅行',path:'/videos/旅行'}],
   filters:[], attrs:{orientation:'',duration:'',type:''}, folder:'', playMode:'random',
   round:['v1','v3','v2','v5','v4','v6'], index:0,
-  connection:{address:'192.168.1.20',port:'8760',connected:true}, lastDelete:null
+  connection:{address:'192.168.1.20',port:'8760',connected:true}, lastDelete:null, lastDeleteRound:null
 });
 
 window.videoLibrary = () => ({
   ...initialData(), page:'browse', cleanup:false, panel:'', menu:false,
   busy:false, error:'', formError:'', notice:'', selected:[], selecting:false,
-  search:'', tagSearch:'', folderCursor:'', editId:'', form:{}, draftTags:[], batchAction:'add',
+  search:'', tagSearch:'', folderCursor:'', folderReturnTo:'', editId:'', form:{}, draftTags:[], batchAction:'add',
   paused:true, time:0, duration:5, speed:1, mediaError:false, fullscreen:false,
   pointer:null, swiped:false, lastWheel:0, roundEnded:false,
-  draftAttrs:{}, archiveItems:[], archiveCategory:'c1', preview:[], pendingBackup:null, restoreMaps:[],
+  draftAttrs:{}, reviewTags:[], pendingBackup:null, restoreMaps:[],
   restoreChecked:false, confirmKind:'', confirmIds:[], confirmText:'',
   connectionForm:{address:'192.168.1.20',port:'8760',passphrase:'demo'},
   fault:new URLSearchParams(location.search).get('scenario') || '', returnPage:'settings',
-  get pageTitle(){ return ({browse:this.cleanup?'整理':'浏览',library:'视频库',tags:'标签',settings:'设置',connection:'连接',roots:'媒体目录',trash:'回收站',categories:'归档分类',backup:'备份与恢复'})[this.page] || '浏览'; },
+  get pageTitle(){ return ({browse:this.cleanup?'快速整理':'浏览',library:'视频库',tags:'标签',settings:'设置',connection:'连接',roots:'媒体目录',trash:'回收站',backup:'备份与恢复'})[this.page] || '浏览'; },
   get mainPage(){return ['browse','library','tags','settings'].includes(this.page);},
   get isMedia(){return ['browse','library'].includes(this.page);},
   get candidates(){return this.videos.filter(v=>this.matches(v));},
@@ -44,7 +43,7 @@ window.videoLibrary = () => ({
   get folderChildren(){
     if (!this.folderCursor) return this.roots.map(r=>({path:r.path,name:r.name,root:true,unavailable:r.status!=='available'}));
     const dirs=new Set();
-    const sources=[...this.videos.map(v=>v.path.substring(0,v.path.lastIndexOf('/'))),...this.categories.map(c=>c.path)];
+    const sources=this.videos.map(v=>v.path.substring(0,v.path.lastIndexOf('/')));
     for(const p of sources){if(p.startsWith(this.folderCursor+'/')) dirs.add(this.folderCursor+'/'+p.slice(this.folderCursor.length+1).split('/')[0]);}
     return [...dirs].sort().map(p=>({path:p,name:p.split('/').pop()}));
   },
@@ -72,7 +71,7 @@ window.videoLibrary = () => ({
     if(new URLSearchParams(location.search).get('reset')==='1'){localStorage.removeItem(STORAGE_KEY);const url=new URL(location.href);url.searchParams.delete('reset');history.replaceState(null,'',url);}
     try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(saved?.version===1)this.assignData(saved.data);}catch{this.error='无法读取保存的数据，可以在设置中重试或重置。';}
     const params=new URLSearchParams(location.search), target=params.get('page'),state=params.get('state');
-    if(target && ['browse','library','tags','settings','connection','roots','trash','categories','backup'].includes(target))this.page=target;
+    if(target && ['browse','library','tags','settings','connection','roots','trash','backup'].includes(target))this.page=target;
     if(this.fault==='empty'){this.videos=[];this.round=[];this.page='library';}
     if(this.fault==='offline'){this.connection.connected=false;this.page='connection';}
     if(this.fault==='root-unavailable')this.roots[1].status='unavailable';
@@ -90,7 +89,7 @@ window.videoLibrary = () => ({
   assignData(data){for(const key of Object.keys(initialData()))if(data[key]!==undefined)this[key]=clone(data[key]);},
   save(){try{if(this.fault==='storage-failure')throw Error('storage');localStorage.setItem(STORAGE_KEY,JSON.stringify({version:1,data:this.pack()}));return true;}catch{this.error='保存失败，刚才的修改未生效。请检查浏览器存储后重试。';return false;}},
   change(fn){const before=this.pack();fn();if(!this.save()){this.assignData(before);return false;}return true;},
-  notify(text){this.notice=text;clearTimeout(this.noticeTimer);this.noticeTimer=setTimeout(()=>this.notice='',4500);},
+  notify(text){this.notice=text;clearTimeout(this.noticeTimer);this.noticeTimer=setTimeout(()=>this.notice='',text==='已移入回收站'?8000:4500);},
   format(value){const s=Math.floor(Number.isFinite(value)?value:0);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');},
   reconcile(){const id=this.round[this.index];this.round=this.round.filter(id=>this.videos.some(v=>v.id===id&&this.matches(v)));this.index=Math.max(0,Math.min(this.round.indexOf(id)>=0?this.round.indexOf(id):this.index,this.round.length-1));},
   newRound(persist=true){
@@ -118,13 +117,16 @@ window.videoLibrary = () => ({
   pointerEnd(e){if(!this.pointer)return;const dx=e.clientX-this.pointer.x,dy=e.clientY-this.pointer.y;this.pointer=null;if(Math.abs(dy)>55&&Math.abs(dy)>Math.abs(dx)*1.3){this.swiped=true;this.step(dy<0?1:-1);}},
   wheel(e){if(this.menu||this.panel||e.target.closest('.controls')||Math.abs(e.deltaY)<25||Date.now()-this.lastWheel<650)return;this.lastWheel=Date.now();this.step(e.deltaY>0?1:-1);},
   setMode(mode){if(this.change(()=>{this.playMode=mode;this.newRound(false);})){this.closePanel();this.notify(mode==='random'?'已切换随机播放':'已切换顺序播放');}},
-  openFolder(){this.folderCursor=this.folder;this.openPanel('folders');},
+  openFolder(){this.folderReturnTo=this.panel==='review-filters'?'review-filters':'';this.folderCursor=this.folder;this.openPanel('folders');},
   enterFolder(node){if(node.unavailable){this.formError='这个媒体目录暂时无法访问，原有记录仍保留。';return;}this.formError='';this.folderCursor=node.path;},
-  useFolder(){if(this.change(()=>{this.folder=this.folderCursor;this.newRound(false);})){this.selected=[];this.closePanel();}},
+  useFolder(){if(this.change(()=>{this.folder=this.folderCursor;this.newRound(false);})){this.selected=[];const returnTo=this.folderReturnTo;this.folderReturnTo='';this.closePanel();if(returnTo)this.$nextTick(()=>this.openPanel(returnTo));}},
   folderCount(path){return this.videos.filter(v=>v.status==='available'&&this.under(v.path,path)).length;},
   setFilters(tags,attrs=this.attrs){if(this.change(()=>{this.filters=[...tags];this.attrs=clone(attrs);this.newRound(false);})){this.selected=[];}},
   toggleFilter(tag){this.setFilters(this.filters.includes(tag)?this.filters.filter(t=>t!==tag):[...this.filters,tag]);},
   openAttributes(){this.draftAttrs=clone(this.attrs);this.openPanel('attributes');},
+  startCleanup(){this.cleanup=true;this.navigate('browse');},
+  stopCleanup(){this.cleanup=false;this.menu=false;},
+  openReviewFilters(){this.reviewTags=[...this.filters];this.draftAttrs=clone(this.attrs);this.openPanel('review-filters');},
   openVideo(video){if(!this.round.includes(video.id))this.newRound(false);this.index=this.round.indexOf(video.id);this.save();this.navigate('browse');this.$nextTick(()=>this.loadVideo(true));},
   select(id){this.selected=this.selected.includes(id)?this.selected.filter(x=>x!==id):[...this.selected,id];},
   tagCount(tag){return this.videos.filter(v=>v.tags.includes(tag)&&v.status!=='trash').length;},
@@ -140,7 +142,7 @@ window.videoLibrary = () => ({
     if(!ids.length)return;this.menu=false;this.busy=true;this.error='';await wait(360);
     if(this.fault==='write-failure'){this.busy=false;this.error='移动失败：目录没有写入权限，视频仍在原位置。';return;}
     const id=ids[ids.length-1];
-    const ok=this.change(()=>{for(const v of this.videos.filter(v=>ids.includes(v.id))){v.originalPath=v.path;v.status='trash';v.deletedAt=new Date().toISOString();}this.lastDelete=id;this.reconcile();});
+    const ok=this.change(()=>{this.lastDeleteRound={round:[...this.round],index:this.index};for(const v of this.videos.filter(v=>ids.includes(v.id))){v.originalPath=v.path;v.status='trash';v.deletedAt=new Date().toISOString();}this.lastDelete=id;this.reconcile();});
     this.busy=false;if(ok){this.selected=[];this.notify('已移入回收站');this.loadVideo(this.page==='browse');}
   },
   restore(ids){
@@ -148,7 +150,7 @@ window.videoLibrary = () => ({
     if(this.fault==='conflict'||restoreVideos.some(v=>this.videos.some(other=>other.id!==v.id&&other.status==='available'&&other.path===(v.originalPath||v.path)))){this.error='恢复失败：原位置已有同名文件，没有覆盖。';return;}
     if(this.change(()=>{for(const v of restoreVideos){v.status='available';v.path=v.originalPath||v.path;}if(ids.includes(this.lastDelete))this.lastDelete=null;})){this.selected=[];this.notify('已恢复，标签保留');}
   },
-  undo(){if(!this.lastDelete)return;const id=this.lastDelete;this.restore([id]);if(!this.lastDelete){this.newRound(false);const i=this.round.indexOf(id);if(i>=0)this.index=i;this.save();this.loadVideo(false);}},
+  undo(){if(!this.lastDelete)return;const id=this.lastDelete,snapshot=this.lastDeleteRound?clone(this.lastDeleteRound):null;this.restore([id]);if(!this.lastDelete){if(snapshot){this.round=snapshot.round.filter(id=>this.videos.some(v=>v.id===id&&this.matches(v)));}else this.newRound(false);const i=this.round.indexOf(id);this.index=Math.max(0,i);this.roundEnded=false;this.lastDeleteRound=null;this.save();this.loadVideo(false);}},
   askPermanent(){this.confirmKind='permanent';this.confirmIds=[...this.selected];this.confirmText='将永久删除所选 '+this.confirmIds.length+' 个视频，无法撤销。';this.openPanel('confirm');},
   confirm(){
     if(this.confirmKind==='reset'){localStorage.removeItem(STORAGE_KEY);location.href=location.pathname;return;}
@@ -156,24 +158,12 @@ window.videoLibrary = () => ({
     if(this.confirmKind==='tag'){if(!this.change(()=>{const active=this.filters.includes(this.editId);this.tags=this.tags.filter(t=>t!==this.editId);this.videos.forEach(v=>v.tags=v.tags.filter(t=>t!==this.editId));this.filters=this.filters.filter(t=>t!==this.editId);if(active)this.newRound(false);else this.reconcile();}))return;}
     this.closePanel();
   },
-  openArchive(ids){this.archiveItems=ids || (this.selected.length?[...this.selected]:this.current?[this.current.id]:[]);this.archiveCategory=this.categories[0]?.id || '';this.preview=[];this.openPanel('archive');},
-  buildPreview(){const category=this.categories.find(c=>c.id===this.archiveCategory);if(!category){this.formError='请先选择归档分类';return;}this.preview=this.videos.filter(v=>this.archiveItems.includes(v.id)).map(v=>{const target=category.path+'/'+v.name;return {id:v.id,name:v.name,source:v.path,target,conflict:this.fault==='conflict'||this.videos.some(o=>o.id!==v.id&&o.status==='available'&&o.path===target)};});this.panel='archive-preview';},
-  async executeArchive(){
-    if(this.preview.some(p=>p.conflict)){this.formError='目标存在同名文件，请修改分类目标后重试。';return;}
-    if(this.preview.some(p=>this.videos.find(v=>v.id===p.id)?.path!==p.source)){this.formError='来源已发生变化，请重新预览。';return;}
-    this.busy=true;await wait(450);
-    if(this.fault==='write-failure'){this.busy=false;this.formError='移动失败：目标目录没有写入权限，来源保留。';return;}
-    if(this.change(()=>{for(const p of this.preview){const v=this.videos.find(v=>v.id===p.id);v.path=p.target;v.root=this.roots.find(r=>this.under(p.target,r.path))?.id||v.root;}this.reconcile();})){this.closePanel();this.selected=[];this.notify('已完成归档');this.loadVideo(false);}this.busy=false;
-  },
-  categoryName(v){return [...this.categories].sort((a,b)=>b.path.length-a.path.length).find(c=>this.under(v.path,c.path))?.name||'未归档';},
-  openCategory(category=null){this.editId=category?.id||'';this.form=category?clone(category):{name:'',path:'/videos/归档/'};this.openPanel('category-form');},
-  saveCategory(){const name=this.form.name.trim(),path=this.form.path.replace(/\/+$/,'');if(!name||!this.roots.some(r=>this.under(path,r.path))||path.includes('/../')){this.formError='请填写名称，并选择媒体目录范围内的目标路径';return;}if(this.change(()=>{if(this.editId)Object.assign(this.categories.find(c=>c.id===this.editId),{name,path});else this.categories.push({id:'c'+Date.now(),name,path});})){this.closePanel();this.notify('分类已保存，文件尚未移动');}},
   openRoot(root=null){this.editId=root?.id||'';this.form=root?clone(root):{name:'',path:''};this.openPanel('root-form');},
   saveRoot(){const path=this.form.path.trim().replace(/\/+$/,'');if(!this.form.name.trim()||!path.startsWith('/')||path==='/'||path.includes('..')){this.formError='请填写名称和具体的挂载目录路径';return;}if(this.roots.some(r=>r.id!==this.editId&&r.path===path)){this.formError='该目录已经接入';return;}if(this.change(()=>{if(this.editId)Object.assign(this.roots.find(r=>r.id===this.editId),{name:this.form.name.trim(),path});else this.roots.push({id:'r'+Date.now(),name:this.form.name.trim(),path,status:'available',lastScan:'尚未扫描'});})){this.closePanel();}},
   async scan(){
     this.busy=true;this.error='';await wait(750);
     if(this.fault==='root-unavailable'){this.busy=false;this.error='收集目录暂不可用，保留已有视频及标签记录。';return;}
-    if(this.change(()=>{this.roots.forEach(r=>r.lastScan='刚刚');if(!this.videos.some(v=>v.id==='new-scan'))this.videos.push({id:'new-scan',name:'新收集片段_09.mp4',path:'/collection/待归档/新收集片段_09.mp4',root:'r2',orientation:'landscape',duration:5,type:'MP4',tags:[],asset:'flower-landscape',status:'available'});})){this.notify('刷新完成，新增内容将在下一轮播放');}this.busy=false;
+    if(this.change(()=>{this.roots.forEach(r=>r.lastScan='刚刚');if(!this.videos.some(v=>v.id==='new-scan'))this.videos.push({id:'new-scan',name:'新收集片段_09.mp4',path:'/collection/新收藏/新收集片段_09.mp4',root:'r2',orientation:'landscape',duration:5,type:'MP4',tags:[],asset:'flower-landscape',status:'available'});})){this.notify('刷新完成，新增内容将在下一轮播放');}this.busy=false;
   },
   async connect(){
     const f=this.connectionForm;if(!f.address.trim()||!/^\d+$/.test(f.port)||Number(f.port)<1||Number(f.port)>65535){this.error='请填写服务地址和 1–65535 之间的端口';return;}
@@ -185,7 +175,7 @@ window.videoLibrary = () => ({
   exportBackup(){const payload={format:'video-viewer-management',version:1,createdAt:new Date().toISOString(),data:this.pack()};delete payload.data.connection;const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='video-viewer-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);this.notify('已导出管理数据备份');},
   validateBackup(value){
     if(value?.format!=='video-viewer-management'||value.version!==1)throw Error('备份版本或格式不兼容');
-    const d=value.data;if(!d||!Array.isArray(d.videos)||!Array.isArray(d.tags)||!Array.isArray(d.roots)||!Array.isArray(d.categories)||!Array.isArray(d.round)||!Array.isArray(d.filters)||!d.attrs)throw Error('备份内容不完整');
+    const d=value.data;if(!d||!Array.isArray(d.videos)||!Array.isArray(d.tags)||!Array.isArray(d.roots)||!Array.isArray(d.round)||!Array.isArray(d.filters)||!d.attrs)throw Error('备份内容不完整');
     if(d.tags.some(t=>typeof t!=='string')||new Set(d.tags).size!==d.tags.length||d.videos.some(v=>!v.id||typeof v.name!=='string'||typeof v.path!=='string'||!Array.isArray(v.tags)||!['flower-portrait','flower-landscape'].includes(v.asset)||!['available','trash','missing'].includes(v.status))||d.roots.some(r=>!r.id||typeof r.path!=='string'||!r.path.startsWith('/')))throw Error('备份数据校验失败');
     return d;
   },
@@ -194,7 +184,7 @@ window.videoLibrary = () => ({
     if(!this.restoreChecked){this.formError='请确认替换现有管理数据';return;}
     if(this.restoreMaps.some(m=>!m.to.startsWith('/')||m.to.includes('..'))){this.formError='请检查媒体目录映射';return;}
     this.busy=true;await wait(500);
-    try{this.validateBackup(this.pendingBackup);const incoming=clone(this.pendingBackup.data);for(const map of this.restoreMaps){incoming.roots.find(r=>r.id===map.id).path=map.to;for(const v of incoming.videos.filter(v=>v.root===map.id)){if(this.under(v.path,map.from))v.path=map.to+v.path.slice(map.from.length);if(v.originalPath&&this.under(v.originalPath,map.from))v.originalPath=map.to+v.originalPath.slice(map.from.length);}for(const c of incoming.categories)if(this.under(c.path,map.from))c.path=map.to+c.path.slice(map.from.length);if(incoming.folder&&this.under(incoming.folder,map.from))incoming.folder=map.to+incoming.folder.slice(map.from.length);}
+    try{this.validateBackup(this.pendingBackup);const incoming=clone(this.pendingBackup.data);for(const map of this.restoreMaps){incoming.roots.find(r=>r.id===map.id).path=map.to;for(const v of incoming.videos.filter(v=>v.root===map.id)){if(this.under(v.path,map.from))v.path=map.to+v.path.slice(map.from.length);if(v.originalPath&&this.under(v.originalPath,map.from))v.originalPath=map.to+v.originalPath.slice(map.from.length);}if(incoming.folder&&this.under(incoming.folder,map.from))incoming.folder=map.to+incoming.folder.slice(map.from.length);}
       const before=this.pack();localStorage.setItem(STORAGE_KEY+'-before-restore',JSON.stringify({version:1,data:before}));
       if(this.fault==='write-failure')throw Error('恢复未完成，原有管理数据保持不变');
       if(this.change(()=>{this.assignData(incoming);this.reconcile();})){this.closePanel();this.notify('管理数据已恢复');}
@@ -208,6 +198,6 @@ window.videoLibrary = () => ({
   },
   async exitFullscreen(){this.fullscreen=false;try{if(document.fullscreenElement)await document.exitFullscreen();screen.orientation?.unlock?.();}catch{}},
   openPanel(name){this.menu=false;this.panel=name;this.formError='';if(this.notice!=='已移入回收站')this.notice='';this.player()?.pause();this.focusReturn=document.activeElement;this.$nextTick(()=>document.querySelector('.sheet input:not([type=checkbox]),.sheet button')?.focus());},
-  closePanel(){this.panel='';this.formError='';this.$nextTick(()=>{if(this.focusReturn?.isConnected)this.focusReturn.focus();});},
+  closePanel(){if(this.panel==='folders'&&this.folderReturnTo){this.panel=this.folderReturnTo;this.folderReturnTo='';this.formError='';return;}this.panel='';this.formError='';this.$nextTick(()=>{if(this.focusReturn?.isConnected)this.focusReturn.focus();});},
   trapFocus(event){const list=[...event.currentTarget.querySelectorAll('button,input,select,a[href]')].filter(el=>!el.disabled&&el.getClientRects().length);const first=list[0],last=list[list.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}
 });
