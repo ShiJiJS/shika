@@ -13,6 +13,8 @@ void main() {
   late MemoryCredentialStore credentials;
   final oldStarted = Completer<void>(), releaseOld = Completer<void>();
   var delayed = false;
+  var dropRoundResponse = false;
+  final submittedRounds = <Map<String, dynamic>>[];
   Map<String, dynamic> scope = {'tag_ids': <String>[]};
   Map<String, dynamic> emptyRound() => {
     'id': 'round',
@@ -40,6 +42,8 @@ void main() {
   };
   setUp(() async {
     scope = {'tag_ids': <String>[]};
+    dropRoundResponse = false;
+    submittedRounds.clear();
     server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
     server.listen((request) async {
       final path = request.uri.path;
@@ -68,6 +72,15 @@ void main() {
           utf8.decode(await request.expand((chunk) => chunk).toList()),
         ) as Map;
         scope = Map<String, dynamic>.from(body['scope'] as Map);
+        submittedRounds.add(Map<String, dynamic>.from(body));
+        if (dropRoundResponse) {
+          dropRoundResponse = false;
+          final socket = await request.response.detachSocket(
+            writeHeaders: false,
+          );
+          socket.destroy();
+          return;
+        }
         response = emptyRound();
       } else if (path == '/api/v1/tags') {
         response = {'items': [], 'total': 0};
@@ -137,4 +150,25 @@ void main() {
     expect(repo.snapshot.videos.map((v) => v.id), ['new']);
     expect(repo.snapshot.connected, isTrue);
   });
+
+  test(
+    'retrying a round after losing the accepted response reuses its command ID',
+    () async {
+      await repo.initialize();
+      dropRoundResponse = true;
+      await expectLater(
+        repo.setScope(VideoQuery(type: 'MOV')),
+        throwsA(isA<LibraryFailure>()),
+      );
+      expect(repo.snapshot.connected, isTrue);
+      expect(repo.snapshot.query.type, isEmpty);
+      await repo.setScope(VideoQuery(type: 'MOV'));
+      expect(repo.snapshot.query.type, 'MOV');
+      expect(submittedRounds, hasLength(2));
+      expect(
+        submittedRounds.first['request_id'],
+        submittedRounds.last['request_id'],
+      );
+    },
+  );
 }

@@ -13,7 +13,7 @@ from video_viewer.app import create_app
 from video_viewer.config import Settings
 from video_viewer.file_transfer import rename_new
 
-from .generate_media import generate
+from .generate_media import encode, generate
 
 FIXTURE_PASSPHRASE = "video-viewer-emulator-fixture-only"
 FIXTURE_KEY = "isolated-emulator-control"
@@ -47,21 +47,36 @@ def create_e2e_app():
     app = create_app(settings)
     trace = deque(maxlen=300)
     checkpoint = {"phase": "ready"}
+    controls = {"slow": False}
 
     @app.middleware("http")
     async def observe(request, call_next):
         if request.url.path.startswith("/api/"):
-            trace.append(
-                {
-                    "method": request.method,
-                    "path": request.url.path,
-                    "query": dict(request.query_params),
-                    "authenticated": bool(request.headers.get("authorization")),
-                }
-            )
+            entry = {
+                "method": request.method,
+                "path": request.url.path,
+                "query": dict(request.query_params),
+                "authenticated": bool(request.headers.get("authorization")),
+                "range": request.headers.get("range"),
+            }
+            trace.append(entry)
             if request.query_params.get("search") == "片":
                 await asyncio.sleep(0.75)
-        return await call_next(request)
+        response = await call_next(request)
+        if request.url.path.startswith("/api/"):
+            entry["status"] = response.status_code
+        if controls["slow"] and request.method == "GET" and request.url.path.endswith("/stream"):
+            original = response.body_iterator
+
+            async def throttled():
+                async for chunk in original:
+                    for start in range(0, len(chunk), 16384):
+                        if controls["slow"]:
+                            await asyncio.sleep(0.06)
+                        yield chunk[start : start + 16384]
+
+            response.body_iterator = throttled()
+        return response
 
     def controlled(key):
         if key != FIXTURE_KEY:
@@ -87,7 +102,17 @@ def create_e2e_app():
     @app.post("/__fixture/checkpoint/{phase}")
     def set_checkpoint(phase: str, x_fixture_key: str | None = Header(default=None)):
         controlled(x_fixture_key)
-        if phase not in {"ready", "library", "roots", "outage", "recovered", "done"}:
+        if phase not in {
+            "ready",
+            "library",
+            "roots",
+            "outage",
+            "recovered",
+            "done",
+            "playback",
+            "formats",
+            "error",
+        }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase
         return checkpoint
@@ -109,7 +134,28 @@ def create_e2e_app():
         elif action == "rename":
             source = BASE / "shorts" / "自然" / "花卉" / "片段01.mp4"
             if source.exists():
+                (BASE / "shorts" / "改名").mkdir(exist_ok=True)
                 rename_new(str(source), str(BASE / "shorts" / "改名" / "新的名称.mp4"))
+        elif action == "remove":
+            source = BASE / "shorts" / "自然" / "花卉" / "片段03.mp4"
+            destination = BASE / "detached-samples" / "片段03.mp4"
+            if source.exists():
+                destination.parent.mkdir(exist_ok=True)
+                rename_new(str(source), str(destination))
+        elif action == "slow-streams":
+            controls["slow"] = True
+        elif action == "normal-streams":
+            controls["slow"] = False
+        elif action == "seek-sample":
+            destination = BASE / "camera" / "长视频" / "拖动验证.mp4"
+            if not destination.exists():
+                destination.parent.mkdir(exist_ok=True)
+                encode(
+                    destination,
+                    size="320x180",
+                    duration=120,
+                    extra=("-b:v", "600k", "-pix_fmt", "yuv420p", "-movflags", "+faststart"),
+                )
         elif action == "duplicate":
             copy_new(PORTRAIT, BASE / "shorts" / "副本" / "重复副本.mp4")
         elif action == "replace":

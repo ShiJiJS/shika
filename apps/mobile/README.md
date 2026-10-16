@@ -18,6 +18,7 @@
 6. 设置 → 媒体目录 / 回收站 / 备份与恢复。删除只改演示记录，恢复不覆盖冲突，永久删除再确认。备份通过 Android 文件选择器导出与导入 JSON，恢复前校验、映射并确认完整替换。
 7. 更多 → 切换暗黑/浅色模式，或设置 → 暗黑模式，两处同步并在本机保存，重开保留。关闭菜单继续原来的播放状态。
 8. 设置 → 服务连接可验证输入与错误；演示口令 `demo`，地址包含 `unreachable` 时连接失败，口令不保存。
+9. 设置 → 准备相邻视频，可关闭前后各一条的播放器准备来减少占用。默认最多 3 个播放器，只有当前视频播放和发声；离开浏览或网络播放进入后台释放实例，回到前台保持暂停，并保留选定的常规倍速。
 
 所有管理修改保存在 App 私有目录，重开可读回标签、筛选与轮次。演示备份不复制视频、连接口令或运行时请求头；与 HTML 原型备份是不同格式，不能互相导入。
 
@@ -41,12 +42,14 @@ Debug 版本的设置 → 开发工具 → 演示场景。切换会复位 **本 
 ```powershell
 flutter analyze
 flutter test test
-flutter test integration_test/client_demo_test.dart -d emulator-5554 --reporter expanded
-flutter test integration_test/player_gestures_test.dart -d emulator-5554 --reporter expanded
-flutter test integration_test/player_chrome_test.dart -d emulator-5554 --reporter expanded
+flutter test integration_test/client_demo_test.dart -d emulator-5554 --no-uninstall --reporter expanded
+flutter test integration_test/player_gestures_test.dart -d emulator-5554 --no-uninstall --reporter expanded
+flutter test integration_test/player_chrome_test.dart -d emulator-5554 --no-uninstall --reporter expanded
 ```
 
 真实 Android 模拟器流程覆盖本地视频解码与进度、倍速、滑动回看、横向全屏、标签与目录组合筛选、重开读回、快速整理删除/撤销、备份文件恢复及失败状态。测试使用隔离的 App 临时目录，不接触用户演示存储和个人收藏；文件选择桥接可替换为测试文件，避免把 OS 文件管理器当成 Flutter 组件。
+
+真实服务 I1 运行仓库根目录的 `python scripts/run-client-connection-test.py`；I2 使用同一命令加 `--playback`。脚本准备独立 WSL Docker 测试实例、在模拟器验证公开界面和 API，并真实停止容器与 Android 进程。这里的固定测试口令不用于正式实例；不要在个人媒体目录运行测试控制服务。普通开发服务不受测试实例复位影响。
 
 演示界面证据及运行结果见 [客户端验收记录](../../docs/client-validation.md)。2026-10-16，用户已确认客户端整体演示可进入服务端阶段，C6 完成。S1–S6 已在 WSL Docker 验证，见 [服务端验证记录](../../docs/server-validation.md)；网络接入证据单独记录于 [联调记录](../../docs/integration-validation.md)，真实 NAS 与目标手机仍需 V1 验收。
 

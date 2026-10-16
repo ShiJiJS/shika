@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 
-def encode(path, *, codec="libx264", audio="aac", size="160x96", extra=()):
+def encode(path, *, codec="libx264", audio="aac", size="160x96", duration=1, extra=()):
     subprocess.run(
         [
             "ffmpeg",
@@ -21,7 +21,7 @@ def encode(path, *, codec="libx264", audio="aac", size="160x96", extra=()):
             "-i",
             "sine=frequency=440:sample_rate=48000",
             "-t",
-            "1",
+            str(duration),
             "-c:v",
             codec,
             "-threads",

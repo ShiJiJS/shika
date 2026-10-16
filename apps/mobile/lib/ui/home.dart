@@ -12,6 +12,7 @@ import 'player.dart';
 import 'sheets.dart';
 import 'preferences.dart';
 import 'media_poster.dart';
+import 'playback_session.dart';
 
 abstract interface class BackupFiles {
   Future<bool> save(String text);
@@ -63,6 +64,7 @@ class LibraryHome extends StatefulWidget {
 }
 
 class _LibraryHomeState extends State<LibraryHome> {
+  final _playback = PlaybackSession();
   LibraryRepository get repo => widget.repository;
   LibrarySnapshot get data => repo.snapshot;
   late String page = data.connected ? 'browse' : 'connection';
@@ -184,6 +186,7 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   @override
   void dispose() {
+    unawaited(_playback.close());
     libraryGeneration++;
     repo.cancelVideoRead();
     repo.removeListener(changed);
@@ -300,7 +303,10 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   Future<bool> step(int delta) async {
     if (data.round.isEmpty || busy || obscured) return false;
+    // The adjacent window may have no next playable entry even when a missing
+    // tail is still included in the server's candidate count until a scan.
     if (delta > 0 && data.position == data.round.length - 1) {
+      if (!await perform(() => repo.step(delta)) || !mounted) return false;
       ScaffoldMessenger.of(context)
         ..removeCurrentSnackBar()
         ..showSnackBar(
@@ -787,6 +793,18 @@ class _LibraryHomeState extends State<LibraryHome> {
                   onUnauthorized: (source) =>
                       unawaited(repo.mediaUnauthorized(source)),
                   suspended: obscured,
+                  preloadAdjacent: widget.preferences.preloadAdjacent,
+                  session: _playback,
+                  onPlaybackFailure: (video) async {
+                    final message = await repo.playbackFailure(video.source);
+                    if (mounted &&
+                        page == 'browse' &&
+                        message != null &&
+                        repo.current?.id != video.id) {
+                      notice(message);
+                    }
+                    return message;
+                  },
                   footerBuilder: browseCaption,
                 ),
         ),
@@ -1338,6 +1356,19 @@ class _LibraryHomeState extends State<LibraryHome> {
         onChanged: busy
             ? null
             : (value) => perform(() => widget.preferences.setDark(value)),
+      ),
+      const Divider(height: 1),
+      SwitchListTile(
+        key: const Key('preload-setting'),
+        contentPadding: EdgeInsets.zero,
+        secondary: const Icon(Icons.slow_motion_video),
+        title: const Text('准备相邻视频'),
+        subtitle: const Text('最多准备前后各一条，关闭可减少网络和解码占用'),
+        value: widget.preferences.preloadAdjacent,
+        onChanged: busy
+            ? null
+            : (value) =>
+                  perform(() => widget.preferences.setPreloadAdjacent(value)),
       ),
       const Divider(height: 1),
       settingRow(

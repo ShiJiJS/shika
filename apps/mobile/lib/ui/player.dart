@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
@@ -9,6 +10,7 @@ import '../library/models.dart';
 import 'paper.dart';
 import 'device_controls.dart';
 import 'media_poster.dart';
+import 'playback_session.dart';
 
 class MovieStage extends StatefulWidget {
   const MovieStage({
@@ -19,6 +21,9 @@ class MovieStage extends StatefulWidget {
     this.suspended = false,
     this.footerBuilder,
     this.onUnauthorized,
+    this.preloadAdjacent = true,
+    this.onPlaybackFailure,
+    this.session,
   });
   final List<LibraryVideo> videos;
   final int index;
@@ -26,11 +31,15 @@ class MovieStage extends StatefulWidget {
   final bool suspended;
   final Widget Function(LibraryVideo)? footerBuilder;
   final void Function(MediaSource)? onUnauthorized;
+  final bool preloadAdjacent;
+  final Future<String?> Function(LibraryVideo)? onPlaybackFailure;
+  final PlaybackSession? session;
   @override
   State<MovieStage> createState() => _MovieStageState();
 }
 
 class _MovieStageState extends State<MovieStage> {
+  late final _session = widget.session ?? PlaybackSession();
   late final PageController _pages = PageController(initialPage: widget.index);
   bool _changing = false;
   double _edgeDrag = 0;
@@ -108,7 +117,11 @@ class _MovieStageState extends State<MovieStage> {
           allowImplicitScrolling: true,
           physics: _changing || widget.suspended
               ? const NeverScrollableScrollPhysics()
-              : const PageScrollPhysics(parent: ClampingScrollPhysics()),
+              : const PageScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(
+                    parent: ClampingScrollPhysics(),
+                  ),
+                ),
           itemCount: widget.videos.length,
           findChildIndexCallback: (key) {
             final index = widget.videos.indexWhere(
@@ -120,9 +133,14 @@ class _MovieStageState extends State<MovieStage> {
             key: ValueKey(widget.videos[index].id),
             video: widget.videos[index],
             active: index == widget.index,
+            prepare:
+                index == widget.index ||
+                (widget.preloadAdjacent && (index - widget.index).abs() <= 1),
+            session: _session,
             suspended: widget.suspended,
             footer: widget.footerBuilder?.call(widget.videos[index]),
             onUnauthorized: widget.onUnauthorized,
+            onPlaybackFailure: widget.onPlaybackFailure,
           ),
         ),
       );
@@ -130,6 +148,7 @@ class _MovieStageState extends State<MovieStage> {
   @override
   void dispose() {
     _pages.dispose();
+    if (widget.session == null) unawaited(_session.close());
     super.dispose();
   }
 }
@@ -139,14 +158,20 @@ class _MoviePage extends StatefulWidget {
     super.key,
     required this.video,
     required this.active,
+    required this.prepare,
+    required this.session,
     required this.suspended,
     this.footer,
     this.onUnauthorized,
+    this.onPlaybackFailure,
   });
   final LibraryVideo video;
   final bool active, suspended;
+  final bool prepare;
+  final PlaybackSession session;
   final Widget? footer;
   final void Function(MediaSource)? onUnauthorized;
+  final Future<String?> Function(LibraryVideo)? onPlaybackFailure;
 
   @override
   State<_MoviePage> createState() => _MoviePageState();
@@ -158,6 +183,26 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   String? _error;
   bool _wide = false;
   bool _resumeAfterSuspension = false;
+  bool _foreground = true;
+  bool _loading = false;
+  double _baseSpeed = 1;
+  final _screenRevision = ValueNotifier(0);
+  MaterialPageRoute<void>? _fullscreenRoute;
+  NavigatorState? _fullscreenNavigator;
+
+  void _repaint() {
+    if (!mounted) return;
+    setState(() {});
+    if (WidgetsBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _screenRevision.value++;
+      });
+    } else {
+      _screenRevision.value++;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -168,38 +213,100 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   @override
   void didUpdateWidget(_MoviePage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.video.id != widget.video.id) {
+    if (oldWidget.video.id != widget.video.id ||
+        oldWidget.video.source.location != widget.video.source.location ||
+        !mapEquals(
+          oldWidget.video.source.headers,
+          widget.video.source.headers,
+        )) {
+      unawaited(_load());
+    } else if (!widget.prepare) {
+      _unload();
+    } else if (!oldWidget.prepare ||
+        (!_loading &&
+            _error == null &&
+            (_controller == null ||
+                (widget.active && !widget.session.contains(_controller!))))) {
       unawaited(_load());
     } else if (!widget.active || widget.suspended) {
       if (widget.active && widget.suspended && !oldWidget.suspended) {
         _resumeAfterSuspension = _controller?.value.isPlaying == true;
       }
-      unawaited(_controller?.pause());
+      unawaited(widget.session.silence(_controller));
     } else if ((!oldWidget.active ||
             (oldWidget.suspended && _resumeAfterSuspension)) &&
         _controller?.value.isInitialized == true) {
-      if (!oldWidget.active) unawaited(_controller?.seekTo(Duration.zero));
-      unawaited(_controller?.play());
+      unawaited(_activate(rewind: !oldWidget.active));
       _resumeAfterSuspension = false;
+    }
+  }
+
+  Future<void> _activate({required bool rewind, bool play = true}) async {
+    final player = _controller, generation = _generation;
+    if (player == null) return;
+    _loading = true;
+    _repaint();
+    try {
+      await widget.session.select(
+        player,
+        valid: () =>
+            mounted &&
+            generation == _generation &&
+            widget.active &&
+            !widget.suspended &&
+            _foreground,
+        rewind: rewind,
+        play: play,
+      );
+    } finally {
+      if (mounted && generation == _generation) {
+        _loading = false;
+        _repaint();
+      }
     }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    _foreground = state == AppLifecycleState.resumed;
     if (state != AppLifecycleState.resumed) {
       _resumeAfterSuspension = false;
-      unawaited(_controller?.pause());
+      if (widget.video.source.asset) {
+        unawaited(widget.session.silence(_controller));
+      } else {
+        _unload();
+      }
+    } else if (_controller == null && widget.prepare) {
+      unawaited(_load(autoplay: false));
+    } else if (widget.active && !widget.suspended && _controller != null) {
+      unawaited(_activate(rewind: false, play: false));
     }
   }
 
-  Future<void> _load() async {
+  void _unload() {
+    ++_generation;
+    _loading = false;
+    final old = _controller;
+    _controller = null;
+    unawaited(widget.session.release(old));
+    _repaint();
+  }
+
+  Future<void> _load({bool autoplay = true, int emptyTrackRetry = 0}) async {
     final generation = ++_generation;
+    _loading = true;
     final old = _controller;
     _controller = null;
     _error = null;
-    if (mounted) setState(() {});
-    await old?.dispose();
-    if (!mounted || generation != _generation) return;
+    _repaint();
+    await widget.session.release(old);
+    if (!mounted ||
+        generation != _generation ||
+        !widget.prepare ||
+        !_foreground) {
+      if (generation == _generation) _loading = false;
+      return;
+    }
     final source = widget.video.source;
     final next = source.asset
         ? VideoPlayerController.asset(source.location)
@@ -208,17 +315,89 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
             httpHeaders: source.headers,
           );
     _controller = next;
-    try {
-      await next.initialize();
-      if (!mounted || generation != _generation) return;
-      await next.setLooping(true);
-      await next.seekTo(Duration.zero);
-      if (widget.active && !widget.suspended) await next.play();
-      if (mounted && generation == _generation) setState(() {});
-    } catch (_) {
-      if (mounted && generation == _generation) {
-        setState(() => _error = '这段视频暂时无法播放');
+    var initialized = false, failureHandled = false;
+    next.addListener(() {
+      if (initialized &&
+          !failureHandled &&
+          next.value.hasError &&
+          mounted &&
+          generation == _generation) {
+        failureHandled = true;
+        unawaited(
+          _failure(next, generation, failure: next.value.errorDescription),
+        );
       }
+    });
+    try {
+      if (!await widget.session.attach(next)) return;
+      if (!mounted || generation != _generation) {
+        await widget.session.release(next);
+        return;
+      }
+      await next.initialize().timeout(const Duration(seconds: 12));
+      if (!mounted || generation != _generation) return;
+      if (next.value.size.isEmpty) {
+        // A native ready event can still have no video dimensions. Recreate
+        // once, releasing this decoder first; audio-only success is not video.
+        if (emptyTrackRetry == 0 && widget.prepare && _foreground) {
+          await _load(autoplay: autoplay, emptyTrackRetry: 1);
+          return;
+        }
+        throw UnsupportedError('No decoded video track');
+      }
+      initialized = true;
+      await next.setVolume(0);
+      await next.setLooping(true);
+      await next.setPlaybackSpeed(_baseSpeed);
+      await next.seekTo(Duration.zero);
+      if (widget.active && !widget.suspended) {
+        await widget.session.select(
+          next,
+          valid: () =>
+              mounted &&
+              generation == _generation &&
+              widget.active &&
+              !widget.suspended &&
+              _foreground,
+          play: autoplay,
+        );
+      }
+    } catch (error) {
+      if (!failureHandled) {
+        failureHandled = true;
+        await _failure(next, generation, failure: error);
+      }
+    } finally {
+      if (generation == _generation) {
+        _loading = false;
+        _repaint();
+      }
+    }
+  }
+
+  Future<void> _failure(
+    VideoPlayerController player,
+    int generation, {
+    Object? failure,
+  }) async {
+    await widget.session.release(player);
+    String? message;
+    if (mounted && generation == _generation && widget.active) {
+      try {
+        message = await widget.onPlaybackFailure?.call(widget.video);
+      } catch (_) {
+        // A superseded probe must not change the new page or session.
+      }
+    }
+    if (failure is TimeoutException && message == null) {
+      message = '视频加载较慢，请重试或上下滑动继续查看';
+    }
+    if (failure is UnsupportedError && message == null) {
+      message = '当前设备无法解码这段视频，可上下滑动继续查看';
+    }
+    if (mounted && generation == _generation) {
+      _error = message ?? '这段视频暂时无法播放，可上下滑动继续查看';
+      _repaint();
     }
   }
 
@@ -233,21 +412,85 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       ]);
       await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       if (!mounted) return;
-      await Navigator.of(context).push(
-        MaterialPageRoute<void>(
-          builder: (context) => Scaffold(
-            backgroundColor: Colors.black,
-            body: PlayerSurface(
-              controller: player,
-              name: widget.video.name,
-              fullscreen: true,
-              onExit: () => Navigator.pop(context),
-            ),
+      final navigator = _fullscreenNavigator = Navigator.of(context);
+      final route = _fullscreenRoute = MaterialPageRoute<void>(
+        builder: (context) => Scaffold(
+          backgroundColor: Colors.black,
+          body: ValueListenableBuilder<int>(
+            valueListenable: _screenRevision,
+            builder: (context, _, _) {
+              final current = _controller;
+              if (_error == null &&
+                  current != null &&
+                  current.value.isInitialized &&
+                  !current.value.size.isEmpty &&
+                  !_loading) {
+                return PlayerSurface(
+                  controller: current,
+                  name: widget.video.name,
+                  fullscreen: true,
+                  onExit: () => Navigator.pop(context),
+                  onSpeedChanged: (speed) => _baseSpeed = speed,
+                );
+              }
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  MediaPoster(
+                    video: widget.video,
+                    fit: BoxFit.contain,
+                    onUnauthorized: () =>
+                        widget.onUnauthorized?.call(widget.video.source),
+                  ),
+                  Center(
+                    child: _error == null
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                _error!,
+                                style: const TextStyle(color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ),
+                              TextButton(
+                                onPressed: _load,
+                                child: const Text(
+                                  '重试',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                  ),
+                  Positioned(
+                    top: 6,
+                    left: 8,
+                    child: SafeArea(
+                      bottom: false,
+                      child: IconButton(
+                        key: const Key('fullscreen-exit'),
+                        tooltip: '退出全屏',
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(
+                          Icons.arrow_back_ios_new,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       );
+      await navigator.push(route);
     } finally {
       if (mounted) setState(() => _wide = false);
+      _fullscreenRoute = null;
+      _fullscreenNavigator = null;
       await SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]);
@@ -276,7 +519,9 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                     child: const Text('重试'),
                   ),
                 )
-              : _controller == null || !_controller!.value.isInitialized
+              : _controller == null ||
+                    !_controller!.value.isInitialized ||
+                    _controller!.value.size.isEmpty
               ? Stack(
                   fit: StackFit.expand,
                   children: [
@@ -294,9 +539,10 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
               : PlayerSurface(
                   controller: _controller!,
                   name: widget.video.name,
-                  interactionsEnabled: !widget.suspended && !_wide,
+                  interactionsEnabled: !widget.suspended && !_wide && !_loading,
                   footer: widget.footer,
                   onFullscreen: widget.video.portrait ? null : _fullscreen,
+                  onSpeedChanged: (speed) => _baseSpeed = speed,
                 ),
         ),
       ],
@@ -305,8 +551,15 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   @override
   void dispose() {
     ++_generation;
+    final route = _fullscreenRoute, navigator = _fullscreenNavigator;
+    if (route != null && navigator != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (navigator.mounted && route.isActive) navigator.removeRoute(route);
+      });
+    }
+    _screenRevision.dispose();
     WidgetsBinding.instance.removeObserver(this);
-    unawaited(_controller?.dispose());
+    unawaited(widget.session.release(_controller));
     super.dispose();
   }
 }
@@ -324,12 +577,14 @@ class PlayerSurface extends StatefulWidget {
     this.onExit,
     this.onFullscreen,
     this.footer,
+    this.onSpeedChanged,
   });
   final VideoPlayerController controller;
   final String name;
   final bool interactionsEnabled, fullscreen;
   final VoidCallback? onExit, onFullscreen;
   final Widget? footer;
+  final ValueChanged<double>? onSpeedChanged;
   @override
   State<PlayerSurface> createState() => _PlayerSurfaceState();
 }
@@ -788,6 +1043,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                                       onOpened: () => _hideTimer?.cancel(),
                                       onCanceled: _scheduleHide,
                                       onSelected: (speed) {
+                                        widget.onSpeedChanged?.call(speed);
                                         _setSpeed(speed);
                                         _scheduleHide();
                                       },

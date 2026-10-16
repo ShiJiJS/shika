@@ -35,6 +35,8 @@ class ServerLibraryRepository extends LibraryRepository {
   LibrarySnapshot _state;
   ServerApi? _api;
   Json? _round;
+  Json? _pendingRound;
+  String? _pendingRoundSignature;
   final Map<String, LibraryVideo> _videos = {};
   final Map<String, FolderEntry> _directories = {};
   final Map<String, String> _tagNames = {}, _trashIds = {};
@@ -60,6 +62,37 @@ class ServerLibraryRepository extends LibraryRepository {
   String? _connectionError;
   @override
   String? get connectionError => _connectionError;
+  @override
+  Future<String?> playbackFailure(MediaSource source) async {
+    final target = _api;
+    if (target == null ||
+        source.headers['Authorization'] !=
+            target.authorization['Authorization']) {
+      return null;
+    }
+    final generation = _generation;
+    try {
+      await target.request(
+        'HEAD',
+        Uri.parse(source.location).path,
+        timeout: const Duration(seconds: 5),
+      );
+      return null;
+    } on ApiFailure catch (error) {
+      if (generation != _generation || !identical(target, _api)) return null;
+      if (error.status == 401) {
+        await expire();
+        return null;
+      }
+      if (error.status == 409 || error.status == 404) {
+        await synchronize(target, generation);
+        return '视频已不可用，已更新当前播放范围';
+      }
+      if (error.status == 503) return '播放连接繁忙，请稍后重试或滑动继续';
+      return error.message;
+    }
+  }
+
   @override
   Future<void> mediaUnauthorized(MediaSource source) async {
     if (_connectingGeneration == null &&
@@ -137,6 +170,8 @@ class ServerLibraryRepository extends LibraryRepository {
     _tagCounts.clear();
     _trashIds.clear();
     _round = null;
+    _pendingRound = null;
+    _pendingRoundSignature = null;
     _state = _state.copy(
       connected: false,
       videos: [],
@@ -336,6 +371,7 @@ class ServerLibraryRepository extends LibraryRepository {
     Future<void> Function()? beforePublish,
     bool allowConnection = false,
   }) async {
+    final scopeGeneration = _scopeGeneration;
     final response = await Future.wait([
       call('GET', '/api/v1/roots', using: target),
       call('GET', '/api/v1/playback', using: target),
@@ -384,13 +420,21 @@ class ServerLibraryRepository extends LibraryRepository {
         path = '原目录已移除';
       }
     }
-    if (generation != _generation || _disposed) throw const RequestCancelled();
+    if (generation != _generation ||
+        _disposed ||
+        scopeGeneration != _scopeGeneration ||
+        (_round?['id'] == round['id'] &&
+            (_round?['revision'] as int? ?? 0) > (round['revision'] as int))) {
+      throw const RequestCancelled();
+    }
     await beforePublish?.call();
     if (generation != _generation || _disposed) throw const RequestCancelled();
     if (!allowConnection && !identical(target, _api)) {
       throw const RequestCancelled();
     }
     if (!identical(target, _api)) {
+      _pendingRound = null;
+      _pendingRoundSignature = null;
       cancelVideoRead();
       cancelFolderRead();
       _scanRead.cancel();
@@ -402,6 +446,10 @@ class ServerLibraryRepository extends LibraryRepository {
       _session = requestId();
     }
     _api = target;
+    if (_round != null && _round!['id'] != round['id']) {
+      ++_scopeGeneration;
+      cancelVideoRead();
+    }
     _connectionError = null;
     _tagNames.addEntries(
       tags.map((tag) => MapEntry(tag['id'] as String, tag['name'] as String)),
@@ -685,17 +733,32 @@ class ServerLibraryRepository extends LibraryRepository {
       if (scopeGeneration != _scopeGeneration || generation != _generation) {
         throw const RequestCancelled();
       }
-      final round = await call(
-        'POST',
-        '/api/v1/rounds',
-        using: target,
-        body: {
+      final signature = jsonEncode({
+        'order': order.name,
+        'scope': resolved,
+        'anchor': anchor,
+      });
+      if (_pendingRoundSignature != signature) {
+        _pendingRoundSignature = signature;
+        _pendingRound = {
           'request_id': requestId(),
           'order': order.name,
           'scope': resolved,
           'anchor_video_id': ?anchor,
-        },
+        };
+      }
+      final round = await call(
+        'POST',
+        '/api/v1/rounds',
+        using: target,
+        body: _pendingRound,
       );
+      _pendingRound = null;
+      _pendingRoundSignature = null;
+      if (round['active'] == false) {
+        await synchronize(target, generation);
+        throw const LibraryFailure('播放范围已变化，已恢复当前轮次');
+      }
       await acceptRound(round, target, generation, scopeGeneration);
     });
     _roundWrites = result.then<void>(
@@ -726,13 +789,22 @@ class ServerLibraryRepository extends LibraryRepository {
     } else {
       body['video_id'] = _state.round[target];
     }
-    final round = await call(
-      'PATCH',
-      '/api/v1/rounds/${_round!['id']}/position',
-      body: body,
-      using: targetApi,
-    );
-    await acceptRound(round, targetApi, generation, scopeGeneration);
+    try {
+      final round = await call(
+        'PATCH',
+        '/api/v1/rounds/${_round!['id']}/position',
+        body: body,
+        using: targetApi,
+      );
+      await acceptRound(round, targetApi, generation, scopeGeneration);
+    } on ApiFailure catch (error) {
+      if (error.status == 409 &&
+          generation == _generation &&
+          scopeGeneration == _scopeGeneration) {
+        await synchronize(targetApi, generation);
+      }
+      rethrow;
+    }
   }
 
   Future<Json> waitTask(String id, {RequestScope? cancel}) async {

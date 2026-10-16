@@ -5,6 +5,7 @@ import 'models.dart';
 /// This boundary describes client-visible behavior, independent of transport.
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
+  Future<String?> playbackFailure(MediaSource source) async => null;
   LibrarySnapshot get snapshot;
   Future<void> initialize();
   List<LibraryVideo> query({

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,31 +9,7 @@ import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/sheets.dart';
 
-const fixtureBase = 'http://10.0.2.2:8761';
-const fixturePassword = 'video-viewer-emulator-fixture-only';
-const fixtureKey = 'isolated-emulator-control';
-
-Future<Map<String, dynamic>> fixture(
-  String path, {
-  String method = 'POST',
-}) async {
-  final client = HttpClient()..connectionTimeout = const Duration(seconds: 2);
-  try {
-    final request = await client.openUrl(
-      method,
-      Uri.parse('$fixtureBase$path'),
-    );
-    request.headers.set('X-Fixture-Key', fixtureKey);
-    final response = await request.close();
-    final value = await response.transform(utf8.decoder).join();
-    if (response.statusCode != 200) {
-      throw StateError('Fixture ${response.statusCode}');
-    }
-    return jsonDecode(value) as Map<String, dynamic>;
-  } finally {
-    client.close(force: true);
-  }
-}
+import 'support/fixture.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
