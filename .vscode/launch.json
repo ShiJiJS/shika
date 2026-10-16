@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Video Viewer (Android)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/apps/mobile",
+      "program": "${workspaceFolder}/apps/mobile/lib/main.dart",
+      "deviceId": "emulator-5554",
+      "preLaunchTask": "Start Android emulator",
+      "flutterMode": "debug"
+    }
+  ]
+}
