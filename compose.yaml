@@ -1,0 +1,38 @@
+name: video-viewer
+services:
+  server:
+    build:
+      context: ./services/server
+      target: runtime
+    image: video-viewer-server:local
+    user: "${VV_UID:-1000}:${VV_GID:-1000}"
+    ports:
+      - "${VV_BIND_ADDRESS:-0.0.0.0}:${VV_PORT:-8760}:8760"
+    environment:
+      VV_DATA_DIR: /data
+      VV_MOUNTS_FILE: /config/mounts.json
+      VV_PASSPHRASE_FILE: /run/secrets/passphrase
+      VV_SCAN_INTERVAL: "${VV_SCAN_INTERVAL:-300}"
+      VV_STABILITY_SECONDS: "${VV_STABILITY_SECONDS:-2}"
+    volumes:
+      - type: bind
+        source: "${VV_DATA_PATH:?Set VV_DATA_PATH to a local persistent data directory}"
+        target: /data
+      - type: bind
+        source: "${VV_MEDIA_PATH:?Set VV_MEDIA_PATH to a test or NAS media directory}"
+        target: /media
+      - type: bind
+        source: "${VV_CONFIG_PATH:?Set VV_CONFIG_PATH to the configuration directory}"
+        target: /config
+        read_only: true
+      - type: bind
+        source: "${VV_SECRET_PATH:?Set VV_SECRET_PATH to the passphrase file}"
+        target: /run/secrets/passphrase
+        read_only: true
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    init: true
+    restart: unless-stopped

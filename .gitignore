@@ -12,6 +12,14 @@
 /tmp/
 *.log
 
+# Python server build and tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+
 # Local editor and OS files
 .idea/
 .vscode/*

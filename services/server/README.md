@@ -1,0 +1,78 @@
+# Video Viewer 服务端
+
+当前完成 S1：口令认证、多媒体目录扫描、目录层级、媒体信息、缩略图、分页查询与持久化扫描任务。S2–S6 和 Flutter 真实联调继续按 [技术方案](../../docs/server-plan.md) 推进，已完成能力与证据见 [服务端验证记录](../../docs/server-validation.md)。
+
+## 本机 WSL2 开发
+
+在仓库根目录的 PowerShell 中执行：
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Project/video_viewer/scripts/prepare-server-dev.sh
+wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose up -d --build
+wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose ps
+```
+
+准备脚本仅在文件不存在时建立专用开发目录、随机口令及被 Git 忽略的 `.env`，不会打印口令。数据、测试媒体、配置和口令保存在 WSL 的 `~/.local/share/video-viewer-dev/`。真实收藏不要放入这个开发测试目录。
+
+健康检查：Windows `http://127.0.0.1:8760/health`，模拟器 `http://10.0.2.2:8760/health`。服务业务接口需要登录后的 Bearer 请求头，缩略图也需要授权。
+
+容器使用 UID/GID 1000、只读根文件系统与临时 `/tmp`，管理数据挂到 `/data`。`.env` 可设置 UID/GID、端口、监听地址、扫描间隔及稳定观察时间。默认启动时扫描，之后每 300 秒扫描；手动刷新与正在运行的扫描合并为同一任务。稳定观察默认 2 秒；未变化的文件复用媒体信息和缩略图。
+
+停止或重建：
+
+```powershell
+wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose stop
+wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose up -d --force-recreate
+```
+
+这些命令保留数据和测试媒体。业务数据在 `library.sqlite3`，版本由 Alembic 管理；当前使用 SQLite 默认回滚日志及短事务串行写入，WAL 尚未启用。依赖与镜像基础摘要已锁定，FFmpeg 版本在 Dockerfile 中固定。
+
+## 媒体目录配置
+
+`config/mounts.json` 声明允许接入的容器内挂载范围，首次启动会按这些条目建立媒体目录。例如将一个父目录挂到 `/media`，接入两个收藏文件夹：
+
+```json
+[
+  {"id": "shorts", "name": "短视频", "path": "/media/shorts"},
+  {"id": "camera", "name": "相机片段", "path": "/media/camera"}
+]
+```
+
+App 后续通过 API 在允许范围内添加子目录或修改名称和接入范围；目录选择使用服务返回的稳定标识。重叠目录不会重复建立同一物理位置的视频记录，空子目录也可以查询。服务不跟随符号链接，不枚举任意服务器路径。
+
+初次扫描保留路径与名称。仍在变化的文件延迟处理，损坏或无法探测的文件在任务中返回原因。整个目录不可访问、递归遍历失败或扫描中断时保留记录；成功完整扫描后才标记未发现的视频为缺失。
+
+NAS 部署时从 `.env.example` 设置 NAS 本地数据路径、视频挂载路径和当前服务 UID/GID，创建权限匹配的口令文件和配置。额外物理卷可在 Compose 中添加 bind mount，并在 mounts.json 声明范围。NAS 架构、真实媒体兼容性与资源表现待 V1 验证。
+
+## 已实现 API
+
+除 `/health`、登录和接口文档外，以下 API 需要 `Authorization: Bearer <token>`。登录返回可撤销随机 token，数据库只保存 token 摘要和口令哈希；口令变更会撤销原 token。
+
+| 请求 | 行为 |
+| --- | --- |
+| `POST /api/v1/auth/login` | JSON `{ "passphrase": "..." }` 换取 token 和有效期 |
+| `DELETE /api/v1/auth/session` | 撤销当前连接凭据 |
+| `GET /api/v1/info` | 当前服务标识和 API 版本 |
+| `GET /api/v1/mounts` | 已声明的允许挂载范围 |
+| `GET/POST /api/v1/roots` | 查询或接入媒体目录 |
+| `PUT /api/v1/roots/{id}` | 修改名称或允许范围内的接入路径，扫描期间返回冲突 |
+| `GET /api/v1/directories?parent_id=...` | 已扫描到的直接子目录；无 parent_id 时返回媒体目录入口 |
+| `POST /api/v1/scans` | 发起或取得已有扫描任务，返回 202 与任务标识 |
+| `GET /api/v1/tasks` | 最近任务，默认 20 条、最多 100 条 |
+| `GET /api/v1/tasks/{id}` | 任务阶段、状态、逐目录结果和受限数量的失败原因 |
+| `GET /api/v1/videos` | 分页查询，支持目录标识、名称、方向、时长、类型与可用/缺失/回收状态 |
+| `GET /api/v1/videos/{id}/thumbnail` | 授权 JPEG 缩略图 |
+
+分页为 offset/limit，默认 50、最多 200；返回 items/total/offset/limit。目录范围包含子树，名称按字面查找，排序为路径与稳定 ID。视频摘要包含实际视频/音频编码、容器、时长、旋转后的尺寸与媒体入口地址；播放入口由 S2 实现，标签由 S3 接入。完整参数可在 `/docs` 和 `/openapi.json` 查看。
+
+错误统一为 `{"error":{"code":"...","message":"..."}}`；参数错误返回字段位置，不回显原输入或口令。业务未授权为 401，目录越界或输入非法为 422，不存在为 404，扫描忙/媒体不可用等冲突为 409。
+
+## Docker 内验证
+
+```powershell
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Project/video_viewer/scripts/test-server.sh
+```
+
+测试镜像由同一 runtime 构建，使用非 root 用户和只读根文件系统，在容器临时目录生成媒体和数据库。覆盖 MP4、MOV、MKV、WebM、AVI，以及 H.264、HEVC、VP9、MPEG-4 Part 2、ProRes；MOV 另含旋转与 PCM 音频。生成器也可用于指定的可丢弃开发目录，固定样本名称会被重建，不要对个人视频目录运行。
+
+测试验证服务端探测、文件字节和 API 行为，Android 解码与真实网络播放在 I2 验收。NAS 上的首帧、快刷、预加载及后台扫描资源测量仍属于 V1，额外性能优化记录在后续事项。

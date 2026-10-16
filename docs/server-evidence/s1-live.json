@@ -1,0 +1,22 @@
+{
+  "service": "WSL2 Docker Compose, production non-root runtime",
+  "windows_http": 200,
+  "android_http": 200,
+  "videos": 8,
+  "types": [
+    "AVI",
+    "MKV",
+    "MOV",
+    "MP4",
+    "WEBM"
+  ],
+  "codecs": [
+    "h264",
+    "hevc",
+    "mpeg4",
+    "prores",
+    "vp9"
+  ],
+  "sqlite_version": "3.40.1",
+  "recreation_preserved_ids_and_session": true
+}

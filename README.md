@@ -2,7 +2,7 @@
 
 部署在 NAS 上的私人短视频库，配套 Android 优先的跨平台 App，用于随机浏览、标签筛选与快速整理。
 
-P2 HTML 原型与 [Flutter Android 客户端演示版](apps/mobile/README.md) 已获用户确认，客户端沿用 B 风格，使用可替换的演示数据提供方并实际播放测试视频。2026-10-16 完成 WSL2 Docker 开发环境检查，下一项为 S1 服务端认证、多目录扫描与视频列表；NAS 服务和真实联调尚未实现。
+P2 HTML 原型与 [Flutter Android 客户端演示版](apps/mobile/README.md) 已获用户确认，客户端沿用 B 风格。S1 服务端认证、扫描、目录层级、缩略图和分页列表已在 WSL2 Docker 实现并验证；后续服务端和 Flutter 真实联调继续推进，当前 App 仍使用演示数据。具体完成项与证据见 [服务端验证记录](docs/server-validation.md)。
 
 服务端技术栈已确认：Python / FastAPI / Uvicorn、SQLite / SQLAlchemy / Alembic、FFmpeg / ffprobe；通过 Docker Compose 单服务、单端口部署。按 S1–S6 实现服务端，再按 I1–I6 接入 Flutter 并在模拟器联调，最后进行 NAS 验收。NAS 资源与预加载的评估范围见 [服务端方案](docs/server-plan.md)。
 
@@ -28,6 +28,8 @@ P2 HTML 原型与 [Flutter Android 客户端演示版](apps/mobile/README.md) �
 - [Android 开发环境、模拟器和 VS Code 使用](docs/android-development.md)
 - [服务端开发环境：WSL2、Docker 与模拟器连接](docs/server-development.md)
 - [服务端技术方案、联调计划与 NAS 资源约束](docs/server-plan.md)
+- [服务端运行、配置与 API](services/server/README.md)
+- [服务端完成项、格式样本和验证证据](docs/server-validation.md)
 - [第一版规格 Issue #1](https://github.com/ShiJiJS/video_viewer/issues/1)（ready-for-agent）
 - [第一版完整规格](docs/v1-spec.md)
 - [已确认需求与验收场景](docs/requirements.md)
