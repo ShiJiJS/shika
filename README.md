@@ -2,7 +2,7 @@
 
 部署在 NAS 上的私人短视频库，配套 Android 优先的跨平台 App，用于随机浏览、标签筛选与快速整理。
 
-P2 HTML 原型已获用户确认。当前提供 [Flutter Android 客户端演示版](apps/mobile/README.md)，沿用 B 风格，使用可替换的演示数据提供方并实际播放测试视频；NAS 服务尚未实现。当前处于客户端整体试用阶段，确认后再进入服务端和真实联调。
+P2 HTML 原型与 [Flutter Android 客户端演示版](apps/mobile/README.md) 已获用户确认，客户端沿用 B 风格，使用可替换的演示数据提供方并实际播放测试视频。2026-10-16 完成 WSL2 Docker 开发环境检查，下一项为 S1 服务端认证、多目录扫描与视频列表；NAS 服务和真实联调尚未实现。
 
 ## 第一版范围
 
@@ -24,6 +24,7 @@ P2 HTML 原型已获用户确认。当前提供 [Flutter Android 客户端演示
 - [P2 HTML 原型：启动、试用路径与验证记录](prototypes/p2/README.md)
 - [当前 UI 设计基线](prototypes/p2/DESIGN.md)
 - [Android 开发环境、模拟器和 VS Code 使用](docs/android-development.md)
+- [服务端开发环境：WSL2、Docker 与模拟器连接](docs/server-development.md)
 - [第一版规格 Issue #1](https://github.com/ShiJiJS/video_viewer/issues/1)（ready-for-agent）
 - [第一版完整规格](docs/v1-spec.md)
 - [已确认需求与验收场景](docs/requirements.md)
