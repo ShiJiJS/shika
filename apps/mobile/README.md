@@ -1,10 +1,14 @@
-# Flutter 客户端演示版
+# Flutter 客户端
 
-沿用用户确认的 P2「留白」界面，实现原生 Flutter 页面与 Android 播放器。当前使用演示提供方，默认进入已连接状态，可直接播放仓库中的素材；服务地址输入不会发出真实请求。服务端后续接入。
+沿用用户确认的 P2「留白」界面，实现原生 Flutter 页面与 Android 播放器。默认使用真实服务提供方，输入个人口令后连接 WSL/NAS API；可单独启动演示模式，继续试用原有打包素材和本地演示记录。真实功能按 I1–I6 逐项联调，已验证范围见 [联调记录](../../docs/integration-validation.md)。
 
 ## 在模拟器试用
 
-在仓库根目录用 VS Code 的 **Video Viewer (Android)** 按 F5，原有模拟器启动任务继续使用。命令行也可在本目录运行 `flutter run -d emulator-5554`。环境位置见 [Android 开发说明](../../docs/android-development.md)。
+在仓库根目录用 VS Code 的 **Video Viewer (Android)** 按 F5，默认地址为 `http://10.0.2.2:8760`，在连接页可修改并记住。先按 [服务端运行说明](../../services/server/README.md) 启动 WSL Docker。访问凭据使用 Android 加密存储；不保存个人口令，401 后重新输入，网络暂时中断保留连接配置供重试。服务启动不阻塞 Flutter 首帧。
+
+选择 **Video Viewer Demo (Android)** 可直接试用演示版。命令行演示模式为 `flutter run -d emulator-5554 --dart-define=LIBRARY_MODE=demo`；真实模式默认启用，可通过 `--dart-define=SERVER_ADDRESS=10.0.2.2 --dart-define=SERVER_PORT=8760` 修改初始值。已保存的地址优先，地址不依赖临时端口转发。环境位置见 [Android 开发说明](../../docs/android-development.md)。
+
+下面是演示版完整试用路径；真实文件操作与备份恢复以对应 I 阶段的验收结果为准。
 
 1. 浏览页上下滑动换视频，画面跟随手指整页滑动，短拖回弹；点画面暂停/继续，中央不显示播放按钮。名称和半透明标签浮在视频下方。进度默认隐藏，左右拖动画面或底部区域时出现，松手提交进度，闲置 3 秒收起；暂停后也不常驻。
 2. 播放时长按临时 2 倍速，松手恢复原速。横版的「横屏」胶囊可进入全屏；横屏点画面显示/隐藏控件，左上角无背景箭头退出，箭头和进度闲置 3 秒隐藏。左右拖动快进/后退；左半侧上下滑动调当前窗口亮度，右半侧调 Android 媒体音量，退出恢复窗口亮度。
@@ -23,11 +27,11 @@ Debug 版本的设置 → 开发工具 → 演示场景。切换会复位 **本 
 
 「目录不可用」场景第一次刷新失败，第二次刷新恢复目录，并保留视频与标签。「外部变化」场景刷新后更新稳定视频 ID 的路径并找回缺失视频；「同路径替换与重复副本」保留旧缺失记录，新文件不继承旧标签。
 
-也可启动时指定，例如 `flutter run -d emulator-5554 --dart-define=DEMO_SCENARIO=writeFailure`。可用值与 `DemoScenario` 一致，场景选择本身不作为产品设置保存。
+也可启动时指定，例如 `flutter run -d emulator-5554 --dart-define=LIBRARY_MODE=demo --dart-define=DEMO_SCENARIO=writeFailure`。可用值与 `DemoScenario` 一致，场景选择本身不作为产品设置保存。
 
 ## 数据边界与实现
 
-- [客户端数据契约](../../docs/client-data-contract.md)：统一的 `LibraryRepository`，界面不读写 NAS 路径，后续在入口注入网络提供方。
+- [客户端数据契约](../../docs/client-data-contract.md)：统一的 `LibraryRepository`，界面不读写 NAS 路径；入口选择真实/演示提供方，视频列表和目录使用异步加载。
 - `lib/library/`：不可变领域数据、演示提供方、查询与轮次、事务式演示保存及备份校验。
 - `lib/ui/`：纸白/草木绿样式、页面、筛选和目录面板，以及独立播放器生命周期。
 - 播放采用 [video_player](https://pub.dev/packages/video_player)，本地目录由 [path_provider](https://pub.dev/packages/path_provider) 提供，备份文件选择使用 [file_picker](https://pub.dev/packages/file_picker)。依赖版本锁在 pubspec.lock。
@@ -36,7 +40,7 @@ Debug 版本的设置 → 开发工具 → 演示场景。切换会复位 **本 
 
 ```powershell
 flutter analyze
-flutter test test/library_flow_test.dart test/connection_widget_test.dart
+flutter test test
 flutter test integration_test/client_demo_test.dart -d emulator-5554 --reporter expanded
 flutter test integration_test/player_gestures_test.dart -d emulator-5554 --reporter expanded
 flutter test integration_test/player_chrome_test.dart -d emulator-5554 --reporter expanded
@@ -44,7 +48,7 @@ flutter test integration_test/player_chrome_test.dart -d emulator-5554 --reporte
 
 真实 Android 模拟器流程覆盖本地视频解码与进度、倍速、滑动回看、横向全屏、标签与目录组合筛选、重开读回、快速整理删除/撤销、备份文件恢复及失败状态。测试使用隔离的 App 临时目录，不接触用户演示存储和个人收藏；文件选择桥接可替换为测试文件，避免把 OS 文件管理器当成 Flutter 组件。
 
-界面证据及最终运行结果见 [客户端验收记录](../../docs/client-validation.md)。2026-10-16，用户已确认客户端整体演示可进入服务端阶段，C6 完成。服务端已开始在 WSL Docker 实现，进度见 [服务端验证记录](../../docs/server-validation.md)；当前 App 尚未接入真实 API，网络播放、真实文件操作和目标手机兼容性留在对应联调及 NAS 验收任务。
+演示界面证据及运行结果见 [客户端验收记录](../../docs/client-validation.md)。2026-10-16，用户已确认客户端整体演示可进入服务端阶段，C6 完成。S1–S6 已在 WSL Docker 验证，见 [服务端验证记录](../../docs/server-validation.md)；网络接入证据单独记录于 [联调记录](../../docs/integration-validation.md)，真实 NAS 与目标手机仍需 V1 验收。
 
 ## 素材
 

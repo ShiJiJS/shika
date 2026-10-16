@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
@@ -10,6 +11,7 @@ import 'paper.dart';
 import 'player.dart';
 import 'sheets.dart';
 import 'preferences.dart';
+import 'media_poster.dart';
 
 abstract interface class BackupFiles {
   Future<bool> save(String text);
@@ -35,7 +37,7 @@ class NativeBackupFiles implements BackupFiles {
     );
     if (file == null) return null;
     final size = await file.length();
-    if (size == null || size > 2 * 1024 * 1024) {
+    if (size == null || size > 32 * 1024 * 1024) {
       throw const LibraryFailure('备份文件过大或无法读取');
     }
     return utf8.decode(await file.readAsBytes());
@@ -49,11 +51,13 @@ class LibraryHome extends StatefulWidget {
     this.initialError,
     this.backupFiles,
     required this.preferences,
+    this.initializeRepository = false,
   });
   final LibraryRepository repository;
   final String? initialError;
   final BackupFiles? backupFiles;
   final UiPreferences preferences;
+  final bool initializeRepository;
   @override
   State<LibraryHome> createState() => _LibraryHomeState();
 }
@@ -66,11 +70,15 @@ class _LibraryHomeState extends State<LibraryHome> {
   bool busy = false, review = false, selecting = false, obscured = false;
   String search = '', tagSearch = '';
   Set<String> selected = {};
-  int limit = 24, playerEpoch = 0;
+  int playerEpoch = 0;
+  List<LibraryVideo> libraryItems = [];
+  int libraryTotal = 0, libraryGeneration = 0;
+  bool libraryLoading = false;
+  String libraryError = '', libraryKey = '', previousScope = '';
   late final BackupFiles files = widget.backupFiles ?? NativeBackupFiles();
   final address = TextEditingController(),
       port = TextEditingController(),
-      passphrase = TextEditingController(text: 'demo');
+      passphrase = TextEditingController();
   String get title => {
     'browse': review ? '快速整理' : '浏览',
     'library': '视频库',
@@ -100,14 +108,84 @@ class _LibraryHomeState extends State<LibraryHome> {
     repo.addListener(changed);
     address.text = data.address;
     port.text = '${data.port}';
+    previousScope = jsonEncode(data.query.toJson());
+    if (repo is DemoControls) passphrase.text = 'demo';
+    if (widget.initializeRepository) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+        final connected = await perform(repo.initialize);
+        if (!mounted) return;
+        address.text = data.address;
+        port.text = '${data.port}';
+        if (connected && data.connected) go('browse');
+      });
+    }
   }
 
   void changed() {
-    if (mounted) setState(() {});
+    if (!mounted) return;
+    final nextScope = jsonEncode(data.query.toJson());
+    setState(() {
+      if (nextScope != previousScope) {
+        selected = {};
+        previousScope = nextScope;
+      }
+      if (!data.connected && page != 'connection') page = 'connection';
+      if (!data.connected && repo.connectionError != null) {
+        error = repo.connectionError!;
+      }
+    });
+    if (page == 'library') unawaited(loadLibrary());
+  }
+
+  Future<void> loadLibrary({bool more = false}) async {
+    if (page != 'library' || (more && libraryLoading)) return;
+    final generation = ++libraryGeneration;
+    final scope = data.query;
+    final text = search;
+    final key = jsonEncode([scope.toJson(), text]);
+    final offset = more ? libraryItems.length : 0;
+    setState(() {
+      libraryLoading = true;
+      libraryError = '';
+      if (key != libraryKey) {
+        libraryItems = [];
+        libraryTotal = 0;
+        selected = {};
+      }
+      libraryKey = key;
+    });
+    try {
+      final result = await repo.loadVideos(
+        scope: scope,
+        search: text,
+        offset: offset,
+        limit: 24,
+      );
+      if (!mounted || generation != libraryGeneration || page != 'library') {
+        return;
+      }
+      setState(() {
+        libraryItems = more ? [...libraryItems, ...result.items] : result.items;
+        libraryTotal = result.total;
+      });
+    } on RequestCancelled {
+      // A newer query or another page owns the visible state.
+    } catch (failure) {
+      if (mounted && generation == libraryGeneration) {
+        setState(() => libraryError = failure.toString());
+      }
+    } finally {
+      if (mounted && generation == libraryGeneration) {
+        setState(() => libraryLoading = false);
+      }
+    }
   }
 
   @override
   void dispose() {
+    libraryGeneration++;
+    repo.cancelVideoRead();
     repo.removeListener(changed);
     address.dispose();
     port.dispose();
@@ -121,8 +199,13 @@ class _LibraryHomeState extends State<LibraryHome> {
       page = next;
       selected = {};
       selecting = false;
-      limit = 24;
     });
+    if (next == 'library') {
+      unawaited(loadLibrary());
+    } else {
+      libraryGeneration++;
+      repo.cancelVideoRead();
+    }
   }
 
   void notice(String text) {
@@ -141,6 +224,8 @@ class _LibraryHomeState extends State<LibraryHome> {
     try {
       await action();
       return true;
+    } on RequestCancelled {
+      return false;
     } catch (e) {
       if (mounted) setState(() => error = e.toString());
       return false;
@@ -410,7 +495,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 9),
                         child: Text(
-                          '${data.round.isEmpty ? '00' : (data.position + 1).toString().padLeft(2, '0')} / ${data.round.length.toString().padLeft(2, '0')}',
+                          '${data.round.isEmpty ? '00' : (repo.playbackPosition + 1).toString().padLeft(2, '0')} / ${repo.playbackTotal.toString().padLeft(2, '0')}',
                           key: const Key('round-position'),
                           style: TextStyle(
                             fontFamily: 'serif',
@@ -664,7 +749,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                               playerEpoch++;
                             }),
                       child: Text(
-                        '${data.query.tags.contains(tag) ? '✓' : '#'} $tag',
+                        '${data.query.tags.contains(tag) ? '✓' : '#'} ${repo.tagName(tag)}',
                         style: const TextStyle(fontSize: 12),
                       ),
                     ),
@@ -699,6 +784,8 @@ class _LibraryHomeState extends State<LibraryHome> {
                   ],
                   index: data.position,
                   onStep: step,
+                  onUnauthorized: (source) =>
+                      unawaited(repo.mediaUnauthorized(source)),
                   suspended: obscured,
                   footerBuilder: browseCaption,
                 ),
@@ -749,8 +836,8 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   Widget library() {
-    final results = repo.query(search: search, limit: limit);
-    final total = repo.query(search: search).length;
+    final results = libraryItems;
+    final total = libraryTotal;
     return Column(
       children: [
         Padding(
@@ -759,7 +846,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             children: [
               Expanded(
                 child: Text(
-                  '$total 个视频',
+                  libraryLoading && results.isEmpty ? '正在加载…' : '$total 个视频',
                   key: const Key('library-count'),
                   style: TextStyle(
                     color: Paper.of(context).olive,
@@ -795,15 +882,18 @@ class _LibraryHomeState extends State<LibraryHome> {
                 child: TextField(
                   key: const Key('video-search'),
                   decoration: const InputDecoration(hintText: '搜索视频'),
-                  onChanged: (v) => setState(() {
-                    search = v;
-                    limit = 24;
-                  }),
+                  onChanged: (v) {
+                    setState(() {
+                      search = v;
+                      selected = {};
+                    });
+                    unawaited(loadLibrary());
+                  },
                 ),
               ),
               const SizedBox(width: 9),
               OutlinedButton(
-                onPressed: busy || results.isEmpty
+                onPressed: busy || libraryLoading || results.isEmpty
                     ? null
                     : () async {
                         if (await perform(
@@ -826,7 +916,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                   child: Text(
                     [
                       if (data.query.folder.isNotEmpty) data.query.folder,
-                      ...data.query.tags.map((t) => '# $t'),
+                      ...data.query.tags.map((t) => '# ${repo.tagName(t)}'),
                       if (data.query.orientation.isNotEmpty)
                         data.query.orientation == 'portrait' ? '竖版' : '横版',
                       if (data.query.duration.isNotEmpty)
@@ -849,8 +939,37 @@ class _LibraryHomeState extends State<LibraryHome> {
             ),
           ),
         Expanded(
-          child: results.isEmpty
-              ? EmptyView(data.videos.isEmpty ? '视频库还是空的' : '没有符合条件的视频')
+          child: libraryLoading && results.isEmpty
+              ? const Center(child: CircularProgressIndicator())
+              : libraryError.isNotEmpty && results.isEmpty
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    note(libraryError),
+                    TextButton(
+                      onPressed: () => loadLibrary(),
+                      child: const Text('重试'),
+                    ),
+                  ],
+                )
+              : results.isEmpty
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    note(
+                      data.roots.isNotEmpty &&
+                              data.roots.every((root) => !root.available)
+                          ? '媒体目录暂不可用，请检查挂载后刷新'
+                          : data.query.count > 0 || search.isNotEmpty
+                          ? '没有符合条件的视频'
+                          : '视频库还是空的',
+                    ),
+                    TextButton(
+                      onPressed: busy ? null : () => perform(repo.refresh),
+                      child: const Text('刷新'),
+                    ),
+                  ],
+                )
               : RefreshIndicator(
                   onRefresh: () => perform(repo.refresh),
                   child: GridView.builder(
@@ -868,14 +987,16 @@ class _LibraryHomeState extends State<LibraryHome> {
                     itemBuilder: (context, i) {
                       if (i == results.length) {
                         return TextButton(
-                          onPressed: () => setState(() => limit += 24),
-                          child: const Text('加载更多'),
+                          onPressed: libraryLoading
+                              ? null
+                              : () => loadLibrary(more: true),
+                          child: Text(libraryLoading ? '加载中…' : '加载更多'),
                         );
                       }
                       final v = results[i];
                       return InkWell(
                         key: Key('tile-${v.id}'),
-                        onTap: busy
+                        onTap: busy || libraryLoading
                             ? null
                             : () async {
                                 if (selecting) {
@@ -898,7 +1019,12 @@ class _LibraryHomeState extends State<LibraryHome> {
                               child: Stack(
                                 fit: StackFit.expand,
                                 children: [
-                                  Image.asset(v.poster, fit: BoxFit.cover),
+                                  MediaPoster(
+                                    video: v,
+                                    onUnauthorized: () => unawaited(
+                                      repo.mediaUnauthorized(v.source),
+                                    ),
+                                  ),
                                   Positioned(
                                     right: 5,
                                     bottom: 5,
@@ -956,7 +1082,9 @@ class _LibraryHomeState extends State<LibraryHome> {
                               ),
                             ),
                             Text(
-                              v.tags.map((t) => '# $t').join('   '),
+                              v.tags
+                                  .map((t) => '# ${repo.tagName(t)}')
+                                  .join('   '),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -971,6 +1099,16 @@ class _LibraryHomeState extends State<LibraryHome> {
                   ),
                 ),
         ),
+        if (libraryError.isNotEmpty && results.isNotEmpty)
+          Row(
+            children: [
+              Expanded(child: note(libraryError)),
+              TextButton(
+                onPressed: () => loadLibrary(),
+                child: const Text('重试'),
+              ),
+            ],
+          ),
         if (selecting) batchBar(),
       ],
     );
@@ -987,11 +1125,15 @@ class _LibraryHomeState extends State<LibraryHome> {
           ),
         ),
         TextButton(
-          onPressed: busy || selected.isEmpty ? null : () => tag(selected),
+          onPressed: busy || libraryLoading || selected.isEmpty
+              ? null
+              : () => tag(selected),
           child: const Text('打标签'),
         ),
         TextButton(
-          onPressed: busy || selected.isEmpty ? null : () => remove(selected),
+          onPressed: busy || libraryLoading || selected.isEmpty
+              ? null
+              : () => remove(selected),
           style: TextButton.styleFrom(
             foregroundColor: Paper.of(context).danger,
           ),
@@ -1028,7 +1170,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             ? const EmptyView('还没有标签')
             : ListView(
                 children: data.tags
-                    .where((t) => t.contains(tagSearch))
+                    .where((t) => repo.tagName(t).contains(tagSearch))
                     .map(
                       (t) => ListTile(
                         leading: Text(
@@ -1039,12 +1181,10 @@ class _LibraryHomeState extends State<LibraryHome> {
                           ),
                         ),
                         title: Text(
-                          t,
+                          repo.tagName(t),
                           style: Paper.of(context).title.copyWith(fontSize: 17),
                         ),
-                        subtitle: Text(
-                          '${data.videos.where((v) => v.status != VideoStatus.trash && v.tags.contains(t)).length} 个视频',
-                        ),
+                        subtitle: Text('${repo.tagVideoCount(t)} 个视频'),
                         onTap: busy
                             ? null
                             : () async {
@@ -1059,21 +1199,26 @@ class _LibraryHomeState extends State<LibraryHome> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             iconAction(
-                              '重命名标签 $t',
+                              '重命名标签 ${repo.tagName(t)}',
                               Icons.edit_outlined,
                               () => tagForm(t),
                             ),
-                            iconAction('删除标签 $t', Icons.close, () async {
-                              if (await confirm(
-                                '删除这个标签？',
-                                '将解除「$t」与视频的关联，不会删除视频。',
-                                '删除标签',
-                              )) {
-                                await perform(
-                                  () => repo.editTag(original: t, delete: true),
-                                );
-                              }
-                            }),
+                            iconAction(
+                              '删除标签 ${repo.tagName(t)}',
+                              Icons.close,
+                              () async {
+                                if (await confirm(
+                                  '删除这个标签？',
+                                  '将解除「${repo.tagName(t)}」与视频的关联，不会删除视频。',
+                                  '删除标签',
+                                )) {
+                                  await perform(
+                                    () =>
+                                        repo.editTag(original: t, delete: true),
+                                  );
+                                }
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -1084,7 +1229,9 @@ class _LibraryHomeState extends State<LibraryHome> {
     ],
   );
   Future<void> tagForm([String? original]) async {
-    final input = TextEditingController(text: original ?? '');
+    final input = TextEditingController(
+      text: original == null ? '' : repo.tagName(original),
+    );
     String formError = '';
     bool saving = false;
     await sheet<void>(
@@ -1168,7 +1315,7 @@ class _LibraryHomeState extends State<LibraryHome> {
       settingRow(
         Icons.folder_outlined,
         '媒体目录',
-        '${data.roots.length} 个目录 · ${data.videos.where((v) => v.status == VideoStatus.missing).length} 个缺失视频',
+        '${data.roots.length} 个目录 · ${repo.missingCount} 个缺失视频',
         () => go('roots'),
       ),
       const SizedBox(height: 14),
@@ -1176,7 +1323,7 @@ class _LibraryHomeState extends State<LibraryHome> {
       settingRow(
         Icons.delete_outline,
         '回收站',
-        '${data.videos.where((v) => v.status == VideoStatus.trash).length} 个视频 · 不会自动清空',
+        '${repo.trashCount} 个视频 · 不会自动清空',
         () => go('trash'),
       ),
       settingRow(Icons.save_outlined, '备份与恢复', '导出标签和管理记录', () => go('backup')),
@@ -1218,17 +1365,20 @@ class _LibraryHomeState extends State<LibraryHome> {
       const SizedBox(height: 26),
       TextField(
         controller: address,
+        enabled: !busy,
         decoration: const InputDecoration(labelText: '服务地址'),
       ),
       const SizedBox(height: 20),
       TextField(
         controller: port,
+        enabled: !busy,
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(labelText: '端口'),
       ),
       const SizedBox(height: 20),
       TextField(
         controller: passphrase,
+        enabled: !busy,
         obscureText: true,
         decoration: const InputDecoration(labelText: '个人口令'),
       ),
@@ -1244,6 +1394,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                     passphrase.text,
                   ),
                 )) {
+                  passphrase.clear();
                   go('browse');
                 }
               },
@@ -1466,7 +1617,9 @@ class _LibraryHomeState extends State<LibraryHome> {
             : () async {
                 bool saved = false;
                 if (await perform(
-                      () async => saved = await files.save(repo.exportBackup()),
+                      () async => saved = await files.save(
+                        await repo.exportBackupFile(),
+                      ),
                     ) &&
                     saved) {
                   notice('已导出管理数据备份');
@@ -1482,7 +1635,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                 String? text;
                 if (await perform(() async {
                       text = await files.open();
-                      if (text != null) repo.inspectBackup(text!);
+                      if (text != null) await repo.inspectBackupFile(text!);
                     }) &&
                     text != null) {
                   await restoreForm(text!);
@@ -1495,8 +1648,14 @@ class _LibraryHomeState extends State<LibraryHome> {
     ],
   );
   Future<void> restoreForm(String text) async {
-    final preview = repo.inspectBackup(text);
-    final mappings = {for (final r in preview.snapshot.roots) r.id: r.path};
+    final preview = await repo.inspectBackupFile(text);
+    if (!mounted) return;
+    final mappings = {
+      for (final r in preview.snapshot.roots)
+        r.id: preview.suggestedMappings.containsKey(r.id)
+            ? preview.suggestedMappings[r.id] ?? ''
+            : r.path,
+    };
     bool checked = false, restoring = false;
     String formError = '';
     await sheet<void>(
@@ -1509,8 +1668,12 @@ class _LibraryHomeState extends State<LibraryHome> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: TextFormField(
-                  initialValue: r.path,
-                  decoration: InputDecoration(labelText: r.path),
+                  initialValue: mappings[r.id],
+                  decoration: InputDecoration(
+                    labelText: r.name,
+                    helperText: '原目录：${r.path}',
+                    hintText: preview.importId == null ? null : '留空表示暂不映射',
+                  ),
                   onChanged: (v) => mappings[r.id] = v,
                 ),
               ),

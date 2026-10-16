@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 import '../library/models.dart';
 import 'paper.dart';
 import 'device_controls.dart';
+import 'media_poster.dart';
 
 class MovieStage extends StatefulWidget {
   const MovieStage({
@@ -17,12 +18,14 @@ class MovieStage extends StatefulWidget {
     required this.onStep,
     this.suspended = false,
     this.footerBuilder,
+    this.onUnauthorized,
   });
   final List<LibraryVideo> videos;
   final int index;
   final Future<bool> Function(int) onStep;
   final bool suspended;
   final Widget Function(LibraryVideo)? footerBuilder;
+  final void Function(MediaSource)? onUnauthorized;
   @override
   State<MovieStage> createState() => _MovieStageState();
 }
@@ -119,6 +122,7 @@ class _MovieStageState extends State<MovieStage> {
             active: index == widget.index,
             suspended: widget.suspended,
             footer: widget.footerBuilder?.call(widget.videos[index]),
+            onUnauthorized: widget.onUnauthorized,
           ),
         ),
       );
@@ -137,10 +141,12 @@ class _MoviePage extends StatefulWidget {
     required this.active,
     required this.suspended,
     this.footer,
+    this.onUnauthorized,
   });
   final LibraryVideo video;
   final bool active, suspended;
   final Widget? footer;
+  final void Function(MediaSource)? onUnauthorized;
 
   @override
   State<_MoviePage> createState() => _MoviePageState();
@@ -256,7 +262,12 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       children: [
         Positioned.fill(
           child: !widget.active
-              ? Image.asset(widget.video.poster, fit: BoxFit.contain)
+              ? MediaPoster(
+                  video: widget.video,
+                  fit: BoxFit.contain,
+                  onUnauthorized: () =>
+                      widget.onUnauthorized?.call(widget.video.source),
+                )
               : _error != null
               ? EmptyView(
                   _error!,
@@ -269,7 +280,12 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
               ? Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image.asset(widget.video.poster, fit: BoxFit.contain),
+                    MediaPoster(
+                      video: widget.video,
+                      fit: BoxFit.contain,
+                      onUnauthorized: () =>
+                          widget.onUnauthorized?.call(widget.video.source),
+                    ),
                     const Center(
                       child: CircularProgressIndicator(strokeWidth: 2),
                     ),

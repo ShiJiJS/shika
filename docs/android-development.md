@@ -1,6 +1,6 @@
 # Android 开发与模拟器
 
-本项目暂定 Flutter，Android 为第一版开发与验收平台。P2 原型已确认，当前 App 为可在模拟器试用的 Flutter 客户端演示版，使用演示数据和真实测试短视频，NAS 服务尚未接入。
+本项目使用 Flutter，Android 为第一版开发与验收平台。P2 原型和客户端演示已确认，当前默认连接 WSL Docker 真实服务并按 I1–I6 联调；仍可单独运行演示模式。最终 NAS 与目标手机验证属于 V1，进度见 [联调记录](integration-validation.md)。
 
 ## 本机配置
 
@@ -31,6 +31,7 @@ Flutter 下载与 Dart 包使用 Flutter 官方文档列出的 CFUG 镜像：`ht
 1. 打开仓库根目录 `C:\Project\video_viewer`。
    首次打开时由用户信任这个项目文件夹；Restricted Mode 会禁用调试和工作区任务。
 2. 在“运行和调试”中选择 **Video Viewer (Android)**，按 **F5**。
+   默认连接 `10.0.2.2:8760`，需先启动 WSL 开发服务。离线试用原有素材可选择 **Video Viewer Demo (Android)**。
 3. 启动前任务会检查或启动 `video_viewer_api_36`，等待 Android 完成启动，然后在 `emulator-5554` 上调试。
 4. 修改 Dart 代码并保存，使用 Flutter 热重载；需要重置状态时使用热重启。
 
@@ -66,7 +67,7 @@ flutter run -d emulator-5554
 
 `flutter run` 中按 `r` 热重载、按 `R` 热重启，按 `q` 结束调试。也可以在 VS Code 中使用对应调试按钮。
 
-Android 模拟器访问 Windows 开发服务时通常使用 `10.0.2.2`。未来服务监听端口和 App 的局域网访问配置随服务端实现确定；当前没有视频库服务。
+Android 模拟器使用 `10.0.2.2:8760` 访问当前 WSL 开发服务。地址和端口可在 App 中修改并记住，不依赖 `adb reverse`。端到端测试另用 8761 的独立实例，见 [联调复现说明](integration-validation.md)。
 
 ## 首次构建与边界
 

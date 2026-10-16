@@ -23,6 +23,12 @@ class LibraryFailure implements Exception {
   String toString() => message;
 }
 
+class RequestCancelled implements Exception {
+  const RequestCancelled();
+  @override
+  String toString() => '请求已取消';
+}
+
 bool under(String path, String parent) =>
     path == parent || path.startsWith('$parent/');
 String basename(String path) => path.split('/').last;
@@ -119,8 +125,11 @@ class MediaRoot {
     this.path, {
     this.available = true,
     this.lastScan = '今天 09:20',
+    this.directoryId = '',
+    this.error,
   });
-  final String id, name, path, lastScan;
+  final String id, name, path, lastScan, directoryId;
+  final String? error;
   final bool available;
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -128,6 +137,8 @@ class MediaRoot {
     'path': path,
     'available': available,
     'lastScan': lastScan,
+    'directoryId': directoryId,
+    'error': error,
   };
   factory MediaRoot.fromJson(Map<String, dynamic> j) => MediaRoot(
     j['id'],
@@ -135,6 +146,8 @@ class MediaRoot {
     j['path'],
     available: j['available'],
     lastScan: j['lastScan'],
+    directoryId: j['directoryId'] ?? '',
+    error: j['error'],
   );
 }
 
@@ -302,14 +315,38 @@ class LibrarySnapshot {
 }
 
 class FolderEntry {
-  const FolderEntry(this.name, this.path, {this.available = true});
-  final String name, path;
+  const FolderEntry(
+    this.name,
+    this.path, {
+    this.available = true,
+    this.id = '',
+    this.videoCount,
+  });
+  final String name, path, id;
   final bool available;
+  final int? videoCount;
+}
+
+class VideoPage {
+  VideoPage({
+    required Iterable<LibraryVideo> items,
+    required this.total,
+    required this.offset,
+    required this.limit,
+  }) : items = List.unmodifiable(items);
+  final List<LibraryVideo> items;
+  final int total, offset, limit;
 }
 
 class BackupPreview {
-  const BackupPreview(this.snapshot);
+  const BackupPreview(
+    this.snapshot, {
+    this.importId,
+    this.suggestedMappings = const {},
+  });
   final LibrarySnapshot snapshot;
+  final String? importId;
+  final Map<String, String?> suggestedMappings;
   static BackupPreview parse(String text) {
     try {
       if (text.length > 2 * 1024 * 1024) throw const FormatException();

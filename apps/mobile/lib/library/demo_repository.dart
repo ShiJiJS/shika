@@ -535,15 +535,18 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
             ],
     );
   });
-  @override
   String exportBackup() => const JsonEncoder.withIndent('  ').convert({
     'format': 'video-viewer-flutter-demo',
     'version': 1,
     'createdAt': DateTime.now().toUtc().toIso8601String(),
     'data': _state.toJson(connection: false),
   });
-  @override
   BackupPreview inspectBackup(String text) => BackupPreview.parse(text);
+  @override
+  Future<String> exportBackupFile() async => exportBackup();
+  @override
+  Future<BackupPreview> inspectBackupFile(String text) async =>
+      inspectBackup(text);
   @override
   Future<void> restoreBackup(
     String text,

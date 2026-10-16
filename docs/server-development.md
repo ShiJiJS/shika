@@ -5,8 +5,8 @@
 ## 当前任务进度
 
 - P1、P2、D1、C1–C6 已完成。用户在播放手势、控件与暗黑模式调整后明确确认“目前大概差不多了。可以开始服务端了”，C6 的用户验收关口通过。
-- [S1：认证、多目录扫描与视频列表](https://github.com/ShiJiJS/video_viewer/issues/11) 已实现并通过 API、实际 Compose、Windows 和模拟器认证网络验证；随后按依赖推进 S2–S6。
-- I1–I6 负责把客户端接入真实 API 并在模拟器逐项联调；V1 负责最终 NAS 和真实 Android 设备验收。它们尚未开始。
+- S1–S6 已实现并通过 API 与 WSL Compose 验证，见 [服务端验证记录](server-validation.md)。
+- I1–I6 负责把客户端接入真实 API 并在模拟器逐项联调，目前正在推进，见 [联调记录](integration-validation.md)；V1 负责最终 NAS 和真实 Android 设备验收，尚未完成。
 - 快速整理仍是筛选、连续查看、打标签、删除与撤销；按标签一键调整物理目录继续留在后续事项，不增加归档分类。
 
 ## 已确认的环境

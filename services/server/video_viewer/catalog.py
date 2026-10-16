@@ -136,6 +136,36 @@ class Catalog:
                 if Path(d.path).parent == Path(parent.path)
             ]
 
+    def directory(self, *, directory_id=None, path=None):
+        with self.db.read() as session:
+            if path is not None:
+                validate_path(path, self.settings.mounts)
+                directory = session.scalar(
+                    select(Directory).where(Directory.path == str(Path(path)))
+                )
+            else:
+                directory = session.get(Directory, directory_id)
+            if not directory:
+                raise LibraryError("directory_not_found", "目录不存在，请重新选择", 404)
+            roots = [
+                root
+                for root in session.scalars(select(Root))
+                if beneath(Path(directory.path), Path(root.path))
+            ]
+            if not roots:
+                raise LibraryError("directory_not_found", "目录不在当前接入范围内", 404)
+            available = any(root.available for root in roots)
+            return {
+                "id": directory.id,
+                "root_id": directory.root_id,
+                "path": directory.path,
+                "name": directory.name,
+                "available": available,
+                "error": None
+                if available
+                else next((root.error for root in roots if root.error), "root_unavailable"),
+            }
+
     def video_statement(
         self,
         session,

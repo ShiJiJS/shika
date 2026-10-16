@@ -57,6 +57,8 @@ NAS 部署时从 `.env.example` 设置 NAS 本地数据路径、视频挂载路�
 | `GET/POST /api/v1/roots` | 查询或接入媒体目录 |
 | `PUT /api/v1/roots/{id}` | 修改名称或允许范围内的接入路径，扫描期间返回冲突 |
 | `GET /api/v1/directories?parent_id=...` | 已扫描到的直接子目录；无 parent_id 时返回媒体目录入口 |
+| `GET /api/v1/directories/{id}` | 按稳定 ID 恢复已选目录路径及可用状态 |
+| `GET /api/v1/directories/resolve?path=...` | 在允许挂载范围内解析已扫描目录的 ID；不枚举任意服务器路径 |
 | `POST /api/v1/scans` | 发起或取得已有扫描任务，返回 202 与任务标识 |
 | `GET /api/v1/tasks` | 最近任务，默认 20 条、最多 100 条 |
 | `GET /api/v1/tasks/{id}` | 任务阶段、状态、逐目录结果和受限数量的失败原因 |

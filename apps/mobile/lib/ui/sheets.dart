@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../library/models.dart';
@@ -18,6 +20,52 @@ class FolderPicker extends StatefulWidget {
 
 class _FolderPickerState extends State<FolderPicker> {
   late String cursor = widget.initial;
+  List<FolderEntry> children = [];
+  bool loading = true;
+  String error = '';
+  int generation = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(load(initial: true));
+  }
+
+  Future<void> load({bool initial = false}) async {
+    final current = ++generation;
+    if (!initial) {
+      setState(() {
+        loading = true;
+        children = [];
+        error = '';
+      });
+    }
+    try {
+      final result = await widget.repository.loadFolders(cursor);
+      if (mounted && current == generation) setState(() => children = result);
+    } on RequestCancelled {
+      // A newer directory selection owns the visible result.
+    } catch (failure) {
+      if (mounted && current == generation) {
+        setState(() => error = failure.toString());
+      }
+    } finally {
+      if (mounted && current == generation) setState(() => loading = false);
+    }
+  }
+
+  void navigate(String path) {
+    cursor = path;
+    unawaited(load());
+  }
+
+  @override
+  void dispose() {
+    generation++;
+    widget.repository.cancelFolderRead();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final root = widget.repository.snapshot.roots
@@ -36,7 +84,6 @@ class _FolderPickerState extends State<FolderPicker> {
         paths.add(p);
       }
     }
-    final children = widget.repository.folders(cursor);
     return SheetFrame(
       title: '选择文件夹',
       children: [
@@ -45,14 +92,14 @@ class _FolderPickerState extends State<FolderPicker> {
           child: Row(
             children: [
               TextButton(
-                onPressed: () => setState(() => cursor = ''),
+                onPressed: () => navigate(''),
                 child: const Text('媒体目录'),
               ),
               ...paths.expand(
                 (p) => [
                   const Icon(Icons.chevron_right, size: 16),
                   TextButton(
-                    onPressed: () => setState(() => cursor = p),
+                    onPressed: () => navigate(p),
                     child: Text(p == root?.path ? root!.name : basename(p)),
                   ),
                 ],
@@ -61,6 +108,15 @@ class _FolderPickerState extends State<FolderPicker> {
           ),
         ),
         note(cursor.isEmpty ? '全部媒体目录' : cursor),
+        if (loading)
+          const Padding(
+            padding: EdgeInsets.all(20),
+            child: Center(child: CircularProgressIndicator()),
+          ),
+        if (error.isNotEmpty) ...[
+          note(error),
+          TextButton(onPressed: () => load(), child: const Text('重试')),
+        ],
         ...children.map(
           (f) => ListTile(
             contentPadding: EdgeInsets.zero,
@@ -68,18 +124,22 @@ class _FolderPickerState extends State<FolderPicker> {
             title: Text(f.name),
             subtitle: Text(
               f.available
-                  ? '${widget.repository.query(scope: VideoQuery(folder: f.path)).length} 个视频'
+                  ? f.videoCount == null
+                        ? '包含下级目录'
+                        : '${f.videoCount} 个视频'
                   : '目录暂不可用',
             ),
             trailing: const Icon(Icons.chevron_right),
             enabled: f.available,
-            onTap: () => setState(() => cursor = f.path),
+            onTap: () => navigate(f.path),
           ),
         ),
-        if (children.isEmpty) note('已经到最下一级，可使用当前目录。'),
+        if (!loading && error.isEmpty && children.isEmpty)
+          note('已经到最下一级，可使用当前目录。'),
         const SizedBox(height: 16),
         FilledButton(
-          onPressed: root != null && !root.available
+          onPressed:
+              loading || error.isNotEmpty || (root != null && !root.available)
               ? null
               : () => Navigator.pop(context, cursor),
           child: Text(cursor.isEmpty ? '使用全部目录' : '使用此目录'),
@@ -158,7 +218,7 @@ class _ScopeSheetState extends State<ScopeSheet> {
         children: widget.repository.snapshot.tags
             .map(
               (tag) => FilterChip(
-                label: Text(tag),
+                label: Text(widget.repository.tagName(tag)),
                 selected: draft.tags.contains(tag),
                 backgroundColor: Paper.of(context).soft,
                 side: BorderSide.none,
@@ -184,6 +244,17 @@ class _ScopeSheetState extends State<ScopeSheet> {
       select('文件类型', draft.type, const {
         '': '全部类型',
         'MP4': 'MP4',
+        'MOV': 'MOV',
+        'MKV': 'MKV',
+        'WEBM': 'WebM',
+        'AVI': 'AVI',
+        'M4V': 'M4V',
+        'TS': 'TS',
+        'MTS': 'MTS',
+        'M2TS': 'M2TS',
+        'MPG': 'MPG',
+        'MPEG': 'MPEG',
+        '3GP': '3GP',
       }, (v) => draft = draft.copy(type: v)),
       const SizedBox(height: 20),
       Row(
@@ -258,10 +329,10 @@ class _TagEditorState extends State<TagEditor> {
         spacing: 8,
         runSpacing: 6,
         children: widget.repository.snapshot.tags
-            .where((t) => t.contains(search))
+            .where((t) => widget.repository.tagName(t).contains(search))
             .map(
               (tag) => FilterChip(
-                label: Text(tag),
+                label: Text(widget.repository.tagName(tag)),
                 selected: selected.contains(tag),
                 backgroundColor: Paper.of(context).soft,
                 side: BorderSide.none,

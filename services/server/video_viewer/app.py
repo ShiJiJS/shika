@@ -240,6 +240,16 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     def directories(request: Request, parent_id: str | None = None):
         return {"items": request.app.state.catalog.directories(parent_id)}
 
+    @app.get("/api/v1/directories/resolve", dependencies=auth_required)
+    def resolve_directory(
+        request: Request, path: Annotated[str, Query(min_length=1, max_length=4096)]
+    ):
+        return request.app.state.catalog.directory(path=path)
+
+    @app.get("/api/v1/directories/{directory_id}", dependencies=auth_required)
+    def directory(directory_id: str, request: Request):
+        return request.app.state.catalog.directory(directory_id=directory_id)
+
     @app.post("/api/v1/scans", dependencies=auth_required, status_code=202)
     def scan(request: Request):
         return request.app.state.scanner.submit()
