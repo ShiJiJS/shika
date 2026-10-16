@@ -18,6 +18,7 @@
 
 ## 项目文档
 
+- [第一版规格 Issue #1](https://github.com/ShiJiJS/video_viewer/issues/1)（ready-for-agent）
 - [第一版完整规格](docs/v1-spec.md)
 - [已确认需求与验收场景](docs/requirements.md)
 - [领域术语](GLOSSARY.md)
