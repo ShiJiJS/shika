@@ -3,7 +3,7 @@ from pathlib import Path
 from sqlalchemy import func, or_, select
 
 from .errors import LibraryError
-from .models import Directory, Root, Video, uid
+from .models import Directory, Root, Video, VideoTag, uid
 from .paths import beneath, excluded, validate_path
 
 
@@ -140,6 +140,7 @@ class Catalog:
         orientation=None,
         duration=None,
         file_type=None,
+        tag_ids=(),
     ):
         statement = select(Video).join(Root).where(Video.status == status)
         if status == "available":
@@ -168,6 +169,15 @@ class Catalog:
             )
         if file_type:
             statement = statement.where(Video.type == file_type.upper())
+        chosen_tags = sorted(set(tag_ids))
+        if chosen_tags:
+            matching = (
+                select(VideoTag.video_id)
+                .where(VideoTag.tag_id.in_(chosen_tags))
+                .group_by(VideoTag.video_id)
+                .having(func.count(VideoTag.tag_id) == len(chosen_tags))
+            )
+            statement = statement.where(Video.id.in_(matching))
         return statement
 
     def videos(self, *, offset=0, limit=50, **scope):
@@ -204,5 +214,5 @@ class Catalog:
             "container": video.container,
             "thumbnail_url": f"/api/v1/videos/{video.id}/thumbnail" if video.thumbnail else None,
             "media_url": f"/api/v1/videos/{video.id}/stream",
-            "tag_ids": [],
+            "tag_ids": sorted(tag.id for tag in video.tags),
         }

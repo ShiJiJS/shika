@@ -13,9 +13,7 @@ class Playback:
         self.db, self.catalog, self.streams = db, catalog, streams
 
     def eligible(self, session, round):
-        scope = {key: value for key, value in round.scope.items() if key != "tag_ids"}
-        if round.scope.get("tag_ids"):
-            raise LibraryError("tags_not_ready", "标签条件将在标签服务接入后可用", 422)
+        scope = round.scope
         candidates = (
             self.catalog.video_statement(session, **scope).with_only_columns(Video.id).subquery()
         )
@@ -31,56 +29,56 @@ class Playback:
         )
 
     def create(self, order, scope, anchor_video_id=None, request_id=None):
-        query_scope = {key: value for key, value in scope.items() if key != "tag_ids"}
-        if scope.get("tag_ids"):
-            raise LibraryError("tags_not_ready", "标签条件将在标签服务接入后可用", 422)
         with self.db.write() as session:
-            request_hash = hashlib.sha256(
-                json.dumps(
-                    {"order": order, "scope": scope, "anchor": anchor_video_id}, sort_keys=True
-                ).encode()
-            ).hexdigest()
-            request_id = request_id or uid()
-            previous = session.scalar(
-                select(PlaybackRound).where(PlaybackRound.request_id == request_id)
+            return self.create_in_session(session, order, scope, anchor_video_id, request_id)
+
+    def create_in_session(self, session, order, scope, anchor_video_id=None, request_id=None):
+        request_hash = hashlib.sha256(
+            json.dumps(
+                {"order": order, "scope": scope, "anchor": anchor_video_id}, sort_keys=True
+            ).encode()
+        ).hexdigest()
+        request_id = request_id or uid()
+        previous = session.scalar(
+            select(PlaybackRound).where(PlaybackRound.request_id == request_id)
+        )
+        if previous:
+            if previous.request_hash != request_hash:
+                raise LibraryError("idempotency_conflict", "请求标识已用于不同的轮次操作")
+            return self.summary(session, previous)
+        candidates = list(
+            session.scalars(
+                self.catalog.video_statement(session, **scope)
+                .order_by(Video.path, Video.id)
+                .with_only_columns(Video.id)
             )
-            if previous:
-                if previous.request_hash != request_hash:
-                    raise LibraryError("idempotency_conflict", "请求标识已用于不同的轮次操作")
-                return self.summary(session, previous)
-            candidates = list(
-                session.scalars(
-                    self.catalog.video_statement(session, **query_scope)
-                    .order_by(Video.path, Video.id)
-                    .with_only_columns(Video.id)
-                )
-            )
-            if anchor_video_id and anchor_video_id not in candidates:
-                raise LibraryError("video_outside_scope", "该视频不在当前可播放范围内", 422)
-            if order == "random":
-                random.SystemRandom().shuffle(candidates)
-            round = PlaybackRound(
-                request_id=request_id,
-                request_hash=request_hash,
-                order=order,
-                scope=scope,
-                cursor=candidates.index(anchor_video_id) if anchor_video_id else 0,
-                candidate_count=len(candidates),
-                finished=not candidates,
-            )
-            session.add(round)
-            session.flush()
-            session.add_all(
-                RoundEntry(round_id=round.id, ordinal=i, video_id=video_id)
-                for i, video_id in enumerate(candidates)
-            )
-            pointer = session.get(Setting, "active_round")
-            if pointer:
-                pointer.value = round.id
-            else:
-                session.add(Setting(key="active_round", value=round.id))
-            session.flush()
-            return self.summary(session, round)
+        )
+        if anchor_video_id and anchor_video_id not in candidates:
+            raise LibraryError("video_outside_scope", "该视频不在当前可播放范围内", 422)
+        if order == "random":
+            random.SystemRandom().shuffle(candidates)
+        round = PlaybackRound(
+            request_id=request_id,
+            request_hash=request_hash,
+            order=order,
+            scope=scope,
+            cursor=candidates.index(anchor_video_id) if anchor_video_id else 0,
+            candidate_count=len(candidates),
+            finished=not candidates,
+        )
+        session.add(round)
+        session.flush()
+        session.add_all(
+            RoundEntry(round_id=round.id, ordinal=i, video_id=video_id)
+            for i, video_id in enumerate(candidates)
+        )
+        pointer = session.get(Setting, "active_round")
+        if pointer:
+            pointer.value = round.id
+        else:
+            session.add(Setting(key="active_round", value=round.id))
+        session.flush()
+        return self.summary(session, round)
 
     def current(self):
         with self.db.write_lock:

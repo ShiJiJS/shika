@@ -2,7 +2,7 @@ import time
 import uuid
 
 from sqlalchemy import JSON, Boolean, Float, ForeignKey, Index, Integer, String, Text
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 def uid():
@@ -72,6 +72,7 @@ class Video(Base):
     thumbnail: Mapped[str | None] = mapped_column(String, nullable=True)
     seen_scan: Mapped[str] = mapped_column(String)
     created_at: Mapped[float] = mapped_column(Float, default=time.time)
+    tags: Mapped[list["Tag"]] = relationship(secondary="video_tags", lazy="selectin", viewonly=True)
     __table_args__ = (Index("videos_order", "path", "id"),)
 
 
@@ -115,3 +116,27 @@ class RoundEntry(Base):
     )
     ordinal: Mapped[int] = mapped_column(Integer, primary_key=True)
     video_id: Mapped[str] = mapped_column(ForeignKey("videos.id"), index=True)
+
+
+class Tag(Base):
+    __tablename__ = "tags"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    name: Mapped[str] = mapped_column(String, unique=True)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
+class VideoTag(Base):
+    __tablename__ = "video_tags"
+    video_id: Mapped[str] = mapped_column(
+        ForeignKey("videos.id", ondelete="CASCADE"), primary_key=True
+    )
+    tag_id: Mapped[str] = mapped_column(ForeignKey("tags.id", ondelete="CASCADE"), primary_key=True)
+    __table_args__ = (Index("video_tags_tag_video", "tag_id", "video_id"),)
+
+
+class RequestRecord(Base):
+    __tablename__ = "request_records"
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    fingerprint: Mapped[str] = mapped_column(String)
+    result: Mapped[dict] = mapped_column(JSON)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)

@@ -19,6 +19,7 @@ from .playback import Playback
 from .scanner import Scanner
 from .security import Authentication
 from .streaming import MediaStreams
+from .tags import Tags
 
 
 class Input(BaseModel):
@@ -61,6 +62,24 @@ class PositionInput(Input):
         return self
 
 
+class WriteInput(Input):
+    request_id: str = Field(min_length=1, max_length=128)
+
+
+class TagInput(WriteInput):
+    name: str = Field(min_length=1, max_length=100)
+
+
+class TagAssignment(WriteInput):
+    video_ids: list[Annotated[str, Field(min_length=1, max_length=128)]] = Field(
+        min_length=1, max_length=1000
+    )
+    tag_ids: list[Annotated[str, Field(min_length=1, max_length=128)]] = Field(
+        default_factory=list, max_length=256
+    )
+    mode: Literal["add", "remove", "replace"] = "add"
+
+
 def create_app(settings: Settings | None = None):
     @asynccontextmanager
     async def lifespan(app):
@@ -74,6 +93,7 @@ def create_app(settings: Settings | None = None):
         app.state.catalog, app.state.scanner = catalog, scanner
         app.state.streams = MediaStreams(db, configured)
         app.state.playback = Playback(db, catalog, app.state.streams)
+        app.state.tags = Tags(db, app.state.playback)
         app.state.login_attempts = {}
         app.state.login_lock = threading.Lock()
         scanner.start()
@@ -200,6 +220,7 @@ def create_app(settings: Settings | None = None):
         orientation: Literal["portrait", "landscape"] | None = None,
         duration: Literal["short", "long"] | None = None,
         file_type: Annotated[str | None, Query(max_length=16)] = None,
+        tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
     ):
         return request.app.state.catalog.videos(
             offset=offset,
@@ -210,6 +231,7 @@ def create_app(settings: Settings | None = None):
             orientation=orientation,
             duration=duration,
             file_type=file_type,
+            tag_ids=tag_ids or (),
         )
 
     @app.get("/api/v1/videos/{video_id}/thumbnail", dependencies=auth_required)
@@ -263,5 +285,32 @@ def create_app(settings: Settings | None = None):
         limit: Annotated[int, Query(ge=1, le=200)] = 50,
     ):
         return request.app.state.playback.entries(round_id, offset, limit)
+
+    @app.get("/api/v1/tags", dependencies=auth_required)
+    def tags(
+        request: Request,
+        search: Annotated[str, Query(max_length=200)] = "",
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int, Query(ge=1, le=200)] = 200,
+    ):
+        return request.app.state.tags.list(search, offset, limit)
+
+    @app.post("/api/v1/tags", dependencies=auth_required, status_code=201)
+    def create_tag(body: TagInput, request: Request):
+        return request.app.state.tags.create(body.name, body.request_id)
+
+    @app.patch("/api/v1/tags/{tag_id}", dependencies=auth_required)
+    def rename_tag(tag_id: str, body: TagInput, request: Request):
+        return request.app.state.tags.rename(tag_id, body.name, body.request_id)
+
+    @app.delete("/api/v1/tags/{tag_id}", dependencies=auth_required)
+    def delete_tag(tag_id: str, body: WriteInput, request: Request):
+        return request.app.state.tags.delete(tag_id, body.request_id)
+
+    @app.patch("/api/v1/video-tags", dependencies=auth_required)
+    def assign_tags(body: TagAssignment, request: Request):
+        return request.app.state.tags.assign(
+            body.video_ids, body.tag_ids, body.mode, body.request_id
+        )
 
     return app
