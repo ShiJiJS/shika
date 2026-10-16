@@ -48,7 +48,11 @@ class Scanner:
         if interval <= 0:
             return
         while not self.stop.wait(interval):
-            self.submit()
+            try:
+                self.submit()
+            except LibraryError as error:
+                if error.code != "restore_in_progress":
+                    raise
 
     def submit(self):
         with self.lock:
@@ -111,7 +115,7 @@ class Scanner:
                 roots = list(session.scalars(select(Root).order_by(Root.path)))
             for root in roots:
                 self.check_stop()
-                self.scan_root(task_id, root, roots, result)
+                self.scan_root(task_id, root, [item for item in roots if item.mount_id], result)
             self.check_stop()
             self.change_task(task_id, phase="reconciling_identities")
             publish_discoveries(
@@ -156,6 +160,11 @@ class Scanner:
     def scan_root(self, task_id, root, roots, result):
         base = Path(root.path)
         entries = []
+        if not root.mount_id:
+            result["roots"].append(
+                {"id": root.id, "status": "unavailable", "error": "root_unmapped"}
+            )
+            return
         try:
             with open_directory(base) as fd:
                 os.listdir(fd)
@@ -405,5 +414,6 @@ class Scanner:
 
     def close(self):
         self.stop.set()
-        self.scheduler.join(timeout=2)
+        if self.scheduler.is_alive():
+            self.scheduler.join(timeout=2)
         self.executor.shutdown(wait=True, cancel_futures=True)

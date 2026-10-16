@@ -10,14 +10,16 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, model_validator
 from sqlalchemy import select
+from starlette.concurrency import run_in_threadpool
 
+from .backups import Backups
 from .catalog import Catalog
 from .config import Settings
 from .db import Database
 from .errors import LibraryError
 from .file_operations import FileOperations
 from .file_state import reserved_video_ids
-from .models import FileOperation, Root, Setting, Video
+from .models import FileOperation, Root, Setting, Video, uid
 from .playback import Playback
 from .scanner import Scanner
 from .security import Authentication
@@ -99,7 +101,13 @@ class PermanentInput(TrashInput):
     confirmed: Literal[True]
 
 
-def create_app(settings: Settings | None = None, file_fault_hook=None):
+class RestoreInput(WriteInput):
+    preview_id: str = Field(min_length=1, max_length=128)
+    root_mapping: dict[str, str | None] = Field(max_length=256)
+    confirmed: Literal[True]
+
+
+def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fault_hook=None):
     @asynccontextmanager
     async def lifespan(app):
         configured = settings or Settings.from_env()
@@ -116,13 +124,19 @@ def create_app(settings: Settings | None = None, file_fault_hook=None):
         app.state.files = FileOperations(
             db, configured, catalog, app.state.playback, file_fault_hook
         )
+        app.state.backups = Backups(db, configured, scanner, app.state.files, backup_fault_hook)
         app.state.login_attempts = {}
         app.state.login_lock = threading.Lock()
-        app.state.files.start()
-        scanner.start()
+
+        def start_regular():
+            app.state.files.start()
+            scanner.start()
+
+        app.state.backups.start(start_regular)
         try:
             yield
         finally:
+            app.state.backups.close()
             scanner.close()
             app.state.files.close()
             db.close()
@@ -349,6 +363,49 @@ def create_app(settings: Settings | None = None, file_fault_hook=None):
         limit: Annotated[int, Query(ge=1, le=200)] = 50,
     ):
         return request.app.state.files.trash(offset, limit)
+
+    @app.post("/api/v1/backups", dependencies=auth_required, status_code=202)
+    def export_backup(body: WriteInput, request: Request):
+        task_id = request.app.state.backups.submit("backup_export", body.request_id)
+        return request.app.state.scanner.task(task_id)
+
+    @app.get("/api/v1/backups", dependencies=auth_required)
+    def list_backups(request: Request, limit: Annotated[int, Query(ge=1, le=100)] = 20):
+        return {"items": request.app.state.backups.exports(limit)}
+
+    @app.get("/api/v1/backups/{backup_id}/download", dependencies=auth_required)
+    def download_backup(backup_id: str, request: Request):
+        path = request.app.state.backups.artifact(backup_id)
+        return FileResponse(
+            path, media_type="application/json", filename=f"video-viewer-backup-{path.stem}.json"
+        )
+
+    @app.post("/api/v1/backup-imports", dependencies=auth_required, status_code=202)
+    async def inspect_backup(
+        request: Request,
+        idempotency_key: Annotated[str | None, Header(min_length=1, max_length=128)] = None,
+    ):
+        maximum = request.app.state.settings.backup_max_bytes
+        body = bytearray()
+        async for chunk in request.stream():
+            if len(body) + len(chunk) > maximum:
+                raise LibraryError("backup_too_large", "备份超过当前大小限制", 413)
+            body.extend(chunk)
+        # JSON parsing and schema validation run in the bounded backup executor.
+        task_id = await run_in_threadpool(
+            request.app.state.backups.submit,
+            "backup_inspect",
+            idempotency_key or uid(),
+            bytes(body),
+        )
+        return request.app.state.scanner.task(task_id)
+
+    @app.post("/api/v1/backup-restores", dependencies=auth_required, status_code=202)
+    def restore_backup(body: RestoreInput, request: Request):
+        task_id = request.app.state.backups.submit_restore(
+            body.preview_id, body.root_mapping, body.request_id
+        )
+        return request.app.state.scanner.task(task_id)
 
     def operation_task(request, operation_id):
         return request.app.state.scanner.task(operation_id)

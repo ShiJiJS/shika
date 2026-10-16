@@ -3,7 +3,7 @@ from pathlib import Path
 from sqlalchemy import func, or_, select
 
 from .errors import LibraryError
-from .models import Directory, Root, Video, VideoTag, uid
+from .models import Directory, Root, Setting, Video, VideoTag, uid
 from .paths import beneath, excluded, validate_path
 
 
@@ -11,9 +11,14 @@ class Catalog:
     def __init__(self, db, settings):
         self.db, self.settings = db, settings
         with db.write() as session:
+            restored = session.get(Setting, "root_configuration_restored")
             for mount in settings.mounts:
                 root = session.get(Root, mount.id)
                 if root is None:
+                    if restored or session.scalar(
+                        select(Root.id).where(Root.mount_id == mount.id).limit(1)
+                    ):
+                        continue
                     root = Root(
                         id=mount.id, mount_id=mount.id, name=mount.name, path=str(mount.path)
                     )
@@ -21,7 +26,8 @@ class Catalog:
                     session.flush()
                 else:
                     # User-selected subdirectories persist across service starts.
-                    validate_path(root.path, settings.mounts)
+                    if root.mount_id:
+                        validate_path(root.path, settings.mounts)
                 self.ensure_directory(session, Path(root.path), root.id)
 
     @staticmethod
@@ -89,7 +95,7 @@ class Catalog:
                 root.id = uid()
                 session.add(root)
                 session.flush()
-            root.name = name
+            root.name, root.mount_id = name, mount.id
             self.ensure_directory(session, candidate, root.id)
             return self.root_json(session, root)
 

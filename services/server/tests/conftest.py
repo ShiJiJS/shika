@@ -33,8 +33,8 @@ def environment(tmp_path):
     return settings, media
 
 
-def connect(settings, *, token=None, file_fault_hook=None):
-    client = TestClient(create_app(settings, file_fault_hook))
+def connect(settings, *, token=None, file_fault_hook=None, backup_fault_hook=None):
+    client = TestClient(create_app(settings, file_fault_hook, backup_fault_hook))
     client.__enter__()
     if not token:
         response = client.post("/api/v1/auth/login", json={"passphrase": settings.passphrase})

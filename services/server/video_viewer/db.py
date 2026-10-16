@@ -1,11 +1,13 @@
 from contextlib import contextmanager
 from pathlib import Path
-from threading import RLock
+from threading import RLock, get_ident
 
 from alembic import command
 from alembic.config import Config
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import Session
+
+from .errors import LibraryError
 
 
 class Database:
@@ -16,6 +18,8 @@ class Database:
             connect_args={"check_same_thread": False, "timeout": 15},
         )
         self.write_lock = RLock()
+        self.maintenance_task = None
+        self.maintenance_owner = None
 
         @event.listens_for(self.engine, "connect")
         def configure(connection, _record):
@@ -42,6 +46,8 @@ class Database:
     @contextmanager
     def write(self):
         with self.write_lock, Session(self.engine, expire_on_commit=False) as session:
+            if self.maintenance_task and self.maintenance_owner != get_ident():
+                raise LibraryError("restore_in_progress", "管理数据正在恢复，请稍后重试", 503)
             with session.begin():
                 yield session
 

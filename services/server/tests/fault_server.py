@@ -18,3 +18,16 @@ def create_fault_app():
                 time.sleep(0.05)
 
     return create_app(file_fault_hook=checkpoint)
+
+
+def create_backup_fault_app():
+    phase = os.environ["TEST_BACKUP_PHASE"]
+    marker = Path(os.environ["TEST_BACKUP_MARKER"])
+
+    def checkpoint(current, _task):
+        if current == phase:
+            marker.write_text(current)
+            while True:
+                time.sleep(0.05)
+
+    return create_app(backup_fault_hook=checkpoint)
