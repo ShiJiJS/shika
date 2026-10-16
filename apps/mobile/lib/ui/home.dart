@@ -210,8 +210,8 @@ class _LibraryHomeState extends State<LibraryHome> {
     }
   }
 
-  Future<void> step(int delta) async {
-    if (data.round.isEmpty || busy || obscured) return;
+  Future<bool> step(int delta) async {
+    if (data.round.isEmpty || busy || obscured) return false;
     if (delta > 0 && data.position == data.round.length - 1) {
       ScaffoldMessenger.of(context)
         ..removeCurrentSnackBar()
@@ -228,9 +228,9 @@ class _LibraryHomeState extends State<LibraryHome> {
             ),
           ),
         );
-      return;
+      return false;
     }
-    await perform(() => repo.step(delta));
+    return perform(() => repo.step(delta));
   }
 
   Future<void> tag(Set<String> ids) async {
@@ -594,7 +594,11 @@ class _LibraryHomeState extends State<LibraryHome> {
                 )
               : MovieStage(
                   key: ValueKey('player-$playerEpoch'),
-                  video: current,
+                  videos: [
+                    for (final id in data.round)
+                      data.videos.firstWhere((video) => video.id == id),
+                  ],
+                  index: data.position,
                   onStep: step,
                   suspended: obscured,
                 ),

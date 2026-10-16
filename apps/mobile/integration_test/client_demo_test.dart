@@ -49,7 +49,8 @@ void main() {
   }
 
   Future<void> tap(WidgetTester t, Finder finder) async {
-    await t.ensureVisible(finder);
+    // Aligning an already visible in-video control can scroll the PageView.
+    if (finder.hitTestable().evaluate().isEmpty) await t.ensureVisible(finder);
     await t.tap(finder);
     await t.pump(const Duration(milliseconds: 300));
     await until(
@@ -101,6 +102,8 @@ void main() {
   Future<void> playerReady(WidgetTester t) => until(
     t,
     () =>
+        t.widget<PageView>(find.byKey(const Key('video-stage'))).physics
+            is! NeverScrollableScrollPhysics &&
         find.byType(VideoPlayer).evaluate().isNotEmpty &&
         t
             .widget<VideoPlayer>(find.byType(VideoPlayer).first)
@@ -143,11 +146,13 @@ void main() {
       await tap(t, find.byTooltip('播放速度'));
       await textTap(t, '2.0×');
       expect(controller.value.playbackSpeed, 2.0);
+      expect(repo.snapshot.position, 0);
       final seen = {first};
       for (var i = 0; i < 2; i++) {
-        await t.drag(
+        await t.fling(
           find.byKey(const Key('video-stage')),
           const Offset(0, -210),
+          1200,
         );
         await until(
           t,
@@ -156,10 +161,20 @@ void main() {
         );
         seen.add(repo.current!.id);
         await playerReady(t);
+        expect(
+          repo.snapshot.position,
+          i + 1,
+          reason:
+              'One fling advances one page: ${repo.snapshot.round}, seen=$seen',
+        );
       }
       expect(repo.current!.portrait, isFalse);
       final landscapeId = repo.current!.id;
-      await t.drag(find.byKey(const Key('video-stage')), const Offset(0, 210));
+      await t.fling(
+        find.byKey(const Key('video-stage')),
+        const Offset(0, 210),
+        1200,
+      );
       await until(
         t,
         () => repo.current!.id != landscapeId,
@@ -167,7 +182,11 @@ void main() {
       );
       expect(seen.contains(repo.current!.id), isTrue);
       await playerReady(t);
-      await t.drag(find.byKey(const Key('video-stage')), const Offset(0, -210));
+      await t.fling(
+        find.byKey(const Key('video-stage')),
+        const Offset(0, -210),
+        1200,
+      );
       await until(t, () => repo.current!.id == landscapeId);
       await playerReady(t);
       await textTap(t, '横屏');

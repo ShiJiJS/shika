@@ -6,7 +6,7 @@
 
 在仓库根目录用 VS Code 的 **Video Viewer (Android)** 按 F5，原有模拟器启动任务继续使用。命令行也可在本目录运行 `flutter run -d emulator-5554`。环境位置见 [Android 开发说明](../../docs/android-development.md)。
 
-1. 浏览页上下滑动换视频、点画面暂停；暂停后出现进度与倍速，横版有横屏按钮，返回保留同一播放器。
+1. 浏览页上下滑动换视频，画面跟随手指整页滑动，短拖回弹；点画面暂停/继续，中央不显示播放按钮。播放时长按临时以 2 倍速播放，松手恢复原速，横屏同样支持。暂停后出现进度与倍速选择，横版有横屏按钮，返回保留同一播放器。
 2. 顶栏仍为目录、随机/顺序、更多；目录支持挂载范围逐层选择。下方标签点击即筛选，同时满足并高亮。
 3. 视频库可搜索、多选批量追加/移除标签，以及按属性筛选。标签页支持搜索、新建、改名和删除。
 4. 视频库 → 快速整理，或浏览页更多 → 进入快速整理。先筛选范围，再连续查看、打标签、删除，提示中撤销准确的上次删除。退出后收起操作条。
@@ -36,6 +36,7 @@ Debug 版本的设置 → 开发工具 → 演示场景。切换会复位 **本 
 flutter analyze
 flutter test test/library_flow_test.dart test/connection_widget_test.dart
 flutter test integration_test/client_demo_test.dart -d emulator-5554 --reporter expanded
+flutter test integration_test/player_gestures_test.dart -d emulator-5554 --reporter expanded
 ```
 
 真实 Android 模拟器流程覆盖本地视频解码与进度、倍速、滑动回看、横向全屏、标签与目录组合筛选、重开读回、快速整理删除/撤销、备份文件恢复及失败状态。测试使用隔离的 App 临时目录，不接触用户演示存储和个人收藏；文件选择桥接可替换为测试文件，避免把 OS 文件管理器当成 Flutter 组件。
