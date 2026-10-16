@@ -14,6 +14,7 @@ services:
       VV_PASSPHRASE_FILE: /run/secrets/passphrase
       VV_SCAN_INTERVAL: "${VV_SCAN_INTERVAL:-300}"
       VV_STABILITY_SECONDS: "${VV_STABILITY_SECONDS:-2}"
+      VV_MEDIA_STREAMS: "${VV_MEDIA_STREAMS:-4}"
     volumes:
       - type: bind
         source: "${VV_DATA_PATH:?Set VV_DATA_PATH to a local persistent data directory}"

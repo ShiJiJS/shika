@@ -22,6 +22,7 @@ VV_PORT=8760
 VV_BIND_ADDRESS=0.0.0.0
 VV_SCAN_INTERVAL=300
 VV_STABILITY_SECONDS=2
+VV_MEDIA_STREAMS=4
 EOF
 fi
 printf 'Development directories and ignored .env are ready. Passphrase is in %s/passphrase (not printed).\n' "$dev_dir"

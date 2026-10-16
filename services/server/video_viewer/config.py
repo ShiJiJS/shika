@@ -21,6 +21,7 @@ class Settings:
     probe_timeout: float = 20
     startup_scan: bool = True
     token_seconds: int = 30 * 24 * 3600
+    media_streams: int = 4
 
     def __post_init__(self):
         if len(self.passphrase) < 8:
@@ -36,6 +37,8 @@ class Settings:
                 raise ValueError("Mount paths cannot contain parent components")
         if self.stability_seconds < 0 or self.scan_interval < 0 or self.probe_timeout <= 0:
             raise ValueError("Invalid scan timings")
+        if not 1 <= self.media_streams <= 32:
+            raise ValueError("media_streams must be between 1 and 32")
 
     @classmethod
     def from_env(cls):
@@ -49,4 +52,5 @@ class Settings:
             scan_interval=float(os.environ.get("VV_SCAN_INTERVAL", "300")),
             stability_seconds=float(os.environ.get("VV_STABILITY_SECONDS", "2")),
             probe_timeout=float(os.environ.get("VV_PROBE_TIMEOUT", "20")),
+            media_streams=int(os.environ.get("VV_MEDIA_STREAMS", "4")),
         )

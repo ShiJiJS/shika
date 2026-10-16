@@ -92,3 +92,26 @@ class Task(Base):
     finished_at: Mapped[float | None] = mapped_column(Float, nullable=True)
     result: Mapped[dict] = mapped_column(JSON, default=dict)
     error: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class PlaybackRound(Base):
+    __tablename__ = "playback_rounds"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    request_id: Mapped[str] = mapped_column(String, unique=True)
+    request_hash: Mapped[str] = mapped_column(String)
+    order: Mapped[str] = mapped_column(String)
+    scope: Mapped[dict] = mapped_column(JSON)
+    cursor: Mapped[int] = mapped_column(Integer, default=0)
+    revision: Mapped[int] = mapped_column(Integer, default=0)
+    finished: Mapped[bool] = mapped_column(Boolean, default=False)
+    candidate_count: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
+class RoundEntry(Base):
+    __tablename__ = "round_entries"
+    round_id: Mapped[str] = mapped_column(
+        ForeignKey("playback_rounds.id", ondelete="CASCADE"), primary_key=True
+    )
+    ordinal: Mapped[int] = mapped_column(Integer, primary_key=True)
+    video_id: Mapped[str] = mapped_column(ForeignKey("videos.id"), index=True)

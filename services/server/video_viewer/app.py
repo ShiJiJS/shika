@@ -8,15 +8,17 @@ from typing import Annotated, Literal
 from fastapi import Depends, FastAPI, Header, Query, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse
-from pydantic import BaseModel, ConfigDict, Field, SecretStr
+from pydantic import BaseModel, ConfigDict, Field, SecretStr, model_validator
 
 from .catalog import Catalog
 from .config import Settings
 from .db import Database
 from .errors import LibraryError
 from .models import Root, Setting, Video
+from .playback import Playback
 from .scanner import Scanner
 from .security import Authentication
+from .streaming import MediaStreams
 
 
 class Input(BaseModel):
@@ -32,6 +34,33 @@ class RootInput(Input):
     path: str = Field(min_length=1, max_length=4096)
 
 
+class PlaybackScope(Input):
+    directory_id: str | None = Field(default=None, min_length=1, max_length=128)
+    orientation: Literal["portrait", "landscape"] | None = None
+    duration: Literal["short", "long"] | None = None
+    file_type: str | None = Field(default=None, max_length=16)
+    tag_ids: list[str] = Field(default_factory=list, max_length=256)
+
+
+class RoundInput(Input):
+    request_id: str = Field(min_length=1, max_length=128)
+    order: Literal["random", "sequential"] = "random"
+    scope: PlaybackScope = Field(default_factory=PlaybackScope)
+    anchor_video_id: str | None = None
+
+
+class PositionInput(Input):
+    expected_revision: int = Field(ge=0)
+    video_id: str | None = Field(default=None, min_length=1, max_length=128)
+    finish: bool = False
+
+    @model_validator(mode="after")
+    def exactly_one_action(self):
+        if bool(self.video_id) == self.finish:
+            raise ValueError("Specify either video_id or finish")
+        return self
+
+
 def create_app(settings: Settings | None = None):
     @asynccontextmanager
     async def lifespan(app):
@@ -43,6 +72,8 @@ def create_app(settings: Settings | None = None):
         scanner = Scanner(db, configured, catalog)
         app.state.settings, app.state.db, app.state.auth = configured, db, auth
         app.state.catalog, app.state.scanner = catalog, scanner
+        app.state.streams = MediaStreams(db, configured)
+        app.state.playback = Playback(db, catalog, app.state.streams)
         app.state.login_attempts = {}
         app.state.login_lock = threading.Lock()
         scanner.start()
@@ -197,5 +228,40 @@ def create_app(settings: Settings | None = None):
         return FileResponse(
             path, media_type="image/jpeg", headers={"Cache-Control": "private, max-age=300"}
         )
+
+    @app.get("/api/v1/videos/{video_id}/stream", dependencies=auth_required)
+    @app.head(
+        "/api/v1/videos/{video_id}/stream", dependencies=auth_required, include_in_schema=False
+    )
+    def stream(video_id: str, request: Request):
+        return request.app.state.streams.response(video_id)
+
+    @app.get("/api/v1/playback", dependencies=auth_required)
+    def playback(request: Request):
+        return request.app.state.playback.current()
+
+    @app.post("/api/v1/rounds", dependencies=auth_required, status_code=201)
+    def create_round(body: RoundInput, request: Request):
+        return request.app.state.playback.create(
+            body.order,
+            body.scope.model_dump(exclude_none=True),
+            body.anchor_video_id,
+            body.request_id,
+        )
+
+    @app.patch("/api/v1/rounds/{round_id}/position", dependencies=auth_required)
+    def position(round_id: str, body: PositionInput, request: Request):
+        return request.app.state.playback.move(
+            round_id, body.expected_revision, body.video_id, body.finish
+        )
+
+    @app.get("/api/v1/rounds/{round_id}/entries", dependencies=auth_required)
+    def round_entries(
+        round_id: str,
+        request: Request,
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int, Query(ge=1, le=200)] = 50,
+    ):
+        return request.app.state.playback.entries(round_id, offset, limit)
 
     return app

@@ -2,7 +2,7 @@
 
 部署在 NAS 上的私人短视频库，配套 Android 优先的跨平台 App，用于随机浏览、标签筛选与快速整理。
 
-P2 HTML 原型与 [Flutter Android 客户端演示版](apps/mobile/README.md) 已获用户确认，客户端沿用 B 风格。S1 服务端认证、扫描、目录层级、缩略图和分页列表已在 WSL2 Docker 实现并验证；后续服务端和 Flutter 真实联调继续推进，当前 App 仍使用演示数据。具体完成项与证据见 [服务端验证记录](docs/server-validation.md)。
+P2 HTML 原型与 [Flutter Android 客户端演示版](apps/mobile/README.md) 已获用户确认，客户端沿用 B 风格。S1–S2 服务端认证、扫描、列表、授权播放流及随机/顺序轮次已在 WSL2 Docker 实现并验证；后续服务端和 Flutter 真实联调继续推进，当前 App 仍使用演示数据。具体完成项与证据见 [服务端验证记录](docs/server-validation.md)。
 
 服务端技术栈已确认：Python / FastAPI / Uvicorn、SQLite / SQLAlchemy / Alembic、FFmpeg / ffprobe；通过 Docker Compose 单服务、单端口部署。按 S1–S6 实现服务端，再按 I1–I6 接入 Flutter 并在模拟器联调，最后进行 NAS 验收。NAS 资源与预加载的评估范围见 [服务端方案](docs/server-plan.md)。
 

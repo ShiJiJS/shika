@@ -1,6 +1,6 @@
 # Video Viewer 服务端
 
-当前完成 S1：口令认证、多媒体目录扫描、目录层级、媒体信息、缩略图、分页查询与持久化扫描任务。S2–S6 和 Flutter 真实联调继续按 [技术方案](../../docs/server-plan.md) 推进，已完成能力与证据见 [服务端验证记录](../../docs/server-validation.md)。
+当前完成 S1–S2：口令认证、多媒体目录扫描、目录层级、媒体信息、缩略图、分页查询、持久化扫描任务、授权原文件流及随机/顺序轮次。S3–S6 和 Flutter 真实联调继续按 [技术方案](../../docs/server-plan.md) 推进，已完成能力与证据见 [服务端验证记录](../../docs/server-validation.md)。
 
 ## 本机 WSL2 开发
 
@@ -62,10 +62,25 @@ NAS 部署时从 `.env.example` 设置 NAS 本地数据路径、视频挂载路�
 | `GET /api/v1/tasks/{id}` | 任务阶段、状态、逐目录结果和受限数量的失败原因 |
 | `GET /api/v1/videos` | 分页查询，支持目录标识、名称、方向、时长、类型与可用/缺失/回收状态 |
 | `GET /api/v1/videos/{id}/thumbnail` | 授权 JPEG 缩略图 |
+| `GET/HEAD /api/v1/videos/{id}/stream` | 授权原文件，支持 Range、If-Range、长度、类型和内容 ETag |
+| `GET /api/v1/playback` | 当前轮次、模式、位置、筛选及最多 3 个相邻可播放摘要；未建立时创建默认随机轮次 |
+| `POST /api/v1/rounds` | 用 request_id、order、scope 和可选 anchor_video_id 创建轮次；同一请求重试返回原轮次 |
+| `GET /api/v1/rounds/{id}/entries` | 分页读取该轮候选顺序，提供视频摘要和位置 |
+| `PATCH /api/v1/rounds/{id}/position` | expected_revision 与 video_id 更新位置；finish=true 明确标记耗尽 |
 
-分页为 offset/limit，默认 50、最多 200；返回 items/total/offset/limit。目录范围包含子树，名称按字面查找，排序为路径与稳定 ID。视频摘要包含实际视频/音频编码、容器、时长、旋转后的尺寸与媒体入口地址；播放入口由 S2 实现，标签由 S3 接入。完整参数可在 `/docs` 和 `/openapi.json` 查看。
+分页为 offset/limit，默认 50、最多 200；返回 items/total/offset/limit。目录范围包含子树，名称按字面查找，排序为路径与稳定 ID。视频摘要包含实际视频/音频编码、容器、时长、旋转后的尺寸与媒体入口地址；标签由 S3 接入。完整参数可在 `/docs` 和 `/openapi.json` 查看。
 
 错误统一为 `{"error":{"code":"...","message":"..."}}`；参数错误返回字段位置，不回显原输入或口令。业务未授权为 401，目录越界或输入非法为 422，不存在为 404，扫描忙/媒体不可用等冲突为 409。
+
+## 播放协议与轮次
+
+媒体通过已校验的文件描述符读取，执行时核对文件属性和路径范围。原文件改变、缺失或不可访问时返回明确错误，不读取被替换位置的新内容。Range 为 206，越界范围为 416，格式错误为 400；范围协议错误采用文件响应约定。默认最多 4 个媒体读取连接，可用 `VV_MEDIA_STREAMS` 调整；并发已满为 503，取消、错误和正常结束均释放资源，前台业务接口独立响应。
+
+轮次建立时保存候选顺序；随机顺序不会随普通重开改变，顺序模式按目录和文件名排列。新增视频留到新轮次，筛选或模式变化通过新建轮次表达。scope 包含 directory_id、orientation、duration、file_type 和后续 S3 的 tag_ids。
+
+位置提交使用目标视频 ID 和 expected_revision，避免目录变化或并发迟到请求把位置写到另一条。相同位置重试幂等，冲突返回 409 后重新读取当前轮次；被新轮次替代的旧轮次不能再写位置。创建轮次重试要复用 request_id，用户主动换范围或重新随机则生成新 request_id。重试旧轮次创建不会重新激活它。
+
+耗尽通过 finish=true 显式标记，最后一条仍可循环；回看会解除耗尽标记。只有轮次与条目位置持久化，单视频时间进度由播放器从头开始。失效条目在选中和相邻准备前重新校验，空候选不退回全库。
 
 ## Docker 内验证
 
