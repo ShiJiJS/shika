@@ -1,0 +1,1511 @@
+import 'dart:convert';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+import '../library/models.dart';
+import '../library/repository.dart';
+import 'paper.dart';
+import 'player.dart';
+import 'sheets.dart';
+
+abstract interface class BackupFiles {
+  Future<bool> save(String text);
+  Future<String?> open();
+}
+
+class NativeBackupFiles implements BackupFiles {
+  @override
+  Future<bool> save(String text) async =>
+      await FilePicker.saveFile(
+        dialogTitle: '导出管理数据备份',
+        fileName: 'video-viewer-backup.json',
+        type: FileType.custom,
+        allowedExtensions: ['json'],
+        bytes: Uint8List.fromList(utf8.encode(text)),
+      ) !=
+      null;
+  @override
+  Future<String?> open() async {
+    final file = await FilePicker.pickFile(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
+    if (file == null) return null;
+    final size = await file.length();
+    if (size == null || size > 2 * 1024 * 1024) {
+      throw const LibraryFailure('备份文件过大或无法读取');
+    }
+    return utf8.decode(await file.readAsBytes());
+  }
+}
+
+class LibraryHome extends StatefulWidget {
+  const LibraryHome({
+    super.key,
+    required this.repository,
+    this.initialError,
+    this.backupFiles,
+  });
+  final LibraryRepository repository;
+  final String? initialError;
+  final BackupFiles? backupFiles;
+  @override
+  State<LibraryHome> createState() => _LibraryHomeState();
+}
+
+class _LibraryHomeState extends State<LibraryHome> {
+  LibraryRepository get repo => widget.repository;
+  LibrarySnapshot get data => repo.snapshot;
+  late String page = data.connected ? 'browse' : 'connection';
+  late String error = widget.initialError ?? '';
+  bool busy = false, review = false, selecting = false, obscured = false;
+  String search = '', tagSearch = '';
+  Set<String> selected = {};
+  int limit = 24, playerEpoch = 0;
+  late final BackupFiles files = widget.backupFiles ?? NativeBackupFiles();
+  final address = TextEditingController(),
+      port = TextEditingController(),
+      passphrase = TextEditingController(text: 'demo');
+  String get title => {
+    'browse': review ? '快速整理' : '浏览',
+    'library': '视频库',
+    'tags': '标签',
+    'settings': '设置',
+    'roots': '媒体目录',
+    'trash': '回收站',
+    'backup': '备份与恢复',
+    'connection': '连接',
+  }[page]!;
+  bool get mediaPage => page == 'browse' || page == 'library';
+  bool get primaryPage =>
+      ['browse', 'library', 'tags', 'settings'].contains(page);
+  EdgeInsets get snackMargin => EdgeInsets.fromLTRB(
+    12,
+    0,
+    12,
+    page == 'browse'
+        ? (review ? 120 : 60)
+        : ['library', 'trash'].contains(page)
+        ? 100
+        : 16,
+  );
+  @override
+  void initState() {
+    super.initState();
+    repo.addListener(changed);
+    address.text = data.address;
+    port.text = '${data.port}';
+  }
+
+  void changed() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    repo.removeListener(changed);
+    address.dispose();
+    port.dispose();
+    passphrase.dispose();
+    super.dispose();
+  }
+
+  void go(String next) {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    setState(() {
+      page = next;
+      selected = {};
+      selecting = false;
+      limit = 24;
+    });
+  }
+
+  void notice(String text) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(margin: snackMargin, content: Text(text)));
+  }
+
+  Future<bool> perform(Future<void> Function() action) async {
+    if (busy) return false;
+    setState(() {
+      busy = true;
+      error = '';
+    });
+    try {
+      await action();
+      return true;
+    } catch (e) {
+      if (mounted) setState(() => error = e.toString());
+      return false;
+    } finally {
+      if (mounted) setState(() => busy = false);
+    }
+  }
+
+  Future<T?> sheet<T>(Widget child) async {
+    setState(() => obscured = true);
+    try {
+      return await paperSheet<T>(context, child);
+    } finally {
+      if (mounted) setState(() => obscured = false);
+    }
+  }
+
+  Future<void> scope({bool quick = false}) async {
+    final q = await sheet<VideoQuery>(
+      ScopeSheet(repository: repo, review: quick),
+    );
+    if (q != null) {
+      await perform(() async {
+        await repo.setScope(q);
+        playerEpoch++;
+      });
+    }
+  }
+
+  Future<void> folder() async {
+    final value = await sheet<String>(
+      FolderPicker(repository: repo, initial: data.query.folder),
+    );
+    if (value != null) {
+      await perform(() async {
+        await repo.setScope(data.query.copy(folder: value));
+        playerEpoch++;
+      });
+    }
+  }
+
+  Future<void> order() async {
+    final mode = await sheet<PlayOrder>(
+      SheetFrame(
+        title: '播放模式',
+        children: [
+          for (final value in PlayOrder.values)
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Icon(
+                value == PlayOrder.random
+                    ? Icons.shuffle
+                    : Icons.format_list_numbered,
+              ),
+              title: Text(value == PlayOrder.random ? '随机播放' : '顺序播放'),
+              subtitle: Text(
+                value == PlayOrder.random ? '本轮向前不重复，允许回看' : '按目录和文件名排列',
+              ),
+              trailing: data.order == value ? const Icon(Icons.check) : null,
+              onTap: () => Navigator.pop(context, value),
+            ),
+        ],
+      ),
+    );
+    if (mode != null) {
+      await perform(() async {
+        await repo.setScope(data.query, order: mode);
+        playerEpoch++;
+      });
+    }
+  }
+
+  Future<void> step(int delta) async {
+    if (data.round.isEmpty || busy || obscured) return;
+    if (delta > 0 && data.position == data.round.length - 1) {
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            margin: snackMargin,
+            content: const Text('本轮已看完'),
+            action: SnackBarAction(
+              label: '开始新一轮',
+              onPressed: () => perform(() async {
+                await repo.newRound();
+                playerEpoch++;
+              }),
+            ),
+          ),
+        );
+      return;
+    }
+    await perform(() => repo.step(delta));
+  }
+
+  Future<void> tag(Set<String> ids) async {
+    final saved = await sheet<bool>(TagEditor(repository: repo, ids: {...ids}));
+    if (saved == true) {
+      setState(() {
+        selected = {};
+        selecting = false;
+      });
+      notice('标签已保存');
+    }
+  }
+
+  Future<void> remove(Set<String> ids) async {
+    final requestId = 'delete-${DateTime.now().microsecondsSinceEpoch}';
+    if (await perform(
+          () => repo.deleteVideos({...ids}, requestId: requestId),
+        ) &&
+        mounted) {
+      setState(() {
+        selected = {};
+        selecting = false;
+      });
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(
+            margin: snackMargin,
+            content: const Text('已移入回收站'),
+            duration: const Duration(seconds: 8),
+            action: SnackBarAction(
+              label: '撤销',
+              onPressed: () => perform(() async {
+                if (data.lastDelete?.id != requestId) {
+                  throw const LibraryFailure('这次删除已失效，请在回收站查看');
+                }
+                await repo.undoDelete(operationId: requestId);
+              }),
+            ),
+          ),
+        );
+    }
+  }
+
+  Future<bool> confirm(String heading, String text, String action) async {
+    setState(() => obscured = true);
+    try {
+      return await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(heading, style: Paper.title.copyWith(fontSize: 21)),
+              content: Text(text),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('取消'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  style: TextButton.styleFrom(foregroundColor: Paper.danger),
+                  child: Text(action),
+                ),
+              ],
+            ),
+          ) ??
+          false;
+    } finally {
+      if (mounted) setState(() => obscured = false);
+    }
+  }
+
+  Future<void> menu(String action) async {
+    setState(() => obscured = false);
+    final current = repo.current;
+    switch (action) {
+      case 'tag':
+        if (current != null) await tag({current.id});
+      case 'details':
+        if (current != null) {
+          await sheet<void>(
+            SheetFrame(
+              title: '视频详情',
+              children: [
+                Text(current.name, style: Paper.title.copyWith(fontSize: 17)),
+                note(
+                  '${current.portrait ? '竖版' : '横版'} · ${current.seconds} 秒 · ${current.type}',
+                ),
+                SelectableText(
+                  current.path,
+                  style: const TextStyle(fontSize: 12, color: Paper.olive),
+                ),
+                const SizedBox(height: 24),
+              ],
+            ),
+          );
+        }
+      case 'review':
+        setState(() {
+          review = !review;
+          page = 'browse';
+        });
+      case 'round':
+        await perform(() async {
+          await repo.newRound();
+          playerEpoch++;
+        });
+      case 'delete':
+        if (current != null) await remove({current.id});
+      default:
+        go(action);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => PopScope<void>(
+    canPop: page == 'browse' && !review,
+    onPopInvokedWithResult: (didPop, result) {
+      if (didPop) return;
+      if (!primaryPage) {
+        go('settings');
+      } else if (page == 'browse') {
+        setState(() => review = false);
+      } else {
+        go('browse');
+      }
+    },
+    child: Scaffold(
+      bottomNavigationBar: primaryPage
+          ? SafeArea(top: false, child: bottomNav())
+          : null,
+      body: SafeArea(
+        bottom: !primaryPage,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 52,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16, right: 12),
+                child: Row(
+                  children: [
+                    if (!primaryPage)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4),
+                        child: iconAction(
+                          '返回设置',
+                          Icons.arrow_back,
+                          busy ? null : () => go('settings'),
+                        ),
+                      ),
+                    Expanded(
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Paper.title,
+                      ),
+                    ),
+                    if (mediaPage) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 9),
+                        child: Text(
+                          '${data.round.isEmpty ? '00' : (data.position + 1).toString().padLeft(2, '0')} / ${data.round.length.toString().padLeft(2, '0')}',
+                          key: const Key('round-position'),
+                          style: const TextStyle(
+                            fontFamily: 'serif',
+                            fontSize: 13,
+                            color: Paper.olive,
+                          ),
+                        ),
+                      ),
+                      iconAction(
+                        '选择文件夹',
+                        Icons.folder_outlined,
+                        busy ? null : folder,
+                      ),
+                      iconAction(
+                        '播放模式',
+                        data.order == PlayOrder.random
+                            ? Icons.shuffle
+                            : Icons.format_list_numbered,
+                        busy ? null : order,
+                      ),
+                    ],
+                    PopupMenuButton<String>(
+                      tooltip: '更多',
+                      enabled: !busy,
+                      onOpened: () => setState(() => obscured = true),
+                      onCanceled: () => setState(() => obscured = false),
+                      onSelected: menu,
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(Icons.more_horiz),
+                      constraints: const BoxConstraints(minWidth: 190),
+                      itemBuilder: (_) => page == 'browse'
+                          ? [
+                              if (repo.current != null)
+                                const PopupMenuItem(
+                                  value: 'tag',
+                                  child: Text('打标签'),
+                                ),
+                              if (repo.current != null)
+                                const PopupMenuItem(
+                                  value: 'details',
+                                  child: Text('视频详情'),
+                                ),
+                              PopupMenuItem(
+                                value: 'review',
+                                child: Text(review ? '返回日常浏览' : '进入快速整理'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'round',
+                                child: Text('开始新一轮'),
+                              ),
+                              if (repo.current != null)
+                                const PopupMenuItem(
+                                  value: 'delete',
+                                  child: Text(
+                                    '移入回收站',
+                                    style: TextStyle(color: Paper.danger),
+                                  ),
+                                ),
+                            ]
+                          : const [
+                              PopupMenuItem(
+                                value: 'roots',
+                                child: Text('媒体目录'),
+                              ),
+                              PopupMenuItem(value: 'trash', child: Text('回收站')),
+                              PopupMenuItem(
+                                value: 'backup',
+                                child: Text('备份与恢复'),
+                              ),
+                            ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 2,
+              child: busy
+                  ? const LinearProgressIndicator(minHeight: 2)
+                  : const ColoredBox(color: Paper.line),
+            ),
+            if (error.isNotEmpty)
+              Container(
+                color: const Color(0xfff4e8e2),
+                padding: const EdgeInsets.only(left: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        error,
+                        key: const Key('operation-error'),
+                        style: const TextStyle(
+                          color: Paper.danger,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    iconAction(
+                      '关闭错误提示',
+                      Icons.close,
+                      () => setState(() => error = ''),
+                    ),
+                  ],
+                ),
+              ),
+            Expanded(
+              child: switch (page) {
+                'browse' => browsing(),
+                'library' => library(),
+                'tags' => tags(),
+                'settings' => settings(),
+                'roots' => roots(),
+                'trash' => trash(),
+                'backup' => backup(),
+                'connection' => connection(),
+                _ => const SizedBox(),
+              },
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+
+  Widget bottomNav() => Container(
+    decoration: const BoxDecoration(
+      border: Border(top: BorderSide(color: Paper.line)),
+    ),
+    child: Center(
+      heightFactor: 1,
+      child: SizedBox(
+        width: 300,
+        height: 52,
+        child: Row(
+          children: [
+            for (final tab in [
+              ('browse', '浏览', Icons.smart_display_outlined),
+              ('library', '视频库', Icons.grid_view),
+              ('tags', '标签', Icons.sell_outlined),
+              ('settings', '设置', Icons.settings_outlined),
+            ])
+              Expanded(
+                child: InkWell(
+                  key: Key('nav-${tab.$1}'),
+                  onTap: busy ? null : () => go(tab.$1),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        tab.$3,
+                        size: 19,
+                        color: page == tab.$1
+                            ? Paper.olive
+                            : const Color(0xff7a8172),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        tab.$2,
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: page == tab.$1
+                              ? Paper.olive
+                              : const Color(0xff7a8172),
+                        ),
+                      ),
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 160),
+                        margin: const EdgeInsets.only(top: 3),
+                        width: 18,
+                        height: 2,
+                        color: page == tab.$1
+                            ? Paper.olive
+                            : Colors.transparent,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    ),
+  );
+  Widget browsing() {
+    final current = repo.current;
+    final tagNames = {...?current?.tags, ...data.query.tags};
+    return Column(
+      children: [
+        Expanded(
+          child: current == null
+              ? EmptyView(
+                  data.videos.isEmpty ? '视频库还是空的' : '没有符合条件的可播放视频',
+                  action: OutlinedButton(
+                    onPressed: busy
+                        ? null
+                        : () => perform(() => repo.setScope(VideoQuery())),
+                    child: const Text('清除筛选'),
+                  ),
+                )
+              : MovieStage(
+                  key: ValueKey('player-$playerEpoch'),
+                  video: current,
+                  onStep: step,
+                  suspended: obscured,
+                ),
+        ),
+        SizedBox(
+          height: 46,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            children: [
+              if (data.query.folder.isNotEmpty)
+                TextButton(
+                  onPressed: folder,
+                  child: actionLabel(
+                    Icons.folder_outlined,
+                    basename(data.query.folder),
+                  ),
+                ),
+              for (final t in tagNames)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 1,
+                    vertical: 4,
+                  ),
+                  child: TextButton(
+                    key: Key('filter-tag-$t'),
+                    style: TextButton.styleFrom(
+                      backgroundColor: data.query.tags.contains(t)
+                          ? Paper.soft
+                          : Colors.transparent,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                    ),
+                    onPressed: busy
+                        ? null
+                        : () => perform(() async {
+                            final tags = {...data.query.tags};
+                            tags.contains(t) ? tags.remove(t) : tags.add(t);
+                            await repo.setScope(data.query.copy(tags: tags));
+                            playerEpoch++;
+                          }),
+                    child: Text(
+                      '${data.query.tags.contains(t) ? '✓' : '#'} $t',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        if (review)
+          Container(
+            key: const Key('review-actions'),
+            padding: const EdgeInsets.fromLTRB(12, 7, 16, 9),
+            decoration: const BoxDecoration(
+              border: Border(top: BorderSide(color: Paper.line)),
+            ),
+            child: Row(
+              children: [
+                TextButton(
+                  onPressed: busy ? null : () => scope(quick: true),
+                  child: actionLabel(
+                    Icons.filter_list,
+                    '筛选${data.query.count > 0 ? ' ${data.query.count}' : ''}',
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: busy || current == null
+                        ? null
+                        : () => tag({current.id}),
+                    child: actionLabel(Icons.sell_outlined, '打标签'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: FilledButton(
+                    key: const Key('quick-delete'),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Paper.danger,
+                    ),
+                    onPressed: busy || current == null
+                        ? null
+                        : () => remove({current.id}),
+                    child: actionLabel(Icons.delete_outline, '删除'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget library() {
+    final results = repo.query(search: search, limit: limit);
+    final total = repo.query(search: search).length;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 10, 12, 3),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  '$total 个视频',
+                  key: const Key('library-count'),
+                  style: const TextStyle(color: Paper.olive, fontSize: 12),
+                ),
+              ),
+              TextButton(
+                onPressed: busy
+                    ? null
+                    : () => setState(() {
+                        review = true;
+                        page = 'browse';
+                      }),
+                child: const Text('快速整理'),
+              ),
+              TextButton(
+                onPressed: () => setState(() {
+                  selecting = !selecting;
+                  selected = {};
+                }),
+                child: Text(selecting ? '取消多选' : '多选'),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 16, 12),
+          child: Row(
+            children: [
+              iconAction('筛选视频', Icons.filter_list, () => scope()),
+              Expanded(
+                child: TextField(
+                  key: const Key('video-search'),
+                  decoration: const InputDecoration(hintText: '搜索视频'),
+                  onChanged: (v) => setState(() {
+                    search = v;
+                    limit = 24;
+                  }),
+                ),
+              ),
+              const SizedBox(width: 9),
+              OutlinedButton(
+                onPressed: busy || results.isEmpty
+                    ? null
+                    : () async {
+                        if (await perform(
+                          () => repo.openVideo(results.first.id),
+                        )) {
+                          go('browse');
+                        }
+                      },
+                child: const Text('播放'),
+              ),
+            ],
+          ),
+        ),
+        if (data.query.count > 0)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 12, 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    [
+                      if (data.query.folder.isNotEmpty) data.query.folder,
+                      ...data.query.tags.map((t) => '# $t'),
+                      if (data.query.orientation.isNotEmpty)
+                        data.query.orientation == 'portrait' ? '竖版' : '横版',
+                      if (data.query.duration.isNotEmpty)
+                        data.query.duration == 'short' ? '10 秒以内' : '10 秒以上',
+                      data.query.type,
+                    ].where((s) => s.isNotEmpty).join(' · '),
+                    style: const TextStyle(fontSize: 12, color: Paper.olive),
+                  ),
+                ),
+                TextButton(
+                  onPressed: busy
+                      ? null
+                      : () => perform(() => repo.setScope(VideoQuery())),
+                  child: const Text('清除'),
+                ),
+              ],
+            ),
+          ),
+        Expanded(
+          child: results.isEmpty
+              ? EmptyView(data.videos.isEmpty ? '视频库还是空的' : '没有符合条件的视频')
+              : RefreshIndicator(
+                  onRefresh: () => perform(repo.refresh),
+                  child: GridView.builder(
+                    key: const Key('video-grid'),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 18,
+                          mainAxisExtent: 290,
+                        ),
+                    itemCount:
+                        results.length + (results.length < total ? 1 : 0),
+                    itemBuilder: (context, i) {
+                      if (i == results.length) {
+                        return TextButton(
+                          onPressed: () => setState(() => limit += 24),
+                          child: const Text('加载更多'),
+                        );
+                      }
+                      final v = results[i];
+                      return InkWell(
+                        key: Key('tile-${v.id}'),
+                        onTap: busy
+                            ? null
+                            : () async {
+                                if (selecting) {
+                                  setState(
+                                    () => selected.contains(v.id)
+                                        ? selected.remove(v.id)
+                                        : selected.add(v.id),
+                                  );
+                                } else if (await perform(
+                                  () => repo.openVideo(v.id),
+                                )) {
+                                  playerEpoch++;
+                                  go('browse');
+                                }
+                              },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  Image.asset(v.poster, fit: BoxFit.cover),
+                                  Positioned(
+                                    right: 5,
+                                    bottom: 5,
+                                    child: Container(
+                                      color: Colors.black54,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 4,
+                                        vertical: 2,
+                                      ),
+                                      child: Text(
+                                        timeLabel(Duration(seconds: v.seconds)),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  if (selecting)
+                                    Positioned(
+                                      left: 6,
+                                      top: 6,
+                                      child: CircleAvatar(
+                                        radius: 12,
+                                        backgroundColor: selected.contains(v.id)
+                                            ? Paper.olive
+                                            : Paper.background,
+                                        child: Icon(
+                                          selected.contains(v.id)
+                                              ? Icons.check
+                                              : Icons.circle_outlined,
+                                          size: 18,
+                                          color: selected.contains(v.id)
+                                              ? Colors.white
+                                              : Paper.olive,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              v.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Paper.title.copyWith(fontSize: 14),
+                            ),
+                            Text(
+                              '${v.portrait ? '竖版' : '横版'} · ${v.type}',
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: Paper.olive,
+                              ),
+                            ),
+                            Text(
+                              v.tags.map((t) => '# $t').join('   '),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: Paper.olive,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+        ),
+        if (selecting) batchBar(),
+      ],
+    );
+  }
+
+  Widget batchBar() => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+    child: Row(
+      children: [
+        Expanded(
+          child: Text(
+            '已选 ${selected.length}',
+            style: const TextStyle(fontSize: 12, color: Paper.olive),
+          ),
+        ),
+        TextButton(
+          onPressed: busy || selected.isEmpty ? null : () => tag(selected),
+          child: const Text('打标签'),
+        ),
+        TextButton(
+          onPressed: busy || selected.isEmpty ? null : () => remove(selected),
+          style: TextButton.styleFrom(foregroundColor: Paper.danger),
+          child: const Text('移入回收站'),
+        ),
+      ],
+    ),
+  );
+  Widget tags() => Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: '搜索标签',
+                  prefixIcon: Icon(Icons.search),
+                ),
+                onChanged: (v) => setState(() => tagSearch = v),
+              ),
+            ),
+            const SizedBox(width: 8),
+            TextButton(
+              onPressed: busy ? null : () => tagForm(),
+              child: const Text('新建标签'),
+            ),
+          ],
+        ),
+      ),
+      Expanded(
+        child: data.tags.isEmpty
+            ? const EmptyView('还没有标签')
+            : ListView(
+                children: data.tags
+                    .where((t) => t.contains(tagSearch))
+                    .map(
+                      (t) => ListTile(
+                        leading: const Text(
+                          '#',
+                          style: TextStyle(color: Paper.olive, fontSize: 19),
+                        ),
+                        title: Text(
+                          t,
+                          style: Paper.title.copyWith(fontSize: 17),
+                        ),
+                        subtitle: Text(
+                          '${data.videos.where((v) => v.status != VideoStatus.trash && v.tags.contains(t)).length} 个视频',
+                        ),
+                        onTap: busy
+                            ? null
+                            : () async {
+                                if (await perform(
+                                  () =>
+                                      repo.setScope(data.query.copy(tags: {t})),
+                                )) {
+                                  go('library');
+                                }
+                              },
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            iconAction(
+                              '重命名标签 $t',
+                              Icons.edit_outlined,
+                              () => tagForm(t),
+                            ),
+                            iconAction('删除标签 $t', Icons.close, () async {
+                              if (await confirm(
+                                '删除这个标签？',
+                                '将解除「$t」与视频的关联，不会删除视频。',
+                                '删除标签',
+                              )) {
+                                await perform(
+                                  () => repo.editTag(original: t, delete: true),
+                                );
+                              }
+                            }),
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+      ),
+    ],
+  );
+  Future<void> tagForm([String? original]) async {
+    final input = TextEditingController(text: original ?? '');
+    String formError = '';
+    bool saving = false;
+    await sheet<void>(
+      StatefulBuilder(
+        builder: (context, local) => SheetFrame(
+          title: original == null ? '新建标签' : '重命名标签',
+          children: [
+            const SizedBox(height: 12),
+            TextField(
+              key: const Key('tag-name'),
+              controller: input,
+              autofocus: true,
+              maxLength: 40,
+              decoration: const InputDecoration(labelText: '标签名称'),
+            ),
+            if (formError.isNotEmpty) note(formError),
+            FilledButton(
+              onPressed: saving
+                  ? null
+                  : () async {
+                      local(() {
+                        saving = true;
+                        formError = '';
+                      });
+                      try {
+                        await repo.editTag(
+                          original: original,
+                          name: input.text,
+                        );
+                        if (context.mounted) Navigator.pop(context);
+                      } catch (e) {
+                        if (context.mounted) {
+                          local(() => formError = e.toString());
+                        }
+                      } finally {
+                        if (context.mounted) local(() => saving = false);
+                      }
+                    },
+              child: const Text('保存'),
+            ),
+          ],
+        ),
+      ),
+    );
+    input.dispose();
+  }
+
+  Widget settingRow(
+    IconData icon,
+    String title,
+    String subtitle,
+    VoidCallback action,
+  ) => Column(
+    children: [
+      ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: Icon(icon),
+        title: Text(title, style: const TextStyle(fontSize: 15)),
+        subtitle: subtitle.isEmpty
+            ? null
+            : Text(
+                subtitle,
+                style: const TextStyle(fontSize: 12, color: Paper.olive),
+              ),
+        trailing: const Icon(Icons.chevron_right, size: 19),
+        onTap: busy ? null : action,
+      ),
+      const Divider(height: 1),
+    ],
+  );
+  Widget settings() => ListView(
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    children: [
+      note('连接与文件'),
+      settingRow(
+        Icons.link,
+        '服务连接',
+        '${data.address}:${data.port}',
+        () => go('connection'),
+      ),
+      settingRow(
+        Icons.folder_outlined,
+        '媒体目录',
+        '${data.roots.length} 个目录 · ${data.videos.where((v) => v.status == VideoStatus.missing).length} 个缺失视频',
+        () => go('roots'),
+      ),
+      const SizedBox(height: 14),
+      note('数据维护'),
+      settingRow(
+        Icons.delete_outline,
+        '回收站',
+        '${data.videos.where((v) => v.status == VideoStatus.trash).length} 个视频 · 不会自动清空',
+        () => go('trash'),
+      ),
+      settingRow(Icons.save_outlined, '备份与恢复', '导出标签和管理记录', () => go('backup')),
+      const SizedBox(height: 14),
+      note('偏好'),
+      settingRow(
+        Icons.shuffle,
+        '播放顺序',
+        data.order == PlayOrder.random ? '随机播放' : '顺序播放',
+        order,
+      ),
+      if (kDebugMode && repo is DemoControls) ...[
+        const SizedBox(height: 26),
+        note('开发工具'),
+        settingRow(
+          Icons.science_outlined,
+          '演示场景',
+          '复位演示数据并切换可重复的状态',
+          scenarios,
+        ),
+      ],
+    ],
+  );
+  Widget connection() => ListView(
+    padding: const EdgeInsets.all(20),
+    children: [
+      Text('连接你的视频库', style: Paper.title),
+      const SizedBox(height: 26),
+      TextField(
+        controller: address,
+        decoration: const InputDecoration(labelText: '服务地址'),
+      ),
+      const SizedBox(height: 20),
+      TextField(
+        controller: port,
+        keyboardType: TextInputType.number,
+        decoration: const InputDecoration(labelText: '端口'),
+      ),
+      const SizedBox(height: 20),
+      TextField(
+        controller: passphrase,
+        obscureText: true,
+        decoration: const InputDecoration(labelText: '个人口令'),
+      ),
+      const SizedBox(height: 26),
+      FilledButton(
+        onPressed: busy
+            ? null
+            : () async {
+                if (await perform(
+                  () => repo.connect(
+                    address.text,
+                    int.tryParse(port.text) ?? 0,
+                    passphrase.text,
+                  ),
+                )) {
+                  go('browse');
+                }
+              },
+        child: Text(busy ? '正在连接…' : '连接'),
+      ),
+    ],
+  );
+  Widget roots() => ListView(
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    children: [
+      Row(
+        children: [
+          Expanded(child: note('扫描包含子目录')),
+          TextButton(
+            onPressed: busy ? null : () => rootForm(),
+            child: const Text('添加目录'),
+          ),
+        ],
+      ),
+      for (final r in data.roots)
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: const Icon(Icons.folder_outlined),
+          title: Text(r.name),
+          subtitle: Text(
+            '${r.path}\n${r.available ? '可访问 · ${r.lastScan}' : '目录暂不可用'}',
+            style: TextStyle(
+              fontSize: 12,
+              color: r.available ? Paper.olive : Paper.danger,
+            ),
+          ),
+          trailing: iconAction(
+            '编辑目录 ${r.name}',
+            Icons.edit_outlined,
+            busy ? null : () => rootForm(r),
+          ),
+        ),
+      const SizedBox(height: 20),
+      OutlinedButton(
+        onPressed: busy
+            ? null
+            : () async {
+                if (await perform(repo.refresh)) notice('刷新完成，新增内容将在下一轮播放');
+              },
+        child: actionLabel(Icons.refresh, '刷新媒体目录'),
+      ),
+      if (data.videos.any((v) => v.status == VideoStatus.missing)) ...[
+        const SizedBox(height: 30),
+        Text('缺失视频', style: Paper.title.copyWith(fontSize: 20)),
+        note('保留标签记录，重新找到同一文件后继续关联。'),
+        for (final v in data.videos.where(
+          (v) => v.status == VideoStatus.missing,
+        ))
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(v.name),
+            subtitle: Text(
+              '${v.path}\n${v.tags.join(' · ')}',
+              style: const TextStyle(fontSize: 12),
+            ),
+            trailing: const Text('缺失', style: TextStyle(color: Paper.danger)),
+          ),
+      ],
+      const SizedBox(height: 20),
+    ],
+  );
+  Future<void> rootForm([MediaRoot? root]) async {
+    final name = TextEditingController(text: root?.name ?? ''),
+        path = TextEditingController(text: root?.path ?? '');
+    String formError = '';
+    bool saving = false;
+    await sheet<void>(
+      StatefulBuilder(
+        builder: (context, local) => SheetFrame(
+          title: root == null ? '添加媒体目录' : '编辑媒体目录',
+          children: [
+            const SizedBox(height: 12),
+            TextField(
+              controller: name,
+              decoration: const InputDecoration(labelText: '名称'),
+            ),
+            const SizedBox(height: 18),
+            TextField(
+              controller: path,
+              decoration: const InputDecoration(labelText: '挂载目录'),
+            ),
+            note('扫描包含子目录，不修改源文件位置。'),
+            if (formError.isNotEmpty) note(formError),
+            FilledButton(
+              onPressed: saving
+                  ? null
+                  : () async {
+                      local(() => saving = true);
+                      try {
+                        await repo.saveRoot(
+                          MediaRoot(
+                            root?.id ??
+                                'r${DateTime.now().microsecondsSinceEpoch}',
+                            name.text.trim(),
+                            path.text.trim().replaceAll(RegExp(r'/+$'), ''),
+                          ),
+                        );
+                        if (context.mounted) Navigator.pop(context);
+                      } catch (e) {
+                        if (context.mounted) {
+                          local(() => formError = e.toString());
+                        }
+                      } finally {
+                        if (context.mounted) local(() => saving = false);
+                      }
+                    },
+              child: const Text('保存'),
+            ),
+          ],
+        ),
+      ),
+    );
+    name.dispose();
+    path.dispose();
+  }
+
+  Widget trash() {
+    final items = data.videos
+        .where((v) => v.status == VideoStatus.trash)
+        .toList();
+    if (items.isEmpty) return const EmptyView('回收站是空的');
+    return Column(
+      children: [
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              note('不会自动清空；恢复时保留原有标签。'),
+              for (final v in items)
+                CheckboxListTile(
+                  contentPadding: EdgeInsets.zero,
+                  value: selected.contains(v.id),
+                  title: Text(v.name),
+                  subtitle: Text(
+                    v.originalPath ?? v.path,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  onChanged: busy
+                      ? null
+                      : (yes) => setState(
+                          () =>
+                              yes! ? selected.add(v.id) : selected.remove(v.id),
+                        ),
+                ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Expanded(child: Text('已选 ${selected.length}')),
+              OutlinedButton(
+                onPressed: busy || selected.isEmpty
+                    ? null
+                    : () async {
+                        List<String> failures = [];
+                        if (await perform(() async {
+                          failures = await repo.restoreVideos({...selected});
+                        })) {
+                          setState(() {
+                            selected = {};
+                            error = failures.join('\n');
+                          });
+                          if (failures.isEmpty) notice('已恢复，标签保留');
+                        }
+                      },
+                child: const Text('恢复'),
+              ),
+              const SizedBox(width: 8),
+              TextButton(
+                onPressed: busy || selected.isEmpty
+                    ? null
+                    : () async {
+                        final ids = {...selected};
+                        if (await confirm(
+                          '永久删除这些视频？',
+                          '将永久删除所选 ${ids.length} 个视频，无法撤销。',
+                          '永久删除',
+                        )) {
+                          if (await perform(
+                            () => repo.permanentlyDelete(ids),
+                          )) {
+                            setState(() => selected = {});
+                            notice('已永久删除');
+                          }
+                        }
+                      },
+                style: TextButton.styleFrom(foregroundColor: Paper.danger),
+                child: const Text('永久删除'),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget backup() => ListView(
+    padding: const EdgeInsets.all(20),
+    children: [
+      Text('保存你的整理成果', style: Paper.title.copyWith(fontSize: 21)),
+      note('备份标签、视频关联、媒体目录映射、回收站索引和播放轮次，不包含原视频及访问口令。'),
+      const SizedBox(height: 14),
+      FilledButton(
+        onPressed: busy
+            ? null
+            : () async {
+                bool saved = false;
+                if (await perform(
+                      () async => saved = await files.save(repo.exportBackup()),
+                    ) &&
+                    saved) {
+                  notice('已导出管理数据备份');
+                }
+              },
+        child: const Text('导出备份'),
+      ),
+      const SizedBox(height: 12),
+      OutlinedButton(
+        onPressed: busy
+            ? null
+            : () async {
+                String? text;
+                if (await perform(() async {
+                      text = await files.open();
+                      if (text != null) repo.inspectBackup(text!);
+                    }) &&
+                    text != null) {
+                  await restoreForm(text!);
+                }
+              },
+        child: const Text('选择备份文件'),
+      ),
+      const SizedBox(height: 18),
+      note('完整恢复会替换现有管理数据。已永久删除的视频不会从备份中恢复，也不会回滚磁盘上的文件移动。恢复前会保留当前数据快照。'),
+    ],
+  );
+  Future<void> restoreForm(String text) async {
+    final preview = repo.inspectBackup(text);
+    final mappings = {for (final r in preview.snapshot.roots) r.id: r.path};
+    bool checked = false, restoring = false;
+    String formError = '';
+    await sheet<void>(
+      StatefulBuilder(
+        builder: (context, local) => SheetFrame(
+          title: '恢复备份',
+          children: [
+            note('校验通过。请核对媒体目录映射，恢复前将保留当前数据快照。'),
+            for (final r in preview.snapshot.roots)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: TextFormField(
+                  initialValue: r.path,
+                  decoration: InputDecoration(labelText: r.path),
+                  onChanged: (v) => mappings[r.id] = v,
+                ),
+              ),
+            CheckboxListTile(
+              contentPadding: EdgeInsets.zero,
+              value: checked,
+              onChanged: restoring ? null : (v) => local(() => checked = v!),
+              title: const Text(
+                '我知道恢复会替换现有管理数据',
+                style: TextStyle(fontSize: 13),
+              ),
+            ),
+            if (formError.isNotEmpty) note(formError),
+            FilledButton(
+              onPressed: restoring
+                  ? null
+                  : () async {
+                      if (!checked) {
+                        local(() => formError = '请确认替换现有管理数据');
+                        return;
+                      }
+                      local(() {
+                        restoring = true;
+                        formError = '';
+                      });
+                      try {
+                        await repo.restoreBackup(text, mappings);
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                          notice('管理数据已恢复');
+                        }
+                      } catch (e) {
+                        if (context.mounted) {
+                          local(() => formError = e.toString());
+                        }
+                      } finally {
+                        if (context.mounted) local(() => restoring = false);
+                      }
+                    },
+              child: Text(restoring ? '正在恢复…' : '恢复管理数据'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> scenarios() async {
+    final controls = repo is DemoControls ? repo as DemoControls : null;
+    if (controls == null) return;
+    final chosen = await sheet<DemoScenario>(
+      SheetFrame(
+        title: '演示场景',
+        children: [
+          note('切换会复位本 App 的演示数据，不会读写 NAS。'),
+          for (final entry in <DemoScenario, String>{
+            DemoScenario.normal: '正常 / 复位',
+            DemoScenario.empty: '空视频库',
+            DemoScenario.offline: '服务不可达',
+            DemoScenario.unavailable: '媒体目录不可用',
+            DemoScenario.writeFailure: '文件操作失败',
+            DemoScenario.storageFailure: '保存失败',
+            DemoScenario.conflict: '恢复同名冲突',
+            DemoScenario.changedFiles: '外部改名、移动与找回',
+            DemoScenario.identityConflict: '同路径替换与重复副本',
+          }.entries)
+            ListTile(
+              title: Text(entry.value),
+              onTap: () => Navigator.pop(context, entry.key),
+            ),
+        ],
+      ),
+    );
+    if (chosen != null &&
+        await perform(() => controls.reset(scenario: chosen))) {
+      setState(() {
+        review = false;
+        selected = {};
+        search = '';
+        error = '';
+        playerEpoch++;
+        page = chosen == DemoScenario.offline ? 'connection' : 'browse';
+      });
+      notice('演示数据已复位');
+    }
+  }
+}

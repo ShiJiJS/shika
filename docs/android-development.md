@@ -1,6 +1,6 @@
 # Android 开发与模拟器
 
-本项目暂定 Flutter，Android 为第一版开发与验收平台。当前 App 是 Flutter 工具链验证用的计数器脚手架，视频库业务尚未实现。
+本项目暂定 Flutter，Android 为第一版开发与验收平台。P2 原型已确认，当前 App 为可在模拟器试用的 Flutter 客户端演示版，使用演示数据和真实测试短视频，NAS 服务尚未接入。
 
 ## 本机配置
 
@@ -57,12 +57,12 @@ cd C:\Project\video_viewer\apps\mobile
 flutter doctor -v
 flutter devices
 flutter analyze
-flutter test test/widget_test.dart
-flutter test integration_test/environment_smoke_test.dart -d emulator-5554
+flutter test test/library_flow_test.dart test/connection_widget_test.dart
+flutter test integration_test/client_demo_test.dart -d emulator-5554
 flutter run -d emulator-5554
 ```
 
-`environment_smoke_test` 会实际构建 Android App、安装到模拟器、启动界面并点击计数器，验证计数从 0 变成 1。这个测试只验证开发环境，后续功能实现时应替换或扩充为真实用户流程。
+`client_demo_test` 会构建、安装客户端到模拟器，验证真实播放/全屏、标签与目录组合、快速整理删除撤销、备份恢复及失败状态；使用隔离的演示数据目录。它已经替换最初的计数器环境冒烟测试，不能代替真实 NAS 服务验收。
 
 `flutter run` 中按 `r` 热重载、按 `R` 热重启，按 `q` 结束调试。也可以在 VS Code 中使用对应调试按钮。
 
@@ -73,6 +73,8 @@ Android 模拟器访问 Windows 开发服务时通常使用 `10.0.2.2`。未来�
 首次 Android 构建需要下载 Gradle、Android 插件、Flutter 引擎产物及对应的 NDK 等依赖，会比后续构建慢。管理用 SDK、AVD 和依赖缓存不提交 Git。
 
 本次发现 Command-line Tools 23.0 的兼容包装器会把 Flutter 使用的带分号包名拆开，导致自动安装 NDK 失败。因此 `latest` 使用兼容的 19.0，23.0 保留备用；不要在未验证前直接覆盖 `latest`。旧工具读取新版 SDK 元数据时可能提示 XML 版本警告，这与 NDK 安装失败是不同问题；已安装包应通过实际构建验证。
+
+客户端插件首次构建按依赖安装了 Android API 35 和 CMake 3.22.1；API 36 模拟器继续沿用，无需重新配置。
 
 本机自动图形模式出现过 `Failed to import external memory object`、OpenGL 纹理错误和快照恢复失败。因此启动脚本固定 `-gpu software -feature -Vulkan -no-snapshot`，并将此 AVD 设为软件图形和冷启动。相较快照恢复，启动需要完整等待 Android 引导；软件渲染也不适合用来评估真实手机图形性能。
 

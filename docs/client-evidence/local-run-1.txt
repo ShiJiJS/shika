@@ -1,0 +1,10 @@
+00:00 +0: loading C:/Project/video_viewer/apps/mobile/test/library_flow_test.dart
+00:00 +0: C:/Project/video_viewer/apps/mobile/test/library_flow_test.dart: directory/tag intersection, batch tags and round survive reopening
+00:00 +1: C:/Project/video_viewer/apps/mobile/test/library_flow_test.dart: delete is idempotent; undo restores exact item, tags, path and round
+00:00 +2: C:/Project/video_viewer/apps/mobile/test/library_flow_test.dart: renaming tags preserves associations; deleting an active tag restarts the wider scope
+00:00 +3: C:/Project/video_viewer/apps/mobile/test/library_flow_test.dart: failed delete and failed save retain position and metadata
+00:00 +4: C:/Project/video_viewer/apps/mobile/test/library_flow_test.dart: backup round-trip validates before replace, remaps metadata and excludes secrets
+00:00 +5: C:/Project/video_viewer/apps/mobile/test/connection_widget_test.dart: connection input errors retain the entered values
+00:00 +6: C:/Project/video_viewer/apps/mobile/test/connection_widget_test.dart: connection input errors retain the entered values
+00:00 +7: C:/Project/video_viewer/apps/mobile/test/connection_widget_test.dart: connection input errors retain the entered values
+00:00 +8: All tests passed!

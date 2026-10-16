@@ -2,7 +2,7 @@
 
 部署在 NAS 上的私人短视频库，配套 Android 优先的跨平台 App，用于随机浏览、标签筛选与快速整理。
 
-当前已初始化 Flutter Android 环境验证脚手架，并提供 [B 风格 HTML 交互原型](prototypes/p2/README.md)。真实客户端与 NAS 服务业务尚未实现。交付顺序为原型试用确认 → Flutter 客户端演示版 → 服务端 → 联调验收。
+P2 HTML 原型已获用户确认。当前提供 [Flutter Android 客户端演示版](apps/mobile/README.md)，沿用 B 风格，使用可替换的演示数据提供方并实际播放测试视频；NAS 服务尚未实现。当前处于客户端整体试用阶段，确认后再进入服务端和真实联调。
 
 ## 第一版范围
 
@@ -16,6 +16,10 @@
 按标签一键调整文件夹留待后续，规则未定，不设独立归档分类。图包、AI 打标、外网、多用户及离线缓存也不进入第一版。
 
 ## 项目文档
+
+- [Flutter 客户端演示：运行、试用与复位](apps/mobile/README.md)
+- [客户端数据接口与阶段边界](docs/client-data-contract.md)
+- [客户端验证和模拟器画面](docs/client-validation.md)
 
 - [P2 HTML 原型：启动、试用路径与验证记录](prototypes/p2/README.md)
 - [当前 UI 设计基线](prototypes/p2/DESIGN.md)
