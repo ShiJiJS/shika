@@ -30,7 +30,7 @@ wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker version
 wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose version
 ```
 
-服务端框架、数据库、镜像依赖与正式 Compose 文件在 S1 中选择并实现。WSL 中没有预装 Node.js 或 FFmpeg，不影响当前环境检查；需要的服务运行依赖随服务端镜像配置。
+用户已确认服务端使用 Python / FastAPI / Uvicorn、SQLite / SQLAlchemy / Alembic、FFmpeg / ffprobe；后台任务状态持久化，使用受控的服务内执行器。技术与联调计划见 [服务端方案](server-plan.md)。S1 负责锁定依赖版本、建立镜像和正式 Compose 文件，并实现首批真实 API。WSL 中没有预装 FFmpeg，不影响当前环境检查；所需运行依赖随服务镜像配置。
 
 ## 容器、目录和连接实测
 
