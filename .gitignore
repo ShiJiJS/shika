@@ -1,0 +1,19 @@
+# Local credentials and configuration
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Runtime data and personal media
+/data/
+/media/
+/test-media/
+/backups/
+/tmp/
+*.log
+
+# Local editor and OS files
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
