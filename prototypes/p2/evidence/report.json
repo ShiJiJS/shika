@@ -1,0 +1,176 @@
+[
+  {
+    "file": "page.png",
+    "state": null,
+    "size": "390x844",
+    "zoom": 1,
+    "animationWaitMs": 0,
+    "issues": [],
+    "lint": []
+  },
+  {
+    "file": "page-@2x.png",
+    "state": null,
+    "size": "390x844",
+    "zoom": 2,
+    "animationWaitMs": 0,
+    "issues": [],
+    "lint": []
+  },
+  {
+    "file": "motion-probe-folders",
+    "state": null,
+    "size": "390x844",
+    "zoom": 1,
+    "group": "folders",
+    "motion": {
+      "load": {
+        "elements": 2,
+        "loops": 0,
+        "maxMove": 22,
+        "maxSize": 0,
+        "maxOpacity": 0.43,
+        "top": [
+          {
+            "el": "div.nav-selected",
+            "move": 22,
+            "size": 0,
+            "opacity": 0,
+            "loop": false,
+            "sources": [
+              "js:style",
+              "transition:left"
+            ]
+          },
+          {
+            "el": "div.app",
+            "move": 0,
+            "size": 0,
+            "opacity": 0.43,
+            "loop": false,
+            "sources": [
+              "css:enter"
+            ]
+          }
+        ]
+      },
+      "steps": {
+        "elements": 1,
+        "loops": 0,
+        "maxMove": 25,
+        "maxSize": 0,
+        "maxOpacity": 1,
+        "top": [
+          {
+            "el": "section.sheet",
+            "move": 25,
+            "size": 0,
+            "opacity": 1,
+            "loop": false,
+            "sources": [
+              "js:style",
+              "transition:transform",
+              "transition:opacity"
+            ]
+          }
+        ]
+      },
+      "hero": {
+        "elements": 0,
+        "loops": 0,
+        "maxMove": 0,
+        "maxSize": 0,
+        "maxOpacity": 0,
+        "top": [],
+        "layers": 0
+      },
+      "scroll": {
+        "elements": 0,
+        "loops": 0,
+        "maxMove": 0,
+        "maxSize": 0,
+        "maxOpacity": 0,
+        "top": [],
+        "scrollable": false
+      }
+    },
+    "issues": []
+  },
+  {
+    "file": "motion-entry-end.jpg",
+    "state": null,
+    "size": "390x844",
+    "zoom": 1,
+    "group": "entry",
+    "issues": [],
+    "frames": {
+      "start": {
+        "file": "motion-entry-start.jpg",
+        "source": "Page.screencastFrame",
+        "timeMs": 102
+      },
+      "mid": {
+        "file": "motion-entry-mid.jpg",
+        "source": "Page.screencastFrame",
+        "timeMs": 206
+      },
+      "end": {
+        "file": "motion-entry-end.jpg",
+        "source": "Page.captureScreenshot",
+        "timeMs": 1744
+      }
+    },
+    "sampling": {
+      "mode": "entry"
+    },
+    "durationMs": 1744,
+    "consistency": {
+      "status": "matched",
+      "reference": "motion-entry-end.jpg",
+      "different": false,
+      "changedPixels": 0,
+      "maxTilePixels": 0,
+      "pixelRatio": 0
+    }
+  },
+  {
+    "file": "motion-folders-end.jpg",
+    "state": null,
+    "size": "390x844",
+    "zoom": 1,
+    "group": "folders",
+    "issues": [],
+    "frames": {
+      "start": {
+        "file": "motion-folders-start.jpg",
+        "source": "Page.captureScreenshot",
+        "timeMs": 544
+      },
+      "mid": {
+        "file": "motion-folders-mid.jpg",
+        "source": "Page.screencastFrame",
+        "timeMs": 680
+      },
+      "end": {
+        "file": "motion-folders-end.jpg",
+        "source": "Page.captureScreenshot",
+        "timeMs": 1882
+      }
+    },
+    "sampling": {
+      "mode": "action",
+      "step": 1,
+      "action": "click",
+      "raw": "click [aria-label=\"选择文件夹\"]"
+    },
+    "durationMs": 1882,
+    "consistency": {
+      "status": "matched",
+      "reference": "motion-folders-end.jpg",
+      "different": false,
+      "changedPixels": 0,
+      "maxTilePixels": 0,
+      "pixelRatio": 0
+    }
+  }
+]

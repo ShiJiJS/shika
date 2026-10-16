@@ -1,0 +1,37 @@
+{
+  "testedAt": "2026-10-16T12:13:42.363Z",
+  "checks": [
+    {
+      "name": "folder hierarchy, intersection filtering, order and refresh persistence",
+      "passed": true
+    },
+    {
+      "name": "actual playback, no-repeat round, backtracking, resume and fullscreen",
+      "passed": true
+    },
+    {
+      "name": "tag CRUD, batch append, search and read after refresh",
+      "passed": true
+    },
+    {
+      "name": "delete next, exact undo, recycle restore and permanent-delete confirmation",
+      "passed": true
+    },
+    {
+      "name": "archive preview is inert, execute updates metadata and persists tags",
+      "passed": true
+    },
+    {
+      "name": "backup downloads, invalid imports stay safe, confirmed restore reads back",
+      "passed": true
+    },
+    {
+      "name": "operation failure does not advance or claim success",
+      "passed": true
+    },
+    {
+      "name": "connection error, unavailable root and empty result recovery",
+      "passed": true
+    }
+  ]
+}
