@@ -1044,12 +1044,27 @@ class _LibraryHomeState extends State<LibraryHome> {
               '${bytes(state.bytesProcessed)} / ${bytes(state.bytesTotal)} 已核对',
               style: TextStyle(fontSize: 11, color: p.muted),
             ),
-          if (state.failed > 0 || state.deferred > 0)
+          if (state.failed > 0 ||
+              state.thumbnailFailed > 0 ||
+              state.deferred > 0)
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Text(
-                '${state.failed} 个读取失败 · ${state.deferred} 个等待文件稳定',
+                [
+                  if (state.failed > 0) '${state.failed} 个视频信息读取失败',
+                  if (state.thumbnailFailed > 0)
+                    '${state.thumbnailFailed} 个缩略图待补充（不影响入库）',
+                  if (state.deferred > 0) '${state.deferred} 个等待文件稳定',
+                ].join('\n'),
                 style: TextStyle(fontSize: 11, color: p.muted),
+              ),
+            ),
+          if (state.failureDetail.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                state.failureDetail,
+                style: TextStyle(fontSize: 11, color: p.muted, height: 1.5),
               ),
             ),
           const SizedBox(height: 12),

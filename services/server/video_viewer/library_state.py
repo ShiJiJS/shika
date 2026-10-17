@@ -28,8 +28,15 @@ def library_state(db):
             "phase": task.phase if task else "idle",
             "updated_at": progress.get("updated_at"),
             "progress": progress,
-            "counts": {key: result.get(key, 0) for key in ("imported", "unchanged", "deferred", "failed")},
-            "indexed": session.scalar(select(func.count()).select_from(Video).where(Video.status == "available")),
+            "counts": {
+                key: result.get(key, 0)
+                for key in ("imported", "unchanged", "deferred", "failed", "thumbnail_failed")
+            },
+            "failure_reasons": result.get("failure_reasons", {}),
+            "warning_reasons": result.get("warning_reasons", {}),
+            "indexed": session.scalar(
+                select(func.count()).select_from(Video).where(Video.status == "available")
+            ),
             "roots": [
                 {
                     "id": root.id,

@@ -50,6 +50,31 @@ class PagedLibrary extends DemoLibraryRepository {
 
 void main() {
   testWidgets(
+    'thumbnail warnings are displayed separately from source failures',
+    (t) async {
+      final repo = PagedLibrary();
+      await repo.initialize();
+      final preparation = LibraryPreparation.fromJson({
+        'ready': false,
+        'scanning': true,
+        'phase': 'processing_media',
+        'counts': {'failed': 2, 'thumbnail_failed': 204},
+        'failure_reasons': {'probe_timeout': 2},
+      });
+      repo.libraryPreparation.value = preparation.offline();
+      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pump(const Duration(milliseconds: 200));
+      expect(find.textContaining('2 个视频信息读取失败'), findsOneWidget);
+      expect(find.textContaining('204 个缩略图待补充（不影响入库）'), findsOneWidget);
+      expect(find.text('读取媒体信息超时 2 个'), findsOneWidget);
+      expect(find.text('进度暂未同步，正在重试'), findsOneWidget);
+      expect(t.takeException(), isNull);
+      await t.pumpWidget(const SizedBox());
+      repo.dispose();
+    },
+  );
+
+  testWidgets(
     'preparation blocks the player and updates progress without reloading the grid',
     (t) async {
       final repo = PagedLibrary();

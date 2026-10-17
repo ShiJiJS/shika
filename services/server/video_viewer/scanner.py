@@ -10,7 +10,7 @@ from sqlalchemy import delete, select, update
 from .errors import LibraryError
 from .file_state import path_reserved, reserved_video_ids
 from .identity import publish_discoveries
-from .media import fingerprint, inspect_media
+from .media import MediaInspectionError, fingerprint, inspect_media, make_thumbnail
 from .models import Directory, Observation, Root, Setting, Task, Video
 from .paths import VIDEO_EXTENSIONS, beneath, excluded, open_directory, open_video, signature
 
@@ -103,6 +103,10 @@ class Scanner:
             "unchanged": 0,
             "deferred": 0,
             "failed": 0,
+            "thumbnail_failed": 0,
+            "failure_reasons": {},
+            "warning_reasons": {},
+            "warnings": [],
             "missing": 0,
             "identity_matched": 0,
             "identity_ambiguous": 0,
@@ -193,8 +197,14 @@ class Scanner:
     def scan_root(self, task_id, root, roots, result, *, initial_import=False):
         base = Path(root.path)
         entries = []
-        item = {"id": root.id, "status": "discovering", "discovered": 0, "processed": 0,
-                "bytes_total": 0, "bytes_processed": 0}
+        item = {
+            "id": root.id,
+            "status": "discovering",
+            "discovered": 0,
+            "processed": 0,
+            "bytes_total": 0,
+            "bytes_processed": 0,
+        }
         result["roots"].append(item)
         self.change_task(task_id, phase="discovering", result=result)
         if not root.mount_id:
@@ -253,14 +263,24 @@ class Scanner:
                 StopIteration,
                 LibraryError,
                 subprocess.SubprocessError,
-            ):
+            ) as error:
                 result["failed"] += 1
+                code = (
+                    error.code
+                    if isinstance(error, (MediaInspectionError, LibraryError))
+                    else "file_missing"
+                    if isinstance(error, FileNotFoundError)
+                    else "permission_denied"
+                    if isinstance(error, PermissionError)
+                    else "invalid_metadata"
+                    if isinstance(error, (ValueError, KeyError, StopIteration))
+                    else "media_read_failed"
+                )
+                result["failure_reasons"][code] = result["failure_reasons"].get(code, 0) + 1
                 if len(result["issues"]) < 100:
-                    result["issues"].append(
-                        {"root_id": root.id, "name": path.name, "code": "media_probe_failed"}
-                    )
+                    result["issues"].append({"root_id": root.id, "name": path.name, "code": code})
                 with self.db.write() as session:
-                    self.record_state(session, existing, path, task_id, "media_probe_failed")
+                    self.record_state(session, existing, path, task_id, code)
             item["processed"] += 1
             item["bytes_processed"] += first_signature[2]
             result["progress"]["processed"] += 1
@@ -377,16 +397,15 @@ class Scanner:
                     self.record_state(session, existing, path, task_id, "file_changing")
                 result["deferred"] += 1
                 return
+            cached = existing and current == [
+                existing.device,
+                existing.inode,
+                existing.size,
+                existing.mtime_ns,
+                existing.ctime_ns,
+            ]
             if (
-                existing
-                and current
-                == [
-                    existing.device,
-                    existing.inode,
-                    existing.size,
-                    existing.mtime_ns,
-                    existing.ctime_ns,
-                ]
+                cached
                 and existing.thumbnail
                 and (self.settings.data_dir / "thumbnails" / existing.thumbnail).is_file()
             ):
@@ -394,14 +413,39 @@ class Scanner:
                     self.record_state(session, existing, path, task_id, None)
                 result["unchanged"] += 1
                 return
-            digest, quick = fingerprint(fd, self.stop)
-            media = inspect_media(
-                fd, self.settings.data_dir / "thumbnails", self.settings.probe_timeout
-            )
+            if cached:
+                # Rebuilding a missing optional poster must not hash the whole
+                # unchanged original or probe its already verified metadata again.
+                digest, quick = existing.sha256, existing.quick_hash
+                media = {
+                    key: getattr(existing, key)
+                    for key in (
+                        "duration",
+                        "width",
+                        "height",
+                        "rotation",
+                        "video_codec",
+                        "audio_codec",
+                        "container",
+                    )
+                }
+                try:
+                    media["thumbnail"] = make_thumbnail(
+                        fd, self.settings.data_dir / "thumbnails", self.settings.probe_timeout
+                    )
+                except MediaInspectionError as error:
+                    media.update(thumbnail=None, thumbnail_warning=error.code)
+            else:
+                digest, quick = fingerprint(fd, self.stop)
+                media = inspect_media(
+                    fd, self.settings.data_dir / "thumbnails", self.settings.probe_timeout
+                )
+            warning = media.pop("thumbnail_warning", None)
             thumbnail = media["thumbnail"]
             # Recheck both opened content and current path after expensive work.
             if signature(os.fstat(fd)) != current:
-                (self.settings.data_dir / "thumbnails" / thumbnail).unlink(missing_ok=True)
+                if thumbnail:
+                    (self.settings.data_dir / "thumbnails" / thumbnail).unlink(missing_ok=True)
                 result["deferred"] += 1
                 if existing:
                     with self.db.write() as session:
@@ -409,7 +453,8 @@ class Scanner:
                 return
             with open_video(path, self.settings.mounts) as fresh:
                 if signature(os.fstat(fresh)) != current:
-                    (self.settings.data_dir / "thumbnails" / thumbnail).unlink(missing_ok=True)
+                    if thumbnail:
+                        (self.settings.data_dir / "thumbnails" / thumbnail).unlink(missing_ok=True)
                     raise OSError("file_replaced_during_probe")
         with self.db.write() as session:
             stored = session.get(Video, existing.id) if existing else None
@@ -425,7 +470,8 @@ class Scanner:
                 )
                 or (not existing and concurrent)
             ):
-                (self.settings.data_dir / "thumbnails" / thumbnail).unlink(missing_ok=True)
+                if thumbnail:
+                    (self.settings.data_dir / "thumbnails" / thumbnail).unlink(missing_ok=True)
                 result["deferred"] += 1
                 return
             if stored and stored.sha256 != digest:
@@ -466,7 +512,14 @@ class Scanner:
                     current[4],
                 )
                 stored.seen_scan, stored.error = task_id, None
-            result["imported"] += 1
+            result["unchanged" if cached else "imported"] += 1
+            if warning:
+                result["thumbnail_failed"] += 1
+                result["warning_reasons"][warning] = result["warning_reasons"].get(warning, 0) + 1
+                if len(result["warnings"]) < 100:
+                    result["warnings"].append(
+                        {"root_id": root.id, "name": path.name, "code": warning}
+                    )
 
     def close(self):
         self.stop.set()

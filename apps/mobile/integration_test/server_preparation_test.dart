@@ -17,7 +17,9 @@ void main() {
   testWidgets(
     'preparation gates native playback, synchronizes progress, and paginates automatically',
     (t) async {
-      await fixture('/__fixture/actions/prepare-library');
+      final preparationFixture = await fixture(
+        '/__fixture/actions/prepare-library',
+      );
       final repo = ServerLibraryRepository(MemoryCredentialStore(), port: 8761);
       final preferences = UiPreferences(preloadAdjacent: false);
       final ui = ServerUi(t, repo);
@@ -45,6 +47,11 @@ void main() {
         'first scan readiness synchronizes',
       );
       expect(repo.libraryPreparation.value.processed, 27);
+      expect(repo.libraryPreparation.value.failed, 0);
+      expect(repo.libraryPreparation.value.thumbnailFailed, 1);
+      expect(find.textContaining('1 个缩略图待补充（不影响入库）'), findsOneWidget);
+      await fixture('/__fixture/checkpoint/roots');
+      await t.runAsync(() => Future<void>.delayed(const Duration(seconds: 1)));
       await ui.tap(find.byTooltip('返回设置'));
       await ui.nav('library');
       expect(find.text('27 个视频'), findsOneWidget);
@@ -78,6 +85,7 @@ void main() {
       );
       expect(pages.length, 1);
       await fixture('/__fixture/actions/busy-streams');
+      await repo.openVideo(preparationFixture['warning_video_id'] as String);
       await ui.nav('browse');
       await ui.ready();
       expect(

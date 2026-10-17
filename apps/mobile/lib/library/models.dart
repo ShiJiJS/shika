@@ -407,6 +407,8 @@ class LibraryPreparation {
     this.bytesTotal = 0,
     this.bytesProcessed = 0,
     this.failed = 0,
+    this.thumbnailFailed = 0,
+    this.failureReasons = const {},
     this.deferred = 0,
     this.roots = const {},
     this.syncError,
@@ -415,6 +417,8 @@ class LibraryPreparation {
   final String phase, status;
   final String? taskId, syncError;
   final int discovered, processed, bytesTotal, bytesProcessed, failed, deferred;
+  final int thumbnailFailed;
+  final Map<String, int> failureReasons;
   final Map<String, Map<String, dynamic>> roots;
   factory LibraryPreparation.fromJson(
     Map<String, dynamic> data, {
@@ -433,6 +437,11 @@ class LibraryPreparation {
       bytesTotal: (progress['bytes_total'] as num?)?.toInt() ?? 0,
       bytesProcessed: (progress['bytes_processed'] as num?)?.toInt() ?? 0,
       failed: (counts['failed'] as num?)?.toInt() ?? 0,
+      thumbnailFailed: (counts['thumbnail_failed'] as num?)?.toInt() ?? 0,
+      failureReasons: {
+        for (final entry in (data['failure_reasons'] as Map? ?? {}).entries)
+          entry.key as String: (entry.value as num).toInt(),
+      },
       deferred: (counts['deferred'] as num?)?.toInt() ?? 0,
       roots: {
         for (final root in data['roots'] as List? ?? [])
@@ -451,6 +460,8 @@ class LibraryPreparation {
     bytesTotal: bytesTotal,
     bytesProcessed: bytesProcessed,
     failed: failed,
+    thumbnailFailed: thumbnailFailed,
+    failureReasons: failureReasons,
     deferred: deferred,
     roots: roots,
     syncError: '进度暂未同步，正在重试',
@@ -472,4 +483,21 @@ class LibraryPreparation {
                 ? ' · 已发现 $discovered 个'
                 : ' · $processed / $discovered 个'
           : ''}';
+  String get failureDetail => failureReasons.entries
+      .map((entry) {
+        final label = switch (entry.key) {
+          'probe_timeout' => '读取媒体信息超时',
+          'probe_failed' => '媒体信息无法解析',
+          'probe_unavailable' => '探测工具不可用',
+          'no_video_stream' => '未找到视频轨道',
+          'invalid_duration' ||
+          'invalid_dimensions' ||
+          'invalid_metadata' => '媒体信息不完整',
+          'file_missing' => '文件已移走',
+          'permission_denied' => '读取权限不足',
+          _ => '其他读取问题',
+        };
+        return '$label ${entry.value} 个';
+      })
+      .join(' · ');
 }

@@ -142,7 +142,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             app.state.files.close()
             db.close()
 
-    app = FastAPI(title="Video Viewer", version="0.1.1", lifespan=lifespan)
+    app = FastAPI(title="Video Viewer", version="0.1.2", lifespan=lifespan)
 
     @app.exception_handler(LibraryError)
     async def library_error(_request, error):

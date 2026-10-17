@@ -10,10 +10,14 @@ from pathlib import Path
 
 from fastapi import Header, HTTPException
 from fastapi.responses import JSONResponse
+from sqlalchemy import select
 
+from video_viewer import scanner as scan_module
 from video_viewer.app import create_app
 from video_viewer.config import Settings
 from video_viewer.file_transfer import rename_new
+from video_viewer.media import MediaInspectionError
+from video_viewer.models import Root, Video
 
 from .generate_media import encode, generate
 
@@ -220,12 +224,20 @@ def create_e2e_app():
                 moved.append({"from": str(source), "to": str(destination)})
             details["moved"] = moved
         elif action == "prepare-library":
-            from sqlalchemy import select
-
-            from video_viewer.models import Root
             with app.state.db.write() as session:
                 for root in session.scalars(select(Root)):
                     root.last_scan = None
+                video = session.scalar(select(Video).where(Video.status == 'available').order_by(Video.path).limit(1))
+                if video:
+                    if video.thumbnail:
+                        (settings.data_dir / 'thumbnails' / video.thumbnail).unlink(missing_ok=True)
+                    video.thumbnail = None
+                    details['warning_video_id'] = video.id
+            original_thumbnail = scan_module.make_thumbnail
+            def optional_poster_failure(*args):
+                scan_module.make_thumbnail = original_thumbnail
+                raise MediaInspectionError('thumbnail_timeout')
+            scan_module.make_thumbnail = optional_poster_failure
             scanner = app.state.scanner
             original = scanner.check_stop
             deadline = time.monotonic() + 15
