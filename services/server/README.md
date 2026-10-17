@@ -25,7 +25,7 @@ wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose stop
 wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose up -d --force-recreate
 ```
 
-这些命令保留数据和测试媒体。业务数据在 `library.sqlite3`，版本由 Alembic 管理；当前使用 SQLite 默认回滚日志及短事务串行写入，WAL 尚未启用。依赖与镜像基础摘要已锁定，FFmpeg 版本在 Dockerfile 中固定。
+这些命令保留数据和测试媒体。业务数据在 `library.sqlite3`，版本由 Alembic 管理；使用 SQLite WAL、FULL 同步、1000 页自动检查点及短事务串行写入，让后台扫描不阻塞普通读取。管理目录必须位于支持 WAL 的本地文件系统，运行中不能只复制数据库主文件而忽略 WAL；使用 App 逻辑备份或停机完整备份。依赖与镜像基础摘要已锁定，FFmpeg 版本在 Dockerfile 中固定。
 
 ## 媒体目录配置
 

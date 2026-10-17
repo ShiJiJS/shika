@@ -25,10 +25,14 @@ class Database:
         def configure(connection, _record):
             connection.execute("PRAGMA foreign_keys=ON")
             connection.execute("PRAGMA busy_timeout=15000")
-            # Short serialized writes with the default rollback journal. WAL is
-            # unnecessary for the initial single-user service and needs separate
-            # runtime/checkpoint/version validation before enabling it.
-            connection.execute("PRAGMA journal_mode=DELETE")
+            # Keep reads responsive while a large NAS library is discovered.
+            # FULL preserves durable command intent before physical file work.
+            # Autocheckpoint bounds ordinary WAL growth; readers are short-lived.
+            mode = connection.execute("PRAGMA journal_mode=WAL").fetchone()[0]
+            if mode.lower() != "wal":
+                raise RuntimeError("Management data requires a local filesystem supporting WAL")
+            connection.execute("PRAGMA synchronous=FULL")
+            connection.execute("PRAGMA wal_autocheckpoint=1000")
 
     def migrate(self):
         source = Path(__file__).resolve().parent.parent
