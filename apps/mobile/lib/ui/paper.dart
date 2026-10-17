@@ -159,7 +159,11 @@ class EmptyView extends StatelessWidget {
   );
 }
 
-Future<T?> paperSheet<T>(BuildContext context, Widget child) async {
+Future<T?> paperSheet<T>(
+  BuildContext context,
+  Widget child, {
+  bool dismissible = true,
+}) async {
   final navigator = Navigator.of(context);
   final route = ModalBottomSheetRoute<T>(
     capturedThemes: InheritedTheme.capture(
@@ -168,6 +172,8 @@ Future<T?> paperSheet<T>(BuildContext context, Widget child) async {
     ),
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
     isScrollControlled: true,
+    isDismissible: dismissible,
+    enableDrag: dismissible,
     useSafeArea: true,
     sheetAnimationStyle: const AnimationStyle(
       duration: Duration(milliseconds: 240),
@@ -184,9 +190,15 @@ Future<T?> paperSheet<T>(BuildContext context, Widget child) async {
 }
 
 class SheetFrame extends StatelessWidget {
-  const SheetFrame({super.key, required this.title, required this.children});
+  const SheetFrame({
+    super.key,
+    required this.title,
+    required this.children,
+    this.closeEnabled = true,
+  });
   final String title;
   final List<Widget> children;
+  final bool closeEnabled;
   @override
   Widget build(BuildContext context) => ConstrainedBox(
     constraints: BoxConstraints(
@@ -207,7 +219,11 @@ class SheetFrame extends StatelessWidget {
                     style: Paper.of(context).title.copyWith(fontSize: 21),
                   ),
                 ),
-                iconAction('关闭面板', Icons.close, () => Navigator.pop(context)),
+                iconAction(
+                  '关闭面板',
+                  Icons.close,
+                  closeEnabled ? () => Navigator.pop(context) : null,
+                ),
               ],
             ),
             Flexible(

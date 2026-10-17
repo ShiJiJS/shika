@@ -1,6 +1,6 @@
 # Flutter 与真实服务联调
 
-服务端 S1–S6 已通过 WSL Docker 验证。I1–I5 真实连接、播放、标签、文件操作和外部变化已完成，接下来推进 I6 备份恢复。这里仅登记实际验证结果；完整 NAS 和目标手机验收属于 V1。
+服务端 S1–S6 和 Flutter I1–I6 已通过 WSL Docker 与 Android 模拟器验证。这里仅登记实际验证结果；完整 NAS、代表性用户媒体和目标设备条件仍属于 V1，不能用本机结果代替。
 
 ## I1：连接、扫描、目录与列表（完成）
 
@@ -95,6 +95,23 @@ Android 16 模拟器完整外部变化流程及另一次进程重开均通过，
 
 每段外部改动都按明确预期核对媒体路径、大小与 SHA-256，包括 25 个移出范围的文件；扫描、目录配置和 App 重开未调整或损坏文件。Flutter 静态分析和完整 43 项单元/界面测试通过，另有 [演示文件状态原生回归](integration-evidence/i5-demo-regression.txt)。这里只使用隔离样本，I6 及实际 NAS/目标手机验收继续单独推进。
 
+## I6：真实备份文件、恢复与新实例（完成）
+
+真实导出、上传校验及完整恢复由独立 `ServerBackups` 模块处理。任务标识和摘要独立持久化，上传/下载限定 32 MiB，下载先核对任务 SHA-256；坏 JSON、演示格式、不兼容版本和完整性错误均不能进入有效恢复。映射界面展示数量及原目录，完整替换须明确勾选。取消选择、预览或保存均不冒充恢复/保存成功。
+
+恢复先保存命令，再提交一次；响应不确定或 App 重开后只查询原任务，不再次提交。处理中和待确认时禁用冲突写入，保留导航、查询和重新连接。任务完成后还须读回权威状态，再清理旧删除/撤销记录和缓存、解除待确认。服务端恢复失败时保持原数据；恢复前快照可读，历史文件操作不重放。
+
+Android 16 模拟器三个独立进程流程均通过，见 [原生完整输出](integration-evidence/i6-android.txt)、[结果及物理事件](integration-evidence/i6-summary.json)、[实际映射确认](integration-evidence/i6-preview.png)、[新实例恢复完成](integration-evidence/i6-fresh-done.png) 和 [再次重开后的映射目录](integration-evidence/i6-recovered.png)：
+
+- 导出实际 Android 文件，核对正式格式、摘要和口令/访问凭据未进入包。改变标签后验证取消导入、坏 JSON、版本和校验错误，以及勾选前不能恢复；取消预览保持现有数据。
+- 在替换事务提交前注入真实服务失败，当前 3 个标签及媒体位置保持不变；重试后在已保存恢复前快照阶段真实停止 Docker。App 保留待确认，写操作禁用，处理中的返回也不会取消替换任务。
+- 强制停止 App 后重新启动，仅查询已接受的恢复；读回原标签、回收站及非零轮次位置，并清理未确认旧删除记录。轨迹中没有再次提交恢复或删除；恢复前快照确实包含替换前新增标签。
+- 取消保存不改动已导出的文件。把测试源目录显式移到新位置，再用空管理目录启动新服务实例；新实例 ID 确实变化，重新连接后显式填写新目录映射，恢复原标签、回收站及轮次。再次强制停止 App 重开，新凭据、映射路径、轮次及备份文件仍在。
+
+27 个实际媒体文件在恢复失败、Docker 重启及新实例恢复前后按预期逐一核对路径、大小与 SHA-256；只有明确的测试夹具外部改址步骤改变路径，恢复本身没有移动视频。旧管理目录另存为可恢复的隔离测试快照，未重置普通 8760 数据或个人收藏。静态分析、[53 项客户端单元/界面测试](integration-evidence/i6-unit.txt) 和 77 项服务端回归通过，另有 [演示模式备份往返回归](integration-evidence/i6-demo-regression.txt)。普通服务 runtime 已更新，新只读查询接口可用；实例及 8 个格式样本保留，未授权备份与媒体返回 401，测试控制路由仍为 404。
+
+文件传递测试通过公开 `BackupFiles` 边界读写实际 Android 应用目录文件；它验证真实文件字节与网络流程，不冒充对所有系统文档提供方的交互验收。系统选择器沿用既有客户端实现，不同手机存储提供方、NAS 和代表性个人媒体仍由 V1 验收。
+
 ## 端到端实例与复现
 
 测试使用 `compose.client-e2e.yaml`，在 WSL 原生目录 `~/.local/share/video-viewer-e2e` 建立独立数据和媒体。Windows 端口 8761，模拟器使用 `10.0.2.2:8761`；正常开发服务继续使用 8760。固定口令和控制键仅限此可丢弃测试实例。测试控制路由位于测试镜像中，生产 runtime 镜像不包含这些路由。
@@ -109,8 +126,9 @@ python scripts/run-client-connection-test.py --playback
 python scripts/run-client-connection-test.py --tags
 python scripts/run-client-connection-test.py --files
 python scripts/run-client-connection-test.py --external
+python scripts/run-client-connection-test.py --backups
 ```
 
 本机如未配置 `python`，可使用已安装的 Python 可执行文件。脚本使用 `~/develop/flutter` 和 `~/develop/android-sdk`，适配当前开发环境。它先调用 `prepare-client-e2e.sh --reset`，只清理固定测试实例的数据及素材；不操作主服务目录或个人收藏。测试运行时会真实停止并重启名为 `video-viewer-client-e2e-server-1` 的容器，并强制关闭 Android App，再用另一进程验证凭据及深层目录恢复。两次运行必须保留 `--no-uninstall`：当前 Flutter 的集成测试默认在结束时卸载 App，会清空加密存储，不能用于验证普通重开。日志、脱敏请求轨迹和模拟器截图写入被 Git 忽略的 `tmp/client-e2e`，审核后选择需要的证据纳入文档。
 
-模拟器使用软件渲染，因此这里的耗时不能用作 NAS、手机解码或网络性能结论。
+备份模式额外使用 `reset-client-e2e-instance.py`：严格核对固定测试目录和标记后，保留旧管理目录快照并建立空实例，保持媒体文件不变；随后进行第二次 App 强制关闭与第三个进程验证。该步骤不操作普通开发服务。模拟器使用软件渲染，因此这里的耗时不能用作 NAS、手机解码或网络性能结论。

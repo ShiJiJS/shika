@@ -19,7 +19,7 @@ from .db import Database
 from .errors import LibraryError
 from .file_operations import FileOperations
 from .file_state import reserved_video_ids
-from .models import FileOperation, Root, Setting, Video, uid
+from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
 from .playback import Playback
 from .scanner import Scanner
 from .security import Authentication
@@ -415,6 +415,16 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         task_id = request.app.state.backups.submit_restore(
             body.preview_id, body.root_mapping, body.request_id
         )
+        return request.app.state.scanner.task(task_id)
+
+    @app.get("/api/v1/backup-requests/{kind}/{request_id}", dependencies=auth_required)
+    def backup_request(kind: Literal["export", "inspect", "restore"], request_id: str, request: Request):
+        namespace = {"export": "backup.backup_export", "inspect": "backup.backup_inspect", "restore": "backup.restore"}[kind]
+        with request.app.state.db.read() as session:
+            record = session.get(RequestRecord, namespace + ":" + request_id)
+            if not record:
+                raise LibraryError("backup_request_not_found", "未查询到已受理的备份任务", 404)
+            task_id = record.result["id"]
         return request.app.state.scanner.task(task_id)
 
     def operation_task(request, operation_id):

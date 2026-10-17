@@ -343,10 +343,12 @@ class BackupPreview {
     this.snapshot, {
     this.importId,
     this.suggestedMappings = const {},
+    this.counts = const {},
   });
   final LibrarySnapshot snapshot;
   final String? importId;
   final Map<String, String?> suggestedMappings;
+  final Map<String, int> counts;
   static BackupPreview parse(String text) {
     try {
       if (text.length > 2 * 1024 * 1024) throw const FormatException();

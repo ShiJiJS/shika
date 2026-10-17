@@ -41,7 +41,11 @@ class NativeBackupFiles implements BackupFiles {
     if (size == null || size > 32 * 1024 * 1024) {
       throw const LibraryFailure('备份文件过大或无法读取');
     }
-    return utf8.decode(await file.readAsBytes());
+    try {
+      return utf8.decode(await file.readAsBytes());
+    } on FormatException {
+      throw const LibraryFailure('备份文件不是有效的 UTF-8 文本');
+    }
   }
 }
 
@@ -69,7 +73,8 @@ class _LibraryHomeState extends State<LibraryHome> {
   LibrarySnapshot get data => repo.snapshot;
   late String page = data.connected ? 'browse' : 'connection';
   late String error = widget.initialError ?? '';
-  bool busy = false, review = false, selecting = false, obscured = false;
+  bool _busy = false, review = false, selecting = false, obscured = false;
+  bool get busy => _busy || repo.backupRestorePending;
   String search = '', tagSearch = '';
   Set<String> selected = {};
   int playerEpoch = 0;
@@ -127,7 +132,9 @@ class _LibraryHomeState extends State<LibraryHome> {
         if (!mounted) return;
         address.text = data.address;
         port.text = '${data.port}';
-        if (connected && data.connected) go('browse');
+        if (connected && data.connected) {
+          go(repo.backupRestorePending ? 'backup' : 'browse');
+        }
       });
     }
   }
@@ -305,10 +312,13 @@ class _LibraryHomeState extends State<LibraryHome> {
       ..showSnackBar(SnackBar(margin: snackMargin, content: Text(text)));
   }
 
-  Future<bool> perform(Future<void> Function() action) async {
-    if (busy) return false;
+  Future<bool> perform(
+    Future<void> Function() action, {
+    bool allowMaintenance = false,
+  }) async {
+    if (_busy || (!allowMaintenance && repo.backupRestorePending)) return false;
     setState(() {
-      busy = true;
+      _busy = true;
       error = '';
     });
     try {
@@ -320,14 +330,14 @@ class _LibraryHomeState extends State<LibraryHome> {
       if (mounted) setState(() => error = e.toString());
       return false;
     } finally {
-      if (mounted) setState(() => busy = false);
+      if (mounted) setState(() => _busy = false);
     }
   }
 
-  Future<T?> sheet<T>(Widget child) async {
+  Future<T?> sheet<T>(Widget child, {bool dismissible = true}) async {
     setState(() => obscured = true);
     try {
-      return await paperSheet<T>(context, child);
+      return await paperSheet<T>(context, child, dismissible: dismissible);
     } finally {
       if (mounted) setState(() => obscured = false);
     }
@@ -583,7 +593,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                         child: iconAction(
                           '返回设置',
                           Icons.arrow_back,
-                          busy ? null : () => go('settings'),
+                          _busy ? null : () => go('settings'),
                         ),
                       ),
                     Expanded(
@@ -697,7 +707,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             ),
             SizedBox(
               height: 2,
-              child: busy
+              child: _busy
                   ? const LinearProgressIndicator(minHeight: 2)
                   : ColoredBox(color: Paper.of(context).line),
             ),
@@ -738,6 +748,27 @@ class _LibraryHomeState extends State<LibraryHome> {
                           ? null
                           : () => perform(repo.reconcileFileOperation),
                       child: const Text('查询结果'),
+                    ),
+                  ],
+                ),
+              ),
+            if (data.connected && repo.backupRestorePending)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Text('恢复结果待确认', style: TextStyle(fontSize: 12)),
+                    ),
+                    TextButton(
+                      key: const Key('backup-query'),
+                      onPressed: _busy
+                          ? null
+                          : () => perform(
+                              repo.reconcileBackupRestore,
+                              allowMaintenance: true,
+                            ),
+                      child: const Text('查询恢复结果'),
                     ),
                   ],
                 ),
@@ -802,7 +833,7 @@ class _LibraryHomeState extends State<LibraryHome> {
               Expanded(
                 child: InkWell(
                   key: Key('nav-${tab.$1}'),
-                  onTap: busy ? null : () => go(tab.$1),
+                  onTap: _busy ? null : () => go(tab.$1),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -932,7 +963,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                   onStep: step,
                   onUnauthorized: (source) =>
                       unawaited(repo.mediaUnauthorized(source)),
-                  suspended: obscured,
+                  suspended: obscured || repo.backupRestorePending,
                   preloadAdjacent: widget.preferences.preloadAdjacent,
                   session: _playback,
                   onPlaybackFailure: (video) async {
@@ -1441,8 +1472,9 @@ class _LibraryHomeState extends State<LibraryHome> {
     IconData icon,
     String title,
     String subtitle,
-    VoidCallback action,
-  ) => Column(
+    VoidCallback action, {
+    bool allowDuringRestore = false,
+  }) => Column(
     children: [
       ListTile(
         contentPadding: EdgeInsets.zero,
@@ -1455,7 +1487,9 @@ class _LibraryHomeState extends State<LibraryHome> {
                 style: TextStyle(fontSize: 12, color: Paper.of(context).olive),
               ),
         trailing: const Icon(Icons.chevron_right, size: 19),
-        onTap: busy ? null : action,
+        onTap: _busy || (!allowDuringRestore && repo.backupRestorePending)
+            ? null
+            : action,
       ),
       const Divider(height: 1),
     ],
@@ -1469,6 +1503,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         '服务连接',
         '${data.address}:${data.port}',
         () => go('connection'),
+        allowDuringRestore: true,
       ),
       settingRow(
         Icons.folder_outlined,
@@ -1484,7 +1519,13 @@ class _LibraryHomeState extends State<LibraryHome> {
         '${repo.trashCount} 个视频 · 不会自动清空',
         () => go('trash'),
       ),
-      settingRow(Icons.save_outlined, '备份与恢复', '导出标签和管理记录', () => go('backup')),
+      settingRow(
+        Icons.save_outlined,
+        '备份与恢复',
+        '导出标签和管理记录',
+        () => go('backup'),
+        allowDuringRestore: true,
+      ),
       const SizedBox(height: 14),
       note('偏好'),
       SwitchListTile(
@@ -1536,26 +1577,26 @@ class _LibraryHomeState extends State<LibraryHome> {
       const SizedBox(height: 26),
       TextField(
         controller: address,
-        enabled: !busy,
+        enabled: !_busy,
         decoration: const InputDecoration(labelText: '服务地址'),
       ),
       const SizedBox(height: 20),
       TextField(
         controller: port,
-        enabled: !busy,
+        enabled: !_busy,
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(labelText: '端口'),
       ),
       const SizedBox(height: 20),
       TextField(
         controller: passphrase,
-        enabled: !busy,
+        enabled: !_busy,
         obscureText: true,
         decoration: const InputDecoration(labelText: '个人口令'),
       ),
       const SizedBox(height: 26),
       FilledButton(
-        onPressed: busy
+        onPressed: _busy
             ? null
             : () async {
                 if (await perform(
@@ -1564,12 +1605,13 @@ class _LibraryHomeState extends State<LibraryHome> {
                     int.tryParse(port.text) ?? 0,
                     passphrase.text,
                   ),
+                  allowMaintenance: true,
                 )) {
                   passphrase.clear();
-                  go('browse');
+                  go(repo.backupRestorePending ? 'backup' : 'browse');
                 }
               },
-        child: Text(busy ? '正在连接…' : '连接'),
+        child: Text(_busy ? '正在连接…' : '连接'),
       ),
     ],
   );
@@ -1814,6 +1856,19 @@ class _LibraryHomeState extends State<LibraryHome> {
     children: [
       Text('保存你的整理成果', style: Paper.of(context).title.copyWith(fontSize: 21)),
       note('备份标签、视频关联、媒体目录映射、回收站索引和播放轮次，不包含原视频及访问口令。'),
+      ValueListenableBuilder<String?>(
+        valueListenable: repo.backupStatus,
+        builder: (context, message, _) => message == null
+            ? const SizedBox()
+            : Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  message,
+                  key: const Key('backup-status'),
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ),
+      ),
       const SizedBox(height: 14),
       FilledButton(
         onPressed: busy
@@ -1864,64 +1919,92 @@ class _LibraryHomeState extends State<LibraryHome> {
     String formError = '';
     await sheet<void>(
       StatefulBuilder(
-        builder: (context, local) => SheetFrame(
-          title: '恢复备份',
-          children: [
-            note('校验通过。请核对媒体目录映射，恢复前将保留当前数据快照。'),
-            for (final r in preview.snapshot.roots)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: TextFormField(
-                  initialValue: mappings[r.id],
-                  decoration: InputDecoration(
-                    labelText: r.name,
-                    helperText: '原目录：${r.path}',
-                    hintText: preview.importId == null ? null : '留空表示暂不映射',
+        builder: (context, local) => PopScope(
+          canPop: !restoring,
+          child: SheetFrame(
+            title: '恢复备份',
+            closeEnabled: !restoring,
+            children: [
+              note('校验通过。请核对媒体目录映射，恢复前将保留当前数据快照。'),
+              if (preview.counts.isNotEmpty)
+                note(
+                  '视频 ${preview.counts['videos'] ?? 0} · 标签 ${preview.counts['tags'] ?? 0} · 回收站 ${preview.counts['trash_items'] ?? 0}',
+                ),
+              for (final r in preview.snapshot.roots)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: TextFormField(
+                    key: Key('mapping-${r.id}'),
+                    initialValue: mappings[r.id],
+                    enabled: !restoring && !repo.backupRestorePending,
+                    decoration: InputDecoration(
+                      labelText: r.name,
+                      helperText: '原目录：${r.path}',
+                      hintText: preview.importId == null ? null : '留空表示暂不映射',
+                    ),
+                    onChanged: (value) => mappings[r.id] = value,
                   ),
-                  onChanged: (v) => mappings[r.id] = v,
+                ),
+              CheckboxListTile(
+                key: const Key('restore-confirm'),
+                contentPadding: EdgeInsets.zero,
+                value: checked,
+                onChanged: restoring || repo.backupRestorePending
+                    ? null
+                    : (v) => local(() => checked = v!),
+                title: const Text(
+                  '我知道恢复会替换现有管理数据',
+                  style: TextStyle(fontSize: 13),
                 ),
               ),
-            CheckboxListTile(
-              contentPadding: EdgeInsets.zero,
-              value: checked,
-              onChanged: restoring ? null : (v) => local(() => checked = v!),
-              title: const Text(
-                '我知道恢复会替换现有管理数据',
-                style: TextStyle(fontSize: 13),
-              ),
-            ),
-            if (formError.isNotEmpty) note(formError),
-            FilledButton(
-              onPressed: restoring
-                  ? null
-                  : () async {
-                      if (!checked) {
-                        local(() => formError = '请确认替换现有管理数据');
-                        return;
-                      }
-                      local(() {
-                        restoring = true;
-                        formError = '';
-                      });
-                      try {
-                        await repo.restoreBackup(text, mappings);
-                        if (context.mounted) {
+              if (formError.isNotEmpty) note(formError),
+              FilledButton(
+                key: const Key('restore-submit'),
+                onPressed: restoring
+                    ? null
+                    : () async {
+                        if (!repo.backupRestorePending && !checked) {
+                          local(() => formError = '请确认替换现有管理数据');
+                          return;
+                        }
+                        local(() {
+                          restoring = true;
+                          formError = '';
+                        });
+                        final completed = await perform(() async {
+                          if (repo.backupRestorePending) {
+                            await repo.reconcileBackupRestore();
+                          } else {
+                            await repo.restoreBackup(text, mappings);
+                          }
+                        }, allowMaintenance: true);
+                        if (!context.mounted) return;
+                        if (completed) {
                           Navigator.pop(context);
                           notice('管理数据已恢复');
+                        } else {
+                          local(() => formError = error);
                         }
-                      } catch (e) {
-                        if (context.mounted) {
-                          local(() => formError = e.toString());
-                        }
-                      } finally {
                         if (context.mounted) local(() => restoring = false);
-                      }
-                    },
-              child: Text(restoring ? '正在恢复…' : '恢复管理数据'),
-            ),
-          ],
+                      },
+                child: Text(
+                  restoring
+                      ? '正在恢复…'
+                      : repo.backupRestorePending
+                      ? '查询恢复结果'
+                      : '恢复管理数据',
+                ),
+              ),
+              TextButton(
+                key: const Key('restore-cancel'),
+                onPressed: restoring ? null : () => Navigator.pop(context),
+                child: Text(repo.backupRestorePending ? '关闭' : '取消'),
+              ),
+            ],
+          ),
         ),
       ),
+      dismissible: false,
     );
   }
 

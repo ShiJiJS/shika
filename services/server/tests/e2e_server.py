@@ -46,10 +46,19 @@ def create_e2e_app():
         samples = generate(Path("/tmp/e2e-formats"))
         shutil.copyfile(samples / "h264.mov", camera / "相机片段.mov")
         marker.write_text("dedicated generated emulator fixture")
-    app = create_app(settings)
+    controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False,
+                "fail_restore": False, "slow_restore": False}
+
+    def backup_fault(phase, _task_id):
+        if controls["fail_restore"] and phase == "after_replace_before_commit":
+            controls["fail_restore"] = False
+            raise RuntimeError("Isolated restore rollback fixture")
+        if controls["slow_restore"] and phase == "snapshot_written":
+            time.sleep(6)
+
+    app = create_app(settings, backup_fault_hook=backup_fault)
     trace = deque(maxlen=300)
     checkpoint = {"phase": "ready"}
-    controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False}
 
     @app.middleware("http")
     async def observe(request, call_next):
@@ -146,6 +155,9 @@ def create_e2e_app():
             "playback",
             "formats",
             "error",
+            "preview",
+            "fresh-instance",
+            "fresh-done",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase
@@ -223,6 +235,18 @@ def create_e2e_app():
             controls["lose_tag_response"] = True
         elif action == "lose-file-response":
             controls["lose_file_response"] = True
+        elif action == "fail-next-restore":
+            controls["fail_restore"] = True
+        elif action == "slow-next-restore":
+            controls["slow_restore"] = True
+        elif action == "relocate-shorts-root":
+            root = BASE / "shorts"
+            sources = list(root.iterdir())
+            destination = root / "重新映射"
+            destination.mkdir()
+            for source in sources:
+                rename_new(str(source), str(destination / source.name))
+            details["mapped_path"] = str(destination)
         elif action in {"lock-flower", "unlock-flower"}:
             (BASE / "shorts" / "自然" / "花卉").chmod(
                 0o555 if action == "lock-flower" else 0o755

@@ -36,6 +36,19 @@ def docker(*args):
     )
 
 
+def fresh_instance():
+    docker("stop", "--time", "0", CONTAINER)
+    events.append({"phase": "fresh-instance-stopped", "time": time.time()})
+    linux_root = "/mnt/" + ROOT.drive.rstrip(":").lower() + ROOT.as_posix()[2:]
+    result = subprocess.run(
+        ["wsl", "-d", "Ubuntu-24.04", "--", "python3", linux_root + "/scripts/reset-client-e2e-instance.py"],
+        check=True, capture_output=True, text=True, timeout=30,
+    )
+    events.append({"phase": "fresh-instance-prepared", "time": time.time(), **json.loads(result.stdout)})
+    docker("start", CONTAINER)
+    events.append({"phase": "fresh-instance-started", "time": time.time()})
+
+
 def watch():
     seen = set()
     try:
@@ -59,6 +72,8 @@ def watch():
                 "playback",
                 "formats",
                 "error",
+                "preview",
+                "fresh-done",
             }:
                 request = urllib.request.Request(
                     "http://127.0.0.1:8761/__fixture/trace", headers=HEADERS
@@ -88,6 +103,8 @@ def watch():
                 stop.wait(20 if PREFIX == "i2" else 8)
                 docker("start", CONTAINER)
                 events.append({"phase": "docker-started", "time": time.time()})
+            if phase == "fresh-instance":
+                fresh_instance()
     except (OSError, ValueError, KeyError, subprocess.SubprocessError) as error:
         errors.append(str(error))
 
@@ -100,9 +117,21 @@ def main():
     mode.add_argument("--tags", action="store_true")
     mode.add_argument("--files", action="store_true")
     mode.add_argument("--external", action="store_true")
+    mode.add_argument("--backups", action="store_true")
     parser.add_argument("--plain-name")
     args = parser.parse_args()
-    PREFIX = "i5" if args.external else "i4" if args.files else "i3" if args.tags else "i2" if args.playback else "i1"
+    if args.backups:
+        PREFIX = "i6"
+    elif args.external:
+        PREFIX = "i5"
+    elif args.files:
+        PREFIX = "i4"
+    elif args.tags:
+        PREFIX = "i3"
+    elif args.playback:
+        PREFIX = "i2"
+    else:
+        PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     linux_root = "/mnt/" + ROOT.drive.rstrip(":").lower() + ROOT.as_posix()[2:]
     subprocess.run(
@@ -129,15 +158,14 @@ def main():
         command = [
             str(DEVELOP / "flutter/bin/flutter.bat"),
             "test",
-            "integration_test/server_external_test.dart"
-            if args.external
-            else "integration_test/server_files_test.dart"
-            if args.files
-            else "integration_test/server_tags_test.dart"
-            if args.tags
-            else "integration_test/server_playback_test.dart"
-            if args.playback
-            else "integration_test/server_connection_test.dart",
+            {
+                "i1": "integration_test/server_connection_test.dart",
+                "i2": "integration_test/server_playback_test.dart",
+                "i3": "integration_test/server_tags_test.dart",
+                "i4": "integration_test/server_files_test.dart",
+                "i5": "integration_test/server_external_test.dart",
+                "i6": "integration_test/server_backups_test.dart",
+            }[PREFIX],
             "-d",
             "emulator-5554",
             "--no-uninstall",
@@ -150,8 +178,8 @@ def main():
             "w", encoding="utf-8"
         ) as log:
             code = 0
-            for resume in (False,) if args.plain_name else (False, True):
-                if resume:
+            for phase in range(1 if args.plain_name else 3 if args.backups else 2):
+                if phase:
                     subprocess.run(
                         [
                             str(DEVELOP / "android-sdk/platform-tools/adb.exe"),
@@ -166,10 +194,11 @@ def main():
                         timeout=15,
                     )
                     events.append(
-                        {"phase": "android-force-stopped", "time": time.time()}
+                        {"phase": "android-force-stopped", "resume_phase": phase, "time": time.time()}
                     )
                 process = subprocess.Popen(
-                    command + (["--dart-define=E2E_RESUME=true"] if resume else []),
+                    command + (["--dart-define=E2E_RESUME=true"] if phase else [])
+                    + (["--dart-define=E2E_FRESH_RESUME=true"] if phase == 2 else []),
                     cwd=ROOT / "apps/mobile",
                     env=env,
                     stdout=subprocess.PIPE,

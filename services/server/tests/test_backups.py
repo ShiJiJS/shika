@@ -30,8 +30,11 @@ def wait_task(client, task_id):
 
 
 def export(client):
-    response = client.post("/api/v1/backups", json={"request_id": str(uuid.uuid4())})
+    key = str(uuid.uuid4())
+    response = client.post("/api/v1/backups", json={"request_id": key})
     assert response.status_code == 202, response.text
+    found = client.get(f"/api/v1/backup-requests/export/{key}")
+    assert found.status_code == 200 and found.json()["id"] == response.json()["id"]
     task = wait_task(client, response.json()["id"])
     assert task["status"] == "completed", task
     response = client.get(f"/api/v1/backups/{task['id']}/download")
@@ -41,12 +44,15 @@ def export(client):
 
 
 def inspect(client, raw):
+    key = str(uuid.uuid4())
     response = client.post(
         "/api/v1/backup-imports",
         content=raw,
-        headers={"Content-Type": "application/json", "Idempotency-Key": str(uuid.uuid4())},
+        headers={"Content-Type": "application/json", "Idempotency-Key": key},
     )
     assert response.status_code == 202, response.text
+    found = client.get(f"/api/v1/backup-requests/inspect/{key}")
+    assert found.status_code == 200 and found.json()["id"] == response.json()["id"]
     return wait_task(client, response.json()["id"])
 
 
@@ -114,6 +120,9 @@ def test_complete_snapshot_restore_replaces_data_preserves_auth_and_round(enviro
         assert before.status_code == 200
         assert any(item["id"] == extra["id"] for item in before.json()["payload"]["tables"]["tags"])
         assert client.post("/api/v1/backup-restores", json=body).json()["id"] == restored["id"]
+        found = client.get(f"/api/v1/backup-requests/restore/{body['request_id']}")
+        assert found.status_code == 200 and found.json()["id"] == restored["id"]
+        assert client.get("/api/v1/backup-requests/restore/never-submitted").status_code == 404
         assert hashlib.sha256((media / "one.mov").read_bytes()).hexdigest() == original
     finally:
         client.__exit__(None, None, None)

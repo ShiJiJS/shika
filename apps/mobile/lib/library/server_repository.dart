@@ -4,6 +4,8 @@ import 'dart:math';
 
 import 'credentials.dart';
 import 'file_command_store.dart';
+import 'backup_work_store.dart';
+import 'server_backups.dart';
 import 'models.dart';
 import 'repository.dart';
 import 'server_api.dart';
@@ -21,9 +23,11 @@ class ServerLibraryRepository extends LibraryRepository {
   ServerLibraryRepository(
     this.credentials, {
     FileCommandStore? fileCommands,
+    BackupWorkStore? backupWork,
     String address = '10.0.2.2',
     int port = 8760,
   }) : fileCommands = fileCommands ?? MemoryFileCommandStore(),
+       backupWork = backupWork ?? MemoryBackupWorkStore(),
        _state = LibrarySnapshot(
          videos: [],
          roots: [],
@@ -36,6 +40,14 @@ class ServerLibraryRepository extends LibraryRepository {
        );
   final CredentialStore credentials;
   final FileCommandStore fileCommands;
+  final BackupWorkStore backupWork;
+  ServerBackups? _backups;
+  @override
+  bool get backupRestorePending => _backups?.restorePending ?? false;
+  void ensureNotRestoring() {
+    if (backupRestorePending) throw const LibraryFailure('恢复结果尚未确认，请先查询结果');
+  }
+
   Json _fileState = {};
   String? _fileScope;
   Future<void> _fileWrites = Future.value();
@@ -62,14 +74,7 @@ class ServerLibraryRepository extends LibraryRepository {
   int _generation = 0, _scopeGeneration = 0, _missing = 0, _trash = 0;
   bool _disposed = false;
   String _session = requestId();
-  String? _scanTask,
-      _exportTask,
-      _importTask,
-      _importKey,
-      _previewText,
-      _restoreTask,
-      _restoreKey;
-  BackupPreview? _preview;
+  String? _scanTask;
   int? _connectingGeneration;
   Future<void> _credentialWrites = Future.value(),
       _roundWrites = Future.value();
@@ -180,6 +185,9 @@ class ServerLibraryRepository extends LibraryRepository {
     _scanRead.cancel();
     _api?.close();
     _api = null;
+    _backups?.dispose();
+    _backups = null;
+    backupStatus.value = null;
     _videos.clear();
     _directories.clear();
     _tagNames.clear();
@@ -277,6 +285,7 @@ class ServerLibraryRepository extends LibraryRepository {
       }
       await synchronize(candidate, generation, allowConnection: true);
       await activateFileCommands(saved);
+      await activateBackupWork(saved);
     } on ApiFailure catch (error) {
       if (error.status == 401 && generation == _generation) {
         await writeCredentials(credentials.clear, generation: generation);
@@ -325,6 +334,7 @@ class ServerLibraryRepository extends LibraryRepository {
         allowConnection: true,
       );
       await activateFileCommands(session);
+      await activateBackupWork(session);
     } finally {
       if (_connectingGeneration == generation) _connectingGeneration = null;
       if (!identical(candidate, _api)) candidate.close();
@@ -452,6 +462,8 @@ class ServerLibraryRepository extends LibraryRepository {
       throw const RequestCancelled();
     }
     if (!identical(target, _api)) {
+      _backups?.dispose();
+      _backups = null;
       _pendingRound = null;
       _pendingRoundSignature = null;
       _tagRetryKeys.clear();
@@ -748,6 +760,7 @@ class ServerLibraryRepository extends LibraryRepository {
     PlayOrder order, {
     String? anchor,
   }) {
+    ensureNotRestoring();
     cancelVideoRead();
     final scopeGeneration = ++_scopeGeneration, generation = _generation;
     final target = api;
@@ -802,6 +815,7 @@ class ServerLibraryRepository extends LibraryRepository {
 
   @override
   Future<void> step(int delta) async {
+    ensureNotRestoring();
     if (_round == null || _state.round.isEmpty) return;
     final targetApi = api,
         generation = _generation,
@@ -885,6 +899,7 @@ class ServerLibraryRepository extends LibraryRepository {
   });
 
   Future<Json> operation(String path, Json body, {String? idempotency}) {
+    ensureNotRestoring();
     final target = api, generation = _generation;
     return serializeFiles(() async {
       if (generation != _generation || !identical(target, _api)) {
@@ -1100,6 +1115,7 @@ class ServerLibraryRepository extends LibraryRepository {
       );
 
   Future<void> _writeTags(String method, String path, Json payload) {
+    ensureNotRestoring();
     final generation = _generation, target = api;
     final signature = jsonEncode([method, path, payload]);
     final result = _tagWrites.then((_) async {
@@ -1291,6 +1307,7 @@ class ServerLibraryRepository extends LibraryRepository {
 
   @override
   Future<void> saveRoot(MediaRoot root) async {
+    ensureNotRestoring();
     await call(
       root.id.isEmpty ? 'POST' : 'PUT',
       '/api/v1/roots${root.id.isEmpty ? '' : '/${root.id}'}',
@@ -1301,6 +1318,7 @@ class ServerLibraryRepository extends LibraryRepository {
 
   @override
   Future<void> refresh() {
+    ensureNotRestoring();
     final existing = _refreshWork;
     if (existing != null) return existing;
     final work = scan();
@@ -1410,102 +1428,88 @@ class ServerLibraryRepository extends LibraryRepository {
     }
   }
 
-  @override
-  Future<String> exportBackupFile() async {
-    _exportTask ??= (await call(
-      'POST',
-      '/api/v1/backups',
-      body: {'request_id': requestId()},
-    ))['id'];
-    final task = await waitTask(_exportTask!);
-    if (task['status'] != 'completed') {
-      _exportTask = null;
-      throw const LibraryFailure('备份导出失败，请重试');
-    }
-    final response = await api.request(
-      'GET',
-      '/api/v1/backups/$_exportTask/download',
-      maximumBytes: 32 * 1024 * 1024,
-    );
-    _exportTask = null;
-    return utf8.decode(response.bytes);
-  }
-
-  @override
-  Future<BackupPreview> inspectBackupFile(String text) async {
-    if (_previewText == text && _preview != null) return _preview!;
-    if (_previewText != text) {
-      _previewText = text;
-      _preview = null;
-      _importTask = null;
-      _importKey = requestId();
-    }
-    if (_importTask == null) {
-      final accepted = await api.request(
-        'POST',
-        '/api/v1/backup-imports',
-        body: utf8.encode(text),
-        headers: {'Idempotency-Key': _importKey!},
-      );
-      _importTask = object(jsonDecode(utf8.decode(accepted.bytes)))['id'];
-    }
-    final task = await waitTask(_importTask!);
-    if (task['status'] != 'completed') {
-      throw const LibraryFailure('备份校验失败，请检查文件格式和版本');
-    }
-    final result = object(task['result']);
-    final roots = (result['roots'] as List).map(object).toList();
-    return _preview = BackupPreview(
-      LibrarySnapshot(
-        videos: [],
-        roots: roots.map(
-          (root) => MediaRoot(root['id'], root['name'], root['original_path']),
-        ),
-        tags: [],
-        query: VideoQuery(),
-        round: [],
-      ),
-      importId: _importTask,
-      suggestedMappings: {
-        for (final root in roots) root['id']: root['suggested_path'],
+  Future<void> activateBackupWork(ConnectionCredentials session) async {
+    final target = api, generation = _generation;
+    _backups?.dispose();
+    late final ServerBackups client;
+    client = ServerBackups(
+      api: target,
+      scope: jsonEncode([session.endpoint.toString(), session.serverId]),
+      store: backupWork,
+      status: backupStatus,
+      onChanged: () {
+        if (!_disposed &&
+            generation == _generation &&
+            identical(_backups, client)) {
+          publish();
+        }
+      },
+      onRestored: () async {
+        if (_disposed ||
+            generation != _generation ||
+            !identical(target, _api)) {
+          throw const RequestCancelled();
+        }
+        await serializeFiles(() => saveFileState({'scope': _fileScope}));
+        _scanRead.cancel();
+        _scanTask = null;
+        scanStatus.value = null;
+        await synchronize(
+          target,
+          generation,
+          beforePublish: () async {
+            cancelVideoRead();
+            cancelFolderRead();
+            cancelTrashRead();
+            cancelMissingRead();
+            _videos.clear();
+            _directories.clear();
+            _trashIds.clear();
+            _retryKeys.clear();
+            _tagRetryKeys.clear();
+            _pendingRound = null;
+            _pendingRoundSignature = null;
+            _session = requestId();
+            _state = _state.copy(clearDelete: true);
+          },
+        );
       },
     );
+    _backups = client;
+    await client.initialize();
+  }
+
+  Future<T> backupAction<T>(
+    Future<T> Function(ServerBackups client) action,
+  ) async {
+    final client = _backups;
+    if (client == null) throw const LibraryFailure('请先连接视频库');
+    final generation = _generation;
+    try {
+      return await action(client);
+    } catch (error) {
+      if (!_disposed &&
+          generation == _generation &&
+          identical(_backups, client)) {
+        backupStatus.value = error.toString();
+        if (error is ApiFailure && error.status == 401) await expire();
+      }
+      rethrow;
+    }
   }
 
   @override
-  Future<void> restoreBackup(
-    String text,
-    Map<String, String> rootMappings,
-  ) async {
-    final preview = await inspectBackupFile(text);
-    final payload = {
-      'preview_id': preview.importId,
-      'root_mapping': rootMappings.map(
-        (key, value) =>
-            MapEntry(key, value.trim().isEmpty ? null : value.trim()),
-      ),
-      'confirmed': true,
-    };
-    final signature = jsonEncode(payload);
-    final key = _retryKeys.putIfAbsent('restore:$signature', requestId);
-    if (_restoreKey != key) {
-      _restoreTask = null;
-      _restoreKey = key;
-    }
-    _restoreTask ??= (await call(
-      'POST',
-      '/api/v1/backup-restores',
-      body: {'request_id': key, ...payload},
-    ))['id'];
-    final task = await waitTask(_restoreTask!);
-    if (task['status'] != 'completed') {
-      throw const LibraryFailure('恢复未完成，原管理数据已保留；可重试查询任务');
-    }
-    _videos.clear();
-    await synchronize(api, _generation);
-    _state = _state.copy(clearDelete: true);
-    publish();
-  }
+  Future<String> exportBackupFile() =>
+      backupAction((client) => client.export());
+  @override
+  Future<BackupPreview> inspectBackupFile(String text) =>
+      backupAction((client) => client.inspect(text));
+  @override
+  Future<void> restoreBackup(String text, Map<String, String> rootMappings) =>
+      backupAction((client) => client.restore(text, rootMappings));
+  @override
+  Future<void> reconcileBackupRestore() =>
+      backupAction((client) => client.reconcile());
 
   @override
   void dispose() {
@@ -1516,6 +1520,7 @@ class ServerLibraryRepository extends LibraryRepository {
     cancelMissingRead();
     _scanRead.cancel();
     _api?.close();
+    _backups?.dispose();
     super.dispose();
   }
 }

@@ -8,6 +8,7 @@ import 'library/state_store.dart';
 import 'library/credentials.dart';
 import 'library/server_repository.dart';
 import 'library/file_command_store.dart';
+import 'library/backup_work_store.dart';
 import 'ui/home.dart';
 import 'ui/paper.dart';
 import 'ui/preferences.dart';
@@ -38,6 +39,7 @@ Future<void> main() async {
       : ServerLibraryRepository(
           SecureCredentialStore(),
           fileCommands: SecureFileCommandStore(),
+          backupWork: SecureBackupWorkStore(),
           address: const String.fromEnvironment(
             'SERVER_ADDRESS',
             defaultValue: '10.0.2.2',
