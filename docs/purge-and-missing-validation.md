@@ -38,3 +38,11 @@
 截图：[悬浮删除提示](integration-evidence/floating-delete-notice.png)、[外部删除后的清理入口](integration-evidence/missing-cleanup.png)。素材来自独立测试目录，不含个人 NAS 视频。
 
 真实 NAS 上新版本删除 160 个大视频的耗时尚未重新测量，不在收藏上做试删，也不从小文件测试推断具体提速倍数。
+
+## 交付与回归结果
+
+Flutter 68 项、静态分析、服务端分组 85+13=98 项及 Ruff 通过。服务端源码 `f5fe32c`，ARM64 镜像 `sha256:6c2905c250921e2f936b2ef6fb214ef3ab760cabe148fa352294af78fd4d6fcf` 已在 NAS 运行。更新前保存完整管理目录快照，3981 条视频身份/指纹、201 条回收历史、4065 条观察记录及已有标签关联核对保留，SQLite integrity_check 为 ok。
+
+服务端库仍就绪，旧凭据及实例标识可继续使用；批量轮次 entries、原视频 Range 206、权限检查和正式镜像不含测试接口均复核。通过 OpenAPI 确认失效清理入口已部署，没有在个人 NAS 上调用该清理接口或执行试删。
+
+APK `tmp/releases/video-viewer-0.1.4-nas-arm64.apk`，版本 0.1.4 / code 5，21,668,902 字节；SHA-256 `1efa5d9fcea0f92e3b35471f167bd2cb7a4f75fb83f81061581b3b5b4d61296d`。包名及签名保持一致，可覆盖安装；NAS packages 副本校验一致，私有 infos 已更新。

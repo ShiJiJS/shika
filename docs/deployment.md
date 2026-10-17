@@ -107,7 +107,9 @@ curl --fail http://127.0.0.1:8760/health
 
 ## 4. 安装与开发调试
 
-当前 NAS 手机测试包为 `tmp/releases/video-viewer-0.1.3-nas-arm64.apk`：0.1.3 / versionCode 4，SHA-256 `758bdfa7f1173dd42a3c6a58516dce3aff9d085d6c1aa4a2938b2c256129c0f3`。可覆盖安装，包名、签名及连接口令不变。新增逻辑回收站、非阻塞翻页与连续删除、顶部定时撤销提示、回收站跨页全选和后台恢复，见 [行为与验证](logical-trash-and-browsing.md)。旧版已移动记录继续兼容恢复；以下包信息保留作历史记录。
+当前 NAS 手机测试包为 `tmp/releases/video-viewer-0.1.4-nas-arm64.apk`，0.1.4 / code 5，SHA-256 `1efa5d9fcea0f92e3b35471f167bd2cb7a4f75fb83f81061581b3b5b4d61296d`。可覆盖安装，地址和口令不变。本版加速未变化视频的永久删除，结果查询不锁界面，增加同步外部删除与手动清理失效元数据，提示使用不占视频面积的悬浮层，见 [验证与操作](purge-and-missing-validation.md)。以下包信息保留作历史记录。
+
+0.1.3 历史交付： `tmp/releases/video-viewer-0.1.3-nas-arm64.apk`：0.1.3 / versionCode 4，SHA-256 `758bdfa7f1173dd42a3c6a58516dce3aff9d085d6c1aa4a2938b2c256129c0f3`。可覆盖安装，包名、签名及连接口令不变。新增逻辑回收站、非阻塞翻页与连续删除、顶部定时撤销提示、回收站跨页全选和后台恢复，见 [行为与验证](logical-trash-and-browsing.md)。旧版已移动记录继续兼容恢复；以下包信息保留作历史记录。
 
 0.1.2 历史交付： `tmp/releases/video-viewer-0.1.2-nas-arm64.apk`：版本 `0.1.2` / versionCode `3`，21,668,902 字节，SHA-256 `0b5d5e2b6088224b0d3a9a56dd6afcbf5218c77a3a46c91d27db74f09ad5793f`。包名和本机签名与旧包相同，可覆盖安装保留连接凭据，口令不变。NAS 个人目录 `docker/video-viewer/packages` 已有同名副本，连接信息在同目录的私有说明文件中。本版修正 4K HEVC 精确取图超时、将可选缩略图失败与媒体读取失败分开，详见 [原因与验证](thumbnail-timeout-validation.md)；0.1.1 的准备状态与分页修正继续保留。下列 0.1.0 包信息保留作历史交付记录。
 
