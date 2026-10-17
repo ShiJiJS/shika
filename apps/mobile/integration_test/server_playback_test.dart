@@ -424,8 +424,11 @@ void main() {
         await t.pump(const Duration(milliseconds: 400));
         expect(
           controller.value.position.inMilliseconds,
-          inInclusiveRange(250, controller.value.duration.inMilliseconds + 100),
+          inInclusiveRange(0, controller.value.duration.inMilliseconds + 100),
         );
+        // One-second AVI/MOV samples can land on the first keyframe. The long
+        // unbuffered sample below independently verifies an actual forward seek.
+        expect(controller.value.isPlaying, isFalse);
         result.addAll({
           'width': controller.value.size.width,
           'height': controller.value.size.height,
@@ -703,6 +706,13 @@ void main() {
       expect(controller.value.isPlaying, isFalse);
       expect(find.byKey(const Key('hold-speed-hint')), findsNothing);
       await pausedHold.up();
+      // Start away from the loop boundary so a clamped seek still has room.
+      await t.drag(surface, Offset(-t.getSize(surface).width * 1.1, 0));
+      await until(
+        t,
+        () => controller.value.position.inMilliseconds < 250,
+        'paused seek returns to beginning',
+      );
       final originalPosition = controller.value.position;
       await t.drag(surface, const Offset(120, 0));
       await until(

@@ -101,6 +101,45 @@ class ServerApi {
     int maximumBytes = 2 * 1024 * 1024,
     Duration timeout = const Duration(seconds: 20),
   }) async {
+    final elapsed = Stopwatch()..start();
+    Future<ApiResponse> attempt(Duration budget) => _requestOnce(
+      method,
+      path,
+      body: body,
+      query: query,
+      headers: headers,
+      scope: scope,
+      maximumBytes: maximumBytes,
+      timeout: budget,
+    );
+    try {
+      return await attempt(timeout);
+    } on ApiFailure catch (error) {
+      final remaining = timeout - elapsed.elapsed;
+      if (error.code != 'network_unavailable' ||
+          (method != 'GET' && method != 'HEAD') ||
+          body != null ||
+          remaining <= Duration.zero ||
+          _closed ||
+          scope?.cancelled == true) {
+        rethrow;
+      }
+      // A broken idle socket or truncated read may be retried once. Writes
+      // retain their caller-owned command ID and are never replayed here.
+      return attempt(remaining);
+    }
+  }
+
+  Future<ApiResponse> _requestOnce(
+    String method,
+    String path, {
+    List<int>? body,
+    Map<String, dynamic>? query,
+    Map<String, String> headers = const {},
+    RequestScope? scope,
+    int maximumBytes = 2 * 1024 * 1024,
+    Duration timeout = const Duration(seconds: 20),
+  }) async {
     if (_closed || scope?.cancelled == true) throw const RequestCancelled();
     HttpClientRequest? request;
     StreamSubscription<List<int>>? subscription;
@@ -194,6 +233,7 @@ class ServerApi {
     } on TimeoutException {
       throw const ApiFailure('连接超时，请检查服务后重试', code: 'timeout');
     } on IOException {
+      request?.abort();
       if (interruption is RequestCancelled || _closed) {
         throw const RequestCancelled();
       }

@@ -185,6 +185,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   bool _resumeAfterSuspension = false;
   bool _foreground = true;
   bool _loading = false;
+  bool _playRequested = false;
   double _baseSpeed = 1;
   final _screenRevision = ValueNotifier(0);
   MaterialPageRoute<void>? _fullscreenRoute;
@@ -206,6 +207,8 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    final lifecycle = WidgetsBinding.instance.lifecycleState;
+    _foreground = lifecycle == null || lifecycle == AppLifecycleState.resumed;
     WidgetsBinding.instance.addObserver(this);
     unawaited(_load());
   }
@@ -223,6 +226,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
     } else if (!widget.prepare) {
       _unload();
     } else if (!oldWidget.prepare ||
+        (!oldWidget.active && widget.active && _error != null) ||
         (!_loading &&
             _error == null &&
             (_controller == null ||
@@ -230,8 +234,9 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       unawaited(_load());
     } else if (!widget.active || widget.suspended) {
       if (widget.active && widget.suspended && !oldWidget.suspended) {
-        _resumeAfterSuspension = _controller?.value.isPlaying == true;
+        _resumeAfterSuspension = _playRequested;
       }
+      _playRequested = false;
       unawaited(widget.session.silence(_controller));
     } else if ((!oldWidget.active ||
             (oldWidget.suspended && _resumeAfterSuspension)) &&
@@ -244,6 +249,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   Future<void> _activate({required bool rewind, bool play = true}) async {
     final player = _controller, generation = _generation;
     if (player == null) return;
+    _playRequested = play;
     _loading = true;
     _repaint();
     try {
@@ -272,7 +278,9 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
     if (state != AppLifecycleState.resumed) {
       _resumeAfterSuspension = false;
       if (widget.video.source.asset) {
+        _playRequested = false;
         unawaited(widget.session.silence(_controller));
+        _repaint();
       } else {
         _unload();
       }
@@ -286,6 +294,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   void _unload() {
     ++_generation;
     _loading = false;
+    _playRequested = false;
     final old = _controller;
     _controller = null;
     unawaited(widget.session.release(old));
@@ -295,6 +304,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   Future<void> _load({bool autoplay = true, int emptyTrackRetry = 0}) async {
     final generation = ++_generation;
     _loading = true;
+    _playRequested = autoplay && widget.active && !widget.suspended;
     final old = _controller;
     _controller = null;
     _error = null;
@@ -308,11 +318,17 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       return;
     }
     final source = widget.video.source;
+    // This page owns lifecycle handling; the plugin must not resume independently.
+    final options = VideoPlayerOptions(allowBackgroundPlayback: true);
     final next = source.asset
-        ? VideoPlayerController.asset(source.location)
+        ? VideoPlayerController.asset(
+            source.location,
+            videoPlayerOptions: options,
+          )
         : VideoPlayerController.networkUrl(
             Uri.parse(source.location),
             httpHeaders: source.headers,
+            videoPlayerOptions: options,
           );
     _controller = next;
     var initialized = false, failureHandled = false;
@@ -329,13 +345,19 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       }
     });
     try {
-      if (!await widget.session.attach(next)) return;
-      if (!mounted || generation != _generation) {
+      if (!await widget.session.attach(next, current: widget.active)) return;
+      if (!mounted ||
+          generation != _generation ||
+          !widget.session.contains(next)) {
         await widget.session.release(next);
         return;
       }
       await next.initialize().timeout(const Duration(seconds: 12));
-      if (!mounted || generation != _generation) return;
+      if (!mounted ||
+          generation != _generation ||
+          !widget.session.contains(next)) {
+        return;
+      }
       if (next.value.size.isEmpty) {
         // A native ready event can still have no video dimensions. Recreate
         // once, releasing this decoder first; audio-only success is not video.
@@ -380,6 +402,17 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
     int generation, {
     Object? failure,
   }) async {
+    if (mounted && generation == _generation) {
+      _controller = null;
+      _loading = false;
+      _playRequested = false;
+      _error = failure is TimeoutException
+          ? '视频加载较慢，请重试或上下滑动继续查看'
+          : failure is UnsupportedError
+          ? '当前设备无法解码这段视频，可上下滑动继续查看'
+          : '这段视频暂时无法播放，可上下滑动继续查看';
+      _repaint();
+    }
     await widget.session.release(player);
     String? message;
     if (mounted && generation == _generation && widget.active) {
@@ -396,7 +429,8 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       message = '当前设备无法解码这段视频，可上下滑动继续查看';
     }
     if (mounted && generation == _generation) {
-      _error = message ?? '这段视频暂时无法播放，可上下滑动继续查看';
+      _playRequested = false;
+      _error = message ?? _error;
       _repaint();
     }
   }
@@ -422,6 +456,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
               final current = _controller;
               if (_error == null &&
                   current != null &&
+                  widget.session.contains(current) &&
                   current.value.isInitialized &&
                   !current.value.size.isEmpty &&
                   !_loading) {
@@ -431,6 +466,8 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                   fullscreen: true,
                   onExit: () => Navigator.pop(context),
                   onSpeedChanged: (speed) => _baseSpeed = speed,
+                  isPlayRequested: () => _playRequested,
+                  onPlayRequested: _changePlayRequest,
                 );
               }
               return Stack(
@@ -520,6 +557,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                   ),
                 )
               : _controller == null ||
+                    !widget.session.contains(_controller!) ||
                     !_controller!.value.isInitialized ||
                     _controller!.value.size.isEmpty
               ? Stack(
@@ -543,11 +581,18 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                   footer: widget.footer,
                   onFullscreen: widget.video.portrait ? null : _fullscreen,
                   onSpeedChanged: (speed) => _baseSpeed = speed,
+                  isPlayRequested: () => _playRequested,
+                  onPlayRequested: _changePlayRequest,
                 ),
         ),
       ],
     ),
   );
+  void _changePlayRequest(bool playing) {
+    _playRequested = playing;
+    _repaint();
+  }
+
   @override
   void dispose() {
     ++_generation;
@@ -578,6 +623,8 @@ class PlayerSurface extends StatefulWidget {
     this.onFullscreen,
     this.footer,
     this.onSpeedChanged,
+    this.isPlayRequested,
+    this.onPlayRequested,
   });
   final VideoPlayerController controller;
   final String name;
@@ -585,6 +632,8 @@ class PlayerSurface extends StatefulWidget {
   final VoidCallback? onExit, onFullscreen;
   final Widget? footer;
   final ValueChanged<double>? onSpeedChanged;
+  final bool Function()? isPlayRequested;
+  final ValueChanged<bool>? onPlayRequested;
   @override
   State<PlayerSurface> createState() => _PlayerSurfaceState();
 }
@@ -604,6 +653,15 @@ class _PlayerSurfaceState extends State<PlayerSurface>
   double? _pendingLevel;
   bool _writingLevel = false;
   VideoPlayerController get controller => widget.controller;
+  bool get _playRequested =>
+      widget.isPlayRequested?.call() ?? controller.value.isPlaying;
+
+  void _togglePlayback() {
+    final playing = !_playRequested;
+    widget.onPlayRequested?.call(playing);
+    if (!playing) _endBoost();
+    unawaited(playing ? controller.play() : controller.pause());
+  }
 
   @override
   void initState() {
@@ -646,13 +704,21 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     _speedChanges = _speedChanges
         .then((_) async {
           if (player.value.isInitialized) await player.setPlaybackSpeed(speed);
+          if (mounted &&
+              widget.interactionsEnabled &&
+              _deviceEnabled &&
+              !_seeking &&
+              _playRequested &&
+              player.value.isInitialized) {
+            await player.play();
+          }
         })
         .catchError((Object _) {});
   }
 
   void _startBoost() {
     if (!widget.interactionsEnabled ||
-        !controller.value.isPlaying ||
+        !_playRequested ||
         _previousSpeed != null) {
       return;
     }
@@ -674,7 +740,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     _hideTimer?.cancel();
     _seekStart = controller.value.position.inMilliseconds.toDouble();
     _seekDx = 0;
-    _resumeAfterSeek = controller.value.isPlaying;
+    _resumeAfterSeek = _playRequested;
     unawaited(controller.pause());
     setState(() {
       _seeking = true;
@@ -818,7 +884,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
       );
       return Semantics(
         label: widget.name,
-        value: '${v.isPlaying ? '正在播放' : '已暂停'}，${v.playbackSpeed}倍速',
+        value: '${_playRequested ? '正在播放' : '已暂停'}，${v.playbackSpeed}倍速',
         child: Stack(
           children: [
             Positioned.fill(
@@ -838,9 +904,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                             setState(() => _controls = !_controls);
                             if (_controls) _scheduleHide();
                           } else {
-                            v.isPlaying
-                                ? controller.pause()
-                                : controller.play();
+                            _togglePlayback();
                           }
                         },
                   onLongPressStart: !widget.interactionsEnabled
@@ -1007,20 +1071,18 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                                   children: [
                                     if (widget.fullscreen)
                                       IconButton(
-                                        tooltip: v.isPlaying ? '暂停' : '播放',
+                                        tooltip: _playRequested ? '暂停' : '播放',
                                         constraints: const BoxConstraints(
                                           minWidth: 30,
                                           minHeight: 28,
                                         ),
                                         padding: EdgeInsets.zero,
                                         onPressed: () {
-                                          v.isPlaying
-                                              ? controller.pause()
-                                              : controller.play();
+                                          _togglePlayback();
                                           _scheduleHide();
                                         },
                                         icon: Icon(
-                                          v.isPlaying
+                                          _playRequested
                                               ? Icons.pause
                                               : Icons.play_arrow,
                                           color: Colors.white,

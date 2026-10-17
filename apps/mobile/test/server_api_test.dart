@@ -88,6 +88,61 @@ void main() {
     },
   );
 
+  test('a truncated GET retries once on a new connection', () async {
+    var requests = 0;
+    final sockets = <Socket>[];
+    final raw = await ServerSocket.bind(InternetAddress.loopbackIPv4, 0);
+    raw.listen((socket) {
+      sockets.add(socket);
+      requests++;
+      final first = requests == 1;
+      var sent = false;
+      socket.listen((_) async {
+        if (sent) return;
+        sent = true;
+        final body = first ? '{' : '{"fresh":true}';
+        socket.write(
+          'HTTP/1.1 200 OK\r\nContent-Length: ${first ? 32 : body.length}\r\nConnection: close\r\n\r\n$body',
+        );
+        await socket.flush();
+        socket.destroy();
+      }, onError: (Object _) {});
+    });
+    api.close();
+    api = ServerApi(Uri.parse('http://127.0.0.1:${raw.port}'));
+    try {
+      expect(await api.json('GET', '/read'), {'fresh': true});
+      expect(requests, 2);
+    } finally {
+      for (final socket in sockets) {
+        socket.destroy();
+      }
+      await raw.close();
+    }
+  });
+
+  test(
+    'a lost write response is not automatically replayed by transport',
+    () async {
+      var requests = 0;
+      respond((request) async {
+        requests++;
+        (await request.response.detachSocket(writeHeaders: false)).destroy();
+      });
+      await expectLater(
+        api.json('POST', '/write', body: {'request_id': 'isolated'}),
+        throwsA(
+          isA<ApiFailure>().having(
+            (e) => e.code,
+            'code',
+            'network_unavailable',
+          ),
+        ),
+      );
+      expect(requests, 1);
+    },
+  );
+
   test('deadline ends a stalled real response', () async {
     final release = Completer<void>();
     respond((request) async {

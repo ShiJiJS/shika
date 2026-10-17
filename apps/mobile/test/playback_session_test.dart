@@ -47,6 +47,38 @@ class SimulatedPlayer extends VideoPlayerController {
 }
 
 void main() {
+  test(
+    'late invalid initialization cannot pause or replace the current selection',
+    () async {
+      final session = PlaybackSession();
+      final current = SimulatedPlayer('current'),
+          obsolete = SimulatedPlayer('obsolete');
+      await session.attach(current);
+      await session.attach(obsolete);
+      await session.select(current, valid: () => true);
+      final pauses = current.events.where((e) => e == 'pause').length;
+      await session.select(obsolete, valid: () => false);
+      expect(current.nativePlaying, isTrue);
+      expect(current.value.volume, 1);
+      expect(current.events.where((e) => e == 'pause').length, pauses);
+      expect(obsolete.nativePlaying, isFalse);
+      await session.close();
+    },
+  );
+  test('current initialization and a paused current page survive adjacent eviction', () async {
+    final session = PlaybackSession();
+    final current = SimulatedPlayer('current');
+    final neighbors = List.generate(3, (i) => SimulatedPlayer('neighbor$i'));
+    await session.attach(current, current: true);
+    await session.attach(neighbors[0]);
+    await session.attach(neighbors[1]);
+    await session.silence(current);
+    await session.attach(neighbors[2]);
+    expect(current.released, isFalse);
+    expect(neighbors[0].released, isTrue);
+    expect(session.debugPlayers, hasLength(3));
+    await session.close();
+  });
   test('new audio waits for the old native pause acknowledgement', () async {
     final session = PlaybackSession();
     final first = SimulatedPlayer('a'), second = SimulatedPlayer('b');

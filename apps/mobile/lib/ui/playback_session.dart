@@ -8,6 +8,8 @@ import 'package:video_player/video_player.dart';
 class PlaybackSession {
   final Set<VideoPlayerController> _players = {};
   VideoPlayerController? _selected;
+  // The visible decoder stays protected while initializing or temporarily paused.
+  VideoPlayerController? _current;
   Future<void> _work = Future.value();
   int _revision = 0;
   bool _closed = false;
@@ -25,19 +27,24 @@ class PlaybackSession {
     return result;
   }
 
-  Future<bool> attach(VideoPlayerController player) => _enqueue(() async {
-    if (_closed) {
-      await player.dispose();
-      return false;
-    }
-    if (_players.length >= 3) {
-      final victim = _players.firstWhere((item) => item != _selected);
-      _players.remove(victim);
-      await victim.dispose();
-    }
-    _players.add(player);
-    return true;
-  });
+  Future<bool> attach(VideoPlayerController player, {bool current = false}) {
+    if (current) _current = player;
+    return _enqueue(() async {
+      if (_closed) {
+        await player.dispose();
+        return false;
+      }
+      if (_players.length >= 3) {
+        final victim = _players.firstWhere(
+          (item) => item != _selected && item != _current,
+        );
+        _players.remove(victim);
+        await victim.dispose();
+      }
+      _players.add(player);
+      return true;
+    });
+  }
 
   Future<void> select(
     VideoPlayerController player, {
@@ -45,7 +52,14 @@ class PlaybackSession {
     bool play = true,
     bool rewind = false,
   }) {
+    if (_closed ||
+        !_players.contains(player) ||
+        !player.value.isInitialized ||
+        !valid()) {
+      return Future.value();
+    }
     _selected = player;
+    _current = player;
     final revision = ++_revision;
     bool current() =>
         !_closed &&
@@ -54,7 +68,9 @@ class PlaybackSession {
         _players.contains(player) &&
         valid();
     return _enqueue(() async {
+      if (!current()) return;
       for (final other in _players.where((item) => item != player).toList()) {
+        if (!current()) return;
         if (other.value.isInitialized) {
           await other.pause();
           await other.setVolume(0);
@@ -87,6 +103,7 @@ class PlaybackSession {
 
   Future<void> release(VideoPlayerController? player) {
     if (player == null) return Future.value();
+    if (_current == player) _current = null;
     if (_selected == player) {
       _selected = null;
       _revision++;
@@ -99,6 +116,7 @@ class PlaybackSession {
   Future<void> close() {
     _closed = true;
     _selected = null;
+    _current = null;
     _revision++;
     return _enqueue(() async {
       final players = _players.toList();
