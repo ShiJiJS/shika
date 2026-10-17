@@ -42,6 +42,8 @@ class ServerLibraryRepository extends LibraryRepository {
   final Map<String, String> _tagNames = {}, _trashIds = {};
   final Map<String, int> _tagCounts = {};
   final Map<String, String> _retryKeys = {};
+  final Map<String, String> _tagRetryKeys = {};
+  Future<void> _tagWrites = Future.value();
   RequestScope _videoRead = RequestScope(),
       _folderRead = RequestScope(),
       _scanRead = RequestScope();
@@ -172,6 +174,7 @@ class ServerLibraryRepository extends LibraryRepository {
     _round = null;
     _pendingRound = null;
     _pendingRoundSignature = null;
+    _tagRetryKeys.clear();
     _state = _state.copy(
       connected: false,
       videos: [],
@@ -435,6 +438,7 @@ class ServerLibraryRepository extends LibraryRepository {
     if (!identical(target, _api)) {
       _pendingRound = null;
       _pendingRoundSignature = null;
+      _tagRetryKeys.clear();
       cancelVideoRead();
       cancelFolderRead();
       _scanRead.cancel();
@@ -451,9 +455,11 @@ class ServerLibraryRepository extends LibraryRepository {
       cancelVideoRead();
     }
     _connectionError = null;
-    _tagNames.addEntries(
-      tags.map((tag) => MapEntry(tag['id'] as String, tag['name'] as String)),
-    );
+    _tagNames
+      ..clear()
+      ..addEntries(
+        tags.map((tag) => MapEntry(tag['id'] as String, tag['name'] as String)),
+      );
     _tagCounts
       ..clear()
       ..addEntries(
@@ -858,41 +864,72 @@ class ServerLibraryRepository extends LibraryRepository {
     Set<String> tags, {
     bool remove = false,
     bool replace = false,
-  }) async {
-    await call(
-      'PATCH',
-      '/api/v1/video-tags',
-      body: {
-        'request_id': requestId(),
-        'video_ids': ids.toList(),
-        'tag_ids': tags.toList(),
-        'mode': replace
-            ? 'replace'
-            : remove
-            ? 'remove'
-            : 'add',
-      },
-    );
-    _videos.clear();
-    await synchronize(api, _generation);
-  }
+  }) => _writeTags('PATCH', '/api/v1/video-tags', {
+    'video_ids': ids.toList()..sort(),
+    'tag_ids': tags.toList()..sort(),
+    'mode': replace
+        ? 'replace'
+        : remove
+        ? 'remove'
+        : 'add',
+  });
 
   @override
-  Future<void> editTag({
-    String? original,
-    String? name,
-    bool delete = false,
-  }) async {
-    await call(
-      delete
-          ? 'DELETE'
-          : original == null
-          ? 'POST'
-          : 'PATCH',
-      '/api/v1/tags${original == null ? '' : '/$original'}',
-      body: {'request_id': requestId(), if (!delete) 'name': name},
+  Future<void> editTag({String? original, String? name, bool delete = false}) =>
+      _writeTags(
+        delete
+            ? 'DELETE'
+            : original == null
+            ? 'POST'
+            : 'PATCH',
+        '/api/v1/tags${original == null ? '' : '/$original'}',
+        {if (!delete) 'name': name?.trim()},
+      );
+
+  Future<void> _writeTags(String method, String path, Json payload) {
+    final generation = _generation, target = api;
+    final signature = jsonEncode([method, path, payload]);
+    final result = _tagWrites.then((_) async {
+      if (_disposed || generation != _generation || !identical(target, _api)) {
+        throw const RequestCancelled();
+      }
+      final key = _tagRetryKeys.putIfAbsent(signature, requestId);
+      var accepted = false;
+      try {
+        await call(
+          method,
+          path,
+          using: target,
+          body: {'request_id': key, ...payload},
+        );
+        accepted = true;
+        await synchronize(
+          target,
+          generation,
+          beforePublish: () async {
+            cancelVideoRead();
+            _videos.clear();
+          },
+        );
+        _tagRetryKeys.remove(signature);
+      } on ApiFailure catch (error) {
+        final status = error.status;
+        if (!accepted &&
+            status != null &&
+            status >= 400 &&
+            status < 500 &&
+            status != 408 &&
+            status != 429) {
+          _tagRetryKeys.remove(signature);
+        }
+        rethrow;
+      }
+    });
+    _tagWrites = result.then<void>(
+      (_) {},
+      onError: (Object error, StackTrace stack) {},
     );
-    await synchronize(api, _generation);
+    return result;
   }
 
   @override

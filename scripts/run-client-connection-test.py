@@ -95,10 +95,12 @@ def watch():
 def main():
     global PREFIX
     parser = argparse.ArgumentParser()
-    parser.add_argument("--playback", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--playback", action="store_true")
+    mode.add_argument("--tags", action="store_true")
     parser.add_argument("--plain-name")
     args = parser.parse_args()
-    PREFIX = "i2" if args.playback else "i1"
+    PREFIX = "i3" if args.tags else "i2" if args.playback else "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     linux_root = "/mnt/" + ROOT.drive.rstrip(":").lower() + ROOT.as_posix()[2:]
     subprocess.run(
@@ -125,7 +127,9 @@ def main():
         command = [
             str(DEVELOP / "flutter/bin/flutter.bat"),
             "test",
-            "integration_test/server_playback_test.dart"
+            "integration_test/server_tags_test.dart"
+            if args.tags
+            else "integration_test/server_playback_test.dart"
             if args.playback
             else "integration_test/server_connection_test.dart",
             "-d",

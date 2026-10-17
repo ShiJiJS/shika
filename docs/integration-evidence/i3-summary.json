@@ -1,0 +1,58 @@
+{
+  "environment": "Android 16 API 36 x86_64 emulator + isolated WSL Docker instance, port 8761",
+  "results": {
+    "TAGS_RESULT": {
+      "single": true,
+      "batch_add_remove": true,
+      "unrelated_tag_preserved": true,
+      "AND_and_attributes": true,
+      "empty_scope": true,
+      "retry_same_command": true,
+      "rename_keeps_id": true,
+      "delete_updates_scope": true,
+      "files_unchanged": true,
+      "docker_restart_links": true
+    },
+    "TAGS_REOPEN_RESULT": {
+      "links": true,
+      "scope": true,
+      "renamed_id": true
+    }
+  },
+  "file_proof": "All 27 mounted media paths, sizes and SHA-256 hashes equal before and after tag operations and Docker restart",
+  "fixture_events": [
+    {
+      "phase": "ready",
+      "time": 1792196738.2750485
+    },
+    {
+      "phase": "library",
+      "time": 1792196886.6122248
+    },
+    {
+      "phase": "outage",
+      "time": 1792196889.289571
+    },
+    {
+      "phase": "docker-stopped",
+      "time": 1792196890.046439
+    },
+    {
+      "phase": "docker-started",
+      "time": 1792196898.5782528
+    },
+    {
+      "phase": "done",
+      "time": 1792196902.2546387
+    },
+    {
+      "phase": "android-force-stopped",
+      "time": 1792196903.9680278
+    }
+  ],
+  "client_unit_widget_suite": 31,
+  "limitations": [
+    "NAS and target phone acceptance remain V1",
+    "File operations and backup integration remain I4-I6"
+  ]
+}

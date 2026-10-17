@@ -8,6 +8,7 @@ from collections import deque
 from pathlib import Path
 
 from fastapi import Header, HTTPException
+from fastapi.responses import JSONResponse
 
 from video_viewer.app import create_app
 from video_viewer.config import Settings
@@ -47,7 +48,7 @@ def create_e2e_app():
     app = create_app(settings)
     trace = deque(maxlen=300)
     checkpoint = {"phase": "ready"}
-    controls = {"slow": False}
+    controls = {"slow": False, "lose_tag_response": False}
 
     @app.middleware("http")
     async def observe(request, call_next):
@@ -59,10 +60,26 @@ def create_e2e_app():
                 "authenticated": bool(request.headers.get("authorization")),
                 "range": request.headers.get("range"),
             }
+            if request.method == "PATCH" and request.url.path == "/api/v1/video-tags":
+                body = await request.json()
+                entry["command_hash"] = hashlib.sha256(
+                    str(body.get("request_id")).encode()
+                ).hexdigest()
             trace.append(entry)
             if request.query_params.get("search") == "片":
                 await asyncio.sleep(0.75)
         response = await call_next(request)
+        if (
+            controls["lose_tag_response"]
+            and request.method == "PATCH"
+            and request.url.path == "/api/v1/video-tags"
+            and response.status_code == 200
+        ):
+            controls["lose_tag_response"] = False
+            response = JSONResponse(
+                {"error": {"code": "fixture_response_lost", "message": "测试连接已中断，请重试"}},
+                status_code=503,
+            )
         if request.url.path.startswith("/api/"):
             entry["status"] = response.status_code
         if controls["slow"] and request.method == "GET" and request.url.path.endswith("/stream"):
@@ -146,6 +163,8 @@ def create_e2e_app():
             controls["slow"] = True
         elif action == "normal-streams":
             controls["slow"] = False
+        elif action == "lose-tag-response":
+            controls["lose_tag_response"] = True
         elif action == "seek-sample":
             destination = BASE / "camera" / "长视频" / "拖动验证.mp4"
             if not destination.exists():
