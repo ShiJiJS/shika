@@ -2,9 +2,9 @@
 
 部署在 NAS 上的私人短视频库，配套 Android 优先的跨平台 App，用于随机浏览、标签筛选与快速整理。
 
-P2 HTML 原型与 [Flutter Android 客户端演示版](apps/mobile/README.md) 已获用户确认，客户端沿用 B 风格。S1–S6 服务端认证、扫描、列表、授权播放、轮次、标签、可靠回收站、外部文件变化识别及完整管理备份恢复已在 WSL2 Docker 实现并验证。Flutter 默认连接真实服务，保留独立演示模式；正在按 I1–I6 推进模拟器联调，已验证范围见 [联调记录](docs/integration-validation.md) 和 [服务端验证记录](docs/server-validation.md)。
+P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已确认的 B 风格。S1–S6 服务端与 I1–I6 真实服务联调已完成：认证、扫描、播放、轮次、标签、回收站、外部文件变化及备份恢复均有 WSL2 Docker 和 Android 模拟器证据。Flutter 默认连接真实服务，保留独立演示模式。当前进入 V1，已提供本机 Android 测试包与部署说明；真实 NAS 和目标手机验收待补齐，见 [V1 状态](docs/v1-validation.md)。
 
-服务端技术栈已确认：Python / FastAPI / Uvicorn、SQLite / SQLAlchemy / Alembic、FFmpeg / ffprobe；通过 Docker Compose 单服务、单端口部署。按 S1–S6 实现服务端，再按 I1–I6 接入 Flutter 并在模拟器联调，最后进行 NAS 验收。NAS 资源与预加载的评估范围见 [服务端方案](docs/server-plan.md)。
+服务端技术栈：Python / FastAPI / Uvicorn、SQLite / SQLAlchemy / Alembic、FFmpeg / ffprobe；通过 Docker Compose 单服务、单端口部署。NAS 资源与预加载的评估范围见 [服务端方案](docs/server-plan.md)。
 
 ## 第一版范围
 
@@ -19,7 +19,9 @@ P2 HTML 原型与 [Flutter Android 客户端演示版](apps/mobile/README.md) �
 
 ## 项目文档
 
-- [Flutter 客户端演示：运行、试用与复位](apps/mobile/README.md)
+- [部署、安装、日常使用与恢复手册](docs/deployment.md)
+- [V1 本机交付、安装包校验与目标环境待验项](docs/v1-validation.md)
+- [Flutter 客户端：真实服务、演示与开发](apps/mobile/README.md)
 - [客户端数据接口与阶段边界](docs/client-data-contract.md)
 - [客户端验证和模拟器画面](docs/client-validation.md)
 - [Flutter 与真实服务联调、隔离测试实例](docs/integration-validation.md)

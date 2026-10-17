@@ -1,6 +1,6 @@
 # Video Viewer 服务端
 
-当前完成 S1–S6：口令认证、多媒体目录扫描、目录层级、媒体信息、缩略图、分页查询、持久化任务、授权原文件流、随机/顺序轮次、标签管理、真实回收站、外部文件变化识别及完整管理备份恢复。Flutter 真实联调继续按 [技术方案](../../docs/server-plan.md) 推进，已完成能力与证据见 [服务端验证记录](../../docs/server-validation.md)。
+当前完成 S1–S6：口令认证、多媒体目录扫描、目录层级、媒体信息、缩略图、分页查询、持久化任务、授权原文件流、随机/顺序轮次、标签管理、真实回收站、外部文件变化识别及完整管理备份恢复。Flutter I1–I6 真实联调已完成。NAS 配置、Android 安装与日常使用见 [部署手册](../../docs/deployment.md)；已完成能力与证据见 [服务端验证记录](../../docs/server-validation.md) 和 [V1 待验项](../../docs/v1-validation.md)。
 
 ## 本机 WSL2 开发
 
@@ -80,11 +80,13 @@ NAS 部署时从 `.env.example` 设置 NAS 本地数据路径、视频挂载路�
 | `POST /api/v1/operations/{id}/undo` | request_id 精确撤销最近成功删除，旧操作返回冲突 |
 | `POST /api/v1/operations/{id}/retry` | request_id 重试该操作未完成条目，成功项不重做 |
 | `GET /api/v1/operations/{id}` | 文件操作任务、阶段和逐项成功/失败结果 |
+| `GET /api/v1/file-requests/{request_id}` | 按客户端命令 ID 只读查询文件操作，未受理返回 404，不触发重执行 |
 | `POST /api/v1/backups` | request_id 创建一致性管理备份，202 返回导出任务 |
 | `GET /api/v1/backups` | 最近完成的导出及恢复前快照，默认 20、最多 100 |
 | `GET /api/v1/backups/{id}/download` | 授权下载已完成的 JSON 备份 |
 | `POST /api/v1/backup-imports` | 上传原始 JSON 文件，Idempotency-Key 请求头可重试；202 返回校验任务 |
 | `POST /api/v1/backup-restores` | request_id、preview_id、root_mapping、confirmed=true 接受完整恢复 |
+| `GET /api/v1/backup-requests/{kind}/{request_id}` | 按 export/inspect/restore 与客户端请求 ID 只读查询备份任务 |
 
 分页为 offset/limit，默认 50、最多 200；返回 items/total/offset/limit。目录范围包含子树，名称按字面查找，排序为路径与稳定 ID。视频摘要包含实际视频/音频编码、容器、时长、旋转后的尺寸、媒体入口与 tag_ids；标签列表返回稳定 ID 和名称。完整参数可在 `/docs` 和 `/openapi.json` 查看。
 
@@ -138,7 +140,7 @@ NAS 部署时从 `.env.example` 设置 NAS 本地数据路径、视频挂载路�
 
 恢复根据磁盘现状表达可用、回收或缺失，不回滚真实文件移动，不声称找回已永久删除的视频。当前可验证的回收索引及命令回执保留为安全证据，标签、筛选和视频管理记录按备份替换。所有历史文件操作隔离为只读记录，旧撤销和显式重试不能重新执行；备份后发出的旧请求再次到达时也只返回回执。客户端随后刷新权威状态。
 
-恢复前快照及导出文件在 `/data/backups`，不自动清理。任务 result.pre_snapshot_id 可用于下载恢复前快照；客户端恢复请求重试复用 request_id，重新发起恢复使用新的请求标识。未映射目录可后续通过媒体目录配置重新接入；恢复产生的根目录不会在重启时被默认挂载范围静默扩大。缩略图在下一次扫描重建。此协议区别于 Flutter 演示备份格式，真实客户端传输与恢复确认继续 I6。
+恢复前快照及导出文件在 `/data/backups`，不自动清理。任务 result.pre_snapshot_id 可用于下载恢复前快照；客户端恢复请求重试复用 request_id，重新发起恢复使用新的请求标识。未映射目录可后续通过媒体目录配置重新接入；恢复产生的根目录不会在重启时被默认挂载范围静默扩大。缩略图在下一次扫描重建。此协议区别于 Flutter 演示备份格式；I6 已验证真实客户端文件传输、确认、断线只读核对及新实例显式映射恢复。
 
 ## Docker 内验证
 
@@ -148,4 +150,4 @@ wsl -d Ubuntu-24.04 -- bash /mnt/c/Project/video_viewer/scripts/test-server.sh
 
 测试镜像由同一 runtime 构建，使用非 root 用户和只读根文件系统，在容器临时目录生成媒体和数据库。覆盖 MP4、MOV、MKV、WebM、AVI，以及 H.264、HEVC、VP9、MPEG-4 Part 2、ProRes；MOV 另含旋转与 PCM 音频。生成器也可用于指定的可丢弃开发目录，固定样本名称会被重建，不要对个人视频目录运行。
 
-测试验证服务端探测、文件字节和 API 行为，Android 解码与真实网络播放在 I2 验收。NAS 上的首帧、快刷、预加载及后台扫描资源测量仍属于 V1，额外性能优化记录在后续事项。
+测试验证服务端探测、文件字节和 API 行为，I2 已记录 Android 模拟器解码与真实网络播放结果。NAS 上的首帧、快刷、预加载及后台扫描资源测量仍属于 V1，额外性能优化记录在后续事项。

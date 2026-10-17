@@ -1,6 +1,6 @@
 # Android 开发与模拟器
 
-本项目使用 Flutter，Android 为第一版开发与验收平台。P2 原型和客户端演示已确认，当前默认连接 WSL Docker 真实服务并按 I1–I6 联调；仍可单独运行演示模式。最终 NAS 与目标手机验证属于 V1，进度见 [联调记录](integration-validation.md)。
+本项目使用 Flutter，Android 为第一版开发与验收平台。P2 原型和客户端演示已确认，I1–I6 真实服务联调已完成；默认连接 WSL Docker，仍可单独运行演示模式。最终 NAS 与目标手机验证属于 V1，进度见 [联调记录](integration-validation.md)。本机可安装测试包及复现命令见 [部署手册](deployment.md#4-安装与开发调试)。
 
 ## 本机配置
 

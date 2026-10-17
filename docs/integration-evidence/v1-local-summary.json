@@ -1,0 +1,56 @@
+{
+  "source_commit": "41d95f398eeec9208315a6bccf89d1077a90d745",
+  "apk_bytes": 41304346,
+  "apk_sha256": "d1c19c963b567bc346d46ef42963a03cf08556e22087a8b5cef8346473ddc628",
+  "engine_libraries": [
+    "lib/arm64-v8a/libapp.so",
+    "lib/arm64-v8a/libflutter.so",
+    "lib/x86_64/libapp.so",
+    "lib/x86_64/libflutter.so"
+  ],
+  "version_name": "0.1.0",
+  "version_code": 1,
+  "min_sdk": 24,
+  "target_sdk": 36,
+  "signing": "local Android Debug certificate, v2 signature verified",
+  "install_replace_success": true,
+  "launch_activity_success": true,
+  "scope": "local release-mode smoke; target NAS/phone unverified",
+  "release_smoke": "Android activity starts successfully and connection form renders; no release-mode logged-in playback claimed",
+  "container_recreation": {
+    "container_force_recreated": true,
+    "same_saved_token_accepted": true,
+    "available_videos": 8,
+    "media_files": 8,
+    "unchanged": {
+      "server_id": true,
+      "available_videos": true,
+      "video_state_digest": true,
+      "tag_state_digest": true,
+      "playback_state_digest": true,
+      "root_state_digest": true,
+      "media_files": true,
+      "media_paths_sizes_sha256_digest": true
+    },
+    "environment": "WSL Ubuntu 24.04 Docker linux/amd64; generated sample media only"
+  },
+  "network_appearance": {
+    "initial_native_test": true,
+    "host_adb_force_stop_between_runs": true,
+    "second_independent_flutter_process": true,
+    "encrypted_fixture_session_reused": true,
+    "dark_preference_survives_process": true,
+    "menu_settings_agree": true,
+    "network_native_video_plays": true,
+    "file_and_credential_namespace": "dedicated e2e-v1; normal App state untouched"
+  },
+  "target": {
+    "nas_brand": "ZSpace (user supplied)",
+    "nas_model_architecture_address": "pending",
+    "phone": "OPPO Find X8 (user supplied)",
+    "phone_installed_os": "pending",
+    "actual_target_measurements": "pending"
+  },
+  "ordinary_debug_main_rebuilt_installed_started": true,
+  "flutter_analyze": "No issues found (5.2s)"
+}
