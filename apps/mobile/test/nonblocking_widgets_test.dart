@@ -57,6 +57,49 @@ void main() {
     await t.pump();
   }
 
+  testWidgets('querying a pending file result leaves navigation enabled', (
+    t,
+  ) async {
+    repo.fileQuery = Completer<void>();
+    await t.pumpWidget(VideoViewerApp(repository: repo));
+    await pump(t);
+    await t.tap(find.text('查询结果'));
+    await pump(t);
+    expect(find.text('正在查询…'), findsOneWidget);
+    expect(find.byKey(const Key('management-loading')), findsNothing);
+    await t.tap(find.byKey(const Key('nav-settings')));
+    await pump(t);
+    expect(find.text('媒体目录'), findsOneWidget);
+    repo.fileQuery!.complete();
+    await pump(t);
+    await t.pumpWidget(const SizedBox());
+    await t.pump();
+  });
+
+  testWidgets(
+    'round completion floats without resizing and vanishes after three seconds',
+    (t) async {
+      await t.runAsync(
+        () => repo.setScope(VideoQuery(folder: '/videos/收集/花草/横版')),
+      );
+      expect(repo.snapshot.round, hasLength(1));
+      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await pump(t);
+      final stage = find.byKey(const Key('video-stage'));
+      final rect = t.getRect(stage);
+      await t.drag(stage, const Offset(0, -500));
+      await pump(t);
+      final banner = find.byKey(const Key('round-notice'));
+      expect(banner, findsOneWidget);
+      expect(t.getRect(stage), rect);
+      expect(t.getTopLeft(banner).dy, greaterThan(rect.top));
+      await t.pump(const Duration(seconds: 4));
+      expect(banner, findsNothing);
+      await t.pumpWidget(const SizedBox());
+      await t.pump();
+    },
+  );
+
   testWidgets(
     'uninitialized video and blocked position save never capture vertical swipes',
     (t) async {
@@ -92,17 +135,15 @@ void main() {
       await t.tap(find.text('进入快速整理'));
       await pump(t);
       repo.deletion = Completer<void>();
+      final videoRect = t.getRect(find.byKey(const Key('video-stage')));
       await t.tap(find.byKey(const Key('quick-delete')));
       await pump(t);
       expect(visible(t), ids[1]);
       final banner = find.byKey(const Key('delete-notice'));
       expect(banner, findsOneWidget);
-      expect(
-        t.getBottomLeft(banner).dy,
-        lessThanOrEqualTo(
-          t.getTopLeft(find.byKey(const Key('video-stage'))).dy,
-        ),
-      );
+      expect(t.getRect(find.byKey(const Key('video-stage'))), videoRect);
+      expect(t.getTopLeft(banner).dy, greaterThan(videoRect.top));
+      expect(t.getBottomLeft(banner).dy, lessThan(videoRect.top + 80));
       expect(find.byType(SnackBar), findsNothing);
       await t.pump(const Duration(seconds: 5));
       await t.tap(find.byKey(const Key('quick-delete')));

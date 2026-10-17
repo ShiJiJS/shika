@@ -113,6 +113,7 @@ abstract class LibraryRepository extends ChangeNotifier {
 
   bool get fileOperationPending => false;
   Future<void> reconcileFileOperation() async {}
+  Future<int> forgetMissingVideos() async => 0;
   void cancelVideoRead() {}
   void cancelFolderRead() {}
   void cancelTrashRead() {}

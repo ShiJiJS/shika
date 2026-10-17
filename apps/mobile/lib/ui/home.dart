@@ -92,6 +92,9 @@ class _LibraryHomeState extends State<LibraryHome> {
   int trashTotal = 0, trashGeneration = 0;
   bool trashLoading = false;
   bool selectingAllTrash = false, restoringTrash = false;
+  bool purgingTrash = false, queryingFiles = false, cleaningMissing = false;
+  Timer? _roundNoticeTimer;
+  bool _roundNotice = false;
   String trashError = '';
   List<LibraryVideo> missingItems = [];
   int missingTotal = 0, missingGeneration = 0;
@@ -301,6 +304,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   @override
   void dispose() {
     _deleteNoticeTimer?.cancel();
+    _roundNoticeTimer?.cancel();
     unawaited(_playback.close());
     libraryGeneration++;
     trashGeneration++;
@@ -452,22 +456,11 @@ class _LibraryHomeState extends State<LibraryHome> {
         return _browsing.step(delta);
       }
       if (!mounted) return false;
-      ScaffoldMessenger.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            margin: snackMargin,
-            content: const Text('本轮已看完'),
-            action: SnackBarAction(
-              label: '开始新一轮',
-              onPressed: () => perform(() async {
-                await repo.newRound();
-                _browsing.followRepository();
-                playerEpoch++;
-              }),
-            ),
-          ),
-        );
+      _roundNoticeTimer?.cancel();
+      setState(() => _roundNotice = true);
+      _roundNoticeTimer = Timer(const Duration(seconds: 3), () {
+        if (mounted) setState(() => _roundNotice = false);
+      });
       return false;
     }
     return _browsing.step(delta);
@@ -792,51 +785,6 @@ class _LibraryHomeState extends State<LibraryHome> {
                     )
                   : ColoredBox(color: Paper.of(context).line),
             ),
-            if (_deleteNotice != null)
-              Container(
-                key: const Key('delete-notice'),
-                padding: const EdgeInsets.only(left: 16, right: 4),
-                height: 40,
-                color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        _deleteNotice!,
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ),
-                    if (_undoNotice != null)
-                      TextButton(
-                        onPressed: () async {
-                          final operation = _undoNotice!;
-                          setState(() {
-                            _deleteNotice = null;
-                            _undoNotice = null;
-                          });
-                          _deleteNoticeTimer?.cancel();
-                          await perform(() async {
-                            if (data.lastDelete?.id != operation.id) {
-                              throw const LibraryFailure('这次删除已失效，请在回收站查看');
-                            }
-                            await repo.undoDelete(operationId: operation.id);
-                            _browsing.followRepository();
-                          });
-                        },
-                        child: const Text('撤销'),
-                      ),
-                    IconButton(
-                      tooltip: '关闭删除提示',
-                      iconSize: 18,
-                      onPressed: () {
-                        _deleteNoticeTimer?.cancel();
-                        setState(() => _deleteNotice = null);
-                      },
-                      icon: const Icon(Icons.close),
-                    ),
-                  ],
-                ),
-              ),
             if (error.isNotEmpty)
               Container(
                 color: Theme.of(context).colorScheme.errorContainer,
@@ -864,19 +812,24 @@ class _LibraryHomeState extends State<LibraryHome> {
             if (data.connected &&
                 repo.fileOperationPending &&
                 !_browsing.deleting &&
-                !restoringTrash)
+                !restoringTrash &&
+                !purgingTrash)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                    const Expanded(
-                      child: Text('文件操作结果待确认', style: TextStyle(fontSize: 12)),
+                    Expanded(
+                      child: ValueListenableBuilder<String?>(
+                        valueListenable: repo.fileStatus,
+                        builder: (_, status, _) => Text(
+                          status ?? '文件操作结果待确认',
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
                     ),
                     TextButton(
-                      onPressed: busy
-                          ? null
-                          : () => perform(repo.reconcileFileOperation),
-                      child: const Text('查询结果'),
+                      onPressed: queryingFiles ? null : queryFileResult,
+                      child: Text(queryingFiles ? '正在查询…' : '查询结果'),
                     ),
                   ],
                 ),
@@ -924,29 +877,125 @@ class _LibraryHomeState extends State<LibraryHome> {
                       ),
               ),
             Expanded(
-              child: switch (page) {
-                'browse' => TweenAnimationBuilder<double>(
-                  key: ValueKey(repo.libraryPreparation.value.ready),
-                  tween: Tween(begin: 0, end: 1),
-                  duration: const Duration(milliseconds: 180),
-                  child: browsing(),
-                  builder: (_, opacity, child) =>
-                      Opacity(opacity: opacity, child: child),
-                ),
-                'library' => library(),
-                'tags' => tags(),
-                'settings' => settings(),
-                'roots' => roots(),
-                'trash' => trash(),
-                'backup' => backup(),
-                'connection' => connection(),
-                _ => const SizedBox(),
-              },
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  switch (page) {
+                    'browse' => TweenAnimationBuilder<double>(
+                      key: ValueKey(repo.libraryPreparation.value.ready),
+                      tween: Tween(begin: 0, end: 1),
+                      duration: const Duration(milliseconds: 180),
+                      child: browsing(),
+                      builder: (_, opacity, child) =>
+                          Opacity(opacity: opacity, child: child),
+                    ),
+                    'library' => library(),
+                    'tags' => tags(),
+                    'settings' => settings(),
+                    'roots' => roots(),
+                    'trash' => trash(),
+                    'backup' => backup(),
+                    'connection' => connection(),
+                    _ => const SizedBox(),
+                  },
+                  if (_deleteNotice != null || _roundNotice)
+                    Positioned(
+                      top: 8,
+                      left: 12,
+                      right: 12,
+                      child: floatingNotices(),
+                    ),
+                ],
+              ),
             ),
           ],
         ),
       ),
     ),
+  );
+
+  Widget floatingNotices() => Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      if (_deleteNotice != null)
+        Container(
+          key: const Key('delete-notice'),
+          padding: const EdgeInsets.only(left: 16, right: 4),
+          height: 40,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerHigh
+                .withValues(alpha: .94),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  _deleteNotice!,
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ),
+              if (_undoNotice != null)
+                TextButton(
+                  onPressed: () async {
+                    final operation = _undoNotice!;
+                    setState(() {
+                      _deleteNotice = null;
+                      _undoNotice = null;
+                    });
+                    _deleteNoticeTimer?.cancel();
+                    await perform(() async {
+                      if (data.lastDelete?.id != operation.id) {
+                        throw const LibraryFailure('这次删除已失效，请在回收站查看');
+                      }
+                      await repo.undoDelete(operationId: operation.id);
+                      _browsing.followRepository();
+                    });
+                  },
+                  child: const Text('撤销'),
+                ),
+              IconButton(
+                tooltip: '关闭删除提示',
+                iconSize: 18,
+                onPressed: () {
+                  _deleteNoticeTimer?.cancel();
+                  setState(() => _deleteNotice = null);
+                },
+                icon: const Icon(Icons.close),
+              ),
+            ],
+          ),
+        ),
+      if (_roundNotice)
+        Container(
+          key: const Key('round-notice'),
+          height: 40,
+          padding: const EdgeInsets.symmetric(horizontal: 14),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerHigh
+                .withValues(alpha: .94),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              const Expanded(
+                child: Text('本轮已看完', style: TextStyle(fontSize: 12)),
+              ),
+              TextButton(
+                onPressed: () async {
+                  setState(() => _roundNotice = false);
+                  await perform(() async {
+                    await repo.newRound();
+                    _browsing.followRepository();
+                    playerEpoch++;
+                  });
+                },
+                child: const Text('开始新一轮'),
+              ),
+            ],
+          ),
+        ),
+    ],
   );
 
   Widget bottomNav() => Container(
@@ -2006,13 +2055,20 @@ class _LibraryHomeState extends State<LibraryHome> {
               },
         child: actionLabel(
           Icons.refresh,
-          repo.libraryPreparation.value.scanning ? '扫描进行中' : '刷新媒体目录',
+          repo.libraryPreparation.value.scanning ? '同步进行中' : '同步外部变更',
         ),
       ),
       if (missingTotal > 0 || missingItems.isNotEmpty) ...[
         const SizedBox(height: 30),
         Text('缺失视频', style: Paper.of(context).title.copyWith(fontSize: 20)),
         note('保留标签记录，重新找到同一文件后继续关联。'),
+        TextButton(
+          key: const Key('forget-missing'),
+          onPressed: cleaningMissing || repo.libraryPreparation.value.scanning
+              ? null
+              : clearMissing,
+          child: Text(cleaningMissing ? '正在清理…' : '清除失效记录 ($missingTotal)'),
+        ),
         for (final v in missingItems)
           ListTile(
             key: Key('missing-${v.id}'),
@@ -2101,8 +2157,67 @@ class _LibraryHomeState extends State<LibraryHome> {
     path.dispose();
   }
 
+  Future<void> queryFileResult() async {
+    if (queryingFiles) return;
+    setState(() => queryingFiles = true);
+    try {
+      await repo.reconcileFileOperation();
+      if (mounted) {
+        notice(repo.fileOperationPending ? '任务仍在后台处理，可继续浏览' : '结果已同步');
+      }
+    } on RequestCancelled {
+      return;
+    } catch (e) {
+      notice(e.toString());
+    } finally {
+      if (mounted) setState(() => queryingFiles = false);
+    }
+  }
+
+  Future<void> clearMissing() async {
+    if (!await confirm(
+      '清除失效视频记录？',
+      '只清除扫描已确认缺失的记录及标签关联，不删除任何磁盘文件。暂时离线的目录不会清理；清理后找回视频不会恢复原标签。',
+      '清除记录',
+    )) {
+      return;
+    }
+    if (!mounted) return;
+    setState(() => cleaningMissing = true);
+    try {
+      final count = await repo.forgetMissingVideos();
+      _browsing.followRepository();
+      if (mounted && page == 'roots') await loadMissing();
+      notice('已清除 $count 条失效记录');
+    } catch (e) {
+      notice(e.toString());
+    } finally {
+      if (mounted) setState(() => cleaningMissing = false);
+    }
+  }
+
+  Future<void> purgeTrash(Set<String> ids) async {
+    if (purgingTrash) return;
+    setState(() => purgingTrash = true);
+    try {
+      await repo.permanentlyDelete(ids);
+      if (!mounted) return;
+      setState(() => selected.removeAll(ids));
+      if (page == 'trash') await loadTrash();
+      notice('已永久删除');
+    } on RequestCancelled {
+      return;
+    } catch (e) {
+      notice('删除结果待确认：$e');
+    } finally {
+      if (mounted) setState(() => purgingTrash = false);
+    }
+  }
+
   Future<void> selectAllTrash() async {
-    if (selectingAllTrash || restoringTrash || trashLoading) return;
+    if (selectingAllTrash || restoringTrash || purgingTrash || trashLoading) {
+      return;
+    }
     if (selected.length == trashTotal && trashTotal > 0) {
       setState(() => selected.clear());
       return;
@@ -2136,7 +2251,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   Future<void> restoreSelectedTrash() async {
-    if (restoringTrash || selected.isEmpty) return;
+    if (restoringTrash || purgingTrash || selected.isEmpty) return;
     final ids = {...selected};
     setState(() => restoringTrash = true);
     try {
@@ -2189,7 +2304,11 @@ class _LibraryHomeState extends State<LibraryHome> {
               TextButton(
                 key: const Key('trash-select-all'),
                 onPressed:
-                    busy || selectingAllTrash || trashLoading || restoringTrash
+                    busy ||
+                        selectingAllTrash ||
+                        trashLoading ||
+                        restoringTrash ||
+                        purgingTrash
                     ? null
                     : selectAllTrash,
                 child: Text(
@@ -2203,7 +2322,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             ],
           ),
         ),
-        if (restoringTrash)
+        if (restoringTrash || purgingTrash)
           ValueListenableBuilder<String?>(
             valueListenable: repo.fileStatus,
             builder: (_, status, _) => Padding(
@@ -2217,7 +2336,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    status ?? '正在恢复，可继续浏览',
+                    status ?? (purgingTrash ? '正在删除，可继续浏览' : '正在恢复，可继续浏览'),
                     style: const TextStyle(fontSize: 12),
                   ),
                 ],
@@ -2239,7 +2358,11 @@ class _LibraryHomeState extends State<LibraryHome> {
                     v.originalPath ?? v.path,
                     style: const TextStyle(fontSize: 12),
                   ),
-                  onChanged: busy || restoringTrash || selectingAllTrash
+                  onChanged:
+                      busy ||
+                          restoringTrash ||
+                          selectingAllTrash ||
+                          purgingTrash
                       ? null
                       : (yes) => setState(
                           () =>
@@ -2263,6 +2386,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                 onPressed:
                     busy ||
                         restoringTrash ||
+                        purgingTrash ||
                         selectingAllTrash ||
                         selected.isEmpty
                     ? null
@@ -2274,6 +2398,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                 onPressed:
                     busy ||
                         restoringTrash ||
+                        purgingTrash ||
                         selectingAllTrash ||
                         selected.isEmpty
                     ? null
@@ -2284,12 +2409,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                           '将永久删除所选 ${ids.length} 个视频，无法撤销。',
                           '永久删除',
                         )) {
-                          if (await perform(
-                            () => repo.permanentlyDelete(ids),
-                          )) {
-                            setState(() => selected = {});
-                            notice('已永久删除');
-                          }
+                          await purgeTrash(ids);
                         }
                       },
                 style: TextButton.styleFrom(

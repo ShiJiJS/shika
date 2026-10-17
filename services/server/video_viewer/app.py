@@ -20,6 +20,7 @@ from .errors import LibraryError
 from .file_operations import FileOperations
 from .file_state import reserved_video_ids
 from .library_state import library_state
+from .metadata_cleanup import forget_missing
 from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
 from .playback import Playback
 from .scanner import Scanner
@@ -99,6 +100,10 @@ class TrashInput(WriteInput):
 
 
 class PermanentInput(TrashInput):
+    confirmed: Literal[True]
+
+
+class ForgetMissingInput(WriteInput):
     confirmed: Literal[True]
 
 
@@ -446,6 +451,10 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         return operation_task(
             request, request.app.state.files.submit("restore", body.trash_ids, body.request_id)
         )
+
+    @app.post("/api/v1/videos/forget-missing", dependencies=auth_required)
+    def forget_missing_videos(body: ForgetMissingInput, request: Request):
+        return forget_missing(request.app.state.db, body.request_id)
 
     @app.post("/api/v1/trash/permanent", dependencies=auth_required, status_code=202)
     def permanent_trash(body: PermanentInput, request: Request):

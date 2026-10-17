@@ -424,6 +424,17 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
   }
 
   @override
+  Future<int> forgetMissingVideos() async {
+    final count = missingCount;
+    await _commit(
+      (s) => s.copy(
+        videos: s.videos.where((v) => v.status != VideoStatus.missing),
+      ),
+    );
+    return count;
+  }
+
+  @override
   Future<void> permanentlyDelete(Set<String> ids) => _commit(
     (s) => s.copy(
       videos: s.videos.where(

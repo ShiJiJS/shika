@@ -1075,7 +1075,13 @@ class ServerLibraryRepository extends LibraryRepository {
     final target = api, generation = _generation;
     return serializeFiles(() async {
       if (!fileOperationPending) return;
-      final task = await runFileCommand(target, generation, submit: false);
+      final task = await runFileCommand(
+        target,
+        generation,
+        submit: false,
+        wait: false,
+      );
+      if (['queued', 'running'].contains(task['status'])) return;
       if (task['status'] != 'completed' ||
           object(task['result'])['partial'] == true) {
         throw LibraryFailure(failure(task));
@@ -1087,6 +1093,7 @@ class ServerLibraryRepository extends LibraryRepository {
     ServerApi target,
     int generation, {
     required bool submit,
+    bool wait = true,
   }) async {
     void check() {
       if (_disposed || generation != _generation || !identical(target, _api)) {
@@ -1125,6 +1132,7 @@ class ServerLibraryRepository extends LibraryRepository {
                 ![408, 429].contains(error.status))) {
           check();
           await saveFileState({..._fileState}..remove('pending'));
+          fileStatus.value = null;
           publish();
         }
         rethrow;
@@ -1137,11 +1145,22 @@ class ServerLibraryRepository extends LibraryRepository {
     late Json task;
     while (true) {
       check();
-      task = await call(
-        'GET',
-        '/api/v1/tasks/${command['task']}',
-        using: target,
-      );
+      try {
+        task = await call(
+          'GET',
+          '/api/v1/tasks/${command['task']}',
+          using: target,
+        );
+      } on ApiFailure catch (error) {
+        if (!submit && error.status == 404) {
+          check();
+          await saveFileState({..._fileState}..remove('pending'));
+          fileStatus.value = null;
+          publish();
+          throw const LibraryFailure('原任务已不存在，请核对文件状态后重新操作；未重复执行');
+        }
+        rethrow;
+      }
       check();
       final progress = object(task['result'] ?? {});
       final label = command['path'] == '/api/v1/trash/restore'
@@ -1153,6 +1172,7 @@ class ServerLibraryRepository extends LibraryRepository {
       if (['completed', 'failed', 'interrupted'].contains(task['status'])) {
         break;
       }
+      if (!wait) return task;
       if (DateTime.now().isAfter(deadline)) {
         throw const LibraryFailure('服务仍在处理文件，可稍后查询结果');
       }
@@ -1369,6 +1389,29 @@ class ServerLibraryRepository extends LibraryRepository {
         object(task['result'])['partial'] == true) {
       throw LibraryFailure(failure(task));
     }
+  }
+
+  @override
+  Future<int> forgetMissingVideos() async {
+    ensureNotRestoring();
+    final target = api, generation = _generation;
+    final key = _retryKeys.putIfAbsent('forget-missing', requestId);
+    final result = await call(
+      'POST',
+      '/api/v1/videos/forget-missing',
+      body: {'request_id': key, 'confirmed': true},
+      using: target,
+    );
+    await synchronize(
+      target,
+      generation,
+      beforePublish: () async {
+        cancelMissingRead();
+        _videos.removeWhere((id, video) => video.status == VideoStatus.missing);
+      },
+    );
+    _retryKeys.remove('forget-missing');
+    return result['removed'] as int;
   }
 
   List<String> trashIds(Set<String> ids) {

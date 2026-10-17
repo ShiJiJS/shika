@@ -9,6 +9,14 @@ import 'package:video_viewer/ui/browsing_session.dart';
 class SlowLibrary extends DemoLibraryRepository {
   SlowLibrary() : super(MemoryStateStore(), latency: Duration.zero);
   Completer<void>? navigation, deletion;
+  Completer<void>? fileQuery;
+  @override
+  bool get fileOperationPending => fileQuery != null && !fileQuery!.isCompleted;
+  @override
+  Future<void> reconcileFileOperation() async {
+    await fileQuery?.future;
+  }
+
   bool failDelete = false;
   final moves = <String>[];
   final deletes = <Set<String>>[];

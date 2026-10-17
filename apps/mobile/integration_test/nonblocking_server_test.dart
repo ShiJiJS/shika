@@ -17,6 +17,19 @@ import 'support/server_ui.dart';
 class DelayedReceipts extends ServerLibraryRepository {
   DelayedReceipts() : super(MemoryCredentialStore());
   Completer<void>? navigation, deletion, restoration;
+  Completer<void>? purging, querying;
+  @override
+  Future<void> permanentlyDelete(Set<String> ids) async {
+    await purging?.future;
+    await super.permanentlyDelete(ids);
+  }
+
+  @override
+  Future<void> reconcileFileOperation() async {
+    await querying?.future;
+    await super.reconcileFileOperation();
+  }
+
   @override
   Future<void> moveToVideo(String id) async {
     await navigation?.future;
@@ -48,7 +61,13 @@ void main() {
       final preferences = UiPreferences(preloadAdjacent: false);
       final ui = ServerUi(t, repo);
       addTearDown(() async {
-        for (final gate in [repo.navigation, repo.deletion, repo.restoration]) {
+        for (final gate in [
+          repo.navigation,
+          repo.deletion,
+          repo.restoration,
+          repo.purging,
+          repo.querying,
+        ]) {
           if (gate != null && !gate.isCompleted) gate.complete();
         }
         await t.pumpWidget(const SizedBox());
@@ -111,10 +130,8 @@ void main() {
       final banner = find.byKey(const Key('delete-notice'));
       expect(banner, findsOneWidget);
       expect(
-        t.getBottomLeft(banner).dy,
-        lessThanOrEqualTo(
-          t.getTopLeft(find.byKey(const Key('video-stage'))).dy,
-        ),
+        t.getTopLeft(banner).dy,
+        greaterThan(t.getTopLeft(find.byKey(const Key('video-stage'))).dy),
       );
       await fixture('/__fixture/checkpoint/preview');
       await t.pump(const Duration(seconds: 2));
@@ -173,6 +190,71 @@ void main() {
           (r) => r['method'] == 'POST' && r['path'] == '/api/v1/trash/restore',
         ),
         hasLength(1),
+      );
+      await repo.deleteVideos(ids.skip(23).toSet(), requestId: requestId());
+      await ui.nav('settings');
+      await ui.text('回收站');
+      await ui.tap(find.byKey(const Key('trash-select-all')));
+      await ui.until(
+        () => find.text('已选 2').evaluate().isNotEmpty,
+        'two purge candidates',
+      );
+      repo.purging = Completer<void>();
+      await ui.text('永久删除');
+      await ui.text('永久删除');
+      expect(find.byKey(const Key('management-loading')), findsNothing);
+      await ui.nav('settings');
+      await ui.nav('browse');
+      repo.purging!.complete();
+      await ui.until(
+        () => repo.trashCount == 0 && !repo.fileOperationPending,
+        'purge completes without blocking navigation',
+      );
+      await fixture('/__fixture/actions/remove');
+      await repo.requestScan();
+      await ui.until(
+        () => repo.missingCount == 1 && !repo.libraryPreparation.value.scanning,
+        'external deletion synchronizes to missing',
+      );
+      await ui.nav('settings');
+      await ui.text('媒体目录');
+      await ui.until(
+        () => find.byKey(const Key('forget-missing')).evaluate().isNotEmpty,
+        'missing cleanup option',
+      );
+      await fixture('/__fixture/checkpoint/library');
+      await t.pump(const Duration(seconds: 2));
+      final beforeCleanup = jsonEncode(
+        (await fixture('/__fixture/files', method: 'GET'))['items'],
+      );
+      await ui.tap(find.byKey(const Key('forget-missing')));
+      await ui.text('清除记录');
+      await ui.until(
+        () => repo.missingCount == 0,
+        'only missing metadata removed',
+      );
+      expect(
+        jsonEncode((await fixture('/__fixture/files', method: 'GET'))['items']),
+        beforeCleanup,
+      );
+      await fixture('/__fixture/actions/lose-file-response');
+      await expectLater(
+        repo.deleteVideos({ids[10]}, requestId: requestId()),
+        throwsA(anything),
+      );
+      await ui.until(
+        () => find.text('查询结果').evaluate().isNotEmpty,
+        'uncertain command query',
+      );
+      repo.querying = Completer<void>();
+      await ui.text('查询结果');
+      expect(find.byKey(const Key('management-loading')), findsNothing);
+      await ui.nav('settings');
+      await ui.nav('browse');
+      repo.querying!.complete();
+      await ui.until(
+        () => !repo.fileOperationPending,
+        'read-only query reconciled',
       );
       debugPrint(
         'NONBLOCKING: 3 swipes with blocked save; 2 consecutive marks; top timed notice; all 25 restored with one POST; all original file hashes and paths unchanged.',

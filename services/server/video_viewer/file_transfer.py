@@ -94,7 +94,7 @@ class FileTransfer:
         except (OSError, LibraryError):
             return False
 
-    def claim(self, step):
+    def claim(self, step, *, unchanged_purge=False):
         if file_stat(step.staging):
             expected = step.claimed_identity or identity(step.source_signature)
             current = self.verified(step.staging, step, expected)
@@ -104,6 +104,7 @@ class FileTransfer:
         if not current:
             raise LibraryError("source_missing", "源文件已缺失，操作未执行")
         current = signature(current)
+        unchanged = current == step.source_signature
         expected = step.claimed_identity or identity(step.source_signature)
         if identity(current) != expected:
             raise LibraryError("source_replaced", "源文件已被替换，操作未执行")
@@ -123,7 +124,14 @@ class FileTransfer:
             self.mark(step, "claimed", claimed_identity=identity(after))
             if identity(after) != identity(before):
                 raise LibraryError("source_replaced", "源文件在移动时被替换")
-        current = self.verified(step.staging, step, step.claimed_identity)
+        # An unchanged original has already been fingerprinted. A permanent
+        # purge needs identity/attribute checks, not another full disk read.
+        # Rename changes ctime; inode, size and mtime must remain identical.
+        # Changed sources and crash recovery retain full content verification.
+        if unchanged_purge and unchanged and after[:4] == before[:4]:
+            current = after
+        else:
+            current = self.verified(step.staging, step, step.claimed_identity)
         self.mark(step, "verified")
         return current
 
@@ -207,7 +215,7 @@ class FileTransfer:
             return signature(file_stat(step.destination))
         if step.destination and file_stat(step.destination):
             raise LibraryError("destination_conflict", "原位置已有同名文件，未覆盖")
-        current = self.claim(step)
+        current = self.claim(step, unchanged_purge=kind == "permanent")
         if kind == "permanent":
             self.mark(step, "purging")
             # Recheck the opened inode and attributes immediately after the

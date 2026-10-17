@@ -16,7 +16,7 @@ void main() {
   late Map<String, Map<String, dynamic>> receipts;
   late List<Map<String, dynamic>> writes;
   late List<String> reads;
-  bool lose = false, conflict = false;
+  bool lose = false, conflict = false, taskRunning = false, taskMissing = false;
   String serverId = 'files-fixture';
   Map<String, dynamic> video(String id) => {
     'id': id,
@@ -38,6 +38,8 @@ void main() {
     reads = [];
     lose = false;
     conflict = false;
+    taskRunning = false;
+    taskMissing = false;
     serverId = 'files-fixture';
     server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
     server.listen((request) async {
@@ -111,9 +113,27 @@ void main() {
             };
           }
         } else if (path.startsWith('/api/v1/tasks/')) {
+          if (taskMissing) {
+            request.response.statusCode = 404;
+            request.response.headers.contentType = ContentType.json;
+            request.response.write(
+              jsonEncode({
+                'error': {'code': 'not_found', 'message': '原任务不存在'},
+              }),
+            );
+            await request.response.close();
+            return;
+          }
           response = receipts.values.singleWhere(
             (t) => t['id'] == path.split('/').last,
           );
+          if (taskRunning) {
+            response = {
+              ...Map<String, dynamic>.from(response as Map),
+              'status': 'running',
+              'result': {'processed': 0, 'total': 1},
+            };
+          }
         } else if (path == '/api/v1/library-state') {
           response = {'ready': true, 'scanning': false, 'status': 'idle'};
         } else if (path == '/api/v1/roots') {
@@ -216,6 +236,26 @@ void main() {
       expect(writes, hasLength(1));
     },
   );
+  test('manual query returns after one running task read instead of waiting for completion', () async {
+    lose = true;
+    await expectLater(
+      repo.deleteVideos({'v1'}, requestId: 'pending-query'),
+      throwsA(anything),
+    );
+    taskRunning = true;
+    final before = reads.where((p) => p.startsWith('/api/v1/tasks/')).length;
+    await repo.reconcileFileOperation().timeout(const Duration(seconds: 2));
+    expect(repo.fileOperationPending, isTrue);
+    expect(repo.fileStatus.value, contains('0 / 1'));
+    expect(
+      reads.where((p) => p.startsWith('/api/v1/tasks/')).length,
+      before + 1,
+    );
+    taskRunning = false;
+    await repo.reconcileFileOperation();
+    expect(repo.fileOperationPending, isFalse);
+    expect(writes, hasLength(1));
+  });
   test(
     'lost submit response survives process restart and reconciles by read only',
     () async {
@@ -241,6 +281,25 @@ void main() {
       expect(writes.last['path'], '/api/v1/operations/server-operation-0/undo');
       expect(repo.snapshot.lastDelete, isNull);
       expect(repo.current!.id, 'v1');
+    },
+  );
+  test(
+    'a missing known task clears its local receipt without replaying deletion',
+    () async {
+      lose = true;
+      await expectLater(
+        repo.deleteVideos({'v1'}, requestId: 'missing-known'),
+        throwsA(anything),
+      );
+      taskRunning = true;
+      await repo.reconcileFileOperation();
+      taskMissing = true;
+      await expectLater(
+        repo.reconcileFileOperation(),
+        throwsA(isA<LibraryFailure>()),
+      );
+      expect(repo.fileOperationPending, isFalse);
+      expect(writes, hasLength(1));
     },
   );
   test(
