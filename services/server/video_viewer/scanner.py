@@ -110,12 +110,20 @@ class Scanner:
             "issues": [],
         }
         try:
+            with self.db.read() as session:
+                initial_import = session.scalar(select(Video.id).limit(1)) is None
             self.change_task(task_id, status="running", phase="discovering")
             with self.db.read() as session:
                 roots = list(session.scalars(select(Root).order_by(Root.path)))
             for root in roots:
                 self.check_stop()
-                self.scan_root(task_id, root, [item for item in roots if item.mount_id], result)
+                self.scan_root(
+                    task_id,
+                    root,
+                    [item for item in roots if item.mount_id],
+                    result,
+                    initial_import=initial_import,
+                )
             self.check_stop()
             self.change_task(task_id, phase="reconciling_identities")
             publish_discoveries(
@@ -157,7 +165,7 @@ class Scanner:
         if self.stop.is_set():
             raise InterruptedError("scan_stopped")
 
-    def scan_root(self, task_id, root, roots, result):
+    def scan_root(self, task_id, root, roots, result, *, initial_import=False):
         base = Path(root.path)
         entries = []
         if not root.mount_id:
@@ -201,7 +209,14 @@ class Scanner:
                 existing = session.scalar(select(Video).where(Video.location_key == str(path)))
             try:
                 self.scan_file(
-                    path, first_signature, owner, task_id, result, existing, stable_since
+                    path,
+                    first_signature,
+                    owner,
+                    task_id,
+                    result,
+                    existing,
+                    stable_since,
+                    initial_import=initial_import,
                 )
             except InterruptedError:
                 raise
@@ -312,7 +327,9 @@ class Scanner:
         stored.seen_scan, stored.error = task_id, error
         return True
 
-    def scan_file(self, path, observed, root, task_id, result, existing, stable_since):
+    def scan_file(
+        self, path, observed, root, task_id, result, existing, stable_since, *, initial_import=False
+    ):
         thumbnail = None
         with self.db.read() as session:
             if path_reserved(session, path):
@@ -386,7 +403,11 @@ class Scanner:
                     path=str(path),
                     location_key=str(path),
                     name=path.name,
-                    status="discovered",
+                    # A library with no history cannot transfer an existing
+                    # identity or tags. Publish each fully verified initial
+                    # file immediately, so a large first scan is usable.
+                    # Later scans still reconcile complete discoveries.
+                    status="available" if initial_import else "discovered",
                     sha256=digest,
                     quick_hash=quick,
                     type=path.suffix[1:].upper(),
