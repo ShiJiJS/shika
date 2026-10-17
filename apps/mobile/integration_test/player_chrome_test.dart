@@ -10,6 +10,7 @@ import 'package:video_viewer/library/state_store.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/device_controls.dart';
 import 'package:video_viewer/ui/preferences.dart';
+import 'package:video_viewer/ui/player.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -64,6 +65,12 @@ void main() {
       t,
       () =>
           find.byType(VideoPlayer).evaluate().isNotEmpty &&
+          find
+              .byWidgetPredicate(
+                (w) => w is PlayerSurface && w.interactionsEnabled,
+              )
+              .evaluate()
+              .isNotEmpty &&
           player(t).value.isPlaying,
     );
     addTearDown(() async {
@@ -226,6 +233,11 @@ void main() {
       expect(Theme.of(t.element(stage)).brightness, Brightness.dark);
       expect(identical(player(t), controller), isTrue);
       expect(repo.current!.id, first);
+      await until(
+        t,
+        () => controller.value.isPlaying,
+        'theme preserves requested playback',
+      );
       expect(controller.value.isPlaying, isTrue);
       await tap(t, find.byKey(const Key('nav-settings')));
       expect(

@@ -1,0 +1,33 @@
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+00:00 +0: loading C:/Project/video_viewer/apps/mobile/integration_test/server_playback_test.dart
+Running Gradle task 'assembleDebug'...
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+Running Gradle task 'assembleDebug'...                             23.6s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...        2,537ms
+00:00 +0: I2 measure eight actual container/codec samples on Android
+FORMAT_RESULT {"name":"h264.mkv","container":"matroska,webm","video_codec":"h264","audio_codec":"aac","rotation":0,"decoded":true,"open_retried":false,"width":160.0,"height":96.0,"seek_ms":1021,"loop":true}
+FORMAT_RESULT {"name":"h264.mov","container":"mov,mp4,m4a,3gp,3g2,mj2","video_codec":"h264","audio_codec":"aac","rotation":0,"decoded":true,"open_retried":false,"loop_observed":true,"width":160.0,"height":96.0,"seek_ms":777,"loop":true}
+FORMAT_RESULT {"name":"hevc.mov","container":"mov,mp4,m4a,3gp,3g2,mj2","video_codec":"hevc","audio_codec":"aac","rotation":0,"decoded":true,"open_retried":false,"width":160.0,"height":96.0,"seek_ms":533,"loop":true}
+FORMAT_RESULT {"name":"mpeg4.avi","container":"avi","video_codec":"mpeg4","audio_codec":"mp3","rotation":0,"decoded":true,"open_retried":false,"width":160.0,"height":96.0,"seek_ms":1083,"loop":true}
+FORMAT_RESULT {"name":"portrait.mp4","container":"mov,mp4,m4a,3gp,3g2,mj2","video_codec":"h264","audio_codec":"aac","rotation":0,"decoded":true,"open_retried":false,"width":96.0,"height":160.0,"seek_ms":597,"loop":true}
+FORMAT_RESULT {"name":"prores.mov","container":"mov,mp4,m4a,3gp,3g2,mj2","video_codec":"prores","audio_codec":"pcm_s16le","rotation":0,"decoded":false,"open_retried":false}
+FORMAT_RESULT {"name":"rotated.mov","container":"mov,mp4,m4a,3gp,3g2,mj2","video_codec":"h264","audio_codec":"aac","rotation":90,"decoded":true,"open_retried":false,"width":96.0,"height":160.0,"seek_ms":1000,"loop":true}
+FORMAT_RESULT {"name":"vp9.webm","container":"matroska,webm","video_codec":"vp9","audio_codec":"opus","rotation":0,"decoded":true,"open_retried":false,"width":160.0,"height":96.0,"seek_ms":650,"loop":true}
+01:22 +1: I2 exhaustion stays on the last clip and a new round is explicit
+01:35 +2: I2 fullscreen gestures, rate selection and background recovery
+01:54 +3: I2 real rounds, gestures, bounded preparation, failures and Docker recovery
+RANGE_RESULT {"range":"bytes=3186513-","status":206,"seek_ms":53289,"buffered_before_ms":19264}
+PLAYBACK_RESULT {"peak_decoders":3,"samples_in_round":25,"swipes":7,"preload_disabled":true,"background_released":true,"docker_restart_preserved_round":true,"missing_source_skipped":true}
+07:56 +4: (tearDownAll)
+07:56 +4: All tests passed!
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+00:00 +0: loading C:/Project/video_viewer/apps/mobile/integration_test/server_playback_test.dart
+Running Gradle task 'assembleDebug'...
+Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
+Running Gradle task 'assembleDebug'...                             22.2s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...           3.9s
+00:00 +0: I2 network round and nonzero position survive Android process restart
+00:21 +1: (tearDownAll)
+00:21 +1: All tests passed!

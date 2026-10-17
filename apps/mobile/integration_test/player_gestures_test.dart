@@ -32,7 +32,10 @@ void main() {
         t.widget<PageView>(stage).physics is! NeverScrollableScrollPhysics &&
         find
             .byWidgetPredicate(
-              (w) => w is PlayerSurface && w.name == repo.current?.name,
+              (w) =>
+                  w is PlayerSurface &&
+                  w.name == repo.current?.name &&
+                  w.interactionsEnabled,
             )
             .evaluate()
             .isNotEmpty &&
@@ -206,10 +209,25 @@ void main() {
       final hold = await t.startGesture(t.getCenter(surface));
       await until(t, () => controller.value.playbackSpeed == 2);
       t.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
-      await until(t, () => controller.value.playbackSpeed == 1);
+      await until(
+        t,
+        () =>
+            controller.value.playbackSpeed == 1 && !controller.value.isPlaying,
+      );
       expect(controller.value.isPlaying, isFalse);
       await hold.cancel();
       t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await until(
+        t,
+        () =>
+            find.byType(VideoPlayer).evaluate().isNotEmpty &&
+            find
+                .byWidgetPredicate(
+                  (w) => w is PlayerSurface && w.interactionsEnabled,
+                )
+                .evaluate()
+                .isNotEmpty,
+      );
       final exit = find.byKey(const Key('fullscreen-exit'));
       final opacity = t
           .widget<AnimatedOpacity>(

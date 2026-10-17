@@ -1,0 +1,172 @@
+{
+  "environment": "Android 16 API 36 x86_64 software-rendered emulator + WSL Ubuntu 24.04 Docker, port 8761",
+  "formats": [
+    {
+      "name": "h264.mkv",
+      "container": "matroska,webm",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "rotation": 0,
+      "decoded": true,
+      "open_retried": false,
+      "width": 160.0,
+      "height": 96.0,
+      "seek_ms": 1021,
+      "loop": true
+    },
+    {
+      "name": "h264.mov",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "rotation": 0,
+      "decoded": true,
+      "open_retried": false,
+      "loop_observed": true,
+      "width": 160.0,
+      "height": 96.0,
+      "seek_ms": 777,
+      "loop": true
+    },
+    {
+      "name": "hevc.mov",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "video_codec": "hevc",
+      "audio_codec": "aac",
+      "rotation": 0,
+      "decoded": true,
+      "open_retried": false,
+      "width": 160.0,
+      "height": 96.0,
+      "seek_ms": 533,
+      "loop": true
+    },
+    {
+      "name": "mpeg4.avi",
+      "container": "avi",
+      "video_codec": "mpeg4",
+      "audio_codec": "mp3",
+      "rotation": 0,
+      "decoded": true,
+      "open_retried": false,
+      "width": 160.0,
+      "height": 96.0,
+      "seek_ms": 1083,
+      "loop": true
+    },
+    {
+      "name": "portrait.mp4",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "rotation": 0,
+      "decoded": true,
+      "open_retried": false,
+      "width": 96.0,
+      "height": 160.0,
+      "seek_ms": 597,
+      "loop": true
+    },
+    {
+      "name": "prores.mov",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "video_codec": "prores",
+      "audio_codec": "pcm_s16le",
+      "rotation": 0,
+      "decoded": false,
+      "open_retried": false
+    },
+    {
+      "name": "rotated.mov",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "rotation": 90,
+      "decoded": true,
+      "open_retried": false,
+      "width": 96.0,
+      "height": 160.0,
+      "seek_ms": 1000,
+      "loop": true
+    },
+    {
+      "name": "vp9.webm",
+      "container": "matroska,webm",
+      "video_codec": "vp9",
+      "audio_codec": "opus",
+      "rotation": 0,
+      "decoded": true,
+      "open_retried": false,
+      "width": 160.0,
+      "height": 96.0,
+      "seek_ms": 650,
+      "loop": true
+    }
+  ],
+  "unbuffered_range": {
+    "range": "bytes=3186513-",
+    "status": 206,
+    "seek_ms": 53289,
+    "buffered_before_ms": 19264
+  },
+  "playback": {
+    "peak_decoders": 3,
+    "samples_in_round": 25,
+    "swipes": 7,
+    "preload_disabled": true,
+    "background_released": true,
+    "docker_restart_preserved_round": true,
+    "missing_source_skipped": true
+  },
+  "native_process_restart_same_round_and_nonzero_position": true,
+  "native_reopen_without_password_login": true,
+  "revoked_session_releases_players_and_removes_saved_token": true,
+  "single_video_exhaustion_persisted_and_new_round_explicit": true,
+  "fullscreen_controls_device_gestures_and_background_restore": true,
+  "client_unit_widget_tests_for_i2": 28,
+  "legacy_native_gesture_chrome_regressions": 6,
+  "fixture_events": [
+    {
+      "phase": "ready",
+      "time": 1792195600.313312
+    },
+    {
+      "phase": "formats",
+      "time": 1792195716.8676012
+    },
+    {
+      "phase": "playback",
+      "time": 1792195918.4312038
+    },
+    {
+      "phase": "outage",
+      "time": 1792196052.170779
+    },
+    {
+      "phase": "docker-stopped",
+      "time": 1792196053.1067615
+    },
+    {
+      "phase": "docker-started",
+      "time": 1792196073.761325
+    },
+    {
+      "phase": "recovered",
+      "time": 1792196084.6708252
+    },
+    {
+      "phase": "done",
+      "time": 1792196112.0829732
+    },
+    {
+      "phase": "android-force-stopped",
+      "time": 1792196114.458562
+    }
+  ],
+  "limitations": [
+    "Generated one-second codec samples; no promise of extension-wide compatibility",
+    "Separate 120-second generated sample verifies unbuffered seek and HTTP 206",
+    "Playback resource bound is registered controller count, not fixed buffer bytes",
+    "I3-I6 management integration and actual NAS/target phone acceptance remain separate"
+  ]
+}
