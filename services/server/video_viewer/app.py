@@ -458,4 +458,17 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 raise LibraryError("operation_not_found", "文件操作不存在", 404)
         return operation_task(request, operation_id)
 
+    @app.get("/api/v1/file-requests/{request_id}", dependencies=auth_required)
+    def file_request(request_id: str, request: Request):
+        # Read-only reconciliation after a lost submit response. Never enqueue
+        # a missing or historical command merely because a client reopened.
+        with request.app.state.db.read() as session:
+            operation = session.scalar(
+                select(FileOperation).where(FileOperation.request_key == "files:" + request_id)
+            )
+            if not operation:
+                raise LibraryError("operation_not_found", "未查询到已受理的文件操作", 404)
+            operation_id = operation.id
+        return operation_task(request, operation_id)
+
     return app

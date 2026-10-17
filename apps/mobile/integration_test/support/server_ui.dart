@@ -56,7 +56,14 @@ class ServerUi {
   }
 
   Future<void> text(String value) => tap(find.text(value).last);
-  Future<void> nav(String page) => tap(find.byKey(Key('nav-$page')));
+  Future<void> nav(String page) async {
+    if (find.byKey(Key('nav-$page')).evaluate().isEmpty &&
+        find.byTooltip('返回设置').evaluate().isNotEmpty) {
+      await tap(find.byTooltip('返回设置'));
+    }
+    await tap(find.byKey(Key('nav-$page')));
+  }
+
   Future<void> ready() => until(
     () =>
         find

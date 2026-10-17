@@ -54,8 +54,23 @@ abstract class LibraryRepository extends ChangeNotifier {
   int get trashCount => snapshot.videos
       .where((video) => video.status == VideoStatus.trash)
       .length;
+  Future<VideoPage> loadTrash({int offset = 0, int limit = 24}) async {
+    final items = snapshot.videos
+        .where((v) => v.status == VideoStatus.trash)
+        .toList();
+    return VideoPage(
+      items: items.skip(offset).take(limit),
+      total: items.length,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  bool get fileOperationPending => false;
+  Future<void> reconcileFileOperation() async {}
   void cancelVideoRead() {}
   void cancelFolderRead() {}
+  void cancelTrashRead() {}
   String? get connectionError => null;
   Future<void> mediaUnauthorized(MediaSource source) async {}
   LibraryVideo? get current;

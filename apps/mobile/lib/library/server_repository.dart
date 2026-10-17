@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'credentials.dart';
+import 'file_command_store.dart';
 import 'models.dart';
 import 'repository.dart';
 import 'server_api.dart';
@@ -19,9 +20,11 @@ String requestId() =>
 class ServerLibraryRepository extends LibraryRepository {
   ServerLibraryRepository(
     this.credentials, {
+    FileCommandStore? fileCommands,
     String address = '10.0.2.2',
     int port = 8760,
-  }) : _state = LibrarySnapshot(
+  }) : fileCommands = fileCommands ?? MemoryFileCommandStore(),
+       _state = LibrarySnapshot(
          videos: [],
          roots: [],
          tags: [],
@@ -32,6 +35,12 @@ class ServerLibraryRepository extends LibraryRepository {
          connected: false,
        );
   final CredentialStore credentials;
+  final FileCommandStore fileCommands;
+  Json _fileState = {};
+  String? _fileScope;
+  Future<void> _fileWrites = Future.value();
+  @override
+  bool get fileOperationPending => _fileState['pending'] != null;
   LibrarySnapshot _state;
   ServerApi? _api;
   Json? _round;
@@ -46,6 +55,7 @@ class ServerLibraryRepository extends LibraryRepository {
   Future<void> _tagWrites = Future.value();
   RequestScope _videoRead = RequestScope(),
       _folderRead = RequestScope(),
+      _trashRead = RequestScope(),
       _scanRead = RequestScope();
   int _generation = 0, _scopeGeneration = 0, _missing = 0, _trash = 0;
   bool _disposed = false;
@@ -163,6 +173,7 @@ class ServerLibraryRepository extends LibraryRepository {
     _generation++;
     cancelVideoRead();
     cancelFolderRead();
+    cancelTrashRead();
     _scanRead.cancel();
     _api?.close();
     _api = null;
@@ -262,6 +273,7 @@ class ServerLibraryRepository extends LibraryRepository {
         throw const LibraryFailure('服务实例或版本已变化，请重新连接');
       }
       await synchronize(candidate, generation, allowConnection: true);
+      await activateFileCommands(saved);
     } on ApiFailure catch (error) {
       if (error.status == 401 && generation == _generation) {
         await writeCredentials(credentials.clear, generation: generation);
@@ -309,6 +321,7 @@ class ServerLibraryRepository extends LibraryRepository {
         ),
         allowConnection: true,
       );
+      await activateFileCommands(session);
     } finally {
       if (_connectingGeneration == generation) _connectingGeneration = null;
       if (!identical(candidate, _api)) candidate.close();
@@ -441,6 +454,7 @@ class ServerLibraryRepository extends LibraryRepository {
       _tagRetryKeys.clear();
       cancelVideoRead();
       cancelFolderRead();
+      cancelTrashRead();
       _scanRead.cancel();
       _api?.close();
       _videos.clear();
@@ -826,16 +840,202 @@ class ServerLibraryRepository extends LibraryRepository {
     }
   }
 
-  Future<Json> operation(String path, Json body, {String? idempotency}) async {
-    final submitted = await call(
-      'POST',
-      path,
-      body: {'request_id': idempotency ?? requestId(), ...body},
+  Future<T> serializeFiles<T>(Future<T> Function() action) {
+    final result = _fileWrites.then((_) => action());
+    _fileWrites = result.then<void>(
+      (_) {},
+      onError: (Object e, StackTrace s) {},
     );
-    final result = await waitTask(submitted['id']);
-    _videos.clear();
-    await synchronize(api, _generation);
     return result;
+  }
+
+  Future<void> saveFileState(Json next) async {
+    await fileCommands.write(jsonEncode(next));
+    _fileState = next;
+  }
+
+  Future<void> activateFileCommands(
+    ConnectionCredentials session,
+  ) => serializeFiles(() async {
+    final scope = jsonEncode([session.endpoint.toString(), session.serverId]);
+    final text = await fileCommands.read();
+    if (_api?.token != session.token) throw const RequestCancelled();
+    Json saved = {};
+    if (text != null) {
+      try {
+        saved = object(jsonDecode(text));
+      } catch (_) {
+        /* Ignore invalid local receipts. */
+      }
+    }
+    _fileScope = scope;
+    _fileState = saved['scope'] == scope ? saved : {'scope': scope};
+    final last = _fileState['lastDelete'];
+    _state = _state.copy(
+      clearDelete: last == null,
+      lastDelete: last == null ? null : DeleteOperation.fromJson(object(last)),
+    );
+    publish();
+  });
+
+  Future<Json> operation(String path, Json body, {String? idempotency}) {
+    final target = api, generation = _generation;
+    return serializeFiles(() async {
+      if (generation != _generation || !identical(target, _api)) {
+        throw const RequestCancelled();
+      }
+      final old = _fileState['pending'];
+      final signature = jsonEncode([path, body]);
+      if (old != null && object(old)['signature'] != signature) {
+        throw const LibraryFailure('上次文件操作的结果尚未确认，请先查询结果');
+      }
+      if (old == null) {
+        await saveFileState({
+          ..._fileState,
+          'scope': _fileScope,
+          'pending': {
+            'path': path,
+            'body': body,
+            'signature': signature,
+            'key': idempotency ?? requestId(),
+            'before': {'round': _state.round, 'position': _state.position},
+            'labels': {
+              for (final v in _videos.values)
+                if ((body['video_ids'] as List? ?? []).contains(v.id) ||
+                    (body['trash_ids'] as List? ?? []).contains(
+                      _trashIds[v.id],
+                    ))
+                  v.id: v.name,
+            },
+          },
+        });
+        publish();
+      }
+      return runFileCommand(target, generation, submit: true);
+    });
+  }
+
+  @override
+  Future<void> reconcileFileOperation() {
+    final target = api, generation = _generation;
+    return serializeFiles(() async {
+      if (!fileOperationPending) return;
+      final task = await runFileCommand(target, generation, submit: false);
+      if (task['status'] != 'completed' ||
+          object(task['result'])['partial'] == true) {
+        throw LibraryFailure(failure(task));
+      }
+    });
+  }
+
+  Future<Json> runFileCommand(
+    ServerApi target,
+    int generation, {
+    required bool submit,
+  }) async {
+    void check() {
+      if (_disposed || generation != _generation || !identical(target, _api)) {
+        throw const RequestCancelled();
+      }
+    }
+
+    check();
+    var command = object(_fileState['pending']);
+    if (command['task'] == null) {
+      Json accepted;
+      try {
+        accepted = submit
+            ? await call(
+                'POST',
+                command['path'],
+                using: target,
+                body: {
+                  'request_id': command['key'],
+                  ...object(command['body']),
+                },
+              )
+            : await call(
+                'GET',
+                '/api/v1/file-requests/${command['key']}',
+                using: target,
+              );
+      } on ApiFailure catch (error) {
+        // Unknown response remains pending. Reopening only queries; it never
+        // replays a destructive command into a restored or different database.
+        if ((!submit && error.status == 404) ||
+            (submit &&
+                error.status != null &&
+                error.status! >= 400 &&
+                error.status! < 500 &&
+                ![408, 429].contains(error.status))) {
+          check();
+          await saveFileState({..._fileState}..remove('pending'));
+          publish();
+        }
+        rethrow;
+      }
+      check();
+      command = {...command, 'task': accepted['id']};
+      await saveFileState({..._fileState, 'pending': command});
+    }
+    final deadline = DateTime.now().add(const Duration(seconds: 30));
+    late Json task;
+    while (true) {
+      check();
+      task = await call(
+        'GET',
+        '/api/v1/tasks/${command['task']}',
+        using: target,
+      );
+      if (['completed', 'failed', 'interrupted'].contains(task['status'])) {
+        break;
+      }
+      if (DateTime.now().isAfter(deadline)) {
+        throw const LibraryFailure('服务仍在处理文件，可稍后查询结果');
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 250));
+    }
+    check();
+    if (task['status'] == 'interrupted') {
+      throw const LibraryFailure('文件操作已中断，服务恢复后可查询结果');
+    }
+    await synchronize(
+      target,
+      generation,
+      beforePublish: () async {
+        cancelVideoRead();
+        _videos.clear();
+      },
+    );
+    check();
+    final result = object(task['result']);
+    final next = {..._fileState}..remove('pending');
+    if (command['path'] == '/api/v1/videos/trash' &&
+        (result['succeeded'] as int? ?? 0) > 0) {
+      final before = object(command['before']);
+      final successful = (result['items'] as List)
+          .map(object)
+          .where((item) => item['outcome'] == 'succeeded')
+          .map((item) => item['video_id'] as String);
+      next['lastDelete'] = DeleteOperation(
+        task['id'],
+        successful,
+        List<String>.from(before['round']),
+        before['position'],
+      ).toJson();
+    } else if ((command['path'] as String).endsWith('/undo') &&
+        task['status'] == 'completed' &&
+        result['partial'] != true) {
+      next.remove('lastDelete');
+    }
+    await saveFileState(next);
+    final last = next['lastDelete'];
+    _state = _state.copy(
+      clearDelete: last == null,
+      lastDelete: last == null ? null : DeleteOperation.fromJson(object(last)),
+    );
+    publish();
+    return {...task, '_labels': command['labels']};
   }
 
   String failure(Json task) {
@@ -850,10 +1050,17 @@ class ServerLibraryRepository extends LibraryRepository {
       'source_missing': '源文件已缺失',
       'source_replaced': '源文件已被替换，未执行',
       'stale_delete': '撤销已失效，请在回收站查看',
+      'item_not_found': '文件记录已变化，请刷新回收站',
+      'operation_busy': '该视频的文件操作仍在处理中',
+      'video_unavailable': '视频当前不可用，未删除',
+      'restore_outside_library': '原目录已调整，请先重新接入后恢复',
     };
     if (problems.isEmpty) return '操作未完成，请刷新后重试';
     return problems
-        .map((item) => messages[item['error']] ?? '部分文件操作未完成，请刷新后重试')
+        .map((item) {
+          final label = (task['_labels'] as Map?)?[item['video_id']];
+          return '${label == null ? '' : '$label：'}${messages[item['error']] ?? '文件操作未完成，请刷新后重试'}';
+        })
         .toSet()
         .join('\n');
   }
@@ -937,26 +1144,10 @@ class ServerLibraryRepository extends LibraryRepository {
     Set<String> ids, {
     required String requestId,
   }) async {
-    final before = _state;
     final task = await operation('/api/v1/videos/trash', {
-      'video_ids': ids.toList(),
+      'video_ids': ids.toList()..sort(),
     }, idempotency: requestId);
     final result = object(task['result']);
-    if ((result['succeeded'] as int? ?? 0) > 0) {
-      final successful = (result['items'] as List)
-          .map(object)
-          .where((item) => item['outcome'] == 'succeeded')
-          .map((item) => item['video_id'] as String);
-      _state = _state.copy(
-        lastDelete: DeleteOperation(
-          task['id'],
-          successful,
-          before.round,
-          before.position,
-        ),
-      );
-      publish();
-    }
     if (task['status'] != 'completed' || result['partial'] == true) {
       throw LibraryFailure(failure(task));
     }
@@ -970,21 +1161,24 @@ class ServerLibraryRepository extends LibraryRepository {
       {},
       idempotency: key,
     );
-    if (task['status'] != 'completed') throw LibraryFailure(failure(task));
-    _state = _state.copy(clearDelete: true);
-    publish();
+    _retryKeys.remove('undo:$operationId');
+    if (task['status'] != 'completed' ||
+        object(task['result'])['partial'] == true) {
+      throw LibraryFailure(failure(task));
+    }
   }
 
   @override
   Future<List<String>> restoreVideos(Set<String> ids) async {
     final task = await operation('/api/v1/trash/restore', {
-      'trash_ids': ids.map((id) => _trashIds[id] ?? '').toList(),
+      'trash_ids': trashIds(ids),
     });
     return (object(task['result'])['items'] as List? ?? [])
         .map(object)
         .where((item) => item['outcome'] != 'succeeded')
         .map(
           (item) => failure({
+            '_labels': task['_labels'],
             'result': {
               'items': [item],
             },
@@ -996,7 +1190,7 @@ class ServerLibraryRepository extends LibraryRepository {
   @override
   Future<void> permanentlyDelete(Set<String> ids) async {
     final task = await operation('/api/v1/trash/permanent', {
-      'trash_ids': ids.map((id) => _trashIds[id] ?? '').toList(),
+      'trash_ids': trashIds(ids),
       'confirmed': true,
     });
     if (task['status'] != 'completed' ||
@@ -1004,6 +1198,56 @@ class ServerLibraryRepository extends LibraryRepository {
       throw LibraryFailure(failure(task));
     }
   }
+
+  List<String> trashIds(Set<String> ids) {
+    if (ids.isEmpty || ids.any((id) => !_trashIds.containsKey(id))) {
+      throw const LibraryFailure('回收站记录已变化，请刷新后重新选择');
+    }
+    return ids.map((id) => _trashIds[id]!).toList()..sort();
+  }
+
+  @override
+  Future<VideoPage> loadTrash({int offset = 0, int limit = 24}) async {
+    cancelTrashRead();
+    final work = _trashRead = RequestScope();
+    final target = api, generation = _generation;
+    final page = await call(
+      'GET',
+      '/api/v1/trash',
+      query: {'offset': '$offset', 'limit': '$limit'},
+      using: target,
+      cancel: work,
+    );
+    if (generation != _generation ||
+        !identical(target, _api) ||
+        work.cancelled) {
+      throw const RequestCancelled();
+    }
+    final items = <LibraryVideo>[];
+    if (offset == 0) _trashIds.clear();
+    for (final row in rows(page)) {
+      final item = video(
+        object(row['video']),
+        target,
+        status: VideoStatus.trash,
+        originalPath: row['original_path'],
+      );
+      _trashIds[item.id] = row['id'];
+      _videos[item.id] = item;
+      items.add(item);
+    }
+    _trash = page['total'];
+    _state = _state.copy(videos: _videos.values);
+    return VideoPage(
+      items: items,
+      total: page['total'],
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  @override
+  void cancelTrashRead() => _trashRead.cancel();
 
   @override
   Future<void> saveRoot(MediaRoot root) async {
@@ -1132,6 +1376,7 @@ class ServerLibraryRepository extends LibraryRepository {
     _disposed = true;
     cancelVideoRead();
     cancelFolderRead();
+    cancelTrashRead();
     _scanRead.cancel();
     _api?.close();
     super.dispose();

@@ -49,6 +49,9 @@ def test_real_trash_and_precise_undo_preserve_identity_tags_and_round(library, s
     round, _ = create_round(client, "sequential")
     round = move(client, round, videos[1]["id"])
     deleted, request = trash(client, [videos[1]["id"]])
+    found = client.get(f"/api/v1/file-requests/{request['request_id']}")
+    assert found.status_code == 200 and found.json()["id"] == deleted["id"]
+    assert client.get("/api/v1/file-requests/never-submitted").status_code == 404
     assert deleted["status"] == "completed", deleted
     assert deleted["result"]["succeeded"] == 1
     assert not (media / "1.mov").exists()

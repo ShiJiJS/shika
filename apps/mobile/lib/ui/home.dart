@@ -77,6 +77,10 @@ class _LibraryHomeState extends State<LibraryHome> {
   int libraryTotal = 0, libraryGeneration = 0;
   bool libraryLoading = false;
   String libraryError = '', libraryKey = '', previousScope = '';
+  List<LibraryVideo> trashItems = [];
+  int trashTotal = 0, trashGeneration = 0;
+  bool trashLoading = false;
+  String trashError = '';
   late final BackupFiles files = widget.backupFiles ?? NativeBackupFiles();
   final address = TextEditingController(),
       port = TextEditingController(),
@@ -138,6 +142,35 @@ class _LibraryHomeState extends State<LibraryHome> {
       }
     });
     if (page == 'library') unawaited(loadLibrary());
+    if (page == 'trash') unawaited(loadTrash());
+  }
+
+  Future<void> loadTrash({bool more = false}) async {
+    if (page != 'trash' || (more && trashLoading)) return;
+    final generation = ++trashGeneration;
+    setState(() {
+      trashLoading = true;
+      trashError = '';
+    });
+    try {
+      final result = await repo.loadTrash(offset: more ? trashItems.length : 0);
+      if (!mounted || generation != trashGeneration || page != 'trash') return;
+      setState(() {
+        trashItems = more ? [...trashItems, ...result.items] : result.items;
+        trashTotal = result.total;
+        selected.removeWhere((id) => !trashItems.any((v) => v.id == id));
+      });
+    } on RequestCancelled {
+      // A newer page owns the list.
+    } catch (e) {
+      if (mounted && generation == trashGeneration) {
+        setState(() => trashError = e.toString());
+      }
+    } finally {
+      if (mounted && generation == trashGeneration) {
+        setState(() => trashLoading = false);
+      }
+    }
   }
 
   Future<void> loadLibrary({bool more = false}) async {
@@ -188,7 +221,9 @@ class _LibraryHomeState extends State<LibraryHome> {
   void dispose() {
     unawaited(_playback.close());
     libraryGeneration++;
+    trashGeneration++;
     repo.cancelVideoRead();
+    repo.cancelTrashRead();
     repo.removeListener(changed);
     address.dispose();
     port.dispose();
@@ -208,6 +243,13 @@ class _LibraryHomeState extends State<LibraryHome> {
     } else {
       libraryGeneration++;
       repo.cancelVideoRead();
+    }
+    if (next == 'trash') {
+      trashItems = [];
+      unawaited(loadTrash());
+    } else {
+      trashGeneration++;
+      repo.cancelTrashRead();
     }
   }
 
@@ -340,28 +382,33 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   Future<void> remove(Set<String> ids) async {
     final requestId = 'delete-${DateTime.now().microsecondsSinceEpoch}';
-    if (await perform(
-          () => repo.deleteVideos({...ids}, requestId: requestId),
-        ) &&
-        mounted) {
+    final previous = data.lastDelete?.id;
+    final completed = await perform(
+      () => repo.deleteVideos({...ids}, requestId: requestId),
+    );
+    if (!mounted) return;
+    final operation = data.lastDelete;
+    if (operation != null && operation.id != previous) {
       setState(() {
-        selected = {};
-        selecting = false;
+        selected.removeAll(operation.ids);
+        if (completed) selecting = false;
       });
       ScaffoldMessenger.of(context)
         ..removeCurrentSnackBar()
         ..showSnackBar(
           SnackBar(
             margin: snackMargin,
-            content: const Text('已移入回收站'),
+            content: Text(
+              completed ? '已移入回收站' : '已移入 ${operation.ids.length} 个，其余未完成',
+            ),
             duration: const Duration(seconds: 8),
             action: SnackBarAction(
               label: '撤销',
               onPressed: () => perform(() async {
-                if (data.lastDelete?.id != requestId) {
+                if (data.lastDelete?.id != operation.id) {
                   throw const LibraryFailure('这次删除已失效，请在回收站查看');
                 }
-                await repo.undoDelete(operationId: requestId);
+                await repo.undoDelete(operationId: operation.id);
               }),
             ),
           ),
@@ -411,6 +458,11 @@ class _LibraryHomeState extends State<LibraryHome> {
         );
       case 'tag':
         if (current != null) await tag({current.id});
+      case 'undo':
+        final operation = data.lastDelete;
+        if (operation != null) {
+          await perform(() => repo.undoDelete(operationId: operation.id));
+        }
       case 'details':
         if (current != null) {
           await sheet<void>(
@@ -533,6 +585,11 @@ class _LibraryHomeState extends State<LibraryHome> {
                       icon: const Icon(Icons.more_horiz),
                       constraints: const BoxConstraints(minWidth: 190),
                       itemBuilder: (_) => [
+                        if (data.lastDelete != null)
+                          const PopupMenuItem(
+                            value: 'undo',
+                            child: Text('撤销上次删除'),
+                          ),
                         PopupMenuItem(
                           value: 'theme',
                           child: actionLabel(
@@ -619,6 +676,23 @@ class _LibraryHomeState extends State<LibraryHome> {
                       '关闭错误提示',
                       Icons.close,
                       () => setState(() => error = ''),
+                    ),
+                  ],
+                ),
+              ),
+            if (data.connected && repo.fileOperationPending)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Text('文件操作结果待确认', style: TextStyle(fontSize: 12)),
+                    ),
+                    TextButton(
+                      onPressed: busy
+                          ? null
+                          : () => perform(repo.reconcileFileOperation),
+                      child: const Text('查询结果'),
                     ),
                   ],
                 ),
@@ -774,7 +848,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         Expanded(
           child: current == null
               ? EmptyView(
-                  data.videos.isEmpty ? '视频库还是空的' : '没有符合条件的可播放视频',
+                  data.query.count > 0 ? '没有符合条件的可播放视频' : '当前没有可播放的视频',
                   action: OutlinedButton(
                     onPressed: busy
                         ? null
@@ -1553,9 +1627,21 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   Widget trash() {
-    final items = data.videos
-        .where((v) => v.status == VideoStatus.trash)
-        .toList();
+    final items = trashItems;
+    if (trashError.isNotEmpty) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(trashError),
+            TextButton(onPressed: () => loadTrash(), child: const Text('重试')),
+          ],
+        ),
+      );
+    }
+    if (items.isEmpty && trashLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     if (items.isEmpty) return const EmptyView('回收站是空的');
     return Column(
       children: [
@@ -1566,6 +1652,7 @@ class _LibraryHomeState extends State<LibraryHome> {
               note('不会自动清空；恢复时保留原有标签。'),
               for (final v in items)
                 CheckboxListTile(
+                  key: Key('trash-${v.id}'),
                   contentPadding: EdgeInsets.zero,
                   value: selected.contains(v.id),
                   title: Text(v.name),
@@ -1579,6 +1666,11 @@ class _LibraryHomeState extends State<LibraryHome> {
                           () =>
                               yes! ? selected.add(v.id) : selected.remove(v.id),
                         ),
+                ),
+              if (items.length < trashTotal)
+                TextButton(
+                  onPressed: trashLoading ? null : () => loadTrash(more: true),
+                  child: Text(trashLoading ? '正在加载…' : '加载更多'),
                 ),
             ],
           ),

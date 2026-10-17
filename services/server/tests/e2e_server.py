@@ -48,7 +48,7 @@ def create_e2e_app():
     app = create_app(settings)
     trace = deque(maxlen=300)
     checkpoint = {"phase": "ready"}
-    controls = {"slow": False, "lose_tag_response": False}
+    controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False}
 
     @app.middleware("http")
     async def observe(request, call_next):
@@ -60,7 +60,11 @@ def create_e2e_app():
                 "authenticated": bool(request.headers.get("authorization")),
                 "range": request.headers.get("range"),
             }
-            if request.method == "PATCH" and request.url.path == "/api/v1/video-tags":
+            if (request.method == "PATCH" and request.url.path == "/api/v1/video-tags") or (
+                request.method == "POST" and request.url.path in {
+                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent"
+                }
+            ):
                 body = await request.json()
                 entry["command_hash"] = hashlib.sha256(
                     str(body.get("request_id")).encode()
@@ -82,6 +86,18 @@ def create_e2e_app():
             )
         if request.url.path.startswith("/api/"):
             entry["status"] = response.status_code
+        if (
+            controls["lose_file_response"]
+            and request.method == "POST"
+            and request.url.path == "/api/v1/videos/trash"
+            and response.status_code == 202
+        ):
+            controls["lose_file_response"] = False
+            response = JSONResponse(
+                {"error": {"code": "fixture_response_lost", "message": "删除结果待确认，请查询结果"}},
+                status_code=503,
+            )
+            entry["status"] = 503
         if controls["slow"] and request.method == "GET" and request.url.path.endswith("/stream"):
             original = response.body_iterator
 
@@ -165,6 +181,19 @@ def create_e2e_app():
             controls["slow"] = False
         elif action == "lose-tag-response":
             controls["lose_tag_response"] = True
+        elif action == "lose-file-response":
+            controls["lose_file_response"] = True
+        elif action in {"lock-flower", "unlock-flower"}:
+            (BASE / "shorts" / "自然" / "花卉").chmod(
+                0o555 if action == "lock-flower" else 0o755
+            )
+        elif action == "conflict-first":
+            copy_new(LANDSCAPE, BASE / "shorts" / "自然" / "花卉" / "片段01.mp4")
+        elif action == "clear-conflict-first":
+            target = BASE / "shorts" / "自然" / "花卉" / "片段01.mp4"
+            if target.read_bytes() != LANDSCAPE.read_bytes():
+                raise HTTPException(status_code=409, detail="Unexpected fixture conflict bytes")
+            target.unlink()
         elif action == "seek-sample":
             destination = BASE / "camera" / "长视频" / "拖动验证.mp4"
             if not destination.exists():

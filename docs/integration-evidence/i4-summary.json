@@ -1,0 +1,73 @@
+{
+  "environment": "Android 16 API 36 x86_64 emulator + isolated WSL Docker instance, port 8761",
+  "results": {
+    "FILES_RESULT": {
+      "combined_scope": true,
+      "quick_tags_keep_paths": true,
+      "failure_keeps_current": true,
+      "precise_undo": true,
+      "last_item_empty": true,
+      "stale_undo_rejected": true,
+      "partial_restore_conflict_no_overwrite": true,
+      "restore_keeps_tags": true,
+      "trash_paging_25": true,
+      "permanent_cancel_and_confirm": true,
+      "file_hashes_verified": true,
+      "lost_response_pending_after_docker_restart": true
+    },
+    "FILES_REOPEN_RESULT": {
+      "pending_restored": true,
+      "read_only_query": true,
+      "precise_undo": true,
+      "same_video_restored": true
+    }
+  },
+  "fixture_events": [
+    {
+      "phase": "ready",
+      "time": 1792199571.742819
+    },
+    {
+      "phase": "library",
+      "time": 1792199665.9517186
+    },
+    {
+      "phase": "outage",
+      "time": 1792199674.481759
+    },
+    {
+      "phase": "docker-stopped",
+      "time": 1792199675.0703561
+    },
+    {
+      "phase": "docker-started",
+      "time": 1792199683.4992466
+    },
+    {
+      "phase": "done",
+      "time": 1792199685.466599
+    },
+    {
+      "phase": "android-force-stopped",
+      "time": 1792199687.102263
+    },
+    {
+      "phase": "recovered",
+      "time": 1792199725.6800141
+    }
+  ],
+  "client_unit_widget_suite": 39,
+  "server_api_suite": 77,
+  "legacy_demo_native_regressions": 3,
+  "main_runtime_probe": {
+    "healthy": true,
+    "same_server_id": true,
+    "available_samples": 8,
+    "read_only_file_request_lookup": true,
+    "fixture_control_absent_in_runtime": true
+  },
+  "limitations": [
+    "NAS and target phone acceptance remain V1",
+    "External changes and backup integration remain I5-I6"
+  ]
+}

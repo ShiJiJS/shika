@@ -405,7 +405,7 @@ void main() {
       await nav(t, 'settings');
       await textTap(t, '演示场景');
       await textTap(t, '空视频库');
-      expect(find.text('视频库还是空的'), findsOneWidget);
+      expect(find.text('当前没有可播放的视频'), findsOneWidget);
       await nav(t, 'library');
       expect(find.text('0 个视频'), findsOneWidget);
       await nav(t, 'settings');
