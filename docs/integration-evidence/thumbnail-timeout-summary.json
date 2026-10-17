@@ -1,0 +1,126 @@
+{
+  "source": "6aff849",
+  "nas_sample_diagnosis": {
+    "old_reported_failures": 204,
+    "metadata_samples": 12,
+    "codec": "hevc",
+    "dimensions": [
+      3840,
+      2160
+    ],
+    "metadata_successes": 12,
+    "original_thumbnail_attempts_in_service": 3,
+    "original_timeouts": 3,
+    "original_timeout_seconds": 20,
+    "isolated_original_attempt_timed_out": true,
+    "isolated_keyframe_attempts_succeeded": 3,
+    "keyframe_seconds": [
+      1.96,
+      2.25,
+      2.0
+    ],
+    "diagnostic_cpu_limit": 1.5,
+    "diagnostic_memory_mib": 768,
+    "originals_read_only": true,
+    "personal_frames_or_names_published": false,
+    "scope": "Samples from capped historical issue list; not a diagnosis of every failed file."
+  },
+  "tests": {
+    "server_passed": 89,
+    "server_seconds": 76.55,
+    "flutter_passed": 58,
+    "ruff": "passed",
+    "flutter_analysis": "passed",
+    "android_api": 36,
+    "android_emulator": "x86_64 software renderer",
+    "android_native_flow_passed": true,
+    "optional_poster_timeout_keeps_library_ready": true,
+    "actual_video_without_poster_played": true,
+    "native_seconds": 33
+  },
+  "upgrade": {
+    "healthy": true,
+    "image_id": "sha256:fc71626f26cf2887a29f9cb7b90cc0cb07f8d95642452cce50202aaaa6ec3d0c",
+    "offline_snapshot_saved": true,
+    "video_records_preserved": 1113,
+    "trash_records_preserved": 1,
+    "observations_preserved": 4065,
+    "integrity_check": "ok",
+    "original_mounts_unchanged": true
+  },
+  "runtime_probe": {
+    "source": "6aff849",
+    "old_token_and_server_id_preserved": true,
+    "library_ready": false,
+    "scanning": true,
+    "phase": "discovering",
+    "progress": {
+      "discovered": 3888,
+      "processed": 0,
+      "bytes_total": 326428073957,
+      "bytes_processed": 0,
+      "updated_at": 1792221451.73507
+    },
+    "counts": {
+      "imported": 0,
+      "unchanged": 0,
+      "deferred": 0,
+      "failed": 0,
+      "thumbnail_failed": 0
+    },
+    "available": 701,
+    "trash_count": 1,
+    "unauthenticated_state_denied": true,
+    "production_fixture_excluded": true,
+    "preparation_locks_partial_playback": true,
+    "original_stream_waits_for_preparation": true,
+    "existing_thumbnail_readable": true,
+    "later_phase": "processing_media",
+    "later_progress": {
+      "discovered": 4064,
+      "processed": 28,
+      "bytes_total": 445170563544,
+      "bytes_processed": 9145333009,
+      "updated_at": 1792221455.2921715
+    }
+  },
+  "retry_observation": {
+    "tracked_old_failed_samples": 100,
+    "old_failed_count": 204,
+    "retried_metadata_records": 15,
+    "retried_with_posters": 15,
+    "new_scan": true,
+    "scan_status": "running",
+    "phase": "processing_media",
+    "current_counts": {
+      "imported": 15,
+      "unchanged": 525,
+      "failed": 0,
+      "thumbnail_failed": 0,
+      "deferred": 0
+    },
+    "failure_reasons": {},
+    "warning_reasons": {},
+    "progress": {
+      "discovered": 4064,
+      "processed": 540,
+      "bytes_total": 445170563544,
+      "bytes_processed": 179349630447,
+      "updated_at": 1792221573.7537537
+    }
+  },
+  "apk": {
+    "file": "video-viewer-0.1.2-nas-arm64.apk",
+    "version": "0.1.2",
+    "version_code": 3,
+    "bytes": 21668902,
+    "sha256": "0b5d5e2b6088224b0d3a9a56dd6afcbf5218c77a3a46c91d27db74f09ad5793f",
+    "same_certificate_as_previous": true,
+    "signature_verified": true,
+    "nas_copy_verified": true
+  },
+  "limitations": [
+    "Full initial scan and all old failure retries are still running.",
+    "Actual Find X8 decoding across the full library still needs user validation."
+  ]
+}
