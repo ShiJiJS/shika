@@ -113,6 +113,7 @@ def test_complete_snapshot_restore_replaces_data_preserves_auth_and_round(enviro
         )
         assert client.get("/api/v1/tags").json()["items"][0]["name"] == "原标签"
         assert client.get("/api/v1/tags").json()["total"] == 1
+        scan(client)
         current = client.get("/api/v1/playback").json()
         assert current["id"] == active["id"] and current["current"]["id"] == active["current"]["id"]
         assert client.get("/api/v1/info").json()["server_id"] == server_id
@@ -196,6 +197,7 @@ def test_new_instance_mapping_and_new_credentials_preserve_video_identity(enviro
         fresh = client.get("/api/v1/videos").json()["items"][0]
         assert fresh["id"] == old["id"] and fresh["tag_ids"] == [marked]
         assert fresh["path"] == str(target / "one.mov")
+        scan(client)
         assert client.get(fresh["media_url"]).content == (target / "one.mov").read_bytes()
         assert (
             client.post("/api/v1/auth/login", json={"passphrase": settings.passphrase}).status_code

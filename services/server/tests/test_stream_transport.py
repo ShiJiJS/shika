@@ -70,7 +70,7 @@ def test_real_http_backpressure_cancellation_and_bounded_memory(environment, sam
             client.headers["Authorization"] = "Bearer " + login.json()["access_token"]
             while time.monotonic() < deadline:
                 listing = client.get("/api/v1/videos").json()
-                if listing["total"] == 1:
+                if listing["total"] == 1 and client.get('/api/v1/library-state').json()['ready']:
                     break
                 time.sleep(0.03)
             assert listing["total"] == 1

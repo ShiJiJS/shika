@@ -11,7 +11,7 @@ from .errors import LibraryError
 from .file_state import path_reserved, reserved_video_ids
 from .identity import publish_discoveries
 from .media import fingerprint, inspect_media
-from .models import Directory, Observation, Root, Task, Video
+from .models import Directory, Observation, Root, Setting, Task, Video
 from .paths import VIDEO_EXTENSIONS, beneath, excluded, open_directory, open_video, signature
 
 
@@ -108,11 +108,13 @@ class Scanner:
             "identity_ambiguous": 0,
             "roots": [],
             "issues": [],
+            "progress": {"discovered": 0, "processed": 0, "bytes_total": 0, "bytes_processed": 0},
         }
+        self.last_progress = 0
         try:
             with self.db.read() as session:
                 initial_import = session.scalar(select(Video.id).limit(1)) is None
-            self.change_task(task_id, status="running", phase="discovering")
+            self.change_task(task_id, status="running", phase="discovering", result=result)
             with self.db.read() as session:
                 roots = list(session.scalars(select(Root).order_by(Root.path)))
             for root in roots:
@@ -134,6 +136,22 @@ class Scanner:
                 result,
                 self.check_stop,
             )
+            # Readiness is published only after identity reconciliation, never
+            # after merely traversing a directory. Keep it durable across upgrades.
+            with self.db.write() as session:
+                became_ready = False
+                for item in result["roots"]:
+                    if item["status"] == "completed":
+                        root = session.get(Root, item["id"])
+                        became_ready |= root.last_scan is None
+                        root.last_scan = time.time()
+                if became_ready:
+                    flag = session.get(Setting, "library_round_refresh")
+                    if flag:
+                        flag.value = "1"
+                    else:
+                        session.add(Setting(key="library_round_refresh", value="1"))
+            self.progress(task_id, result, force=True)
             self.change_task(
                 task_id,
                 status="completed",
@@ -165,13 +183,22 @@ class Scanner:
         if self.stop.is_set():
             raise InterruptedError("scan_stopped")
 
+    def progress(self, task_id, result, *, force=False):
+        now = time.monotonic()
+        if force or now - self.last_progress >= 1:
+            result["progress"]["updated_at"] = time.time()
+            self.change_task(task_id, result=result)
+            self.last_progress = now
+
     def scan_root(self, task_id, root, roots, result, *, initial_import=False):
         base = Path(root.path)
         entries = []
+        item = {"id": root.id, "status": "discovering", "discovered": 0, "processed": 0,
+                "bytes_total": 0, "bytes_processed": 0}
+        result["roots"].append(item)
+        self.change_task(task_id, phase="discovering", result=result)
         if not root.mount_id:
-            result["roots"].append(
-                {"id": root.id, "status": "unavailable", "error": "root_unmapped"}
-            )
+            item.update(status="unavailable", error="root_unmapped")
             return
         try:
             with open_directory(base) as fd:
@@ -183,15 +210,14 @@ class Scanner:
             # Walk opened directory FDs, not path-based os.walk, so an external
             # link replacement cannot redirect enumeration outside this root.
             with open_directory(base) as fd:
-                self.discover(fd, base, root, roots, task_id, entries)
+                self.discover(fd, base, root, roots, task_id, entries, result, item)
         except (OSError, LibraryError):
             with self.db.write() as session:
                 stored = session.get(Root, root.id)
                 stored.available, stored.error = False, "root_unavailable"
-            result["roots"].append(
-                {"id": root.id, "status": "unavailable", "error": "root_unavailable"}
-            )
+            item.update(status="unavailable", error="root_unavailable")
             return
+        item["status"] = "processing_media"
         self.change_task(task_id, phase="waiting_for_stable_files", result=result)
         remaining = max(
             (since + self.settings.stability_seconds - time.time() for _, _, since in entries),
@@ -235,6 +261,11 @@ class Scanner:
                     )
                 with self.db.write() as session:
                     self.record_state(session, existing, path, task_id, "media_probe_failed")
+            item["processed"] += 1
+            item["bytes_processed"] += first_signature[2]
+            result["progress"]["processed"] += 1
+            result["progress"]["bytes_processed"] += first_signature[2]
+            self.progress(task_id, result, force=item["processed"] == 1)
         self.check_stop()
         try:
             with open_directory(base) as fd:
@@ -245,9 +276,7 @@ class Scanner:
             with self.db.write() as session:
                 stored = session.get(Root, root.id)
                 stored.available, stored.error = False, "root_unavailable"
-            result["roots"].append(
-                {"id": root.id, "status": "unavailable", "error": "root_unavailable"}
-            )
+            item.update(status="unavailable", error="root_unavailable")
             return
         # Only a successful complete traversal can mark unseen files missing.
         with self.db.write() as session:
@@ -271,10 +300,11 @@ class Scanner:
                 )
             )
             stored = session.get(Root, root.id)
-            stored.last_scan, stored.available, stored.error = time.time(), True, None
-        result["roots"].append({"id": root.id, "status": "completed"})
+            stored.available, stored.error = True, None
+        item["status"] = "completed"
+        self.progress(task_id, result, force=True)
 
-    def discover(self, fd, path, root, roots, task_id, entries):
+    def discover(self, fd, path, root, roots, task_id, entries, result, item):
         self.check_stop()
         owner = min((r for r in roots if beneath(path, Path(r.path))), key=lambda r: len(r.path))
         with self.db.write() as session:
@@ -294,7 +324,7 @@ class Scanner:
                         child.name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd
                     )
                     try:
-                        self.discover(nested, full, root, roots, task_id, entries)
+                        self.discover(nested, full, root, roots, task_id, entries, result, item)
                     finally:
                         os.close(nested)
                 elif (
@@ -313,6 +343,11 @@ class Scanner:
                             previous.signature, previous.stable_since = observed, time.time()
                         stable_since = previous.stable_since
                     entries.append((full, observed, stable_since))
+                    item["discovered"] += 1
+                    item["bytes_total"] += observed[2]
+                    result["progress"]["discovered"] += 1
+                    result["progress"]["bytes_total"] += observed[2]
+                    self.progress(task_id, result)
 
     @staticmethod
     def record_state(session, existing, path, task_id, error):

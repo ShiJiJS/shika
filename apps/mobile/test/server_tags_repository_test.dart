@@ -98,6 +98,8 @@ void main() {
         }
       } else if (path == '/api/v1/info') {
         response = {'api_version': 1, 'server_id': 'tags-fixture'};
+      } else if (path == '/api/v1/library-state') {
+        response = {'ready': true, 'scanning': false, 'status': 'idle'};
       } else if (path == '/api/v1/roots') {
         response = {
           'items': [

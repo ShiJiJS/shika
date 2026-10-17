@@ -51,6 +51,11 @@ while time.monotonic() < deadline:
         request = urllib.request.Request(base + "/api/v1/videos", headers={"Authorization":"Bearer " + token})
         with urllib.request.urlopen(request, timeout=3) as response:
             if json.load(response)["total"] >= 27:
+                ready = urllib.request.Request(base + "/api/v1/library-state", headers={"Authorization":"Bearer " + token})
+                with urllib.request.urlopen(ready, timeout=3) as state:
+                    if not json.load(state)["ready"]:
+                        time.sleep(0.2)
+                        continue
                 print("Isolated emulator fixture ready at port 8761; main service unchanged")
                 break
     except OSError:

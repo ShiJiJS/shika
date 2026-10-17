@@ -19,6 +19,7 @@ from .db import Database
 from .errors import LibraryError
 from .file_operations import FileOperations
 from .file_state import reserved_video_ids
+from .library_state import library_state
 from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
 from .playback import Playback
 from .scanner import Scanner
@@ -141,7 +142,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             app.state.files.close()
             db.close()
 
-    app = FastAPI(title="Video Viewer", version="0.1.0", lifespan=lifespan)
+    app = FastAPI(title="Video Viewer", version="0.1.1", lifespan=lifespan)
 
     @app.exception_handler(LibraryError)
     async def library_error(_request, error):
@@ -215,6 +216,10 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     @app.get("/api/v1/roots", dependencies=auth_required)
     def roots(request: Request):
         return {"items": request.app.state.catalog.roots()}
+
+    @app.get("/api/v1/library-state", dependencies=auth_required)
+    def preparation(request: Request):
+        return library_state(request.app.state.db)
 
     def save_root(body, request, root_id=None):
         scanner = request.app.state.scanner

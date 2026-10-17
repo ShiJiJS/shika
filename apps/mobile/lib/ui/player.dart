@@ -301,7 +301,11 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
     _repaint();
   }
 
-  Future<void> _load({bool autoplay = true, int emptyTrackRetry = 0}) async {
+  Future<void> _load({
+    bool autoplay = true,
+    int emptyTrackRetry = 0,
+    int transientRetry = 0,
+  }) async {
     final generation = ++_generation;
     _loading = true;
     _playRequested = autoplay && widget.active && !widget.suspended;
@@ -352,7 +356,9 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
         await widget.session.release(next);
         return;
       }
-      await next.initialize().timeout(const Duration(seconds: 12));
+      await next.initialize().timeout(
+        Duration(seconds: widget.active ? 30 : 20),
+      );
       if (!mounted ||
           generation != _generation ||
           !widget.session.contains(next)) {
@@ -362,7 +368,11 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
         // A native ready event can still have no video dimensions. Recreate
         // once, releasing this decoder first; audio-only success is not video.
         if (emptyTrackRetry == 0 && widget.prepare && _foreground) {
-          await _load(autoplay: autoplay, emptyTrackRetry: 1);
+          await _load(
+            autoplay: autoplay,
+            emptyTrackRetry: 1,
+            transientRetry: transientRetry,
+          );
           return;
         }
         throw UnsupportedError('No decoded video track');
@@ -385,6 +395,44 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
         );
       }
     } catch (error) {
+      final description = error.toString().toLowerCase();
+      final transient =
+          error is TimeoutException ||
+          [
+            'source error',
+            '503',
+            '502',
+            '504',
+            'socketexception',
+            'connection reset',
+            'connection timed out',
+          ].any(description.contains);
+      if (!failureHandled &&
+          transient &&
+          transientRetry == 0 &&
+          mounted &&
+          generation == _generation &&
+          widget.active &&
+          widget.prepare &&
+          _foreground) {
+        // A NAS may still be reading ahead or releasing an older HTTP Range.
+        // Release before one bounded retry; stale pages never start a decoder.
+        _controller = null;
+        await widget.session.release(next);
+        await Future<void>.delayed(const Duration(milliseconds: 800));
+        if (mounted &&
+            generation == _generation &&
+            widget.active &&
+            widget.prepare &&
+            _foreground) {
+          await _load(
+            autoplay: autoplay,
+            emptyTrackRetry: emptyTrackRetry,
+            transientRetry: 1,
+          );
+        }
+        return;
+      }
       if (!failureHandled) {
         failureHandled = true;
         await _failure(next, generation, failure: error);

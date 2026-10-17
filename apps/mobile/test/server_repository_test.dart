@@ -16,6 +16,7 @@ void main() {
   var dropRoundResponse = false;
   var scanPolls = 0, scanSubmits = 0, missingTotal = 0;
   var rootUnavailable = false, scanFailed = false, renamedDirectory = false;
+  Map<String, dynamic> preparation = {};
   final rootWrites = <String>[];
   final submittedRounds = <Map<String, dynamic>>[];
   Map<String, dynamic> scope = {'tag_ids': <String>[]};
@@ -54,6 +55,7 @@ void main() {
     scanFailed = false;
     renamedDirectory = false;
     rootWrites.clear();
+    preparation = {'ready': true, 'scanning': false, 'status': 'idle'};
     server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
     server.listen((request) async {
       final path = request.uri.path;
@@ -61,6 +63,8 @@ void main() {
       Object response;
       if (path == '/api/v1/info') {
         response = {'api_version': 1, 'server_id': 'fixture'};
+      } else if (path == '/api/v1/library-state') {
+        response = preparation;
       } else if (path == '/api/v1/roots') {
         if (request.method != 'GET') {
           rootWrites.add(request.method);
@@ -207,6 +211,38 @@ void main() {
     await server.close(force: true);
   });
 
+  test('initial preparation stays locked and live progress does not reload catalog pages', () async {
+    expect(repo.libraryPreparation.value.ready, isFalse);
+    preparation = {
+      'ready': false,
+      'scanning': true,
+      'status': 'running',
+      'task_id': 'initial-scan',
+      'phase': 'processing_media',
+      'progress': {'discovered': 4065, 'processed': 300},
+    };
+    await repo.initialize();
+    var publications = 0;
+    repo.addListener(() => publications++);
+    expect(repo.libraryPreparation.value.ready, isFalse);
+    expect(repo.libraryPreparation.value.processed, 300);
+    preparation['progress'] = {'discovered': 4065, 'processed': 310};
+    await repo.pollPreparation(repo.api, 1);
+    expect(repo.libraryPreparation.value.processed, 310);
+    expect(publications, 0);
+    preparation = {
+      'ready': true,
+      'scanning': false,
+      'status': 'completed',
+      'task_id': 'initial-scan',
+      'phase': 'completed',
+      'progress': {'discovered': 4065, 'processed': 4065},
+    };
+    await repo.pollPreparation(repo.api, 1);
+    expect(repo.libraryPreparation.value.ready, isTrue);
+    expect(publications, 1);
+  });
+
   test(
     'empty current video can be reopened and selected without expanding scope',
     () async {
@@ -219,6 +255,29 @@ void main() {
       expect(repo.snapshot.query.type, 'MOV');
       expect(repo.snapshot.query.tags, {'tag'});
       expect(repo.snapshot.round, isEmpty);
+    },
+  );
+
+  test(
+    'background scan completion invalidates externally renamed directory paths',
+    () async {
+      await repo.initialize();
+      await repo.loadFolders('/media');
+      expect(await repo.directoryId('/media/old'), 'child');
+      renamedDirectory = true;
+      preparation = {
+        'ready': true,
+        'scanning': false,
+        'status': 'completed',
+        'phase': 'completed',
+        'task_id': 'background-scan',
+      };
+      await repo.pollPreparation(repo.api, 1);
+      await expectLater(
+        repo.directoryId('/media/old'),
+        throwsA(isA<LibraryFailure>()),
+      );
+      expect(scanSubmits, 0);
     },
   );
 

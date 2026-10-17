@@ -5,6 +5,7 @@ from pathlib import Path
 from starlette.responses import FileResponse
 
 from .errors import LibraryError
+from .library_state import prepared
 from .models import Root, Video
 from .paths import open_directory, open_video, signature
 
@@ -104,6 +105,8 @@ class MediaStreams:
         fd = None
         try:
             with self.db.read() as session:
+                if not prepared(session):
+                    raise LibraryError("library_preparing", "视频库正在准备，完成后即可播放", 409)
                 video = session.get(Video, video_id)
                 fd = self.verified_fd(session, video)
             return DescriptorResponse(fd, self.slots.release, video)

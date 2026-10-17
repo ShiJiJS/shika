@@ -114,6 +114,8 @@ void main() {
           response = receipts.values.singleWhere(
             (t) => t['id'] == path.split('/').last,
           );
+        } else if (path == '/api/v1/library-state') {
+          response = {'ready': true, 'scanning': false, 'status': 'idle'};
         } else if (path == '/api/v1/roots') {
           response = {
             'items': [

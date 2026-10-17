@@ -27,7 +27,7 @@ class ServerUi {
   }
 
   Future<void> idle() => until(
-    () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
+    () => find.byKey(const Key('management-loading')).evaluate().isEmpty,
     'management operation',
   );
 

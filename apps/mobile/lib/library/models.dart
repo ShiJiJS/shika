@@ -393,3 +393,83 @@ class BackupPreview {
     }
   }
 }
+
+/// Server-owned preparation state. Progress updates do not replace paged lists.
+class LibraryPreparation {
+  const LibraryPreparation({
+    this.ready = true,
+    this.scanning = false,
+    this.phase = 'idle',
+    this.taskId,
+    this.status = 'idle',
+    this.discovered = 0,
+    this.processed = 0,
+    this.bytesTotal = 0,
+    this.bytesProcessed = 0,
+    this.failed = 0,
+    this.deferred = 0,
+    this.roots = const {},
+    this.syncError,
+  });
+  final bool ready, scanning;
+  final String phase, status;
+  final String? taskId, syncError;
+  final int discovered, processed, bytesTotal, bytesProcessed, failed, deferred;
+  final Map<String, Map<String, dynamic>> roots;
+  factory LibraryPreparation.fromJson(
+    Map<String, dynamic> data, {
+    bool? ready,
+  }) {
+    final progress = data['progress'] as Map? ?? {};
+    final counts = data['counts'] as Map? ?? {};
+    return LibraryPreparation(
+      ready: ready ?? data['ready'] == true,
+      scanning: data['scanning'] == true,
+      phase: data['phase'] as String? ?? 'idle',
+      status: data['status'] as String? ?? 'idle',
+      taskId: data['task_id'] as String?,
+      discovered: (progress['discovered'] as num?)?.toInt() ?? 0,
+      processed: (progress['processed'] as num?)?.toInt() ?? 0,
+      bytesTotal: (progress['bytes_total'] as num?)?.toInt() ?? 0,
+      bytesProcessed: (progress['bytes_processed'] as num?)?.toInt() ?? 0,
+      failed: (counts['failed'] as num?)?.toInt() ?? 0,
+      deferred: (counts['deferred'] as num?)?.toInt() ?? 0,
+      roots: {
+        for (final root in data['roots'] as List? ?? [])
+          root['id'] as String: Map<String, dynamic>.from(root as Map),
+      },
+    );
+  }
+  LibraryPreparation offline() => LibraryPreparation(
+    ready: ready,
+    scanning: scanning,
+    phase: phase,
+    taskId: taskId,
+    status: status,
+    discovered: discovered,
+    processed: processed,
+    bytesTotal: bytesTotal,
+    bytesProcessed: bytesProcessed,
+    failed: failed,
+    deferred: deferred,
+    roots: roots,
+    syncError: '进度暂未同步，正在重试',
+  );
+  String get label => switch (phase) {
+    'queued' => '扫描排队中',
+    'discovering' => '正在查找视频',
+    'waiting_for_stable_files' => '等待文件写入稳定',
+    'processing_media' => '正在读取视频信息',
+    'reconciling_identities' => '正在核对文件身份',
+    'completed' => ready ? '扫描完成' : '部分目录未就绪，请检查媒体目录',
+    'interrupted' => '扫描已中断',
+    'failed' => '扫描失败',
+    _ => ready ? '视频库已就绪' : '等待首次扫描',
+  };
+  String get summary =>
+      '$label${discovered > 0
+          ? phase == 'discovering'
+                ? ' · 已发现 $discovered 个'
+                : ' · $processed / $discovered 个'
+          : ''}';
+}

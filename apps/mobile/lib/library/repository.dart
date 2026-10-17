@@ -6,12 +6,15 @@ import 'models.dart';
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
   final ValueNotifier<String?> scanStatus = ValueNotifier(null);
+  final libraryPreparation = ValueNotifier(const LibraryPreparation());
+  Future<void> requestScan() => refresh();
   final ValueNotifier<String?> backupStatus = ValueNotifier(null);
   bool get backupRestorePending => false;
   Future<void> reconcileBackupRestore() async {}
   @override
   void dispose() {
     scanStatus.dispose();
+    libraryPreparation.dispose();
     backupStatus.dispose();
     super.dispose();
   }

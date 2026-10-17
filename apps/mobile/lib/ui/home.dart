@@ -81,6 +81,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   List<LibraryVideo> libraryItems = [];
   int libraryTotal = 0, libraryGeneration = 0;
   bool libraryLoading = false;
+  final libraryScroll = ScrollController();
   String libraryError = '', libraryKey = '', previousScope = '';
   List<LibraryVideo> trashItems = [];
   int trashTotal = 0, trashGeneration = 0;
@@ -121,6 +122,8 @@ class _LibraryHomeState extends State<LibraryHome> {
   void initState() {
     super.initState();
     repo.addListener(changed);
+    repo.libraryPreparation.addListener(preparationChanged);
+    libraryScroll.addListener(loadNearBottom);
     address.text = data.address;
     port.text = '${data.port}';
     previousScope = jsonEncode(data.query.toJson());
@@ -155,6 +158,22 @@ class _LibraryHomeState extends State<LibraryHome> {
     if (page == 'library') unawaited(loadLibrary());
     if (page == 'trash') unawaited(loadTrash());
     if (page == 'roots') unawaited(loadMissing());
+  }
+
+  void preparationChanged() {
+    if (mounted) setState(() {});
+  }
+
+  void loadNearBottom() {
+    if (page == 'library' &&
+        libraryScroll.hasClients &&
+        libraryScroll.position.extentAfter < 480 &&
+        !libraryLoading &&
+        libraryError.isEmpty &&
+        libraryItems.isNotEmpty &&
+        libraryItems.length < libraryTotal) {
+      unawaited(loadLibrary(more: true));
+    }
   }
 
   Future<void> loadMissing({bool more = false}) async {
@@ -246,6 +265,11 @@ class _LibraryHomeState extends State<LibraryHome> {
       setState(() {
         libraryItems = more ? [...libraryItems, ...result.items] : result.items;
         libraryTotal = result.total;
+        if (more &&
+            result.items.isEmpty &&
+            libraryItems.length < result.total) {
+          libraryError = '视频列表已变化，请刷新后继续';
+        }
       });
     } on RequestCancelled {
       // A newer query or another page owns the visible state.
@@ -256,6 +280,9 @@ class _LibraryHomeState extends State<LibraryHome> {
     } finally {
       if (mounted && generation == libraryGeneration) {
         setState(() => libraryLoading = false);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) loadNearBottom();
+        });
       }
     }
   }
@@ -270,6 +297,8 @@ class _LibraryHomeState extends State<LibraryHome> {
     repo.cancelTrashRead();
     repo.cancelMissingRead();
     repo.removeListener(changed);
+    repo.libraryPreparation.removeListener(preparationChanged);
+    libraryScroll.dispose();
     address.dispose();
     port.dispose();
     passphrase.dispose();
@@ -608,7 +637,9 @@ class _LibraryHomeState extends State<LibraryHome> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 9),
                         child: Text(
-                          '${data.round.isEmpty ? '00' : (repo.playbackPosition + 1).toString().padLeft(2, '0')} / ${repo.playbackTotal.toString().padLeft(2, '0')}',
+                          !repo.libraryPreparation.value.ready
+                              ? '准备中'
+                              : '${data.round.isEmpty ? '00' : (repo.playbackPosition + 1).toString().padLeft(2, '0')} / ${repo.playbackTotal.toString().padLeft(2, '0')}',
                           key: const Key('round-position'),
                           style: TextStyle(
                             fontFamily: 'serif',
@@ -708,7 +739,10 @@ class _LibraryHomeState extends State<LibraryHome> {
             SizedBox(
               height: 2,
               child: _busy
-                  ? const LinearProgressIndicator(minHeight: 2)
+                  ? const LinearProgressIndicator(
+                      key: Key('management-loading'),
+                      minHeight: 2,
+                    )
                   : ColoredBox(color: Paper.of(context).line),
             ),
             if (error.isNotEmpty)
@@ -796,7 +830,14 @@ class _LibraryHomeState extends State<LibraryHome> {
               ),
             Expanded(
               child: switch (page) {
-                'browse' => browsing(),
+                'browse' => TweenAnimationBuilder<double>(
+                  key: ValueKey(repo.libraryPreparation.value.ready),
+                  tween: Tween(begin: 0, end: 1),
+                  duration: const Duration(milliseconds: 180),
+                  child: browsing(),
+                  builder: (_, opacity, child) =>
+                      Opacity(opacity: opacity, child: child),
+                ),
                 'library' => library(),
                 'tags' => tags(),
                 'settings' => settings(),
@@ -938,7 +979,141 @@ class _LibraryHomeState extends State<LibraryHome> {
     );
   }
 
+  Widget preparationCard({bool locked = false}) {
+    final state = repo.libraryPreparation.value;
+    final p = Paper.of(context);
+    final active = state.scanning && state.syncError == null;
+    String bytes(int count) {
+      final unit = count >= 1024 * 1024 * 1024
+          ? 1024 * 1024 * 1024
+          : 1024 * 1024;
+      return '${(count / unit).toStringAsFixed(1)} ${unit == 1024 * 1024 ? 'MB' : 'GB'}';
+    }
+
+    return Container(
+      key: const Key('library-preparation'),
+      constraints: const BoxConstraints(maxWidth: 420),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: p.soft.withValues(alpha: .5),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: p.line),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                locked ? Icons.lock_outline : Icons.folder_copy_outlined,
+                size: 20,
+                color: p.olive,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  locked ? '视频库正在准备' : '目录扫描',
+                  style: p.title.copyWith(fontSize: 20),
+                ),
+              ),
+              if (active)
+                const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 1.8),
+                ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            state.summary,
+            key: const Key('preparation-progress'),
+            style: TextStyle(fontSize: 13, color: p.olive),
+          ),
+          if (active)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: LinearProgressIndicator(
+                minHeight: 3,
+                borderRadius: BorderRadius.circular(3),
+              ),
+            ),
+          if (state.bytesTotal > 0)
+            Text(
+              '${bytes(state.bytesProcessed)} / ${bytes(state.bytesTotal)} 已核对',
+              style: TextStyle(fontSize: 11, color: p.muted),
+            ),
+          if (state.failed > 0 || state.deferred > 0)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                '${state.failed} 个读取失败 · ${state.deferred} 个等待文件稳定',
+                style: TextStyle(fontSize: 11, color: p.muted),
+              ),
+            ),
+          const SizedBox(height: 12),
+          Text(
+            state.syncError ??
+                (locked
+                    ? '首次扫描完成后自动开放播放。可以先查看目录、标签和设置，进度会自动同步。'
+                    : state.scanning
+                    ? '已有视频可以继续播放，新增内容在扫描完成后入库。'
+                    : '扫描记录保存在服务端，关闭应用不会中断扫描。'),
+            style: TextStyle(fontSize: 12, color: p.muted, height: 1.6),
+          ),
+          if (locked || !state.scanning)
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Wrap(
+                spacing: 8,
+                children: [
+                  if (!state.scanning)
+                    OutlinedButton(
+                      onPressed: busy ? null : () => perform(repo.requestScan),
+                      child: const Text('重新扫描'),
+                    ),
+                  if (locked)
+                    TextButton(
+                      onPressed: () => go('roots'),
+                      child: const Text('查看媒体目录'),
+                    ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  String rootScanLabel(MediaRoot root) {
+    final state = repo.libraryPreparation.value;
+    final detail = state.roots[root.id];
+    final scan = detail?['scan'] as Map?;
+    if (detail?['available'] == false || !root.available) return '目录暂不可用';
+    if (state.scanning && scan != null) {
+      if (scan['status'] == 'unavailable') return '目录暂不可用';
+      if (scan['status'] == 'discovering') {
+        return '正在查找 · 已发现 ${scan['discovered'] ?? 0} 个';
+      }
+      if (scan['status'] == 'completed') {
+        return '本目录已核对 · ${scan['processed'] ?? 0} 个';
+      }
+      return '正在核对 · ${scan['processed'] ?? 0} / ${scan['discovered'] ?? 0} 个';
+    }
+    if (detail?['ready'] == false) return '首次扫描尚未完成';
+    return '可访问 · ${root.lastScan}';
+  }
+
   Widget browsing() {
+    if (!repo.libraryPreparation.value.ready) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: preparationCard(locked: true),
+        ),
+      );
+    }
     final current = repo.current;
     return Column(
       children: [
@@ -1035,7 +1210,11 @@ class _LibraryHomeState extends State<LibraryHome> {
             children: [
               Expanded(
                 child: Text(
-                  libraryLoading && results.isEmpty ? '正在加载…' : '$total 个视频',
+                  !repo.libraryPreparation.value.ready
+                      ? '建库中 · 已入库 $total 个，数量仍在更新'
+                      : libraryLoading && results.isEmpty
+                      ? '正在加载…'
+                      : '$total 个视频',
                   key: const Key('library-count'),
                   style: TextStyle(
                     color: Paper.of(context).olive,
@@ -1082,7 +1261,10 @@ class _LibraryHomeState extends State<LibraryHome> {
               ),
               const SizedBox(width: 9),
               OutlinedButton(
-                onPressed: busy || libraryLoading || results.isEmpty
+                onPressed:
+                    busy ||
+                        !repo.libraryPreparation.value.ready ||
+                        results.isEmpty
                     ? null
                     : () async {
                         if (await perform(
@@ -1154,150 +1336,201 @@ class _LibraryHomeState extends State<LibraryHome> {
                           : '视频库还是空的',
                     ),
                     TextButton(
-                      onPressed: busy ? null : () => perform(repo.refresh),
+                      onPressed: busy ? null : () => perform(repo.requestScan),
                       child: const Text('刷新'),
                     ),
                   ],
                 )
               : RefreshIndicator(
-                  onRefresh: () => perform(repo.refresh),
-                  child: GridView.builder(
+                  onRefresh: () => perform(repo.requestScan),
+                  child: CustomScrollView(
                     key: const Key('video-grid'),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 18,
-                          mainAxisExtent: 290,
-                        ),
-                    itemCount:
-                        results.length + (results.length < total ? 1 : 0),
-                    itemBuilder: (context, i) {
-                      if (i == results.length) {
-                        return TextButton(
-                          onPressed: libraryLoading
-                              ? null
-                              : () => loadLibrary(more: true),
-                          child: Text(libraryLoading ? '加载中…' : '加载更多'),
-                        );
-                      }
-                      final v = results[i];
-                      return InkWell(
-                        key: Key('tile-${v.id}'),
-                        onTap: busy || libraryLoading
-                            ? null
-                            : () async {
-                                if (selecting) {
-                                  setState(
-                                    () => selected.contains(v.id)
-                                        ? selected.remove(v.id)
-                                        : selected.add(v.id),
-                                  );
-                                } else if (await perform(
-                                  () => repo.openVideo(v.id),
-                                )) {
-                                  playerEpoch++;
-                                  go('browse');
-                                }
-                              },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Stack(
-                                fit: StackFit.expand,
+                    controller: libraryScroll,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    slivers: [
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        sliver: SliverGrid.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 12,
+                                mainAxisSpacing: 18,
+                                mainAxisExtent: 290,
+                              ),
+                          itemCount: results.length,
+                          itemBuilder: (context, i) {
+                            final v = results[i];
+                            return InkWell(
+                              key: Key('tile-${v.id}'),
+                              onTap:
+                                  busy ||
+                                      (!selecting &&
+                                          !repo.libraryPreparation.value.ready)
+                                  ? null
+                                  : () async {
+                                      if (selecting) {
+                                        setState(
+                                          () => selected.contains(v.id)
+                                              ? selected.remove(v.id)
+                                              : selected.add(v.id),
+                                        );
+                                      } else if (await perform(
+                                        () => repo.openVideo(v.id),
+                                      )) {
+                                        playerEpoch++;
+                                        go('browse');
+                                      }
+                                    },
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  MediaPoster(
-                                    video: v,
-                                    onUnauthorized: () => unawaited(
-                                      repo.mediaUnauthorized(v.source),
+                                  Expanded(
+                                    child: Stack(
+                                      fit: StackFit.expand,
+                                      children: [
+                                        MediaPoster(
+                                          video: v,
+                                          onUnauthorized: () => unawaited(
+                                            repo.mediaUnauthorized(v.source),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          right: 5,
+                                          bottom: 5,
+                                          child: Container(
+                                            color: Colors.black54,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 4,
+                                              vertical: 2,
+                                            ),
+                                            child: Text(
+                                              timeLabel(
+                                                Duration(seconds: v.seconds),
+                                              ),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 11,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        if (selecting)
+                                          Positioned(
+                                            left: 6,
+                                            top: 6,
+                                            child: CircleAvatar(
+                                              radius: 12,
+                                              backgroundColor:
+                                                  selected.contains(v.id)
+                                                  ? Paper.of(context).olive
+                                                  : Paper.of(context)
+                                                        .background,
+                                              child: Icon(
+                                                selected.contains(v.id)
+                                                    ? Icons.check
+                                                    : Icons.circle_outlined,
+                                                size: 18,
+                                                color: selected.contains(v.id)
+                                                    ? Paper.of(context)
+                                                          .background
+                                                    : Paper.of(context).olive,
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ),
-                                  Positioned(
-                                    right: 5,
-                                    bottom: 5,
-                                    child: Container(
-                                      color: Colors.black54,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 4,
-                                        vertical: 2,
-                                      ),
-                                      child: Text(
-                                        timeLabel(Duration(seconds: v.seconds)),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                        ),
-                                      ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    v.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Paper.of(context).title
+                                        .copyWith(fontSize: 14),
+                                  ),
+                                  Text(
+                                    '${v.portrait ? '竖版' : '横版'} · ${v.type}',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Paper.of(context).olive,
                                     ),
                                   ),
-                                  if (selecting)
-                                    Positioned(
-                                      left: 6,
-                                      top: 6,
-                                      child: CircleAvatar(
-                                        radius: 12,
-                                        backgroundColor: selected.contains(v.id)
-                                            ? Paper.of(context).olive
-                                            : Paper.of(context).background,
-                                        child: Icon(
-                                          selected.contains(v.id)
-                                              ? Icons.check
-                                              : Icons.circle_outlined,
-                                          size: 18,
-                                          color: selected.contains(v.id)
-                                              ? Paper.of(context).background
-                                              : Paper.of(context).olive,
-                                        ),
-                                      ),
+                                  Text(
+                                    v.tags
+                                        .map((t) => '# ${repo.tagName(t)}')
+                                        .join('   '),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Paper.of(context).olive,
                                     ),
+                                  ),
                                 ],
                               ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              v.name,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Paper.of(context).title
-                                  .copyWith(fontSize: 14),
-                            ),
-                            Text(
-                              '${v.portrait ? '竖版' : '横版'} · ${v.type}',
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: Paper.of(context).olive,
-                              ),
-                            ),
-                            Text(
-                              v.tags
-                                  .map((t) => '# ${repo.tagName(t)}')
-                                  .join('   '),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: Paper.of(context).olive,
-                              ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 24,
+                            horizontal: 16,
+                          ),
+                          child: libraryError.isNotEmpty
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        libraryError,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Paper.of(context).muted,
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => loadLibrary(more: true),
+                                      child: const Text('重试'),
+                                    ),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (libraryLoading) ...[
+                                      const SizedBox(
+                                        key: Key('library-loading-more'),
+                                        width: 16,
+                                        height: 16,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 1.8,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                    ],
+                                    Text(
+                                      libraryLoading
+                                          ? '正在加载视频'
+                                          : results.length >= total
+                                          ? '已显示全部视频'
+                                          : '继续向下浏览',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Paper.of(context).muted,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
         ),
-        if (libraryError.isNotEmpty && results.isNotEmpty)
-          Row(
-            children: [
-              Expanded(child: note(libraryError)),
-              TextButton(
-                onPressed: () => loadLibrary(),
-                child: const Text('重试'),
-              ),
-            ],
-          ),
         if (selecting) batchBar(),
       ],
     );
@@ -1618,6 +1851,10 @@ class _LibraryHomeState extends State<LibraryHome> {
   Widget roots() => ListView(
     padding: const EdgeInsets.symmetric(horizontal: 20),
     children: [
+      if (repo is! DemoControls) ...[
+        preparationCard(),
+        const SizedBox(height: 12),
+      ],
       Row(
         children: [
           Expanded(child: note('扫描包含子目录')),
@@ -1634,7 +1871,7 @@ class _LibraryHomeState extends State<LibraryHome> {
           leading: const Icon(Icons.folder_outlined),
           title: Text(r.name),
           subtitle: Text(
-            '${r.path}\n${r.available ? '可访问 · ${r.lastScan}' : '目录暂不可用'}',
+            '${r.path}\n${rootScanLabel(r)}',
             style: TextStyle(
               fontSize: 12,
               color: r.available
@@ -1650,12 +1887,15 @@ class _LibraryHomeState extends State<LibraryHome> {
         ),
       const SizedBox(height: 20),
       OutlinedButton(
-        onPressed: busy
+        onPressed: busy || repo.libraryPreparation.value.scanning
             ? null
             : () async {
-                if (await perform(repo.refresh)) notice('刷新完成，新增内容将在下一轮播放');
+                if (await perform(repo.requestScan)) notice('扫描已提交，进度会自动同步');
               },
-        child: actionLabel(Icons.refresh, '刷新媒体目录'),
+        child: actionLabel(
+          Icons.refresh,
+          repo.libraryPreparation.value.scanning ? '扫描进行中' : '刷新媒体目录',
+        ),
       ),
       if (missingTotal > 0 || missingItems.isNotEmpty) ...[
         const SizedBox(height: 30),

@@ -127,6 +127,10 @@ void main() {
         Map<String, dynamic> expected, {
         required bool mapped,
       }) async {
+        await ui.until(
+          () => repo.libraryPreparation.value.ready,
+          'restored directories finish preparation',
+        );
         expect((await tags()).map((r) => r['name']).toSet(), {'原标签', '补充标签'});
         final round = await observer!.json('GET', '/api/v1/playback');
         expect(round['id'], expected['round_id']);

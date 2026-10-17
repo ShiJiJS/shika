@@ -74,6 +74,9 @@ def watch():
                 "error",
                 "preview",
                 "fresh-done",
+                "preparing",
+                "loading-more",
+                "prepared",
             }:
                 request = urllib.request.Request(
                     "http://127.0.0.1:8761/__fixture/trace", headers=HEADERS
@@ -118,9 +121,12 @@ def main():
     mode.add_argument("--files", action="store_true")
     mode.add_argument("--external", action="store_true")
     mode.add_argument("--backups", action="store_true")
+    mode.add_argument("--preparation", action="store_true")
     parser.add_argument("--plain-name")
     args = parser.parse_args()
-    if args.backups:
+    if args.preparation:
+        PREFIX = "v1-preparation"
+    elif args.backups:
         PREFIX = "i6"
     elif args.external:
         PREFIX = "i5"
@@ -165,6 +171,7 @@ def main():
                 "i4": "integration_test/server_files_test.dart",
                 "i5": "integration_test/server_external_test.dart",
                 "i6": "integration_test/server_backups_test.dart",
+                "v1-preparation": "integration_test/server_preparation_test.dart",
             }[PREFIX],
             "-d",
             "emulator-5554",
@@ -178,7 +185,7 @@ def main():
             "w", encoding="utf-8"
         ) as log:
             code = 0
-            for phase in range(1 if args.plain_name else 3 if args.backups else 2):
+            for phase in range(1 if args.plain_name or args.preparation else 3 if args.backups else 2):
                 if phase:
                     subprocess.run(
                         [

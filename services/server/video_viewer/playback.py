@@ -5,6 +5,7 @@ import random
 from sqlalchemy import select
 
 from .errors import LibraryError
+from .library_state import prepared
 from .models import PlaybackRound, RoundEntry, Setting, Video, uid
 
 
@@ -74,6 +75,8 @@ class Playback:
             if not allow_missing_scope or error.code != "directory_not_found":
                 raise
             candidates = []
+        if not prepared(session):
+            candidates = []
         if anchor_video_id and anchor_video_id not in candidates:
             raise LibraryError("video_outside_scope", "该视频不在当前可播放范围内", 422)
         if order == "random":
@@ -99,6 +102,9 @@ class Playback:
         else:
             session.add(Setting(key="active_round", value=round.id))
         session.flush()
+        refresh = session.get(Setting, "library_round_refresh")
+        if refresh and prepared(session):
+            session.delete(refresh)
         return self.summary(session, round)
 
     def current(self):
@@ -110,6 +116,22 @@ class Playback:
                 return self.create("random", {})
             with self.db.write() as session:
                 round = self.get(session, active)
+                refresh = session.get(Setting, "library_round_refresh")
+                if refresh and refresh.value and prepared(session):
+                    session.delete(refresh)
+                    try:
+                        expected = set(session.scalars(
+                            self.catalog.video_statement(session, **round.scope).with_only_columns(Video.id)
+                        ))
+                    except LibraryError as error:
+                        if error.code != "directory_not_found":
+                            raise
+                        expected = set()
+                    actual = {video_id for _ordinal, video_id in self.eligible(session, round)}
+                    if actual != expected:
+                        return self.create_in_session(
+                            session, round.order, round.scope, allow_missing_scope=True
+                        )
                 return self.summary(session, round)
 
     @staticmethod
@@ -128,7 +150,8 @@ class Playback:
         ]
 
     def summary(self, session, round):
-        entries = self.eligible(session, round)
+        ready = prepared(session)
+        entries = self.eligible(session, round) if ready else []
         cursor = next((i for i, row in enumerate(entries) if row[0] >= round.cursor), len(entries))
         selected = None
         for i in range(cursor, len(entries)):
@@ -166,6 +189,7 @@ class Playback:
         pointer = session.get(Setting, "active_round")
         return {
             "id": round.id,
+            "library_locked": not ready,
             "active": bool(pointer and pointer.value == round.id),
             "order": round.order,
             "scope": round.scope,

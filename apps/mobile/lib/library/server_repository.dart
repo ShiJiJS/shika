@@ -37,7 +37,9 @@ class ServerLibraryRepository extends LibraryRepository {
          address: address,
          port: port,
          connected: false,
-       );
+       ) {
+    libraryPreparation.value = const LibraryPreparation(ready: false);
+  }
   final CredentialStore credentials;
   final FileCommandStore fileCommands;
   final BackupWorkStore backupWork;
@@ -75,6 +77,9 @@ class ServerLibraryRepository extends LibraryRepository {
   bool _disposed = false;
   String _session = requestId();
   String? _scanTask;
+  Timer? _preparationTimer;
+  RequestScope _preparationRead = RequestScope();
+  bool _scanAfterRestore = false;
   int? _connectingGeneration;
   Future<void> _credentialWrites = Future.value(),
       _roundWrites = Future.value();
@@ -183,6 +188,10 @@ class ServerLibraryRepository extends LibraryRepository {
     cancelTrashRead();
     cancelMissingRead();
     _scanRead.cancel();
+    _preparationTimer?.cancel();
+    _preparationRead.cancel();
+    _scanAfterRestore = false;
+    libraryPreparation.value = const LibraryPreparation(ready: false);
     _api?.close();
     _api = null;
     _backups?.dispose();
@@ -411,6 +420,7 @@ class ServerLibraryRepository extends LibraryRepository {
         using: target,
       ),
       call('GET', '/api/v1/trash', query: {'limit': '1'}, using: target),
+      call('GET', '/api/v1/library-state', using: target),
     ]);
     final tags = await allTags(target);
     final roots = rows(response[0]).map((root) {
@@ -426,7 +436,7 @@ class ServerLibraryRepository extends LibraryRepository {
         directoryId: root['directory_id'],
         error: root['error'],
         lastScan: date == null
-            ? '尚未扫描'
+            ? '等待首次扫描完成'
             : '${date.month}/${date.day} ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}',
       );
     }).toList();
@@ -473,6 +483,7 @@ class ServerLibraryRepository extends LibraryRepository {
       cancelMissingRead();
       _scanRead.cancel();
       _scanTask = null;
+      _scanAfterRestore = false;
       scanStatus.value = null;
       _api?.close();
       _videos.clear();
@@ -541,7 +552,90 @@ class ServerLibraryRepository extends LibraryRepository {
         type: scope['file_type'] ?? '',
       ),
     );
+    libraryPreparation.value = LibraryPreparation.fromJson(
+      response[4],
+      ready: response[4]['ready'] == true && round['library_locked'] != true,
+    );
     publish();
+    schedulePreparation(target, generation);
+  }
+
+  void schedulePreparation(ServerApi target, int generation) {
+    _preparationTimer?.cancel();
+    if (_disposed || generation != _generation || !identical(target, _api)) {
+      return;
+    }
+    _preparationTimer = Timer(
+      Duration(
+        seconds:
+            libraryPreparation.value.scanning || !libraryPreparation.value.ready
+            ? 2
+            : 10,
+      ),
+      () => unawaited(pollPreparation(target, generation)),
+    );
+  }
+
+  Future<void> pollPreparation(ServerApi target, int generation) async {
+    _preparationRead.cancel();
+    final work = _preparationRead = RequestScope();
+    bool valid() =>
+        !_disposed &&
+        !work.cancelled &&
+        generation == _generation &&
+        identical(target, _api);
+    try {
+      if (!valid() || backupRestorePending) return;
+      if (_scanAfterRestore) {
+        await call('POST', '/api/v1/scans', using: target, cancel: work);
+        if (!valid()) return;
+        _scanAfterRestore = false;
+      }
+      final data = await call(
+        'GET',
+        '/api/v1/library-state',
+        using: target,
+        cancel: work,
+      );
+      if (!valid()) return;
+      final previous = libraryPreparation.value;
+      final next = LibraryPreparation.fromJson(data);
+      // Keep playback locked until the matching, complete round is installed.
+      final finished =
+          !next.scanning &&
+          (previous.scanning || previous.taskId != next.taskId);
+      if ((!previous.ready && next.ready) || finished) {
+        await synchronize(
+          target,
+          generation,
+          beforePublish: () async {
+            cancelVideoRead();
+            cancelFolderRead();
+            cancelMissingRead();
+            _videos.clear();
+            _directories.clear();
+          },
+        );
+      } else {
+        libraryPreparation.value = next;
+      }
+    } on RequestCancelled {
+      // Another connection or restore owns this read.
+    } catch (_) {
+      if (valid()) {
+        libraryPreparation.value = libraryPreparation.value.offline();
+      }
+    } finally {
+      if (valid()) schedulePreparation(target, generation);
+    }
+  }
+
+  @override
+  Future<void> requestScan() async {
+    ensureNotRestoring();
+    final target = api, generation = _generation;
+    await call('POST', '/api/v1/scans', using: target);
+    await pollPreparation(target, generation);
   }
 
   @override
@@ -1473,6 +1567,7 @@ class ServerLibraryRepository extends LibraryRepository {
             _state = _state.copy(clearDelete: true);
           },
         );
+        _scanAfterRestore = !libraryPreparation.value.ready;
       },
     );
     _backups = client;
@@ -1514,6 +1609,8 @@ class ServerLibraryRepository extends LibraryRepository {
   @override
   void dispose() {
     _disposed = true;
+    _preparationTimer?.cancel();
+    _preparationRead.cancel();
     cancelVideoRead();
     cancelFolderRead();
     cancelTrashRead();

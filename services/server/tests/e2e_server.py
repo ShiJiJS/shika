@@ -47,7 +47,8 @@ def create_e2e_app():
         shutil.copyfile(samples / "h264.mov", camera / "相机片段.mov")
         marker.write_text("dedicated generated emulator fixture")
     controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False,
-                "fail_restore": False, "slow_restore": False}
+                "fail_restore": False, "slow_restore": False, "slow_page": False,
+                "fail_streams": 0}
 
     def backup_fault(phase, _task_id):
         if controls["fail_restore"] and phase == "after_replace_before_commit":
@@ -80,6 +81,12 @@ def create_e2e_app():
                     str(body.get("request_id")).encode()
                 ).hexdigest()
             trace.append(entry)
+            if controls["slow_page"] and request.url.path == "/api/v1/videos" and int(request.query_params.get("offset", "0")) > 0:
+                await asyncio.sleep(3)
+            if controls["fail_streams"] and request.url.path.endswith("/stream"):
+                controls["fail_streams"] -= 1
+                entry["status"] = 503
+                return JSONResponse({"error": {"code": "media_busy", "message": "Isolated transient stream failure"}}, status_code=503)
             if request.query_params.get("search") == "片":
                 await asyncio.sleep(0.75)
         response = await call_next(request)
@@ -158,6 +165,9 @@ def create_e2e_app():
             "preview",
             "fresh-instance",
             "fresh-done",
+            "preparing",
+            "loading-more",
+            "prepared",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase
@@ -209,6 +219,30 @@ def create_e2e_app():
                 rename_new(str(source), str(destination))
                 moved.append({"from": str(source), "to": str(destination)})
             details["moved"] = moved
+        elif action == "prepare-library":
+            from sqlalchemy import select
+
+            from video_viewer.models import Root
+            with app.state.db.write() as session:
+                for root in session.scalars(select(Root)):
+                    root.last_scan = None
+            scanner = app.state.scanner
+            original = scanner.check_stop
+            deadline = time.monotonic() + 15
+            def preparation_check():
+                if time.monotonic() < deadline:
+                    time.sleep(0.08)
+                else:
+                    scanner.check_stop = original
+                original()
+            scanner.check_stop = preparation_check
+            scanner.submit()
+        elif action == "slow-pages":
+            controls["slow_page"] = True
+        elif action == "normal-pages":
+            controls["slow_page"] = False
+        elif action == "busy-streams":
+            controls["fail_streams"] = 4
         elif action in {"fail-next-scan", "slow-next-scan"}:
             scanner = app.state.scanner
             original = scanner.check_stop
