@@ -99,9 +99,10 @@ def main():
     mode.add_argument("--playback", action="store_true")
     mode.add_argument("--tags", action="store_true")
     mode.add_argument("--files", action="store_true")
+    mode.add_argument("--external", action="store_true")
     parser.add_argument("--plain-name")
     args = parser.parse_args()
-    PREFIX = "i4" if args.files else "i3" if args.tags else "i2" if args.playback else "i1"
+    PREFIX = "i5" if args.external else "i4" if args.files else "i3" if args.tags else "i2" if args.playback else "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     linux_root = "/mnt/" + ROOT.drive.rstrip(":").lower() + ROOT.as_posix()[2:]
     subprocess.run(
@@ -128,7 +129,9 @@ def main():
         command = [
             str(DEVELOP / "flutter/bin/flutter.bat"),
             "test",
-            "integration_test/server_files_test.dart"
+            "integration_test/server_external_test.dart"
+            if args.external
+            else "integration_test/server_files_test.dart"
             if args.files
             else "integration_test/server_tags_test.dart"
             if args.tags

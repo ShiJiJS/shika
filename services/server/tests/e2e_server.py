@@ -4,6 +4,7 @@ import asyncio
 import hashlib
 import os
 import shutil
+import time
 from collections import deque
 from pathlib import Path
 
@@ -153,6 +154,7 @@ def create_e2e_app():
     @app.post("/__fixture/actions/{action}")
     def action(action: str, x_fixture_key: str | None = Header(default=None)):
         controlled(x_fixture_key)
+        details = {}
         if action == "reset-login-limit":
             with app.state.login_lock:
                 app.state.login_attempts.clear()
@@ -169,6 +171,44 @@ def create_e2e_app():
             if source.exists():
                 (BASE / "shorts" / "改名").mkdir(exist_ok=True)
                 rename_new(str(source), str(BASE / "shorts" / "改名" / "新的名称.mp4"))
+        elif action == "rename-in-place":
+            folder = BASE / "shorts" / "自然" / "花卉"
+            rename_new(str(folder / "片段04.mp4"), str(folder / "片段04_改名.mp4"))
+        elif action == "move-cross":
+            source = BASE / "shorts" / "改名" / "新的名称.mp4"
+            destination = BASE / "camera" / "移动" / "跨目录片段.mp4"
+            destination.parent.mkdir(exist_ok=True)
+            rename_new(str(source), str(destination))
+        elif action == "return-removed":
+            source = BASE / "detached-samples" / "片段03.mp4"
+            destination = BASE / "shorts" / "自然" / "花卉" / "片段03.mp4"
+            rename_new(str(source), str(destination))
+        elif action == "move-many-out":
+            sources = sorted(
+                p for root in [BASE / "shorts", BASE / "camera"]
+                for p in root.rglob("*") if p.is_file() and p.suffix.lower() in {".mp4", ".mov"}
+            )[:25]
+            if len(sources) != 25:
+                raise HTTPException(status_code=409, detail="Expected 25 disposable media files")
+            moved = []
+            for source in sources:
+                destination = BASE / "detached-bulk" / source.relative_to(BASE)
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                rename_new(str(source), str(destination))
+                moved.append({"from": str(source), "to": str(destination)})
+            details["moved"] = moved
+        elif action in {"fail-next-scan", "slow-next-scan"}:
+            scanner = app.state.scanner
+            original = scanner.check_stop
+
+            def controlled_check():
+                if action == "fail-next-scan":
+                    scanner.check_stop = original
+                    raise RuntimeError("Isolated fixture scan failure")
+                time.sleep(0.2)
+                original()
+
+            scanner.check_stop = controlled_check
         elif action == "remove":
             source = BASE / "shorts" / "自然" / "花卉" / "片段03.mp4"
             destination = BASE / "detached-samples" / "片段03.mp4"
@@ -215,7 +255,7 @@ def create_e2e_app():
                 copy_new(source, BASE / "camera" / "格式" / source.name)
         else:
             raise HTTPException(status_code=404)
-        return {"action": action, "completed": True}
+        return {"action": action, "completed": True, **details}
 
     @app.get("/__fixture/files")
     def files(x_fixture_key: str | None = Header(default=None)):

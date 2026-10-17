@@ -1,0 +1,72 @@
+{
+  "environment": "Android 16 API 36 x86_64 emulator + isolated WSL Docker instance, port 8761",
+  "results": {
+    "EXTERNAL_RESULT": {
+      "rename_same_directory": true,
+      "move_within_root": true,
+      "move_between_roots": true,
+      "identity_tags_round_preserved": true,
+      "missing_and_return": true,
+      "duplicate_not_inherited": true,
+      "replacement_not_inherited": true,
+      "root_unavailable_not_mass_missing": true,
+      "scan_failure_no_fake_success": true,
+      "missing_26_paged": true,
+      "new_root_creation": true,
+      "running_scan_and_docker_recovery": true,
+      "exact_file_paths_sizes_hashes": true
+    },
+    "EXTERNAL_REOPEN_RESULT": {
+      "same_round": true,
+      "missing_26": true,
+      "root_configuration": true,
+      "tag_names": true,
+      "session": true
+    }
+  },
+  "fixture_events": [
+    {
+      "phase": "ready",
+      "time": 1792200683.052725
+    },
+    {
+      "phase": "roots",
+      "time": 1792200772.3502743
+    },
+    {
+      "phase": "library",
+      "time": 1792200796.3990855
+    },
+    {
+      "phase": "outage",
+      "time": 1792200804.6532884
+    },
+    {
+      "phase": "docker-stopped",
+      "time": 1792200805.3642151
+    },
+    {
+      "phase": "docker-started",
+      "time": 1792200813.8226364
+    },
+    {
+      "phase": "done",
+      "time": 1792200819.1410086
+    },
+    {
+      "phase": "android-force-stopped",
+      "time": 1792200821.1314626
+    },
+    {
+      "phase": "recovered",
+      "time": 1792200868.4907088
+    }
+  ],
+  "client_unit_widget_suite": 43,
+  "legacy_demo_native_regressions": 1,
+  "file_proof": "Exact media path, size and SHA-256 mappings checked across declared external changes, including 25 moves outside configured roots; app scans and root creation do not mutate files",
+  "limitations": [
+    "NAS and target phone acceptance remain V1",
+    "Backup integration remains I6"
+  ]
+}

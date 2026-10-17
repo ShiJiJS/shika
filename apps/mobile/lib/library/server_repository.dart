@@ -56,7 +56,9 @@ class ServerLibraryRepository extends LibraryRepository {
   RequestScope _videoRead = RequestScope(),
       _folderRead = RequestScope(),
       _trashRead = RequestScope(),
+      _missingRead = RequestScope(),
       _scanRead = RequestScope();
+  Future<void>? _refreshWork;
   int _generation = 0, _scopeGeneration = 0, _missing = 0, _trash = 0;
   bool _disposed = false;
   String _session = requestId();
@@ -174,6 +176,7 @@ class ServerLibraryRepository extends LibraryRepository {
     cancelVideoRead();
     cancelFolderRead();
     cancelTrashRead();
+    cancelMissingRead();
     _scanRead.cancel();
     _api?.close();
     _api = null;
@@ -455,7 +458,10 @@ class ServerLibraryRepository extends LibraryRepository {
       cancelVideoRead();
       cancelFolderRead();
       cancelTrashRead();
+      cancelMissingRead();
       _scanRead.cancel();
+      _scanTask = null;
+      scanStatus.value = null;
       _api?.close();
       _videos.clear();
       _directories.clear();
@@ -1250,6 +1256,40 @@ class ServerLibraryRepository extends LibraryRepository {
   void cancelTrashRead() => _trashRead.cancel();
 
   @override
+  void cancelMissingRead() => _missingRead.cancel();
+
+  @override
+  Future<VideoPage> loadMissing({int offset = 0, int limit = 24}) async {
+    cancelMissingRead();
+    final work = _missingRead = RequestScope();
+    final target = api, generation = _generation;
+    final page = await call(
+      'GET',
+      '/api/v1/videos',
+      query: {'status': 'missing', 'offset': '$offset', 'limit': '$limit'},
+      using: target,
+      cancel: work,
+    );
+    if (generation != _generation ||
+        !identical(target, _api) ||
+        work.cancelled) {
+      throw const RequestCancelled();
+    }
+    final items = rows(page).map((row) => video(row, target)).toList();
+    for (final item in items) {
+      _videos[item.id] = item;
+    }
+    _missing = page['total'];
+    _state = _state.copy(videos: _videos.values);
+    return VideoPage(
+      items: items,
+      total: page['total'],
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  @override
   Future<void> saveRoot(MediaRoot root) async {
     await call(
       root.id.isEmpty ? 'POST' : 'PUT',
@@ -1260,18 +1300,114 @@ class ServerLibraryRepository extends LibraryRepository {
   }
 
   @override
-  Future<void> refresh() async {
+  Future<void> refresh() {
+    final existing = _refreshWork;
+    if (existing != null) return existing;
+    final work = scan();
+    _refreshWork = work;
+    void finished() {
+      if (identical(_refreshWork, work)) _refreshWork = null;
+    }
+
+    work.then(
+      (_) => finished(),
+      onError: (Object e, StackTrace s) => finished(),
+    );
+    return work;
+  }
+
+  Future<void> scan() async {
     _scanRead.cancel();
     final work = _scanRead = RequestScope();
-    final submitted = await call('POST', '/api/v1/scans');
-    _scanTask = submitted['id'];
-    final result = await waitTask(_scanTask!, cancel: work);
-    if (result['status'] != 'completed') {
-      throw const LibraryFailure('扫描未完成，请重试');
+    final target = api, generation = _generation;
+    void check() {
+      if (_disposed ||
+          work.cancelled ||
+          generation != _generation ||
+          !identical(target, _api)) {
+        throw const RequestCancelled();
+      }
     }
-    _videos.clear();
-    await synchronize(api, _generation);
-    _scanTask = null;
+
+    final phases = {
+      'queued': '扫描排队中',
+      'discovering': '正在查找视频',
+      'waiting_for_stable_files': '等待文件写入稳定',
+      'processing_media': '正在读取视频信息',
+      'reconciling_identities': '正在核对文件身份',
+      'completed': '扫描完成',
+      'failed': '扫描失败',
+      'interrupted': '扫描已中断',
+    };
+    try {
+      scanStatus.value = '正在扫描媒体目录…';
+      _scanTask ??= (await call(
+        'POST',
+        '/api/v1/scans',
+        using: target,
+        cancel: work,
+      ))['id'];
+      final deadline = DateTime.now().add(const Duration(minutes: 2));
+      late Json task;
+      while (true) {
+        check();
+        task = await call(
+          'GET',
+          '/api/v1/tasks/$_scanTask',
+          using: target,
+          cancel: work,
+        );
+        check();
+        final counts = object(task['result']);
+        final checked =
+            (counts['imported'] as int? ?? 0) +
+            (counts['unchanged'] as int? ?? 0);
+        scanStatus.value =
+            '${phases[task['phase']] ?? '正在扫描'} · 已核对 $checked 个视频';
+        if (['completed', 'failed', 'interrupted'].contains(task['status'])) {
+          break;
+        }
+        if (DateTime.now().isAfter(deadline)) {
+          throw const LibraryFailure('扫描仍在服务端进行，可稍后刷新查询进度');
+        }
+        await Future<void>.delayed(const Duration(milliseconds: 500));
+      }
+      final counts = object(task['result']);
+      _scanTask = null;
+      await synchronize(
+        target,
+        generation,
+        beforePublish: () async {
+          cancelVideoRead();
+          cancelFolderRead();
+          cancelMissingRead();
+          _videos.clear();
+          _directories.clear();
+        },
+      );
+      check();
+      if (task['status'] != 'completed') {
+        throw const LibraryFailure('扫描未完成，原有标签记录保留，请重试');
+      }
+      final roots = (counts['roots'] as List? ?? [])
+          .map(object)
+          .where((r) => r['status'] != 'completed')
+          .length;
+      final failed = counts['failed'] as int? ?? 0;
+      if (roots > 0 || failed > 0) {
+        throw LibraryFailure('扫描结束：$roots 个目录不可用，$failed 个文件未能读取；原记录和标签保留');
+      }
+      scanStatus.value =
+          '扫描完成 · 新增 ${counts['imported'] ?? 0} · 缺失 ${counts['missing'] ?? 0} · 等待稳定 ${counts['deferred'] ?? 0}';
+    } on RequestCancelled {
+      rethrow;
+    } catch (error) {
+      if (!_disposed && generation == _generation && !work.cancelled) {
+        if (error is ApiFailure && error.status == 404) _scanTask = null;
+        scanStatus.value = error.toString();
+      }
+      rethrow;
+    }
   }
 
   @override
@@ -1377,6 +1513,7 @@ class ServerLibraryRepository extends LibraryRepository {
     cancelVideoRead();
     cancelFolderRead();
     cancelTrashRead();
+    cancelMissingRead();
     _scanRead.cancel();
     _api?.close();
     super.dispose();

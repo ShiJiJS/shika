@@ -1,6 +1,6 @@
 # Flutter 与真实服务联调
 
-服务端 S1–S6 已通过 WSL Docker 验证。I1 连接/列表、I2 真实播放、I3 标签和 I4 文件操作已完成，接下来推进 I5 外部变化和 I6 备份恢复。这里仅登记实际验证结果；完整 NAS 和目标手机验收属于 V1。
+服务端 S1–S6 已通过 WSL Docker 验证。I1–I5 真实连接、播放、标签、文件操作和外部变化已完成，接下来推进 I6 备份恢复。这里仅登记实际验证结果；完整 NAS 和目标手机验收属于 V1。
 
 ## I1：连接、扫描、目录与列表（完成）
 
@@ -81,6 +81,20 @@ Android 16 模拟器完整文件流程及独立进程重开均通过，见 [完�
 
 静态分析无问题，完整 39 项客户端单元/界面测试及 77 项服务端回归通过。受影响的 3 条演示模式原生流程也通过，见 [回归输出](integration-evidence/i4-demo-regression.txt)。新增真实回环 HTTP 测试还验证了同命令重试、部分成功、跨服务隔离、存储意图失败时不发送文件写入，以及恢复旧管理数据后找不到命令时不重放。普通 8760 服务已更新，只读查询接口可用，服务实例和 8 个原格式样本保持不变，生产镜像中的测试控制路由仍为 404。测试文件均为隔离样本，没有使用个人收藏；实际 NAS 和手机验收仍属 V1。
 
+## I5：外部改动、缺失记录和扫描反馈（完成）
+
+缺失视频改为独立真实分页，不再只列出播放或视频库访问过的缓存；标签显示名称而非内部 ID。扫描阶段和计数使用独立状态通知，不在每次进度轮询时重取视频列表。同一客户端的并发刷新共享正在查询的任务；超时或断线保留任务标识供再次查询。任务失败、中断或部分目录不可用先读取权威状态，再显示说明，不提示全部成功。刷新也清理旧目录路径缓存；新增目录由服务端分配 ID，表单失败保留输入并可重试。
+
+Android 16 模拟器完整外部变化流程及另一次进程重开均通过，见 [原生完整输出](integration-evidence/i5-android.txt)、[结果及真实重启事件](integration-evidence/i5-summary.json)。验证内容包括：
+
+- 在同一目录改名、移到同一接入根目录下的其他文件夹、跨接入根目录移动，保留确认身份的视频 ID、标签及有效轮次引用，显示实际新名称和路径；不把文件搬回。
+- 把文件移出接入范围后显示缺失，移回后恢复原 ID 和关联。重复副本获得自己的 ID 且没有原标签；原路径换成不同内容后生成新记录，原标签仍在旧缺失记录上，不误绑定新内容。
+- 整个相机目录断开时显示不可用，播放候选排除其内容，缺失计数维持已有的 1 条；重新接入后恢复可访问及原标签。见 [实际不可用目录和缺失记录](integration-evidence/i5-roots.png)。
+- 实际注入扫描任务失败，界面不报完成，原记录及标签可读；后续扫描恢复。外部移出 25 个文件后共 26 条缺失记录，实测首批 24 条及下一页，并在重开 App 后再次读回。见 [缺失列表](integration-evidence/i5-library.png) 和 [重开后列表](integration-evidence/i5-recovered.png)。
+- 新增真实空媒体目录，保存服务端生成的 ID；若连接中断，保留名称和路径后重试，最终只有 1 条新增目录记录。慢扫描期间真实停止 Docker，读取到中断或网络失败后重试并收敛到完成状态；新目录配置、标签名称和轮次在 App 强制关闭后仍保留。
+
+每段外部改动都按明确预期核对媒体路径、大小与 SHA-256，包括 25 个移出范围的文件；扫描、目录配置和 App 重开未调整或损坏文件。Flutter 静态分析和完整 43 项单元/界面测试通过，另有 [演示文件状态原生回归](integration-evidence/i5-demo-regression.txt)。这里只使用隔离样本，I6 及实际 NAS/目标手机验收继续单独推进。
+
 ## 端到端实例与复现
 
 测试使用 `compose.client-e2e.yaml`，在 WSL 原生目录 `~/.local/share/video-viewer-e2e` 建立独立数据和媒体。Windows 端口 8761，模拟器使用 `10.0.2.2:8761`；正常开发服务继续使用 8760。固定口令和控制键仅限此可丢弃测试实例。测试控制路由位于测试镜像中，生产 runtime 镜像不包含这些路由。
@@ -94,6 +108,7 @@ python scripts/run-client-connection-test.py
 python scripts/run-client-connection-test.py --playback
 python scripts/run-client-connection-test.py --tags
 python scripts/run-client-connection-test.py --files
+python scripts/run-client-connection-test.py --external
 ```
 
 本机如未配置 `python`，可使用已安装的 Python 可执行文件。脚本使用 `~/develop/flutter` 和 `~/develop/android-sdk`，适配当前开发环境。它先调用 `prepare-client-e2e.sh --reset`，只清理固定测试实例的数据及素材；不操作主服务目录或个人收藏。测试运行时会真实停止并重启名为 `video-viewer-client-e2e-server-1` 的容器，并强制关闭 Android App，再用另一进程验证凭据及深层目录恢复。两次运行必须保留 `--no-uninstall`：当前 Flutter 的集成测试默认在结束时卸载 App，会清空加密存储，不能用于验证普通重开。日志、脱敏请求轨迹和模拟器截图写入被 Git 忽略的 `tmp/client-e2e`，审核后选择需要的证据纳入文档。

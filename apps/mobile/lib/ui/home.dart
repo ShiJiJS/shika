@@ -81,6 +81,10 @@ class _LibraryHomeState extends State<LibraryHome> {
   int trashTotal = 0, trashGeneration = 0;
   bool trashLoading = false;
   String trashError = '';
+  List<LibraryVideo> missingItems = [];
+  int missingTotal = 0, missingGeneration = 0;
+  bool missingLoading = false;
+  String missingError = '';
   late final BackupFiles files = widget.backupFiles ?? NativeBackupFiles();
   final address = TextEditingController(),
       port = TextEditingController(),
@@ -143,6 +147,38 @@ class _LibraryHomeState extends State<LibraryHome> {
     });
     if (page == 'library') unawaited(loadLibrary());
     if (page == 'trash') unawaited(loadTrash());
+    if (page == 'roots') unawaited(loadMissing());
+  }
+
+  Future<void> loadMissing({bool more = false}) async {
+    if (page != 'roots' || (more && missingLoading)) return;
+    final generation = ++missingGeneration;
+    setState(() {
+      missingLoading = true;
+      missingError = '';
+    });
+    try {
+      final result = await repo.loadMissing(
+        offset: more ? missingItems.length : 0,
+      );
+      if (!mounted || generation != missingGeneration || page != 'roots') {
+        return;
+      }
+      setState(() {
+        missingItems = more ? [...missingItems, ...result.items] : result.items;
+        missingTotal = result.total;
+      });
+    } on RequestCancelled {
+      // A newer page owns the result.
+    } catch (e) {
+      if (mounted && generation == missingGeneration) {
+        setState(() => missingError = e.toString());
+      }
+    } finally {
+      if (mounted && generation == missingGeneration) {
+        setState(() => missingLoading = false);
+      }
+    }
   }
 
   Future<void> loadTrash({bool more = false}) async {
@@ -222,8 +258,10 @@ class _LibraryHomeState extends State<LibraryHome> {
     unawaited(_playback.close());
     libraryGeneration++;
     trashGeneration++;
+    missingGeneration++;
     repo.cancelVideoRead();
     repo.cancelTrashRead();
+    repo.cancelMissingRead();
     repo.removeListener(changed);
     address.dispose();
     port.dispose();
@@ -250,6 +288,13 @@ class _LibraryHomeState extends State<LibraryHome> {
     } else {
       trashGeneration++;
       repo.cancelTrashRead();
+    }
+    if (next == 'roots') {
+      missingItems = [];
+      unawaited(loadMissing());
+    } else {
+      missingGeneration++;
+      repo.cancelMissingRead();
     }
   }
 
@@ -696,6 +741,27 @@ class _LibraryHomeState extends State<LibraryHome> {
                     ),
                   ],
                 ),
+              ),
+            if (data.connected && (busy || page == 'roots'))
+              ValueListenableBuilder<String?>(
+                valueListenable: repo.scanStatus,
+                builder: (context, message, _) =>
+                    message == null || message == error
+                    ? const SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 4,
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            message,
+                            key: const Key('scan-status'),
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      ),
               ),
             Expanded(
               child: switch (page) {
@@ -1521,6 +1587,7 @@ class _LibraryHomeState extends State<LibraryHome> {
       ),
       for (final r in data.roots)
         ListTile(
+          key: Key('root-${r.id}'),
           contentPadding: EdgeInsets.zero,
           leading: const Icon(Icons.folder_outlined),
           title: Text(r.name),
@@ -1548,18 +1615,17 @@ class _LibraryHomeState extends State<LibraryHome> {
               },
         child: actionLabel(Icons.refresh, '刷新媒体目录'),
       ),
-      if (data.videos.any((v) => v.status == VideoStatus.missing)) ...[
+      if (missingTotal > 0 || missingItems.isNotEmpty) ...[
         const SizedBox(height: 30),
         Text('缺失视频', style: Paper.of(context).title.copyWith(fontSize: 20)),
         note('保留标签记录，重新找到同一文件后继续关联。'),
-        for (final v in data.videos.where(
-          (v) => v.status == VideoStatus.missing,
-        ))
+        for (final v in missingItems)
           ListTile(
+            key: Key('missing-${v.id}'),
             contentPadding: EdgeInsets.zero,
             title: Text(v.name),
             subtitle: Text(
-              '${v.path}\n${v.tags.join(' · ')}',
+              '${v.path}\n${v.tags.map(repo.tagName).join(' · ')}',
               style: const TextStyle(fontSize: 12),
             ),
             trailing: Text(
@@ -1567,6 +1633,19 @@ class _LibraryHomeState extends State<LibraryHome> {
               style: TextStyle(color: Paper.of(context).danger),
             ),
           ),
+        if (missingItems.length < missingTotal)
+          TextButton(
+            onPressed: missingLoading ? null : () => loadMissing(more: true),
+            child: const Text('加载更多缺失视频'),
+          ),
+      ],
+      if (missingLoading) const LinearProgressIndicator(),
+      if (missingError.isNotEmpty) ...[
+        note(missingError),
+        TextButton(
+          onPressed: () => loadMissing(),
+          child: const Text('重试读取缺失记录'),
+        ),
       ],
       const SizedBox(height: 20),
     ],
@@ -1597,12 +1676,14 @@ class _LibraryHomeState extends State<LibraryHome> {
               onPressed: saving
                   ? null
                   : () async {
-                      local(() => saving = true);
+                      local(() {
+                        saving = true;
+                        formError = '';
+                      });
                       try {
                         await repo.saveRoot(
                           MediaRoot(
-                            root?.id ??
-                                'r${DateTime.now().microsecondsSinceEpoch}',
+                            root?.id ?? '',
                             name.text.trim(),
                             path.text.trim().replaceAll(RegExp(r'/+$'), ''),
                           ),

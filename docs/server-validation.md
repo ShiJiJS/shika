@@ -1,6 +1,6 @@
 # 服务端实现与验证
 
-S1–S6 已实现并通过 WSL2 Docker 验证。Flutter I1 真实连接/列表、I2 授权播放、I3 标签和 I4 文件操作联调也已在模拟器通过，见 [联调记录](integration-validation.md)；I5–I6 与最终 NAS/目标 Android 验收继续按 GitHub 任务推进。本文件只记录已有证据，完整计划见 [服务端方案](server-plan.md)。
+S1–S6 已实现并通过 WSL2 Docker 验证。Flutter I1–I5 的真实连接、播放、标签、文件操作和外部变化联调也已在模拟器通过，见 [联调记录](integration-validation.md)；I6 与最终 NAS/目标 Android 验收继续按 GitHub 任务推进。本文件只记录已有证据，完整计划见 [服务端方案](server-plan.md)。
 
 ## S1：认证、扫描、目录与列表
 

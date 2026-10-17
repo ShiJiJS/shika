@@ -5,6 +5,13 @@ import 'models.dart';
 /// This boundary describes client-visible behavior, independent of transport.
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
+  final ValueNotifier<String?> scanStatus = ValueNotifier(null);
+  @override
+  void dispose() {
+    scanStatus.dispose();
+    super.dispose();
+  }
+
   Future<String?> playbackFailure(MediaSource source) async => null;
   LibrarySnapshot get snapshot;
   Future<void> initialize();
@@ -66,11 +73,24 @@ abstract class LibraryRepository extends ChangeNotifier {
     );
   }
 
+  Future<VideoPage> loadMissing({int offset = 0, int limit = 24}) async {
+    final items = snapshot.videos
+        .where((v) => v.status == VideoStatus.missing)
+        .toList();
+    return VideoPage(
+      items: items.skip(offset).take(limit),
+      total: items.length,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
   bool get fileOperationPending => false;
   Future<void> reconcileFileOperation() async {}
   void cancelVideoRead() {}
   void cancelFolderRead() {}
   void cancelTrashRead() {}
+  void cancelMissingRead() {}
   String? get connectionError => null;
   Future<void> mediaUnauthorized(MediaSource source) async {}
   LibraryVideo? get current;

@@ -435,6 +435,15 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
   );
   @override
   Future<void> saveRoot(MediaRoot root) => _commit((s) {
+    if (root.id.isEmpty) {
+      root = MediaRoot(
+        'r${DateTime.now().microsecondsSinceEpoch}',
+        root.name,
+        root.path,
+        available: root.available,
+        lastScan: root.lastScan,
+      );
+    }
     if (root.name.trim().isEmpty ||
         !root.path.startsWith('/') ||
         root.path == '/' ||
