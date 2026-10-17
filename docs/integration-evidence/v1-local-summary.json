@@ -46,10 +46,24 @@
   },
   "target": {
     "nas_brand": "ZSpace (user supplied)",
-    "nas_model_architecture_address": "pending",
+    "nas_model_architecture_address": "Product model and media volume pending; address stored only in private infos",
     "phone": "OPPO Find X8 (user supplied)",
     "phone_installed_os": "pending",
-    "actual_target_measurements": "pending"
+    "actual_target_measurements": "pending",
+    "nas_readonly_inspection": {
+      "public_key_login": true,
+      "sudo_noninteractive": true,
+      "soc": "Rockchip RK3568",
+      "architecture": "arm64",
+      "cpus": 4,
+      "memory_bytes": 3893460992,
+      "kernel": "Linux 5.10.110",
+      "docker": "24.0.0",
+      "docker_api": "1.43",
+      "docker_requires_sudo": true,
+      "compose_available": false,
+      "service_deployed": false
+    }
   },
   "ordinary_debug_main_rebuilt_installed_started": true,
   "flutter_analyze": "No issues found (5.2s)"
