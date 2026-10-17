@@ -129,8 +129,11 @@ python scripts/run-client-connection-test.py --tags
 python scripts/run-client-connection-test.py --files
 python scripts/run-client-connection-test.py --external
 python scripts/run-client-connection-test.py --backups
+python scripts/run-client-connection-test.py --preparation
 ```
 
 本机如未配置 `python`，可使用已安装的 Python 可执行文件。脚本使用 `~/develop/flutter` 和 `~/develop/android-sdk`，适配当前开发环境。它先调用 `prepare-client-e2e.sh --reset`，只清理固定测试实例的数据及素材；不操作主服务目录或个人收藏。测试运行时会真实停止并重启名为 `video-viewer-client-e2e-server-1` 的容器，并强制关闭 Android App，再用另一进程验证凭据及深层目录恢复。两次运行必须保留 `--no-uninstall`：当前 Flutter 的集成测试默认在结束时卸载 App，会清空加密存储，不能用于验证普通重开。日志、脱敏请求轨迹和模拟器截图写入被 Git 忽略的 `tmp/client-e2e`，审核后选择需要的证据纳入文档。
 
 备份模式额外使用 `reset-client-e2e-instance.py`：严格核对固定测试目录和标记后，保留旧管理目录快照并建立空实例，保持媒体文件不变；随后进行第二次 App 强制关闭与第三个进程验证。该步骤不操作普通开发服务。模拟器使用软件渲染，因此这里的耗时不能用作 NAS、手机解码或网络性能结论。
+
+2026-10-17：0.1.1 增加独立建库准备与自动分页原生流程，并重新验证 I6 三个进程。最新修正、截图、持久化核对和边界见 [建库准备验证](library-preparation-validation.md)。这些模式共享同一个可丢弃服务与模拟器，必须串行执行。

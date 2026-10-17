@@ -107,6 +107,8 @@ curl --fail http://127.0.0.1:8760/health
 
 ## 4. 安装与开发调试
 
+当前 NAS 手机测试更新为 `tmp/releases/video-viewer-0.1.1-nas-arm64.apk`：版本 `0.1.1` / versionCode `2`，21,668,898 字节，SHA-256 `dd512b4dab834cf078274a2097692c336d5f788c75b9a3600934f2924936de97`。包名和本机签名与旧包相同，可覆盖安装保留连接凭据，口令不变。NAS 个人目录 `docker/video-viewer/packages` 已有同名副本，连接信息在同目录的私有说明文件中。本次新增准备状态、自动扫描进度与自动分页，详见 [修正验证](library-preparation-validation.md)。下列 0.1.0 包信息保留作历史交付记录。
+
 当前本机测试包位于仓库的 `tmp/releases/video-viewer-0.1.0-test.apk`，不纳入 Git；版本 `0.1.0`、versionCode `1`，Android API 24+，Flutter 引擎覆盖 ARM64 和 x86_64。实际手机仍需 V1 兼容验证。包使用本机 Android Debug 证书签名，仅用于本次测试交付。
 
 另有面向当前 NAS 测试的 `tmp/releases/video-viewer-0.1.0-nas-arm64.apk`，只包含 ARM64 Flutter 引擎，约 20.6 MiB，默认地址为用户的 NAS 局域网地址；版本/签名策略相同。已复制到 NAS 个人目录的 `docker/video-viewer/packages`，同目录的“手机连接信息.txt”仅供所属账户读取。服务口令也保存在私有 infos 的 `video-viewer.connection`，没有编译进 APK。
