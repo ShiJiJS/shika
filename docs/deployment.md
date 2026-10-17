@@ -1,10 +1,20 @@
 # 部署与日常使用
 
-适用于第一版本机测试交付：FastAPI 单容器、单端口、SQLite 持久化，Android Flutter 客户端。S1–S6 与 I1–I6 已完成；真实 NAS、代表性收藏及目标手机仍待 [V1 验收](v1-validation.md)。下面的 NAS 路径是示例，部署前替换为目标机器上的实际路径。
+适用于第一版测试交付：FastAPI 单容器、单端口、SQLite 持久化，Android Flutter 客户端。S1–S6 与 I1–I6 已完成，并已部署极空间 ARM64 NAS；首次建库、目标手机和性能仍按 [V1 状态](v1-validation.md) 验收。下面的 NAS 路径是通用示例；实际个人连接配置保存在私有 infos。
 
 ## 1. 准备目录、权限和个人口令
 
-NAS 需要 Linux Docker Engine 与 Compose v2 插件，并能从源码构建镜像。目前实测镜像为 `linux/amd64`；ARM64 NAS 需要在目标架构构建和验证，尚未交付预构建的多架构镜像。获取此私有仓库需要自己的 GitHub 访问权限，凭据不要写入仓库或 Compose。
+NAS 需要 Linux Docker Engine 与 Compose v2，或独立 Compose 二进制。目前已有 `linux/amd64` 本机与 `linux/arm64` 极空间运行证据；没有发布通用多架构镜像。NAS 可以原生构建，也可从本机导入匹配架构的镜像。获取此私有仓库需要自己的 GitHub 访问权限，凭据不要写入仓库或 Compose。
+
+本次 RK3568 原生安装构建依赖较慢，改在 WSL 使用 Buildx/QEMU 生成 ARM64 镜像，再通过 SSH 导入。构建依赖和 NAS 系统软件分开，未升级 NAS Docker。项目自带校验过官方 SHA-256 的 Compose v2.39.4 ARM64 二进制，通过 `sudo -n ./bin/docker-compose -f compose.yaml ...` 维护；全局插件不变。跨架构构建前需具备 [Docker 官方说明中的 QEMU/Buildx 支持](https://docs.docker.com/build/building/multi-platform/)。
+
+在对应源码版本的仓库根目录构建导出，例如：
+
+```bash
+docker buildx build --platform linux/arm64 --target runtime -t video-viewer-server:b622329-arm64 --output type=docker,dest=server-arm64.tar services/server
+```
+
+把归档传到 NAS 后 `sudo docker load -i server-arm64.tar`，在实际 Compose 中使用该镜像，执行 `up -d --no-build --wait`。构建、导入和运行后均核对架构，不将已有 amd64 镜像改标签后当 ARM64 使用。
 
 先用独立测试视频目录验收，确认后再接入收藏。例如：
 
@@ -16,6 +26,8 @@ NAS 需要 Linux Docker Engine 与 Compose v2 插件，并能从源码构建镜�
 | `/volume1/docker/video-viewer/passphrase` | `/run/secrets/passphrase`，只读 | 个人口令，至少 8 字符 |
 
 使用 NAS 上的专用非 root UID/GID。在 NAS 的权限界面给它管理数据目录的读写权限、口令和配置的读取权限，以及媒体目录的读取和移动/删除权限。不能写入媒体目录时可以浏览，但删除到回收站会失败并保留来源。不要为此递归改变整个收藏的所有者。
+
+当前极空间用户授权目录为 root 所有，普通 UID 只读。此实例配置为容器 UID/GID 0:0，保留全部 capabilities 丢弃、只读根文件系统和 no-new-privileges，仅绑定授权媒体子树及专用数据目录；没有放宽 Docker socket 或修改收藏权限。该实例资源上限为 768 MiB、1.5 核、128 个进程，3 路媒体读取和 900 秒扫描间隔，仍需实际手机/媒体条件评估。
 
 在 Bash 终端中，创建自己的应用目录后可隐藏输入口令；此示例不覆盖已有口令：
 
@@ -89,9 +101,13 @@ curl --fail http://127.0.0.1:8760/health
 
 启动会扫描，之后默认每 300 秒检查一次；手动刷新可立即发起扫描，已有扫描会合并。稳定观察默认 2 秒，持续写入的视频暂缓处理；复制文件结束后再次刷新。未变化的视频复用媒体信息和缩略图。扫描一次只处理一个任务，媒体原文件流默认最多 4 路，可按 NAS 资源降低；不进行实时转码。
 
+首次先枚举目录并观察文件稳定，再逐个完整校验内容、探测和生成缩略图。全新库中就绪的视频随即发布，可边处理边浏览；目录发现阶段仍可能显示 0 个视频。大库首次处理时间取决于总字节数和媒体复杂度，不能按几十个样本的速度估计。SQLite 使用 WAL、FULL 同步和 1000 页自动检查点，管理目录须为支持 WAL 的本地文件系统。
+
 ## 4. 安装与开发调试
 
 当前本机测试包位于仓库的 `tmp/releases/video-viewer-0.1.0-test.apk`，不纳入 Git；版本 `0.1.0`、versionCode `1`，Android API 24+，Flutter 引擎覆盖 ARM64 和 x86_64。实际手机仍需 V1 兼容验证。包使用本机 Android Debug 证书签名，仅用于本次测试交付。
+
+另有面向当前 NAS 测试的 `tmp/releases/video-viewer-0.1.0-nas-arm64.apk`，只包含 ARM64 Flutter 引擎，约 20.6 MiB，默认地址为用户的 NAS 局域网地址；版本/签名策略相同。已复制到 NAS 个人目录的 `docker/video-viewer/packages`，同目录的“手机连接信息.txt”仅供所属账户读取。服务口令也保存在私有 infos 的 `video-viewer.connection`，没有编译进 APK。
 
 可通过 Android 文件管理器打开 APK 安装，或使用 ADB：
 
