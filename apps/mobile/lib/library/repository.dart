@@ -9,13 +9,16 @@ abstract class LibraryRepository extends ChangeNotifier {
   final libraryPreparation = ValueNotifier(const LibraryPreparation());
   Future<void> requestScan() => refresh();
   final ValueNotifier<String?> backupStatus = ValueNotifier(null);
+  final ValueNotifier<String?> fileStatus = ValueNotifier(null);
   bool get backupRestorePending => false;
+  Object get connectionIdentity => this;
   Future<void> reconcileBackupRestore() async {}
   @override
   void dispose() {
     scanStatus.dispose();
     libraryPreparation.dispose();
     backupStatus.dispose();
+    fileStatus.dispose();
     super.dispose();
   }
 
@@ -60,6 +63,22 @@ abstract class LibraryRepository extends ChangeNotifier {
           .toList();
   int get playbackPosition => snapshot.position;
   int get playbackTotal => snapshot.round.length;
+  String get playbackIdentity => '${snapshot.query.toJson()}-${snapshot.order}';
+  Future<VideoPage> loadPlaybackVideos({int offset = 0, int limit = 48}) async {
+    final ids = snapshot.round.skip(offset).take(limit);
+    return VideoPage(
+      items: ids.map((id) => snapshot.videos.firstWhere((v) => v.id == id)),
+      total: snapshot.round.length,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  Future<void> moveToVideo(String id) async {
+    final index = snapshot.round.indexOf(id);
+    if (index >= 0) await step(index - snapshot.position);
+  }
+
   String tagName(String id) => id;
   int tagVideoCount(String id) => query(scope: VideoQuery(tags: {id})).length;
   int get missingCount => snapshot.videos

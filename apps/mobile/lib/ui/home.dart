@@ -13,6 +13,7 @@ import 'sheets.dart';
 import 'preferences.dart';
 import 'media_poster.dart';
 import 'playback_session.dart';
+import 'browsing_session.dart';
 
 abstract interface class BackupFiles {
   Future<bool> save(String text);
@@ -70,10 +71,14 @@ class LibraryHome extends StatefulWidget {
 class _LibraryHomeState extends State<LibraryHome> {
   final _playback = PlaybackSession();
   LibraryRepository get repo => widget.repository;
-  LibrarySnapshot get data => repo.snapshot;
+  late final _browsing = BrowsingSession(repo);
+  LibrarySnapshot get data => _browsing.snapshot;
   late String page = data.connected ? 'browse' : 'connection';
   late String error = widget.initialError ?? '';
   bool _busy = false, review = false, selecting = false, obscured = false;
+  Timer? _deleteNoticeTimer;
+  String? _deleteNotice, _deleteNoticeRequest;
+  DeleteOperation? _undoNotice;
   bool get busy => _busy || repo.backupRestorePending;
   String search = '', tagSearch = '';
   Set<String> selected = {};
@@ -86,6 +91,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   List<LibraryVideo> trashItems = [];
   int trashTotal = 0, trashGeneration = 0;
   bool trashLoading = false;
+  bool selectingAllTrash = false, restoringTrash = false;
   String trashError = '';
   List<LibraryVideo> missingItems = [];
   int missingTotal = 0, missingGeneration = 0;
@@ -121,7 +127,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   @override
   void initState() {
     super.initState();
-    repo.addListener(changed);
+    _browsing.addListener(changed);
     repo.libraryPreparation.addListener(preparationChanged);
     libraryScroll.addListener(loadNearBottom);
     address.text = data.address;
@@ -144,6 +150,11 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   void changed() {
     if (!mounted) return;
+    final message = _browsing.message;
+    if (message != null) {
+      _browsing.message = null;
+      WidgetsBinding.instance.addPostFrameCallback((_) => notice(message));
+    }
     final nextScope = jsonEncode(data.query.toJson());
     setState(() {
       if (nextScope != previousScope) {
@@ -289,6 +300,7 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   @override
   void dispose() {
+    _deleteNoticeTimer?.cancel();
     unawaited(_playback.close());
     libraryGeneration++;
     trashGeneration++;
@@ -296,7 +308,8 @@ class _LibraryHomeState extends State<LibraryHome> {
     repo.cancelVideoRead();
     repo.cancelTrashRead();
     repo.cancelMissingRead();
-    repo.removeListener(changed);
+    _browsing.removeListener(changed);
+    _browsing.dispose();
     repo.libraryPreparation.removeListener(preparationChanged);
     libraryScroll.dispose();
     address.dispose();
@@ -379,6 +392,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     if (q != null) {
       await perform(() async {
         await repo.setScope(q);
+        _browsing.followRepository();
         playerEpoch++;
       });
     }
@@ -391,6 +405,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     if (value != null) {
       await perform(() async {
         await repo.setScope(data.query.copy(folder: value));
+        _browsing.followRepository();
         playerEpoch++;
       });
     }
@@ -422,6 +437,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     if (mode != null) {
       await perform(() async {
         await repo.setScope(data.query, order: mode);
+        _browsing.followRepository();
         playerEpoch++;
       });
     }
@@ -432,7 +448,10 @@ class _LibraryHomeState extends State<LibraryHome> {
     // The adjacent window may have no next playable entry even when a missing
     // tail is still included in the server's candidate count until a scan.
     if (delta > 0 && data.position == data.round.length - 1) {
-      if (!await perform(() => repo.step(delta)) || !mounted) return false;
+      if (_browsing.position + 1 < repo.playbackTotal) {
+        return _browsing.step(delta);
+      }
+      if (!mounted) return false;
       ScaffoldMessenger.of(context)
         ..removeCurrentSnackBar()
         ..showSnackBar(
@@ -443,6 +462,7 @@ class _LibraryHomeState extends State<LibraryHome> {
               label: '开始新一轮',
               onPressed: () => perform(() async {
                 await repo.newRound();
+                _browsing.followRepository();
                 playerEpoch++;
               }),
             ),
@@ -450,12 +470,13 @@ class _LibraryHomeState extends State<LibraryHome> {
         );
       return false;
     }
-    return perform(() => repo.step(delta));
+    return _browsing.step(delta);
   }
 
   Future<void> tag(Set<String> ids) async {
     final saved = await sheet<bool>(TagEditor(repository: repo, ids: {...ids}));
     if (saved == true) {
+      _browsing.followRepository();
       setState(() {
         selected = {};
         selecting = false;
@@ -466,37 +487,59 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   Future<void> remove(Set<String> ids) async {
     final requestId = 'delete-${DateTime.now().microsecondsSinceEpoch}';
+    _deleteNoticeTimer?.cancel();
+    setState(() {
+      _deleteNoticeRequest = requestId;
+      _deleteNotice = '正在移入回收站…';
+      _undoNotice = null;
+    });
+    _deleteNoticeTimer = Timer(const Duration(seconds: 8), () {
+      if (mounted) {
+        setState(() {
+          _deleteNotice = null;
+          _undoNotice = null;
+        });
+      }
+    });
     final previous = data.lastDelete?.id;
-    final completed = await perform(
-      () => repo.deleteVideos({...ids}, requestId: requestId),
-    );
+    var completed = false;
+    try {
+      final work = _browsing.delete({...ids}, requestId);
+      setState(() {
+        selected.removeAll(ids);
+        selecting = false;
+      });
+      await work;
+      completed = true;
+    } on RequestCancelled {
+      return;
+    } catch (e) {
+      if (mounted) {
+        notice(
+          repo.fileOperationPending
+              ? '删除结果待确认，可继续浏览，稍后在设置中查询结果'
+              : '删除未完成，未成功的视频已恢复：$e',
+        );
+      }
+    }
     if (!mounted) return;
     final operation = data.lastDelete;
-    if (operation != null && operation.id != previous) {
+    if (operation != null &&
+        operation.id != previous &&
+        _deleteNoticeRequest == requestId &&
+        _deleteNotice != null) {
       setState(() {
         selected.removeAll(operation.ids);
         if (completed) selecting = false;
       });
-      ScaffoldMessenger.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            margin: snackMargin,
-            content: Text(
-              completed ? '已移入回收站' : '已移入 ${operation.ids.length} 个，其余未完成',
-            ),
-            duration: const Duration(seconds: 8),
-            action: SnackBarAction(
-              label: '撤销',
-              onPressed: () => perform(() async {
-                if (data.lastDelete?.id != operation.id) {
-                  throw const LibraryFailure('这次删除已失效，请在回收站查看');
-                }
-                await repo.undoDelete(operationId: operation.id);
-              }),
-            ),
-          ),
-        );
+      setState(() {
+        _deleteNotice = completed
+            ? '已移入回收站'
+            : '已移入 ${operation.ids.length} 个，其余未完成';
+        _undoNotice = operation;
+      });
+    } else if (!completed && _deleteNoticeRequest == requestId && mounted) {
+      setState(() => _deleteNotice = null);
     }
   }
 
@@ -534,7 +577,7 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   Future<void> menu(String action) async {
     setState(() => obscured = false);
-    final current = repo.current;
+    final current = _browsing.current;
     switch (action) {
       case 'theme':
         await perform(
@@ -545,7 +588,10 @@ class _LibraryHomeState extends State<LibraryHome> {
       case 'undo':
         final operation = data.lastDelete;
         if (operation != null) {
-          await perform(() => repo.undoDelete(operationId: operation.id));
+          await perform(() async {
+            await repo.undoDelete(operationId: operation.id);
+            _browsing.followRepository();
+          });
         }
       case 'details':
         if (current != null) {
@@ -580,6 +626,7 @@ class _LibraryHomeState extends State<LibraryHome> {
       case 'round':
         await perform(() async {
           await repo.newRound();
+          _browsing.followRepository();
           playerEpoch++;
         });
       case 'delete':
@@ -639,7 +686,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                         child: Text(
                           !repo.libraryPreparation.value.ready
                               ? '准备中'
-                              : '${data.round.isEmpty ? '00' : (repo.playbackPosition + 1).toString().padLeft(2, '0')} / ${repo.playbackTotal.toString().padLeft(2, '0')}',
+                              : '${data.round.isEmpty ? '00' : (_browsing.position + 1).toString().padLeft(2, '0')} / ${repo.playbackTotal.toString().padLeft(2, '0')}',
                           key: const Key('round-position'),
                           style: TextStyle(
                             fontFamily: 'serif',
@@ -687,12 +734,12 @@ class _LibraryHomeState extends State<LibraryHome> {
                         ),
                         ...(page == 'browse'
                             ? [
-                                if (repo.current != null)
+                                if (_browsing.current != null)
                                   const PopupMenuItem(
                                     value: 'tag',
                                     child: Text('打标签'),
                                   ),
-                                if (repo.current != null)
+                                if (_browsing.current != null)
                                   const PopupMenuItem(
                                     value: 'details',
                                     child: Text('视频详情'),
@@ -705,7 +752,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                                   value: 'round',
                                   child: Text('开始新一轮'),
                                 ),
-                                if (repo.current != null)
+                                if (_browsing.current != null)
                                   PopupMenuItem(
                                     value: 'delete',
                                     child: Text(
@@ -745,6 +792,51 @@ class _LibraryHomeState extends State<LibraryHome> {
                     )
                   : ColoredBox(color: Paper.of(context).line),
             ),
+            if (_deleteNotice != null)
+              Container(
+                key: const Key('delete-notice'),
+                padding: const EdgeInsets.only(left: 16, right: 4),
+                height: 40,
+                color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _deleteNotice!,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ),
+                    if (_undoNotice != null)
+                      TextButton(
+                        onPressed: () async {
+                          final operation = _undoNotice!;
+                          setState(() {
+                            _deleteNotice = null;
+                            _undoNotice = null;
+                          });
+                          _deleteNoticeTimer?.cancel();
+                          await perform(() async {
+                            if (data.lastDelete?.id != operation.id) {
+                              throw const LibraryFailure('这次删除已失效，请在回收站查看');
+                            }
+                            await repo.undoDelete(operationId: operation.id);
+                            _browsing.followRepository();
+                          });
+                        },
+                        child: const Text('撤销'),
+                      ),
+                    IconButton(
+                      tooltip: '关闭删除提示',
+                      iconSize: 18,
+                      onPressed: () {
+                        _deleteNoticeTimer?.cancel();
+                        setState(() => _deleteNotice = null);
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
+                  ],
+                ),
+              ),
             if (error.isNotEmpty)
               Container(
                 color: Theme.of(context).colorScheme.errorContainer,
@@ -769,7 +861,10 @@ class _LibraryHomeState extends State<LibraryHome> {
                   ],
                 ),
               ),
-            if (data.connected && repo.fileOperationPending)
+            if (data.connected &&
+                repo.fileOperationPending &&
+                !_browsing.deleting &&
+                !restoringTrash)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
@@ -964,6 +1059,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                               await repo.setScope(
                                 data.query.copy(tags: chosen),
                               );
+                              _browsing.followRepository();
                               playerEpoch++;
                             }),
                       child: Text(
@@ -1129,7 +1225,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         ),
       );
     }
-    final current = repo.current;
+    final current = _browsing.current;
     return Column(
       children: [
         Expanded(
@@ -1161,7 +1257,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                     if (mounted &&
                         page == 'browse' &&
                         message != null &&
-                        repo.current?.id != video.id) {
+                        _browsing.current?.id != video.id) {
                       notice(message);
                     }
                     return message;
@@ -1393,6 +1489,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                                       } else if (await perform(
                                         () => repo.openVideo(v.id),
                                       )) {
+                                        _browsing.followRepository();
                                         playerEpoch++;
                                         go('browse');
                                       }
@@ -2004,6 +2101,62 @@ class _LibraryHomeState extends State<LibraryHome> {
     path.dispose();
   }
 
+  Future<void> selectAllTrash() async {
+    if (selectingAllTrash || restoringTrash || trashLoading) return;
+    if (selected.length == trashTotal && trashTotal > 0) {
+      setState(() => selected.clear());
+      return;
+    }
+    final generation = ++trashGeneration;
+    setState(() => selectingAllTrash = true);
+    try {
+      final all = <LibraryVideo>[];
+      var total = trashTotal;
+      do {
+        final batch = await repo.loadTrash(offset: all.length, limit: 200);
+        if (!mounted || page != 'trash' || generation != trashGeneration) {
+          return;
+        }
+        all.addAll(batch.items);
+        total = batch.total;
+        if (batch.items.isEmpty) break;
+      } while (all.length < total);
+      setState(() {
+        trashItems = all;
+        trashTotal = total;
+        selected = all.map((v) => v.id).toSet();
+      });
+    } on RequestCancelled {
+      return;
+    } catch (e) {
+      notice('全选未完成：$e');
+    } finally {
+      if (mounted) setState(() => selectingAllTrash = false);
+    }
+  }
+
+  Future<void> restoreSelectedTrash() async {
+    if (restoringTrash || selected.isEmpty) return;
+    final ids = {...selected};
+    setState(() => restoringTrash = true);
+    try {
+      final failures = await repo.restoreVideos(ids);
+      if (!mounted) return;
+      setState(() {
+        selected.removeAll(ids);
+        error = failures.join('\n');
+      });
+      if (page == 'trash') await loadTrash();
+      if (failures.isEmpty) notice('已恢复，标签保留');
+    } on RequestCancelled {
+      return;
+    } catch (e) {
+      notice('恢复结果待确认：$e');
+    } finally {
+      if (mounted) setState(() => restoringTrash = false);
+    }
+  }
+
   Widget trash() {
     final items = trashItems;
     if (trashError.isNotEmpty) {
@@ -2023,11 +2176,59 @@ class _LibraryHomeState extends State<LibraryHome> {
     if (items.isEmpty) return const EmptyView('回收站是空的');
     return Column(
       children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 4, 12, 0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  '共 $trashTotal 个视频',
+                  style: const TextStyle(fontSize: 12),
+                ),
+              ),
+              TextButton(
+                key: const Key('trash-select-all'),
+                onPressed:
+                    busy || selectingAllTrash || trashLoading || restoringTrash
+                    ? null
+                    : selectAllTrash,
+                child: Text(
+                  selectingAllTrash
+                      ? '正在全选…'
+                      : selected.length == trashTotal
+                      ? '取消全选'
+                      : '全选',
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (restoringTrash)
+          ValueListenableBuilder<String?>(
+            valueListenable: repo.fileStatus,
+            builder: (_, status, _) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 12,
+                    height: 12,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    status ?? '正在恢复，可继续浏览',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+          ),
         Expanded(
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              note('不会自动清空；恢复时保留原有标签。'),
+              note('只作标记，原文件仍在原位置；恢复时保留标签。不会自动清空。'),
               for (final v in items)
                 CheckboxListTile(
                   key: Key('trash-${v.id}'),
@@ -2038,7 +2239,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                     v.originalPath ?? v.path,
                     style: const TextStyle(fontSize: 12),
                   ),
-                  onChanged: busy
+                  onChanged: busy || restoringTrash || selectingAllTrash
                       ? null
                       : (yes) => setState(
                           () =>
@@ -2059,25 +2260,22 @@ class _LibraryHomeState extends State<LibraryHome> {
             children: [
               Expanded(child: Text('已选 ${selected.length}')),
               OutlinedButton(
-                onPressed: busy || selected.isEmpty
+                onPressed:
+                    busy ||
+                        restoringTrash ||
+                        selectingAllTrash ||
+                        selected.isEmpty
                     ? null
-                    : () async {
-                        List<String> failures = [];
-                        if (await perform(() async {
-                          failures = await repo.restoreVideos({...selected});
-                        })) {
-                          setState(() {
-                            selected = {};
-                            error = failures.join('\n');
-                          });
-                          if (failures.isEmpty) notice('已恢复，标签保留');
-                        }
-                      },
-                child: const Text('恢复'),
+                    : restoreSelectedTrash,
+                child: Text(restoringTrash ? '恢复中…' : '恢复'),
               ),
               const SizedBox(width: 8),
               TextButton(
-                onPressed: busy || selected.isEmpty
+                onPressed:
+                    busy ||
+                        restoringTrash ||
+                        selectingAllTrash ||
+                        selected.isEmpty
                     ? null
                     : () async {
                         final ids = {...selected};
@@ -2296,6 +2494,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         selected = {};
         search = '';
         error = '';
+        _browsing.followRepository();
         playerEpoch++;
         page = chosen == DemoScenario.offline ? 'connection' : 'browse';
       });

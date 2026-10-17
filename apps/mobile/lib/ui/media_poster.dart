@@ -38,6 +38,9 @@ class MediaPoster extends StatelessWidget {
             video.poster,
             headers: video.source.headers,
             fit: fit,
+            frameBuilder: (context, child, frame, synchronous) => frame == null
+                ? const ColoredBox(color: Color(0xff20231f))
+                : child,
             errorBuilder: unavailable,
           );
   }

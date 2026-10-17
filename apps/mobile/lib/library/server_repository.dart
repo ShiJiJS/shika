@@ -46,6 +46,8 @@ class ServerLibraryRepository extends LibraryRepository {
   ServerBackups? _backups;
   @override
   bool get backupRestorePending => _backups?.restorePending ?? false;
+  @override
+  Object get connectionIdentity => _api ?? this;
   void ensureNotRestoring() {
     if (backupRestorePending) throw const LibraryFailure('恢复结果尚未确认，请先查询结果');
   }
@@ -141,6 +143,44 @@ class ServerLibraryRepository extends LibraryRepository {
   int get playbackPosition => (_round?['position'] as num?)?.toInt() ?? 0;
   @override
   int get playbackTotal => (_round?['total'] as num?)?.toInt() ?? 0;
+  @override
+  String get playbackIdentity => _round?['id'] as String? ?? '';
+  @override
+  Future<VideoPage> loadPlaybackVideos({int offset = 0, int limit = 48}) async {
+    final identity = playbackIdentity, generation = _generation;
+    final target = api;
+    final page = await call(
+      'GET',
+      '/api/v1/rounds/$identity/entries',
+      query: {'offset': '$offset', 'limit': '$limit'},
+      using: target,
+    );
+    if (generation != _generation ||
+        identity != playbackIdentity ||
+        _disposed) {
+      throw const RequestCancelled();
+    }
+    return VideoPage(
+      items: rows(page).map((row) => video(object(row['video']), target)),
+      total: page['total'],
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  @override
+  Future<void> moveToVideo(String id) async {
+    ensureNotRestoring();
+    final target = api, generation = _generation, scope = _scopeGeneration;
+    final round = await call(
+      'PATCH',
+      '/api/v1/rounds/$playbackIdentity/position',
+      body: {'video_id': id, 'expected_revision': _round!['revision']},
+      using: target,
+    );
+    await acceptRound(round, target, generation, scope);
+  }
+
   @override
   LibraryVideo? get current =>
       _state.round.isEmpty ? null : _videos[_state.round[_state.position]];
@@ -1093,7 +1133,7 @@ class ServerLibraryRepository extends LibraryRepository {
       command = {...command, 'task': accepted['id']};
       await saveFileState({..._fileState, 'pending': command});
     }
-    final deadline = DateTime.now().add(const Duration(seconds: 30));
+    final deadline = DateTime.now().add(const Duration(minutes: 10));
     late Json task;
     while (true) {
       check();
@@ -1102,13 +1142,21 @@ class ServerLibraryRepository extends LibraryRepository {
         '/api/v1/tasks/${command['task']}',
         using: target,
       );
+      check();
+      final progress = object(task['result'] ?? {});
+      final label = command['path'] == '/api/v1/trash/restore'
+          ? '正在恢复'
+          : '正在处理文件';
+      fileStatus.value = progress['total'] == null
+          ? label
+          : '$label · ${progress['processed'] ?? 0} / ${progress['total']}';
       if (['completed', 'failed', 'interrupted'].contains(task['status'])) {
         break;
       }
       if (DateTime.now().isAfter(deadline)) {
         throw const LibraryFailure('服务仍在处理文件，可稍后查询结果');
       }
-      await Future<void>.delayed(const Duration(milliseconds: 250));
+      await Future<void>.delayed(const Duration(milliseconds: 500));
     }
     check();
     if (task['status'] == 'interrupted') {
@@ -1150,6 +1198,7 @@ class ServerLibraryRepository extends LibraryRepository {
       lastDelete: last == null ? null : DeleteOperation.fromJson(object(last)),
     );
     publish();
+    fileStatus.value = null;
     return {...task, '_labels': command['labels']};
   }
 
@@ -1286,6 +1335,13 @@ class ServerLibraryRepository extends LibraryRepository {
 
   @override
   Future<List<String>> restoreVideos(Set<String> ids) async {
+    if (ids.length > 1000) {
+      final all = ids.toList(), failures = <String>[];
+      for (var i = 0; i < all.length; i += 1000) {
+        failures.addAll(await restoreVideos(all.skip(i).take(1000).toSet()));
+      }
+      return failures;
+    }
     final task = await operation('/api/v1/trash/restore', {
       'trash_ids': trashIds(ids),
     });

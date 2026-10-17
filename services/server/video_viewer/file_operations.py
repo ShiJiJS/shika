@@ -1,4 +1,4 @@
-"""Durable per-file operations; only this module changes media locations."""
+"""Logical trash and durable physical purge/legacy recovery operations."""
 
 import errno
 import hashlib
@@ -166,8 +166,9 @@ class FileOperations:
         if operation.kind == "trash":
             step.trash_id = uid()
             step.source = video.path
-            trash_root = self.settings.trash_dir or Path(root.path) / ".video-viewer-trash"
-            step.destination = str(trash_root / step.trash_id / Path(video.path).name)
+            # Equal paths encode a logical trash receipt in the existing schema.
+            # Old durable intents retain different paths and their recovery logic.
+            step.destination = step.source
         else:
             step.trash_id, step.source = item.id, item.trash_path
             step.destination = "" if operation.kind == "permanent" else item.original_path
@@ -199,7 +200,12 @@ class FileOperations:
                 raise LibraryError("path_outside_scope", "源文件不在媒体目录内")
         else:
             allowed_trash = self.settings.trash_dir or root_path / ".video-viewer-trash"
-            if not beneath(Path(step.source), allowed_trash):
+            logical = item.trash_path == item.original_path
+            if logical:
+                validate_path(step.source, self.settings.mounts)
+                if step.source != item.original_path or not beneath(Path(step.source), root_path):
+                    raise LibraryError("path_outside_scope", "文件不在原媒体目录内")
+            elif not beneath(Path(step.source), allowed_trash):
                 raise LibraryError("path_outside_scope", "回收站文件不在受控范围内")
         if step.staging != str(Path(step.source).parent / ".video-viewer-tmp" / step.id):
             raise LibraryError("invalid_intent", "文件操作记录不合法")
@@ -267,16 +273,14 @@ class FileOperations:
                                 if video:
                                     video.error = None
                         steps = []
-            for step in steps:
-                if self.stop.is_set():
-                    raise InterruptedError("service_stopping")
-                if step.outcome != "pending":
-                    continue
-                try:
-                    final_signature = self.transfer.execute(step, kind)
-                    self.commit_step(step.id, kind, final_signature)
-                except (LibraryError, OSError) as error:
-                    self.fail_step(step, error, kind)
+            self.progress(operation_id)
+            pending = [step for step in steps if step.outcome == "pending"]
+            logical = [step for step in pending if step.source == step.destination]
+            if logical:
+                self.logical_batch(logical, kind)
+            for step in pending:
+                if step.source != step.destination:
+                    self.run_step(step, kind)
             self.finish(operation_id)
         except InterruptedError:
             with self.db.write() as session:
@@ -288,58 +292,112 @@ class FileOperations:
                 task.status, task.error = "failed", "operation_recovery_required"
                 task.finished_at = time.time()
 
+    def logical_batch(self, steps, kind):
+        # A batch of marks/restores is one SQLite transaction, with no media
+        # reads, hashing, directory creation, renames or deletes.
+        with self.db.write() as session:
+            for source in steps:
+                step = session.get(FileStep, source.id)
+                video = session.get(Video, step.video_id)
+                item = session.get(TrashItem, step.trash_id) if kind != "trash" else None
+                code = None
+                if not video or video.status != step.original_status:
+                    code = "stale_operation"
+                elif kind != "trash" and (not item or item.status != "active"):
+                    code = "item_not_found"
+                elif kind != "trash" and session.scalar(select(Video.id).where(
+                    Video.location_key == step.destination, Video.id != video.id
+                )):
+                    code = "destination_conflict"
+                if code:
+                    step.phase, step.outcome, step.error = "prepared", "failed", code
+                    if video and video.error == "file_operation_pending":
+                        video.error = None
+                    continue
+                self.apply_step(session, step, kind, None)
+        self.progress(steps[0].operation_id)
+        if self.fault_hook:
+            self.fault_hook("logical_committed", steps[0].id)
+
+    def run_step(self, step, kind):
+        if self.stop.is_set():
+            raise InterruptedError("service_stopping")
+        try:
+            final_signature = self.transfer.execute(step, kind)
+            self.commit_step(step.id, kind, final_signature)
+        except (LibraryError, OSError) as error:
+            self.fail_step(step, error, kind)
+        self.progress(step.operation_id)
+
+    def progress(self, operation_id):
+        with self.db.write() as session:
+            outcomes = list(
+                session.scalars(select(FileStep.outcome).where(FileStep.operation_id == operation_id))
+            )
+            session.get(Task, operation_id).result = {
+                "total": len(outcomes),
+                "processed": sum(outcome != "pending" for outcome in outcomes),
+                "succeeded": outcomes.count("succeeded"),
+                "failed": sum(outcome not in ("pending", "succeeded") for outcome in outcomes),
+            }
+
     def commit_step(self, step_id, kind, final_signature):
         with self.db.write() as session:
             step = session.get(FileStep, step_id)
-            video = session.get(Video, step.video_id)
-            if kind == "trash":
-                session.add(
-                    TrashItem(
-                        id=step.trash_id,
-                        video_id=video.id,
-                        operation_id=step.operation_id,
-                        root_path=step.root_path,
-                        original_path=step.original_path,
-                        trash_path=step.destination,
-                        sha256=step.expected_hash,
-                        size=step.expected_size,
-                        status="active",
-                    )
+            self.apply_step(session, step, kind, final_signature)
+
+    def apply_step(self, session, step, kind, final_signature):
+        video = session.get(Video, step.video_id)
+        if kind == "trash":
+            session.add(
+                TrashItem(
+                    id=step.trash_id,
+                    video_id=video.id,
+                    operation_id=step.operation_id,
+                    root_path=step.root_path,
+                    original_path=step.original_path,
+                    trash_path=step.destination,
+                    sha256=step.expected_hash,
+                    size=step.expected_size,
+                    status="active",
                 )
-                video.status, video.location_key = "trash", None
-            elif kind == "permanent":
-                session.get(TrashItem, step.trash_id).status = "purged"
-                video.status, video.location_key = "deleted", None
-                session.execute(delete(VideoTag).where(VideoTag.video_id == video.id))
-            else:
-                conflicting = session.scalar(
-                    select(Video).where(
-                        Video.location_key == step.destination, Video.id != video.id
-                    )
+            )
+            video.status, video.location_key = (
+                "trash", step.source if step.source == step.destination else None
+            )
+        elif kind == "permanent":
+            session.get(TrashItem, step.trash_id).status = "purged"
+            video.status, video.location_key = "deleted", None
+            session.execute(delete(VideoTag).where(VideoTag.video_id == video.id))
+        else:
+            conflicting = session.scalar(
+                select(Video).where(
+                    Video.location_key == step.destination, Video.id != video.id
                 )
-                if conflicting:
-                    conflicting.status, conflicting.location_key = "missing", None
-                    conflicting.generation += 1
-                    touch_active_scan(session, conflicting)
-                    session.flush()
-                roots = list(session.scalars(select(Root)))
-                root = min(
-                    (root for root in roots if beneath(Path(step.destination), Path(root.path))),
-                    key=lambda root: len(root.path),
-                )
-                video.status, video.location_key, video.path, video.root_id = (
-                    "available",
-                    step.destination,
-                    step.destination,
-                    root.id,
-                )
-                session.get(TrashItem, step.trash_id).status = "restored"
-            if final_signature:
-                set_video_signature(video, final_signature)
-            video.error = None
-            video.generation += 1
-            touch_active_scan(session, video)
-            step.phase, step.outcome, step.error = "committed", "succeeded", None
+            )
+            if conflicting:
+                conflicting.status, conflicting.location_key = "missing", None
+                conflicting.generation += 1
+                touch_active_scan(session, conflicting)
+                session.flush()
+            roots = list(session.scalars(select(Root)))
+            root = min(
+                (root for root in roots if beneath(Path(step.destination), Path(root.path))),
+                key=lambda root: len(root.path),
+            )
+            video.status, video.location_key, video.path, video.root_id = (
+                "available",
+                step.destination,
+                step.destination,
+                root.id,
+            )
+            session.get(TrashItem, step.trash_id).status = "restored"
+        if final_signature:
+            set_video_signature(video, final_signature)
+        video.error = None
+        video.generation += 1
+        touch_active_scan(session, video)
+        step.phase, step.outcome, step.error = "committed", "succeeded", None
 
     @staticmethod
     def error_code(error):

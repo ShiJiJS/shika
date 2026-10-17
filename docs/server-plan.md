@@ -36,7 +36,7 @@ FastAPI 的参数校验和接口文档用于明确 Flutter 网络契约。SQLite
 | [S1 #11](https://github.com/ShiJiJS/video_viewer/issues/11) | 认证、多目录扫描、目录层级、缩略图和分页列表 | [I1 #17](https://github.com/ShiJiJS/video_viewer/issues/17)：异步网络提供方、真实连接和列表 |
 | [S2 #12](https://github.com/ShiJiJS/video_viewer/issues/12) | 授权 Range 播放、随机/顺序轮次及持久位置 | [I2 #18](https://github.com/ShiJiJS/video_viewer/issues/18)：网络播放、手势、有限预加载和轮次恢复 |
 | [S3 #13](https://github.com/ShiJiJS/video_viewer/issues/13) | 标签、批量关联、目录和属性组合查询 | [I3 #19](https://github.com/ShiJiJS/video_viewer/issues/19)：真实标签及筛选播放 |
-| [S4 #14](https://github.com/ShiJiJS/video_viewer/issues/14) | 实际移入回收站、精确撤销、恢复及永久删除 | [I4 #20](https://github.com/ShiJiJS/video_viewer/issues/20)：快速整理和真实文件操作 |
+| [S4 #14](https://github.com/ShiJiJS/video_viewer/issues/14) | 数据库标记回收站、精确撤销、批量取消标记及确认后永久删除（兼容旧版已移动记录） | [I4 #20](https://github.com/ShiJiJS/video_viewer/issues/20)：快速整理和真实文件操作 |
 | [S5 #15](https://github.com/ShiJiJS/video_viewer/issues/15) | 外部变化、稳定身份、缺失及目录可用性 | [I5 #21](https://github.com/ShiJiJS/video_viewer/issues/21)：真实外部改动与异常反馈 |
 | [S6 #16](https://github.com/ShiJiJS/video_viewer/issues/16) | 一致性备份、校验、目录映射及完整恢复 | [I6 #22](https://github.com/ShiJiJS/video_viewer/issues/22)：异步备份传输、校验和恢复任务 |
 

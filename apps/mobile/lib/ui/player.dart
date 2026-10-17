@@ -42,25 +42,58 @@ class _MovieStageState extends State<MovieStage> {
   late final _session = widget.session ?? PlaybackSession();
   late final PageController _pages = PageController(initialPage: widget.index);
   bool _changing = false;
+  int _transition = 0;
   double _edgeDrag = 0;
+  final Set<String> _posters = {};
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _prefetchPosters();
+  }
+
+  void _prefetchPosters() {
+    for (final video
+        in widget.videos
+            .skip((widget.index - 1).clamp(0, widget.videos.length))
+            .take(9)) {
+      if (video.poster.isEmpty || !_posters.add(video.poster)) continue;
+      final ImageProvider provider = video.source.asset
+          ? AssetImage(video.poster)
+          : NetworkImage(video.poster, headers: video.source.headers);
+      unawaited(
+        precacheImage(
+          provider,
+          context,
+          onError: (Object error, StackTrace? stack) {},
+        ),
+      );
+    }
+    if (_posters.length > 96) _posters.clear();
+  }
 
   @override
   void didUpdateWidget(MovieStage oldWidget) {
     super.didUpdateWidget(oldWidget);
+    _prefetchPosters();
     final roundChanged = !listEquals(
       oldWidget.videos.map((v) => v.id).toList(),
       widget.videos.map((v) => v.id).toList(),
     );
     if (roundChanged || (!_changing && oldWidget.index != widget.index)) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && _pages.hasClients) _pages.jumpToPage(widget.index);
+        if (mounted &&
+            _pages.hasClients &&
+            !_pages.position.isScrollingNotifier.value &&
+            (_pages.page! - widget.index).abs() > .001) {
+          _pages.jumpToPage(widget.index);
+        }
       });
     }
   }
 
   Future<void> _settle() async {
-    if (_changing ||
-        !_pages.hasClients ||
+    if (!_pages.hasClients ||
         widget.suspended ||
         _pages.position.isScrollingNotifier.value) {
       return;
@@ -70,13 +103,19 @@ class _MovieStageState extends State<MovieStage> {
     final atEnd = _edgeDrag > 45 && target == widget.videos.length - 1;
     _edgeDrag = 0;
     if (delta == 0 && !atEnd) return;
+    final transition = ++_transition;
     setState(() => _changing = true);
     try {
       await widget.onStep(delta == 0 ? 1 : delta);
-      // The repository publishes only after saving. A failed save must slide
-      // back to the original video rather than leave the visible page ahead.
+      // The visible selection is published immediately; network persistence
+      // and decoder initialization do not own the scroll gesture.
       await WidgetsBinding.instance.endOfFrame;
-      if (!mounted || !_pages.hasClients) return;
+      if (!mounted ||
+          !_pages.hasClients ||
+          transition != _transition ||
+          _pages.position.isScrollingNotifier.value) {
+        return;
+      }
       if ((_pages.page! - widget.index).abs() > .001) {
         if (MediaQuery.disableAnimationsOf(context)) {
           _pages.jumpToPage(widget.index);
@@ -89,7 +128,9 @@ class _MovieStageState extends State<MovieStage> {
         }
       }
     } finally {
-      if (mounted) setState(() => _changing = false);
+      if (mounted && transition == _transition) {
+        setState(() => _changing = false);
+      }
     }
   }
 
@@ -115,7 +156,7 @@ class _MovieStageState extends State<MovieStage> {
           controller: _pages,
           scrollDirection: Axis.vertical,
           allowImplicitScrolling: true,
-          physics: _changing || widget.suspended
+          physics: widget.suspended
               ? const NeverScrollableScrollPhysics()
               : const PageScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(

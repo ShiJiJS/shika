@@ -390,6 +390,12 @@ class Scanner:
             if path_reserved(session, path):
                 result["deferred"] += 1
                 return
+            # Logical trash keeps its location reserved. Never re-import or
+            # probe the still-present source as an ordinary available video.
+            stored = session.get(Video, existing.id) if existing else None
+            if stored and stored.status == "trash":
+                result["unchanged"] += 1
+                return
         with open_video(path, self.settings.mounts) as fd:
             current = signature(os.fstat(fd))
             if current != observed or time.time() - stable_since < self.settings.stability_seconds:

@@ -13,7 +13,7 @@ from .conftest import put
 from .test_file_operations import operation, trash, wait_operation
 
 
-@pytest.mark.parametrize("kind,phase", [("trash", "published"), ("permanent", "purging")])
+@pytest.mark.parametrize("kind,phase", [("trash", "logical_committed"), ("permanent", "purging")])
 def test_sigkill_real_http_file_operation_recovers_exact_request(environment, samples, kind, phase):
     settings, media = environment
     digest = put(samples / "h264.mov", media / "one.mov")
@@ -104,17 +104,16 @@ def test_sigkill_real_http_file_operation_recovers_exact_request(environment, sa
             assert recovered["status"] == "completed", recovered
             assert client.post(route, json=request).json()["id"] == operation_id
             assert client.get("/api/v1/videos").json()["total"] == 0
-            assert not (media / "one.mov").exists()
             if kind == "trash":
+                assert (media / "one.mov").exists()
                 assert client.get("/api/v1/trash").json()["total"] == 1
-                assert [
-                    hashlib.sha256(p.read_bytes()).hexdigest()
-                    for p in (media / ".video-viewer-trash").rglob("*.mov")
-                ] == [digest]
+                assert hashlib.sha256((media / "one.mov").read_bytes()).hexdigest() == digest
+                assert not (media / ".video-viewer-trash").exists()
                 undone, _ = operation(client, f"/api/v1/operations/{operation_id}/undo", {})
                 assert undone["status"] == "completed", undone
                 assert hashlib.sha256((media / "one.mov").read_bytes()).hexdigest() == digest
             else:
+                assert not (media / "one.mov").exists()
                 assert client.get("/api/v1/trash").json()["total"] == 0
                 assert not list((media / ".video-viewer-trash").rglob("*.mov"))
             print(

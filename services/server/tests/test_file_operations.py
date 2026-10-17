@@ -14,6 +14,31 @@ from .test_playback import create_round, move
 from .test_tags import assign, tag
 
 
+@pytest.fixture(autouse=True)
+def legacy_move_receipts(monkeypatch):
+    """Exercise recovery of pre-0.1.3 physical intents, not new trash marks."""
+    from sqlalchemy import select
+
+    from video_viewer.file_operations import FileOperations
+    from video_viewer.models import FileStep
+
+    prepare = FileOperations.prepare_step
+
+    def old_intent(self, session, operation, requested_id):
+        prepare(self, session, operation, requested_id)
+        if operation.kind != "trash":
+            return
+        step = session.scalar(select(FileStep).where(
+            FileStep.operation_id == operation.id, FileStep.requested_id == requested_id
+        ))
+        if step and step.outcome == "pending":
+            step.destination = str((self.settings.trash_dir or Path(step.root_path) / ".video-viewer-trash")
+                                   / step.trash_id / Path(step.source).name)
+            step.copy_path = str(Path(step.destination).parent / ".video-viewer-tmp" / (step.id + ".part"))
+
+    monkeypatch.setattr(FileOperations, "prepare_step", old_intent)
+
+
 def wait_operation(client, operation_id):
     deadline = time.monotonic() + 30
     while time.monotonic() < deadline:

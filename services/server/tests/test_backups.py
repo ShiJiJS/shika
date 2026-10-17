@@ -223,7 +223,7 @@ def test_old_backup_reconciles_current_trash_and_never_replays_purge(library, sa
     deleted, _ = trash(client, [videos[0]["id"]])
     restored, _ = restore(client, raw, {"main": str(media)})
     assert restored["status"] == "completed" and restored["result"]["trash"] == 1, restored
-    assert not (media / "one.mov").exists()
+    assert (media / "one.mov").exists()  # Logical trash keeps the original in place.
     assert client.get("/api/v1/trash").json()["items"][0]["video"]["id"] == videos[0]["id"]
     assert (
         client.post(

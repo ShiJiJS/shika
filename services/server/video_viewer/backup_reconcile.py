@@ -87,7 +87,12 @@ def reconcile(payload, current, mapping, settings, stop):
         try:
             if is_trash:
                 base = settings.trash_dir or Path(item["root_path"]) / ".video-viewer-trash"
-                if Path(path) != base / item["id"] / Path(item["original_path"]).name:
+                logical = item["trash_path"] == item["original_path"]
+                if logical:
+                    validate_path(path, settings.mounts)
+                    if not beneath(Path(path), Path(item["root_path"])):
+                        return None
+                elif Path(path) != base / item["id"] / Path(item["original_path"]).name:
                     return None
                 validate_path(item["root_path"], settings.mounts)
             else:
@@ -146,10 +151,11 @@ def reconcile(payload, current, mapping, settings, stop):
         video = videos_by_id[item["video_id"]]
         root, old_root = roots[video["root_id"]], source_roots[video["root_id"]]
         if mapping[root["id"]]:
+            logical = item["trash_path"] == item["original_path"]
             original = mapped_path(item["original_path"], old_root["path"], root["path"])
             item["original_path"] = original or item["original_path"]
             item["root_path"] = root["path"]
-            item["trash_path"] = str(
+            item["trash_path"] = item["original_path"] if logical else str(
                 (settings.trash_dir or Path(root["path"]) / ".video-viewer-trash")
                 / item["id"]
                 / Path(item["original_path"]).name
@@ -170,6 +176,31 @@ def reconcile(payload, current, mapping, settings, stop):
             video["error"] = "root_unmapped"
             continue
         known = current_videos.get(video["id"])
+        # Logical trash is still physically at the original path. Prefer an
+        # active mark over that path's existence, otherwise restore would
+        # silently resurrect every marked item as available.
+        marked = current_trash.get(video["id"])
+        if marked and not any(
+            mapping[owner["id"]] and beneath(Path(marked["original_path"]), Path(owner["path"]))
+            for owner in roots.values()
+        ):
+            marked = None
+        if marked is None and (not known or known["status"] != "available"):
+            marked = next((item for item in trash_by_video[video["id"]]
+                           if item["status"] == "active"), None)
+        if marked and marked["trash_path"] == marked["original_path"]:
+            result = verified(marked["trash_path"], video, is_trash=True, item=marked)
+            for previous in trash_by_video[video["id"]]:
+                if previous["id"] != marked["id"] and previous["status"] == "active":
+                    previous["status"] = "restored"
+            trash[marked["id"]] = copy.deepcopy(marked)
+            video["status"], video["path"], video["location_key"] = (
+                "trash", marked["original_path"], marked["original_path"]
+            )
+            video["error"] = None if result else "trash_missing"
+            if result:
+                video["device"], video["inode"], video["size"], video["mtime_ns"], video["ctime_ns"] = result
+            continue
         candidates = []
         if known and known["sha256"] == video["sha256"] and known["status"] == "available":
             owners = [

@@ -6,6 +6,7 @@ Only the explicitly named e2e container may be stopped by this runner.
 """
 
 import argparse
+import atexit
 import json
 import os
 import subprocess
@@ -122,9 +123,25 @@ def main():
     mode.add_argument("--external", action="store_true")
     mode.add_argument("--backups", action="store_true")
     mode.add_argument("--preparation", action="store_true")
+    mode.add_argument("--interactions", action="store_true")
     parser.add_argument("--plain-name")
     args = parser.parse_args()
-    if args.preparation:
+    # Keep this WSL VM attached while Windows Gradle/emulator work is running.
+    # Otherwise an idle VM can stop the fixture before Android connects.
+    keepalive = subprocess.Popen(
+        ["wsl", "-d", "Ubuntu-24.04", "--", "python3", "-c", "import sys; sys.stdin.buffer.read()"],
+        stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+    )
+    def release_wsl():
+        keepalive.stdin.close()
+        try:
+            keepalive.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            keepalive.terminate()
+    atexit.register(release_wsl)
+    if args.interactions:
+        PREFIX = "v1-interactions"
+    elif args.preparation:
         PREFIX = "v1-preparation"
     elif args.backups:
         PREFIX = "i6"
@@ -172,6 +189,7 @@ def main():
                 "i5": "integration_test/server_external_test.dart",
                 "i6": "integration_test/server_backups_test.dart",
                 "v1-preparation": "integration_test/server_preparation_test.dart",
+                "v1-interactions": "integration_test/nonblocking_server_test.dart",
             }[PREFIX],
             "-d",
             "emulator-5554",
@@ -185,7 +203,7 @@ def main():
             "w", encoding="utf-8"
         ) as log:
             code = 0
-            for phase in range(1 if args.plain_name or args.preparation else 3 if args.backups else 2):
+            for phase in range(1 if args.plain_name or args.preparation or args.interactions else 3 if args.backups else 2):
                 if phase:
                     subprocess.run(
                         [
