@@ -298,8 +298,8 @@ def test_multiple_independent_mounts_and_disconnect_during_scan(environment, sam
         mounts=(*settings.mounts, Mount("second", "第二个目录", second)),
     )
     client, _ = connect(settings)
-    scan(client)
-    assert client.get("/api/v1/videos").json()["total"] == 2
+    first_scan = scan(client)
+    assert client.get("/api/v1/videos").json()["total"] == 2, str(first_scan)
     put(samples / "portrait.mp4", media / "arriving.mp4")
     job = client.post("/api/v1/scans").json()
     wait_phase(client, job["id"], "waiting_for_stable_files")
