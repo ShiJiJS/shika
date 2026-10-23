@@ -107,6 +107,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   List<String> _returnAnchors = const [];
   bool _restoringLibrary = false;
   int _libraryViewGeneration = 0;
+  int _previewGeneration = 0;
   String previousScope = '';
   List<LibraryVideo> trashItems = [];
   int trashTotal = 0, trashGeneration = 0;
@@ -419,6 +420,9 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   Future<void> openPreview({String? anchor, bool quick = false}) async {
+    if (viewing || busy || page != 'library') return;
+    final generation = ++_previewGeneration;
+    final connection = repo.connectionIdentity;
     FocusScope.of(context).unfocus();
     final position = captureLibraryPosition();
     final origin = position.context, anchors = position.anchors;
@@ -438,7 +442,13 @@ class _LibraryHomeState extends State<LibraryHome> {
       })) {
         return;
       }
-      if (!mounted) return;
+      if (!mounted ||
+          generation != _previewGeneration ||
+          !identical(connection, repo.connectionIdentity) ||
+          !data.connected ||
+          page != 'library') {
+        return;
+      }
       final route = PageRouteBuilder<void>(
         transitionDuration: MediaQuery.disableAnimationsOf(context)
             ? Duration.zero
@@ -501,6 +511,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   void go(String next) {
+    _previewGeneration++;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     setState(() {
       page = next;
@@ -851,7 +862,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     },
     child: AppShell(
       showNavigation: primaryPage,
-      navigationEnabled: !_busy,
+      navigationEnabled: !_busy || viewing,
       selected: page,
       onNavigate: go,
       destinations: const [
