@@ -1,0 +1,160 @@
+{
+  "stage": "LF3 client/native representative checkpoint; LF3 remains in progress",
+  "implementation_revision": "1af451e16eb583d4ad67a47fcdead06ca34d5162",
+  "branch": "codex/lf3-fixed-preview",
+  "base_branch": "codex/lf2-pack-catalog",
+  "schema": "0008",
+  "server_tests": {
+    "passed": 146,
+    "failed": 0,
+    "seconds": 152.44,
+    "tested_source_revision": "98d47d0",
+    "subsequent_server_source_changes": false,
+    "source_bind_mount": false,
+    "command": "docker run --rm --read-only --network none --shm-size=64m --tmpfs /tmp:mode=1777 video-viewer-server:lf3 pytest -q",
+    "image_config_digest": "sha256:23735462e8e44e3e45e1a04dcd47af5c445455cc57057b014a7debcf83ed3638",
+    "log_sha256": "a05e3176315684ef908c182c4f4bd2992b3010843cf4b0e88f7977c13c439e93",
+    "warning": "Existing FastAPI TestClient/httpx deprecation"
+  },
+  "client_tests": {
+    "passed": 91,
+    "failed": 0,
+    "command": "bash ../../scripts/dev.sh flutter test (cwd apps/mobile)",
+    "log_sha256": "cbb45b1c027290a63df361fff58905d86800fd35e948da6642571f5cbeb0d62b",
+    "analyze": "No issues found",
+    "analyze_log_sha256": "60988b29ac93eb2f7c5f96f3dd0d0333e61b698a9a08102b2905989ce6a4be92"
+  },
+  "native": {
+    "command": "bash scripts/dev.sh python3 scripts/run-client-connection-test.py --preview",
+    "consecutive_fresh_runs_passed": 3,
+    "runs": [
+      {
+        "run": 1,
+        "source_revision": "1af451e16eb583d4ad67a47fcdead06ca34d5162",
+        "exit_code": 0,
+        "e2e_image_id": "sha256:6b165d9f964a5310fa69c425518a91d949d8e70f20f4ba0f3a55c471902f6a19",
+        "apk_sha256": "e9024b7efceb93a03f5e51b4c8a30fb77d0747620b2166f6d1ac8fc7a1e51ec5",
+        "host_errors": [],
+        "files_sha256": {
+          "lf3-preview-android-test.log": "9a710609b250f0b4d503634d72e2a7ed9d08c76835f912547a3a40e67e84d023",
+          "lf3-preview-formats-requests.json": "8453f700b317e9665b3135b2b30000ef293039fdff67fccc70f11e3a9e837285",
+          "lf3-preview-formats.png": "fc4dd8eb5d12dac7b1aed883538fba501c5e14940239a8ad33d1380ea66783b1",
+          "lf3-preview-host-events.json": "66b87a95d87476cd3d579b19fc68ac0674a2468c471d2fb36f9b47e0d9337109",
+          "lf3-preview-library-requests.json": "cae55a637e4e1740620de37fa7992b158504266070883353a4c692f4aa87930c",
+          "lf3-preview-library.png": "8760ff2194409f59f5fab5a290c1a29fec8b689388a1430945d2db9d12ea80f6",
+          "lf3-preview-preview-requests.json": "f61c8df6ceddfd77cc95c68d32c7d75d5efe56606f258e5fc87fdb658f26edd8",
+          "lf3-preview-preview.png": "d1b9d1d51aa98e9698fa3d240f1634175a964f8331fa732669fd2fe740c6b088",
+          "runner.log": "d6f05e17d11af544d554d48a40ce8f28b988b2e7708ea5de1233cfa6c3c48407",
+          "source.json": "1fd3153eaea5869436d5b93baa399f958bca874c002c081becefd36a3ec33eb2"
+        }
+      },
+      {
+        "run": 2,
+        "source_revision": "1af451e16eb583d4ad67a47fcdead06ca34d5162",
+        "exit_code": 0,
+        "e2e_image_id": "sha256:8536c8faae2853c42aecad52a4ea92176f02b743db24adceefba36944a5653f5",
+        "apk_sha256": "0c4f2404ff5b817330fca649bf7bb95a13f9167aa3d6e625cc8c639af2594bd6",
+        "host_errors": [],
+        "files_sha256": {
+          "lf3-preview-android-test.log": "e09a7d0f460e493825aedf05a3355ae5bfc80e155a20ce7d8d56555cc1aa652c",
+          "lf3-preview-formats-requests.json": "8453807d71cdaf0d2fccb5b0061c2185878c4cb16cb94f3926efb5363bc90101",
+          "lf3-preview-formats.png": "694c32acfefc30cf4a0b3b1d20a0c431bca53cef2e2c8e41e71438c3c28b16bf",
+          "lf3-preview-host-events.json": "035cad8870e4c72ab6bf78c206b0aa4156a5256f48dbb346d2000d4f616bfd23",
+          "lf3-preview-library-requests.json": "fe595e14d952d97acd8c2bcd6bad38679782991490a33d55ffe3b3f5768337ed",
+          "lf3-preview-library.png": "8c74a05d862336f1ba20988ea66e3d5c5db73e5adec755db078a1c0f6882e3b9",
+          "lf3-preview-preview-requests.json": "1e8a65011ac2f14ea7701979f4ad9dfacc628dce5703cc5d0aeef2280b933d5d",
+          "lf3-preview-preview.png": "0fba6f2a90b1691a1251f04d771179f2798bd6b9dd6d3714bd93650c5ccdd66d",
+          "runner.log": "480b1d23d51fa4b10eb59f67ca3f9fc1680efd0ee39fb64ca9b5a7861ae612bf",
+          "source.json": "ccdd0382b2457ca17a0d050e1756efc6b22282fea0cbd738812b43db30e733a8"
+        }
+      },
+      {
+        "run": 3,
+        "source_revision": "1af451e16eb583d4ad67a47fcdead06ca34d5162",
+        "exit_code": 0,
+        "e2e_image_id": "sha256:d6fcec992345ea22362fe4432d89a863829bde60c2b48c66b2dc90e4a39866d4",
+        "apk_sha256": "f296d7bb822ecd58946595b500eade20b5cdd72f8476095e0c500edeabe8acf6",
+        "host_errors": [],
+        "files_sha256": {
+          "lf3-preview-android-test.log": "3a428715acee7a10ff2588209743ec9f53b278051b6474f6997649339cd48147",
+          "lf3-preview-formats-requests.json": "41d09ec8f7afb98a55af454205ad66bae3867c57f27a22228bdadc96474f6bbb",
+          "lf3-preview-formats.png": "c4f6f51b4f06edfd0fc514e31a336a50c52d9fb7eee938e3c6ac3cf08b3f0741",
+          "lf3-preview-host-events.json": "c33ed2565f20b5a9f81ccf4fd62134616c7d5a9b075e6ec53341a09fb8f9adc8",
+          "lf3-preview-library-requests.json": "94c8adeb3cff46152bf194eb0cc83d7b13767d8d1af6d44f287e2b70643cb271",
+          "lf3-preview-library.png": "f9d7a028fcee2d5c8ff922fc37f21aab83c913aaf3edabd61b345209cb1625cc",
+          "lf3-preview-preview-requests.json": "5167b2b5f470afcc1ce6e850309cfec513d3d85446618df4ee024983594a0574",
+          "lf3-preview-preview.png": "753cada4b490077f0e4dbd2ccb475e51c22ac6b7dff222b43d01fe27991c7ecf",
+          "runner.log": "cb6de1e64cfbcae6982514dd2f7b3cd7b2f9c785232ccf08db75b03660644b6a",
+          "source.json": "2834b87d12693a00366f8687cb0e1111c4e9932a718bccd144d1eb28452eb23a"
+        }
+      }
+    ],
+    "device": "Android 16/API 36 emulator-5554, 1080x2400, density 420; macOS host GPU, Vulkan disabled",
+    "fixture": "isolated synthetic 8761 service, public flower videos; reset independently for each run",
+    "peak_decoders": 3,
+    "maximum_audible_players": 1,
+    "all_decoders_released_on_return": true,
+    "candidate_count": 25,
+    "initial_library_page": 24,
+    "opened_history_distinct_videos": 3,
+    "covered": [
+      "read-only connect creates no round or history",
+      "full searched range exceeds first loaded page",
+      "native picture/audio and long-press 2x restores 1x",
+      "mode switch retains current video and fixed membership",
+      "lazy queue selects 25th video",
+      "end/restart retains same scope identity",
+      "return retains source search and first-page conditions",
+      "second explicit landscape range",
+      "pause exposes play/progress/speed controls",
+      "fullscreen retains pause intent"
+    ],
+    "scope_limit": "Representative path; not full LF3 lifecycle/network/fault matrix or real NAS/phone performance"
+  },
+  "regression_found_and_fixed": {
+    "initial_native_failure": "Queue first read after reorder lazily captured the new version while retaining old cached items",
+    "fix": "Initialize cache identity eagerly; version server pages and invalidate client metadata on reorder",
+    "initial_failed_log_preserved_locally": ".dev/logs/lf3-native-preview-initial.log",
+    "intermediate_passes": "Earlier 98d47d0/ea43f9f passes are historical and excluded from this final 3-run count"
+  },
+  "visual_review": {
+    "rounds": 2,
+    "mode": "independent existing-product review, then prior-findings verification; no scores",
+    "resolved": [
+      "single-line inset control group with speed dropdown",
+      "letterbox background #111612"
+    ],
+    "record": "lf3-visual-review.md",
+    "motion_verified_by_static_review": false
+  },
+  "compatibility": [
+    "Legacy service path remains separate",
+    "Frozen 0004/0005/0007 database upgrades preserve old rows and columns",
+    "Legacy backup retains exact v1 projection; fixed/typed state requires LF7 v2"
+  ],
+  "ruff_check": "passed at unchanged server source",
+  "ruff_format": {
+    "status": "7 pre-existing untouched files would be reformatted",
+    "files": [
+      "tests/e2e_server.py",
+      "tests/test_cleanup_and_fast_purge.py",
+      "tests/test_file_operations.py",
+      "tests/test_initial_import.py",
+      "tests/test_logical_trash.py",
+      "tests/test_thumbnail_recovery.py",
+      "video_viewer/backup_reconcile.py"
+    ]
+  },
+  "pending": [
+    "Stable deep-list return anchor after tag removal, inserted content and failure/retry",
+    "LF4 four-entry shell, video/pack contexts, recent UI and source wiring",
+    "Update old native I1/I2 navigation assumptions while retaining fault assertions",
+    "New-route lifecycle, device controls, rapid swipe, timeout, delayed receipts and process restart matrix",
+    "Full LF3 acceptance and LF8 visual/device audit"
+  ],
+  "reference_modified": false,
+  "real_nas_modified": false,
+  "private_media": false,
+  "apk_released": false,
+  "github_browser_sync": "Pending original TaskSpace 106 recovery question; Git SSH push remains available"
+}

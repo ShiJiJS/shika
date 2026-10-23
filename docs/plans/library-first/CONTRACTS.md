@@ -51,7 +51,7 @@ LF2 不提供阅读会话、进度更新、最近写入或图包整理接口；�
 
 ## LF3 服务协议（客户端接线中）
 
-schema `0007`，新增能力 `fixed_video_sessions`。轮次新增 membership/source/sort，成员另存 source_ordinal。原有调用默认 legacy/library/path，升级旧轮次也保留此状态。
+初始 schema `0007` 新增 fixed_video_sessions；当前 `0008` 另有 versioned_video_queue。轮次新增 membership/source/sort，成员另存 source_ordinal；0008 新增 sequence_revision。原有调用默认 legacy/library/path，升级旧轮次也保留此状态。
 
 `POST /rounds` 新客户端发送 membership=fixed，source=library/tags/recent、sort=path/name/newest/recent、完整 scope（新增 search）、order、anchor_video_id 和 request_id。recent 排序只用于 recent 来源。legacy 不接受新增搜索/来源/排序语义，旧请求不会静默进入新协议。返回额外 membership/source/sort，scope 保留原查询依据，但固定会话不再次使用该依据筛成员。
 
@@ -59,4 +59,8 @@ schema `0007`，新增能力 `fixed_video_sessions`。轮次新增 membership/so
 
 `GET /videos` 增加 source/sort，服务端按相同条件求完整预览候选；默认 path 保持旧分页顺序。搜索匹配名称及根下相对目录，不匹配临时主机挂载前缀。`GET /recent?kind=video` 返回相同分页结构及条目的 opened_at；图包最近暂未实现，kind=pack 明确拒绝，不返回空成功。
 
-新连接应调用 `GET /playback?create=false`；无会话返回 404 round_not_started，界面停留入口。旧调用继续默认 create=true。客户端尚未切换此读取和新会话方法；不得仅因服务接口存在宣称 LF3 或默认媒体库导航已完成。
+支持 fixed_video_sessions 的新连接已调用 `GET /playback?create=false`；无会话返回 404 round_not_started，界面停留入口。旧调用继续默认 create=true。新固定预览同时要求 versioned_video_queue，旧服务缺少能力时明确提示升级。客户端的 begin/order/restart/opened 已接线，原生四入口和全部返回路径仍未验收完成。
+
+`GET /rounds/{id}/entries?v=sequence_revision` 返回 sequence_revision，版本不符返回 409 round_order_changed；在同一短读取快照内检查版本、候选与总数。普通位置变化只改 revision，重排/重来还提高 sequence_revision，原候选不变。客户端窗口/队列以会话 ID + sequence_revision 隔离，遇失配先只读刷新当前会话，再拒绝迟到的旧页。长队列 UI 随机访问分页，最多保留四页元数据；重排后定位当前项。
+
+`VideoEntryScope` 是两种 adapter 共用的完整查询输入；来源的滚动位置单独在 BrowseContext 中。`BrowsingSession` 可见时才确认 opened；普通列表和队列预取不确认。观看位置、显式队列选择、模式变更和完成命令共用该浏览会话的串行队列，关闭/换连接/换会话后未执行的旧命令取消。Demo 的原始顺序、当前顺序、最近记录和固定范围随演示管理状态保存。
