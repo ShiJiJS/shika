@@ -177,6 +177,27 @@ void main() {
         ),
         isTrue,
       );
+      await fixture('/__fixture/preview/slow');
+      await repo.editTag(name: '后台变化');
+      final backgroundTag = repo.snapshot.tags.singleWhere(
+        (id) => repo.tagName(id) == '后台变化',
+      );
+      await repo.setVideoTags({original.items.first.id}, {backgroundTag});
+      await repo.setVideoTags(
+        {original.items.first.id},
+        {backgroundTag},
+        remove: true,
+      );
+      await until(
+        () =>
+            find.byType(LinearProgressIndicator).evaluate().isEmpty &&
+            find.byKey(const Key('library-return-retry')).evaluate().isEmpty &&
+            neighborTile.hitTestable().evaluate().isNotEmpty,
+        'overlapping background updates retain the visible source',
+      );
+      expect(scroll().offset, closeTo(5 * 308.0 + 37, 1));
+      expect(t.getTopLeft(neighborTile).dy, closeTo(originalTop, 1));
+      await fixture('/__fixture/preview/fast');
       await fixture('/__fixture/checkpoint/recovered');
       await t.pump(const Duration(seconds: 1));
       final refreshed = await repo.loadVideoEntry(
@@ -201,7 +222,7 @@ void main() {
       expect(scroll().offset, closeTo(12 * 308.0, 1));
       expect(session.debugPlayers, isEmpty);
       debugPrint(
-        'LF3_ANCHOR candidates=73 return_page=48 page_size=24 fallback_neighbor=59 retry=503/200 prepend=24',
+        'LF3_ANCHOR candidates=73 return_page=48 page_size=24 fallback_neighbor=59 retry=503/200 prepend=24 overlapping_refresh=retained',
       );
       await fixture('/__fixture/checkpoint/done');
     },

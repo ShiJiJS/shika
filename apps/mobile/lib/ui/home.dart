@@ -101,6 +101,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   VideoBrowseContext? _pendingReturn;
   List<String> _returnAnchors = const [];
   bool _restoringLibrary = false;
+  int _libraryViewGeneration = 0;
   String previousScope = '';
   List<LibraryVideo> trashItems = [];
   int trashTotal = 0, trashGeneration = 0;
@@ -187,7 +188,18 @@ class _LibraryHomeState extends State<LibraryHome> {
         error = repo.connectionError!;
       }
     });
-    if (page == 'library' && !viewing) unawaited(loadLibrary());
+    if (page == 'library' && !viewing) {
+      if (libraryFirst &&
+          _pendingReturn == null &&
+          libraryItems.isNotEmpty &&
+          libraryContext.copyWith(query: entryQuery, search: search).queryKey ==
+              _library.state.context.queryKey) {
+        final position = captureLibraryPosition();
+        _pendingReturn = position.context;
+        _returnAnchors = position.anchors;
+      }
+      unawaited(loadLibrary());
+    }
     if (page == 'trash') unawaited(loadTrash());
     if (page == 'roots') unawaited(loadMissing());
   }
@@ -281,6 +293,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     if (page != 'library' || viewing || ((more || before) && libraryLoading)) {
       return;
     }
+    final generation = ++_libraryViewGeneration;
     final next = VideoBrowseContext(
       query: entryQuery,
       search: search,
@@ -302,9 +315,10 @@ class _LibraryHomeState extends State<LibraryHome> {
     } else {
       await _library.load(next, more: more, before: before);
     }
+    if (generation != _libraryViewGeneration) return;
     if (mounted && page == 'library') {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
+        if (!mounted || generation != _libraryViewGeneration) return;
         if (_library.state.context.queryKey == next.queryKey &&
             libraryError.isEmpty &&
             libraryScroll.hasClients) {
@@ -342,8 +356,8 @@ class _LibraryHomeState extends State<LibraryHome> {
     await loadLibrary();
   }
 
-  Future<void> openPreview({String? anchor, bool quick = false}) async {
-    FocusScope.of(context).unfocus();
+  ({VideoBrowseContext context, List<String> anchors})
+  captureLibraryPosition() {
     final offset = libraryScroll.hasClients ? libraryScroll.offset : 0.0;
     final first = libraryItems.isEmpty
         ? null
@@ -362,15 +376,26 @@ class _LibraryHomeState extends State<LibraryHome> {
           .take(8)
           .map((item) => item.id),
     ];
-    final origin = libraryContext.copyWith(
-      query: entryQuery,
-      search: search,
-      scrollOffset: offset,
-      scrollAnchor: first,
-      scrollIndex: _library.state.offset + localIndex,
-      scrollInset: offset % 308,
+    return (
+      context: libraryContext.copyWith(
+        query: entryQuery,
+        search: search,
+        scrollOffset: offset,
+        scrollAnchor: first,
+        scrollIndex: _library.state.offset + localIndex,
+        scrollInset: offset % 308,
+      ),
+      anchors: anchors,
     );
+  }
+
+  Future<void> openPreview({String? anchor, bool quick = false}) async {
+    FocusScope.of(context).unfocus();
+    final position = captureLibraryPosition();
+    final origin = position.context, anchors = position.anchors;
     viewing = true;
+    _libraryViewGeneration++;
+    _library.cancel();
     try {
       if (!await perform(
         () => repo.beginPreview(origin.entry, anchor: anchor),
@@ -440,6 +465,8 @@ class _LibraryHomeState extends State<LibraryHome> {
     if (next == 'library') {
       unawaited(loadLibrary());
     } else {
+      _libraryViewGeneration++;
+      _restoringLibrary = false;
       _library.cancel();
     }
     if (next == 'trash') {

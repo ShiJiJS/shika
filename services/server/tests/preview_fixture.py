@@ -1,5 +1,6 @@
 """Additional disposable media and read faults for native return-position tests."""
 
+import asyncio
 import shutil
 
 from fastapi import Header, HTTPException
@@ -7,10 +8,16 @@ from fastapi.responses import JSONResponse
 
 
 def install(app, base, portrait, key):
-    controls = {"fail_anchor_reads": False}
+    controls = {"fail_anchor_reads": False, "slow_anchor_reads": False}
 
     @app.middleware("http")
     async def anchor_fault(request, call_next):
+        if (
+            controls["slow_anchor_reads"]
+            and request.url.path == "/api/v1/videos"
+            and "anchor_ids" in request.query_params
+        ):
+            await asyncio.sleep(0.75)
         if (
             controls["fail_anchor_reads"]
             and request.url.path == "/api/v1/videos"
@@ -38,6 +45,9 @@ def install(app, base, portrait, key):
             names = ["000-new.mp4"]
         elif action in {"fail", "recover"}:
             controls["fail_anchor_reads"] = action == "fail"
+            return {"status": "ok"}
+        elif action in {"slow", "fast"}:
+            controls["slow_anchor_reads"] = action == "slow"
             return {"status": "ok"}
         else:
             raise HTTPException(status_code=404)
