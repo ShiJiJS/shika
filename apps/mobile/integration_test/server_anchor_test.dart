@@ -46,7 +46,9 @@ void main() {
       await repo.connect(fixtureBase, 8761, fixturePassword);
       await repo.requestScan();
       await until(
-        () => repo.libraryPreparation.value.ready,
+        () =>
+            repo.libraryPreparation.value.ready &&
+            !repo.libraryPreparation.value.scanning,
         'extended library scan',
       );
       final entry = VideoEntryScope(search: '花卉', sort: VideoSort.name);
@@ -71,6 +73,12 @@ void main() {
       await t.enterText(find.byKey(const Key('video-search')), '花卉');
       await t.testTextInput.receiveAction(TextInputAction.done);
       final grid = find.byKey(const Key('video-grid'));
+      await until(
+        () =>
+            grid.evaluate().isNotEmpty &&
+            find.text('73 个视频').evaluate().isNotEmpty,
+        'searched tag range',
+      );
       ScrollController scroll() => t.widget<CustomScrollView>(grid).controller!;
       const targetPixels = 29 * 308.0 + 37;
       await until(() async {
@@ -101,7 +109,9 @@ void main() {
       await fixture('/__fixture/preview/insert');
       await repo.requestScan();
       await until(
-        () => repo.libraryPreparation.value.ready,
+        () =>
+            repo.libraryPreparation.value.ready &&
+            !repo.libraryPreparation.value.scanning,
         'inserted content scanned',
       );
       final inserted = await repo.loadVideoEntry(
