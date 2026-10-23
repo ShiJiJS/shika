@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:video_viewer/library/credentials.dart';
+import 'package:video_viewer/features/library/video_catalog_page.dart';
 import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
@@ -170,7 +171,14 @@ void main() {
       expect(scroll().offset, closeTo(header + 5 * 308.0 + 37, 1));
       expect(t.getTopLeft(neighborTile).dy, closeTo(originalTop, 1));
       expect(anchorTile, findsNothing);
-      expect(find.text('73 个视频'), findsOneWidget);
+      expect(
+        t
+            .state<VideoCatalogPageState>(find.byType(VideoCatalogPage))
+            .data
+            .total,
+        73,
+        reason: 'authoritative count is retained while its toolbar is scrolled above the viewport',
+      );
       final round = await repo.api.json('GET', '/api/v1/playback');
       expect(round['id'], identity);
       expect(round['candidate_count'], 73);
