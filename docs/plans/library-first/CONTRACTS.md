@@ -68,3 +68,7 @@ LF2 不提供阅读会话、进度更新、最近写入或图包整理接口；�
 `GET /rounds/{id}/entries?v=sequence_revision` 返回 sequence_revision，版本不符返回 409 round_order_changed；在同一短读取快照内检查版本、候选与总数。普通位置变化只改 revision，重排/重来还提高 sequence_revision，原候选不变。客户端窗口/队列以会话 ID + sequence_revision 隔离，遇失配先只读刷新当前会话，再拒绝迟到的旧页。长队列 UI 随机访问分页，最多保留四页元数据；重排后定位当前项。
 
 `VideoEntryScope` 是两种 adapter 共用的完整查询输入；来源的滚动位置单独在 BrowseContext 中。`BrowsingSession` 可见时才确认 opened；普通列表和队列预取不确认。观看位置、显式队列选择、模式变更和完成命令共用该浏览会话的串行队列，关闭/换连接/换会话后未执行的旧命令取消。Demo 的原始顺序、当前顺序、最近记录和固定范围随演示管理状态保存。
+
+`savedPreviewEntry` 只读暴露已保存固定会话的入口。一次新连接可用它初始化媒体库草稿，之后不跟随活动轮次覆盖草稿；重开不自动导航到预览，也不写 opened。连接失效时二级预览释放播放器并返回登录界面。
+
+LF3 暂将默认顺序保存在本机 `UiPreferences.videoOrder`，与活动会话的 order 分离；仅在新 begin 时作为显式 order 发送。首次新入口沿用已有顺序形成初始默认；设置默认值不调用 setScope / POST rounds，当前范围重排也不改默认值。本机偏好写入串行执行，成功后才发布新值；外观、相邻准备和默认顺序不互相覆盖，失败保留旧值。此处只完成 SET-02 的会话隔离；PLAN 规定的服务端管理默认值及 v2 备份仍由 LF7 完成，届时迁移/冲突规则与连接隔离必须单独验证，不能以当前本机持久化代替。
