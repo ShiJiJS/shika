@@ -1,10 +1,10 @@
 """Independent pack labels: IDs, counts, idempotent writes, never image labels."""
 
-from sqlalchemy import and_, case, delete, func, select
+from sqlalchemy import and_, case, delete, exists, func, select
 
 from .errors import LibraryError
-from .media_roots import enabled_path
-from .models import ImagePack, PackTag, PackTagLink, Root
+from .media_roots import owned_path
+from .models import ImagePack, PackPage, PackTag, PackTagLink, Root
 from .requests import once
 
 
@@ -18,6 +18,7 @@ class PackTags:
 
     def list(self, search="", offset=0, limit=200):
         with self.db.read() as session:
+            session.connection().exec_driver_sql("BEGIN")
             criteria = PackTag.name.contains(search, autoescape=True)
             count = func.count(
                 case(
@@ -27,7 +28,16 @@ class PackTags:
                             ImagePack.error.is_(None),
                             Root.available.is_(True),
                             Root.enabled.is_(True),
-                            enabled_path(session, ImagePack.path, "pack"),
+                            owned_path(session, ImagePack.path, ImagePack.root_id),
+                            exists(
+                                select(PackPage.id)
+                                .where(
+                                    PackPage.pack_id == ImagePack.id,
+                                    PackPage.error.is_(None),
+                                    owned_path(session, PackPage.path, ImagePack.root_id),
+                                )
+                                .correlate(ImagePack)
+                            ),
                         ),
                         ImagePack.id,
                     )

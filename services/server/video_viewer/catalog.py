@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from sqlalchemy import func, or_, select
+from sqlalchemy import func, or_, select, update
 
 from .errors import LibraryError
 from .media_roots import enabled_path, owner_for_path
@@ -74,6 +74,7 @@ class Catalog:
                 if root_id
                 else session.scalar(select(Root).where(Root.path == str(candidate)))
             )
+            previous_path = root.path if root else None
             if root_id and not root:
                 raise LibraryError("root_not_found", "媒体目录不存在", 404)
             occupied = session.scalar(select(Root).where(Root.path == str(candidate)))
@@ -106,7 +107,7 @@ class Catalog:
                             video.status, video.location_key = "missing", None
                 for pack in session.scalars(select(ImagePack).where(ImagePack.root_id == root.id)):
                     if not beneath(Path(pack.path), candidate) and pack.status == "available":
-                        pack.status = "missing"
+                        pack.status, pack.location_key = "missing", None
                 root.path, root.available, root.last_scan = str(candidate), False, None
             if not root:
                 root = Root(name=name, path=str(candidate), mount_id=mount.id)
@@ -114,52 +115,83 @@ class Catalog:
                 root.id = uid()
                 session.add(root)
                 session.flush()
+            policy_changed = (
+                previous_path != str(candidate)
+                or (kind is not None and root.kind != kind)
+                or (enabled is not None and root.enabled != enabled)
+            )
+            if kind is not None and root.kind != kind:
+                root.last_scan, root.available, root.error = None, False, None
             root.name, root.mount_id = name, mount.id
             root.kind = kind if kind is not None else root.kind
             root.enabled = enabled if enabled is not None else root.enabled
+            if policy_changed:
+                scopes = {candidate, Path(previous_path)} if previous_path else {candidate}
+                affected = [
+                    identity
+                    for identity, pack_path in session.execute(select(ImagePack.id, ImagePack.path))
+                    if any(
+                        beneath(Path(pack_path), scope) or beneath(scope, Path(pack_path))
+                        for scope in scopes
+                    )
+                ]
+                if affected:
+                    session.execute(
+                        update(ImagePack)
+                        .where(ImagePack.id.in_(affected))
+                        .values(content_version=ImagePack.content_version + 1)
+                    )
             self.ensure_directory(session, candidate, root.id)
             return self.root_json(session, root)
 
-    def directories(self, parent_id=None, kind="video"):
+    def directories(self, parent_id=None, kind="video", *, offset=0, limit=None):
         with self.db.read() as session:
             all_roots = list(session.scalars(select(Root)))
             roots = [root for root in all_roots if root.kind == kind]
             if not parent_id:
-                return [
-                    {
-                        **self.root_json(session, r),
-                        "id": self.root_json(session, r)["directory_id"],
-                        "root_id": r.id,
-                        "available": r.available and r.enabled,
-                    }
-                    for r in roots
-                ]
+                selected = roots[offset:] if limit is None else roots[offset : offset + limit]
+                items = []
+                for root in selected:
+                    data = self.root_json(session, root)
+                    items.append(
+                        {
+                            **data,
+                            "id": data["directory_id"],
+                            "root_id": root.id,
+                            "available": root.available and root.enabled,
+                        }
+                    )
+                return {"items": items, "total": len(roots), "offset": offset, "limit": limit}
             parent = session.get(Directory, parent_id)
             if not parent:
                 raise LibraryError("directory_not_found", "目录不存在", 404)
-            allowed_roots = [r for r in roots if beneath(Path(parent.path), Path(r.path))]
-            if not allowed_roots:
+            if not any(beneath(Path(parent.path), Path(root.path)) for root in roots):
                 raise LibraryError("directory_not_found", "目录不在接入范围内", 404)
-            if owner_for_path(parent.path, all_roots, kind) is None or not any(
-                r.available and r.enabled for r in allowed_roots
-            ):
+            owner = owner_for_path(parent.path, all_roots, kind)
+            if not owner or not owner.available:
                 raise LibraryError("root_unavailable", "媒体目录暂不可用")
-            statement = (
-                select(Directory)
-                .where(Directory.path.startswith(parent.path + "/", autoescape=True))
-                .order_by(Directory.path)
+            tail = func.substr(Directory.path, len(parent.path) + 2)
+            statement = select(Directory).where(
+                Directory.path.startswith(parent.path + "/", autoescape=True),
+                func.instr(tail, "/") == 0,
             )
-            return [
-                {
-                    "id": d.id,
-                    "root_id": d.root_id,
-                    "name": d.name,
-                    "path": d.path,
-                    "available": owner_for_path(d.path, all_roots, kind) is not None,
-                }
-                for d in session.scalars(statement)
-                if Path(d.path).parent == Path(parent.path)
-            ]
+            total = session.scalar(select(func.count()).select_from(statement.subquery()))
+            statement = statement.order_by(Directory.path).offset(offset)
+            if limit is not None:
+                statement = statement.limit(limit)
+            items = []
+            for directory in session.scalars(statement):
+                owner = owner_for_path(directory.path, all_roots, kind)
+                items.append(
+                    {
+                        "id": directory.id,
+                        "root_id": owner.id if owner else directory.root_id,
+                        "name": directory.name,
+                        "path": directory.path,
+                        "available": bool(owner and owner.available),
+                    }
+                )
+            return {"items": items, "total": total, "offset": offset, "limit": limit}
 
     def directory(self, *, directory_id=None, path=None, kind="video"):
         with self.db.read() as session:
@@ -179,13 +211,11 @@ class Catalog:
             ]
             if not roots:
                 raise LibraryError("directory_not_found", "目录不在当前接入范围内", 404)
-            available = (
-                any(root.available and root.enabled for root in roots)
-                and owner_for_path(directory.path, roots, kind) is not None
-            )
+            owner = owner_for_path(directory.path, roots, kind)
+            available = bool(owner and owner.available)
             return {
                 "id": directory.id,
-                "root_id": directory.root_id,
+                "root_id": owner.id if owner else directory.root_id,
                 "path": directory.path,
                 "name": directory.name,
                 "available": available,

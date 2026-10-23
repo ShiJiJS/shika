@@ -4,13 +4,14 @@ from sqlalchemy import func, select
 
 from .media_roots import enabled_path
 from .models import Root, Task, Video
+from .packs import Packs
 
 
-def prepared(session):
+def prepared(session, kind="video"):
     roots = [
         root
         for root in session.scalars(select(Root))
-        if root.mount_id and root.enabled and root.kind == "video"
+        if root.mount_id and root.enabled and root.kind == kind
     ]
     return bool(roots) and all(root.last_scan is not None for root in roots)
 
@@ -27,6 +28,22 @@ def library_state(db):
         root_progress = {item["id"]: item for item in result.get("roots", [])}
         return {
             "ready": prepared(session),
+            "media": {
+                "video": {
+                    "ready": prepared(session),
+                    "scanning": running and not task.phase.startswith("pack_"),
+                },
+                "pack": {
+                    "ready": prepared(session, "pack"),
+                    "scanning": running and task.phase.startswith("pack_"),
+                    "counts": result.get("packs", {}),
+                    "indexed": session.scalar(
+                        select(func.count()).select_from(
+                            Packs(db).statement(session).order_by(None).subquery()
+                        )
+                    ),
+                },
+            },
             "scanning": running,
             "task_id": task.id if task else None,
             "status": task.status if task else "idle",

@@ -30,15 +30,19 @@ MIME_TYPES = {
 class DescriptorResponse(FileResponse):
     """Starlette Range handling over an already verified, stable open file."""
 
-    def __init__(self, fd, release, video):
+    def __init__(self, fd, release, video, *, media_type=None, extra_headers=None):
         self.fd, self.release = fd, release
         super().__init__(
             f"/proc/self/fd/{fd}",
             stat_result=os.fstat(fd),
-            media_type=MIME_TYPES.get(video.type, "application/octet-stream"),
+            media_type=media_type or MIME_TYPES.get(video.type, "application/octet-stream"),
             filename=video.name,
             content_disposition_type="inline",
-            headers={"ETag": f'"{video.sha256}"', "Cache-Control": "private, no-cache"},
+            headers={
+                "ETag": f'"{video.sha256}"',
+                "Cache-Control": "private, no-cache",
+                **(extra_headers or {}),
+            },
         )
 
     async def __call__(self, scope, receive, send):

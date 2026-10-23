@@ -1,0 +1,134 @@
+{
+  "scope": "LF2 server pack catalog and authorized image reads; native pack UI and LF3–LF8 remain open",
+  "implementation_revision": "9aff732d245311ceb772794a5d51af2852e750ab",
+  "runtime": {
+    "host": "macOS arm64",
+    "docker": "Linux aarch64, non-root uid 1000, read-only root, /tmp tmpfs, 64 MiB /dev/shm",
+    "source_mount": false,
+    "image_manifest": "sha256:65f7463982cf5a31f25e39211723b6b34fc4e5aa52198c8f99834b6d9ee11cb7",
+    "image_config_digest": "sha256:d9f901becd41dbdf7d7fd0548f70155696ed6f26de78be3834bfed29dc1edd0b"
+  },
+  "server_tests": {
+    "passed": 138,
+    "failed": 0,
+    "seconds": 151.31,
+    "command": "docker run --rm --read-only --network none --shm-size=64m --tmpfs /tmp:mode=1777 video-viewer-server:lf2 pytest -q",
+    "warning": "Existing FastAPI TestClient/httpx deprecation; no test failure"
+  },
+  "schema": {
+    "from": [
+      "0004",
+      "0005"
+    ],
+    "to": "0006",
+    "frozen_0004_all_old_rows_and_columns": "unchanged",
+    "0005_pack_tags_progress_preferences_recent": "unchanged",
+    "new_column": "packs.directory_signature"
+  },
+  "canonical_fixture": {
+    "generator": "video-viewer-lf0-synthetic-v1",
+    "source_revision": "9aff732",
+    "image_id": "sha256:d9f901becd41dbdf7d7fd0548f70155696ed6f26de78be3834bfed29dc1edd0b",
+    "transport": "public HTTP",
+    "packs": 4,
+    "valid_originals_checked": 508,
+    "thumbnails_checked": 508,
+    "invalid_pages": 1,
+    "long_pack_pages": 500,
+    "source_files_unchanged": true,
+    "private_media": false,
+    "first_scan_seconds": 72.501,
+    "cached_scan_seconds": 0.241,
+    "peak_decoder_kib": 284248
+  },
+  "canonical_image_id_kind": "image_id in fixture output is the immutable build config digest; runnable multi-platform manifest is recorded above",
+  "transport_resource_samples": [
+    {
+      "transport": "real authenticated HTTP image",
+      "file_bytes": 50351853,
+      "cancellations": 3,
+      "stream_slots": 1,
+      "rss_before_kib": 90284,
+      "rss_peak_kib": 91016,
+      "fds_before": 13,
+      "fds_after": 15,
+      "range_after_cancel": 206
+    },
+    {
+      "transport": "real HTTP over loopback, non-root Docker",
+      "file_bytes": 134217728,
+      "cancellations": 3,
+      "stream_slots": 1,
+      "rss_before_kib": 89412,
+      "rss_peak_kib": 90028,
+      "fds_before": 13,
+      "fds_after": 15,
+      "range_after_cancel": 206
+    }
+  ],
+  "transport_tests": {
+    "passed": 2,
+    "command": "docker run --rm --read-only --network none --shm-size=64m --tmpfs /tmp:mode=1777 video-viewer-server:lf2 pytest -q -s tests/test_image_transport.py tests/test_stream_transport.py",
+    "scope": "Real loopback HTTP resource baselines, not NAS or phone measurements"
+  },
+  "native_connection": {
+    "passed": 2,
+    "failed": 0,
+    "command": "bash scripts/dev.sh python3 scripts/run-client-connection-test.py",
+    "phases": [
+      "real service login, paging, directories, restart and outage/recovery",
+      "Android process restart: saved encrypted credentials and deep folder retained"
+    ],
+    "host_events_errors": [],
+    "renderer": "macOS host GPU, Vulkan disabled",
+    "service_port": 8761,
+    "ordinary_service_8760_modified": false,
+    "scope": "Existing video compatibility; native pack library/reader not implemented in LF2"
+  },
+  "ruff_check": "passed",
+  "ruff_format": {
+    "status": "9 pre-existing untouched files would be reformatted",
+    "files": [
+      "tests/e2e_server.py",
+      "tests/test_cleanup_and_fast_purge.py",
+      "tests/test_file_operations.py",
+      "tests/test_initial_import.py",
+      "tests/test_logical_trash.py",
+      "tests/test_thumbnail_recovery.py",
+      "video_viewer/backup_reconcile.py",
+      "video_viewer/file_operations.py",
+      "video_viewer/playback.py"
+    ]
+  },
+  "notable_regressions": [
+    "inaccessible or unmapped pack root cannot poison parent video scan",
+    "inode reuse never transfers old tags/progress to unrelated same-path pack",
+    "disabled duplicate disqualifies ambiguous content adoption without acting as identity donor",
+    "hidden cached pages cannot prove current ownership or identity",
+    "directory mutation during probe defers publication",
+    "count/items/version read from one SQLite snapshot",
+    "cold first scan publishes each complete pack while later pack inspection continues"
+  ],
+  "temporary_backup_boundary": "LF1 v1 guard remains until LF7 v2",
+  "public_capabilities": [
+    "typed_roots",
+    "pack_tags",
+    "image_packs"
+  ],
+  "reference_tag": "design-lf-2026-10-23",
+  "reference_modified": false,
+  "private_media": false,
+  "real_nas_modified": false,
+  "apk_released": false,
+  "logs_sha256": {
+    "lf2-server-final-frozen.log": "b4e8ef256dea20f63b428445e2b555feee745d098823975a928a0db234c34550",
+    "lf2-canonical-fixture-final.log": "37d74b85aa11c5b293d0d20c613290d124796d42017272ba5c10bd679b613b8d",
+    "lf2-native-final.log": "bd8ec467f607a225815e0d405cf667cbbf8a429f2c4dc4d15cdfaffe6cebb139",
+    "lf2-transport-frozen.log": "76c815bc175d9fac01b04c844a17a1f9e10e64173f3903603e452e8c9f1deb79"
+  },
+  "delivery": {
+    "commit": "9aff732",
+    "base_pr": 35,
+    "pull_request": null
+  }
+}

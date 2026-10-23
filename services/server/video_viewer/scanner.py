@@ -13,6 +13,7 @@ from .identity import publish_discoveries
 from .media import MediaInspectionError, fingerprint, inspect_media, make_thumbnail
 from .media_roots import enabled_path, owner_for_path
 from .models import Directory, Observation, Root, Setting, Task, Video
+from .pack_scanner import PackScanner
 from .paths import VIDEO_EXTENSIONS, beneath, excluded, open_directory, open_video, signature
 
 
@@ -129,7 +130,7 @@ class Scanner:
                 self.scan_root(
                     task_id,
                     root,
-                    [item for item in roots if item.mount_id],
+                    roots,
                     result,
                     initial_import=initial_import,
                 )
@@ -158,6 +159,7 @@ class Scanner:
                         flag.value = "1"
                     else:
                         session.add(Setting(key="library_round_refresh", value="1"))
+            PackScanner(self).run(task_id, roots, result)
             self.progress(task_id, result, force=True)
             self.change_task(
                 task_id,
@@ -347,6 +349,8 @@ class Scanner:
                 ):
                     continue
                 if child.is_dir(follow_symlinks=False):
+                    if owner_for_path(full, roots) is None:
+                        continue
                     nested = os.open(
                         child.name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd
                     )
