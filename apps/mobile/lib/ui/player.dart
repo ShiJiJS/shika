@@ -313,8 +313,12 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                 (widget.active && !widget.session.contains(_controller!))))) {
       unawaited(_load());
     } else if (!widget.active || widget.suspended) {
-      if (widget.active && widget.suspended && !oldWidget.suspended) {
-        _resumeAfterSuspension = _playRequested;
+      if (widget.active &&
+          widget.suspended &&
+          (!oldWidget.active || !oldWidget.suspended)) {
+        // Picking another item while a queue covers the stage requests play
+        // once it closes; reopening the current item preserves its pause.
+        _resumeAfterSuspension = !oldWidget.active || _playRequested;
       }
       _playRequested = false;
       unawaited(widget.session.silence(_controller));
@@ -404,6 +408,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
     final generation = ++_generation;
     _loading = true;
     _playRequested = autoplay && widget.active && !widget.suspended;
+    _resumeAfterSuspension = autoplay && widget.active && widget.suspended;
     final old = _controller;
     _controller = null;
     _error = null;

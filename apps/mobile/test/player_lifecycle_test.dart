@@ -74,6 +74,93 @@ Future<void> frames(WidgetTester tester) async {
 }
 
 void main() {
+  for (final preload in [false, true]) {
+    testWidgets(
+      'queue selection starts a new video after suspension, preserving current pause; preload=$preload',
+      (t) async {
+        final original = VideoPlayerPlatform.instance;
+        final platform = ReadyVideo();
+        VideoPlayerPlatform.instance = platform;
+        final session = PlaybackSession();
+        addTearDown(() {
+          unawaited(session.close());
+          VideoPlayerPlatform.instance = original;
+        });
+        final videos = [
+          for (final id in ['first', 'second'])
+            LibraryVideo(
+              id: id,
+              path: '/fixture/$id.mp4',
+              rootId: 'fixture',
+              portrait: false,
+              source: MediaSource(
+                'https://fixture.invalid/$id.mp4',
+                asset: false,
+              ),
+              poster: '',
+            ),
+        ];
+        Future<void> show(int index, {bool suspended = false}) async {
+          await t.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: MovieStage(
+                  videos: videos,
+                  index: index,
+                  suspended: suspended,
+                  session: session,
+                  inlineControls: true,
+                  preloadAdjacent: preload,
+                  onStep: (_) async => false,
+                ),
+              ),
+            ),
+          );
+          await frames(t);
+        }
+
+        await show(0);
+        final first = session.debugPlayers.singleWhere(
+          (p) => p.dataSource.endsWith('/first.mp4'),
+        );
+        expect(first.value.isPlaying, isTrue);
+        await show(0, suspended: true);
+        expect(first.value.isPlaying, isFalse);
+        await show(0);
+        expect(first.value.isPlaying, isTrue);
+        await t.tap(
+          find.byKey(const Key('video-gesture-surface')).hitTestable(),
+        );
+        await frames(t);
+        expect(first.value.isPlaying, isFalse);
+        await show(0, suspended: true);
+        await show(0);
+        expect(first.value.isPlaying, isFalse);
+        await show(0, suspended: true);
+        await show(1, suspended: true);
+        expect(session.debugPlayers.every((p) => !p.value.isPlaying), isTrue);
+        await show(1);
+        expect(
+          session.debugPlayers
+              .singleWhere((p) => p.dataSource.endsWith('/second.mp4'))
+              .value
+              .isPlaying,
+          isTrue,
+        );
+        expect(
+          session.debugPlayers.where((p) => p.value.isPlaying),
+          hasLength(1),
+        );
+        await t.pumpWidget(const SizedBox());
+        await frames(t);
+        final closed = session.close();
+        await frames(t);
+        await closed;
+        expect(platform.events, isEmpty);
+        expect(t.takeException(), isNull);
+      },
+    );
+  }
   for (final playing in [true, false]) {
     testWidgets(
       'fullscreen keeps play intent=$playing across rotation focus changes; real background still pauses',
