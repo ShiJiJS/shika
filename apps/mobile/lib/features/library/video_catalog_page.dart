@@ -352,7 +352,8 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                 ),
               ),
             ),
-          if (busy) const LinearProgressIndicator(minHeight: 2),
+          if (busy || (data.loading && data.items.isNotEmpty))
+            const LinearProgressIndicator(minHeight: 2),
           if (error.isNotEmpty)
             Row(
               children: [
@@ -370,6 +371,30 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                   '关闭错误提示',
                   Icons.close,
                   () => setState(() => error = ''),
+                ),
+              ],
+            ),
+          if (data.error.isNotEmpty && data.items.isNotEmpty)
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Text(
+                      '当前列表已保留：${data.error}',
+                      style: TextStyle(color: p.danger, fontSize: 12),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  key: const Key('library-return-retry'),
+                  onPressed: () => pendingReturn != null
+                      ? load()
+                      : load(
+                          more: !data.beforeFailure,
+                          before: data.beforeFailure,
+                        ),
+                  child: const Text('重试'),
                 ),
               ],
             ),
@@ -494,35 +519,6 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                           ],
                         ),
                       ),
-                      if (data.error.isNotEmpty)
-                        SliverToBoxAdapter(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Text(
-                                    '当前列表已保留：${data.error}',
-                                    style: TextStyle(
-                                      color: p.danger,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                key: const Key('library-return-retry'),
-                                onPressed: () => pendingReturn != null
-                                    ? load()
-                                    : load(
-                                        more: !data.beforeFailure,
-                                        before: data.beforeFailure,
-                                      ),
-                                child: const Text('重试'),
-                              ),
-                            ],
-                          ),
-                        ),
                       if (data.items.isEmpty && !data.loading)
                         SliverFillRemaining(
                           hasScrollBody: false,

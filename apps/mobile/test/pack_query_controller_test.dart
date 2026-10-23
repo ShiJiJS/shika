@@ -89,6 +89,7 @@ void main() {
     expect(controller.state.items, hasLength(24));
     expect(controller.state.loading, isFalse);
     expect(controller.state.error, contains('离线'));
+    expect(controller.state.retryMore, isTrue);
     final retry = controller.load(context, more: true);
     expect(repo.reads.last.offset, 24);
     repo.reads.last.result.complete(page(24, 24));
@@ -103,6 +104,24 @@ void main() {
     expect(repo.reads, hasLength(4));
     expect(repo.playbackIdentity, videoIdentity);
     expect(repo.snapshot.recentVideos, isEmpty);
+  });
+
+  test('a failed refresh keeps its refresh intent instead of appending another page on retry', () async {
+    final context = PackBrowseContext();
+    final first = controller.load(context);
+    repo.reads.last.result.complete(page(0, 24));
+    await first;
+    final refresh = controller.load(context);
+    repo.reads.last.result.completeError(const LibraryFailure('暂时离线'));
+    await refresh;
+    expect(controller.state.items, hasLength(24));
+    expect(controller.state.retryMore, isFalse);
+    final retry = controller.load(context, more: controller.state.retryMore);
+    expect(repo.reads.last.offset, 0);
+    repo.reads.last.result.complete(page(0, 24));
+    await retry;
+    expect(controller.state.items, hasLength(24));
+    expect(controller.state.error, isEmpty);
   });
 
   test('new pack query wins over late results; source and filters belong to its own context', () async {

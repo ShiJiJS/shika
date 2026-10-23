@@ -12,11 +12,12 @@ class PackLibraryState {
     this.offset = 0,
     this.loading = false,
     this.error = '',
+    this.retryMore = false,
   }) : items = List.unmodifiable(items);
   final PackBrowseContext context;
   final List<LibraryPack> items;
   final int total, offset;
-  final bool loading;
+  final bool loading, retryMore;
   final String error;
   bool get hasMore => offset + items.length < total;
 }
@@ -97,6 +98,7 @@ class PackQueryController extends ChangeNotifier {
           items: append ? [...previous, ...page.items] : page.items,
           total: page.total,
           offset: append ? _state.offset : page.offset,
+          retryMore: append && page.items.isEmpty,
           error: append && page.items.isEmpty && offset < page.total
               ? '图包列表已变化，请刷新后继续'
               : '',
@@ -122,6 +124,7 @@ class PackQueryController extends ChangeNotifier {
             total: _state.total,
             offset: _state.offset,
             error: failure.toString(),
+            retryMore: append,
           ),
         );
       }
@@ -138,6 +141,7 @@ class PackQueryController extends ChangeNotifier {
         total: _state.total,
         offset: _state.offset,
         error: _state.error,
+        retryMore: _state.retryMore,
       ),
     );
   }

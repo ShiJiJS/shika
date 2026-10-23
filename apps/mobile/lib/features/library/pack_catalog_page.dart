@@ -317,6 +317,21 @@ class PackCatalogPageState extends State<PackCatalogPage> {
               ),
             ),
           if (error.isNotEmpty) note(error),
+          if (data.loading && data.items.isNotEmpty)
+            const LinearProgressIndicator(minHeight: 2),
+          if (data.error.isNotEmpty && data.items.isNotEmpty)
+            Row(
+              children: [
+                Expanded(child: note('当前列表已保留：${data.error}')),
+                TextButton(
+                  key: const Key('pack-list-retry'),
+                  onPressed: data.loading
+                      ? null
+                      : () => load(more: data.retryMore),
+                  child: const Text('重试'),
+                ),
+              ],
+            ),
           Expanded(
             child: data.loading && data.items.isEmpty
                 ? const Center(child: CircularProgressIndicator())
@@ -420,18 +435,6 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                           ],
                         ),
                       ),
-                      if (data.error.isNotEmpty)
-                        SliverToBoxAdapter(
-                          child: Row(
-                            children: [
-                              Expanded(child: note('当前列表已保留：${data.error}')),
-                              TextButton(
-                                onPressed: () => load(more: true),
-                                child: const Text('重试'),
-                              ),
-                            ],
-                          ),
-                        ),
                       if (data.items.isEmpty)
                         const SliverFillRemaining(
                           hasScrollBody: false,
