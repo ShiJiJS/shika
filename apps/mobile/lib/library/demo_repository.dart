@@ -84,7 +84,13 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
   bool _matches(LibraryVideo v, VideoQuery q, [LibrarySnapshot? state]) {
     final s = state ?? _state;
     return v.status == VideoStatus.available &&
-        s.roots.any((r) => r.id == v.rootId && r.available) &&
+        s.roots.any(
+          (r) =>
+              r.id == v.rootId &&
+              r.available &&
+              r.enabled &&
+              r.kind == MediaKind.video,
+        ) &&
         (q.folder.isEmpty || under(v.path, q.folder)) &&
         v.tags.containsAll(q.tags) &&
         (q.orientation.isEmpty ||
@@ -122,7 +128,14 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
   List<FolderEntry> folders(String parent) {
     if (parent.isEmpty) {
       return _state.roots
-          .map((r) => FolderEntry(r.name, r.path, available: r.available))
+          .where((r) => r.kind == MediaKind.video)
+          .map(
+            (r) => FolderEntry(
+              r.name,
+              r.path,
+              available: r.available && r.enabled,
+            ),
+          )
           .toList();
     }
     if (!_state.roots.any((r) => under(parent, r.path))) {
@@ -225,6 +238,8 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
               r.name,
               r.path,
               available: r.id != 'r2',
+              kind: r.kind,
+              enabled: r.enabled,
               lastScan: r.lastScan,
             ),
           ),
@@ -261,7 +276,13 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
   @override
   Future<void> setScope(VideoQuery scope, {PlayOrder? order}) => _commit((s) {
     if (scope.folder.isNotEmpty &&
-        !s.roots.any((r) => r.available && under(scope.folder, r.path))) {
+        !s.roots.any(
+          (r) =>
+              r.available &&
+              r.enabled &&
+              r.kind == MediaKind.video &&
+              under(scope.folder, r.path),
+        )) {
       throw const LibraryFailure('所选目录暂时无法访问');
     }
     return _round(s.copy(query: scope, order: order));
@@ -452,6 +473,8 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
         root.name,
         root.path,
         available: root.available,
+        kind: root.kind,
+        enabled: root.enabled,
         lastScan: root.lastScan,
       );
     }
@@ -469,6 +492,11 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
       throw const LibraryFailure('这个目录与已有媒体目录重叠');
     }
     final old = s.roots.where((r) => r.id == root.id).firstOrNull;
+    if (old != null &&
+        old.kind != root.kind &&
+        s.videos.any((v) => v.rootId == old.id)) {
+      throw const LibraryFailure('已有内容的目录不能直接更改媒体类型');
+    }
     final pathChanged = old != null && old.path != root.path;
     return _reconcile(
       s.copy(
@@ -494,7 +522,14 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
       }
       return s.copy(
         roots: s.roots.map(
-          (r) => MediaRoot(r.id, r.name, r.path, lastScan: '刚刚'),
+          (r) => MediaRoot(
+            r.id,
+            r.name,
+            r.path,
+            kind: r.kind,
+            enabled: r.enabled,
+            lastScan: '刚刚',
+          ),
         ),
       );
     }
@@ -538,7 +573,14 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
     }
     return s.copy(
       roots: s.roots.map(
-        (r) => MediaRoot(r.id, r.name, r.path, lastScan: '刚刚'),
+        (r) => MediaRoot(
+          r.id,
+          r.name,
+          r.path,
+          kind: r.kind,
+          enabled: r.enabled,
+          lastScan: '刚刚',
+        ),
       ),
       videos: s.videos.any((v) => v.id == 'v9')
           ? s.videos
@@ -590,6 +632,8 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
               r.name,
               rootMappings[r.id] ?? r.path,
               available: r.available,
+              kind: r.kind,
+              enabled: r.enabled,
               lastScan: r.lastScan,
             ),
           )

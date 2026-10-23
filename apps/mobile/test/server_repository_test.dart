@@ -18,6 +18,10 @@ void main() {
   var rootUnavailable = false, scanFailed = false, renamedDirectory = false;
   Map<String, dynamic> preparation = {};
   final rootWrites = <String>[];
+  final rootBodies = <Map<String, dynamic>>[];
+  List<String>? capabilities;
+  var typedRoot = false, delayRoot = false;
+  late Completer<void> delayedRootStarted, releaseRoot;
   final submittedRounds = <Map<String, dynamic>>[];
   Map<String, dynamic> scope = {'tag_ids': <String>[]};
   Map<String, dynamic> emptyRound() => {
@@ -55,6 +59,12 @@ void main() {
     scanFailed = false;
     renamedDirectory = false;
     rootWrites.clear();
+    rootBodies.clear();
+    capabilities = null;
+    typedRoot = false;
+    delayRoot = false;
+    delayedRootStarted = Completer<void>();
+    releaseRoot = Completer<void>();
     preparation = {'ready': true, 'scanning': false, 'status': 'idle'};
     server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
     server.listen((request) async {
@@ -62,13 +72,28 @@ void main() {
       final query = request.uri.queryParameters;
       Object response;
       if (path == '/api/v1/info') {
-        response = {'api_version': 1, 'server_id': 'fixture'};
+        response = {
+          'api_version': 1,
+          'server_id': 'fixture',
+          'capabilities': ?capabilities,
+        };
       } else if (path == '/api/v1/library-state') {
         response = preparation;
       } else if (path == '/api/v1/roots') {
+        if (delayRoot) {
+          delayRoot = false;
+          delayedRootStarted.complete();
+          await releaseRoot.future;
+        }
         if (request.method != 'GET') {
           rootWrites.add(request.method);
-          await request.drain<void>();
+          rootBodies.add(
+            Map<String, dynamic>.from(
+              jsonDecode(
+                utf8.decode(await request.expand((chunk) => chunk).toList()),
+              ) as Map,
+            ),
+          );
         }
         response = {
           'items': [
@@ -78,6 +103,8 @@ void main() {
               'path': '/media',
               'directory_id': 'directory',
               'available': !rootUnavailable,
+              if (typedRoot) 'kind': 'pack',
+              if (typedRoot) 'enabled': false,
               'error': null,
               'last_scan': null,
             },
@@ -210,6 +237,73 @@ void main() {
     repo.dispose();
     await server.close(force: true);
   });
+
+  test('late old connection cannot publish stale capabilities', () async {
+    capabilities = ['typed_roots', 'pack_tags'];
+    delayRoot = true;
+    final old = repo.initialize();
+    final rejected = expectLater(old, throwsA(isA<RequestCancelled>()));
+    await delayedRootStarted.future;
+    capabilities = null;
+    await repo.initialize();
+    releaseRoot.complete();
+    await rejected;
+    expect(repo.snapshot.connected, isTrue);
+    expect(repo.capabilities.typedRoots, isFalse);
+  });
+
+  test('legacy capabilities keep video writes compatible and reject new root features', () async {
+    await repo.initialize();
+    expect(repo.capabilities.typedRoots, isFalse);
+    expect(repo.capabilities.imagePacks, isFalse);
+    expect(repo.snapshot.roots.single.kind, MediaKind.video);
+    expect(repo.snapshot.roots.single.enabled, isTrue);
+    await repo.saveRoot(const MediaRoot('', '视频', '/media/new'));
+    expect(rootBodies.single, {'name': '视频', 'path': '/media/new'});
+    await expectLater(
+      repo.saveRoot(
+        const MediaRoot('', '图包', '/media/packs', kind: MediaKind.pack),
+      ),
+      throwsA(isA<LibraryFailure>()),
+    );
+    await expectLater(
+      repo.saveRoot(const MediaRoot('', '停用', '/media/off', enabled: false)),
+      throwsA(isA<LibraryFailure>()),
+    );
+    expect(rootBodies, hasLength(1));
+  });
+
+  test(
+    'typed capability publishes root flags and expires with connection',
+    () async {
+      capabilities = ['typed_roots', 'pack_tags', 'future_unknown'];
+      typedRoot = true;
+      await repo.initialize();
+      expect(repo.capabilities.typedRoots, isTrue);
+      expect(repo.capabilities.packTags, isTrue);
+      expect(repo.capabilities.imagePacks, isFalse);
+      expect(repo.snapshot.roots.single.kind, MediaKind.pack);
+      expect(repo.snapshot.roots.single.enabled, isFalse);
+      expect(repo.folders(''), isEmpty);
+      await repo.saveRoot(
+        const MediaRoot(
+          '',
+          '图包',
+          '/media/packs',
+          kind: MediaKind.pack,
+          enabled: false,
+        ),
+      );
+      expect(rootBodies.single, {
+        'name': '图包',
+        'path': '/media/packs',
+        'kind': 'pack',
+        'enabled': false,
+      });
+      await repo.expire();
+      expect(repo.capabilities.typedRoots, isFalse);
+    },
+  );
 
   test('initial preparation stays locked and live progress does not reload catalog pages', () async {
     expect(repo.libraryPreparation.value.ready, isFalse);

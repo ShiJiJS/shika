@@ -11,23 +11,53 @@ from sqlalchemy import JSON, Boolean, Float, Integer, String, create_engine, sel
 from sqlalchemy.exc import IntegrityError, StatementError
 
 from .errors import LibraryError
-from .models import Base, Setting
+from .models import Base, Root, Setting
 
 FORMAT = "video-viewer-management"
 VERSION = 1
 SCHEMA = "0004"
 CONTROL_PREFIX = "backup_"
 SETTING_KEYS = {"active_round", "last_delete_operation"}
-TABLES = [
-    table
-    for table in Base.metadata.sorted_tables
-    if table.name
-    not in {
-        "settings",
-        "access_tokens",
-        "observations",
-    }
-]
+# v1 remains the exact video-only logical schema until LF7 adds v2.
+LEGACY_TABLES = {
+    "roots",
+    "directories",
+    "videos",
+    "tasks",
+    "playback_rounds",
+    "round_entries",
+    "tags",
+    "video_tags",
+    "request_records",
+    "file_operations",
+    "file_steps",
+    "trash_items",
+}
+TABLES = [table for table in Base.metadata.sorted_tables if table.name in LEGACY_TABLES]
+
+
+def backup_columns(table):
+    return [
+        column
+        for column in table.c
+        if table.name != "roots" or column.name not in {"kind", "enabled"}
+    ]
+
+
+def require_legacy_backup(session):
+    """Never report a successful v1 export/restore that would omit new data."""
+    typed_root = session.scalar(
+        select(Root.id).where((Root.kind != "video") | Root.enabled.is_(False)).limit(1)
+    )
+    new_data = any(
+        session.scalar(select(table.c[next(iter(table.c.keys()))]).limit(1)) is not None
+        for table in Base.metadata.sorted_tables
+        if table.name not in LEGACY_TABLES | {"settings", "access_tokens", "observations"}
+    )
+    if typed_root or new_data:
+        raise LibraryError("backup_upgrade_required", "当前管理数据需要图包备份 v2 支持", 409)
+
+
 TABLE_MAP = {table.name: table for table in TABLES}
 
 
@@ -46,9 +76,10 @@ def snapshot(db, settings):
     # Keep one short, serialized logical read across tables; disk serialization
     # happens afterwards. Do not materialize ORM relationships or media bytes.
     with db.write_lock, db.read() as session:
+        require_legacy_backup(session)
         tables = {}
         for table in TABLES:
-            statement = select(table)
+            statement = select(*backup_columns(table))
             if table.name == "tasks":
                 statement = statement.where(~table.c.kind.startswith(CONTROL_PREFIX))
             if table.name == "request_records":
@@ -166,7 +197,9 @@ def validate_payload(payload):
         if not isinstance(rows, list) or len(rows) > 250_000:
             invalid("备份记录数量超出支持范围")
         for row in rows:
-            if not isinstance(row, dict) or set(row) != set(table.c.keys()):
+            if not isinstance(row, dict) or set(row) != {
+                column.name for column in backup_columns(table)
+            }:
                 invalid()
             if name not in {"roots", "request_records", "video_tags", "round_entries"}:
                 try:
@@ -174,7 +207,7 @@ def validate_payload(payload):
                         invalid()
                 except (ValueError, TypeError, AttributeError):
                     invalid()
-            for column in table.c:
+            for column in backup_columns(table):
                 value = row[column.name]
                 if value is None:
                     if not column.nullable:

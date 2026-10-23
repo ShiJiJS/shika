@@ -3,7 +3,8 @@ from pathlib import Path
 from sqlalchemy import func, or_, select
 
 from .errors import LibraryError
-from .models import Directory, Root, Setting, Video, VideoTag, uid
+from .media_roots import enabled_path, owner_for_path
+from .models import Directory, ImagePack, Root, Setting, Video, VideoTag, uid
 from .paths import beneath, excluded, validate_path
 
 
@@ -56,12 +57,14 @@ class Catalog:
             "name": root.name,
             "path": root.path,
             "directory_id": directory.id,
+            "kind": root.kind,
+            "enabled": root.enabled,
             "available": root.available,
             "error": root.error,
             "last_scan": root.last_scan,
         }
 
-    def save_root(self, name, path, root_id=None):
+    def save_root(self, name, path, root_id=None, *, kind=None, enabled=None):
         candidate, mount = validate_path(path, self.settings.mounts)
         if excluded(candidate, self.settings.data_dir):
             raise LibraryError("reserved_directory", "该目录保留给回收站或管理数据", 422)
@@ -76,8 +79,21 @@ class Catalog:
             occupied = session.scalar(select(Root).where(Root.path == str(candidate)))
             if occupied and root and occupied.id != root.id:
                 raise LibraryError("root_conflict", "该媒体目录已接入")
+            if root and kind is not None and root.kind != kind:
+                if session.scalar(
+                    select(Video.id).where(Video.root_id == root.id).limit(1)
+                ) or session.scalar(
+                    select(ImagePack.id).where(ImagePack.root_id == root.id).limit(1)
+                ):
+                    raise LibraryError(
+                        "root_kind_conflict",
+                        "已有内容的目录不能直接更改媒体类型，请新建接入目录",
+                        409,
+                    )
             if root and root.path != str(candidate):
-                other_roots = list(session.scalars(select(Root).where(Root.id != root.id)))
+                other_roots = list(
+                    session.scalars(select(Root).where(Root.id != root.id, Root.kind == "video"))
+                )
                 for video in session.scalars(select(Video).where(Video.root_id == root.id)):
                     if not beneath(Path(video.path), candidate):
                         replacement = next(
@@ -88,6 +104,9 @@ class Catalog:
                             video.root_id = replacement.id
                         elif video.status == "available":
                             video.status, video.location_key = "missing", None
+                for pack in session.scalars(select(ImagePack).where(ImagePack.root_id == root.id)):
+                    if not beneath(Path(pack.path), candidate) and pack.status == "available":
+                        pack.status = "missing"
                 root.path, root.available, root.last_scan = str(candidate), False, None
             if not root:
                 root = Root(name=name, path=str(candidate), mount_id=mount.id)
@@ -96,18 +115,22 @@ class Catalog:
                 session.add(root)
                 session.flush()
             root.name, root.mount_id = name, mount.id
+            root.kind = kind if kind is not None else root.kind
+            root.enabled = enabled if enabled is not None else root.enabled
             self.ensure_directory(session, candidate, root.id)
             return self.root_json(session, root)
 
-    def directories(self, parent_id=None):
+    def directories(self, parent_id=None, kind="video"):
         with self.db.read() as session:
-            roots = list(session.scalars(select(Root)))
+            all_roots = list(session.scalars(select(Root)))
+            roots = [root for root in all_roots if root.kind == kind]
             if not parent_id:
                 return [
                     {
                         **self.root_json(session, r),
                         "id": self.root_json(session, r)["directory_id"],
                         "root_id": r.id,
+                        "available": r.available and r.enabled,
                     }
                     for r in roots
                 ]
@@ -117,7 +140,9 @@ class Catalog:
             allowed_roots = [r for r in roots if beneath(Path(parent.path), Path(r.path))]
             if not allowed_roots:
                 raise LibraryError("directory_not_found", "目录不在接入范围内", 404)
-            if not any(r.available for r in allowed_roots):
+            if owner_for_path(parent.path, all_roots, kind) is None or not any(
+                r.available and r.enabled for r in allowed_roots
+            ):
                 raise LibraryError("root_unavailable", "媒体目录暂不可用")
             statement = (
                 select(Directory)
@@ -130,13 +155,13 @@ class Catalog:
                     "root_id": d.root_id,
                     "name": d.name,
                     "path": d.path,
-                    "available": True,
+                    "available": owner_for_path(d.path, all_roots, kind) is not None,
                 }
                 for d in session.scalars(statement)
                 if Path(d.path).parent == Path(parent.path)
             ]
 
-    def directory(self, *, directory_id=None, path=None):
+    def directory(self, *, directory_id=None, path=None, kind="video"):
         with self.db.read() as session:
             if path is not None:
                 validate_path(path, self.settings.mounts)
@@ -154,7 +179,10 @@ class Catalog:
             ]
             if not roots:
                 raise LibraryError("directory_not_found", "目录不在当前接入范围内", 404)
-            available = any(root.available for root in roots)
+            available = (
+                any(root.available and root.enabled for root in roots)
+                and owner_for_path(directory.path, roots, kind) is not None
+            )
             return {
                 "id": directory.id,
                 "root_id": directory.root_id,
@@ -180,7 +208,13 @@ class Catalog:
     ):
         statement = select(Video).join(Root).where(Video.status == status)
         if status == "available":
-            statement = statement.where(Root.available.is_(True), Video.error.is_(None))
+            statement = statement.where(
+                Root.available.is_(True),
+                Root.enabled.is_(True),
+                Root.kind == "video",
+                Video.error.is_(None),
+                enabled_path(session, Video.path),
+            )
         if directory_id:
             directory = session.get(Directory, directory_id)
             if not directory:

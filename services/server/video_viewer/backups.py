@@ -10,7 +10,15 @@ from concurrent.futures import ThreadPoolExecutor
 
 from sqlalchemy import delete, select
 
-from .backup_format import SETTING_KEYS, TABLES, canonical, decode, snapshot, validate_relations
+from .backup_format import (
+    SETTING_KEYS,
+    TABLES,
+    canonical,
+    decode,
+    require_legacy_backup,
+    snapshot,
+    validate_relations,
+)
 from .backup_reconcile import mappings_for, recommended_mapping, reconcile
 from .errors import LibraryError
 from .file_state import reserved_steps
@@ -140,6 +148,8 @@ class Backups:
         with self.db.write() as session:
 
             def action():
+                if kind == "backup_export":
+                    require_legacy_backup(session)
                 task = Task(kind=kind, status="queued", result={"raw_sha256": fingerprint})
                 session.add(task)
                 session.flush()
@@ -230,6 +240,7 @@ class Backups:
         mappings_for(document["payload"], mapping, self.settings)
         try:
             with self.db.write() as session:
+                require_legacy_backup(session)
                 busy = session.scalar(
                     select(Task.id)
                     .where(

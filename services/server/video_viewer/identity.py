@@ -7,6 +7,7 @@ from sqlalchemy import func, select
 
 from .errors import LibraryError
 from .file_state import reserved_video_ids, set_video_signature, video_signature
+from .media_roots import enabled_path
 from .models import Root, TrashItem, Video
 from .paths import open_video, signature
 
@@ -81,6 +82,8 @@ def publish_discoveries(db, settings, task_id, completed_roots, result, check_st
                 .where(
                     Video.status == "missing",
                     Root.available.is_(True),
+                    Root.enabled.is_(True),
+                    enabled_path(session, Video.path),
                     Video.size == fresh.size,
                     Video.quick_hash == fresh.quick_hash,
                     Video.sha256 == fresh.sha256,

@@ -1,0 +1,51 @@
+{
+  "scope": "LF1 typed media model and compatibility; LF2–LF8 remain open",
+  "schema": {
+    "from": "0004",
+    "to": "0005",
+    "frozen_old_tables_and_columns": "all rows unchanged",
+    "snapshot_failure_restore": "passed",
+    "interrupted_migration_restart": "passed",
+    "static_new_schema_matches_orm": "passed; legacy trash_active_video omission excluded"
+  },
+  "server_tests": {
+    "passed": 107,
+    "failed": 0,
+    "command": "docker run --rm --read-only --shm-size=64m --tmpfs /tmp:mode=1777 -v \"$PWD/services/server:/app:ro\" video-viewer-server:e2e python -m pytest -q"
+  },
+  "client_tests": {
+    "passed": 78,
+    "failed": 0,
+    "command": "cd apps/mobile && bash ../../scripts/dev.sh flutter test"
+  },
+  "client_analyze": "passed",
+  "ruff_check": "passed",
+  "ruff_format": {
+    "status": "10 pre-existing untouched files still fail",
+    "files": [
+      "tests/e2e_server.py",
+      "tests/test_cleanup_and_fast_purge.py",
+      "tests/test_file_operations.py",
+      "tests/test_initial_import.py",
+      "tests/test_logical_trash.py",
+      "tests/test_stream_transport.py",
+      "tests/test_thumbnail_recovery.py",
+      "video_viewer/backup_reconcile.py",
+      "video_viewer/file_operations.py",
+      "video_viewer/playback.py"
+    ]
+  },
+  "native_connection": {
+    "status": "pending retry: emulator QEMU GPU threads hung; no passing claim",
+    "logs_local": ".dev/logs/lf1-android-connection*.log"
+  },
+  "temporary_backup_boundary": "video-only v1 exact schema projection; typed state rejects export/restore with backup_upgrade_required until LF7 v2",
+  "public_capabilities": [
+    "typed_roots",
+    "pack_tags"
+  ],
+  "reference_tag": "design-lf-2026-10-23",
+  "reference_modified": false,
+  "real_nas_modified": false,
+  "apk_released": false
+}

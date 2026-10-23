@@ -2047,6 +2047,8 @@ class _LibraryHomeState extends State<LibraryHome> {
                             root?.id ?? '',
                             name.text.trim(),
                             path.text.trim().replaceAll(RegExp(r'/+$'), ''),
+                            kind: root?.kind ?? MediaKind.video,
+                            enabled: root?.enabled ?? true,
                           ),
                         );
                         if (context.mounted) Navigator.pop(context);

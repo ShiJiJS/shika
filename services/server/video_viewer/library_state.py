@@ -2,11 +2,16 @@
 
 from sqlalchemy import func, select
 
+from .media_roots import enabled_path
 from .models import Root, Task, Video
 
 
 def prepared(session):
-    roots = [root for root in session.scalars(select(Root)) if root.mount_id]
+    roots = [
+        root
+        for root in session.scalars(select(Root))
+        if root.mount_id and root.enabled and root.kind == "video"
+    ]
     return bool(roots) and all(root.last_scan is not None for root in roots)
 
 
@@ -35,12 +40,16 @@ def library_state(db):
             "failure_reasons": result.get("failure_reasons", {}),
             "warning_reasons": result.get("warning_reasons", {}),
             "indexed": session.scalar(
-                select(func.count()).select_from(Video).where(Video.status == "available")
+                select(func.count())
+                .select_from(Video)
+                .where(Video.status == "available", enabled_path(session, Video.path))
             ),
             "roots": [
                 {
                     "id": root.id,
                     "ready": root.last_scan is not None and bool(root.mount_id),
+                    "kind": root.kind,
+                    "enabled": root.enabled,
                     "available": root.available,
                     "last_scan": root.last_scan,
                     "error": root.error,

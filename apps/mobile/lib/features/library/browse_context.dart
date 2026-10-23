@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import '../../library/models.dart';
 
-enum MediaKind { video, pack }
+export '../../library/models.dart' show MediaKind;
 
 enum BrowseSource { library, tags, recent }
 
@@ -43,6 +43,33 @@ class VideoBrowseContext {
   }) => VideoBrowseContext(
     query: query ?? this.query,
     search: search ?? this.search,
+    source: source ?? this.source,
+    scrollOffset: scrollOffset ?? this.scrollOffset,
+    scrollAnchor: scrollAnchor ?? this.scrollAnchor,
+  );
+}
+
+/// A pack entry page keeps its own filters and return position.
+class PackBrowseContext {
+  PackBrowseContext({
+    PackQuery? query,
+    this.source = BrowseSource.library,
+    this.scrollOffset = 0,
+    this.scrollAnchor,
+  }) : query = query ?? PackQuery();
+  final PackQuery query;
+  final BrowseSource source;
+  final double scrollOffset;
+  final String? scrollAnchor;
+  MediaKind get kind => MediaKind.pack;
+  String get queryKey => jsonEncode([source.name, query.toJson()]);
+  PackBrowseContext copyWith({
+    PackQuery? query,
+    BrowseSource? source,
+    double? scrollOffset,
+    String? scrollAnchor,
+  }) => PackBrowseContext(
+    query: query ?? this.query,
     source: source ?? this.source,
     scrollOffset: scrollOffset ?? this.scrollOffset,
     scrollAnchor: scrollAnchor ?? this.scrollAnchor,

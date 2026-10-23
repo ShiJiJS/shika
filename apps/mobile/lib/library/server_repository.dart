@@ -43,6 +43,9 @@ class ServerLibraryRepository extends LibraryRepository {
   final CredentialStore credentials;
   final FileCommandStore fileCommands;
   final BackupWorkStore backupWork;
+  ServiceCapabilities _capabilities = const ServiceCapabilities.legacy();
+  @override
+  ServiceCapabilities get capabilities => _capabilities;
   ServerBackups? _backups;
   @override
   bool get backupRestorePending => _backups?.restorePending ?? false;
@@ -234,6 +237,7 @@ class ServerLibraryRepository extends LibraryRepository {
     libraryPreparation.value = const LibraryPreparation(ready: false);
     _api?.close();
     _api = null;
+    _capabilities = const ServiceCapabilities.legacy();
     _backups?.dispose();
     _backups = null;
     backupStatus.value = null;
@@ -332,7 +336,12 @@ class ServerLibraryRepository extends LibraryRepository {
         await writeCredentials(credentials.clear, generation: generation);
         throw const LibraryFailure('服务实例或版本已变化，请重新连接');
       }
-      await synchronize(candidate, generation, allowConnection: true);
+      await synchronize(
+        candidate,
+        generation,
+        allowConnection: true,
+        capabilities: ServiceCapabilities.fromInfo(info),
+      );
       await activateFileCommands(saved);
       await activateBackupWork(saved);
     } on ApiFailure catch (error) {
@@ -381,6 +390,7 @@ class ServerLibraryRepository extends LibraryRepository {
           generation: generation,
         ),
         allowConnection: true,
+        capabilities: ServiceCapabilities.fromInfo(info),
       );
       await activateFileCommands(session);
       await activateBackupWork(session);
@@ -448,6 +458,7 @@ class ServerLibraryRepository extends LibraryRepository {
     int generation, {
     Future<void> Function()? beforePublish,
     bool allowConnection = false,
+    ServiceCapabilities? capabilities,
   }) async {
     final scopeGeneration = _scopeGeneration;
     final response = await Future.wait([
@@ -473,6 +484,8 @@ class ServerLibraryRepository extends LibraryRepository {
         root['name'],
         root['path'],
         available: root['available'],
+        kind: root['kind'] == 'pack' ? MediaKind.pack : MediaKind.video,
+        enabled: root['enabled'] as bool? ?? true,
         directoryId: root['directory_id'],
         error: root['error'],
         lastScan: date == null
@@ -533,6 +546,7 @@ class ServerLibraryRepository extends LibraryRepository {
       _session = requestId();
     }
     _api = target;
+    if (capabilities != null) _capabilities = capabilities;
     if (_round != null && _round!['id'] != round['id']) {
       ++_scopeGeneration;
       cancelVideoRead();
@@ -555,7 +569,7 @@ class ServerLibraryRepository extends LibraryRepository {
         root.name,
         root.path,
         id: root.directoryId,
-        available: root.available,
+        available: root.available && root.enabled,
       );
     }
     if (selectedDirectory != null) {
@@ -781,12 +795,13 @@ class ServerLibraryRepository extends LibraryRepository {
   @override
   List<FolderEntry> folders(String parent) => parent.isEmpty
       ? _state.roots
+            .where((root) => root.kind == MediaKind.video)
             .map(
               (root) => FolderEntry(
                 root.name,
                 root.path,
                 id: root.directoryId,
-                available: root.available,
+                available: root.available && root.enabled,
               ),
             )
             .toList()
@@ -1501,10 +1516,19 @@ class ServerLibraryRepository extends LibraryRepository {
   @override
   Future<void> saveRoot(MediaRoot root) async {
     ensureNotRestoring();
+    if (!capabilities.typedRoots &&
+        (root.kind != MediaKind.video || !root.enabled)) {
+      throw const LibraryFailure('请升级服务端后使用图包目录或停用目录');
+    }
     await call(
       root.id.isEmpty ? 'POST' : 'PUT',
       '/api/v1/roots${root.id.isEmpty ? '' : '/${root.id}'}',
-      body: {'name': root.name, 'path': root.path},
+      body: {
+        'name': root.name,
+        'path': root.path,
+        if (capabilities.typedRoots) 'kind': root.kind.name,
+        if (capabilities.typedRoots) 'enabled': root.enabled,
+      },
     );
     await synchronize(api, _generation);
   }
