@@ -328,7 +328,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             pixels =
                 ((anchor - _library.state.offset) ~/ 2) * 308 +
                 restoring.scrollInset;
-            _pendingReturn = null;
+            setState(() => _pendingReturn = null);
           } else if (before) {
             pixels =
                 oldPixels + ((oldStart - _library.state.offset) ~/ 2) * 308;

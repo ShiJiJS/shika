@@ -192,7 +192,8 @@ void main() {
         () =>
             find.byType(LinearProgressIndicator).evaluate().isEmpty &&
             find.byKey(const Key('library-return-retry')).evaluate().isEmpty &&
-            neighborTile.hitTestable().evaluate().isNotEmpty,
+            neighborTile.hitTestable().evaluate().isNotEmpty &&
+            (t.getTopLeft(neighborTile).dy - originalTop).abs() < 1,
         'overlapping background updates retain the visible source',
       );
       expect(scroll().offset, closeTo(5 * 308.0 + 37, 1));
