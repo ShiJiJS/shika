@@ -233,6 +233,22 @@ void main() {
 
   Future<void> textTap(WidgetTester t, String text) =>
       tap(t, find.text(text).last);
+
+  // The paused inline surface has a central play button above its gesture
+  // detector. Exercise seeking/holding on exposed video, as a user would.
+  Offset gesturePoint(WidgetTester t) {
+    final rect = t.getRect(surface);
+    return Offset(rect.left + rect.width * .3, rect.top + rect.height * .3);
+  }
+
+  Future<void> tapSurface(WidgetTester t) async {
+    await t.tapAt(gesturePoint(t));
+    await t.pump(const Duration(milliseconds: 300));
+    await idle(t);
+  }
+
+  Future<void> dragSurface(WidgetTester t, Offset offset) =>
+      t.dragFrom(gesturePoint(t), offset);
   Future<void> enter(WidgetTester t, {String? anchor}) async {
     await until(
       t,
@@ -525,7 +541,7 @@ void main() {
           expect(controller.value.isPlaying, isTrue);
           result['loop_observed'] = true;
         }
-        await tap(t, surface);
+        await tapSurface(t);
         await until(
           t,
           () => !controller.value.isPlaying,
@@ -652,7 +668,7 @@ void main() {
     });
     await device.setVolume(.4);
     await device.setBrightness(.35);
-    if (!player(t).value.isPlaying) await tap(t, surface);
+    if (!player(t).value.isPlaying) await tapSurface(t);
     await until(
       t,
       () => player(t).value.isPlaying,
@@ -689,7 +705,7 @@ void main() {
       reason: 'rotation keeps the decoder and playback timeline',
     );
     await until(t, () => !controlsVisible(t), 'landscape controls hide');
-    await tap(t, surface);
+    await tapSurface(t);
     expect(find.byKey(const Key('fullscreen-exit')), findsOneWidget);
     final rect = t.getRect(surface);
     final beforeLevels = await device.levels();
@@ -712,7 +728,7 @@ void main() {
       lessThan(beforeLevels['volume']!),
     );
     if (!controlsVisible(t)) {
-      await tap(t, surface);
+      await tapSurface(t);
     }
     final ratePlayer = player(t);
     var observedRate = ratePlayer.value.playbackSpeed;
@@ -735,7 +751,7 @@ void main() {
       () => player(t).value.playbackSpeed == 1.5,
       'fullscreen base rate',
     );
-    final landscapeHold = await t.startGesture(t.getCenter(surface));
+    final landscapeHold = await t.startGesture(gesturePoint(t));
     await until(
       t,
       () => player(t).value.playbackSpeed == 2,
@@ -758,7 +774,7 @@ void main() {
       levels['windowBrightness'],
     );
     if (!controlsVisible(t)) {
-      await tap(t, surface);
+      await tapSurface(t);
     }
     await tap(t, find.byKey(const Key('fullscreen-exit')));
     await until(
@@ -847,7 +863,7 @@ void main() {
         () => controller.value.position.inMilliseconds > 250,
         'network playback advancing',
       );
-      final hold = await t.startGesture(t.getCenter(surface));
+      final hold = await t.startGesture(gesturePoint(t));
       await until(
         t,
         () => controller.value.playbackSpeed == 2,
@@ -859,22 +875,22 @@ void main() {
         () => controller.value.playbackSpeed == 1,
         'cancel restores speed',
       );
-      await tap(t, surface);
+      await tapSurface(t);
       expect(controller.value.isPlaying, isFalse);
-      final pausedHold = await t.startGesture(t.getCenter(surface));
+      final pausedHold = await t.startGesture(gesturePoint(t));
       await t.pump(const Duration(milliseconds: 650));
       expect(controller.value.isPlaying, isFalse);
       expect(find.byKey(const Key('hold-speed-hint')), findsNothing);
       await pausedHold.up();
       // Start away from the loop boundary so a clamped seek still has room.
-      await t.drag(surface, Offset(-t.getSize(surface).width * 1.1, 0));
+      await dragSurface(t, Offset(-t.getSize(surface).width * 1.1, 0));
       await until(
         t,
         () => controller.value.position.inMilliseconds < 250,
         'paused seek returns to beginning',
       );
       final originalPosition = controller.value.position;
-      await t.drag(surface, const Offset(120, 0));
+      await dragSurface(t, const Offset(120, 0));
       await until(
         t,
         () =>
@@ -883,7 +899,7 @@ void main() {
         'forward seek',
       );
       final forward = controller.value.position;
-      await t.drag(surface, const Offset(-100, 0));
+      await dragSurface(t, const Offset(-100, 0));
       await until(
         t,
         () => controller.value.position < forward,
@@ -894,7 +910,7 @@ void main() {
         find.byKey(const Key('inline-play')).hitTestable(),
         findsOneWidget,
       );
-      await tap(t, surface);
+      await tapSurface(t);
       final short = await t.startGesture(t.getCenter(stage));
       await short.moveBy(const Offset(0, -24));
       await t.pump();
@@ -1009,7 +1025,7 @@ void main() {
       await mode(t, '随机播放');
       expect(preferences.videoOrder, PlayOrder.sequential);
       await mode(t, '顺序播放');
-      await t.drag(surface, const Offset(40, 0));
+      await dragSurface(t, const Offset(40, 0));
       await tap(t, find.byTooltip('播放速度'));
       await textTap(t, '1.5×');
       await until(
@@ -1017,7 +1033,7 @@ void main() {
         () => player(t).value.playbackSpeed == 1.5,
         'selected base rate',
       );
-      final boostBeforeBackground = await t.startGesture(t.getCenter(surface));
+      final boostBeforeBackground = await t.startGesture(gesturePoint(t));
       await until(
         t,
         () => player(t).value.playbackSpeed == 2,
@@ -1028,19 +1044,19 @@ void main() {
       await ready(t);
       expect(player(t).value.isPlaying, isFalse);
       expect(player(t).value.playbackSpeed, 1.5);
-      await tap(t, surface);
+      await tapSurface(t);
 
       await clearScope(t);
       await fixture('/__fixture/actions/slow-streams');
       await folder(t, ['端到端相机', '长视频']);
       await enter(t);
       await ready(t);
-      await tap(t, surface);
+      await tapSurface(t);
       expect(player(t).value.isPlaying, isFalse);
       final bufferedBefore = player(t).value.buffered
           .map((b) => b.end.inMilliseconds)
           .fold<int>(0, (a, b) => a > b ? a : b);
-      await t.drag(surface, const Offset(200, 0));
+      await dragSurface(t, const Offset(200, 0));
       await until(
         t,
         () => player(t).value.position.inMilliseconds > 45000,
@@ -1048,7 +1064,7 @@ void main() {
       );
       final seekPosition = player(t).value.position.inMilliseconds;
       expect(seekPosition, greaterThan(bufferedBefore));
-      await tap(t, surface);
+      await tapSurface(t);
       await until(
         t,
         () => player(t).value.position.inMilliseconds > seekPosition + 250,
