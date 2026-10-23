@@ -623,126 +623,139 @@ void main() {
     },
   );
 
-  testWidgets(
-    'I2 fullscreen gestures, rate selection and background recovery',
-    (t) async {
-      await start(t, preload: false);
-      await repo.beginPreview(
-        VideoEntryScope(query: VideoQuery(folder: '/media/camera/旅行')),
-        order: PlayOrder.sequential,
-      );
-      await show(t);
-      await ready(t);
-      final device = PlaybackDeviceControls();
-      final levels = await device.levels();
-      addTearDown(() async {
-        await device.setVolume(levels['volume']!);
-        await device.restoreBrightness();
-      });
-      await device.setVolume(.4);
-      await device.setBrightness(.35);
-      await textTap(t, '横向全屏');
-      await until(
-        t,
-        () => t.view.physicalSize.width > t.view.physicalSize.height,
-        'actual landscape',
-      );
-      await until(
-        t,
-        () =>
-            find.byKey(const Key('fullscreen-exit')).evaluate().isNotEmpty &&
-            find.byKey(const Key('playback-controls')).evaluate().isNotEmpty,
-        'fullscreen surface mounted',
-      );
-      await until(t, () => !controlsVisible(t), 'landscape controls hide');
+  testWidgets('I2 fullscreen gestures, rate selection and background recovery', (
+    t,
+  ) async {
+    await start(t, preload: false);
+    await repo.beginPreview(
+      VideoEntryScope(query: VideoQuery(folder: '/media/camera/旅行')),
+      order: PlayOrder.sequential,
+    );
+    await show(t);
+    await ready(t);
+    final device = PlaybackDeviceControls();
+    final levels = await device.levels();
+    addTearDown(() async {
+      await device.setVolume(levels['volume']!);
+      await device.restoreBrightness();
+    });
+    await device.setVolume(.4);
+    await device.setBrightness(.35);
+    if (!player(t).value.isPlaying) await tap(t, surface);
+    await until(
+      t,
+      () => player(t).value.isPlaying,
+      'playing before fullscreen',
+    );
+    debugPrint(
+      'FULLSCREEN_ENTER before_playing=${player(t).value.isPlaying} lifecycle=${WidgetsBinding.instance.lifecycleState}',
+    );
+    await textTap(t, '横向全屏');
+    await until(
+      t,
+      () => t.view.physicalSize.width > t.view.physicalSize.height,
+      'actual landscape',
+    );
+    await until(
+      t,
+      () =>
+          find.byKey(const Key('fullscreen-exit')).evaluate().isNotEmpty &&
+          find.byKey(const Key('playback-controls')).evaluate().isNotEmpty,
+      'fullscreen surface mounted',
+    );
+    debugPrint(
+      'FULLSCREEN_ENTER after_playing=${player(t).value.isPlaying} lifecycle=${WidgetsBinding.instance.lifecycleState}',
+    );
+    expect(
+      player(t).value.isPlaying,
+      isTrue,
+      reason: 'entering fullscreen preserves play intent',
+    );
+    await until(t, () => !controlsVisible(t), 'landscape controls hide');
+    await tap(t, surface);
+    expect(find.byKey(const Key('fullscreen-exit')), findsOneWidget);
+    final rect = t.getRect(surface);
+    final beforeLevels = await device.levels();
+    await t.dragFrom(
+      Offset(rect.left + rect.width * .2, rect.center.dy),
+      const Offset(0, -95),
+    );
+    await t.pump(const Duration(milliseconds: 300));
+    expect(
+      (await device.levels())['brightness']!,
+      greaterThan(beforeLevels['brightness']!),
+    );
+    await t.dragFrom(
+      Offset(rect.left + rect.width * .8, rect.center.dy),
+      const Offset(0, 95),
+    );
+    await t.pump(const Duration(milliseconds: 300));
+    expect(
+      (await device.levels())['volume']!,
+      lessThan(beforeLevels['volume']!),
+    );
+    if (!controlsVisible(t)) {
       await tap(t, surface);
-      expect(find.byKey(const Key('fullscreen-exit')), findsOneWidget);
-      final rect = t.getRect(surface);
-      final beforeLevels = await device.levels();
-      await t.dragFrom(
-        Offset(rect.left + rect.width * .2, rect.center.dy),
-        const Offset(0, -95),
-      );
-      await t.pump(const Duration(milliseconds: 300));
-      expect(
-        (await device.levels())['brightness']!,
-        greaterThan(beforeLevels['brightness']!),
-      );
-      await t.dragFrom(
-        Offset(rect.left + rect.width * .8, rect.center.dy),
-        const Offset(0, 95),
-      );
-      await t.pump(const Duration(milliseconds: 300));
-      expect(
-        (await device.levels())['volume']!,
-        lessThan(beforeLevels['volume']!),
-      );
-      if (!controlsVisible(t)) {
-        await tap(t, surface);
+    }
+    final ratePlayer = player(t);
+    var observedRate = ratePlayer.value.playbackSpeed;
+    void changedRate() {
+      if (ratePlayer.value.playbackSpeed != observedRate) {
+        observedRate = ratePlayer.value.playbackSpeed;
+        debugPrint('FULLSCREEN_RATE $observedRate');
       }
-      final ratePlayer = player(t);
-      var observedRate = ratePlayer.value.playbackSpeed;
-      void changedRate() {
-        if (ratePlayer.value.playbackSpeed != observedRate) {
-          observedRate = ratePlayer.value.playbackSpeed;
-          debugPrint('FULLSCREEN_RATE $observedRate');
-        }
-      }
+    }
 
-      ratePlayer.addListener(changedRate);
-      addTearDown(() => ratePlayer.removeListener(changedRate));
-      await tap(t, find.byTooltip('播放速度'));
-      final rateChoice = find.byWidgetPredicate(
-        (widget) => widget is PopupMenuItem<double> && widget.value == 1.5,
-      );
-      await tap(t, rateChoice);
-      await until(
-        t,
-        () => player(t).value.playbackSpeed == 1.5,
-        'fullscreen base rate',
-      );
-      final landscapeHold = await t.startGesture(t.getCenter(surface));
-      await until(
-        t,
-        () => player(t).value.playbackSpeed == 2,
-        'fullscreen hold rate',
-      );
-      await background(t);
-      await landscapeHold.cancel();
-      await until(
-        t,
-        () =>
-            find.byType(VideoPlayer).evaluate().isNotEmpty &&
-            player(t).value.isInitialized &&
-            player(t).value.playbackSpeed == 1.5,
-        'fullscreen reopens after releasing network resources',
-      );
-      expect(
-        t.view.physicalSize.width,
-        greaterThan(t.view.physicalSize.height),
-      );
-      expect(player(t).value.isPlaying, isFalse);
-      expect(
-        (await device.levels())['windowBrightness'],
-        levels['windowBrightness'],
-      );
-      if (!controlsVisible(t)) {
-        await tap(t, surface);
-      }
-      await tap(t, find.byKey(const Key('fullscreen-exit')));
-      await until(
-        t,
-        () => t.view.physicalSize.height > t.view.physicalSize.width,
-        'portrait return',
-      );
-      expect(
-        (await device.levels())['windowBrightness'],
-        levels['windowBrightness'],
-      );
+    ratePlayer.addListener(changedRate);
+    addTearDown(() => ratePlayer.removeListener(changedRate));
+    await tap(t, find.byTooltip('播放速度'));
+    final rateChoice = find.byWidgetPredicate(
+      (widget) => widget is PopupMenuItem<double> && widget.value == 1.5,
+    );
+    await tap(t, rateChoice);
+    await until(
+      t,
+      () => player(t).value.playbackSpeed == 1.5,
+      'fullscreen base rate',
+    );
+    final landscapeHold = await t.startGesture(t.getCenter(surface));
+    await until(
+      t,
+      () => player(t).value.playbackSpeed == 2,
+      'fullscreen hold rate',
+    );
+    await background(t);
+    await landscapeHold.cancel();
+    await until(
+      t,
+      () =>
+          find.byType(VideoPlayer).evaluate().isNotEmpty &&
+          player(t).value.isInitialized &&
+          player(t).value.playbackSpeed == 1.5,
+      'fullscreen reopens after releasing network resources',
+    );
+    expect(t.view.physicalSize.width, greaterThan(t.view.physicalSize.height));
+    expect(player(t).value.isPlaying, isFalse);
+    expect(
+      (await device.levels())['windowBrightness'],
+      levels['windowBrightness'],
+    );
+    if (!controlsVisible(t)) {
+      await tap(t, surface);
+    }
+    await tap(t, find.byKey(const Key('fullscreen-exit')));
+    await until(
+      t,
+      () => t.view.physicalSize.height > t.view.physicalSize.width,
+      'portrait return',
+    );
+    expect(
+      (await device.levels())['windowBrightness'],
+      levels['windowBrightness'],
+    );
 
-      expect(t.takeException(), isNull);
-    },
-  );
+    expect(t.takeException(), isNull);
+  });
 
   testWidgets(
     'I2 real rounds, gestures, bounded preparation, failures and Docker recovery',
