@@ -632,6 +632,13 @@ void main() {
         () => t.view.physicalSize.width > t.view.physicalSize.height,
         'actual landscape',
       );
+      await until(
+        t,
+        () =>
+            find.byKey(const Key('fullscreen-exit')).evaluate().isNotEmpty &&
+            find.byKey(const Key('playback-controls')).evaluate().isNotEmpty,
+        'fullscreen surface mounted',
+      );
       await until(t, () => !controlsVisible(t), 'landscape controls hide');
       await tap(t, surface);
       expect(find.byKey(const Key('fullscreen-exit')), findsOneWidget);
@@ -759,6 +766,7 @@ void main() {
       final order = entries.map((r) => r['video']['id'] as String).toList();
       expect(order, hasLength(25));
       expect(order.toSet(), hasLength(25));
+      await choose(t, order.first);
       expect(repo.current!.id, order.first);
       expect((round['scope']['tag_ids'] as List).toSet(), tags);
       final controller = player(t);
@@ -922,10 +930,26 @@ void main() {
       );
       await tap(t, find.byKey(const Key('preload-setting')));
       expect(preferences.preloadAdjacent, isFalse);
+      final beforeDefaults = repo.playbackIdentity,
+          beforeDefaultsPosition = repo.playbackPosition;
+      await t.scrollUntilVisible(
+        find.text('默认播放顺序'),
+        250,
+        scrollable: find.byType(Scrollable).last,
+      );
+      await textTap(t, '默认播放顺序');
+      await textTap(t, '顺序播放');
+      expect(preferences.videoOrder, PlayOrder.sequential);
+      expect(repo.playbackIdentity, beforeDefaults);
+      expect(repo.playbackPosition, beforeDefaultsPosition);
       await nav(t, 'browse');
       await ready(t);
       await t.pump(const Duration(milliseconds: 400));
       expect(session!.debugPlayers, hasLength(1));
+      expect(repo.snapshot.order, PlayOrder.sequential);
+      await mode(t, '随机播放');
+      expect(preferences.videoOrder, PlayOrder.sequential);
+      await mode(t, '顺序播放');
       await t.drag(surface, const Offset(40, 0));
       await tap(t, find.byTooltip('播放速度'));
       await textTap(t, '1.5×');

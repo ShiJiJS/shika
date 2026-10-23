@@ -82,6 +82,9 @@ class _LibraryHomeState extends State<LibraryHome> {
   late String page = data.connected ? landing : 'connection';
   VideoBrowseContext libraryContext = VideoBrowseContext(sort: VideoSort.name);
   Object? _entryConnection;
+  PlayOrder? _initialEntryOrder;
+  PlayOrder get entryOrder =>
+      widget.preferences.videoOrder ?? _initialEntryOrder ?? data.order;
   bool viewing = false;
   VideoQuery get entryQuery => libraryFirst ? libraryContext.query : data.query;
   late String error = widget.initialError ?? '';
@@ -215,6 +218,7 @@ class _LibraryHomeState extends State<LibraryHome> {
       return;
     }
     _entryConnection = repo.connectionIdentity;
+    _initialEntryOrder = widget.preferences.videoOrder ?? data.order;
     final entry = repo.savedPreviewEntry;
     libraryContext = VideoBrowseContext(
       query: entry?.query,
@@ -424,9 +428,14 @@ class _LibraryHomeState extends State<LibraryHome> {
     _library.cancel();
     var pushed = false;
     try {
-      if (!await perform(
-        () => repo.beginPreview(origin.entry, anchor: anchor),
-      )) {
+      if (!await perform(() async {
+        await widget.preferences.ensureVideoOrder(entryOrder);
+        await repo.beginPreview(
+          origin.entry,
+          anchor: anchor,
+          order: widget.preferences.videoOrder,
+        );
+      })) {
         return;
       }
       if (!mounted) return;
@@ -603,8 +612,9 @@ class _LibraryHomeState extends State<LibraryHome> {
   Future<void> order() async {
     final mode = await sheet<PlayOrder>(
       SheetFrame(
-        title: '播放模式',
+        title: libraryFirst ? '默认播放顺序' : '播放模式',
         children: [
+          if (libraryFirst) note('只影响下一次进入预览，不改变当前范围。'),
           for (final value in PlayOrder.values)
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -615,15 +625,27 @@ class _LibraryHomeState extends State<LibraryHome> {
               ),
               title: Text(value == PlayOrder.random ? '随机播放' : '顺序播放'),
               subtitle: Text(
-                value == PlayOrder.random ? '本轮向前不重复，允许回看' : '按目录和文件名排列',
+                libraryFirst
+                    ? value == PlayOrder.random
+                          ? '范围内随机排列'
+                          : '沿用入口列表的排序'
+                    : value == PlayOrder.random
+                    ? '本轮向前不重复，允许回看'
+                    : '按目录和文件名排列',
               ),
-              trailing: data.order == value ? const Icon(Icons.check) : null,
+              trailing: (libraryFirst ? entryOrder : data.order) == value
+                  ? const Icon(Icons.check)
+                  : null,
               onTap: () => Navigator.pop(context, value),
             ),
         ],
       ),
     );
     if (mode != null) {
+      if (libraryFirst) {
+        await perform(() => widget.preferences.setVideoOrder(mode));
+        return;
+      }
       await perform(() async {
         await repo.setScope(data.query, order: mode);
         _browsing.followRepository();
@@ -2118,8 +2140,10 @@ class _LibraryHomeState extends State<LibraryHome> {
       const Divider(height: 1),
       settingRow(
         Icons.shuffle,
-        '播放顺序',
-        data.order == PlayOrder.random ? '随机播放' : '顺序播放',
+        libraryFirst ? '默认播放顺序' : '播放顺序',
+        (libraryFirst ? entryOrder : data.order) == PlayOrder.random
+            ? '随机播放'
+            : '顺序播放',
         order,
       ),
       if (kDebugMode && repo is DemoControls) ...[

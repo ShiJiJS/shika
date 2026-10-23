@@ -6,6 +6,7 @@ import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/state_store.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/player.dart';
+import 'package:video_viewer/ui/preferences.dart';
 
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 
@@ -30,6 +31,58 @@ void main() {
     repo.dispose();
     VideoPlayerPlatform.instance = original;
   });
+
+  testWidgets(
+    'the default order only affects new previews and session order never overwrites it',
+    (t) async {
+      await t.runAsync(
+        () => repo.beginPreview(VideoEntryScope(), order: PlayOrder.random),
+      );
+      final oldIdentity = repo.playbackIdentity;
+      final preferences = UiPreferences();
+      await t.pumpWidget(
+        VideoViewerApp(repository: repo, preferences: preferences),
+      );
+      await frames(t);
+      await t.tap(find.byKey(const Key('nav-settings')));
+      await frames(t);
+      await t.scrollUntilVisible(
+        find.text('默认播放顺序'),
+        200,
+        scrollable: find.byType(Scrollable).last,
+      );
+      await t.tap(find.text('默认播放顺序'));
+      await frames(t);
+      await t.tap(find.text('顺序播放').last);
+      await frames(t);
+      expect(preferences.videoOrder, PlayOrder.sequential);
+      expect(repo.playbackIdentity, oldIdentity);
+      expect(repo.snapshot.order, PlayOrder.random);
+      await t.tap(find.byKey(const Key('nav-library')));
+      await frames(t);
+      await t.tap(find.text('预览此范围'));
+      await frames(t);
+      expect(repo.playbackIdentity, isNot(oldIdentity));
+      expect(repo.snapshot.order, PlayOrder.sequential);
+      await t.tap(find.byKey(const Key('preview-scope')));
+      await frames(t);
+      await t.tap(find.byKey(const Key('queue-order-random')));
+      await frames(t);
+      expect(repo.snapshot.order, PlayOrder.random);
+      expect(preferences.videoOrder, PlayOrder.sequential);
+      await t.tap(find.byTooltip('关闭面板'));
+      await frames(t);
+      await t.tap(find.byKey(const Key('preview-back')));
+      await frames(t);
+      await t.tap(find.text('预览此范围'));
+      await frames(t);
+      expect(repo.snapshot.order, PlayOrder.sequential);
+      await t.pumpWidget(const SizedBox());
+      await frames(t);
+      preferences.dispose();
+      expect(t.takeException(), isNull);
+    },
+  );
 
   testWidgets(
     'an expired connection closes the secondary preview and reveals login',
