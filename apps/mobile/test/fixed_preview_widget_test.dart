@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 import 'package:video_viewer/library/demo_repository.dart';
+import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/state_store.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/player.dart';
@@ -29,6 +30,61 @@ void main() {
     repo.dispose();
     VideoPlayerPlatform.instance = original;
   });
+
+  testWidgets(
+    'an expired connection closes the secondary preview and reveals login',
+    (t) async {
+      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await frames(t);
+      await t.tap(find.text('预览此范围'));
+      await frames(t);
+      expect(find.byKey(const Key('video-preview-route')), findsOneWidget);
+      await t.runAsync(() => repo.reset(scenario: DemoScenario.offline));
+      await frames(t);
+      expect(find.byKey(const Key('video-preview-route')), findsNothing);
+      expect(find.byType(MovieStage), findsNothing);
+      expect(find.text('连接你的视频库'), findsOneWidget);
+      await t.pumpWidget(const SizedBox());
+      await frames(t);
+      expect(t.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'reopening shows the last entered scope in the library without autoplay or a new session',
+    (t) async {
+      await t.runAsync(
+        () => repo.beginPreview(
+          VideoEntryScope(
+            search: '花间微风',
+            sort: VideoSort.name,
+            source: BrowseSource.tags,
+          ),
+          anchor: 'v1',
+        ),
+      );
+      final identity = repo.playbackIdentity;
+      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await frames(t);
+      expect(find.byType(MovieStage), findsNothing);
+      expect(find.text('1 个视频'), findsOneWidget);
+      expect(
+        t
+            .widget<TextField>(find.byKey(const Key('video-search')))
+            .controller!
+            .text,
+        '花间微风',
+      );
+      expect(repo.playbackIdentity, identity);
+      expect(repo.snapshot.recentVideos, isEmpty);
+      await t.enterText(find.byKey(const Key('video-search')), '蜻蜓');
+      await frames(t);
+      expect(repo.savedPreviewEntry!.search, '花间微风');
+      expect(repo.playbackIdentity, identity);
+      await t.pumpWidget(const SizedBox());
+      await frames(t);
+    },
+  );
 
   testWidgets(
     'library entry opens a secondary preview; end/restart/return retain the source search',

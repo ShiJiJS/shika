@@ -81,6 +81,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   String get landing => libraryFirst ? 'library' : 'browse';
   late String page = data.connected ? landing : 'connection';
   VideoBrowseContext libraryContext = VideoBrowseContext(sort: VideoSort.name);
+  Object? _entryConnection;
   bool viewing = false;
   VideoQuery get entryQuery => libraryFirst ? libraryContext.query : data.query;
   late String error = widget.initialError ?? '';
@@ -90,6 +91,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   DeleteOperation? _undoNotice;
   bool get busy => _busy || repo.backupRestorePending;
   String search = '', tagSearch = '';
+  late final videoSearch = TextEditingController(text: search);
   Set<String> selected = {};
   int playerEpoch = 0;
   late final _library = LibraryQueryController(repo);
@@ -152,6 +154,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     address.text = data.address;
     port.text = '${data.port}';
     previousScope = jsonEncode(data.query.toJson());
+    restoreEntryForConnection();
     if (repo is DemoControls) passphrase.text = 'demo';
     if (widget.initializeRepository) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -179,6 +182,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     }
     final nextScope = jsonEncode(data.query.toJson());
     setState(() {
+      restoreEntryForConnection();
       if (nextScope != previousScope) {
         selected = {};
         previousScope = nextScope;
@@ -202,6 +206,27 @@ class _LibraryHomeState extends State<LibraryHome> {
     }
     if (page == 'trash') unawaited(loadTrash());
     if (page == 'roots') unawaited(loadMissing());
+  }
+
+  void restoreEntryForConnection() {
+    if (!data.connected ||
+        !libraryFirst ||
+        identical(_entryConnection, repo.connectionIdentity)) {
+      return;
+    }
+    _entryConnection = repo.connectionIdentity;
+    final entry = repo.savedPreviewEntry;
+    libraryContext = VideoBrowseContext(
+      query: entry?.query,
+      search: entry?.search ?? '',
+      source: entry?.source ?? BrowseSource.library,
+      sort: entry?.sort ?? VideoSort.name,
+    );
+    search = libraryContext.search;
+    videoSearch.text = search;
+    _pendingReturn = null;
+    _returnAnchors = const [];
+    _restoringLibrary = false;
   }
 
   void preparationChanged() {
@@ -395,7 +420,9 @@ class _LibraryHomeState extends State<LibraryHome> {
     final origin = position.context, anchors = position.anchors;
     viewing = true;
     _libraryViewGeneration++;
+    _restoringLibrary = false;
     _library.cancel();
+    var pushed = false;
     try {
       if (!await perform(
         () => repo.beginPreview(origin.entry, anchor: anchor),
@@ -421,6 +448,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             ? child
             : FadeTransition(opacity: animation, child: child),
       );
+      pushed = true;
       await Navigator.of(context).push(route);
       await route.completed;
       if (!mounted) return;
@@ -431,6 +459,13 @@ class _LibraryHomeState extends State<LibraryHome> {
       await loadLibrary();
     } finally {
       viewing = false;
+      if (mounted && !pushed && _pendingReturn != null && page == 'library') {
+        unawaited(loadLibrary());
+      } else if (mounted && !pushed) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) loadNearBottom();
+        });
+      }
     }
   }
 
@@ -452,6 +487,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     address.dispose();
     port.dispose();
     passphrase.dispose();
+    videoSearch.dispose();
     super.dispose();
   }
 
@@ -1496,6 +1532,7 @@ class _LibraryHomeState extends State<LibraryHome> {
               Expanded(
                 child: TextField(
                   key: const Key('video-search'),
+                  controller: videoSearch,
                   decoration: const InputDecoration(hintText: '搜索视频'),
                   onChanged: (v) {
                     setState(() {
@@ -1899,6 +1936,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                                       sort: VideoSort.name,
                                     );
                                     search = '';
+                                    videoSearch.clear();
                                   });
                                   go('library');
                                   return;
@@ -2747,6 +2785,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         review = false;
         selected = {};
         search = '';
+        videoSearch.clear();
         error = '';
         _browsing.followRepository();
         playerEpoch++;

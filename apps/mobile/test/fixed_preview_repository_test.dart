@@ -283,6 +283,7 @@ void main() {
   test('connect and catalog reads do not start a round; begin sends the complete entry', () async {
     await connect();
     expect(repo.current, isNull);
+    expect(repo.savedPreviewEntry, isNull);
     expect(repo.playbackIdentity, isEmpty);
     expect(
       fixture.reads
@@ -314,6 +315,12 @@ void main() {
       throwsA(isA<LibraryFailure>()),
     );
     await repo.beginPreview(entry, anchor: 'v25');
+    final saved = repo.savedPreviewEntry!;
+    expect(saved.search, entry.search);
+    expect(saved.source, entry.source);
+    expect(saved.sort, entry.sort);
+    expect(saved.query.tags, entry.query.tags);
+    expect(saved.query.folder, entry.query.folder);
     expect(fixture.creates[0], fixture.creates[1]);
     expect(fixture.creates.last, containsPair('membership', 'fixed'));
     expect(fixture.creates.last['scope'], {

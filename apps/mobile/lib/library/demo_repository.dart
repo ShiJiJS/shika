@@ -370,6 +370,8 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
   @override
   bool get fixedPreview => _state.preview != null;
   @override
+  VideoEntryScope? get savedPreviewEntry => _state.preview?.entry;
+  @override
   Future<VideoPage> restoreVideoEntry(
     VideoEntryScope entry, {
     required List<String> anchors,

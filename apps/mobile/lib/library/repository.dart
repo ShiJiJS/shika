@@ -90,6 +90,7 @@ abstract class LibraryRepository extends ChangeNotifier {
     int limit = 24,
   }) => Future.error(const LibraryFailure('当前服务尚不支持返回位置恢复，请升级服务端'));
   bool get fixedPreview => false;
+  VideoEntryScope? get savedPreviewEntry => null;
   bool get supportsFixedPreviews =>
       capabilities.fixedVideoSessions &&
       capabilities.versionedVideoQueue &&

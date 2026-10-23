@@ -155,6 +155,17 @@ class ServerLibraryRepository extends LibraryRepository {
   @override
   bool get fixedPreview => _round?['membership'] == 'fixed';
   @override
+  VideoEntryScope? get savedPreviewEntry => !fixedPreview
+      ? null
+      : VideoEntryScope(
+          query: _state.query,
+          search: (_round?['scope'] as Map?)?['search'] as String? ?? '',
+          source: BrowseSource.values.byName(
+            _round?['source'] as String? ?? 'library',
+          ),
+          sort: VideoSort.values.byName(_round?['sort'] as String? ?? 'path'),
+        );
+  @override
   String get playbackSequenceIdentity =>
       '$playbackIdentity:${_round?['sequence_revision'] ?? 0}';
   @override

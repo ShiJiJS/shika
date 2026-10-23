@@ -83,6 +83,10 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
 
   void changed() {
     if (!mounted) return;
+    if (!data.connected) {
+      unawaited(leave());
+      return;
+    }
     setState(() {
       if (browsing.message != null) {
         error = browsing.message!;
