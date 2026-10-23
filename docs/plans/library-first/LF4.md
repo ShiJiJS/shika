@@ -1,6 +1,6 @@
 # LF4：双类型媒体库与四入口（实施中）
 
-对应 [#29](https://github.com/ShiJiJS/video_viewer/issues/29)，基于 LF3 / [草稿 PR #37](https://github.com/ShiJiJS/video_viewer/pull/37)。完整四入口与页面尚未交付；当前首先接入真实图包目录数据，避免界面继续依赖视频缓存或原型数据。
+对应 [#29](https://github.com/ShiJiJS/video_viewer/issues/29) / [草稿 PR #38](https://github.com/ShiJiJS/video_viewer/pull/38)，基于 LF3 / [草稿 PR #37](https://github.com/ShiJiJS/video_viewer/pull/37)。完整四入口与页面尚未交付；当前首先接入真实图包目录数据，避免界面继续依赖视频缓存或原型数据。
 
 ## 已接入的读取与写入边界
 
