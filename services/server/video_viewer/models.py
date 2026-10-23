@@ -122,6 +122,10 @@ class PlaybackRound(Base):
     request_hash: Mapped[str] = mapped_column(String)
     order: Mapped[str] = mapped_column(String)
     scope: Mapped[dict] = mapped_column(JSON)
+    membership: Mapped[str] = mapped_column(String, default="legacy", server_default="legacy")
+    source: Mapped[str] = mapped_column(String, default="library", server_default="library")
+    sort: Mapped[str] = mapped_column(String, default="path", server_default="path")
+    sequence_revision: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
     cursor: Mapped[int] = mapped_column(Integer, default=0)
     revision: Mapped[int] = mapped_column(Integer, default=0)
     finished: Mapped[bool] = mapped_column(Boolean, default=False)
@@ -135,6 +139,7 @@ class RoundEntry(Base):
         ForeignKey("playback_rounds.id", ondelete="CASCADE"), primary_key=True
     )
     ordinal: Mapped[int] = mapped_column(Integer, primary_key=True)
+    source_ordinal: Mapped[int | None] = mapped_column(Integer, nullable=True)
     video_id: Mapped[str] = mapped_column(ForeignKey("videos.id"), index=True)
 
 

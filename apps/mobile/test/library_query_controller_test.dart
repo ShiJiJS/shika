@@ -11,6 +11,20 @@ class DelayedCatalog extends DemoLibraryRepository {
   DelayedCatalog() : super(MemoryStateStore(), latency: Duration.zero);
   final requests =
       <({String search, int offset, Completer<VideoPage> result})>[];
+  final restores =
+      <({List<String> anchors, int fallback, Completer<VideoPage> result})>[];
+
+  @override
+  Future<VideoPage> restoreVideoEntry(
+    VideoEntryScope entry, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) {
+    final result = Completer<VideoPage>();
+    restores.add((anchors: anchors, fallback: fallbackIndex, result: result));
+    return result.future;
+  }
 
   @override
   Future<VideoPage> loadVideos({
@@ -53,6 +67,80 @@ void main() {
   tearDown(() {
     controller.dispose();
     repo.dispose();
+  });
+
+  test('deep return failure retains the old window; retry locates one page then pages both ways', () async {
+    final context = VideoBrowseContext(
+      scrollIndex: 999,
+      scrollAnchor: 'video-999',
+    );
+    final initial = controller.load(context);
+    repo.requests.last.result.complete(page(0, 24, total: 2000));
+    await initial;
+    final failed = controller.restore(
+      context,
+      anchors: ['video-999', 'video-1000'],
+    );
+    repo.restores.last.result.completeError(StateError('offline'));
+    await failed;
+    expect(controller.state.items.first.id, 'video-0');
+    expect(controller.state.offset, 0);
+    expect(controller.state.error, contains('offline'));
+    final retry = controller.restore(
+      context,
+      anchors: ['video-999', 'video-1000'],
+    );
+    expect(repo.restores.last.fallback, 999);
+    repo.restores.last.result.complete(
+      VideoPage(
+        items: page(984, 24, total: 2001).items,
+        offset: 984,
+        limit: 24,
+        total: 2001,
+        anchorIndex: 1000,
+      ),
+    );
+    await retry;
+    expect(controller.state.items.length, 24);
+    expect(controller.state.anchorIndex, 1000);
+    expect(controller.state.offset, 984);
+    expect(controller.state.hasBefore, isTrue);
+    expect(controller.state.hasAfter, isTrue);
+    final more = controller.load(context, more: true);
+    expect(repo.requests.last.offset, 1008);
+    repo.requests.last.result.complete(page(1008, 24, total: 2001));
+    await more;
+    final beforeFailed = controller.load(context, before: true);
+    repo.requests.last.result.completeError(
+      StateError('previous page offline'),
+    );
+    await beforeFailed;
+    expect(controller.state.beforeFailure, isTrue);
+    expect(controller.state.offset, 984);
+    expect(controller.state.items.length, 48);
+    final before = controller.load(context, before: true);
+    expect(repo.requests.last.offset, 960);
+    repo.requests.last.result.complete(page(960, 24, total: 2001));
+    await before;
+    expect(controller.state.offset, 960);
+    expect(controller.state.items.length, 72);
+    expect(controller.state.items.last.id, 'video-1031');
+    expect(controller.state.beforeFailure, isFalse);
+  });
+
+  test('a late return lookup cannot replace a new search', () async {
+    final old = controller.restore(
+      VideoBrowseContext(search: 'old'),
+      anchors: ['old-id'],
+    );
+    final current = controller.load(VideoBrowseContext(search: 'new'));
+    repo.requests.last.result.complete(page(0, 1, total: 1));
+    await current;
+    repo.restores.last.result.complete(page(984, 24, total: 2000));
+    await old;
+    expect(controller.state.context.search, 'new');
+    expect(controller.state.offset, 0);
+    expect(controller.state.items.length, 1);
   });
 
   test(

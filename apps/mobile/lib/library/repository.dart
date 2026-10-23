@@ -62,9 +62,49 @@ abstract class LibraryRepository extends ChangeNotifier {
             ),
           )
           .toList();
+  Future<VideoPage> loadVideoEntry(
+    VideoEntryScope entry, {
+    int offset = 0,
+    int limit = 24,
+  }) {
+    if (entry.source != BrowseSource.library || entry.sort != VideoSort.path) {
+      throw const LibraryFailure('当前服务尚不支持此入口，请升级服务端');
+    }
+    return loadVideos(
+      scope: entry.query,
+      search: entry.search,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  Future<void> beginPreview(
+    VideoEntryScope entry, {
+    String? anchor,
+    PlayOrder? order,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持固定预览范围，请升级服务端'));
+  Future<VideoPage> restoreVideoEntry(
+    VideoEntryScope entry, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持返回位置恢复，请升级服务端'));
+  bool get fixedPreview => false;
+  VideoEntryScope? get savedPreviewEntry => null;
+  bool get supportsFixedPreviews =>
+      capabilities.fixedVideoSessions &&
+      capabilities.versionedVideoQueue &&
+      capabilities.videoEntryAnchors;
+  bool get previewFinished => false;
+  String get playbackSequenceIdentity => playbackIdentity;
+  Future<void> changePreviewOrder(PlayOrder order, {bool restart = false}) =>
+      Future.error(const LibraryFailure('请从媒体库选择范围开始预览'));
+  Future<void> recordVideoOpened(String id) async {}
+  Future<void> finishPreview() async {}
   int get playbackPosition => snapshot.position;
   int get playbackTotal => snapshot.round.length;
-  String get playbackIdentity => '${snapshot.query.toJson()}-${snapshot.order}';
+  String get playbackIdentity =>
+      snapshot.preview?.id ?? '${snapshot.query.toJson()}-${snapshot.order}';
   Future<VideoPage> loadPlaybackVideos({int offset = 0, int limit = 48}) async {
     final ids = snapshot.round.skip(offset).take(limit);
     return VideoPage(

@@ -65,7 +65,7 @@ bash scripts/test-server.sh
 bash scripts/dev.sh python3 scripts/run-client-connection-test.py
 ```
 
-联调脚本现支持 Mac/Linux 原生 Docker，并保留 Windows WSL 路径。先启动模拟器；VS Code 联调任务已设置该依赖。它只复位 `.dev/e2e` 的可丢弃数据，使用 8761 端口；普通 8760 和 NAS 实例独立。可追加 `--playback`、`--tags`、`--files`、`--external`、`--backups`、`--preparation` 或 `--interactions`，对应原有各阶段流程。
+联调脚本现支持 Mac/Linux 原生 Docker，并保留 Windows WSL 路径。先启动模拟器；VS Code 联调任务已设置该依赖。它只复位 `.dev/e2e` 的可丢弃数据，使用 8761 端口；普通 8760 和 NAS 实例独立。可追加 `--playback`、`--tags`、`--files`、`--external`、`--backups`、`--preparation` 或 `--interactions`，对应原有各阶段流程；LF3 另有 `--preview` 和 `--anchor`，分别验证固定预览与来源位置恢复。
 
 OrbStack 默认共享内存容量较大，因此服务端回归容器显式指定 `--shm-size=64m`，使磁盘满故障测试与 Windows 一致。测试脚本即使格式检查失败也继续执行测试，最终保留失败退出码。
 
@@ -113,3 +113,19 @@ python3 scripts/configure-vscode.py
 ### LF1 模拟器渲染回归
 
 2026-10-24 的原生 I1 回归中，software / SwiftShader 渲染出现 QEMU 图形线程卡死并离线；使用 `-gpu host -feature -Vulkan -no-snapshot` 后两个阶段均通过。因此 Mac 的启动脚本默认使用 host，Linux 仍为 software；可用 `VV_EMULATOR_GPU` 覆盖。脚本复用已运行设备时不会重启或切换其后端，需要退出原模拟器后重新启动才生效。此设置不改变正式 APK 的解码策略，也不宣称所有设备后端都已验证。
+
+### LF3 模拟器崩溃后的恢复
+
+LF3 播放器回归中，长时间运行的 host 后端也发生过一次 QEMU 主循环/CPU 线程挂起，模拟器退出，导致 Flutter 测试报设备丢失。保留崩溃日志后冷启动；该次不计为测试通过。恢复时还出现了发送崩溃报告的模态询问，已选择“不发送”。启动脚本现使用本机 Emulator 帮助明确支持的 `-no-metrics -crash-report-mode never`，避免无人值守启动被此对话框挡住。
+
+如果自动化终端会在命令结束后清理后台子进程，可在一个独立、持续运行的终端中以前台方式启动模拟器，再从另一终端运行联调：
+
+```bash
+bash scripts/dev.sh emulator -avd video_viewer_api_36 -port 5554 \
+  -no-window -no-boot-anim -gpu host -feature -Vulkan -no-snapshot \
+  -no-metrics -crash-report-mode never
+```
+
+仅在 `adb devices -l` 及进程状态确认设备已退出后重启；测试日志暂时没有输出不能当作模拟器已停止。无需删除 AVD 或清空用户数据。
+
+冷启动首次横屏可能出现 Android 自己的“全屏查看”指引，覆盖 Flutter 的触控。联调 runner 会先核对专用 AVD 名称，再设置并读回 `immersive_mode_confirmations=confirmed`。播放后台测试使用实际 ADB Home 和 `am start --activity-single-top` 返回，宿主记录 `android-backgrounded` / `android-foregrounded`；不能用直接注入不完整的 Flutter 生命周期来冒充真实后台验证。此准备仅用于可丢弃模拟器。

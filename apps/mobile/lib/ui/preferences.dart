@@ -4,18 +4,29 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../library/models.dart';
+
 class UiPreferences extends ChangeNotifier {
   factory UiPreferences({
     File? file,
     bool dark = false,
     bool preloadAdjacent = true,
-  }) => UiPreferences._(file, dark, preloadAdjacent);
-  UiPreferences._(this._file, this._dark, this._preloadAdjacent);
+    PlayOrder? videoOrder,
+  }) => UiPreferences._(file, dark, preloadAdjacent, videoOrder);
+  UiPreferences._(
+    this._file,
+    this._dark,
+    this._preloadAdjacent,
+    this._videoOrder,
+  );
   final File? _file;
   bool _dark;
   bool get dark => _dark;
   bool _preloadAdjacent;
   bool get preloadAdjacent => _preloadAdjacent;
+  PlayOrder? _videoOrder;
+  PlayOrder? get videoOrder => _videoOrder;
+  Future<void> _changes = Future.value();
 
   static Future<UiPreferences> load({File? file}) async {
     file ??= File(
@@ -23,35 +34,68 @@ class UiPreferences extends ChangeNotifier {
     );
     var dark = false;
     var preload = true;
+    PlayOrder? order;
     try {
       if (await file.exists()) {
         final saved = jsonDecode(await file.readAsString());
         dark = saved is Map && saved['dark'] == true;
         preload = saved is! Map || saved['preloadAdjacent'] != false;
+        if (saved is Map) {
+          order = PlayOrder.values
+              .where((value) => value.name == saved['videoOrder'])
+              .firstOrNull;
+        }
       }
     } on FormatException {
       // An incomplete preference file falls back to the default appearance.
     } on FileSystemException {
       // The app can still open; a later failed save is reported by the UI.
     }
-    return UiPreferences(file: file, dark: dark, preloadAdjacent: preload);
+    return UiPreferences(
+      file: file,
+      dark: dark,
+      preloadAdjacent: preload,
+      videoOrder: order,
+    );
   }
 
-  Future<void> setDark(bool value) async {
-    await _save(dark: value, preload: _preloadAdjacent);
-    _dark = value;
-    notifyListeners();
-  }
+  Future<void> setDark(bool value) => _update(dark: value);
 
-  Future<void> setPreloadAdjacent(bool value) async {
-    await _save(dark: _dark, preload: value);
-    _preloadAdjacent = value;
-    notifyListeners();
-  }
+  Future<void> setPreloadAdjacent(bool value) => _update(preload: value);
+  Future<void> setVideoOrder(PlayOrder value) => _update(videoOrder: value);
+  Future<void> ensureVideoOrder(PlayOrder value) =>
+      _update(videoOrder: value, onlyIfMissing: true);
 
-  Future<void> _save({required bool dark, required bool preload}) async =>
-      _file?.writeAsString(
-        jsonEncode({'dark': dark, 'preloadAdjacent': preload}),
+  Future<void> _update({
+    bool? dark,
+    bool? preload,
+    PlayOrder? videoOrder,
+    bool onlyIfMissing = false,
+  }) {
+    final work = _changes.then((_) async {
+      final nextDark = dark ?? _dark, nextPreload = preload ?? _preloadAdjacent;
+      final nextOrder = onlyIfMissing
+          ? _videoOrder ?? videoOrder
+          : videoOrder ?? _videoOrder;
+      if (nextDark == _dark &&
+          nextPreload == _preloadAdjacent &&
+          nextOrder == _videoOrder) {
+        return;
+      }
+      await _file?.writeAsString(
+        jsonEncode({
+          'dark': nextDark,
+          'preloadAdjacent': nextPreload,
+          if (nextOrder != null) 'videoOrder': nextOrder.name,
+        }),
         flush: true,
       );
+      _dark = nextDark;
+      _preloadAdjacent = nextPreload;
+      _videoOrder = nextOrder;
+      notifyListeners();
+    });
+    _changes = work.catchError((Object _) {});
+    return work;
+  }
 }

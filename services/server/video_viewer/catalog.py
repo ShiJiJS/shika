@@ -4,7 +4,7 @@ from sqlalchemy import func, or_, select, update
 
 from .errors import LibraryError
 from .media_roots import enabled_path, owner_for_path
-from .models import Directory, ImagePack, Root, Setting, Video, VideoTag, uid
+from .models import Directory, ImagePack, RecentEntry, Root, Setting, Video, VideoTag, uid
 from .paths import beneath, excluded, validate_path
 
 
@@ -256,7 +256,12 @@ class Catalog:
                 )
             )
         if search:
-            statement = statement.where(Video.name.contains(search, autoescape=True))
+            statement = statement.where(
+                Video.name.contains(search, autoescape=True)
+                | func.substr(Video.path, func.length(Root.path) + 1).contains(
+                    search, autoescape=True
+                )
+            )
         if orientation:
             statement = statement.where(
                 Video.height > Video.width
@@ -280,18 +285,77 @@ class Catalog:
             statement = statement.where(Video.id.in_(matching))
         return statement
 
-    def videos(self, *, offset=0, limit=50, **scope):
-        with self.db.read() as session:
-            query = self.video_statement(session, **scope)
-            total = session.scalar(select(func.count()).select_from(query.subquery()))
-            items = session.scalars(
-                query.order_by(Video.path, Video.id).offset(offset).limit(limit)
+    @staticmethod
+    def video_ordering(source, sort):
+        if sort == "recent":
+            if source != "recent":
+                raise LibraryError("invalid_sort", "最近排序仅适用于最近入口", 422)
+            ordering = (RecentEntry.opened_at.desc(), Video.id)
+        elif sort == "name":
+            ordering = (func.lower(Video.name), Video.path, Video.id)
+        elif sort == "newest":
+            ordering = (Video.created_at.desc(), Video.id)
+        else:
+            ordering = (Video.path, Video.id)
+        return ordering
+
+    def ordered_videos(self, session, *, source="library", sort="path", **scope):
+        statement = self.video_statement(session, **scope)
+        if source == "recent":
+            statement = statement.join(
+                RecentEntry,
+                (RecentEntry.video_id == Video.id) & (RecentEntry.kind == "video"),
             )
+        return statement.order_by(*self.video_ordering(source, sort))
+
+    def videos(self, *, offset=0, limit=50, source="library", sort="path", anchor_ids=(), **scope):
+        with self.db.read() as session:
+            session.connection().exec_driver_sql("BEGIN")
+            query = self.ordered_videos(session, source=source, sort=sort, **scope)
+            total = session.scalar(
+                select(func.count()).select_from(query.order_by(None).subquery())
+            )
+            anchor_index = None
+            if anchor_ids:
+                ranked = (
+                    query.order_by(None)
+                    .with_only_columns(
+                        Video.id.label("video_id"),
+                        (
+                            func.row_number().over(order_by=self.video_ordering(source, sort)) - 1
+                        ).label("position"),
+                    )
+                    .subquery()
+                )
+                positions = dict(
+                    session.execute(
+                        select(ranked.c.video_id, ranked.c.position).where(
+                            ranked.c.video_id.in_(anchor_ids)
+                        )
+                    ).all()
+                )
+                anchor_index = next(
+                    (positions[identity] for identity in anchor_ids if identity in positions),
+                    min(offset, max(0, total - 1)),
+                )
+                offset = anchor_index // limit * limit
+            items = session.scalars(query.offset(offset).limit(limit))
+            result = []
+            for video in items:
+                item = self.video_json(video)
+                if source == "recent":
+                    item["opened_at"] = session.scalar(
+                        select(RecentEntry.opened_at).where(
+                            RecentEntry.video_id == video.id, RecentEntry.kind == "video"
+                        )
+                    )
+                result.append(item)
             return {
-                "items": [self.video_json(v) for v in items],
+                "items": result,
                 "total": total,
                 "offset": offset,
                 "limit": limit,
+                **({"anchor_index": anchor_index} if anchor_ids else {}),
             }
 
     @staticmethod
@@ -304,6 +368,7 @@ class Catalog:
             "status": video.status,
             "error": video.error,
             "size": video.size,
+            "created_at": video.created_at,
             "duration": video.duration,
             "width": video.width,
             "height": video.height,

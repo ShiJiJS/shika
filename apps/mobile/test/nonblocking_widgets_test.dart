@@ -9,12 +9,22 @@ import 'package:video_viewer/ui/player.dart';
 
 import 'browsing_session_test.dart' show SlowLibrary;
 
+/// Keep these legacy feedback checks; the fixed route has its own end panel.
+class LegacySlowLibrary extends SlowLibrary {
+  @override
+  bool get supportsFixedPreviews => false;
+}
+
 /// Native initialization intentionally never finishes during these tests.
 class UnreadyVideo extends VideoPlayerPlatform {
   int next = 0;
   final events = <int, StreamController<VideoEvent>>{};
   @override
   Future<void> init() async {}
+  @override
+  Future<void> setMixWithOthers(bool mixWithOthers) async {}
+  @override
+  Future<void> setAllowBackgroundPlayback(bool allowBackgroundPlayback) async {}
   @override
   Future<int> createWithOptions(VideoCreationOptions options) async {
     events[++next] = StreamController<VideoEvent>.broadcast();
@@ -35,7 +45,7 @@ void main() {
   setUp(() async {
     original = VideoPlayerPlatform.instance;
     VideoPlayerPlatform.instance = UnreadyVideo();
-    repo = SlowLibrary();
+    repo = LegacySlowLibrary();
     await repo.initialize();
     await repo.setScope(VideoQuery(), order: PlayOrder.sequential);
   });

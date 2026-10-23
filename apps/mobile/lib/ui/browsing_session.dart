@@ -9,11 +9,54 @@ import '../library/repository.dart';
 /// Visible selection is independent of decoder readiness and network receipts.
 /// Only metadata is buffered; the player still owns at most three decoders.
 class BrowsingSession extends ChangeNotifier {
-  BrowsingSession(this.repository) {
+  BrowsingSession(this.repository, {this.recordOpens = false}) {
     repository.addListener(_changed);
     _changed();
   }
   final LibraryRepository repository;
+  final bool recordOpens;
+  bool _visible = false;
+  String? _lastOpened, _opening;
+  int _openRevision = 0;
+
+  /// Only a mounted viewing route enables history, never list/queue prefetch.
+  void setVisible(bool visible) {
+    _visible = visible;
+    if (visible) _recordOpen();
+  }
+
+  void _recordOpen() {
+    final id = _selected;
+    if (_closed ||
+        !_visible ||
+        !recordOpens ||
+        !repository.fixedPreview ||
+        id == null ||
+        repository.current?.id != id) {
+      return;
+    }
+    final key =
+        '${identityHashCode(repository.connectionIdentity)}:${repository.playbackIdentity}:$id';
+    if (_lastOpened == key || _opening == key) return;
+    _opening = key;
+    final revision = ++_openRevision;
+    unawaited(() async {
+      try {
+        await repository.recordVideoOpened(id);
+        if (!_closed && revision == _openRevision) _lastOpened = key;
+      } on RequestCancelled {
+        // A later selection owns its own visible-open acknowledgement.
+      } catch (_) {
+        if (!_closed && _visible && revision == _openRevision) {
+          message = '最近记录暂未同步，可继续观看';
+          _emit();
+        }
+      } finally {
+        if (_opening == key) _opening = null;
+      }
+    }());
+  }
+
   final Map<int, String> _entries = {};
   final Map<String, LibraryVideo> _videos = {};
   final Set<String> _hidden = {};
@@ -64,7 +107,7 @@ class BrowsingSession extends ChangeNotifier {
     if (_closed) return;
     final state = repository.snapshot;
     final identity =
-        '${state.connected}-${state.address}:${state.port}-${repository.playbackIdentity}';
+        '${state.connected}-${state.address}:${state.port}-${repository.playbackSequenceIdentity}';
     if (_identity != identity) {
       _identity = identity;
       _epoch++;
@@ -98,6 +141,7 @@ class BrowsingSession extends ChangeNotifier {
     if (_moves == 0 && _fileChanges == 0) _selected = repository.current?.id;
     _selected ??= repository.current?.id;
     _emit();
+    _recordOpen();
     if (state.connected && repository.libraryPreparation.value.ready) {
       unawaited(_prefetch());
     }
@@ -150,6 +194,54 @@ class BrowsingSession extends ChangeNotifier {
     return result;
   }
 
+  Future<void> changeOrder(PlayOrder order, {bool restart = false}) {
+    final connection = repository.connectionIdentity;
+    final identity = repository.playbackIdentity;
+    return _enqueue(() async {
+      if (_closed ||
+          !identical(connection, repository.connectionIdentity) ||
+          identity != repository.playbackIdentity) {
+        throw const RequestCancelled();
+      }
+      await repository.changePreviewOrder(order, restart: restart);
+    });
+  }
+
+  Future<void> choose(String id) {
+    final connection = repository.connectionIdentity;
+    final identity = repository.playbackIdentity;
+    ++_selection;
+    _moves++;
+    return _enqueue(() async {
+      try {
+        if (_closed ||
+            !identical(connection, repository.connectionIdentity) ||
+            identity != repository.playbackIdentity) {
+          throw const RequestCancelled();
+        }
+        await repository.moveToVideo(id);
+      } finally {
+        _moves--;
+        if (!_closed && identical(connection, repository.connectionIdentity)) {
+          followRepository();
+        }
+      }
+    });
+  }
+
+  Future<void> finish() {
+    final connection = repository.connectionIdentity;
+    final identity = repository.playbackIdentity;
+    return _enqueue(() async {
+      if (_closed ||
+          !identical(connection, repository.connectionIdentity) ||
+          identity != repository.playbackIdentity) {
+        throw const RequestCancelled();
+      }
+      await repository.finishPreview();
+    });
+  }
+
   bool step(int delta) {
     final ids = _ids, index = ids.indexOf(_selected ?? '') + delta;
     if (index < 0 || index >= ids.length) {
@@ -171,6 +263,9 @@ class BrowsingSession extends ChangeNotifier {
             return;
           }
           await repository.moveToVideo(id);
+          if (!_closed && epoch == _epoch && selection == _selection) {
+            _recordOpen();
+          }
         } on RequestCancelled {
           return;
         } catch (_) {

@@ -151,15 +151,21 @@ class _FolderPickerState extends State<FolderPicker> {
 }
 
 class ScopeSheet extends StatefulWidget {
-  const ScopeSheet({super.key, required this.repository, this.review = false});
+  const ScopeSheet({
+    super.key,
+    required this.repository,
+    this.review = false,
+    this.initial,
+  });
   final LibraryRepository repository;
   final bool review;
+  final VideoQuery? initial;
   @override
   State<ScopeSheet> createState() => _ScopeSheetState();
 }
 
 class _ScopeSheetState extends State<ScopeSheet> {
-  late VideoQuery draft = widget.repository.snapshot.query;
+  late VideoQuery draft = widget.initial ?? widget.repository.snapshot.query;
   Widget select(
     String label,
     String value,

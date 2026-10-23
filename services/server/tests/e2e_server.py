@@ -20,6 +20,7 @@ from video_viewer.media import MediaInspectionError
 from video_viewer.models import Root, Video
 
 from .generate_media import encode, generate
+from .preview_fixture import install as install_preview_fixture
 
 FIXTURE_PASSPHRASE = "video-viewer-emulator-fixture-only"
 FIXTURE_KEY = "isolated-emulator-control"
@@ -62,6 +63,7 @@ def create_e2e_app():
             time.sleep(6)
 
     app = create_app(settings, backup_fault_hook=backup_fault)
+    install_preview_fixture(app, BASE, PORTRAIT, FIXTURE_KEY)
     trace = deque(maxlen=300)
     checkpoint = {"phase": "ready"}
 
@@ -135,6 +137,7 @@ def create_e2e_app():
     def controlled(key):
         if key != FIXTURE_KEY:
             raise HTTPException(status_code=403)
+
 
     def copy_new(source, destination):
         destination.parent.mkdir(parents=True, exist_ok=True)

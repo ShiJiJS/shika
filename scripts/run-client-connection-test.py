@@ -49,6 +49,7 @@ stop = threading.Event()
 events = []
 errors = []
 PREFIX = "i1"
+APP_COMPONENT = "io.github.shijijs.video_viewer/.MainActivity"
 
 
 def docker(*args):
@@ -58,6 +59,79 @@ def docker(*args):
         capture_output=True,
         text=True,
         timeout=30,
+    )
+
+
+def prepare_emulator():
+    avd = (
+        subprocess.check_output(
+            [ADB, "-s", "emulator-5554", "emu", "avd", "name"], text=True, timeout=10
+        )
+        .splitlines()[0]
+        .strip()
+    )
+    if avd != os.environ.get("VV_AVD_NAME", "video_viewer_api_36"):
+        raise SystemExit(
+            f"Refusing to change guidance settings on an unexpected AVD: {avd}"
+        )
+    # Cold boots can show an Android-owned immersive guide over the app. It
+    # steals focus and is outside Flutter's widget tree, so prepare only this AVD.
+    subprocess.run(
+        [
+            ADB,
+            "-s",
+            "emulator-5554",
+            "shell",
+            "settings",
+            "put",
+            "secure",
+            "immersive_mode_confirmations",
+            "confirmed",
+        ],
+        check=True,
+        timeout=10,
+    )
+    confirmed = subprocess.check_output(
+        [
+            ADB,
+            "-s",
+            "emulator-5554",
+            "shell",
+            "settings",
+            "get",
+            "secure",
+            "immersive_mode_confirmations",
+        ],
+        text=True,
+        timeout=10,
+    ).strip()
+    if confirmed != "confirmed":
+        raise SystemExit(
+            "Could not prepare the dedicated emulator's immersive guidance"
+        )
+    events.append(
+        {"phase": "emulator-immersive-guidance-confirmed", "time": time.time()}
+    )
+
+
+def foreground_app():
+    return subprocess.run(
+        [
+            ADB,
+            "-s",
+            "emulator-5554",
+            "shell",
+            "am",
+            "start",
+            "-W",
+            "-n",
+            APP_COMPONENT,
+            "--activity-single-top",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=15,
     )
 
 
@@ -87,8 +161,15 @@ def fresh_instance():
         # Recreate only this disposable container to mount the new empty data.
         subprocess.run(
             [
-                "docker", "compose", "-f", str(ROOT / "compose.client-e2e.yaml"),
-                "up", "-d", "--no-build", "--force-recreate", "server",
+                "docker",
+                "compose",
+                "-f",
+                str(ROOT / "compose.client-e2e.yaml"),
+                "up",
+                "-d",
+                "--no-build",
+                "--force-recreate",
+                "server",
             ],
             env={**os.environ, "VV_E2E_ASSETS": str(ROOT / "apps/mobile/assets/media")},
             check=True,
@@ -174,6 +255,8 @@ def main():
     mode.add_argument("--backups", action="store_true")
     mode.add_argument("--preparation", action="store_true")
     mode.add_argument("--interactions", action="store_true")
+    mode.add_argument("--preview", action="store_true")
+    mode.add_argument("--anchor", action="store_true")
     parser.add_argument("--plain-name")
     args = parser.parse_args()
     if not Path(ADB).is_file() or not Path(FLUTTER).is_file():
@@ -197,7 +280,11 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.interactions:
+    if args.anchor:
+        PREFIX = "lf3-anchor"
+    elif args.preview:
+        PREFIX = "lf3-preview"
+    elif args.interactions:
         PREFIX = "v1-interactions"
     elif args.preparation:
         PREFIX = "v1-preparation"
@@ -214,6 +301,7 @@ def main():
     else:
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
+    prepare_emulator()
     subprocess.run(
         host_command(
             "bash", host_path(ROOT / "scripts/prepare-client-e2e.sh"), "--reset"
@@ -226,6 +314,7 @@ def main():
     )
     watcher = threading.Thread(target=watch, daemon=True)
     watcher.start()
+    android_in_background = False
     try:
         command = [
             FLUTTER,
@@ -239,6 +328,8 @@ def main():
                 "i6": "integration_test/server_backups_test.dart",
                 "v1-preparation": "integration_test/server_preparation_test.dart",
                 "v1-interactions": "integration_test/nonblocking_server_test.dart",
+                "lf3-preview": "integration_test/server_preview_test.dart",
+                "lf3-anchor": "integration_test/server_anchor_test.dart",
             }[PREFIX],
             "-d",
             "emulator-5554",
@@ -254,7 +345,11 @@ def main():
             code = 0
             for phase in range(
                 1
-                if args.plain_name or args.preparation or args.interactions
+                if args.plain_name
+                or args.preparation
+                or args.interactions
+                or args.preview
+                or args.anchor
                 else 3
                 if args.backups
                 else 2
@@ -296,10 +391,40 @@ def main():
                     log.write(line)
                     log.flush()
                     print(line, end="", flush=True)
+                    if line.strip() == "VV_E2E_DEVICE_BACKGROUND":
+                        subprocess.run(
+                            [
+                                ADB,
+                                "-s",
+                                "emulator-5554",
+                                "shell",
+                                "input",
+                                "keyevent",
+                                "KEYCODE_HOME",
+                            ],
+                            check=True,
+                            capture_output=True,
+                            timeout=10,
+                        )
+                        android_in_background = True
+                        events.append(
+                            {"phase": "android-backgrounded", "time": time.time()}
+                        )
+                    elif line.strip() == "VV_E2E_DEVICE_FOREGROUND":
+                        foreground_app()
+                        android_in_background = False
+                        events.append(
+                            {"phase": "android-foregrounded", "time": time.time()}
+                        )
                 code = process.wait()
                 if code:
                     break
     finally:
+        if android_in_background:
+            try:
+                foreground_app()
+            except subprocess.SubprocessError as error:
+                errors.append(f"Could not restore the emulator app: {error}")
         stop.set()
         watcher.join(timeout=35)
         docker("start", CONTAINER)

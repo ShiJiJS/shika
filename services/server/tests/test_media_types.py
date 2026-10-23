@@ -201,8 +201,15 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         == 200
     )
     info = client.get("/api/v1/info").json()
-    assert info["schema_version"] == "0006"
-    assert set(info["capabilities"]) == {"typed_roots", "pack_tags", "image_packs"}
+    assert info["schema_version"] == "0008"
+    assert set(info["capabilities"]) == {
+        "typed_roots",
+        "pack_tags",
+        "image_packs",
+        "fixed_video_sessions",
+        "versioned_video_queue",
+        "video_entry_anchors",
+    }
     schema = client.get("/openapi.json").json()
     assert schema["components"]["schemas"]["RootInput"]["properties"]["enabled"]
     assert (
@@ -322,7 +329,7 @@ def test_crash_recovery_uses_journal_before_retrying_upgrade(tmp_path):
             ).fetchone()
             is None
         )
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0006",)
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0008",)
     assert not (tmp_path / "migration-pending.json").exists()
     db.close()
 
@@ -341,6 +348,56 @@ def test_static_migration_matches_orm_schema(library):
             change[0] == "remove_index" and change[1].name == "trash_active_video"
             for change in changes
         )
+
+
+def test_0007_fixed_sessions_survive_sequence_revision_upgrade(tmp_path):
+    from alembic import command
+    from alembic.config import Config
+
+    fixture = Path(__file__).parent / "fixtures" / "lf0-management-0004.sql"
+    path = tmp_path / "library.sqlite3"
+    with sqlite3.connect(path) as connection:
+        connection.executescript(fixture.read_text())
+    db = Database(tmp_path)
+    config = Config(str(Path(__file__).parents[1] / "alembic.ini"))
+    config.set_main_option("script_location", str(Path(__file__).parents[1] / "migrations"))
+    with db.engine.begin() as connection:
+        config.attributes["connection"] = connection
+        command.upgrade(config, "0007")
+    with sqlite3.connect(path) as connection:
+        connection.execute(
+            "UPDATE playback_rounds SET membership='fixed', source='tags', sort='name'"
+        )
+        connection.execute("UPDATE round_entries SET source_ordinal=ordinal")
+        names = [
+            row[0]
+            for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name!='alembic_version'"
+            )
+        ]
+        columns = {
+            name: [row[1] for row in connection.execute(f'PRAGMA table_info("{name}")')]
+            for name in names
+        }
+        before = {
+            name: sorted(connection.execute(f'SELECT * FROM "{name}"').fetchall(), key=repr)
+            for name in names
+        }
+    db.migrate()
+    with sqlite3.connect(path) as connection:
+        for name in names:
+            fields = ",".join(f'"{column}"' for column in columns[name])
+            assert (
+                sorted(connection.execute(f'SELECT {fields} FROM "{name}"').fetchall(), key=repr)
+                == before[name]
+            )
+        assert connection.execute(
+            "SELECT DISTINCT sequence_revision FROM playback_rounds"
+        ).fetchall() == [(0,)]
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0008",)
+        assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
+    assert db.last_migration_snapshot is not None
+    db.close()
 
 
 def test_reused_path_preserves_missing_pack_identity_without_stealing_tags(library):
@@ -478,7 +535,7 @@ def test_0005_pack_management_data_survives_directory_evidence_upgrade(tmp_path)
                 == before[name]
             )
         assert connection.execute("SELECT directory_signature FROM packs").fetchone() == ("[]",)
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0006",)
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0008",)
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
     assert db.last_migration_snapshot is not None
     db.close()

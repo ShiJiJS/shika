@@ -1,0 +1,264 @@
+{
+  "stage": "LF3 native playback recovery checkpoint; LF3/LF4 source integration and final LF8 audit remain open",
+  "implementation_revision": "22ff159c1a55870712a0a1785fc56a51425ca229",
+  "pull_request": "https://github.com/ShiJiJS/video_viewer/pull/37",
+  "client": {
+    "passed": 108,
+    "failed": 0,
+    "analyze": "No issues found",
+    "test_log_sha256": "c8d22dc6c5b9764167ab767f29083bf06b61d6d3e1343998d39cf17c137e483f",
+    "analyze_log_sha256": "bce4cbefebb908a4937420ca1c175cae3938021642565dbfcfe6d32f1d73ec51"
+  },
+  "server": {
+    "passed": 148,
+    "unchanged_production_files_checked_against_anchor_manifest": 41,
+    "changed": [],
+    "historical_result": "lf3-anchor-results.json",
+    "new_server_suite_run": false
+  },
+  "native": {
+    "implementation_revision": "22ff159c1a55870712a0a1785fc56a51425ca229",
+    "phase_1_checkout_revision": "22ff159c1a55870712a0a1785fc56a51425ca229",
+    "phase_2_checkout_revision": "f72bd389efd8db07e393bba2c1772181cb6c03e3",
+    "between_phase_changes": "Documentation only; all application/test/runner hashes match lf3-playback-source-sha256.json",
+    "exit_code": 0,
+    "test_cases_passed": 5,
+    "phases": 2,
+    "host_errors": [],
+    "e2e_image_id": "sha256:15808a3af17bd44b84bbb5384f8aeeaebe314de95642a6328b669737b11f225c",
+    "last_apk_sha256": "ea18494522ed8690a5e8b73840e0e787ab78b30ec49c35f67be205de5fd60550",
+    "last_apk_kind": "E2E_RESUME variant from phase 2; phase 1 APK was overwritten and its hash was not captured",
+    "consecutive_fresh_complete_runs": 1,
+    "phase_1_seconds": 208,
+    "phase_2_seconds": 8,
+    "format_samples": [
+      {
+        "name": "h264.mkv",
+        "container": "matroska,webm",
+        "video_codec": "h264",
+        "audio_codec": "aac",
+        "rotation": 0,
+        "decoded": true,
+        "open_retried": false,
+        "width": 160.0,
+        "height": 96.0,
+        "seek_ms": 872,
+        "loop": true
+      },
+      {
+        "name": "h264.mov",
+        "container": "mov,mp4,m4a,3gp,3g2,mj2",
+        "video_codec": "h264",
+        "audio_codec": "aac",
+        "rotation": 0,
+        "decoded": true,
+        "open_retried": false,
+        "loop_observed": true,
+        "width": 160.0,
+        "height": 96.0,
+        "seek_ms": 209,
+        "loop": true
+      },
+      {
+        "name": "hevc.mov",
+        "container": "mov,mp4,m4a,3gp,3g2,mj2",
+        "video_codec": "hevc",
+        "audio_codec": "aac",
+        "rotation": 0,
+        "decoded": true,
+        "open_retried": false,
+        "width": 160.0,
+        "height": 96.0,
+        "seek_ms": 720,
+        "loop": true
+      },
+      {
+        "name": "mpeg4.avi",
+        "container": "avi",
+        "video_codec": "mpeg4",
+        "audio_codec": "mp3",
+        "rotation": 0,
+        "decoded": true,
+        "open_retried": false,
+        "width": 160.0,
+        "height": 96.0,
+        "seek_ms": 518,
+        "loop": true
+      },
+      {
+        "name": "portrait.mp4",
+        "container": "mov,mp4,m4a,3gp,3g2,mj2",
+        "video_codec": "h264",
+        "audio_codec": "aac",
+        "rotation": 0,
+        "decoded": true,
+        "open_retried": false,
+        "width": 96.0,
+        "height": 160.0,
+        "seek_ms": 430,
+        "loop": true
+      },
+      {
+        "name": "prores.mov",
+        "container": "mov,mp4,m4a,3gp,3g2,mj2",
+        "video_codec": "prores",
+        "audio_codec": "pcm_s16le",
+        "rotation": 0,
+        "decoded": false,
+        "open_retried": false
+      },
+      {
+        "name": "rotated.mov",
+        "container": "mov,mp4,m4a,3gp,3g2,mj2",
+        "video_codec": "h264",
+        "audio_codec": "aac",
+        "rotation": 90,
+        "decoded": true,
+        "open_retried": false,
+        "width": 96.0,
+        "height": 160.0,
+        "seek_ms": 364,
+        "loop": true
+      },
+      {
+        "name": "vp9.webm",
+        "container": "matroska,webm",
+        "video_codec": "vp9",
+        "audio_codec": "opus",
+        "rotation": 0,
+        "decoded": true,
+        "open_retried": false,
+        "width": 160.0,
+        "height": 96.0,
+        "seek_ms": 413,
+        "loop": true
+      }
+    ],
+    "playback_result": {
+      "peak_decoders": 3,
+      "samples_in_round": 25,
+      "swipes": 7,
+      "preload_disabled": true,
+      "background_released": true,
+      "docker_restart_preserved_round": true,
+      "missing_source_skipped": true
+    },
+    "range_result": {
+      "range": "bytes=3185681-",
+      "status": 206,
+      "seek_ms": 52507,
+      "buffered_before_ms": 1002
+    },
+    "host_events": [
+      {
+        "phase": "emulator-immersive-guidance-confirmed",
+        "time": 1792793306.157509
+      },
+      {
+        "phase": "ready",
+        "time": 1792793312.254621
+      },
+      {
+        "phase": "formats",
+        "time": 1792793372.8564548
+      },
+      {
+        "phase": "android-backgrounded",
+        "time": 1792793392.921076
+      },
+      {
+        "phase": "android-foregrounded",
+        "time": 1792793394.280792
+      },
+      {
+        "phase": "playback",
+        "time": 1792793424.355743
+      },
+      {
+        "phase": "android-backgrounded",
+        "time": 1792793454.633079
+      },
+      {
+        "phase": "android-foregrounded",
+        "time": 1792793456.8298082
+      },
+      {
+        "phase": "outage",
+        "time": 1792793489.2060611
+      },
+      {
+        "phase": "android-backgrounded",
+        "time": 1792793489.5863008
+      },
+      {
+        "phase": "docker-stopped",
+        "time": 1792793489.658138
+      },
+      {
+        "phase": "android-foregrounded",
+        "time": 1792793491.767089
+      },
+      {
+        "phase": "docker-started",
+        "time": 1792793510.007824
+      },
+      {
+        "phase": "recovered",
+        "time": 1792793513.123123
+      },
+      {
+        "phase": "android-backgrounded",
+        "time": 1792793527.446203
+      },
+      {
+        "phase": "android-foregrounded",
+        "time": 1792793529.6390002
+      },
+      {
+        "phase": "done",
+        "time": 1792793537.339565
+      },
+      {
+        "phase": "android-force-stopped",
+        "resume_phase": 1,
+        "time": 1792793537.889299
+      },
+      {
+        "phase": "android-backgrounded",
+        "time": 1792793559.568369
+      },
+      {
+        "phase": "android-foregrounded",
+        "time": 1792793561.7376719
+      }
+    ],
+    "files_sha256": {
+      "i2-android-test.log": "327587eb413e88ad2ddfef1da2c72bfee54f8ea51950cca00b22513850f22699",
+      "i2-formats-requests.json": "9ac520494e54b7cdd4d2367e3b8daf088cb362248503951de99038cf3e14c629",
+      "i2-formats.png": "01af09cf0249b0b48ddff064e358c595256dceb6f810e0f3cb1d1667350f47ae",
+      "i2-host-events.json": "d999de1f0aaff6213949264383a416676376df7199156e67e6c15485c164a7bd",
+      "i2-playback-requests.json": "41130d3f8b4aeddfc45128586c0f21c273681946cfe5001bbf39ec98179dbfac",
+      "i2-playback.png": "9f9eb81401c19a85293abf10ca1279c718b4a1ef476e3a898dfe3eb6775cea2b",
+      "i2-recovered-requests.json": "c97670c67eedae048e47035f12c8e13afcebe5942795f4eafe63fac204836af1",
+      "i2-recovered.png": "b7c143712127f2e357271dceeda2b9949fb0bb23b1a3aea5dcbad3439cb444cd",
+      "runner.log": "04908a7abb1c95013823366dec21c2de57848762db56095c65c8ba512da57ee9",
+      "source.json": "0d7046ce1ab64b0ba31b7eb80cd50c0c863aa5738402087a5d4f86dc365d249d"
+    },
+    "device": "Android 16/API 36 emulator-5554, arm64, 1080x2400, density 420, host GPU, Vulkan disabled",
+    "fixture": "Disposable 8761 service, public flower/format samples; ordinary 8760/NAS untouched"
+  },
+  "regressions_fixed": [
+    "Rotation focus loss retains play/pause intent, decoder and timeline; real background releases and resumes paused",
+    "Device-hint removal keeps the open speed menu state",
+    "Queue selection starts the new clip after the panel closes, while reopening a paused current clip stays paused",
+    "Pending begin allows navigation away and cannot push a late preview route",
+    "Failed/cancelled begin after overlapping source refresh releases lookup/pagination state",
+    "Missing-source recovery explanation survives disposal of the old decoder"
+  ],
+  "remaining": [
+    "LF4 four destinations, recent/tag source wiring and independent video/pack contexts",
+    "Repeated complete native paths and real phone/NAS performance/visual audit at the LF8 milestone",
+    "LF7 service-owned defaults and v2 backup; LF3 local videoOrder is temporary"
+  ],
+  "reference_prototype_changed": false
+}

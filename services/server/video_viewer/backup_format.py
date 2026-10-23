@@ -11,7 +11,7 @@ from sqlalchemy import JSON, Boolean, Float, Integer, String, create_engine, sel
 from sqlalchemy.exc import IntegrityError, StatementError
 
 from .errors import LibraryError
-from .models import Base, Root, Setting
+from .models import Base, PlaybackRound, Root, Setting
 
 FORMAT = "video-viewer-management"
 VERSION = 1
@@ -37,11 +37,12 @@ TABLES = [table for table in Base.metadata.sorted_tables if table.name in LEGACY
 
 
 def backup_columns(table):
-    return [
-        column
-        for column in table.c
-        if table.name != "roots" or column.name not in {"kind", "enabled"}
-    ]
+    excluded = {
+        "roots": {"kind", "enabled"},
+        "playback_rounds": {"membership", "source", "sort", "sequence_revision"},
+        "round_entries": {"source_ordinal"},
+    }
+    return [column for column in table.c if column.name not in excluded.get(table.name, set())]
 
 
 def require_legacy_backup(session):
@@ -54,8 +55,11 @@ def require_legacy_backup(session):
         for table in Base.metadata.sorted_tables
         if table.name not in LEGACY_TABLES | {"settings", "access_tokens", "observations"}
     )
-    if typed_root or new_data:
-        raise LibraryError("backup_upgrade_required", "当前管理数据需要图包备份 v2 支持", 409)
+    fixed_round = session.scalar(
+        select(PlaybackRound.id).where(PlaybackRound.membership == "fixed").limit(1)
+    )
+    if typed_root or new_data or fixed_round:
+        raise LibraryError("backup_upgrade_required", "当前管理数据需要媒体库备份 v2 支持", 409)
 
 
 TABLE_MAP = {table.name: table for table in TABLES}

@@ -1,0 +1,167 @@
+{
+  "stage": "LF3 stable source-position checkpoint; LF3 overall remains in progress",
+  "implementation_revision": "3e26922549c93b219abce942d3e57be048c73d15",
+  "branch": "codex/lf3-fixed-preview",
+  "base_branch": "codex/lf2-pack-catalog",
+  "schema": "0008",
+  "server_tests": {
+    "passed": 148,
+    "failed": 0,
+    "seconds": 165.67,
+    "production_source_revision": "436554c",
+    "production_source_unchanged_after_that_revision": true,
+    "later_changes": "Native fixture delay controls and Flutter/UI tests; current fixture separately exercised by native runs",
+    "image_config_digest": "sha256:82e16ee506761001d02b1430b93170f6cb99a61a415c3dc3bf81c39125e0fbc",
+    "command": "docker run --rm --read-only --network none --shm-size=64m --tmpfs /tmp:mode=1777 video-viewer-server:lf3-anchor pytest -q",
+    "source_bind_mount": false,
+    "log_sha256": "73b510a09459eb969b8cde61137f994b459abc1ceb62294ce31f3838417d302c",
+    "warning": "Existing FastAPI TestClient/httpx deprecation"
+  },
+  "client_tests": {
+    "passed": 95,
+    "failed": 0,
+    "log_sha256": "8018dfee368818d78fa0db7135831f28e9cbc8ed8fb24dc953131bccacc36766",
+    "analyze": "No issues found",
+    "analyze_log_sha256": "2104e445ed98c3251144d988288758cbd79f6fa9342f6a5fd21216e60aa24279"
+  },
+  "capability_added": "video_entry_anchors",
+  "database_columns_added": false,
+  "server_and_adapter_coverage": [
+    "Same filtered/sorted SQL snapshot supplies count, anchor rank and bounded metadata page",
+    "Inserted content does not defeat stable ID lookup",
+    "Retagged anchor is skipped for next matching saved ID",
+    "All saved IDs missing clamps fallback index; empty query stays empty",
+    "Recent order remains within actual recent membership",
+    "Lookup neither starts playback nor writes history",
+    "Maximum 16 candidate IDs",
+    "Server and Demo adapters agree; stale lookup cannot replace new search",
+    "Lookup and previous-page failure retain old window; retry uses the same operation"
+  ],
+  "native": {
+    "command": "bash scripts/dev.sh python3 scripts/run-client-connection-test.py --anchor",
+    "consecutive_fresh_runs_passed": 3,
+    "runs": [
+      {
+        "run": 1,
+        "source_revision": "3e26922549c93b219abce942d3e57be048c73d15",
+        "exit_code": 0,
+        "e2e_image_id": "sha256:fac41cfa217749c06a790c1babcb0972ee43a669b392d95057a9d0c7b5b9b922",
+        "apk_sha256": "c341d2b2a067d85b005d976216f07f339f32b2c3d3fba2996538bcdb7be8cbf3",
+        "host_errors": [],
+        "files_sha256": {
+          "lf3-anchor-android-test.log": "cb7ec0b57bd78d4b526406db30e555571163e0e1439efb7b3e8ea35ffe425aed",
+          "lf3-anchor-host-events.json": "b14044279beac6018a05f5e21c3064465247a580674f00fb0d42fbc40cb7219c",
+          "lf3-anchor-library-requests.json": "dc9d1232e5eeedae508b9a9279ffca5307d375bfaa744304b5cd693dfb1586a5",
+          "lf3-anchor-library.png": "a813c8c22b26e3928b971513f86c305c1e598018d66dd35775de7aff948c2616",
+          "lf3-anchor-recovered-requests.json": "7fe39b17b8d90d3b05a53ad70ce949c041a06fa551afe0440d7b529da2ab91d1",
+          "lf3-anchor-recovered.png": "4a49f6e6f34764dbebe28ee1864c650f239186a9075cf4fc9f936aff5c82c8e9",
+          "runner.log": "a655cd10047ff064934971a09b0989ce71d6f9e9fc099b9389eb9328023a620c",
+          "source.json": "39de8dd30ebef4c5aae00f5df01133b5d7f1ed2f56e0ffa255eb1400830b8103"
+        }
+      },
+      {
+        "run": 2,
+        "source_revision": "3e26922549c93b219abce942d3e57be048c73d15",
+        "exit_code": 0,
+        "e2e_image_id": "sha256:8622b40e840f0e7bd4f587e68e7f32385d24f2ea356a7d6b6ce2161134274588",
+        "apk_sha256": "111c7ce09ad981e595441ee165f2cb8f47c539b54b8d7e9fdaddc4c6be3cd45f",
+        "host_errors": [],
+        "files_sha256": {
+          "lf3-anchor-android-test.log": "19d3cdbfc0289ccdaceedbb558a0705f37d1b1a166cd79f992ded6e68a33a9ec",
+          "lf3-anchor-host-events.json": "aff236abcf0ee76d03c5dcbda72553f63efaaf6574075943e0e5ada4da0e7245",
+          "lf3-anchor-library-requests.json": "40d485779ad36fcbbbdeecd8008be3c78ff335983993081bb4029e44f0a61cb4",
+          "lf3-anchor-library.png": "e4064bb3da4c370def8be810e49625a1f4b58f2c3a1ab211e171bfe174376708",
+          "lf3-anchor-recovered-requests.json": "4baa734e2b9b42a3c95f420f15f43fb7e78723a073ac2dd4663d77c88249cd75",
+          "lf3-anchor-recovered.png": "41cf0fe2a064f21d67985ecfb586750563415ce1fb5ca3ffff6178c86049c7d5",
+          "runner.log": "88f9833443c563f9a6e7bc1e0cc96c2f9eda629690c2c0602ddbb1093968e7d9",
+          "source.json": "bceeb3f917989da7d1ef03d0d12fd2f4c7b94e87176d26822115f604cb6a3f13"
+        }
+      },
+      {
+        "run": 3,
+        "source_revision": "3e26922549c93b219abce942d3e57be048c73d15",
+        "exit_code": 0,
+        "e2e_image_id": "sha256:011e725625b86adb1dcabe20316181f30fb6e612f79bf5c569ae6586eb8ba656",
+        "apk_sha256": "41a625682ff7a418124557da4292e2cdbcd016d858ad7afce5f4f5777e4e0f5c",
+        "host_errors": [],
+        "files_sha256": {
+          "lf3-anchor-android-test.log": "158c1dc7e30ce350f810861881091ac07085e3e93c9aa7904689527ef8daa205",
+          "lf3-anchor-host-events.json": "96397bd1f2fa70cf2faac2f5ae60ee1f57387f41d5991e19d7cbbd5885885bd3",
+          "lf3-anchor-library-requests.json": "5bb6027003cc8d85af1cf703bed408c5991aa4038ac0cb9ef5782ae88449fe86",
+          "lf3-anchor-library.png": "f0b1066c7d25a9211665823afa623227224140129c7cbcd48e31cabf3365e8c3",
+          "lf3-anchor-recovered-requests.json": "a801b29a4b1b30fb5d70a4867379e7ce96628597f9551ecab39a595280682e43",
+          "lf3-anchor-recovered.png": "6c3f051166bbe8eb6a9724bdf4be70de9ff4d2cdd5d97e555aba1a1b8b948e88",
+          "runner.log": "77a01f6e805358541dbc48ac44e21a11d7016c92ccb093399d4f754013aa46bb",
+          "source.json": "0ee637752bb4591161954e05c4336edc3c79effa67379936ec0c5a6b84905556"
+        }
+      }
+    ],
+    "device": "Android 16/API 36 emulator-5554, 1080x2400, density 420; macOS host GPU, Vulkan disabled",
+    "fixture": "Isolated disposable 8761 service; public flower media; fresh reset per run",
+    "source_candidates": 73,
+    "source": "tags plus directory-relative search",
+    "original_anchor_index": 58,
+    "mutations_while_previewing": [
+      "Insert a new matching video before saved anchor",
+      "Remove the original anchor from its tag filter"
+    ],
+    "fixed_preview_candidate_count_after_mutations": 73,
+    "restored_neighbor_index": 59,
+    "restored_page_offset": 48,
+    "restored_page_size": 24,
+    "preserved_row_inset_dp": 37,
+    "failure_retry": "503 retains visible old cards, query and scroll; explicit retry after recovery locates surviving ID",
+    "background_updates": "Tag creation plus two writes with overlapping delayed reads retain visible row and pixel position",
+    "scroll_up": "Prepend offset 24 and compensate 12 rows to retain visible content",
+    "distinct_opened_history": 1,
+    "decoders_released_on_return": true,
+    "scope_limit": "Third-page synthetic path, not full LF3 fault/lifecycle matrix, all media entry screens, NAS or real-phone performance"
+  },
+  "native_preview_regression": {
+    "runs": 1,
+    "source": {
+      "source_revision": "3e26922549c93b219abce942d3e57be048c73d15",
+      "exit_code": 0,
+      "e2e_image_id": "sha256:14bf6844cd4a612842ca0e5ce575801de3b7d8188bb0168ea49663d1be1b7483",
+      "apk_sha256": "16088952019a8c8106cce5a6c48c1dcc8f4d36f37131a22c0e25097b0a81da13",
+      "host_errors": [],
+      "files_sha256": {
+        "lf3-preview-android-test.log": "78bcc62b866450b1c83207c8eb0e1f1a7bdeaedd476dd846038ada6fe76808c4",
+        "lf3-preview-formats-requests.json": "48efd23d54576960c84d35d371af1ce0b61d7c9a671b569a7aed4a23967f7883",
+        "lf3-preview-formats.png": "e4d68fdf82208abbfa9ed6b7191465b7ef343b9d8a79d27450d7fecb8c632c2d",
+        "lf3-preview-host-events.json": "bf4bf6a4865e21077c12bea0ee11e0017160838cba249c9d2d4924267100d090",
+        "lf3-preview-library-requests.json": "5ef3fbe62ddeca44935e75569d41542c8e49883f6143d054909a67e08e7bfdcc",
+        "lf3-preview-library.png": "d053e3a5a0727b9bdfdf4afdf6c1fde8dd5b4fdbb754138d70e3bc23ebacdd03",
+        "lf3-preview-preview-requests.json": "24f71015dc6df623cd6166f66fd83fbebc446f241db331dd519a72b697e5d7b3",
+        "lf3-preview-preview.png": "98943b0a262005de71c78acb46bfff94e53f7ebbf6ebb85bc3481e739a9a1ca3",
+        "runner.log": "9ae548ca0a8544f20472029371ef08e81f612bdc8e30f08547a0a41dbf3ed98d",
+        "source.json": "102398fd9af4397fd202ffedd3211446fc98766e5102c01a0c383701164d9e01"
+      }
+    },
+    "scope": "Existing 25-candidate preview, queue/mode/restart, pause/fullscreen and source return at the new source revision; earlier 3-run visual checkpoint remains historical"
+  },
+  "earlier_attempts": [
+    "First two anchor attempts asserted the extended catalog before async scan completion; tests now wait for ready and not scanning",
+    "Baseline deep-return flow passed 3 times at aab5c20 before overlapping-refresh coverage was added",
+    "First background-update probes read a stale rendered tree before a loading bar appeared; final helper pumps and rechecks rendered state before accepting completion",
+    "Earlier attempts are preserved locally and are excluded from final 3-run count"
+  ],
+  "ruff_check": "All checks passed",
+  "ruff_check_log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+  "ruff_format": {
+    "status": "7 inherited formatting debts; e2e_server.py only adds fixture registration without reformatting the existing module",
+    "log_sha256": "8c0281847b0f0e2ceccb1335a61384dadf0eb753d887816541872a01753cd2a4"
+  },
+  "reference_modified": false,
+  "private_media": false,
+  "real_nas_modified": false,
+  "ordinary_service_8760_modified": false,
+  "apk_released": false,
+  "pending": [
+    "Full native lifecycle/device-gesture/rapid-swipe/timeout/delayed-receipt/process-restart matrix",
+    "Update I1/I2 navigation assumptions while preserving fault coverage",
+    "LF4 recent/multiple-tag/sort UI and video/pack context separation",
+    "LF5-LF8 reader, cleanup, settings/backup-v2 and final prototype/device audit"
+  ],
+  "github_browser_sync": "Pending original TaskSpace recovery question; Git SSH push continues"
+}

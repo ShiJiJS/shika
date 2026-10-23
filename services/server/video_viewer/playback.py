@@ -1,12 +1,14 @@
 import hashlib
 import json
 import random
+import time
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from .errors import LibraryError
 from .library_state import prepared
-from .models import PlaybackRound, RoundEntry, Setting, Video, uid
+from .models import PlaybackRound, RecentEntry, RoundEntry, Setting, Video, uid
+from .requests import once
 
 
 class Playback:
@@ -14,7 +16,9 @@ class Playback:
         self.db, self.catalog, self.streams = db, catalog, streams
 
     def eligible(self, session, round):
-        scope = round.scope
+        # Fixed sessions only drop currently unavailable members. Entry filters
+        # were evaluated once at creation; editing tags cannot change membership.
+        scope = {} if round.membership == "fixed" else round.scope
         try:
             candidates = (
                 self.catalog.video_statement(session, **scope)
@@ -36,9 +40,11 @@ class Playback:
             )
         )
 
-    def create(self, order, scope, anchor_video_id=None, request_id=None):
+    def create(self, order, scope, anchor_video_id=None, request_id=None, **context):
         with self.db.write() as session:
-            return self.create_in_session(session, order, scope, anchor_video_id, request_id)
+            return self.create_in_session(
+                session, order, scope, anchor_video_id, request_id, **context
+            )
 
     def create_in_session(
         self,
@@ -49,12 +55,14 @@ class Playback:
         request_id=None,
         *,
         allow_missing_scope=False,
+        membership="legacy",
+        source="library",
+        sort="path",
     ):
-        request_hash = hashlib.sha256(
-            json.dumps(
-                {"order": order, "scope": scope, "anchor": anchor_video_id}, sort_keys=True
-            ).encode()
-        ).hexdigest()
+        payload = {"order": order, "scope": scope, "anchor": anchor_video_id}
+        if membership == "fixed":
+            payload.update(membership=membership, source=source, sort=sort)
+        request_hash = hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
         request_id = request_id or uid()
         previous = session.scalar(
             select(PlaybackRound).where(PlaybackRound.request_id == request_id)
@@ -66,9 +74,9 @@ class Playback:
         try:
             candidates = list(
                 session.scalars(
-                    self.catalog.video_statement(session, **scope)
-                    .order_by(Video.path, Video.id)
-                    .with_only_columns(Video.id)
+                    self.catalog.ordered_videos(
+                        session, source=source, sort=sort, **scope
+                    ).with_only_columns(Video.id)
                 )
             )
         except LibraryError as error:
@@ -76,9 +84,12 @@ class Playback:
                 raise
             candidates = []
         if not prepared(session):
+            if membership == "fixed":
+                raise LibraryError("library_preparing", "视频首扫尚未完成，请稍后进入预览", 409)
             candidates = []
         if anchor_video_id and anchor_video_id not in candidates:
             raise LibraryError("video_outside_scope", "该视频不在当前可播放范围内", 422)
+        source_ordinals = {video_id: i for i, video_id in enumerate(candidates)}
         if order == "random":
             random.SystemRandom().shuffle(candidates)
         round = PlaybackRound(
@@ -86,6 +97,9 @@ class Playback:
             request_hash=request_hash,
             order=order,
             scope=scope,
+            membership=membership,
+            source=source,
+            sort=sort,
             cursor=candidates.index(anchor_video_id) if anchor_video_id else 0,
             candidate_count=len(candidates),
             finished=not candidates,
@@ -93,7 +107,12 @@ class Playback:
         session.add(round)
         session.flush()
         session.add_all(
-            RoundEntry(round_id=round.id, ordinal=i, video_id=video_id)
+            RoundEntry(
+                round_id=round.id,
+                ordinal=i,
+                video_id=video_id,
+                source_ordinal=source_ordinals[video_id] if membership == "fixed" else None,
+            )
             for i, video_id in enumerate(candidates)
         )
         pointer = session.get(Setting, "active_round")
@@ -107,22 +126,30 @@ class Playback:
             session.delete(refresh)
         return self.summary(session, round)
 
-    def current(self):
+    def current(self, *, create=True):
         with self.db.write_lock:
             with self.db.read() as session:
                 pointer = session.get(Setting, "active_round")
                 active = pointer.value if pointer else None
             if not active:
+                if not create:
+                    raise LibraryError("round_not_started", "请从媒体库选择范围开始预览", 404)
                 return self.create("random", {})
             with self.db.write() as session:
                 round = self.get(session, active)
                 refresh = session.get(Setting, "library_round_refresh")
-                if refresh and refresh.value and prepared(session):
+                if refresh and round.membership == "fixed":
+                    session.delete(refresh)
+                elif refresh and refresh.value and prepared(session):
                     session.delete(refresh)
                     try:
-                        expected = set(session.scalars(
-                            self.catalog.video_statement(session, **round.scope).with_only_columns(Video.id)
-                        ))
+                        expected = set(
+                            session.scalars(
+                                self.catalog.video_statement(
+                                    session, **round.scope
+                                ).with_only_columns(Video.id)
+                            )
+                        )
                     except LibraryError as error:
                         if error.code != "directory_not_found":
                             raise
@@ -193,6 +220,10 @@ class Playback:
             "active": bool(pointer and pointer.value == round.id),
             "order": round.order,
             "scope": round.scope,
+            "membership": round.membership,
+            "source": round.source,
+            "sort": round.sort,
+            "sequence_revision": round.sequence_revision,
             "position": selected or 0,
             "total": len(entries),
             "candidate_count": round.candidate_count,
@@ -238,9 +269,12 @@ class Playback:
                     )
             return self.summary(session, round)
 
-    def entries(self, round_id, offset, limit):
+    def entries(self, round_id, offset, limit, sequence=None):
         with self.db.read() as session:
+            session.connection().exec_driver_sql("BEGIN")
             round = self.get(session, round_id)
+            if sequence is not None and sequence != round.sequence_revision:
+                raise LibraryError("round_order_changed", "预览队列顺序已变化，请重新读取", 409)
             entries = self.eligible(session, round)
             return {
                 "items": [
@@ -252,4 +286,103 @@ class Playback:
                 "offset": offset,
                 "limit": limit,
                 "total": len(entries),
+                "sequence_revision": round.sequence_revision,
             }
+
+    def active_fixed(self, session, round_id, expected_revision):
+        round = self.get(session, round_id)
+        pointer = session.get(Setting, "active_round")
+        if not pointer or pointer.value != round.id:
+            raise LibraryError("round_replaced", "播放范围已变化，请返回当前预览")
+        if round.membership != "fixed":
+            raise LibraryError("fixed_session_required", "此操作需要从媒体库重新进入预览", 422)
+        if round.revision != expected_revision:
+            raise LibraryError("round_conflict", "预览位置已变化，请刷新后重试")
+        return round
+
+    def reorder(self, round_id, order, expected_revision, request_id, *, restart=False):
+        """Reorder the stored members; never rerun the original filters."""
+        with self.db.write() as session:
+
+            def action():
+                round = self.active_fixed(session, round_id, expected_revision)
+                entries = list(
+                    session.scalars(
+                        select(RoundEntry)
+                        .where(RoundEntry.round_id == round.id)
+                        .order_by(RoundEntry.ordinal)
+                    )
+                )
+                selected = next(
+                    (entry.video_id for entry in entries if entry.ordinal == round.cursor), None
+                )
+                members = [(entry.video_id, entry.source_ordinal) for entry in entries]
+                if order == "random":
+                    random.SystemRandom().shuffle(members)
+                else:
+                    members.sort(key=lambda item: item[1])
+                session.execute(
+                    delete(RoundEntry)
+                    .where(RoundEntry.round_id == round.id)
+                    .execution_options(synchronize_session=False)
+                )
+                # Clear deleted identities before reusing composite ordinal keys.
+                for entry in entries:
+                    session.expunge(entry)
+                session.add_all(
+                    RoundEntry(
+                        round_id=round.id, ordinal=i, video_id=video_id, source_ordinal=baseline
+                    )
+                    for i, (video_id, baseline) in enumerate(members)
+                )
+                round.cursor = (
+                    0
+                    if restart
+                    else next(
+                        (i for i, (video_id, _) in enumerate(members) if video_id == selected), 0
+                    )
+                )
+                round.order, round.revision = order, round.revision + 1
+                round.sequence_revision += 1
+                round.finished = not members
+                session.flush()
+                return self.summary(session, round)
+
+            return once(
+                session,
+                "preview.order",
+                request_id,
+                {"id": round_id, "order": order, "revision": expected_revision, "restart": restart},
+                action,
+            )
+
+    def opened(self, round_id, video_id, expected_revision, request_id):
+        """Only a visible selection acknowledges an open; prefetch/GET never do."""
+        with self.db.write() as session:
+
+            def action():
+                round = self.active_fixed(session, round_id, expected_revision)
+                entry = session.scalar(
+                    select(RoundEntry).where(
+                        RoundEntry.round_id == round.id,
+                        RoundEntry.ordinal == round.cursor,
+                        RoundEntry.video_id == video_id,
+                    )
+                )
+                if not entry or not self.streams.can_play(session, session.get(Video, video_id)):
+                    raise LibraryError("video_unavailable", "该视频已不是当前可观看内容")
+                recent = session.scalar(select(RecentEntry).where(RecentEntry.video_id == video_id))
+                if not recent:
+                    recent = RecentEntry(kind="video", video_id=video_id)
+                    session.add(recent)
+                recent.opened_at = time.time()
+                session.flush()
+                return {"video_id": video_id, "opened_at": recent.opened_at}
+
+            return once(
+                session,
+                "preview.opened",
+                request_id,
+                {"id": round_id, "video_id": video_id, "revision": expected_revision},
+                action,
+            )

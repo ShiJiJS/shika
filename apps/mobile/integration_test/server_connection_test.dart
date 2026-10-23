@@ -8,6 +8,7 @@ import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/sheets.dart';
+import 'package:video_viewer/ui/player.dart';
 
 import 'support/fixture.dart';
 
@@ -45,6 +46,12 @@ void main() {
         expect(repo.snapshot.port, 8761);
         expect(repo.snapshot.query.folder, '/media/shorts/自然/花卉');
         expect(repo.playbackTotal, 25);
+        expect(repo.fixedPreview, isTrue);
+        expect(
+          find.byType(MovieStage),
+          findsNothing,
+          reason: 'saved scope does not autoplay after restart',
+        );
         expect(find.text('连接你的视频库'), findsNothing);
         final after =
             (await fixture('/__fixture/trace', method: 'GET'))['items'] as List;
@@ -198,8 +205,10 @@ void main() {
           : t.widget<Text>(find.byKey(const Key('operation-error'))).data,
     );
     expect(repo.snapshot.roots, hasLength(2));
-    // Initial connection gets a small playback window, not the entire catalog.
+    // Connection reads metadata; only an explicit library entry starts preview.
     expect(repo.snapshot.videos.length, lessThan(27));
+    expect(repo.playbackIdentity, isEmpty);
+    expect(find.byType(MovieStage), findsNothing);
     await nav('library');
     await count(27);
     await until(
@@ -225,7 +234,12 @@ void main() {
     );
     await folder(['端到端短视频', '自然', '花卉']);
     await count(25);
-    expect(repo.snapshot.query.folder, '/media/shorts/自然/花卉');
+    expect(
+      repo.snapshot.query.folder,
+      isEmpty,
+      reason: 'folder draft is independent of active playback',
+    );
+    expect(repo.playbackIdentity, isEmpty);
     await folder(['端到端短视频', '空目录']);
     await count(0);
     expect(find.text('没有符合条件的视频'), findsOneWidget);
@@ -247,9 +261,29 @@ void main() {
     await refreshRoots();
     await nav('library');
     await count(28);
-    expect(repo.playbackTotal, 27, reason: 'new media joins the next round');
+    expect(
+      repo.playbackTotal,
+      0,
+      reason: 'scan and selection still do not start playback',
+    );
     await folder(['端到端短视频', '自然', '花卉']);
     await count(25);
+    await textTap('预览此范围');
+    await until(
+      () => find.byType(MovieStage).evaluate().isNotEmpty,
+      'explicit fixed folder preview',
+    );
+    expect(repo.fixedPreview, isTrue);
+    expect(repo.playbackTotal, 25);
+    expect(repo.snapshot.query.folder, '/media/shorts/自然/花卉');
+    final preview = t.widget<MovieStage>(find.byType(MovieStage)).session!;
+    await tap(find.byKey(const Key('preview-back')));
+    await until(
+      () =>
+          preview.debugPlayers.isEmpty &&
+          find.byKey(const Key('video-grid')).evaluate().isNotEmpty,
+      'return releases playback',
+    );
     final serverId = (await store.read())!.serverId;
     await t.pumpWidget(const SizedBox());
     await t.pump(const Duration(milliseconds: 300));
@@ -391,6 +425,7 @@ void main() {
     await textTap('连接');
     expect(repo.snapshot.connected, isTrue);
     await nav('library');
+    await folder([], all: true);
     await count(28);
     await folder(['端到端短视频', '自然', '花卉']);
     await count(25);

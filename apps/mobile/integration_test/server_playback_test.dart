@@ -19,6 +19,42 @@ import 'package:video_viewer/ui/sheets.dart';
 
 import 'support/fixture.dart';
 
+class LifecycleTrace extends WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) =>
+      debugPrint('NATIVE_LIFECYCLE $state');
+}
+
+Future<void> deviceBackground(
+  WidgetTester tester,
+  PlaybackSession session,
+) async {
+  await tester.runAsync(() async {
+    debugPrint('VV_E2E_DEVICE_BACKGROUND');
+    try {
+      final deadline = DateTime.now().add(const Duration(seconds: 15));
+      while ((WidgetsBinding.instance.lifecycleState !=
+                  AppLifecycleState.paused ||
+              session.debugPlayers.isNotEmpty) &&
+          DateTime.now().isBefore(deadline)) {
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+      }
+      expect(WidgetsBinding.instance.lifecycleState, AppLifecycleState.paused);
+      expect(session.debugPlayers, isEmpty);
+    } finally {
+      debugPrint('VV_E2E_DEVICE_FOREGROUND');
+      final deadline = DateTime.now().add(const Duration(seconds: 15));
+      while (WidgetsBinding.instance.lifecycleState !=
+              AppLifecycleState.resumed &&
+          DateTime.now().isBefore(deadline)) {
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+      }
+      expect(WidgetsBinding.instance.lifecycleState, AppLifecycleState.resumed);
+    }
+  });
+  await tester.pump(const Duration(milliseconds: 300));
+}
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   if (const bool.fromEnvironment('E2E_RESUME')) {
@@ -56,7 +92,7 @@ void main() {
         final deadline = DateTime.now().add(const Duration(seconds: 30));
         while (!repo.snapshot.connected ||
             find.byType(LinearProgressIndicator).evaluate().isNotEmpty ||
-            find.byType(VideoPlayer).evaluate().isEmpty) {
+            find.byKey(const Key('video-grid')).evaluate().isEmpty) {
           if (DateTime.now().isAfter(deadline)) {
             fail('Android round did not reopen');
           }
@@ -69,22 +105,40 @@ void main() {
         expect(repo.snapshot.query.folder, '/media/shorts/自然/花卉');
         final after = await observer.json('GET', '/api/v1/playback');
         expect(after['id'], before['id']);
+        expect(
+          find.byType(MovieStage),
+          findsNothing,
+          reason: 'restart retains fixed session metadata without autoplay',
+        );
         final traceAfter =
             (await fixture('/__fixture/trace', method: 'GET'))['items'] as List;
         expect(
           traceAfter.where((r) => r['path'] == '/api/v1/auth/login').length,
           logins,
         );
+        final target = find.byKey(Key('tile-${repo.current!.id}'));
+        await t.ensureVisible(target);
+        await t.tap(target);
+        final pictureDeadline = DateTime.now().add(const Duration(seconds: 30));
+        while (find.byType(VideoPlayer).evaluate().isEmpty) {
+          if (DateTime.now().isAfter(pictureDeadline)) {
+            fail('Explicit preview did not decode');
+          }
+          await t.pump(const Duration(milliseconds: 100));
+        }
+        expect(repo.current!.id, before['current']['id']);
         final movieSession = t
             .widget<MovieStage>(find.byType(MovieStage))
             .session!;
         await observer.json('DELETE', '/api/v1/auth/session');
-        await t.tap(find.byKey(const Key('nav-settings')));
-        await t.pump(const Duration(milliseconds: 300));
-        await t.tap(find.byKey(const Key('nav-browse')));
+        await deviceBackground(t, movieSession);
         final expiryDeadline = DateTime.now().add(const Duration(seconds: 25));
         while (repo.snapshot.connected ||
-            movieSession.debugPlayers.isNotEmpty) {
+            movieSession.debugPlayers.isNotEmpty ||
+            find
+                .byKey(const Key('video-preview-route'))
+                .evaluate()
+                .isNotEmpty) {
           if (DateTime.now().isAfter(expiryDeadline)) {
             fail('Native playback did not release its expired session');
           }
@@ -127,8 +181,13 @@ void main() {
     int seconds = 35,
   }) async {
     final deadline = DateTime.now().add(Duration(seconds: seconds));
-    while (!condition()) {
+    while (true) {
+      await t.pump(const Duration(milliseconds: 80));
       audioBound();
+      if (condition()) {
+        await t.pump(const Duration(milliseconds: 80));
+        if (condition()) return;
+      }
       if (DateTime.now().isAfter(deadline)) {
         debugPrint(
           'VISIBLE_UI ${t.widgetList<Text>(find.byType(Text)).map((w) => w.data).whereType<String>().join(' | ')}',
@@ -139,10 +198,7 @@ void main() {
         } catch (_) {}
         fail('Timed out: $reason');
       }
-      await t.pump(const Duration(milliseconds: 80));
     }
-    audioBound();
-    await t.pump(const Duration(milliseconds: 100));
   }
 
   Future<void> idle(WidgetTester t) => until(
@@ -177,7 +233,56 @@ void main() {
 
   Future<void> textTap(WidgetTester t, String text) =>
       tap(t, find.text(text).last);
+
+  // The paused inline surface has a central play button above its gesture
+  // detector. Exercise seeking/holding on exposed video, as a user would.
+  Offset gesturePoint(WidgetTester t) {
+    final rect = t.getRect(surface);
+    return Offset(rect.left + rect.width * .3, rect.top + rect.height * .3);
+  }
+
+  Future<void> tapSurface(WidgetTester t) async {
+    await t.tapAt(gesturePoint(t));
+    await t.pump(const Duration(milliseconds: 300));
+    await idle(t);
+  }
+
+  Future<void> dragSurface(WidgetTester t, Offset offset) =>
+      t.dragFrom(gesturePoint(t), offset);
+  Future<void> enter(WidgetTester t, {String? anchor}) async {
+    await until(
+      t,
+      () => find.byKey(const Key('video-grid')).evaluate().isNotEmpty,
+      'library before explicit preview',
+    );
+    if (anchor == null) {
+      await textTap(t, '预览此范围');
+    } else {
+      final target = find.byKey(Key('tile-$anchor'));
+      await t.scrollUntilVisible(
+        target,
+        400,
+        scrollable: find.descendant(
+          of: find.byKey(const Key('video-grid')),
+          matching: find.byType(Scrollable),
+        ),
+      );
+      await tap(t, target);
+    }
+  }
+
   Future<void> nav(WidgetTester t, String page) async {
+    final selected = repo.current?.id;
+    if (find.byKey(const Key('video-preview-route')).evaluate().isNotEmpty) {
+      if (page == 'browse') return;
+      await tap(t, find.byKey(const Key('preview-back')));
+      await until(t, () => stage.evaluate().isEmpty, 'leave secondary preview');
+    }
+    if (page == 'browse') {
+      await nav(t, 'library');
+      await enter(t, anchor: selected);
+      return;
+    }
     if (find.byKey(Key('nav-$page')).evaluate().isEmpty) {
       await tap(t, find.byTooltip('返回设置'));
     }
@@ -240,6 +345,12 @@ void main() {
       VideoViewerApp(repository: repo, preferences: preferences),
     );
     await t.pump(const Duration(milliseconds: 300));
+    expect(
+      find.byType(MovieStage),
+      findsNothing,
+      reason: 'restored scope does not autoplay',
+    );
+    await enter(t);
   }
 
   Future<void> folder(WidgetTester t, List<String> names) async {
@@ -270,11 +381,47 @@ void main() {
     await tap(t, find.byTooltip('筛选视频'));
     await textTap(t, '清除条件');
     await textTap(t, '应用筛选');
+    await t.enterText(find.byKey(const Key('video-search')), '');
   }
 
   Future<void> mode(WidgetTester t, String name) async {
-    await tap(t, find.byTooltip('播放模式'));
-    await textTap(t, name);
+    await tap(t, find.byKey(const Key('preview-scope')));
+    await tap(
+      t,
+      find.byKey(
+        Key('queue-order-${name == '顺序播放' ? 'sequential' : 'random'}'),
+      ),
+    );
+    await tap(t, find.byTooltip('关闭面板'));
+  }
+
+  Future<void> choose(WidgetTester t, String id) async {
+    await tap(t, find.byKey(const Key('preview-scope')));
+    final queue = find.byKey(const Key('preview-queue'));
+    await until(t, () => queue.evaluate().isNotEmpty, 'queue mounted');
+    t.widget<ListView>(queue).controller!.jumpTo(0);
+    await until(
+      t,
+      () => find
+          .descendant(
+            of: queue,
+            matching: find.byType(CircularProgressIndicator),
+          )
+          .evaluate()
+          .isEmpty,
+      'queue metadata loaded',
+    );
+    final target = find.byKey(Key('queue-video-$id'));
+    await t.scrollUntilVisible(
+      target,
+      300,
+      scrollable: find.descendant(
+        of: find.byKey(const Key('preview-queue')),
+        matching: find.byType(Scrollable),
+      ),
+    );
+    await tap(t, target);
+    await ready(t);
   }
 
   Future<void> fling(WidgetTester t, {bool back = false}) async {
@@ -287,36 +434,19 @@ void main() {
     await idle(t);
   }
 
-  bool controlsVisible(WidgetTester t) =>
-      t
-          .widget<AnimatedOpacity>(
-            find
-                .ancestor(
-                  of: find.byKey(const Key('playback-controls')).last,
-                  matching: find.byType(AnimatedOpacity),
-                )
-                .first,
-          )
-          .opacity >
-      0;
-
-  Future<void> background(WidgetTester t) async {
-    // A paused live binding cannot pump. Wait for native disposal, then resume.
-    await t.runAsync(() async {
-      t.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-      try {
-        final deadline = DateTime.now().add(const Duration(seconds: 8));
-        while (session!.debugPlayers.isNotEmpty &&
-            DateTime.now().isBefore(deadline)) {
-          await Future<void>.delayed(const Duration(milliseconds: 50));
-        }
-        expect(session!.debugPlayers, isEmpty);
-      } finally {
-        t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-      }
-    });
-    await t.pump(const Duration(milliseconds: 300));
+  bool controlsVisible(WidgetTester t) {
+    final controls = find.byKey(const Key('playback-controls'));
+    // A rebuilding fullscreen surface has no controls yet; it has not hidden them.
+    if (controls.evaluate().isEmpty) return true;
+    final opacity = find.ancestor(
+      of: controls.last,
+      matching: find.byType(AnimatedOpacity),
+    );
+    if (opacity.evaluate().isEmpty) return true;
+    return t.widget<AnimatedOpacity>(opacity.first).opacity > 0;
   }
+
+  Future<void> background(WidgetTester t) => deviceBackground(t, session!);
 
   testWidgets('I2 measure eight actual container/codec samples on Android', (
     t,
@@ -324,8 +454,8 @@ void main() {
     await fixture('/__fixture/actions/formats');
     await start(t, preload: false);
     await repo.refresh();
-    await repo.setScope(
-      VideoQuery(folder: '/media/camera/格式'),
+    await repo.beginPreview(
+      VideoEntryScope(query: VideoQuery(folder: '/media/camera/格式')),
       order: PlayOrder.sequential,
     );
     final all = await observer.json(
@@ -411,7 +541,7 @@ void main() {
           expect(controller.value.isPlaying, isTrue);
           result['loop_observed'] = true;
         }
-        await tap(t, surface);
+        await tapSurface(t);
         await until(
           t,
           () => !controller.value.isPlaying,
@@ -482,11 +612,13 @@ void main() {
       await fixture('/__fixture/actions/formats');
       await start(t);
       await repo.refresh();
-      await repo.setScope(
-        VideoQuery(
-          folder: '/media/camera/格式',
-          type: 'MOV',
-          orientation: 'portrait',
+      await repo.beginPreview(
+        VideoEntryScope(
+          query: VideoQuery(
+            folder: '/media/camera/格式',
+            type: 'MOV',
+            orientation: 'portrait',
+          ),
         ),
         order: PlayOrder.sequential,
       );
@@ -498,16 +630,16 @@ void main() {
       await fling(t);
       await until(
         t,
-        () => find.text('本轮已看完').evaluate().isNotEmpty,
+        () => find.text('本次范围已到末尾').evaluate().isNotEmpty,
         'explicit exhaustion',
       );
       expect(repo.current!.id, id);
       final exhausted = await observer.json('GET', '/api/v1/playback');
       expect(exhausted['finished'], isTrue);
-      await textTap(t, '开始新一轮');
+      await tap(t, find.byKey(const Key('preview-restart')));
       await ready(t);
       final next = await observer.json('GET', '/api/v1/playback');
-      expect(next['id'], isNot(before['id']));
+      expect(next['id'], before['id']);
       expect(next['finished'], isFalse);
       expect(repo.current!.id, id);
       expect(repo.snapshot.query.type, 'MOV');
@@ -515,105 +647,148 @@ void main() {
     },
   );
 
-  testWidgets(
-    'I2 fullscreen gestures, rate selection and background recovery',
-    (t) async {
-      await start(t, preload: false);
-      await repo.setScope(
-        VideoQuery(folder: '/media/camera/旅行'),
-        order: PlayOrder.sequential,
-      );
-      await show(t);
-      await ready(t);
-      final device = PlaybackDeviceControls();
-      final levels = await device.levels();
-      addTearDown(() async {
-        await device.setVolume(levels['volume']!);
-        await device.restoreBrightness();
-      });
-      await device.setVolume(.4);
-      await device.setBrightness(.35);
-      await textTap(t, '横屏');
-      await until(
-        t,
-        () => t.view.physicalSize.width > t.view.physicalSize.height,
-        'actual landscape',
-      );
-      await until(t, () => !controlsVisible(t), 'landscape controls hide');
-      await tap(t, surface);
-      expect(find.byKey(const Key('fullscreen-exit')), findsOneWidget);
-      final rect = t.getRect(surface);
-      final beforeLevels = await device.levels();
-      await t.dragFrom(
-        Offset(rect.left + rect.width * .2, rect.center.dy),
-        const Offset(0, -95),
-      );
-      await t.pump(const Duration(milliseconds: 300));
-      expect(
-        (await device.levels())['brightness']!,
-        greaterThan(beforeLevels['brightness']!),
-      );
-      await t.dragFrom(
-        Offset(rect.left + rect.width * .8, rect.center.dy),
-        const Offset(0, 95),
-      );
-      await t.pump(const Duration(milliseconds: 300));
-      expect(
-        (await device.levels())['volume']!,
-        lessThan(beforeLevels['volume']!),
-      );
-      if (!controlsVisible(t)) {
-        await tap(t, surface);
+  testWidgets('I2 fullscreen gestures, rate selection and background recovery', (
+    t,
+  ) async {
+    final lifecycle = LifecycleTrace();
+    WidgetsBinding.instance.addObserver(lifecycle);
+    addTearDown(() => WidgetsBinding.instance.removeObserver(lifecycle));
+    await start(t, preload: false);
+    await repo.beginPreview(
+      VideoEntryScope(query: VideoQuery(folder: '/media/camera/旅行')),
+      order: PlayOrder.sequential,
+    );
+    await show(t);
+    await ready(t);
+    final device = PlaybackDeviceControls();
+    final levels = await device.levels();
+    addTearDown(() async {
+      await device.setVolume(levels['volume']!);
+      await device.restoreBrightness();
+    });
+    await device.setVolume(.4);
+    await device.setBrightness(.35);
+    if (!player(t).value.isPlaying) await tapSurface(t);
+    await until(
+      t,
+      () => player(t).value.isPlaying,
+      'playing before fullscreen',
+    );
+    debugPrint(
+      'FULLSCREEN_ENTER before_playing=${player(t).value.isPlaying} lifecycle=${WidgetsBinding.instance.lifecycleState}',
+    );
+    final beforeRotation = player(t);
+    await textTap(t, '横向全屏');
+    await until(
+      t,
+      () => t.view.physicalSize.width > t.view.physicalSize.height,
+      'actual landscape',
+    );
+    await until(
+      t,
+      () =>
+          find.byKey(const Key('fullscreen-exit')).evaluate().isNotEmpty &&
+          find.byKey(const Key('playback-controls')).evaluate().isNotEmpty,
+      'fullscreen surface mounted',
+    );
+    debugPrint(
+      'FULLSCREEN_ENTER after_playing=${player(t).value.isPlaying} lifecycle=${WidgetsBinding.instance.lifecycleState}',
+    );
+    expect(
+      player(t).value.isPlaying,
+      isTrue,
+      reason: 'entering fullscreen preserves play intent',
+    );
+    expect(
+      identical(player(t), beforeRotation),
+      isTrue,
+      reason: 'rotation keeps the decoder and playback timeline',
+    );
+    await until(t, () => !controlsVisible(t), 'landscape controls hide');
+    await tapSurface(t);
+    expect(find.byKey(const Key('fullscreen-exit')), findsOneWidget);
+    final rect = t.getRect(surface);
+    final beforeLevels = await device.levels();
+    await t.dragFrom(
+      Offset(rect.left + rect.width * .2, rect.center.dy),
+      const Offset(0, -95),
+    );
+    await t.pump(const Duration(milliseconds: 300));
+    expect(
+      (await device.levels())['brightness']!,
+      greaterThan(beforeLevels['brightness']!),
+    );
+    await t.dragFrom(
+      Offset(rect.left + rect.width * .8, rect.center.dy),
+      const Offset(0, 95),
+    );
+    await t.pump(const Duration(milliseconds: 300));
+    expect(
+      (await device.levels())['volume']!,
+      lessThan(beforeLevels['volume']!),
+    );
+    if (!controlsVisible(t)) {
+      await tapSurface(t);
+    }
+    final ratePlayer = player(t);
+    var observedRate = ratePlayer.value.playbackSpeed;
+    void changedRate() {
+      if (ratePlayer.value.playbackSpeed != observedRate) {
+        observedRate = ratePlayer.value.playbackSpeed;
+        debugPrint('FULLSCREEN_RATE $observedRate');
       }
-      await tap(t, find.byTooltip('播放速度'));
-      await textTap(t, '1.5×');
-      await until(
-        t,
-        () => player(t).value.playbackSpeed == 1.5,
-        'fullscreen base rate',
-      );
-      final landscapeHold = await t.startGesture(t.getCenter(surface));
-      await until(
-        t,
-        () => player(t).value.playbackSpeed == 2,
-        'fullscreen hold rate',
-      );
-      await background(t);
-      await landscapeHold.cancel();
-      await until(
-        t,
-        () =>
-            find.byType(VideoPlayer).evaluate().isNotEmpty &&
-            player(t).value.isInitialized &&
-            player(t).value.playbackSpeed == 1.5,
-        'fullscreen reopens after releasing network resources',
-      );
-      expect(
-        t.view.physicalSize.width,
-        greaterThan(t.view.physicalSize.height),
-      );
-      expect(player(t).value.isPlaying, isFalse);
-      expect(
-        (await device.levels())['windowBrightness'],
-        levels['windowBrightness'],
-      );
-      if (!controlsVisible(t)) {
-        await tap(t, surface);
-      }
-      await tap(t, find.byKey(const Key('fullscreen-exit')));
-      await until(
-        t,
-        () => t.view.physicalSize.height > t.view.physicalSize.width,
-        'portrait return',
-      );
-      expect(
-        (await device.levels())['windowBrightness'],
-        levels['windowBrightness'],
-      );
+    }
 
-      expect(t.takeException(), isNull);
-    },
-  );
+    ratePlayer.addListener(changedRate);
+    addTearDown(() => ratePlayer.removeListener(changedRate));
+    await tap(t, find.byTooltip('播放速度'));
+    final rateChoice = find.byWidgetPredicate(
+      (widget) => widget is PopupMenuItem<double> && widget.value == 1.5,
+    );
+    await tap(t, rateChoice);
+    await until(
+      t,
+      () => player(t).value.playbackSpeed == 1.5,
+      'fullscreen base rate',
+    );
+    final landscapeHold = await t.startGesture(gesturePoint(t));
+    await until(
+      t,
+      () => player(t).value.playbackSpeed == 2,
+      'fullscreen hold rate',
+    );
+    await background(t);
+    await landscapeHold.cancel();
+    await until(
+      t,
+      () =>
+          find.byType(VideoPlayer).evaluate().isNotEmpty &&
+          player(t).value.isInitialized &&
+          player(t).value.playbackSpeed == 1.5,
+      'fullscreen reopens after releasing network resources',
+    );
+    expect(t.view.physicalSize.width, greaterThan(t.view.physicalSize.height));
+    expect(player(t).value.isPlaying, isFalse);
+    expect(
+      (await device.levels())['windowBrightness'],
+      levels['windowBrightness'],
+    );
+    if (!controlsVisible(t)) {
+      await tapSurface(t);
+    }
+    await tap(t, find.byKey(const Key('fullscreen-exit')));
+    await until(
+      t,
+      () => t.view.physicalSize.height > t.view.physicalSize.width,
+      'portrait return',
+    );
+    expect(
+      (await device.levels())['windowBrightness'],
+      levels['windowBrightness'],
+    );
+
+    expect(t.takeException(), isNull);
+  });
 
   testWidgets(
     'I2 real rounds, gestures, bounded preparation, failures and Docker recovery',
@@ -642,12 +817,14 @@ void main() {
         );
       }
       await repo.setVideoTags(flowers, tags);
-      await repo.setScope(
-        VideoQuery(
-          folder: '/media/shorts/自然/花卉',
-          tags: tags,
-          orientation: 'portrait',
-          type: 'MP4',
+      await repo.beginPreview(
+        VideoEntryScope(
+          query: VideoQuery(
+            folder: '/media/shorts/自然/花卉',
+            tags: tags,
+            orientation: 'portrait',
+            type: 'MP4',
+          ),
         ),
         order: PlayOrder.random,
       );
@@ -664,19 +841,18 @@ void main() {
       final order = entries.map((r) => r['video']['id'] as String).toList();
       expect(order, hasLength(25));
       expect(order.toSet(), hasLength(25));
+      await choose(t, order.first);
       expect(repo.current!.id, order.first);
       expect((round['scope']['tag_ids'] as List).toSet(), tags);
       final controller = player(t);
-      await tap(t, find.byTooltip('更多'));
-      await textTap(t, '切换暗黑模式');
+      await preferences.setDark(true);
       await until(
         t,
         () => preferences.dark && player(t).value.isPlaying,
         'dark theme preserves network playback',
       );
       expect(identical(player(t), controller), isTrue);
-      await tap(t, find.byTooltip('更多'));
-      await textTap(t, '切换浅色模式');
+      await preferences.setDark(false);
       await until(
         t,
         () => !preferences.dark && player(t).value.isPlaying,
@@ -687,7 +863,7 @@ void main() {
         () => controller.value.position.inMilliseconds > 250,
         'network playback advancing',
       );
-      final hold = await t.startGesture(t.getCenter(surface));
+      final hold = await t.startGesture(gesturePoint(t));
       await until(
         t,
         () => controller.value.playbackSpeed == 2,
@@ -699,22 +875,22 @@ void main() {
         () => controller.value.playbackSpeed == 1,
         'cancel restores speed',
       );
-      await tap(t, surface);
+      await tapSurface(t);
       expect(controller.value.isPlaying, isFalse);
-      final pausedHold = await t.startGesture(t.getCenter(surface));
+      final pausedHold = await t.startGesture(gesturePoint(t));
       await t.pump(const Duration(milliseconds: 650));
       expect(controller.value.isPlaying, isFalse);
       expect(find.byKey(const Key('hold-speed-hint')), findsNothing);
       await pausedHold.up();
       // Start away from the loop boundary so a clamped seek still has room.
-      await t.drag(surface, Offset(-t.getSize(surface).width * 1.1, 0));
+      await dragSurface(t, Offset(-t.getSize(surface).width * 1.1, 0));
       await until(
         t,
         () => controller.value.position.inMilliseconds < 250,
         'paused seek returns to beginning',
       );
       final originalPosition = controller.value.position;
-      await t.drag(surface, const Offset(120, 0));
+      await dragSurface(t, const Offset(120, 0));
       await until(
         t,
         () =>
@@ -723,15 +899,18 @@ void main() {
         'forward seek',
       );
       final forward = controller.value.position;
-      await t.drag(surface, const Offset(-100, 0));
+      await dragSurface(t, const Offset(-100, 0));
       await until(
         t,
         () => controller.value.position < forward,
         'backward seek',
       );
       expect(controller.value.isPlaying, isFalse);
-      expect(find.byIcon(Icons.play_arrow), findsNothing);
-      await tap(t, surface);
+      expect(
+        find.byKey(const Key('inline-play')).hitTestable(),
+        findsOneWidget,
+      );
+      await tapSurface(t);
       final short = await t.startGesture(t.getCenter(stage));
       await short.moveBy(const Offset(0, -24));
       await t.pump();
@@ -771,8 +950,14 @@ void main() {
       await fixture('/__fixture/checkpoint/playback');
       await t.pump(const Duration(seconds: 2));
 
-      await tap(t, find.byTooltip('更多'));
-      await textTap(t, '开始新一轮');
+      await choose(t, order.last);
+      await tap(t, find.byKey(const Key('preview-next')));
+      await until(
+        t,
+        () => find.byKey(const Key('preview-restart')).evaluate().isNotEmpty,
+        'range end before restart',
+      );
+      await tap(t, find.byKey(const Key('preview-restart')));
       await ready(t);
       final fresh = await observer.json('GET', '/api/v1/playback');
       final freshEntries =
@@ -782,12 +967,18 @@ void main() {
                 query: {'limit': '200'},
               ))['items']
               as List;
-      expect(fresh['id'], isNot(round['id']));
+      expect(fresh['id'], round['id']);
       expect(freshEntries.map((r) => r['video']['id']).toSet(), flowers);
       expect((fresh['scope']['tag_ids'] as List).toSet(), tags);
 
       await fixture('/__fixture/actions/slow-streams');
       await mode(t, '顺序播放');
+      final sequential = await observer.json(
+        'GET',
+        '/api/v1/rounds/${fresh['id']}/entries',
+        query: {'limit': '200'},
+      );
+      await choose(t, sequential['items'][0]['video']['id'] as String);
       await until(
         t,
         () =>
@@ -814,11 +1005,27 @@ void main() {
       );
       await tap(t, find.byKey(const Key('preload-setting')));
       expect(preferences.preloadAdjacent, isFalse);
+      final beforeDefaults = repo.playbackIdentity,
+          beforeDefaultsPosition = repo.playbackPosition;
+      await t.scrollUntilVisible(
+        find.text('默认播放顺序'),
+        250,
+        scrollable: find.byType(Scrollable).last,
+      );
+      await textTap(t, '默认播放顺序');
+      await textTap(t, '顺序播放');
+      expect(preferences.videoOrder, PlayOrder.sequential);
+      expect(repo.playbackIdentity, beforeDefaults);
+      expect(repo.playbackPosition, beforeDefaultsPosition);
       await nav(t, 'browse');
       await ready(t);
       await t.pump(const Duration(milliseconds: 400));
       expect(session!.debugPlayers, hasLength(1));
-      await t.drag(surface, const Offset(40, 0));
+      expect(repo.snapshot.order, PlayOrder.sequential);
+      await mode(t, '随机播放');
+      expect(preferences.videoOrder, PlayOrder.sequential);
+      await mode(t, '顺序播放');
+      await dragSurface(t, const Offset(40, 0));
       await tap(t, find.byTooltip('播放速度'));
       await textTap(t, '1.5×');
       await until(
@@ -826,7 +1033,7 @@ void main() {
         () => player(t).value.playbackSpeed == 1.5,
         'selected base rate',
       );
-      final boostBeforeBackground = await t.startGesture(t.getCenter(surface));
+      final boostBeforeBackground = await t.startGesture(gesturePoint(t));
       await until(
         t,
         () => player(t).value.playbackSpeed == 2,
@@ -837,19 +1044,19 @@ void main() {
       await ready(t);
       expect(player(t).value.isPlaying, isFalse);
       expect(player(t).value.playbackSpeed, 1.5);
-      await tap(t, surface);
+      await tapSurface(t);
 
       await clearScope(t);
       await fixture('/__fixture/actions/slow-streams');
       await folder(t, ['端到端相机', '长视频']);
-      await nav(t, 'browse');
+      await enter(t);
       await ready(t);
-      await tap(t, surface);
+      await tapSurface(t);
       expect(player(t).value.isPlaying, isFalse);
       final bufferedBefore = player(t).value.buffered
           .map((b) => b.end.inMilliseconds)
           .fold<int>(0, (a, b) => a > b ? a : b);
-      await t.drag(surface, const Offset(200, 0));
+      await dragSurface(t, const Offset(200, 0));
       await until(
         t,
         () => player(t).value.position.inMilliseconds > 45000,
@@ -857,7 +1064,7 @@ void main() {
       );
       final seekPosition = player(t).value.position.inMilliseconds;
       expect(seekPosition, greaterThan(bufferedBefore));
-      await tap(t, surface);
+      await tapSurface(t);
       await until(
         t,
         () => player(t).value.position.inMilliseconds > seekPosition + 250,
@@ -880,8 +1087,8 @@ void main() {
 
       await clearScope(t);
       await folder(t, ['端到端相机', '旅行']);
+      await enter(t);
       await mode(t, '顺序播放');
-      await nav(t, 'browse');
       await ready(t);
       expect(repo.current!.name, '横版片段.mp4');
       final beforeOutage = await observer.json('GET', '/api/v1/playback');
@@ -896,8 +1103,7 @@ void main() {
         if (!down) await t.pump(const Duration(milliseconds: 100));
       }
       expect(down, isTrue);
-      await nav(t, 'settings');
-      await nav(t, 'browse');
+      await background(t);
       await until(
         t,
         () =>
@@ -934,20 +1140,19 @@ void main() {
         () => find.byKey(const Key('video-search')).evaluate().isNotEmpty,
         'library search',
       );
-      await t.enterText(find.byKey(const Key('video-search')), '片段03');
+      await t.enterText(find.byKey(const Key('video-search')), '片段');
       await until(
         t,
-        () => find.text('1 个视频').evaluate().isNotEmpty,
+        () => find.text('25 个视频').evaluate().isNotEmpty,
         'target for external removal',
       );
       final currentId = flowers.firstWhere(
         (id) => videos.any((v) => v['id'] == id && v['name'] == '片段03.mp4'),
       );
-      await tap(t, find.byKey(Key('tile-$currentId')));
+      await enter(t, anchor: currentId);
       await ready(t);
       await fixture('/__fixture/actions/remove');
-      await nav(t, 'settings');
-      await nav(t, 'browse');
+      await background(t);
       await until(
         t,
         () => repo.current?.id != currentId,

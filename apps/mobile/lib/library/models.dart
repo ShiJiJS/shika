@@ -2,6 +2,10 @@ import 'dart:convert';
 
 enum MediaKind { video, pack }
 
+enum BrowseSource { library, tags, recent }
+
+enum VideoSort { path, name, newest, recent }
+
 /// Missing capabilities mean the original video-only protocol.
 class ServiceCapabilities {
   const ServiceCapabilities.legacy() : values = const {};
@@ -15,6 +19,9 @@ class ServiceCapabilities {
   bool get typedRoots => values.contains('typed_roots');
   bool get packTags => values.contains('pack_tags');
   bool get imagePacks => values.contains('image_packs');
+  bool get fixedVideoSessions => values.contains('fixed_video_sessions');
+  bool get versionedVideoQueue => values.contains('versioned_video_queue');
+  bool get videoEntryAnchors => values.contains('video_entry_anchors');
 }
 
 enum VideoStatus { available, missing, trash }
@@ -80,6 +87,7 @@ class LibraryVideo {
     this.type = 'MP4',
     this.status = VideoStatus.available,
     this.originalPath,
+    this.createdAt = 0,
   }) : tags = Set.unmodifiable(tags);
   final String id, path, rootId, poster, type;
   final bool portrait;
@@ -88,6 +96,7 @@ class LibraryVideo {
   final Set<String> tags;
   final VideoStatus status;
   final String? originalPath;
+  final double createdAt;
   String get name => basename(path);
   LibraryVideo copy({
     String? path,
@@ -106,6 +115,7 @@ class LibraryVideo {
     type: type,
     status: status ?? this.status,
     originalPath: originalPath ?? this.originalPath,
+    createdAt: createdAt,
   );
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -119,6 +129,7 @@ class LibraryVideo {
     'type': type,
     'status': status.name,
     'originalPath': originalPath,
+    'createdAt': createdAt,
   };
   factory LibraryVideo.fromJson(Map<String, dynamic> j) => LibraryVideo(
     id: j['id'],
@@ -132,6 +143,7 @@ class LibraryVideo {
     type: j['type'],
     status: VideoStatus.values.byName(j['status']),
     originalPath: j['originalPath'],
+    createdAt: (j['createdAt'] as num?)?.toDouble() ?? 0,
   );
 }
 
@@ -261,6 +273,108 @@ class VideoQuery {
   );
 }
 
+/// The complete entry selection; loading it never starts a viewing session.
+class VideoEntryScope {
+  VideoEntryScope({
+    VideoQuery? query,
+    this.search = '',
+    this.source = BrowseSource.library,
+    this.sort = VideoSort.path,
+  }) : query = query ?? VideoQuery();
+  final VideoQuery query;
+  final String search;
+  final BrowseSource source;
+  final VideoSort sort;
+  Map<String, dynamic> toJson() => {
+    'query': query.toJson(),
+    'search': search,
+    'source': source.name,
+    'sort': sort.name,
+  };
+  factory VideoEntryScope.fromJson(Map<String, dynamic> j) => VideoEntryScope(
+    query: VideoQuery.fromJson(Map<String, dynamic>.from(j['query'])),
+    search: j['search'] as String? ?? '',
+    source: BrowseSource.values.byName(j['source'] as String? ?? 'library'),
+    sort: VideoSort.values.byName(j['sort'] as String? ?? 'path'),
+  );
+}
+
+/// Demo persistence mirrors the server's baseline and current member ordering.
+class VideoPreviewData {
+  VideoPreviewData({
+    required this.id,
+    required this.entry,
+    required Iterable<String> sequence,
+    Iterable<String>? ordered,
+    this.finished = false,
+    this.ordering = 0,
+  }) : sequence = List.unmodifiable(sequence),
+       ordered = List.unmodifiable(ordered ?? sequence);
+  final String id;
+  final VideoEntryScope entry;
+  final List<String> sequence, ordered;
+  final bool finished;
+  final int ordering;
+  VideoPreviewData withOrder(
+    Iterable<String> ids, {
+    bool finished = false,
+    bool reordered = true,
+  }) => VideoPreviewData(
+    id: id,
+    entry: entry,
+    sequence: sequence,
+    ordered: ids,
+    finished: finished,
+    ordering: ordering + (reordered ? 1 : 0),
+  );
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'entry': entry.toJson(),
+    'sequence': sequence,
+    'ordered': ordered,
+    'finished': finished,
+    'ordering': ordering,
+  };
+  factory VideoPreviewData.fromJson(Map<String, dynamic> j) => VideoPreviewData(
+    id: j['id'],
+    entry: VideoEntryScope.fromJson(Map<String, dynamic>.from(j['entry'])),
+    sequence: List<String>.from(j['sequence']),
+    ordered: List<String>.from(j['ordered']),
+    finished: j['finished'] as bool? ?? false,
+    ordering: j['ordering'] as int? ?? 0,
+  );
+}
+
+bool videoIsAvailable(LibraryVideo video, Iterable<MediaRoot> roots) {
+  final owned = roots.where((root) => root.id == video.rootId).firstOrNull;
+  if (video.status != VideoStatus.available ||
+      owned == null ||
+      !owned.available ||
+      !owned.enabled ||
+      owned.kind != MediaKind.video) {
+    return false;
+  }
+  final policies = roots.where((root) => under(video.path, root.path)).toList()
+    ..sort((a, b) => b.path.length.compareTo(a.path.length));
+  final policy = policies.firstOrNull;
+  return policy != null &&
+      policy.available &&
+      policy.enabled &&
+      policy.kind == MediaKind.video;
+}
+
+bool videoMatchesSearch(
+  LibraryVideo video,
+  Iterable<MediaRoot> roots,
+  String search,
+) {
+  final root = roots.where((root) => root.id == video.rootId).firstOrNull;
+  final relative = root != null && under(video.path, root.path)
+      ? video.path.substring(root.path.length)
+      : video.name;
+  return relative.toLowerCase().contains(search.toLowerCase());
+}
+
 class DeleteOperation {
   DeleteOperation(
     this.id,
@@ -300,11 +414,14 @@ class LibrarySnapshot {
     this.connected = true,
     this.lastDelete,
     Iterable<String> completedRequests = const [],
+    this.preview,
+    Map<String, double> recentVideos = const {},
   }) : videos = List.unmodifiable(videos),
        roots = List.unmodifiable(roots),
        tags = List.unmodifiable(tags),
        round = List.unmodifiable(round),
-       completedRequests = List.unmodifiable(completedRequests);
+       completedRequests = List.unmodifiable(completedRequests),
+       recentVideos = Map.unmodifiable(recentVideos);
   final List<LibraryVideo> videos;
   final List<MediaRoot> roots;
   final List<String> tags, round, completedRequests;
@@ -314,6 +431,8 @@ class LibrarySnapshot {
   final String address;
   final bool connected;
   final DeleteOperation? lastDelete;
+  final VideoPreviewData? preview;
+  final Map<String, double> recentVideos;
   LibrarySnapshot copy({
     Iterable<LibraryVideo>? videos,
     Iterable<MediaRoot>? roots,
@@ -328,6 +447,9 @@ class LibrarySnapshot {
     DeleteOperation? lastDelete,
     bool clearDelete = false,
     Iterable<String>? completedRequests,
+    VideoPreviewData? preview,
+    bool clearPreview = false,
+    Map<String, double>? recentVideos,
   }) => LibrarySnapshot(
     videos: videos ?? this.videos,
     roots: roots ?? this.roots,
@@ -341,6 +463,8 @@ class LibrarySnapshot {
     connected: connected ?? this.connected,
     lastDelete: clearDelete ? null : lastDelete ?? this.lastDelete,
     completedRequests: completedRequests ?? this.completedRequests,
+    preview: clearPreview ? null : preview ?? this.preview,
+    recentVideos: recentVideos ?? this.recentVideos,
   );
   Map<String, dynamic> toJson({bool connection = true}) => {
     'videos': videos.map((v) => v.toJson()).toList(),
@@ -352,6 +476,8 @@ class LibrarySnapshot {
     'order': order.name,
     'lastDelete': lastDelete?.toJson(),
     'completedRequests': completedRequests,
+    if (preview != null) 'preview': preview!.toJson(),
+    'recentVideos': recentVideos,
     if (connection)
       'connection': {'address': address, 'port': port, 'connected': connected},
   };
@@ -378,6 +504,13 @@ class LibrarySnapshot {
               Map<String, dynamic>.from(j['lastDelete']),
             ),
       completedRequests: List<String>.from(j['completedRequests'] ?? []),
+      preview: j['preview'] == null
+          ? null
+          : VideoPreviewData.fromJson(Map<String, dynamic>.from(j['preview'])),
+      recentVideos: {
+        for (final e in (j['recentVideos'] as Map? ?? {}).entries)
+          e.key as String: (e.value as num).toDouble(),
+      },
     );
   }
 }
@@ -401,9 +534,11 @@ class VideoPage {
     required this.total,
     required this.offset,
     required this.limit,
+    this.anchorIndex,
   }) : items = List.unmodifiable(items);
   final List<LibraryVideo> items;
   final int total, offset, limit;
+  final int? anchorIndex;
 }
 
 class BackupPreview {

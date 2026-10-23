@@ -1,6 +1,6 @@
 ## 目标
 
-将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于 2026-10-23 确认当前 `design/reference/library-first/` 原型方向并要求先确定框架、写规划和 GitHub issues。本任务现在处于规划阶段，尚未实现或发布新版。
+将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于 2026-10-23 确认当前 `design/reference/library-first/` 原型方向并要求先确定框架、写规划和 GitHub issues。当前 LF0–LF2 已实现并验证，等待依赖 PR 合并；LF3 固定预览与原生兼容实施中，LF4–LF8 待实施，尚未发布新版。
 
 这是后续升级，不覆盖 #1 的历史 V1 规格，也不把 #23 仍未完成的目标环境验收标记为已完成。
 
@@ -26,6 +26,8 @@
 
 ## 实施任务
 
+当前 PR：[LF0 #34](https://github.com/ShiJiJS/video_viewer/pull/34) → [LF1 #35](https://github.com/ShiJiJS/video_viewer/pull/35) → [LF2 #36](https://github.com/ShiJiJS/video_viewer/pull/36) → [LF3 草稿 #37](https://github.com/ShiJiJS/video_viewer/pull/37)。前序阶段实现完成不等于整体原型验收完成，子任务等待对应依赖合并。
+
 - [ ] https://github.com/ShiJiJS/video_viewer/issues/25 — [LF0] 锁定原型基线与可运行的模块骨架
 - [ ] https://github.com/ShiJiJS/video_viewer/issues/26 — [LF1] 兼容迁移数据模型：媒体类型、图包标签与服务能力
 - [ ] https://github.com/ShiJiJS/video_viewer/issues/27 — [LF2] 图包扫描、分页目录与授权图片读取
@@ -49,4 +51,4 @@
 
 ## 本轮不做
 
-无压缩包直读、单张图片标签/删除、AI标签、离线下载、自动文件夹归档、多用户或新微服务。本次只登记规划，不部署 NAS、不构建发布新 APK。
+无压缩包直读、单张图片标签/删除、AI标签、离线下载、自动文件夹归档、多用户或新微服务。当前开发与故障验证使用隔离实例和合成媒体，尚未部署 NAS 或发布升级 APK；正式交付按 LF8 验收与迁移流程推进。
