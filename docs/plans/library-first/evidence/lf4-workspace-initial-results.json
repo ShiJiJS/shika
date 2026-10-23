@@ -1,0 +1,137 @@
+{
+  "stage": "Historical ee3e624 workspace checkpoint: 129 client tests and three native flows; later retry fix is tracked separately",
+  "implementation_revision": "ee3e624ef00f111b92f14edd3e44ef41fb82f56a",
+  "client_tests": {
+    "passed": 129,
+    "failed": 0,
+    "log_sha256": "7cc5d272b5215870eaee1051578b8ce2af9b04f93837df351e61ae9725f848e0"
+  },
+  "analyze": {
+    "result": "No issues found",
+    "log_sha256": "c00ae8f88489f257656513c9b24202e7ae814627aa608f30becdba695a8e5a57"
+  },
+  "native_workspace": {
+    "backend": "isolated FastAPI 8761",
+    "fixture": "27 public-flower packs / 81 pages; no private NAS media",
+    "same_implementation_successful_runs": 3,
+    "order": [
+      "360-large",
+      "390-1",
+      "390-2"
+    ],
+    "runs": [
+      {
+        "name": "360-large",
+        "result": "passed",
+        "runner_exit_code": 0,
+        "test_cases": 1,
+        "viewport": {
+          "phase": "workspace-viewport",
+          "width_dp": 360,
+          "height_dp": 740,
+          "density_dpi": 480,
+          "text_scale": "2"
+        },
+        "log_sha256": "aea9e17d0c41f29e0680487668e06acb0037765dda1a93f4e4c751ad9704cde9",
+        "host_events_sha256": "2450befd374a4359bff5cac2fb4f88152f32965577e1a6a4ed0a150c95d588fb",
+        "apk_sha256": "b704b01de231198d72b923ee34edc22eb28d889da53d8bb107c4e217d36cbea4",
+        "first_two_busy_covers_recovered": true
+      },
+      {
+        "name": "390-1",
+        "result": "passed",
+        "runner_exit_code": 0,
+        "test_cases": 1,
+        "viewport": {
+          "phase": "workspace-viewport",
+          "width_dp": 390,
+          "height_dp": 844,
+          "density_dpi": 480,
+          "text_scale": "1"
+        },
+        "log_sha256": "768061588d32e65e96dffbef18cf9ac43a18a9adeaf1aff9cada9b45b4730e2e",
+        "host_events_sha256": "89bdd6c19173ed554b4d3a239d24daa3564ed8a69867f3c27da378da592bb9fe",
+        "apk_sha256": "d71513d6eb5f88f53f38e9fe86a64418c111a66e234ad57cc8d18f825db5d2fc",
+        "first_two_busy_covers_recovered": true
+      },
+      {
+        "name": "390-2",
+        "result": "passed",
+        "runner_exit_code": 0,
+        "test_cases": 1,
+        "viewport": {
+          "phase": "workspace-viewport",
+          "width_dp": 390,
+          "height_dp": 844,
+          "density_dpi": 480,
+          "text_scale": "1"
+        },
+        "log_sha256": "bca4a1bd682f1fef3490c688dbce1355f0737d4b059a0ed9c79d0084f2a7335a",
+        "host_events_sha256": "75b0d0d3063fe5a8a4acd142bfca04f1e68ef75335cfd91ccea5f035d4a51d7c",
+        "apk_sha256": "f890b3e40929e53e21b4b9119c32db338b0fd6f4caee93384fe720b7922fc0c5",
+        "first_two_busy_covers_recovered": true
+      }
+    ]
+  },
+  "visual_review": {
+    "mode": "independent existing-interface comparison; no score",
+    "rounds": 2,
+    "initial_findings": 3,
+    "resolved": 3,
+    "report": "lf4-workspace/visual-review.md",
+    "scope": "static screenshot review; interaction assertions are from main-agent native runs"
+  },
+  "reference_prototype_changed": false,
+  "real_nas_media_changed": false,
+  "release_apk_published": false,
+  "source_files_sha256": {
+    "apps/mobile/lib/app/app_shell.dart": "284b4bd052ca99001c091d6f214476b2af8a3317d6367b7d8f79ada03d214cdb",
+    "apps/mobile/lib/app/media_workspace.dart": "c42b0f0f132e9903d98cb913eee63096a9717869d7ed53da040d3ac6227436cd",
+    "apps/mobile/lib/features/library/browse_context.dart": "f3fb5e3b80e25f72bc7dcd66a8440249ff642179a97c76929b3b0eb7505fcec3",
+    "apps/mobile/lib/features/library/library_query_controller.dart": "fcb9dacf4f1ea84d8a9c6998db90f047dd5464564e7fafe3b22adf3f450b3782",
+    "apps/mobile/lib/features/library/pack_catalog_page.dart": "dff56fe16c31f333616e9873cc43dab4b7d85ac99500ab1c2d572d899403e0b6",
+    "apps/mobile/lib/features/library/pack_query_controller.dart": "debd24f6962fdd34588fb3232b917af8f3fc2917addb648c6ffa868face8f01f",
+    "apps/mobile/lib/features/library/tag_catalog_page.dart": "b77218908cc0beb43f8e8fe414786cb524947d9803421dc44f83a804e7aaaf66",
+    "apps/mobile/lib/features/library/video_catalog_page.dart": "167ed73034073e41d31ee4278502c8ff43f30f582c6316e0cd242d95637abaab",
+    "apps/mobile/lib/features/packs/pack_sheets.dart": "82f1b8c4ef6141a2a11c5961d6e2b464e16c77d21158ec546f7525802599170b",
+    "apps/mobile/lib/features/preview/video_preview_route.dart": "28ff5d00db1c3c15032e4e84fcb4de44ffc2ddd2a730460100eb89f850c4765c",
+    "apps/mobile/lib/library/backup_work_store.dart": "60b6490d37a9ba93e1014291176dd8d4e9df263b3edb1482e96b6afd754fba33",
+    "apps/mobile/lib/library/credentials.dart": "ddb0ee9960f53435766271f56b7c2c50ece5eac3c7f8365efc46d7a604edd624",
+    "apps/mobile/lib/library/demo_repository.dart": "a035f06d563d5e8f04f1a220a1a21d227848d5727338c0c7e2509bd9759b33a6",
+    "apps/mobile/lib/library/file_command_store.dart": "db50bd71903ddf4c8ff400fb60efb723b031b1b59c5cfb7c4fb43dc1bdf5161b",
+    "apps/mobile/lib/library/models.dart": "c61ab8fef0bf49dcdea5153ad5ae640b72d36560ff198968eff7d7e5107d0c2c",
+    "apps/mobile/lib/library/pack_models.dart": "9e14cd07010eca3a133f7ed526980f0841f1d9dc23c67cd2699ee28bd223d314",
+    "apps/mobile/lib/library/repository.dart": "fbca0c6a034c255c9ae5f822ee6b27e2a2664ded9d316c8b541f334b6c202e3a",
+    "apps/mobile/lib/library/server_api.dart": "1751625b79abb1c1611043227f96e8f0cae04a734b31c9ab965e897db0a3403f",
+    "apps/mobile/lib/library/server_backups.dart": "74a1bc8c0bf92b24741333371093a703b59c6663443d3c1eae26b3defa4adea2",
+    "apps/mobile/lib/library/server_pack_catalog.dart": "c694bd51d2c353be536956b7fae5b97a78623e22e0e5df9c9c438d1a44c5f971",
+    "apps/mobile/lib/library/server_repository.dart": "7400de1246361c6222cf25ae0411eca4d42202f16247c00830e63f277f412217",
+    "apps/mobile/lib/library/state_store.dart": "d99e157ab013adff6735456d1cd7da23ab03624bd71d67b16adbd514c11a2fc9",
+    "apps/mobile/lib/main.dart": "60550d3f9fd7a6e843fea71a94c7487fb0c921201dab22f27e8171a22bbaa24a",
+    "apps/mobile/lib/ui/browsing_session.dart": "cbcc8f90c42c5de0777563cee984114f4d3bef772a05fa3388582bdc35108475",
+    "apps/mobile/lib/ui/device_controls.dart": "79b84156c77e8af8ee4d3fc54ae40d9e9b44cc47a439761d8522c6039e86bb53",
+    "apps/mobile/lib/ui/home.dart": "1a409e08c423425de4841546c2a95fd0871011827d2fcb857023c6480b8d59dd",
+    "apps/mobile/lib/ui/media_layout.dart": "1344184a182e4bdd91898f9e5cb3ec512ead0e160d55dbbee5d4024a1f2dc7c2",
+    "apps/mobile/lib/ui/media_poster.dart": "db61b89ea11574a1155836266f458e90db9c2232111e5d71cb8e431d5160c39e",
+    "apps/mobile/lib/ui/paper.dart": "90d20e588ac4cc744ce452b690f763d804fe247047ae0a58790d8008e8c9c291",
+    "apps/mobile/lib/ui/playback_session.dart": "513099524bf05737f4d439e53ffeae5eac07775cb5b88bb5e3c54d2af894e3f8",
+    "apps/mobile/lib/ui/player.dart": "3783b554cc63316d7d0ac5dd003573e527622067327a24434dcc55077d0dcece",
+    "apps/mobile/lib/ui/preferences.dart": "c843d59866c867c83788b0e7f2fc9492b8b53ef44f30b942f3ed6787a674cefa",
+    "apps/mobile/lib/ui/sheets.dart": "3e6bd5988d020afc334cac2ce375996346e17ef024988366d58c3cebd95522a5",
+    "apps/mobile/integration_test/server_workspace_test.dart": "46eaa315510b930a47d3f31035b3cbf27b8000516c4ef2f45504a11db1739b57",
+    "apps/mobile/integration_test/server_anchor_test.dart": "3d16c727358ba5a9e4340908020bad6821e1a1b77b44f55892fed620544c5549",
+    "scripts/run-client-connection-test.py": "3d4bd419ce0d5682f801db60cbd17ca4669a2d5be7a7a032e8b8e58c22e89d37",
+    "services/server/tests/e2e_server.py": "975ca201b9bb7832177fae8141988e6fb3853db7e9eeb1b9e343f97c197b1353",
+    "services/server/tests/workspace_fixture.py": "3f893a5b9dafd7cb372ab294fb8c93468eaad5f84289041713b68c33aee27fdf"
+  },
+  "remaining": [
+    "Paged video-label adapter/search",
+    "Complete matching-range batch selection",
+    "Resolve selected pack labels beyond the first page and display label names",
+    "Remaining source/error/return combinations",
+    "LF5 pack reader/progress/recent",
+    "LF6 pack removal/undo",
+    "LF7 settings/backup v2",
+    "LF8 phone/NAS/complete prototype acceptance"
+  ]
+}

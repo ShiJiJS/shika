@@ -1,6 +1,6 @@
 ## 目标
 
-将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于 2026-10-23 确认当前 `design/reference/library-first/` 原型方向并要求先确定框架、写规划和 GitHub issues。当前 LF0–LF2 已实现并验证，等待依赖 PR 合并；LF3 固定预览与原生兼容已通过完整 I2 两阶段首轮，仍待来源组合/重复验收；LF4 图包数据接线已开始，LF5–LF8 待实施，尚未发布新版。
+将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于 2026-10-23 确认当前 `design/reference/library-first/` 原型方向并要求先确定框架、写规划和 GitHub issues。当前 LF0–LF2 已实现并验证，等待依赖 PR 合并；LF3 固定预览与原生兼容已通过完整 I2 两阶段首轮，仍待来源组合/重复验收；LF4 四入口、双类型媒体库与独立标签已接线，剩余分页/批选与原生验收仍在补齐，LF5–LF8 待实施，尚未发布新版。
 
 这是后续升级，不覆盖 #1 的历史 V1 规格，也不把 #23 仍未完成的目标环境验收标记为已完成。
 
@@ -26,7 +26,7 @@
 
 ## 实施任务
 
-当前 PR：[LF0 #34](https://github.com/ShiJiJS/video_viewer/pull/34) → [LF1 #35](https://github.com/ShiJiJS/video_viewer/pull/35) → [LF2 #36](https://github.com/ShiJiJS/video_viewer/pull/36) → [LF3 草稿 #37](https://github.com/ShiJiJS/video_viewer/pull/37) → [LF4 数据接线草稿 #38](https://github.com/ShiJiJS/video_viewer/pull/38)。前序阶段实现完成不等于整体原型验收完成，子任务等待对应依赖合并。
+当前 PR：[LF0 #34](https://github.com/ShiJiJS/video_viewer/pull/34) → [LF1 #35](https://github.com/ShiJiJS/video_viewer/pull/35) → [LF2 #36](https://github.com/ShiJiJS/video_viewer/pull/36) → [LF3 草稿 #37](https://github.com/ShiJiJS/video_viewer/pull/37) → [LF4 四入口与媒体库草稿 #38](https://github.com/ShiJiJS/video_viewer/pull/38)。前序阶段实现完成不等于整体原型验收完成，子任务等待对应依赖合并。
 
 - [ ] https://github.com/ShiJiJS/video_viewer/issues/25 — [LF0] 锁定原型基线与可运行的模块骨架
 - [ ] https://github.com/ShiJiJS/video_viewer/issues/26 — [LF1] 兼容迁移数据模型：媒体类型、图包标签与服务能力

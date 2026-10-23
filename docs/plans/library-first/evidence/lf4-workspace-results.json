@@ -1,0 +1,165 @@
+{
+  "stage": "LF4 native workspace and visible return-retry checkpoint; LF4 remains open",
+  "implementation_revision": "5f66d0c0c5fe6fd361aad7d7aa19123bf21408df",
+  "production_retry_fix_revision": "4f4e795405d8dba0c4acb5373e441f2373cc59de",
+  "client_tests": {
+    "passed": 130,
+    "failed": 0,
+    "log_sha256": "8428a7975a6a13d61e5113adf37464d58e10c4475d76dce8c27bf42e32b87985"
+  },
+  "analyze": {
+    "result": "No issues found",
+    "log_sha256": "6f7f6d779e475477ca35e8b6341a118ebf5d16014636360848a2876faeaff63a"
+  },
+  "native_workspace": {
+    "backend": "isolated FastAPI 8761; 27 public-flower packs / 81 pages",
+    "initial_three_run_checkpoint": "lf4-workspace-initial-results.json",
+    "current_revision_rerun": {
+      "passed": true,
+      "runner_exit_code": 0,
+      "viewport_dp": [
+        390,
+        844
+      ],
+      "text_scale": 1,
+      "log_sha256": "d4e3614de4d64c6f60026221f5031eeda0fa711cc1e2fce7109e8231b5989690",
+      "apk_sha256": "edf2119c2ea06ef4d03a8f6d63c2929235797f810e19afdc7094f00696000e48"
+    },
+    "screenshot_revisions": {
+      "390": "5f66d0c0c5fe6fd361aad7d7aa19123bf21408df",
+      "360-large": "ee3e624"
+    },
+    "scope": "catalog paging, independent same-name labels and source queries, direct tag preview/return, retained settings, appearance switch/search, visible cover recovery"
+  },
+  "native_anchor": {
+    "implementation_revision": "5f66d0c0c5fe6fd361aad7d7aa19123bf21408df",
+    "same_implementation_successful_runs": 3,
+    "runs": [
+      {
+        "number": 1,
+        "passed": true,
+        "runner_exit_code": 0,
+        "log_sha256": "0d3b2eba8d3732e88ff669a022d352c8b01d3191ddd922f24ee4770b732505e5",
+        "host_events_sha256": "d5ae7230f7bb33d3619e76bf7de500dbf4c4f523204f326d90e89d5e6a0868e4",
+        "apk_sha256": "a5ee2717763cf231768f1e642285422130581d36766d44d3e152713985cb7687",
+        "anchor_lookup_503_then_200": true
+      },
+      {
+        "number": 2,
+        "passed": true,
+        "runner_exit_code": 0,
+        "log_sha256": "ed4e909d420ecf131146df5c27299975385fe993ef1374799ec51b3e4fac7ffb",
+        "host_events_sha256": "2c8002bb018482a5c2442ca4d24b862106b4093e0d7d535c5a2ae56f298bbc2b",
+        "apk_sha256": "f9238f0a4c8de4cf3e971a01c8b5cd59052662b4b300b5b742d4fc0b2f3f0027",
+        "anchor_lookup_503_then_200": true
+      },
+      {
+        "number": 3,
+        "passed": true,
+        "runner_exit_code": 0,
+        "log_sha256": "5ec95c4cd04e3f4bc040ec8ff0de426510ce0c4f184df2c64f26e3ff35aab19b",
+        "host_events_sha256": "cf6649fccac8efcb9bc3793a9f47110990359b52db3f9a626495080854c48f7a",
+        "apk_sha256": "31a6767a23e10069c8cb34e0bd79ae971662f8b2738ab7ec1a1b6f985291daa1",
+        "anchor_lookup_503_then_200": true
+      }
+    ],
+    "checks": {
+      "candidate_count": 73,
+      "saved_fallback_index": 58,
+      "surviving_neighbor_index": 59,
+      "return_page_offset": 48,
+      "return_page_size": 24,
+      "failed_return_preserves_old_cards_and_visible_retry": true,
+      "retry_preserves_source_search_and_visible_row": true,
+      "overlapping_background_tag_refresh_preserves_position": true,
+      "prepend_24_preserves_visible_row": true,
+      "preview_identity_and_membership_unchanged": true,
+      "actual_recent_total": 1
+    }
+  },
+  "visual_review": {
+    "mode": "independent existing-interface comparison; no score",
+    "rounds": 2,
+    "findings_resolved": 3,
+    "report": "lf4-workspace/visual-review.md",
+    "scope": "static screenshot review; native interactions independently executed by main agent"
+  },
+  "reference_prototype_changed": false,
+  "real_nas_media_changed": false,
+  "release_apk_published": false,
+  "source_files_sha256": {
+    "apps/mobile/lib/app/app_shell.dart": "284b4bd052ca99001c091d6f214476b2af8a3317d6367b7d8f79ada03d214cdb",
+    "apps/mobile/lib/app/media_workspace.dart": "c42b0f0f132e9903d98cb913eee63096a9717869d7ed53da040d3ac6227436cd",
+    "apps/mobile/lib/features/library/browse_context.dart": "f3fb5e3b80e25f72bc7dcd66a8440249ff642179a97c76929b3b0eb7505fcec3",
+    "apps/mobile/lib/features/library/library_query_controller.dart": "fcb9dacf4f1ea84d8a9c6998db90f047dd5464564e7fafe3b22adf3f450b3782",
+    "apps/mobile/lib/features/library/pack_catalog_page.dart": "facc46b02d02974d33c4042696803def001e998f98ba64327155b5afaf12811b",
+    "apps/mobile/lib/features/library/pack_query_controller.dart": "f2d02ee80b9bf001b5b3dd66dbf27728dd1a3d237bfd80dd8df9af8b2283053a",
+    "apps/mobile/lib/features/library/tag_catalog_page.dart": "b77218908cc0beb43f8e8fe414786cb524947d9803421dc44f83a804e7aaaf66",
+    "apps/mobile/lib/features/library/video_catalog_page.dart": "de40b052fccb4b5e48b57af1d89f447df7282bfe4e8759a98627c475a50d19d0",
+    "apps/mobile/lib/features/packs/pack_sheets.dart": "82f1b8c4ef6141a2a11c5961d6e2b464e16c77d21158ec546f7525802599170b",
+    "apps/mobile/lib/features/preview/video_preview_route.dart": "28ff5d00db1c3c15032e4e84fcb4de44ffc2ddd2a730460100eb89f850c4765c",
+    "apps/mobile/lib/library/backup_work_store.dart": "60b6490d37a9ba93e1014291176dd8d4e9df263b3edb1482e96b6afd754fba33",
+    "apps/mobile/lib/library/credentials.dart": "ddb0ee9960f53435766271f56b7c2c50ece5eac3c7f8365efc46d7a604edd624",
+    "apps/mobile/lib/library/demo_repository.dart": "a035f06d563d5e8f04f1a220a1a21d227848d5727338c0c7e2509bd9759b33a6",
+    "apps/mobile/lib/library/file_command_store.dart": "db50bd71903ddf4c8ff400fb60efb723b031b1b59c5cfb7c4fb43dc1bdf5161b",
+    "apps/mobile/lib/library/models.dart": "c61ab8fef0bf49dcdea5153ad5ae640b72d36560ff198968eff7d7e5107d0c2c",
+    "apps/mobile/lib/library/pack_models.dart": "9e14cd07010eca3a133f7ed526980f0841f1d9dc23c67cd2699ee28bd223d314",
+    "apps/mobile/lib/library/repository.dart": "fbca0c6a034c255c9ae5f822ee6b27e2a2664ded9d316c8b541f334b6c202e3a",
+    "apps/mobile/lib/library/server_api.dart": "1751625b79abb1c1611043227f96e8f0cae04a734b31c9ab965e897db0a3403f",
+    "apps/mobile/lib/library/server_backups.dart": "74a1bc8c0bf92b24741333371093a703b59c6663443d3c1eae26b3defa4adea2",
+    "apps/mobile/lib/library/server_pack_catalog.dart": "c694bd51d2c353be536956b7fae5b97a78623e22e0e5df9c9c438d1a44c5f971",
+    "apps/mobile/lib/library/server_repository.dart": "7400de1246361c6222cf25ae0411eca4d42202f16247c00830e63f277f412217",
+    "apps/mobile/lib/library/state_store.dart": "d99e157ab013adff6735456d1cd7da23ab03624bd71d67b16adbd514c11a2fc9",
+    "apps/mobile/lib/main.dart": "60550d3f9fd7a6e843fea71a94c7487fb0c921201dab22f27e8171a22bbaa24a",
+    "apps/mobile/lib/ui/browsing_session.dart": "cbcc8f90c42c5de0777563cee984114f4d3bef772a05fa3388582bdc35108475",
+    "apps/mobile/lib/ui/device_controls.dart": "79b84156c77e8af8ee4d3fc54ae40d9e9b44cc47a439761d8522c6039e86bb53",
+    "apps/mobile/lib/ui/home.dart": "1a409e08c423425de4841546c2a95fd0871011827d2fcb857023c6480b8d59dd",
+    "apps/mobile/lib/ui/media_layout.dart": "1344184a182e4bdd91898f9e5cb3ec512ead0e160d55dbbee5d4024a1f2dc7c2",
+    "apps/mobile/lib/ui/media_poster.dart": "db61b89ea11574a1155836266f458e90db9c2232111e5d71cb8e431d5160c39e",
+    "apps/mobile/lib/ui/paper.dart": "90d20e588ac4cc744ce452b690f763d804fe247047ae0a58790d8008e8c9c291",
+    "apps/mobile/lib/ui/playback_session.dart": "513099524bf05737f4d439e53ffeae5eac07775cb5b88bb5e3c54d2af894e3f8",
+    "apps/mobile/lib/ui/player.dart": "3783b554cc63316d7d0ac5dd003573e527622067327a24434dcc55077d0dcece",
+    "apps/mobile/lib/ui/preferences.dart": "c843d59866c867c83788b0e7f2fc9492b8b53ef44f30b942f3ed6787a674cefa",
+    "apps/mobile/lib/ui/sheets.dart": "3e6bd5988d020afc334cac2ce375996346e17ef024988366d58c3cebd95522a5",
+    "apps/mobile/integration_test/server_workspace_test.dart": "46eaa315510b930a47d3f31035b3cbf27b8000516c4ef2f45504a11db1739b57",
+    "apps/mobile/integration_test/server_anchor_test.dart": "143db050818fedd10ebf76d20bce644c5e786f53df2e4afc7c9be715f72e7c48",
+    "scripts/run-client-connection-test.py": "3d4bd419ce0d5682f801db60cbd17ca4669a2d5be7a7a032e8b8e58c22e89d37",
+    "services/server/tests/e2e_server.py": "975ca201b9bb7832177fae8141988e6fb3853db7e9eeb1b9e343f97c197b1353",
+    "services/server/tests/workspace_fixture.py": "3f893a5b9dafd7cb372ab294fb8c93468eaad5f84289041713b68c33aee27fdf"
+  },
+  "evidence_files_sha256": {
+    "docs/plans/library-first/evidence/lf4-workspace/360-large/dark.png": "ec44b34dec260e5dda3813786e09c4e9d97185d828f893e006182009b55300ab",
+    "docs/plans/library-first/evidence/lf4-workspace/360-large/host-events.json": "2450befd374a4359bff5cac2fb4f88152f32965577e1a6a4ed0a150c95d588fb",
+    "docs/plans/library-first/evidence/lf4-workspace/360-large/pack-tags.png": "5b8f6bc8775a104683694b59fd2bcd7cffaddc945ebc06651e0e9f5fc293c028",
+    "docs/plans/library-first/evidence/lf4-workspace/360-large/packs.png": "dfdce15374a22d70939c849a3a5327303375d8eaba608ec8c32a728dccb9a039",
+    "docs/plans/library-first/evidence/lf4-workspace/360-large/requests.json": "24725f1c11f004889d1676d38651c4995db8d90773faf20e8fa2af447ce7835e",
+    "docs/plans/library-first/evidence/lf4-workspace/360-large/settings.png": "d086696031767ed323ec007e6f6df3ada286919619dddd5211da0dd05ddba648",
+    "docs/plans/library-first/evidence/lf4-workspace/360-large/video-tags.png": "6868e729144411d1bec4c765d80408bc690eab83c6df621c54fba9e5cbfa4284",
+    "docs/plans/library-first/evidence/lf4-workspace/360-large/video.png": "1f015d53553177c8e4c204b004762a110fd26821ed23bf07a85c003952b19bb1",
+    "docs/plans/library-first/evidence/lf4-workspace/390/dark.png": "eb4e9eb5d3a2ceb27970b7b84e17a9ed0665b9ed58cb31b3c9381c2b0ee40b9b",
+    "docs/plans/library-first/evidence/lf4-workspace/390/host-events.json": "15ba3372e29b1cfc103bfca3a7deec25265ac5ffb0b045b7eed566b2c8f6e4b8",
+    "docs/plans/library-first/evidence/lf4-workspace/390/pack-tags.png": "7c6acf5bf7cd500b7c2288a6b53b478ece53eb6a95fb65fb7ce2f7beff8e504a",
+    "docs/plans/library-first/evidence/lf4-workspace/390/packs.png": "bab75edf54c602b0c29370575d1cf89efd913d83a98dcace48cbc400912179b3",
+    "docs/plans/library-first/evidence/lf4-workspace/390/requests.json": "7920cf13691e5cd2f31cc4688699ad73f17568ac5d5a0557b65632bc9b95e46f",
+    "docs/plans/library-first/evidence/lf4-workspace/390/settings.png": "e98e9072315ab5661515e77f8b4b5f76988b498f98765ad32dc4476c2da6379e",
+    "docs/plans/library-first/evidence/lf4-workspace/390/video-tags.png": "cc73b3fcb6a9afdcfd01fe67692415f23e3e5a48421c9c425f238f43d543410f",
+    "docs/plans/library-first/evidence/lf4-workspace/390/video.png": "2bb574dc5d0355840d567e2f10b184115531090c2159c74e7f32585db14f8cf2",
+    "docs/plans/library-first/evidence/lf4-workspace/README.md": "6cf5c47f8f88adc2408b25ea54d1bcf13253730947af4374aeeac0d5624fa70d",
+    "docs/plans/library-first/evidence/lf4-workspace/anchor/host-events.json": "cf6649fccac8efcb9bc3793a9f47110990359b52db3f9a626495080854c48f7a",
+    "docs/plans/library-first/evidence/lf4-workspace/anchor/restored-requests.json": "4e4438d34ce188efa74f6255344dbbbcb25b687eb3f73e87b7eec9982feaeb69",
+    "docs/plans/library-first/evidence/lf4-workspace/anchor/restored.png": "1bbbccc4c29fb27b67f58b2125e9748f9016d7dc795b060b2ee67d22531cc017",
+    "docs/plans/library-first/evidence/lf4-workspace/anchor/retry-requests.json": "9eb9d365bea3f15207b183aadeeea71f918ce361ea476e3caa5a56b2626aaaae",
+    "docs/plans/library-first/evidence/lf4-workspace/anchor/retry.png": "dc3fa24ab4d93c85bf7ec2eb30eebd5dc5dc1f8dcd29c959e93fba74f703760b",
+    "docs/plans/library-first/evidence/lf4-workspace/visual-review.md": "accc3aa573108883813e95295acc36fe742b954dc3f94ea81d023774e14a32ba"
+  },
+  "remaining": [
+    "Paged video-label adapter/search",
+    "Complete matching-range batch selection",
+    "Resolve selected pack labels beyond the first page and display label names",
+    "Remaining source/error/return combinations",
+    "LF5 pack reader/progress/recent",
+    "LF6 pack removal/undo",
+    "LF7 settings/backup v2",
+    "LF8 phone/NAS/complete prototype acceptance"
+  ]
+}
