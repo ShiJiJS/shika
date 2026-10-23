@@ -5,6 +5,18 @@
       "label": "Start Android emulator",
       "type": "process",
       "command": "powershell.exe",
+      "osx": {
+        "command": "bash",
+        "args": [
+          "${workspaceFolder}/scripts/start-android-emulator.sh"
+        ]
+      },
+      "linux": {
+        "command": "bash",
+        "args": [
+          "${workspaceFolder}/scripts/start-android-emulator.sh"
+        ]
+      },
       "args": [
         "-NoProfile",
         "-ExecutionPolicy",
@@ -17,6 +29,134 @@
         "reveal": "silent",
         "panel": "dedicated"
       }
+    },
+    {
+      "label": "Flutter: analyze",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/scripts/dev.sh",
+        "flutter",
+        "analyze"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/mobile"
+      },
+      "problemMatcher": [],
+      "windows": {
+        "command": "flutter",
+        "args": [
+          "analyze"
+        ]
+      }
+    },
+    {
+      "label": "Flutter: unit tests",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/scripts/dev.sh",
+        "flutter",
+        "test",
+        "test"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/mobile"
+      },
+      "problemMatcher": [],
+      "windows": {
+        "command": "flutter",
+        "args": [
+          "test",
+          "test"
+        ]
+      }
+    },
+    {
+      "label": "Flutter: build ARM64 APK",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/scripts/dev.sh",
+        "flutter",
+        "build",
+        "apk",
+        "--release",
+        "--target-platform",
+        "android-arm64"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/apps/mobile"
+      },
+      "problemMatcher": [],
+      "windows": {
+        "command": "flutter",
+        "args": [
+          "build",
+          "apk",
+          "--release",
+          "--target-platform",
+          "android-arm64"
+        ]
+      }
+    },
+    {
+      "label": "Server: start local Docker",
+      "type": "shell",
+      "command": "bash scripts/dev.sh bash scripts/prepare-server-dev.sh && docker compose up -d --build --wait --wait-timeout 120",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "windows": {
+        "command": "wsl -d Ubuntu-24.04 -- bash -lc 'bash scripts/prepare-server-dev.sh && docker compose up -d --build --wait --wait-timeout 120'"
+      }
+    },
+    {
+      "label": "Server: regression tests",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/scripts/test-server.sh"
+      ],
+      "problemMatcher": [],
+      "windows": {
+        "command": "wsl",
+        "args": [
+          "-d",
+          "Ubuntu-24.04",
+          "--",
+          "bash",
+          "scripts/test-server.sh"
+        ]
+      }
+    },
+    {
+      "label": "Integration: Android + disposable server",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "${workspaceFolder}/scripts/dev.sh",
+        "python3",
+        "${workspaceFolder}/scripts/run-client-connection-test.py"
+      ],
+      "problemMatcher": [],
+      "dependsOn": "Start Android emulator",
+      "windows": {
+        "command": "python",
+        "args": [
+          "${workspaceFolder}/scripts/run-client-connection-test.py"
+        ]
+      }
+    },
+    {
+      "label": "Prepare Android debug",
+      "dependsOn": [
+        "Server: start local Docker",
+        "Start Android emulator"
+      ],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
     }
   ]
 }

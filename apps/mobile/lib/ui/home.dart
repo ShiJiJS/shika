@@ -6,6 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../library/models.dart';
+import '../app/app_shell.dart';
+import '../features/library/browse_context.dart';
+import '../features/library/library_query_controller.dart';
 import '../library/repository.dart';
 import 'paper.dart';
 import 'player.dart';
@@ -83,11 +86,13 @@ class _LibraryHomeState extends State<LibraryHome> {
   String search = '', tagSearch = '';
   Set<String> selected = {};
   int playerEpoch = 0;
-  List<LibraryVideo> libraryItems = [];
-  int libraryTotal = 0, libraryGeneration = 0;
-  bool libraryLoading = false;
+  late final _library = LibraryQueryController(repo);
+  List<LibraryVideo> get libraryItems => _library.state.items;
+  int get libraryTotal => _library.state.total;
+  bool get libraryLoading => _library.state.loading;
+  String get libraryError => _library.state.error;
   final libraryScroll = ScrollController();
-  String libraryError = '', libraryKey = '', previousScope = '';
+  String previousScope = '';
   List<LibraryVideo> trashItems = [];
   int trashTotal = 0, trashGeneration = 0;
   bool trashLoading = false;
@@ -131,6 +136,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   void initState() {
     super.initState();
     _browsing.addListener(changed);
+    _library.addListener(libraryChanged);
     repo.libraryPreparation.addListener(preparationChanged);
     libraryScroll.addListener(loadNearBottom);
     address.text = data.address;
@@ -249,55 +255,25 @@ class _LibraryHomeState extends State<LibraryHome> {
     }
   }
 
+  void libraryChanged() {
+    if (mounted) setState(() {});
+  }
+
   Future<void> loadLibrary({bool more = false}) async {
     if (page != 'library' || (more && libraryLoading)) return;
-    final generation = ++libraryGeneration;
-    final scope = data.query;
-    final text = search;
-    final key = jsonEncode([scope.toJson(), text]);
-    final offset = more ? libraryItems.length : 0;
-    setState(() {
-      libraryLoading = true;
-      libraryError = '';
-      if (key != libraryKey) {
-        libraryItems = [];
-        libraryTotal = 0;
-        selected = {};
-      }
-      libraryKey = key;
-    });
-    try {
-      final result = await repo.loadVideos(
-        scope: scope,
-        search: text,
-        offset: offset,
-        limit: 24,
-      );
-      if (!mounted || generation != libraryGeneration || page != 'library') {
-        return;
-      }
-      setState(() {
-        libraryItems = more ? [...libraryItems, ...result.items] : result.items;
-        libraryTotal = result.total;
-        if (more &&
-            result.items.isEmpty &&
-            libraryItems.length < result.total) {
-          libraryError = '视频列表已变化，请刷新后继续';
-        }
+    final next = VideoBrowseContext(
+      query: data.query,
+      search: search,
+      scrollOffset: libraryScroll.hasClients ? libraryScroll.offset : 0,
+    );
+    if (next.queryKey != _library.state.context.queryKey) {
+      setState(() => selected = {});
+    }
+    await _library.load(next, more: more);
+    if (mounted && page == 'library') {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) loadNearBottom();
       });
-    } on RequestCancelled {
-      // A newer query or another page owns the visible state.
-    } catch (failure) {
-      if (mounted && generation == libraryGeneration) {
-        setState(() => libraryError = failure.toString());
-      }
-    } finally {
-      if (mounted && generation == libraryGeneration) {
-        setState(() => libraryLoading = false);
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) loadNearBottom();
-        });
-      }
     }
   }
 
@@ -306,10 +282,10 @@ class _LibraryHomeState extends State<LibraryHome> {
     _deleteNoticeTimer?.cancel();
     _roundNoticeTimer?.cancel();
     unawaited(_playback.close());
-    libraryGeneration++;
+    _library.removeListener(libraryChanged);
+    _library.dispose();
     trashGeneration++;
     missingGeneration++;
-    repo.cancelVideoRead();
     repo.cancelTrashRead();
     repo.cancelMissingRead();
     _browsing.removeListener(changed);
@@ -332,8 +308,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     if (next == 'library') {
       unawaited(loadLibrary());
     } else {
-      libraryGeneration++;
-      repo.cancelVideoRead();
+      _library.cancel();
     }
     if (next == 'trash') {
       trashItems = [];
@@ -642,274 +617,269 @@ class _LibraryHomeState extends State<LibraryHome> {
         go('browse');
       }
     },
-    child: Scaffold(
-      bottomNavigationBar: primaryPage
-          ? SafeArea(top: false, child: bottomNav())
-          : null,
-      body: SafeArea(
-        bottom: !primaryPage,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 52,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 12),
-                child: Row(
-                  children: [
-                    if (!primaryPage)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 4),
-                        child: iconAction(
-                          '返回设置',
-                          Icons.arrow_back,
-                          _busy ? null : () => go('settings'),
-                        ),
-                      ),
-                    Expanded(
-                      child: Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Paper.of(context).title,
+    child: AppShell(
+      showNavigation: primaryPage,
+      navigationEnabled: !_busy,
+      selected: page,
+      onNavigate: go,
+      destinations: const [
+        AppDestination('browse', '浏览', Icons.smart_display_outlined),
+        AppDestination('library', '视频库', Icons.grid_view),
+        AppDestination('tags', '标签', Icons.sell_outlined),
+        AppDestination('settings', '设置', Icons.settings_outlined),
+      ],
+      header: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 52,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 12),
+              child: Row(
+                children: [
+                  if (!primaryPage)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: iconAction(
+                        '返回设置',
+                        Icons.arrow_back,
+                        _busy ? null : () => go('settings'),
                       ),
                     ),
-                    if (mediaPage) ...[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 9),
-                        child: Text(
-                          !repo.libraryPreparation.value.ready
-                              ? '准备中'
-                              : '${data.round.isEmpty ? '00' : (_browsing.position + 1).toString().padLeft(2, '0')} / ${repo.playbackTotal.toString().padLeft(2, '0')}',
-                          key: const Key('round-position'),
-                          style: TextStyle(
-                            fontFamily: 'serif',
-                            fontSize: 13,
-                            color: Paper.of(context).olive,
-                          ),
-                        ),
-                      ),
-                      iconAction(
-                        '选择文件夹',
-                        Icons.folder_outlined,
-                        busy ? null : folder,
-                      ),
-                      iconAction(
-                        '播放模式',
-                        data.order == PlayOrder.random
-                            ? Icons.shuffle
-                            : Icons.format_list_numbered,
-                        busy ? null : order,
-                      ),
-                    ],
-                    PopupMenuButton<String>(
-                      tooltip: '更多',
-                      enabled: !busy,
-                      onOpened: () => setState(() => obscured = true),
-                      onCanceled: () => setState(() => obscured = false),
-                      onSelected: menu,
-                      padding: EdgeInsets.zero,
-                      icon: const Icon(Icons.more_horiz),
-                      constraints: const BoxConstraints(minWidth: 190),
-                      itemBuilder: (_) => [
-                        if (data.lastDelete != null)
-                          const PopupMenuItem(
-                            value: 'undo',
-                            child: Text('撤销上次删除'),
-                          ),
-                        PopupMenuItem(
-                          value: 'theme',
-                          child: actionLabel(
-                            widget.preferences.dark
-                                ? Icons.light_mode_outlined
-                                : Icons.dark_mode_outlined,
-                            widget.preferences.dark ? '切换浅色模式' : '切换暗黑模式',
-                          ),
-                        ),
-                        ...(page == 'browse'
-                            ? [
-                                if (_browsing.current != null)
-                                  const PopupMenuItem(
-                                    value: 'tag',
-                                    child: Text('打标签'),
-                                  ),
-                                if (_browsing.current != null)
-                                  const PopupMenuItem(
-                                    value: 'details',
-                                    child: Text('视频详情'),
-                                  ),
-                                PopupMenuItem(
-                                  value: 'review',
-                                  child: Text(review ? '返回日常浏览' : '进入快速整理'),
-                                ),
-                                const PopupMenuItem(
-                                  value: 'round',
-                                  child: Text('开始新一轮'),
-                                ),
-                                if (_browsing.current != null)
-                                  PopupMenuItem(
-                                    value: 'delete',
-                                    child: Text(
-                                      '移入回收站',
-                                      style: TextStyle(
-                                        color: Paper.of(context).danger,
-                                      ),
-                                    ),
-                                  ),
-                              ]
-                            : const [
-                                PopupMenuItem(
-                                  value: 'roots',
-                                  child: Text('媒体目录'),
-                                ),
-                                PopupMenuItem(
-                                  value: 'trash',
-                                  child: Text('回收站'),
-                                ),
-                                PopupMenuItem(
-                                  value: 'backup',
-                                  child: Text('备份与恢复'),
-                                ),
-                              ]),
-                      ],
+                  Expanded(
+                    child: Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Paper.of(context).title,
                     ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 2,
-              child: _busy
-                  ? const LinearProgressIndicator(
-                      key: Key('management-loading'),
-                      minHeight: 2,
-                    )
-                  : ColoredBox(color: Paper.of(context).line),
-            ),
-            if (error.isNotEmpty)
-              Container(
-                color: Theme.of(context).colorScheme.errorContainer,
-                padding: const EdgeInsets.only(left: 16),
-                child: Row(
-                  children: [
-                    Expanded(
+                  ),
+                  if (mediaPage) ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 9),
                       child: Text(
-                        error,
-                        key: const Key('operation-error'),
+                        !repo.libraryPreparation.value.ready
+                            ? '准备中'
+                            : '${data.round.isEmpty ? '00' : (_browsing.position + 1).toString().padLeft(2, '0')} / ${repo.playbackTotal.toString().padLeft(2, '0')}',
+                        key: const Key('round-position'),
                         style: TextStyle(
-                          color: Paper.of(context).danger,
-                          fontSize: 12,
+                          fontFamily: 'serif',
+                          fontSize: 13,
+                          color: Paper.of(context).olive,
                         ),
                       ),
                     ),
                     iconAction(
-                      '关闭错误提示',
-                      Icons.close,
-                      () => setState(() => error = ''),
+                      '选择文件夹',
+                      Icons.folder_outlined,
+                      busy ? null : folder,
+                    ),
+                    iconAction(
+                      '播放模式',
+                      data.order == PlayOrder.random
+                          ? Icons.shuffle
+                          : Icons.format_list_numbered,
+                      busy ? null : order,
                     ),
                   ],
-                ),
+                  PopupMenuButton<String>(
+                    tooltip: '更多',
+                    enabled: !busy,
+                    onOpened: () => setState(() => obscured = true),
+                    onCanceled: () => setState(() => obscured = false),
+                    onSelected: menu,
+                    padding: EdgeInsets.zero,
+                    icon: const Icon(Icons.more_horiz),
+                    constraints: const BoxConstraints(minWidth: 190),
+                    itemBuilder: (_) => [
+                      if (data.lastDelete != null)
+                        const PopupMenuItem(
+                          value: 'undo',
+                          child: Text('撤销上次删除'),
+                        ),
+                      PopupMenuItem(
+                        value: 'theme',
+                        child: actionLabel(
+                          widget.preferences.dark
+                              ? Icons.light_mode_outlined
+                              : Icons.dark_mode_outlined,
+                          widget.preferences.dark ? '切换浅色模式' : '切换暗黑模式',
+                        ),
+                      ),
+                      ...(page == 'browse'
+                          ? [
+                              if (_browsing.current != null)
+                                const PopupMenuItem(
+                                  value: 'tag',
+                                  child: Text('打标签'),
+                                ),
+                              if (_browsing.current != null)
+                                const PopupMenuItem(
+                                  value: 'details',
+                                  child: Text('视频详情'),
+                                ),
+                              PopupMenuItem(
+                                value: 'review',
+                                child: Text(review ? '返回日常浏览' : '进入快速整理'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'round',
+                                child: Text('开始新一轮'),
+                              ),
+                              if (_browsing.current != null)
+                                PopupMenuItem(
+                                  value: 'delete',
+                                  child: Text(
+                                    '移入回收站',
+                                    style: TextStyle(
+                                      color: Paper.of(context).danger,
+                                    ),
+                                  ),
+                                ),
+                            ]
+                          : const [
+                              PopupMenuItem(
+                                value: 'roots',
+                                child: Text('媒体目录'),
+                              ),
+                              PopupMenuItem(value: 'trash', child: Text('回收站')),
+                              PopupMenuItem(
+                                value: 'backup',
+                                child: Text('备份与恢复'),
+                              ),
+                            ]),
+                    ],
+                  ),
+                ],
               ),
-            if (data.connected &&
-                repo.fileOperationPending &&
-                !_browsing.deleting &&
-                !restoringTrash &&
-                !purgingTrash)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ValueListenableBuilder<String?>(
-                        valueListenable: repo.fileStatus,
-                        builder: (_, status, _) => Text(
-                          status ?? '文件操作结果待确认',
+            ),
+          ),
+          SizedBox(
+            height: 2,
+            child: _busy
+                ? const LinearProgressIndicator(
+                    key: Key('management-loading'),
+                    minHeight: 2,
+                  )
+                : ColoredBox(color: Paper.of(context).line),
+          ),
+          if (error.isNotEmpty)
+            Container(
+              color: Theme.of(context).colorScheme.errorContainer,
+              padding: const EdgeInsets.only(left: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      error,
+                      key: const Key('operation-error'),
+                      style: TextStyle(
+                        color: Paper.of(context).danger,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                  iconAction(
+                    '关闭错误提示',
+                    Icons.close,
+                    () => setState(() => error = ''),
+                  ),
+                ],
+              ),
+            ),
+          if (data.connected &&
+              repo.fileOperationPending &&
+              !_browsing.deleting &&
+              !restoringTrash &&
+              !purgingTrash)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ValueListenableBuilder<String?>(
+                      valueListenable: repo.fileStatus,
+                      builder: (_, status, _) => Text(
+                        status ?? '文件操作结果待确认',
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: queryingFiles ? null : queryFileResult,
+                    child: Text(queryingFiles ? '正在查询…' : '查询结果'),
+                  ),
+                ],
+              ),
+            ),
+          if (data.connected && repo.backupRestorePending)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text('恢复结果待确认', style: TextStyle(fontSize: 12)),
+                  ),
+                  TextButton(
+                    key: const Key('backup-query'),
+                    onPressed: _busy
+                        ? null
+                        : () => perform(
+                            repo.reconcileBackupRestore,
+                            allowMaintenance: true,
+                          ),
+                    child: const Text('查询恢复结果'),
+                  ),
+                ],
+              ),
+            ),
+          if (data.connected && (busy || page == 'roots'))
+            ValueListenableBuilder<String?>(
+              valueListenable: repo.scanStatus,
+              builder: (context, message, _) =>
+                  message == null || message == error
+                  ? const SizedBox()
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 4,
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          message,
+                          key: const Key('scan-status'),
                           style: const TextStyle(fontSize: 12),
                         ),
                       ),
                     ),
-                    TextButton(
-                      onPressed: queryingFiles ? null : queryFileResult,
-                      child: Text(queryingFiles ? '正在查询…' : '查询结果'),
-                    ),
-                  ],
-                ),
-              ),
-            if (data.connected && repo.backupRestorePending)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    const Expanded(
-                      child: Text('恢复结果待确认', style: TextStyle(fontSize: 12)),
-                    ),
-                    TextButton(
-                      key: const Key('backup-query'),
-                      onPressed: _busy
-                          ? null
-                          : () => perform(
-                              repo.reconcileBackupRestore,
-                              allowMaintenance: true,
-                            ),
-                      child: const Text('查询恢复结果'),
-                    ),
-                  ],
-                ),
-              ),
-            if (data.connected && (busy || page == 'roots'))
-              ValueListenableBuilder<String?>(
-                valueListenable: repo.scanStatus,
-                builder: (context, message, _) =>
-                    message == null || message == error
-                    ? const SizedBox()
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 4,
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            message,
-                            key: const Key('scan-status'),
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        ),
-                      ),
-              ),
-            Expanded(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  switch (page) {
-                    'browse' => TweenAnimationBuilder<double>(
-                      key: ValueKey(repo.libraryPreparation.value.ready),
-                      tween: Tween(begin: 0, end: 1),
-                      duration: const Duration(milliseconds: 180),
-                      child: browsing(),
-                      builder: (_, opacity, child) =>
-                          Opacity(opacity: opacity, child: child),
-                    ),
-                    'library' => library(),
-                    'tags' => tags(),
-                    'settings' => settings(),
-                    'roots' => roots(),
-                    'trash' => trash(),
-                    'backup' => backup(),
-                    'connection' => connection(),
-                    _ => const SizedBox(),
-                  },
-                  if (_deleteNotice != null || _roundNotice)
-                    Positioned(
-                      top: 8,
-                      left: 12,
-                      right: 12,
-                      child: floatingNotices(),
-                    ),
-                ],
-              ),
             ),
-          ],
-        ),
+        ],
+      ),
+      content: Stack(
+        fit: StackFit.expand,
+        children: [
+          switch (page) {
+            'browse' => TweenAnimationBuilder<double>(
+              key: ValueKey(repo.libraryPreparation.value.ready),
+              tween: Tween(begin: 0, end: 1),
+              duration: const Duration(milliseconds: 180),
+              child: browsing(),
+              builder: (_, opacity, child) =>
+                  Opacity(opacity: opacity, child: child),
+            ),
+            'library' => library(),
+            'tags' => tags(),
+            'settings' => settings(),
+            'roots' => roots(),
+            'trash' => trash(),
+            'backup' => backup(),
+            'connection' => connection(),
+            _ => const SizedBox(),
+          },
+          if (_deleteNotice != null || _roundNotice)
+            Positioned(top: 8, left: 12, right: 12, child: floatingNotices()),
+        ],
       ),
     ),
   );
@@ -998,65 +968,6 @@ class _LibraryHomeState extends State<LibraryHome> {
     ],
   );
 
-  Widget bottomNav() => Container(
-    decoration: BoxDecoration(
-      border: Border(top: BorderSide(color: Paper.of(context).line)),
-    ),
-    child: Center(
-      heightFactor: 1,
-      child: SizedBox(
-        width: 300,
-        height: 52,
-        child: Row(
-          children: [
-            for (final tab in [
-              ('browse', '浏览', Icons.smart_display_outlined),
-              ('library', '视频库', Icons.grid_view),
-              ('tags', '标签', Icons.sell_outlined),
-              ('settings', '设置', Icons.settings_outlined),
-            ])
-              Expanded(
-                child: InkWell(
-                  key: Key('nav-${tab.$1}'),
-                  onTap: _busy ? null : () => go(tab.$1),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        tab.$3,
-                        size: 19,
-                        color: page == tab.$1
-                            ? Paper.of(context).olive
-                            : Paper.of(context).muted,
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        tab.$2,
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: page == tab.$1
-                              ? Paper.of(context).olive
-                              : Paper.of(context).muted,
-                        ),
-                      ),
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 160),
-                        margin: const EdgeInsets.only(top: 3),
-                        width: 18,
-                        height: 2,
-                        color: page == tab.$1
-                            ? Paper.of(context).olive
-                            : Colors.transparent,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    ),
-  );
   Widget browseCaption(LibraryVideo video) {
     final tags = {...video.tags, ...data.query.tags};
     return Column(

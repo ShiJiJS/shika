@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-dev_dir="$HOME/.local/share/video-viewer-dev"
+dev_dir="${VV_SERVER_DEV_HOME:-$HOME/.local/share/video-viewer-dev}"
 umask 077
 mkdir -p "$dev_dir/data" "$dev_dir/media" "$dev_dir/config"
 if [[ ! -e "$dev_dir/passphrase" ]]; then

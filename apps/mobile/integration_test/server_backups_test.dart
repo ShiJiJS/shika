@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:video_viewer/library/backup_work_store.dart';
 import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/file_command_store.dart';
+import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/server_api.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
@@ -364,6 +365,9 @@ void main() {
       await ui.tap(find.byTooltip('筛选视频'));
       await ui.tagChip('原标签');
       await ui.text('应用筛选');
+      // The later assertion deliberately moves to position 1. A random
+      // anchored item can be last, whose adjacent window need not contain 1.
+      await repo.setScope(repo.snapshot.query, order: PlayOrder.sequential);
       await ui.search('片段01', 1);
       await ui.tap(find.byKey(Key('tile-${id(1)}')));
       await ui.ready();

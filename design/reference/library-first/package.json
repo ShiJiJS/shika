@@ -1,0 +1,1 @@
+{"name":"video-viewer-design-reference","version":"2026.10.23","private":true,"description":"Removable LF design reference; never shipped in the app","scripts":{"test":"node validate.mjs && node validate-pack-cleanup.mjs && node validate-settings.mjs","capture":"node capture.mjs"},"devDependencies":{"playwright":"1.62.1"}}

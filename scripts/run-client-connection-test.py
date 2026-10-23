@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Windows host runner for the disposable Android/public-API connection test.
+"""Cross-platform host runner for the disposable Android/public-API connection test.
 
 Prepares/resets the dedicated fixture using prepare-client-e2e.sh --reset.
 Only the explicitly named e2e container may be stopped by this runner.
@@ -18,7 +18,31 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 EVIDENCE = ROOT / "tmp" / "client-e2e"
-DEVELOP = Path.home() / "develop"
+WINDOWS = os.name == "nt"
+DEVELOP = (
+    Path.home() / "develop"
+    if WINDOWS
+    else Path(os.environ.get("VV_DEV_HOME", ROOT / ".dev"))
+)
+SDK = Path(os.environ.get("ANDROID_HOME", DEVELOP / "android-sdk"))
+FLUTTER_ROOT = Path(os.environ.get("FLUTTER_ROOT", DEVELOP / "flutter"))
+ADB = str(SDK / "platform-tools" / ("adb.exe" if WINDOWS else "adb"))
+FLUTTER = str(FLUTTER_ROOT / "bin" / ("flutter.bat" if WINDOWS else "flutter"))
+WSL = ["wsl", "-d", "Ubuntu-24.04", "--"] if WINDOWS else []
+
+
+def host_path(path):
+    if not WINDOWS:
+        return str(path)
+    return subprocess.check_output(
+        WSL + ["wslpath", "-a", str(path)], text=True
+    ).strip()
+
+
+def host_command(*args):
+    return WSL + list(args)
+
+
 HEADERS = {"X-Fixture-Key": "isolated-emulator-control"}
 CONTAINER = "video-viewer-client-e2e-server-1"
 stop = threading.Event()
@@ -29,7 +53,7 @@ PREFIX = "i1"
 
 def docker(*args):
     return subprocess.run(
-        ["wsl", "-d", "Ubuntu-24.04", "--", "docker", *args],
+        host_command("docker", *args),
         check=True,
         capture_output=True,
         text=True,
@@ -40,13 +64,39 @@ def docker(*args):
 def fresh_instance():
     docker("stop", "--time", "0", CONTAINER)
     events.append({"phase": "fresh-instance-stopped", "time": time.time()})
-    linux_root = "/mnt/" + ROOT.drive.rstrip(":").lower() + ROOT.as_posix()[2:]
     result = subprocess.run(
-        ["wsl", "-d", "Ubuntu-24.04", "--", "python3", linux_root + "/scripts/reset-client-e2e-instance.py"],
-        check=True, capture_output=True, text=True, timeout=30,
+        host_command(
+            "python3", host_path(ROOT / "scripts/reset-client-e2e-instance.py")
+        ),
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=30,
     )
-    events.append({"phase": "fresh-instance-prepared", "time": time.time(), **json.loads(result.stdout)})
-    docker("start", CONTAINER)
+    events.append(
+        {
+            "phase": "fresh-instance-prepared",
+            "time": time.time(),
+            **json.loads(result.stdout),
+        }
+    )
+    if WINDOWS:
+        docker("start", CONTAINER)
+    else:
+        # OrbStack keeps the old bind-mounted directory after host-side rename.
+        # Recreate only this disposable container to mount the new empty data.
+        subprocess.run(
+            [
+                "docker", "compose", "-f", str(ROOT / "compose.client-e2e.yaml"),
+                "up", "-d", "--no-build", "--force-recreate", "server",
+            ],
+            env={**os.environ, "VV_E2E_ASSETS": str(ROOT / "apps/mobile/assets/media")},
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        events.append({"phase": "fresh-instance-recreated", "time": time.time()})
     events.append({"phase": "fresh-instance-started", "time": time.time()})
 
 
@@ -89,7 +139,7 @@ def watch():
                     )
                 result = subprocess.run(
                     [
-                        str(DEVELOP / "android-sdk/platform-tools/adb.exe"),
+                        ADB,
                         "-s",
                         "emulator-5554",
                         "exec-out",
@@ -126,19 +176,27 @@ def main():
     mode.add_argument("--interactions", action="store_true")
     parser.add_argument("--plain-name")
     args = parser.parse_args()
-    # Keep this WSL VM attached while Windows Gradle/emulator work is running.
-    # Otherwise an idle VM can stop the fixture before Android connects.
-    keepalive = subprocess.Popen(
-        ["wsl", "-d", "Ubuntu-24.04", "--", "python3", "-c", "import sys; sys.stdin.buffer.read()"],
-        stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-    )
-    def release_wsl():
-        keepalive.stdin.close()
-        try:
-            keepalive.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            keepalive.terminate()
-    atexit.register(release_wsl)
+    if not Path(ADB).is_file() or not Path(FLUTTER).is_file():
+        parser.error(
+            "Flutter or ADB missing. On Mac use: bash scripts/dev.sh python3 scripts/run-client-connection-test.py"
+        )
+    # Only Windows needs a keepalive for its WSL VM.
+    if WINDOWS:
+        keepalive = subprocess.Popen(
+            WSL + ["python3", "-c", "import sys; sys.stdin.buffer.read()"],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
+        def release_wsl():
+            keepalive.stdin.close()
+            try:
+                keepalive.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                keepalive.terminate()
+
+        atexit.register(release_wsl)
     if args.interactions:
         PREFIX = "v1-interactions"
     elif args.preparation:
@@ -156,30 +214,21 @@ def main():
     else:
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
-    linux_root = "/mnt/" + ROOT.drive.rstrip(":").lower() + ROOT.as_posix()[2:]
     subprocess.run(
-        [
-            "wsl",
-            "-d",
-            "Ubuntu-24.04",
-            "--",
-            "bash",
-            linux_root + "/scripts/prepare-client-e2e.sh",
-            "--reset",
-        ],
+        host_command(
+            "bash", host_path(ROOT / "scripts/prepare-client-e2e.sh"), "--reset"
+        ),
         check=True,
     )
     env = os.environ.copy()
     env.update(
-        PUB_CACHE=str(DEVELOP / "pub-cache"),
-        PUB_HOSTED_URL="https://pub.flutter-io.cn",
-        FLUTTER_STORAGE_BASE_URL="https://storage.flutter-io.cn",
+        PUB_CACHE=os.environ.get("PUB_CACHE", str(DEVELOP / "pub-cache")),
     )
     watcher = threading.Thread(target=watch, daemon=True)
     watcher.start()
     try:
         command = [
-            str(DEVELOP / "flutter/bin/flutter.bat"),
+            FLUTTER,
             "test",
             {
                 "i1": "integration_test/server_connection_test.dart",
@@ -203,11 +252,17 @@ def main():
             "w", encoding="utf-8"
         ) as log:
             code = 0
-            for phase in range(1 if args.plain_name or args.preparation or args.interactions else 3 if args.backups else 2):
+            for phase in range(
+                1
+                if args.plain_name or args.preparation or args.interactions
+                else 3
+                if args.backups
+                else 2
+            ):
                 if phase:
                     subprocess.run(
                         [
-                            str(DEVELOP / "android-sdk/platform-tools/adb.exe"),
+                            ADB,
                             "-s",
                             "emulator-5554",
                             "shell",
@@ -219,10 +274,15 @@ def main():
                         timeout=15,
                     )
                     events.append(
-                        {"phase": "android-force-stopped", "resume_phase": phase, "time": time.time()}
+                        {
+                            "phase": "android-force-stopped",
+                            "resume_phase": phase,
+                            "time": time.time(),
+                        }
                     )
                 process = subprocess.Popen(
-                    command + (["--dart-define=E2E_RESUME=true"] if phase else [])
+                    command
+                    + (["--dart-define=E2E_RESUME=true"] if phase else [])
                     + (["--dart-define=E2E_FRESH_RESUME=true"] if phase == 2 else []),
                     cwd=ROOT / "apps/mobile",
                     env=env,

@@ -1,0 +1,56 @@
+{
+  "scope": "LF0 foundation; LF1–LF8 pending",
+  "client_before": 68,
+  "client_after": 73,
+  "client_analyze": "passed",
+  "server_existing_tests": 98,
+  "server_new_frozen_fixture_tests": 1,
+  "server_full_script_exit": "nonzero: 12 pre-existing Ruff format files",
+  "reference_flows": {
+    "main": 12,
+    "pack_cleanup": 5,
+    "settings": 8,
+    "rounds_each": 3
+  },
+  "native_interactions": "passed",
+  "native_backups": [
+    {
+      "phase": "BACKUP_RESULT",
+      "result": {
+        "actual_android_file": true,
+        "no_credentials_in_package": true,
+        "cancel_import_and_confirmation": true,
+        "bad_json_version_checksum": true,
+        "rollback_keeps_original_data": true,
+        "maintenance_blocks_writes_and_back": true,
+        "docker_restart_during_restore": true,
+        "pending_receipt_saved": true,
+        "no_media_changes": true
+      }
+    },
+    {
+      "phase": "BACKUP_FRESH_RESULT",
+      "result": {
+        "read_only_recovery": true,
+        "pre_restore_snapshot": true,
+        "cancel_save_preserves_file": true,
+        "new_server_id": true,
+        "explicit_mapping": true,
+        "tags_round_trash_restored": true,
+        "no_media_moved_by_restore": true
+      }
+    },
+    {
+      "phase": "BACKUP_FINAL_REOPEN_RESULT",
+      "result": {
+        "fresh_session": true,
+        "mapped_roots": true,
+        "same_round_and_position": true,
+        "trash_and_tags": true,
+        "no_old_commands": true,
+        "actual_file_preserved": true
+      }
+    }
+  ],
+  "private_media_uploaded": false
+}

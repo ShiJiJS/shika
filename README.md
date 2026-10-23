@@ -6,6 +6,8 @@ P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已�
 
 服务端技术栈：Python / FastAPI / Uvicorn、SQLite / SQLAlchemy / Alembic、FFmpeg / ffprobe；通过 Docker Compose 单服务、单端口部署。NAS 资源与预加载的评估范围见 [服务端方案](docs/server-plan.md)。
 
+当前开发从 LF0 开始：隔离设计参考、建立可运行模块骨架，后续按 [LF issues](docs/plans/library-first/ISSUES.md) 逐项实现媒体库与图包。下列第一版范围保留为历史发布记录。
+
 ## 第一版范围
 
 - NAS Docker 服务，个人局域网使用。
@@ -20,6 +22,10 @@ P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已�
 
 ## 项目文档
 
+- [可移除设计参考原型](design/reference/README.md)（不随 App 发布）
+- [媒体库与图包升级规划：框架、实施任务与原型一致性验收](docs/plans/library-first/PLAN.md)（LF0 骨架阶段，后续按 issue 实施）
+
+- [Mac 开发环境、VS Code F5、测试、打包与 NAS 维护](docs/macos-development.md)
 - [部署、安装、日常使用与恢复手册](docs/deployment.md)
 - [V1 本机交付、安装包校验与目标环境待验项](docs/v1-validation.md)
 - [Flutter 客户端：真实服务、演示与开发](apps/mobile/README.md)
