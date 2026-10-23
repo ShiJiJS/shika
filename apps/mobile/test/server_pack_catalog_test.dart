@@ -345,4 +345,18 @@ void main() {
     expect(fixture.reads.any((u) => u.path.endsWith('/packs')), isFalse);
     expect(repo.snapshot.connected, isTrue);
   });
+
+  test('a pending tag retry belongs to its service and is not sent to another connection', () async {
+    await connect();
+    fixture.loseWrite = true;
+    await expectLater(repo.editPackTag(name: '新建'), throwsA(isA<ApiFailure>()));
+    final originalKey = fixture.writes.single.body['request_id'];
+    final other = PackServer();
+    await other.start();
+    addTearDown(() => other.server.close(force: true));
+    await repo.connect('http://127.0.0.1', other.server.port, 'fixture');
+    await repo.editPackTag(name: '新建');
+    expect(other.writes.single.body['request_id'], isNot(originalKey));
+    expect(other.packTags['new-tag'], '新建');
+  });
 }

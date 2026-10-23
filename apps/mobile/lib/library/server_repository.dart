@@ -284,9 +284,7 @@ class ServerLibraryRepository extends LibraryRepository
     cancelFolderRead();
     cancelTrashRead();
     cancelMissingRead();
-    cancelPackRead();
-    cancelPackTagRead();
-    cancelPackDirectoryRead();
+    _resetPackConnection();
     _scanRead.cancel();
     _preparationTimer?.cancel();
     _preparationRead.cancel();
@@ -596,9 +594,7 @@ class ServerLibraryRepository extends LibraryRepository
       cancelFolderRead();
       cancelTrashRead();
       cancelMissingRead();
-      cancelPackRead();
-      cancelPackTagRead();
-      cancelPackDirectoryRead();
+      _resetPackConnection();
       _scanRead.cancel();
       _scanTask = null;
       _scanAfterRestore = false;
@@ -2010,9 +2006,7 @@ class ServerLibraryRepository extends LibraryRepository
     cancelFolderRead();
     cancelTrashRead();
     cancelMissingRead();
-    cancelPackRead();
-    cancelPackTagRead();
-    cancelPackDirectoryRead();
+    _resetPackConnection();
     _scanRead.cancel();
     _api?.close();
     _backups?.dispose();

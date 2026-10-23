@@ -25,6 +25,14 @@ mixin _ServerPackCatalog on LibraryRepository {
   final Map<String, String> _packWriteKeys = {};
   ServerApi? _packWriteOwner;
 
+  void _resetPackConnection() {
+    cancelPackRead();
+    cancelPackTagRead();
+    cancelPackDirectoryRead();
+    _packWriteOwner = null;
+    _packWriteKeys.clear();
+  }
+
   void _packSupported({bool tagsOnly = false}) {
     if (!(tagsOnly ? capabilities.packTags : capabilities.imagePacks)) {
       throw const LibraryFailure('当前服务尚不支持图包，请升级服务端');
