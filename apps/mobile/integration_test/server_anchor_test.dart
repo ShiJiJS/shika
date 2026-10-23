@@ -44,6 +44,7 @@ void main() {
         repo.dispose();
       });
       await repo.connect(fixtureBase, 8761, fixturePassword);
+      await repo.requestScan();
       await until(
         () => repo.libraryPreparation.value.ready,
         'extended library scan',
