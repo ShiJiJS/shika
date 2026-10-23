@@ -1,0 +1,61 @@
+{
+  "stage": "LF3 service protocol checkpoint; LF3 remains in progress",
+  "implementation_revision": "08fb641248c38edd527e18d3627c6dcd32594f23",
+  "branch": "codex/lf3-fixed-preview",
+  "base_branch": "codex/lf2-pack-catalog",
+  "schema": "0007",
+  "server_tests": {
+    "passed": 145,
+    "failed": 0,
+    "seconds": 140.94,
+    "command": "docker run --rm --read-only --network none --shm-size=64m --tmpfs /tmp:mode=1777 video-viewer-server:lf3 pytest -q",
+    "source_bind_mount": false,
+    "image_manifest": "sha256:4cb61edbff0dfb7f11a190f92f8fcd6b47e9c48c68848fcdf4cfe847cba5f246",
+    "log_sha256": "9cb2661dcc51752ea881f9e5ed5303eb442b9226e71e163692a870f540fa9faf"
+  },
+  "focused_tests": {
+    "passed": 25,
+    "failed": 0,
+    "scope": "first service checkpoint before final restart coverage"
+  },
+  "covered_behaviors": [
+    "28 matches remain in fixed preview when library loaded only 24",
+    "name and relative directory search plus directory/tag AND/orientation/duration/type selection",
+    "editing or deleting tags does not reselect fixed members",
+    "scan and new files do not expand existing fixed range",
+    "disabled root excludes available selection without adding outsiders",
+    "mode reorder retains selected ID and original sequential baseline",
+    "restart uses existing members after new files were scanned",
+    "read-only connection creates no round; GET and prefetch do not write recents",
+    "visible open is idempotent and deduplicated; recent source only includes opened videos",
+    "recent baseline stays fixed after history timestamps change",
+    "fixed undo follows original video ID after order reversal and filter tag deletion",
+    "pure legacy backup remains exact v1; fixed state requires v2"
+  ],
+  "compatibility": "All existing service tests included; old request defaults legacy/library/path. Frozen 0004/0005 upgrades and ORM schema comparison pass at head 0007.",
+  "ruff_check": "passed",
+  "ruff_format": {
+    "status": "7 pre-existing untouched files still would be reformatted",
+    "files": [
+      "tests/e2e_server.py",
+      "tests/test_cleanup_and_fast_purge.py",
+      "tests/test_file_operations.py",
+      "tests/test_initial_import.py",
+      "tests/test_logical_trash.py",
+      "tests/test_thumbnail_recovery.py",
+      "video_viewer/backup_reconcile.py"
+    ]
+  },
+  "client_changes": false,
+  "pending": [
+    "Server and Demo adapters for full entry context, read-only connect, mode/restart/open acknowledgement",
+    "native preview route and source/scroll restoration",
+    "native gesture, lifecycle and delayed receipt regression",
+    "full LF3 acceptance; prototype/navigation wiring in LF4"
+  ],
+  "reference_modified": false,
+  "private_media": false,
+  "real_nas_modified": false,
+  "apk_released": false,
+  "github_browser_sync": "pending: original ego TaskSpace 106 no longer exists; user confirmation requested to create a replacement"
+}

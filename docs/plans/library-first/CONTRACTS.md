@@ -48,3 +48,15 @@ LF0 保留旧版可运行路径，LF3/LF4 才切换固定会话与新导航。�
 `library-state.media.video/pack` 分别返回 ready/scanning/counts；pack 还返回 indexed。ready 表示完整首扫已结束，不能作为读取已发布图包的前置门禁。冷扫无旧身份待匹配时按已完成包发布；有旧身份时先完成对应范围核对。扫描阶段、处理数量、受限错误列表与解码峰值记在现有 task 的 result.packs，不复制另一套扫描任务。失败/延迟范围不执行缺失清理。
 
 LF2 不提供阅读会话、进度更新、最近写入或图包整理接口；已有进度只读返回用于后续接线。新 App 的图包 adapter/UI、冷扫进度呈现、坏页重试/跳过由 LF4/LF5/LF7 实现，不以当前服务端成功替代原生路径验收。
+
+## LF3 服务协议（客户端接线中）
+
+schema `0007`，新增能力 `fixed_video_sessions`。轮次新增 membership/source/sort，成员另存 source_ordinal。原有调用默认 legacy/library/path，升级旧轮次也保留此状态。
+
+`POST /rounds` 新客户端发送 membership=fixed，source=library/tags/recent、sort=path/name/newest/recent、完整 scope（新增 search）、order、anchor_video_id 和 request_id。recent 排序只用于 recent 来源。legacy 不接受新增搜索/来源/排序语义，旧请求不会静默进入新协议。返回额外 membership/source/sort，scope 保留原查询依据，但固定会话不再次使用该依据筛成员。
+
+`PATCH /rounds/{id}/order` 接受 order、expected_revision、request_id、restart（默认 false）。重排固定成员、保持当前视频，顺序使用创建时的基准；restart 从重排后开头开始。它不创建新轮次或重查媒体库。`POST /rounds/{id}/opened` 接受 video_id、expected_revision、request_id，只允许当前有效固定会话的实际选中项写入最近。
+
+`GET /videos` 增加 source/sort，服务端按相同条件求完整预览候选；默认 path 保持旧分页顺序。搜索匹配名称及根下相对目录，不匹配临时主机挂载前缀。`GET /recent?kind=video` 返回相同分页结构及条目的 opened_at；图包最近暂未实现，kind=pack 明确拒绝，不返回空成功。
+
+新连接应调用 `GET /playback?create=false`；无会话返回 404 round_not_started，界面停留入口。旧调用继续默认 create=true。客户端尚未切换此读取和新会话方法；不得仅因服务接口存在宣称 LF3 或默认媒体库导航已完成。

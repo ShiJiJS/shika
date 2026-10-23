@@ -1,6 +1,6 @@
 # GitHub 实施任务
 
-总任务：[媒体库与图包升级 #24](https://github.com/ShiJiJS/video_viewer/issues/24)。LF0–LF2 已实现对应阶段并验证，等待 PR 按依赖合并；LF3–LF8 尚未实施；以下依赖是实施顺序，不是完成状态。
+总任务：[媒体库与图包升级 #24](https://github.com/ShiJiJS/video_viewer/issues/24)。LF0–LF2 已实现对应阶段并验证，等待 PR 按依赖合并；LF3 实施中（先接固定范围服务协议），LF4–LF8 尚未实施；以下依赖是实施顺序，不是完成状态。
 
 | 编号 | 任务 | 依赖 |
 | --- | --- | --- |
