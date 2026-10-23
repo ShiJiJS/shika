@@ -1149,7 +1149,7 @@ void main() {
       final currentId = flowers.firstWhere(
         (id) => videos.any((v) => v['id'] == id && v['name'] == '片段03.mp4'),
       );
-      await tap(t, find.byKey(Key('tile-$currentId')));
+      await enter(t, anchor: currentId);
       await ready(t);
       await fixture('/__fixture/actions/remove');
       await background(t);
