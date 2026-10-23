@@ -201,8 +201,13 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         == 200
     )
     info = client.get("/api/v1/info").json()
-    assert info["schema_version"] == "0006"
-    assert set(info["capabilities"]) == {"typed_roots", "pack_tags", "image_packs"}
+    assert info["schema_version"] == "0007"
+    assert set(info["capabilities"]) == {
+        "typed_roots",
+        "pack_tags",
+        "image_packs",
+        "fixed_video_sessions",
+    }
     schema = client.get("/openapi.json").json()
     assert schema["components"]["schemas"]["RootInput"]["properties"]["enabled"]
     assert (
@@ -322,7 +327,7 @@ def test_crash_recovery_uses_journal_before_retrying_upgrade(tmp_path):
             ).fetchone()
             is None
         )
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0006",)
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0007",)
     assert not (tmp_path / "migration-pending.json").exists()
     db.close()
 
@@ -478,7 +483,7 @@ def test_0005_pack_management_data_survives_directory_evidence_upgrade(tmp_path)
                 == before[name]
             )
         assert connection.execute("SELECT directory_signature FROM packs").fetchone() == ("[]",)
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0006",)
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0007",)
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
     assert db.last_migration_snapshot is not None
     db.close()

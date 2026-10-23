@@ -54,6 +54,7 @@ class PlaybackScope(Input):
     duration: Literal["short", "long"] | None = None
     file_type: str | None = Field(default=None, max_length=16)
     tag_ids: list[str] = Field(default_factory=list, max_length=256)
+    search: str = Field(default="", max_length=200)
 
 
 class RoundInput(Input):
@@ -61,6 +62,32 @@ class RoundInput(Input):
     order: Literal["random", "sequential"] = "random"
     scope: PlaybackScope = Field(default_factory=PlaybackScope)
     anchor_video_id: str | None = None
+    membership: Literal["legacy", "fixed"] = "legacy"
+    source: Literal["library", "tags", "recent"] = "library"
+    sort: Literal["path", "name", "newest", "recent"] = "path"
+
+    @model_validator(mode="after")
+    def compatible_context(self):
+        if self.membership == "legacy" and (
+            self.scope.search or self.source != "library" or self.sort != "path"
+        ):
+            raise ValueError("Entry search/source/sort require fixed membership")
+        if self.sort == "recent" and self.source != "recent":
+            raise ValueError("Recent sorting requires the recent source")
+        return self
+
+
+class OrderInput(Input):
+    request_id: str = Field(min_length=1, max_length=128)
+    expected_revision: int = Field(ge=0)
+    order: Literal["random", "sequential"]
+    restart: bool = False
+
+
+class OpenedInput(Input):
+    request_id: str = Field(min_length=1, max_length=128)
+    expected_revision: int = Field(ge=0)
+    video_id: str = Field(min_length=1, max_length=128)
 
 
 class PositionInput(Input):
@@ -247,8 +274,8 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             "server_id": server_id,
             "api_version": 1,
             "sqlite_version": sqlite3.sqlite_version,
-            "schema_version": "0006",
-            "capabilities": ["typed_roots", "pack_tags", "image_packs"],
+            "schema_version": "0007",
+            "capabilities": ["typed_roots", "pack_tags", "image_packs", "fixed_video_sessions"],
         }
 
     @app.get("/api/v1/mounts", dependencies=auth_required)
@@ -370,6 +397,8 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         duration: Literal["short", "long"] | None = None,
         file_type: Annotated[str | None, Query(max_length=16)] = None,
         tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
+        source: Literal["library", "tags", "recent"] = "library",
+        sort: Literal["path", "name", "newest", "recent"] = "path",
     ):
         return request.app.state.catalog.videos(
             offset=offset,
@@ -381,6 +410,8 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             duration=duration,
             file_type=file_type,
             tag_ids=tag_ids or (),
+            source=source,
+            sort=sort,
         )
 
     @app.get("/api/v1/videos/{video_id}/thumbnail", dependencies=auth_required)
@@ -408,16 +439,45 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         return request.app.state.streams.response(video_id)
 
     @app.get("/api/v1/playback", dependencies=auth_required)
-    def playback(request: Request):
-        return request.app.state.playback.current()
+    def playback(request: Request, create: bool = True):
+        return request.app.state.playback.current(create=create)
 
     @app.post("/api/v1/rounds", dependencies=auth_required, status_code=201)
     def create_round(body: RoundInput, request: Request):
+        scope = body.scope.model_dump(exclude_none=True)
+        if not scope["search"]:
+            scope.pop("search")
         return request.app.state.playback.create(
             body.order,
-            body.scope.model_dump(exclude_none=True),
+            scope,
             body.anchor_video_id,
             body.request_id,
+            membership=body.membership,
+            source=body.source,
+            sort=body.sort,
+        )
+
+    @app.patch("/api/v1/rounds/{round_id}/order", dependencies=auth_required)
+    def reorder(round_id: str, body: OrderInput, request: Request):
+        return request.app.state.playback.reorder(
+            round_id, body.order, body.expected_revision, body.request_id, restart=body.restart
+        )
+
+    @app.post("/api/v1/rounds/{round_id}/opened", dependencies=auth_required)
+    def opened(round_id: str, body: OpenedInput, request: Request):
+        return request.app.state.playback.opened(
+            round_id, body.video_id, body.expected_revision, body.request_id
+        )
+
+    @app.get("/api/v1/recent", dependencies=auth_required)
+    def recent(
+        request: Request,
+        kind: Literal["video"] = "video",
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int, Query(ge=1, le=200)] = 24,
+    ):
+        return request.app.state.catalog.videos(
+            offset=offset, limit=limit, source="recent", sort="recent"
         )
 
     @app.patch("/api/v1/rounds/{round_id}/position", dependencies=auth_required)

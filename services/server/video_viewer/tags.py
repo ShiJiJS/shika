@@ -95,7 +95,11 @@ class Tags:
                 pointer = session.get(Setting, "active_round")
                 round = session.get(PlaybackRound, pointer.value) if pointer else None
                 replacement = None
-                if round and tag_id in round.scope.get("tag_ids", []):
+                if (
+                    round
+                    and round.membership != "fixed"
+                    and tag_id in round.scope.get("tag_ids", [])
+                ):
                     scope = {
                         **round.scope,
                         "tag_ids": [tag for tag in round.scope["tag_ids"] if tag != tag_id],
