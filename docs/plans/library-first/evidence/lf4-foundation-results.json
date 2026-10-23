@@ -1,0 +1,36 @@
+{
+  "stage": "LF4 pack catalog adapter and query-controller foundation; native four-destination UI not delivered",
+  "implementation_revision": "c26522ae69055aacfaf8f07f71540853c3c6b07e",
+  "client_tests": {
+    "passed": 119,
+    "failed": 0,
+    "log_sha256": "c2fcf0d558f5beb5b4d08686a79030e6b699507b3a5b70d5110de2222f82c263"
+  },
+  "analyze": {
+    "result": "No issues found",
+    "log_sha256": "abef086526b90d551a60aa2105560805d235efc8cc7e22b935cc6603e0de3fc3"
+  },
+  "new_tests": {
+    "http_adapter": 6,
+    "query_controller": 5
+  },
+  "http_test_backend": "Controllable Dart HttpServer protocol fixture, not a new FastAPI/native integration claim",
+  "source_files_sha256": {
+    "apps/mobile/lib/features/library/pack_query_controller.dart": "debd24f6962fdd34588fb3232b917af8f3fc2917addb648c6ffa868face8f01f",
+    "apps/mobile/lib/library/pack_models.dart": "9e14cd07010eca3a133f7ed526980f0841f1d9dc23c67cd2699ee28bd223d314",
+    "apps/mobile/lib/library/repository.dart": "ec36fb2ecce4641d8f120b45814395bfa17acb7972b12a6aca31421b82fc3ca0",
+    "apps/mobile/lib/library/server_pack_catalog.dart": "ea419ed0d200c73ecb3df8803d628e004313c78e99a7869adc79bb9134e06780",
+    "apps/mobile/lib/library/server_repository.dart": "7b574f5ffce13961c9122f7fa614b4869a0bcbc3a33ea0f3f118e0069ac4c215",
+    "apps/mobile/test/pack_query_controller_test.dart": "a5ad02d3954b0f7667757d24f281e2347acbd57ec6dc862095f5087811c7a062",
+    "apps/mobile/test/server_pack_catalog_test.dart": "62ffe18c646dc671115204d8ca8bd93c7955d97a5d713f744dab88e0fcdc57d1"
+  },
+  "reference_prototype_changed": false,
+  "real_nas_media_changed": false,
+  "native_ui_verified": false,
+  "remaining": [
+    "Four destinations and per-type/source entry state",
+    "Native video/pack library and separate tag pages",
+    "Recent sources and source return integration",
+    "P2 screenshots, sizing and real-service native flows"
+  ]
+}
