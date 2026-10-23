@@ -79,6 +79,12 @@ void main() {
       expect(controller.value.position.inSeconds, inInclusiveRange(20, 25));
       expect(controller.value.isPlaying, isFalse);
       expect(requested, isFalse);
+      await t.tap(find.byTooltip('播放速度'));
+      await t.pumpAndSettle();
+      await t.tap(find.text('1.5×'));
+      await t.pumpAndSettle();
+      expect(controller.value.playbackSpeed, 1.5);
+      expect(controller.value.isPlaying, isFalse);
       await t.pumpWidget(const SizedBox());
       await controller.dispose();
     },

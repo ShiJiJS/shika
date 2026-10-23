@@ -680,8 +680,22 @@ void main() {
       if (!controlsVisible(t)) {
         await tap(t, surface);
       }
+      final ratePlayer = player(t);
+      var observedRate = ratePlayer.value.playbackSpeed;
+      void changedRate() {
+        if (ratePlayer.value.playbackSpeed != observedRate) {
+          observedRate = ratePlayer.value.playbackSpeed;
+          debugPrint('FULLSCREEN_RATE $observedRate');
+        }
+      }
+
+      ratePlayer.addListener(changedRate);
+      addTearDown(() => ratePlayer.removeListener(changedRate));
       await tap(t, find.byTooltip('播放速度'));
-      await textTap(t, '1.5×');
+      final rateChoice = find.byWidgetPredicate(
+        (widget) => widget is PopupMenuItem<double> && widget.value == 1.5,
+      );
+      await tap(t, rateChoice);
       await until(
         t,
         () => player(t).value.playbackSpeed == 1.5,
