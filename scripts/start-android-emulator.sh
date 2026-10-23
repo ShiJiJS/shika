@@ -20,7 +20,8 @@ emulator="$ANDROID_HOME/emulator/emulator"
 "$adb" start-server
 if ! "$adb" devices | awk '{print $1}' | grep -Fxq "$device"; then
   mkdir -p "$VV_DEV_HOME/logs"
-  options=(-avd "$avd_name" -port "$port" -no-boot-anim -gpu "$gpu_mode" -feature -Vulkan -no-snapshot)
+  # A previous emulator crash must not block unattended startup on a consent dialog.
+  options=(-avd "$avd_name" -port "$port" -no-boot-anim -gpu "$gpu_mode" -feature -Vulkan -no-snapshot -no-metrics -crash-report-mode never)
   [[ "${VV_EMULATOR_HEADLESS:-0}" == 1 ]] && options+=(-no-window)
   nohup "$emulator" "${options[@]}" > "$VV_DEV_HOME/logs/emulator-$port.log" 2>&1 < /dev/null &
 fi
