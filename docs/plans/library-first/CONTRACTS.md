@@ -5,7 +5,7 @@ LF0 保留旧版可运行路径，LF3/LF4 才切换固定会话与新导航。�
 | 模块 | LF0 已接入的接口 | 不变量 / 下一步 |
 | --- | --- | --- |
 | AppShell | header/content、destinations、selected/onNavigate、showNavigation | SafeArea/Scaffold/底栏统一，保留既有 nav-* Key、尺寸和状态。LF4 更换四入口并拆出功能页，LF0 不提前丢掉旧入口 |
-| VideoBrowseContext | query、search、source、scrollOffset/anchor；queryKey | 不持有播放器或发写命令；tag 集合顺序不改变查询身份，滚动不触发重查；LF1 加入类型专有的 PackQuery，LF3 保存来源恢复 |
+| VideoBrowseContext | query、search、source、sort、scrollOffset/anchor/index/inset；queryKey | 不持有播放器或发写命令；tag 集合顺序不改变查询身份，滚动不触发重查；LF1 加入类型专有的 PackQuery，LF3 保存来源恢复 |
 | LibraryQueryController | load(context, more)、state、cancel/dispose | 查询只调用 LibraryRepository.loadVideos，永不 setScope/openVideo；24 条分页，迟到结果无效、翻页失败保留卡片/原 offset、停止加载、显式错误 |
 | Viewing | 现有 BrowsingSession / PlaybackSession | LF3 接收完整入口范围、固定候选/revision 与返回上下文；LF0 不改变旧轮次语义 |
 | PackReader | 尚未实现 | LF2 确定页清单/版本/鉴权，LF5 接 reading session；不拿视频实体占位 |
@@ -51,7 +51,7 @@ LF2 不提供阅读会话、进度更新、最近写入或图包整理接口；�
 
 ## LF3 服务协议（客户端接线中）
 
-初始 schema `0007` 新增 fixed_video_sessions；当前 `0008` 另有 versioned_video_queue。轮次新增 membership/source/sort，成员另存 source_ordinal；0008 新增 sequence_revision。原有调用默认 legacy/library/path，升级旧轮次也保留此状态。
+初始 schema `0007` 新增 fixed_video_sessions；当前 `0008` 另有 versioned_video_queue、video_entry_anchors。轮次新增 membership/source/sort，成员另存 source_ordinal；0008 新增 sequence_revision。返回定位不新增数据库列。原有调用默认 legacy/library/path，升级旧轮次也保留此状态。
 
 `POST /rounds` 新客户端发送 membership=fixed，source=library/tags/recent、sort=path/name/newest/recent、完整 scope（新增 search）、order、anchor_video_id 和 request_id。recent 排序只用于 recent 来源。legacy 不接受新增搜索/来源/排序语义，旧请求不会静默进入新协议。返回额外 membership/source/sort，scope 保留原查询依据，但固定会话不再次使用该依据筛成员。
 
@@ -59,7 +59,11 @@ LF2 不提供阅读会话、进度更新、最近写入或图包整理接口；�
 
 `GET /videos` 增加 source/sort，服务端按相同条件求完整预览候选；默认 path 保持旧分页顺序。搜索匹配名称及根下相对目录，不匹配临时主机挂载前缀。`GET /recent?kind=video` 返回相同分页结构及条目的 opened_at；图包最近暂未实现，kind=pack 明确拒绝，不返回空成功。
 
-支持 fixed_video_sessions 的新连接已调用 `GET /playback?create=false`；无会话返回 404 round_not_started，界面停留入口。旧调用继续默认 create=true。新固定预览同时要求 versioned_video_queue，旧服务缺少能力时明确提示升级。客户端的 begin/order/restart/opened 已接线，原生四入口和全部返回路径仍未验收完成。
+支持 fixed_video_sessions 的新连接已调用 `GET /playback?create=false`；无会话返回 404 round_not_started，界面停留入口。旧调用继续默认 create=true。新固定预览同时要求 versioned_video_queue、video_entry_anchors，旧服务缺少能力时明确提示升级。客户端的 begin/order/restart/opened 已接线，原生四入口和全部返回路径仍未验收完成。
+
+`GET /videos` 可携带最多 16 个按优先级排列的 anchor_ids，offset 此时为原条目序号的回退值。服务在同一 SQLite 读取快照内，使用完整入口查询及相同排序查找第一个仍匹配的 ID；全部失效则把回退序号限制在有效范围内。返回该条目所在的一页、实际 offset 和全局 anchor_index；不会把所有前置页发送到客户端，也不创建播放会话或最近记录。
+
+来源页保存首个可见视频及附近 ID、全局序号、行内滚动余量。恢复后按返回页内行定位；前方分页插入时补偿滚动距离，仍可向前后浏览。查询失败保留原窗口和来源，原处重试同一定位；新搜索或离页使旧读取及其滚动回调失效。后台管理数据更新也按可见 ID 刷新，避免恢复后又被第一页刷新覆盖。
 
 `GET /rounds/{id}/entries?v=sequence_revision` 返回 sequence_revision，版本不符返回 409 round_order_changed；在同一短读取快照内检查版本、候选与总数。普通位置变化只改 revision，重排/重来还提高 sequence_revision，原候选不变。客户端窗口/队列以会话 ID + sequence_revision 隔离，遇失配先只读刷新当前会话，再拒绝迟到的旧页。长队列 UI 随机访问分页，最多保留四页元数据；重排后定位当前项。
 
