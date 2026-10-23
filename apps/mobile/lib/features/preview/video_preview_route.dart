@@ -471,8 +471,23 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                                   widget.preferences.preloadAdjacent,
                               onUnauthorized: (source) =>
                                   unawaited(repo.mediaUnauthorized(source)),
-                              onPlaybackFailure: (video) =>
-                                  repo.playbackFailure(video.source),
+                              onPlaybackFailure: (video) async {
+                                final identity = repo.playbackIdentity;
+                                final message = await repo.playbackFailure(
+                                  video.source,
+                                );
+                                // Recovery can dispose the failed page while
+                                // selecting its successor. Keep the explanation
+                                // on this route, after the old decoder is gone.
+                                if (mounted &&
+                                    !closing &&
+                                    repo.playbackIdentity == identity &&
+                                    message != null &&
+                                    browsing.current?.id != video.id) {
+                                  setState(() => error = message);
+                                }
+                                return message;
+                              },
                             ),
                           ),
                     if (notice.isNotEmpty)
