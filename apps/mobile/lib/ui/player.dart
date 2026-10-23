@@ -576,7 +576,9 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       final navigator = _fullscreenNavigator = Navigator.of(context);
       final route = _fullscreenRoute = MaterialPageRoute<void>(
         builder: (context) => Scaffold(
-          backgroundColor: Colors.black,
+          backgroundColor: widget.inlineControls
+              ? const Color(0xff111612)
+              : Colors.black,
           body: ValueListenableBuilder<int>(
             valueListenable: _screenRevision,
             builder: (context, _, _) {
@@ -665,7 +667,9 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) => ColoredBox(
-    color: Paper.of(context).videoSurface,
+    color: widget.inlineControls
+        ? const Color(0xff111612)
+        : Paper.of(context).videoSurface,
     child: Stack(
       children: [
         Positioned.fill(
@@ -891,10 +895,14 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     });
   }
 
-  void _moveSeek(DragUpdateDetails details, {bool track = false}) {
+  void _moveSeek(
+    DragUpdateDetails details, {
+    bool track = false,
+    double? trackWidth,
+  }) {
     if (!_seeking) return;
     final duration = controller.value.duration.inMilliseconds.toDouble();
-    final width = context.size!.width;
+    final width = trackWidth ?? context.size!.width;
     _seekDx += details.delta.dx;
     setState(
       () => _seekMs = track
@@ -979,6 +987,143 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     if (_feedback != null) _message(_feedback!);
     if (_controls) _scheduleHide();
   }
+
+  Widget _inlineControlBar(
+    VideoPlayerValue value,
+    Duration position,
+  ) => Positioned(
+    left: 10,
+    right: 10,
+    bottom: 12,
+    height: 48,
+    child: IgnorePointer(
+      ignoring: !_controls,
+      child: AnimatedOpacity(
+        opacity: _controls ? 1 : 0,
+        duration: const Duration(milliseconds: 160),
+        child: Container(
+          key: const Key('playback-controls'),
+          padding: const EdgeInsets.symmetric(horizontal: 6),
+          decoration: BoxDecoration(
+            color: const Color(0xff0d110e).withValues(alpha: .94),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Row(
+            children: [
+              TextButton(
+                onPressed: _togglePlayback,
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(40, 44),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  textStyle: const TextStyle(fontSize: 12),
+                ),
+                child: Text(_playRequested ? '暂停' : '播放'),
+              ),
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) => GestureDetector(
+                    key: const Key('video-progress-touch'),
+                    behavior: HitTestBehavior.opaque,
+                    onHorizontalDragStart: !widget.interactionsEnabled
+                        ? null
+                        : (_) => _startSeek(),
+                    onHorizontalDragUpdate: (details) => _moveSeek(
+                      details,
+                      track: true,
+                      trackWidth: constraints.maxWidth,
+                    ),
+                    onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
+                    onHorizontalDragCancel: () =>
+                        unawaited(_finishSeek(cancel: true)),
+                    child: SizedBox(
+                      height: 48,
+                      child: SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          trackHeight: 2,
+                          thumbShape: const RoundSliderThumbShape(
+                            enabledThumbRadius: 7,
+                          ),
+                          overlayShape: const RoundSliderOverlayShape(
+                            overlayRadius: 12,
+                          ),
+                        ),
+                        child: IgnorePointer(
+                          child: Slider(
+                            key: const Key('video-progress'),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            activeColor: const Color(0xffb9cba9),
+                            inactiveColor: Colors.white38,
+                            min: 0,
+                            max: value.duration.inMilliseconds > 0
+                                ? value.duration.inMilliseconds.toDouble()
+                                : 1,
+                            value: position.inMilliseconds.toDouble().clamp(
+                              0,
+                              value.duration.inMilliseconds > 0
+                                  ? value.duration.inMilliseconds.toDouble()
+                                  : 1,
+                            ),
+                            onChanged: (_) {},
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                '${timeLabel(position)} / ${timeLabel(value.duration)}',
+                key: const Key('playback-time'),
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+              ),
+              PopupMenuButton<double>(
+                tooltip: '播放速度',
+                initialValue: value.playbackSpeed,
+                onOpened: () => _hideTimer?.cancel(),
+                onCanceled: _scheduleHide,
+                onSelected: (speed) {
+                  widget.onSpeedChanged?.call(speed);
+                  _setSpeed(speed);
+                  _scheduleHide();
+                },
+                itemBuilder: (_) => [.5, 1.0, 1.5, 2.0]
+                    .map(
+                      (speed) =>
+                          PopupMenuItem(value: speed, child: Text('$speed×')),
+                    )
+                    .toList(),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 4),
+                  child: SizedBox(
+                    height: 48,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '${value.playbackSpeed.toString().replaceFirst(RegExp(r'\.0$'), '')}×',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        const Icon(
+                          Icons.expand_more,
+                          size: 17,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 
   @override
   void didUpdateWidget(PlayerSurface oldWidget) {
@@ -1198,163 +1343,169 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                   ),
                 ),
               ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: _controls ? 56 : 26,
-              child: GestureDetector(
-                key: const Key('video-progress-touch'),
-                behavior: HitTestBehavior.opaque,
-                onHorizontalDragStart: !widget.interactionsEnabled
-                    ? null
-                    : (_) => _startSeek(),
-                onHorizontalDragUpdate: (d) => _moveSeek(d, track: true),
-                onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
-                onHorizontalDragCancel: () =>
-                    unawaited(_finishSeek(cancel: true)),
-                child: ClipRect(
-                  child: OverflowBox(
-                    alignment: Alignment.bottomCenter,
-                    minHeight: 56,
-                    maxHeight: 56,
-                    child: IgnorePointer(
-                      ignoring: !_controls,
-                      child: AnimatedOpacity(
-                        opacity: _controls ? 1 : 0,
-                        duration: const Duration(milliseconds: 160),
-                        child: Container(
-                          key: const Key('playback-controls'),
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [Colors.transparent, Color(0x75000000)],
+            if (widget.inlineControls)
+              _inlineControlBar(v, position)
+            else
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                height: _controls ? 56 : 26,
+                child: GestureDetector(
+                  key: const Key('video-progress-touch'),
+                  behavior: HitTestBehavior.opaque,
+                  onHorizontalDragStart: !widget.interactionsEnabled
+                      ? null
+                      : (_) => _startSeek(),
+                  onHorizontalDragUpdate: (d) => _moveSeek(d, track: true),
+                  onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
+                  onHorizontalDragCancel: () =>
+                      unawaited(_finishSeek(cancel: true)),
+                  child: ClipRect(
+                    child: OverflowBox(
+                      alignment: Alignment.bottomCenter,
+                      minHeight: 56,
+                      maxHeight: 56,
+                      child: IgnorePointer(
+                        ignoring: !_controls,
+                        child: AnimatedOpacity(
+                          opacity: _controls ? 1 : 0,
+                          duration: const Duration(milliseconds: 160),
+                          child: Container(
+                            key: const Key('playback-controls'),
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [Colors.transparent, Color(0x75000000)],
+                              ),
                             ),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 28,
-                                child: Row(
-                                  children: [
-                                    if (widget.fullscreen ||
-                                        widget.inlineControls)
-                                      IconButton(
-                                        tooltip: _playRequested ? '暂停' : '播放',
-                                        constraints: const BoxConstraints(
-                                          minWidth: 30,
-                                          minHeight: 28,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 28,
+                                  child: Row(
+                                    children: [
+                                      if (widget.fullscreen ||
+                                          widget.inlineControls)
+                                        IconButton(
+                                          tooltip: _playRequested ? '暂停' : '播放',
+                                          constraints: const BoxConstraints(
+                                            minWidth: 30,
+                                            minHeight: 28,
+                                          ),
+                                          padding: EdgeInsets.zero,
+                                          onPressed: () {
+                                            _togglePlayback();
+                                            _scheduleHide();
+                                          },
+                                          icon: Icon(
+                                            _playRequested
+                                                ? Icons.pause
+                                                : Icons.play_arrow,
+                                            color: Colors.white,
+                                            size: 20,
+                                          ),
                                         ),
-                                        padding: EdgeInsets.zero,
-                                        onPressed: () {
-                                          _togglePlayback();
-                                          _scheduleHide();
-                                        },
-                                        icon: Icon(
-                                          _playRequested
-                                              ? Icons.pause
-                                              : Icons.play_arrow,
-                                          color: Colors.white,
-                                          size: 20,
-                                        ),
-                                      ),
-                                    Expanded(
-                                      child: Text(
-                                        '${timeLabel(position)} / ${timeLabel(v.duration)}',
-                                        key: const Key('playback-time'),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ),
-                                    PopupMenuButton<double>(
-                                      tooltip: '播放速度',
-                                      initialValue: v.playbackSpeed,
-                                      onOpened: () => _hideTimer?.cancel(),
-                                      onCanceled: _scheduleHide,
-                                      onSelected: (speed) {
-                                        widget.onSpeedChanged?.call(speed);
-                                        _setSpeed(speed);
-                                        _scheduleHide();
-                                      },
-                                      itemBuilder: (_) => [.5, 1.0, 1.5, 2.0]
-                                          .map(
-                                            (speed) => PopupMenuItem(
-                                              value: speed,
-                                              child: Text('$speed×'),
-                                            ),
-                                          )
-                                          .toList(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                        ),
+                                      Expanded(
                                         child: Text(
-                                          '${v.playbackSpeed}×',
+                                          '${timeLabel(position)} / ${timeLabel(v.duration)}',
+                                          key: const Key('playback-time'),
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 12,
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 28,
-                                child: SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    trackHeight: 2,
-                                    thumbShape: const RoundSliderThumbShape(
-                                      enabledThumbRadius: 4,
-                                    ),
-                                    overlayShape: const RoundSliderOverlayShape(
-                                      overlayRadius: 8,
-                                    ),
-                                  ),
-                                  child: IgnorePointer(
-                                    child: Slider(
-                                      key: const Key('video-progress'),
-                                      activeColor: Colors.white,
-                                      inactiveColor: Colors.white38,
-                                      min: 0,
-                                      max: v.duration.inMilliseconds > 0
-                                          ? v.duration.inMilliseconds.toDouble()
-                                          : 1,
-                                      value: position.inMilliseconds
-                                          .toDouble()
-                                          .clamp(
-                                            0,
-                                            v.duration.inMilliseconds > 0
-                                                ? v.duration.inMilliseconds
-                                                      .toDouble()
-                                                : 1,
-                                          ),
-                                      onChangeStart: (_) => _startSeek(),
-                                      onChanged: (value) {
-                                        if (_seeking) {
-                                          setState(() => _seekMs = value);
-                                        } else {
-                                          unawaited(
-                                            controller.seekTo(
-                                              Duration(
-                                                milliseconds: value.round(),
+                                      PopupMenuButton<double>(
+                                        tooltip: '播放速度',
+                                        initialValue: v.playbackSpeed,
+                                        onOpened: () => _hideTimer?.cancel(),
+                                        onCanceled: _scheduleHide,
+                                        onSelected: (speed) {
+                                          widget.onSpeedChanged?.call(speed);
+                                          _setSpeed(speed);
+                                          _scheduleHide();
+                                        },
+                                        itemBuilder: (_) => [.5, 1.0, 1.5, 2.0]
+                                            .map(
+                                              (speed) => PopupMenuItem(
+                                                value: speed,
+                                                child: Text('$speed×'),
                                               ),
+                                            )
+                                            .toList(),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                          ),
+                                          child: Text(
+                                            '${v.playbackSpeed}×',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
                                             ),
-                                          );
-                                        }
-                                      },
-                                      onChangeEnd: (_) =>
-                                          unawaited(_finishSeek()),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 28,
+                                  child: SliderTheme(
+                                    data: SliderTheme.of(context).copyWith(
+                                      trackHeight: 2,
+                                      thumbShape: const RoundSliderThumbShape(
+                                        enabledThumbRadius: 4,
+                                      ),
+                                      overlayShape:
+                                          const RoundSliderOverlayShape(
+                                            overlayRadius: 8,
+                                          ),
+                                    ),
+                                    child: IgnorePointer(
+                                      child: Slider(
+                                        key: const Key('video-progress'),
+                                        activeColor: Colors.white,
+                                        inactiveColor: Colors.white38,
+                                        min: 0,
+                                        max: v.duration.inMilliseconds > 0
+                                            ? v.duration.inMilliseconds
+                                                  .toDouble()
+                                            : 1,
+                                        value: position.inMilliseconds
+                                            .toDouble()
+                                            .clamp(
+                                              0,
+                                              v.duration.inMilliseconds > 0
+                                                  ? v.duration.inMilliseconds
+                                                        .toDouble()
+                                                  : 1,
+                                            ),
+                                        onChangeStart: (_) => _startSeek(),
+                                        onChanged: (value) {
+                                          if (_seeking) {
+                                            setState(() => _seekMs = value);
+                                          } else {
+                                            unawaited(
+                                              controller.seekTo(
+                                                Duration(
+                                                  milliseconds: value.round(),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        onChangeEnd: (_) =>
+                                            unawaited(_finishSeek()),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -1362,7 +1513,6 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                   ),
                 ),
               ),
-            ),
           ],
         ),
       );

@@ -73,6 +73,12 @@ void main() {
         findsOneWidget,
       );
       expect(find.byTooltip('播放速度').hitTestable(), findsOneWidget);
+      final track = find.byKey(const Key('video-progress-touch'));
+      await t.drag(track, Offset(t.getSize(track).width / 4, 0));
+      await t.pump();
+      expect(controller.value.position.inSeconds, inInclusiveRange(20, 25));
+      expect(controller.value.isPlaying, isFalse);
+      expect(requested, isFalse);
       await t.pumpWidget(const SizedBox());
       await controller.dispose();
     },
