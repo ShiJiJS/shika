@@ -134,9 +134,11 @@ def test_reorder_keeps_members_selection_and_original_sequence_with_idempotency(
     original = entries(client, round)
     selected = original[1]["video"]["id"]
     round = move(client, round, selected)
+    assert round["sequence_revision"] == 0
     shuffled, body = reorder(client, round, "random", "shuffle")
     assert shuffled["id"] == round["id"] and shuffled["current"]["id"] == selected
     assert shuffled["revision"] > round["revision"]
+    assert shuffled["sequence_revision"] == 1
     assert {row["video"]["id"] for row in entries(client, shuffled)} == {
         row["video"]["id"] for row in original
     }
@@ -149,6 +151,7 @@ def test_reorder_keeps_members_selection_and_original_sequence_with_idempotency(
         == 409
     )
     ordered, _ = reorder(client, shuffled, "sequential")
+    assert ordered["sequence_revision"] == 2
     assert ordered["current"]["id"] == selected
     assert [row["video"]["id"] for row in entries(client, ordered)] == [
         row["video"]["id"] for row in original
@@ -162,6 +165,7 @@ def test_reorder_keeps_members_selection_and_original_sequence_with_idempotency(
     )
     final = move(client, ordered, original[-1]["video"]["id"])
     final = move(client, final, finish=True)
+    assert final["sequence_revision"] == 2
     assert final["finished"] and client.get("/api/v1/playback").json()["id"] == round["id"]
     put(samples / "h264.mov", media / "added-after-entry.mov")
     scan(client)
@@ -177,6 +181,7 @@ def test_reorder_keeps_members_selection_and_original_sequence_with_idempotency(
     restarted = response.json()
     assert response.status_code == 200, response.text
     assert restarted["id"] == round["id"] and restarted["total"] == 3
+    assert restarted["sequence_revision"] == 3
     assert restarted["current"]["id"] == original[0]["video"]["id"] and not restarted["finished"]
 
 

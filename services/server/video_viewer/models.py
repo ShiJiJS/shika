@@ -125,6 +125,7 @@ class PlaybackRound(Base):
     membership: Mapped[str] = mapped_column(String, default="legacy", server_default="legacy")
     source: Mapped[str] = mapped_column(String, default="library", server_default="library")
     sort: Mapped[str] = mapped_column(String, default="path", server_default="path")
+    sequence_revision: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
     cursor: Mapped[int] = mapped_column(Integer, default=0)
     revision: Mapped[int] = mapped_column(Integer, default=0)
     finished: Mapped[bool] = mapped_column(Boolean, default=False)

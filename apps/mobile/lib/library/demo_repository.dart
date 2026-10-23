@@ -83,14 +83,7 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
 
   bool _matches(LibraryVideo v, VideoQuery q, [LibrarySnapshot? state]) {
     final s = state ?? _state;
-    return v.status == VideoStatus.available &&
-        s.roots.any(
-          (r) =>
-              r.id == v.rootId &&
-              r.available &&
-              r.enabled &&
-              r.kind == MediaKind.video,
-        ) &&
+    return videoIsAvailable(v, s.roots) &&
         (q.folder.isEmpty || under(v.path, q.folder)) &&
         v.tags.containsAll(q.tags) &&
         (q.orientation.isEmpty ||
@@ -110,7 +103,7 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
       .where(
         (v) =>
             _matches(v, scope ?? _state.query) &&
-            v.name.toLowerCase().contains(search.toLowerCase()),
+            videoMatchesSearch(v, _state.roots, search),
       )
       .skip(offset)
       .take(limit)
@@ -120,7 +113,11 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
     if (_state.round.isEmpty) return null;
     final id = _state.round[_state.position];
     return _state.videos
-        .where((v) => v.id == id && _matches(v, _state.query))
+        .where(
+          (v) =>
+              v.id == id &&
+              _matches(v, _state.preview == null ? _state.query : VideoQuery()),
+        )
         .firstOrNull;
   }
 
@@ -167,14 +164,22 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
     } else {
       items.sort((a, b) => a.path.compareTo(b.path));
     }
-    return s.copy(round: items.map((v) => v.id), position: 0);
+    return s.copy(
+      round: items.map((v) => v.id),
+      position: 0,
+      clearPreview: true,
+    );
   }
 
   LibrarySnapshot _reconcile(LibrarySnapshot s) {
     final id = s.round.isEmpty ? null : s.round[s.position];
-    final round = s.round
+    final round = (s.preview?.ordered ?? s.round)
         .where(
-          (id) => s.videos.any((v) => v.id == id && _matches(v, s.query, s)),
+          (id) => s.videos.any(
+            (v) =>
+                v.id == id &&
+                _matches(v, s.preview == null ? s.query : VideoQuery(), s),
+          ),
         )
         .toList();
     final index = round.indexOf(id ?? '');
@@ -287,8 +292,163 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
     }
     return _round(s.copy(query: scope, order: order));
   });
+
+  List<LibraryVideo> _entryVideos(
+    LibrarySnapshot state,
+    VideoEntryScope entry,
+  ) {
+    if (entry.sort == VideoSort.recent && entry.source != BrowseSource.recent) {
+      throw const LibraryFailure('最近排序仅适用于最近入口');
+    }
+    final items = state.videos
+        .where(
+          (video) =>
+              _matches(video, entry.query, state) &&
+              videoMatchesSearch(video, state.roots, entry.search) &&
+              (entry.source != BrowseSource.recent ||
+                  state.recentVideos.containsKey(video.id)),
+        )
+        .toList();
+    int path(LibraryVideo a, LibraryVideo b) => a.path.compareTo(b.path);
+    items.sort((a, b) {
+      final result = switch (entry.sort) {
+        VideoSort.path => path(a, b),
+        VideoSort.name => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+        VideoSort.newest => b.createdAt.compareTo(a.createdAt),
+        VideoSort.recent => state.recentVideos[b.id]!.compareTo(
+          state.recentVideos[a.id]!,
+        ),
+      };
+      return result != 0 ? result : path(a, b);
+    });
+    return items;
+  }
+
   @override
-  Future<void> newRound() => _commit(_round);
+  Future<VideoPage> loadVideos({
+    VideoQuery? scope,
+    String search = '',
+    int offset = 0,
+    int limit = 24,
+  }) async {
+    final items = _entryVideos(
+      _state,
+      VideoEntryScope(query: scope ?? _state.query, search: search),
+    );
+    return VideoPage(
+      items: items.skip(offset).take(limit),
+      total: items.length,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  @override
+  Future<VideoPage> loadVideoEntry(
+    VideoEntryScope entry, {
+    int offset = 0,
+    int limit = 24,
+  }) async {
+    // Keep the legacy read override useful for delayed/failure test adapters.
+    if (entry.source == BrowseSource.library && entry.sort == VideoSort.path) {
+      return loadVideos(
+        scope: entry.query,
+        search: entry.search,
+        offset: offset,
+        limit: limit,
+      );
+    }
+    final items = _entryVideos(_state, entry);
+    return VideoPage(
+      items: items.skip(offset).take(limit),
+      total: items.length,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  @override
+  bool get fixedPreview => _state.preview != null;
+  @override
+  bool get supportsFixedPreviews => true;
+  @override
+  String get playbackSequenceIdentity =>
+      '$playbackIdentity:${_state.preview?.ordering ?? 0}';
+  @override
+  bool get previewFinished =>
+      _state.preview?.finished == true || _state.round.isEmpty;
+  @override
+  Future<void> beginPreview(
+    VideoEntryScope entry, {
+    String? anchor,
+    PlayOrder? order,
+  }) => _commit((s) {
+    final sequence = _entryVideos(s, entry).map((v) => v.id).toList();
+    if (anchor != null && !sequence.contains(anchor)) {
+      throw const LibraryFailure('该视频不在当前预览范围内');
+    }
+    final mode = order ?? s.order;
+    final ordered = [...sequence];
+    if (mode == PlayOrder.random) ordered.shuffle(Random());
+    return s.copy(
+      query: entry.query,
+      order: mode,
+      round: ordered,
+      position: anchor == null ? 0 : ordered.indexOf(anchor),
+      preview: VideoPreviewData(
+        id: 'preview-${DateTime.now().microsecondsSinceEpoch}',
+        entry: entry,
+        sequence: sequence,
+        ordered: ordered,
+        finished: sequence.isEmpty,
+      ),
+    );
+  });
+  @override
+  Future<void> changePreviewOrder(PlayOrder order, {bool restart = false}) =>
+      _commit((s) {
+        final preview = s.preview;
+        if (preview == null) throw const LibraryFailure('请从媒体库选择范围开始预览');
+        final selected = s.round.isEmpty ? null : s.round[s.position];
+        final ordered = [...preview.sequence];
+        if (order == PlayOrder.random) ordered.shuffle(Random());
+        final next = _reconcile(
+          s.copy(order: order, preview: preview.withOrder(ordered)),
+        );
+        return next.copy(
+          position: restart ? 0 : max(0, next.round.indexOf(selected ?? '')),
+        );
+      });
+  @override
+  Future<void> recordVideoOpened(String id) => _commit((s) {
+    if (s.preview == null || s.round.isEmpty || s.round[s.position] != id) {
+      throw const RequestCancelled();
+    }
+    return s.copy(
+      recentVideos: {
+        ...s.recentVideos,
+        id: DateTime.now().millisecondsSinceEpoch / 1000,
+      },
+    );
+  });
+  @override
+  Future<void> finishPreview() => _commit((s) {
+    if (s.preview == null ||
+        (s.round.isNotEmpty && s.position != s.round.length - 1)) {
+      throw const LibraryFailure('本范围还有未观看的视频');
+    }
+    return s.copy(
+      preview: s.preview!.withOrder(
+        s.preview!.ordered,
+        finished: true,
+        reordered: false,
+      ),
+    );
+  });
+  @override
+  Future<void> newRound() => fixedPreview
+      ? changePreviewOrder(_state.order, restart: true)
+      : _commit(_round);
   @override
   Future<void> step(int delta) => _commit(
     (s) => s.copy(
@@ -354,7 +514,10 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
           videos: videos,
           query: s.query.copy(tags: queryTags),
         );
-        return delete && original != null && s.query.tags.contains(original)
+        return s.preview == null &&
+                delete &&
+                original != null &&
+                s.query.tags.contains(original)
             ? _round(next)
             : _reconcile(next);
       });
@@ -403,6 +566,7 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
     if (targets.any((v) => _conflict(s, v))) {
       throw const LibraryFailure('恢复失败：原位置已有同名文件，没有覆盖');
     }
+    final restoredSelection = op.round.isEmpty ? null : op.round[op.position];
     final next = s.copy(
       videos: s.videos.map(
         (v) => op.ids.contains(v.id)
@@ -412,8 +576,10 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
               )
             : v,
       ),
-      round: op.round,
-      position: op.position,
+      round: s.preview?.ordered ?? op.round,
+      position: s.preview == null
+          ? op.position
+          : max(0, s.preview!.ordered.indexOf(restoredSelection ?? '')),
       clearDelete: true,
       completedRequests: [...s.completedRequests, 'undo:$operationId'],
     );

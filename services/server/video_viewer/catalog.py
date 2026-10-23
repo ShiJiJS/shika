@@ -339,6 +339,7 @@ class Catalog:
             "status": video.status,
             "error": video.error,
             "size": video.size,
+            "created_at": video.created_at,
             "duration": video.duration,
             "width": video.width,
             "height": video.height,

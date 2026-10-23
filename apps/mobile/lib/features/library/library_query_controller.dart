@@ -55,9 +55,8 @@ class LibraryQueryController extends ChangeNotifier {
       ),
     );
     try {
-      final page = await repository.loadVideos(
-        scope: context.query,
-        search: context.search,
+      final page = await repository.loadVideoEntry(
+        context.entry,
         offset: offset,
         limit: 24,
       );

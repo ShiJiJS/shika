@@ -174,6 +174,7 @@ def main():
     mode.add_argument("--backups", action="store_true")
     mode.add_argument("--preparation", action="store_true")
     mode.add_argument("--interactions", action="store_true")
+    mode.add_argument("--preview", action="store_true")
     parser.add_argument("--plain-name")
     args = parser.parse_args()
     if not Path(ADB).is_file() or not Path(FLUTTER).is_file():
@@ -197,7 +198,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.interactions:
+    if args.preview:
+        PREFIX = "lf3-preview"
+    elif args.interactions:
         PREFIX = "v1-interactions"
     elif args.preparation:
         PREFIX = "v1-preparation"
@@ -239,6 +242,7 @@ def main():
                 "i6": "integration_test/server_backups_test.dart",
                 "v1-preparation": "integration_test/server_preparation_test.dart",
                 "v1-interactions": "integration_test/nonblocking_server_test.dart",
+                "lf3-preview": "integration_test/server_preview_test.dart",
             }[PREFIX],
             "-d",
             "emulator-5554",
@@ -254,7 +258,7 @@ def main():
             code = 0
             for phase in range(
                 1
-                if args.plain_name or args.preparation or args.interactions
+                if args.plain_name or args.preparation or args.interactions or args.preview
                 else 3
                 if args.backups
                 else 2

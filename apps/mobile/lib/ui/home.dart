@@ -9,6 +9,7 @@ import '../library/models.dart';
 import '../app/app_shell.dart';
 import '../features/library/browse_context.dart';
 import '../features/library/library_query_controller.dart';
+import '../features/preview/video_preview_route.dart';
 import '../library/repository.dart';
 import 'paper.dart';
 import 'player.dart';
@@ -76,7 +77,12 @@ class _LibraryHomeState extends State<LibraryHome> {
   LibraryRepository get repo => widget.repository;
   late final _browsing = BrowsingSession(repo);
   LibrarySnapshot get data => _browsing.snapshot;
-  late String page = data.connected ? 'browse' : 'connection';
+  bool get libraryFirst => repo.supportsFixedPreviews;
+  String get landing => libraryFirst ? 'library' : 'browse';
+  late String page = data.connected ? landing : 'connection';
+  VideoBrowseContext libraryContext = VideoBrowseContext(sort: VideoSort.name);
+  bool viewing = false;
+  VideoQuery get entryQuery => libraryFirst ? libraryContext.query : data.query;
   late String error = widget.initialError ?? '';
   bool _busy = false, review = false, selecting = false, obscured = false;
   Timer? _deleteNoticeTimer;
@@ -151,10 +157,13 @@ class _LibraryHomeState extends State<LibraryHome> {
         address.text = data.address;
         port.text = '${data.port}';
         if (connected && data.connected) {
-          go(repo.backupRestorePending ? 'backup' : 'browse');
+          go(repo.backupRestorePending ? 'backup' : landing);
         }
       });
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && page == 'library') unawaited(loadLibrary());
+    });
   }
 
   void changed() {
@@ -175,7 +184,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         error = repo.connectionError!;
       }
     });
-    if (page == 'library') unawaited(loadLibrary());
+    if (page == 'library' && !viewing) unawaited(loadLibrary());
     if (page == 'trash') unawaited(loadTrash());
     if (page == 'roots') unawaited(loadMissing());
   }
@@ -186,6 +195,7 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   void loadNearBottom() {
     if (page == 'library' &&
+        !viewing &&
         libraryScroll.hasClients &&
         libraryScroll.position.extentAfter < 480 &&
         !libraryLoading &&
@@ -260,12 +270,15 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   Future<void> loadLibrary({bool more = false}) async {
-    if (page != 'library' || (more && libraryLoading)) return;
+    if (page != 'library' || viewing || (more && libraryLoading)) return;
     final next = VideoBrowseContext(
-      query: data.query,
+      query: entryQuery,
       search: search,
+      source: libraryFirst ? libraryContext.source : BrowseSource.library,
+      sort: libraryFirst ? libraryContext.sort : VideoSort.path,
       scrollOffset: libraryScroll.hasClients ? libraryScroll.offset : 0,
     );
+    libraryContext = next;
     if (next.queryKey != _library.state.context.queryKey) {
       setState(() => selected = {});
     }
@@ -274,6 +287,73 @@ class _LibraryHomeState extends State<LibraryHome> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) loadNearBottom();
       });
+    }
+  }
+
+  Future<void> setEntryQuery(VideoQuery query) async {
+    if (!libraryFirst) return repo.setScope(query);
+    setState(() {
+      libraryContext = libraryContext.copyWith(query: query);
+      selected = {};
+    });
+    await loadLibrary();
+  }
+
+  Future<void> openPreview({String? anchor, bool quick = false}) async {
+    FocusScope.of(context).unfocus();
+    final offset = libraryScroll.hasClients ? libraryScroll.offset : 0.0;
+    final first = libraryItems.isEmpty
+        ? null
+        : libraryItems[((offset ~/ 308) * 2).clamp(0, libraryItems.length - 1)]
+              .id;
+    final origin = libraryContext.copyWith(
+      query: entryQuery,
+      search: search,
+      scrollOffset: offset,
+      scrollAnchor: first,
+    );
+    viewing = true;
+    try {
+      if (!await perform(
+        () => repo.beginPreview(origin.entry, anchor: anchor),
+      )) {
+        return;
+      }
+      if (!mounted) return;
+      final route = PageRouteBuilder<void>(
+        transitionDuration: const Duration(milliseconds: 240),
+        reverseTransitionDuration: const Duration(milliseconds: 160),
+        pageBuilder: (context, animation, secondary) => VideoPreviewRoute(
+          repository: repo,
+          preferences: widget.preferences,
+          origin: origin,
+          quick: quick,
+        ),
+        transitionsBuilder: (context, animation, secondary, child) =>
+            MediaQuery.disableAnimationsOf(context)
+            ? child
+            : FadeTransition(opacity: animation, child: child),
+      );
+      await Navigator.of(context).push(route);
+      await route.completed;
+      if (!mounted) return;
+      libraryContext = origin;
+      viewing = false;
+      await loadLibrary();
+      if (mounted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted && libraryScroll.hasClients) {
+            libraryScroll.jumpTo(
+              origin.scrollOffset.clamp(
+                0.0,
+                libraryScroll.position.maxScrollExtent,
+              ),
+            );
+          }
+        });
+      }
+    } finally {
+      viewing = false;
     }
   }
 
@@ -366,9 +446,17 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   Future<void> scope({bool quick = false}) async {
     final q = await sheet<VideoQuery>(
-      ScopeSheet(repository: repo, review: quick),
+      ScopeSheet(
+        repository: repo,
+        review: quick,
+        initial: page == 'library' ? entryQuery : data.query,
+      ),
     );
     if (q != null) {
+      if (libraryFirst && page == 'library') {
+        await setEntryQuery(q);
+        return;
+      }
       await perform(() async {
         await repo.setScope(q);
         _browsing.followRepository();
@@ -379,9 +467,16 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   Future<void> folder() async {
     final value = await sheet<String>(
-      FolderPicker(repository: repo, initial: data.query.folder),
+      FolderPicker(
+        repository: repo,
+        initial: page == 'library' ? entryQuery.folder : data.query.folder,
+      ),
     );
     if (value != null) {
+      if (libraryFirst && page == 'library') {
+        await setEntryQuery(entryQuery.copy(folder: value));
+        return;
+      }
       await perform(() async {
         await repo.setScope(data.query.copy(folder: value));
         _browsing.followRepository();
@@ -1296,6 +1391,8 @@ class _LibraryHomeState extends State<LibraryHome> {
               TextButton(
                 onPressed: busy
                     ? null
+                    : libraryFirst
+                    ? () => openPreview(quick: true)
                     : () => setState(() {
                         review = true;
                         page = 'browse';
@@ -1337,6 +1434,8 @@ class _LibraryHomeState extends State<LibraryHome> {
                         !repo.libraryPreparation.value.ready ||
                         results.isEmpty
                     ? null
+                    : libraryFirst
+                    ? () => openPreview(anchor: results.first.id)
                     : () async {
                         if (await perform(
                           () => repo.openVideo(results.first.id),
@@ -1344,12 +1443,12 @@ class _LibraryHomeState extends State<LibraryHome> {
                           go('browse');
                         }
                       },
-                child: const Text('播放'),
+                child: Text(libraryFirst ? '预览此范围' : '播放'),
               ),
             ],
           ),
         ),
-        if (data.query.count > 0)
+        if (entryQuery.count > 0)
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 12, 8),
             child: Row(
@@ -1357,13 +1456,13 @@ class _LibraryHomeState extends State<LibraryHome> {
                 Expanded(
                   child: Text(
                     [
-                      if (data.query.folder.isNotEmpty) data.query.folder,
-                      ...data.query.tags.map((t) => '# ${repo.tagName(t)}'),
-                      if (data.query.orientation.isNotEmpty)
-                        data.query.orientation == 'portrait' ? '竖版' : '横版',
-                      if (data.query.duration.isNotEmpty)
-                        data.query.duration == 'short' ? '10 秒以内' : '10 秒以上',
-                      data.query.type,
+                      if (entryQuery.folder.isNotEmpty) entryQuery.folder,
+                      ...entryQuery.tags.map((t) => '# ${repo.tagName(t)}'),
+                      if (entryQuery.orientation.isNotEmpty)
+                        entryQuery.orientation == 'portrait' ? '竖版' : '横版',
+                      if (entryQuery.duration.isNotEmpty)
+                        entryQuery.duration == 'short' ? '10 秒以内' : '10 秒以上',
+                      entryQuery.type,
                     ].where((s) => s.isNotEmpty).join(' · '),
                     style: TextStyle(
                       fontSize: 12,
@@ -1374,7 +1473,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                 TextButton(
                   onPressed: busy
                       ? null
-                      : () => perform(() => repo.setScope(VideoQuery())),
+                      : () => perform(() => setEntryQuery(VideoQuery())),
                   child: const Text('清除'),
                 ),
               ],
@@ -1402,7 +1501,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                       data.roots.isNotEmpty &&
                               data.roots.every((root) => !root.available)
                           ? '媒体目录暂不可用，请检查挂载后刷新'
-                          : data.query.count > 0 || search.isNotEmpty
+                          : entryQuery.count > 0 || search.isNotEmpty
                           ? '没有符合条件的视频'
                           : '视频库还是空的',
                     ),
@@ -1446,6 +1545,8 @@ class _LibraryHomeState extends State<LibraryHome> {
                                               ? selected.remove(v.id)
                                               : selected.add(v.id),
                                         );
+                                      } else if (libraryFirst) {
+                                        await openPreview(anchor: v.id);
                                       } else if (await perform(
                                         () => repo.openVideo(v.id),
                                       )) {
@@ -1682,6 +1783,18 @@ class _LibraryHomeState extends State<LibraryHome> {
                         onTap: busy
                             ? null
                             : () async {
+                                if (libraryFirst) {
+                                  setState(() {
+                                    libraryContext = VideoBrowseContext(
+                                      query: VideoQuery(tags: {t}),
+                                      source: BrowseSource.tags,
+                                      sort: VideoSort.name,
+                                    );
+                                    search = '';
+                                  });
+                                  go('library');
+                                  return;
+                                }
                                 if (await perform(
                                   () =>
                                       repo.setScope(data.query.copy(tags: {t})),
@@ -1913,7 +2026,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                   allowMaintenance: true,
                 )) {
                   passphrase.clear();
-                  go(repo.backupRestorePending ? 'backup' : 'browse');
+                  go(repo.backupRestorePending ? 'backup' : landing);
                 }
               },
         child: Text(_busy ? '正在连接…' : '连接'),

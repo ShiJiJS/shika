@@ -223,6 +223,7 @@ class Playback:
             "membership": round.membership,
             "source": round.source,
             "sort": round.sort,
+            "sequence_revision": round.sequence_revision,
             "position": selected or 0,
             "total": len(entries),
             "candidate_count": round.candidate_count,
@@ -339,6 +340,7 @@ class Playback:
                     )
                 )
                 round.order, round.revision = order, round.revision + 1
+                round.sequence_revision += 1
                 round.finished = not members
                 session.flush()
                 return self.summary(session, round)

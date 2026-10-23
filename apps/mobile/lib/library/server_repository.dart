@@ -64,6 +64,10 @@ class ServerLibraryRepository extends LibraryRepository {
   ServerApi? _api;
   Json? _round;
   Json? _pendingRound;
+  Json? _pendingOrder;
+  String? _pendingOrderSignature;
+  final Map<String, Future<void>> _openedWork = {};
+  final Set<String> _opened = {};
   String? _pendingRoundSignature;
   final Map<String, LibraryVideo> _videos = {};
   final Map<String, FolderEntry> _directories = {};
@@ -149,8 +153,17 @@ class ServerLibraryRepository extends LibraryRepository {
   @override
   String get playbackIdentity => _round?['id'] as String? ?? '';
   @override
+  bool get fixedPreview => _round?['membership'] == 'fixed';
+  @override
+  String get playbackSequenceIdentity =>
+      '$playbackIdentity:${_round?['sequence_revision'] ?? 0}';
+  @override
+  bool get previewFinished => _round?['finished'] == true;
+  @override
   Future<VideoPage> loadPlaybackVideos({int offset = 0, int limit = 48}) async {
-    final identity = playbackIdentity, generation = _generation;
+    final identity = playbackIdentity,
+        sequence = playbackSequenceIdentity,
+        generation = _generation;
     final target = api;
     final page = await call(
       'GET',
@@ -160,6 +173,7 @@ class ServerLibraryRepository extends LibraryRepository {
     );
     if (generation != _generation ||
         identity != playbackIdentity ||
+        sequence != playbackSequenceIdentity ||
         _disposed) {
       throw const RequestCancelled();
     }
@@ -428,6 +442,7 @@ class ServerLibraryRepository extends LibraryRepository {
       type: data['type'],
       status: status ?? VideoStatus.values.byName(data['status']),
       originalPath: originalPath,
+      createdAt: (data['created_at'] as num?)?.toDouble() ?? 0,
     );
   }
 
@@ -463,7 +478,7 @@ class ServerLibraryRepository extends LibraryRepository {
     final scopeGeneration = _scopeGeneration;
     final response = await Future.wait([
       call('GET', '/api/v1/roots', using: target),
-      call('GET', '/api/v1/playback', using: target),
+      readCurrent(target, capabilities ?? _capabilities),
       call(
         'GET',
         '/api/v1/videos',
@@ -529,6 +544,10 @@ class ServerLibraryRepository extends LibraryRepository {
       _backups = null;
       _pendingRound = null;
       _pendingRoundSignature = null;
+      _pendingOrder = null;
+      _pendingOrderSignature = null;
+      _opened.clear();
+      _openedWork.clear();
       _tagRetryKeys.clear();
       cancelVideoRead();
       cancelFolderRead();
@@ -584,7 +603,7 @@ class ServerLibraryRepository extends LibraryRepository {
     }
     final currentId = (round['current'] as Map?)?['id'];
     final ids = window.map((entry) => entry['video']['id'] as String).toList();
-    _round = round;
+    _round = round['id'] is String ? round : null;
     _state = _state.copy(
       videos: _videos.values,
       roots: roots,
@@ -612,6 +631,37 @@ class ServerLibraryRepository extends LibraryRepository {
     );
     publish();
     schedulePreparation(target, generation);
+  }
+
+  Future<Json> readCurrent(
+    ServerApi target,
+    ServiceCapabilities capabilities,
+  ) async {
+    try {
+      return await call(
+        'GET',
+        '/api/v1/playback',
+        using: target,
+        query: {if (capabilities.fixedVideoSessions) 'create': 'false'},
+      );
+    } on ApiFailure catch (error) {
+      if (!capabilities.fixedVideoSessions ||
+          error.code != 'round_not_started') {
+        rethrow;
+      }
+      // Local disconnected-from-viewing state, not an invented server session.
+      return {
+        'id': null,
+        'order': _state.order.name,
+        'scope': <String, dynamic>{},
+        'position': 0,
+        'total': 0,
+        'revision': 0,
+        'finished': true,
+        'current': null,
+        'window': <dynamic>[],
+      };
+    }
   }
 
   void schedulePreparation(ServerApi target, int generation) {
@@ -703,10 +753,7 @@ class ServerLibraryRepository extends LibraryRepository {
     return _videos.values
         .where(
           (item) =>
-              item.status == VideoStatus.available &&
-              _state.roots.any(
-                (root) => root.id == item.rootId && root.available,
-              ) &&
+              videoIsAvailable(item, _state.roots) &&
               (chosen.folder.isEmpty || under(item.path, chosen.folder)) &&
               item.tags.containsAll(chosen.tags) &&
               (chosen.orientation.isEmpty ||
@@ -716,7 +763,7 @@ class ServerLibraryRepository extends LibraryRepository {
                       ? item.seconds <= 10
                       : item.seconds > 10)) &&
               (chosen.type.isEmpty || chosen.type == item.type) &&
-              item.name.contains(search),
+              videoMatchesSearch(item, _state.roots, search),
         )
         .skip(offset)
         .take(limit)
@@ -753,12 +800,32 @@ class ServerLibraryRepository extends LibraryRepository {
   };
 
   @override
+  Future<VideoPage> loadVideoEntry(
+    VideoEntryScope entry, {
+    int offset = 0,
+    int limit = 24,
+  }) => loadVideos(
+    scope: entry.query,
+    search: entry.search,
+    offset: offset,
+    limit: limit,
+    entry: entry,
+  );
+
+  @override
   Future<VideoPage> loadVideos({
     VideoQuery? scope,
     String search = '',
     int offset = 0,
     int limit = 24,
+    VideoEntryScope? entry,
   }) async {
+    if (entry != null &&
+        !capabilities.fixedVideoSessions &&
+        (entry.source != BrowseSource.library ||
+            entry.sort != VideoSort.path)) {
+      throw const LibraryFailure('当前服务尚不支持此入口，请升级服务端');
+    }
     cancelVideoRead();
     final work = _videoRead = RequestScope();
     final generation = _generation, scopeGeneration = _scopeGeneration;
@@ -771,6 +838,10 @@ class ServerLibraryRepository extends LibraryRepository {
         'offset': '$offset',
         'limit': '$limit',
         if (search.isNotEmpty) 'search': search,
+        if (entry != null && capabilities.fixedVideoSessions) ...{
+          'source': entry.source.name,
+          'sort': entry.sort.name,
+        },
       },
       cancel: work,
     );
@@ -877,7 +948,9 @@ class ServerLibraryRepository extends LibraryRepository {
     }
     if (_disposed ||
         generation != _generation ||
-        scopeGeneration != _scopeGeneration) {
+        scopeGeneration != _scopeGeneration ||
+        (_round?['id'] == round['id'] &&
+            (_round?['revision'] as int? ?? 0) > (round['revision'] as int))) {
       throw const RequestCancelled();
     }
     final window = (round['window'] as List).map(object).toList();
@@ -908,6 +981,7 @@ class ServerLibraryRepository extends LibraryRepository {
     VideoQuery scope,
     PlayOrder order, {
     String? anchor,
+    VideoEntryScope? entry,
   }) {
     ensureNotRestoring();
     cancelVideoRead();
@@ -918,6 +992,9 @@ class ServerLibraryRepository extends LibraryRepository {
         throw const RequestCancelled();
       }
       final resolved = await scopeBody(scope);
+      if (entry != null && entry.search.isNotEmpty) {
+        resolved['search'] = entry.search;
+      }
       if (scopeGeneration != _scopeGeneration || generation != _generation) {
         throw const RequestCancelled();
       }
@@ -925,6 +1002,11 @@ class ServerLibraryRepository extends LibraryRepository {
         'order': order.name,
         'scope': resolved,
         'anchor': anchor,
+        if (entry != null) ...{
+          'membership': 'fixed',
+          'source': entry.source.name,
+          'sort': entry.sort.name,
+        },
       });
       if (_pendingRoundSignature != signature) {
         _pendingRoundSignature = signature;
@@ -933,6 +1015,11 @@ class ServerLibraryRepository extends LibraryRepository {
           'order': order.name,
           'scope': resolved,
           'anchor_video_id': ?anchor,
+          if (entry != null) ...{
+            'membership': 'fixed',
+            'source': entry.source.name,
+            'sort': entry.sort.name,
+          },
         };
       }
       final round = await call(
@@ -957,7 +1044,123 @@ class ServerLibraryRepository extends LibraryRepository {
   }
 
   @override
-  Future<void> newRound() => setScope(_state.query);
+  Future<void> newRound() => fixedPreview
+      ? changePreviewOrder(_state.order, restart: true)
+      : setScope(_state.query);
+  @override
+  Future<void> beginPreview(
+    VideoEntryScope entry, {
+    String? anchor,
+    PlayOrder? order,
+  }) {
+    if (!capabilities.fixedVideoSessions) {
+      throw const LibraryFailure('当前服务尚不支持固定预览范围，请升级服务端');
+    }
+    return changeRound(
+      entry.query,
+      order ?? _state.order,
+      anchor: anchor,
+      entry: entry,
+    );
+  }
+
+  @override
+  Future<void> changePreviewOrder(PlayOrder order, {bool restart = false}) {
+    ensureNotRestoring();
+    if (!fixedPreview) throw const LibraryFailure('请从媒体库选择范围开始预览');
+    final target = api,
+        generation = _generation,
+        scope = _scopeGeneration,
+        identity = playbackIdentity;
+    final result = _roundWrites.then((_) async {
+      if (_disposed ||
+          generation != _generation ||
+          scope != _scopeGeneration ||
+          identity != playbackIdentity) {
+        throw const RequestCancelled();
+      }
+      final signature = jsonEncode([
+        identity,
+        _round!['revision'],
+        order.name,
+        restart,
+      ]);
+      if (_pendingOrderSignature != signature) {
+        _pendingOrderSignature = signature;
+        _pendingOrder = {
+          'request_id': requestId(),
+          'expected_revision': _round!['revision'],
+          'order': order.name,
+          'restart': restart,
+        };
+      }
+      final round = await call(
+        'PATCH',
+        '/api/v1/rounds/$identity/order',
+        using: target,
+        body: _pendingOrder,
+      );
+      await acceptRound(round, target, generation, scope);
+      _pendingOrder = null;
+      _pendingOrderSignature = null;
+    });
+    _roundWrites = result.then<void>(
+      (_) {},
+      onError: (Object e, StackTrace s) {},
+    );
+    return result;
+  }
+
+  @override
+  Future<void> recordVideoOpened(String id) {
+    if (!fixedPreview || current?.id != id) {
+      return Future.error(const RequestCancelled());
+    }
+    final target = api, generation = _generation, identity = playbackIdentity;
+    final revision = _round!['revision'];
+    final key = '$identity:$revision:$id';
+    if (_opened.contains(key)) return Future.value();
+    return _openedWork.putIfAbsent(key, () async {
+      try {
+        await call(
+          'POST',
+          '/api/v1/rounds/$identity/opened',
+          using: target,
+          body: {
+            'request_id': 'opened-$key',
+            'video_id': id,
+            'expected_revision': revision,
+          },
+        );
+        if (_disposed ||
+            generation != _generation ||
+            identity != playbackIdentity) {
+          throw const RequestCancelled();
+        }
+        _opened.add(key);
+        if (_opened.length > 256) _opened.remove(_opened.first);
+      } finally {
+        _openedWork.remove(key);
+      }
+    });
+  }
+
+  @override
+  Future<void> finishPreview() async {
+    if (!fixedPreview) return;
+    final target = api,
+        generation = _generation,
+        scope = _scopeGeneration,
+        identity = playbackIdentity;
+    final round = await call(
+      'PATCH',
+      '/api/v1/rounds/$identity/position',
+      using: target,
+      body: {'expected_revision': _round!['revision'], 'finish': true},
+    );
+    await acceptRound(round, target, generation, scope);
+  }
+
   @override
   Future<void> openVideo(String id) =>
       changeRound(_state.query, _state.order, anchor: id);

@@ -57,6 +57,32 @@ void main() {
     repo.dispose();
   });
 
+  test('fixed queue reordering replaces cached ordinals and hidden prefetch never writes history', () async {
+    await repo.beginPreview(VideoEntryScope(), order: PlayOrder.sequential);
+    final view = BrowsingSession(repo, recordOpens: true);
+    await tick();
+    expect(repo.snapshot.recentVideos, isEmpty);
+    view.setVisible(true);
+    await tick();
+    expect(repo.snapshot.recentVideos.keys.toList(), [repo.current!.id]);
+    await view.changeOrder(PlayOrder.random);
+    await tick();
+    expect(view.snapshot.round, repo.snapshot.round);
+    await view.changeOrder(PlayOrder.sequential);
+    await tick();
+    expect(view.snapshot.round, repo.snapshot.round);
+    expect(repo.snapshot.recentVideos.length, 1);
+    view.setVisible(false);
+    final next = repo.snapshot.round.firstWhere((id) => id != repo.current!.id);
+    await repo.moveToVideo(next);
+    await tick();
+    expect(repo.snapshot.recentVideos.length, 1);
+    view.setVisible(true);
+    await tick();
+    expect(repo.snapshot.recentVideos.length, 2);
+    view.dispose();
+  });
+
   test('repeated swipes select immediately while position acknowledgement is blocked', () async {
     final ids = browsing.snapshot.round;
     repo.navigation = Completer<void>();

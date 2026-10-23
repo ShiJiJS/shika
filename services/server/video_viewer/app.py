@@ -274,7 +274,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             "server_id": server_id,
             "api_version": 1,
             "sqlite_version": sqlite3.sqlite_version,
-            "schema_version": "0007",
+            "schema_version": "0008",
             "capabilities": ["typed_roots", "pack_tags", "image_packs", "fixed_video_sessions"],
         }
 

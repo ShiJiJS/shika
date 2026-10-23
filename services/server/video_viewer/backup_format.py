@@ -39,7 +39,7 @@ TABLES = [table for table in Base.metadata.sorted_tables if table.name in LEGACY
 def backup_columns(table):
     excluded = {
         "roots": {"kind", "enabled"},
-        "playback_rounds": {"membership", "source", "sort"},
+        "playback_rounds": {"membership", "source", "sort", "sequence_revision"},
         "round_entries": {"source_ordinal"},
     }
     return [column for column in table.c if column.name not in excluded.get(table.name, set())]

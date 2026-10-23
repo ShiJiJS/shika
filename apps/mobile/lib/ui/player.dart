@@ -231,6 +231,39 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   final _screenRevision = ValueNotifier(0);
   MaterialPageRoute<void>? _fullscreenRoute;
   NavigatorState? _fullscreenNavigator;
+  Completer<void>? _initializationCancelled;
+
+  void _cancelInitialization() {
+    final pending = _initializationCancelled;
+    _initializationCancelled = null;
+    if (pending != null && !pending.isCompleted) pending.complete();
+  }
+
+  Future<void> _initialize(
+    VideoPlayerController controller,
+    Duration limit,
+  ) async {
+    final cancelled = _initializationCancelled = Completer<void>();
+    final expired = Completer<void>();
+    final timer = Timer(
+      limit,
+      () => expired.completeError(
+        TimeoutException('Video initialization timed out', limit),
+      ),
+    );
+    try {
+      await Future.any([
+        controller.initialize(),
+        cancelled.future,
+        expired.future,
+      ]);
+    } finally {
+      timer.cancel();
+      if (identical(_initializationCancelled, cancelled)) {
+        _initializationCancelled = null;
+      }
+    }
+  }
 
   void _repaint() {
     if (!mounted) return;
@@ -333,6 +366,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   }
 
   void _unload() {
+    _cancelInitialization();
     ++_generation;
     _loading = false;
     _playRequested = false;
@@ -347,6 +381,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
     int emptyTrackRetry = 0,
     int transientRetry = 0,
   }) async {
+    _cancelInitialization();
     final generation = ++_generation;
     _loading = true;
     _playRequested = autoplay && widget.active && !widget.suspended;
@@ -397,9 +432,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
         await widget.session.release(next);
         return;
       }
-      await next.initialize().timeout(
-        Duration(seconds: widget.active ? 30 : 20),
-      );
+      await _initialize(next, Duration(seconds: widget.active ? 30 : 20));
       if (!mounted ||
           generation != _generation ||
           !widget.session.contains(next)) {
@@ -685,6 +718,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   @override
   void dispose() {
     ++_generation;
+    _cancelInitialization();
     final route = _fullscreenRoute, navigator = _fullscreenNavigator;
     if (route != null && navigator != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
