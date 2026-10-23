@@ -228,7 +228,19 @@ mixin _ServerPackCatalog on LibraryRepository {
         : 'PATCH',
     '/api/v1/pack-tags${original == null ? '' : '/${Uri.encodeComponent(original)}'}',
     {if (!delete) 'name': name?.trim()},
-  );
+  ).then((_) {});
+
+  @override
+  Future<PackTag> createPackTag(String name) async {
+    final result = await _writePackTags('POST', '/api/v1/pack-tags', {
+      'name': name.trim(),
+    });
+    return PackTag(
+      result['id'],
+      result['name'],
+      result['pack_count'] as int? ?? 0,
+    );
+  }
 
   @override
   Future<void> setPackTags(
@@ -239,9 +251,9 @@ mixin _ServerPackCatalog on LibraryRepository {
     'pack_ids': ids.toList()..sort(),
     'tag_ids': tags.toList()..sort(),
     'mode': replace ? 'replace' : 'add',
-  });
+  }).then((_) {});
 
-  Future<void> _writePackTags(String method, String path, Json payload) {
+  Future<Json> _writePackTags(String method, String path, Json payload) {
     _packSupported(tagsOnly: true);
     ensureNotRestoring();
     final target = api, generation = _generation;
@@ -255,7 +267,7 @@ mixin _ServerPackCatalog on LibraryRepository {
       ensureNotRestoring();
       final key = _packWriteKeys.putIfAbsent(signature, requestId);
       try {
-        await call(
+        final response = await call(
           method,
           path,
           using: target,
@@ -264,6 +276,7 @@ mixin _ServerPackCatalog on LibraryRepository {
         _packCurrent(target, generation);
         _packWriteKeys.remove(signature);
         publish();
+        return response;
       } on ApiFailure catch (error) {
         final status = error.status;
         if (status != null &&

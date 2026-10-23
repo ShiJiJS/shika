@@ -32,7 +32,13 @@ void main() {
       await t.tap(find.byKey(const Key('nav-tags')));
       await t.pumpAndSettle();
       expect(
-        t.widget<TextButton>(find.widgetWithText(TextButton, '新建标签')).onPressed,
+        t
+            .widget<IconButton>(
+              find.byWidgetPredicate(
+                (widget) => widget is IconButton && widget.tooltip == '新建视频标签',
+              ),
+            )
+            .onPressed,
         isNull,
       );
       await t.tap(find.byKey(const Key('nav-settings')));

@@ -27,6 +27,8 @@ abstract class LibraryRepository extends ChangeNotifier {
     String? name,
     bool delete = false,
   }) => Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  Future<PackTag> createPackTag(String name) =>
+      Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
   Future<void> setPackTags(
     Set<String> ids,
     Set<String> tags, {

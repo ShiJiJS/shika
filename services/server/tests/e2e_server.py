@@ -21,6 +21,7 @@ from video_viewer.models import Root, Video
 
 from .generate_media import encode, generate
 from .preview_fixture import install as install_preview_fixture
+from .workspace_fixture import seed_workspace_packs
 
 FIXTURE_PASSPHRASE = "video-viewer-emulator-fixture-only"
 FIXTURE_KEY = "isolated-emulator-control"
@@ -53,7 +54,7 @@ def create_e2e_app():
         marker.write_text("dedicated generated emulator fixture")
     controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False,
                 "fail_restore": False, "slow_restore": False, "slow_page": False,
-                "fail_streams": 0}
+                "fail_streams": 0, "busy_covers": 0}
 
     def backup_fault(phase, _task_id):
         if controls["fail_restore"] and phase == "after_replace_before_commit":
@@ -87,6 +88,10 @@ def create_e2e_app():
                     str(body.get("request_id")).encode()
                 ).hexdigest()
             trace.append(entry)
+            if controls["busy_covers"] and request.url.path.endswith("/cover"):
+                controls["busy_covers"] -= 1
+                entry["status"] = 503
+                return JSONResponse({"error": {"code": "image_busy", "message": "Isolated transient cover failure"}}, status_code=503)
             if controls["slow_page"] and request.url.path == "/api/v1/videos" and int(request.query_params.get("offset", "0")) > 0:
                 await asyncio.sleep(3)
             if controls["fail_streams"] and request.url.path.endswith("/stream"):
@@ -175,6 +180,8 @@ def create_e2e_app():
             "preparing",
             "loading-more",
             "prepared",
+            "workspace-video", "workspace-packs", "workspace-video-tags",
+            "workspace-pack-tags", "workspace-settings", "workspace-dark",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase
@@ -187,6 +194,9 @@ def create_e2e_app():
         if action == "reset-login-limit":
             with app.state.login_lock:
                 app.state.login_attempts.clear()
+        elif action == "workspace-packs":
+            details = seed_workspace_packs(BASE, Path("/fixture-assets"))
+            controls["busy_covers"] = 2
         elif action == "add":
             copy_new(PORTRAIT, BASE / "shorts" / "新增" / "新到片段.mp4")
         elif action == "disconnect":

@@ -139,7 +139,14 @@ class PackServer {
                       : Uri.decodeComponent(path.split('/').last)] =
                   body['name'];
             }
-            return <String, dynamic>{'changed': 1};
+            return <String, dynamic>{
+              'changed': 1,
+              if (path.endsWith('/pack-tags')) ...{
+                'id': 'new-tag',
+                'name': body['name'],
+                'pack_count': 0,
+              },
+            };
           });
           if (loseWrite) {
             loseWrite = false;
@@ -268,6 +275,22 @@ void main() {
     expect(fixture.packTags.containsKey('same-id'), isFalse);
     expect(repo.tagName('same-id'), '同名');
     expect(fixture.writes.every((w) => w.path.contains('/pack-')), isTrue);
+  });
+
+  test('inline pack tag creation returns its authoritative ID without a first-page lookup', () async {
+    await connect();
+    final before = fixture.reads
+        .where((u) => u.path.endsWith('/pack-tags'))
+        .length;
+    final tag = await repo.createPackTag(' 新建图包标签 ');
+    expect(tag.id, 'new-tag');
+    expect(tag.name, '新建图包标签');
+    expect(tag.count, 0);
+    expect(
+      fixture.reads.where((u) => u.path.endsWith('/pack-tags')).length,
+      before,
+    );
+    expect(repo.tagName('same-id'), '同名');
   });
 
   test('pack folders are typed and paginated; an unavailable folder does not broaden a query', () async {

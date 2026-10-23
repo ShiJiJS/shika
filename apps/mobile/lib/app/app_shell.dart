@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'dart:math';
+
 import '../ui/paper.dart';
 
 /// Shared safe areas and navigation. LF0 retains the legacy destinations;
@@ -20,6 +22,8 @@ class AppShell extends StatelessWidget {
     required this.onNavigate,
     required this.showNavigation,
     this.navigationEnabled = true,
+    this.navigationExtent = 52,
+    this.navigationWidth = 300,
   });
 
   final Widget header, content;
@@ -27,6 +31,7 @@ class AppShell extends StatelessWidget {
   final String selected;
   final ValueChanged<String> onNavigate;
   final bool showNavigation, navigationEnabled;
+  final double navigationExtent, navigationWidth;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -53,8 +58,11 @@ class AppShell extends StatelessWidget {
     child: Center(
       heightFactor: 1,
       child: SizedBox(
-        width: 300,
-        height: 52,
+        width: navigationWidth,
+        height: max(
+          navigationExtent,
+          MediaQuery.textScalerOf(context).scale(10) * 1.6 + 26,
+        ),
         child: Row(
           children: [
             for (final tab in destinations)
@@ -83,7 +91,9 @@ class AppShell extends StatelessWidget {
                         ),
                       ),
                       AnimatedContainer(
-                        duration: const Duration(milliseconds: 160),
+                        duration: MediaQuery.disableAnimationsOf(context)
+                            ? Duration.zero
+                            : const Duration(milliseconds: 160),
                         margin: const EdgeInsets.only(top: 3),
                         width: 18,
                         height: 2,

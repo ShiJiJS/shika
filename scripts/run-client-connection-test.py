@@ -209,6 +209,8 @@ def watch():
                 "preparing",
                 "loading-more",
                 "prepared",
+                "workspace-video", "workspace-packs", "workspace-video-tags",
+                "workspace-pack-tags", "workspace-settings", "workspace-dark",
             }:
                 request = urllib.request.Request(
                     "http://127.0.0.1:8761/__fixture/trace", headers=HEADERS
@@ -257,6 +259,9 @@ def main():
     mode.add_argument("--interactions", action="store_true")
     mode.add_argument("--preview", action="store_true")
     mode.add_argument("--anchor", action="store_true")
+    mode.add_argument("--workspace", action="store_true")
+    parser.add_argument("--workspace-viewport", choices=("390", "360"), default="390")
+    parser.add_argument("--workspace-text-scale", choices=("1", "2"), default="1")
     parser.add_argument("--plain-name")
     args = parser.parse_args()
     if not Path(ADB).is_file() or not Path(FLUTTER).is_file():
@@ -280,7 +285,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.anchor:
+    if args.workspace:
+        PREFIX = "lf4-workspace"
+    elif args.anchor:
         PREFIX = "lf3-anchor"
     elif args.preview:
         PREFIX = "lf3-preview"
@@ -302,6 +309,30 @@ def main():
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     prepare_emulator()
+    if args.workspace:
+        def device(*command):
+            return subprocess.check_output(
+                [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
+            ).strip()
+
+        old_size, old_density = device("wm", "size"), device("wm", "density")
+        old_scale = device("settings", "get", "system", "font_scale")
+
+        def restore_workspace_viewport():
+            for name, previous in (("size", old_size), ("density", old_density)):
+                override = next((line.split(":", 1)[1].strip() for line in previous.splitlines() if line.startswith("Override")), "reset")
+                device("wm", name, override)
+            if old_scale == "null":
+                device("settings", "delete", "system", "font_scale")
+            else:
+                device("settings", "put", "system", "font_scale", old_scale)
+
+        atexit.register(restore_workspace_viewport)
+        width, height = (390, 844) if args.workspace_viewport == "390" else (360, 740)
+        device("wm", "size", f"{width * 3}x{height * 3}")
+        device("wm", "density", "480")
+        device("settings", "put", "system", "font_scale", args.workspace_text_scale)
+        events.append({"phase": "workspace-viewport", "width_dp": width, "height_dp": height, "density_dpi": 480, "text_scale": args.workspace_text_scale})
     subprocess.run(
         host_command(
             "bash", host_path(ROOT / "scripts/prepare-client-e2e.sh"), "--reset"
@@ -330,6 +361,7 @@ def main():
                 "v1-interactions": "integration_test/nonblocking_server_test.dart",
                 "lf3-preview": "integration_test/server_preview_test.dart",
                 "lf3-anchor": "integration_test/server_anchor_test.dart",
+                "lf4-workspace": "integration_test/server_workspace_test.dart",
             }[PREFIX],
             "-d",
             "emulator-5554",
@@ -350,6 +382,7 @@ def main():
                 or args.interactions
                 or args.preview
                 or args.anchor
+                or args.workspace
                 else 3
                 if args.backups
                 else 2
