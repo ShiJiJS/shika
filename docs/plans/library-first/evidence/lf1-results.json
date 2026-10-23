@@ -36,8 +36,14 @@
     ]
   },
   "native_connection": {
-    "status": "pending retry: emulator QEMU GPU threads hung; no passing claim",
-    "logs_local": ".dev/logs/lf1-android-connection*.log"
+    "status": "passed",
+    "phases": [
+      "real service login, paging, directories, restart, outage/recovery",
+      "Android process restart: encrypted credentials and deep directory retained"
+    ],
+    "renderer": "macOS host GPU, Vulkan disabled",
+    "initial_failures": "software/SwiftShader QEMU threads hung; incomplete runs excluded",
+    "source_trace": "tmp/client-e2e/i1-host-events.json; errors=[]"
   },
   "temporary_backup_boundary": "video-only v1 exact schema projection; typed state rejects export/restore with backup_upgrade_required until LF7 v2",
   "public_capabilities": [
@@ -47,5 +53,10 @@
   "reference_tag": "design-lf-2026-10-23",
   "reference_modified": false,
   "real_nas_modified": false,
-  "apk_released": false
+  "apk_released": false,
+  "delivery": {
+    "commit": "60112e9",
+    "pull_request": "https://github.com/ShiJiJS/video_viewer/pull/35",
+    "base_pr": 34
+  }
 }

@@ -5,6 +5,14 @@ avd_name="${VV_AVD_NAME:-video_viewer_api_36}"
 port="${VV_EMULATOR_PORT:-5554}"
 device="emulator-$port"
 timeout_seconds="${VV_EMULATOR_TIMEOUT:-240}"
+gpu_mode="${VV_EMULATOR_GPU:-}"
+if [[ -z "$gpu_mode" ]]; then
+  if [[ "$(uname -s)" == Darwin ]]; then
+    gpu_mode=host
+  else
+    gpu_mode=software
+  fi
+fi
 adb="$ANDROID_HOME/platform-tools/adb"
 emulator="$ANDROID_HOME/emulator/emulator"
 [[ -x "$adb" && -x "$emulator" ]] || { echo 'Install Android platform-tools and emulator first.' >&2; exit 1; }
@@ -12,7 +20,7 @@ emulator="$ANDROID_HOME/emulator/emulator"
 "$adb" start-server
 if ! "$adb" devices | awk '{print $1}' | grep -Fxq "$device"; then
   mkdir -p "$VV_DEV_HOME/logs"
-  options=(-avd "$avd_name" -port "$port" -no-boot-anim -gpu software -feature -Vulkan -no-snapshot)
+  options=(-avd "$avd_name" -port "$port" -no-boot-anim -gpu "$gpu_mode" -feature -Vulkan -no-snapshot)
   [[ "${VV_EMULATOR_HEADLESS:-0}" == 1 ]] && options+=(-no-window)
   nohup "$emulator" "${options[@]}" > "$VV_DEV_HOME/logs/emulator-$port.log" 2>&1 < /dev/null &
 fi
