@@ -269,10 +269,12 @@ class Playback:
                     )
             return self.summary(session, round)
 
-    def entries(self, round_id, offset, limit):
+    def entries(self, round_id, offset, limit, sequence=None):
         with self.db.read() as session:
             session.connection().exec_driver_sql("BEGIN")
             round = self.get(session, round_id)
+            if sequence is not None and sequence != round.sequence_revision:
+                raise LibraryError("round_order_changed", "预览队列顺序已变化，请重新读取", 409)
             entries = self.eligible(session, round)
             return {
                 "items": [
@@ -284,6 +286,7 @@ class Playback:
                 "offset": offset,
                 "limit": limit,
                 "total": len(entries),
+                "sequence_revision": round.sequence_revision,
             }
 
     def active_fixed(self, session, round_id, expected_revision):

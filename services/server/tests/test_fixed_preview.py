@@ -139,6 +139,14 @@ def test_reorder_keeps_members_selection_and_original_sequence_with_idempotency(
     assert shuffled["id"] == round["id"] and shuffled["current"]["id"] == selected
     assert shuffled["revision"] > round["revision"]
     assert shuffled["sequence_revision"] == 1
+    stale = client.get(f"/api/v1/rounds/{round['id']}/entries", params={"v": 0})
+    assert stale.status_code == 409 and stale.json()["error"]["code"] == "round_order_changed"
+    assert (
+        client.get(f"/api/v1/rounds/{round['id']}/entries", params={"v": 1}).json()[
+            "sequence_revision"
+        ]
+        == 1
+    )
     assert {row["video"]["id"] for row in entries(client, shuffled)} == {
         row["video"]["id"] for row in original
     }

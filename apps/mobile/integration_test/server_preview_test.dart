@@ -131,9 +131,7 @@ void main() {
       await t.pump(const Duration(seconds: 1));
 
       // A native long press retains the existing temporary 2x behavior.
-      final current = session!.debugPlayers.firstWhere(
-        (p) => p.value.isPlaying,
-      );
+      final current = session.debugPlayers.firstWhere((p) => p.value.isPlaying);
       final gesture = await t.startGesture(
         t.getCenter(find.byKey(const Key('video-gesture-surface')).last),
       );
@@ -221,6 +219,58 @@ void main() {
       );
       await fixture('/__fixture/checkpoint/library');
       await t.pump(const Duration(seconds: 1));
+      await t.enterText(find.byKey(const Key('video-search')), '横版片段');
+      await until(
+        () => find.text('1 个视频').evaluate().isNotEmpty,
+        'landscape result',
+      );
+      await t.tap(find.text('预览此范围'));
+      await until(
+        () =>
+            find.byType(MovieStage).evaluate().isNotEmpty &&
+            repo.playbackIdentity != identity,
+        'explicit new entry creates a new scope',
+      );
+      session = t.widget<MovieStage>(find.byType(MovieStage)).session!;
+      await until(
+        () => session!.debugPlayers.any(
+          (p) => p.value.isInitialized && p.value.isPlaying,
+        ),
+        'landscape picture',
+      );
+      final landscape = session.debugPlayers.firstWhere(
+        (p) => p.value.isPlaying,
+      );
+      await t.tap(find.byKey(const Key('video-gesture-surface')).last);
+      await until(() => !landscape.value.isPlaying, 'pause intent');
+      await fixture('/__fixture/checkpoint/formats');
+      await t.pump(const Duration(seconds: 1));
+      await t.tap(find.widgetWithText(FilledButton, '横屏'));
+      await until(
+        () => find.byKey(const Key('fullscreen-exit')).evaluate().isNotEmpty,
+        'native fullscreen',
+      );
+      expect(landscape.value.isPlaying, isFalse);
+      await t.tap(find.byKey(const Key('fullscreen-exit')));
+      await until(
+        () =>
+            find.byKey(const Key('fullscreen-exit')).evaluate().isEmpty &&
+            find
+                .byKey(const Key('preview-back'))
+                .hitTestable()
+                .evaluate()
+                .isNotEmpty,
+        'fullscreen returns to preview',
+      );
+      expect(landscape.value.isPlaying, isFalse);
+      await t.tap(find.byKey(const Key('preview-back')));
+      await until(
+        () =>
+            find.byKey(const Key('video-preview-route')).evaluate().isEmpty &&
+            session!.debugPlayers.isEmpty,
+        'landscape leave releases decoders',
+      );
+      expect((await repo.api.json('GET', '/api/v1/recent'))['total'], 3);
       await fixture('/__fixture/checkpoint/done');
     },
   );

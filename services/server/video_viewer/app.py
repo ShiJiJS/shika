@@ -275,7 +275,13 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             "api_version": 1,
             "sqlite_version": sqlite3.sqlite_version,
             "schema_version": "0008",
-            "capabilities": ["typed_roots", "pack_tags", "image_packs", "fixed_video_sessions"],
+            "capabilities": [
+                "typed_roots",
+                "pack_tags",
+                "image_packs",
+                "fixed_video_sessions",
+                "versioned_video_queue",
+            ],
         }
 
     @app.get("/api/v1/mounts", dependencies=auth_required)
@@ -492,8 +498,9 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         request: Request,
         offset: Annotated[int, Query(ge=0)] = 0,
         limit: Annotated[int, Query(ge=1, le=200)] = 50,
+        v: Annotated[int | None, Query(ge=0)] = None,
     ):
-        return request.app.state.playback.entries(round_id, offset, limit)
+        return request.app.state.playback.entries(round_id, offset, limit, v)
 
     @app.get("/api/v1/tags", dependencies=auth_required)
     def tags(

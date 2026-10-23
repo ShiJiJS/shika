@@ -20,6 +20,7 @@ class ServiceCapabilities {
   bool get packTags => values.contains('pack_tags');
   bool get imagePacks => values.contains('image_packs');
   bool get fixedVideoSessions => values.contains('fixed_video_sessions');
+  bool get versionedVideoQueue => values.contains('versioned_video_queue');
 }
 
 enum VideoStatus { available, missing, trash }

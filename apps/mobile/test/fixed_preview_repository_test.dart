@@ -77,7 +77,12 @@ class PreviewServer {
         result = {
           'api_version': 1,
           'server_id': 'fixture',
-          'capabilities': [if (supportsFixed) 'fixed_video_sessions'],
+          'capabilities': [
+            if (supportsFixed) ...[
+              'fixed_video_sessions',
+              'versioned_video_queue',
+            ],
+          ],
         };
       } else if (path.endsWith('/roots')) {
         result = {
@@ -188,7 +193,31 @@ class PreviewServer {
         opens.add(body);
         result = {'video_id': body['video_id'], 'opened_at': 123.0};
       } else if (path.endsWith('/entries')) {
-        result = {'items': [], 'offset': 0, 'limit': 48, 'total': 30};
+        final version = request.uri.queryParameters['v'];
+        if (version != null && version != '${round!['sequence_revision']}') {
+          status = 409;
+          result = {
+            'error': {
+              'code': 'round_order_changed',
+              'message': 'Order changed',
+            },
+          };
+        } else {
+          final offset = int.parse(
+            request.uri.queryParameters['offset'] ?? '0',
+          );
+          final limit = int.parse(request.uri.queryParameters['limit'] ?? '48');
+          result = {
+            'items': [
+              for (var i = offset; i < 30 && i < offset + limit; i++)
+                {'position': i, 'video': video(i)},
+            ],
+            'offset': offset,
+            'limit': limit,
+            'total': 30,
+            'sequence_revision': round!['sequence_revision'],
+          };
+        }
       } else if (path.endsWith('/videos')) {
         final unavailable = request.uri.queryParameters['status'] == 'missing';
         final offset = int.parse(request.uri.queryParameters['offset'] ?? '0');
@@ -321,6 +350,33 @@ void main() {
     expect(repo.current!.id, 'v6');
     expect(repo.snapshot.order, PlayOrder.sequential);
     expect(repo.playbackSequenceIdentity, endsWith(':1'));
+  });
+
+  test('an externally changed queue rejects stale pages and refreshes its ordering identity', () async {
+    await connect();
+    await repo.beginPreview(VideoEntryScope());
+    fixture.round = {...fixture.round!, 'sequence_revision': 1, 'revision': 1};
+    await expectLater(
+      repo.loadPlaybackVideos(),
+      throwsA(isA<RequestCancelled>()),
+    );
+    expect(repo.playbackSequenceIdentity, endsWith(':1'));
+    final page = await repo.loadPlaybackVideos(offset: 24, limit: 6);
+    expect(page.items.map((video) => video.id).toList(), [
+      'v24',
+      'v25',
+      'v26',
+      'v27',
+      'v28',
+      'v29',
+    ]);
+    expect(
+      fixture.reads
+          .where((uri) => uri.path.endsWith('/entries'))
+          .last
+          .queryParameters['v'],
+      '1',
+    );
   });
 
   test('old services keep legacy connection behavior and reject unsupported fixed entry clearly', () async {

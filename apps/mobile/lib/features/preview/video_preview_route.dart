@@ -678,14 +678,16 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
   late final scroll = ScrollController(
     initialScrollOffset: repo.playbackPosition * 80.0,
   );
-  late String sequence = repo.playbackSequenceIdentity;
-  late int total = repo.playbackTotal;
+  late String sequence;
+  late int total;
   int generation = 0;
   bool busy = false;
   String error = '';
   @override
   void initState() {
     super.initState();
+    sequence = repo.playbackSequenceIdentity;
+    total = repo.playbackTotal;
     repo.addListener(changed);
   }
 

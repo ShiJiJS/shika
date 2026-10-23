@@ -165,12 +165,30 @@ class ServerLibraryRepository extends LibraryRepository {
         sequence = playbackSequenceIdentity,
         generation = _generation;
     final target = api;
-    final page = await call(
-      'GET',
-      '/api/v1/rounds/$identity/entries',
-      query: {'offset': '$offset', 'limit': '$limit'},
-      using: target,
-    );
+    final version = fixedPreview && capabilities.versionedVideoQueue
+        ? _round!['sequence_revision'] as int? ?? 0
+        : null;
+    late Json page;
+    try {
+      page = await call(
+        'GET',
+        '/api/v1/rounds/$identity/entries',
+        query: {
+          'offset': '$offset',
+          'limit': '$limit',
+          if (version != null) 'v': '$version',
+        },
+        using: target,
+      );
+    } on ApiFailure catch (failure) {
+      if (failure.code != 'round_order_changed') rethrow;
+      if (generation == _generation &&
+          identity == playbackIdentity &&
+          sequence == playbackSequenceIdentity) {
+        await synchronize(target, generation);
+      }
+      throw const RequestCancelled();
+    }
     if (generation != _generation ||
         identity != playbackIdentity ||
         sequence != playbackSequenceIdentity ||
@@ -1053,7 +1071,7 @@ class ServerLibraryRepository extends LibraryRepository {
     String? anchor,
     PlayOrder? order,
   }) {
-    if (!capabilities.fixedVideoSessions) {
+    if (!supportsFixedPreviews) {
       throw const LibraryFailure('当前服务尚不支持固定预览范围，请升级服务端');
     }
     return changeRound(
