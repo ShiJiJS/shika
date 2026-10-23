@@ -108,3 +108,8 @@ python3 scripts/configure-vscode.py
 当前基线有 **12 个服务端文件未通过 Ruff 格式检查**，因此 `scripts/test-server.sh` 完整命令仍返回非零，但其中 98 项业务测试通过。未为迁移批量重排原业务代码。I2–I6 和完整演示集成测试本次未全量重跑，其中部分历史用例仍使用“刷新媒体目录”旧文案，运行前需与当前“同步外部变更”及后台扫描行为对齐。
 
 环境摘要在 `.dev/toolchain-verification.json`，详细日志在 `.dev/logs/`，I1 原生截图、请求记录和宿主操作事件在 `tmp/client-e2e/`。NAS 服务和管理数据未更新；签名迁移使用的临时密文已清理。
+
+
+### LF1 模拟器渲染回归
+
+2026-10-24 的原生 I1 回归中，software / SwiftShader 渲染出现 QEMU 图形线程卡死并离线；使用 `-gpu host -feature -Vulkan -no-snapshot` 后两个阶段均通过。因此 Mac 的启动脚本默认使用 host，Linux 仍为 software；可用 `VV_EMULATOR_GPU` 覆盖。脚本复用已运行设备时不会重启或切换其后端，需要退出原模拟器后重新启动才生效。此设置不改变正式 APK 的解码策略，也不宣称所有设备后端都已验证。

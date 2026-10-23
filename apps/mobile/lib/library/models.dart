@@ -1,5 +1,22 @@
 import 'dart:convert';
 
+enum MediaKind { video, pack }
+
+/// Missing capabilities mean the original video-only protocol.
+class ServiceCapabilities {
+  const ServiceCapabilities.legacy() : values = const {};
+  ServiceCapabilities(Iterable<String> values)
+    : values = Set.unmodifiable(values);
+  factory ServiceCapabilities.fromInfo(Map<String, dynamic> info) =>
+      ServiceCapabilities(
+        (info['capabilities'] as List? ?? const []).whereType<String>(),
+      );
+  final Set<String> values;
+  bool get typedRoots => values.contains('typed_roots');
+  bool get packTags => values.contains('pack_tags');
+  bool get imagePacks => values.contains('image_packs');
+}
+
 enum VideoStatus { available, missing, trash }
 
 enum PlayOrder { random, sequential }
@@ -124,18 +141,23 @@ class MediaRoot {
     this.name,
     this.path, {
     this.available = true,
+    this.kind = MediaKind.video,
+    this.enabled = true,
     this.lastScan = '今天 09:20',
     this.directoryId = '',
     this.error,
   });
   final String id, name, path, lastScan, directoryId;
   final String? error;
-  final bool available;
+  final bool available, enabled;
+  final MediaKind kind;
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
     'path': path,
     'available': available,
+    'kind': kind.name,
+    'enabled': enabled,
     'lastScan': lastScan,
     'directoryId': directoryId,
     'error': error,
@@ -145,9 +167,55 @@ class MediaRoot {
     j['name'],
     j['path'],
     available: j['available'],
+    kind: j['kind'] == 'pack' ? MediaKind.pack : MediaKind.video,
+    enabled: j['enabled'] as bool? ?? true,
     lastScan: j['lastScan'],
     directoryId: j['directoryId'] ?? '',
     error: j['error'],
+  );
+}
+
+enum PackReadState { all, unread, reading, completed }
+
+enum PackSort { name, newest }
+
+/// Pack-only filters cannot accidentally carry video orientation/duration.
+class PackQuery {
+  PackQuery({
+    this.folder = '',
+    Iterable<String> tags = const [],
+    this.search = '',
+    this.readState = PackReadState.all,
+    this.sort = PackSort.name,
+  }) : tags = Set.unmodifiable(tags);
+  final String folder, search;
+  final Set<String> tags;
+  final PackReadState readState;
+  final PackSort sort;
+  int get count =>
+      tags.length +
+      (folder.isEmpty ? 0 : 1) +
+      (readState == PackReadState.all ? 0 : 1);
+  Map<String, dynamic> toJson() => {
+    'folder': folder,
+    'tag_ids': tags.toList()..sort(),
+    'search': search,
+    'read_state': readState.name,
+    'sort': sort.name,
+  };
+  String get queryKey => jsonEncode(toJson());
+  PackQuery copy({
+    String? folder,
+    Set<String>? tags,
+    String? search,
+    PackReadState? readState,
+    PackSort? sort,
+  }) => PackQuery(
+    folder: folder ?? this.folder,
+    tags: tags ?? this.tags,
+    search: search ?? this.search,
+    readState: readState ?? this.readState,
+    sort: sort ?? this.sort,
   );
 }
 

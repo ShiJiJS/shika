@@ -11,6 +11,7 @@ from .errors import LibraryError
 from .file_state import path_reserved, reserved_video_ids
 from .identity import publish_discoveries
 from .media import MediaInspectionError, fingerprint, inspect_media, make_thumbnail
+from .media_roots import enabled_path, owner_for_path
 from .models import Directory, Observation, Root, Setting, Task, Video
 from .paths import VIDEO_EXTENSIONS, beneath, excluded, open_directory, open_video, signature
 
@@ -123,6 +124,8 @@ class Scanner:
                 roots = list(session.scalars(select(Root).order_by(Root.path)))
             for root in roots:
                 self.check_stop()
+                if not root.enabled or root.kind != "video":
+                    continue
                 self.scan_root(
                     task_id,
                     root,
@@ -238,9 +241,9 @@ class Scanner:
         self.change_task(task_id, phase="processing_media")
         for path, first_signature, stable_since in entries:
             self.check_stop()
-            owner = min(
-                (r for r in roots if beneath(path, Path(r.path))), key=lambda r: len(r.path)
-            )
+            owner = owner_for_path(path, roots)
+            if owner is None:
+                continue
             with self.db.read() as session:
                 existing = session.scalar(select(Video).where(Video.location_key == str(path)))
             try:
@@ -303,6 +306,7 @@ class Scanner:
             unseen = session.scalars(
                 select(Video).where(
                     Video.status == "available",
+                    enabled_path(session, Video.path),
                     Video.path.startswith(str(base) + "/", autoescape=True),
                     Video.seen_scan != task_id,
                     Video.id.not_in(reserved_video_ids()),
@@ -317,6 +321,7 @@ class Scanner:
                     Directory.path.startswith(str(base) + "/", autoescape=True),
                     Directory.seen_scan != task_id,
                     Directory.path.not_in(configured_paths),
+                    enabled_path(session, Directory.path),
                 )
             )
             stored = session.get(Root, root.id)
@@ -326,7 +331,9 @@ class Scanner:
 
     def discover(self, fd, path, root, roots, task_id, entries, result, item):
         self.check_stop()
-        owner = min((r for r in roots if beneath(path, Path(r.path))), key=lambda r: len(r.path))
+        owner = owner_for_path(path, roots)
+        if owner is None:
+            return
         with self.db.write() as session:
             self.catalog.ensure_directory(session, path, owner.id, task_id)
         with os.scandir(fd) as children:

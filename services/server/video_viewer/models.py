@@ -1,7 +1,20 @@
 import time
 import uuid
 
-from sqlalchemy import JSON, Boolean, Float, ForeignKey, Index, Integer, String, Text
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    CheckConstraint,
+    Float,
+    ForeignKey,
+    ForeignKeyConstraint,
+    Index,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+    text,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -31,9 +44,15 @@ class Root(Base):
     name: Mapped[str] = mapped_column(String)
     path: Mapped[str] = mapped_column(Text, unique=True)
     mount_id: Mapped[str] = mapped_column(String)
+    kind: Mapped[str] = mapped_column(String, default="video", server_default="video")
+    enabled: Mapped[bool] = mapped_column(Boolean, default=True, server_default="1")
     available: Mapped[bool] = mapped_column(Boolean, default=False)
     error: Mapped[str | None] = mapped_column(String, nullable=True)
     last_scan: Mapped[float | None] = mapped_column(Float, nullable=True)
+    __table_args__ = (
+        CheckConstraint("kind IN ('video','pack')"),
+        CheckConstraint("enabled IN (0,1)"),
+    )
 
 
 class Directory(Base):
@@ -191,3 +210,192 @@ class TrashItem(Base):
     size: Mapped[int] = mapped_column(Integer)
     status: Mapped[str] = mapped_column(String, default="active", index=True)
     deleted_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
+class ImagePack(Base):
+    __tablename__ = "packs"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    root_id: Mapped[str] = mapped_column(ForeignKey("roots.id"), index=True)
+    path: Mapped[str] = mapped_column(Text, index=True)
+    location_key: Mapped[str | None] = mapped_column(Text, unique=True, nullable=True)
+    name: Mapped[str] = mapped_column(String)
+    status: Mapped[str] = mapped_column(String, default="available", index=True)
+    error: Mapped[str | None] = mapped_column(String, nullable=True)
+    device: Mapped[str] = mapped_column(String, default="")
+    inode: Mapped[str] = mapped_column(String, default="")
+    content_version: Mapped[int] = mapped_column(Integer, default=0)
+    page_count: Mapped[int] = mapped_column(Integer, default=0)
+    generation: Mapped[int] = mapped_column(Integer, default=0)
+    seen_scan: Mapped[str | None] = mapped_column(String, nullable=True)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+    tags: Mapped[list["PackTag"]] = relationship(
+        secondary="pack_tag_links", lazy="selectin", viewonly=True
+    )
+    __table_args__ = (CheckConstraint("content_version >= 0 AND page_count >= 0"),)
+
+
+class PackPage(Base):
+    __tablename__ = "pack_pages"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id", ondelete="CASCADE"), index=True)
+    path: Mapped[str] = mapped_column(Text, index=True)
+    relative_path: Mapped[str] = mapped_column(Text)
+    ordinal: Mapped[int] = mapped_column(Integer)
+    width: Mapped[int] = mapped_column(Integer)
+    height: Mapped[int] = mapped_column(Integer)
+    size: Mapped[int] = mapped_column(Integer)
+    format: Mapped[str] = mapped_column(String)
+    signature: Mapped[list] = mapped_column(JSON, default=list)
+    sha256: Mapped[str | None] = mapped_column(String, nullable=True)
+    error: Mapped[str | None] = mapped_column(String, nullable=True)
+    thumbnail: Mapped[str | None] = mapped_column(String, nullable=True)
+    seen_scan: Mapped[str | None] = mapped_column(String, nullable=True)
+    __table_args__ = (
+        UniqueConstraint("pack_id", "id"),
+        UniqueConstraint("pack_id", "relative_path"),
+        Index("pack_pages_order", "pack_id", "ordinal", "id"),
+        CheckConstraint("ordinal >= 0 AND width >= 0 AND height >= 0 AND size >= 0"),
+    )
+
+
+class PackTag(Base):
+    __tablename__ = "pack_tag_definitions"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    name: Mapped[str] = mapped_column(String, unique=True)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+
+
+class PackTagLink(Base):
+    __tablename__ = "pack_tag_links"
+    pack_id: Mapped[str] = mapped_column(
+        ForeignKey("packs.id", ondelete="CASCADE"), primary_key=True
+    )
+    tag_id: Mapped[str] = mapped_column(
+        ForeignKey("pack_tag_definitions.id", ondelete="CASCADE"), primary_key=True
+    )
+    __table_args__ = (Index("pack_tags_tag_pack", "tag_id", "pack_id"),)
+
+
+class PackProgress(Base):
+    __tablename__ = "pack_progress"
+    pack_id: Mapped[str] = mapped_column(
+        ForeignKey("packs.id", ondelete="CASCADE"), primary_key=True
+    )
+    page_id: Mapped[str | None] = mapped_column(String, nullable=True)
+    offset_ratio: Mapped[float] = mapped_column(Float, default=0)
+    completed: Mapped[bool] = mapped_column(Boolean, default=False)
+    revision: Mapped[int] = mapped_column(Integer, default=0)
+    updated_at: Mapped[float] = mapped_column(Float, default=time.time)
+    __table_args__ = (
+        ForeignKeyConstraint(["pack_id", "page_id"], ["pack_pages.pack_id", "pack_pages.id"]),
+        CheckConstraint("offset_ratio >= 0 AND offset_ratio <= 1 AND revision >= 0"),
+    )
+
+
+class PackPreferences(Base):
+    __tablename__ = "pack_preferences"
+    pack_id: Mapped[str] = mapped_column(
+        ForeignKey("packs.id", ondelete="CASCADE"), primary_key=True
+    )
+    mode: Mapped[str] = mapped_column(String, default="horizontal")
+    direction: Mapped[str] = mapped_column(String, default="ltr")
+    gap: Mapped[bool] = mapped_column(Boolean, default=False)
+    fit: Mapped[str] = mapped_column(String, default="contain")
+    __table_args__ = (
+        CheckConstraint("mode IN ('horizontal','vertical')"),
+        CheckConstraint("direction IN ('ltr','rtl')"),
+        CheckConstraint("fit IN ('contain','width')"),
+    )
+
+
+class RecentEntry(Base):
+    __tablename__ = "recent_entries"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    kind: Mapped[str] = mapped_column(String)
+    video_id: Mapped[str | None] = mapped_column(
+        ForeignKey("videos.id", ondelete="CASCADE"), unique=True, nullable=True
+    )
+    pack_id: Mapped[str | None] = mapped_column(
+        ForeignKey("packs.id", ondelete="CASCADE"), unique=True, nullable=True
+    )
+    opened_at: Mapped[float] = mapped_column(Float, default=time.time, index=True)
+    __table_args__ = (
+        CheckConstraint(
+            "(kind='video' AND video_id IS NOT NULL AND pack_id IS NULL) OR (kind='pack' AND pack_id IS NOT NULL AND video_id IS NULL)"
+        ),
+    )
+
+
+class PackSession(Base):
+    __tablename__ = "pack_sessions"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    request_id: Mapped[str] = mapped_column(String, unique=True)
+    request_hash: Mapped[str] = mapped_column(String)
+    scope: Mapped[dict] = mapped_column(JSON)
+    source: Mapped[dict] = mapped_column(JSON, default=dict)
+    order: Mapped[str] = mapped_column(String, default="sequential")
+    cursor: Mapped[int] = mapped_column(Integer, default=0)
+    revision: Mapped[int] = mapped_column(Integer, default=0)
+    finished: Mapped[bool] = mapped_column(Boolean, default=False)
+    candidate_count: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[float] = mapped_column(Float, default=time.time)
+    __table_args__ = (
+        CheckConstraint("cursor >= 0 AND revision >= 0 AND candidate_count >= 0"),
+        CheckConstraint("\"order\" IN ('random','sequential')"),
+    )
+
+
+class PackSessionEntry(Base):
+    __tablename__ = "pack_session_entries"
+    session_id: Mapped[str] = mapped_column(
+        ForeignKey("pack_sessions.id", ondelete="CASCADE"), primary_key=True
+    )
+    ordinal: Mapped[int] = mapped_column(Integer, primary_key=True)
+    pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id"), index=True)
+    __table_args__ = (UniqueConstraint("session_id", "pack_id"),)
+
+
+class PackFileOperation(Base):
+    __tablename__ = "pack_file_operations"
+    id: Mapped[str] = mapped_column(ForeignKey("tasks.id"), primary_key=True)
+    request_key: Mapped[str] = mapped_column(String, unique=True)
+    request_hash: Mapped[str] = mapped_column(String)
+    kind: Mapped[str] = mapped_column(String)
+    undo_of: Mapped[str | None] = mapped_column(
+        ForeignKey("pack_file_operations.id"), nullable=True
+    )
+    session_snapshot: Mapped[dict] = mapped_column(JSON, default=dict)
+    historical: Mapped[bool] = mapped_column(Boolean, default=False)
+    __table_args__ = (CheckConstraint("kind IN ('trash','restore','permanent','undo')"),)
+
+
+class PackFileStep(Base):
+    __tablename__ = "pack_file_steps"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    operation_id: Mapped[str] = mapped_column(ForeignKey("pack_file_operations.id"), index=True)
+    pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id"), index=True)
+    page_id: Mapped[str | None] = mapped_column(ForeignKey("pack_pages.id"), nullable=True)
+    requested_id: Mapped[str] = mapped_column(String)
+    root_path: Mapped[str] = mapped_column(Text)
+    original_path: Mapped[str] = mapped_column(Text)
+    source_signature: Mapped[list] = mapped_column(JSON, default=list)
+    expected_hash: Mapped[str | None] = mapped_column(String, nullable=True)
+    expected_size: Mapped[int] = mapped_column(Integer, default=0)
+    phase: Mapped[str] = mapped_column(String, default="prepared", index=True)
+    outcome: Mapped[str] = mapped_column(String, default="pending")
+    error: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class PackTrashItem(Base):
+    __tablename__ = "pack_trash_items"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id"), index=True)
+    operation_id: Mapped[str] = mapped_column(ForeignKey("pack_file_operations.id"))
+    root_path: Mapped[str] = mapped_column(Text)
+    original_path: Mapped[str] = mapped_column(Text)
+    manifest: Mapped[dict] = mapped_column(JSON, default=dict)
+    status: Mapped[str] = mapped_column(String, default="active", index=True)
+    deleted_at: Mapped[float] = mapped_column(Float, default=time.time)
+    __table_args__ = (
+        Index("pack_trash_active", "pack_id", unique=True, sqlite_where=text("status='active'")),
+    )

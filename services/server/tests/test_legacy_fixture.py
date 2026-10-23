@@ -15,10 +15,36 @@ def test_frozen_0004_preserves_identity_round_trash_and_pending_command(tmp_path
     assert hashlib.sha256(sql).hexdigest() == expected["sha256"]
     with sqlite3.connect(tmp_path / "library.sqlite3") as connection:
         connection.executescript(sql.decode())
+        names = [
+            row[0]
+            for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name!='alembic_version'"
+            )
+        ]
+        columns = {
+            name: [row[1] for row in connection.execute(f'PRAGMA table_info("{name}")')]
+            for name in names
+        }
+        before = {
+            name: sorted(connection.execute(f'SELECT * FROM "{name}"').fetchall(), key=repr)
+            for name in names
+        }
     database = Database(tmp_path)
     try:
         database.migrate()
         with sqlite3.connect(tmp_path / "library.sqlite3") as connection:
+            for name in names:
+                fields = ",".join(f'"{column}"' for column in columns[name])
+                assert (
+                    sorted(
+                        connection.execute(f'SELECT {fields} FROM "{name}"').fetchall(), key=repr
+                    )
+                    == before[name]
+                )
+            assert database.last_migration_snapshot is not None
+            assert connection.execute("SELECT kind, enabled FROM roots").fetchall() == [
+                ("video", 1)
+            ]
             assert connection.execute("PRAGMA integrity_check").fetchone() == ("ok",)
             assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
             assert connection.execute("SELECT count(*) FROM videos").fetchone() == (4,)

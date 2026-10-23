@@ -22,6 +22,7 @@ from .file_state import reserved_video_ids
 from .library_state import library_state
 from .metadata_cleanup import forget_missing
 from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
+from .pack_tags import PackTags
 from .playback import Playback
 from .scanner import Scanner
 from .security import Authentication
@@ -38,6 +39,8 @@ class Login(Input):
 
 
 class RootInput(Input):
+    kind: Literal["video", "pack"] | None = None
+    enabled: bool | None = None
     name: str = Field(min_length=1, max_length=100)
     path: str = Field(min_length=1, max_length=4096)
 
@@ -87,6 +90,33 @@ class TagAssignment(WriteInput):
     mode: Literal["add", "remove", "replace"] = "add"
 
 
+class PackTagAssignment(WriteInput):
+    pack_ids: list[Annotated[str, Field(min_length=1, max_length=128)]] = Field(
+        min_length=1, max_length=1000
+    )
+    tag_ids: list[Annotated[str, Field(min_length=1, max_length=128)]] = Field(
+        default_factory=list, max_length=256
+    )
+    mode: Literal["add", "remove", "replace"] = "add"
+
+
+class PackTagResponse(BaseModel):
+    id: str
+    name: str
+    kind: Literal["pack"] = "pack"
+
+
+class PackTagCount(PackTagResponse):
+    pack_count: int
+
+
+class PackTagPage(BaseModel):
+    items: list[PackTagCount]
+    total: int
+    offset: int
+    limit: int
+
+
 class DeleteInput(WriteInput):
     video_ids: list[Annotated[str, Field(min_length=1, max_length=128)]] = Field(
         min_length=1, max_length=1000
@@ -127,6 +157,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         app.state.streams = MediaStreams(db, configured)
         app.state.playback = Playback(db, catalog, app.state.streams)
         app.state.tags = Tags(db, app.state.playback)
+        app.state.pack_tags = PackTags(db)
         app.state.files = FileOperations(
             db, configured, catalog, app.state.playback, file_fault_hook
         )
@@ -207,7 +238,13 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     def info(request: Request):
         with request.app.state.db.read() as session:
             server_id = session.get(Setting, "server_id").value
-        return {"server_id": server_id, "api_version": 1, "sqlite_version": sqlite3.sqlite_version}
+        return {
+            "server_id": server_id,
+            "api_version": 1,
+            "sqlite_version": sqlite3.sqlite_version,
+            "schema_version": "0005",
+            "capabilities": ["typed_roots", "pack_tags"],
+        }
 
     @app.get("/api/v1/mounts", dependencies=auth_required)
     def mounts(request: Request):
@@ -236,7 +273,9 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                     select(Video.id).where(Video.id.in_(reserved_video_ids())).limit(1)
                 ):
                     raise LibraryError("operation_busy", "文件操作进行中，请完成后再修改媒体目录")
-            return request.app.state.catalog.save_root(body.name, body.path, root_id)
+            return request.app.state.catalog.save_root(
+                body.name, body.path, root_id, kind=body.kind, enabled=body.enabled
+            )
 
     @app.post("/api/v1/roots", dependencies=auth_required, status_code=201)
     def add_root(body: RootInput, request: Request):
@@ -247,18 +286,56 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         return save_root(body, request, root_id)
 
     @app.get("/api/v1/directories", dependencies=auth_required)
-    def directories(request: Request, parent_id: str | None = None):
-        return {"items": request.app.state.catalog.directories(parent_id)}
+    def directories(
+        request: Request, parent_id: str | None = None, kind: Literal["video", "pack"] = "video"
+    ):
+        return {"items": request.app.state.catalog.directories(parent_id, kind)}
 
     @app.get("/api/v1/directories/resolve", dependencies=auth_required)
     def resolve_directory(
-        request: Request, path: Annotated[str, Query(min_length=1, max_length=4096)]
+        request: Request,
+        path: Annotated[str, Query(min_length=1, max_length=4096)],
+        kind: Literal["video", "pack"] = "video",
     ):
-        return request.app.state.catalog.directory(path=path)
+        return request.app.state.catalog.directory(path=path, kind=kind)
 
     @app.get("/api/v1/directories/{directory_id}", dependencies=auth_required)
-    def directory(directory_id: str, request: Request):
-        return request.app.state.catalog.directory(directory_id=directory_id)
+    def directory(directory_id: str, request: Request, kind: Literal["video", "pack"] = "video"):
+        return request.app.state.catalog.directory(directory_id=directory_id, kind=kind)
+
+    @app.get("/api/v1/pack-tags", dependencies=auth_required, response_model=PackTagPage)
+    def pack_tags(
+        request: Request,
+        search: Annotated[str, Query(max_length=200)] = "",
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int, Query(ge=1, le=200)] = 50,
+    ):
+        return request.app.state.pack_tags.list(search, offset, limit)
+
+    @app.post(
+        "/api/v1/pack-tags",
+        dependencies=auth_required,
+        status_code=201,
+        response_model=PackTagResponse,
+    )
+    def create_pack_tag(body: TagInput, request: Request):
+        return request.app.state.pack_tags.create(body.name, body.request_id)
+
+    @app.patch(
+        "/api/v1/pack-tags/{tag_id}", dependencies=auth_required, response_model=PackTagResponse
+    )
+    def rename_pack_tag(tag_id: str, body: TagInput, request: Request):
+        return request.app.state.pack_tags.rename(tag_id, body.name, body.request_id)
+
+    @app.delete("/api/v1/pack-tags/{tag_id}", dependencies=auth_required)
+    def delete_pack_tag(tag_id: str, body: WriteInput, request: Request):
+        return request.app.state.pack_tags.delete(tag_id, body.request_id)
+
+    @app.patch("/api/v1/pack-tag-links", dependencies=auth_required)
+    def assign_pack_tags(body: PackTagAssignment, request: Request):
+        return request.app.state.pack_tags.assign(
+            body.pack_ids, body.tag_ids, body.mode, body.request_id
+        )
 
     @app.post("/api/v1/scans", dependencies=auth_required, status_code=202)
     def scan(request: Request):
@@ -428,8 +505,14 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         return request.app.state.scanner.task(task_id)
 
     @app.get("/api/v1/backup-requests/{kind}/{request_id}", dependencies=auth_required)
-    def backup_request(kind: Literal["export", "inspect", "restore"], request_id: str, request: Request):
-        namespace = {"export": "backup.backup_export", "inspect": "backup.backup_inspect", "restore": "backup.restore"}[kind]
+    def backup_request(
+        kind: Literal["export", "inspect", "restore"], request_id: str, request: Request
+    ):
+        namespace = {
+            "export": "backup.backup_export",
+            "inspect": "backup.backup_inspect",
+            "restore": "backup.restore",
+        }[kind]
         with request.app.state.db.read() as session:
             record = session.get(RequestRecord, namespace + ":" + request_id)
             if not record:

@@ -1,6 +1,7 @@
 from sqlalchemy import and_, case, delete, func, select
 
 from .errors import LibraryError
+from .media_roots import enabled_path
 from .models import PlaybackRound, Root, Setting, Tag, Video, VideoTag
 from .requests import once
 
@@ -24,6 +25,8 @@ class Tags:
                             Video.status == "available",
                             Video.error.is_(None),
                             Root.available.is_(True),
+                            Root.enabled.is_(True),
+                            enabled_path(session, Video.path),
                         ),
                         Video.id,
                     )

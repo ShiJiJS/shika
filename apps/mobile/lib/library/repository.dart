@@ -10,6 +10,7 @@ abstract class LibraryRepository extends ChangeNotifier {
   Future<void> requestScan() => refresh();
   final ValueNotifier<String?> backupStatus = ValueNotifier(null);
   final ValueNotifier<String?> fileStatus = ValueNotifier(null);
+  ServiceCapabilities get capabilities => const ServiceCapabilities.legacy();
   bool get backupRestorePending => false;
   Object get connectionIdentity => this;
   Future<void> reconcileBackupRestore() async {}
