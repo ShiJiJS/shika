@@ -216,7 +216,8 @@ class ImagePack(Base):
     __tablename__ = "packs"
     id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
     root_id: Mapped[str] = mapped_column(ForeignKey("roots.id"), index=True)
-    path: Mapped[str] = mapped_column(Text, unique=True)
+    path: Mapped[str] = mapped_column(Text, index=True)
+    location_key: Mapped[str | None] = mapped_column(Text, unique=True, nullable=True)
     name: Mapped[str] = mapped_column(String)
     status: Mapped[str] = mapped_column(String, default="available", index=True)
     error: Mapped[str | None] = mapped_column(String, nullable=True)
@@ -237,7 +238,7 @@ class PackPage(Base):
     __tablename__ = "pack_pages"
     id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
     pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id", ondelete="CASCADE"), index=True)
-    path: Mapped[str] = mapped_column(Text, unique=True)
+    path: Mapped[str] = mapped_column(Text, index=True)
     relative_path: Mapped[str] = mapped_column(Text)
     ordinal: Mapped[int] = mapped_column(Integer)
     width: Mapped[int] = mapped_column(Integer)

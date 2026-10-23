@@ -49,6 +49,7 @@ TABLE_DDL = [
     id VARCHAR NOT NULL,
     root_id VARCHAR NOT NULL,
     path TEXT NOT NULL,
+    location_key TEXT,
     name VARCHAR NOT NULL,
     status VARCHAR NOT NULL,
     error VARCHAR,
@@ -62,7 +63,7 @@ TABLE_DDL = [
     PRIMARY KEY (id),
     CHECK (content_version >= 0 AND page_count >= 0),
     FOREIGN KEY(root_id) REFERENCES roots (id),
-    UNIQUE (path)
+    UNIQUE (location_key)
 )""",
     """CREATE TABLE pack_pages (
     id VARCHAR NOT NULL,
@@ -83,8 +84,7 @@ TABLE_DDL = [
     UNIQUE (pack_id, id),
     UNIQUE (pack_id, relative_path),
     CHECK (ordinal >= 0 AND width >= 0 AND height >= 0 AND size >= 0),
-    FOREIGN KEY(pack_id) REFERENCES packs (id) ON DELETE CASCADE,
-    UNIQUE (path)
+    FOREIGN KEY(pack_id) REFERENCES packs (id) ON DELETE CASCADE
 )""",
     """CREATE TABLE pack_preferences (
     pack_id VARCHAR NOT NULL,
@@ -173,6 +173,8 @@ TABLE_DDL = [
 )""",
 ]
 INDEX_DDL = [
+    "CREATE INDEX ix_packs_path ON packs (path)",
+    "CREATE INDEX ix_pack_pages_path ON pack_pages (path)",
     "CREATE INDEX ix_packs_root_id ON packs (root_id)",
     "CREATE INDEX ix_packs_status ON packs (status)",
     "CREATE INDEX ix_pack_pages_pack_id ON pack_pages (pack_id)",

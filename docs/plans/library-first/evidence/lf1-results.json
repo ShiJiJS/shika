@@ -6,10 +6,11 @@
     "frozen_old_tables_and_columns": "all rows unchanged",
     "snapshot_failure_restore": "passed",
     "interrupted_migration_restart": "passed",
-    "static_new_schema_matches_orm": "passed; legacy trash_active_video omission excluded"
+    "static_new_schema_matches_orm": "passed; legacy trash_active_video omission excluded",
+    "path_reuse_identity": "passed: missing and replacement packs/pages share historical path, only current location_key is unique"
   },
   "server_tests": {
-    "passed": 107,
+    "passed": 108,
     "failed": 0,
     "command": "docker run --rm --read-only --shm-size=64m --tmpfs /tmp:mode=1777 -v \"$PWD/services/server:/app:ro\" video-viewer-server:e2e python -m pytest -q"
   },
@@ -58,5 +59,9 @@
     "commit": "60112e9",
     "pull_request": "https://github.com/ShiJiJS/video_viewer/pull/35",
     "base_pr": 34
-  }
+  },
+  "intermediate_runs": [
+    "one rerun omitted --shm-size=64m and failed the bounded /dev/shm fixture; same run observed one transient stream 503",
+    "final full rerun with the documented resource limits passed all 108 tests"
+  ]
 }

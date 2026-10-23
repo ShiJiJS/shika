@@ -329,3 +329,43 @@ def test_static_migration_matches_orm_schema(library):
             change[0] == "remove_index" and change[1].name == "trash_active_video"
             for change in changes
         )
+
+
+def test_reused_path_preserves_missing_pack_identity_without_stealing_tags(library):
+    client, media = library
+    root = pack_root(client, media)
+    db = client.app.state.db
+    path = f"{root['path']}/reused"
+    with db.write() as session:
+        old = ImagePack(root_id=root["id"], path=path, name="old", status="missing")
+        new = ImagePack(root_id=root["id"], path=path, location_key=path, name="new")
+        session.add_all([old, new])
+        session.flush()
+        old_id, new_id = old.id, new.id
+        for identity in (old_id, new_id):
+            session.add(
+                PackPage(
+                    pack_id=identity,
+                    path=f"{path}/1.jpg",
+                    relative_path="1.jpg",
+                    ordinal=0,
+                    width=10,
+                    height=10,
+                    size=1,
+                    format="JPEG",
+                )
+            )
+    label = pack_tag(client)
+    assert (
+        client.patch(
+            "/api/v1/pack-tag-links",
+            json={"pack_ids": [old_id], "tag_ids": [label["id"]], "request_id": "old-label"},
+        ).status_code
+        == 200
+    )
+    with db.read() as session:
+        assert {link.pack_id for link in session.scalars(select(PackTagLink))} == {old_id}
+        assert session.get(ImagePack, old_id).path == session.get(ImagePack, new_id).path
+    with pytest.raises(IntegrityError), db.write() as session:
+        session.add(ImagePack(root_id=root["id"], path=path, location_key=path, name="collision"))
+        session.flush()
