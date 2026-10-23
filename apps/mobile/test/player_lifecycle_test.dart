@@ -11,6 +11,7 @@ import 'package:video_viewer/ui/player.dart';
 class ReadyVideo extends VideoPlayerPlatform {
   var next = 0;
   final events = <int, StreamController<VideoEvent>>{};
+  final positions = <int, Duration>{};
   @override
   Future<void> init() async {}
   @override
@@ -35,6 +36,7 @@ class ReadyVideo extends VideoPlayerPlatform {
       },
     );
     events[id] = stream;
+    positions[id] = Duration.zero;
     return id;
   }
 
@@ -53,9 +55,13 @@ class ReadyVideo extends VideoPlayerPlatform {
   @override
   Future<void> setPlaybackSpeed(int playerId, double speed) async {}
   @override
-  Future<void> seekTo(int playerId, Duration position) async {}
+  Future<void> seekTo(int playerId, Duration position) async {
+    positions[playerId] = position;
+  }
+
   @override
-  Future<Duration> getPosition(int playerId) async => Duration.zero;
+  Future<Duration> getPosition(int playerId) async =>
+      positions[playerId] ?? Duration.zero;
   @override
   Future<void> dispose(int playerId) async => events.remove(playerId)?.close();
 }
@@ -130,6 +136,8 @@ void main() {
         );
         await frames(t);
         expect(session.debugPlayers.single.value.isPlaying, isTrue);
+        final beforeRotation = session.debugPlayers.single;
+        await beforeRotation.seekTo(const Duration(seconds: 7));
         if (!playing) {
           await t.tap(find.byKey(const Key('video-gesture-surface')));
           await frames(t);
@@ -138,6 +146,13 @@ void main() {
         await frames(t);
         expect(find.byKey(const Key('fullscreen-exit')), findsOneWidget);
         expect(session.debugPlayers.single.value.isPlaying, playing);
+        expect(identical(session.debugPlayers.single, beforeRotation), isTrue);
+        expect(
+          session.debugPlayers.single.value.position,
+          const Duration(seconds: 7),
+        );
+        t.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+        t.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
         t.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
         var released = false;
         try {
@@ -150,6 +165,8 @@ void main() {
           }
           released = session.debugPlayers.isEmpty;
         } finally {
+          t.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+          t.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
           t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
         }
         expect(released, isTrue);

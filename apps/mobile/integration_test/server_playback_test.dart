@@ -25,6 +25,36 @@ class LifecycleTrace extends WidgetsBindingObserver {
       debugPrint('NATIVE_LIFECYCLE $state');
 }
 
+Future<void> deviceBackground(
+  WidgetTester tester,
+  PlaybackSession session,
+) async {
+  await tester.runAsync(() async {
+    debugPrint('VV_E2E_DEVICE_BACKGROUND');
+    try {
+      final deadline = DateTime.now().add(const Duration(seconds: 15));
+      while ((WidgetsBinding.instance.lifecycleState !=
+                  AppLifecycleState.paused ||
+              session.debugPlayers.isNotEmpty) &&
+          DateTime.now().isBefore(deadline)) {
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+      }
+      expect(WidgetsBinding.instance.lifecycleState, AppLifecycleState.paused);
+      expect(session.debugPlayers, isEmpty);
+    } finally {
+      debugPrint('VV_E2E_DEVICE_FOREGROUND');
+      final deadline = DateTime.now().add(const Duration(seconds: 15));
+      while (WidgetsBinding.instance.lifecycleState !=
+              AppLifecycleState.resumed &&
+          DateTime.now().isBefore(deadline)) {
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+      }
+      expect(WidgetsBinding.instance.lifecycleState, AppLifecycleState.resumed);
+    }
+  });
+  await tester.pump(const Duration(milliseconds: 300));
+}
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   if (const bool.fromEnvironment('E2E_RESUME')) {
@@ -101,19 +131,7 @@ void main() {
             .widget<MovieStage>(find.byType(MovieStage))
             .session!;
         await observer.json('DELETE', '/api/v1/auth/session');
-        await t.runAsync(() async {
-          t.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-          try {
-            final released = DateTime.now().add(const Duration(seconds: 8));
-            while (movieSession.debugPlayers.isNotEmpty &&
-                DateTime.now().isBefore(released)) {
-              await Future<void>.delayed(const Duration(milliseconds: 50));
-            }
-            expect(movieSession.debugPlayers, isEmpty);
-          } finally {
-            t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-          }
-        });
+        await deviceBackground(t, movieSession);
         final expiryDeadline = DateTime.now().add(const Duration(seconds: 25));
         while (repo.snapshot.connected ||
             movieSession.debugPlayers.isNotEmpty ||
@@ -412,23 +430,7 @@ void main() {
     return t.widget<AnimatedOpacity>(opacity.first).opacity > 0;
   }
 
-  Future<void> background(WidgetTester t) async {
-    // A paused live binding cannot pump. Wait for native disposal, then resume.
-    await t.runAsync(() async {
-      t.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-      try {
-        final deadline = DateTime.now().add(const Duration(seconds: 8));
-        while (session!.debugPlayers.isNotEmpty &&
-            DateTime.now().isBefore(deadline)) {
-          await Future<void>.delayed(const Duration(milliseconds: 50));
-        }
-        expect(session!.debugPlayers, isEmpty);
-      } finally {
-        t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-      }
-    });
-    await t.pump(const Duration(milliseconds: 300));
-  }
+  Future<void> background(WidgetTester t) => deviceBackground(t, session!);
 
   testWidgets('I2 measure eight actual container/codec samples on Android', (
     t,
@@ -659,6 +661,7 @@ void main() {
     debugPrint(
       'FULLSCREEN_ENTER before_playing=${player(t).value.isPlaying} lifecycle=${WidgetsBinding.instance.lifecycleState}',
     );
+    final beforeRotation = player(t);
     await textTap(t, '横向全屏');
     await until(
       t,
@@ -679,6 +682,11 @@ void main() {
       player(t).value.isPlaying,
       isTrue,
       reason: 'entering fullscreen preserves play intent',
+    );
+    expect(
+      identical(player(t), beforeRotation),
+      isTrue,
+      reason: 'rotation keeps the decoder and playback timeline',
     );
     await until(t, () => !controlsVisible(t), 'landscape controls hide');
     await tap(t, surface);

@@ -362,7 +362,11 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
     _foreground = state == AppLifecycleState.resumed;
     if (state != AppLifecycleState.resumed) {
       _resumeAfterSuspension = false;
-      if (widget.video.source.asset) {
+      // Rotation can briefly remove focus. Keep its decoder and timeline until
+      // a real hidden/paused transition requires network resource release.
+      if (widget.video.source.asset ||
+          (state == AppLifecycleState.inactive &&
+              _orientationPlayIntent != null)) {
         _playRequested = false;
         unawaited(widget.session.silence(_controller));
         _repaint();

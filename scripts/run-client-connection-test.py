@@ -49,6 +49,7 @@ stop = threading.Event()
 events = []
 errors = []
 PREFIX = "i1"
+APP_COMPONENT = "io.github.shijijs.video_viewer/.MainActivity"
 
 
 def docker(*args):
@@ -110,6 +111,27 @@ def prepare_emulator():
         )
     events.append(
         {"phase": "emulator-immersive-guidance-confirmed", "time": time.time()}
+    )
+
+
+def foreground_app():
+    return subprocess.run(
+        [
+            ADB,
+            "-s",
+            "emulator-5554",
+            "shell",
+            "am",
+            "start",
+            "-W",
+            "-n",
+            APP_COMPONENT,
+            "--activity-single-top",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=15,
     )
 
 
@@ -292,6 +314,7 @@ def main():
     )
     watcher = threading.Thread(target=watch, daemon=True)
     watcher.start()
+    android_in_background = False
     try:
         command = [
             FLUTTER,
@@ -368,10 +391,40 @@ def main():
                     log.write(line)
                     log.flush()
                     print(line, end="", flush=True)
+                    if line.strip() == "VV_E2E_DEVICE_BACKGROUND":
+                        subprocess.run(
+                            [
+                                ADB,
+                                "-s",
+                                "emulator-5554",
+                                "shell",
+                                "input",
+                                "keyevent",
+                                "KEYCODE_HOME",
+                            ],
+                            check=True,
+                            capture_output=True,
+                            timeout=10,
+                        )
+                        android_in_background = True
+                        events.append(
+                            {"phase": "android-backgrounded", "time": time.time()}
+                        )
+                    elif line.strip() == "VV_E2E_DEVICE_FOREGROUND":
+                        foreground_app()
+                        android_in_background = False
+                        events.append(
+                            {"phase": "android-foregrounded", "time": time.time()}
+                        )
                 code = process.wait()
                 if code:
                     break
     finally:
+        if android_in_background:
+            try:
+                foreground_app()
+            except subprocess.SubprocessError as error:
+                errors.append(f"Could not restore the emulator app: {error}")
         stop.set()
         watcher.join(timeout=35)
         docker("start", CONTAINER)
