@@ -232,6 +232,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   bool _foreground = true;
   bool _loading = false;
   bool _playRequested = false;
+  bool? _orientationPlayIntent;
   double _baseSpeed = 1;
   final _screenRevision = ValueNotifier(0);
   MaterialPageRoute<void>? _fullscreenRoute;
@@ -353,6 +354,11 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden ||
+        state == AppLifecycleState.detached) {
+      _orientationPlayIntent = null;
+    }
     _foreground = state == AppLifecycleState.resumed;
     if (state != AppLifecycleState.resumed) {
       _resumeAfterSuspension = false;
@@ -363,10 +369,14 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       } else {
         _unload();
       }
-    } else if (_controller == null && widget.prepare) {
-      unawaited(_load(autoplay: false));
-    } else if (widget.active && !widget.suspended && _controller != null) {
-      unawaited(_activate(rewind: false, play: false));
+    } else {
+      final playing = _orientationPlayIntent ?? false;
+      _orientationPlayIntent = null;
+      if (_controller == null && widget.prepare) {
+        unawaited(_load(autoplay: playing));
+      } else if (widget.active && !widget.suspended && _controller != null) {
+        unawaited(_activate(rewind: false, play: playing));
+      }
     }
   }
 
@@ -565,6 +575,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   Future<void> _fullscreen() async {
     final player = _controller;
     if (player == null || !player.value.isInitialized || _wide) return;
+    _orientationPlayIntent = _playRequested;
     setState(() => _wide = true);
     try {
       await SystemChrome.setPreferredOrientations([
@@ -594,7 +605,10 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                   name: widget.video.name,
                   fullscreen: true,
                   inlineControls: widget.inlineControls,
-                  onExit: () => Navigator.pop(context),
+                  onExit: () {
+                    _orientationPlayIntent = _playRequested;
+                    Navigator.pop(context);
+                  },
                   onSpeedChanged: (speed) => _baseSpeed = speed,
                   isPlayRequested: () => _playRequested,
                   onPlayRequested: _changePlayRequest,
@@ -655,6 +669,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       );
       await navigator.push(route);
     } finally {
+      _orientationPlayIntent ??= _playRequested;
       if (mounted) setState(() => _wide = false);
       _fullscreenRoute = null;
       _fullscreenNavigator = null;
@@ -722,6 +737,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
     ),
   );
   void _changePlayRequest(bool playing) {
+    _orientationPlayIntent = null;
     _playRequested = playing;
     _repaint();
   }

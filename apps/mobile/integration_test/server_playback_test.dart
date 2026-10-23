@@ -19,6 +19,12 @@ import 'package:video_viewer/ui/sheets.dart';
 
 import 'support/fixture.dart';
 
+class LifecycleTrace extends WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) =>
+      debugPrint('NATIVE_LIFECYCLE $state');
+}
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   if (const bool.fromEnvironment('E2E_RESUME')) {
@@ -626,6 +632,9 @@ void main() {
   testWidgets('I2 fullscreen gestures, rate selection and background recovery', (
     t,
   ) async {
+    final lifecycle = LifecycleTrace();
+    WidgetsBinding.instance.addObserver(lifecycle);
+    addTearDown(() => WidgetsBinding.instance.removeObserver(lifecycle));
     await start(t, preload: false);
     await repo.beginPreview(
       VideoEntryScope(query: VideoQuery(folder: '/media/camera/旅行')),

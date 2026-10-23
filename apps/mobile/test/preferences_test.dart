@@ -58,7 +58,9 @@ void main() {
     final directory = await Directory.systemTemp.createTemp(
       'vv-default-failure-',
     );
-    final preferences = UiPreferences(file: File(directory.path));
+    final blocked = await Directory('${directory.path}/appearance.json').create();
+    final file = File(blocked.path);
+    final preferences = UiPreferences(file: file);
     try {
       await expectLater(
         preferences.setVideoOrder(PlayOrder.sequential),
@@ -66,14 +68,16 @@ void main() {
       );
       expect(preferences.videoOrder, isNull);
       expect(preferences.dark, isFalse);
-      await expectLater(
-        preferences.setDark(true),
-        throwsA(isA<FileSystemException>()),
-      );
-      expect(preferences.dark, isFalse);
+      await blocked.delete();
+      await preferences.setDark(true);
+      await preferences.setVideoOrder(PlayOrder.sequential);
+      final reopened = await UiPreferences.load(file: file);
+      expect(reopened.dark, isTrue);
+      expect(reopened.videoOrder, PlayOrder.sequential);
+      reopened.dispose();
     } finally {
       preferences.dispose();
-      await directory.delete();
+      await directory.delete(recursive: true);
     }
   });
 }
