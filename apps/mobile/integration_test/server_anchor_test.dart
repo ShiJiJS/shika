@@ -25,7 +25,14 @@ void main() {
         String reason,
       ) async {
         final deadline = DateTime.now().add(const Duration(seconds: 60));
-        while (!await condition()) {
+        while (true) {
+          // Read the rendered state after pending notifications have had a frame.
+          // A stale tree can otherwise look "not loading" just before the bar appears.
+          await t.pump(const Duration(milliseconds: 80));
+          if (await condition()) {
+            await t.pump(const Duration(milliseconds: 80));
+            if (await condition()) return;
+          }
           if (DateTime.now().isAfter(deadline)) {
             debugPrint(
               'ANCHOR_UI ${t.widgetList<Text>(find.byType(Text)).map((text) => text.data).join(' | ')}',
@@ -33,9 +40,7 @@ void main() {
             await fixture('/__fixture/checkpoint/error');
             fail('Timed out: $reason');
           }
-          await t.pump(const Duration(milliseconds: 80));
         }
-        await t.pump(const Duration(milliseconds: 80));
       }
 
       addTearDown(() async {
