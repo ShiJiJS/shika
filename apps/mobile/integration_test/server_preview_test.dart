@@ -243,9 +243,17 @@ void main() {
       );
       await t.tap(find.byKey(const Key('video-gesture-surface')).last);
       await until(() => !landscape.value.isPlaying, 'pause intent');
+      await until(
+        () => find
+            .byKey(const Key('inline-play'))
+            .hitTestable()
+            .evaluate()
+            .isNotEmpty,
+        'paused inline controls',
+      );
       await fixture('/__fixture/checkpoint/formats');
       await t.pump(const Duration(seconds: 1));
-      await t.tap(find.widgetWithText(FilledButton, '横屏'));
+      await t.tap(find.widgetWithText(FilledButton, '横向全屏'));
       await until(
         () => find.byKey(const Key('fullscreen-exit')).evaluate().isNotEmpty,
         'native fullscreen',

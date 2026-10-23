@@ -462,6 +462,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                               onStep: step,
                               suspended: obscured || repo.backupRestorePending,
                               session: playback,
+                              inlineControls: true,
                               preloadAdjacent:
                                   widget.preferences.preloadAdjacent,
                               onUnauthorized: (source) =>
@@ -710,6 +711,16 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
         failures.clear();
         loading.clear();
         total = repo.playbackTotal;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted && scroll.hasClients) {
+            scroll.jumpTo(
+              (repo.playbackPosition * 80.0).clamp(
+                0.0,
+                scroll.position.maxScrollExtent,
+              ),
+            );
+          }
+        });
       }
     });
   }

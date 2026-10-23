@@ -321,8 +321,12 @@ class _LibraryHomeState extends State<LibraryHome> {
       }
       if (!mounted) return;
       final route = PageRouteBuilder<void>(
-        transitionDuration: const Duration(milliseconds: 240),
-        reverseTransitionDuration: const Duration(milliseconds: 160),
+        transitionDuration: MediaQuery.disableAnimationsOf(context)
+            ? Duration.zero
+            : const Duration(milliseconds: 240),
+        reverseTransitionDuration: MediaQuery.disableAnimationsOf(context)
+            ? Duration.zero
+            : const Duration(milliseconds: 160),
         pageBuilder: (context, animation, secondary) => VideoPreviewRoute(
           repository: repo,
           preferences: widget.preferences,

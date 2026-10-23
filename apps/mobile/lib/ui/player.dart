@@ -24,6 +24,7 @@ class MovieStage extends StatefulWidget {
     this.preloadAdjacent = true,
     this.onPlaybackFailure,
     this.session,
+    this.inlineControls = false,
   });
   final List<LibraryVideo> videos;
   final int index;
@@ -34,6 +35,7 @@ class MovieStage extends StatefulWidget {
   final bool preloadAdjacent;
   final Future<String?> Function(LibraryVideo)? onPlaybackFailure;
   final PlaybackSession? session;
+  final bool inlineControls;
   @override
   State<MovieStage> createState() => _MovieStageState();
 }
@@ -182,6 +184,7 @@ class _MovieStageState extends State<MovieStage> {
             footer: widget.footerBuilder?.call(widget.videos[index]),
             onUnauthorized: widget.onUnauthorized,
             onPlaybackFailure: widget.onPlaybackFailure,
+            inlineControls: widget.inlineControls,
           ),
         ),
       );
@@ -205,6 +208,7 @@ class _MoviePage extends StatefulWidget {
     this.footer,
     this.onUnauthorized,
     this.onPlaybackFailure,
+    this.inlineControls = false,
   });
   final LibraryVideo video;
   final bool active, suspended;
@@ -213,6 +217,7 @@ class _MoviePage extends StatefulWidget {
   final Widget? footer;
   final void Function(MediaSource)? onUnauthorized;
   final Future<String?> Function(LibraryVideo)? onPlaybackFailure;
+  final bool inlineControls;
 
   @override
   State<_MoviePage> createState() => _MoviePageState();
@@ -586,6 +591,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                   controller: current,
                   name: widget.video.name,
                   fullscreen: true,
+                  inlineControls: widget.inlineControls,
                   onExit: () => Navigator.pop(context),
                   onSpeedChanged: (speed) => _baseSpeed = speed,
                   isPlayRequested: () => _playRequested,
@@ -700,6 +706,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                   controller: _controller!,
                   name: widget.video.name,
                   interactionsEnabled: !widget.suspended && !_wide && !_loading,
+                  inlineControls: widget.inlineControls,
                   footer: widget.footer,
                   onFullscreen: widget.video.portrait ? null : _fullscreen,
                   onSpeedChanged: (speed) => _baseSpeed = speed,
@@ -748,6 +755,7 @@ class PlayerSurface extends StatefulWidget {
     this.onSpeedChanged,
     this.isPlayRequested,
     this.onPlayRequested,
+    this.inlineControls = false,
   });
   final VideoPlayerController controller;
   final String name;
@@ -757,6 +765,7 @@ class PlayerSurface extends StatefulWidget {
   final ValueChanged<double>? onSpeedChanged;
   final bool Function()? isPlayRequested;
   final ValueChanged<bool>? onPlayRequested;
+  final bool inlineControls;
   @override
   State<PlayerSurface> createState() => _PlayerSurfaceState();
 }
@@ -767,7 +776,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
   double? _previousSpeed;
   Future<void> _speedChanges = Future.value();
   Timer? _hideTimer, _feedbackTimer;
-  late bool _controls = widget.fullscreen;
+  late bool _controls = widget.fullscreen || widget.inlineControls;
   bool _seeking = false, _resumeAfterSeek = false, _deviceEnabled = true;
   double _seekStart = 0, _seekMs = 0, _seekDx = 0;
   Map<String, double>? _levels;
@@ -784,6 +793,14 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     widget.onPlayRequested?.call(playing);
     if (!playing) _endBoost();
     unawaited(playing ? controller.play() : controller.pause());
+    if (widget.inlineControls) {
+      setState(() => _controls = true);
+      if (playing) {
+        _scheduleHide();
+      } else {
+        _hideTimer?.cancel();
+      }
+    }
   }
 
   @override
@@ -792,8 +809,8 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     WidgetsBinding.instance.addObserver(this);
     if (widget.fullscreen) {
       unawaited(_readLevels());
-      _scheduleHide();
     }
+    if (widget.fullscreen || widget.inlineControls) _scheduleHide();
   }
 
   Future<void> _readLevels() async {
@@ -810,7 +827,9 @@ class _PlayerSurfaceState extends State<PlayerSurface>
   void _scheduleHide() {
     _hideTimer?.cancel();
     _hideTimer = Timer(const Duration(seconds: 3), () {
-      if (mounted && !_seeking) setState(() => _controls = false);
+      if (mounted && !_seeking && (_playRequested || !widget.inlineControls)) {
+        setState(() => _controls = false);
+      }
     });
   }
 
@@ -1060,6 +1079,25 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                 ),
               ),
             ),
+            if (widget.inlineControls && !_playRequested)
+              Positioned.fill(
+                child: Center(
+                  child: IconButton(
+                    key: const Key('inline-play'),
+                    tooltip: '播放视频',
+                    style: IconButton.styleFrom(
+                      backgroundColor: Paper.background.withValues(alpha: .94),
+                      foregroundColor: Paper.olive,
+                      minimumSize: const Size(60, 60),
+                      shape: const CircleBorder(),
+                    ),
+                    onPressed: widget.interactionsEnabled
+                        ? _togglePlayback
+                        : null,
+                    icon: const Icon(Icons.play_arrow_outlined, size: 32),
+                  ),
+                ),
+              ),
             if (widget.footer != null)
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 160),
@@ -1106,16 +1144,25 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                 bottom: _controls ? 66 : 32,
                 child: FilledButton.tonalIcon(
                   style: FilledButton.styleFrom(
-                    backgroundColor: Paper.of(context).background
-                        .withValues(alpha: .9),
-                    foregroundColor: Paper.of(context).ink,
-                    shape: const StadiumBorder(),
+                    backgroundColor:
+                        (widget.inlineControls
+                                ? Paper.background
+                                : Paper.of(context).background)
+                            .withValues(alpha: .9),
+                    foregroundColor: widget.inlineControls
+                        ? Paper.olive
+                        : Paper.of(context).ink,
+                    shape: widget.inlineControls
+                        ? RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7),
+                          )
+                        : const StadiumBorder(),
                     minimumSize: const Size(74, 36),
                     padding: const EdgeInsets.symmetric(horizontal: 13),
                   ),
                   onPressed: widget.onFullscreen,
                   icon: const Icon(Icons.fullscreen, size: 19),
-                  label: const Text('横屏'),
+                  label: Text(widget.inlineControls ? '横向全屏' : '横屏'),
                 ),
               ),
             if (widget.fullscreen)
@@ -1192,7 +1239,8 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                                 height: 28,
                                 child: Row(
                                   children: [
-                                    if (widget.fullscreen)
+                                    if (widget.fullscreen ||
+                                        widget.inlineControls)
                                       IconButton(
                                         tooltip: _playRequested ? '暂停' : '播放',
                                         constraints: const BoxConstraints(

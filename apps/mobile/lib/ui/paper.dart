@@ -175,9 +175,9 @@ Future<T?> paperSheet<T>(
     isDismissible: dismissible,
     enableDrag: dismissible,
     useSafeArea: true,
-    sheetAnimationStyle: const AnimationStyle(
-      duration: Duration(milliseconds: 240),
-    ),
+    sheetAnimationStyle: MediaQuery.disableAnimationsOf(context)
+        ? AnimationStyle.noAnimation
+        : const AnimationStyle(duration: Duration(milliseconds: 240)),
     builder: (context) => Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: child,

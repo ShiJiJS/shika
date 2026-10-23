@@ -41,6 +41,44 @@ class BufferingPlayer extends VideoPlayerController {
 
 void main() {
   testWidgets(
+    'inline paused controls stay visible and expose an explicit resume action',
+    (t) async {
+      final controller = BufferingPlayer();
+      var requested = false;
+      await t.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: PlayerSurface(
+              controller: controller,
+              name: 'inline',
+              inlineControls: true,
+              isPlayRequested: () => requested,
+              onPlayRequested: (value) => requested = value,
+            ),
+          ),
+        ),
+      );
+      expect(find.byKey(const Key('inline-play')), findsOneWidget);
+      await t.tap(find.byKey(const Key('inline-play')));
+      await t.pump();
+      expect(requested, isTrue);
+      expect(controller.value.isPlaying, isTrue);
+      await t.tap(find.byKey(const Key('video-gesture-surface')));
+      await t.pump();
+      expect(requested, isFalse);
+      expect(controller.value.isPlaying, isFalse);
+      await t.pump(const Duration(seconds: 4));
+      expect(
+        find.byKey(const Key('inline-play')).hitTestable(),
+        findsOneWidget,
+      );
+      expect(find.byTooltip('播放速度').hitTestable(), findsOneWidget);
+      await t.pumpWidget(const SizedBox());
+      await controller.dispose();
+    },
+  );
+
+  testWidgets(
     'a buffering play request can boost, but an explicit pause cannot',
     (t) async {
       final controller = BufferingPlayer();
