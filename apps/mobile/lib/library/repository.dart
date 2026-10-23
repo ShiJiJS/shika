@@ -1,10 +1,40 @@
 import 'package:flutter/foundation.dart';
 
 import 'models.dart';
+import 'pack_models.dart';
+export 'pack_models.dart';
 
 /// This boundary describes client-visible behavior, independent of transport.
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
+  Future<CatalogPage<LibraryPack>> loadPacks(
+    PackQuery query, {
+    int offset = 0,
+    int limit = 24,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包，请升级服务端'));
+  Future<CatalogPage<PackTag>> loadPackTags({
+    String search = '',
+    int offset = 0,
+    int limit = 50,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  Future<CatalogPage<FolderEntry>> loadPackDirectories(
+    String parent, {
+    int offset = 0,
+    int limit = 50,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包目录，请升级服务端'));
+  Future<void> editPackTag({
+    String? original,
+    String? name,
+    bool delete = false,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  Future<void> setPackTags(
+    Set<String> ids,
+    Set<String> tags, {
+    bool replace = false,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  void cancelPackRead() {}
+  void cancelPackTagRead() {}
+  void cancelPackDirectoryRead() {}
   final ValueNotifier<String?> scanStatus = ValueNotifier(null);
   final libraryPreparation = ValueNotifier(const LibraryPreparation());
   Future<void> requestScan() => refresh();

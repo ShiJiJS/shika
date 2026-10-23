@@ -10,6 +10,8 @@ import 'models.dart';
 import 'repository.dart';
 import 'server_api.dart';
 
+part 'server_pack_catalog.dart';
+
 typedef Json = Map<String, dynamic>;
 
 Json object(Object? value) => Map<String, dynamic>.from(value as Map);
@@ -19,7 +21,8 @@ String requestId() =>
 
 /// Server IDs remain authoritative; this cache contains only visited pages and
 /// the small playback window. It is never used as a replacement NAS database.
-class ServerLibraryRepository extends LibraryRepository {
+class ServerLibraryRepository extends LibraryRepository
+    with _ServerPackCatalog {
   ServerLibraryRepository(
     this.credentials, {
     FileCommandStore? fileCommands,
@@ -51,6 +54,7 @@ class ServerLibraryRepository extends LibraryRepository {
   bool get backupRestorePending => _backups?.restorePending ?? false;
   @override
   Object get connectionIdentity => _api ?? this;
+  @override
   void ensureNotRestoring() {
     if (backupRestorePending) throw const LibraryFailure('恢复结果尚未确认，请先查询结果');
   }
@@ -82,8 +86,12 @@ class ServerLibraryRepository extends LibraryRepository {
       _missingRead = RequestScope(),
       _scanRead = RequestScope();
   Future<void>? _refreshWork;
-  int _generation = 0, _scopeGeneration = 0, _missing = 0, _trash = 0;
+  @override
+  int _generation = 0;
+  int _scopeGeneration = 0, _missing = 0, _trash = 0;
+  @override
   bool _disposed = false;
+  @override
   String _session = requestId();
   String? _scanTask;
   Timer? _preparationTimer;
@@ -231,12 +239,15 @@ class ServerLibraryRepository extends LibraryRepository {
   LibraryVideo? get current =>
       _state.round.isEmpty ? null : _videos[_state.round[_state.position]];
 
+  @override
   void publish() {
     if (!_disposed) notifyListeners();
   }
 
+  @override
   ServerApi get api => _api ?? (throw const LibraryFailure('请先连接视频库'));
 
+  @override
   Future<Json> call(
     String method,
     String path, {
@@ -273,6 +284,9 @@ class ServerLibraryRepository extends LibraryRepository {
     cancelFolderRead();
     cancelTrashRead();
     cancelMissingRead();
+    cancelPackRead();
+    cancelPackTagRead();
+    cancelPackDirectoryRead();
     _scanRead.cancel();
     _preparationTimer?.cancel();
     _preparationRead.cancel();
@@ -582,6 +596,9 @@ class ServerLibraryRepository extends LibraryRepository {
       cancelFolderRead();
       cancelTrashRead();
       cancelMissingRead();
+      cancelPackRead();
+      cancelPackTagRead();
+      cancelPackDirectoryRead();
       _scanRead.cancel();
       _scanTask = null;
       _scanAfterRestore = false;
@@ -1993,6 +2010,9 @@ class ServerLibraryRepository extends LibraryRepository {
     cancelFolderRead();
     cancelTrashRead();
     cancelMissingRead();
+    cancelPackRead();
+    cancelPackTagRead();
+    cancelPackDirectoryRead();
     _scanRead.cancel();
     _api?.close();
     _backups?.dispose();
