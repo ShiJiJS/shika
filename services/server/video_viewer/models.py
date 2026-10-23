@@ -223,6 +223,7 @@ class ImagePack(Base):
     error: Mapped[str | None] = mapped_column(String, nullable=True)
     device: Mapped[str] = mapped_column(String, default="")
     inode: Mapped[str] = mapped_column(String, default="")
+    directory_signature: Mapped[list] = mapped_column(JSON, default=list, server_default="[]")
     content_version: Mapped[int] = mapped_column(Integer, default=0)
     page_count: Mapped[int] = mapped_column(Integer, default=0)
     generation: Mapped[int] = mapped_column(Integer, default=0)

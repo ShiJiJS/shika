@@ -39,6 +39,18 @@ def seed_pack(client, root, name="one", status="available"):
         )
         session.add(pack)
         session.flush()
+        session.add(
+            PackPage(
+                pack_id=pack.id,
+                path=f"{pack.path}/seed.png",
+                relative_path="seed.png",
+                ordinal=0,
+                width=10,
+                height=10,
+                size=1,
+                format="PNG",
+            )
+        )
         return pack.id
 
 
@@ -189,8 +201,8 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         == 200
     )
     info = client.get("/api/v1/info").json()
-    assert info["schema_version"] == "0005"
-    assert set(info["capabilities"]) == {"typed_roots", "pack_tags"}
+    assert info["schema_version"] == "0006"
+    assert set(info["capabilities"]) == {"typed_roots", "pack_tags", "image_packs"}
     schema = client.get("/openapi.json").json()
     assert schema["components"]["schemas"]["RootInput"]["properties"]["enabled"]
     assert (
@@ -310,7 +322,7 @@ def test_crash_recovery_uses_journal_before_retrying_upgrade(tmp_path):
             ).fetchone()
             is None
         )
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0005",)
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0006",)
     assert not (tmp_path / "migration-pending.json").exists()
     db.close()
 
@@ -369,3 +381,104 @@ def test_reused_path_preserves_missing_pack_identity_without_stealing_tags(libra
     with pytest.raises(IntegrityError), db.write() as session:
         session.add(ImagePack(root_id=root["id"], path=path, location_key=path, name="collision"))
         session.flush()
+
+
+def test_0005_pack_management_data_survives_directory_evidence_upgrade(tmp_path):
+    from alembic import command
+    from alembic.config import Config
+
+    fixture = Path(__file__).parent / "fixtures" / "lf0-management-0004.sql"
+    path = tmp_path / "library.sqlite3"
+    with sqlite3.connect(path) as connection:
+        connection.executescript(fixture.read_text())
+    db = Database(tmp_path)
+    config = Config(str(Path(__file__).parents[1] / "alembic.ini"))
+    config.set_main_option("script_location", str(Path(__file__).parents[1] / "migrations"))
+    with db.engine.begin() as connection:
+        config.attributes["connection"] = connection
+        command.upgrade(config, "0005")
+    with sqlite3.connect(path) as connection:
+        connection.execute(
+            "INSERT INTO roots (id,name,path,mount_id,kind,enabled,available,error,last_scan) VALUES (?,?,?,?,?,?,?,?,?)",
+            ("p5-root", "typed root", "/media/p5", "main", "pack", 0, 1, None, 1.0),
+        )
+        connection.execute(
+            "INSERT INTO packs (id,root_id,path,location_key,name,status,error,device,inode,content_version,page_count,generation,seen_scan,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            (
+                "p5-pack",
+                "p5-root",
+                "/media/p5/one",
+                "/media/p5/one",
+                "one",
+                "available",
+                None,
+                "1",
+                "2",
+                4,
+                1,
+                3,
+                None,
+                1.0,
+            ),
+        )
+        connection.execute(
+            "INSERT INTO pack_pages (id,pack_id,path,relative_path,ordinal,width,height,size,format,signature,sha256,error,thumbnail,seen_scan) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            (
+                "p5-page",
+                "p5-pack",
+                "/media/p5/one/1.png",
+                "1.png",
+                0,
+                40,
+                60,
+                100,
+                "PNG",
+                "[]",
+                "a" * 64,
+                None,
+                None,
+                None,
+            ),
+        )
+        connection.execute(
+            "INSERT INTO pack_tag_definitions VALUES (?,?,?)", ("p5-tag", "pack tag", 1.0)
+        )
+        connection.execute("INSERT INTO pack_tag_links VALUES (?,?)", ("p5-pack", "p5-tag"))
+        connection.execute(
+            "INSERT INTO pack_progress VALUES (?,?,?,?,?,?)", ("p5-pack", "p5-page", 0.5, 0, 5, 1.0)
+        )
+        connection.execute(
+            "INSERT INTO pack_preferences VALUES (?,?,?,?,?)",
+            ("p5-pack", "vertical", "rtl", 1, "width"),
+        )
+        connection.execute(
+            "INSERT INTO recent_entries VALUES (?,?,?,?,?)",
+            ("p5-recent", "pack", None, "p5-pack", 1.0),
+        )
+        names = [
+            row[0]
+            for row in connection.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name!='alembic_version'"
+            )
+        ]
+        columns = {
+            name: [row[1] for row in connection.execute(f'PRAGMA table_info("{name}")')]
+            for name in names
+        }
+        before = {
+            name: sorted(connection.execute(f'SELECT * FROM "{name}"').fetchall(), key=repr)
+            for name in names
+        }
+    db.migrate()
+    with sqlite3.connect(path) as connection:
+        for name in names:
+            fields = ",".join(f'"{column}"' for column in columns[name])
+            assert (
+                sorted(connection.execute(f'SELECT {fields} FROM "{name}"').fetchall(), key=repr)
+                == before[name]
+            )
+        assert connection.execute("SELECT directory_signature FROM packs").fetchone() == ("[]",)
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0006",)
+        assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
+    assert db.last_migration_snapshot is not None
+    db.close()

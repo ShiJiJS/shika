@@ -19,10 +19,13 @@ from .db import Database
 from .errors import LibraryError
 from .file_operations import FileOperations
 from .file_state import reserved_video_ids
+from .images import ImageStreams
 from .library_state import library_state
 from .metadata_cleanup import forget_missing
 from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
+from .pack_api import router as pack_router
 from .pack_tags import PackTags
+from .packs import Packs
 from .playback import Playback
 from .scanner import Scanner
 from .security import Authentication
@@ -158,6 +161,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         app.state.playback = Playback(db, catalog, app.state.streams)
         app.state.tags = Tags(db, app.state.playback)
         app.state.pack_tags = PackTags(db)
+        app.state.packs, app.state.images = Packs(db), ImageStreams(db, configured)
         app.state.files = FileOperations(
             db, configured, catalog, app.state.playback, file_fault_hook
         )
@@ -206,6 +210,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         return request.app.state.auth.require(authorization)
 
     auth_required = [Depends(authorized)]
+    app.include_router(pack_router(auth_required))
 
     @app.get("/health")
     def health():
@@ -242,8 +247,8 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             "server_id": server_id,
             "api_version": 1,
             "sqlite_version": sqlite3.sqlite_version,
-            "schema_version": "0005",
-            "capabilities": ["typed_roots", "pack_tags"],
+            "schema_version": "0006",
+            "capabilities": ["typed_roots", "pack_tags", "image_packs"],
         }
 
     @app.get("/api/v1/mounts", dependencies=auth_required)
@@ -287,9 +292,13 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
 
     @app.get("/api/v1/directories", dependencies=auth_required)
     def directories(
-        request: Request, parent_id: str | None = None, kind: Literal["video", "pack"] = "video"
+        request: Request,
+        parent_id: str | None = None,
+        kind: Literal["video", "pack"] = "video",
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int | None, Query(ge=1, le=200)] = None,
     ):
-        return {"items": request.app.state.catalog.directories(parent_id, kind)}
+        return request.app.state.catalog.directories(parent_id, kind, offset=offset, limit=limit)
 
     @app.get("/api/v1/directories/resolve", dependencies=auth_required)
     def resolve_directory(
