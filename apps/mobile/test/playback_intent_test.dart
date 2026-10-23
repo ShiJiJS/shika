@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_viewer/ui/player.dart';
@@ -40,6 +41,54 @@ class BufferingPlayer extends VideoPlayerController {
 }
 
 void main() {
+  testWidgets(
+    'a transient device hint disappearing does not discard an open speed menu',
+    (t) async {
+      final controller = BufferingPlayer();
+      const device = MethodChannel('video_viewer/playback');
+      final messenger =
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+      messenger.setMockMethodCallHandler(
+        device,
+        (call) async => call.method == 'restoreBrightness'
+            ? null
+            : {'brightness': .5, 'volume': .5, 'windowBrightness': -1.0},
+      );
+      addTearDown(() => messenger.setMockMethodCallHandler(device, null));
+      await t.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: PlayerSurface(
+              controller: controller,
+              name: 'fullscreen',
+              fullscreen: true,
+              inlineControls: true,
+              isPlayRequested: () => true,
+            ),
+          ),
+        ),
+      );
+      await t.pump();
+      final surface = t.getRect(find.byKey(const Key('video-gesture-surface')));
+      await t.dragFrom(
+        Offset(surface.left + 30, surface.center.dy),
+        const Offset(0, -70),
+      );
+      await t.pump(const Duration(milliseconds: 100));
+      expect(find.byKey(const Key('device-level-hint')), findsOneWidget);
+      await t.tap(find.byTooltip('播放速度'));
+      await t.pump(const Duration(milliseconds: 300));
+      expect(find.text('1.5×'), findsOneWidget);
+      await t.pump(const Duration(seconds: 1));
+      expect(find.byKey(const Key('device-level-hint')), findsNothing);
+      await t.tap(find.text('1.5×'));
+      await t.pump(const Duration(milliseconds: 300));
+      expect(controller.value.playbackSpeed, 1.5);
+      await t.pumpWidget(const SizedBox());
+      await controller.dispose();
+    },
+  );
+
   testWidgets(
     'inline paused controls stay visible and expose an explicit resume action',
     (t) async {

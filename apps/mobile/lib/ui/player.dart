@@ -1008,6 +1008,8 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     VideoPlayerValue value,
     Duration position,
   ) => Positioned(
+    // Sibling hints can disappear while the speed popup is open.
+    key: const Key('playback-controls-layer'),
     left: 10,
     right: 10,
     bottom: 12,
@@ -1363,6 +1365,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
               _inlineControlBar(v, position)
             else
               Positioned(
+                key: const Key('playback-controls-layer'),
                 left: 0,
                 right: 0,
                 bottom: 0,
