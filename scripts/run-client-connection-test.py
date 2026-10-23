@@ -61,6 +61,58 @@ def docker(*args):
     )
 
 
+def prepare_emulator():
+    avd = (
+        subprocess.check_output(
+            [ADB, "-s", "emulator-5554", "emu", "avd", "name"], text=True, timeout=10
+        )
+        .splitlines()[0]
+        .strip()
+    )
+    if avd != os.environ.get("VV_AVD_NAME", "video_viewer_api_36"):
+        raise SystemExit(
+            f"Refusing to change guidance settings on an unexpected AVD: {avd}"
+        )
+    # Cold boots can show an Android-owned immersive guide over the app. It
+    # steals focus and is outside Flutter's widget tree, so prepare only this AVD.
+    subprocess.run(
+        [
+            ADB,
+            "-s",
+            "emulator-5554",
+            "shell",
+            "settings",
+            "put",
+            "secure",
+            "immersive_mode_confirmations",
+            "confirmed",
+        ],
+        check=True,
+        timeout=10,
+    )
+    confirmed = subprocess.check_output(
+        [
+            ADB,
+            "-s",
+            "emulator-5554",
+            "shell",
+            "settings",
+            "get",
+            "secure",
+            "immersive_mode_confirmations",
+        ],
+        text=True,
+        timeout=10,
+    ).strip()
+    if confirmed != "confirmed":
+        raise SystemExit(
+            "Could not prepare the dedicated emulator's immersive guidance"
+        )
+    events.append(
+        {"phase": "emulator-immersive-guidance-confirmed", "time": time.time()}
+    )
+
+
 def fresh_instance():
     docker("stop", "--time", "0", CONTAINER)
     events.append({"phase": "fresh-instance-stopped", "time": time.time()})
@@ -227,6 +279,7 @@ def main():
     else:
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
+    prepare_emulator()
     subprocess.run(
         host_command(
             "bash", host_path(ROOT / "scripts/prepare-client-e2e.sh"), "--reset"
