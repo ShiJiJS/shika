@@ -87,8 +87,15 @@ def fresh_instance():
         # Recreate only this disposable container to mount the new empty data.
         subprocess.run(
             [
-                "docker", "compose", "-f", str(ROOT / "compose.client-e2e.yaml"),
-                "up", "-d", "--no-build", "--force-recreate", "server",
+                "docker",
+                "compose",
+                "-f",
+                str(ROOT / "compose.client-e2e.yaml"),
+                "up",
+                "-d",
+                "--no-build",
+                "--force-recreate",
+                "server",
             ],
             env={**os.environ, "VV_E2E_ASSETS": str(ROOT / "apps/mobile/assets/media")},
             check=True,
@@ -175,6 +182,7 @@ def main():
     mode.add_argument("--preparation", action="store_true")
     mode.add_argument("--interactions", action="store_true")
     mode.add_argument("--preview", action="store_true")
+    mode.add_argument("--anchor", action="store_true")
     parser.add_argument("--plain-name")
     args = parser.parse_args()
     if not Path(ADB).is_file() or not Path(FLUTTER).is_file():
@@ -198,7 +206,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.preview:
+    if args.anchor:
+        PREFIX = "lf3-anchor"
+    elif args.preview:
         PREFIX = "lf3-preview"
     elif args.interactions:
         PREFIX = "v1-interactions"
@@ -243,6 +253,7 @@ def main():
                 "v1-preparation": "integration_test/server_preparation_test.dart",
                 "v1-interactions": "integration_test/nonblocking_server_test.dart",
                 "lf3-preview": "integration_test/server_preview_test.dart",
+                "lf3-anchor": "integration_test/server_anchor_test.dart",
             }[PREFIX],
             "-d",
             "emulator-5554",
@@ -258,7 +269,11 @@ def main():
             code = 0
             for phase in range(
                 1
-                if args.plain_name or args.preparation or args.interactions or args.preview
+                if args.plain_name
+                or args.preparation
+                or args.interactions
+                or args.preview
+                or args.anchor
                 else 3
                 if args.backups
                 else 2

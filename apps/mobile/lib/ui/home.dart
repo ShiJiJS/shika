@@ -98,6 +98,9 @@ class _LibraryHomeState extends State<LibraryHome> {
   bool get libraryLoading => _library.state.loading;
   String get libraryError => _library.state.error;
   final libraryScroll = ScrollController();
+  VideoBrowseContext? _pendingReturn;
+  List<String> _returnAnchors = const [];
+  bool _restoringLibrary = false;
   String previousScope = '';
   List<LibraryVideo> trashItems = [];
   int trashTotal = 0, trashGeneration = 0;
@@ -196,13 +199,18 @@ class _LibraryHomeState extends State<LibraryHome> {
   void loadNearBottom() {
     if (page == 'library' &&
         !viewing &&
+        !_restoringLibrary &&
         libraryScroll.hasClients &&
-        libraryScroll.position.extentAfter < 480 &&
         !libraryLoading &&
         libraryError.isEmpty &&
-        libraryItems.isNotEmpty &&
-        libraryItems.length < libraryTotal) {
-      unawaited(loadLibrary(more: true));
+        libraryItems.isNotEmpty) {
+      if (libraryScroll.position.extentBefore < 180 &&
+          _library.state.hasBefore) {
+        unawaited(loadLibrary(before: true));
+      } else if (libraryScroll.position.extentAfter < 480 &&
+          _library.state.hasAfter) {
+        unawaited(loadLibrary(more: true));
+      }
     }
   }
 
@@ -269,8 +277,10 @@ class _LibraryHomeState extends State<LibraryHome> {
     if (mounted) setState(() {});
   }
 
-  Future<void> loadLibrary({bool more = false}) async {
-    if (page != 'library' || viewing || (more && libraryLoading)) return;
+  Future<void> loadLibrary({bool more = false, bool before = false}) async {
+    if (page != 'library' || viewing || ((more || before) && libraryLoading)) {
+      return;
+    }
     final next = VideoBrowseContext(
       query: entryQuery,
       search: search,
@@ -279,14 +289,47 @@ class _LibraryHomeState extends State<LibraryHome> {
       scrollOffset: libraryScroll.hasClients ? libraryScroll.offset : 0,
     );
     libraryContext = next;
+    if (_pendingReturn?.queryKey != next.queryKey) _pendingReturn = null;
     if (next.queryKey != _library.state.context.queryKey) {
       setState(() => selected = {});
     }
-    await _library.load(next, more: more);
+    final restoring = _pendingReturn;
+    final oldStart = _library.state.offset;
+    final oldPixels = libraryScroll.hasClients ? libraryScroll.offset : 0.0;
+    _restoringLibrary = restoring != null || before;
+    if (restoring != null) {
+      await _library.restore(restoring, anchors: _returnAnchors);
+    } else {
+      await _library.load(next, more: more, before: before);
+    }
     if (mounted && page == 'library') {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) loadNearBottom();
+        if (!mounted) return;
+        if (_library.state.context.queryKey == next.queryKey &&
+            libraryError.isEmpty &&
+            libraryScroll.hasClients) {
+          double? pixels;
+          if (restoring != null && identical(restoring, _pendingReturn)) {
+            final anchor = _library.state.anchorIndex ?? _library.state.offset;
+            pixels =
+                ((anchor - _library.state.offset) ~/ 2) * 308 +
+                restoring.scrollInset;
+            _pendingReturn = null;
+          } else if (before) {
+            pixels =
+                oldPixels + ((oldStart - _library.state.offset) ~/ 2) * 308;
+          }
+          if (pixels != null) {
+            libraryScroll.jumpTo(
+              pixels.clamp(0.0, libraryScroll.position.maxScrollExtent),
+            );
+          }
+        }
+        _restoringLibrary = false;
+        loadNearBottom();
       });
+    } else {
+      _restoringLibrary = false;
     }
   }
 
@@ -306,11 +349,26 @@ class _LibraryHomeState extends State<LibraryHome> {
         ? null
         : libraryItems[((offset ~/ 308) * 2).clamp(0, libraryItems.length - 1)]
               .id;
+    final localIndex = ((offset ~/ 308) * 2).clamp(
+      0,
+      (libraryItems.length - 1).clamp(0, libraryItems.length),
+    );
+    final anchors = [
+      ...libraryItems.skip(localIndex).take(8).map((item) => item.id),
+      ...libraryItems
+          .take(localIndex)
+          .toList()
+          .reversed
+          .take(8)
+          .map((item) => item.id),
+    ];
     final origin = libraryContext.copyWith(
       query: entryQuery,
       search: search,
       scrollOffset: offset,
       scrollAnchor: first,
+      scrollIndex: _library.state.offset + localIndex,
+      scrollInset: offset % 308,
     );
     viewing = true;
     try {
@@ -343,19 +401,9 @@ class _LibraryHomeState extends State<LibraryHome> {
       if (!mounted) return;
       libraryContext = origin;
       viewing = false;
+      _pendingReturn = origin;
+      _returnAnchors = anchors;
       await loadLibrary();
-      if (mounted) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted && libraryScroll.hasClients) {
-            libraryScroll.jumpTo(
-              origin.scrollOffset.clamp(
-                0.0,
-                libraryScroll.position.maxScrollExtent,
-              ),
-            );
-          }
-        });
-      }
     } finally {
       viewing = false;
     }
@@ -1483,6 +1531,30 @@ class _LibraryHomeState extends State<LibraryHome> {
               ],
             ),
           ),
+        if ((_pendingReturn != null || _library.state.beforeFailure) &&
+            results.isNotEmpty)
+          libraryLoading
+              ? const LinearProgressIndicator(minHeight: 2)
+              : libraryError.isNotEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${_pendingReturn != null ? '返回位置未能刷新' : '前面的内容未能加载'}，当前列表已保留：$libraryError',
+                        ),
+                      ),
+                      TextButton(
+                        key: const Key('library-return-retry'),
+                        onPressed: () =>
+                            loadLibrary(before: _library.state.beforeFailure),
+                        child: const Text('重试'),
+                      ),
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
         Expanded(
           child: libraryLoading && results.isEmpty
               ? const Center(child: CircularProgressIndicator())
@@ -1670,7 +1742,12 @@ class _LibraryHomeState extends State<LibraryHome> {
                                       ),
                                     ),
                                     TextButton(
-                                      onPressed: () => loadLibrary(more: true),
+                                      onPressed: () => loadLibrary(
+                                        more:
+                                            _pendingReturn == null &&
+                                            !_library.state.beforeFailure,
+                                        before: _library.state.beforeFailure,
+                                      ),
                                       child: const Text('重试'),
                                     ),
                                   ],
@@ -1692,7 +1769,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                                     Text(
                                       libraryLoading
                                           ? '正在加载视频'
-                                          : results.length >= total
+                                          : !_library.state.hasAfter
                                           ? '已显示全部视频'
                                           : '继续向下浏览',
                                       style: TextStyle(

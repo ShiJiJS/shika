@@ -370,6 +370,32 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
   @override
   bool get fixedPreview => _state.preview != null;
   @override
+  Future<VideoPage> restoreVideoEntry(
+    VideoEntryScope entry, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) async {
+    final items = _entryVideos(_state, entry);
+    var index = -1;
+    for (final id in anchors) {
+      index = items.indexWhere((item) => item.id == id);
+      if (index >= 0) break;
+    }
+    if (index < 0) {
+      index = fallbackIndex.clamp(0, (items.length - 1).clamp(0, items.length));
+    }
+    final offset = index ~/ limit * limit;
+    return VideoPage(
+      items: items.skip(offset).take(limit),
+      total: items.length,
+      offset: offset,
+      limit: limit,
+      anchorIndex: index,
+    );
+  }
+
+  @override
   bool get supportsFixedPreviews => true;
   @override
   String get playbackSequenceIdentity =>

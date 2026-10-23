@@ -818,6 +818,26 @@ class ServerLibraryRepository extends LibraryRepository {
   };
 
   @override
+  Future<VideoPage> restoreVideoEntry(
+    VideoEntryScope entry, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) {
+    if (!capabilities.videoEntryAnchors) {
+      throw const LibraryFailure('当前服务尚不支持返回位置恢复，请升级服务端');
+    }
+    return loadVideos(
+      scope: entry.query,
+      search: entry.search,
+      offset: fallbackIndex,
+      limit: limit,
+      entry: entry,
+      anchorIds: anchors,
+    );
+  }
+
+  @override
   Future<VideoPage> loadVideoEntry(
     VideoEntryScope entry, {
     int offset = 0,
@@ -837,6 +857,7 @@ class ServerLibraryRepository extends LibraryRepository {
     int offset = 0,
     int limit = 24,
     VideoEntryScope? entry,
+    List<String> anchorIds = const [],
   }) async {
     if (entry != null &&
         !capabilities.fixedVideoSessions &&
@@ -855,6 +876,7 @@ class ServerLibraryRepository extends LibraryRepository {
         ...chosen,
         'offset': '$offset',
         'limit': '$limit',
+        if (anchorIds.isNotEmpty) 'anchor_ids': anchorIds.take(16).toList(),
         if (search.isNotEmpty) 'search': search,
         if (entry != null && capabilities.fixedVideoSessions) ...{
           'source': entry.source.name,
@@ -876,8 +898,9 @@ class ServerLibraryRepository extends LibraryRepository {
     return VideoPage(
       items: items,
       total: page['total'],
-      offset: offset,
+      offset: page['offset'] ?? offset,
       limit: limit,
+      anchorIndex: page['anchor_index'],
     );
   }
 

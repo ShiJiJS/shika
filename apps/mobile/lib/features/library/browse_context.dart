@@ -14,6 +14,8 @@ class VideoBrowseContext {
     this.sort = VideoSort.path,
     this.scrollOffset = 0,
     this.scrollAnchor,
+    this.scrollIndex = 0,
+    this.scrollInset = 0,
   }) : query = query ?? VideoQuery();
 
   final VideoQuery query;
@@ -24,6 +26,8 @@ class VideoBrowseContext {
       VideoEntryScope(query: query, search: search, source: source, sort: sort);
   final double scrollOffset;
   final String? scrollAnchor;
+  final int scrollIndex;
+  final double scrollInset;
   MediaKind get kind => MediaKind.video;
 
   String get queryKey => jsonEncode([
@@ -44,6 +48,8 @@ class VideoBrowseContext {
     VideoSort? sort,
     double? scrollOffset,
     String? scrollAnchor,
+    int? scrollIndex,
+    double? scrollInset,
   }) => VideoBrowseContext(
     query: query ?? this.query,
     search: search ?? this.search,
@@ -51,6 +57,8 @@ class VideoBrowseContext {
     sort: sort ?? this.sort,
     scrollOffset: scrollOffset ?? this.scrollOffset,
     scrollAnchor: scrollAnchor ?? this.scrollAnchor,
+    scrollIndex: scrollIndex ?? this.scrollIndex,
+    scrollInset: scrollInset ?? this.scrollInset,
   );
 }
 

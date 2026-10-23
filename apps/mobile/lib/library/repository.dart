@@ -83,9 +83,17 @@ abstract class LibraryRepository extends ChangeNotifier {
     String? anchor,
     PlayOrder? order,
   }) => Future.error(const LibraryFailure('当前服务尚不支持固定预览范围，请升级服务端'));
+  Future<VideoPage> restoreVideoEntry(
+    VideoEntryScope entry, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持返回位置恢复，请升级服务端'));
   bool get fixedPreview => false;
   bool get supportsFixedPreviews =>
-      capabilities.fixedVideoSessions && capabilities.versionedVideoQueue;
+      capabilities.fixedVideoSessions &&
+      capabilities.versionedVideoQueue &&
+      capabilities.videoEntryAnchors;
   bool get previewFinished => false;
   String get playbackSequenceIdentity => playbackIdentity;
   Future<void> changePreviewOrder(PlayOrder order, {bool restart = false}) =>

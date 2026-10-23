@@ -81,6 +81,7 @@ class PreviewServer {
             if (supportsFixed) ...[
               'fixed_video_sessions',
               'versioned_video_queue',
+              'video_entry_anchors',
             ],
           ],
         };
@@ -220,7 +221,10 @@ class PreviewServer {
         }
       } else if (path.endsWith('/videos')) {
         final unavailable = request.uri.queryParameters['status'] == 'missing';
-        final offset = int.parse(request.uri.queryParameters['offset'] ?? '0');
+        final restoring = request.uri.queryParametersAll['anchor_ids'];
+        final offset = restoring == null
+            ? int.parse(request.uri.queryParameters['offset'] ?? '0')
+            : 24;
         final limit = int.parse(request.uri.queryParameters['limit'] ?? '24');
         result = {
           'items': [
@@ -230,6 +234,7 @@ class PreviewServer {
           'total': unavailable ? 0 : 30,
           'offset': offset,
           'limit': limit,
+          if (restoring != null) 'anchor_index': 28,
         };
       } else {
         result = {'items': [], 'total': 0};
@@ -256,6 +261,24 @@ void main() {
   });
   Future<void> connect() =>
       repo.connect('http://127.0.0.1', fixture.server.port, 'test-only');
+
+  test('return location sends bounded stable IDs and accepts the located page offset', () async {
+    await connect();
+    final result = await repo.restoreVideoEntry(
+      VideoEntryScope(search: 'folder', sort: VideoSort.name),
+      anchors: ['removed', 'v28', 'v29'],
+      fallbackIndex: 40,
+    );
+    final request = fixture.reads.last;
+    expect(request.queryParametersAll['anchor_ids'], ['removed', 'v28', 'v29']);
+    expect(request.queryParameters['offset'], '40');
+    expect(request.queryParameters['search'], 'folder');
+    expect(request.queryParameters['sort'], 'name');
+    expect(result.offset, 24);
+    expect(result.anchorIndex, 28);
+    expect(result.items.first.id, 'v24');
+    expect(repo.playbackIdentity, isEmpty);
+  });
 
   test('connect and catalog reads do not start a round; begin sends the complete entry', () async {
     await connect();

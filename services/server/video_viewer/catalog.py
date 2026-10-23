@@ -285,13 +285,8 @@ class Catalog:
             statement = statement.where(Video.id.in_(matching))
         return statement
 
-    def ordered_videos(self, session, *, source="library", sort="path", **scope):
-        statement = self.video_statement(session, **scope)
-        if source == "recent":
-            statement = statement.join(
-                RecentEntry,
-                (RecentEntry.video_id == Video.id) & (RecentEntry.kind == "video"),
-            )
+    @staticmethod
+    def video_ordering(source, sort):
         if sort == "recent":
             if source != "recent":
                 raise LibraryError("invalid_sort", "最近排序仅适用于最近入口", 422)
@@ -302,15 +297,48 @@ class Catalog:
             ordering = (Video.created_at.desc(), Video.id)
         else:
             ordering = (Video.path, Video.id)
-        return statement.order_by(*ordering)
+        return ordering
 
-    def videos(self, *, offset=0, limit=50, source="library", sort="path", **scope):
+    def ordered_videos(self, session, *, source="library", sort="path", **scope):
+        statement = self.video_statement(session, **scope)
+        if source == "recent":
+            statement = statement.join(
+                RecentEntry,
+                (RecentEntry.video_id == Video.id) & (RecentEntry.kind == "video"),
+            )
+        return statement.order_by(*self.video_ordering(source, sort))
+
+    def videos(self, *, offset=0, limit=50, source="library", sort="path", anchor_ids=(), **scope):
         with self.db.read() as session:
             session.connection().exec_driver_sql("BEGIN")
             query = self.ordered_videos(session, source=source, sort=sort, **scope)
             total = session.scalar(
                 select(func.count()).select_from(query.order_by(None).subquery())
             )
+            anchor_index = None
+            if anchor_ids:
+                ranked = (
+                    query.order_by(None)
+                    .with_only_columns(
+                        Video.id.label("video_id"),
+                        (
+                            func.row_number().over(order_by=self.video_ordering(source, sort)) - 1
+                        ).label("position"),
+                    )
+                    .subquery()
+                )
+                positions = dict(
+                    session.execute(
+                        select(ranked.c.video_id, ranked.c.position).where(
+                            ranked.c.video_id.in_(anchor_ids)
+                        )
+                    ).all()
+                )
+                anchor_index = next(
+                    (positions[identity] for identity in anchor_ids if identity in positions),
+                    min(offset, max(0, total - 1)),
+                )
+                offset = anchor_index // limit * limit
             items = session.scalars(query.offset(offset).limit(limit))
             result = []
             for video in items:
@@ -327,6 +355,7 @@ class Catalog:
                 "total": total,
                 "offset": offset,
                 "limit": limit,
+                **({"anchor_index": anchor_index} if anchor_ids else {}),
             }
 
     @staticmethod

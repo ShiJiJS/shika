@@ -21,6 +21,7 @@ class ServiceCapabilities {
   bool get imagePacks => values.contains('image_packs');
   bool get fixedVideoSessions => values.contains('fixed_video_sessions');
   bool get versionedVideoQueue => values.contains('versioned_video_queue');
+  bool get videoEntryAnchors => values.contains('video_entry_anchors');
 }
 
 enum VideoStatus { available, missing, trash }
@@ -533,9 +534,11 @@ class VideoPage {
     required this.total,
     required this.offset,
     required this.limit,
+    this.anchorIndex,
   }) : items = List.unmodifiable(items);
   final List<LibraryVideo> items;
   final int total, offset, limit;
+  final int? anchorIndex;
 }
 
 class BackupPreview {

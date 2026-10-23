@@ -13,6 +13,39 @@ void main() {
   });
   tearDown(() => repo.dispose());
 
+  test('return lookup skips a retagged anchor and clamps empty or removed neighborhoods', () async {
+    final entry = VideoEntryScope(
+      query: VideoQuery(tags: {'花卉'}),
+      sort: VideoSort.name,
+    );
+    final before = await repo.loadVideoEntry(entry);
+    final anchor = before.items.first.id, neighbor = before.items[1].id;
+    await repo.setVideoTags({anchor}, {}, replace: true);
+    final restored = await repo.restoreVideoEntry(
+      entry,
+      anchors: [anchor, neighbor],
+      fallbackIndex: 999,
+      limit: 1,
+    );
+    expect(restored.items.single.id, neighbor);
+    expect(restored.anchorIndex, 0);
+    final fallback = await repo.restoreVideoEntry(
+      entry,
+      anchors: ['missing'],
+      fallbackIndex: 999,
+      limit: 1,
+    );
+    expect(fallback.anchorIndex, 1);
+    final empty = await repo.restoreVideoEntry(
+      VideoEntryScope(search: 'missing'),
+      anchors: [anchor],
+      fallbackIndex: 999,
+    );
+    expect(empty.total, 0);
+    expect(empty.offset, 0);
+    expect(empty.items, isEmpty);
+  });
+
   test('fixed filtered members and selection survive tag deletion, mode switches and reopening', () async {
     final entry = VideoEntryScope(
       query: VideoQuery(tags: {'花卉'}),

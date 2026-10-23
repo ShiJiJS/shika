@@ -281,6 +281,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "image_packs",
                 "fixed_video_sessions",
                 "versioned_video_queue",
+                "video_entry_anchors",
             ],
         }
 
@@ -405,6 +406,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
         source: Literal["library", "tags", "recent"] = "library",
         sort: Literal["path", "name", "newest", "recent"] = "path",
+        anchor_ids: Annotated[list[str] | None, Query(max_length=16)] = None,
     ):
         return request.app.state.catalog.videos(
             offset=offset,
@@ -418,6 +420,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             tag_ids=tag_ids or (),
             source=source,
             sort=sort,
+            anchor_ids=anchor_ids or (),
         )
 
     @app.get("/api/v1/videos/{video_id}/thumbnail", dependencies=auth_required)

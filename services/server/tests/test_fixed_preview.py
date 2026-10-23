@@ -43,6 +43,83 @@ def reorder(client, round, order, key=None):
     return response.json(), body
 
 
+def test_return_anchor_locates_only_current_matches_after_insert_and_tag_removal(library, samples):
+    client, media = library
+    for index in range(61):
+        put(samples / "h264.mov", media / "selected" / f"video-{index:03d}.mov")
+    put(samples / "h264.mov", media / "outside" / "video-000.mov")
+    scan(client)
+    selected = client.get(
+        "/api/v1/videos", params={"search": "selected", "sort": "name", "limit": 200}
+    ).json()["items"]
+    label = tag(client, "Return scope")
+    ids = [item["id"] for item in selected]
+    assign(client, ids, [label["id"]])
+    put(samples / "h264.mov", media / "selected" / "aaa-new.mov")
+    scan(client)
+    new = client.get("/api/v1/videos", params={"search": "aaa-new"}).json()["items"][0]
+    assign(client, [new["id"]], [label["id"]])
+    assign(client, [ids[40]], [], "replace")
+    params = [
+        ("search", "selected"),
+        ("sort", "name"),
+        ("source", "tags"),
+        ("tag_ids", label["id"]),
+        ("limit", 24),
+        ("offset", 40),
+        ("anchor_ids", ids[40]),
+        ("anchor_ids", ids[41]),
+        ("anchor_ids", ids[39]),
+    ]
+    response = client.get("/api/v1/videos", params=params)
+    assert response.status_code == 200, response.text
+    page = response.json()
+    assert page["total"] == 61 and page["offset"] == 24 and len(page["items"]) == 24
+    assert page["anchor_index"] == 41
+    assert page["items"][41 - 24]["id"] == ids[41]
+    assert ids[40] not in {item["id"] for item in page["items"]}
+    # Neither the lookup nor its metadata page starts playback or writes history.
+    assert client.get("/api/v1/playback", params={"create": False}).status_code == 404
+    assert client.get("/api/v1/recent").json()["total"] == 0
+    # If every saved neighbor is gone, clamp to an existing row in the same scope.
+    fallback = client.get(
+        "/api/v1/videos",
+        params={"search": "aaa-new", "anchor_ids": ids[40], "offset": 4000, "limit": 24},
+    ).json()
+    assert fallback["anchor_index"] == fallback["offset"] == 0
+    assert fallback["items"][0]["id"] == new["id"]
+    empty = client.get(
+        "/api/v1/videos", params={"search": "no match", "anchor_ids": ids[41], "offset": 4000}
+    ).json()
+    assert empty["total"] == empty["offset"] == empty["anchor_index"] == 0
+    assert empty["items"] == []
+    assert (
+        client.get(
+            "/api/v1/videos", params=[("anchor_ids", str(index)) for index in range(17)]
+        ).status_code
+        == 422
+    )
+
+
+def test_recent_return_anchor_uses_recent_order_without_expanding_to_library(library, samples):
+    client, media = library
+    for name in ("a.mov", "b.mov", "outside.mov"):
+        put(samples / "h264.mov", media / name)
+    scan(client)
+    round, _ = begin(client, sort="name")
+    first = round["current"]["id"]
+    opened(client, round)
+    second = entries(client, round)[1]["video"]["id"]
+    round = move(client, round, second)
+    opened(client, round)
+    page = client.get(
+        "/api/v1/videos",
+        params={"source": "recent", "sort": "recent", "anchor_ids": first, "limit": 1},
+    ).json()
+    assert page["total"] == 2 and page["offset"] == page["anchor_index"] == 1
+    assert page["items"][0]["id"] == first
+
+
 def test_search_directory_tags_and_attributes_freeze_all_pages(library, samples):
     client, media = library
     for i in range(28):
