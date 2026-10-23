@@ -1,0 +1,186 @@
+window.PACKS = [
+  {
+    "id": "summer",
+    "title": "夏日祭",
+    "author": "示例作者",
+    "number": "034",
+    "folder": "示例作者 NO.034 - 夏日祭",
+    "sourceCount": 67,
+    "pages": [
+      "assets/pages/summer-1.svg",
+      "assets/pages/summer-2.svg",
+      "assets/pages/summer-3.svg",
+      "assets/pages/summer-4.svg",
+      "assets/pages/summer-5.svg",
+      "assets/pages/summer-6.svg"
+    ],
+    "tags": [
+      "和服",
+      "户外"
+    ],
+    "sizes": [
+      [
+        4000,
+        6000
+      ],
+      [
+        4016,
+        6016
+      ],
+      [
+        6000,
+        4000
+      ],
+      [
+        3984,
+        5968
+      ],
+      [
+        4016,
+        6016
+      ],
+      [
+        4000,
+        6000
+      ]
+    ]
+  },
+  {
+    "id": "field",
+    "title": "原野上的浪漫",
+    "author": "示例作者",
+    "number": "057",
+    "folder": "示例作者 NO.057 - 原野上的浪漫",
+    "sourceCount": 51,
+    "pages": [
+      "assets/pages/field-1.svg",
+      "assets/pages/field-2.svg",
+      "assets/pages/field-3.svg",
+      "assets/pages/field-4.svg",
+      "assets/pages/field-5.svg",
+      "assets/pages/field-6.svg"
+    ],
+    "tags": [
+      "户外",
+      "白裙"
+    ],
+    "sizes": [
+      [
+        8334,
+        5559
+      ],
+      [
+        7952,
+        5304
+      ],
+      [
+        7952,
+        5304
+      ],
+      [
+        5304,
+        7952
+      ],
+      [
+        5304,
+        7952
+      ],
+      [
+        7952,
+        5304
+      ]
+    ]
+  },
+  {
+    "id": "newyear",
+    "title": "灵梦 · 新年快乐",
+    "author": "示例作者",
+    "number": "019",
+    "folder": "示例作者 NO.019 - 灵梦 · 新年快乐",
+    "sourceCount": 45,
+    "pages": [
+      "assets/pages/newyear-1.svg",
+      "assets/pages/newyear-2.svg",
+      "assets/pages/newyear-3.svg",
+      "assets/pages/newyear-4.svg",
+      "assets/pages/newyear-5.svg",
+      "assets/pages/newyear-6.svg"
+    ],
+    "tags": [
+      "角色",
+      "和服"
+    ],
+    "sizes": [
+      [
+        4000,
+        6000
+      ],
+      [
+        4000,
+        6000
+      ],
+      [
+        6000,
+        3375
+      ],
+      [
+        4000,
+        6000
+      ],
+      [
+        6000,
+        4000
+      ],
+      [
+        6000,
+        4000
+      ]
+    ]
+  },
+  {
+    "id": "kimono",
+    "title": "加藤惠 · 和服",
+    "author": "示例作者",
+    "number": "051",
+    "folder": "示例作者 NO.051 - 加藤惠 · 和服",
+    "sourceCount": 23,
+    "pages": [
+      "assets/pages/kimono-1.svg",
+      "assets/pages/kimono-2.svg",
+      "assets/pages/kimono-3.svg",
+      "assets/pages/kimono-4.svg",
+      "assets/pages/kimono-5.svg",
+      "assets/pages/kimono-6.svg"
+    ],
+    "tags": [
+      "角色",
+      "和服"
+    ],
+    "sizes": [
+      [
+        5304,
+        7952
+      ],
+      [
+        7952,
+        5304
+      ],
+      [
+        5304,
+        7952
+      ],
+      [
+        5304,
+        7952
+      ],
+      [
+        5304,
+        7952
+      ],
+      [
+        7952,
+        5304
+      ]
+    ]
+  }
+];
