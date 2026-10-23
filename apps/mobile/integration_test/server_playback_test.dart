@@ -157,8 +157,13 @@ void main() {
     int seconds = 35,
   }) async {
     final deadline = DateTime.now().add(Duration(seconds: seconds));
-    while (!condition()) {
+    while (true) {
+      await t.pump(const Duration(milliseconds: 80));
       audioBound();
+      if (condition()) {
+        await t.pump(const Duration(milliseconds: 80));
+        if (condition()) return;
+      }
       if (DateTime.now().isAfter(deadline)) {
         debugPrint(
           'VISIBLE_UI ${t.widgetList<Text>(find.byType(Text)).map((w) => w.data).whereType<String>().join(' | ')}',
@@ -169,10 +174,7 @@ void main() {
         } catch (_) {}
         fail('Timed out: $reason');
       }
-      await t.pump(const Duration(milliseconds: 80));
     }
-    audioBound();
-    await t.pump(const Duration(milliseconds: 100));
   }
 
   Future<void> idle(WidgetTester t) => until(
@@ -355,6 +357,20 @@ void main() {
 
   Future<void> choose(WidgetTester t, String id) async {
     await tap(t, find.byKey(const Key('preview-scope')));
+    final queue = find.byKey(const Key('preview-queue'));
+    await until(t, () => queue.evaluate().isNotEmpty, 'queue mounted');
+    t.widget<ListView>(queue).controller!.jumpTo(0);
+    await until(
+      t,
+      () => find
+          .descendant(
+            of: queue,
+            matching: find.byType(CircularProgressIndicator),
+          )
+          .evaluate()
+          .isEmpty,
+      'queue metadata loaded',
+    );
     final target = find.byKey(Key('queue-video-$id'));
     await t.scrollUntilVisible(
       target,
@@ -378,18 +394,17 @@ void main() {
     await idle(t);
   }
 
-  bool controlsVisible(WidgetTester t) =>
-      t
-          .widget<AnimatedOpacity>(
-            find
-                .ancestor(
-                  of: find.byKey(const Key('playback-controls')).last,
-                  matching: find.byType(AnimatedOpacity),
-                )
-                .first,
-          )
-          .opacity >
-      0;
+  bool controlsVisible(WidgetTester t) {
+    final controls = find.byKey(const Key('playback-controls'));
+    // A rebuilding fullscreen surface has no controls yet; it has not hidden them.
+    if (controls.evaluate().isEmpty) return true;
+    final opacity = find.ancestor(
+      of: controls.last,
+      matching: find.byType(AnimatedOpacity),
+    );
+    if (opacity.evaluate().isEmpty) return true;
+    return t.widget<AnimatedOpacity>(opacity.first).opacity > 0;
+  }
 
   Future<void> background(WidgetTester t) async {
     // A paused live binding cannot pump. Wait for native disposal, then resume.
