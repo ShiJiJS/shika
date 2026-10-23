@@ -150,10 +150,18 @@ void main() {
       await textTap(all ? '使用全部目录' : '使用此目录');
     }
 
+    Future<void> syncRoots() async {
+      await textTap('同步外部变更');
+      await until(
+        () => !repo.libraryPreparation.value.scanning,
+        'external change scan finished',
+      );
+    }
+
     Future<void> refreshRoots() async {
       await nav('settings');
       await textTap('媒体目录');
-      await textTap('刷新媒体目录');
+      await syncRoots();
     }
 
     await start();
@@ -201,26 +209,19 @@ void main() {
       'authenticated thumbnails decoded on Android',
     );
     final grid = find.byKey(const Key('video-grid'));
-    expect(
-      (t.widget<GridView>(grid).childrenDelegate as SliverChildBuilderDelegate)
-          .childCount,
-      25,
-    );
+    int loadedCards() => t
+        .widget<SliverGrid>(
+          find.descendant(of: grid, matching: find.byType(SliverGrid)),
+        )
+        .delegate
+        .estimatedChildCount!;
+    expect(loadedCards(), 24);
     await fixture('/__fixture/checkpoint/library');
     await t.pump(const Duration(seconds: 2));
-    await t.scrollUntilVisible(
-      find.text('加载更多'),
-      550,
-      scrollable: find.descendant(of: grid, matching: find.byType(Scrollable)),
-    );
-    await textTap('加载更多');
+    await t.drag(grid, const Offset(0, -6000));
     await until(
-      () =>
-          (t.widget<GridView>(grid).childrenDelegate
-                  as SliverChildBuilderDelegate)
-              .childCount ==
-          27,
-      'second page appended',
+      () => loadedCards() == 27,
+      'second page appended automatically',
     );
     await folder(['端到端短视频', '自然', '花卉']);
     await count(25);
@@ -278,7 +279,7 @@ void main() {
     await fixture('/__fixture/checkpoint/roots');
     await t.pump(const Duration(seconds: 2));
     await fixture('/__fixture/actions/reconnect');
-    await textTap('刷新媒体目录');
+    await syncRoots();
     expect(repo.snapshot.roots.every((r) => r.available), isTrue);
 
     final trace =
@@ -299,7 +300,7 @@ void main() {
       isTrue,
       reason: 'host runner must physically stop the fixture',
     );
-    await textTap('刷新媒体目录');
+    await syncRoots();
     expect(find.byKey(const Key('operation-error')), findsOneWidget);
     expect(repo.snapshot.connected, isTrue);
     expect((await store.read())!.serverId, serverId);
@@ -313,7 +314,7 @@ void main() {
       }
     }
     expect(up, isTrue);
-    await textTap('刷新媒体目录');
+    await syncRoots();
     expect(find.byKey(const Key('operation-error')), findsNothing);
     expect((await store.read())!.serverId, serverId);
     await nav('library');
@@ -370,7 +371,10 @@ void main() {
     } finally {
       client.close(force: true);
     }
-    await refreshRoots();
+    // Opening roots already performs an authenticated read and detects expiry.
+    await nav('settings');
+    await textTap('媒体目录');
+    await until(() => !repo.snapshot.connected, 'revoked session detected');
     expect(find.text('连接你的视频库'), findsOneWidget);
     expect(await store.read(), isNull);
     expect(
