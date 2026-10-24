@@ -1,0 +1,1521 @@
+{
+  "items": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": {},
+      "authenticated": false,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": {},
+      "authenticated": false,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/info",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/scans",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/c0ff5dd7-829d-47ba-8d09-f67be04785ee",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tags",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "search": "",
+        "read_state": "all",
+        "sort": "name"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/pack-tag-links",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "source": "library",
+        "sort": "name"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/4bedcd81-4554-4473-a854-284788142f63/thumbnail",
+      "query": {
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/6f8e999c-4a43-4a40-997c-0274066125aa/thumbnail",
+      "query": {
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/c507653c-9858-4e85-94e3-97b20460645a/thumbnail",
+      "query": {
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/2592c8b2-952c-43e0-a67c-37a487457249/thumbnail",
+      "query": {
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/bb06701b-45a1-406f-847f-77064e915cbe/thumbnail",
+      "query": {
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/cbba5193-bd53-4dd3-9e1f-4a35b58a5687/thumbnail",
+      "query": {
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "search": "",
+        "read_state": "all",
+        "sort": "name"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/21d25cc4-1853-489f-b444-2a3c48b70dea/cover",
+      "query": {
+        "v": "1",
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/b306e81d-8370-4c08-8ca1-71bf978c26fb/cover",
+      "query": {
+        "v": "1",
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/907b0424-6fa0-4b0a-a828-e586dc23be23/cover",
+      "query": {
+        "v": "1",
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/3cd26b86-6020-4fae-ad3d-799127196ef0/cover",
+      "query": {
+        "v": "1",
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/b20833b3-2ce2-43b5-be69-af6063059326/cover",
+      "query": {
+        "v": "1",
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/0b988910-cc66-4219-a861-88a6fc56bae2/cover",
+      "query": {
+        "v": "1",
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/b306e81d-8370-4c08-8ca1-71bf978c26fb/cover",
+      "query": {
+        "v": "1",
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/21d25cc4-1853-489f-b444-2a3c48b70dea/cover",
+      "query": {
+        "v": "1",
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/203787a1-1171-4121-9a6f-e94c31da706e/cover",
+      "query": {
+        "v": "1",
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/aed8ae0d-5bb1-4b86-a372-2d4106d6df4f/cover",
+      "query": {
+        "v": "1",
+        "session": "1792845543782221-c1d07394"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "50"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags/resolve",
+      "query": {
+        "tag_ids": "fb0347e5-9c3d-47c9-91d1-cb1f110e9c5f"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags/resolve",
+      "query": {
+        "tag_ids": "fb0347e5-9c3d-47c9-91d1-cb1f110e9c5f"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags",
+      "query": {
+        "search": "名称00",
+        "offset": "0",
+        "limit": "50"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/pack-tag-links",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "search": "",
+        "read_state": "all",
+        "sort": "name"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "50"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags/resolve",
+      "query": {
+        "tag_ids": "fb0347e5-9c3d-47c9-91d1-cb1f110e9c5f"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "search": "",
+        "read_state": "all",
+        "sort": "name",
+        "tag_ids": "fb0347e5-9c3d-47c9-91d1-cb1f110e9c5f"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "50"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "offset": "0",
+        "limit": "1",
+        "source": "tags",
+        "sort": "name"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "1",
+        "search": "",
+        "read_state": "all",
+        "sort": "name"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "50"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags",
+      "query": {
+        "search": "名称60",
+        "offset": "0",
+        "limit": "50"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/pack-tags/fb0347e5-9c3d-47c9-91d1-cb1f110e9c5f",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags",
+      "query": {
+        "search": "名称60",
+        "offset": "0",
+        "limit": "50"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "1",
+        "search": "",
+        "read_state": "all",
+        "sort": "name"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "search": "",
+        "read_state": "all",
+        "sort": "name"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "search": "名称60",
+        "offset": "0",
+        "limit": "50"
+      },
+      "authenticated": true,
+      "range": null,
+      "status": 200
+    }
+  ]
+}

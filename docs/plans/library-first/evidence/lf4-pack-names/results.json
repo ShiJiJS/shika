@@ -1,0 +1,85 @@
+{
+  "implementation_revision": "5821667180dc856117873b0eb86491304d80781e",
+  "initial_feature_revision": "5d0d49d",
+  "scope": "Pack tag names in real summaries; selected IDs beyond first50 resolved directly; explicit retry retains draft; save/reopen/readback; rename/delete update cards and preserve same-name video labels",
+  "client_tests": {
+    "passed": 157,
+    "log_sha256": "a4ba8e4b543ea345f2a33547ed7ca6e497c91069fbd6da537a335a0a2679683a"
+  },
+  "server_names_related_tests": {
+    "passed": 41,
+    "log_sha256": "bb6f681da411842c352a77797f7113ed467fb5bf7157b35ce3a839faef4bf4fa"
+  },
+  "analyze": {
+    "result": "No issues found",
+    "log_sha256": "2104e445ed98c3251144d988288758cbd79f6fa9342f6a5fd21216e60aa24279"
+  },
+  "ruff": {
+    "result": "All checks passed",
+    "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+  },
+  "native": {
+    "passed": 3,
+    "backend": "isolated FastAPI8761;27 public-flower packs/81pages;61 real pack labels",
+    "runs": [
+      {
+        "id": "1-390",
+        "viewport_dp": [
+          390,
+          844
+        ],
+        "text_scale": 1,
+        "apk_sha256": "b8d5490f3848d3aba4664a5fc68b302cd594c662b3cc0d3178bf87344c4664d3"
+      },
+      {
+        "id": "2-large",
+        "viewport_dp": [
+          360,
+          740
+        ],
+        "text_scale": 2,
+        "apk_sha256": "1bf6c361319e9b94c35867dcc8409c0d9c2017d6f58ca224acb8c0c3b38e1e3f"
+      },
+      {
+        "id": "3-390",
+        "viewport_dp": [
+          390,
+          844
+        ],
+        "text_scale": 1,
+        "apk_sha256": "4bc99c1f9d42f2cd0d017d5db070294242c1405a80b0ca4cbbb8b7d25faedce3"
+      }
+    ]
+  },
+  "sha256": {
+    "run-1-390-proof.json": "ee4e8ea74d52a688c8a8e9df1f17e2f7a5f0b043bed5bbb5869871aecfc163ea",
+    "run-2-large-android-test.log": "dc930aa3c8b21dde66bb9c259ffc9379dea229203629d6d70ff9f856975ce474",
+    "run-2-large-proof.json": "de20173ca35bdb20d6c7dd26e437cd8ca5b136b35275868372ee60f73f6ea9ca",
+    "run-1-390-android-test.log": "2c85f71396cd10bbfd81078a566fc349bc9008cdd115c6d5cd602d3fd9e6b1eb",
+    "run-3-390-host-events.json": "7d9570663517514d7be60d8ceb925bfe2a38e29a2ed72cb15f6c922777f61617",
+    "run-3-390-proof.json": "8aa411d73f61c620065f6ed8e8cf23a85684f4ca4ca91ed44d409cb6a9d3d765",
+    "run-2-large-host-events.json": "37423d7fedc7a9d260c40a46215295e9bd051ce71120debd33be630d71762678",
+    "run-1-390-host-events.json": "fc4baa275e74dc203e562a2a2e61daf9523ede4624b7b427e914b20af67afb28",
+    "run-3-390-android-test.log": "c53c2c2bd8b19fb1818654f14208a6a44c5aede4df63abcf7f219a1032c61011",
+    "390/card.png": "278f7fe7cbf372f475422dac8f1fd4c2ac2f2903da3d78218f6979b548879665",
+    "390/renamed-requests.json": "a886116a48bc3951ddb7595dcd7626d213070a6006cb2c2e75844476ea743b46",
+    "390/retry.png": "ed0a404e72df08819ef231d1343da330869ffbd12d10cf3f0d243cd196160fbf",
+    "390/saved-requests.json": "062e91979a67fd06063c89df367aff5ab041b1dcc20516fce87eafb840ef7bc2",
+    "390/saved.png": "3c62676cfcf35beca358f3ac3941f74272e2acf879ce09c07a3283600f79163b",
+    "390/card-requests.json": "f5dc79ed8c8ca082f26ad336860a2757d248743e429f51e72bfa8e12d6709d79",
+    "390/renamed.png": "9680b95a10095da6a5d6a256e6584083bbca5889283400553b8e58656031a727",
+    "390/retry-requests.json": "8295529f6132057a2e3a7e6f3ee1436d6d99516c55622bdc8d3787e97fa76162",
+    "360-large/card.png": "955b1fc4802cad08e9735ffefd004abfdc1528ef04a29337422b6a720518bcf5",
+    "360-large/renamed-requests.json": "aeb3754519ebad0a040fe56d41f442c179fc3dee6fe768fe8aacf7fff094c8cc",
+    "360-large/retry.png": "8262f9c0abce9cfb36d6f3233d0903919b2abda07b841cafc0bc24bef1bbd76e",
+    "360-large/saved-requests.json": "61885f106d01a917150093357fbf3245708fdb3388e214db94d0031be74d2630",
+    "360-large/saved.png": "05a4019dfaa2328a78ac754a5d5e95564f82d05119a58bd062f0f70a6ce4f95d",
+    "360-large/card-requests.json": "6683b5f28c43b88e766dbd5dea965a52f262901a38e50547c61fd3d6e0871bd1",
+    "360-large/renamed.png": "05a4019dfaa2328a78ac754a5d5e95564f82d05119a58bd062f0f70a6ce4f95d",
+    "360-large/retry-requests.json": "cc2c283f193be8f1d89836fe4a9dc6e332bb24c5e5b456a5a46998739626414f"
+  },
+  "screenshot_runs": {
+    "390": "3-390",
+    "360-large": "2-large"
+  }
+}
