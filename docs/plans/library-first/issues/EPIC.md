@@ -4,7 +4,7 @@
 
 LF4最新检查点：独立视频标签分页、完整筛选范围跨页全选/排除与每1000项追加、图包名称与首50项外初选均已接入。`be7be51` 补齐图包深列表稳定返回、有限120项窗口及原位失败/取消重试；当前171项客户端测试/静态检查、43项定位/图包相关服务端回归/Ruff通过。同提交真实Android完整路径连续三轮通过（含360宽2倍字号）：73包完整筛选、编辑移出交集、实际503后邻居定位、前补与插入后位置保留。此前名称/标签分页/跨页选择三轮证据各自保留。证据随[LF4记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf4-media-library/docs/plans/library-first/LF4.md)提交；剩余来源/错误组合及旧流程回归继续验证，图包阅读/最近依赖LF5，LF4继续开放。
 
-LF5已开始：[草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39) 接入固定完整图包范围、版本化逐包进度/偏好、默认冻结、实际opened后的独立最近及只读回执。Schema0009保留旧进度并记录删页回退；cb02a67完整162项服务端测试（含8项阅读接口）与Ruff通过。04f57a8接入类型化客户端阅读句柄及连接/同连接恢复失效、只读回执与协议校验，179项客户端测试/静态检查通过（含8项新HTTP适配）；尚无阅读会话/UI、原生手势/生命周期和大图内存证据，见[LF5记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md)。
+LF5已开始：[草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39) 接入固定完整图包范围、版本化逐包进度/偏好、默认冻结、实际opened后的独立最近及只读回执。Schema0009保留旧进度并记录删页回退；cb02a67完整162项服务端测试（含8项阅读接口）与Ruff通过。04f57a8接入类型化客户端阅读句柄及连接/同连接恢复失效、只读回执与协议校验，f43a320再补发布后的最终归属检查，当前180项客户端测试/静态检查通过（含9项新HTTP适配）；尚无阅读会话/UI、原生手势/生命周期和大图内存证据，见[LF5记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md)。
 
 这是后续升级，不覆盖 #1 的历史 V1 规格，也不把 #23 仍未完成的目标环境验收标记为已完成。
 
