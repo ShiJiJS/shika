@@ -272,15 +272,29 @@ void main() {
           () => state().session.index == 0 && state().session.unsaved,
         );
         expect(await state().session.flush(), isTrue);
+        await tap(find.byTooltip('阅读设置'));
+        await tap(find.byType(DropdownButtonFormField<ReaderDirection>));
+        await tap(find.text('从右向左').last);
+        await until(
+          () =>
+              state().session.preferences.direction == ReaderDirection.rtl &&
+              !state().session.busy,
+        );
+        await tap(find.text('继续阅读'));
+        expect(t.widget<PageView>(horizontal).reverse, isTrue);
+        await t.drag(horizontal, Offset(sample.$1.width * .65, 0));
+        await until(
+          () => state().session.index == 1 && state().session.unsaved,
+        );
+        expect(await state().session.flush(), isTrue);
+        await t.drag(horizontal, Offset(-sample.$1.width * .65, 0));
+        await until(
+          () => state().session.index == 0 && state().session.unsaved,
+        );
+        expect(await state().session.flush(), isTrue);
         final center = t.getCenter(horizontal);
-        final left = await t.startGesture(
-          center - const Offset(30, 0),
-          pointer: 11,
-        );
-        final right = await t.startGesture(
-          center + const Offset(30, 0),
-          pointer: 12,
-        );
+        final left = await t.startGesture(center - const Offset(30, 0));
+        final right = await t.startGesture(center + const Offset(30, 0));
         await t.pump(const Duration(milliseconds: 50));
         for (var i = 1; i <= 4; i++) {
           await left.moveTo(center - Offset(30 + i * 15, 0));
