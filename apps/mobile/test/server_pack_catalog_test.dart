@@ -25,6 +25,9 @@ class PackServer {
   Completer<void>? blocked, release;
   Completer<void>? selectionBlocked, selectionRelease;
   Completer<void>? writeBlocked, writeRelease;
+  Completer<void>? namesBlocked, namesRelease;
+  Json? namesOverride;
+  bool incompletePackNames = false;
   Json? selectionOverride;
   int loseWriteAt = 0;
   Json pack(int index) => {
@@ -39,6 +42,9 @@ class PackServer {
     'created_at': 12.0,
     'error': null,
     'tag_ids': links.toList(),
+    'tag_names': incompletePackNames
+        ? {}
+        : {for (final id in links) id: packTags[id] ?? '保留'},
     'cover_url': foreignCover
         ? 'https://foreign.invalid/cover'
         : '/api/v1/packs/p$index/cover?v=7',
@@ -80,6 +86,7 @@ class PackServer {
               'pack_tags',
               'typed_roots',
               'catalog_selection',
+              'pack_tag_names',
             ],
           ],
         };
@@ -108,6 +115,25 @@ class PackServer {
           result = {
             'error': {'code': 'expired', 'message': 'Expired'},
           };
+        } else if (path.endsWith('/pack-tags/resolve')) {
+          final ids = r.uri.queryParametersAll['tag_ids']!;
+          result =
+              namesOverride ??
+              {
+                'kind': 'pack',
+                'items': [
+                  for (final id in ids)
+                    if (packTags.containsKey(id))
+                      {'id': id, 'name': packTags[id], 'kind': 'pack'},
+                ],
+                'missing_ids': ids
+                    .where((id) => !packTags.containsKey(id))
+                    .toList(),
+              };
+          if (namesBlocked != null && !namesBlocked!.isCompleted) {
+            namesBlocked!.complete();
+            await namesRelease!.future;
+          }
         } else if (path.endsWith('/directories/resolve')) {
           result = {'id': 'pack-directory', 'available': !unavailableDirectory};
         } else if (path.endsWith('/directories')) {

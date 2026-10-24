@@ -30,7 +30,9 @@ class LibraryPack {
     this.cover,
     this.progress,
     Iterable<String> tags = const [],
-  }) : tags = Set.unmodifiable(tags);
+    Map<String, String> tagNames = const {},
+  }) : tags = Set.unmodifiable(tags),
+       tagNames = Map.unmodifiable(tagNames);
   final String id, rootId, path, name, status;
   final int pageCount, readableCount, contentVersion;
   final double createdAt;
@@ -38,6 +40,7 @@ class LibraryPack {
   final MediaSource? cover;
   final PackProgress? progress;
   final Set<String> tags;
+  final Map<String, String> tagNames;
   PackReadState get readState => progress == null
       ? PackReadState.unread
       : progress!.completed
@@ -49,6 +52,16 @@ class PackTag {
   const PackTag(this.id, this.name, this.count);
   final String id, name;
   final int count;
+}
+
+class PackTagNames {
+  PackTagNames({
+    required Map<String, String> names,
+    Iterable<String> missing = const [],
+  }) : names = Map.unmodifiable(names),
+       missing = Set.unmodifiable(missing);
+  final Map<String, String> names;
+  final Set<String> missing;
 }
 
 /// The server owns total and offset, even when only one page is cached.

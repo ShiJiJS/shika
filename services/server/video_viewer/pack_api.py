@@ -26,6 +26,7 @@ class PackSummary(BaseModel):
     readable_count: int
     content_version: int
     tag_ids: list[str]
+    tag_names: dict[str, str]
     created_at: float
     cover_url: str | None
     progress: ReadingProgress | None

@@ -246,20 +246,22 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     if (mounted && result != null) await change(result);
   }
 
-  Future<void> tags(
+  Future<PackTagNames?> tags(
     Set<String> ids, {
     Set<String> initial = const {},
+    Map<String, String> initialNames = const {},
     bool appendOnly = false,
   }) async {
-    if (repo.backupRestorePending) return;
+    if (repo.backupRestorePending) return null;
     setState(() => busy = true);
     try {
-      await paperSheet<bool>(
+      return await paperSheet<PackTagNames>(
         context,
         PackTagEditor(
           repository: repo,
           ids: ids,
           initial: initial,
+          initialNames: initialNames,
           appendOnly: appendOnly,
         ),
       );
@@ -274,27 +276,50 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   Future<void> details(LibraryPack pack) async {
     // LF4 exposes the real catalog object. LF5 replaces this entry with its
     // fixed-scope reader once progress and recent writes exist on the service.
+    var ids = {...pack.tags}, names = {...pack.tagNames};
+    final owner = repo.connectionIdentity;
+    var error = '';
     await paperSheet<void>(
       context,
-      SheetFrame(
-        title: pack.name,
-        children: [
-          SizedBox(
-            height: 230,
-            child: PackCover(pack: pack, repository: repo),
-          ),
-          note('${pack.pageCount} 张 · ${pack.readableCount} 张可读取'),
-          Text(
-            pack.path,
-            style: TextStyle(fontSize: 12, color: Paper.of(context).muted),
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: const Text('整包标签'),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => tags({pack.id}, initial: pack.tags),
-          ),
-        ],
+      StatefulBuilder(
+        builder: (sheetContext, local) => SheetFrame(
+          title: pack.name,
+          children: [
+            SizedBox(
+              height: 230,
+              child: PackCover(pack: pack, repository: repo),
+            ),
+            note('${pack.pageCount} 张 · ${pack.readableCount} 张可读取'),
+            Text(
+              pack.path,
+              style: TextStyle(fontSize: 12, color: Paper.of(context).muted),
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('整包标签'),
+              trailing: const Icon(Icons.chevron_right),
+              subtitle: names.isEmpty ? null : Text(names.values.join('、')),
+              onTap: () async {
+                if (!identical(owner, repo.connectionIdentity)) {
+                  local(() => error = '服务连接已变化，请关闭后重新打开。');
+                  return;
+                }
+                final result = await tags(
+                  {pack.id},
+                  initial: ids,
+                  initialNames: names,
+                );
+                if (result != null && sheetContext.mounted) {
+                  local(() {
+                    ids = result.names.keys.toSet();
+                    names = {...result.names};
+                  });
+                }
+              },
+            ),
+            if (error.isNotEmpty) note(error),
+          ],
+        ),
       ),
     );
   }
@@ -619,9 +644,16 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                   ),
                                 ),
                                 Text(
+                                  key: Key('pack-tag-names-${pack.id}'),
                                   pack.tags.isEmpty
                                       ? ''
-                                      : '${pack.tags.length} 个标签',
+                                      : pack.tagNames.isEmpty
+                                      ? '${pack.tags.length} 个标签'
+                                      : (pack.tagNames.values.toList()..sort())
+                                            .map((name) => '# $name')
+                                            .join('  '),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: 11,
                                     color: p.olive,

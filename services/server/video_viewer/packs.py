@@ -108,6 +108,7 @@ class Packs:
             "readable_count": readable_count,
             "content_version": pack.content_version,
             "tag_ids": sorted(tag.id for tag in pack.tags),
+            "tag_names": {tag.id: tag.name for tag in sorted(pack.tags, key=lambda tag: tag.id)},
             "created_at": pack.created_at,
             "cover_url": f"/api/v1/packs/{pack.id}/cover?v={pack.content_version}"
             if cover and cover.thumbnail

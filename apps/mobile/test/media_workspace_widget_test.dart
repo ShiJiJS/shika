@@ -43,6 +43,9 @@ class WorkspaceLibrary extends DemoLibraryRepository {
                   status: 'available',
                   createdAt: 0,
                   tags: packLinks[id]!,
+                  tagNames: {
+                    for (final tag in packLinks[id]!) tag: packNames[tag]!,
+                  },
                   cover: const MediaSource('assets/media/flower-portrait.jpg'),
                 ),
             ]
@@ -62,6 +65,15 @@ class WorkspaceLibrary extends DemoLibraryRepository {
       limit: limit,
     );
   }
+
+  @override
+  Future<PackTagNames> resolvePackTags(Set<String> ids) async => PackTagNames(
+    names: {
+      for (final id in ids)
+        if (packNames.containsKey(id)) id: packNames[id]!,
+    },
+    missing: ids.where((id) => !packNames.containsKey(id)),
+  );
 
   @override
   Future<CatalogPage<PackTag>> loadPackTags({

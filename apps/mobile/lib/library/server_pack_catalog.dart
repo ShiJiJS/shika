@@ -24,6 +24,7 @@ mixin _ServerPackCatalog on LibraryRepository {
 
   RequestScope _packRead = RequestScope(),
       _packTagRead = RequestScope(),
+      _packTagNamesRead = RequestScope(),
       _packDirectoryRead = RequestScope();
   Future<void> _packWrites = Future.value();
   final Map<String, String> _packWriteKeys = {};
@@ -32,6 +33,7 @@ mixin _ServerPackCatalog on LibraryRepository {
   void _resetPackConnection() {
     cancelPackRead();
     cancelPackTagRead();
+    cancelPackTagNamesRead();
     cancelPackDirectoryRead();
     _packWriteOwner = null;
     _packWriteKeys.clear();
@@ -74,6 +76,15 @@ mixin _ServerPackCatalog on LibraryRepository {
     final progress = data['progress'] == null ? null : object(data['progress']);
     final cover = data['cover_url'] as String?;
     final url = cover == null ? null : target.resolve(cover);
+    final tags = List<String>.from(data['tag_ids']);
+    final names = Map<String, String>.from(
+      data['tag_names'] as Map? ?? const {},
+    );
+    if (capabilities.packTagNames &&
+        (names.length != tags.length ||
+            tags.any((id) => !names.containsKey(id)))) {
+      throw const LibraryFailure('图包标签名称不完整，请重试读取列表');
+    }
     return LibraryPack(
       id: data['id'],
       rootId: data['root_id'],
@@ -85,7 +96,8 @@ mixin _ServerPackCatalog on LibraryRepository {
       status: data['status'],
       error: data['error'],
       createdAt: (data['created_at'] as num?)?.toDouble() ?? 0,
-      tags: List<String>.from(data['tag_ids']),
+      tags: tags,
+      tagNames: names,
       cover: url == null
           ? null
           : MediaSource(
@@ -175,6 +187,64 @@ mixin _ServerPackCatalog on LibraryRepository {
       offset: page['offset'],
       limit: page['limit'],
     );
+  }
+
+  @override
+  Future<PackTagNames> resolvePackTags(Set<String> ids) async {
+    cancelPackTagNamesRead();
+    if (ids.isEmpty) return PackTagNames(names: {});
+    if (!capabilities.packTagNames) {
+      throw const LibraryFailure('当前服务尚不支持按ID读取标签名称，请升级服务端');
+    }
+    final scope = _packTagNamesRead = RequestScope();
+    final target = api, generation = _generation;
+    final ordered = ids.toList()..sort();
+    final names = <String, String>{}, missing = <String>{};
+    for (var offset = 0; offset < ordered.length; offset += 256) {
+      _packCurrent(target, generation, scope);
+      final batch = ordered
+          .sublist(offset, min(offset + 256, ordered.length))
+          .toSet();
+      final response = await call(
+        'GET',
+        '/api/v1/pack-tags/resolve',
+        using: target,
+        cancel: scope,
+        query: {'tag_ids': batch.toList()},
+      );
+      _packCurrent(target, generation, scope);
+      final items = response['items'], absent = response['missing_ids'];
+      if (response['kind'] != 'pack' ||
+          items is! List ||
+          absent is! List ||
+          absent.any((id) => id is! String || id.isEmpty)) {
+        throw const LibraryFailure('标签名称查询结果不完整，请重试');
+      }
+      final returned = <String, String>{};
+      for (final item in items) {
+        if (item is! Map ||
+            item['kind'] != 'pack' ||
+            item['id'] is! String ||
+            (item['id'] as String).isEmpty ||
+            item['name'] is! String ||
+            (item['name'] as String).isEmpty ||
+            returned.containsKey(item['id'])) {
+          throw const LibraryFailure('标签名称查询结果不完整，请重试');
+        }
+        returned[item['id']] = item['name'];
+      }
+      final missingIds = absent.cast<String>();
+      final accounted = {...returned.keys, ...missingIds};
+      if (missingIds.toSet().length != missingIds.length ||
+          absent.any(returned.containsKey) ||
+          accounted.length != batch.length ||
+          !accounted.containsAll(batch)) {
+        throw const LibraryFailure('标签名称查询结果不完整，请重试');
+      }
+      names.addAll(returned);
+      missing.addAll(missingIds);
+    }
+    return PackTagNames(names: names, missing: missing);
   }
 
   @override
@@ -307,6 +377,8 @@ mixin _ServerPackCatalog on LibraryRepository {
   void cancelPackRead() => _packRead.cancel();
   @override
   void cancelPackTagRead() => _packTagRead.cancel();
+  @override
+  void cancelPackTagNamesRead() => _packTagNamesRead.cancel();
   @override
   void cancelPackDirectoryRead() => _packDirectoryRead.cancel();
 }

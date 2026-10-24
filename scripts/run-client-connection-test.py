@@ -213,6 +213,7 @@ def watch():
                 "workspace-pack-tags", "workspace-settings", "workspace-dark",
                 "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
                 "selection-videos", "selection-packs",
+                "pack-names-card", "pack-names-retry", "pack-names-saved", "pack-names-renamed",
             }:
                 request = urllib.request.Request(
                     "http://127.0.0.1:8761/__fixture/trace", headers=HEADERS
@@ -264,6 +265,7 @@ def main():
     mode.add_argument("--workspace", action="store_true")
     mode.add_argument("--tag-catalog", action="store_true")
     mode.add_argument("--selection", action="store_true")
+    mode.add_argument("--pack-names", action="store_true")
     parser.add_argument("--workspace-viewport", choices=("390", "360"), default="390")
     parser.add_argument("--workspace-text-scale", choices=("1", "2"), default="1")
     parser.add_argument("--plain-name")
@@ -289,7 +291,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.selection:
+    if args.pack_names:
+        PREFIX = "lf4-pack-names"
+    elif args.selection:
         PREFIX = "lf4-selection"
     elif args.tag_catalog:
         PREFIX = "lf4-tag-catalog"
@@ -317,7 +321,7 @@ def main():
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     prepare_emulator()
-    if args.workspace or args.tag_catalog or args.selection:
+    if args.workspace or args.tag_catalog or args.selection or args.pack_names:
         def device(*command):
             return subprocess.check_output(
                 [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
@@ -372,6 +376,7 @@ def main():
                 "lf4-workspace": "integration_test/server_workspace_test.dart",
                 "lf4-tag-catalog": "integration_test/server_tag_catalog_test.dart",
                 "lf4-selection": "integration_test/server_catalog_selection_test.dart",
+                "lf4-pack-names": "integration_test/server_pack_names_test.dart",
             }[PREFIX],
             "-d",
             "emulator-5554",
@@ -395,6 +400,7 @@ def main():
                 or args.workspace
                 or args.tag_catalog
                 or args.selection
+                or args.pack_names
                 else 3
                 if args.backups
                 else 2

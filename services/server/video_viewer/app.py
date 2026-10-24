@@ -283,6 +283,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "versioned_video_queue",
                 "video_entry_anchors",
                 "catalog_selection",
+                "pack_tag_names",
             ],
         }
 
@@ -355,6 +356,13 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         limit: Annotated[int, Query(ge=1, le=200)] = 50,
     ):
         return request.app.state.pack_tags.list(search, offset, limit)
+
+    @app.get("/api/v1/pack-tags/resolve", dependencies=auth_required)
+    def resolve_pack_tags(
+        request: Request,
+        tag_ids: Annotated[list[str], Query(min_length=1, max_length=256)],
+    ):
+        return request.app.state.pack_tags.resolve(tag_ids)
 
     @app.post(
         "/api/v1/pack-tags",

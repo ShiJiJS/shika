@@ -209,6 +209,8 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         "fixed_video_sessions",
         "versioned_video_queue",
         "video_entry_anchors",
+        "catalog_selection",
+        "pack_tag_names",
     }
     schema = client.get("/openapi.json").json()
     assert schema["components"]["schemas"]["RootInput"]["properties"]["enabled"]

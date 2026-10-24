@@ -118,11 +118,13 @@ class PackTagEditor extends StatefulWidget {
     required this.repository,
     required this.ids,
     this.initial = const {},
+    this.initialNames = const {},
     this.selectionOnly = false,
     this.appendOnly = false,
   });
   final LibraryRepository repository;
   final Set<String> ids, initial;
+  final Map<String, String> initialNames;
   final bool selectionOnly;
   final bool appendOnly;
   @override
@@ -135,39 +137,136 @@ class _PackTagEditorState extends State<PackTagEditor> {
       widget.selectionOnly || (widget.ids.length == 1 && !widget.appendOnly)
       ? {...widget.initial}
       : <String>{};
-  final names = <String, String>{};
+  late final names = <String, String>{...widget.initialNames};
+  late final unverified = {...chosen};
+  final missing = <String>{}, nameVersions = <String, int>{};
+  late final owner = widget.repository.connectionIdentity;
   List<PackTag> items = [];
-  int total = 0, generation = 0;
-  bool loading = false, saving = false;
-  String error = '';
+  int total = 0, generation = 0, namesGeneration = 0, nameOrder = 0;
+  bool loading = false,
+      saving = false,
+      namesLoading = false,
+      connectionChanged = false;
+  bool retryMore = false;
+  String? loadedSearch;
+  String error = '', namesError = '';
+  bool get validConnection =>
+      identical(owner, widget.repository.connectionIdentity);
+  bool get unresolved => chosen.any(unverified.contains);
+  bool get removed => chosen.any(missing.contains);
   @override
   void initState() {
     super.initState();
+    widget.repository.addListener(repositoryChanged);
     unawaited(load());
+    if (chosen.isNotEmpty) unawaited(resolveNames());
+  }
+
+  void repositoryChanged() {
+    if (validConnection || connectionChanged) return;
+    generation++;
+    namesGeneration++;
+    widget.repository.cancelPackTagRead();
+    widget.repository.cancelPackTagNamesRead();
+    setState(() {
+      connectionChanged = true;
+      loading = namesLoading = false;
+      items = [];
+      names.clear();
+      error = '服务连接已变化，请关闭后重新打开。';
+    });
+  }
+
+  void acceptNames(
+    Map<String, String> found,
+    Iterable<String> absent,
+    int version,
+  ) {
+    for (final id in {...found.keys, ...absent}) {
+      if (version < (nameVersions[id] ?? 0)) continue;
+      nameVersions[id] = version;
+      unverified.remove(id);
+      if (found.containsKey(id)) {
+        names[id] = found[id]!;
+        missing.remove(id);
+      } else {
+        names.remove(id);
+        missing.add(id);
+      }
+    }
+  }
+
+  Future<void> resolveNames() async {
+    if (!validConnection) return;
+    final current = ++namesGeneration, version = ++nameOrder;
+    setState(() {
+      namesLoading = true;
+      namesError = '';
+    });
+    try {
+      final result = await widget.repository.resolvePackTags({...chosen});
+      if (!mounted || current != namesGeneration || !validConnection) return;
+      setState(() => acceptNames(result.names, result.missing, version));
+    } on RequestCancelled {
+      // The connection owner or a newer resolution cancelled this read.
+    } catch (failure) {
+      if (mounted && current == namesGeneration && validConnection) {
+        setState(() => namesError = '标签名称未更新，原选择已保留：$failure');
+      }
+    } finally {
+      if (mounted && current == namesGeneration) {
+        setState(() => namesLoading = false);
+      }
+    }
   }
 
   Future<void> load({bool more = false}) async {
-    final current = ++generation;
+    if (!validConnection || (more && loading)) return;
+    final current = ++generation, version = ++nameOrder;
+    final search = input.text;
+    final append = more && search == loadedSearch;
+    final offset = append ? items.length : 0;
+    var restartRequired = false;
     setState(() {
       loading = true;
       error = '';
     });
     try {
       final page = await widget.repository.loadPackTags(
-        search: input.text,
-        offset: more ? items.length : 0,
+        search: search,
+        offset: offset,
       );
-      if (!mounted || current != generation) return;
+      if (!mounted || current != generation || !validConnection) return;
+      final ids = page.items.map((tag) => tag.id).toSet();
+      if (page.offset != offset ||
+          page.total < offset + page.items.length ||
+          (page.items.isEmpty && offset < page.total) ||
+          ids.length != page.items.length ||
+          (append &&
+              (page.total != total ||
+                  items.any((tag) => ids.contains(tag.id))))) {
+        restartRequired = true;
+        throw const LibraryFailure('标签列表已变化，请重新加载');
+      }
       setState(() {
-        items = more ? [...items, ...page.items] : page.items;
+        items = append ? [...items, ...page.items] : page.items;
         total = page.total;
-        for (final item in page.items) {
-          names[item.id] = item.name;
-        }
+        loadedSearch = search;
+        retryMore = false;
+        acceptNames(
+          {for (final tag in page.items) tag.id: tag.name},
+          const [],
+          version,
+        );
       });
+    } on RequestCancelled {
+      // Preserve the prior list and draft on cancellation.
     } catch (failure) {
-      if (mounted && current == generation) {
-        setState(() => error = failure.toString());
+      if (mounted && current == generation && validConnection) {
+        setState(() {
+          error = failure.toString();
+          retryMore = append && !restartRequired;
+        });
       }
     } finally {
       if (mounted && current == generation) setState(() => loading = false);
@@ -175,16 +274,16 @@ class _PackTagEditorState extends State<PackTagEditor> {
   }
 
   Future<void> create() async {
-    if (saving || input.text.trim().isEmpty) return;
+    if (saving || input.text.trim().isEmpty || !validConnection) return;
     setState(() {
       saving = true;
       error = '';
     });
     try {
       final tag = await widget.repository.createPackTag(input.text);
-      if (!mounted) return;
+      if (!mounted || !validConnection) return;
       setState(() {
-        names[tag.id] = tag.name;
+        acceptNames({tag.id: tag.name}, const [], ++nameOrder);
         chosen.add(tag.id);
         input.clear();
       });
@@ -197,6 +296,7 @@ class _PackTagEditorState extends State<PackTagEditor> {
   }
 
   Future<void> save() async {
+    if (!validConnection || unresolved || removed) return;
     setState(() {
       saving = true;
       error = '';
@@ -211,7 +311,12 @@ class _PackTagEditorState extends State<PackTagEditor> {
         chosen,
         replace: widget.ids.length == 1 && !widget.appendOnly,
       );
-      if (mounted) Navigator.pop(context, true);
+      if (mounted) {
+        Navigator.pop(
+          context,
+          PackTagNames(names: {for (final id in chosen) id: names[id]!}),
+        );
+      }
     } catch (failure) {
       if (mounted) setState(() => error = failure.toString());
     } finally {
@@ -222,7 +327,10 @@ class _PackTagEditorState extends State<PackTagEditor> {
   @override
   void dispose() {
     generation++;
+    namesGeneration++;
+    widget.repository.removeListener(repositoryChanged);
     widget.repository.cancelPackTagRead();
+    widget.repository.cancelPackTagNamesRead();
     input.dispose();
     super.dispose();
   }
@@ -249,8 +357,13 @@ class _PackTagEditorState extends State<PackTagEditor> {
           children: [
             for (final id in chosen)
               InputChip(
-                label: Text(names[id] ?? '已选标签'),
-                onDeleted: saving
+                key: Key('chosen-pack-tag-$id'),
+                label: Text(
+                  missing.contains(id) ? '已移除的标签' : names[id] ?? '名称待确认',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                onDeleted: saving || connectionChanged
                     ? null
                     : () => setState(() => chosen.remove(id)),
               ),
@@ -258,7 +371,7 @@ class _PackTagEditorState extends State<PackTagEditor> {
         ),
       TextField(
         controller: input,
-        enabled: !saving,
+        enabled: !saving && !connectionChanged,
         decoration: InputDecoration(
           labelText: widget.selectionOnly ? '搜索图包标签' : '搜索或新建图包标签',
         ),
@@ -269,10 +382,18 @@ class _PackTagEditorState extends State<PackTagEditor> {
           input.text.trim().isNotEmpty &&
           !items.any((tag) => tag.name == input.text.trim()))
         TextButton(
-          onPressed: saving ? null : create,
+          onPressed: saving || connectionChanged ? null : create,
           child: Text('新建「${input.text.trim()}」'),
         ),
-      if (loading) const LinearProgressIndicator(),
+      if (loading || namesLoading) const LinearProgressIndicator(),
+      if (removed) note('部分已选标签已被移除，请取消这些选择后再保存。'),
+      if (unresolved && namesError.isNotEmpty) ...[
+        note(namesError),
+        TextButton(
+          onPressed: namesLoading || connectionChanged ? null : resolveNames,
+          child: const Text('重试读取名称'),
+        ),
+      ],
       Wrap(
         spacing: 8,
         runSpacing: 6,
@@ -281,7 +402,7 @@ class _PackTagEditorState extends State<PackTagEditor> {
             FilterChip(
               label: Text(tag.name),
               selected: chosen.contains(tag.id),
-              onSelected: saving
+              onSelected: saving || connectionChanged
                   ? null
                   : (value) => setState(() {
                       value ? chosen.add(tag.id) : chosen.remove(tag.id);
@@ -289,17 +410,25 @@ class _PackTagEditorState extends State<PackTagEditor> {
             ),
         ],
       ),
-      if (!loading && error.isEmpty && items.length < total)
+      if (!loading &&
+          error.isEmpty &&
+          loadedSearch == input.text &&
+          items.length < total)
         TextButton(
           onPressed: () => load(more: true),
           child: const Text('更多标签'),
         ),
       if (error.isNotEmpty) note(error),
-      if (error.isNotEmpty && !saving)
-        TextButton(onPressed: () => load(), child: const Text('重试读取标签')),
+      if (error.isNotEmpty && !saving && !connectionChanged)
+        TextButton(
+          onPressed: () => load(more: retryMore),
+          child: const Text('重试读取标签'),
+        ),
       const SizedBox(height: 12),
       FilledButton(
-        onPressed: saving ? null : save,
+        onPressed: saving || connectionChanged || unresolved || removed
+            ? null
+            : save,
         child: Text(
           saving
               ? '正在保存…'

@@ -16,6 +16,16 @@ class PackTags:
     def json(tag):
         return {"id": tag.id, "name": tag.name, "kind": "pack"}
 
+    def resolve(self, tag_ids):
+        requested = set(tag_ids)
+        with self.db.read() as session:
+            tags = list(session.scalars(select(PackTag).where(PackTag.id.in_(requested)).order_by(PackTag.id)))
+            return {
+                "kind": "pack",
+                "items": [self.json(tag) for tag in tags],
+                "missing_ids": sorted(requested - {tag.id for tag in tags}),
+            }
+
     def list(self, search="", offset=0, limit=200):
         with self.db.read() as session:
             session.connection().exec_driver_sql("BEGIN")
