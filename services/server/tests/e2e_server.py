@@ -59,7 +59,7 @@ def create_e2e_app():
         marker.write_text("dedicated generated emulator fixture")
     controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False,
                 "fail_restore": False, "slow_restore": False, "slow_page": False,
-                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_pack_names": False, "fail_pack_anchor": False}
+                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_pack_names": False, "fail_pack_anchor": False, "fail_pack_trash": False}
 
     def backup_fault(phase, _task_id):
         if controls["fail_restore"] and phase == "after_replace_before_commit":
@@ -86,7 +86,7 @@ def create_e2e_app():
             }
             if (request.method == "PATCH" and request.url.path == "/api/v1/video-tags") or (
                 request.method == "POST" and request.url.path in {
-                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent"
+                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans"
                 }
             ):
                 body = await request.json()
@@ -102,6 +102,10 @@ def create_e2e_app():
                 controls["busy_covers"] -= 1
                 entry["status"] = 503
                 return JSONResponse({"error": {"code": "image_busy", "message": "Isolated transient cover failure"}}, status_code=503)
+            if controls["fail_pack_trash"] and request.method == "GET" and request.url.path == "/api/v1/pack-trash":
+                controls["fail_pack_trash"] = False
+                entry["status"] = 503
+                return JSONResponse({"error": {"code": "fixture_trash_read", "message": "图包回收站暂时无法读取，请重试"}}, status_code=503)
             if controls["fail_pack_anchor"] and request.method == "GET" and request.url.path == "/api/v1/packs" and request.query_params.get("anchor_ids"):
                 controls["fail_pack_anchor"] = False
                 entry["status"] = 503
@@ -139,12 +143,12 @@ def create_e2e_app():
         if (
             controls["lose_file_response"]
             and request.method == "POST"
-            and request.url.path == "/api/v1/videos/trash"
+            and request.url.path in {"/api/v1/videos/trash", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans"}
             and response.status_code == 202
         ):
             controls["lose_file_response"] = False
             response = JSONResponse(
-                {"error": {"code": "fixture_response_lost", "message": "删除结果待确认，请查询结果"}},
+                {"error": {"code": "fixture_response_lost", "message": "恢复结果待确认，请查询原结果" if request.url.path == "/api/v1/pack-trash/restore" else "删除结果待确认，请查询结果"}},
                 status_code=503,
             )
             entry["status"] = 503
@@ -211,7 +215,10 @@ def create_e2e_app():
             "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
             "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
             "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
-            "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
+            "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
+            "purge-selected", "purge-review", "purge-files", "purge-unknown", "purge-result", "purge-finished",
+                "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
+                "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase
@@ -235,6 +242,40 @@ def create_e2e_app():
         elif action == "workspace-packs":
             details = seed_workspace_packs(BASE, Path("/fixture-assets"))
             controls["busy_covers"] = 2
+        elif action == "purge-pack-attachments":
+            folder = BASE / "shorts" / "图包"
+            if str(folder) != "/media/shorts/图包" or folder.is_symlink() or folder.resolve() != folder:
+                raise HTTPException(status_code=409, detail="Expected isolated flower directory")
+            for index in range(1, 28):
+                pack = folder / f"图包{index:02d}"
+                if pack.is_symlink() or not pack.is_dir():
+                    raise HTTPException(status_code=409, detail="Expected fixture pack directory")
+                (pack / "notes.txt").write_text("retain isolated attachment", encoding="utf-8")
+        elif action == "fail-pack-purge":
+            def fail_purge(phase, identity):
+                if phase == "purge_purging":
+                    from video_viewer.models import PackPurgeStep
+
+                    with app.state.db.read() as session:
+                        row = session.get(PackPurgeStep, identity)
+                        if row.relative_path == "2.jpg":
+                            raise PermissionError("Isolated fixture page failure")
+            app.state.pack_purge.fault_hook = fail_purge
+        elif action == "normal-pack-purge":
+            app.state.pack_purge.fault_hook = None
+        elif action == "fail-pack-trash-read":
+            controls["fail_pack_trash"] = True
+        elif action == "pack-trash-hashes":
+            folder = BASE / "shorts" / "图包"
+            if str(folder) != "/media/shorts/图包" or folder.is_symlink() or folder.resolve() != folder:
+                raise HTTPException(status_code=409, detail="Expected isolated flower directory")
+            hashes = {}
+            for item in sorted(folder.rglob("*")):
+                if item.is_symlink() or not item.resolve().is_relative_to(folder):
+                    raise HTTPException(status_code=409, detail="Unexpected fixture link")
+                if item.is_file():
+                    hashes[str(item.relative_to(folder))] = hashlib.sha256(item.read_bytes()).hexdigest()
+            return {"hashes": hashes}
         elif action == "add":
             copy_new(PORTRAIT, BASE / "shorts" / "新增" / "新到片段.mp4")
         elif action == "disconnect":

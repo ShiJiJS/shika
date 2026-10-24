@@ -397,6 +397,7 @@ class PackFileStep(Base):
 
 class PackTrashItem(Base):
     __tablename__ = "pack_trash_items"
+    purged_pages: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
     id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
     pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id"), index=True)
     operation_id: Mapped[str] = mapped_column(ForeignKey("pack_file_operations.id"))
@@ -407,4 +408,59 @@ class PackTrashItem(Base):
     deleted_at: Mapped[float] = mapped_column(Float, default=time.time)
     __table_args__ = (
         Index("pack_trash_active", "pack_id", unique=True, sqlite_where=text("status='active'")),
+    )
+
+
+class PackPurgePlan(Base):
+    __tablename__ = "pack_purge_plans"
+    historical: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
+    id: Mapped[str] = mapped_column(ForeignKey("tasks.id"), primary_key=True)
+    request_key: Mapped[str] = mapped_column(String, unique=True)
+    request_hash: Mapped[str] = mapped_column(String)
+    expires_at: Mapped[float] = mapped_column(Float)
+    digest: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class PackPurgeEntry(Base):
+    __tablename__ = "pack_purge_entries"
+    name: Mapped[str] = mapped_column(String)
+    path: Mapped[str] = mapped_column(Text)
+    image_count: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    image_bytes: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    retained_entries: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    plan_id: Mapped[str] = mapped_column(ForeignKey("pack_purge_plans.id"), index=True)
+    pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id"), index=True)
+    trash_id: Mapped[str] = mapped_column(ForeignKey("pack_trash_items.id"))
+    source: Mapped[dict] = mapped_column(JSON)
+    manifest: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    digest: Mapped[str | None] = mapped_column(String, nullable=True)
+    error: Mapped[str | None] = mapped_column(String, nullable=True)
+    __table_args__ = (UniqueConstraint("plan_id", "trash_id"),)
+
+
+class PackPurgeExecution(Base):
+    __tablename__ = "pack_purge_executions"
+    id: Mapped[str] = mapped_column(ForeignKey("pack_file_operations.id"), primary_key=True)
+    plan_id: Mapped[str] = mapped_column(ForeignKey("pack_purge_plans.id"), unique=True)
+
+
+class PackPurgeStep(Base):
+    __tablename__ = "pack_purge_steps"
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    parent_id: Mapped[str] = mapped_column(ForeignKey("pack_file_steps.id"), index=True)
+    kind: Mapped[str] = mapped_column(String)
+    # Historical identity must survive scanner removal of a deleted page row.
+    page_id: Mapped[str | None] = mapped_column(String, nullable=True)
+    relative_path: Mapped[str] = mapped_column(Text)
+    source_signature: Mapped[list] = mapped_column(JSON)
+    expected_hash: Mapped[str | None] = mapped_column(String, nullable=True)
+    expected_size: Mapped[int] = mapped_column(Integer, default=0)
+    state: Mapped[dict] = mapped_column(JSON, default=dict)
+    phase: Mapped[str] = mapped_column(String, default="prepared")
+    outcome: Mapped[str] = mapped_column(String, default="pending")
+    error: Mapped[str | None] = mapped_column(String, nullable=True)
+    __table_args__ = (
+        UniqueConstraint("parent_id", "kind", "relative_path"),
+        CheckConstraint("kind IN ('image','directory')"),
     )

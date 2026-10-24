@@ -3,12 +3,25 @@ import 'package:flutter/foundation.dart';
 import 'models.dart';
 import 'pack_models.dart';
 import 'pack_reading.dart';
+import 'pack_files.dart';
+import 'pack_trash.dart';
+import 'pack_purge.dart';
+export 'pack_purge.dart';
+export 'pack_trash.dart';
+export 'pack_files.dart';
 export 'pack_reading.dart';
 export 'pack_models.dart';
 
 /// This boundary describes client-visible behavior, independent of transport.
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
+  PackPurgeGateway createPackPurge() =>
+      throw const LibraryFailure('当前服务尚不支持图包永久删除，请升级服务端');
+  PackTrashCatalog createPackTrash() =>
+      throw const LibraryFailure('当前服务尚不支持图包回收站，请升级服务端');
+  PackFiles createPackFiles() =>
+      throw const LibraryFailure('当前服务尚不支持图包回收，请升级服务端');
+  void packFilesChanged() => notifyListeners();
   PackReader createPackReader() =>
       throw const LibraryFailure('当前服务尚不支持图包阅读，请升级服务端');
   Future<Set<String>> selectVideoIds(VideoEntryScope entry) =>

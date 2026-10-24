@@ -1,0 +1,531 @@
+All checks passed!
+============================= test session starts ==============================
+platform linux -- Python 3.13.16, pytest-9.1.1, pluggy-1.7.0
+rootdir: /app
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collected 73 items
+
+tests/test_pack_purge_execution.py ....................FFFFFFFFFF        [ 41%]
+tests/test_pack_purge_plans.py ...................F............          [ 84%]
+tests/test_media_types.py ...........                                    [100%]
+
+=================================== FAILURES ===================================
+___ test_cold_service_recovery_reconciles_each_durable_phase[purge_claiming] ___
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec0/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec0/media'))
+phase = 'purge_claiming'
+
+    @pytest.mark.parametrize(
+        "phase",
+        [
+            "purge_claiming",
+            "purge_claimed",
+            "purge_verified",
+            "purge_purging",
+            "purge_unlinked_before_commit",
+            "purge_image_committed",
+            "purge_directory_claiming",
+            "purge_directory_claimed",
+            "purge_removing",
+            "purge_directory_removed",
+        ],
+    )
+    def test_cold_service_recovery_reconciles_each_durable_phase(environment, phase):
+        settings, media = environment
+        first, token = connect(settings)
+        second = None
+        try:
+            root, _, rows = fixture(first, media)
+            base = Path(root["path"]) / "pack-0"
+            value = plan(first, [rows[0]["id"]])
+            interrupted = []
+    
+            def hook(current, _):
+                if current == phase and not interrupted:
+                    interrupted.append(True)
+                    raise InterruptedError("fixture cold restart")
+    
+            first.app.state.pack_purge.fault_hook = hook
+            result = execute(first, value)
+>           assert interrupted and result["status"] == "interrupted", result
+E           AssertionError: {'server_time': 1792880709.9012508, 'id': 'd03fdd12-6d35-4d8b-8a68-36f3a981a6ac', 'kind': 'pack_permanent', 'status': 'failed', ...}
+E           assert ([True] and 'failed' == 'interrupted'
+E             
+E             - interrupted
+E             + failed)
+
+tests/test_pack_purge_execution.py:320: AssertionError
+___ test_cold_service_recovery_reconciles_each_durable_phase[purge_claimed] ____
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec1/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec1/media'))
+phase = 'purge_claimed'
+
+    @pytest.mark.parametrize(
+        "phase",
+        [
+            "purge_claiming",
+            "purge_claimed",
+            "purge_verified",
+            "purge_purging",
+            "purge_unlinked_before_commit",
+            "purge_image_committed",
+            "purge_directory_claiming",
+            "purge_directory_claimed",
+            "purge_removing",
+            "purge_directory_removed",
+        ],
+    )
+    def test_cold_service_recovery_reconciles_each_durable_phase(environment, phase):
+        settings, media = environment
+        first, token = connect(settings)
+        second = None
+        try:
+            root, _, rows = fixture(first, media)
+            base = Path(root["path"]) / "pack-0"
+            value = plan(first, [rows[0]["id"]])
+            interrupted = []
+    
+            def hook(current, _):
+                if current == phase and not interrupted:
+                    interrupted.append(True)
+                    raise InterruptedError("fixture cold restart")
+    
+            first.app.state.pack_purge.fault_hook = hook
+            result = execute(first, value)
+>           assert interrupted and result["status"] == "interrupted", result
+E           AssertionError: {'server_time': 1792880710.5154035, 'id': 'dc56a7c9-fe17-4f11-9c21-7a836b8a5697', 'kind': 'pack_permanent', 'status': 'failed', ...}
+E           assert ([True] and 'failed' == 'interrupted'
+E             
+E             - interrupted
+E             + failed)
+
+tests/test_pack_purge_execution.py:320: AssertionError
+___ test_cold_service_recovery_reconciles_each_durable_phase[purge_verified] ___
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec2/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec2/media'))
+phase = 'purge_verified'
+
+    @pytest.mark.parametrize(
+        "phase",
+        [
+            "purge_claiming",
+            "purge_claimed",
+            "purge_verified",
+            "purge_purging",
+            "purge_unlinked_before_commit",
+            "purge_image_committed",
+            "purge_directory_claiming",
+            "purge_directory_claimed",
+            "purge_removing",
+            "purge_directory_removed",
+        ],
+    )
+    def test_cold_service_recovery_reconciles_each_durable_phase(environment, phase):
+        settings, media = environment
+        first, token = connect(settings)
+        second = None
+        try:
+            root, _, rows = fixture(first, media)
+            base = Path(root["path"]) / "pack-0"
+            value = plan(first, [rows[0]["id"]])
+            interrupted = []
+    
+            def hook(current, _):
+                if current == phase and not interrupted:
+                    interrupted.append(True)
+                    raise InterruptedError("fixture cold restart")
+    
+            first.app.state.pack_purge.fault_hook = hook
+            result = execute(first, value)
+>           assert interrupted and result["status"] == "interrupted", result
+E           AssertionError: {'server_time': 1792880711.0639868, 'id': 'b01d0e93-51ed-4fc1-8c0c-f8d8d0577ce8', 'kind': 'pack_permanent', 'status': 'failed', ...}
+E           assert ([True] and 'failed' == 'interrupted'
+E             
+E             - interrupted
+E             + failed)
+
+tests/test_pack_purge_execution.py:320: AssertionError
+___ test_cold_service_recovery_reconciles_each_durable_phase[purge_purging] ____
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec3/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec3/media'))
+phase = 'purge_purging'
+
+    @pytest.mark.parametrize(
+        "phase",
+        [
+            "purge_claiming",
+            "purge_claimed",
+            "purge_verified",
+            "purge_purging",
+            "purge_unlinked_before_commit",
+            "purge_image_committed",
+            "purge_directory_claiming",
+            "purge_directory_claimed",
+            "purge_removing",
+            "purge_directory_removed",
+        ],
+    )
+    def test_cold_service_recovery_reconciles_each_durable_phase(environment, phase):
+        settings, media = environment
+        first, token = connect(settings)
+        second = None
+        try:
+            root, _, rows = fixture(first, media)
+            base = Path(root["path"]) / "pack-0"
+            value = plan(first, [rows[0]["id"]])
+            interrupted = []
+    
+            def hook(current, _):
+                if current == phase and not interrupted:
+                    interrupted.append(True)
+                    raise InterruptedError("fixture cold restart")
+    
+            first.app.state.pack_purge.fault_hook = hook
+            result = execute(first, value)
+>           assert interrupted and result["status"] == "interrupted", result
+E           AssertionError: {'server_time': 1792880711.6574764, 'id': '7f61016d-e372-453f-937e-fcbe59775861', 'kind': 'pack_permanent', 'status': 'failed', ...}
+E           assert ([True] and 'failed' == 'interrupted'
+E             
+E             - interrupted
+E             + failed)
+
+tests/test_pack_purge_execution.py:320: AssertionError
+_ test_cold_service_recovery_reconciles_each_durable_phase[purge_unlinked_before_commit] _
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec4/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec4/media'))
+phase = 'purge_unlinked_before_commit'
+
+    @pytest.mark.parametrize(
+        "phase",
+        [
+            "purge_claiming",
+            "purge_claimed",
+            "purge_verified",
+            "purge_purging",
+            "purge_unlinked_before_commit",
+            "purge_image_committed",
+            "purge_directory_claiming",
+            "purge_directory_claimed",
+            "purge_removing",
+            "purge_directory_removed",
+        ],
+    )
+    def test_cold_service_recovery_reconciles_each_durable_phase(environment, phase):
+        settings, media = environment
+        first, token = connect(settings)
+        second = None
+        try:
+            root, _, rows = fixture(first, media)
+            base = Path(root["path"]) / "pack-0"
+            value = plan(first, [rows[0]["id"]])
+            interrupted = []
+    
+            def hook(current, _):
+                if current == phase and not interrupted:
+                    interrupted.append(True)
+                    raise InterruptedError("fixture cold restart")
+    
+            first.app.state.pack_purge.fault_hook = hook
+            result = execute(first, value)
+>           assert interrupted and result["status"] == "interrupted", result
+E           AssertionError: {'server_time': 1792880712.261676, 'id': 'e04cb81a-7908-4443-a6c5-ceea39176702', 'kind': 'pack_permanent', 'status': 'failed', ...}
+E           assert ([True] and 'failed' == 'interrupted'
+E             
+E             - interrupted
+E             + failed)
+
+tests/test_pack_purge_execution.py:320: AssertionError
+_ test_cold_service_recovery_reconciles_each_durable_phase[purge_image_committed] _
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec5/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec5/media'))
+phase = 'purge_image_committed'
+
+    @pytest.mark.parametrize(
+        "phase",
+        [
+            "purge_claiming",
+            "purge_claimed",
+            "purge_verified",
+            "purge_purging",
+            "purge_unlinked_before_commit",
+            "purge_image_committed",
+            "purge_directory_claiming",
+            "purge_directory_claimed",
+            "purge_removing",
+            "purge_directory_removed",
+        ],
+    )
+    def test_cold_service_recovery_reconciles_each_durable_phase(environment, phase):
+        settings, media = environment
+        first, token = connect(settings)
+        second = None
+        try:
+            root, _, rows = fixture(first, media)
+            base = Path(root["path"]) / "pack-0"
+            value = plan(first, [rows[0]["id"]])
+            interrupted = []
+    
+            def hook(current, _):
+                if current == phase and not interrupted:
+                    interrupted.append(True)
+                    raise InterruptedError("fixture cold restart")
+    
+            first.app.state.pack_purge.fault_hook = hook
+            result = execute(first, value)
+>           assert interrupted and result["status"] == "interrupted", result
+E           AssertionError: {'server_time': 1792880713.0017006, 'id': '4302a0f1-a16b-4f21-8e01-3da798dc2bbc', 'kind': 'pack_permanent', 'status': 'failed', ...}
+E           assert ([True] and 'failed' == 'interrupted'
+E             
+E             - interrupted
+E             + failed)
+
+tests/test_pack_purge_execution.py:320: AssertionError
+_ test_cold_service_recovery_reconciles_each_durable_phase[purge_directory_claiming] _
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec6/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec6/media'))
+phase = 'purge_directory_claiming'
+
+    @pytest.mark.parametrize(
+        "phase",
+        [
+            "purge_claiming",
+            "purge_claimed",
+            "purge_verified",
+            "purge_purging",
+            "purge_unlinked_before_commit",
+            "purge_image_committed",
+            "purge_directory_claiming",
+            "purge_directory_claimed",
+            "purge_removing",
+            "purge_directory_removed",
+        ],
+    )
+    def test_cold_service_recovery_reconciles_each_durable_phase(environment, phase):
+        settings, media = environment
+        first, token = connect(settings)
+        second = None
+        try:
+            root, _, rows = fixture(first, media)
+            base = Path(root["path"]) / "pack-0"
+            value = plan(first, [rows[0]["id"]])
+            interrupted = []
+    
+            def hook(current, _):
+                if current == phase and not interrupted:
+                    interrupted.append(True)
+                    raise InterruptedError("fixture cold restart")
+    
+            first.app.state.pack_purge.fault_hook = hook
+            result = execute(first, value)
+>           assert interrupted and result["status"] == "interrupted", result
+E           AssertionError: {'server_time': 1792880713.6198096, 'id': 'cd6e30fc-8339-4eaa-8ba1-2b824435f725', 'kind': 'pack_permanent', 'status': 'failed', ...}
+E           assert ([True] and 'failed' == 'interrupted'
+E             
+E             - interrupted
+E             + failed)
+
+tests/test_pack_purge_execution.py:320: AssertionError
+_ test_cold_service_recovery_reconciles_each_durable_phase[purge_directory_claimed] _
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec7/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec7/media'))
+phase = 'purge_directory_claimed'
+
+    @pytest.mark.parametrize(
+        "phase",
+        [
+            "purge_claiming",
+            "purge_claimed",
+            "purge_verified",
+            "purge_purging",
+            "purge_unlinked_before_commit",
+            "purge_image_committed",
+            "purge_directory_claiming",
+            "purge_directory_claimed",
+            "purge_removing",
+            "purge_directory_removed",
+        ],
+    )
+    def test_cold_service_recovery_reconciles_each_durable_phase(environment, phase):
+        settings, media = environment
+        first, token = connect(settings)
+        second = None
+        try:
+            root, _, rows = fixture(first, media)
+            base = Path(root["path"]) / "pack-0"
+            value = plan(first, [rows[0]["id"]])
+            interrupted = []
+    
+            def hook(current, _):
+                if current == phase and not interrupted:
+                    interrupted.append(True)
+                    raise InterruptedError("fixture cold restart")
+    
+            first.app.state.pack_purge.fault_hook = hook
+            result = execute(first, value)
+>           assert interrupted and result["status"] == "interrupted", result
+E           AssertionError: {'server_time': 1792880714.2349942, 'id': 'a1a5c555-2d43-4a5d-94cf-f3565da25ab4', 'kind': 'pack_permanent', 'status': 'failed', ...}
+E           assert ([True] and 'failed' == 'interrupted'
+E             
+E             - interrupted
+E             + failed)
+
+tests/test_pack_purge_execution.py:320: AssertionError
+___ test_cold_service_recovery_reconciles_each_durable_phase[purge_removing] ___
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec8/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec8/media'))
+phase = 'purge_removing'
+
+    @pytest.mark.parametrize(
+        "phase",
+        [
+            "purge_claiming",
+            "purge_claimed",
+            "purge_verified",
+            "purge_purging",
+            "purge_unlinked_before_commit",
+            "purge_image_committed",
+            "purge_directory_claiming",
+            "purge_directory_claimed",
+            "purge_removing",
+            "purge_directory_removed",
+        ],
+    )
+    def test_cold_service_recovery_reconciles_each_durable_phase(environment, phase):
+        settings, media = environment
+        first, token = connect(settings)
+        second = None
+        try:
+            root, _, rows = fixture(first, media)
+            base = Path(root["path"]) / "pack-0"
+            value = plan(first, [rows[0]["id"]])
+            interrupted = []
+    
+            def hook(current, _):
+                if current == phase and not interrupted:
+                    interrupted.append(True)
+                    raise InterruptedError("fixture cold restart")
+    
+            first.app.state.pack_purge.fault_hook = hook
+            result = execute(first, value)
+>           assert interrupted and result["status"] == "interrupted", result
+E           AssertionError: {'server_time': 1792880714.8262482, 'id': '40f92436-2048-4677-9660-2660aba55783', 'kind': 'pack_permanent', 'status': 'failed', ...}
+E           assert ([True] and 'failed' == 'interrupted'
+E             
+E             - interrupted
+E             + failed)
+
+tests/test_pack_purge_execution.py:320: AssertionError
+_ test_cold_service_recovery_reconciles_each_durable_phase[purge_directory_removed] _
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec9/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cold_service_recovery_rec9/media'))
+phase = 'purge_directory_removed'
+
+    @pytest.mark.parametrize(
+        "phase",
+        [
+            "purge_claiming",
+            "purge_claimed",
+            "purge_verified",
+            "purge_purging",
+            "purge_unlinked_before_commit",
+            "purge_image_committed",
+            "purge_directory_claiming",
+            "purge_directory_claimed",
+            "purge_removing",
+            "purge_directory_removed",
+        ],
+    )
+    def test_cold_service_recovery_reconciles_each_durable_phase(environment, phase):
+        settings, media = environment
+        first, token = connect(settings)
+        second = None
+        try:
+            root, _, rows = fixture(first, media)
+            base = Path(root["path"]) / "pack-0"
+            value = plan(first, [rows[0]["id"]])
+            interrupted = []
+    
+            def hook(current, _):
+                if current == phase and not interrupted:
+                    interrupted.append(True)
+                    raise InterruptedError("fixture cold restart")
+    
+            first.app.state.pack_purge.fault_hook = hook
+            result = execute(first, value)
+>           assert interrupted and result["status"] == "interrupted", result
+E           AssertionError: {'server_time': 1792880715.4313333, 'id': '93cb9c7b-e250-4947-947c-1cdfa0a961b5', 'kind': 'pack_permanent', 'status': 'failed', ...}
+E           assert ([True] and 'failed' == 'interrupted'
+E             
+E             - interrupted
+E             + failed)
+
+tests/test_pack_purge_execution.py:320: AssertionError
+_ test_0009_upgrade_keeps_existing_tables_byte_values_and_adds_only_preview_tables _
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_0009_upgrade_keeps_existi0/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_0009_upgrade_keeps_existi0/media'))
+
+    def test_0009_upgrade_keeps_existing_tables_byte_values_and_adds_only_preview_tables(environment):
+        from alembic import command as migrate
+        from alembic.config import Config
+    
+        from video_viewer.db import Database
+    
+        settings, media = environment
+        client, _ = connect(settings)
+        try:
+            fixture(client, media)
+        finally:
+            client.__exit__(None, None, None)
+        db = Database(settings.data_dir)
+        config = Config(str(Path(__file__).parents[1] / "alembic.ini"))
+        config.set_main_option("script_location", str(Path(__file__).parents[1] / "migrations"))
+        with db.engine.begin() as connection:
+            config.attributes["connection"] = connection
+            migrate.downgrade(config, "0009")
+        with sqlite3.connect(db.path) as connection:
+            connection.execute("INSERT INTO settings VALUES ('keep', 'old value')")
+            tables = [
+                row[0]
+                for row in connection.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table' AND name!='alembic_version'"
+                )
+            ]
+            before = {name: connection.execute(f'SELECT * FROM "{name}"').fetchall() for name in tables}
+        db.migrate()
+        with sqlite3.connect(db.path) as connection:
+>           assert {
+                name: connection.execute(f'SELECT * FROM "{name}"').fetchall() for name in tables
+            } == before
+E           assert {'settings': ...ca4cc')], ...} == {'settings': ...ca4cc')], ...}
+E             
+E             Omitting 26 identical items, use -vv to show
+E             Differing items:
+E             {'pack_trash_items': [('4e4101cf-a14b-49bb-8c1d-e7d3a7ed4ef2', '81fafb71-1968-4419-955d-fb20686ae32b', 'a6f41b83-84d8-...80727687338753"], "sha256": "8cb86750162dba622eb8ea598acd9a9776733fc4b4607739dc314b2335731859", "size": 677}]}', ...)]} != {'pack_trash_items': [('4e4101cf-a14b-49bb-8c1d-e7d3a7ed4ef2', '81fafb71-1968-4419-955d-fb20686ae32b', 'a6f41b83-84d8-...80727687338753"], "sha256": "8cb86750162dba622eb8ea598acd9a9776733fc4b4607739dc314b2335731859", "size": 677}]}', ...)]}
+E             Use -v to get more diff
+
+tests/test_pack_purge_plans.py:350: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/_pytest/config/__init__.py:1464
+  /usr/local/lib/python3.13/site-packages/_pytest/config/__init__.py:1464: PytestConfigWarning: Unknown config option: cache_dir
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_pack_purge_execution.py::test_cold_service_recovery_reconciles_each_durable_phase[purge_claiming]
+FAILED tests/test_pack_purge_execution.py::test_cold_service_recovery_reconciles_each_durable_phase[purge_claimed]
+FAILED tests/test_pack_purge_execution.py::test_cold_service_recovery_reconciles_each_durable_phase[purge_verified]
+FAILED tests/test_pack_purge_execution.py::test_cold_service_recovery_reconciles_each_durable_phase[purge_purging]
+FAILED tests/test_pack_purge_execution.py::test_cold_service_recovery_reconciles_each_durable_phase[purge_unlinked_before_commit]
+FAILED tests/test_pack_purge_execution.py::test_cold_service_recovery_reconciles_each_durable_phase[purge_image_committed]
+FAILED tests/test_pack_purge_execution.py::test_cold_service_recovery_reconciles_each_durable_phase[purge_directory_claiming]
+FAILED tests/test_pack_purge_execution.py::test_cold_service_recovery_reconciles_each_durable_phase[purge_directory_claimed]
+FAILED tests/test_pack_purge_execution.py::test_cold_service_recovery_reconciles_each_durable_phase[purge_removing]
+FAILED tests/test_pack_purge_execution.py::test_cold_service_recovery_reconciles_each_durable_phase[purge_directory_removed]
+FAILED tests/test_pack_purge_plans.py::test_0009_upgrade_keeps_existing_tables_byte_values_and_adds_only_preview_tables
+================== 11 failed, 62 passed, 2 warnings in 41.99s ==================

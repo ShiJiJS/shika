@@ -9,6 +9,7 @@ import '../../ui/media_layout.dart';
 import '../../ui/paper.dart';
 import '../packs/pack_sheets.dart';
 import '../packs/pack_reader_page.dart';
+import '../packs/pack_file_action.dart';
 import 'browse_context.dart';
 import 'catalog_selection.dart';
 import 'pack_query_controller.dart';
@@ -127,7 +128,9 @@ class PackCatalogPage extends StatefulWidget {
     required this.repository,
     required this.entry,
     required this.active,
+    this.onResumeReading,
   });
+  final Future<void> Function(PackCleanupContext, String)? onResumeReading;
   final LibraryRepository repository;
   final PackBrowseContext entry;
   final bool active;
@@ -154,6 +157,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   PackBrowseContext? pendingReturn;
   List<String> returnIds = const [];
   String error = '';
+  List<PackFileCommand> pendingFiles = const [];
+  int _pendingFilesRead = 0;
   PackLibraryState get data => catalog.state;
   bool get recent => entry.source == BrowseSource.recent;
   int get columns => recent ? 1 : 2;
@@ -196,6 +201,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       search.text = entry.query.search;
       selection.cancel(clear: true);
       initialized = false;
+      pendingFiles = const [];
+      _pendingFilesRead++;
       generation++;
       pendingReturn = null;
       returnIds = const [];
@@ -219,6 +226,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   void repositoryChanged() {
     if (!identical(selectionConnection, repo.connectionIdentity)) {
       selectionConnection = repo.connectionIdentity;
+      pendingFiles = const [];
+      _pendingFilesRead++;
       selection.cancel(clear: true);
       generation++;
       pendingReturn = null;
@@ -285,6 +294,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       return;
     }
     final current = ++generation;
+    unawaited(loadPendingFiles());
     final oldStart = data.offset,
         oldPixels = scroll.hasClients ? scroll.offset : 0.0;
     if (restore) remember();
@@ -425,35 +435,291 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     }
   }
 
-  Future<void> details(LibraryPack pack) async {
-    if (_detailsOpen || busy) return;
-    if (repo.capabilities.packReadingSessions) {
-      remember();
-      _detailsOpen = true;
-      try {
-        await Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (_) => PackReaderPage(
-              repository: repo,
-              entry: PackReadingEntry(
-                entry.query,
-                source: entry.source,
-                anchorId: pack.id,
-              ),
-              editTags: (current) async {
-                await tags(
-                  {current.id},
-                  initial: current.tags,
-                  initialNames: current.tagNames,
-                );
-              },
+  Future<void> loadPendingFiles() async {
+    final request = ++_pendingFilesRead, connection = repo.connectionIdentity;
+    if (!repo.capabilities.packLogicalTrash) return;
+    try {
+      final pending = await repo.createPackFiles().pending();
+      if (mounted &&
+          request == _pendingFilesRead &&
+          identical(connection, repo.connectionIdentity)) {
+        setState(() => pendingFiles = pending);
+      }
+    } catch (failure) {
+      if (mounted &&
+          request == _pendingFilesRead &&
+          identical(connection, repo.connectionIdentity)) {
+        setState(() => error = failure.toString());
+      }
+    }
+  }
+
+  Future<void> checkPendingFiles() async {
+    if (_detailsOpen || pendingFiles.isEmpty) return;
+    var command = pendingFiles.first;
+    _detailsOpen = true;
+    try {
+      if (pendingFiles.length > 1) {
+        final selected = await paperSheet<PackFileCommand>(
+          context,
+          SheetFrame(
+            title: '待核对的图包操作',
+            children: [
+              for (final value in pendingFiles)
+                ListTile(
+                  title: Text(
+                    value.label ?? (value.kind == 'trash' ? '整包移除' : '图包恢复与撤销'),
+                  ),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.pop(context, value),
+                ),
+            ],
+          ),
+        );
+        if (selected == null || !mounted) return;
+        command = selected;
+      }
+      if (!mounted) return;
+      final files = repo.createPackFiles();
+      final outcome = await showPackFileAction(
+        context,
+        files: files,
+        command: command,
+        title: '核对图包操作',
+        description: command.label,
+        confirm: true,
+      );
+      if (outcome == null || !mounted || !files.isCurrent()) return;
+      await files.acknowledge(outcome.command);
+      repo.packFilesChanged();
+      if (mounted &&
+          outcome.command.kind == 'trash' &&
+          outcome.task.result!.succeeded > 0) {
+        showPackUndo(context, repo, outcome, onRestored: resumeRestored);
+      } else if (mounted) {
+        if (outcome.command.kind == 'undo' &&
+            outcome.task.result!.readingRestored) {
+          _detailsOpen = false;
+          await resumeRestored(outcome);
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              outcome.task.result!.succeeded > 0
+                  ? '图包操作已完成'
+                  : '图包操作未完成，请重新读取后再试',
             ),
           ),
         );
-      } finally {
-        _detailsOpen = false;
-        if (mounted && widget.active) await load(restore: initialized);
       }
+    } catch (failure) {
+      if (mounted) setState(() => error = failure.toString());
+    } finally {
+      _detailsOpen = false;
+      if (mounted && widget.active) await load(restore: initialized);
+    }
+  }
+
+  Future<void> actions(LibraryPack pack) async {
+    if (_detailsOpen || busy) return;
+    _detailsOpen = true;
+    String? action;
+    try {
+      action = await paperSheet<String>(
+        context,
+        SheetFrame(
+          title: pack.name,
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('阅读图包'),
+              trailing: const Icon(Icons.chrome_reader_mode_outlined),
+              onTap: () => Navigator.pop(context, 'read'),
+            ),
+            if (repo.capabilities.packReaderCleanup &&
+                repo.capabilities.packLogicalTrash)
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('从这包开始快速整理'),
+                trailing: const Icon(Icons.playlist_play),
+                onTap: () => Navigator.pop(context, 'quick'),
+              ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('整包标签'),
+              trailing: const Icon(Icons.sell_outlined),
+              onTap: () => Navigator.pop(context, 'tags'),
+            ),
+            if (repo.capabilities.packLogicalTrash)
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  '整包移入回收站',
+                  style: TextStyle(color: Paper.of(context).danger),
+                ),
+                trailing: const Icon(Icons.delete_outline),
+                onTap: () => Navigator.pop(context, 'trash'),
+              ),
+          ],
+        ),
+      );
+    } finally {
+      _detailsOpen = false;
+    }
+    if (!mounted || !widget.active) return;
+    if (action == 'read') await details(pack);
+    if (action == 'quick') await open(quick: true, anchor: pack.id);
+    if (action == 'tags') {
+      await tags({pack.id}, initial: pack.tags, initialNames: pack.tagNames);
+    }
+    if (action == 'trash') await remove(pack);
+  }
+
+  Future<void> remove(LibraryPack pack) async {
+    if (_detailsOpen || busy) return;
+    remember();
+    _detailsOpen = true;
+    try {
+      final outcome = await showPackFileAction(
+        context,
+        files: repo.createPackFiles(),
+        command: PackFileCommand.trash(packFileRequestId(), [
+          pack.id,
+        ], label: pack.name),
+        title: '整包移入回收站？',
+        description: '${pack.name} · ${pack.pageCount} 张',
+      );
+      if (outcome == null || !mounted || !outcome.files.isCurrent()) return;
+      await outcome.files.acknowledge(outcome.command);
+      repo.packFilesChanged();
+      if (!mounted) return;
+      if (outcome.task.result!.succeeded > 0) {
+        showPackUndo(context, repo, outcome, onRestored: resumeRestored);
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('图包未移除，请重新读取后再试')));
+      }
+    } catch (failure) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(failure.toString())));
+      }
+    } finally {
+      _detailsOpen = false;
+      if (mounted && widget.active) await load(restore: initialized);
+    }
+  }
+
+  Future<void> resumeRestored(PackFileOutcome outcome) async {
+    if (!mounted ||
+        !outcome.files.isCurrent() ||
+        !outcome.task.result!.readingRestored ||
+        ModalRoute.of(context)?.isCurrent != true) {
+      return;
+    }
+    final origin = outcome.command.readerContext;
+    final identity = outcome.command.readingSessionId;
+    if (origin == null || identity == null) return;
+    if (widget.onResumeReading != null) {
+      await widget.onResumeReading!(origin, identity);
+    } else if (origin.entry.source == entry.source) {
+      await resumeFromCleanup(origin, identity);
+    }
+  }
+
+  Future<void> resumeFromCleanup(
+    PackCleanupContext origin,
+    String identity,
+  ) async {
+    if (!mounted ||
+        !widget.active ||
+        _detailsOpen ||
+        ModalRoute.of(context)?.isCurrent != true) {
+      return;
+    }
+    entry = PackBrowseContext(
+      query: origin.entry.query,
+      scrollOffset: origin.scrollOffset,
+      scrollAnchor: origin.scrollAnchor,
+      scrollIndex: origin.scrollIndex,
+      scrollInset: origin.scrollInset,
+    );
+    search.text = entry.query.search;
+    selection.cancel(clear: true);
+    selecting = false;
+    pendingReturn = entry;
+    returnIds = origin.anchors;
+    await open(origin: origin, resumeSessionId: identity, quick: origin.quick);
+  }
+
+  Future<void> open({
+    bool quick = false,
+    String? anchor,
+    PackCleanupContext? origin,
+    String? resumeSessionId,
+  }) async {
+    if (_detailsOpen ||
+        busy ||
+        !widget.active ||
+        !repo.capabilities.packReadingSessions) {
+      return;
+    }
+    if (quick &&
+        (!repo.capabilities.packReaderCleanup ||
+            !repo.capabilities.packLogicalTrash)) {
+      return;
+    }
+    if (origin == null && data.items.isEmpty) return;
+    remember();
+    final saved = pendingReturn ?? entry;
+    final returnContext =
+        origin ??
+        PackCleanupContext(
+          entry: PackReadingEntry(
+            entry.query,
+            source: entry.source,
+            anchorId: anchor ?? data.items.first.id,
+          ),
+          quick: quick,
+          scrollOffset: saved.scrollOffset,
+          scrollAnchor: saved.scrollAnchor,
+          scrollIndex: saved.scrollIndex,
+          scrollInset: saved.scrollInset,
+          anchors: returnIds,
+        );
+    _detailsOpen = true;
+    PackFileOutcome? outcome;
+    try {
+      outcome = await Navigator.of(context).push<PackFileOutcome>(
+        MaterialPageRoute<PackFileOutcome>(
+          builder: (_) => PackReaderPage(
+            repository: repo,
+            entry: returnContext.entry,
+            quick: quick,
+            returnContext: returnContext,
+            resumeSessionId: resumeSessionId,
+            editTags: (current) => tags(
+              {current.id},
+              initial: current.tags,
+              initialNames: current.tagNames,
+            ),
+          ),
+        ),
+      );
+    } finally {
+      _detailsOpen = false;
+      if (mounted && widget.active) await load(restore: initialized);
+    }
+    if (outcome != null && mounted && outcome.files.isCurrent()) {
+      showPackUndo(context, repo, outcome, onRestored: resumeRestored);
+    }
+  }
+
+  Future<void> details(LibraryPack pack) async {
+    if (_detailsOpen || busy) return;
+    if (repo.capabilities.packReadingSessions) {
+      await open(anchor: pack.id);
       return;
     }
 
@@ -622,6 +888,17 @@ class PackCatalogPageState extends State<PackCatalogPage> {
               ),
             ),
           if (error.isNotEmpty) note(error),
+          if (pendingFiles.isNotEmpty)
+            Row(
+              children: [
+                Expanded(child: note('${pendingFiles.length} 项图包操作待核对')),
+                TextButton(
+                  key: const Key('pack-pending-files'),
+                  onPressed: checkPendingFiles,
+                  child: const Text('查询结果'),
+                ),
+              ],
+            ),
           if (data.loading && data.items.isNotEmpty)
             const LinearProgressIndicator(minHeight: 2),
           if (data.error.isNotEmpty && data.items.isNotEmpty)
@@ -786,6 +1063,20 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                   PackSort.recent => '最近阅读 ↓',
                                 }, style: const TextStyle(fontSize: 13)),
                               ),
+                              if (repo.capabilities.packReaderCleanup &&
+                                  repo.capabilities.packLogicalTrash &&
+                                  !selecting)
+                                TextButton(
+                                  key: const Key('pack-quick-cleanup'),
+                                  onPressed:
+                                      data.items.isEmpty || busy || data.loading
+                                      ? null
+                                      : () => open(quick: true),
+                                  child: const Text(
+                                    '快速整理',
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                ),
                             ],
                           ),
                         ),
@@ -945,7 +1236,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                         ),
                                         IconButton(
                                           tooltip: '图包操作 ${pack.name}',
-                                          onPressed: () => details(pack),
+                                          onPressed: () => actions(pack),
                                           constraints: const BoxConstraints(
                                             minWidth: 32,
                                             minHeight: 28,

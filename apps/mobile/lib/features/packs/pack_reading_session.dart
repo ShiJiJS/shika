@@ -34,6 +34,8 @@ class PackReadingSession extends ChangeNotifier {
     this.repository,
     this.entry, {
     PackReader? reader,
+    this.fileCommands,
+    this.returnContext,
     this.saveDelay = const Duration(milliseconds: 700),
     String Function()? nonce,
   }) : reader = reader ?? repository.createPackReader(),
@@ -47,6 +49,26 @@ class PackReadingSession extends ChangeNotifier {
   final LibraryRepository repository;
   final PackReadingEntry entry;
   final PackReader reader;
+  PackFiles? _files;
+  final PackFiles? fileCommands;
+  final PackCleanupContext? returnContext;
+  PackFiles get cleanupFiles =>
+      _files ??= fileCommands ?? repository.createPackFiles();
+  bool get cleanupSupported =>
+      repository.capabilities.packReaderCleanup &&
+      repository.capabilities.packLogicalTrash;
+  bool cleanupBusy = false,
+      cleanupFrozen = false,
+      cleanupCanResend = false,
+      cleanupFinished = false;
+  String cleanupError = '';
+  PackFileCommand? _cleanupCommand, lastDeleteCommand;
+  PackFileTask? cleanupTask, lastDeleteTask;
+  ReaderCursor? _cleanupOwner;
+  String? _undoPack;
+  PackFileCommand? get cleanupCommand => _cleanupCommand;
+  bool get hasCleanup => _cleanupCommand != null;
+  bool get inputBlocked => busy || hasPending || cleanupBusy || cleanupFrozen;
   final Duration saveDelay;
   final String Function() _nonce;
   bool _disposed = false,
@@ -78,7 +100,7 @@ class PackReadingSession extends ChangeNotifier {
   int get total => range?.pack?.pageCount ?? 0;
   int get packEpoch => _generation;
   String? get pendingKind => _pending?.kind;
-  bool get hasPending => _pending != null;
+  bool get hasPending => _pending != null || hasCleanup;
   bool get unsaved => _mark != null && _dirty > _saved;
   bool get live => !_disposed && !invalidated && reader.isCurrent;
   ReaderPage? get currentPage => _pages[index];
@@ -100,7 +122,35 @@ class PackReadingSession extends ChangeNotifier {
     _notify();
   }
 
-  Future<bool> start() => _run(CreatePackReading(_nonce(), entry), _install);
+  Future<bool> start({String? resumeSessionId}) => resumeSessionId == null
+      ? _run(CreatePackReading(_nonce(), entry), _install)
+      : resume(resumeSessionId);
+
+  Future<bool> resume(String identity) async {
+    if (!live || busy || hasPending) return false;
+    busy = true;
+    error = '';
+    _notify();
+    try {
+      final value = await reader.read(identity);
+      if (!live) return false;
+      if (value.finished ||
+          value.source != entry.source ||
+          value.random != entry.random) {
+        throw const LibraryFailure('原阅读范围已结束或来源已变化，请从来源重新进入');
+      }
+      _install(value);
+      return true;
+    } catch (failure) {
+      if (live) error = failure.toString();
+      return false;
+    } finally {
+      if (!_disposed) {
+        busy = false;
+        _notify();
+      }
+    }
+  }
 
   void _install(PackReadingRange value) {
     _generation++;
@@ -203,10 +253,18 @@ class PackReadingSession extends ChangeNotifier {
       canResend ? _execute(true) : Future.value(false);
 
   Future<bool> reload() async {
-    if (!live || busy || hasPending || range == null) return false;
+    if (!live ||
+        busy ||
+        hasPending ||
+        cleanupBusy ||
+        cleanupFrozen ||
+        range == null) {
+      return false;
+    }
     final generation = _generation;
     busy = true;
     error = '';
+    cleanupError = '';
     _notify();
     try {
       final value = await reader.read(range!.id);
@@ -275,6 +333,8 @@ class PackReadingSession extends ChangeNotifier {
 
   void show(int pageIndex, {double ratio = 0, bool end = false}) {
     if (!live ||
+        cleanupBusy ||
+        cleanupFrozen ||
         pendingKind == 'position' ||
         pageIndex < 0 ||
         pageIndex >= total) {
@@ -293,6 +353,8 @@ class PackReadingSession extends ChangeNotifier {
   /// Called only by the current displayed widget after a real decoded frame.
   void visibleFrame(int pageIndex, String pageId, int epoch) {
     if (!live ||
+        cleanupBusy ||
+        cleanupFrozen ||
         pendingKind == 'position' ||
         epoch != _generation ||
         pageIndex != index ||
@@ -352,13 +414,22 @@ class PackReadingSession extends ChangeNotifier {
 
   void _scheduleSave() {
     _saveTimer?.cancel();
-    if (!live || !opened || !unsaved || busy || hasPending) return;
+    if (!live ||
+        !opened ||
+        !unsaved ||
+        busy ||
+        hasPending ||
+        cleanupBusy ||
+        cleanupFrozen ||
+        needsReload) {
+      return;
+    }
     _saveTimer = Timer(saveDelay, () => unawaited(flush()));
   }
 
-  Future<bool> flush() async {
+  Future<bool> flush({bool forCleanup = false}) async {
     _saveTimer?.cancel();
-    if (!live) return false;
+    if (!live || cleanupFrozen || (cleanupBusy && !forCleanup)) return false;
     for (var wait = 0; wait < 4 && _work != null; wait++) {
       await _work;
     }
@@ -406,6 +477,247 @@ class PackReadingSession extends ChangeNotifier {
       ),
       _install,
     );
+  }
+
+  Future<PackFileTask?> removeCurrent({required bool quick}) async {
+    if (!cleanupSupported ||
+        !live ||
+        cleanupBusy ||
+        cleanupFrozen ||
+        hasCleanup ||
+        needsReload ||
+        cursor == null) {
+      return null;
+    }
+    cleanupBusy = true;
+    cleanupError = '';
+    _saveTimer?.cancel();
+    _notify();
+    try {
+      if (!await flush(forCleanup: true) ||
+          !live ||
+          !opened ||
+          cursor == null) {
+        cleanupError = '请先打开当前图片并确认阅读状态，再整理整包';
+        return null;
+      }
+      final owner = cursor!, generation = _generation;
+      final pending = await cleanupFiles.pending();
+      if (!live || generation != _generation) return null;
+      final existing = pending
+          .where((value) => value.resources.contains('pack:${owner.packId}'))
+          .firstOrNull;
+      _cleanupCommand =
+          existing ??
+          PackFileCommand.trash(
+            _nonce(),
+            [owner.packId],
+            reading: owner,
+            advance: quick,
+            label: range!.pack!.name,
+            readerContext:
+                (returnContext ??
+                        PackCleanupContext(entry: entry, quick: quick))
+                    .withQuick(quick, session: owner.sessionId),
+          );
+      _cleanupOwner = owner;
+      cleanupTask = null;
+      cleanupFinished = false;
+      cleanupFrozen = true;
+      _notify();
+      return await _executeCleanup(submit: existing == null);
+    } catch (failure) {
+      if (live) cleanupError = packFileFailureMessage(failure);
+      return null;
+    } finally {
+      if (!_disposed) {
+        cleanupBusy = false;
+        _notify();
+        _scheduleSave();
+      }
+    }
+  }
+
+  Future<PackFileTask?> checkCleanup({bool resend = false}) async {
+    if (!live || cleanupBusy || !hasCleanup || (resend && !cleanupCanResend)) {
+      return null;
+    }
+    cleanupBusy = true;
+    _notify();
+    try {
+      return await _executeCleanup(submit: resend);
+    } finally {
+      if (!_disposed) {
+        cleanupBusy = false;
+        _notify();
+        _scheduleSave();
+      }
+    }
+  }
+
+  Future<PackFileTask?> undoDelete(PackFileTask original) async {
+    if (!live ||
+        cleanupBusy ||
+        cleanupFrozen ||
+        hasCleanup ||
+        needsReload ||
+        cursor == null ||
+        lastDeleteTask?.id != original.id) {
+      return null;
+    }
+    cleanupBusy = true;
+    cleanupError = '';
+    _saveTimer?.cancel();
+    _notify();
+    try {
+      if (!await flush(forCleanup: true) || !live || cursor == null) {
+        return null;
+      }
+      _cleanupOwner = cursor;
+      _undoPack =
+          (lastDeleteCommand!.body['pack_ids'] as List).single as String;
+      _cleanupCommand = PackFileCommand.undo(
+        _nonce(),
+        original.id,
+        readerContext: lastDeleteCommand!.readerContext,
+      );
+      cleanupTask = null;
+      cleanupFrozen = true;
+      _notify();
+      return await _executeCleanup(submit: true);
+    } catch (failure) {
+      if (live) cleanupError = packFileFailureMessage(failure);
+      return null;
+    } finally {
+      if (!_disposed) {
+        cleanupBusy = false;
+        _notify();
+        _scheduleSave();
+      }
+    }
+  }
+
+  bool _ownsCleanup(PackFileCommand command) =>
+      live && identical(command, _cleanupCommand);
+
+  void _discardOldMark() {
+    _saveTimer?.cancel();
+    _generation++;
+    _pageRead++;
+    _queueRead++;
+    reader.cancelPages();
+    reader.cancelQueue();
+    loadingPages = loadingQueue = false;
+    _mark = null;
+    _shownId = null;
+    _dirty = _saved = 0;
+    opened = false;
+    cursor = null;
+  }
+
+  Future<bool> _ackCleanup(PackFileCommand command) async {
+    await cleanupFiles.acknowledge(command);
+    if (!_ownsCleanup(command)) return false;
+    _cleanupCommand = null;
+    cleanupCanResend = false;
+    return true;
+  }
+
+  Future<PackFileTask?> _executeCleanup({required bool submit}) async {
+    final command = _cleanupCommand!, owner = _cleanupOwner!;
+    cleanupError = '';
+    cleanupCanResend = false;
+    try {
+      final task = await cleanupFiles.resolve(
+        command,
+        submit: submit,
+        keepWaiting: () => _ownsCleanup(command),
+      );
+      if (!_ownsCleanup(command)) return null;
+      cleanupTask = task;
+      if (task == null || !task.settled) {
+        cleanupCanResend =
+            task == null && await cleanupFiles.canResend(command);
+        cleanupError = task == null
+            ? '未找到原请求，核对后可明确重新提交原请求'
+            : '整包操作尚未确认完成，请查询原结果；当前阅读位置已保留';
+        return task;
+      }
+      final result = task.result!;
+      if (result.succeeded == 0) {
+        if (!await _ackCleanup(command)) return null;
+        cleanupFrozen = false;
+        needsReload = true;
+        cleanupError = '整包操作未完成，请重新读取后再试';
+        return task;
+      }
+      if (command.kind == 'trash') {
+        lastDeleteCommand = command;
+        lastDeleteTask = task;
+        _discardOldMark();
+        final advance =
+            command.readingSessionId == owner.sessionId &&
+            (command.body['reading'] as Map?)?['advance'] != false &&
+            command.body['reading'] != null;
+        final transition = result.transition;
+        if (!advance || transition?.finished == true) {
+          if (!await _ackCleanup(command)) return null;
+          cleanupFinished = true;
+          repository.packFilesChanged();
+          return task;
+        }
+        if (transition == null ||
+            transition.sessionId != owner.sessionId ||
+            transition.revision <= owner.sessionRevision) {
+          throw const LibraryFailure('图包已移除，原阅读范围的结果需要重新核对');
+        }
+        final value = await reader.read(owner.sessionId);
+        if (!_ownsCleanup(command)) return null;
+        if (value.finished ||
+            value.revision != transition.revision ||
+            value.pack?.id != transition.packId) {
+          throw const LibraryFailure('图包已移除，但阅读范围位置已变化，请返回来源核对');
+        }
+        if (!await _ackCleanup(command)) return null;
+        cleanupFrozen = cleanupBusy = false;
+        _install(value);
+      } else if (command.kind == 'undo') {
+        if (result.readingRestored) {
+          final value = await reader.read(owner.sessionId);
+          if (!_ownsCleanup(command)) return null;
+          if (value.finished ||
+              value.revision != owner.sessionRevision + 1 ||
+              value.pack?.id != _undoPack) {
+            throw const LibraryFailure('内容已恢复，但原阅读位置需要重新核对');
+          }
+          if (!await _ackCleanup(command)) return null;
+          cleanupFrozen = cleanupBusy = false;
+          _install(value);
+        } else {
+          if (!await _ackCleanup(command)) return null;
+          cleanupFrozen = false;
+        }
+        lastDeleteTask = null;
+        lastDeleteCommand = null;
+      }
+      repository.packFilesChanged();
+      return task;
+    } catch (failure) {
+      if (!_ownsCleanup(command)) return null;
+      cleanupError = packFileFailureMessage(failure);
+      try {
+        final pending = await cleanupFiles.pending();
+        if (_ownsCleanup(command) &&
+            !pending.any((value) => value.requestId == command.requestId)) {
+          _cleanupCommand = null;
+          cleanupFrozen = false;
+          needsReload = true;
+        }
+      } catch (_) {
+        /* Unknown persistence state must retain the original command. */
+      }
+      return null;
+    }
   }
 
   Future<void> loadQueue({int offset = 0}) async {

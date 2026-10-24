@@ -12,6 +12,8 @@ import 'server_api.dart';
 
 part 'server_pack_catalog.dart';
 part 'server_pack_reading.dart';
+part 'server_pack_trash.dart';
+part 'server_pack_purge.dart';
 
 typedef Json = Map<String, dynamic>;
 
@@ -27,10 +29,14 @@ class ServerLibraryRepository extends LibraryRepository
   ServerLibraryRepository(
     this.credentials, {
     FileCommandStore? fileCommands,
+    FileCommandStore? packCommands,
     BackupWorkStore? backupWork,
     String address = '10.0.2.2',
     int port = 8760,
   }) : fileCommands = fileCommands ?? MemoryFileCommandStore(),
+       packFileJournal = PackFileJournal(
+         packCommands ?? MemoryFileCommandStore(),
+       ),
        backupWork = backupWork ?? MemoryBackupWorkStore(),
        _state = LibrarySnapshot(
          videos: [],
@@ -45,7 +51,34 @@ class ServerLibraryRepository extends LibraryRepository
     libraryPreparation.value = const LibraryPreparation(ready: false);
   }
   final Set<_ServerPackReader> _readers = {};
+  final Set<_ServerPackTrash> _trashReaders = {};
+  final Set<_ServerPackPurge> _purgeReaders = {};
   int _readerEpoch = 0;
+  @override
+  PackPurgeGateway createPackPurge() {
+    ensureNotRestoring();
+    if (!capabilities.packPurgePreview ||
+        !capabilities.packPermanentDelete ||
+        !capabilities.packLogicalTrash ||
+        !capabilities.imagePacks) {
+      throw const LibraryFailure('当前服务尚不支持图包永久删除，请升级服务端');
+    }
+    final gateway = _ServerPackPurge(this, api, _generation, _readerEpoch);
+    _purgeReaders.add(gateway);
+    return gateway;
+  }
+
+  @override
+  PackTrashCatalog createPackTrash() {
+    ensureNotRestoring();
+    if (!capabilities.packLogicalTrash || !capabilities.imagePacks) {
+      throw const LibraryFailure('当前服务尚不支持图包回收站，请升级服务端');
+    }
+    final catalog = _ServerPackTrash(this, api, _generation, _readerEpoch);
+    _trashReaders.add(catalog);
+    return catalog;
+  }
+
   @override
   PackReader createPackReader() {
     ensureNotRestoring();
@@ -60,6 +93,12 @@ class ServerLibraryRepository extends LibraryRepository
   @override
   void _resetReaders() {
     _readerEpoch++;
+    for (final gateway in _purgeReaders.toList()) {
+      gateway.dispose();
+    }
+    for (final catalog in _trashReaders.toList()) {
+      catalog.dispose();
+    }
     for (final reader in _readers.toList()) {
       reader.dispose();
     }
@@ -67,6 +106,34 @@ class ServerLibraryRepository extends LibraryRepository
 
   final CredentialStore credentials;
   final FileCommandStore fileCommands;
+  final PackFileJournal packFileJournal;
+  @override
+  PackFiles createPackFiles() {
+    ensureNotRestoring();
+    if (!capabilities.packLogicalTrash || _fileScope == null) {
+      throw const LibraryFailure('当前服务尚不支持图包回收，请升级服务端');
+    }
+    final target = api, generation = _generation, epoch = _readerEpoch;
+    bool current() =>
+        !_disposed &&
+        generation == _generation &&
+        epoch == _readerEpoch &&
+        identical(target, _api);
+    return PackFiles(
+      journal: packFileJournal,
+      scope: _fileScope!,
+      isCurrent: current,
+      call: (method, path, {body}) async {
+        ensureNotRestoring();
+        if (!current()) throw const RequestCancelled();
+        final result = await call(method, path, using: target, body: body);
+        if (!current()) throw const RequestCancelled();
+        ensureNotRestoring();
+        return result;
+      },
+    );
+  }
+
   final BackupWorkStore backupWork;
   ServiceCapabilities _capabilities = const ServiceCapabilities.legacy();
   @override

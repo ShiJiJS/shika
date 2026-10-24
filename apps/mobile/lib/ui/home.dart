@@ -11,6 +11,7 @@ import '../app/media_workspace.dart';
 import '../features/library/browse_context.dart';
 import '../features/library/library_query_controller.dart';
 import '../features/preview/video_preview_route.dart';
+import '../features/packs/pack_trash_page.dart';
 import '../library/repository.dart';
 import 'paper.dart';
 import 'player.dart';
@@ -112,6 +113,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   String previousScope = '';
   List<LibraryVideo> trashItems = [];
   int trashTotal = 0, trashGeneration = 0;
+  MediaKind trashKind = MediaKind.video;
   bool trashLoading = false;
   bool selectingAllTrash = false, restoringTrash = false;
   bool purgingTrash = false, queryingFiles = false, cleaningMissing = false;
@@ -291,7 +293,11 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   Future<void> loadTrash({bool more = false}) async {
-    if (page != 'trash' || (more && trashLoading)) return;
+    if (page != 'trash' ||
+        trashKind != MediaKind.video ||
+        (more && trashLoading)) {
+      return;
+    }
     final generation = ++trashGeneration;
     setState(() {
       trashLoading = true;
@@ -2150,7 +2156,9 @@ class _LibraryHomeState extends State<LibraryHome> {
       settingRow(
         Icons.delete_outline,
         '回收站',
-        '${repo.trashCount} 个视频 · 不会自动清空',
+        repo.capabilities.packLogicalTrash
+            ? '视频与图包分别管理 · 不会自动清空'
+            : '${repo.trashCount} 个视频 · 不会自动清空',
         () => go('trash'),
       ),
       settingRow(
@@ -2517,6 +2525,69 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   Widget trash() {
+    if (!repo.capabilities.packLogicalTrash || !repo.capabilities.imagePacks) {
+      return videoTrash();
+    }
+    final p = Paper.of(context);
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              for (final kind in MediaKind.values)
+                Padding(
+                  padding: const EdgeInsets.only(right: 24),
+                  child: TextButton(
+                    key: Key('trash-kind-${kind.name}'),
+                    onPressed: () {
+                      if (trashKind == kind) return;
+                      setState(() => trashKind = kind);
+                      trashGeneration++;
+                      repo.cancelTrashRead();
+                      if (kind == MediaKind.video) unawaited(loadTrash());
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: kind == trashKind ? p.olive : p.muted,
+                      shape: const RoundedRectangleBorder(),
+                      side: BorderSide.none,
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: kind == trashKind
+                                ? p.olive
+                                : Colors.transparent,
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                      child: Text(kind == MediaKind.video ? '视频' : '图包'),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: IndexedStack(
+            index: trashKind == MediaKind.video ? 0 : 1,
+            children: [
+              videoTrash(),
+              PackTrashPage(
+                repository: repo,
+                active: trashKind == MediaKind.pack,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget videoTrash() {
     final items = trashItems;
     if (trashError.isNotEmpty) {
       return Center(

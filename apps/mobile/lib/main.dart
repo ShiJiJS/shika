@@ -39,6 +39,9 @@ Future<void> main() async {
       : ServerLibraryRepository(
           SecureCredentialStore(),
           fileCommands: SecureFileCommandStore(),
+          packCommands: SecureFileCommandStore(
+            key: 'video_viewer.pack_commands.v1',
+          ),
           backupWork: SecureBackupWorkStore(),
           address: const String.fromEnvironment(
             'SERVER_ADDRESS',

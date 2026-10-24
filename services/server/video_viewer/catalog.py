@@ -3,8 +3,10 @@ from pathlib import Path
 from sqlalchemy import func, or_, select, update
 
 from .errors import LibraryError
+from .file_state import reserved_video_ids
 from .media_roots import enabled_path, owner_for_path
 from .models import Directory, ImagePack, RecentEntry, Root, Setting, Video, VideoTag, uid
+from .pack_scanner import reserved_packs
 from .paths import beneath, excluded, validate_path
 
 
@@ -69,6 +71,11 @@ class Catalog:
         if excluded(candidate, self.settings.data_dir):
             raise LibraryError("reserved_directory", "该目录保留给回收站或管理数据", 422)
         with self.db.write() as session:
+            # Check inside the write transaction: command acceptance cannot race root edits.
+            if session.scalar(reserved_packs().limit(1)) or session.scalar(
+                reserved_video_ids().limit(1)
+            ):
+                raise LibraryError("operation_busy", "文件操作进行中，请完成后再修改媒体目录")
             root = (
                 session.get(Root, root_id)
                 if root_id

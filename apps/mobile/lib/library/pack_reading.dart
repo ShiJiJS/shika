@@ -158,7 +158,7 @@ class PackReadingRange {
   final ReaderState? resume;
   final BrowseSource source;
   final ReaderNeighbor? previous, next;
-  ReaderCursor? get ownership => pack == null || resume == null
+  ReaderCursor? get ownership => finished || pack == null || resume == null
       ? null
       : ReaderCursor(
           sessionId: id,

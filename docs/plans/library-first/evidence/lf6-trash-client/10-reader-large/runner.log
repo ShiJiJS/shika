@@ -1,0 +1,100 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.39kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 101B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 9.47kB done
+#5 DONE 0.0s
+
+#6 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.0s done
+#6 DONE 0.0s
+
+#7 [runtime 8/9] COPY alembic.ini ./
+#7 CACHED
+
+#8 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#8 CACHED
+
+#9 [runtime 7/9] COPY migrations ./migrations
+#9 CACHED
+
+#10 [runtime 4/9] COPY requirements.lock ./
+#10 CACHED
+
+#11 [test 3/4] COPY tests ./tests
+#11 CACHED
+
+#12 [runtime 3/9] WORKDIR /app
+#12 CACHED
+
+#13 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#13 CACHED
+
+#14 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#14 CACHED
+
+#15 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [test 1/4] COPY requirements-test.lock ./
+#16 CACHED
+
+#17 [runtime 6/9] COPY video_viewer ./video_viewer
+#17 CACHED
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:22364afd410a8dee1427947573c04bfb1f4f261a2c4e9bb7111cae73a6eead5a done
+#19 exporting config sha256:4c4895e159aedc5de13c88318701506e12dd938547e10ed0f0bbd5d46c56696a done
+#19 exporting attestation manifest sha256:958e076156b156ae0a161dd466cc968b19e59d82c6587fbce7921caebafdd07b 0.0s done
+#19 exporting manifest list sha256:7d2f6a7c18de3c1a928f18a8fd093d792896b1bdd8ffab8ed8f2a004a48441a8 done
+#19 naming to docker.io/library/video-viewer-server:e2e done
+#19 unpacking to docker.io/library/video-viewer-server:e2e done
+#19 DONE 0.1s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.0s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart
+Running Gradle task 'assembleDebug'...                             13.1s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          491ms
+00:00 +0: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return
+CLEANUP_REPEAT 1: 7f3f64f3-51c3-4e05-a4a0-3a581f14b25f -> 0984d5e9-dd89-4258-9184-cd29e7514521
+CLEANUP_REPEAT 2: 0984d5e9-dd89-4258-9184-cd29e7514521 -> ad2dfb44-8316-448a-b8d3-de0825c3192e
+CLEANUP_REPEAT 3: ad2dfb44-8316-448a-b8d3-de0825c3192e -> 58c97131-e477-4e9d-b91a-4da9938fa039
+CLEANUP_REPEAT 4: 58c97131-e477-4e9d-b91a-4da9938fa039 -> d0fecc62-aba2-4c23-85f0-8230dd763cea
+CLEANUP_REPEAT 5: d0fecc62-aba2-4c23-85f0-8230dd763cea -> cb94a18c-f5fd-4608-ae90-cea8e91c137e
+CLEANUP_REPEAT 6: cb94a18c-f5fd-4608-ae90-cea8e91c137e -> 8ae10204-7be0-468d-8c23-5493e666bd48
+CLEANUP_REPEAT 7: 8ae10204-7be0-468d-8c23-5493e666bd48 -> b4ad1cc8-f8c0-4162-9716-16ab6761e665
+01:07 +1: (tearDownAll)
+01:07 +1: All tests passed!

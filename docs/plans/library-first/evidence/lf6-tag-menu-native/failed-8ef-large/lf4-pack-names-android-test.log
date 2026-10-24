@@ -1,0 +1,60 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_names_test.dart
+Running Gradle task 'assembleDebug'...                             22.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          809ms
+00:00 +0: LF4 real pack names beyond first page, retry, readback, rename and delete
+
+Warning: A call to tap() with finder "Found 1 widget with widget matching predicate descending from widget with type "PackTagEditor": [
+  RawTooltip-[LabeledGlobalKey<RawTooltipState>#ffeb3]("关闭面板", hover delay: 0:00:00.000000, touch delay: 0:00:01.500000, dismiss delay: 0:00:00.100000, triggerMode: TooltipTriggerMode.longPress, enableFeedback: true, positionDelegate: Closure: (TooltipPositionContext) => Offset from Function '_getDefaultPositionDelegate@1383220820':., state: RawTooltipState#bff57),
+]" derived an Offset (Offset(316.0, 780.0)) that would not hit test on the specified widget.
+Maybe the widget is actually off-screen, or another widget is obscuring it, or the widget cannot receive pointer events.
+Indeed, Offset(316.0, 780.0) is outside the bounds of the root of the render tree, Size(360.0, 740.0).
+The finder corresponds to this RenderBox: _RenderLayoutSurrogateProxyBox#6c949 relayoutBoundary=up19
+The hit test result at that offset is: HitTestResult(HitTestEntry<HitTestTarget>#35f74(_ReusableRenderView#d827b), HitTestEntry<HitTestTarget>#72191(<IntegrationTestWidgetsFlutterBinding>))
+#0      WidgetController._getElementPoint (package:flutter_test/src/controller.dart:2165:25)
+#1      WidgetController.getCenter (package:flutter_test/src/controller.dart:1947:12)
+#2      WidgetController.tap (package:flutter_test/src/controller.dart:1080:7)
+#3      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_names_test.dart:68:17)
+<asynchronous suspension>
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_names_test.dart:167:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+#7      StackZoneSpecification._registerCallback.<anonymous closure> (package:stack_trace/src/stack_zone_specification.dart:114:42)
+<asynchronous suspension>
+To silence this warning, pass "warnIfMissed: false" to "tap()".
+To make this warning fatal, set WidgetController.hitTestWarningShouldBeFatal to true.
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Timed out: card label visible for native evidence
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_names_test.dart:53:13)
+<asynchronous suspension>
+#2      main.<anonymous closure>.shot (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_names_test.dart:81:11)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_names_test.dart:182:7)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF4 real pack names beyond first page, retry, readback, rename and delete
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:15 +0 -1: LF4 real pack names beyond first page, retry, readback, rename and delete [E]
+  Test failed. See exception logs above.
+  The test description was: LF4 real pack names beyond first page, retry, readback, rename and delete
+  
+01:15 +0 -1: (tearDownAll)
+01:15 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_names_test.dart: LF4 real pack names beyond first page, retry, readback, rename and delete

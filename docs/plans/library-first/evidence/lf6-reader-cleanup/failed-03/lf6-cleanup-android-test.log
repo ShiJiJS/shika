@@ -1,0 +1,37 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart
+Running Gradle task 'assembleDebug'...                             12.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          566ms
+00:00 +0: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return
+CLEANUP_TIMEOUT decoded and confirmed bfb252b5-f685-497c-a851-a67b6dafb1f6
+CLEANUP_STATE  / 
+CLEANUP_IMAGE page=971881a7-5855-40e7-8403-424a1064411d readable=true error=null source=http://10.0.2.2:8761/api/v1/pages/971881a7-5855-40e7-8403-424a1064411d/image?v=1&session=1792872092033675-caeb7e39&reader=1 viewport=Size(390.0, 552.3)
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Timed out: decoded and confirmed bfb252b5-f685-497c-a851-a67b6dafb1f6
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart:73:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart:150:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:05 +0 -1: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return [E]
+  Test failed. See exception logs above.
+  The test description was: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return
+  
+01:05 +0 -1: (tearDownAll)
+01:05 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return

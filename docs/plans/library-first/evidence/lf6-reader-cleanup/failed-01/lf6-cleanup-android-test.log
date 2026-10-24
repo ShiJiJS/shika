@@ -1,0 +1,36 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart
+Running Gradle task 'assembleDebug'...                             26.3s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          709ms
+00:00 +0: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return
+CLEANUP_TIMEOUT decoded and confirmed f890037c-08b9-4b1a-a055-2bed27b3b535
+CLEANUP_STATE  / 
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Timed out: decoded and confirmed f890037c-08b9-4b1a-a055-2bed27b3b535
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart:53:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart:130:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:11 +0 -1: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return [E]
+  Test failed. See exception logs above.
+  The test description was: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return
+  
+01:11 +0 -1: (tearDownAll)
+01:11 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return

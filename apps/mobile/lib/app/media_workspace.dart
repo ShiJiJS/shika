@@ -113,6 +113,33 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
     setState(() => kinds[widget.destination] = value);
   }
 
+  Future<void> resumePack(PackCleanupContext origin, String identity) async {
+    if (!mounted || !widget.active || ModalRoute.of(context)?.isCurrent != true) {
+      return;
+    }
+    final destination = switch (origin.entry.source) {
+      BrowseSource.library => 'library',
+      BrowseSource.tags => 'tags',
+      BrowseSource.recent => 'recent',
+    };
+    setState(() {
+      kinds[destination] = MediaKind.pack;
+      showingTagResults = destination == 'tags';
+      if (showingTagResults) {
+        tagResultsPack = PackBrowseContext(query: origin.entry.query);
+      }
+    });
+    widget.onNavigate(destination);
+    await WidgetsBinding.instance.endOfFrame;
+    if (!mounted || widget.destination != destination || !widget.active) return;
+    final page = switch (destination) {
+      'tags' => tagsPack.currentState,
+      'recent' => recentPack.currentState,
+      _ => libraryPack.currentState,
+    };
+    await page?.resumeFromCleanup(origin, identity);
+  }
+
   Future<void> previewTags(Set<String> tags) async {
     final target = VideoBrowseContext(
       query: VideoQuery(tags: tags),
@@ -218,14 +245,23 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                               ? currentPack?.toggleSelection()
                               : currentVideo?.toggleSelection();
                         }
-                        if (value == 'quick') currentVideo?.open(quick: true);
+                        if (value == 'quick') {
+                          pack
+                              ? currentPack?.open(quick: true)
+                              : currentVideo?.open(quick: true);
+                        }
                       },
                       itemBuilder: (_) => [
                         const PopupMenuItem(
                           value: 'select',
                           child: Text('多选内容'),
                         ),
-                        if (!pack)
+                        if (!pack ||
+                            (widget.repository.capabilities.packReaderCleanup &&
+                                widget
+                                    .repository
+                                    .capabilities
+                                    .packLogicalTrash))
                           const PopupMenuItem(
                             value: 'quick',
                             child: Text('快速整理'),
@@ -295,6 +331,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
             ),
             PackCatalogPage(
               key: libraryPack,
+              onResumeReading: resumePack,
               repository: widget.repository,
               entry: PackBrowseContext(),
               active: active(1),
@@ -340,6 +377,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
             ),
             PackCatalogPage(
               key: tagsPack,
+              onResumeReading: resumePack,
               repository: widget.repository,
               entry: tagResultsPack,
               active: active(5),
@@ -354,6 +392,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
             ),
             PackCatalogPage(
               key: recentPack,
+              onResumeReading: resumePack,
               repository: widget.repository,
               entry: PackBrowseContext(source: BrowseSource.recent),
               active: active(7),
