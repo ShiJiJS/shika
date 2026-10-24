@@ -90,10 +90,10 @@ def test_precise_persisted_manifest_files_pagination_attachments_and_readonly(li
         assert db.scalar(select(func.count()).select_from(PackFileOperation)) == 1
         assert db.scalar(select(func.count()).select_from(PackFileStep)) == 1
     assert client.get("/api/v1/pack-trash").json()["total"] == 1
-    # Preview capability does not advertise or expose a permanent-delete command.
+    # Backend confirmation requires a plan; the UI capability is not advertised yet.
     capabilities = client.get("/api/v1/info").json()["capabilities"]
     assert "pack_purge_preview" in capabilities and "pack_permanent_delete" not in capabilities
-    assert client.post("/api/v1/pack-trash/permanent", json={}).status_code == 404
+    assert client.post("/api/v1/pack-trash/permanent", json={}).status_code == 422
     assert root["path"] in str(files[0]["path"])
 
 
@@ -318,7 +318,7 @@ def test_failed_pack_does_not_publish_a_partially_ready_plan(library):
     assert sum(bool(row["digest"]) for row in result["items"]) == 1
 
 
-def test_0009_upgrade_keeps_existing_tables_byte_values_and_adds_only_preview_tables(environment):
+def test_0009_upgrade_keeps_existing_column_values_and_adds_purge_journals(environment):
     from alembic import command as migrate
     from alembic.config import Config
 
@@ -344,13 +344,20 @@ def test_0009_upgrade_keeps_existing_tables_byte_values_and_adds_only_preview_ta
                 "SELECT name FROM sqlite_master WHERE type='table' AND name!='alembic_version'"
             )
         ]
+        columns = {
+            name: [r[1] for r in connection.execute(f'PRAGMA table_info("{name}")')]
+            for name in tables
+        }
         before = {name: connection.execute(f'SELECT * FROM "{name}"').fetchall() for name in tables}
     db.migrate()
     with sqlite3.connect(db.path) as connection:
-        assert {
-            name: connection.execute(f'SELECT * FROM "{name}"').fetchall() for name in tables
-        } == before
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0010",)
+        for name in tables:
+            fields = ",".join(f'"{column}"' for column in columns[name])
+            assert connection.execute(f'SELECT {fields} FROM "{name}"').fetchall() == before[name]
+        assert connection.execute(
+            "SELECT DISTINCT purged_pages FROM pack_trash_items"
+        ).fetchall() == [(0,)]
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0011",)
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
         for name in ["pack_purge_plans", "pack_purge_entries"]:
             assert connection.execute(f'SELECT COUNT(*) FROM "{name}"').fetchone() == (0,)
@@ -549,3 +556,44 @@ def test_summary_reads_large_persisted_manifest_without_materializing_its_files(
     assert len(response.content) < 4096
     assert peak < 4 * 1024 * 1024, f"Summary materialized a large file inventory: {peak} bytes"
     print(f"PURGE_PLAN_SUMMARY stored_bytes={stored_bytes} peak_python_bytes={peak}")
+
+
+def test_status_and_digest_are_one_coherent_snapshot_when_worker_finishes_during_read(library):
+    from sqlalchemy import event
+
+    client, media = library
+    _, _, rows = fixture(client, media)
+    plans, db = client.app.state.pack_purge_plans, client.app.state.db
+    reached, release = threading.Event(), threading.Event()
+
+    def paused(phase, _):
+        if phase == "purge_before_manifest_commit":
+            reached.set()
+            assert release.wait(5)
+
+    plans.fault_hook = paused
+    accepted = prepare(client, [rows[0]["id"]])
+    assert reached.wait(5)
+    reader = threading.get_ident()
+    intercepted = []
+
+    def finish_between_reads(_connection, _cursor, statement, _parameters, _context, _many):
+        if (
+            threading.get_ident() == reader
+            and not intercepted
+            and statement.lstrip().upper().startswith("SELECT")
+            and "pack_purge_plans" in statement
+        ):
+            intercepted.append(True)
+            release.set()
+            plans.futures[accepted["id"]].result(timeout=5)
+
+    event.listen(db.engine, "after_cursor_execute", finish_between_reads)
+    try:
+        result = plans.view(accepted["id"])
+        assert intercepted
+        assert not (result["status"] == "completed" and not result["ready"]), result
+    finally:
+        release.set()
+        event.remove(db.engine, "after_cursor_execute", finish_between_reads)
+    assert plans.view(accepted["id"])["ready"]

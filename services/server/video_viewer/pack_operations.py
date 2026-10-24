@@ -39,6 +39,7 @@ class PackOperations:
         self.lock = threading.RLock()
         self.executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="pack-operations")
         self.futures = {}
+        self.purge = None
 
     def start(self):
         with self.db.write() as session:
@@ -221,6 +222,14 @@ class PackOperations:
             self.fault_hook(phase, identity)
 
     def run(self, identity):
+        with self.db.read() as session:
+            operation = session.get(PackFileOperation, identity)
+            if operation and operation.kind == "permanent":
+                if self.purge is not None:
+                    self.purge.run(identity)
+                else:
+                    self.failed(identity, "failed", "unsupported_pack_operation")
+                return
         try:
             if self.stop.is_set():
                 raise InterruptedError()
@@ -315,6 +324,8 @@ class PackOperations:
                             step.outcome, step.error = "failed", "stale_pack_state"
                             continue
                         pack.status, pack.error = item.manifest["status"], item.manifest["error"]
+                        if item.purged_pages and pack.page_count == 0 and pack.status == "available":
+                            pack.error = "no_readable_images"
                         item.status = "restored"
                     pack.generation += 1
                     step.phase, step.outcome, step.error = "committed", "succeeded", None
@@ -546,7 +557,8 @@ class PackOperations:
                         "operation_id": item.operation_id,
                         "original_path": item.original_path,
                         "deleted_at": item.deleted_at,
-                        "page_count": item.manifest["page_count"],
+                        "page_count": session.get(ImagePack, item.pack_id).page_count if item.purged_pages else item.manifest["page_count"],
+                        "purged_pages": item.purged_pages,
                         "pack": self.packs.summary(session, session.get(ImagePack, item.pack_id)),
                     }
                     for item in rows

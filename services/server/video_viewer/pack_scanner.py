@@ -8,7 +8,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from types import SimpleNamespace
 
-from sqlalchemy import delete, literal, select, update
+from sqlalchemy import and_, delete, literal, or_, select, update
 
 from .directory_identity import directory_stamp
 from .images import IMAGE_EXTENSIONS, inspect_image
@@ -76,7 +76,10 @@ def reserved_packs():
     return (
         select(PackFileStep.pack_id)
         .join(PackFileOperation)
-        .where(PackFileOperation.historical.is_(False), PackFileStep.outcome == "pending")
+        .where(PackFileOperation.historical.is_(False), or_(
+            PackFileStep.outcome == "pending",
+            and_(PackFileStep.phase == "needs_attention", PackFileStep.outcome != "succeeded"),
+        ))
     )
 
 

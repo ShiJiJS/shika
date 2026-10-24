@@ -26,6 +26,7 @@ from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
 from .pack_api import router as pack_router
 from .pack_operations import PackOperations
 from .pack_operations_api import router as pack_operations_router
+from .pack_purge import PackPurge
 from .pack_purge_plans import PackPurgePlans
 from .pack_tags import PackTags
 from .packs import Packs
@@ -197,6 +198,8 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         app.state.reading = Reading(db, app.state.packs)
         app.state.pack_files = PackOperations(db, app.state.packs, app.state.reading)
         app.state.pack_purge_plans = PackPurgePlans(db, configured)
+        app.state.pack_purge = PackPurge(app.state.pack_files, app.state.pack_purge_plans, configured)
+        app.state.pack_files.purge = app.state.pack_purge
         app.state.files = FileOperations(
             db, configured, catalog, app.state.playback, file_fault_hook
         )
@@ -288,7 +291,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             "server_id": server_id,
             "api_version": 1,
             "sqlite_version": sqlite3.sqlite_version,
-            "schema_version": "0010",
+            "schema_version": "0011",
             "capabilities": [
                 "typed_roots",
                 "pack_tags",

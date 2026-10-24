@@ -3,7 +3,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Query, Request
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 Identity = Annotated[str, Field(min_length=1, max_length=128)]
 
@@ -30,6 +30,18 @@ class Trash(Input):
 
 class Restore(Input):
     trash_ids: list[Identity] = Field(min_length=1, max_length=1000)
+
+
+class Permanent(Input):
+    plan_id: Identity
+    digest: str = Field(pattern="^[0-9a-f]{64}$")
+    confirmed: bool = Field(strict=True)
+
+    @model_validator(mode="after")
+    def explicit_confirmation(self):
+        if self.confirmed is not True:
+            raise ValueError("Explicit permanent deletion confirmation is required")
+        return self
 
 
 def router(auth_required):
@@ -87,6 +99,19 @@ def router(auth_required):
         limit: Annotated[int, Query(ge=1, le=200)] = 100,
     ):
         return request.app.state.pack_purge_plans.files(identity, trash_id, offset, limit)
+
+    @api.post("/pack-trash/permanent", status_code=202)
+    def permanent(body: Permanent, request: Request):
+        state = request.app.state
+        return state.pack_files.task(state.pack_purge.submit(body.plan_id, body.digest, body.request_id))
+
+    @api.get("/pack-operations/{identity}/pages")
+    def purge_pages(
+        identity: str, request: Request,
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int, Query(ge=1, le=200)] = 100,
+    ):
+        return request.app.state.pack_purge.pages(identity, offset, limit)
 
     @api.post("/pack-operations/{identity}/undo", status_code=202)
     def undo(identity: str, body: Input, request: Request):

@@ -16,6 +16,7 @@ from .models import (
     PackFileStep,
     PackPage,
     PackPurgeEntry,
+    PackPurgeExecution,
     PackPurgePlan,
     PackTrashItem,
     Root,
@@ -47,7 +48,7 @@ class PackPurgePlans:
             raise InterruptedError("service_stopping")
 
     @staticmethod
-    def source(session, trash_id):
+    def source(session, trash_id, *, exclude_operation=None, allow_empty=False):
         item = session.get(PackTrashItem, trash_id)
         pack = session.get(ImagePack, item.pack_id) if item else None
         root = session.get(Root, pack.root_id) if pack else None
@@ -59,16 +60,22 @@ class PackPurgePlans:
             raise LibraryError("root_unavailable", "图包目录未启用、未映射或暂不可用")
         if item.original_path != pack.path or item.root_path != root.path:
             raise LibraryError("pack_changed", "图包接入位置与回收记录不同")
-        if session.scalar(reserved_packs().where(PackFileStep.pack_id == pack.id).limit(1)):
+        reservation = reserved_packs().where(PackFileStep.pack_id == pack.id)
+        if exclude_operation:
+            reservation = reservation.where(PackFileStep.operation_id != exclude_operation)
+        if session.scalar(reservation.limit(1)):
             raise LibraryError("operation_busy", "图包已有待执行操作，请稍后核对")
         pages = list(
             session.scalars(
                 select(PackPage)
-                .where(PackPage.pack_id == pack.id)
+                .where(
+                    PackPage.pack_id == pack.id,
+                    PackPage.error.is_distinct_from("permanently_deleted"),
+                )
                 .order_by(PackPage.ordinal, PackPage.id)
             )
         )
-        if not pages or len(pages) != pack.page_count:
+        if (not pages and not allow_empty) or len(pages) != pack.page_count:
             raise LibraryError("invalid_page_manifest", "图包图片清单不完整")
         return {
             "pack_id": pack.id,
@@ -357,19 +364,30 @@ class PackPurgePlans:
 
     def view(self, identity=None, *, request_id=None):
         with self.db.read() as session:
-            plan = (
-                session.scalar(
-                    select(PackPurgePlan).where(
-                        PackPurgePlan.request_key == "pack_purge_preview:" + request_id
-                    )
-                )
+            criterion = (
+                PackPurgePlan.request_key == "pack_purge_preview:" + request_id
                 if request_id
-                else session.get(PackPurgePlan, identity)
+                else PackPurgePlan.id == identity
             )
-            if not plan:
+            # SQLite's legacy SELECT mode does not hold a transaction snapshot
+            # across independent ORM gets. Fetch state and digest in one row so
+            # a concurrent completion cannot produce completed + old digest.
+            pair = session.execute(
+                select(PackPurgePlan, Task)
+                .join(
+                    Task,
+                    PackPurgePlan.id == Task.id,
+                )
+                .where(criterion)
+            ).first()
+            if not pair:
                 raise LibraryError("pack_purge_plan_not_found", "未找到已受理的图片清单", 404)
-            task = session.get(Task, plan.id)
+            plan, task = pair
+            now = self.clock()
             rows = self.summaries(session, plan.id)
+            consumed = session.scalar(
+                select(PackPurgeExecution.id).where(PackPurgeExecution.plan_id == plan.id)
+            )
             return {
                 **{
                     key: getattr(task, key)
@@ -384,14 +402,16 @@ class PackPurgePlans:
                         "error",
                     )
                 },
-                "server_time": self.clock(),
+                "server_time": now,
                 "expires_at": plan.expires_at,
                 "digest": plan.digest,
                 "historical": plan.historical,
-                "ready": not plan.historical
+                "operation_id": consumed,
+                "ready": not consumed
+                and not plan.historical
                 and task.status == "completed"
                 and bool(plan.digest)
-                and self.clock() <= plan.expires_at,
+                and now <= plan.expires_at,
                 "items": [
                     {
                         "trash_id": row.trash_id,

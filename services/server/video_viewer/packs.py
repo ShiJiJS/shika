@@ -19,7 +19,8 @@ class Packs:
             select(PackPage)
             .join(ImagePack)
             .where(
-                PackPage.pack_id == pack_id, owned_path(session, PackPage.path, ImagePack.root_id)
+                PackPage.pack_id == pack_id, owned_path(session, PackPage.path, ImagePack.root_id),
+                PackPage.error.is_distinct_from("permanently_deleted"),
             )
         )
 
