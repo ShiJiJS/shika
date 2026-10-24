@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../library/models.dart';
 import '../../library/repository.dart';
 import '../../ui/paper.dart';
+import '../../ui/media_layout.dart';
 import 'pack_file_action.dart';
 import 'pack_trash_session.dart';
 
@@ -125,6 +126,14 @@ class _PackTrashPageState extends State<PackTrashPage> {
     }
   }
 
+  Widget retryRead(bool locked) => TextButton(
+    key: const Key('pack-trash-retry'),
+    onPressed: locked || session.loading || !session.live
+        ? null
+        : () => session.load(),
+    child: const Text('重新读取'),
+  );
+
   @override
   Widget build(BuildContext context) {
     if (_session == null) {
@@ -150,9 +159,10 @@ class _PackTrashPageState extends State<PackTrashPage> {
           child: TextField(
             key: const Key('pack-trash-search'),
             controller: search,
+            style: const TextStyle(fontSize: 14),
             enabled: !locked,
             decoration: const InputDecoration(
-              hintText: '搜索图包名称、目录',
+              hintText: '搜索名称或目录',
               prefixIcon: Icon(Icons.search),
             ),
             onChanged: (value) => unawaited(session.load(query: value)),
@@ -161,20 +171,28 @@ class _PackTrashPageState extends State<PackTrashPage> {
         if (session.error.isNotEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(session.error, style: TextStyle(color: p.danger)),
-                ),
-                TextButton(
-                  key: const Key('pack-trash-retry'),
-                  onPressed: locked || session.loading || !session.live
-                      ? null
-                      : () => session.load(),
-                  child: const Text('重新读取'),
-                ),
-              ],
-            ),
+            child: MediaLayout.largeText(context)
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(session.error, style: TextStyle(color: p.danger)),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: retryRead(locked),
+                      ),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          session.error,
+                          style: TextStyle(color: p.danger),
+                        ),
+                      ),
+                      retryRead(locked),
+                    ],
+                  ),
           ),
         if (session.selection.error.isNotEmpty)
           Padding(
@@ -190,37 +208,31 @@ class _PackTrashPageState extends State<PackTrashPage> {
             onPressed: locked ? null : checkPending,
             child: Text('${session.pending.length} 项图包操作待核对'),
           ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  session.hasLoaded ? '共 ${session.total} 个图包' : '图包回收站',
-                  key: const Key('pack-trash-count'),
-                  style: TextStyle(fontSize: 13, color: p.muted),
-                ),
-              ),
+        MediaCatalogToolbar(
+          children: [
+            Text(
+              session.hasLoaded ? '共 ${session.total} 个图包' : '图包回收站',
+              key: const Key('pack-trash-count'),
+              style: TextStyle(fontSize: 13, color: p.muted),
+            ),
+            TextButton(
+              key: const Key('pack-trash-select-all'),
+              onPressed: locked || session.selection.loading || session.loading
+                  ? null
+                  : () => session.selectAll(),
+              child: Text(session.selection.loading ? '正在全选…' : '全选'),
+            ),
+            if (session.selection.loading)
               TextButton(
-                key: const Key('pack-trash-select-all'),
-                onPressed:
-                    locked || session.selection.loading || session.loading
-                    ? null
-                    : () => session.selectAll(),
-                child: Text(session.selection.loading ? '正在全选…' : '全选'),
+                onPressed: () => session.selection.cancel(),
+                child: const Text('取消'),
               ),
-              if (session.selection.loading)
-                TextButton(
-                  onPressed: () => session.selection.cancel(),
-                  child: const Text('取消'),
-                ),
-              if (selected.isNotEmpty && !session.selection.loading)
-                TextButton(
-                  onPressed: locked ? null : session.clearSelection,
-                  child: const Text('取消选择'),
-                ),
-            ],
-          ),
+            if (selected.isNotEmpty && !session.selection.loading)
+              TextButton(
+                onPressed: locked ? null : session.clearSelection,
+                child: const Text('取消选择'),
+              ),
+          ],
         ),
         if (session.loading || session.restoring || session.selection.loading)
           const LinearProgressIndicator(),
