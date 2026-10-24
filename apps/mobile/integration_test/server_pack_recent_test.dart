@@ -94,6 +94,11 @@ void main() {
         'library search',
       );
       await t.enterText(find.byKey(const Key('pack-search')), target.name);
+      await t.testTextInput.receiveAction(TextInputAction.done);
+      await until(
+        () => t.view.viewInsets.bottom == 0,
+        'search keyboard dismissed',
+      );
       await until(
         () =>
             !catalog().data.loading &&
@@ -124,6 +129,11 @@ void main() {
         'return specific library query',
       );
       await t.enterText(find.byKey(const Key('pack-search')), '没有这个图包');
+      await t.testTextInput.receiveAction(TextInputAction.done);
+      await until(
+        () => t.view.viewInsets.bottom == 0,
+        'empty-search keyboard dismissed',
+      );
       await until(
         () =>
             !catalog().data.loading &&
@@ -188,6 +198,7 @@ void main() {
         'historical current image resumed',
       );
       expect(reader().session.entry.source, BrowseSource.recent);
+      expect(find.text('最近阅读'), findsOneWidget);
       expect(reader().session.range!.source, BrowseSource.recent);
       expect(reader().session.range!.candidateCount, 28);
       expect(reader().session.range!.cursor, 27);

@@ -58,6 +58,21 @@ class PackReaderPageState extends State<PackReaderPage>
     return conditions.isEmpty ? '全部图包' : conditions.join(' · ');
   }
 
+  String get sourceCaption {
+    final query = widget.entry.query;
+    if (widget.entry.source == BrowseSource.recent &&
+        query.count == 0 &&
+        query.search.isEmpty) {
+      return '最近阅读';
+    }
+    final source = switch (widget.entry.source) {
+      BrowseSource.library => '媒体库',
+      BrowseSource.tags => '标签',
+      BrowseSource.recent => '最近',
+    };
+    return '$source · $scopeLabel';
+  }
+
   void changed() {
     if (!mounted) return;
     if (SchedulerBinding.instance.schedulerPhase ==
@@ -817,11 +832,7 @@ class PackReaderPageState extends State<PackReaderPage>
                                           children: [
                                             Expanded(
                                               child: Text(
-                                                '${switch (widget.entry.source) {
-                                                  BrowseSource.library => '媒体库',
-                                                  BrowseSource.tags => '标签',
-                                                  BrowseSource.recent => '最近',
-                                                }} · $scopeLabel',
+                                                sourceCaption,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                   fontSize: 12,
