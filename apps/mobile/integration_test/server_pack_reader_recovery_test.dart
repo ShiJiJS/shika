@@ -351,7 +351,7 @@ void main() {
       expect(reader().session.offsetRatio, closeTo(ratio, .02));
       await shot('background');
 
-      await tap(find.text('整包标签'));
+      await tap(find.byIcon(Icons.sell_outlined));
       await until(
         () => find
             .widgetWithText(FilterChip, '恢复范围二')
