@@ -8,9 +8,11 @@
 
 `278a774` / `91f1112`现已接入真实原生PackReadingSession和阅读路由：卡片进入横翻/纵向拼接、方向/缩放/适配/间距、分页总览和跳页、沉浸、整包标签、固定范围内手动换包、保存/关闭后续读、返回原媒体库。实际当前图片首帧才记打开；预加载不记历史，元数据/图片provider有界，未知写结果先查回执。Paper最小52dp顶栏自然适应大字号，工具图标上对齐且避免中文孤字。
 
-当前完整 **189项客户端测试和Flutter analyze通过**。同实现主路径Android/8761真实服务连续三轮通过（390普通字号两次、360双倍字号一次），日志、截图与逐文件源码哈希见[原生证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-reader/README.md)；[客户端证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-reader-ui-client/README.md)包含6项HTTP控制器及3项图片首帧/布局新用例。服务器162项为原cb02a67检查点，没有冒充本次重新全量执行。
+当前完整 **197项客户端测试、Flutter analyze和163项服务端测试/Ruff通过**。最近图包已按冻结原型接入纵向历史行；查询来源和排序贯穿列表、分页、全选、定位及阅读入口，与媒体库筛选互不污染。进度页码按当前清单的稳定pageId位置计算；分页边界返回先补足尾页，再恢复原视口锚点。见[最近实现及检查](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-recent-catalog/README.md)。
 
-最近图包列表REC-01、完整来源/异常/后台/恢复组合、左右手势/缩放/沉浸等原生验证、500页4K/8K的真实内存与延迟仍待补；全局默认设置界面和备份v2由LF7收口，快速整理由LF6实施。本issue继续开放，PR保持草稿。详见[设计契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-DESIGN.md)、[界面约束](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-UI-DESIGN.md)和[实施记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md) / [草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)。
+`d8e3082`上最近来源Android/8761完整路径连续三轮通过（390普通字号两次、360双倍字号一次）：实际新包首帧、跨24项分页、完整28包全选、末包续读、历史重排后的固定范围和原位返回、媒体库筛选保留。27条预置历史不算本轮实际阅读，见[最近原生证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-recent/README.md)。此前`91f1112`阅读器主路径三轮证据独立保留于[阅读原生记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-reader/README.md)，不混称为当前版本三轮。当前`d8e3082`在最近三轮后另跑一轮原阅读器完整回归通过（33秒），同目录保留独立日志与截图。
+
+REC-01的回收隐藏/恢复保留状态仍需LF6联动；完整来源/异常/后台/恢复组合、左右手势/缩放/沉浸等原生验证、500页4K/8K的真实内存与延迟仍待补。全局默认设置界面和备份v2由LF7收口，快速整理由LF6实施。本issue继续开放，PR保持草稿。详见[设计契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-DESIGN.md)、[界面约束](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-UI-DESIGN.md)和[实施记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md) / [草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)。
 
 ## 依赖
 
