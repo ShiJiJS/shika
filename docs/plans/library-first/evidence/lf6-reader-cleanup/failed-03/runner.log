@@ -1,0 +1,123 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.39kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 101B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 9.47kB done
+#5 DONE 0.0s
+
+#6 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.0s done
+#6 DONE 0.0s
+
+#7 [runtime 7/9] COPY migrations ./migrations
+#7 CACHED
+
+#8 [runtime 8/9] COPY alembic.ini ./
+#8 CACHED
+
+#9 [test 1/4] COPY requirements-test.lock ./
+#9 CACHED
+
+#10 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#10 CACHED
+
+#11 [runtime 3/9] WORKDIR /app
+#11 CACHED
+
+#12 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#12 CACHED
+
+#13 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#13 CACHED
+
+#14 [test 3/4] COPY tests ./tests
+#14 CACHED
+
+#15 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [runtime 4/9] COPY requirements.lock ./
+#16 CACHED
+
+#17 [runtime 6/9] COPY video_viewer ./video_viewer
+#17 CACHED
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:6e9cc8fc18ac445391b8dada780a45f0c1120dc6e9547a84d0024362c999e7c9 done
+#19 exporting config sha256:35dd1ae21870f406a27192739efedcab1c6ab67151b4a711b9c99173fe7e060e done
+#19 exporting attestation manifest sha256:a26e7256cfe73f5c8e9b5edbdb386d94fe35a2dfeea53f27cfd4951cd0e8c004 0.0s done
+#19 exporting manifest list sha256:766795d5049026ff160f5d330948f491f88d7b9b5e81f14ba388638d264d7621 done
+#19 naming to docker.io/library/video-viewer-server:e2e done
+#19 unpacking to docker.io/library/video-viewer-server:e2e done
+#19 DONE 0.1s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.0s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart
+Running Gradle task 'assembleDebug'...                             12.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          566ms
+00:00 +0: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return
+CLEANUP_TIMEOUT decoded and confirmed bfb252b5-f685-497c-a851-a67b6dafb1f6
+CLEANUP_STATE  / 
+CLEANUP_IMAGE page=971881a7-5855-40e7-8403-424a1064411d readable=true error=null source=http://10.0.2.2:8761/api/v1/pages/971881a7-5855-40e7-8403-424a1064411d/image?v=1&session=1792872092033675-caeb7e39&reader=1 viewport=Size(390.0, 552.3)
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Timed out: decoded and confirmed bfb252b5-f685-497c-a851-a67b6dafb1f6
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart:73:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart:150:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:05 +0 -1: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return [E]
+  Test failed. See exception logs above.
+  The test description was: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return
+  
+01:05 +0 -1: (tearDownAll)
+01:05 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_cleanup_test.dart: LF6 quick cleanup receipt, fixed tag range, exact undo and ordinary reader return
