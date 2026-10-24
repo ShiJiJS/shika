@@ -213,6 +213,7 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         "pack_tag_names",
         "pack_entry_anchors",
         "pack_reading_sessions",
+        "pack_logical_trash",
     }
     schema = client.get("/openapi.json").json()
     assert schema["components"]["schemas"]["RootInput"]["properties"]["enabled"]
