@@ -267,6 +267,20 @@ void main() {
     expect(controller.state.error, isEmpty);
   });
 
+  test('a current location cancelled outside the controller is not published as a successful restore', () async {
+    final context = PackBrowseContext(scrollIndex: 58);
+    final first = controller.load(context);
+    repo.reads.last.result.complete(page(0, 24, total: 73));
+    await first;
+    final location = controller.restore(context, anchors: ['p58']);
+    repo.locations.last.result.completeError(const RequestCancelled());
+    await location;
+    expect(controller.state.items.length, 24);
+    expect(controller.state.retryRestore, isTrue);
+    expect(controller.state.error, contains('已取消'));
+    expect(controller.state.anchorIndex, isNull);
+  });
+
   test('long browsing stays within five pages and can prepend discarded earlier items', () async {
     final context = PackBrowseContext();
     for (var offset = 0; offset <= 120; offset += 24) {

@@ -182,6 +182,8 @@ class PackQueryController extends ChangeNotifier {
             items: previous,
             total: previousTotal,
             offset: previousOffset,
+            error: '图包读取已取消，原列表已保留，请重试',
+            retry: intent,
           ),
         );
       }

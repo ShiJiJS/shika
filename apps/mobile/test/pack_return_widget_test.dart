@@ -19,7 +19,7 @@ class DeepPacks extends WorkspaceLibrary {
         for (var i = 0; i < count; i++) 'p$i': {'自然', '收藏'},
       });
   }
-  bool failLocation = false;
+  bool failLocation = false, cancelLocation = false;
   Completer<void>? locationGate, pageGate;
   int? heldOffset;
   final locations = <({List<String> anchors, int fallback})>[];
@@ -76,6 +76,7 @@ class DeepPacks extends WorkspaceLibrary {
     int limit = 24,
   }) async {
     locations.add((anchors: [...anchors], fallback: fallbackIndex));
+    if (cancelLocation) throw const RequestCancelled();
     if (failLocation) throw const LibraryFailure('定位暂时失败');
     final page = await super.restorePackEntry(
       query,
@@ -226,6 +227,36 @@ void main() {
       expect(state.data.total, 58);
       expect(state.data.items.last.id, 'p57');
       expect(tile('p57').hitTestable(), findsOneWidget);
+      await close(t);
+    },
+  );
+
+  testWidgets(
+    'an interrupted location keeps its old pixels and pending IDs until an explicit retry',
+    (t) async {
+      final state = await start(t);
+      for (var i = 0; i < 3; i++) {
+        await t.drag(
+          find.byKey(const Key('pack-grid')),
+          const Offset(0, -6000),
+        );
+        await frames(t);
+      }
+      final pixels = state.listHeader + 29 * state.stride + 37;
+      state.scroll.jumpTo(pixels);
+      await frames(t);
+      final y = t.getTopLeft(tile('p58')).dy;
+      repo.cancelLocation = true;
+      repo.notifyListeners();
+      await frames(t);
+      expect(state.data.error, contains('已取消'));
+      expect(state.pendingReturn!.scrollIndex, 58);
+      expect(state.scroll.offset, closeTo(pixels, 1));
+      repo.cancelLocation = false;
+      await tap(t, find.byKey(const Key('pack-list-retry')));
+      expect(state.data.offset, 48);
+      expect(state.data.anchorIndex, 58);
+      expect(t.getTopLeft(tile('p58')).dy, closeTo(y, 1));
       await close(t);
     },
   );

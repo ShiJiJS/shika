@@ -63,6 +63,10 @@ void main() {
       Future<void> tap(Finder finder) async {
         if (finder.hitTestable().evaluate().isEmpty) {
           await t.ensureVisible(finder);
+          await until(
+            () => finder.hitTestable().evaluate().isNotEmpty,
+            'scrolled control accepts the next tap',
+          );
         }
         await t.tap(finder);
         await t.pump(const Duration(milliseconds: 300));
