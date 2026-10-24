@@ -96,6 +96,9 @@ void main() {
       }
 
       Future<void> tap(Finder target) async {
+        if (target.evaluate().isEmpty) {
+          await until(() => target.evaluate().isNotEmpty, 'target loaded');
+        }
         await t.ensureVisible(target);
         await until(
           () => target.hitTestable().evaluate().isNotEmpty,
