@@ -152,6 +152,11 @@ void main() {
       await fixture('/__fixture/actions/fail-pack-names');
       await tap(find.byTooltip('图包操作 ${pack.name}'));
       await tap(find.text('整包标签'));
+      await until(() {
+        final retry = find.widgetWithText(TextButton, '重试读取名称');
+        return retry.evaluate().length == 1 &&
+            t.widget<TextButton>(retry).onPressed != null;
+      }, 'selected-name failure is visible and ready for explicit retry');
       expect(chosen(ids.last), findsOneWidget);
       final save = find.widgetWithText(FilledButton, '保存整包标签');
       expect(t.widget<FilledButton>(save).onPressed, isNull);
@@ -167,6 +172,13 @@ void main() {
       ) {
         expect(chosen(ids.last), findsOneWidget);
         await tap(find.text('重试读取名称'));
+        await until(() {
+          if (save.evaluate().length != 1) return false;
+          if (t.widget<FilledButton>(save).onPressed != null) return true;
+          final retry = find.widgetWithText(TextButton, '重试读取名称');
+          return retry.evaluate().length == 1 &&
+              t.widget<TextButton>(retry).onPressed != null;
+        }, 'name resolution settled after explicit retry');
       }
       expect(t.widget<FilledButton>(save).onPressed, isNotNull);
       await text(editorInput(), '名称00');
@@ -176,6 +188,14 @@ void main() {
       // Reopen from the same card's action menu and read back both saved choices.
       await tap(find.byTooltip('图包操作 ${pack.name}'));
       await tap(find.text('整包标签'));
+      await until(
+        () =>
+            chosen(ids.first).evaluate().isNotEmpty &&
+            chosen(ids.last).evaluate().isNotEmpty &&
+            save.evaluate().length == 1 &&
+            t.widget<FilledButton>(save).onPressed != null,
+        'saved labels read back',
+      );
       expect(chosen(ids.first), findsOneWidget);
       expect(chosen(ids.last), findsOneWidget);
       await tap(
