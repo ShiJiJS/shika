@@ -69,11 +69,15 @@ class PackBrowseContext {
     this.source = BrowseSource.library,
     this.scrollOffset = 0,
     this.scrollAnchor,
+    this.scrollIndex = 0,
+    this.scrollInset = 0,
   }) : query = query ?? PackQuery();
   final PackQuery query;
   final BrowseSource source;
   final double scrollOffset;
   final String? scrollAnchor;
+  final int scrollIndex;
+  final double scrollInset;
   MediaKind get kind => MediaKind.pack;
   String get queryKey => jsonEncode([source.name, query.toJson()]);
   PackBrowseContext copyWith({
@@ -81,10 +85,14 @@ class PackBrowseContext {
     BrowseSource? source,
     double? scrollOffset,
     String? scrollAnchor,
+    int? scrollIndex,
+    double? scrollInset,
   }) => PackBrowseContext(
     query: query ?? this.query,
     source: source ?? this.source,
     scrollOffset: scrollOffset ?? this.scrollOffset,
     scrollAnchor: scrollAnchor ?? this.scrollAnchor,
+    scrollIndex: scrollIndex ?? this.scrollIndex,
+    scrollInset: scrollInset ?? this.scrollInset,
   );
 }

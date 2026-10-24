@@ -21,6 +21,32 @@ class DelayedPacks extends DemoLibraryRepository {
           Completer<CatalogPage<LibraryPack>> result,
         })
       >[];
+  final locations =
+      <
+        ({
+          PackQuery query,
+          List<String> anchors,
+          int fallback,
+          Completer<CatalogPage<LibraryPack>> result,
+        })
+      >[];
+  @override
+  Future<CatalogPage<LibraryPack>> restorePackEntry(
+    PackQuery query, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) {
+    final result = Completer<CatalogPage<LibraryPack>>();
+    locations.add((
+      query: query,
+      anchors: [...anchors],
+      fallback: fallbackIndex,
+      result: result,
+    ));
+    return result.future;
+  }
+
   @override
   Future<CatalogPage<LibraryPack>> loadPacks(
     PackQuery query, {
@@ -38,26 +64,31 @@ class DelayedPacks extends DemoLibraryRepository {
   }
 }
 
-CatalogPage<LibraryPack> page(int offset, int count, {int total = 50}) =>
-    CatalogPage(
-      items: [
-        for (var i = offset; i < offset + count; i++)
-          LibraryPack(
-            id: 'p$i',
-            rootId: 'r',
-            path: '/packs/$i',
-            name: '图包$i',
-            pageCount: 500,
-            readableCount: 500,
-            contentVersion: 1,
-            status: 'available',
-            createdAt: 0,
-          ),
-      ],
-      total: total,
-      offset: offset,
-      limit: 24,
-    );
+CatalogPage<LibraryPack> page(
+  int offset,
+  int count, {
+  int total = 50,
+  int? anchor,
+}) => CatalogPage(
+  items: [
+    for (var i = offset; i < offset + count; i++)
+      LibraryPack(
+        id: 'p$i',
+        rootId: 'r',
+        path: '/packs/$i',
+        name: '图包$i',
+        pageCount: 500,
+        readableCount: 500,
+        contentVersion: 1,
+        status: 'available',
+        createdAt: 0,
+      ),
+  ],
+  total: total,
+  offset: offset,
+  limit: 24,
+  anchorIndex: anchor,
+);
 void main() {
   late DelayedPacks repo;
   late PackQueryController controller;
@@ -183,6 +214,118 @@ void main() {
     expect(controller.state.items, hasLength(24));
     expect(controller.state.error, contains('已变化'));
   });
+
+  test('localized restore and prepend keep complete scope and authoritative offsets', () async {
+    final context = PackBrowseContext(
+      query: PackQuery(search: '包', tags: {'a', 'b'}),
+      source: BrowseSource.tags,
+      scrollIndex: 58,
+    );
+    final restoring = controller.restore(context, anchors: ['p58', 'p59']);
+    expect(repo.locations.last.fallback, 58);
+    expect(repo.locations.last.anchors, ['p58', 'p59']);
+    expect(repo.locations.last.query.tags, {'a', 'b'});
+    repo.locations.last.result.complete(page(48, 24, total: 73, anchor: 58));
+    await restoring;
+    expect(controller.state.offset, 48);
+    expect(controller.state.items.length, 24);
+    expect(controller.state.anchorIndex, 58);
+    expect(controller.state.hasBefore, isTrue);
+    final before = controller.load(context, before: true);
+    expect(repo.reads.last.offset, 24);
+    repo.reads.last.result.complete(page(24, 24, total: 73));
+    await before;
+    expect(controller.state.offset, 24);
+    expect(controller.state.items.length, 48);
+    expect(controller.state.items.last.id, 'p71');
+  });
+
+  test('restore failure retains old deep cards and repeats location instead of appending', () async {
+    final context = PackBrowseContext(scrollIndex: 58);
+    final initial = controller.load(context);
+    repo.reads.last.result.complete(page(0, 24, total: 73));
+    await initial;
+    for (final offset in [24, 48]) {
+      final next = controller.load(context, more: true);
+      repo.reads.last.result.complete(page(offset, 24, total: 73));
+      await next;
+    }
+    final location = controller.restore(context, anchors: ['p58', 'p59']);
+    repo.locations.last.result.completeError(const LibraryFailure('定位离线'));
+    await location;
+    expect(controller.state.items.length, 72);
+    expect(controller.state.offset, 0);
+    expect(controller.state.retryRestore, isTrue);
+    expect(controller.state.retryMore, isFalse);
+    final retry = controller.restore(context, anchors: ['p58', 'p59']);
+    expect(repo.locations.last.fallback, 58);
+    repo.locations.last.result.complete(page(48, 24, total: 73, anchor: 59));
+    await retry;
+    expect(controller.state.items.length, 24);
+    expect(controller.state.offset, 48);
+    expect(controller.state.anchorIndex, 59);
+    expect(controller.state.error, isEmpty);
+  });
+
+  test('long browsing stays within five pages and can prepend discarded earlier items', () async {
+    final context = PackBrowseContext();
+    for (var offset = 0; offset <= 120; offset += 24) {
+      final reading = controller.load(context, more: offset > 0);
+      expect(repo.reads.last.offset, offset);
+      repo.reads.last.result.complete(page(offset, 24, total: 200));
+      await reading;
+      expect(controller.state.items.length, lessThanOrEqualTo(120));
+    }
+    expect(controller.state.offset, 24);
+    expect(controller.state.items.first.id, 'p24');
+    final before = controller.load(context, before: true);
+    repo.reads.last.result.complete(page(0, 24, total: 200));
+    await before;
+    expect(controller.state.offset, 0);
+    expect(controller.state.items.length, 120);
+    expect(controller.state.items.last.id, 'p119');
+  });
+
+  test('changed membership while paging retains old rows and requires stable relocation', () async {
+    final context = PackBrowseContext();
+    final first = controller.load(context);
+    repo.reads.last.result.complete(page(0, 24, total: 73));
+    await first;
+    final more = controller.load(context, more: true);
+    repo.reads.last.result.complete(page(24, 24, total: 74));
+    await more;
+    expect(controller.state.items.length, 24);
+    expect(controller.state.total, 73);
+    expect(controller.state.retryRestore, isTrue);
+    expect(controller.state.error, contains('已变化'));
+  });
+
+  test(
+    'late location cannot overwrite a new query or a replaced connection',
+    () async {
+      final old = controller.restore(
+        PackBrowseContext(query: PackQuery(search: '旧')),
+        anchors: ['p58'],
+      );
+      final current = controller.load(
+        PackBrowseContext(query: PackQuery(search: '新')),
+      );
+      repo.reads.last.result.complete(page(0, 1, total: 1));
+      await current;
+      repo.locations.last.result.complete(page(48, 24, total: 73, anchor: 58));
+      await old;
+      expect(controller.state.context.query.search, '新');
+      expect(controller.state.items.length, 1);
+      final pending = controller.restore(
+        PackBrowseContext(scrollIndex: 58),
+        anchors: ['p58'],
+      );
+      repo.switchConnection();
+      repo.locations.last.result.complete(page(48, 24, total: 73, anchor: 58));
+      await pending;
+      expect(controller.state.items, isEmpty);
+    },
+  );
 
   test('a recent pack source cannot fall back to the whole catalog before its protocol exists', () async {
     await controller.load(PackBrowseContext(source: BrowseSource.recent));

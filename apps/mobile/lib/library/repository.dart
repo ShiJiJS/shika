@@ -16,6 +16,12 @@ abstract class LibraryRepository extends ChangeNotifier {
   Future<PackTagNames> resolvePackTags(Set<String> ids) =>
       Future.error(const LibraryFailure('当前服务尚不支持按ID读取标签名称，请升级服务端'));
   void cancelPackTagNamesRead() {}
+  Future<CatalogPage<LibraryPack>> restorePackEntry(
+    PackQuery query, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包原位返回，请升级服务端'));
   Future<CatalogPage<VideoTag>> loadVideoTags({
     String search = '',
     int offset = 0,

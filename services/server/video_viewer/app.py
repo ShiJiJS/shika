@@ -284,6 +284,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "video_entry_anchors",
                 "catalog_selection",
                 "pack_tag_names",
+                "pack_entry_anchors",
             ],
         }
 

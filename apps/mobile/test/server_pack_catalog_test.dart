@@ -28,6 +28,8 @@ class PackServer {
   Completer<void>? namesBlocked, namesRelease;
   Json? namesOverride;
   bool incompletePackNames = false;
+  Json? anchorOverride;
+  bool anchorFailure = false;
   Json? selectionOverride;
   int loseWriteAt = 0;
   Json pack(int index) => {
@@ -87,6 +89,7 @@ class PackServer {
               'typed_roots',
               'catalog_selection',
               'pack_tag_names',
+              'pack_entry_anchors',
             ],
           ],
         };
@@ -156,12 +159,31 @@ class PackServer {
             await release!.future;
           }
           final offset = int.parse(r.uri.queryParameters['offset']!);
-          result = {
-            'items': [pack(offset)],
-            'total': 51,
-            'offset': offset,
-            'limit': int.parse(r.uri.queryParameters['limit']!),
-          };
+          if (r.uri.queryParametersAll.containsKey('anchor_ids')) {
+            if (anchorFailure) {
+              status = 503;
+              result = {
+                'error': {'code': 'fixture_anchor', 'message': '定位暂时失败'},
+              };
+            } else {
+              result =
+                  anchorOverride ??
+                  {
+                    'items': [for (var i = 48; i < 72; i++) pack(i)],
+                    'total': 73,
+                    'offset': 48,
+                    'limit': 24,
+                    'anchor_index': 58,
+                  };
+            }
+          } else {
+            result = {
+              'items': [pack(offset)],
+              'total': 51,
+              'offset': offset,
+              'limit': int.parse(r.uri.queryParameters['limit']!),
+            };
+          }
         } else if (r.method == 'GET') {
           final search = r.uri.queryParameters['search'] ?? '';
           final all = packTags.entries

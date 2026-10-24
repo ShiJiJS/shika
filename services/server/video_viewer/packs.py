@@ -85,7 +85,11 @@ class Packs:
             statement = statement.where(PackProgress.completed.is_(False))
         elif read_state == "completed":
             statement = statement.where(PackProgress.completed.is_(True))
-        return statement.order_by(
+        return statement.order_by(*self.ordering(sort))
+
+    @staticmethod
+    def ordering(sort):
+        return (
             ImagePack.created_at.desc() if sort == "newest" else func.lower(ImagePack.name),
             ImagePack.id,
         )
@@ -124,13 +128,27 @@ class Packs:
             },
         }
 
-    def list(self, *, offset=0, limit=24, **query):
+    def list(self, *, offset=0, limit=24, anchor_ids=(), **query):
         with self.db.read() as session:
             session.connection().exec_driver_sql("BEGIN")
             statement = self.statement(session, **query)
             total = session.scalar(
                 select(func.count()).select_from(statement.order_by(None).subquery())
             )
+            anchor_index = None
+            if anchor_ids:
+                ranked = statement.order_by(None).with_only_columns(
+                    ImagePack.id.label("pack_id"),
+                    (func.row_number().over(order_by=self.ordering(query.get("sort", "name"))) - 1).label("position"),
+                ).subquery()
+                positions = dict(session.execute(
+                    select(ranked.c.pack_id, ranked.c.position).where(ranked.c.pack_id.in_(anchor_ids))
+                ).all())
+                anchor_index = next(
+                    (positions[identity] for identity in anchor_ids if identity in positions),
+                    min(offset, max(0, total - 1)),
+                )
+                offset = anchor_index // limit * limit
             return {
                 "items": [
                     self.summary(session, pack)
@@ -139,6 +157,7 @@ class Packs:
                 "total": total,
                 "offset": offset,
                 "limit": limit,
+                "anchor_index": anchor_index,
             }
 
     def selection(self, **query):

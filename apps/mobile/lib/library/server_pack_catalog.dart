@@ -129,6 +129,43 @@ mixin _ServerPackCatalog on LibraryRepository {
     PackQuery query, {
     int offset = 0,
     int limit = 24,
+  }) => _readPacks(query, offset: offset, limit: limit);
+
+  @override
+  Future<CatalogPage<LibraryPack>> restorePackEntry(
+    PackQuery query, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) async {
+    if (!capabilities.packEntryAnchors) {
+      throw const LibraryFailure('当前服务尚不支持图包原位返回，请升级服务端');
+    }
+    if (anchors.isEmpty) {
+      throw const LibraryFailure('缺少图包定位信息，请刷新列表');
+    }
+    final page = await _readPacks(
+      query,
+      offset: fallbackIndex,
+      limit: limit,
+      anchors: anchors,
+    );
+    final index = page.anchorIndex;
+    if (index == null ||
+        index < 0 ||
+        (page.total > 0 && index >= page.total) ||
+        page.offset != index ~/ limit * limit ||
+        (page.total > 0 && index >= page.offset + page.items.length)) {
+      throw const LibraryFailure('服务未返回完整的图包定位信息，请重试');
+    }
+    return page;
+  }
+
+  Future<CatalogPage<LibraryPack>> _readPacks(
+    PackQuery query, {
+    required int offset,
+    required int limit,
+    List<String>? anchors,
   }) async {
     _packSupported();
     cancelPackRead();
@@ -151,6 +188,7 @@ mixin _ServerPackCatalog on LibraryRepository {
         'sort': query.sort.name,
         'directory_id': ?directory,
         if (query.tags.isNotEmpty) 'tag_ids': query.tags.toList()..sort(),
+        if (anchors != null) 'anchor_ids': anchors.take(16).toList(),
       },
     );
     _packCurrent(target, generation, scope);
@@ -159,6 +197,7 @@ mixin _ServerPackCatalog on LibraryRepository {
       total: page['total'],
       offset: page['offset'],
       limit: page['limit'],
+      anchorIndex: page['anchor_index'],
     );
   }
 

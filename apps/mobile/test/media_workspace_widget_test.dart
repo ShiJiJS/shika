@@ -67,6 +67,32 @@ class WorkspaceLibrary extends DemoLibraryRepository {
   }
 
   @override
+  Future<CatalogPage<LibraryPack>> restorePackEntry(
+    PackQuery query, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) async {
+    final all = (await loadPacks(query, limit: 100000)).items;
+    var index = -1;
+    for (final id in anchors) {
+      index = all.indexWhere((pack) => pack.id == id);
+      if (index >= 0) break;
+    }
+    if (index < 0) {
+      index = fallbackIndex.clamp(0, (all.length - 1).clamp(0, all.length));
+    }
+    final offset = index ~/ limit * limit;
+    return CatalogPage(
+      items: all.skip(offset).take(limit),
+      total: all.length,
+      offset: offset,
+      limit: limit,
+      anchorIndex: index,
+    );
+  }
+
+  @override
   Future<PackTagNames> resolvePackTags(Set<String> ids) async => PackTagNames(
     names: {
       for (final id in ids)

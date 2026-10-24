@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -146,8 +147,21 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   Set<String> get selected => selection.ids;
   late Object selectionConnection = repo.connectionIdentity;
   bool selecting = false, initialized = false, dirty = false, busy = false;
+  bool _positioning = false, _detailsOpen = false, _refreshScheduled = false;
+  int generation = 0;
+  double width = 390;
+  PackBrowseContext? pendingReturn;
+  List<String> returnIds = const [];
   String error = '';
   PackLibraryState get data => catalog.state;
+  double get stride =>
+      MediaLayout.tile(width, scaler: MediaQuery.textScalerOf(context)) +
+      MediaLayout.rowGap;
+  double get listHeader =>
+      MediaLayout.toolbar(context) +
+      (entry.query.count > 0 || entry.query.search.isNotEmpty
+          ? MediaLayout.scope(context)
+          : 0);
   @override
   void initState() {
     super.initState();
@@ -158,9 +172,12 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     if (widget.active) scheduleLoad();
   }
 
-  void scheduleLoad() => WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (mounted && widget.active) unawaited(load());
-  });
+  void scheduleLoad({bool restore = false}) =>
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && widget.active && !busy && !_detailsOpen) {
+          unawaited(load(restore: restore));
+        }
+      });
   @override
   void didUpdateWidget(PackCatalogPage oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -169,13 +186,18 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       search.text = entry.query.search;
       selection.cancel(clear: true);
       initialized = false;
+      generation++;
+      pendingReturn = null;
+      returnIds = const [];
       if (widget.active) scheduleLoad();
     } else if (oldWidget.active != widget.active) {
       if (!widget.active) {
+        generation++;
+        remember();
         selection.cancel();
         catalog.cancel();
-      } else if (!initialized || dirty) {
-        scheduleLoad();
+      } else if (!initialized || dirty || pendingReturn != null) {
+        scheduleLoad(restore: initialized);
       }
     }
   }
@@ -188,37 +210,128 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     if (!identical(selectionConnection, repo.connectionIdentity)) {
       selectionConnection = repo.connectionIdentity;
       selection.cancel(clear: true);
+      generation++;
+      pendingReturn = null;
+      returnIds = const [];
+      initialized = false;
+      entry = PackBrowseContext(query: entry.query, source: entry.source);
+      if (scroll.hasClients) scroll.jumpTo(0);
     }
     dirty = true;
-    if (widget.active && !busy) scheduleLoad();
+    if (!widget.active || busy || _detailsOpen || _refreshScheduled) return;
+    _refreshScheduled = true;
+    scheduleMicrotask(() {
+      _refreshScheduled = false;
+      if (mounted) scheduleLoad(restore: initialized);
+    });
   }
 
-  Future<void> load({bool more = false}) async {
-    if (!widget.active) return;
-    await catalog.load(entry, more: more);
-    if (!mounted) return;
+  ({PackBrowseContext context, List<String> ids}) position() {
+    final pixels = scroll.hasClients ? scroll.offset : 0.0;
+    final local = max(0, ((pixels - listHeader) / stride).floor() * 2);
+    final index = local.clamp(0, max(0, data.items.length - 1)).toInt();
+    final ids = <String>[];
+    for (
+      var distance = 0;
+      distance < data.items.length && ids.length < 16;
+      distance++
+    ) {
+      if (index + distance < data.items.length) {
+        ids.add(data.items[index + distance].id);
+      }
+      if (distance > 0 && index - distance >= 0 && ids.length < 16) {
+        ids.add(data.items[index - distance].id);
+      }
+    }
+    return (
+      context: entry.copyWith(
+        scrollOffset: pixels,
+        scrollAnchor: data.items.isEmpty ? null : data.items[index].id,
+        scrollIndex: data.offset + index,
+        scrollInset: pixels < listHeader
+            ? pixels - listHeader
+            : (pixels - listHeader) % stride,
+      ),
+      ids: ids,
+    );
+  }
+
+  void remember() {
+    if (pendingReturn != null || data.items.isEmpty) return;
+    final saved = position();
+    pendingReturn = saved.context;
+    returnIds = saved.ids;
+  }
+
+  Future<void> load({
+    bool more = false,
+    bool before = false,
+    bool restore = false,
+  }) async {
+    if (!widget.active ||
+        busy ||
+        _detailsOpen ||
+        ((more || before) && data.loading)) {
+      return;
+    }
+    final current = ++generation;
+    final oldStart = data.offset,
+        oldPixels = scroll.hasClients ? scroll.offset : 0.0;
+    if (restore) remember();
+    final restoring = pendingReturn;
+    _positioning = restoring != null || before;
+    if (restoring != null) {
+      await catalog.restore(restoring, anchors: returnIds);
+    } else {
+      await catalog.load(entry, more: more, before: before);
+    }
+    if (!mounted || current != generation) return;
     initialized = true;
     dirty = false;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) nearBottom();
+      if (!mounted || current != generation) return;
+      if (scroll.hasClients && data.error.isEmpty) {
+        double? pixels;
+        if (restoring != null) {
+          pixels =
+              listHeader +
+              ((data.anchorIndex ?? data.offset) - data.offset) ~/ 2 * stride +
+              restoring.scrollInset;
+          pendingReturn = null;
+        } else if (oldStart != data.offset && data.items.isNotEmpty) {
+          pixels = oldPixels + (oldStart - data.offset) ~/ 2 * stride;
+        }
+        if (pixels != null) {
+          scroll.jumpTo(pixels.clamp(0.0, scroll.position.maxScrollExtent));
+        }
+      }
+      _positioning = false;
+      nearBottom();
     });
   }
 
   void nearBottom() {
     if (widget.active &&
         !busy &&
+        !_detailsOpen &&
+        !_positioning &&
         scroll.hasClients &&
-        scroll.position.extentAfter < 480 &&
         !data.loading &&
         data.error.isEmpty &&
-        data.hasMore) {
-      unawaited(load(more: true));
+        data.items.isNotEmpty) {
+      if (scroll.position.extentBefore < listHeader + 180 && data.hasBefore) {
+        unawaited(load(before: true));
+      } else if (scroll.position.extentAfter < 480 && data.hasMore) {
+        unawaited(load(more: true));
+      }
     }
   }
 
   Future<void> change(PackQuery query) async {
     entry = entry.copyWith(query: query);
     selection.cancel(clear: true);
+    pendingReturn = null;
+    returnIds = const [];
     if (scroll.hasClients) scroll.jumpTo(0);
     await load();
   }
@@ -253,6 +366,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     bool appendOnly = false,
   }) async {
     if (repo.backupRestorePending) return null;
+    final hadPending = pendingReturn != null;
+    remember();
     setState(() => busy = true);
     try {
       return await paperSheet<PackTagNames>(
@@ -268,7 +383,13 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     } finally {
       if (mounted) {
         setState(() => busy = false);
-        if (dirty) unawaited(load());
+        if (!_detailsOpen) {
+          if (dirty) {
+            await load(restore: initialized);
+          } else if (!hadPending) {
+            pendingReturn = null;
+          }
+        }
       }
     }
   }
@@ -279,53 +400,60 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     var ids = {...pack.tags}, names = {...pack.tagNames};
     final owner = repo.connectionIdentity;
     var error = '';
-    await paperSheet<void>(
-      context,
-      StatefulBuilder(
-        builder: (sheetContext, local) => SheetFrame(
-          title: pack.name,
-          children: [
-            SizedBox(
-              height: 230,
-              child: PackCover(pack: pack, repository: repo),
-            ),
-            note('${pack.pageCount} 张 · ${pack.readableCount} 张可读取'),
-            Text(
-              pack.path,
-              style: TextStyle(fontSize: 12, color: Paper.of(context).muted),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text('整包标签'),
-              trailing: const Icon(Icons.chevron_right),
-              subtitle: names.isEmpty ? null : Text(names.values.join('、')),
-              onTap: () async {
-                if (!identical(owner, repo.connectionIdentity)) {
-                  local(() => error = '服务连接已变化，请关闭后重新打开。');
-                  return;
-                }
-                final result = await tags(
-                  {pack.id},
-                  initial: ids,
-                  initialNames: names,
-                );
-                if (result != null && sheetContext.mounted) {
-                  local(() {
-                    ids = result.names.keys.toSet();
-                    names = {...result.names};
-                  });
-                }
-              },
-            ),
-            if (error.isNotEmpty) note(error),
-          ],
+    _detailsOpen = true;
+    try {
+      await paperSheet<void>(
+        context,
+        StatefulBuilder(
+          builder: (sheetContext, local) => SheetFrame(
+            title: pack.name,
+            children: [
+              SizedBox(
+                height: 230,
+                child: PackCover(pack: pack, repository: repo),
+              ),
+              note('${pack.pageCount} 张 · ${pack.readableCount} 张可读取'),
+              Text(
+                pack.path,
+                style: TextStyle(fontSize: 12, color: Paper.of(context).muted),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('整包标签'),
+                trailing: const Icon(Icons.chevron_right),
+                subtitle: names.isEmpty ? null : Text(names.values.join('、')),
+                onTap: () async {
+                  if (!identical(owner, repo.connectionIdentity)) {
+                    local(() => error = '服务连接已变化，请关闭后重新打开。');
+                    return;
+                  }
+                  final result = await tags(
+                    {pack.id},
+                    initial: ids,
+                    initialNames: names,
+                  );
+                  if (result != null && sheetContext.mounted) {
+                    local(() {
+                      ids = result.names.keys.toSet();
+                      names = {...result.names};
+                    });
+                  }
+                },
+              ),
+              if (error.isNotEmpty) note(error),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } finally {
+      _detailsOpen = false;
+      if (mounted && widget.active && dirty) await load(restore: initialized);
+    }
   }
 
   @override
   void dispose() {
+    generation++;
     repo.removeListener(repositoryChanged);
     selection.removeListener(changed);
     selection.dispose();
@@ -339,6 +467,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, box) {
+      width = box.maxWidth;
       final p = Paper.of(context), recent = entry.source == BrowseSource.recent;
       return Column(
         children: [
@@ -379,7 +508,11 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                   key: const Key('pack-list-retry'),
                   onPressed: data.loading
                       ? null
-                      : () => load(more: data.retryMore),
+                      : () => load(
+                          more: data.retryMore,
+                          before: data.retryBefore,
+                          restore: data.retryRestore,
+                        ),
                   child: const Text('重试'),
                 ),
               ],
@@ -402,36 +535,46 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                       if (entry.query.count > 0 ||
                           entry.query.search.isNotEmpty)
                         SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 16),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    [
-                                      if (entry.query.folder.isNotEmpty)
-                                        entry.query.folder,
-                                      if (entry.query.tags.isNotEmpty)
-                                        '${entry.query.tags.length} 个图包标签',
-                                      if (entry.query.search.isNotEmpty)
-                                        '“${entry.query.search}”',
-                                    ].join(' · '),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: p.olive,
+                          child: SizedBox(
+                            height: MediaLayout.scope(context),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      [
+                                        if (entry.query.folder.isNotEmpty)
+                                          entry.query.folder,
+                                        if (entry.query.tags.isNotEmpty)
+                                          '${entry.query.tags.length} 个图包标签',
+                                        if (entry.query.search.isNotEmpty)
+                                          '“${entry.query.search}”',
+                                        if (entry.query.readState !=
+                                            PackReadState.all)
+                                          {
+                                            PackReadState.unread: '未读',
+                                            PackReadState.reading: '在读',
+                                            PackReadState.completed: '已读',
+                                          }[entry.query.readState]!,
+                                      ].join(' · '),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: p.olive,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    search.clear();
-                                    unawaited(change(PackQuery()));
-                                  },
-                                  child: const Text('清除'),
-                                ),
-                              ],
+                                  TextButton(
+                                    onPressed: () {
+                                      search.clear();
+                                      unawaited(change(PackQuery()));
+                                    },
+                                    child: const Text('清除'),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

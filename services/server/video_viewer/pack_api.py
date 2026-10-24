@@ -37,6 +37,7 @@ class PackList(BaseModel):
     total: int
     offset: int
     limit: int
+    anchor_index: int | None = None
 
 
 class PageSummary(BaseModel):
@@ -78,6 +79,7 @@ def router(auth_required):
         read_state: Literal["all", "unread", "reading", "completed"] = "all",
         sort: Literal["name", "newest"] = "name",
         status: Literal["available", "missing", "trash", "unreadable"] = "available",
+        anchor_ids: Annotated[list[str] | None, Query(max_length=16)] = None,
     ):
         return request.app.state.packs.list(
             offset=offset,
@@ -88,6 +90,7 @@ def router(auth_required):
             read_state=read_state,
             sort=sort,
             status=status,
+            anchor_ids=anchor_ids or (),
         )
 
     @api.get("/packs/selection")

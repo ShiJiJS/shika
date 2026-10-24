@@ -71,8 +71,10 @@ class CatalogPage<T> {
     required this.total,
     required this.offset,
     required this.limit,
+    this.anchorIndex,
   }) : items = List.unmodifiable(items);
   final List<T> items;
   final int total, offset, limit;
+  final int? anchorIndex;
   bool get hasMore => offset + items.length < total;
 }

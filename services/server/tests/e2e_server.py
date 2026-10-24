@@ -21,7 +21,7 @@ from video_viewer.models import Root, Video
 
 from .generate_media import encode, generate
 from .preview_fixture import install as install_preview_fixture
-from .workspace_fixture import seed_workspace_packs
+from .workspace_fixture import prepend_workspace_pack, seed_workspace_packs
 
 FIXTURE_PASSPHRASE = "video-viewer-emulator-fixture-only"
 FIXTURE_KEY = "isolated-emulator-control"
@@ -54,7 +54,7 @@ def create_e2e_app():
         marker.write_text("dedicated generated emulator fixture")
     controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False,
                 "fail_restore": False, "slow_restore": False, "slow_page": False,
-                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_pack_names": False}
+                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_pack_names": False, "fail_pack_anchor": False}
 
     def backup_fault(phase, _task_id):
         if controls["fail_restore"] and phase == "after_replace_before_commit":
@@ -87,11 +87,19 @@ def create_e2e_app():
                 entry["command_hash"] = hashlib.sha256(
                     str(body.get("request_id")).encode()
                 ).hexdigest()
+            entry["query_lists"] = {
+                key: request.query_params.getlist(key)
+                for key in ("tag_ids", "anchor_ids") if key in request.query_params
+            }
             trace.append(entry)
             if controls["busy_covers"] and request.url.path.endswith("/cover"):
                 controls["busy_covers"] -= 1
                 entry["status"] = 503
                 return JSONResponse({"error": {"code": "image_busy", "message": "Isolated transient cover failure"}}, status_code=503)
+            if controls["fail_pack_anchor"] and request.method == "GET" and request.url.path == "/api/v1/packs" and request.query_params.get("anchor_ids"):
+                controls["fail_pack_anchor"] = False
+                entry["status"] = 503
+                return JSONResponse({"error": {"code": "fixture_pack_anchor", "message": "Isolated pack location failure"}}, status_code=503)
             if controls["fail_pack_names"] and request.method == "GET" and request.url.path == "/api/v1/pack-tags/resolve":
                 controls["fail_pack_names"] = False
                 entry["status"] = 503
@@ -193,6 +201,7 @@ def create_e2e_app():
             "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
             "selection-videos", "selection-packs",
             "pack-names-card", "pack-names-retry", "pack-names-saved", "pack-names-renamed",
+            "pack-anchor-before", "pack-anchor-error", "pack-anchor-return", "pack-anchor-prepend", "pack-anchor-inserted",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase
@@ -205,6 +214,12 @@ def create_e2e_app():
         if action == "reset-login-limit":
             with app.state.login_lock:
                 app.state.login_attempts.clear()
+        elif action == "pack-anchor":
+            details = seed_workspace_packs(BASE, Path("/fixture-assets"), 73)
+        elif action == "pack-anchor-prepend":
+            details = prepend_workspace_pack(BASE, Path("/fixture-assets"))
+        elif action == "fail-pack-anchor":
+            controls["fail_pack_anchor"] = True
         elif action == "workspace-packs":
             details = seed_workspace_packs(BASE, Path("/fixture-assets"))
             controls["busy_covers"] = 2
