@@ -119,7 +119,17 @@ void main() {
       expect(t.widget<FilledButton>(save).onPressed, isNull);
       expect(find.text('重试读取名称'), findsOneWidget);
       await shot('retry');
-      await tap(find.text('重试读取名称'));
+      // A broken idle transport may fail before reaching the injected 503.
+      // Exercise bounded explicit user retries; each must retain the draft.
+      // The final trace still requires the controlled 503 and a real 200.
+      for (
+        var retry = 0;
+        retry < 3 && t.widget<FilledButton>(save).onPressed == null;
+        retry++
+      ) {
+        expect(chosen(ids.last), findsOneWidget);
+        await tap(find.text('重试读取名称'));
+      }
       expect(t.widget<FilledButton>(save).onPressed, isNotNull);
       await text(editorInput(), '名称00');
       await tap(find.widgetWithText(FilterChip, '名称00'));
