@@ -218,6 +218,7 @@ def watch():
                 "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
                 "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
                 "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
+                "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
             }:
                 request = urllib.request.Request(
                     "http://127.0.0.1:8761/__fixture/trace", headers=HEADERS
@@ -227,6 +228,16 @@ def watch():
                         json.dumps(json.load(response), ensure_ascii=False, indent=2),
                         encoding="utf-8",
                     )
+                if PREFIX == "lf5-recovery":
+                    request = urllib.request.Request(
+                        "http://127.0.0.1:8761/__fixture/reader/stats",
+                        headers=HEADERS, method="POST",
+                    )
+                    with urllib.request.urlopen(request, timeout=2) as response:
+                        (EVIDENCE / f"{PREFIX}-{phase}-faults.json").write_text(
+                            json.dumps(json.load(response), ensure_ascii=False, indent=2),
+                            encoding="utf-8",
+                        )
                 result = subprocess.run(
                     [
                         ADB,
@@ -274,6 +285,7 @@ def main():
     mode.add_argument("--pack-reader", action="store_true")
     mode.add_argument("--pack-recent", action="store_true")
     mode.add_argument("--pack-controls", action="store_true")
+    mode.add_argument("--pack-recovery", action="store_true")
     parser.add_argument("--workspace-viewport", choices=("390", "360"), default="390")
     parser.add_argument("--workspace-text-scale", choices=("1", "2"), default="1")
     parser.add_argument("--plain-name")
@@ -299,7 +311,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.pack_controls:
+    if args.pack_recovery:
+        PREFIX = "lf5-recovery"
+    elif args.pack_controls:
         PREFIX = "lf5-controls"
     elif args.pack_recent:
         PREFIX = "lf5-recent"
@@ -337,7 +351,7 @@ def main():
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     prepare_emulator()
-    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls:
+    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery:
         def device(*command):
             return subprocess.check_output(
                 [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
@@ -397,6 +411,7 @@ def main():
                 "lf5-reader": "integration_test/server_pack_reader_test.dart",
                 "lf5-recent": "integration_test/server_pack_recent_test.dart",
                 "lf5-controls": "integration_test/server_pack_reader_controls_test.dart",
+                "lf5-recovery": "integration_test/server_pack_reader_recovery_test.dart",
             }[PREFIX],
             "-d",
             "emulator-5554",
@@ -425,6 +440,7 @@ def main():
                 or args.pack_reader
                 or args.pack_recent
                 or args.pack_controls
+                or args.pack_recovery
                 else 3
                 if args.backups
                 else 2

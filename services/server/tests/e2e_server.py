@@ -21,6 +21,7 @@ from video_viewer.models import Root, Video
 
 from .generate_media import encode, generate
 from .preview_fixture import install as install_preview_fixture
+from .reader_fixture import install as install_reader_fixture
 from .workspace_fixture import (
     prepend_workspace_pack,
     seed_recent_pack_history,
@@ -69,6 +70,7 @@ def create_e2e_app():
 
     app = create_app(settings, backup_fault_hook=backup_fault)
     install_preview_fixture(app, BASE, PORTRAIT, FIXTURE_KEY)
+    install_reader_fixture(app, FIXTURE_KEY)
     trace = deque(maxlen=300)
     checkpoint = {"phase": "ready"}
 
@@ -209,6 +211,7 @@ def create_e2e_app():
             "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
             "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
             "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
+            "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase

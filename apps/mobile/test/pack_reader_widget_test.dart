@@ -344,6 +344,17 @@ void main() {
           () => state().session.index == 1 && state().session.offsetRatio > .04,
         );
         final ratio = state().session.offsetRatio;
+        expect(state().session.unsaved, isTrue);
+        final beforePause = repo.revisions['p0']!;
+        final pausedAt = t.binding.clock.now();
+        t.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+        await t.pump();
+        // No fake-clock time advances: the 700ms autosave cannot satisfy this.
+        expect(t.binding.clock.now(), pausedAt);
+        expect(state().session.unsaved, isFalse);
+        expect(repo.revisions['p0'], greaterThan(beforePause));
+        expect(repo.marks['p0']!.offsetRatio, closeTo(ratio, .02));
+        t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
         expect(await state().session.flush(), isTrue);
         expect(repo.marks['p0']!.pageId, 'p0-1');
         await tap(find.byTooltip('返回来源'));
