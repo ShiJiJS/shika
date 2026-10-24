@@ -772,6 +772,7 @@ class PackReaderPageState extends State<PackReaderPage>
                                   ],
                                 ),
                                 Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     tool(
                                       '总览',
@@ -893,7 +894,9 @@ class PackReaderPageState extends State<PackReaderPage>
             Icon(icon, size: 21),
             const SizedBox(height: 3),
             Text(
-              label,
+              MediaLayout.largeText(context) && label.length == 4
+                  ? '${label.substring(0, 2)}\n${label.substring(2)}'
+                  : label,
               style: const TextStyle(fontSize: 12),
               maxLines: 2,
               textAlign: TextAlign.center,
