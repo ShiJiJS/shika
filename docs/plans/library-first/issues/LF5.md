@@ -14,7 +14,9 @@
 
 `3f693be` / `9024f88`进一步修正单指翻页被缩放组件截获、较低触控阈值下双指与翻页竞争的问题。同实现Android操作专项连续三轮通过（含360双倍字号，46/49/55秒），每轮核对4次实际ADB返回；覆盖跟手回弹、LTR/RTL、双指/双击缩放、放大拖动、沉浸、宽适配续读、纵拼与下一包独立默认。原生操作专项与当前197项客户端回归见[操作记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-controls/README.md)及[组件回归](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-reader-controls-client/README.md)。
 
-REC-01的回收隐藏/恢复保留状态仍需LF6联动；完整来源/异常/后台/恢复组合、完整手势与异常组合、500页4K/8K的真实内存与延迟仍待补。全局默认设置界面和备份v2由LF7收口，快速整理由LF6实施。本issue继续开放，PR保持草稿。详见[设计契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-DESIGN.md)、[界面约束](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-UI-DESIGN.md)和[实施记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md) / [草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)。
+`9ca6518`补齐深色错误动作的对比度；`aafccee`恢复专项验证图片503有限重试/手动恢复、未受理进度的同键显式重试、已提交丢响应的只读回执、真实Android后台保存、整包标签移出交集后仍保留完整25包范围，以及返回原查询24条结果。同实现原生路径连续三轮通过（含360双倍字号，55/54/60秒）；当前197项客户端回归包含不推进假时钟的3尺寸生命周期保存断言；见[恢复原生记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-recovery/README.md)和[生命周期回归](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-reader-recovery-client/README.md)。服务端业务/迁移35份源码仍匹配既有163项记录，本轮新增的是隔离e2e故障夹具，未重新全量执行163项。
+
+REC-01的回收隐藏/恢复保留状态仍需LF6联动；其它图片错误码/跳过、连接替换/同连接管理恢复/旧服务、强杀与完整状态组合、500页4K/8K的真实内存与延迟仍待补。全局默认设置界面和备份v2由LF7收口，快速整理由LF6实施。本issue继续开放，PR保持草稿。详见[设计契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-DESIGN.md)、[界面约束](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-UI-DESIGN.md)和[实施记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md) / [草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)。
 
 ## 依赖
 
