@@ -128,6 +128,15 @@ void main() {
         () => find.byType(PackReaderPage).evaluate().isEmpty,
         'return specific library query',
       );
+      await until(() {
+        final field = find.byKey(const Key('pack-search'));
+        if (field.hitTestable().evaluate().isEmpty) return false;
+        final route = ModalRoute.of(t.element(field));
+        return route?.isCurrent == true &&
+            route?.secondaryAnimation?.status == AnimationStatus.dismissed &&
+            !catalog().data.loading &&
+            catalog().pendingReturn == null;
+      }, 'library transition and restore ready for editing');
       await t.enterText(find.byKey(const Key('pack-search')), '没有这个图包');
       await t.testTextInput.receiveAction(TextInputAction.done);
       await until(
