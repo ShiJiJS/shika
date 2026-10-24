@@ -116,6 +116,9 @@ class _ReaderImageState extends State<ReaderImage> {
 
   @override
   Widget build(BuildContext context) {
+    final errorButtonStyle = widget.thumbnail
+        ? null
+        : TextButton.styleFrom(foregroundColor: Colors.white);
     Widget failure() => Center(
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -128,6 +131,7 @@ class _ReaderImageState extends State<ReaderImage> {
                 style: TextStyle(color: Colors.white, fontSize: 14),
               ),
             TextButton.icon(
+              style: errorButtonStyle,
               key: Key('reader-image-retry-${widget.page.id}'),
               onPressed: () {
                 widget.images.evict(widget.page);
@@ -137,7 +141,11 @@ class _ReaderImageState extends State<ReaderImage> {
               label: const Text('重试'),
             ),
             if (widget.onSkip != null)
-              TextButton(onPressed: widget.onSkip, child: const Text('跳过这一张')),
+              TextButton(
+                style: errorButtonStyle,
+                onPressed: widget.onSkip,
+                child: const Text('跳过这一张'),
+              ),
           ],
         ),
       ),
