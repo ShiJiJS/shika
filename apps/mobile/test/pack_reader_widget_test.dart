@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,6 +15,7 @@ class AssetReadingLibrary extends WorkspaceLibrary {
   final marks = <String, ReaderMark>{};
   final revisions = <String, int>{};
   int openedCount = 0, scopes = 0;
+  Completer<void>? preferenceStarted, preferenceRelease;
   @override
   ServiceCapabilities get capabilities => ServiceCapabilities([
     'image_packs',
@@ -107,6 +110,13 @@ class _AssetReader implements PackReader {
         result = state;
         break;
       case final WritePackPreferences value:
+        if (repo.preferenceStarted != null &&
+            !repo.preferenceStarted!.isCompleted) {
+          repo.preferenceStarted!.complete();
+        }
+        if (repo.preferenceRelease != null) {
+          await repo.preferenceRelease!.future;
+        }
         final p = value.preferences;
         repo.prefs[selected] = ReaderPreferences(
           mode: p.mode,

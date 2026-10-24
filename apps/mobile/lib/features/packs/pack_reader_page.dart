@@ -951,6 +951,13 @@ class PackReaderPageState extends State<PackReaderPage>
                                     ),
                                     Expanded(
                                       child: Slider(
+                                        // A fresh Slider state avoids reparenting its internal
+                                        // global-key semantics while a modal blocks this route
+                                        // (Flutter 3.47, flutter/flutter#193706).
+                                        key: ValueKey(
+                                          !session.inputBlocked &&
+                                              session.total > 1,
+                                        ),
                                         value: session.index.toDouble(),
                                         min: 0,
                                         max: max(
@@ -1033,6 +1040,13 @@ class PackReaderPageState extends State<PackReaderPage>
                                       children: [
                                         Expanded(
                                           child: OutlinedButton(
+                                            style: OutlinedButton.styleFrom(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 8,
+                                                    vertical: 10,
+                                                  ),
+                                            ),
                                             onPressed: session.inputBlocked
                                                 ? null
                                                 : () async {
@@ -1050,9 +1064,14 @@ class PackReaderPageState extends State<PackReaderPage>
                                         ),
                                         const SizedBox(width: 12),
                                         Expanded(
-                                          child: FilledButton.icon(
+                                          child: FilledButton(
                                             key: const Key('reader-trash-pack'),
                                             style: FilledButton.styleFrom(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 8,
+                                                    vertical: 10,
+                                                  ),
                                               backgroundColor: p.danger,
                                               foregroundColor: Theme.of(context)
                                                   .colorScheme
@@ -1063,11 +1082,7 @@ class PackReaderPageState extends State<PackReaderPage>
                                                     !session.opened
                                                 ? null
                                                 : removeCurrent,
-                                            icon: const Icon(
-                                              Icons.delete_outline,
-                                              size: 18,
-                                            ),
-                                            label: const Text('移入回收站'),
+                                            child: const Text('移入回收站'),
                                           ),
                                         ),
                                       ],
