@@ -208,6 +208,7 @@ def create_e2e_app():
             "pack-anchor-before", "pack-anchor-error", "pack-anchor-return", "pack-anchor-prepend", "pack-anchor-inserted",
             "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
             "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
+            "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase

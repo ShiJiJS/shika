@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart' show ScrollCacheExtent;
@@ -1004,6 +1005,44 @@ class _HorizontalReader extends StatefulWidget {
 class _HorizontalReaderState extends State<_HorizontalReader> {
   late final pages = PageController(initialPage: widget.session.index);
   bool zoom = false;
+  Drag? pageDrag;
+
+  void startDrag(ScaleStartDetails details) {
+    if (zoom || !pages.hasClients) return;
+    pageDrag?.cancel();
+    pageDrag = pages.position.drag(
+      DragStartDetails(globalPosition: details.focalPoint),
+      () => pageDrag = null,
+    );
+  }
+
+  void updateDrag(ScaleUpdateDetails details) {
+    pageDrag?.update(
+      DragUpdateDetails(
+        delta: Offset(details.focalPointDelta.dx, 0),
+        primaryDelta: details.focalPointDelta.dx,
+        globalPosition: details.focalPoint,
+      ),
+    );
+  }
+
+  void endDrag(ScaleEndDetails details) {
+    final drag = pageDrag;
+    pageDrag = null;
+    drag?.end(
+      DragEndDetails(
+        velocity: details.velocity,
+        primaryVelocity: details.velocity.pixelsPerSecond.dx,
+      ),
+    );
+  }
+
+  void cancelDrag() {
+    final drag = pageDrag;
+    pageDrag = null;
+    drag?.cancel();
+  }
+
   @override
   void didUpdateWidget(_HorizontalReader old) {
     super.didUpdateWidget(old);
@@ -1046,6 +1085,10 @@ class _HorizontalReaderState extends State<_HorizontalReader> {
         reset: widget.resetZoom,
         active: index == widget.session.index,
         tap: widget.tap,
+        startDrag: startDrag,
+        updateDrag: updateDrag,
+        endDrag: endDrag,
+        cancelDrag: cancelDrag,
         onZoom: (value) {
           if (index == widget.session.index) {
             setState(() => zoom = value);
@@ -1073,6 +1116,7 @@ class _HorizontalReaderState extends State<_HorizontalReader> {
   );
   @override
   void dispose() {
+    cancelDrag();
     pages.dispose();
     super.dispose();
   }
@@ -1086,7 +1130,15 @@ class _ZoomPage extends StatefulWidget {
     required this.onZoom,
     required this.active,
     required this.reset,
+    required this.startDrag,
+    required this.updateDrag,
+    required this.endDrag,
+    required this.cancelDrag,
   });
+  final GestureScaleStartCallback startDrag;
+  final GestureScaleUpdateCallback updateDrag;
+  final GestureScaleEndCallback endDrag;
+  final VoidCallback cancelDrag;
   final Widget child;
   final VoidCallback tap;
   final ValueChanged<bool> onZoom;
@@ -1098,6 +1150,7 @@ class _ZoomPage extends StatefulWidget {
 
 class _ZoomPageState extends State<_ZoomPage> {
   final transform = TransformationController();
+  bool pageGesture = false;
   @override
   void didUpdateWidget(_ZoomPage old) {
     super.didUpdateWidget(old);
@@ -1127,8 +1180,28 @@ class _ZoomPageState extends State<_ZoomPage> {
         minScale: 1,
         maxScale: 4,
         panEnabled: transform.value.getMaxScaleOnAxis() > 1.01,
-        onInteractionUpdate: (_) =>
-            widget.onZoom(transform.value.getMaxScaleOnAxis() > 1.01),
+        // InteractiveViewer's scale recognizer also wins single-finger drags
+        // when panEnabled is false. Forward those to the PageView's real scroll
+        // activity so page physics, RTL and follow-the-finger movement agree.
+        onInteractionStart: (details) {
+          pageGesture =
+              details.pointerCount == 1 &&
+              transform.value.getMaxScaleOnAxis() <= 1.01;
+          if (pageGesture) widget.startDrag(details);
+        },
+        onInteractionUpdate: (details) {
+          final enlarged = transform.value.getMaxScaleOnAxis() > 1.01;
+          if (pageGesture && (details.pointerCount > 1 || enlarged)) {
+            pageGesture = false;
+            widget.cancelDrag();
+          }
+          if (pageGesture) widget.updateDrag(details);
+          widget.onZoom(enlarged);
+        },
+        onInteractionEnd: (details) {
+          if (pageGesture) widget.endDrag(details);
+          pageGesture = false;
+        },
         child: SizedBox.expand(child: widget.child),
       ),
     ),

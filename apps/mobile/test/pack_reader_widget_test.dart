@@ -251,7 +251,57 @@ void main() {
         );
         await t.pump(const Duration(milliseconds: 500));
         expect(repo.openedCount, 1);
-        expect(find.byKey(const Key('reader-horizontal')), findsOneWidget);
+        final horizontal = find.byKey(const Key('reader-horizontal'));
+        expect(horizontal, findsOneWidget);
+        final hold = await t.startGesture(t.getCenter(horizontal));
+        await hold.moveBy(Offset(-sample.$1.width * .25, 0));
+        await t.pump(const Duration(milliseconds: 30));
+        final pager = t.widget<PageView>(horizontal).controller!;
+        expect(pager.page, greaterThan(.05));
+        expect(pager.page, lessThan(.5));
+        await hold.up();
+        await until(() => (pager.page ?? 1).abs() < .001);
+        expect(state().session.index, 0);
+        await t.drag(horizontal, Offset(-sample.$1.width * .65, 0));
+        await until(
+          () => state().session.index == 1 && state().session.unsaved,
+        );
+        expect(await state().session.flush(), isTrue);
+        await t.drag(horizontal, Offset(sample.$1.width * .65, 0));
+        await until(
+          () => state().session.index == 0 && state().session.unsaved,
+        );
+        expect(await state().session.flush(), isTrue);
+        final center = t.getCenter(horizontal);
+        final left = await t.startGesture(
+          center - const Offset(30, 0),
+          pointer: 11,
+        );
+        final right = await t.startGesture(
+          center + const Offset(30, 0),
+          pointer: 12,
+        );
+        await t.pump(const Duration(milliseconds: 50));
+        for (var i = 1; i <= 4; i++) {
+          await left.moveTo(center - Offset(30 + i * 15, 0));
+          await right.moveTo(center + Offset(30 + i * 15, 0));
+          await t.pump(const Duration(milliseconds: 30));
+        }
+        await until(() => state().zoomed);
+        await left.up();
+        await right.up();
+        await t.pump(const Duration(milliseconds: 200));
+        await t.drag(horizontal, const Offset(-140, 0));
+        await t.pump(const Duration(milliseconds: 300));
+        expect(
+          state().session.index,
+          0,
+          reason: 'pinch and zoom pan cannot flip',
+        );
+        await t.binding.handlePopRoute();
+        await until(() => !state().zoomed);
+        expect(find.byType(PackReaderPage), findsOneWidget);
+        expect(state().controls, isTrue);
         await tap(find.byTooltip('下一张'));
         await until(
           () => state().session.index == 1 && state().session.unsaved,
