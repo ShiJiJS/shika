@@ -1,0 +1,62 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart
+00:00 +0: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: _AssertionError:<'package:flutter/src/rendering/object.dart': Failed assertion: line 6723
+pos 12: 'identical(childRenderObject, parentRenderObject)': is not true.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart:59:13)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart:67:13)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart line 59
+The test description was:
+  reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0 [E]
+  Test failed. See exception logs above.
+  The test description was: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+  
+00:00 +0 -1: reader settings keep accessible mode sections stable Size(360.0, 740.0)/2.0
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: _AssertionError:<'package:flutter/src/rendering/object.dart': Failed assertion: line 6723
+pos 12: 'identical(childRenderObject, parentRenderObject)': is not true.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart:59:13)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart:67:13)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart line 59
+The test description was:
+  reader settings keep accessible mode sections stable Size(360.0, 740.0)/2.0
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -2: reader settings keep accessible mode sections stable Size(360.0, 740.0)/2.0 [E]
+  Test failed. See exception logs above.
+  The test description was: reader settings keep accessible mode sections stable Size(360.0, 740.0)/2.0
+  
+00:01 +0 -2: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(360.0, 740.0)/2.0
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
