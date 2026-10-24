@@ -9,6 +9,7 @@ import '../../ui/media_layout.dart';
 import '../../ui/paper.dart';
 import '../packs/pack_sheets.dart';
 import '../packs/pack_reader_page.dart';
+import '../packs/pack_file_action.dart';
 import 'browse_context.dart';
 import 'catalog_selection.dart';
 import 'pack_query_controller.dart';
@@ -154,6 +155,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   PackBrowseContext? pendingReturn;
   List<String> returnIds = const [];
   String error = '';
+  List<PackFileCommand> pendingFiles = const [];
+  int _pendingFilesRead = 0;
   PackLibraryState get data => catalog.state;
   bool get recent => entry.source == BrowseSource.recent;
   int get columns => recent ? 1 : 2;
@@ -196,6 +199,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       search.text = entry.query.search;
       selection.cancel(clear: true);
       initialized = false;
+      pendingFiles = const [];
+      _pendingFilesRead++;
       generation++;
       pendingReturn = null;
       returnIds = const [];
@@ -219,6 +224,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   void repositoryChanged() {
     if (!identical(selectionConnection, repo.connectionIdentity)) {
       selectionConnection = repo.connectionIdentity;
+      pendingFiles = const [];
+      _pendingFilesRead++;
       selection.cancel(clear: true);
       generation++;
       pendingReturn = null;
@@ -285,6 +292,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       return;
     }
     final current = ++generation;
+    unawaited(loadPendingFiles());
     final oldStart = data.offset,
         oldPixels = scroll.hasClients ? scroll.offset : 0.0;
     if (restore) remember();
@@ -422,6 +430,167 @@ class PackCatalogPageState extends State<PackCatalogPage> {
           }
         }
       }
+    }
+  }
+
+  Future<void> loadPendingFiles() async {
+    final request = ++_pendingFilesRead, connection = repo.connectionIdentity;
+    if (!repo.capabilities.packLogicalTrash) return;
+    try {
+      final pending = await repo.createPackFiles().pending();
+      if (mounted &&
+          request == _pendingFilesRead &&
+          identical(connection, repo.connectionIdentity)) {
+        setState(() => pendingFiles = pending);
+      }
+    } catch (failure) {
+      if (mounted &&
+          request == _pendingFilesRead &&
+          identical(connection, repo.connectionIdentity)) {
+        setState(() => error = failure.toString());
+      }
+    }
+  }
+
+  Future<void> checkPendingFiles() async {
+    if (_detailsOpen || pendingFiles.isEmpty) return;
+    var command = pendingFiles.first;
+    _detailsOpen = true;
+    try {
+      if (pendingFiles.length > 1) {
+        final selected = await paperSheet<PackFileCommand>(
+          context,
+          SheetFrame(
+            title: '待核对的图包操作',
+            children: [
+              for (final value in pendingFiles)
+                ListTile(
+                  title: Text(
+                    value.label ?? (value.kind == 'trash' ? '整包移除' : '图包恢复与撤销'),
+                  ),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.pop(context, value),
+                ),
+            ],
+          ),
+        );
+        if (selected == null || !mounted) return;
+        command = selected;
+      }
+      if (!mounted) return;
+      final files = repo.createPackFiles();
+      final outcome = await showPackFileAction(
+        context,
+        files: files,
+        command: command,
+        title: '核对图包操作',
+        description: command.label,
+        confirm: true,
+      );
+      if (outcome == null || !mounted || !files.isCurrent()) return;
+      await files.acknowledge(outcome.command);
+      repo.packFilesChanged();
+      if (mounted &&
+          outcome.command.kind == 'trash' &&
+          outcome.task.result!.succeeded > 0) {
+        showPackUndo(context, repo, outcome);
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              outcome.task.result!.succeeded > 0
+                  ? '图包操作已完成'
+                  : '图包操作未完成，请重新读取后再试',
+            ),
+          ),
+        );
+      }
+    } catch (failure) {
+      if (mounted) setState(() => error = failure.toString());
+    } finally {
+      _detailsOpen = false;
+      if (mounted && widget.active) await load(restore: initialized);
+    }
+  }
+
+  Future<void> actions(LibraryPack pack) async {
+    if (_detailsOpen || busy) return;
+    _detailsOpen = true;
+    String? action;
+    try {
+      action = await paperSheet<String>(
+        context,
+        SheetFrame(
+          title: pack.name,
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('阅读图包'),
+              trailing: const Icon(Icons.chrome_reader_mode_outlined),
+              onTap: () => Navigator.pop(context, 'read'),
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('整包标签'),
+              trailing: const Icon(Icons.sell_outlined),
+              onTap: () => Navigator.pop(context, 'tags'),
+            ),
+            if (repo.capabilities.packLogicalTrash)
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  '整包移入回收站',
+                  style: TextStyle(color: Paper.of(context).danger),
+                ),
+                trailing: const Icon(Icons.delete_outline),
+                onTap: () => Navigator.pop(context, 'trash'),
+              ),
+          ],
+        ),
+      );
+    } finally {
+      _detailsOpen = false;
+    }
+    if (!mounted || !widget.active) return;
+    if (action == 'read') await details(pack);
+    if (action == 'tags') {
+      await tags({pack.id}, initial: pack.tags, initialNames: pack.tagNames);
+    }
+    if (action == 'trash') await remove(pack);
+  }
+
+  Future<void> remove(LibraryPack pack) async {
+    if (_detailsOpen || busy) return;
+    remember();
+    _detailsOpen = true;
+    try {
+      final outcome = await showPackFileAction(
+        context,
+        files: repo.createPackFiles(),
+        command: PackFileCommand.trash(packFileRequestId(), [
+          pack.id,
+        ], label: pack.name),
+        title: '整包移入回收站？',
+        description: '${pack.name} · ${pack.pageCount} 张',
+      );
+      if (outcome == null || !mounted || !outcome.files.isCurrent()) return;
+      await outcome.files.acknowledge(outcome.command);
+      repo.packFilesChanged();
+      if (!mounted) return;
+      if (outcome.task.result!.succeeded > 0) {
+        showPackUndo(context, repo, outcome);
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('图包未移除，请重新读取后再试')));
+      }
+    } catch (failure) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(failure.toString())));
+      }
+    } finally {
+      _detailsOpen = false;
+      if (mounted && widget.active) await load(restore: initialized);
     }
   }
 
@@ -622,6 +791,17 @@ class PackCatalogPageState extends State<PackCatalogPage> {
               ),
             ),
           if (error.isNotEmpty) note(error),
+          if (pendingFiles.isNotEmpty)
+            Row(
+              children: [
+                Expanded(child: note('${pendingFiles.length} 项图包操作待核对')),
+                TextButton(
+                  key: const Key('pack-pending-files'),
+                  onPressed: checkPendingFiles,
+                  child: const Text('查询结果'),
+                ),
+              ],
+            ),
           if (data.loading && data.items.isNotEmpty)
             const LinearProgressIndicator(minHeight: 2),
           if (data.error.isNotEmpty && data.items.isNotEmpty)
@@ -945,7 +1125,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                         ),
                                         IconButton(
                                           tooltip: '图包操作 ${pack.name}',
-                                          onPressed: () => details(pack),
+                                          onPressed: () => actions(pack),
                                           constraints: const BoxConstraints(
                                             minWidth: 32,
                                             minHeight: 28,

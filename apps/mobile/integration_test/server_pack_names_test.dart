@@ -159,7 +159,8 @@ void main() {
       await tap(find.widgetWithText(FilterChip, '名称00'));
       expect(chosen(ids.last), findsOneWidget);
       await tap(save);
-      // The already-open detail sheet must use the successful edit when reopened.
+      // Reopen from the same card's action menu and read back both saved choices.
+      await tap(find.byTooltip('图包操作 ${pack.name}'));
       await tap(find.text('整包标签'));
       expect(chosen(ids.first), findsOneWidget);
       expect(chosen(ids.last), findsOneWidget);
@@ -169,7 +170,6 @@ void main() {
           matching: find.byTooltip('关闭面板'),
         ),
       );
-      await tap(find.byTooltip('关闭面板'));
       await until(
         () => cardText().contains('名称00') && cardText().contains('名称60'),
         'saved card names read back',

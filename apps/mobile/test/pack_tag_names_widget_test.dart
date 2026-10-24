@@ -114,6 +114,7 @@ void main() {
       await tap(t, find.widgetWithText(FilterChip, '标签00'));
       await tap(t, save());
       expect(repo.packLinks['p1'], {'t60', 't0'});
+      await tap(t, find.byTooltip('图包操作 春日合集'));
       await tap(t, find.text('整包标签'));
       expect(find.byKey(const Key('chosen-pack-tag-t0')), findsOneWidget);
       expect(chosen(), findsOneWidget);

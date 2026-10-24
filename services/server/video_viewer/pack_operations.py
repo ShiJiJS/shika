@@ -457,17 +457,20 @@ class PackOperations:
                 raise LibraryError("pack_operation_not_found", "未找到已受理的图包操作", 404)
             task = session.get(Task, operation.id)
             return {
-                key: getattr(task, key)
-                for key in (
-                    "id",
-                    "kind",
-                    "status",
-                    "phase",
-                    "created_at",
-                    "finished_at",
-                    "result",
-                    "error",
-                )
+                "server_time": self.clock(),
+                **{
+                    key: getattr(task, key)
+                    for key in (
+                        "id",
+                        "kind",
+                        "status",
+                        "phase",
+                        "created_at",
+                        "finished_at",
+                        "result",
+                        "error",
+                    )
+                },
             }
 
     def retry(self, identity, request_id):

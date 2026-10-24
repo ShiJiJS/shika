@@ -214,7 +214,9 @@ def test_undo_expiry_and_latest_accepted_intent(library, monkeypatch):
     clock = [100.0]
     ops.clock = lambda: clock[0]
     first = trash(client, [ids[0]])
+    assert first["server_time"] == clock[0]
     clock[0] = 108.01
+    assert client.get(f"/api/v1/pack-operations/{first['id']}").json()["server_time"] == 108.01
     assert undo(client, first["id"], status=409)["error"]["code"] == "undo_expired"
     clock[0] = 107
     enqueue = ops.enqueue
