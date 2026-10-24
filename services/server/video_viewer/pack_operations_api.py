@@ -20,6 +20,7 @@ class ReadingScene(BaseModel):
     pack_id: Identity
     content_version: int = Field(ge=1)
     expected_progress_revision: int = Field(ge=0)
+    advance: bool = True
 
 
 class Trash(Input):
@@ -42,7 +43,7 @@ def router(auth_required):
                 "trash",
                 body.pack_ids,
                 body.request_id,
-                scene=body.reading.model_dump() if body.reading else None,
+                scene=body.reading.model_dump(exclude_defaults=True) if body.reading else None,
             )
         )
 

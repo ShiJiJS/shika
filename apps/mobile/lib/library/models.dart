@@ -27,6 +27,7 @@ class ServiceCapabilities {
   bool get packReadingSessions => values.contains('pack_reading_sessions');
   bool get packEntryAnchors => values.contains('pack_entry_anchors');
   bool get packLogicalTrash => values.contains('pack_logical_trash');
+  bool get packReaderCleanup => values.contains('pack_reader_cleanup');
 }
 
 enum VideoStatus { available, missing, trash }

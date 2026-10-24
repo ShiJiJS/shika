@@ -16,6 +16,12 @@ typedef PackFileCall = Future<Map<String, dynamic>> Function(
 String packFileRequestId() =>
     '${DateTime.now().microsecondsSinceEpoch}-${Random.secure().nextInt(1 << 32)}';
 
+String packFileFailureMessage(Object failure) => failure is LibraryFailure
+    ? failure.message
+    : failure is RequestCancelled
+    ? '服务连接或管理数据已变化，请关闭后重新打开'
+    : '操作记录或网络结果未能确认，请查询原操作后再试';
+
 String _id(Object? value) =>
     value is String && value.isNotEmpty && value.length <= 128
     ? value
@@ -37,6 +43,106 @@ Object? _freeze(Object? value) => value is Map
     : value;
 
 /// Immutable intent, including the original reading owner for quick cleanup.
+class PackCleanupContext {
+  PackCleanupContext({
+    required this.entry,
+    required this.quick,
+    this.scrollOffset = 0,
+    this.scrollAnchor,
+    this.scrollIndex = 0,
+    this.scrollInset = 0,
+    this.sessionId,
+    Iterable<String> anchors = const [],
+  }) : anchors = List.unmodifiable(anchors) {
+    if (!scrollOffset.isFinite ||
+        scrollOffset < 0 ||
+        !scrollInset.isFinite ||
+        scrollIndex < 0 ||
+        this.anchors.length > 16 ||
+        this.anchors.toSet().length != this.anchors.length) {
+      throw const LibraryFailure('阅读来源记录不完整');
+    }
+    for (final value in this.anchors) {
+      _id(value);
+    }
+    if (scrollAnchor != null) _id(scrollAnchor);
+    if (sessionId != null) _id(sessionId);
+  }
+  final PackReadingEntry entry;
+  final bool quick;
+  final String? sessionId;
+  final double scrollOffset, scrollInset;
+  final String? scrollAnchor;
+  final int scrollIndex;
+  final List<String> anchors;
+  PackCleanupContext withQuick(bool value, {String? session}) =>
+      PackCleanupContext(
+        entry: entry,
+        quick: value,
+        scrollOffset: scrollOffset,
+        scrollAnchor: scrollAnchor,
+        scrollIndex: scrollIndex,
+        scrollInset: scrollInset,
+        anchors: anchors,
+        sessionId: session ?? sessionId,
+      );
+  Map<String, dynamic> toJson() => {
+    'query': entry.query.toJson(),
+    'random': entry.random,
+    'entry_anchor': entry.anchorId,
+    'quick': quick,
+    'scroll_offset': scrollOffset,
+    'scroll_anchor': scrollAnchor,
+    'scroll_index': scrollIndex,
+    'scroll_inset': scrollInset,
+    'anchors': anchors,
+    'session_id': sessionId,
+  };
+  factory PackCleanupContext.fromJson(Map<String, dynamic> raw) {
+    try {
+      final query = _map(raw['query']);
+      final folder = query['folder'], search = query['search'];
+      if (folder is! String ||
+          folder.length > 4096 ||
+          search is! String ||
+          search.length > 200) {
+        throw const FormatException();
+      }
+      final tags = (query['tag_ids'] as List).map(_id).toList();
+      if (tags.length > 256 || tags.toSet().length != tags.length) {
+        throw const FormatException();
+      }
+      return PackCleanupContext(
+        entry: PackReadingEntry(
+          PackQuery(
+            folder: folder,
+            tags: tags,
+            search: search,
+            readState: PackReadState.values.byName(query['read_state']),
+            source: BrowseSource.values.byName(query['source']),
+            sort: PackSort.values.byName(query['sort']),
+          ),
+          anchorId: raw['entry_anchor'] == null
+              ? null
+              : _id(raw['entry_anchor']),
+          random: _flag(raw['random']),
+        ),
+        quick: _flag(raw['quick']),
+        scrollOffset: (raw['scroll_offset'] as num).toDouble(),
+        scrollAnchor: raw['scroll_anchor'] == null
+            ? null
+            : _id(raw['scroll_anchor']),
+        scrollIndex: _integer(raw['scroll_index']),
+        scrollInset: (raw['scroll_inset'] as num).toDouble(),
+        anchors: (raw['anchors'] as List).map(_id),
+        sessionId: raw['session_id'] == null ? null : _id(raw['session_id']),
+      );
+    } catch (_) {
+      throw const LibraryFailure('阅读来源记录不完整');
+    }
+  }
+}
+
 class PackFileCommand {
   PackFileCommand._(
     this.requestId,
@@ -44,36 +150,66 @@ class PackFileCommand {
     this.path,
     Map<String, dynamic> body, {
     this.label,
+    this.readerContext,
   }) : body = _freeze(body) as Map<String, dynamic> {
     _id(requestId);
+    if (readerContext != null && body['reading'] == null && kind != 'undo') {
+      throw const LibraryFailure('阅读来源缺少原阅读范围');
+    }
+    if (readerContext != null) {
+      final scene = body['reading'] as Map?;
+      if (readerContext!.sessionId == null ||
+          (scene != null &&
+              (readerContext!.sessionId != scene['session_id'] ||
+                  readerContext!.quick != (scene['advance'] != false)))) {
+        throw const LibraryFailure('阅读来源与整包操作不一致');
+      }
+    }
   }
   factory PackFileCommand.trash(
     String requestId,
     Iterable<String> ids, {
     ReaderCursor? reading,
     String? label,
-  }) => PackFileCommand._(requestId, 'trash', '/api/v1/packs/trash', {
-    'pack_ids': _ids(ids),
-    if (reading != null)
-      'reading': {
-        'session_id': reading.sessionId,
-        'expected_session_revision': reading.sessionRevision,
-        'pack_id': reading.packId,
-        'content_version': reading.version,
-        'expected_progress_revision': reading.progressRevision,
-      },
-  }, label: label);
+    bool advance = true,
+    PackCleanupContext? readerContext,
+  }) => PackFileCommand._(
+    requestId,
+    'trash',
+    '/api/v1/packs/trash',
+    {
+      'pack_ids': _ids(ids),
+      if (reading != null)
+        'reading': {
+          'session_id': reading.sessionId,
+          'expected_session_revision': reading.sessionRevision,
+          'pack_id': reading.packId,
+          'content_version': reading.version,
+          'expected_progress_revision': reading.progressRevision,
+          if (!advance) 'advance': false,
+        },
+    },
+    label: label,
+    readerContext: readerContext?.withQuick(
+      readerContext.quick,
+      session: reading?.sessionId,
+    ),
+  );
   factory PackFileCommand.restore(String requestId, Iterable<String> ids) =>
       PackFileCommand._(requestId, 'restore', '/api/v1/pack-trash/restore', {
         'trash_ids': _ids(ids),
       });
-  factory PackFileCommand.undo(String requestId, String operationId) =>
-      PackFileCommand._(
-        requestId,
-        'undo',
-        '/api/v1/pack-operations/${Uri.encodeComponent(_id(operationId))}/undo',
-        {},
-      );
+  factory PackFileCommand.undo(
+    String requestId,
+    String operationId, {
+    PackCleanupContext? readerContext,
+  }) => PackFileCommand._(
+    requestId,
+    'undo',
+    '/api/v1/pack-operations/${Uri.encodeComponent(_id(operationId))}/undo',
+    {},
+    readerContext: readerContext,
+  );
   factory PackFileCommand.retry(
     String requestId,
     String operationId,
@@ -93,8 +229,16 @@ class PackFileCommand {
 
   final String requestId, kind, path;
   final String? label;
+  final PackCleanupContext? readerContext;
+  String? get readingSessionId =>
+      (body['reading'] as Map?)?['session_id'] as String? ??
+      readerContext?.sessionId;
   final Map<String, dynamic> body;
-  String get signature => jsonEncode([path, body]);
+  String get signature => jsonEncode([
+    path,
+    body,
+    if (readerContext != null) readerContext!.toJson(),
+  ]);
   Set<String> get resources => {
     for (final id in (body['pack_ids'] as List? ?? const [])) 'pack:$id',
     for (final id in (body['trash_ids'] as List? ?? const [])) 'trash:$id',
@@ -106,6 +250,7 @@ class PackFileCommand {
     'path': path,
     'body': body,
     if (label != null) 'label': label,
+    if (readerContext != null) 'reader_context': readerContext!.toJson(),
   };
   factory PackFileCommand.fromJson(Map<String, dynamic> value) {
     final kind = value['kind'], body = _map(value['body']);
@@ -117,6 +262,9 @@ class PackFileCommand {
       result = PackFileCommand.trash(
         requestId,
         (body['pack_ids'] as List).cast<String>(),
+        advance: scene == null || scene['advance'] == null
+            ? true
+            : _flag(scene['advance']),
         reading: scene == null
             ? null
             : ReaderCursor(
@@ -156,6 +304,9 @@ class PackFileCommand {
       result.path,
       result.body,
       label: label as String?,
+      readerContext: value['reader_context'] == null
+          ? null
+          : PackCleanupContext.fromJson(_map(value['reader_context'])),
     );
   }
 }
@@ -542,15 +693,18 @@ class PackFiles {
     PackFileCommand command, {
     bool submit = false,
     Duration timeout = const Duration(seconds: 25),
+    bool Function()? keepWaiting,
   }) async {
     var task = submit ? await send(command) : await receipt(command);
     final deadline = DateTime.now().add(timeout);
     while (task != null &&
         !task.settled &&
         ['queued', 'running'].contains(task.status) &&
+        (keepWaiting?.call() ?? true) &&
         DateTime.now().isBefore(deadline)) {
       await Future<void>.delayed(pollDelay);
       _check();
+      if (keepWaiting != null && !keepWaiting()) break;
       task = await receipt(command);
     }
     return task;

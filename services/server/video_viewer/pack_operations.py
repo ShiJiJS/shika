@@ -325,7 +325,16 @@ class PackOperations:
                     if operation.kind == "trash":
                         self.clear_lease(session, successes)
                         if snapshot.get("reading"):
-                            snapshot["transition"] = self.advance(session, snapshot["reading"])
+                            if snapshot["reading"].get("advance", True):
+                                snapshot["transition"] = self.advance(session, snapshot["reading"])
+                            else:
+                                value = session.get(PackSession, snapshot["reading"]["session_id"])
+                                value.revision += 1
+                                snapshot["return_state"] = {
+                                    "revision": value.revision,
+                                    "cursor": value.cursor,
+                                    "finished": value.finished,
+                                }
                     elif operation.kind == "undo":
                         snapshot["reading_restored"] = self.restore_reading(
                             session, operation, successes
@@ -365,7 +374,8 @@ class PackOperations:
     def restore_reading(self, session, operation, restored):
         original = session.get(PackFileOperation, operation.undo_of)
         snapshot = original.session_snapshot
-        scene, transition = snapshot.get("reading"), snapshot.get("transition")
+        scene = snapshot.get("reading")
+        transition = snapshot.get("transition") or snapshot.get("return_state")
         if not scene or not transition or scene["pack_id"] not in restored:
             return False
         value = session.get(PackSession, scene["session_id"])

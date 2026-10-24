@@ -76,7 +76,7 @@ class _PackFileActionState extends State<PackFileAction> {
         await perform(true);
       }
     } catch (failure) {
-      if (mounted) setState(() => error = failure.toString());
+      if (mounted) setState(() => error = packFileFailureMessage(failure));
     } finally {
       if (mounted) setState(() => busy = false);
     }
@@ -107,7 +107,7 @@ class _PackFileActionState extends State<PackFileAction> {
         });
       }
     } catch (failure) {
-      if (mounted) setState(() => error = failure.toString());
+      if (mounted) setState(() => error = packFileFailureMessage(failure));
     } finally {
       if (mounted) setState(() => busy = false);
     }
@@ -198,6 +198,7 @@ void showPackUndo(
                         command: PackFileCommand.undo(
                           packFileRequestId(),
                           outcome.task.id,
+                          readerContext: outcome.command.readerContext,
                         ),
                         title: '撤销整包移除',
                         confirm: false,
@@ -220,7 +221,9 @@ void showPackUndo(
                     }().catchError((Object failure) {
                       if (context.mounted) {
                         messenger.showSnackBar(
-                          SnackBar(content: Text(failure.toString())),
+                          SnackBar(
+                            content: Text(packFileFailureMessage(failure)),
+                          ),
                         );
                       }
                     }),

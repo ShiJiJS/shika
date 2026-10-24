@@ -184,6 +184,10 @@ class _ReaderImageState extends State<ReaderImage> {
         return child;
       },
       errorBuilder: (context, error, stack) {
+        assert(() {
+          debugPrint('READER_IMAGE_FAILURE ${widget.page.id}: $error');
+          return true;
+        }());
         if (error is NetworkImageLoadException &&
             [429, 503].contains(error.statusCode) &&
             attempt < 2 &&

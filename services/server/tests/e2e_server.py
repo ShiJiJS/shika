@@ -86,7 +86,7 @@ def create_e2e_app():
             }
             if (request.method == "PATCH" and request.url.path == "/api/v1/video-tags") or (
                 request.method == "POST" and request.url.path in {
-                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent"
+                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash"
                 }
             ):
                 body = await request.json()
@@ -139,7 +139,7 @@ def create_e2e_app():
         if (
             controls["lose_file_response"]
             and request.method == "POST"
-            and request.url.path == "/api/v1/videos/trash"
+            and request.url.path in {"/api/v1/videos/trash", "/api/v1/packs/trash"}
             and response.status_code == 202
         ):
             controls["lose_file_response"] = False
@@ -211,7 +211,8 @@ def create_e2e_app():
             "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
             "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
             "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
-            "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
+            "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
+                "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase

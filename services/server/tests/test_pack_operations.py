@@ -525,3 +525,56 @@ def test_cross_page_trash_selection_is_complete_and_escaped_search_is_literal(li
     assert client.get("/api/v1/pack-trash/selection", params={"search": "%"}).json()["total"] == 0
     assert restore(client, selected["ids"])["result"]["succeeded"] == 27
     assert packs(client)["total"] == 27
+
+
+def test_reader_normal_trash_returns_without_advancing_and_undo_keeps_original_range(library):
+    from video_viewer.models import PackSession
+
+    client, media = library
+    _, ids = setup(client, media, count=3)
+    value = create(client, anchor_pack_id=ids[1])
+    saved = opened(client, value)
+    saved = client.patch(
+        f"/api/v1/packs/{ids[1]}/progress", json=progress_body(value, saved)
+    ).json()
+    task = trash(client, [ids[1]], reading={**scene(value, saved), "advance": False})
+    assert task["result"]["succeeded"] == 1
+    assert task["result"]["reading_transition"] is None
+    with client.app.state.db.read() as db:
+        position = db.get(PackSession, value["id"])
+        assert position.cursor == 1 and position.revision == value["revision"] + 1
+        assert not position.finished
+    result = undo(client, task["id"])
+    assert result["result"]["reading_restored"] is True
+    current = client.get(f"/api/v1/pack-sessions/{value['id']}").json()
+    assert current["id"] == value["id"] and current["current"]["id"] == ids[1]
+    assert current["cursor"] == 1 and current["resume"]["offset_ratio"] == 0.37
+    assert current["resume"]["preferences"] == saved["preferences"]
+
+
+def test_default_advance_encoding_replays_the_original_reading_command(library):
+    client, media = library
+    _, ids = setup(client, media)
+    value = create(client)
+    saved = opened(client, value)
+    original = trash(client, [ids[0]], reading=scene(value, saved))
+    replay = command(
+        client,
+        "packs/trash",
+        {
+            "request_id": "trash",
+            "pack_ids": [ids[0]],
+            "reading": {**scene(value, saved), "advance": True},
+        },
+    )
+    assert replay["id"] == original["id"]
+    command(
+        client,
+        "packs/trash",
+        {
+            "request_id": "trash",
+            "pack_ids": [ids[0]],
+            "reading": {**scene(value, saved), "advance": False},
+        },
+        409,
+    )

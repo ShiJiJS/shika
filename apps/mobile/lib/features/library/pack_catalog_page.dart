@@ -128,7 +128,9 @@ class PackCatalogPage extends StatefulWidget {
     required this.repository,
     required this.entry,
     required this.active,
+    this.onResumeReading,
   });
+  final Future<void> Function(PackCleanupContext, String)? onResumeReading;
   final LibraryRepository repository;
   final PackBrowseContext entry;
   final bool active;
@@ -493,8 +495,14 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       if (mounted &&
           outcome.command.kind == 'trash' &&
           outcome.task.result!.succeeded > 0) {
-        showPackUndo(context, repo, outcome);
+        showPackUndo(context, repo, outcome, onRestored: resumeRestored);
       } else if (mounted) {
+        if (outcome.command.kind == 'undo' &&
+            outcome.task.result!.readingRestored) {
+          _detailsOpen = false;
+          await resumeRestored(outcome);
+          return;
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
@@ -529,6 +537,14 @@ class PackCatalogPageState extends State<PackCatalogPage> {
               trailing: const Icon(Icons.chrome_reader_mode_outlined),
               onTap: () => Navigator.pop(context, 'read'),
             ),
+            if (repo.capabilities.packReaderCleanup &&
+                repo.capabilities.packLogicalTrash)
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('从这包开始快速整理'),
+                trailing: const Icon(Icons.playlist_play),
+                onTap: () => Navigator.pop(context, 'quick'),
+              ),
             ListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text('整包标签'),
@@ -553,6 +569,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     }
     if (!mounted || !widget.active) return;
     if (action == 'read') await details(pack);
+    if (action == 'quick') await open(quick: true, anchor: pack.id);
     if (action == 'tags') {
       await tags({pack.id}, initial: pack.tags, initialNames: pack.tagNames);
     }
@@ -578,7 +595,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       repo.packFilesChanged();
       if (!mounted) return;
       if (outcome.task.result!.succeeded > 0) {
-        showPackUndo(context, repo, outcome);
+        showPackUndo(context, repo, outcome, onRestored: resumeRestored);
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('图包未移除，请重新读取后再试')));
@@ -594,35 +611,115 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     }
   }
 
+  Future<void> resumeRestored(PackFileOutcome outcome) async {
+    if (!mounted ||
+        !outcome.files.isCurrent() ||
+        !outcome.task.result!.readingRestored ||
+        ModalRoute.of(context)?.isCurrent != true) {
+      return;
+    }
+    final origin = outcome.command.readerContext;
+    final identity = outcome.command.readingSessionId;
+    if (origin == null || identity == null) return;
+    if (widget.onResumeReading != null) {
+      await widget.onResumeReading!(origin, identity);
+    } else if (origin.entry.source == entry.source) {
+      await resumeFromCleanup(origin, identity);
+    }
+  }
+
+  Future<void> resumeFromCleanup(
+    PackCleanupContext origin,
+    String identity,
+  ) async {
+    if (!mounted ||
+        !widget.active ||
+        _detailsOpen ||
+        ModalRoute.of(context)?.isCurrent != true) {
+      return;
+    }
+    entry = PackBrowseContext(
+      query: origin.entry.query,
+      scrollOffset: origin.scrollOffset,
+      scrollAnchor: origin.scrollAnchor,
+      scrollIndex: origin.scrollIndex,
+      scrollInset: origin.scrollInset,
+    );
+    search.text = entry.query.search;
+    selection.cancel(clear: true);
+    selecting = false;
+    pendingReturn = entry;
+    returnIds = origin.anchors;
+    await open(origin: origin, resumeSessionId: identity, quick: origin.quick);
+  }
+
+  Future<void> open({
+    bool quick = false,
+    String? anchor,
+    PackCleanupContext? origin,
+    String? resumeSessionId,
+  }) async {
+    if (_detailsOpen ||
+        busy ||
+        !widget.active ||
+        !repo.capabilities.packReadingSessions) {
+      return;
+    }
+    if (quick &&
+        (!repo.capabilities.packReaderCleanup ||
+            !repo.capabilities.packLogicalTrash)) {
+      return;
+    }
+    if (origin == null && data.items.isEmpty) return;
+    remember();
+    final saved = pendingReturn ?? entry;
+    final returnContext =
+        origin ??
+        PackCleanupContext(
+          entry: PackReadingEntry(
+            entry.query,
+            source: entry.source,
+            anchorId: anchor ?? data.items.first.id,
+          ),
+          quick: quick,
+          scrollOffset: saved.scrollOffset,
+          scrollAnchor: saved.scrollAnchor,
+          scrollIndex: saved.scrollIndex,
+          scrollInset: saved.scrollInset,
+          anchors: returnIds,
+        );
+    _detailsOpen = true;
+    PackFileOutcome? outcome;
+    try {
+      outcome = await Navigator.of(context).push<PackFileOutcome>(
+        MaterialPageRoute<PackFileOutcome>(
+          builder: (_) => PackReaderPage(
+            repository: repo,
+            entry: returnContext.entry,
+            quick: quick,
+            returnContext: returnContext,
+            resumeSessionId: resumeSessionId,
+            editTags: (current) => tags(
+              {current.id},
+              initial: current.tags,
+              initialNames: current.tagNames,
+            ),
+          ),
+        ),
+      );
+    } finally {
+      _detailsOpen = false;
+      if (mounted && widget.active) await load(restore: initialized);
+    }
+    if (outcome != null && mounted && outcome.files.isCurrent()) {
+      showPackUndo(context, repo, outcome, onRestored: resumeRestored);
+    }
+  }
+
   Future<void> details(LibraryPack pack) async {
     if (_detailsOpen || busy) return;
     if (repo.capabilities.packReadingSessions) {
-      remember();
-      _detailsOpen = true;
-      try {
-        await Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (_) => PackReaderPage(
-              repository: repo,
-              entry: PackReadingEntry(
-                entry.query,
-                source: entry.source,
-                anchorId: pack.id,
-              ),
-              editTags: (current) async {
-                await tags(
-                  {current.id},
-                  initial: current.tags,
-                  initialNames: current.tagNames,
-                );
-              },
-            ),
-          ),
-        );
-      } finally {
-        _detailsOpen = false;
-        if (mounted && widget.active) await load(restore: initialized);
-      }
+      await open(anchor: pack.id);
       return;
     }
 
@@ -966,6 +1063,20 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                   PackSort.recent => '最近阅读 ↓',
                                 }, style: const TextStyle(fontSize: 13)),
                               ),
+                              if (repo.capabilities.packReaderCleanup &&
+                                  repo.capabilities.packLogicalTrash &&
+                                  !selecting)
+                                TextButton(
+                                  key: const Key('pack-quick-cleanup'),
+                                  onPressed:
+                                      data.items.isEmpty || busy || data.loading
+                                      ? null
+                                      : () => open(quick: true),
+                                  child: const Text(
+                                    '快速整理',
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                ),
                             ],
                           ),
                         ),

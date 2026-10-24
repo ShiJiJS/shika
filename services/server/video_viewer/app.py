@@ -297,6 +297,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "pack_entry_anchors",
                 "pack_reading_sessions",
                 "pack_logical_trash",
+                "pack_reader_cleanup",
             ],
         }
 

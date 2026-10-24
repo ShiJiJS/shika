@@ -181,6 +181,113 @@ class FailingStore extends MemoryFileCommandStore {
 }
 
 void main() {
+  test('reader context round trips original query, order, range and return position locally', () {
+    final origin = PackCleanupContext(
+      entry: PackReadingEntry(
+        PackQuery(
+          folder: '/图片/图包',
+          tags: {'b', 'a'},
+          search: '春日',
+          readState: PackReadState.reading,
+          source: BrowseSource.tags,
+          sort: PackSort.newest,
+        ),
+        anchorId: 'p2',
+        random: true,
+      ),
+      quick: false,
+      scrollOffset: 238.5,
+      scrollAnchor: 'p2',
+      scrollIndex: 26,
+      scrollInset: -13,
+      anchors: ['p2', 'p3'],
+    );
+    final owner = ReaderCursor(
+      sessionId: 'range',
+      sessionRevision: 9,
+      packId: 'p2',
+      version: 3,
+      progressRevision: 4,
+    );
+    final command = PackFileCommand.trash(
+      'original',
+      ['p2'],
+      reading: owner,
+      advance: false,
+      readerContext: origin,
+    );
+    final restored = PackFileCommand.fromJson(copy(command.toJson()));
+    expect(restored.signature, command.signature);
+    expect(restored.readerContext!.toJson(), command.readerContext!.toJson());
+    expect(restored.readingSessionId, 'range');
+    expect(restored.body['reading']['advance'], isFalse);
+    expect(restored.body, isNot(contains('reader_context')));
+    expect(restored.readerContext!.entry.random, isTrue);
+    final undo = PackFileCommand.fromJson(
+      copy(
+        PackFileCommand.undo(
+          'undo',
+          'task',
+          readerContext: restored.readerContext,
+        ).toJson(),
+      ),
+    );
+    expect(undo.readingSessionId, 'range');
+    expect(
+      undo.readerContext!.entry.query.toJson(),
+      origin.entry.query.toJson(),
+    );
+    final legacy = PackFileCommand.trash('old', ['p2'], reading: owner);
+    expect((legacy.body['reading'] as Map).containsKey('advance'), isFalse);
+    expect(
+      PackFileCommand.fromJson(copy(legacy.toJson())).signature,
+      legacy.signature,
+    );
+  });
+  test(
+    'stored context cannot silently change quick behavior or original range',
+    () {
+      final owner = ReaderCursor(
+        sessionId: 'range',
+        sessionRevision: 9,
+        packId: 'p2',
+        version: 3,
+        progressRevision: 4,
+      );
+      final command = PackFileCommand.trash(
+        'original',
+        ['p2'],
+        reading: owner,
+        readerContext: PackCleanupContext(
+          entry: PackReadingEntry(PackQuery()),
+          quick: true,
+        ),
+      );
+      for (final change in ['quick', 'session_id', 'scroll_offset', 'source']) {
+        final raw = copy(command.toJson());
+        final context = raw['reader_context'] as Map;
+        if (change == 'quick') context['quick'] = false;
+        if (change == 'session_id') context['session_id'] = 'another-range';
+        if (change == 'scroll_offset') context['scroll_offset'] = -1;
+        if (change == 'source') context['query']['source'] = 'unknown';
+        expect(
+          () => PackFileCommand.fromJson(raw),
+          throwsA(isA<LibraryFailure>()),
+        );
+      }
+      final modified = PackFileCommand.trash(
+        'original',
+        ['p2'],
+        reading: owner,
+        readerContext: PackCleanupContext(
+          entry: PackReadingEntry(PackQuery(search: 'changed')),
+          quick: true,
+        ),
+      );
+      expect(modified.signature, isNot(command.signature));
+    },
+  );
+
   late FilesFixture fixture;
   late ServerLibraryRepository repo;
   setUp(() async {
