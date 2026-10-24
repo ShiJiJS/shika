@@ -1,4 +1,4 @@
-"""Authenticated logical pack operation commands and read-only reconciliation."""
+"""Authenticated logical commands, exact purge previews and read-only receipts."""
 
 from typing import Annotated
 
@@ -64,6 +64,29 @@ def router(auth_required):
     def restore(body: Restore, request: Request):
         ops = request.app.state.pack_files
         return ops.task(ops.submit("restore", body.trash_ids, body.request_id))
+
+    @api.post("/pack-purge-plans", status_code=202)
+    def prepare_purge(body: Restore, request: Request):
+        plans = request.app.state.pack_purge_plans
+        return plans.view(plans.submit(body.trash_ids, body.request_id))
+
+    @api.get("/pack-purge-requests/{request_id}")
+    def purge_preview_receipt(request_id: str, request: Request):
+        return request.app.state.pack_purge_plans.view(request_id=request_id)
+
+    @api.get("/pack-purge-plans/{identity}")
+    def purge_preview(identity: str, request: Request):
+        return request.app.state.pack_purge_plans.view(identity)
+
+    @api.get("/pack-purge-plans/{identity}/files")
+    def purge_files(
+        identity: str,
+        request: Request,
+        trash_id: str = Query(min_length=1, max_length=128),
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int, Query(ge=1, le=200)] = 100,
+    ):
+        return request.app.state.pack_purge_plans.files(identity, trash_id, offset, limit)
 
     @api.post("/pack-operations/{identity}/undo", status_code=202)
     def undo(identity: str, body: Input, request: Request):

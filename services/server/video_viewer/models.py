@@ -408,3 +408,31 @@ class PackTrashItem(Base):
     __table_args__ = (
         Index("pack_trash_active", "pack_id", unique=True, sqlite_where=text("status='active'")),
     )
+
+
+class PackPurgePlan(Base):
+    __tablename__ = "pack_purge_plans"
+    historical: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
+    id: Mapped[str] = mapped_column(ForeignKey("tasks.id"), primary_key=True)
+    request_key: Mapped[str] = mapped_column(String, unique=True)
+    request_hash: Mapped[str] = mapped_column(String)
+    expires_at: Mapped[float] = mapped_column(Float)
+    digest: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class PackPurgeEntry(Base):
+    __tablename__ = "pack_purge_entries"
+    name: Mapped[str] = mapped_column(String)
+    path: Mapped[str] = mapped_column(Text)
+    image_count: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    image_bytes: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    retained_entries: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
+    plan_id: Mapped[str] = mapped_column(ForeignKey("pack_purge_plans.id"), index=True)
+    pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id"), index=True)
+    trash_id: Mapped[str] = mapped_column(ForeignKey("pack_trash_items.id"))
+    source: Mapped[dict] = mapped_column(JSON)
+    manifest: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    digest: Mapped[str | None] = mapped_column(String, nullable=True)
+    error: Mapped[str | None] = mapped_column(String, nullable=True)
+    __table_args__ = (UniqueConstraint("plan_id", "trash_id"),)
