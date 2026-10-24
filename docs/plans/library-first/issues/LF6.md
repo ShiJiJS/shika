@@ -47,4 +47,6 @@ Flutter 3.47.7 Slider跨帧弹层保存的语义断言已用延迟保存测试�
 
 [实施记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/LF6.md)与[回收站证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/evidence/lf6-trash-client/README.md)保留源文件SHA、APK哈希、原始日志、请求和截图。真实NAS/正式8760未修改，未发布新版APK，原型继续隔离。
 
-仍须继续：限定确认图片清单的永久删除/双确认/逐文件故障恢复；整份多批次计划持久化与统一任务（当前离页会停止后续未提交批次，关闭App未保留整份选择）；Android安全存储强杀重开、历史图片失败定位及DEL/REC/UI完整验收。issue与PR保持开放/Draft，不能把每批命令日志当作完整后台续作。
+新增清单准备 **bdbd741**：后台只读核对目录/图片签名与SHA，持久化精确文件清单、保留项和摘要；请求回执不重算，完成后15分钟期限，服务重建只重做未完成准备，历史计划不可确认。完整214项服务端/Ruff通过（新增32项），包含非空0009→0010迁移和8万条持久化明细的轻量汇总检查。仅声明pack_purge_preview，没有物理删除执行路由或App双确认；[契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/LF6-PURGE-DESIGN.md)与[证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/evidence/lf6-purge-plans/README.md)独立保存，新清单接口未作Android UI验收。
+
+仍须继续：绑定确认清单的实际逐页删除/双确认/逐文件故障恢复；整份多批次计划持久化与统一任务（当前离页会停止后续未提交批次，关闭App未保留整份选择）；Android安全存储强杀重开、历史图片失败定位及DEL/REC/UI完整验收。issue与PR保持开放/Draft，不能把每批命令日志当作完整后台续作。
