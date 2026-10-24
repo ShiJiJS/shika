@@ -118,10 +118,14 @@ class PackPurge:
             session.add(operation)
             session.flush()
             session.add(PackPurgeExecution(id=task.id, plan_id=plan_id))
+            last_undo = self.ops.pointer(session, "last_pack_delete_operation")
+            invalidate_undo = False
             for selected in entries:
                 entry = session.get(PackPurgeEntry, selected.id)
                 if not entry.manifest or entry.error or digest_json(entry.manifest) != entry.digest:
                     raise LibraryError("purge_plan_changed", "图片清单已变化")
+                if session.get(PackTrashItem, entry.trash_id).operation_id == last_undo:
+                    invalidate_undo = True
                 if self.plans.source(session, entry.trash_id) != entry.source:
                     raise LibraryError("pack_changed", "图包在准备后变化，请重新核对")
                 step = PackFileStep(
@@ -164,6 +168,8 @@ class PackPurge:
                         session.flush()
                 session.flush()
                 session.expunge(entry)
+            if invalidate_undo:
+                self.ops.set_pointer(session, "last_pack_delete_operation", "")
             identity = task.id
         self.ops.enqueue(identity)
         return identity

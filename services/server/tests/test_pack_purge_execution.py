@@ -588,3 +588,59 @@ def test_new_images_at_purged_path_get_a_new_identity_and_do_not_inherit_old_tag
     assert current["id"] != original["id"] and current["tag_ids"] == []
     assert client.get(f"/api/v1/packs/{original['id']}/pages").status_code == 404
     assert target.exists()
+
+
+def test_confirming_permanent_delete_invalidates_only_its_original_logical_undo(
+    library, monkeypatch
+):
+    client, media = library
+    _, _, rows = fixture(client, media)
+    value = plan(client, [rows[0]["id"]])
+    ops = client.app.state.pack_files
+    ops.clock = lambda: rows[0]["deleted_at"] + 1
+    monkeypatch.setattr(ops, "enqueue", lambda _: None)
+    before = tree(media)
+    task = command(
+        client,
+        "pack-trash/permanent",
+        {
+            "request_id": "accepted",
+            "plan_id": value["id"],
+            "digest": value["digest"],
+            "confirmed": True,
+        },
+    )
+    assert task["status"] == "queued"
+    result = command(
+        client, f"pack-operations/{rows[0]['operation_id']}/undo", {"request_id": "old-undo"}, 409
+    )
+    assert result["error"]["code"] == "stale_delete" and tree(media) == before
+
+
+def test_confirming_an_older_pack_does_not_invalidate_unrelated_latest_undo(library, monkeypatch):
+    client, media = library
+    _, _, rows = fixture(client, media, count=2)
+    older, latest = rows
+    assert restore(client, [latest["id"]], key="restore-latest")["result"]["succeeded"] == 1
+    submitted = command(
+        client, "packs/trash", {"request_id": "new-latest", "pack_ids": [latest["pack"]["id"]]}
+    )
+    current = wait(client, submitted["id"])
+    assert current["status"] == "completed"
+    value = plan(client, [older["id"]])
+    ops = client.app.state.pack_files
+    monkeypatch.setattr(ops, "enqueue", lambda _: None)
+    command(
+        client,
+        "pack-trash/permanent",
+        {
+            "request_id": "purge-older",
+            "plan_id": value["id"],
+            "digest": value["digest"],
+            "confirmed": True,
+        },
+    )
+    untouched = command(
+        client, f"pack-operations/{current['id']}/undo", {"request_id": "unrelated-undo"}
+    )
+    assert untouched["status"] == "queued"
