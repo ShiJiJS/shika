@@ -195,10 +195,13 @@ class PackFileCommand {
       session: reading?.sessionId,
     ),
   );
-  factory PackFileCommand.restore(String requestId, Iterable<String> ids) =>
-      PackFileCommand._(requestId, 'restore', '/api/v1/pack-trash/restore', {
-        'trash_ids': _ids(ids),
-      });
+  factory PackFileCommand.restore(
+    String requestId,
+    Iterable<String> ids, {
+    String? label,
+  }) => PackFileCommand._(requestId, 'restore', '/api/v1/pack-trash/restore', {
+    'trash_ids': _ids(ids),
+  }, label: label);
   factory PackFileCommand.undo(
     String requestId,
     String operationId, {

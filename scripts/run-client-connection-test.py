@@ -218,6 +218,7 @@ def watch():
                 "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
                 "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
                 "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
+                "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
                 "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
             }:
@@ -229,6 +230,16 @@ def watch():
                         json.dumps(json.load(response), ensure_ascii=False, indent=2),
                         encoding="utf-8",
                     )
+                if PREFIX == "lf6-trash":
+                    request = urllib.request.Request(
+                        "http://127.0.0.1:8761/__fixture/actions/pack-trash-hashes",
+                        headers=HEADERS, method="POST",
+                    )
+                    with urllib.request.urlopen(request, timeout=2) as response:
+                        (EVIDENCE / f"{PREFIX}-{phase}-files.json").write_text(
+                            json.dumps(json.load(response), ensure_ascii=False, indent=2),
+                            encoding="utf-8",
+                        )
                 if PREFIX == "lf5-recovery":
                     request = urllib.request.Request(
                         "http://127.0.0.1:8761/__fixture/reader/stats",
@@ -286,10 +297,12 @@ def main():
     mode.add_argument("--pack-reader", action="store_true")
     mode.add_argument("--pack-recent", action="store_true")
     mode.add_argument("--pack-controls", action="store_true")
+    mode.add_argument("--pack-trash", action="store_true")
     mode.add_argument("--pack-cleanup", action="store_true")
     mode.add_argument("--pack-recovery", action="store_true")
     parser.add_argument("--workspace-viewport", choices=("390", "360"), default="390")
     parser.add_argument("--workspace-text-scale", choices=("1", "2"), default="1")
+    parser.add_argument("--pack-cleanup-rounds", type=int, choices=(1, 8), default=1)
     parser.add_argument("--plain-name")
     args = parser.parse_args()
     if not Path(ADB).is_file() or not Path(FLUTTER).is_file():
@@ -313,7 +326,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.pack_cleanup:
+    if args.pack_trash:
+        PREFIX = "lf6-trash"
+    elif args.pack_cleanup:
         PREFIX = "lf6-cleanup"
     elif args.pack_recovery:
         PREFIX = "lf5-recovery"
@@ -355,7 +370,7 @@ def main():
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     prepare_emulator()
-    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup:
+    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash:
         def device(*command):
             return subprocess.check_output(
                 [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
@@ -415,6 +430,7 @@ def main():
                 "lf5-reader": "integration_test/server_pack_reader_test.dart",
                 "lf5-recent": "integration_test/server_pack_recent_test.dart",
                 "lf5-controls": "integration_test/server_pack_reader_controls_test.dart",
+                "lf6-trash": "integration_test/server_pack_trash_test.dart",
                 "lf6-cleanup": "integration_test/server_pack_cleanup_test.dart",
                 "lf5-recovery": "integration_test/server_pack_reader_recovery_test.dart",
             }[PREFIX],
@@ -424,6 +440,8 @@ def main():
             "--reporter",
             "expanded",
         ]
+        if args.pack_cleanup and args.pack_cleanup_rounds > 1:
+            command.append(f"--dart-define=PACK_CLEANUP_ROUNDS={args.pack_cleanup_rounds}")
         if args.plain_name:
             command.extend(["--plain-name", args.plain_name])
         with (EVIDENCE / f"{PREFIX}-android-test.log").open(
@@ -447,6 +465,7 @@ def main():
                 or args.pack_controls
                 or args.pack_recovery
                 or args.pack_cleanup
+                or args.pack_trash
                 else 3
                 if args.backups
                 else 2

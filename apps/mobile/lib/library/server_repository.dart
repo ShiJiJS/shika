@@ -12,6 +12,7 @@ import 'server_api.dart';
 
 part 'server_pack_catalog.dart';
 part 'server_pack_reading.dart';
+part 'server_pack_trash.dart';
 
 typedef Json = Map<String, dynamic>;
 
@@ -49,7 +50,19 @@ class ServerLibraryRepository extends LibraryRepository
     libraryPreparation.value = const LibraryPreparation(ready: false);
   }
   final Set<_ServerPackReader> _readers = {};
+  final Set<_ServerPackTrash> _trashReaders = {};
   int _readerEpoch = 0;
+  @override
+  PackTrashCatalog createPackTrash() {
+    ensureNotRestoring();
+    if (!capabilities.packLogicalTrash || !capabilities.imagePacks) {
+      throw const LibraryFailure('当前服务尚不支持图包回收站，请升级服务端');
+    }
+    final catalog = _ServerPackTrash(this, api, _generation, _readerEpoch);
+    _trashReaders.add(catalog);
+    return catalog;
+  }
+
   @override
   PackReader createPackReader() {
     ensureNotRestoring();
@@ -64,6 +77,9 @@ class ServerLibraryRepository extends LibraryRepository
   @override
   void _resetReaders() {
     _readerEpoch++;
+    for (final catalog in _trashReaders.toList()) {
+      catalog.dispose();
+    }
     for (final reader in _readers.toList()) {
       reader.dispose();
     }

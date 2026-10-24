@@ -95,6 +95,10 @@ void main() {
       }
 
       Future<void> shot(String name) async {
+        await until(
+          () => find.byType(PopupMenuItem<String>).evaluate().isEmpty,
+          'menu exit before screenshot',
+        );
         await fixture('/__fixture/checkpoint/cleanup-$name');
         await t.pump(const Duration(seconds: 1));
         expect(t.takeException(), isNull);
@@ -175,6 +179,46 @@ void main() {
       expect(reader().session.index, 1);
       expect(reader().session.range!.id, identity);
       await shot('undo');
+      const rounds = int.fromEnvironment(
+        'PACK_CLEANUP_ROUNDS',
+        defaultValue: 1,
+      );
+      for (var attempt = 1; attempt < rounds; attempt++) {
+        final current = all.items[attempt], following = all.items[attempt + 1];
+        expect(await reader().session.move(current.id), isTrue);
+        await opened(current.id);
+        debugPrint('CLEANUP_REPEAT $attempt: ${current.id} -> ${following.id}');
+        await fixture('/__fixture/actions/lose-file-response');
+        await tap(find.byKey(const Key('reader-trash-pack')));
+        await until(
+          () => reader().session.hasCleanup && !reader().session.cleanupBusy,
+          'repeat lost acknowledgement',
+        );
+        final pending = reader().session.cleanupCommand!;
+        expect(reader().session.cursor!.packId, current.id);
+        await tap(find.text('查询原结果'));
+        await opened(following.id);
+        expect(reader().session.range!.id, identity);
+        expect(reader().session.range!.candidateCount, 25);
+        final repeatedTrace = await fixture('/__fixture/trace', method: 'GET');
+        expect(
+          (repeatedTrace['items'] as List).any(
+            (row) =>
+                row['method'] == 'GET' &&
+                row['path'] ==
+                    '/api/v1/pack-file-requests/${pending.requestId}',
+          ),
+          isTrue,
+        );
+        await tap(find.text('撤销'));
+        await opened(current.id);
+        expect(reader().session.range!.id, identity);
+      }
+      if (rounds > 1) {
+        expect(await reader().session.move(first.id), isTrue);
+        await opened(first.id);
+        expect(reader().session.index, 1);
+      }
       await tap(find.text('完成'));
       expect(reader().quick, isFalse);
       await tap(find.byTooltip('图包更多'));

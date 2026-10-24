@@ -53,6 +53,12 @@ class _PackFileActionState extends State<PackFileAction> {
   late PackFileCommand command = widget.command;
   bool busy = true, attempted = false, resend = false;
   String error = '';
+  String get actionLabel => switch (command.kind) {
+    'restore' => '恢复图包',
+    'undo' => '撤销移除',
+    'retry' => '重试未完成项',
+    _ => '移入回收站',
+  };
   @override
   void initState() {
     super.initState();
@@ -122,7 +128,8 @@ class _PackFileActionState extends State<PackFileAction> {
           padding: const EdgeInsets.only(bottom: 12),
           child: Text(widget.description!),
         ),
-      if (!attempted) const Text('从媒体库中移除，保留源文件、整包标签和阅读进度。可以在图包回收站恢复。'),
+      if (!attempted && widget.confirm && command.kind == 'trash')
+        const Text('从媒体库中移除，保留源文件、整包标签和阅读进度。可以在图包回收站恢复。'),
       if (busy)
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
@@ -149,14 +156,14 @@ class _PackFileActionState extends State<PackFileAction> {
               child: const Text('重新提交原请求'),
             ),
           FilledButton(
-            style: attempted
+            style: attempted || command.kind != 'trash'
                 ? null
                 : FilledButton.styleFrom(
                     backgroundColor: Paper.of(context).danger,
                     foregroundColor: Theme.of(context).colorScheme.onError,
                   ),
             onPressed: busy ? null : () => perform(!attempted),
-            child: Text(attempted ? '查询原结果' : '移入回收站'),
+            child: Text(attempted ? '查询原结果' : actionLabel),
           ),
         ],
       ),
