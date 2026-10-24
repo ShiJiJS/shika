@@ -11,6 +11,7 @@ import 'repository.dart';
 import 'server_api.dart';
 
 part 'server_pack_catalog.dart';
+part 'server_pack_reading.dart';
 
 typedef Json = Map<String, dynamic>;
 
@@ -43,6 +44,27 @@ class ServerLibraryRepository extends LibraryRepository
        ) {
     libraryPreparation.value = const LibraryPreparation(ready: false);
   }
+  final Set<_ServerPackReader> _readers = {};
+  int _readerEpoch = 0;
+  @override
+  PackReader createPackReader() {
+    ensureNotRestoring();
+    if (!capabilities.packReadingSessions || !capabilities.imagePacks) {
+      throw const LibraryFailure('当前服务尚不支持图包阅读，请升级服务端');
+    }
+    final reader = _ServerPackReader(this, api, _generation, _readerEpoch);
+    _readers.add(reader);
+    return reader;
+  }
+
+  @override
+  void _resetReaders() {
+    _readerEpoch++;
+    for (final reader in _readers.toList()) {
+      reader.dispose();
+    }
+  }
+
   final CredentialStore credentials;
   final FileCommandStore fileCommands;
   final BackupWorkStore backupWork;
@@ -2097,6 +2119,7 @@ class ServerLibraryRepository extends LibraryRepository
           target,
           generation,
           beforePublish: () async {
+            _resetReaders();
             cancelVideoTagRead();
             cancelPackTagNamesRead();
             cancelVideoSelection();

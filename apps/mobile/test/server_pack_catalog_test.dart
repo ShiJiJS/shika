@@ -13,6 +13,8 @@ typedef Json = Map<String, dynamic>;
 class PackServer {
   late HttpServer server;
   bool supported = true, unavailableDirectory = false, foreignCover = false;
+  bool readingSupported = false;
+  FutureOr<({int status, Json body})?> Function(HttpRequest, Json)? handle;
   bool loseWrite = false, unauthorized = false;
   final reads = <Uri>[];
   final writes = <({String path, Json body})>[];
@@ -72,7 +74,11 @@ class PackServer {
       }
       var status = 200;
       Object result;
-      if (path.endsWith('/auth/login')) {
+      final special = await handle?.call(r, body);
+      if (special != null) {
+        status = special.status;
+        result = special.body;
+      } else if (path.endsWith('/auth/login')) {
         result = {
           'access_token': 'pack-test-token',
           'expires_at': 4000000000,
@@ -90,6 +96,7 @@ class PackServer {
               'catalog_selection',
               'pack_tag_names',
               'pack_entry_anchors',
+              if (readingSupported) 'pack_reading_sessions',
             ],
           ],
         };

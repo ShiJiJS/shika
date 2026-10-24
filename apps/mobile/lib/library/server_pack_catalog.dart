@@ -30,7 +30,10 @@ mixin _ServerPackCatalog on LibraryRepository {
   final Map<String, String> _packWriteKeys = {};
   ServerApi? _packWriteOwner;
 
+  void _resetReaders();
+
   void _resetPackConnection() {
+    _resetReaders();
     cancelPackRead();
     cancelPackTagRead();
     cancelPackTagNamesRead();
