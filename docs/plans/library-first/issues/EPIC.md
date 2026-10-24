@@ -1,8 +1,10 @@
 ## 目标
 
-将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于 2026-10-23 确认当前 `design/reference/library-first/` 原型方向并要求先确定框架、写规划和 GitHub issues。当前 LF0–LF2 已实现并验证，等待依赖 PR 合并；LF3 固定预览与原生兼容已通过完整 I2 两阶段首轮，仍待来源组合/重复验收；LF4 四入口、双类型媒体库与独立标签已接线，标签分页、跨页批选、图包名称和深列表稳定返回已补齐，剩余来源/错误组合仍在验证，LF5–LF8 待实施，尚未发布新版。
+将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于 2026-10-23 确认当前 `design/reference/library-first/` 原型方向并要求先确定框架、写规划和 GitHub issues。当前 LF0–LF2 已实现并验证，等待依赖 PR 合并；LF3 固定预览与原生兼容已通过完整 I2 两阶段首轮，仍待来源组合/重复验收；LF4 四入口、双类型媒体库与独立标签已接线，标签分页、跨页批选、图包名称和深列表稳定返回已补齐，剩余来源/错误组合仍在验证，LF5 真实阅读器和最近图包已接入，197项客户端/163项服务端检查通过，完整原生异常/大图验收待补，LF6–LF8 待实施，尚未发布新版。
 
 LF4最新检查点：独立视频标签分页、完整筛选范围跨页全选/排除与每1000项追加、图包名称与首50项外初选均已接入。`be7be51` 补齐图包深列表稳定返回、有限120项窗口及原位失败/取消重试；当前171项客户端测试/静态检查、43项定位/图包相关服务端回归/Ruff通过。同提交真实Android完整路径连续三轮通过（含360宽2倍字号）：73包完整筛选、编辑移出交集、实际503后邻居定位、前补与插入后位置保留。此前名称/标签分页/跨页选择三轮证据各自保留。证据随[LF4记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf4-media-library/docs/plans/library-first/LF4.md)提交；剩余来源/错误组合及旧流程回归继续验证，图包阅读/最近依赖LF5，LF4继续开放。
+
+LF5实施中：[草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)已接入固定完整图包范围、逐包进度/偏好、实际首帧后的独立最近、只读回执和原生阅读器。最近图包按冻结历史行接线，列表/分页/全选/阅读共享来源和排序；修正分页尾部返回定位，媒体库筛选独立保留。当前完整197项客户端测试/静态检查及163项服务端测试/Ruff通过；`d8e3082`最近来源真实Android路径连续三轮通过（含360双倍字号），旧阅读器主路径三轮按`91f1112`独立保留，当前版本再完整回归一次通过。9024f88补齐单指翻页与双指缩放的实际分工，完整197项客户端回归通过，同实现原生操作专项三轮通过（含双倍字号及实际ADB返回），独立证据另行归档。aafccee新增真实图片503、两类进度回执、Android后台和整包标签固定范围恢复专项，同实现原生路径三轮通过（含双倍字号）；197项客户端回归补充无假时钟推进的生命周期保存断言。最近回收/恢复依赖LF6，其它错误码/连接与管理恢复组合、强杀和大图内存仍待补，见[LF5记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md)。
 
 这是后续升级，不覆盖 #1 的历史 V1 规格，也不把 #23 仍未完成的目标环境验收标记为已完成。
 
@@ -28,7 +30,7 @@ LF4最新检查点：独立视频标签分页、完整筛选范围跨页全选/�
 
 ## 实施任务
 
-当前 PR：[LF0 #34](https://github.com/ShiJiJS/video_viewer/pull/34) → [LF1 #35](https://github.com/ShiJiJS/video_viewer/pull/35) → [LF2 #36](https://github.com/ShiJiJS/video_viewer/pull/36) → [LF3 草稿 #37](https://github.com/ShiJiJS/video_viewer/pull/37) → [LF4 四入口与媒体库草稿 #38](https://github.com/ShiJiJS/video_viewer/pull/38)。前序阶段实现完成不等于整体原型验收完成，子任务等待对应依赖合并。
+当前 PR：[LF0 #34](https://github.com/ShiJiJS/video_viewer/pull/34) → [LF1 #35](https://github.com/ShiJiJS/video_viewer/pull/35) → [LF2 #36](https://github.com/ShiJiJS/video_viewer/pull/36) → [LF3 草稿 #37](https://github.com/ShiJiJS/video_viewer/pull/37) → [LF4 四入口与媒体库草稿 #38](https://github.com/ShiJiJS/video_viewer/pull/38) → [LF5 阅读会话草稿 #39](https://github.com/ShiJiJS/video_viewer/pull/39)。前序阶段实现完成不等于整体原型验收完成，子任务等待对应依赖合并。
 
 - [ ] https://github.com/ShiJiJS/video_viewer/issues/25 — [LF0] 锁定原型基线与可运行的模块骨架
 - [ ] https://github.com/ShiJiJS/video_viewer/issues/26 — [LF1] 兼容迁移数据模型：媒体类型、图包标签与服务能力

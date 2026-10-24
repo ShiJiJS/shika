@@ -568,9 +568,14 @@ class PackScanner:
         progress = session.get(PackProgress, pack.id)
         if progress and progress.page_id in removed:
             previous = next(page for page in old if page.id == progress.page_id)
-            progress.page_id = (
-                updated[min(previous.ordinal, len(updated) - 1)].id if updated else None
+            readable = [page for page in updated if not page.error]
+            nearest = min(
+                readable,
+                key=lambda page: (abs(page.ordinal - previous.ordinal), page.ordinal < previous.ordinal),
+                default=None,
             )
+            progress.page_id = nearest.id if nearest else None
+            progress.recovery_reason = "page_removed"
             progress.offset_ratio, progress.completed = 0, False
             progress.revision, progress.updated_at = progress.revision + 1, time.time()
             session.flush()
@@ -587,6 +592,8 @@ class PackScanner:
             pack.path != str(path) or pack.root_id != root_id or pack.status == "missing"
         )
         pack.content_version += int(changed or pack.content_version == 0)
+        if progress and progress.recovery_reason:
+            progress.content_version = pack.content_version
         pack.generation += int(changed or pack.path != str(path) or pack.status == "missing")
         pack.path, pack.name, pack.root_id = str(path), path.name, root_id
         pack.device, pack.inode = identity

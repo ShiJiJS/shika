@@ -27,6 +27,8 @@ from .pack_api import router as pack_router
 from .pack_tags import PackTags
 from .packs import Packs
 from .playback import Playback
+from .reading import Reading
+from .reading_api import router as reading_router
 from .scanner import Scanner
 from .security import Authentication
 from .streaming import MediaStreams
@@ -189,6 +191,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         app.state.tags = Tags(db, app.state.playback)
         app.state.pack_tags = PackTags(db)
         app.state.packs, app.state.images = Packs(db), ImageStreams(db, configured)
+        app.state.reading = Reading(db, app.state.packs)
         app.state.files = FileOperations(
             db, configured, catalog, app.state.playback, file_fault_hook
         )
@@ -238,6 +241,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
 
     auth_required = [Depends(authorized)]
     app.include_router(pack_router(auth_required))
+    app.include_router(reading_router(auth_required))
 
     @app.get("/health")
     def health():
@@ -274,7 +278,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             "server_id": server_id,
             "api_version": 1,
             "sqlite_version": sqlite3.sqlite_version,
-            "schema_version": "0008",
+            "schema_version": "0009",
             "capabilities": [
                 "typed_roots",
                 "pack_tags",
@@ -285,6 +289,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "catalog_selection",
                 "pack_tag_names",
                 "pack_entry_anchors",
+                "pack_reading_sessions",
             ],
         }
 
@@ -509,10 +514,12 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     @app.get("/api/v1/recent", dependencies=auth_required)
     def recent(
         request: Request,
-        kind: Literal["video"] = "video",
+        kind: Literal["video", "pack"] = "video",
         offset: Annotated[int, Query(ge=0)] = 0,
         limit: Annotated[int, Query(ge=1, le=200)] = 24,
     ):
+        if kind == "pack":
+            return request.app.state.packs.list(offset=offset, limit=limit, source="recent", sort="recent")
         return request.app.state.catalog.videos(
             offset=offset, limit=limit, source="recent", sort="recent"
         )

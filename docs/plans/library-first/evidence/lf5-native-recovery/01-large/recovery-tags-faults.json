@@ -1,0 +1,60 @@
+{
+  "images": [
+    {
+      "page_id": "d1d8313f-f991-4c11-8a9c-eee3a8500640",
+      "status": 503
+    },
+    {
+      "page_id": "d1d8313f-f991-4c11-8a9c-eee3a8500640",
+      "status": 503
+    },
+    {
+      "page_id": "d1d8313f-f991-4c11-8a9c-eee3a8500640",
+      "status": 503
+    },
+    {
+      "page_id": "d1d8313f-f991-4c11-8a9c-eee3a8500640",
+      "status": 200
+    }
+  ],
+  "progress": [
+    {
+      "request_hash": "5aad1f4ab0254fb03a8057a92edde4925a5995877a8656792fa4c3d264d910c7",
+      "page_id": "9d962ec8-de8c-4dfd-bda3-868b9d535376",
+      "expected_revision": 1,
+      "mode": "before",
+      "status": 503,
+      "committed": false
+    },
+    {
+      "request_hash": "5aad1f4ab0254fb03a8057a92edde4925a5995877a8656792fa4c3d264d910c7",
+      "page_id": "9d962ec8-de8c-4dfd-bda3-868b9d535376",
+      "expected_revision": 1,
+      "mode": "normal",
+      "status": 200
+    },
+    {
+      "request_hash": "3d81d0aba4e4848f330cb20a03163d5129c153e0901fb3c73b0201b2947ad795",
+      "page_id": "d805b833-76e7-43b5-83ca-579d922f36fb",
+      "expected_revision": 2,
+      "mode": "after",
+      "status": 503,
+      "committed": true
+    },
+    {
+      "request_hash": "d01f058483759b54d2275fdd351c906302c8a250a7baffdc4486df2ae3e72abb",
+      "page_id": "9d962ec8-de8c-4dfd-bda3-868b9d535376",
+      "expected_revision": 3,
+      "mode": "normal",
+      "status": 200
+    },
+    {
+      "request_hash": "67b877a7aa827814f5ac4aa3169ae27f7f08d5844788ca0b30c343978e023647",
+      "page_id": "9d962ec8-de8c-4dfd-bda3-868b9d535376",
+      "expected_revision": 4,
+      "mode": "normal",
+      "status": 200
+    }
+  ],
+  "remaining": 0
+}

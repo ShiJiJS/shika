@@ -118,8 +118,8 @@ class PackQueryController extends ChangeNotifier {
       ),
     );
     try {
-      // Recent packs require LF5's actual opened records.
-      if (context.source == BrowseSource.recent) {
+      if (context.source == BrowseSource.recent &&
+          !repository.capabilities.packReadingSessions) {
         throw const LibraryFailure('当前服务尚不支持最近图包，请升级服务端');
       }
       final page = anchors == null

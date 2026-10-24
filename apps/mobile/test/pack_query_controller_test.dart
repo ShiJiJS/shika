@@ -11,6 +11,12 @@ import 'package:video_viewer/library/state_store.dart';
 class DelayedPacks extends DemoLibraryRepository {
   DelayedPacks() : super(MemoryStateStore(), latency: Duration.zero);
   Object identity = Object();
+  bool readingSupported = false;
+  @override
+  ServiceCapabilities get capabilities => ServiceCapabilities([
+    'image_packs',
+    if (readingSupported) 'pack_reading_sessions',
+  ]);
   @override
   Object get connectionIdentity => identity;
   final reads =
@@ -340,6 +346,42 @@ void main() {
       expect(controller.state.items, isEmpty);
     },
   );
+
+  test('recent paging and return retain source/order and never reuse library items', () async {
+    repo.readingSupported = true;
+    final library = controller.load(PackBrowseContext());
+    repo.reads.last.result.complete(page(0, 24));
+    await library;
+    final context = PackBrowseContext(
+      source: BrowseSource.recent,
+      query: PackQuery(search: '合集', tags: {'pack-tag'}),
+    );
+    final first = controller.load(context);
+    expect(controller.state.items, isEmpty);
+    expect(repo.reads.last.query.source, BrowseSource.recent);
+    expect(repo.reads.last.query.sort, PackSort.recent);
+    repo.reads.last.result.complete(page(0, 24, total: 27));
+    await first;
+    final next = controller.load(context, more: true);
+    expect(repo.reads.last.offset, 24);
+    expect(repo.reads.last.query.source, BrowseSource.recent);
+    expect(repo.reads.last.query.search, '合集');
+    repo.reads.last.result.complete(page(24, 3, total: 27));
+    await next;
+    expect(controller.state.items.length, 27);
+    final back = controller.restore(
+      context.copyWith(scrollIndex: 26),
+      anchors: ['p26'],
+    );
+    expect(repo.locations.last.query.source, BrowseSource.recent);
+    expect(repo.locations.last.query.sort, PackSort.recent);
+    expect(repo.locations.last.query.tags, {'pack-tag'});
+    repo.locations.last.result.complete(page(24, 3, total: 27, anchor: 26));
+    await back;
+    expect(controller.state.items.last.id, 'p26');
+    expect(controller.state.anchorIndex, 26);
+    expect(repo.snapshot.recentVideos, isEmpty);
+  });
 
   test('a recent pack source cannot fall back to the whole catalog before its protocol exists', () async {
     await controller.load(PackBrowseContext(source: BrowseSource.recent));

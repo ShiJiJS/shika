@@ -291,6 +291,8 @@ class PackProgress(Base):
     offset_ratio: Mapped[float] = mapped_column(Float, default=0)
     completed: Mapped[bool] = mapped_column(Boolean, default=False)
     revision: Mapped[int] = mapped_column(Integer, default=0)
+    content_version: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    recovery_reason: Mapped[str | None] = mapped_column(String, nullable=True)
     updated_at: Mapped[float] = mapped_column(Float, default=time.time)
     __table_args__ = (
         ForeignKeyConstraint(["pack_id", "page_id"], ["pack_pages.pack_id", "pack_pages.id"]),
@@ -303,6 +305,7 @@ class PackPreferences(Base):
     pack_id: Mapped[str] = mapped_column(
         ForeignKey("packs.id", ondelete="CASCADE"), primary_key=True
     )
+    revision: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
     mode: Mapped[str] = mapped_column(String, default="horizontal")
     direction: Mapped[str] = mapped_column(String, default="ltr")
     gap: Mapped[bool] = mapped_column(Boolean, default=False)

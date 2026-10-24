@@ -2,11 +2,15 @@ import 'package:flutter/foundation.dart';
 
 import 'models.dart';
 import 'pack_models.dart';
+import 'pack_reading.dart';
+export 'pack_reading.dart';
 export 'pack_models.dart';
 
 /// This boundary describes client-visible behavior, independent of transport.
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
+  PackReader createPackReader() =>
+      throw const LibraryFailure('当前服务尚不支持图包阅读，请升级服务端');
   Future<Set<String>> selectVideoIds(VideoEntryScope entry) =>
       Future.error(const LibraryFailure('当前服务尚不支持跨页全选，请升级服务端'));
   Future<Set<String>> selectPackIds(PackQuery query) =>

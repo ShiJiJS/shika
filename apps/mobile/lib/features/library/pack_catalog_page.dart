@@ -8,6 +8,7 @@ import '../../library/repository.dart';
 import '../../ui/media_layout.dart';
 import '../../ui/paper.dart';
 import '../packs/pack_sheets.dart';
+import '../packs/pack_reader_page.dart';
 import 'browse_context.dart';
 import 'catalog_selection.dart';
 import 'pack_query_controller.dart';
@@ -154,14 +155,23 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   List<String> returnIds = const [];
   String error = '';
   PackLibraryState get data => catalog.state;
-  double get stride =>
-      MediaLayout.tile(width, scaler: MediaQuery.textScalerOf(context)) +
-      MediaLayout.rowGap;
-  double get listHeader =>
-      MediaLayout.toolbar(context) +
-      (entry.query.count > 0 || entry.query.search.isNotEmpty
-          ? MediaLayout.scope(context)
-          : 0);
+  bool get recent => entry.source == BrowseSource.recent;
+  int get columns => recent ? 1 : 2;
+  double get stride => recent
+      ? max(
+          111,
+          MediaQuery.textScalerOf(context).scale(18) * 1.5 +
+              MediaQuery.textScalerOf(context).scale(13) * 1.5 +
+              40,
+        )
+      : MediaLayout.tile(width, scaler: MediaQuery.textScalerOf(context)) +
+            MediaLayout.rowGap;
+  double get listHeader => recent
+      ? max(52, MediaQuery.textScalerOf(context).scale(13) * 1.5 + 32)
+      : MediaLayout.toolbar(context) +
+            (entry.query.count > 0 || entry.query.search.isNotEmpty
+                ? MediaLayout.scope(context)
+                : 0);
   @override
   void initState() {
     super.initState();
@@ -228,7 +238,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
 
   ({PackBrowseContext context, List<String> ids}) position() {
     final pixels = scroll.hasClients ? scroll.offset : 0.0;
-    final local = max(0, ((pixels - listHeader) / stride).floor() * 2);
+    final local = max(0, ((pixels - listHeader) / stride).floor() * columns);
     final index = local.clamp(0, max(0, data.items.length - 1)).toInt();
     final ids = <String>[];
     for (
@@ -279,9 +289,28 @@ class PackCatalogPageState extends State<PackCatalogPage> {
         oldPixels = scroll.hasClients ? scroll.offset : 0.0;
     if (restore) remember();
     final restoring = pendingReturn;
+    int? restoredAnchor;
     _positioning = restoring != null || before;
     if (restoring != null) {
       await catalog.restore(restoring, anchors: returnIds);
+      if (!mounted || current != generation) return;
+      restoredAnchor = data.anchorIndex;
+      // An anchor at a page boundary needs the following visible rows before
+      // jumping, otherwise ScrollPosition clamps to the incomplete window.
+      final viewport = scroll.hasClients
+          ? scroll.position.viewportDimension
+          : MediaQuery.sizeOf(context).height;
+      final through =
+          (restoredAnchor ?? data.offset) +
+          ((viewport / stride).ceil() + 1) * columns;
+      while (mounted &&
+          current == generation &&
+          data.error.isEmpty &&
+          data.hasMore &&
+          data.offset + data.items.length < through &&
+          data.items.length < PackQueryController.maximumItems) {
+        await catalog.load(restoring, more: true);
+      }
     } else {
       await catalog.load(entry, more: more, before: before);
     }
@@ -295,11 +324,13 @@ class PackCatalogPageState extends State<PackCatalogPage> {
         if (restoring != null) {
           pixels =
               listHeader +
-              ((data.anchorIndex ?? data.offset) - data.offset) ~/ 2 * stride +
+              ((restoredAnchor ?? data.offset) - data.offset) ~/
+                  columns *
+                  stride +
               restoring.scrollInset;
           pendingReturn = null;
         } else if (oldStart != data.offset && data.items.isNotEmpty) {
-          pixels = oldPixels + (oldStart - data.offset) ~/ 2 * stride;
+          pixels = oldPixels + (oldStart - data.offset) ~/ columns * stride;
         }
         if (pixels != null) {
           scroll.jumpTo(pixels.clamp(0.0, scroll.position.maxScrollExtent));
@@ -395,6 +426,37 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   }
 
   Future<void> details(LibraryPack pack) async {
+    if (_detailsOpen || busy) return;
+    if (repo.capabilities.packReadingSessions) {
+      remember();
+      _detailsOpen = true;
+      try {
+        await Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => PackReaderPage(
+              repository: repo,
+              entry: PackReadingEntry(
+                entry.query,
+                source: entry.source,
+                anchorId: pack.id,
+              ),
+              editTags: (current) async {
+                await tags(
+                  {current.id},
+                  initial: current.tags,
+                  initialNames: current.tagNames,
+                );
+              },
+            ),
+          ),
+        );
+      } finally {
+        _detailsOpen = false;
+        if (mounted && widget.active) await load(restore: initialized);
+      }
+      return;
+    }
+
     // LF4 exposes the real catalog object. LF5 replaces this entry with its
     // fixed-scope reader once progress and recent writes exist on the service.
     var ids = {...pack.tags}, names = {...pack.tagNames};
@@ -449,6 +511,68 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       _detailsOpen = false;
       if (mounted && widget.active && dirty) await load(restore: initialized);
     }
+  }
+
+  Widget recentRow(LibraryPack pack) {
+    final p = Paper.of(context), progress = pack.progress;
+    final position = progress?.pageIndex;
+    final label = position != null
+        ? '${progress!.completed ? '已读 · ' : ''}第 ${position + 1} / ${pack.pageCount} 张'
+        : progress?.completed == true
+        ? '已读 · ${pack.pageCount} 张'
+        : progress != null
+        ? '续读位置待确认 · ${pack.pageCount} 张'
+        : '${pack.pageCount} 张';
+    return InkWell(
+      key: Key('recent-pack-${pack.id}'),
+      onTap: () => unawaited(details(pack)),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: p.line)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 64,
+                height: 78,
+                child: PackCover(
+                  pack: pack,
+                  repository: repo,
+                  active: widget.active,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      pack.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: p.title.copyWith(fontSize: 18),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      label,
+                      key: Key('recent-pack-progress-${pack.id}'),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 13, color: p.muted),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Icon(Icons.chevron_right, size: 18),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -532,8 +656,9 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                     key: const Key('pack-grid'),
                     controller: scroll,
                     slivers: [
-                      if (entry.query.count > 0 ||
-                          entry.query.search.isNotEmpty)
+                      if (!recent &&
+                          (entry.query.count > 0 ||
+                              entry.query.search.isNotEmpty))
                         SliverToBoxAdapter(
                           child: SizedBox(
                             height: MediaLayout.scope(context),
@@ -578,133 +703,154 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                             ),
                           ),
                         ),
-                      SliverToBoxAdapter(
-                        child: MediaCatalogToolbar(
-                          children: [
-                            Text(
-                              '${data.total} 个图包',
-                              key: const Key('pack-count'),
-                              style: TextStyle(fontSize: 13, color: p.muted),
-                            ),
-                            TextButton(
-                              onPressed: () => change(
-                                entry.query.copy(
-                                  readState:
-                                      PackReadState.values[(entry
-                                                  .query
-                                                  .readState
-                                                  .index +
-                                              1) %
-                                          PackReadState.values.length],
-                                ),
+                      if (recent)
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: listHeader,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                20,
+                                20,
+                                20,
+                                12,
                               ),
-                              child: Text(switch (entry.query.readState) {
-                                PackReadState.all => '阅读状态',
-                                PackReadState.unread => '未读',
-                                PackReadState.reading => '在读',
-                                PackReadState.completed => '已读',
-                              }, style: const TextStyle(fontSize: 13)),
-                            ),
-                            PopupMenuButton<PackSort>(
-                              tooltip: '图包排序',
-                              initialValue: entry.query.sort,
-                              onSelected: (value) =>
-                                  change(entry.query.copy(sort: value)),
-                              itemBuilder: (_) => const [
-                                PopupMenuItem(
-                                  value: PackSort.name,
-                                  child: Text('名称'),
-                                ),
-                                PopupMenuItem(
-                                  value: PackSort.newest,
-                                  child: Text('最近加入'),
-                                ),
-                              ],
-                              child: Text(
-                                entry.query.sort == PackSort.name
-                                    ? '名称 ↓'
-                                    : '最近加入 ↓',
-                                style: const TextStyle(fontSize: 13),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (data.items.isEmpty)
-                        const SliverFillRemaining(
-                          hasScrollBody: false,
-                          child: EmptyView('没有符合条件的图包'),
-                        ),
-                      SliverPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        sliver: SliverGrid.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 18,
-                                mainAxisExtent: MediaLayout.tile(
-                                  box.maxWidth,
-                                  scaler: MediaQuery.textScalerOf(context),
-                                ),
-                              ),
-                          itemCount: data.items.length,
-                          itemBuilder: (context, index) {
-                            final pack = data.items[index];
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: MediaLayout.cover(box.maxWidth),
-                                  child: Stack(
-                                    fit: StackFit.expand,
-                                    children: [
-                                      InkWell(
-                                        key: Key('pack-tile-${pack.id}'),
-                                        onTap: () {
-                                          if (selecting) {
-                                            selection.toggle(pack.id);
-                                          } else {
-                                            unawaited(details(pack));
-                                          }
-                                        },
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            3,
-                                          ),
-                                          child: PackCover(
-                                            pack: pack,
-                                            repository: repo,
-                                            active: widget.active,
-                                          ),
-                                        ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      '最近阅读的图包',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: p.muted,
                                       ),
-                                      Positioned(
-                                        right: 5,
-                                        bottom: 5,
-                                        child: IgnorePointer(
-                                          child: ColoredBox(
-                                            color: Colors.black54,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 4,
-                                                    vertical: 2,
-                                                  ),
-                                              child: Text(
-                                                '${pack.pageCount} 张',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 11,
-                                                ),
-                                              ),
+                                    ),
+                                  ),
+                                  Text(
+                                    '${data.total} 包',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: p.muted,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      if (!recent)
+                        SliverToBoxAdapter(
+                          child: MediaCatalogToolbar(
+                            children: [
+                              Text(
+                                '${data.total} 个图包',
+                                key: const Key('pack-count'),
+                                style: TextStyle(fontSize: 13, color: p.muted),
+                              ),
+                              TextButton(
+                                onPressed: () => change(
+                                  entry.query.copy(
+                                    readState:
+                                        PackReadState.values[(entry
+                                                    .query
+                                                    .readState
+                                                    .index +
+                                                1) %
+                                            PackReadState.values.length],
+                                  ),
+                                ),
+                                child: Text(switch (entry.query.readState) {
+                                  PackReadState.all => '阅读状态',
+                                  PackReadState.unread => '未读',
+                                  PackReadState.reading => '在读',
+                                  PackReadState.completed => '已读',
+                                }, style: const TextStyle(fontSize: 13)),
+                              ),
+                              PopupMenuButton<PackSort>(
+                                tooltip: '图包排序',
+                                initialValue: entry.query.sort,
+                                onSelected: (value) =>
+                                    change(entry.query.copy(sort: value)),
+                                itemBuilder: (_) => const [
+                                  PopupMenuItem(
+                                    value: PackSort.name,
+                                    child: Text('名称'),
+                                  ),
+                                  PopupMenuItem(
+                                    value: PackSort.newest,
+                                    child: Text('最近加入'),
+                                  ),
+                                ],
+                                child: Text(switch (entry.query.sort) {
+                                  PackSort.name => '名称 ↓',
+                                  PackSort.newest => '最近加入 ↓',
+                                  PackSort.recent => '最近阅读 ↓',
+                                }, style: const TextStyle(fontSize: 13)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (data.items.isEmpty)
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: EmptyView(recent ? '还没有阅读过图包' : '没有符合条件的图包'),
+                        ),
+                      if (recent)
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          sliver: SliverFixedExtentList.builder(
+                            itemExtent: stride,
+                            itemCount: data.items.length,
+                            itemBuilder: (context, index) =>
+                                recentRow(data.items[index]),
+                          ),
+                        ),
+                      if (!recent)
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          sliver: SliverGrid.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 18,
+                                  mainAxisExtent: MediaLayout.tile(
+                                    box.maxWidth,
+                                    scaler: MediaQuery.textScalerOf(context),
+                                  ),
+                                ),
+                            itemCount: data.items.length,
+                            itemBuilder: (context, index) {
+                              final pack = data.items[index];
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: MediaLayout.cover(box.maxWidth),
+                                    child: Stack(
+                                      fit: StackFit.expand,
+                                      children: [
+                                        InkWell(
+                                          key: Key('pack-tile-${pack.id}'),
+                                          onTap: () {
+                                            if (selecting) {
+                                              selection.toggle(pack.id);
+                                            } else {
+                                              unawaited(details(pack));
+                                            }
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              3,
+                                            ),
+                                            child: PackCover(
+                                              pack: pack,
+                                              repository: repo,
+                                              active: widget.active,
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      if (pack.progress != null)
                                         Positioned(
-                                          left: 5,
+                                          right: 5,
                                           bottom: 5,
                                           child: IgnorePointer(
                                             child: ColoredBox(
@@ -716,9 +862,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                                       vertical: 2,
                                                     ),
                                                 child: Text(
-                                                  pack.progress!.completed
-                                                      ? '已读'
-                                                      : '在读',
+                                                  '${pack.pageCount} 张',
                                                   style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 11,
@@ -728,85 +872,113 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                             ),
                                           ),
                                         ),
-                                      if (selecting)
-                                        Positioned(
-                                          top: 6,
-                                          left: 6,
-                                          child: IgnorePointer(
-                                            child: Icon(
-                                              selected.contains(pack.id)
-                                                  ? Icons.check_circle
-                                                  : Icons
-                                                        .radio_button_unchecked,
-                                              color: selected.contains(pack.id)
-                                                  ? p.olive
-                                                  : Colors.white,
+                                        if (pack.progress != null)
+                                          Positioned(
+                                            left: 5,
+                                            bottom: 5,
+                                            child: IgnorePointer(
+                                              child: ColoredBox(
+                                                color: Colors.black54,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 4,
+                                                        vertical: 2,
+                                                      ),
+                                                  child: Text(
+                                                    pack.progress!.completed
+                                                        ? '已读'
+                                                        : '在读',
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 11,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        if (selecting)
+                                          Positioned(
+                                            top: 6,
+                                            left: 6,
+                                            child: IgnorePointer(
+                                              child: Icon(
+                                                selected.contains(pack.id)
+                                                    ? Icons.check_circle
+                                                    : Icons
+                                                          .radio_button_unchecked,
+                                                color:
+                                                    selected.contains(pack.id)
+                                                    ? p.olive
+                                                    : Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    pack.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: p.title.copyWith(
+                                      fontSize: 16,
+                                      height: 1.5,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: MediaLayout.meta(context),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            '${pack.readableCount} 张可读',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: p.muted,
                                             ),
                                           ),
                                         ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  pack.name,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: p.title.copyWith(
-                                    fontSize: 16,
-                                    height: 1.5,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: MediaLayout.meta(context),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          '${pack.readableCount} 张可读',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: p.muted,
+                                        IconButton(
+                                          tooltip: '图包操作 ${pack.name}',
+                                          onPressed: () => details(pack),
+                                          constraints: const BoxConstraints(
+                                            minWidth: 32,
+                                            minHeight: 28,
                                           ),
+                                          padding: EdgeInsets.zero,
+                                          iconSize: 18,
+                                          icon: const Icon(Icons.more_horiz),
                                         ),
-                                      ),
-                                      IconButton(
-                                        tooltip: '图包操作 ${pack.name}',
-                                        onPressed: () => details(pack),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 28,
-                                        ),
-                                        padding: EdgeInsets.zero,
-                                        iconSize: 18,
-                                        icon: const Icon(Icons.more_horiz),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  key: Key('pack-tag-names-${pack.id}'),
-                                  pack.tags.isEmpty
-                                      ? ''
-                                      : pack.tagNames.isEmpty
-                                      ? '${pack.tags.length} 个标签'
-                                      : (pack.tagNames.values.toList()..sort())
-                                            .map((name) => '# $name')
-                                            .join('  '),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: p.olive,
+                                  Text(
+                                    key: Key('pack-tag-names-${pack.id}'),
+                                    pack.tags.isEmpty
+                                        ? ''
+                                        : pack.tagNames.isEmpty
+                                        ? '${pack.tags.length} 个标签'
+                                        : (pack.tagNames.values.toList()
+                                                ..sort())
+                                              .map((name) => '# $name')
+                                              .join('  '),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: p.olive,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                          },
+                                ],
+                              );
+                            },
+                          ),
                         ),
-                      ),
                       if (data.loading && data.items.isNotEmpty)
                         const SliverToBoxAdapter(
                           child: Padding(

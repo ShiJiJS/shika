@@ -66,14 +66,16 @@ class VideoBrowseContext {
 class PackBrowseContext {
   PackBrowseContext({
     PackQuery? query,
-    this.source = BrowseSource.library,
+    BrowseSource? source,
     this.scrollOffset = 0,
     this.scrollAnchor,
     this.scrollIndex = 0,
     this.scrollInset = 0,
-  }) : query = query ?? PackQuery();
+  }) : query = source == null
+           ? query ?? PackQuery()
+           : (query ?? PackQuery()).copy(source: source);
   final PackQuery query;
-  final BrowseSource source;
+  BrowseSource get source => query.source;
   final double scrollOffset;
   final String? scrollAnchor;
   final int scrollIndex;

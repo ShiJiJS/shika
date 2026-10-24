@@ -6,7 +6,7 @@ from sqlalchemy import exists, func, select
 
 from .errors import LibraryError
 from .media_roots import owned_path
-from .models import Directory, ImagePack, PackPage, PackProgress, PackTagLink, Root
+from .models import Directory, ImagePack, PackPage, PackProgress, PackTagLink, RecentEntry, Root
 
 
 class Packs:
@@ -33,8 +33,15 @@ class Packs:
         read_state="all",
         sort="name",
         status="available",
+        source="library",
     ):
         statement = select(ImagePack).join(Root).outerjoin(PackProgress)
+        if source == "recent":
+            statement = statement.join(
+                RecentEntry, RecentEntry.pack_id == ImagePack.id
+            ).where(RecentEntry.kind == "pack")
+        if sort == "recent" and source != "recent":
+            raise LibraryError("invalid_pack_sort", "最近排序只用于最近图包", 422)
         if status in ("available", "unreadable"):
             statement = statement.where(
                 ImagePack.status == "available",
@@ -89,6 +96,8 @@ class Packs:
 
     @staticmethod
     def ordering(sort):
+        if sort == "recent":
+            return (RecentEntry.opened_at.desc(), ImagePack.id)
         return (
             ImagePack.created_at.desc() if sort == "newest" else func.lower(ImagePack.name),
             ImagePack.id,
@@ -101,6 +110,15 @@ class Packs:
         readable_count = session.scalar(select(func.count()).select_from(readable.subquery()))
         cover = session.scalar(readable.order_by(PackPage.ordinal, PackPage.id).limit(1))
         progress = session.get(PackProgress, pack.id)
+        page_index = None
+        if progress and progress.page_id:
+            positions = pages.with_only_columns(
+                PackPage.id,
+                (func.row_number().over(order_by=(PackPage.ordinal, PackPage.id)) - 1).label("position"),
+            ).subquery()
+            page_index = session.scalar(
+                select(positions.c.position).where(positions.c.id == progress.page_id)
+            )
         return {
             "id": pack.id,
             "root_id": pack.root_id,
@@ -121,6 +139,7 @@ class Packs:
             if not progress
             else {
                 "page_id": progress.page_id,
+                "page_index": page_index,
                 "offset_ratio": progress.offset_ratio,
                 "completed": progress.completed,
                 "revision": progress.revision,

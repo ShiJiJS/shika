@@ -4,7 +4,19 @@
 
 图包需要按漫画阅读方式浏览，管理单位始终是整包。原型的横翻/纵向/总览/沉浸、包间范围和逐包进度必须落实到真实图片和原生生命周期。
 
-本任务属于 LF-2026-10-23 媒体库/图包改造；用户已确认当前完整原型为方向，本次登记计划，尚未实现。
+本任务属于 LF-2026-10-23 媒体库/图包改造，沿用独立冻结原型。`cb02a67`已接入固定完整范围、逐包进度/偏好、实际opened后的最近、只读回执与schema0009；完整162项服务端测试/Ruff通过。`04f57a8` / `f43a320`接入连接与恢复代次绑定的类型化客户端接口及发布归属检查。
+
+`278a774` / `91f1112`现已接入真实原生PackReadingSession和阅读路由：卡片进入横翻/纵向拼接、方向/缩放/适配/间距、分页总览和跳页、沉浸、整包标签、固定范围内手动换包、保存/关闭后续读、返回原媒体库。实际当前图片首帧才记打开；预加载不记历史，元数据/图片provider有界，未知写结果先查回执。Paper最小52dp顶栏自然适应大字号，工具图标上对齐且避免中文孤字。
+
+当前完整 **197项客户端测试、Flutter analyze和163项服务端测试/Ruff通过**。最近图包已按冻结原型接入纵向历史行；查询来源和排序贯穿列表、分页、全选、定位及阅读入口，与媒体库筛选互不污染。进度页码按当前清单的稳定pageId位置计算；分页边界返回先补足尾页，再恢复原视口锚点。见[最近实现及检查](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-recent-catalog/README.md)。
+
+`d8e3082`上最近来源Android/8761完整路径连续三轮通过（390普通字号两次、360双倍字号一次）：实际新包首帧、跨24项分页、完整28包全选、末包续读、历史重排后的固定范围和原位返回、媒体库筛选保留。27条预置历史不算本轮实际阅读，见[最近原生证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-recent/README.md)。此前`91f1112`阅读器主路径三轮证据独立保留于[阅读原生记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-reader/README.md)，不混称为当前版本三轮。当前`d8e3082`在最近三轮后另跑一轮原阅读器完整回归通过（33秒），同目录保留独立日志与截图。
+
+`3f693be` / `9024f88`进一步修正单指翻页被缩放组件截获、较低触控阈值下双指与翻页竞争的问题。同实现Android操作专项连续三轮通过（含360双倍字号，46/49/55秒），每轮核对4次实际ADB返回；覆盖跟手回弹、LTR/RTL、双指/双击缩放、放大拖动、沉浸、宽适配续读、纵拼与下一包独立默认。原生操作专项与当前197项客户端回归见[操作记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-controls/README.md)及[组件回归](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-reader-controls-client/README.md)。
+
+`9ca6518`补齐深色错误动作的对比度；`aafccee`恢复专项验证图片503有限重试/手动恢复、未受理进度的同键显式重试、已提交丢响应的只读回执、真实Android后台保存、整包标签移出交集后仍保留完整25包范围，以及返回原查询24条结果。同实现原生路径连续三轮通过（含360双倍字号，55/54/60秒）；当前197项客户端回归包含不推进假时钟的3尺寸生命周期保存断言；见[恢复原生记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-recovery/README.md)和[生命周期回归](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-reader-recovery-client/README.md)。服务端业务/迁移35份源码仍匹配既有163项记录，本轮新增的是隔离e2e故障夹具，未重新全量执行163项。
+
+REC-01的回收隐藏/恢复保留状态仍需LF6联动；其它图片错误码/跳过、连接替换/同连接管理恢复/旧服务、强杀与完整状态组合、500页4K/8K的真实内存与延迟仍待补。全局默认设置界面和备份v2由LF7收口，快速整理由LF6实施。本issue继续开放，PR保持草稿。详见[设计契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-DESIGN.md)、[界面约束](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-UI-DESIGN.md)和[实施记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md) / [草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)。
 
 ## 依赖
 
