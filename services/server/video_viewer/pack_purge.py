@@ -564,25 +564,30 @@ class PackPurge:
                 task.finished_at = self.ops.clock()
                 task.error = next((p.error for p in parents if p.error), None)
 
-    def pages(self, identity, offset=0, limit=100):
+    def pages(self, identity, offset=0, limit=100, *, kind="all", outcome="all"):
         with self.db.read() as session:
             statement = (
-                select(PackPurgeStep)
+                select(PackPurgeStep, ImagePack.id, ImagePack.name)
+                .select_from(PackPurgeStep)
                 .join(PackFileStep)
+                .join(ImagePack, PackFileStep.pack_id == ImagePack.id)
                 .where(PackFileStep.operation_id == identity)
             )
+            if kind != "all":
+                statement = statement.where(PackPurgeStep.kind == kind)
+            if outcome == "unfinished":
+                statement = statement.where(PackPurgeStep.outcome.not_in(("succeeded", "retained")))
             if not session.get(PackPurgeExecution, identity):
                 raise LibraryError("pack_operation_not_found", "图包永久删除操作不存在", 404)
-            rows = session.scalars(
-                statement.order_by(PackFileStep.id, PackPurgeStep.kind, PackPurgeStep.relative_path)
+            rows = session.execute(
+                statement.order_by(PackFileStep.id, PackPurgeStep.kind.desc(), PackPurgeStep.relative_path)
                 .offset(offset)
                 .limit(limit)
             )
             return {
                 "items": [
                     {
-                        key: getattr(row, key)
-                        for key in (
+                        **{key: getattr(row, key) for key in (
                             "id",
                             "parent_id",
                             "kind",
@@ -591,9 +596,11 @@ class PackPurge:
                             "phase",
                             "outcome",
                             "error",
-                        )
+                        )},
+                        "pack_id": pack_id,
+                        "pack_name": pack_name,
                     }
-                    for row in rows
+                    for row, pack_id, pack_name in rows
                 ],
                 "total": session.scalar(select(func.count()).select_from(statement.subquery())),
                 "offset": offset,

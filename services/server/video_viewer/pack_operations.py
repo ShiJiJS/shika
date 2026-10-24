@@ -559,6 +559,19 @@ class PackOperations:
                         "deleted_at": item.deleted_at,
                         "page_count": session.get(ImagePack, item.pack_id).page_count if item.purged_pages else item.manifest["page_count"],
                         "purged_pages": item.purged_pages,
+                        "permanent_operation_id": session.scalar(
+                            select(PackFileOperation.id)
+                            .join(PackFileStep, PackFileStep.operation_id == PackFileOperation.id)
+                            .join(Task, Task.id == PackFileOperation.id)
+                            .where(
+                                PackFileStep.pack_id == item.pack_id,
+                                PackFileStep.requested_id == item.id,
+                                PackFileOperation.kind == "permanent",
+                                PackFileOperation.historical.is_(False),
+                            )
+                            .order_by(Task.created_at.desc(), Task.id.desc())
+                            .limit(1)
+                        ),
                         "pack": self.packs.summary(session, session.get(ImagePack, item.pack_id)),
                     }
                     for item in rows

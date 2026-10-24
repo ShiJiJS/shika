@@ -79,6 +79,12 @@ class _ServerPackTrash implements PackTrashCatalog {
           originalPath: path,
           deletedAt: deletedAt.toDouble(),
           pageCount: pack.pageCount,
+          purgedPages: raw['purged_pages'] == null
+              ? 0
+              : integer(raw['purged_pages']),
+          permanentOperationId: raw['permanent_operation_id'] == null
+              ? null
+              : id(raw['permanent_operation_id']),
           pack: pack,
         );
       }).toList();

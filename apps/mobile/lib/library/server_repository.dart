@@ -13,6 +13,7 @@ import 'server_api.dart';
 part 'server_pack_catalog.dart';
 part 'server_pack_reading.dart';
 part 'server_pack_trash.dart';
+part 'server_pack_purge.dart';
 
 typedef Json = Map<String, dynamic>;
 
@@ -51,7 +52,22 @@ class ServerLibraryRepository extends LibraryRepository
   }
   final Set<_ServerPackReader> _readers = {};
   final Set<_ServerPackTrash> _trashReaders = {};
+  final Set<_ServerPackPurge> _purgeReaders = {};
   int _readerEpoch = 0;
+  @override
+  PackPurgeGateway createPackPurge() {
+    ensureNotRestoring();
+    if (!capabilities.packPurgePreview ||
+        !capabilities.packPermanentDelete ||
+        !capabilities.packLogicalTrash ||
+        !capabilities.imagePacks) {
+      throw const LibraryFailure('当前服务尚不支持图包永久删除，请升级服务端');
+    }
+    final gateway = _ServerPackPurge(this, api, _generation, _readerEpoch);
+    _purgeReaders.add(gateway);
+    return gateway;
+  }
+
   @override
   PackTrashCatalog createPackTrash() {
     ensureNotRestoring();
@@ -77,6 +93,9 @@ class ServerLibraryRepository extends LibraryRepository
   @override
   void _resetReaders() {
     _readerEpoch++;
+    for (final gateway in _purgeReaders.toList()) {
+      gateway.dispose();
+    }
     for (final catalog in _trashReaders.toList()) {
       catalog.dispose();
     }

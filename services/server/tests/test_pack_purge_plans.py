@@ -92,7 +92,7 @@ def test_precise_persisted_manifest_files_pagination_attachments_and_readonly(li
     assert client.get("/api/v1/pack-trash").json()["total"] == 1
     # Backend confirmation requires a plan; the UI capability is not advertised yet.
     capabilities = client.get("/api/v1/info").json()["capabilities"]
-    assert "pack_purge_preview" in capabilities and "pack_permanent_delete" not in capabilities
+    assert "pack_purge_preview" in capabilities and "pack_permanent_delete" in capabilities
     assert client.post("/api/v1/pack-trash/permanent", json={}).status_code == 422
     assert root["path"] in str(files[0]["path"])
 

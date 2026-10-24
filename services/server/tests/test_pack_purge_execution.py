@@ -93,6 +93,15 @@ def test_partial_page_failure_restores_claim_and_remaining_pack_can_be_restored(
     listing = client.get("/api/v1/pack-trash").json()["items"][0]
     assert listing["page_count"] == listing["pack"]["page_count"] == 1
     assert listing["purged_pages"] == 1
+    assert listing["permanent_operation_id"] == result["id"]
+    unfinished = client.get(
+        f"/api/v1/pack-operations/{result['id']}/pages",
+        params={"outcome": "unfinished", "kind": "image", "limit": 1},
+    ).json()
+    assert unfinished["total"] == 1 and len(unfinished["items"]) == 1
+    assert unfinished["items"][0]["relative_path"] == "nested/2.jpg"
+    assert unfinished["items"][0]["pack_id"] == catalog[0]["id"]
+    assert unfinished["items"][0]["pack_name"] == catalog[0]["name"]
     purge.fault_hook = None
     restored = restore(client, [rows[0]["id"]])
     assert restored["result"]["succeeded"] == 1
@@ -104,6 +113,28 @@ def test_partial_page_failure_restores_claim_and_remaining_pack_can_be_restored(
     retried = command(client, f"pack-operations/{result['id']}/retry", {"request_id": "old-retry"})
     assert wait(client, retried["id"])["status"] == "failed"
     assert (base / "nested/2.jpg").exists()
+
+
+def test_purge_results_filter_and_paginate_without_mutating_files(library):
+    client, media = library
+    _, _, rows = fixture(client, media)
+    result = execute(client, plan(client, [rows[0]["id"]]))
+    before = tree(media)
+    url = f"/api/v1/pack-operations/{result['id']}/pages"
+    image_rows = []
+    for offset in range(2):
+        response = client.get(url, params={"kind": "image", "offset": offset, "limit": 1})
+        assert response.status_code == 200
+        page = response.json()
+        assert page["total"] == 2 and page["offset"] == offset and page["limit"] == 1
+        image_rows.extend(page["items"])
+    assert len({item["id"] for item in image_rows}) == 2
+    assert all(item["outcome"] == "succeeded" and item["pack_name"] for item in image_rows)
+    assert client.get(url, params={"outcome": "unfinished"}).json()["total"] == 0
+    assert client.get(url, params={"kind": "directory"}).json()["total"] == 3
+    assert client.get(url, params={"outcome": "invalid"}).status_code == 422
+    assert client.get(url, params={"kind": "invalid"}).status_code == 422
+    assert tree(media) == before
 
 
 @pytest.mark.parametrize(

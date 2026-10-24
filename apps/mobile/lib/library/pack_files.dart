@@ -151,8 +151,33 @@ class PackFileCommand {
     Map<String, dynamic> body, {
     this.label,
     this.readerContext,
-  }) : body = _freeze(body) as Map<String, dynamic> {
+    Iterable<String> targets = const [],
+    this.expectedImages,
+    this.expectedTaskKind,
+  }) : body = _freeze(body) as Map<String, dynamic>,
+       targets = List.unmodifiable(targets) {
     _id(requestId);
+    if (this.targets.isNotEmpty) _ids(this.targets);
+    if (expectedTaskKind != null &&
+        ![
+          'pack_trash',
+          'pack_restore',
+          'pack_undo',
+          'pack_permanent',
+        ].contains(expectedTaskKind)) {
+      throw const LibraryFailure('图包操作类型不完整');
+    }
+    if (kind == 'permanent' &&
+        (this.targets.isEmpty ||
+            expectedImages == null ||
+            expectedImages! < this.targets.length)) {
+      throw const LibraryFailure('永久删除缺少已确认的整包范围');
+    }
+    if (kind == 'retry' &&
+        expectedTaskKind == 'pack_permanent' &&
+        this.targets.isEmpty) {
+      throw const LibraryFailure('永久删除重试缺少原图包范围');
+    }
     if (readerContext != null && body['reading'] == null && kind != 'undo') {
       throw const LibraryFailure('阅读来源缺少原阅读范围');
     }
@@ -213,14 +238,42 @@ class PackFileCommand {
     {},
     readerContext: readerContext,
   );
+  factory PackFileCommand.permanent(
+    String requestId, {
+    required String planId,
+    required String digest,
+    required Iterable<String> trashIds,
+    required int imageCount,
+    String? label,
+  }) {
+    if (!RegExp(r'^[0-9a-f]{64}$').hasMatch(digest)) {
+      throw const LibraryFailure('永久删除确认摘要不完整');
+    }
+    return PackFileCommand._(
+      requestId,
+      'permanent',
+      '/api/v1/pack-trash/permanent',
+      {'plan_id': _id(planId), 'digest': digest, 'confirmed': true},
+      targets: _ids(trashIds),
+      expectedImages: imageCount,
+      expectedTaskKind: 'pack_permanent',
+      label: label,
+    );
+  }
   factory PackFileCommand.retry(
     String requestId,
-    String operationId,
-  ) => PackFileCommand._(
+    String operationId, {
+    Iterable<String> targets = const [],
+    String? expectedTaskKind,
+    String? label,
+  }) => PackFileCommand._(
     requestId,
     'retry',
     '/api/v1/pack-operations/${Uri.encodeComponent(_id(operationId))}/retry',
     {},
+    targets: targets.isEmpty ? const [] : _ids(targets),
+    expectedTaskKind: expectedTaskKind,
+    label: label,
   );
   static List<String> _ids(Iterable<String> ids) {
     final values = ids.map(_id).toSet().toList()..sort();
@@ -231,6 +284,9 @@ class PackFileCommand {
   }
 
   final String requestId, kind, path;
+  final List<String> targets;
+  final int? expectedImages;
+  final String? expectedTaskKind;
   final String? label;
   final PackCleanupContext? readerContext;
   String? get readingSessionId =>
@@ -240,11 +296,19 @@ class PackFileCommand {
   String get signature => jsonEncode([
     path,
     body,
+    if (targets.isNotEmpty || expectedTaskKind != null)
+      {
+        'targets': targets,
+        'expected_images': expectedImages,
+        'expected_kind': expectedTaskKind,
+      },
     if (readerContext != null) readerContext!.toJson(),
   ]);
   Set<String> get resources => {
     for (final id in (body['pack_ids'] as List? ?? const [])) 'pack:$id',
     for (final id in (body['trash_ids'] as List? ?? const [])) 'trash:$id',
+    for (final id in targets) 'trash:$id',
+    if (kind == 'permanent') 'plan:${body['plan_id']}',
     if (kind == 'undo' || kind == 'retry') path.split('/').take(5).join('/'),
   };
   Map<String, dynamic> toJson() => {
@@ -252,6 +316,9 @@ class PackFileCommand {
     'kind': kind,
     'path': path,
     'body': body,
+    if (targets.isNotEmpty) 'targets': targets,
+    if (expectedImages != null) 'expected_images': expectedImages,
+    if (expectedTaskKind != null) 'expected_kind': expectedTaskKind,
     if (label != null) 'label': label,
     if (readerContext != null) 'reader_context': readerContext!.toJson(),
   };
@@ -283,18 +350,39 @@ class PackFileCommand {
         requestId,
         (body['trash_ids'] as List).cast<String>(),
       );
+    } else if (kind == 'permanent') {
+      if (body['confirmed'] != true) throw const LibraryFailure('永久删除尚未明确确认');
+      result = PackFileCommand.permanent(
+        requestId,
+        planId: _id(body['plan_id']),
+        digest: _id(body['digest']),
+        trashIds: (value['targets'] as List).cast<String>(),
+        imageCount: _integer(value['expected_images']),
+      );
+      if (value['expected_kind'] != 'pack_permanent') {
+        throw const LibraryFailure('永久删除类型不完整');
+      }
     } else if (kind == 'undo' || kind == 'retry') {
       final parts = (value['path'] as String).split('/');
       if (parts.length != 6) throw const LibraryFailure('本机图包操作记录不完整');
       final operationId = Uri.decodeComponent(parts[4]);
       result = kind == 'undo'
           ? PackFileCommand.undo(requestId, operationId)
-          : PackFileCommand.retry(requestId, operationId);
+          : PackFileCommand.retry(
+              requestId,
+              operationId,
+              targets: (value['targets'] as List? ?? const []).cast<String>(),
+              expectedTaskKind: value['expected_kind'] as String?,
+            );
     } else {
       throw const LibraryFailure('本机图包操作记录不完整');
     }
     if (result.path != value['path'] ||
-        jsonEncode(result.body) != jsonEncode(body)) {
+        jsonEncode(result.body) != jsonEncode(body) ||
+        jsonEncode(result.targets) !=
+            jsonEncode(value['targets'] ?? const []) ||
+        result.expectedImages != value['expected_images'] ||
+        result.expectedTaskKind != value['expected_kind']) {
       throw const LibraryFailure('本机图包操作记录不完整');
     }
     final label = value['label'];
@@ -306,6 +394,9 @@ class PackFileCommand {
       result.kind,
       result.path,
       result.body,
+      targets: result.targets,
+      expectedImages: result.expectedImages,
+      expectedTaskKind: result.expectedTaskKind,
       label: label as String?,
       readerContext: value['reader_context'] == null
           ? null
@@ -315,17 +406,26 @@ class PackFileCommand {
 }
 
 class PackFileItem {
-  PackFileItem(Map<String, dynamic> raw)
+  PackFileItem(Map<String, dynamic> raw, {bool permanent = false})
     : requestedId = _id(raw['requested_id']),
       packId = _id(raw['pack_id']),
       trashId = _id(raw['trash_id']),
       outcome = _id(raw['outcome']),
       phase = _id(raw['phase']),
-      error = raw['error'] as String? {
+      error = raw['error'] as String?,
+      pagesTotal = permanent ? _integer(raw['pages_total']) : 0,
+      pagesDeleted = permanent ? _integer(raw['pages_deleted']) : 0 {
     if (!['succeeded', 'failed'].contains(outcome)) {
       throw const LibraryFailure('图包操作尚未确认完成');
     }
+    if (pagesDeleted > pagesTotal ||
+        (permanent &&
+            (pagesTotal == 0 ||
+                (outcome == 'succeeded' && pagesDeleted != pagesTotal)))) {
+      throw const LibraryFailure('图片删除结果不完整，请查询原任务');
+    }
   }
+  final int pagesTotal, pagesDeleted;
   final String requestedId, packId, trashId, outcome, phase;
   final String? error;
   bool get succeeded => outcome == 'succeeded';
@@ -349,19 +449,30 @@ class PackReadingTransition {
 }
 
 class PackFileResult {
-  PackFileResult(Map<String, dynamic> raw, String operationId)
-    : total = _integer(raw['total']),
-      succeeded = _integer(raw['succeeded']),
-      failed = _integer(raw['failed']),
-      partial = _flag(raw['partial']),
-      items = List.unmodifiable(
-        (raw['items'] as List).map((i) => PackFileItem(_map(i))),
-      ),
-      readingRestored = _flag(raw['reading_restored']),
-      transition = raw['reading_transition'] == null
-          ? null
-          : PackReadingTransition(_map(raw['reading_transition'])),
-      undoExpiresAt = _deadline(raw['undo_expires_at']) {
+  PackFileResult(
+    Map<String, dynamic> raw,
+    String operationId, {
+    bool permanent = false,
+  }) : total = _integer(raw['total']),
+       succeeded = _integer(raw['succeeded']),
+       failed = _integer(raw['failed']),
+       partial = _flag(raw['partial']),
+       items = List.unmodifiable(
+         (raw['items'] as List).map(
+           (i) => PackFileItem(_map(i), permanent: permanent),
+         ),
+       ),
+       pagesTotal = permanent ? _integer(raw['pages_total']) : 0,
+       pagesDeleted = permanent ? _integer(raw['pages_deleted']) : 0,
+       pagesPending = permanent
+           ? _integer(raw['pages_pending_reconciliation'])
+           : 0,
+       needsAttention = permanent ? _flag(raw['needs_attention']) : false,
+       readingRestored = _flag(raw['reading_restored']),
+       transition = raw['reading_transition'] == null
+           ? null
+           : PackReadingTransition(_map(raw['reading_transition'])),
+       undoExpiresAt = _deadline(raw['undo_expires_at']) {
     if (_id(raw['operation_id']) != operationId ||
         _integer(raw['processed']) != total ||
         total > 1000 ||
@@ -370,8 +481,26 @@ class PackFileResult {
         succeeded + failed != total ||
         items.where((i) => i.succeeded).length != succeeded ||
         items.map((i) => i.requestedId).toSet().length != total ||
-        partial != (succeeded > 0 && failed > 0)) {
+        partial !=
+            (permanent
+                ? pagesDeleted > 0 && succeeded < total
+                : succeeded > 0 && failed > 0)) {
       throw const LibraryFailure('图包操作结果不完整，请重新查询');
+    }
+    if (permanent &&
+        (pagesTotal < total ||
+            items.map((v) => v.packId).toSet().length != total ||
+            items.any((v) => v.trashId != v.requestedId) ||
+            pagesDeleted > pagesTotal ||
+            pagesPending > pagesTotal - pagesDeleted ||
+            items.fold<int>(0, (n, v) => n + v.pagesTotal) != pagesTotal ||
+            items.fold<int>(0, (n, v) => n + v.pagesDeleted) != pagesDeleted ||
+            needsAttention != items.any((v) => v.phase == 'needs_attention') ||
+            (pagesPending > 0 && !needsAttention) ||
+            readingRestored ||
+            transition != null ||
+            undoExpiresAt != null)) {
+      throw const LibraryFailure('永久删除结果矛盾，请查询原任务');
     }
   }
   static DateTime? _deadline(Object? value) {
@@ -386,6 +515,8 @@ class PackFileResult {
   }
 
   final int total, succeeded, failed;
+  final int pagesTotal, pagesDeleted, pagesPending;
+  final bool needsAttention;
   final bool partial, readingRestored;
   final List<PackFileItem> items;
   final PackReadingTransition? transition;
@@ -409,7 +540,12 @@ class PackFileTask {
       error = raw['error'] as String?,
       serverTime = PackFileResult._deadline(raw['server_time']),
       receivedAt = DateTime.now() {
-    if (!['pack_trash', 'pack_restore', 'pack_undo'].contains(kind) ||
+    if (![
+          'pack_trash',
+          'pack_restore',
+          'pack_undo',
+          'pack_permanent',
+        ].contains(kind) ||
         ![
           'queued',
           'running',
@@ -421,7 +557,11 @@ class PackFileTask {
     }
     if (status == 'completed' ||
         (status == 'failed' && _map(raw['result']).isNotEmpty)) {
-      result = PackFileResult(_map(raw['result']), id);
+      result = PackFileResult(
+        _map(raw['result']),
+        id,
+        permanent: kind == 'pack_permanent',
+      );
       if ((status == 'completed') != (result!.succeeded > 0)) {
         throw const LibraryFailure('图包任务结果与状态不一致，请重新查询');
       }
@@ -513,6 +653,19 @@ class PackFileJournal {
         for (final row in commands.values) {
           final previous = PackFileCommand.fromJson(_map(_map(row)['command']));
           if (previous.resources.intersection(command.resources).isNotEmpty) {
+            if (command.kind == 'retry' &&
+                _map(row)['task_id'] ==
+                    Uri.decodeComponent(command.path.split('/')[4]) &&
+                (command.expectedTaskKind == null ||
+                    command.expectedTaskKind ==
+                        (previous.kind == 'retry'
+                            ? previous.expectedTaskKind
+                            : 'pack_${previous.kind}')) &&
+                command.targets.every(
+                  (id) => previous.resources.contains('trash:$id'),
+                )) {
+              continue;
+            }
             throw const LibraryFailure('这项图包操作的结果尚未确认，请先查询原结果');
           }
         }
@@ -538,6 +691,24 @@ class PackFileJournal {
       _edit(scope, (commands) {
         commands.remove(requestId);
       });
+  Future<void> forgetTask(
+    String scope,
+    String identity,
+    Set<String> verifiedRequests,
+  ) => _edit(scope, (commands) {
+    commands.removeWhere(
+      (key, value) =>
+          verifiedRequests.contains(key) && _map(value)['task_id'] == identity,
+    );
+  });
+  Future<Map<String, String>> bindings(String scope) => _edit(
+    scope,
+    (commands) => {
+      for (final entry in commands.entries)
+        if (_map(entry.value)['task_id'] case final String id) entry.key: id,
+    },
+    write: false,
+  );
   Future<String?> identity(String scope, String requestId) => _edit(
     scope,
     (commands) => commands[requestId] == null
@@ -566,6 +737,7 @@ class PackFiles {
   final Map<String, Future<PackFileTask>> _sending = {};
   final Map<String, String> _sendingSignatures = {};
   final Map<String, PackFileTask> _settled = {};
+  final Map<PackFileTask, Set<String>> _verified = {};
   void _check() {
     if (!isCurrent()) throw const RequestCancelled();
   }
@@ -612,8 +784,9 @@ class PackFiles {
   }
 
   Future<PackFileTask> _send(PackFileCommand command) async {
-    _settled.remove(command.requestId);
+    _verified.remove(_settled.remove(command.requestId));
     final known = await journal.remember(scope, command);
+    final bindings = await journal.bindings(scope);
     _check();
     Map<String, dynamic> raw;
     if (known != null) {
@@ -640,15 +813,18 @@ class PackFiles {
       }
     }
     _check();
-    return _accept(command, raw);
+    return _accept(command, raw, bindings);
   }
 
   Future<PackFileTask> _accept(
     PackFileCommand command,
     Map<String, dynamic> raw,
+    Map<String, String> bindings,
   ) async {
     final task = PackFileTask.fromJson(raw);
-    final expected = command.kind == 'retry' ? null : 'pack_${command.kind}';
+    final expected = command.kind == 'retry'
+        ? command.expectedTaskKind
+        : 'pack_${command.kind}';
     if (expected != null && task.kind != expected) {
       throw const LibraryFailure('服务端图包任务类型与请求不一致');
     }
@@ -656,8 +832,9 @@ class PackFiles {
         task.id != Uri.decodeComponent(command.path.split('/')[4])) {
       throw const LibraryFailure('重试结果与原图包任务不一致');
     }
-    final requested =
-        command.body[command.kind == 'trash' ? 'pack_ids' : 'trash_ids'];
+    final requested = command.targets.isNotEmpty
+        ? command.targets
+        : command.body[command.kind == 'trash' ? 'pack_ids' : 'trash_ids'];
     if (requested is List &&
         task.result != null &&
         (task.result!.total != requested.length ||
@@ -666,15 +843,30 @@ class PackFiles {
             ))) {
       throw const LibraryFailure('图包操作结果与所选内容不一致');
     }
+    if (command.expectedImages != null &&
+        task.result != null &&
+        task.result!.pagesTotal != command.expectedImages) {
+      throw const LibraryFailure('删除图片数量与确认清单不一致');
+    }
     await journal.accepted(scope, command, task.id);
     _check();
-    if (task.settled) _settled[command.requestId] = task;
+    if (task.settled) {
+      _settled[command.requestId] = task;
+      if (task.kind == 'pack_permanent') {
+        _verified[task] = {
+          command.requestId,
+          for (final entry in bindings.entries)
+            if (entry.value == task.id) entry.key,
+        };
+      }
+    }
     return task;
   }
 
   Future<PackFileTask?> receipt(PackFileCommand command) async {
     _check();
-    _settled.remove(command.requestId);
+    _verified.remove(_settled.remove(command.requestId));
+    final bindings = await journal.bindings(scope);
     try {
       final route = command.kind == 'retry'
           ? 'pack-retry-requests'
@@ -684,7 +876,7 @@ class PackFiles {
         '/api/v1/$route/${Uri.encodeComponent(command.requestId)}',
       );
       _check();
-      return await _accept(command, raw);
+      return await _accept(command, raw, bindings);
     } on ApiFailure catch (error) {
       _check();
       if (error.status == 404) return null;
@@ -718,8 +910,49 @@ class PackFiles {
     if (_settled[command.requestId] == null) {
       throw const LibraryFailure('请先查询并核对这次图包操作结果');
     }
+    if (_settled[command.requestId]!.result!.needsAttention) {
+      throw const LibraryFailure('还有待核对内容，原操作记录将继续保留');
+    }
     await journal.forget(scope, command.requestId);
     _check();
-    _settled.remove(command.requestId);
+    _verified.remove(_settled.remove(command.requestId));
+  }
+
+  Future<PackFileTask> task(String identity) async {
+    _check();
+    _verified.remove(_settled.remove('task:$identity'));
+    final bindings = await journal.bindings(scope);
+    final result = PackFileTask.fromJson(
+      await call(
+        'GET',
+        '/api/v1/pack-operations/${Uri.encodeComponent(_id(identity))}',
+      ),
+    );
+    _check();
+    if (result.id != identity) throw const LibraryFailure('图包任务身份不一致');
+    if (result.settled) {
+      _settled['task:$identity'] = result;
+      if (result.kind == 'pack_permanent') {
+        _verified[result] = {
+          for (final entry in bindings.entries)
+            if (entry.value == identity) entry.key,
+        };
+      }
+    }
+    return result;
+  }
+
+  Future<void> acknowledgeTask(PackFileTask task) async {
+    _check();
+    if (!task.settled ||
+        task.result!.needsAttention ||
+        !_verified.containsKey(task) ||
+        !_settled.values.any((value) => identical(value, task))) {
+      throw const LibraryFailure('请先查询并核对原任务结果');
+    }
+    await journal.forgetTask(scope, task.id, _verified[task] ?? const {});
+    _check();
+    _settled.removeWhere((_, value) => value.id == task.id);
+    _verified.removeWhere((value, _) => value.id == task.id);
   }
 }

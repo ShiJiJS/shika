@@ -216,6 +216,7 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         "pack_logical_trash",
         "pack_reader_cleanup",
         "pack_purge_preview",
+        "pack_permanent_delete",
     }
     schema = client.get("/openapi.json").json()
     assert schema["components"]["schemas"]["RootInput"]["properties"]["enabled"]

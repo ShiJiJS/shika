@@ -8,6 +8,8 @@ import '../../ui/paper.dart';
 import '../../ui/media_layout.dart';
 import 'pack_file_action.dart';
 import 'pack_trash_session.dart';
+import 'pack_purge_review.dart';
+import 'pack_purge_result.dart';
 
 class PackTrashPage extends StatefulWidget {
   const PackTrashPage({
@@ -62,7 +64,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
     }
   }
 
-  Future<void> check(PackFileCommand command) async {
+  Future<void> check(PackFileCommand command, {bool readOnly = true}) async {
     if (checking || session.restoring || !session.live) return;
     setState(() => checking = true);
     try {
@@ -73,10 +75,24 @@ class _PackTrashPageState extends State<PackTrashPage> {
         title: '核对图包操作',
         description: command.label,
         confirm: false,
+        readOnly: readOnly,
       );
       if (outcome == null || !mounted || !session.live) return;
       await session.accept(outcome.command, outcome.task);
       await session.load();
+      if (mounted && outcome.task.kind == 'pack_permanent') {
+        // The result sheet can request an explicit retry after it closes.
+        final retry = await showPackPurgeResult(
+          context,
+          widget.repository,
+          session.files,
+          outcome.task,
+        );
+        if (mounted && retry != null) {
+          setState(() => checking = false);
+          await retryPermanent(retry);
+        }
+      }
     } catch (failure) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -84,6 +100,13 @@ class _PackTrashPageState extends State<PackTrashPage> {
         );
       }
     } finally {
+      if (mounted && session.live) {
+        try {
+          await session.loadPending();
+        } catch (failure) {
+          session.error = packFileFailureMessage(failure);
+        }
+      }
       if (mounted) setState(() => checking = false);
     }
   }
@@ -115,7 +138,122 @@ class _PackTrashPageState extends State<PackTrashPage> {
   Future<void> retryFailed() async {
     final task = session.lastResult;
     if (task == null || task.result!.failed == 0) return;
-    await check(PackFileCommand.retry(packFileRequestId(), task.id));
+    if (task.kind == 'pack_permanent') {
+      await retryPermanent(task);
+      return;
+    }
+    await check(
+      PackFileCommand.retry(packFileRequestId(), task.id),
+      readOnly: false,
+    );
+  }
+
+  Future<void> retryPermanent(PackFileTask task) async {
+    if (!mounted || !session.live || task.result == null) return;
+    final approved = await paperSheet<bool>(
+      context,
+      SheetFrame(
+        title: '重试原任务',
+        children: [
+          const Text('只重试原清单中未完成的内容，已经删除的图片不会重复处理。图片永久删除后不能恢复。'),
+          const SizedBox(height: 16),
+          Wrap(
+            alignment: WrapAlignment.end,
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('取消'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('确认重试原任务'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+    if (!mounted || approved != true || !session.live) return;
+    await check(
+      PackFileCommand.retry(
+        packFileRequestId(),
+        task.id,
+        targets: task.result!.items.map((v) => v.trashId),
+        expectedTaskKind: 'pack_permanent',
+        label: '重试原永久删除任务',
+      ),
+      readOnly: false,
+    );
+  }
+
+  Future<void> permanent() async {
+    if (checking ||
+        session.restoring ||
+        !session.live ||
+        session.selection.ids.isEmpty) {
+      return;
+    }
+    setState(() => checking = true);
+    PackFileCommand? command;
+    try {
+      session.selection.cancel();
+      final ids = session.selection.ids.toList()..sort();
+      await session.loadPending();
+      if (!mounted || !session.live) return;
+      final resources = ids.take(1000).map((id) => 'trash:$id').toSet();
+      if (session.pending.any(
+        (c) => c.resources.intersection(resources).isNotEmpty,
+      )) {
+        throw const LibraryFailure('所选图包有待核对操作，请先查询原结果');
+      }
+      command = await showPackPurgeReview(context, widget.repository, ids);
+    } catch (failure) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(packFileFailureMessage(failure))),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => checking = false);
+    }
+    if (mounted && command != null && session.live) {
+      await check(command, readOnly: false);
+    }
+  }
+
+  Future<void> originalResult(String identity) async {
+    if (checking || session.restoring || !session.live) return;
+    setState(() => checking = true);
+    PackFileTask? retry;
+    try {
+      final task = await session.files.task(identity);
+      if (!mounted || !session.live) return;
+      if (task.kind != 'pack_permanent') {
+        throw const LibraryFailure('原图包任务类型不一致');
+      }
+      if (task.settled && !task.result!.needsAttention) {
+        await session.files.acknowledgeTask(task);
+      }
+      if (!mounted) return;
+      retry = await showPackPurgeResult(
+        context,
+        widget.repository,
+        session.files,
+        task,
+      );
+      await session.load();
+    } catch (failure) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(packFileFailureMessage(failure))),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => checking = false);
+    }
+    if (mounted && retry != null) await retryPermanent(retry);
   }
 
   Future<void> restore() async {
@@ -245,7 +383,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               children: [
                 Text(
-                  '源文件仍在原位置。恢复后保留整包标签、阅读进度和阅读方式，不会自动清空。',
+                  '普通移除保留源文件，永久删除不能恢复。恢复图包时保留剩余图片、整包标签和阅读进度。',
                   style: TextStyle(fontSize: 13, color: p.muted),
                 ),
                 if (session.hasLoaded &&
@@ -281,6 +419,20 @@ class _PackTrashPageState extends State<PackTrashPage> {
                           item.originalPath,
                           style: const TextStyle(fontSize: 12),
                         ),
+                        if (item.purgedPages > 0)
+                          Text(
+                            '已有 ${item.purgedPages} 张永久删除，恢复仅限剩余 ${item.pageCount} 张',
+                            style: TextStyle(fontSize: 12, color: p.danger),
+                          ),
+                        if (item.permanentOperationId != null)
+                          TextButton(
+                            onPressed: locked
+                                ? null
+                                : () => originalResult(
+                                    item.permanentOperationId!,
+                                  ),
+                            child: const Text('查看原永久删除结果'),
+                          ),
                         if (session.failures[item.id] case final String failure)
                           Text(
                             failure,
@@ -333,13 +485,32 @@ class _PackTrashPageState extends State<PackTrashPage> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
-                    '已选 ${selected.length} 个，将按每批最多1000个恢复；未确认结果时停止后续批次。',
+                    '已选 ${selected.length} 个。恢复每批最多1000个；永久删除每批单独核对确认，其余保持选择。',
                     style: TextStyle(fontSize: 12, color: p.muted),
                   ),
                 ),
-              Row(
+              if (MediaLayout.largeText(context)) Text('已选 ${selected.length}'),
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 8,
+                runSpacing: 8,
                 children: [
-                  Expanded(child: Text('已选 ${selected.length}')),
+                  if (!MediaLayout.largeText(context))
+                    Text('已选 ${selected.length}'),
+                  if (widget.repository.capabilities.packPermanentDelete &&
+                      widget.repository.capabilities.packPurgePreview)
+                    TextButton(
+                      key: const Key('pack-trash-permanent'),
+                      style: TextButton.styleFrom(foregroundColor: p.danger),
+                      onPressed:
+                          locked ||
+                              selected.isEmpty ||
+                              session.selection.loading
+                          ? null
+                          : permanent,
+                      child: const Text('永久删除'),
+                    ),
                   FilledButton(
                     key: const Key('pack-trash-restore'),
                     onPressed:

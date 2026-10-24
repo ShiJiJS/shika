@@ -9,10 +9,14 @@ class PackTrashItem {
     required this.deletedAt,
     required this.pageCount,
     required this.pack,
+    this.purgedPages = 0,
+    this.permanentOperationId,
   });
   final String id, operationId, originalPath;
   final double deletedAt;
   final int pageCount;
+  final int purgedPages;
+  final String? permanentOperationId;
   final LibraryPack pack;
 }
 

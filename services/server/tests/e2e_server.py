@@ -86,7 +86,7 @@ def create_e2e_app():
             }
             if (request.method == "PATCH" and request.url.path == "/api/v1/video-tags") or (
                 request.method == "POST" and request.url.path in {
-                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash", "/api/v1/pack-trash/restore"
+                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans"
                 }
             ):
                 body = await request.json()
@@ -143,7 +143,7 @@ def create_e2e_app():
         if (
             controls["lose_file_response"]
             and request.method == "POST"
-            and request.url.path in {"/api/v1/videos/trash", "/api/v1/packs/trash", "/api/v1/pack-trash/restore"}
+            and request.url.path in {"/api/v1/videos/trash", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans"}
             and response.status_code == 202
         ):
             controls["lose_file_response"] = False
@@ -216,6 +216,7 @@ def create_e2e_app():
             "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
             "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
             "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
+            "purge-selected", "purge-review", "purge-files", "purge-unknown", "purge-result", "purge-finished",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
                 "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
         }:
@@ -241,6 +242,27 @@ def create_e2e_app():
         elif action == "workspace-packs":
             details = seed_workspace_packs(BASE, Path("/fixture-assets"))
             controls["busy_covers"] = 2
+        elif action == "purge-pack-attachments":
+            folder = BASE / "shorts" / "图包"
+            if str(folder) != "/media/shorts/图包" or folder.is_symlink() or folder.resolve() != folder:
+                raise HTTPException(status_code=409, detail="Expected isolated flower directory")
+            for index in range(1, 28):
+                pack = folder / f"图包{index:02d}"
+                if pack.is_symlink() or not pack.is_dir():
+                    raise HTTPException(status_code=409, detail="Expected fixture pack directory")
+                (pack / "notes.txt").write_text("retain isolated attachment", encoding="utf-8")
+        elif action == "fail-pack-purge":
+            def fail_purge(phase, identity):
+                if phase == "purge_purging":
+                    from video_viewer.models import PackPurgeStep
+
+                    with app.state.db.read() as session:
+                        row = session.get(PackPurgeStep, identity)
+                        if row.relative_path == "2.jpg":
+                            raise PermissionError("Isolated fixture page failure")
+            app.state.pack_purge.fault_hook = fail_purge
+        elif action == "normal-pack-purge":
+            app.state.pack_purge.fault_hook = None
         elif action == "fail-pack-trash-read":
             controls["fail_pack_trash"] = True
         elif action == "pack-trash-hashes":

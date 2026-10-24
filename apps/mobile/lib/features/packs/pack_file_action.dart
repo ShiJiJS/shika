@@ -19,6 +19,7 @@ Future<PackFileOutcome?> showPackFileAction(
   required String title,
   String? description,
   bool confirm = true,
+  bool readOnly = false,
 }) => paperSheet<PackFileOutcome>(
   context,
   PackFileAction(
@@ -27,6 +28,7 @@ Future<PackFileOutcome?> showPackFileAction(
     title: title,
     description: description,
     confirm: confirm,
+    readOnly: readOnly,
   ),
 );
 
@@ -39,12 +41,14 @@ class PackFileAction extends StatefulWidget {
     required this.title,
     this.description,
     this.confirm = true,
+    this.readOnly = false,
   });
   final PackFiles files;
   final PackFileCommand command;
   final String title;
   final String? description;
   final bool confirm;
+  final bool readOnly;
   @override
   State<PackFileAction> createState() => _PackFileActionState();
 }
@@ -57,6 +61,7 @@ class _PackFileActionState extends State<PackFileAction> {
     'restore' => '恢复图包',
     'undo' => '撤销移除',
     'retry' => '重试未完成项',
+    'permanent' => '永久删除',
     _ => '移入回收站',
   };
   @override
@@ -69,14 +74,24 @@ class _PackFileActionState extends State<PackFileAction> {
     try {
       final pending = await widget.files.pending();
       if (!mounted) return;
-      final previous = pending
-          .where(
-            (value) =>
-                value.resources.intersection(command.resources).isNotEmpty,
-          )
+      final exact = pending
+          .where((value) => value.requestId == command.requestId)
           .firstOrNull;
+      final previous =
+          exact ??
+          (command.kind == 'retry'
+              ? null
+              : pending
+                    .where(
+                      (value) => value.resources
+                          .intersection(command.resources)
+                          .isNotEmpty,
+                    )
+                    .firstOrNull);
       if (previous != null) {
         command = previous;
+        await perform(false);
+      } else if (widget.readOnly) {
         await perform(false);
       } else if (!widget.confirm) {
         await perform(true);
@@ -96,7 +111,11 @@ class _PackFileActionState extends State<PackFileAction> {
       error = '';
     });
     try {
-      final task = await widget.files.resolve(command, submit: submit);
+      final task = await widget.files.resolve(
+        command,
+        submit: submit,
+        keepWaiting: () => mounted && widget.files.isCurrent(),
+      );
       if (!mounted || !widget.files.isCurrent()) return;
       if (task?.settled == true) {
         Navigator.pop(context, PackFileOutcome(widget.files, command, task!));
@@ -156,7 +175,7 @@ class _PackFileActionState extends State<PackFileAction> {
               child: const Text('重新提交原请求'),
             ),
           FilledButton(
-            style: attempted || command.kind != 'trash'
+            style: attempted || !['trash', 'permanent'].contains(command.kind)
                 ? null
                 : FilledButton.styleFrom(
                     backgroundColor: Paper.of(context).danger,
