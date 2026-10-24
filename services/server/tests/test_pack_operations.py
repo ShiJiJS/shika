@@ -280,6 +280,14 @@ def test_restore_partial_retry_does_not_repeat_successes_and_disabled_root_stays
     retry = command(client, f"pack-operations/{result['id']}/retry", {"request_id": "retry"})
     assert wait(client, retry["id"])["result"]["succeeded"] == 1
     assert state(client, ids[1]) == before
+    assert client.get("/api/v1/pack-retry-requests/retry").json()["id"] == result["id"]
+    assert client.get("/api/v1/pack-retry-requests/unknown").status_code == 404
+    db = client.app.state.db
+    db.maintenance_task, db.maintenance_owner = "restore", None
+    try:
+        assert client.get("/api/v1/pack-retry-requests/retry").json()["id"] == result["id"]
+    finally:
+        db.maintenance_task = None
     again = trash(client, ids, "again")
     assert (
         client.put(

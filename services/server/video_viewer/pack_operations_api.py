@@ -82,4 +82,8 @@ def router(auth_required):
     def receipt(request_id: str, request: Request):
         return request.app.state.pack_files.task(request_id=request_id)
 
+    @api.get("/pack-retry-requests/{request_id}")
+    def retry_receipt(request_id: str, request: Request):
+        return request.app.state.pack_files.retry_receipt(request_id)
+
     return api

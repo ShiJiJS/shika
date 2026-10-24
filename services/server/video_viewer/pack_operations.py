@@ -20,6 +20,7 @@ from .models import (
     PackSession,
     PackSessionEntry,
     PackTrashItem,
+    RequestRecord,
     Root,
     Setting,
     Task,
@@ -502,6 +503,14 @@ class PackOperations:
         if enqueue:
             self.enqueue(identity)
         return result["operation_id"]
+
+    def retry_receipt(self, request_id):
+        with self.db.read() as session:
+            record = session.get(RequestRecord, "pack_files.retry:" + request_id)
+            if not record:
+                raise LibraryError("pack_operation_not_found", "未找到已受理的图包重试", 404)
+            identity = record.result["operation_id"]
+        return self.task(identity)
 
     @staticmethod
     def trash_statement(search):
