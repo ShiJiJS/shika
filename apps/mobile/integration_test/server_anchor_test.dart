@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:video_viewer/library/credentials.dart';
+import 'package:video_viewer/features/library/video_catalog_page.dart';
 import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
@@ -74,7 +75,15 @@ void main() {
       await t.tap(find.byKey(const Key('nav-tags')));
       await until(() => find.text('返回定位').evaluate().isNotEmpty, 'tag entry');
       await t.tap(find.text('返回定位'));
-      await until(() => find.text('73 个视频').evaluate().isNotEmpty, 'tag range');
+      await until(
+        () => find.text('匹配 73 个视频').evaluate().isNotEmpty,
+        'tag intersection',
+      );
+      await t.tap(find.byKey(const Key('tag-view-results')));
+      await until(
+        () => find.byKey(const Key('video-grid')).evaluate().isNotEmpty,
+        'tag range',
+      );
       await t.enterText(find.byKey(const Key('video-search')), '花卉');
       await t.testTextInput.receiveAction(TextInputAction.done);
       final grid = find.byKey(const Key('video-grid'));
@@ -85,7 +94,10 @@ void main() {
         'searched tag range',
       );
       ScrollController scroll() => t.widget<CustomScrollView>(grid).controller!;
-      const targetPixels = 29 * 308.0 + 37;
+      final header =
+          t.getTopLeft(find.byKey(Key('tile-${original.items.first.id}'))).dy -
+          t.getTopLeft(grid).dy;
+      final targetPixels = header + 29 * 308.0 + 37;
       await until(() async {
         scroll().jumpTo(
           math.min(targetPixels, scroll().position.maxScrollExtent),
@@ -150,15 +162,23 @@ void main() {
       await until(
         () =>
             find.byKey(const Key('library-return-retry')).evaluate().isEmpty &&
+            find.byType(LinearProgressIndicator).evaluate().isEmpty &&
             neighborTile.hitTestable().evaluate().isNotEmpty,
         'retry locates the surviving neighbor',
       );
       // The inserted row and removed tag cancel numerically, but the saved anchor
       // is gone. The next stable ID is at 59 in the refreshed filtered catalog.
-      expect(scroll().offset, closeTo(5 * 308.0 + 37, 1));
+      expect(scroll().offset, closeTo(header + 5 * 308.0 + 37, 1));
       expect(t.getTopLeft(neighborTile).dy, closeTo(originalTop, 1));
       expect(anchorTile, findsNothing);
-      expect(find.text('73 个视频'), findsOneWidget);
+      expect(
+        t
+            .state<VideoCatalogPageState>(find.byType(VideoCatalogPage))
+            .data
+            .total,
+        73,
+        reason: 'authoritative count is retained while its toolbar is scrolled above the viewport',
+      );
       final round = await repo.api.json('GET', '/api/v1/playback');
       expect(round['id'], identity);
       expect(round['candidate_count'], 73);
@@ -197,11 +217,12 @@ void main() {
         () =>
             find.byType(LinearProgressIndicator).evaluate().isEmpty &&
             find.byKey(const Key('library-return-retry')).evaluate().isEmpty &&
+            find.byType(LinearProgressIndicator).evaluate().isEmpty &&
             neighborTile.hitTestable().evaluate().isNotEmpty &&
             (t.getTopLeft(neighborTile).dy - originalTop).abs() < 1,
         'overlapping background updates retain the visible source',
       );
-      expect(scroll().offset, closeTo(5 * 308.0 + 37, 1));
+      expect(scroll().offset, closeTo(header + 5 * 308.0 + 37, 1));
       expect(t.getTopLeft(neighborTile).dy, closeTo(originalTop, 1));
       await fixture('/__fixture/preview/fast');
       await fixture('/__fixture/checkpoint/recovered');

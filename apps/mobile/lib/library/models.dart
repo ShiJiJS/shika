@@ -22,6 +22,9 @@ class ServiceCapabilities {
   bool get fixedVideoSessions => values.contains('fixed_video_sessions');
   bool get versionedVideoQueue => values.contains('versioned_video_queue');
   bool get videoEntryAnchors => values.contains('video_entry_anchors');
+  bool get catalogSelection => values.contains('catalog_selection');
+  bool get packTagNames => values.contains('pack_tag_names');
+  bool get packEntryAnchors => values.contains('pack_entry_anchors');
 }
 
 enum VideoStatus { available, missing, trash }
@@ -72,6 +75,13 @@ class MediaSource {
     asset: j['asset'] as bool,
     headers: Map<String, String>.from(j['headers'] as Map? ?? {}),
   );
+}
+
+/// A label in the video namespace, with an authoritative catalog count.
+class VideoTag {
+  const VideoTag(this.id, this.name, this.count);
+  final String id, name;
+  final int count;
 }
 
 class LibraryVideo {

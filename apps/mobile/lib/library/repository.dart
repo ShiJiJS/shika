@@ -1,10 +1,77 @@
 import 'package:flutter/foundation.dart';
 
 import 'models.dart';
+import 'pack_models.dart';
+export 'pack_models.dart';
 
 /// This boundary describes client-visible behavior, independent of transport.
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
+  Future<Set<String>> selectVideoIds(VideoEntryScope entry) =>
+      Future.error(const LibraryFailure('当前服务尚不支持跨页全选，请升级服务端'));
+  Future<Set<String>> selectPackIds(PackQuery query) =>
+      Future.error(const LibraryFailure('当前服务尚不支持跨页全选，请升级服务端'));
+  void cancelVideoSelection() {}
+  void cancelPackSelection() {}
+  Future<PackTagNames> resolvePackTags(Set<String> ids) =>
+      Future.error(const LibraryFailure('当前服务尚不支持按ID读取标签名称，请升级服务端'));
+  void cancelPackTagNamesRead() {}
+  Future<CatalogPage<LibraryPack>> restorePackEntry(
+    PackQuery query, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包原位返回，请升级服务端'));
+  Future<CatalogPage<VideoTag>> loadVideoTags({
+    String search = '',
+    int offset = 0,
+    int limit = 50,
+  }) async {
+    final all = snapshot.tags
+        .where((id) => tagName(id).contains(search))
+        .toList();
+    return CatalogPage(
+      items: all
+          .skip(offset)
+          .take(limit)
+          .map((id) => VideoTag(id, tagName(id), tagVideoCount(id))),
+      total: all.length,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  void cancelVideoTagRead() {}
+  Future<CatalogPage<LibraryPack>> loadPacks(
+    PackQuery query, {
+    int offset = 0,
+    int limit = 24,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包，请升级服务端'));
+  Future<CatalogPage<PackTag>> loadPackTags({
+    String search = '',
+    int offset = 0,
+    int limit = 50,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  Future<CatalogPage<FolderEntry>> loadPackDirectories(
+    String parent, {
+    int offset = 0,
+    int limit = 50,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包目录，请升级服务端'));
+  Future<void> editPackTag({
+    String? original,
+    String? name,
+    bool delete = false,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  Future<PackTag> createPackTag(String name) =>
+      Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  Future<void> setPackTags(
+    Set<String> ids,
+    Set<String> tags, {
+    bool replace = false,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  void cancelPackRead() {}
+  void cancelPackTagRead() {}
+  void cancelPackDirectoryRead() {}
   final ValueNotifier<String?> scanStatus = ValueNotifier(null);
   final libraryPreparation = ValueNotifier(const LibraryPreparation());
   Future<void> requestScan() => refresh();

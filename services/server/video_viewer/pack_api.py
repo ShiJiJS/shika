@@ -26,6 +26,7 @@ class PackSummary(BaseModel):
     readable_count: int
     content_version: int
     tag_ids: list[str]
+    tag_names: dict[str, str]
     created_at: float
     cover_url: str | None
     progress: ReadingProgress | None
@@ -36,6 +37,7 @@ class PackList(BaseModel):
     total: int
     offset: int
     limit: int
+    anchor_index: int | None = None
 
 
 class PageSummary(BaseModel):
@@ -77,6 +79,7 @@ def router(auth_required):
         read_state: Literal["all", "unread", "reading", "completed"] = "all",
         sort: Literal["name", "newest"] = "name",
         status: Literal["available", "missing", "trash", "unreadable"] = "available",
+        anchor_ids: Annotated[list[str] | None, Query(max_length=16)] = None,
     ):
         return request.app.state.packs.list(
             offset=offset,
@@ -87,6 +90,21 @@ def router(auth_required):
             read_state=read_state,
             sort=sort,
             status=status,
+            anchor_ids=anchor_ids or (),
+        )
+
+    @api.get("/packs/selection")
+    def pack_selection(
+        request: Request,
+        directory_id: str | None = None,
+        search: Annotated[str, Query(max_length=200)] = "",
+        tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
+        read_state: Literal["all", "unread", "reading", "completed"] = "all",
+        sort: Literal["name", "newest"] = "name",
+    ):
+        return request.app.state.packs.selection(
+            directory_id=directory_id, search=search, tag_ids=tag_ids or (),
+            read_state=read_state, sort=sort,
         )
 
     @api.get("/packs/{pack_id}", response_model=PackSummary)

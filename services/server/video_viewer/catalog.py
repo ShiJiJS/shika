@@ -308,6 +308,13 @@ class Catalog:
             )
         return statement.order_by(*self.video_ordering(source, sort))
 
+    def selection(self, **scope):
+        from .catalog_selection import membership
+
+        with self.db.read() as session:
+            session.connection().exec_driver_sql("BEGIN")
+            return membership(session, self.ordered_videos(session, **scope), Video.id, "video")
+
     def videos(self, *, offset=0, limit=50, source="library", sort="path", anchor_ids=(), **scope):
         with self.db.read() as session:
             session.connection().exec_driver_sql("BEGIN")

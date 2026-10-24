@@ -104,7 +104,7 @@ void main() {
   );
 
   testWidgets(
-    'reopening shows the last entered scope in the library without autoplay or a new session',
+    'reopening retains the saved tag scope without applying it to the independent library or autoplay',
     (t) async {
       await t.runAsync(
         () => repo.beginPreview(
@@ -120,13 +120,13 @@ void main() {
       await t.pumpWidget(VideoViewerApp(repository: repo));
       await frames(t);
       expect(find.byType(MovieStage), findsNothing);
-      expect(find.text('1 个视频'), findsOneWidget);
+      expect(find.text('6 个视频'), findsOneWidget);
       expect(
         t
             .widget<TextField>(find.byKey(const Key('video-search')))
             .controller!
             .text,
-        '花间微风',
+        '',
       );
       expect(repo.playbackIdentity, identity);
       expect(repo.snapshot.recentVideos, isEmpty);
@@ -151,9 +151,7 @@ void main() {
       expect(find.text('1 个视频'), findsOneWidget);
       expect(
         t
-            .widget<OutlinedButton>(
-              find.widgetWithText(OutlinedButton, '预览此范围'),
-            )
+            .widget<FilledButton>(find.widgetWithText(FilledButton, '预览此范围'))
             .onPressed,
         isNotNull,
       );
@@ -204,6 +202,8 @@ void main() {
       await t.tap(find.byKey(const Key('nav-tags')));
       await frames(t);
       await t.tap(find.text('花卉'));
+      await frames(t);
+      await t.tap(find.byKey(const Key('tag-view-results')));
       await frames(t);
       expect(find.text('3 个视频'), findsOneWidget);
       await t.tap(find.text('预览此范围'));

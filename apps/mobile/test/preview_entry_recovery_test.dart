@@ -142,6 +142,9 @@ void main() {
       expect(repo.snapshot.recentVideos, isEmpty);
       await t.tap(find.byKey(const Key('nav-library')));
       await frames(t);
+      expect(repo.restores, isNotEmpty);
+      repo.restores.last.complete(repo.page(0));
+      await frames(t);
       final scroll = t
           .widget<CustomScrollView>(find.byKey(const Key('video-grid')))
           .controller!;

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../library/models.dart';
 import '../app/app_shell.dart';
+import '../app/media_workspace.dart';
 import '../features/library/browse_context.dart';
 import '../features/library/library_query_controller.dart';
 import '../features/preview/video_preview_route.dart';
@@ -173,7 +174,9 @@ class _LibraryHomeState extends State<LibraryHome> {
       });
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && page == 'library') unawaited(loadLibrary());
+      if (mounted && page == 'library' && !libraryFirst) {
+        unawaited(loadLibrary());
+      }
     });
   }
 
@@ -196,7 +199,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         error = repo.connectionError!;
       }
     });
-    if (page == 'library' && !viewing) {
+    if (page == 'library' && !viewing && !libraryFirst) {
       if (libraryFirst &&
           _pendingReturn == null &&
           libraryItems.isNotEmpty &&
@@ -519,7 +522,7 @@ class _LibraryHomeState extends State<LibraryHome> {
       selecting = false;
     });
     if (next == 'library') {
-      unawaited(loadLibrary());
+      if (!libraryFirst) unawaited(loadLibrary());
     } else {
       _libraryViewGeneration++;
       _restoringLibrary = false;
@@ -847,8 +850,141 @@ class _LibraryHomeState extends State<LibraryHome> {
     }
   }
 
+  Widget managementStatus({bool separator = true}) => Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      if (separator || _busy)
+        SizedBox(
+          height: 2,
+          child: _busy
+              ? const LinearProgressIndicator(
+                  key: Key('management-loading'),
+                  minHeight: 2,
+                )
+              : ColoredBox(color: Paper.of(context).line),
+        ),
+      if (error.isNotEmpty)
+        Container(
+          color: Theme.of(context).colorScheme.errorContainer,
+          padding: const EdgeInsets.only(left: 16),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  error,
+                  key: const Key('operation-error'),
+                  style: TextStyle(
+                    color: Paper.of(context).danger,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              iconAction(
+                '关闭错误提示',
+                Icons.close,
+                () => setState(() => error = ''),
+              ),
+            ],
+          ),
+        ),
+      if (data.connected &&
+          repo.fileOperationPending &&
+          !_browsing.deleting &&
+          !restoringTrash &&
+          !purgingTrash)
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              Expanded(
+                child: ValueListenableBuilder<String?>(
+                  valueListenable: repo.fileStatus,
+                  builder: (_, status, _) => Text(
+                    status ?? '文件操作结果待确认',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: queryingFiles ? null : queryFileResult,
+                child: Text(queryingFiles ? '正在查询…' : '查询结果'),
+              ),
+            ],
+          ),
+        ),
+      if (data.connected && repo.backupRestorePending)
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              const Expanded(
+                child: Text('恢复结果待确认', style: TextStyle(fontSize: 12)),
+              ),
+              TextButton(
+                key: const Key('backup-query'),
+                onPressed: _busy
+                    ? null
+                    : () => perform(
+                        repo.reconcileBackupRestore,
+                        allowMaintenance: true,
+                      ),
+                child: const Text('查询恢复结果'),
+              ),
+            ],
+          ),
+        ),
+      if (data.connected && (busy || page == 'roots'))
+        ValueListenableBuilder<String?>(
+          valueListenable: repo.scanStatus,
+          builder: (context, message, _) => message == null || message == error
+              ? const SizedBox()
+              : Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
+                  ),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      message,
+                      key: const Key('scan-status'),
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ),
+        ),
+    ],
+  );
+
   @override
-  Widget build(BuildContext context) => PopScope<void>(
+  Widget build(BuildContext context) {
+    if (!data.connected || !libraryFirst) return legacyBuild(context);
+    final primary = ['library', 'tags', 'recent', 'settings'].contains(page);
+    return Stack(
+      children: [
+        Offstage(
+          offstage: !primary,
+          child: TickerMode(
+            enabled: primary,
+            child: MediaWorkspace(
+              key: ObjectKey(repo.connectionIdentity),
+              repository: repo,
+              preferences: widget.preferences,
+              destination: primary ? page : 'settings',
+              active: primary,
+              onNavigate: go,
+              settings: settings(),
+              status: managementStatus(separator: false),
+              defaultOrder: entryOrder,
+            ),
+          ),
+        ),
+        if (!primary) legacyBuild(context),
+      ],
+    );
+  }
+
+  Widget legacyBuild(BuildContext context) => PopScope<void>(
     canPop: page == 'browse' && !review,
     onPopInvokedWithResult: (didPop, result) {
       if (didPop) return;
@@ -997,106 +1133,7 @@ class _LibraryHomeState extends State<LibraryHome> {
               ),
             ),
           ),
-          SizedBox(
-            height: 2,
-            child: _busy
-                ? const LinearProgressIndicator(
-                    key: Key('management-loading'),
-                    minHeight: 2,
-                  )
-                : ColoredBox(color: Paper.of(context).line),
-          ),
-          if (error.isNotEmpty)
-            Container(
-              color: Theme.of(context).colorScheme.errorContainer,
-              padding: const EdgeInsets.only(left: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      error,
-                      key: const Key('operation-error'),
-                      style: TextStyle(
-                        color: Paper.of(context).danger,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                  iconAction(
-                    '关闭错误提示',
-                    Icons.close,
-                    () => setState(() => error = ''),
-                  ),
-                ],
-              ),
-            ),
-          if (data.connected &&
-              repo.fileOperationPending &&
-              !_browsing.deleting &&
-              !restoringTrash &&
-              !purgingTrash)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ValueListenableBuilder<String?>(
-                      valueListenable: repo.fileStatus,
-                      builder: (_, status, _) => Text(
-                        status ?? '文件操作结果待确认',
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: queryingFiles ? null : queryFileResult,
-                    child: Text(queryingFiles ? '正在查询…' : '查询结果'),
-                  ),
-                ],
-              ),
-            ),
-          if (data.connected && repo.backupRestorePending)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: Text('恢复结果待确认', style: TextStyle(fontSize: 12)),
-                  ),
-                  TextButton(
-                    key: const Key('backup-query'),
-                    onPressed: _busy
-                        ? null
-                        : () => perform(
-                            repo.reconcileBackupRestore,
-                            allowMaintenance: true,
-                          ),
-                    child: const Text('查询恢复结果'),
-                  ),
-                ],
-              ),
-            ),
-          if (data.connected && (busy || page == 'roots'))
-            ValueListenableBuilder<String?>(
-              valueListenable: repo.scanStatus,
-              builder: (context, message, _) =>
-                  message == null || message == error
-                  ? const SizedBox()
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 4,
-                      ),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          message,
-                          key: const Key('scan-status'),
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      ),
-                    ),
-            ),
+          managementStatus(),
         ],
       ),
       content: Stack(

@@ -1,0 +1,25 @@
+{
+  "client_revision": "e92a0efbfa63ceb2406a0238b0b51c513dcc45e7",
+  "scope": "Real video tag paging at offset 50, one 503 then retry 200, selection retained across pages, rename and independent pack namespace",
+  "native_runs_passed": 3,
+  "viewport_dp": [
+    390,
+    844
+  ],
+  "fixture": "isolated 8761; tags created through public API after connect; no NAS writes",
+  "note": "Tag reads do not exercise catalog selection endpoints added separately in the worktree. APK hashes were not captured for these runs.",
+  "sha256": {
+    "renamed-requests.json": "e7b6ca31141f8b169d67ce0392094fb571af208b17a332789c036cb4ebb2498c",
+    "retry.png": "19fa0c52611507b62920ffa1e3054b42005fe1dcb3b23be18db5533ee3133d4d",
+    "run-3-android-test.log": "0f988ec6bedd3f3fcda32e1a1ed9d216acead4e6dbb2f6f53c90762c8b132d01",
+    "run-1-host-events.json": "ae84514216c685e416fa101a0ee9ff41984e2a10d022349b719c7d9ed3560a06",
+    "run-2-android-test.log": "4ce91b2e56ca89df2d76c33641b824811dbe87fb139e2681dcc854d5c2ed4a93",
+    "run-3-host-events.json": "0e564237c70791a9d75ade0cdc6a50bd588d7236945d893d5c23ea1778bc32f4",
+    "run-1-android-test.log": "64cb9ac27a4595fc7ac8c7ea0ee2f0d9acec36d5c398388337f4837fd8ff30fb",
+    "renamed.png": "1fa2ddaa2606eb0e41d6042a8372f8ba7cde8d993bd2c3671389285cb9b2cd80",
+    "paged-requests.json": "13772c4bf909e060aae75bb0317c0fb6f0cada3514667ce5183588819d6b2e08",
+    "run-2-host-events.json": "f6b051e5bb26a97cd2fd47d3d91f33475476fad47a7fc1027de0fc1981a198f1",
+    "retry-requests.json": "e06023de8b2049271fcd14ccfc38f76f898f6284f498b88fbeb740807474b929",
+    "paged.png": "d102f3a7792e5d6ea36ab1c651232de211f673524632abb37f7fca66e778ce40"
+  }
+}

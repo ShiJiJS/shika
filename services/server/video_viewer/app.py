@@ -282,6 +282,9 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "fixed_video_sessions",
                 "versioned_video_queue",
                 "video_entry_anchors",
+                "catalog_selection",
+                "pack_tag_names",
+                "pack_entry_anchors",
             ],
         }
 
@@ -355,6 +358,13 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     ):
         return request.app.state.pack_tags.list(search, offset, limit)
 
+    @app.get("/api/v1/pack-tags/resolve", dependencies=auth_required)
+    def resolve_pack_tags(
+        request: Request,
+        tag_ids: Annotated[list[str], Query(min_length=1, max_length=256)],
+    ):
+        return request.app.state.pack_tags.resolve(tag_ids)
+
     @app.post(
         "/api/v1/pack-tags",
         dependencies=auth_required,
@@ -421,6 +431,24 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             source=source,
             sort=sort,
             anchor_ids=anchor_ids or (),
+        )
+
+    @app.get("/api/v1/videos/selection", dependencies=auth_required)
+    def video_selection(
+        request: Request,
+        directory_id: str | None = None,
+        search: Annotated[str, Query(max_length=200)] = "",
+        orientation: Literal["portrait", "landscape"] | None = None,
+        duration: Literal["short", "long"] | None = None,
+        file_type: Annotated[str | None, Query(max_length=16)] = None,
+        tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
+        source: Literal["library", "tags", "recent"] = "library",
+        sort: Literal["path", "name", "newest", "recent"] = "path",
+    ):
+        return request.app.state.catalog.selection(
+            directory_id=directory_id, search=search, orientation=orientation,
+            duration=duration, file_type=file_type, tag_ids=tag_ids or (),
+            source=source, sort=sort,
         )
 
     @app.get("/api/v1/videos/{video_id}/thumbnail", dependencies=auth_required)
