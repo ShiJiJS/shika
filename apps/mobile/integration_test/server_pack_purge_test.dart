@@ -77,6 +77,11 @@ void main() {
       }
 
       Future<void> shot(String name) async {
+        await until(
+          () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
+          'reads settled before screenshot',
+        );
+        await t.pump(const Duration(milliseconds: 250));
         await fixture('/__fixture/checkpoint/purge-$name');
         await t.pump(const Duration(seconds: 1));
         expect(t.takeException(), isNull);
