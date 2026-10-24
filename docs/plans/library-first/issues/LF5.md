@@ -12,7 +12,9 @@
 
 `d8e3082`上最近来源Android/8761完整路径连续三轮通过（390普通字号两次、360双倍字号一次）：实际新包首帧、跨24项分页、完整28包全选、末包续读、历史重排后的固定范围和原位返回、媒体库筛选保留。27条预置历史不算本轮实际阅读，见[最近原生证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-recent/README.md)。此前`91f1112`阅读器主路径三轮证据独立保留于[阅读原生记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-reader/README.md)，不混称为当前版本三轮。当前`d8e3082`在最近三轮后另跑一轮原阅读器完整回归通过（33秒），同目录保留独立日志与截图。
 
-REC-01的回收隐藏/恢复保留状态仍需LF6联动；完整来源/异常/后台/恢复组合、左右手势/缩放/沉浸等原生验证、500页4K/8K的真实内存与延迟仍待补。全局默认设置界面和备份v2由LF7收口，快速整理由LF6实施。本issue继续开放，PR保持草稿。详见[设计契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-DESIGN.md)、[界面约束](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-UI-DESIGN.md)和[实施记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md) / [草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)。
+`3f693be` / `9024f88`进一步修正单指翻页被缩放组件截获、较低触控阈值下双指与翻页竞争的问题。同实现Android操作专项连续三轮通过（含360双倍字号，46/49/55秒），每轮核对4次实际ADB返回；覆盖跟手回弹、LTR/RTL、双指/双击缩放、放大拖动、沉浸、宽适配续读、纵拼与下一包独立默认。原生操作专项与当前197项客户端回归见[操作记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-controls/README.md)及[组件回归](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-reader-controls-client/README.md)。
+
+REC-01的回收隐藏/恢复保留状态仍需LF6联动；完整来源/异常/后台/恢复组合、完整手势与异常组合、500页4K/8K的真实内存与延迟仍待补。全局默认设置界面和备份v2由LF7收口，快速整理由LF6实施。本issue继续开放，PR保持草稿。详见[设计契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-DESIGN.md)、[界面约束](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-UI-DESIGN.md)和[实施记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md) / [草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)。
 
 ## 依赖
 
