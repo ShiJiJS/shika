@@ -684,4 +684,25 @@ void main() {
       throwsA(isA<LibraryFailure>()),
     );
   });
+  test('a listener retiring the reader during publish cannot receive a successful old-handle result', () async {
+    void retire() => reader.dispose();
+    repo.addListener(retire);
+    addTearDown(() => repo.removeListener(retire));
+    await expectLater(
+      reader.submit(create('retired-on-publish')),
+      throwsA(isA<RequestCancelled>()),
+    );
+    expect(reader.isCurrent, isFalse);
+    expect(
+      server.fixture.writes
+          .where((item) => item.path == '/api/v1/pack-sessions')
+          .length,
+      1,
+    );
+    expect(
+      server.receipts.containsKey('session:retired-on-publish'),
+      isTrue,
+      reason: 'the acknowledged mutation is not automatically repeated after local retirement',
+    );
+  });
 }

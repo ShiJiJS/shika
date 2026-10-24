@@ -477,9 +477,11 @@ class _ServerPackReader implements PackReader {
         writes,
         body: {'request_id': command.requestId, ...body},
       );
+      current(writes);
       final result = decode(command, data);
       createScopes.remove(command.requestId);
       owner.publish();
+      current(writes);
       return result;
     } on ApiFailure catch (error) {
       final status = error.status;
@@ -505,13 +507,16 @@ class _ServerPackReader implements PackReader {
         '/api/v1/pack-reading-requests/${command.kind}/${segment(command.requestId)}',
         scope,
       );
+      current(scope);
       if (data['status'] != 'completed') bad();
       final result = decode(command, map(data['result']));
       createScopes.remove(command.requestId);
       owner.publish();
+      current(scope);
       return result;
     } on ApiFailure catch (error) {
       if (error.status == 404 && error.code == 'reading_request_not_found') {
+        current(scope);
         return null;
       }
       rethrow;
@@ -523,10 +528,13 @@ class _ServerPackReader implements PackReader {
     current();
     cancelMetadata();
     final scope = metadata = RequestScope();
-    return range(
-      await call('GET', '/api/v1/pack-sessions/${segment(sessionId)}', scope),
-      expectedId: sessionId,
+    final data = await call(
+      'GET',
+      '/api/v1/pack-sessions/${segment(sessionId)}',
+      scope,
     );
+    current(scope);
+    return range(data, expectedId: sessionId);
   }
 
   @override
@@ -548,6 +556,7 @@ class _ServerPackReader implements PackReader {
       scope,
       query: {'v': '$version', 'offset': '$offset', 'limit': '$limit'},
     );
+    current(scope);
     if (data['content_version'] != version ||
         data['offset'] != offset ||
         data['limit'] != limit) {
@@ -587,6 +596,7 @@ class _ServerPackReader implements PackReader {
       scope,
       query: {'offset': '$offset', 'limit': '$limit'},
     );
+    current(scope);
     final total = integer(data['total']), raw = items(data);
     if (data['offset'] != offset ||
         data['limit'] != limit ||
@@ -620,10 +630,9 @@ class _ServerPackReader implements PackReader {
     current();
     cancelMetadata();
     final scope = metadata = RequestScope();
-    return preferences(
-      await call('GET', '/api/v1/reading-defaults', scope),
-      defaults: true,
-    );
+    final data = await call('GET', '/api/v1/reading-defaults', scope);
+    current(scope);
+    return preferences(data, defaults: true);
   }
 
   @override
