@@ -7,8 +7,10 @@ class PackProgress {
     required this.completed,
     required this.revision,
     required this.updatedAt,
+    this.pageIndex,
   });
   final String? pageId;
+  final int? pageIndex;
   final double offsetRatio, updatedAt;
   final bool completed;
   final int revision;

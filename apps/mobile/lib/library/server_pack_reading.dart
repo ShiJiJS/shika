@@ -295,6 +295,7 @@ class _ServerPackReader implements PackReader {
         final entry = operation.entry, raw = map(data['scope']);
         final expected = createScopes[operation.requestId];
         if ((result as PackReadingRange).source != entry.source ||
+            map(data['source'])['sort'] != entry.query.sort.name ||
             result.random != entry.random ||
             raw['search'] != entry.query.search ||
             raw['read_state'] != entry.query.readState.name ||
@@ -411,9 +412,7 @@ class _ServerPackReader implements PackReader {
         body = {
           'scope': scope,
           'source': operation.entry.source.name,
-          'sort': operation.entry.source == BrowseSource.recent
-              ? 'recent'
-              : query.sort.name,
+          'sort': query.sort.name,
           'order': operation.entry.random ? 'random' : 'sequential',
           'anchor_pack_id': operation.entry.anchorId,
         };

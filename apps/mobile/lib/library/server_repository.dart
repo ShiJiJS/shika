@@ -1091,6 +1091,7 @@ class ServerLibraryRepository extends LibraryRepository
 
   @override
   Future<Set<String>> selectPackIds(PackQuery query) async {
+    _packQuerySupported(query);
     if (!capabilities.catalogSelection) {
       throw const LibraryFailure('当前服务尚不支持跨页全选，请升级服务端');
     }
@@ -1109,6 +1110,7 @@ class ServerLibraryRepository extends LibraryRepository
       query: {
         'search': query.search,
         'read_state': query.readState.name,
+        'source': query.source.name,
         'sort': query.sort.name,
         'directory_id': ?directory,
         if (query.tags.isNotEmpty) 'tag_ids': query.tags.toList()..sort(),

@@ -3,12 +3,13 @@
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, Query, Request
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from starlette.responses import Response
 
 
 class ReadingProgress(BaseModel):
     page_id: str | None
+    page_index: int | None = Field(default=None, ge=0)
     offset_ratio: float
     completed: bool
     revision: int

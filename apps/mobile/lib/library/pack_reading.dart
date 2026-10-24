@@ -1,16 +1,16 @@
 import 'models.dart';
 import 'pack_models.dart';
 
-/// A frozen reader entry retains source independently from its catalogue draft.
+/// The immutable query carries the same source/order as its catalogue entry.
 class PackReadingEntry {
-  const PackReadingEntry(
-    this.query, {
-    this.source = BrowseSource.library,
+  PackReadingEntry(
+    PackQuery query, {
+    BrowseSource? source,
     this.anchorId,
     this.random = false,
-  });
+  }) : query = source == null ? query : query.copy(source: source);
   final PackQuery query;
-  final BrowseSource source;
+  BrowseSource get source => query.source;
   final String? anchorId;
   final bool random;
 }

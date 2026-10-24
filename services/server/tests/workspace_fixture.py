@@ -1,6 +1,9 @@
 """Public flower samples for the isolated native library UI, never production."""
 
 from PIL import Image, ImageDraw
+from sqlalchemy import func, select
+
+from video_viewer.models import ImagePack, PackPage, PackProgress, RecentEntry, Root
 
 
 def seed_workspace_packs(base, assets, count=27):
@@ -35,3 +38,22 @@ def prepend_workspace_pack(base, assets):
     with Image.open(assets / "flower-portrait.jpg") as source:
         source.convert("RGB").resize((240, 360)).save(destination / "1.jpg", quality=85)
     return {"path": str(destination)}
+
+
+def seed_recent_pack_history(db):
+    """Past-reading fixture, distinct from frames opened by the current UI run."""
+    with db.write() as session:
+        root = session.scalar(select(Root).where(Root.kind == "pack", Root.path == "/media/shorts/图包"))
+        if root is None or session.scalar(select(func.count()).select_from(RecentEntry).where(RecentEntry.kind == "pack")):
+            raise RuntimeError("Expected freshly scanned isolated pack root without history")
+        packs = session.scalars(select(ImagePack).where(ImagePack.root_id == root.id).order_by(ImagePack.name)).all()
+        if len(packs) != 73:
+            raise RuntimeError("Expected 73 disposable fixture packs")
+        selected = packs[:27]
+        for index, pack in enumerate(selected):
+            pages = session.scalars(select(PackPage).where(PackPage.pack_id == pack.id).order_by(PackPage.ordinal, PackPage.id)).all()
+            if len(pages) != 3:
+                raise RuntimeError("Expected three public sample pages")
+            session.add(RecentEntry(kind="pack", pack_id=pack.id, opened_at=1000 + index))
+            session.add(PackProgress(pack_id=pack.id, page_id=pages[1].id, content_version=pack.content_version, offset_ratio=.25, revision=1, updated_at=1000 + index))
+        return {"historical_ids": [pack.id for pack in selected], "total": 27}

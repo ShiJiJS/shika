@@ -21,7 +21,11 @@ from video_viewer.models import Root, Video
 
 from .generate_media import encode, generate
 from .preview_fixture import install as install_preview_fixture
-from .workspace_fixture import prepend_workspace_pack, seed_workspace_packs
+from .workspace_fixture import (
+    prepend_workspace_pack,
+    seed_recent_pack_history,
+    seed_workspace_packs,
+)
 
 FIXTURE_PASSPHRASE = "video-viewer-emulator-fixture-only"
 FIXTURE_KEY = "isolated-emulator-control"
@@ -202,7 +206,8 @@ def create_e2e_app():
             "selection-videos", "selection-packs",
             "pack-names-card", "pack-names-retry", "pack-names-saved", "pack-names-renamed",
             "pack-anchor-before", "pack-anchor-error", "pack-anchor-return", "pack-anchor-prepend", "pack-anchor-inserted",
-                "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
+            "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
+            "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase
@@ -217,6 +222,8 @@ def create_e2e_app():
                 app.state.login_attempts.clear()
         elif action == "pack-anchor":
             details = seed_workspace_packs(BASE, Path("/fixture-assets"), 73)
+        elif action == "recent-pack-history":
+            details = seed_recent_pack_history(app.state.db)
         elif action == "pack-anchor-prepend":
             details = prepend_workspace_pack(BASE, Path("/fixture-assets"))
         elif action == "fail-pack-anchor":

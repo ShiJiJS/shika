@@ -110,6 +110,15 @@ class Packs:
         readable_count = session.scalar(select(func.count()).select_from(readable.subquery()))
         cover = session.scalar(readable.order_by(PackPage.ordinal, PackPage.id).limit(1))
         progress = session.get(PackProgress, pack.id)
+        page_index = None
+        if progress and progress.page_id:
+            positions = pages.with_only_columns(
+                PackPage.id,
+                (func.row_number().over(order_by=(PackPage.ordinal, PackPage.id)) - 1).label("position"),
+            ).subquery()
+            page_index = session.scalar(
+                select(positions.c.position).where(positions.c.id == progress.page_id)
+            )
         return {
             "id": pack.id,
             "root_id": pack.root_id,
@@ -130,6 +139,7 @@ class Packs:
             if not progress
             else {
                 "page_id": progress.page_id,
+                "page_index": page_index,
                 "offset_ratio": progress.offset_ratio,
                 "completed": progress.completed,
                 "revision": progress.revision,

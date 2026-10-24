@@ -54,6 +54,7 @@ class PackServer {
         : '/api/v1/packs/p$index/cover?v=7',
     'progress': {
       'page_id': 'page-2',
+      'page_index': 1,
       'offset_ratio': .3,
       'completed': false,
       'revision': 4,

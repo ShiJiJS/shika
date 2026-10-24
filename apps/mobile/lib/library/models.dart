@@ -200,7 +200,7 @@ class MediaRoot {
 
 enum PackReadState { all, unread, reading, completed }
 
-enum PackSort { name, newest }
+enum PackSort { name, newest, recent }
 
 /// Pack-only filters cannot accidentally carry video orientation/duration.
 class PackQuery {
@@ -209,8 +209,17 @@ class PackQuery {
     Iterable<String> tags = const [],
     this.search = '',
     this.readState = PackReadState.all,
-    this.sort = PackSort.name,
-  }) : tags = Set.unmodifiable(tags);
+    this.source = BrowseSource.library,
+    PackSort? sort,
+  }) : sort =
+           sort ??
+           (source == BrowseSource.recent ? PackSort.recent : PackSort.name),
+       tags = Set.unmodifiable(tags) {
+    if (this.sort == PackSort.recent && source != BrowseSource.recent) {
+      throw ArgumentError('最近排序仅适用于最近图包');
+    }
+  }
+  final BrowseSource source;
   final String folder, search;
   final Set<String> tags;
   final PackReadState readState;
@@ -224,6 +233,7 @@ class PackQuery {
     'tag_ids': tags.toList()..sort(),
     'search': search,
     'read_state': readState.name,
+    'source': source.name,
     'sort': sort.name,
   };
   String get queryKey => jsonEncode(toJson());
@@ -233,12 +243,20 @@ class PackQuery {
     String? search,
     PackReadState? readState,
     PackSort? sort,
+    BrowseSource? source,
   }) => PackQuery(
     folder: folder ?? this.folder,
     tags: tags ?? this.tags,
     search: search ?? this.search,
     readState: readState ?? this.readState,
-    sort: sort ?? this.sort,
+    source: source ?? this.source,
+    sort:
+        sort ??
+        (source != null &&
+                source != this.source &&
+                (source == BrowseSource.recent || this.sort == PackSort.recent)
+            ? null
+            : this.sort),
   );
 }
 

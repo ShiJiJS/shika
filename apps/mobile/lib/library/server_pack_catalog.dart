@@ -48,6 +48,14 @@ mixin _ServerPackCatalog on LibraryRepository {
     }
   }
 
+  void _packQuerySupported(PackQuery query) {
+    _packSupported();
+    if (query.source == BrowseSource.recent &&
+        !capabilities.packReadingSessions) {
+      throw const LibraryFailure('当前服务尚不支持最近图包，请升级服务端');
+    }
+  }
+
   void _packCurrent(ServerApi target, int generation, [RequestScope? scope]) {
     if (_disposed ||
         generation != _generation ||
@@ -77,6 +85,14 @@ mixin _ServerPackCatalog on LibraryRepository {
 
   LibraryPack _pack(Json data, ServerApi target) {
     final progress = data['progress'] == null ? null : object(data['progress']);
+    final pageIndex = progress?['page_index'];
+    if (pageIndex != null &&
+        (pageIndex is! int ||
+            pageIndex < 0 ||
+            pageIndex >= data['page_count'] ||
+            progress!['page_id'] == null)) {
+      throw const LibraryFailure('图包阅读页码不完整，请重试');
+    }
     final cover = data['cover_url'] as String?;
     final url = cover == null ? null : target.resolve(cover);
     final tags = List<String>.from(data['tag_ids']);
@@ -119,6 +135,7 @@ mixin _ServerPackCatalog on LibraryRepository {
           ? null
           : PackProgress(
               pageId: progress['page_id'],
+              pageIndex: pageIndex as int?,
               offsetRatio: (progress['offset_ratio'] as num).toDouble(),
               completed: progress['completed'],
               revision: progress['revision'],
@@ -170,7 +187,7 @@ mixin _ServerPackCatalog on LibraryRepository {
     required int limit,
     List<String>? anchors,
   }) async {
-    _packSupported();
+    _packQuerySupported(query);
     cancelPackRead();
     final scope = _packRead = RequestScope();
     final target = api, generation = _generation;
@@ -188,6 +205,7 @@ mixin _ServerPackCatalog on LibraryRepository {
         'limit': '$limit',
         'search': query.search,
         'read_state': query.readState.name,
+        'source': query.source.name,
         'sort': query.sort.name,
         'directory_id': ?directory,
         if (query.tags.isNotEmpty) 'tag_ids': query.tags.toList()..sort(),

@@ -469,3 +469,37 @@ def test_opening_unavailable_cursor_fallback_commits_position_before_member_reap
         ).status_code
         == 200
     )
+
+
+def test_catalog_recent_page_index_uses_manifest_position_and_does_not_write(library):
+    client, media = library
+    _, ids = setup(client, media, count=1)
+    with client.app.state.db.write() as db:
+        ordered = db.scalars(select(PackPage).where(PackPage.pack_id == ids[0]).order_by(PackPage.ordinal)).all()
+        for i, page in enumerate(ordered):
+            page.ordinal = (i + 1) * 10
+    value = create(client)
+    assert value["current"]["progress"] is None
+    state = opened(client, value)
+    first = client.get(f"/api/v1/packs/{ids[0]}").json()
+    assert first["progress"]["page_index"] == 0
+    manifest = pages(client, ids[0])
+    last_id = manifest["items"][2]["id"]
+    saved = client.patch(f"/api/v1/packs/{ids[0]}/progress", json=progress_body(value, state, page_id=last_id))
+    assert saved.status_code == 200, saved.text
+    for path, params in [
+        (f"/api/v1/packs/{ids[0]}", {}),
+        ("/api/v1/packs", {"source": "recent", "sort": "recent"}),
+        ("/api/v1/recent", {"kind": "pack"}),
+    ]:
+        result = client.get(path, params=params).json()
+        row = result["items"][0] if "items" in result else result
+        assert row["progress"]["page_index"] == 2
+        assert row["progress"]["revision"] == saved.json()["revision"]
+    with client.app.state.db.write() as db:
+        db.get(PackPage, last_id).path = "/outside-fixture/last.png"
+    latest = client.get(f"/api/v1/packs/{ids[0]}").json()
+    assert latest["page_count"] == 2
+    assert latest["progress"]["page_index"] is None
+    assert latest["progress"]["page_id"] == last_id
+    assert latest["progress"]["revision"] == saved.json()["revision"]
