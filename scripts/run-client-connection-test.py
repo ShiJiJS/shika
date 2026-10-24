@@ -215,6 +215,7 @@ def watch():
                 "selection-videos", "selection-packs",
                 "pack-names-card", "pack-names-retry", "pack-names-saved", "pack-names-renamed",
                 "pack-anchor-before", "pack-anchor-error", "pack-anchor-return", "pack-anchor-prepend", "pack-anchor-inserted",
+                "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
             }:
                 request = urllib.request.Request(
                     "http://127.0.0.1:8761/__fixture/trace", headers=HEADERS
@@ -268,6 +269,7 @@ def main():
     mode.add_argument("--selection", action="store_true")
     mode.add_argument("--pack-names", action="store_true")
     mode.add_argument("--pack-anchor", action="store_true")
+    mode.add_argument("--pack-reader", action="store_true")
     parser.add_argument("--workspace-viewport", choices=("390", "360"), default="390")
     parser.add_argument("--workspace-text-scale", choices=("1", "2"), default="1")
     parser.add_argument("--plain-name")
@@ -293,7 +295,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.pack_anchor:
+    if args.pack_reader:
+        PREFIX = "lf5-reader"
+    elif args.pack_anchor:
         PREFIX = "lf4-pack-anchor"
     elif args.pack_names:
         PREFIX = "lf4-pack-names"
@@ -325,7 +329,7 @@ def main():
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     prepare_emulator()
-    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor:
+    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader:
         def device(*command):
             return subprocess.check_output(
                 [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
@@ -382,6 +386,7 @@ def main():
                 "lf4-selection": "integration_test/server_catalog_selection_test.dart",
                 "lf4-pack-names": "integration_test/server_pack_names_test.dart",
                 "lf4-pack-anchor": "integration_test/server_pack_anchor_test.dart",
+                "lf5-reader": "integration_test/server_pack_reader_test.dart",
             }[PREFIX],
             "-d",
             "emulator-5554",
@@ -407,6 +412,7 @@ def main():
                 or args.selection
                 or args.pack_names
                 or args.pack_anchor
+                or args.pack_reader
                 else 3
                 if args.backups
                 else 2

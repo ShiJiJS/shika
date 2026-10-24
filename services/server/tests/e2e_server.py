@@ -202,6 +202,7 @@ def create_e2e_app():
             "selection-videos", "selection-packs",
             "pack-names-card", "pack-names-retry", "pack-names-saved", "pack-names-renamed",
             "pack-anchor-before", "pack-anchor-error", "pack-anchor-return", "pack-anchor-prepend", "pack-anchor-inserted",
+                "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase

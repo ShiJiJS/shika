@@ -8,6 +8,7 @@ import '../../library/repository.dart';
 import '../../ui/media_layout.dart';
 import '../../ui/paper.dart';
 import '../packs/pack_sheets.dart';
+import '../packs/pack_reader_page.dart';
 import 'browse_context.dart';
 import 'catalog_selection.dart';
 import 'pack_query_controller.dart';
@@ -395,6 +396,36 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   }
 
   Future<void> details(LibraryPack pack) async {
+    if (repo.capabilities.packReadingSessions) {
+      remember();
+      _detailsOpen = true;
+      try {
+        await Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => PackReaderPage(
+              repository: repo,
+              entry: PackReadingEntry(
+                entry.query,
+                source: entry.source,
+                anchorId: pack.id,
+              ),
+              editTags: (current) async {
+                await tags(
+                  {current.id},
+                  initial: current.tags,
+                  initialNames: current.tagNames,
+                );
+              },
+            ),
+          ),
+        );
+      } finally {
+        _detailsOpen = false;
+        if (mounted && widget.active) await load(restore: initialized);
+      }
+      return;
+    }
+
     // LF4 exposes the real catalog object. LF5 replaces this entry with its
     // fixed-scope reader once progress and recent writes exist on the service.
     var ids = {...pack.tags}, names = {...pack.tagNames};
