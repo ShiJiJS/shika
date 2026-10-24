@@ -4,7 +4,13 @@
 
 图包需要按漫画阅读方式浏览，管理单位始终是整包。原型的横翻/纵向/总览/沉浸、包间范围和逐包进度必须落实到真实图片和原生生命周期。
 
-本任务属于 LF-2026-10-23 媒体库/图包改造；用户已确认当前完整原型为方向，当前服务端阅读会话实施中，客户端阅读UI尚未接入。`cb02a67` 完整162项服务端测试（含8项阅读接口用例）与Ruff通过。`04f57a8` 又接入连接/恢复代次绑定的类型化客户端句柄、不可变写命令与只读回执、严格清单/回执校验；接线179项检查后，f43a320补发布后的最终归属检查，当前180项客户端测试（含9项新HTTP适配）与静态检查通过，原生阅读会话/界面仍待接入。固定完整范围、分页队列、位置/进度/偏好版本、实际打开后的独立最近和默认值均已接入真实接口；schema0009保留原进度并增加删页回退原因和偏好版本。详见 [设计契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-DESIGN.md)。见 [实施记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md) / [草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)。横翻/纵向/总览/沉浸、客户端生命周期与大图内存验收仍待实施，本issue继续开放。
+本任务属于 LF-2026-10-23 媒体库/图包改造，沿用独立冻结原型。`cb02a67`已接入固定完整范围、逐包进度/偏好、实际opened后的最近、只读回执与schema0009；完整162项服务端测试/Ruff通过。`04f57a8` / `f43a320`接入连接与恢复代次绑定的类型化客户端接口及发布归属检查。
+
+`278a774` / `91f1112`现已接入真实原生PackReadingSession和阅读路由：卡片进入横翻/纵向拼接、方向/缩放/适配/间距、分页总览和跳页、沉浸、整包标签、固定范围内手动换包、保存/关闭后续读、返回原媒体库。实际当前图片首帧才记打开；预加载不记历史，元数据/图片provider有界，未知写结果先查回执。Paper最小52dp顶栏自然适应大字号，工具图标上对齐且避免中文孤字。
+
+当前完整 **189项客户端测试和Flutter analyze通过**。同实现主路径Android/8761真实服务连续三轮通过（390普通字号两次、360双倍字号一次），日志、截图与逐文件源码哈希见[原生证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-native-reader/README.md)；[客户端证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/evidence/lf5-reader-ui-client/README.md)包含6项HTTP控制器及3项图片首帧/布局新用例。服务器162项为原cb02a67检查点，没有冒充本次重新全量执行。
+
+最近图包列表REC-01、完整来源/异常/后台/恢复组合、左右手势/缩放/沉浸等原生验证、500页4K/8K的真实内存与延迟仍待补；全局默认设置界面和备份v2由LF7收口，快速整理由LF6实施。本issue继续开放，PR保持草稿。详见[设计契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-DESIGN.md)、[界面约束](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5-UI-DESIGN.md)和[实施记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md) / [草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)。
 
 ## 依赖
 
