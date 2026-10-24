@@ -80,7 +80,8 @@ class ServerLibraryRepository extends LibraryRepository
   final Map<String, String> _retryKeys = {};
   final Map<String, String> _tagRetryKeys = {};
   Future<void> _tagWrites = Future.value();
-  RequestScope _videoRead = RequestScope(),
+  RequestScope _videoTagRead = RequestScope(),
+      _videoRead = RequestScope(),
       _folderRead = RequestScope(),
       _trashRead = RequestScope(),
       _missingRead = RequestScope(),
@@ -284,6 +285,7 @@ class ServerLibraryRepository extends LibraryRepository
     cancelFolderRead();
     cancelTrashRead();
     cancelMissingRead();
+    cancelVideoTagRead();
     _resetPackConnection();
     _scanRead.cancel();
     _preparationTimer?.cancel();
@@ -494,6 +496,47 @@ class ServerLibraryRepository extends LibraryRepository
     available: data['available'],
   );
 
+  @override
+  void cancelVideoTagRead() => _videoTagRead.cancel();
+
+  @override
+  Future<CatalogPage<VideoTag>> loadVideoTags({
+    String search = '',
+    int offset = 0,
+    int limit = 50,
+  }) async {
+    cancelVideoTagRead();
+    final work = _videoTagRead = RequestScope();
+    final target = api, generation = _generation;
+    final page = await call(
+      'GET',
+      '/api/v1/tags',
+      using: target,
+      cancel: work,
+      query: {'search': search, 'offset': '$offset', 'limit': '$limit'},
+    );
+    if (_disposed ||
+        generation != _generation ||
+        !identical(target, _api) ||
+        work.cancelled) {
+      throw const RequestCancelled();
+    }
+    final tags = rows(page)
+        .map((tag) => VideoTag(tag['id'], tag['name'], tag['video_count']))
+        .toList();
+    // Names for selected labels may not exist in the legacy complete cache yet.
+    for (final tag in tags) {
+      _tagNames[tag.id] = tag.name;
+      _tagCounts[tag.id] = tag.count;
+    }
+    return CatalogPage(
+      items: tags,
+      total: page['total'],
+      offset: page['offset'],
+      limit: page['limit'],
+    );
+  }
+
   Future<List<Json>> allTags(ServerApi target) async {
     final found = <Json>[];
     while (true) {
@@ -594,6 +637,7 @@ class ServerLibraryRepository extends LibraryRepository
       cancelFolderRead();
       cancelTrashRead();
       cancelMissingRead();
+      cancelVideoTagRead();
       _resetPackConnection();
       _scanRead.cancel();
       _scanTask = null;
@@ -1943,6 +1987,7 @@ class ServerLibraryRepository extends LibraryRepository
           target,
           generation,
           beforePublish: () async {
+            cancelVideoTagRead();
             cancelVideoRead();
             cancelFolderRead();
             cancelTrashRead();
@@ -2006,6 +2051,7 @@ class ServerLibraryRepository extends LibraryRepository
     cancelFolderRead();
     cancelTrashRead();
     cancelMissingRead();
+    cancelVideoTagRead();
     _resetPackConnection();
     _scanRead.cancel();
     _api?.close();

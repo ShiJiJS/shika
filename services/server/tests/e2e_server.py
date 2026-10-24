@@ -54,7 +54,7 @@ def create_e2e_app():
         marker.write_text("dedicated generated emulator fixture")
     controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False,
                 "fail_restore": False, "slow_restore": False, "slow_page": False,
-                "fail_streams": 0, "busy_covers": 0}
+                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False}
 
     def backup_fault(phase, _task_id):
         if controls["fail_restore"] and phase == "after_replace_before_commit":
@@ -92,6 +92,10 @@ def create_e2e_app():
                 controls["busy_covers"] -= 1
                 entry["status"] = 503
                 return JSONResponse({"error": {"code": "image_busy", "message": "Isolated transient cover failure"}}, status_code=503)
+            if controls["fail_tag_page"] and request.method == "GET" and request.url.path == "/api/v1/tags" and request.query_params.get("offset") == "50":
+                controls["fail_tag_page"] = False
+                entry["status"] = 503
+                return JSONResponse({"error": {"code": "fixture_tag_page", "message": "Isolated tag page failure"}}, status_code=503)
             if controls["slow_page"] and request.url.path == "/api/v1/videos" and int(request.query_params.get("offset", "0")) > 0:
                 await asyncio.sleep(3)
             if controls["fail_streams"] and request.url.path.endswith("/stream"):
@@ -182,6 +186,7 @@ def create_e2e_app():
             "prepared",
             "workspace-video", "workspace-packs", "workspace-video-tags",
             "workspace-pack-tags", "workspace-settings", "workspace-dark",
+            "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase
@@ -262,6 +267,8 @@ def create_e2e_app():
                 original()
             scanner.check_stop = preparation_check
             scanner.submit()
+        elif action == "fail-tag-page":
+            controls["fail_tag_page"] = True
         elif action == "slow-pages":
             controls["slow_page"] = True
         elif action == "normal-pages":

@@ -41,7 +41,8 @@ class TagCatalogPageState extends State<TagCatalogPage> {
   List<TagCatalogItem> tags = [];
   int total = 0, generation = 0, countGeneration = 0;
   int? matching;
-  bool loading = false, saving = false;
+  bool loading = false, saving = false, retryMore = false;
+  String? loadedSearch;
   String error = '';
   @override
   void initState() {
@@ -65,7 +66,14 @@ class TagCatalogPageState extends State<TagCatalogPage> {
       } else {
         generation++;
         countGeneration++;
-        pack ? repo.cancelPackTagRead() : repo.cancelVideoRead();
+        if (pack) {
+          repo.cancelPackTagRead();
+          repo.cancelPackRead();
+        } else {
+          repo.cancelVideoTagRead();
+          repo.cancelVideoRead();
+        }
+        loading = false;
       }
     }
   }
@@ -75,7 +83,12 @@ class TagCatalogPageState extends State<TagCatalogPage> {
   }
 
   Future<void> load({bool more = false}) async {
+    if (!widget.active || (more && loading)) return;
     final current = ++generation;
+    final text = search.text;
+    final append = more && loadedSearch == text;
+    final offset = append ? tags.length : 0;
+    var restartRequired = false;
     setState(() {
       loading = true;
       error = '';
@@ -83,36 +96,48 @@ class TagCatalogPageState extends State<TagCatalogPage> {
     try {
       final List<TagCatalogItem> batch;
       final int count;
+      final int pageOffset;
       if (pack) {
-        final page = await repo.loadPackTags(
-          search: search.text,
-          offset: more ? tags.length : 0,
-        );
+        final page = await repo.loadPackTags(search: text, offset: offset);
+        pageOffset = page.offset;
         batch = page.items
             .map((tag) => TagCatalogItem(tag.id, tag.name, tag.count))
             .toList();
         count = page.total;
       } else {
-        batch = repo.snapshot.tags
-            .where((id) => repo.tagName(id).contains(search.text))
-            .map(
-              (id) =>
-                  TagCatalogItem(id, repo.tagName(id), repo.tagVideoCount(id)),
-            )
+        final page = await repo.loadVideoTags(search: text, offset: offset);
+        pageOffset = page.offset;
+        batch = page.items
+            .map((tag) => TagCatalogItem(tag.id, tag.name, tag.count))
             .toList();
-        count = batch.length;
+        count = page.total;
       }
       if (!mounted || current != generation) return;
+      final ids = batch.map((tag) => tag.id).toSet();
+      if (pageOffset != offset ||
+          count < offset + batch.length ||
+          (batch.isEmpty && offset < count) ||
+          ids.length != batch.length ||
+          (append &&
+              (count != total || tags.any((tag) => ids.contains(tag.id))))) {
+        restartRequired = true;
+        throw const LibraryFailure('标签列表已变化，请重新加载');
+      }
       setState(() {
-        tags = more ? [...tags, ...batch] : batch;
+        tags = append ? [...tags, ...batch] : batch;
+        loadedSearch = text;
+        retryMore = false;
         total = count;
         loading = false;
       });
+    } on RequestCancelled {
+      if (mounted && current == generation) setState(() => loading = false);
     } catch (failure) {
       if (mounted && current == generation) {
         setState(() {
           loading = false;
-          error = failure.toString();
+          error = '标签未更新，原列表已保留：$failure';
+          retryMore = append && !restartRequired;
         });
       }
     }
@@ -261,7 +286,11 @@ class TagCatalogPageState extends State<TagCatalogPage> {
     generation++;
     countGeneration++;
     repo.removeListener(repositoryChanged);
-    if (pack) repo.cancelPackTagRead();
+    if (pack) {
+      repo.cancelPackTagRead();
+    } else {
+      repo.cancelVideoTagRead();
+    }
     search.dispose();
     super.dispose();
   }
@@ -425,29 +454,27 @@ class TagCatalogPageState extends State<TagCatalogPage> {
   @override
   Widget build(BuildContext context) => Column(
     children: [
+      if (loading) const LinearProgressIndicator(minHeight: 2),
+      if (error.isNotEmpty)
+        Row(
+          children: [
+            Expanded(child: note(error)),
+            TextButton(
+              key: const Key('tag-read-retry'),
+              onPressed: loading
+                  ? null
+                  : () {
+                      unawaited(load(more: retryMore));
+                      unawaited(count());
+                    },
+              child: const Text('重试'),
+            ),
+          ],
+        ),
       Expanded(
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(child: heading(context)),
-            if (loading)
-              const SliverToBoxAdapter(
-                child: LinearProgressIndicator(minHeight: 2),
-              ),
-            if (error.isNotEmpty)
-              SliverToBoxAdapter(
-                child: Row(
-                  children: [
-                    Expanded(child: note(error)),
-                    TextButton(
-                      onPressed: () {
-                        unawaited(load());
-                        unawaited(count());
-                      },
-                      child: const Text('重试'),
-                    ),
-                  ],
-                ),
-              ),
             if (tags.isEmpty && !loading)
               SliverToBoxAdapter(
                 child: Padding(
@@ -472,7 +499,9 @@ class TagCatalogPageState extends State<TagCatalogPage> {
                 itemCount: tags.length + (tags.length < total ? 1 : 0),
                 itemBuilder: (context, index) => index == tags.length
                     ? TextButton(
-                        onPressed: loading ? null : () => load(more: true),
+                        onPressed: loading || loadedSearch != search.text
+                            ? null
+                            : () => load(more: true),
                         child: const Text('更多标签'),
                       )
                     : row(context, tags[index]),

@@ -211,6 +211,7 @@ def watch():
                 "prepared",
                 "workspace-video", "workspace-packs", "workspace-video-tags",
                 "workspace-pack-tags", "workspace-settings", "workspace-dark",
+                "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
             }:
                 request = urllib.request.Request(
                     "http://127.0.0.1:8761/__fixture/trace", headers=HEADERS
@@ -260,6 +261,7 @@ def main():
     mode.add_argument("--preview", action="store_true")
     mode.add_argument("--anchor", action="store_true")
     mode.add_argument("--workspace", action="store_true")
+    mode.add_argument("--tag-catalog", action="store_true")
     parser.add_argument("--workspace-viewport", choices=("390", "360"), default="390")
     parser.add_argument("--workspace-text-scale", choices=("1", "2"), default="1")
     parser.add_argument("--plain-name")
@@ -285,7 +287,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.workspace:
+    if args.tag_catalog:
+        PREFIX = "lf4-tag-catalog"
+    elif args.workspace:
         PREFIX = "lf4-workspace"
     elif args.anchor:
         PREFIX = "lf3-anchor"
@@ -309,7 +313,7 @@ def main():
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     prepare_emulator()
-    if args.workspace:
+    if args.workspace or args.tag_catalog:
         def device(*command):
             return subprocess.check_output(
                 [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
@@ -362,6 +366,7 @@ def main():
                 "lf3-preview": "integration_test/server_preview_test.dart",
                 "lf3-anchor": "integration_test/server_anchor_test.dart",
                 "lf4-workspace": "integration_test/server_workspace_test.dart",
+                "lf4-tag-catalog": "integration_test/server_tag_catalog_test.dart",
             }[PREFIX],
             "-d",
             "emulator-5554",
@@ -383,6 +388,7 @@ def main():
                 or args.preview
                 or args.anchor
                 or args.workspace
+                or args.tag_catalog
                 else 3
                 if args.backups
                 else 2

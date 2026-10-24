@@ -74,6 +74,13 @@ class MediaSource {
   );
 }
 
+/// A label in the video namespace, with an authoritative catalog count.
+class VideoTag {
+  const VideoTag(this.id, this.name, this.count);
+  final String id, name;
+  final int count;
+}
+
 class LibraryVideo {
   LibraryVideo({
     required this.id,

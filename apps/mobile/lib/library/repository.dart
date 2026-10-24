@@ -7,6 +7,26 @@ export 'pack_models.dart';
 /// This boundary describes client-visible behavior, independent of transport.
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
+  Future<CatalogPage<VideoTag>> loadVideoTags({
+    String search = '',
+    int offset = 0,
+    int limit = 50,
+  }) async {
+    final all = snapshot.tags
+        .where((id) => tagName(id).contains(search))
+        .toList();
+    return CatalogPage(
+      items: all
+          .skip(offset)
+          .take(limit)
+          .map((id) => VideoTag(id, tagName(id), tagVideoCount(id))),
+      total: all.length,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  void cancelVideoTagRead() {}
   Future<CatalogPage<LibraryPack>> loadPacks(
     PackQuery query, {
     int offset = 0,

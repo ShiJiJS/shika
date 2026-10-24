@@ -17,6 +17,9 @@ class PackServer {
   final reads = <Uri>[];
   final writes = <({String path, Json body})>[];
   final packTags = <String, String>{'same-id': '同名'};
+  final videoTags = <String, String>{'same-id': '同名'};
+  bool unauthorizedVideoTags = false;
+  Completer<void>? blockedTags, releaseTags;
   final receipts = <String, Json>{};
   final links = <String>{'same-id', 'keep'};
   Completer<void>? blocked, release;
@@ -157,14 +160,39 @@ class PackServer {
           }
         }
       } else if (path.endsWith('/tags')) {
-        result = {
-          'items': [
-            {'id': 'same-id', 'name': '同名', 'video_count': 7},
-          ],
-          'total': 1,
-          'offset': 0,
-          'limit': 200,
-        };
+        expect(r.headers.value('Authorization'), 'Bearer pack-test-token');
+        if (r.uri.queryParameters['search'] == 'blocked' &&
+            blockedTags != null) {
+          blockedTags!.complete();
+          await releaseTags!.future;
+        }
+        final matching = videoTags.entries
+            .where(
+              (e) => e.value.contains(r.uri.queryParameters['search'] ?? ''),
+            )
+            .toList();
+        final offset = int.parse(r.uri.queryParameters['offset'] ?? '0');
+        final limit = int.parse(r.uri.queryParameters['limit'] ?? '200');
+        if (unauthorizedVideoTags) {
+          status = 401;
+          result = {
+            'error': {'code': 'expired', 'message': 'Expired'},
+          };
+        } else {
+          result = {
+            'items': [
+              for (final tag in matching.skip(offset).take(limit))
+                {
+                  'id': tag.key,
+                  'name': tag.value,
+                  'video_count': tag.key == 'same-id' ? 7 : 3,
+                },
+            ],
+            'total': matching.length,
+            'offset': offset,
+            'limit': limit,
+          };
+        }
       } else if (path.endsWith('/library-state')) {
         result = {'ready': true, 'scanning': false};
       } else if (path.endsWith('/playback')) {
@@ -208,6 +236,65 @@ void main() {
   });
   Future<void> connect() =>
       repo.connect('http://127.0.0.1', fixture.server.port, 'fixture');
+
+  test('video label search and paging read authoritative labels absent from the legacy snapshot', () async {
+    await connect();
+    expect(repo.snapshot.tags, ['same-id']);
+    fixture.videoTags.addAll({for (var i = 0; i < 61; i++) 'v$i': '新增标签$i'});
+    final page = await repo.loadVideoTags(
+      search: '新增标签',
+      offset: 50,
+      limit: 10,
+    );
+    expect(page.total, 61);
+    expect(page.offset, 50);
+    expect(page.limit, 10);
+    expect(page.items.map((t) => t.id), [for (var i = 50; i < 60; i++) 'v$i']);
+    expect(page.items.every((t) => t.count == 3), isTrue);
+    expect(repo.tagName('v50'), '新增标签50');
+    expect(repo.snapshot.tags, [
+      'same-id',
+    ], reason: 'the new list does not depend on the legacy complete cache');
+    final request = fixture.reads.last;
+    expect(request.path, '/api/v1/tags');
+    expect(request.queryParameters, {
+      'search': '新增标签',
+      'offset': '50',
+      'limit': '10',
+    });
+    expect((await repo.loadPackTags()).items.single.name, '同名');
+    expect(repo.tagName('same-id'), '同名');
+  });
+
+  test('video label cancellation is independent of media and pack-label reads; superseded labels are rejected', () async {
+    await connect();
+    fixture.blockedTags = Completer<void>();
+    fixture.releaseTags = Completer<void>();
+    final pending = repo.loadVideoTags(search: 'blocked');
+    await fixture.blockedTags!.future;
+    repo.cancelVideoRead();
+    repo.cancelPackRead();
+    repo.cancelPackTagRead();
+    fixture.releaseTags!.complete();
+    expect((await pending).total, 0);
+    fixture.blockedTags = Completer<void>();
+    fixture.releaseTags = Completer<void>();
+    final obsolete = repo.loadVideoTags(search: 'blocked');
+    final cancelled = expectLater(obsolete, throwsA(isA<RequestCancelled>()));
+    await fixture.blockedTags!.future;
+    final current = await repo.loadVideoTags();
+    fixture.releaseTags!.complete();
+    await cancelled;
+    expect(current.items.single.count, 7);
+  });
+
+  test('unauthorized video labels expire the common connection instead of displaying stale cached labels', () async {
+    await connect();
+    fixture.unauthorizedVideoTags = true;
+    await expectLater(repo.loadVideoTags(), throwsA(isA<ApiFailure>()));
+    expect(repo.snapshot.connected, isFalse);
+    expect(repo.snapshot.tags, isEmpty);
+  });
 
   test('whole-pack catalog sends complete typed filters and keeps authoritative paging, progress and authorized cover', () async {
     await connect();
