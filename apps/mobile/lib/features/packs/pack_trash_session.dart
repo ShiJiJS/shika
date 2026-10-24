@@ -26,6 +26,7 @@ class PackTrashSession extends ChangeNotifier {
   final PackFiles files;
   late final CatalogSelection selection;
   bool _disposed = false, active = true, loading = false, restoring = false;
+  bool hasLoaded = false;
   int _read = 0, offset = 0, total = 0;
   String search = '', error = '', message = '';
   List<PackTrashItem> _items = const [];
@@ -46,6 +47,7 @@ class PackTrashSession extends ChangeNotifier {
     catalog.cancelPages();
     selection.cancel(clear: true);
     _items = const [];
+    hasLoaded = false;
     pending = const [];
     failures.clear();
     error = '服务连接或管理数据已变化，请返回后重新打开回收站';
@@ -73,6 +75,7 @@ class PackTrashSession extends ChangeNotifier {
       lastResult = null;
       message = '';
       _items = const [];
+      hasLoaded = false;
       total = offset = 0;
     }
     search = next;
@@ -98,6 +101,7 @@ class PackTrashSession extends ChangeNotifier {
       }
       if (!live || !active || serial != _read) return;
       _items = result.items;
+      hasLoaded = true;
       total = result.total;
       offset = result.offset;
       await loadPending();

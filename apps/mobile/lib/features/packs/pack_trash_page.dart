@@ -161,7 +161,20 @@ class _PackTrashPageState extends State<PackTrashPage> {
         if (session.error.isNotEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(session.error, style: TextStyle(color: p.danger)),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(session.error, style: TextStyle(color: p.danger)),
+                ),
+                TextButton(
+                  key: const Key('pack-trash-retry'),
+                  onPressed: locked || session.loading || !session.live
+                      ? null
+                      : () => session.load(),
+                  child: const Text('重新读取'),
+                ),
+              ],
+            ),
           ),
         if (session.selection.error.isNotEmpty)
           Padding(
@@ -183,7 +196,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
             children: [
               Expanded(
                 child: Text(
-                  '共 ${session.total} 个图包',
+                  session.hasLoaded ? '共 ${session.total} 个图包' : '图包回收站',
                   key: const Key('pack-trash-count'),
                   style: TextStyle(fontSize: 13, color: p.muted),
                 ),
@@ -223,7 +236,10 @@ class _PackTrashPageState extends State<PackTrashPage> {
                   '源文件仍在原位置。恢复后保留整包标签、阅读进度和阅读方式，不会自动清空。',
                   style: TextStyle(fontSize: 13, color: p.muted),
                 ),
-                if (!session.loading && session.items.isEmpty)
+                if (session.hasLoaded &&
+                    !session.loading &&
+                    session.items.isEmpty &&
+                    session.error.isEmpty)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(

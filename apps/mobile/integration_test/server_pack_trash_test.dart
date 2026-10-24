@@ -184,7 +184,16 @@ void main() {
         () => find.text('共 1 个视频').evaluate().isNotEmpty,
         'video trash',
       );
+      await fixture('/__fixture/actions/fail-pack-trash-read');
       await tap(find.byKey(const Key('trash-kind-pack')));
+      await until(
+        () => find.byKey(const Key('pack-trash-retry')).evaluate().isNotEmpty,
+        'read failure with retry',
+      );
+      expect(find.text('图包回收站是空的'), findsNothing);
+      expect(find.text('共 0 个图包'), findsNothing);
+      await shot('read-error');
+      await tap(find.byKey(const Key('pack-trash-retry')));
       await until(
         () => find.text('共 27 个图包').evaluate().isNotEmpty,
         'pack trash',

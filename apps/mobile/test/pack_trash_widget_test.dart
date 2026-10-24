@@ -33,7 +33,7 @@ void main() {
     (const Size(390, 844), 1.0),
     (const Size(360, 740), 2.0),
   ]) {
-    for (final scenario in ['restore', 'unknown', 'gate']) {
+    for (final scenario in ['restore', 'unknown', 'gate', 'page-error']) {
       testWidgets(
         'typed trash $scenario from settings ${sample.$1} / ${sample.$2}',
         (t) async {
@@ -55,6 +55,7 @@ void main() {
               .toSet();
           final videoCount = videoIds.length;
           repo.unavailable = scenario == 'gate';
+          repo.failPage = scenario == 'page-error';
           await t.pumpWidget(VideoViewerApp(repository: repo));
           Future<void> until(bool Function() done) async {
             for (var i = 0; i < 120; i++) {
@@ -95,6 +96,13 @@ void main() {
             expect(find.text('恢复任务尚未结束，请稍后重新读取'), findsOneWidget);
             repo.unavailable = false;
             await tap(find.text('重新读取'));
+          }
+          if (scenario == 'page-error') {
+            await until(() => find.text('目录暂不可用').evaluate().isNotEmpty);
+            expect(find.text('图包回收站是空的'), findsNothing);
+            expect(find.text('共 0 个图包'), findsNothing);
+            repo.failPage = false;
+            await tap(find.byKey(const Key('pack-trash-retry')));
           }
           await until(() => find.text('共 27 个图包').evaluate().isNotEmpty);
           await tap(find.byKey(const Key('pack-trash-select-all')));

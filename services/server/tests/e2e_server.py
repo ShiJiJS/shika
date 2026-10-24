@@ -59,7 +59,7 @@ def create_e2e_app():
         marker.write_text("dedicated generated emulator fixture")
     controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False,
                 "fail_restore": False, "slow_restore": False, "slow_page": False,
-                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_pack_names": False, "fail_pack_anchor": False}
+                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_pack_names": False, "fail_pack_anchor": False, "fail_pack_trash": False}
 
     def backup_fault(phase, _task_id):
         if controls["fail_restore"] and phase == "after_replace_before_commit":
@@ -102,6 +102,10 @@ def create_e2e_app():
                 controls["busy_covers"] -= 1
                 entry["status"] = 503
                 return JSONResponse({"error": {"code": "image_busy", "message": "Isolated transient cover failure"}}, status_code=503)
+            if controls["fail_pack_trash"] and request.method == "GET" and request.url.path == "/api/v1/pack-trash":
+                controls["fail_pack_trash"] = False
+                entry["status"] = 503
+                return JSONResponse({"error": {"code": "fixture_trash_read", "message": "图包回收站暂时无法读取，请重试"}}, status_code=503)
             if controls["fail_pack_anchor"] and request.method == "GET" and request.url.path == "/api/v1/packs" and request.query_params.get("anchor_ids"):
                 controls["fail_pack_anchor"] = False
                 entry["status"] = 503
@@ -211,7 +215,7 @@ def create_e2e_app():
             "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
             "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
             "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
-            "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
+            "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
                 "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
         }:
@@ -237,6 +241,8 @@ def create_e2e_app():
         elif action == "workspace-packs":
             details = seed_workspace_packs(BASE, Path("/fixture-assets"))
             controls["busy_covers"] = 2
+        elif action == "fail-pack-trash-read":
+            controls["fail_pack_trash"] = True
         elif action == "pack-trash-hashes":
             folder = BASE / "shorts" / "图包"
             if str(folder) != "/media/shorts/图包" or folder.is_symlink() or folder.resolve() != folder:
