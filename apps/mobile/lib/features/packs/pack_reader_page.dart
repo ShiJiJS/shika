@@ -1014,6 +1014,9 @@ class _HorizontalReaderState extends State<_HorizontalReader> {
       DragStartDetails(globalPosition: details.focalPoint),
       () => pageDrag = null,
     );
+    // The image must keep receiving a second pointer while its first pointer
+    // drives this drag; ScrollPosition normally ignores children during drags.
+    pages.position.context.setIgnorePointer(false);
   }
 
   void updateDrag(ScaleUpdateDetails details) {
@@ -1066,7 +1069,10 @@ class _HorizontalReaderState extends State<_HorizontalReader> {
     key: const Key('reader-horizontal'),
     controller: pages,
     reverse: widget.session.preferences.direction == ReaderDirection.rtl,
-    physics: zoom ? const NeverScrollableScrollPhysics() : null,
+    // Image scale recognition owns the arena. Its unzoomed one-finger input
+    // drives this position directly; a competing drag recognizer here can win
+    // before pinch detection on devices with a smaller touch slop.
+    physics: const NeverScrollableScrollPhysics(),
     itemCount: widget.session.total + 1,
     onPageChanged: (index) {
       zoom = false;

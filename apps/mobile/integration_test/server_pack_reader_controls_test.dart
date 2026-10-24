@@ -117,6 +117,9 @@ void main() {
     }
 
     await openFirst();
+    debugPrint(
+      'CONTROLS_DEVICE touchSlop=${MediaQuery.of(t.element(horizontal)).gestureSettings.touchSlop}',
+    );
     expect(state().session.preferences.direction, ReaderDirection.ltr);
     expect(state().session.preferences.gap, isFalse);
     expect(state().session.index, 0);
@@ -192,10 +195,8 @@ void main() {
     expect(find.byType(PackReaderPage), findsOneWidget);
     expect(state().session.currentPage!.id, pageId);
     expect(state().controls, isTrue);
-    expect(
-      t.widget<PageView>(horizontal).physics,
-      isNot(isA<NeverScrollableScrollPhysics>()),
-    );
+    await swipe(-260, 0);
+    await swipe(260, 1);
 
     await tap(find.text('沉浸'));
     await until(() => !state().controls, 'immersive controls hidden');
@@ -310,7 +311,7 @@ void main() {
       3,
     );
     debugPrint(
-      'READER_CONTROLS_RESULT ltr_swipes=3 rtl_swipes=2 partial_snap=true pinch=true native_back=4 zoom_pan_kept_page=true width_resume=true preferences_isolated=true',
+      'READER_CONTROLS_RESULT ltr_swipes=3 rtl_swipes=4 partial_snap=true pinch=true native_back=4 zoom_pan_kept_page=true width_resume=true preferences_isolated=true',
     );
   });
 }

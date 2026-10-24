@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_viewer/features/packs/pack_reader_page.dart';
 import 'package:video_viewer/library/models.dart';
@@ -195,8 +196,10 @@ void main() {
           MaterialApp(
             theme: Paper.theme,
             builder: (context, child) => MediaQuery(
-              data: MediaQuery.of(context)
-                  .copyWith(textScaler: TextScaler.linear(sample.$2)),
+              data: MediaQuery.of(context).copyWith(
+                textScaler: TextScaler.linear(sample.$2),
+                gestureSettings: const DeviceGestureSettings(touchSlop: 8),
+              ),
               child: child!,
             ),
             home: Builder(
