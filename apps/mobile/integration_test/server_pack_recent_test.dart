@@ -137,6 +137,9 @@ void main() {
             !catalog().data.loading &&
             catalog().pendingReturn == null;
       }, 'library transition and restore ready for editing');
+      // Done closes the real IME connection. Re-tap as a user would before
+      // editing the same retained TextField again.
+      await tap(find.byKey(const Key('pack-search')));
       await t.enterText(find.byKey(const Key('pack-search')), '没有这个图包');
       await t.testTextInput.receiveAction(TextInputAction.done);
       await until(
