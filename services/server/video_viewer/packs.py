@@ -6,7 +6,7 @@ from sqlalchemy import exists, func, select
 
 from .errors import LibraryError
 from .media_roots import owned_path
-from .models import Directory, ImagePack, PackPage, PackProgress, PackTagLink, Root
+from .models import Directory, ImagePack, PackPage, PackProgress, PackTagLink, RecentEntry, Root
 
 
 class Packs:
@@ -33,8 +33,15 @@ class Packs:
         read_state="all",
         sort="name",
         status="available",
+        source="library",
     ):
         statement = select(ImagePack).join(Root).outerjoin(PackProgress)
+        if source == "recent":
+            statement = statement.join(
+                RecentEntry, RecentEntry.pack_id == ImagePack.id
+            ).where(RecentEntry.kind == "pack")
+        if sort == "recent" and source != "recent":
+            raise LibraryError("invalid_pack_sort", "最近排序只用于最近图包", 422)
         if status in ("available", "unreadable"):
             statement = statement.where(
                 ImagePack.status == "available",
@@ -89,6 +96,8 @@ class Packs:
 
     @staticmethod
     def ordering(sort):
+        if sort == "recent":
+            return (RecentEntry.opened_at.desc(), ImagePack.id)
         return (
             ImagePack.created_at.desc() if sort == "newest" else func.lower(ImagePack.name),
             ImagePack.id,

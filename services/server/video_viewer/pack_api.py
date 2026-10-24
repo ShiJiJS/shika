@@ -77,7 +77,8 @@ def router(auth_required):
         search: Annotated[str, Query(max_length=200)] = "",
         tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
         read_state: Literal["all", "unread", "reading", "completed"] = "all",
-        sort: Literal["name", "newest"] = "name",
+        sort: Literal["name", "newest", "recent"] = "name",
+        source: Literal["library", "tags", "recent"] = "library",
         status: Literal["available", "missing", "trash", "unreadable"] = "available",
         anchor_ids: Annotated[list[str] | None, Query(max_length=16)] = None,
     ):
@@ -89,6 +90,7 @@ def router(auth_required):
             tag_ids=tag_ids or (),
             read_state=read_state,
             sort=sort,
+            source=source,
             status=status,
             anchor_ids=anchor_ids or (),
         )
@@ -100,11 +102,12 @@ def router(auth_required):
         search: Annotated[str, Query(max_length=200)] = "",
         tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
         read_state: Literal["all", "unread", "reading", "completed"] = "all",
-        sort: Literal["name", "newest"] = "name",
+        sort: Literal["name", "newest", "recent"] = "name",
+        source: Literal["library", "tags", "recent"] = "library",
     ):
         return request.app.state.packs.selection(
             directory_id=directory_id, search=search, tag_ids=tag_ids or (),
-            read_state=read_state, sort=sort,
+            read_state=read_state, sort=sort, source=source,
         )
 
     @api.get("/packs/{pack_id}", response_model=PackSummary)

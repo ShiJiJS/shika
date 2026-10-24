@@ -105,3 +105,17 @@ GET/HEAD 遇到传输中断时最多自动重试一次，两次尝试共用原�
 声明 `pack_entry_anchors` 时，鉴权 `GET /api/v1/packs` 接受最多16个重复参数 `anchor_ids`，其余目录/标签交集/搜索/阅读状态/排序条件保持原查询。一次数据库读取确定总数、首个仍匹配候选的稳定排序索引和分页，响应增加可空 `anchor_index`；候选全部消失按传入offset收敛到有效末项。无匹配返回空页；目录不可用仍拒绝，不扩大范围。该读取不创建阅读会话、最近或进度。
 
 客户端 `restorePackEntry` 要求能力与合法定位元数据，并使用独立图包读取取消范围。页控制器最多保留120项，前补/丢页由页面补偿位置；定位、刷新、前补、追加各有原意图重试，失败或当前代次意外取消保留旧窗口。显式离开/改查询/换连接使旧代次失效。跨页全选仍走独立完整ID接口，不受这个窗口上限影响。正式备份v2的全域恢复代次隔离另由LF7完成。
+
+## 固定图包阅读（LF5，服务端先行）
+
+Schema0009声明 `pack_reading_sessions`。`POST /api/v1/pack-sessions` 带request_id、scope（directory_id/search/tag_ids/read_state）、source、sort、order及可选anchor_pack_id；返回固定范围id/revision、candidate_count、available_count、cursor、finished、current、resume与previous/next。成员在服务端完整求值并固定，entries按原ordinal分页；不可用成员标明available=false，新增包或改标签不会加入/重筛范围。只有明确position更新或实际打开回退候选才改变存储位置。
+
+`resume` 返回page/page_index、offset_ratio、completed、revision、content_version、recovery_reason和preferences。页清单/图像仍走LF2鉴权与版本读取。创建会话、摘要和分页读取不写进度、偏好或最近。只有首张实际显示后调用opened，带pack_id/page_id/content_version/expected_session_revision/expected_revision/request_id；成功回执返回新进度revision及session_revision，后续写入必须使用它们。若旧当前项不可用，opened同时提交回退位置并推进会话revision，原项恢复不会自动抢回当前阅读器。
+
+`PATCH /packs/{id}/progress` 带session_id、page_id、content_version、expected_session_revision、expected_revision、offset_ratio（0–1）、completed、request_id；只允许当前会话已实际打开的当前包。清单、会话或进度冲突先读取新状态，不能盲目用旧页/新revision覆盖。`PATCH position` 带会话expected_revision、request_id及pack_id或finish二选一；手动前后包均在固定成员内，纵向末页不自动调用。
+
+每包preferences使用独立expected_revision和当前会话归属，values完整包含mode(horizontal/vertical)、direction(ltr/rtl)、gap、fit(contain/width)。reading-defaults使用独立全局revision。首次实际打开时保存当时默认为本包偏好；后续默认改动不覆盖已读包。偏好操作本身不写最近。
+
+`GET /pack-reading-requests/{kind}/{request_id}` 只读查询session/position/opened/progress/preferences/defaults回执；未知返回404，没有隐式提交或激活旧会话。已完成操作复用原request_id返回回执，内容不同则409。新的入口会话替换当前阅读归属；迟到旧会话写入拒绝，旧回执只读仍可查。客户端必须另行隔离迟到结果及恢复代次，当前尚未接入阅读UI。
+
+`recent?kind=pack` 只含实际opened并按包去重，视频仍为默认kind=video；packs及selection支持source=recent与sort=recent，并保留完整图包过滤。Schema0009保留旧pageId/比例/完成/revision，补当前清单版本与偏好revision；扫描删页选择最近可读页，记录page_removed，实际打开确认后清除说明。原页损坏读取时返回page_unreadable。完整备份v2与跨恢复代次隔离由LF7完成。
