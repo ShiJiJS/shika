@@ -368,6 +368,10 @@ class DemoLibraryRepository extends LibraryRepository implements DemoControls {
   }
 
   @override
+  Future<Set<String>> selectVideoIds(VideoEntryScope entry) async =>
+      _entryVideos(_state, entry).map((video) => video.id).toSet();
+
+  @override
   bool get fixedPreview => _state.preview != null;
   @override
   VideoEntryScope? get savedPreviewEntry => _state.preview?.entry;

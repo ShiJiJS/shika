@@ -13,6 +13,7 @@ import '../../ui/player.dart' show timeLabel;
 import '../../ui/sheets.dart';
 import '../preview/video_preview_route.dart';
 import 'browse_context.dart';
+import 'catalog_selection.dart';
 import 'library_query_controller.dart';
 
 /// One source owns its query, selection, list window and return location.
@@ -40,7 +41,12 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   late VideoBrowseContext entry = widget.entry;
   late final search = TextEditingController(text: entry.search);
   final scroll = ScrollController();
-  final selected = <String>{};
+  late final selection = CatalogSelection(
+    connection: () => repo.connectionIdentity,
+    cancelRead: repo.cancelVideoSelection,
+  );
+  Set<String> get selected => selection.ids;
+  late Object selectionConnection = repo.connectionIdentity;
   late final initialOrder = widget.defaultOrder;
   bool selecting = false,
       busy = false,
@@ -68,6 +74,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
     super.initState();
     query.addListener(changed);
     repo.addListener(repositoryChanged);
+    selection.addListener(changed);
     scroll.addListener(nearEdge);
     if (widget.active) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -82,12 +89,13 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
     if (oldWidget.entry.queryKey != widget.entry.queryKey) {
       entry = widget.entry;
       search.text = entry.search;
-      selected.clear();
+      selection.cancel(clear: true);
       pendingReturn = null;
       if (widget.active) scheduleLoad();
     } else if (oldWidget.active != widget.active) {
       generation++;
       if (!widget.active) {
+        selection.cancel();
         query.cancel();
       } else if (!viewing) {
         scheduleLoad(restore: initialized);
@@ -108,6 +116,10 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   }
 
   void repositoryChanged() {
+    if (!identical(selectionConnection, repo.connectionIdentity)) {
+      selectionConnection = repo.connectionIdentity;
+      selection.cancel(clear: true);
+    }
     if (!widget.active || viewing || busy) {
       dirty = true;
       return;
@@ -206,12 +218,16 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   Future<void> changeEntry(VideoBrowseContext next) async {
     entry = next;
     pendingReturn = null;
-    selected.clear();
+    selection.cancel(clear: true);
     if (scroll.hasClients) scroll.jumpTo(0);
     await load();
   }
 
-  void toggleSelection() => setState(() => selecting = !selecting);
+  void toggleSelection() {
+    selection.cancel();
+    setState(() => selecting = !selecting);
+  }
+
   Future<void> openFolder() async {
     final result = await paperSheet<String>(
       context,
@@ -234,9 +250,12 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
     }
   }
 
-  Future<void> editTags(Set<String> ids) async {
+  Future<void> editTags(Set<String> ids, {bool appendOnly = false}) async {
     if (repo.backupRestorePending) return;
-    await paperSheet<bool>(context, TagEditor(repository: repo, ids: ids));
+    await paperSheet<bool>(
+      context,
+      TagEditor(repository: repo, ids: ids, appendOnly: appendOnly),
+    );
     if (mounted && widget.active) await load(restore: true);
   }
 
@@ -312,6 +331,8 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   void dispose() {
     generation++;
     repo.removeListener(repositoryChanged);
+    selection.removeListener(changed);
+    selection.dispose();
     query.removeListener(changed);
     query.dispose();
     scroll.dispose();
@@ -564,18 +585,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                             ? null
                                             : () {
                                                 if (selecting) {
-                                                  setState(
-                                                    () =>
-                                                        selected.contains(
-                                                          video.id,
-                                                        )
-                                                        ? selected.remove(
-                                                            video.id,
-                                                          )
-                                                        : selected.add(
-                                                            video.id,
-                                                          ),
-                                                  );
+                                                  selection.toggle(video.id);
                                                 } else {
                                                   unawaited(
                                                     open(anchor: video.id),
@@ -737,28 +747,39 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                     ],
                   ),
           ),
+          if (selection.error.isNotEmpty) note(selection.error),
           if (selecting)
             SafeArea(
               top: false,
               child: Row(
                 children: [
-                  TextButton(
-                    onPressed: () => setState(
-                      () => selected.addAll(data.items.map((v) => v.id)),
+                  Expanded(
+                    child: TextButton(
+                      key: const Key('video-select-all'),
+                      onPressed: selection.loading
+                          ? selection.cancel
+                          : () => selection.all(
+                              () => repo.selectVideoIds(entry.entry),
+                            ),
+                      child: Text(
+                        selection.loading ? '取消全选' : '全选匹配项',
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    child: const Text('选择已加载项'),
                   ),
                   Expanded(
                     child: Text(
-                      '已选 ${selected.length}',
+                      selection.loading ? '正在全选…' : '已选 ${selected.length}',
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  TextButton(
-                    onPressed: selected.isEmpty
-                        ? null
-                        : () => editTags({...selected}),
-                    child: const Text('追加标签'),
+                  Expanded(
+                    child: TextButton(
+                      onPressed: selected.isEmpty || selection.loading
+                          ? null
+                          : () => editTags({...selected}, appendOnly: true),
+                      child: const Text('追加标签', textAlign: TextAlign.center),
+                    ),
                   ),
                 ],
               ),

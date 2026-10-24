@@ -7,6 +7,12 @@ export 'pack_models.dart';
 /// This boundary describes client-visible behavior, independent of transport.
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
+  Future<Set<String>> selectVideoIds(VideoEntryScope entry) =>
+      Future.error(const LibraryFailure('当前服务尚不支持跨页全选，请升级服务端'));
+  Future<Set<String>> selectPackIds(PackQuery query) =>
+      Future.error(const LibraryFailure('当前服务尚不支持跨页全选，请升级服务端'));
+  void cancelVideoSelection() {}
+  void cancelPackSelection() {}
   Future<CatalogPage<VideoTag>> loadVideoTags({
     String search = '',
     int offset = 0,

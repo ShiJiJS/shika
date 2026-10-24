@@ -89,6 +89,20 @@ def router(auth_required):
             status=status,
         )
 
+    @api.get("/packs/selection")
+    def pack_selection(
+        request: Request,
+        directory_id: str | None = None,
+        search: Annotated[str, Query(max_length=200)] = "",
+        tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
+        read_state: Literal["all", "unread", "reading", "completed"] = "all",
+        sort: Literal["name", "newest"] = "name",
+    ):
+        return request.app.state.packs.selection(
+            directory_id=directory_id, search=search, tag_ids=tag_ids or (),
+            read_state=read_state, sort=sort,
+        )
+
     @api.get("/packs/{pack_id}", response_model=PackSummary)
     def pack(pack_id: str, request: Request):
         return request.app.state.packs.get(pack_id)

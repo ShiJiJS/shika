@@ -187,6 +187,7 @@ def create_e2e_app():
             "workspace-video", "workspace-packs", "workspace-video-tags",
             "workspace-pack-tags", "workspace-settings", "workspace-dark",
             "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
+            "selection-videos", "selection-packs",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase

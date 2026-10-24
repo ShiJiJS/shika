@@ -81,6 +81,8 @@ class ServerLibraryRepository extends LibraryRepository
   final Map<String, String> _tagRetryKeys = {};
   Future<void> _tagWrites = Future.value();
   RequestScope _videoTagRead = RequestScope(),
+      _videoSelection = RequestScope(),
+      _packSelection = RequestScope(),
       _videoRead = RequestScope(),
       _folderRead = RequestScope(),
       _trashRead = RequestScope(),
@@ -286,6 +288,8 @@ class ServerLibraryRepository extends LibraryRepository
     cancelTrashRead();
     cancelMissingRead();
     cancelVideoTagRead();
+    cancelVideoSelection();
+    cancelPackSelection();
     _resetPackConnection();
     _scanRead.cancel();
     _preparationTimer?.cancel();
@@ -638,6 +642,8 @@ class ServerLibraryRepository extends LibraryRepository
       cancelTrashRead();
       cancelMissingRead();
       cancelVideoTagRead();
+      cancelVideoSelection();
+      cancelPackSelection();
       _resetPackConnection();
       _scanRead.cancel();
       _scanTask = null;
@@ -1017,6 +1023,79 @@ class ServerLibraryRepository extends LibraryRepository
 
   @override
   void cancelVideoRead() => _videoRead.cancel();
+  @override
+  void cancelVideoSelection() => _videoSelection.cancel();
+  @override
+  void cancelPackSelection() => _packSelection.cancel();
+
+  Set<String> _selectionIds(Json response, MediaKind kind) {
+    final values = response['ids'];
+    if (response['kind'] != kind.name ||
+        values is! List ||
+        values.any((id) => id is! String || id.isEmpty)) {
+      throw const LibraryFailure('服务未返回完整的选择范围，请重试');
+    }
+    final ids = values.cast<String>().toSet();
+    if (ids.length != values.length || response['total'] != ids.length) {
+      throw const LibraryFailure('服务返回的选择范围不完整，请重试');
+    }
+    return ids;
+  }
+
+  @override
+  Future<Set<String>> selectVideoIds(VideoEntryScope entry) async {
+    if (!capabilities.catalogSelection) {
+      throw const LibraryFailure('当前服务尚不支持跨页全选，请升级服务端');
+    }
+    cancelVideoSelection();
+    final work = _videoSelection = RequestScope();
+    final target = api, generation = _generation;
+    final filters = await scopeBody(entry.query, cancel: work);
+    final result = await call(
+      'GET',
+      '/api/v1/videos/selection',
+      using: target,
+      cancel: work,
+      query: {
+        ...filters,
+        'search': entry.search,
+        'source': entry.source.name,
+        'sort': entry.sort.name,
+      },
+    );
+    _packCurrent(target, generation, work);
+    return _selectionIds(result, MediaKind.video);
+  }
+
+  @override
+  Future<Set<String>> selectPackIds(PackQuery query) async {
+    if (!capabilities.catalogSelection) {
+      throw const LibraryFailure('当前服务尚不支持跨页全选，请升级服务端');
+    }
+    cancelPackSelection();
+    final work = _packSelection = RequestScope();
+    final target = api, generation = _generation;
+    final directory = query.folder.isEmpty
+        ? null
+        : await _packDirectoryId(query.folder, target, work);
+    _packCurrent(target, generation, work);
+    final result = await call(
+      'GET',
+      '/api/v1/packs/selection',
+      using: target,
+      cancel: work,
+      query: {
+        'search': query.search,
+        'read_state': query.readState.name,
+        'sort': query.sort.name,
+        'directory_id': ?directory,
+        if (query.tags.isNotEmpty) 'tag_ids': query.tags.toList()..sort(),
+      },
+    );
+    _packCurrent(target, generation, work);
+    return _selectionIds(result, MediaKind.pack);
+  }
+
   @override
   void cancelFolderRead() => _folderRead.cancel();
 
@@ -1582,15 +1661,45 @@ class ServerLibraryRepository extends LibraryRepository
     Set<String> tags, {
     bool remove = false,
     bool replace = false,
-  }) => _writeTags('PATCH', '/api/v1/video-tags', {
-    'video_ids': ids.toList()..sort(),
-    'tag_ids': tags.toList()..sort(),
-    'mode': replace
-        ? 'replace'
-        : remove
-        ? 'remove'
-        : 'add',
-  });
+  }) => _writeTagChunks(
+    ids,
+    (chunk) => _writeTags('PATCH', '/api/v1/video-tags', {
+      'video_ids': chunk,
+      'tag_ids': tags.toList()..sort(),
+      'mode': replace
+          ? 'replace'
+          : remove
+          ? 'remove'
+          : 'add',
+    }),
+  );
+
+  @override
+  Future<void> _writeTagChunks(
+    Set<String> ids,
+    Future<void> Function(List<String>) write,
+  ) async {
+    if (ids.isEmpty) return;
+    final ordered = ids.toList()..sort();
+    final target = api, generation = _generation;
+    var confirmed = 0;
+    try {
+      while (confirmed < ordered.length) {
+        _packCurrent(target, generation);
+        ensureNotRestoring();
+        final end = min(confirmed + 1000, ordered.length);
+        await write(ordered.sublist(confirmed, end));
+        _packCurrent(target, generation);
+        confirmed = end;
+      }
+    } catch (failure) {
+      if (ordered.length <= 1000) rethrow;
+      throw LibraryFailure(
+        '标签尚未全部确认，已确认 $confirmed/${ordered.length} 项。'
+        '选择已保留，可重试；已提交部分不会重复追加。$failure',
+      );
+    }
+  }
 
   @override
   Future<void> editTag({String? original, String? name, bool delete = false}) =>
@@ -1612,6 +1721,7 @@ class ServerLibraryRepository extends LibraryRepository
       if (_disposed || generation != _generation || !identical(target, _api)) {
         throw const RequestCancelled();
       }
+      ensureNotRestoring();
       final key = _tagRetryKeys.putIfAbsent(signature, requestId);
       var accepted = false;
       try {
@@ -1988,6 +2098,8 @@ class ServerLibraryRepository extends LibraryRepository
           generation,
           beforePublish: () async {
             cancelVideoTagRead();
+            cancelVideoSelection();
+            cancelPackSelection();
             cancelVideoRead();
             cancelFolderRead();
             cancelTrashRead();
@@ -2052,6 +2164,8 @@ class ServerLibraryRepository extends LibraryRepository
     cancelTrashRead();
     cancelMissingRead();
     cancelVideoTagRead();
+    cancelVideoSelection();
+    cancelPackSelection();
     _resetPackConnection();
     _scanRead.cancel();
     _api?.close();

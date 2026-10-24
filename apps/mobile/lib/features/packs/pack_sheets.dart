@@ -119,17 +119,20 @@ class PackTagEditor extends StatefulWidget {
     required this.ids,
     this.initial = const {},
     this.selectionOnly = false,
+    this.appendOnly = false,
   });
   final LibraryRepository repository;
   final Set<String> ids, initial;
   final bool selectionOnly;
+  final bool appendOnly;
   @override
   State<PackTagEditor> createState() => _PackTagEditorState();
 }
 
 class _PackTagEditorState extends State<PackTagEditor> {
   final input = TextEditingController();
-  late final chosen = widget.selectionOnly || widget.ids.length == 1
+  late final chosen =
+      widget.selectionOnly || (widget.ids.length == 1 && !widget.appendOnly)
       ? {...widget.initial}
       : <String>{};
   final names = <String, String>{};
@@ -206,7 +209,7 @@ class _PackTagEditorState extends State<PackTagEditor> {
       await widget.repository.setPackTags(
         widget.ids,
         chosen,
-        replace: widget.ids.length == 1,
+        replace: widget.ids.length == 1 && !widget.appendOnly,
       );
       if (mounted) Navigator.pop(context, true);
     } catch (failure) {
@@ -228,7 +231,7 @@ class _PackTagEditorState extends State<PackTagEditor> {
   Widget build(BuildContext context) => SheetFrame(
     title: widget.selectionOnly
         ? '选择图包标签'
-        : widget.ids.length == 1
+        : widget.ids.length == 1 && !widget.appendOnly
         ? '图包标签'
         : '图包标签 · 批量追加',
     closeEnabled: !saving,
@@ -236,7 +239,7 @@ class _PackTagEditorState extends State<PackTagEditor> {
       note(
         widget.selectionOnly
             ? '只查看同时包含所选标签的图包。'
-            : widget.ids.length == 1
+            : widget.ids.length == 1 && !widget.appendOnly
             ? '标签应用于整个图包。'
             : '将标签追加到 ${widget.ids.length} 个图包，保留原有标签。',
       ),
@@ -302,7 +305,7 @@ class _PackTagEditorState extends State<PackTagEditor> {
               ? '正在保存…'
               : widget.selectionOnly
               ? '使用所选标签'
-              : widget.ids.length == 1
+              : widget.ids.length == 1 && !widget.appendOnly
               ? '保存整包标签'
               : '追加所选标签',
         ),

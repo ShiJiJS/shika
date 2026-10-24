@@ -22,6 +22,7 @@ class ServiceCapabilities {
   bool get fixedVideoSessions => values.contains('fixed_video_sessions');
   bool get versionedVideoQueue => values.contains('versioned_video_queue');
   bool get videoEntryAnchors => values.contains('video_entry_anchors');
+  bool get catalogSelection => values.contains('catalog_selection');
 }
 
 enum VideoStatus { available, missing, trash }

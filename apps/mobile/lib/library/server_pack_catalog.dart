@@ -17,6 +17,10 @@ mixin _ServerPackCatalog on LibraryRepository {
     RequestScope? cancel,
     ServerApi? using,
   });
+  Future<void> _writeTagChunks(
+    Set<String> ids,
+    Future<void> Function(List<String>) write,
+  );
 
   RequestScope _packRead = RequestScope(),
       _packTagRead = RequestScope(),
@@ -247,11 +251,14 @@ mixin _ServerPackCatalog on LibraryRepository {
     Set<String> ids,
     Set<String> tags, {
     bool replace = false,
-  }) => _writePackTags('PATCH', '/api/v1/pack-tag-links', {
-    'pack_ids': ids.toList()..sort(),
-    'tag_ids': tags.toList()..sort(),
-    'mode': replace ? 'replace' : 'add',
-  }).then((_) {});
+  }) => _writeTagChunks(
+    ids,
+    (chunk) => _writePackTags('PATCH', '/api/v1/pack-tag-links', {
+      'pack_ids': chunk,
+      'tag_ids': tags.toList()..sort(),
+      'mode': replace ? 'replace' : 'add',
+    }).then((_) {}),
+  );
 
   Future<Json> _writePackTags(String method, String path, Json payload) {
     _packSupported(tagsOnly: true);

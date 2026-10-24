@@ -23,6 +23,10 @@ class PackServer {
   final receipts = <String, Json>{};
   final links = <String>{'same-id', 'keep'};
   Completer<void>? blocked, release;
+  Completer<void>? selectionBlocked, selectionRelease;
+  Completer<void>? writeBlocked, writeRelease;
+  Json? selectionOverride;
+  int loseWriteAt = 0;
   Json pack(int index) => {
     'id': 'p$index',
     'root_id': 'pack-root',
@@ -71,9 +75,29 @@ class PackServer {
           'api_version': 1,
           'server_id': 'packs',
           'capabilities': [
-            if (supported) ...['image_packs', 'pack_tags', 'typed_roots'],
+            if (supported) ...[
+              'image_packs',
+              'pack_tags',
+              'typed_roots',
+              'catalog_selection',
+            ],
           ],
         };
+      } else if (path.endsWith('/selection')) {
+        expect(r.headers.value('Authorization'), 'Bearer pack-test-token');
+        if (selectionBlocked != null &&
+            r.uri.queryParameters['search'] == 'blocked') {
+          selectionBlocked!.complete();
+          await selectionRelease!.future;
+        }
+        final ids = [for (var i = 0; i < 1027; i++) 'selected-$i'];
+        result =
+            selectionOverride ??
+            {
+              'kind': path.contains('/packs/') ? 'pack' : 'video',
+              'ids': ids,
+              'total': ids.length,
+            };
       } else if (path.contains('/packs') ||
           path.contains('/pack-tags') ||
           path.contains('/pack-tag-links') ||
@@ -151,13 +175,19 @@ class PackServer {
               },
             };
           });
-          if (loseWrite) {
+          if (loseWrite || writes.length == loseWriteAt) {
             loseWrite = false;
             status = 503;
             result = {
               'error': {'code': 'lost', 'message': 'Lost receipt'},
             };
           }
+        }
+        if (path.endsWith('/pack-tag-links') &&
+            writeBlocked != null &&
+            !writeBlocked!.isCompleted) {
+          writeBlocked!.complete();
+          await writeRelease!.future;
         }
       } else if (path.endsWith('/tags')) {
         expect(r.headers.value('Authorization'), 'Bearer pack-test-token');

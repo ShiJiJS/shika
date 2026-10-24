@@ -8,6 +8,7 @@ import '../../ui/media_layout.dart';
 import '../../ui/paper.dart';
 import '../packs/pack_sheets.dart';
 import 'browse_context.dart';
+import 'catalog_selection.dart';
 import 'pack_query_controller.dart';
 
 class PackCover extends StatefulWidget {
@@ -138,7 +139,12 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   late PackBrowseContext entry = widget.entry;
   late final search = TextEditingController(text: entry.query.search);
   final scroll = ScrollController();
-  final selected = <String>{};
+  late final selection = CatalogSelection(
+    connection: () => repo.connectionIdentity,
+    cancelRead: repo.cancelPackSelection,
+  );
+  Set<String> get selected => selection.ids;
+  late Object selectionConnection = repo.connectionIdentity;
   bool selecting = false, initialized = false, dirty = false, busy = false;
   String error = '';
   PackLibraryState get data => catalog.state;
@@ -147,6 +153,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     super.initState();
     catalog.addListener(changed);
     repo.addListener(repositoryChanged);
+    selection.addListener(changed);
     scroll.addListener(nearBottom);
     if (widget.active) scheduleLoad();
   }
@@ -160,11 +167,12 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     if (oldWidget.entry.queryKey != widget.entry.queryKey) {
       entry = widget.entry;
       search.text = entry.query.search;
-      selected.clear();
+      selection.cancel(clear: true);
       initialized = false;
       if (widget.active) scheduleLoad();
     } else if (oldWidget.active != widget.active) {
       if (!widget.active) {
+        selection.cancel();
         catalog.cancel();
       } else if (!initialized || dirty) {
         scheduleLoad();
@@ -177,6 +185,10 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   }
 
   void repositoryChanged() {
+    if (!identical(selectionConnection, repo.connectionIdentity)) {
+      selectionConnection = repo.connectionIdentity;
+      selection.cancel(clear: true);
+    }
     dirty = true;
     if (widget.active && !busy) scheduleLoad();
   }
@@ -206,12 +218,16 @@ class PackCatalogPageState extends State<PackCatalogPage> {
 
   Future<void> change(PackQuery query) async {
     entry = entry.copyWith(query: query);
-    selected.clear();
+    selection.cancel(clear: true);
     if (scroll.hasClients) scroll.jumpTo(0);
     await load();
   }
 
-  void toggleSelection() => setState(() => selecting = !selecting);
+  void toggleSelection() {
+    selection.cancel();
+    setState(() => selecting = !selecting);
+  }
+
   Future<void> openFolder() async {
     final result = await paperSheet<String>(
       context,
@@ -230,13 +246,22 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     if (mounted && result != null) await change(result);
   }
 
-  Future<void> tags(Set<String> ids, {Set<String> initial = const {}}) async {
+  Future<void> tags(
+    Set<String> ids, {
+    Set<String> initial = const {},
+    bool appendOnly = false,
+  }) async {
     if (repo.backupRestorePending) return;
     setState(() => busy = true);
     try {
       await paperSheet<bool>(
         context,
-        PackTagEditor(repository: repo, ids: ids, initial: initial),
+        PackTagEditor(
+          repository: repo,
+          ids: ids,
+          initial: initial,
+          appendOnly: appendOnly,
+        ),
       );
     } finally {
       if (mounted) {
@@ -277,6 +302,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   @override
   void dispose() {
     repo.removeListener(repositoryChanged);
+    selection.removeListener(changed);
+    selection.dispose();
     catalog.removeListener(changed);
     catalog.dispose();
     search.dispose();
@@ -468,11 +495,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                         key: Key('pack-tile-${pack.id}'),
                                         onTap: () {
                                           if (selecting) {
-                                            setState(
-                                              () => selected.contains(pack.id)
-                                                  ? selected.remove(pack.id)
-                                                  : selected.add(pack.id),
-                                            );
+                                            selection.toggle(pack.id);
                                           } else {
                                             unawaited(details(pack));
                                           }
@@ -624,28 +647,39 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                     ],
                   ),
           ),
+          if (selection.error.isNotEmpty) note(selection.error),
           if (selecting)
             SafeArea(
               top: false,
               child: Row(
                 children: [
-                  TextButton(
-                    onPressed: () => setState(
-                      () => selected.addAll(data.items.map((p) => p.id)),
+                  Expanded(
+                    child: TextButton(
+                      key: const Key('pack-select-all'),
+                      onPressed: selection.loading
+                          ? selection.cancel
+                          : () => selection.all(
+                              () => repo.selectPackIds(entry.query),
+                            ),
+                      child: Text(
+                        selection.loading ? '取消全选' : '全选匹配项',
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    child: const Text('选择已加载项'),
                   ),
                   Expanded(
                     child: Text(
-                      '已选 ${selected.length}',
+                      selection.loading ? '正在全选…' : '已选 ${selected.length}',
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  TextButton(
-                    onPressed: selected.isEmpty
-                        ? null
-                        : () => tags({...selected}),
-                    child: const Text('追加标签'),
+                  Expanded(
+                    child: TextButton(
+                      onPressed: selected.isEmpty || selection.loading
+                          ? null
+                          : () => tags({...selected}, appendOnly: true),
+                      child: const Text('追加标签', textAlign: TextAlign.center),
+                    ),
                   ),
                 ],
               ),

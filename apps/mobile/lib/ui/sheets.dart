@@ -281,15 +281,21 @@ class _ScopeSheetState extends State<ScopeSheet> {
 }
 
 class TagEditor extends StatefulWidget {
-  const TagEditor({super.key, required this.repository, required this.ids});
+  const TagEditor({
+    super.key,
+    required this.repository,
+    required this.ids,
+    this.appendOnly = false,
+  });
   final LibraryRepository repository;
   final Set<String> ids;
+  final bool appendOnly;
   @override
   State<TagEditor> createState() => _TagEditorState();
 }
 
 class _TagEditorState extends State<TagEditor> {
-  late Set<String> selected = widget.ids.length == 1
+  late Set<String> selected = widget.ids.length == 1 && !widget.appendOnly
       ? {
           ...widget.repository.snapshot.videos
               .firstWhere((v) => v.id == widget.ids.first)
@@ -303,11 +309,11 @@ class _TagEditorState extends State<TagEditor> {
     title: '打标签',
     children: [
       note(
-        widget.ids.length == 1
+        widget.ids.length == 1 && !widget.appendOnly
             ? '编辑当前视频的标签'
             : '将修改 ${widget.ids.length} 个视频，其他标签保持不变',
       ),
-      if (widget.ids.length > 1)
+      if (widget.ids.length > 1 && !widget.appendOnly)
         Row(
           children: [
             ChoiceChip(
@@ -366,7 +372,7 @@ class _TagEditorState extends State<TagEditor> {
                     widget.ids,
                     selected,
                     remove: remove,
-                    replace: widget.ids.length == 1,
+                    replace: widget.ids.length == 1 && !widget.appendOnly,
                   );
                   if (context.mounted) Navigator.pop(context, true);
                 } catch (e) {

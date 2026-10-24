@@ -140,6 +140,13 @@ class Packs:
                 "limit": limit,
             }
 
+    def selection(self, **query):
+        from .catalog_selection import membership
+
+        with self.db.read() as session:
+            session.connection().exec_driver_sql("BEGIN")
+            return membership(session, self.statement(session, **query), ImagePack.id, "pack")
+
     def get(self, pack_id):
         with self.db.read() as session:
             session.connection().exec_driver_sql("BEGIN")
