@@ -49,4 +49,6 @@ Flutter 3.47.7 Slider跨帧弹层保存的语义断言已用延迟保存测试�
 
 新增清单准备 **bdbd741**：后台只读核对目录/图片签名与SHA，持久化精确文件清单、保留项和摘要；请求回执不重算，完成后15分钟期限，服务重建只重做未完成准备，历史计划不可确认。完整214项服务端/Ruff通过（新增32项），包含非空0009→0010迁移和8万条持久化明细的轻量汇总检查。仅声明pack_purge_preview，没有物理删除执行路由或App双确认；[契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/LF6-PURGE-DESIGN.md)与[证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/evidence/lf6-purge-plans/README.md)独立保存，新清单接口未作Android UI验收。
 
-仍须继续：绑定确认清单的实际逐页删除/双确认/逐文件故障恢复；整份多批次计划持久化与统一任务（当前离页会停止后续未提交批次，关闭App未保留整份选择）；Android安全存储强杀重开、历史图片失败定位及DEL/REC/UI完整验收。issue与PR保持开放/Draft，不能把每批命令日志当作完整后台续作。
+执行后端 **5e89a1a / dd2dcf3** 已接：严格确认绑定plan/digest/request，单计划单操作；逐页认领后SHA复核、持久化日志与空目录非递归清理。新增/替换/冲突时保留内容，已归档页不重复删除或计数；部分已删页退出可读清单，剩余内容可恢复，待核对保持互斥。所属旧8秒逻辑撤销失效，无关最新撤销保持有效。完整264项服务端/Ruff通过（新增50项），两条真实HTTP SIGKILL流程各三轮通过，另有十阶段合作式中断冷重建；清单状态/摘要跨查询竞争已有确定性红绿复现并修正。新内容重现旧路径获得新ID，不继承旧标签。原始日志、源码SHA和边界见[执行检查点](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/evidence/lf6-purge-execution/README.md)。本轮未改客户端，尚无App双确认或新原生验收，App永久删除能力标志暂不开放。
+
+仍须继续：App精确清单/严格双确认、持久化命令与分页结果、部分删除提示和原生故障/比例验收；整份多批次计划持久化与统一任务（当前离页会停止后续未提交批次，关闭App未保留整份选择）；Android安全存储强杀重开、历史图片失败定位及DEL/REC/UI完整验收。issue与PR保持开放/Draft，不能把每批命令日志当作完整后台续作。

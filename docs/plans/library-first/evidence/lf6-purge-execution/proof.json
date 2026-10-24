@@ -1,0 +1,69 @@
+{
+  "implementation_commit": "dd2dcf3",
+  "core_commit": "5e89a1a",
+  "recorded_at_utc": "2026-10-24T22:59:03.034216+00:00",
+  "server_tests": 264,
+  "elapsed_seconds": 254.45,
+  "source_files": 103,
+  "source_manifest": "source-sha256.json",
+  "source_files_match_git": true,
+  "sigkill_runs": [
+    {
+      "fault": "SIGKILL",
+      "attempt": 1,
+      "phase": "purge_unlinked_before_commit",
+      "root_directory": false,
+      "request_receipt": "same operation",
+      "pages_deleted": 2,
+      "pages_total": 2
+    },
+    {
+      "fault": "SIGKILL",
+      "attempt": 2,
+      "phase": "purge_unlinked_before_commit",
+      "root_directory": false,
+      "request_receipt": "same operation",
+      "pages_deleted": 2,
+      "pages_total": 2
+    },
+    {
+      "fault": "SIGKILL",
+      "attempt": 3,
+      "phase": "purge_unlinked_before_commit",
+      "root_directory": false,
+      "request_receipt": "same operation",
+      "pages_deleted": 2,
+      "pages_total": 2
+    },
+    {
+      "fault": "SIGKILL",
+      "attempt": 1,
+      "phase": "purge_directory_removed",
+      "root_directory": true,
+      "request_receipt": "same operation",
+      "pages_deleted": 2,
+      "pages_total": 2
+    },
+    {
+      "fault": "SIGKILL",
+      "attempt": 2,
+      "phase": "purge_directory_removed",
+      "root_directory": true,
+      "request_receipt": "same operation",
+      "pages_deleted": 2,
+      "pages_total": 2
+    },
+    {
+      "fault": "SIGKILL",
+      "attempt": 3,
+      "phase": "purge_directory_removed",
+      "root_directory": true,
+      "request_receipt": "same operation",
+      "pages_deleted": 2,
+      "pages_total": 2
+    }
+  ],
+  "client_code_changed": false,
+  "android_purge_ui_tested": false,
+  "nas_or_8760_modified": false
+}
