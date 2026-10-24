@@ -1,0 +1,71 @@
+{
+  "implementation_revision": "5953d160d3ab87f66e963a8067b611f32fed7118",
+  "client_tests": {
+    "passed": 146,
+    "log_sha256": "00ed7c30ec51bcad00d15410ce39dd421b9b878f66bd239fa7d90b176bc2d2a2"
+  },
+  "server_related_tests": {
+    "passed": 56,
+    "log_sha256": "8f2af9eb6f2b920629e67d7fac75a2d0c3a66bdb464d0722f2f7a37004e2f175"
+  },
+  "analyze": {
+    "result": "No issues found",
+    "log_sha256": "3fda38d690e1b2f6e9f435e5838a1e14637308559547f5032f3faef2673bee19"
+  },
+  "ruff": {
+    "result": "All checks passed",
+    "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+  },
+  "native": {
+    "passed": 3,
+    "runs": [
+      {
+        "id": "1-large",
+        "viewport_dp": [
+          360,
+          740
+        ],
+        "text_scale": 2,
+        "apk_sha256": "dc6d66d3a6c330a03fdc2d7e4d27ce6f19a1d3535043613eb00d9e4d9233b40a"
+      },
+      {
+        "id": "2",
+        "viewport_dp": [
+          390,
+          844
+        ],
+        "text_scale": 1,
+        "apk_sha256": "59a343cbaee1f8e674b487a38d77eb608c0ba0f8113464f85817b1252bf4bf4b"
+      },
+      {
+        "id": "3",
+        "viewport_dp": [
+          390,
+          844
+        ],
+        "text_scale": 1,
+        "apk_sha256": "7033d7ad9c5c6e9d29df3f0ef75e8510393b39f126a5ac48089edaa865703aac"
+      }
+    ],
+    "fixture": "isolated FastAPI 8761; 27 videos and 27 public-flower image packs; no NAS writes"
+  },
+  "sha256": {
+    "run-1-large-android-test.log": "64dc0258862fce08c3ff19813f3cec3d9debe4a1c07addefde6b0f3dbfe1c7ae",
+    "run-3-android-test.log": "5a95cb0ff1acd12a54126f04664f28029942b48c03d6c7d2ba2c143299f51502",
+    "run-2-android-test.log": "bbbbee802c3a684472ca6ff2779cfac5e1b762f340adc4ac2c87d1eeee911c04",
+    "run-2-proof.json": "60499dd1f25a9056ac42c6ee64e1825848e7b9af7c9336c6e0e56a0c8bbf2d70",
+    "run-1-large-host-events.json": "efdb683389cd8f36c4391871c4dd0f239397e93468c1c03237fa03cfffd35efe",
+    "run-3-host-events.json": "8b4caa75b71b30133140ac68758049e4b768243d8fbcd240965d804a50256265",
+    "run-3-proof.json": "874adf317de92e2ab846f2a3f14344a3662079a1ece83d4410e7de7657da38a6",
+    "run-2-host-events.json": "9e22161f4b2c9521ca8a7dd025da742e90330f9faea12efaf75c806856c0b029",
+    "run-1-large-proof.json": "acd9daf74d201eae52cb186bda2a5b9c635a3a6060881c890a310ea7d2a6f05d",
+    "390/packs.png": "7fe87a24256a10fe6954f9545146233fc74472ce13acf8ed22b74612ca2402fa",
+    "390/videos.png": "f95593e3a3a68c24c36616bb118de08b06e17b520485c0f6b75391b46df69883",
+    "390/packs-requests.json": "09c5e7e035c9b2a016f4657cc05b06f6839525c4f25169f6c93177820188118b",
+    "390/videos-requests.json": "0ad5544d5605f2574669e914301144c19b5329d22edde6e28064e622f42b8199",
+    "360-large/packs.png": "cbd2dda0fe6f7555c7d53ef04bf8c0146c52d34468928babf059042269b7ca79",
+    "360-large/videos.png": "619fcc3a289eea2d2c513db87cfdc68d1e3e9b91a9df65459779cbc6dc276d85",
+    "360-large/packs-requests.json": "46fa6781551263f5df5eba11c749b656b7d99fbd6d0c564e2f25176b5e8afae3",
+    "360-large/videos-requests.json": "5a7373c17d76170b0189b4d31b58d437ed0b3676d83fd9e9f040b0962777369b"
+  }
+}
