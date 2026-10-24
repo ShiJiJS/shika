@@ -64,7 +64,21 @@ void main() {
         'catalog settled',
       );
       Future<void> tap(Finder finder) async {
+        await until(() {
+          final elements = finder.evaluate().toList();
+          if (elements.length != 1) return false;
+          final route = ModalRoute.of(elements.single);
+          return route == null ||
+              (route.isCurrent &&
+                  (route.animation == null ||
+                      route.animation!.status == AnimationStatus.completed));
+        }, 'target route entered');
         await t.ensureVisible(finder);
+        await until(() {
+          if (finder.hitTestable().evaluate().length != 1) return false;
+          final size = t.view.physicalSize / t.view.devicePixelRatio;
+          return (Offset.zero & size).contains(t.getCenter(finder));
+        }, 'target is inside the viewport and can receive input');
         await t.tap(finder);
         await t.pump(const Duration(milliseconds: 300));
         await idle();
