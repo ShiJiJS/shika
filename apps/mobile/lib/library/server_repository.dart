@@ -2098,6 +2098,7 @@ class ServerLibraryRepository extends LibraryRepository
           generation,
           beforePublish: () async {
             cancelVideoTagRead();
+            cancelPackTagNamesRead();
             cancelVideoSelection();
             cancelPackSelection();
             cancelVideoRead();

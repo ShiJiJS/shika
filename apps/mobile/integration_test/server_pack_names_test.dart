@@ -71,6 +71,30 @@ void main() {
       }
 
       Future<void> shot(String phase) async {
+        if (phase != 'retry') {
+          final label = find.byKey(Key('pack-tag-names-${pack.id}'));
+          await Scrollable.ensureVisible(
+            t.element(label),
+            alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtEnd,
+          );
+          await t.pump(const Duration(milliseconds: 200));
+          await until(
+            () => label.hitTestable().evaluate().isNotEmpty,
+            'card label visible for native evidence',
+          );
+          if (phase == 'card') {
+            await until(
+              () => t
+                  .widgetList<RawImage>(find.byType(RawImage))
+                  .any((image) => image.image != null),
+              'pack covers decoded',
+            );
+            await until(
+              () => find.byTooltip('重新加载封面').hitTestable().evaluate().isEmpty,
+              'bounded cover retry settled',
+            );
+          }
+        }
         expect(t.takeException(), isNull);
         await fixture('/__fixture/checkpoint/pack-names-$phase');
         await t.pump(const Duration(seconds: 2));
