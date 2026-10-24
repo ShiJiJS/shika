@@ -8,7 +8,7 @@
 
 ## 依赖
 
-LF3 (#28)、LF5 (#30)
+LF3 (#28), LF5 (#30)
 
 ## 实施范围
 
@@ -34,7 +34,7 @@ LF3 (#28)、LF5 (#30)
 
 验收 ID：DEL-01–06、UI-02/04
 
-本地方案：`docs/plans/library-first/PLAN.md`；验收表：`docs/plans/library-first/ACCEPTANCE.md`。方案与独立原型已随 LF0 纳入版本控制，提交与证据见 `docs/plans/library-first/LF0.md`。当前原型：`design/reference/library-first/`，设置差异：`SETTINGS-AUDIT.md`。禁止只接 Demo 就关闭真实服务任务；不改真实 NAS 文件来做故障测试。
+本地方案：`docs/plans/library-first/PLAN.md`；验收表：`docs/plans/library-first/ACCEPTANCE.md`。规划与冻结原型已推送GitHub，原型独立位于 `design/reference/library-first/`（标记design-lf-2026-10-23），后续可单独移除；设置差异见 `SETTINGS-AUDIT.md`。禁止只接 Demo 就关闭真实服务任务；不改真实 NAS 文件来做故障测试。
 
 
 ## 当前实施进度
@@ -51,4 +51,14 @@ Flutter 3.47.7 Slider跨帧弹层保存的语义断言已用延迟保存测试�
 
 执行后端 **5e89a1a / dd2dcf3** 已接：严格确认绑定plan/digest/request，单计划单操作；逐页认领后SHA复核、持久化日志与空目录非递归清理。新增/替换/冲突时保留内容，已归档页不重复删除或计数；部分已删页退出可读清单，剩余内容可恢复，待核对保持互斥。所属旧8秒逻辑撤销失效，无关最新撤销保持有效。完整264项服务端/Ruff通过（新增50项），两条真实HTTP SIGKILL流程各三轮通过，另有十阶段合作式中断冷重建；清单状态/摘要跨查询竞争已有确定性红绿复现并修正。新内容重现旧路径获得新ID，不继承旧标签。原始日志、源码SHA和边界见[执行检查点](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/evidence/lf6-purge-execution/README.md)。本轮未改客户端，尚无App双确认或新原生验收，App永久删除能力标志暂不开放。
 
-仍须继续：App精确清单/严格双确认、持久化命令与分页结果、部分删除提示和原生故障/比例验收；整份多批次计划持久化与统一任务（当前离页会停止后续未提交批次，关闭App未保留整份选择）；Android安全存储强杀重开、历史图片失败定位及DEL/REC/UI完整验收。issue与PR保持开放/Draft，不能把每批命令日志当作完整后台续作。
+仍须继续：整份多批次计划持久化与统一任务（当前离页停止后续未提交批次，关闭App未保留整份选择）；Android安全存储强杀重开、历史图片失败定位及DEL/REC/UI完整验收。issue与PR保持开放/Draft，每批命令日志不等于完整后台续作。
+
+## App永久删除接线（最新检查点，2026-10-25）
+
+实现 **2d97cc9**、原生截图等待调整 **c55e95c**：设置→图包回收站→准备精确清单→分页核对图片→勾选不可恢复声明→确认永久删除→逐项结果。附件保留，取消/过期/连接变化不提交；超过1000包逐批核对，其余选择保留。
+
+确认范围和plan/digest/request先落命令日志，未知响应重开只GET原请求；部分条目明确已删/剩余数量并可重进原结果，needs_attention不清日志。原任务显式重试只处理原清单，旧结果确认不会清掉后来受理的重试。
+
+完整 **293项客户端/analyze、265项服务端/Ruff**通过。冷启动后的API36 Android关键流程连续三轮通过（390正常、360两倍字号、390正常，均51秒）；每轮108份文件，取消不变，部分后106、原任务重试后105，27份附件哈希全部保持，只有1次永久删除POST。真实HTTP大整数签名兼容问题已修正；早期夹具422和模拟器QEMU退出均单独保留为失败诊断，不计入三轮。
+
+[App契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/LF6-PURGE-CLIENT-DESIGN.md) / [完整证据与边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/evidence/lf6-purge-client/README.md)。冻结原型独立且未改；按DEL-05只删确认图片并保留附件，与原型“删除整目录”的文案差异已记录。原生仓库使用内存注入，不能冒充SecureStorage强杀冷启动验证；没有发布升级APK，也未部署NAS。
