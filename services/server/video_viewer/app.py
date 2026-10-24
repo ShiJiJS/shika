@@ -24,6 +24,8 @@ from .library_state import library_state
 from .metadata_cleanup import forget_missing
 from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
 from .pack_api import router as pack_router
+from .pack_operations import PackOperations
+from .pack_operations_api import router as pack_operations_router
 from .pack_tags import PackTags
 from .packs import Packs
 from .playback import Playback
@@ -192,6 +194,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         app.state.pack_tags = PackTags(db)
         app.state.packs, app.state.images = Packs(db), ImageStreams(db, configured)
         app.state.reading = Reading(db, app.state.packs)
+        app.state.pack_files = PackOperations(db, app.state.packs, app.state.reading)
         app.state.files = FileOperations(
             db, configured, catalog, app.state.playback, file_fault_hook
         )
@@ -201,6 +204,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
 
         def start_regular():
             app.state.files.start()
+            app.state.pack_files.start()
             scanner.start()
 
         app.state.backups.start(start_regular)
@@ -210,6 +214,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             app.state.backups.close()
             scanner.close()
             app.state.files.close()
+            app.state.pack_files.close()
             db.close()
 
     app = FastAPI(title="Video Viewer", version="0.1.2", lifespan=lifespan)
@@ -242,6 +247,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     auth_required = [Depends(authorized)]
     app.include_router(pack_router(auth_required))
     app.include_router(reading_router(auth_required))
+    app.include_router(pack_operations_router(auth_required))
 
     @app.get("/health")
     def health():
@@ -290,6 +296,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "pack_tag_names",
                 "pack_entry_anchors",
                 "pack_reading_sessions",
+                "pack_logical_trash",
             ],
         }
 

@@ -218,7 +218,7 @@ class PackScanner:
                         select(ImagePack).where(ImagePack.location_key == str(path))
                     )
                     if located and (
-                        located.status == "trash"
+                        located.status in ("trash", "deleted")
                         or session.scalar(
                             reserved_packs().where(PackFileStep.pack_id == located.id).limit(1)
                         )
@@ -257,6 +257,27 @@ class PackScanner:
                         previous = proven[0] if len(proven) == inode_counts[identity] == 1 else None
                     with self.db.write() as session:
                         pack = session.get(ImagePack, previous.id) if previous else None
+                        occupied = session.scalar(
+                            select(ImagePack).where(ImagePack.location_key == str(path))
+                        )
+                        # Inspection runs outside the write transaction. A cleanup accepted
+                        # meanwhile owns both the stable identity and the occupied location.
+                        if any(
+                            candidate
+                            and (
+                                candidate.status in ("trash", "deleted")
+                                or session.scalar(
+                                    reserved_packs()
+                                    .where(PackFileStep.pack_id == candidate.id)
+                                    .limit(1)
+                                )
+                            )
+                            for candidate in (pack, occupied)
+                        ):
+                            summary["protected_packs"] += 1
+                            summary["progress"]["packs_processed"] += 1
+                            item["processed"] += 1
+                            continue
                         if not pack:
                             pack = ImagePack(
                                 root_id=root.id,
@@ -300,7 +321,17 @@ class PackScanner:
                     )
                     if failed_id:
                         with self.db.write() as session:
-                            session.get(ImagePack, failed_id).error = "pack_directory_unavailable"
+                            failed = session.get(ImagePack, failed_id)
+                            if (
+                                failed
+                                and failed.status not in ("trash", "deleted")
+                                and not session.scalar(
+                                    reserved_packs()
+                                    .where(PackFileStep.pack_id == failed.id)
+                                    .limit(1)
+                                )
+                            ):
+                                failed.error = "pack_directory_unavailable"
                 self.tick(task_id, result)
             accessible = True
             try:
@@ -571,7 +602,10 @@ class PackScanner:
             readable = [page for page in updated if not page.error]
             nearest = min(
                 readable,
-                key=lambda page: (abs(page.ordinal - previous.ordinal), page.ordinal < previous.ordinal),
+                key=lambda page: (
+                    abs(page.ordinal - previous.ordinal),
+                    page.ordinal < previous.ordinal,
+                ),
                 default=None,
             )
             progress.page_id = nearest.id if nearest else None
