@@ -64,10 +64,7 @@ def archive(client, directory, *, maximum=MAXIMUM, check=None):
     return target, details
 
 
-def test_complete_actual_parent_graph_and_typed_preferences_without_source_bytes(
-    library, samples, tmp_path
-):
-    client, media = library
+def seed_complete_graph(client, media, samples):
     legacy_export(client)  # Keep a real completed v1 backup task/receipt in the graph.
     root, _, rows = fixture(client, media, count=3)
     first = rows[0]
@@ -126,6 +123,14 @@ def test_complete_actual_parent_graph_and_typed_preferences_without_source_bytes
     )
     with client.app.state.db.write() as session:
         session.add(Setting(key="device_theme", value="NOT-IN-MANAGEMENT-BACKUP"))
+    return root
+
+
+def test_complete_actual_parent_graph_and_typed_preferences_without_source_bytes(
+    library, samples, tmp_path
+):
+    client, media = library
+    seed_complete_graph(client, media, samples)
     before = tree(media)
     source_counts = {}
     with client.app.state.db.read() as session:

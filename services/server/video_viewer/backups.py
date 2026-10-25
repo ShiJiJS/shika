@@ -24,6 +24,7 @@ from .backup_reconcile import mappings_for, recommended_mapping, reconcile
 from .errors import LibraryError
 from .file_state import reserved_steps
 from .file_transfer import rename_new, unlink_owned
+from .management_archives import KINDS, ManagementArchives
 from .models import FileOperation, Observation, RequestRecord, Setting, Task, uid
 from .paths import make_directory, open_regular, signature
 from .playback_defaults import PlaybackDefaults
@@ -42,6 +43,7 @@ class Backups:
         self.start_regular = None
         self.regular_started = False
         self.deferred = []
+        self.archives = ManagementArchives(self)
 
     def start(self, start_regular):
         self.start_regular = start_regular
@@ -50,13 +52,18 @@ class Backups:
                 session.scalars(
                     select(Task)
                     .where(
-                        Task.kind.in_(["backup_export", "backup_inspect", "backup_restore"]),
+                        Task.kind.in_(
+                            ["backup_export", "backup_inspect", "backup_restore", *KINDS]
+                        ),
+                        Task.error.is_distinct_from("restored_history"),
                         Task.status.in_(["queued", "running", "interrupted"]),
                     )
                     .order_by(Task.created_at)
                 )
             )
-        restoring = next((task for task in pending if task.kind == "backup_restore"), None)
+        restoring = next(
+            (task for task in pending if task.kind in ("backup_restore", "backup_restore_v2")), None
+        )
         if restoring:
             self.deferred = [task.id for task in pending if task.id != restoring.id]
             with self.db.write_lock:
@@ -66,7 +73,7 @@ class Backups:
         else:
             self.start_normal()
         for task in pending:
-            if task.kind != "backup_restore":
+            if task.kind not in ("backup_restore", "backup_restore_v2"):
                 with self.db.write() as session:
                     session.get(Task, task.id).status = "queued"
                 self.enqueue(task.id)
@@ -162,6 +169,8 @@ class Backups:
             )
             task_id = result["id"]
             task = session.get(Task, task_id)
+            if task.error == "restored_history":
+                raise LibraryError("historical_request", "原备份任务为只读历史，请查询原结果", 409)
             if (
                 raw is not None
                 and task.status == "failed"
@@ -196,7 +205,12 @@ class Backups:
     def artifact(self, task_id, kinds=("backup_export", "backup_snapshot")):
         with self.db.read() as session:
             task = session.get(Task, task_id)
-            if not task or task.kind not in kinds or task.status != "completed":
+            metadata = {c.name: getattr(task, c.name) for c in Task.__table__.c} if task else None
+            if not metadata or metadata.get("error") == "restored_history":
+                from .management_history import historical_task
+
+                metadata = historical_task(session, task_id)
+            if not metadata or metadata["kind"] not in kinds or metadata["status"] != "completed":
                 raise LibraryError("backup_not_found", "备份尚未完成或不存在", 404)
         path = self.path(task_id)
         if not path.is_file():
@@ -205,7 +219,7 @@ class Backups:
             raw = self.read(task_id)
         except OSError:
             raise LibraryError("backup_not_found", "备份文件已不可用", 404) from None
-        if hashlib.sha256(raw).hexdigest() != task.result.get("file_sha256"):
+        if hashlib.sha256(raw).hexdigest() != metadata["result"].get("file_sha256"):
             raise LibraryError("backup_artifact_changed", "备份文件在校验后已变化，请重新导入", 409)
         return path
 
@@ -421,9 +435,9 @@ class Backups:
             with self.db.read() as session:
                 task = session.get(Task, task_id)
                 kind = task.kind
-                if task.status == "completed":
+                if task.status == "completed" or task.error == "restored_history":
                     return
-            is_restore = kind == "backup_restore"
+            is_restore = kind in ("backup_restore", "backup_restore_v2")
             if is_restore:
                 with self.db.write_lock:
                     self.db.maintenance_task, self.db.maintenance_owner = (
@@ -433,7 +447,19 @@ class Backups:
             with self.db.write() as session:
                 task = session.get(Task, task_id)
                 task.status, task.phase, task.error = "running", "processing_backup", None
-            if is_restore:
+            if kind == "backup_restore_v2":
+                self.archives.restore(task_id)
+            elif kind in ("backup_export_v2", "backup_inspect_v2"):
+                result = (
+                    self.archives.export(task_id)
+                    if kind == "backup_export_v2"
+                    else self.archives.inspect(task_id)
+                )
+                with self.db.write() as session:
+                    task = session.get(Task, task_id)
+                    task.status, task.phase, task.error = "completed", "completed", None
+                    task.finished_at, task.result = time.time(), result
+            elif is_restore:
                 self.restore(task_id)
             else:
                 raw = self.read(task_id) if kind == "backup_inspect" else None
@@ -473,6 +499,10 @@ class Backups:
     def fail(self, task_id, error, status, is_restore):
         with self.db.write() as session:
             task = session.get(Task, task_id)
+            # Post-commit cleanup cannot rewrite an already committed restore
+            # into a failed job or invite a second execution.
+            if task.status == "completed":
+                return
             task.status, task.error, task.phase, task.finished_at = (
                 status,
                 error,

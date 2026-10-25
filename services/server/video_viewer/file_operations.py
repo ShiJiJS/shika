@@ -18,6 +18,7 @@ from .file_state import (
     video_signature,
 )
 from .file_transfer import FileTransfer
+from .management_history import reject_historical
 from .models import (
     FileOperation,
     FileStep,
@@ -95,9 +96,12 @@ class FileOperations:
         with self.db.write() as session:
             previous = session.scalar(select(FileOperation).where(FileOperation.request_key == key))
             if previous:
+                if previous.historical:
+                    reject_historical(session, "file_operations", key)
                 if previous.request_hash != digest:
                     raise LibraryError("idempotency_conflict", "请求标识已用于不同的文件操作")
                 return previous.id
+            reject_historical(session, "file_operations", key)
             if kind == "undo":
                 original = session.get(FileOperation, undo_of)
                 latest = session.get(Setting, "last_delete_operation")

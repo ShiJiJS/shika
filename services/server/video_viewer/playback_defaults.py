@@ -17,20 +17,21 @@ class PlaybackDefaults:
             self.current(session)
 
     @classmethod
-    def current(cls, session):
+    def current(cls, session, *, persist=True):
         row = session.get(Setting, cls.key)
         if row:
             return json.loads(row.value)
         pointer = session.get(Setting, "active_round")
         active = session.get(PlaybackRound, pointer.value) if pointer else None
         value = {"order": active.order if active else "random", "revision": 0}
-        session.add(Setting(key=cls.key, value=json.dumps(value)))
-        session.flush()
+        if persist:
+            session.add(Setting(key=cls.key, value=json.dumps(value)))
+            session.flush()
         return value
 
     def read(self):
-        with self.db.write() as session:
-            return self.current(session)
+        with self.db.read() as session:
+            return self.current(session, persist=False)
 
     def write(self, *, order, expected_revision, request_id):
         with self.db.write() as session:

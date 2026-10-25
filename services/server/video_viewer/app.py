@@ -24,6 +24,8 @@ from .file_state import reserved_video_ids
 from .images import ImageStreams
 from .library_state import library_state
 from .maintenance_tasks import router as maintenance_tasks_router
+from .management_backup_api import router as management_backup_router
+from .management_history_api import router as management_history_router
 from .metadata_cleanup import forget_missing
 from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
 from .pack_api import router as pack_router
@@ -197,6 +199,10 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         configured = settings or Settings.from_env()
         db = Database(configured.data_dir)
         db.migrate()
+        # Private startup recovery may initialize authentication and scanners
+        # before the backup executor resumes the durable reservation. HTTP is
+        # not served until this bootstrap owner has been relinquished below.
+        db.maintenance_owner = threading.get_ident()
         auth = Authentication(db, configured)
         catalog = Catalog(db, configured)
         scanner = Scanner(db, configured, catalog)
@@ -233,6 +239,8 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             scanner.start()
 
         app.state.backups.start(start_regular)
+        if db.maintenance_owner == threading.get_ident():
+            db.maintenance_owner = None
         try:
             yield
         finally:
@@ -308,6 +316,8 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     app.include_router(reading_router(auth_required))
     app.include_router(pack_operations_router(auth_required))
     app.include_router(maintenance_tasks_router(auth_required))
+    app.include_router(management_backup_router(auth_required))
+    app.include_router(management_history_router(auth_required))
 
     @app.get("/health")
     def health():
@@ -367,6 +377,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "managed_playback_defaults",
                 "pack_missing_cleanup",
                 "management_authority",
+                "management_history",
             ],
         }
 
@@ -725,9 +736,16 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         }[kind]
         with request.app.state.db.read() as session:
             record = session.get(RequestRecord, namespace + ":" + request_id)
-            if not record:
+            from .management_history import historical_receipt
+
+            retired = (
+                historical_receipt(session, "request_records", namespace + ":" + request_id)
+                if not record
+                else None
+            )
+            if not record and not retired:
                 raise LibraryError("backup_request_not_found", "未查询到已受理的备份任务", 404)
-            task_id = record.result["id"]
+            task_id = record.result["id"] if record else retired["record"]["result"]["id"]
         return request.app.state.scanner.task(task_id)
 
     def operation_task(request, operation_id):
@@ -786,7 +804,10 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     def operation(operation_id: str, request: Request):
         with request.app.state.db.read() as session:
             if not session.get(FileOperation, operation_id):
-                raise LibraryError("operation_not_found", "文件操作不存在", 404)
+                from .management_history import historical_operation
+
+                if historical_operation(session, "file_operations", identity=operation_id) is None:
+                    raise LibraryError("operation_not_found", "文件操作不存在", 404)
         return operation_task(request, operation_id)
 
     @app.get("/api/v1/file-requests/{request_id}", dependencies=auth_required)
@@ -797,9 +818,17 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             operation = session.scalar(
                 select(FileOperation).where(FileOperation.request_key == "files:" + request_id)
             )
-            if not operation:
+            if operation:
+                operation_id = operation.id
+            else:
+                from .management_history import historical_operation
+
+                retired = historical_operation(
+                    session, "file_operations", request_key="files:" + request_id
+                )
+                operation_id = retired["record"]["id"] if retired else None
+            if not operation_id:
                 raise LibraryError("operation_not_found", "未查询到已受理的文件操作", 404)
-            operation_id = operation.id
         return operation_task(request, operation_id)
 
     return app

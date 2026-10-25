@@ -7,6 +7,7 @@ from sqlalchemy import delete, select
 
 from .errors import LibraryError
 from .library_state import prepared
+from .management_history import reject_historical
 from .models import PlaybackRound, RecentEntry, RoundEntry, Setting, Video, uid
 from .requests import once
 
@@ -68,9 +69,11 @@ class Playback:
             select(PlaybackRound).where(PlaybackRound.request_id == request_id)
         )
         if previous:
+            reject_historical(session, "playback_rounds", request_id)
             if previous.request_hash != request_hash:
                 raise LibraryError("idempotency_conflict", "请求标识已用于不同的轮次操作")
             return self.summary(session, previous)
+        reject_historical(session, "playback_rounds", request_id)
         try:
             candidates = list(
                 session.scalars(

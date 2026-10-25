@@ -64,7 +64,8 @@ def require_legacy_backup(session):
             select(Setting.value).where(Setting.key.in_({"reader_defaults", "playback_defaults"}))
         )
     )
-    if typed_root or new_data or fixed_round or managed_defaults:
+    history = session.get(Setting, "management_history_ref")
+    if typed_root or new_data or fixed_round or managed_defaults or history and history.value:
         raise LibraryError("backup_upgrade_required", "当前管理数据需要媒体库备份 v2 支持", 409)
 
 

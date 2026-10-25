@@ -236,10 +236,12 @@ class HistoryArchive:
             _sync_directory(destination.parent)
         return cls(destination)
 
-    def _path(self, row):
+    def _path(self, row, *, verify=True):
         path = self.directory / row["filename"]
         if path.parent != self.directory or path.suffix != ".sqlite3":
             raise LibraryError("history_artifact_changed", "历史图路径不正确", 409)
+        if verify and file_hash(path) != row["digest"]:
+            raise LibraryError("history_artifact_changed", "历史图已变化", 409)
         return path
 
     def graphs(self, *, verify=True):
@@ -247,12 +249,21 @@ class HistoryArchive:
             for row in index.execute(
                 "SELECT * FROM history_graphs ORDER BY source_order,was_library,ordinal"
             ):
-                path = self._path(row)
+                path = self._path(row, verify=False)
                 if verify and file_hash(path) != row["digest"]:
                     raise LibraryError("history_artifact_changed", "历史图已变化", 409)
                 yield ArchiveGraph(
                     row["identity"], "history", path, json.loads(row["mounts"]), row["digest"]
                 )
+
+    @staticmethod
+    def _projection(table, alias):
+        # A later restored library can contain non-executable FK provenance
+        # projections of an older operation. Prefer its exact original history
+        # over that projection; explicit graph lookups still return that graph.
+        if table == "history_tasks":
+            return f"coalesce(json_extract({alias}.summary,'$.error')='restored_history',0)"
+        return f"EXISTS(SELECT 1 FROM history_tasks projection WHERE projection.graph_id={alias}.graph_id AND projection.id={alias}.subject AND json_extract(projection.summary,'$.error')='restored_history')"
 
     @staticmethod
     def _latest(table, keys):
@@ -261,15 +272,20 @@ class HistoryArchive:
         return f"""NOT EXISTS(SELECT 1 FROM {table} newer
             JOIN history_graphs ng ON ng.identity=newer.graph_id
             WHERE {same} AND
-            (ng.source_order,ng.was_library,ng.ordinal)>(g.source_order,g.was_library,g.ordinal))"""
+            (-({HistoryArchive._projection(table, "newer")}),ng.source_order,ng.was_library,ng.ordinal)>
+            (-({HistoryArchive._projection(table, "item")}),g.source_order,g.was_library,g.ordinal))"""
 
-    def tasks(self, *, offset=0, limit=24, family="all", graph_id=None):
+    def tasks(self, *, offset=0, limit=24, family="all", graph_id=None, current_database=None):
         _page(offset, limit)
         if family not in {"all", "scan", "video", "pack", "backup", "other"}:
             raise ValueError("Invalid history family")
         where, params = ["item.listed=1"], []
         if graph_id is None:
             where.append(self._latest("history_tasks", ("id",)))
+            if current_database is not None:
+                where.append(
+                    "NOT EXISTS(SELECT 1 FROM current_library.tasks live WHERE live.id=item.id AND substr(live.kind,1,7)='backup_' AND coalesce(live.error,'')<>'restored_history')"
+                )
         else:
             where.append("item.graph_id=?")
             params.append(graph_id)
@@ -281,6 +297,11 @@ class HistoryArchive:
             + " AND ".join(where)
         )
         with self._index() as index:
+            if graph_id is None and current_database is not None:
+                index.execute(
+                    "ATTACH DATABASE ? AS current_library",
+                    (Path(current_database).absolute().as_uri() + "?mode=ro",),
+                )
             total = index.execute("SELECT count(*) " + query, params).fetchone()[0]
             rows = index.execute(
                 "SELECT item.summary,item.graph_id "
@@ -297,7 +318,7 @@ class HistoryArchive:
             params = (*params, graph_id)
         with self._index() as index:
             row = index.execute(
-                f"SELECT item.*,g.filename FROM {table} item JOIN history_graphs g ON g.identity=item.graph_id WHERE {where} ORDER BY g.source_order DESC,g.was_library DESC,g.ordinal DESC LIMIT 1",
+                f"SELECT item.*,g.filename,g.digest FROM {table} item JOIN history_graphs g ON g.identity=item.graph_id WHERE {where} ORDER BY {self._projection(table, 'item')} ASC,g.source_order DESC,g.was_library DESC,g.ordinal DESC LIMIT 1",
                 params,
             ).fetchone()
         if row is None:
@@ -307,6 +328,18 @@ class HistoryArchive:
     def task(self, identity, *, graph_id=None):
         row = self._locate("history_tasks", "item.id=?", (identity,), graph_id)
         return {**json.loads(row["summary"]), "graph_id": row["graph_id"]}
+
+    def task_record(self, identity, *, graph_id=None):
+        row = self._locate("history_tasks", "item.id=?", (identity,), graph_id)
+        with _engine(self._path(row)) as engine, engine.connect() as connection:
+            task = (
+                connection.execute(select(Task.__table__).where(Task.id == identity))
+                .mappings()
+                .first()
+            )
+        if task is None:
+            _missing()
+        return {**dict(task), "historical": True, "graph_id": row["graph_id"]}
 
     def members(self, identity, *, offset=0, limit=24, unfinished=False, graph_id=None):
         _page(offset, limit)
@@ -318,6 +351,18 @@ class HistoryArchive:
                 identity, offset, limit, unfinished
             )
         return {**result, "historical": True, "graph_id": row["graph_id"]}
+
+    def operation(self, namespace, identity):
+        if namespace not in RECEIPTS or namespace in {
+            "request_records",
+            "playback_rounds",
+            "pack_sessions",
+        }:
+            raise ValueError("Not an operation receipt namespace")
+        row = self._locate(
+            "history_receipts", "item.namespace=? AND item.subject=?", (namespace, identity), None
+        )
+        return self.receipt(namespace, row["request_key"], graph_id=row["graph_id"])
 
     def receipt(self, namespace, request_key, *, graph_id=None):
         """Explicit original receipt read; list queries never materialize results.

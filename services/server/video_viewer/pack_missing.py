@@ -111,6 +111,13 @@ class PackMissing:
                 select(PackMissingCleanup.id).where(PackMissingCleanup.request_id == request_id)
             )
             if not identity:
+                from .management_history import historical_operation
+
+                receipt = historical_operation(
+                    session, "pack_missing_cleanups", request_key=request_id
+                )
+                if receipt is not None:
+                    return receipt["record"]["id"]
                 raise LibraryError("cleanup_request_not_found", "未找到原清理请求；未重新提交", 404)
             return identity
 

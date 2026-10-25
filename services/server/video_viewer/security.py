@@ -53,7 +53,7 @@ class Authentication:
             raise LibraryError("invalid_credentials", "口令不正确", 401)
         token = secrets.token_urlsafe(32)
         expires = time.time() + self.settings.token_seconds
-        with self.db.write() as session:
+        with self.db.write(session_control=True) as session:
             session.execute(delete(AccessToken).where(AccessToken.expires_at < time.time()))
             epoch = Authority.current(session)
             session.add(
@@ -84,5 +84,5 @@ class Authentication:
             return Principal(digest, token.issued_epoch)
 
     def revoke(self, digest):
-        with self.db.write() as session:
+        with self.db.write(session_control=True) as session:
             session.execute(delete(AccessToken).where(AccessToken.digest == digest))

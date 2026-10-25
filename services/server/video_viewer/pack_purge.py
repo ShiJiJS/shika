@@ -8,6 +8,7 @@ from sqlalchemy import Integer, func, select, update
 from .errors import LibraryError
 from .file_operations import FileOperations
 from .file_transfer import file_stat
+from .management_history import reject_historical
 from .models import (
     ImagePack,
     PackFileOperation,
@@ -57,6 +58,8 @@ class PackPurge:
                 select(PackFileOperation).where(PackFileOperation.request_key == key)
             )
             if prior:
+                if prior.historical:
+                    reject_historical(session, "pack_file_operations", key)
                 if prior.request_hash != fingerprint:
                     raise LibraryError("idempotency_conflict", "请求标识已用于不同的图包操作")
                 return prior.id
@@ -67,9 +70,12 @@ class PackPurge:
                 select(PackFileOperation).where(PackFileOperation.request_key == key)
             )
             if prior:
+                if prior.historical:
+                    reject_historical(session, "pack_file_operations", key)
                 if prior.request_hash != fingerprint:
                     raise LibraryError("idempotency_conflict", "请求标识已用于不同的图包操作")
                 return prior.id
+            reject_historical(session, "pack_file_operations", key)
             plan = session.get(PackPurgePlan, plan_id)
             task = session.get(Task, plan_id) if plan else None
             if not plan or not task:
@@ -580,23 +586,28 @@ class PackPurge:
             if not session.get(PackPurgeExecution, identity):
                 raise LibraryError("pack_operation_not_found", "图包永久删除操作不存在", 404)
             rows = session.execute(
-                statement.order_by(PackFileStep.id, PackPurgeStep.kind.desc(), PackPurgeStep.relative_path)
+                statement.order_by(
+                    PackFileStep.id, PackPurgeStep.kind.desc(), PackPurgeStep.relative_path
+                )
                 .offset(offset)
                 .limit(limit)
             )
             return {
                 "items": [
                     {
-                        **{key: getattr(row, key) for key in (
-                            "id",
-                            "parent_id",
-                            "kind",
-                            "page_id",
-                            "relative_path",
-                            "phase",
-                            "outcome",
-                            "error",
-                        )},
+                        **{
+                            key: getattr(row, key)
+                            for key in (
+                                "id",
+                                "parent_id",
+                                "kind",
+                                "page_id",
+                                "relative_path",
+                                "phase",
+                                "outcome",
+                                "error",
+                            )
+                        },
                         "pack_id": pack_id,
                         "pack_name": pack_name,
                     }
