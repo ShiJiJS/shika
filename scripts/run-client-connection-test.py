@@ -220,6 +220,7 @@ def watch():
                 "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
                 "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
                 "purge-selected", "purge-review", "purge-files", "purge-saved", "purge-saved-reopened", "purge-unknown", "purge-result", "purge-finished",
+                "bulk-selected", "bulk-review", "bulk-unknown", "bulk-receipt", "bulk-paged", "bulk-selection", "bulk-next-review",
                 "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
                 "restore-selected", "restore-unknown", "restore-reopened", "restore-paged", "restore-stop-unknown", "restore-stopped",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
@@ -233,7 +234,7 @@ def watch():
                         json.dumps(json.load(response), ensure_ascii=False, indent=2),
                         encoding="utf-8",
                     )
-                if PREFIX in {"lf6-trash", "lf6-purge", "lf7-tasks", "lf7-restore"}:
+                if PREFIX in {"lf6-trash", "lf6-purge", "lf7-tasks", "lf7-restore", "lf7-purge-restart"}:
                     request = urllib.request.Request(
                         "http://127.0.0.1:8761/__fixture/actions/pack-trash-hashes",
                         headers=HEADERS, method="POST",
@@ -247,6 +248,10 @@ def watch():
                     request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/restore-plan-stats", headers=HEADERS, method="POST")
                     with urllib.request.urlopen(request, timeout=2) as response:
                         (EVIDENCE / f"{PREFIX}-{phase}-plan.json").write_text(json.dumps(json.load(response),ensure_ascii=False,indent=2),encoding="utf-8")
+                if PREFIX == "lf7-purge-restart":
+                    request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/purge-restart-stats", headers=HEADERS, method="POST")
+                    with urllib.request.urlopen(request, timeout=5) as response:
+                        (EVIDENCE / f"{PREFIX}-{phase}-stats.json").write_text(json.dumps(json.load(response), ensure_ascii=False, indent=2), encoding="utf-8")
                 if PREFIX == "lf5-recovery":
                     request = urllib.request.Request(
                         "http://127.0.0.1:8761/__fixture/reader/stats",
@@ -306,6 +311,7 @@ def main():
     mode.add_argument("--pack-controls", action="store_true")
     mode.add_argument("--pack-trash", action="store_true")
     mode.add_argument("--pack-purge", action="store_true")
+    mode.add_argument("--purge-restart", action="store_true")
     mode.add_argument("--maintenance-tasks", action="store_true")
     mode.add_argument("--restore-plans", action="store_true")
     mode.add_argument("--pack-cleanup", action="store_true")
@@ -336,7 +342,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.restore_plans:
+    if args.purge_restart:
+        PREFIX = "lf7-purge-restart"
+    elif args.restore_plans:
         PREFIX = "lf7-restore"
     elif args.maintenance_tasks:
         PREFIX = "lf7-tasks"
@@ -386,7 +394,7 @@ def main():
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     prepare_emulator()
-    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.maintenance_tasks or args.restore_plans:
+    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.purge_restart or args.maintenance_tasks or args.restore_plans:
         def device(*command):
             return subprocess.check_output(
                 [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
@@ -450,6 +458,7 @@ def main():
                 "lf6-purge": "integration_test/server_pack_purge_test.dart",
                 "lf7-tasks": "integration_test/server_maintenance_tasks_test.dart",
                 "lf7-restore": "integration_test/server_restore_plans_test.dart",
+                "lf7-purge-restart": "integration_test/server_purge_restart_test.dart",
                 "lf6-cleanup": "integration_test/server_pack_cleanup_test.dart",
                 "lf5-recovery": "integration_test/server_pack_reader_recovery_test.dart",
             }[PREFIX],
@@ -468,6 +477,7 @@ def main():
         ) as log:
             code = 0
             killed_restore_pid = None
+            killed_purge_pid = None
             for phase in range(
                 1
                 if args.plain_name
@@ -493,6 +503,7 @@ def main():
                 else 2
             ):
                 forced_restore_kill = False
+                forced_purge_kill = False
                 if phase:
                     subprocess.run(
                         [
@@ -536,6 +547,47 @@ def main():
                             check=True, capture_output=True, timeout=10,
                         )
                         events.append({"phase": "android-back", "time": time.time()})
+                    elif line.strip() == "VV_E2E_PURGE_FORCE_STOP":
+                        if not args.purge_restart or phase != 0:
+                            raise RuntimeError("Unexpected purge force-stop signal")
+                        killed_purge_pid = subprocess.check_output([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],text=True,timeout=10).strip()
+                        if not killed_purge_pid:
+                            raise RuntimeError("Purge App was not live at forced interruption")
+                        subprocess.run([ADB,"-s","emulator-5554","shell","am","force-stop","io.github.shijijs.video_viewer"],check=True,timeout=10)
+                        absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10)
+                        if absent.stdout.strip():
+                            raise RuntimeError("Purge App survived forced interruption")
+                        forced_purge_kill = True
+                        events.append({"phase":"purge-app-force-stopped","pid":killed_purge_pid,"pid_absent":True,"time":time.time()})
+                        request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/release-purge-restart",headers=HEADERS,method="POST")
+                        with urllib.request.urlopen(request,timeout=5) as response:
+                            json.load(response)
+                        deadline = time.monotonic()+300
+                        while True:
+                            request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/purge-restart-stats",headers=HEADERS,method="POST")
+                            with urllib.request.urlopen(request,timeout=5) as response:
+                                stats = json.load(response)
+                            if stats["task"] and stats["task"]["status"] in {"completed","failed","interrupted"}:
+                                break
+                            if time.monotonic()>deadline:
+                                raise RuntimeError("Accepted 1000-pack purge did not settle while App was absent")
+                            stop.wait(.5)
+                        if stats["task"]["status"] != "completed" or stats["members"] != {"succeeded":1000} or stats["active_trash"] != 3:
+                            raise RuntimeError("Purge did not preserve the unsubmitted three packs: " + json.dumps(stats))
+                        still_absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10)
+                        if still_absent.stdout.strip():
+                            raise RuntimeError("App restarted before its accepted batch completed")
+                        (EVIDENCE/f"{PREFIX}-without-app-stats.json").write_text(json.dumps(stats,ensure_ascii=False,indent=2),encoding="utf-8")
+                        request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/pack-trash-hashes",headers=HEADERS,method="POST")
+                        with urllib.request.urlopen(request,timeout=10) as response:
+                            hashes = json.load(response)
+                        (EVIDENCE/f"{PREFIX}-without-app-files.json").write_text(json.dumps(hashes,ensure_ascii=False,indent=2),encoding="utf-8")
+                        events.append({"phase":"purge-completed-without-app","members":1000,"unsubmitted":3,"pid_absent":True,"time":time.time()})
+                    elif line.strip() == "VV_E2E_PURGE_REOPENED":
+                        reopened = subprocess.check_output([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],text=True,timeout=10).strip()
+                        if not args.purge_restart or not killed_purge_pid or not reopened or reopened == killed_purge_pid:
+                            raise RuntimeError("Purge did not reopen in a different Android process")
+                        events.append({"phase":"purge-app-reopened","old_pid":killed_purge_pid,"new_pid":reopened,"time":time.time()})
                     elif line.strip() == "VV_E2E_RESTORE_FORCE_STOP":
                         if not args.restore_plans or phase != 0:
                             raise RuntimeError("Unexpected restore force-stop signal")
@@ -603,6 +655,11 @@ def main():
                     if not forced_restore_kill or code == 0:
                         raise RuntimeError("First restore phase ended without a forced live-process interruption")
                     events.append({"phase":"restore-expected-test-interruption","runner_exit_code":code,"time":time.time()})
+                    code = 0
+                if args.purge_restart and phase == 0:
+                    if not forced_purge_kill or code == 0:
+                        raise RuntimeError("First purge phase ended without forced live-process interruption")
+                    events.append({"phase":"purge-expected-test-interruption","runner_exit_code":code,"time":time.time()})
                     code = 0
                 if code:
                     break
