@@ -76,13 +76,22 @@ void main() {
         expect(t.takeException(), isNull);
       }
 
-      Future<void> tap(Finder target) async {
+      Future<void> reveal(Finder target) async {
         await until(() => target.evaluate().length == 1, 'unique target');
-        await t.ensureVisible(target);
+        if (target.hitTestable().evaluate().isEmpty) {
+          await Scrollable.ensureVisible(
+            t.element(target),
+            alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtEnd,
+          );
+        }
         await until(
           () => target.hitTestable().evaluate().length == 1,
           'visible target',
         );
+      }
+
+      Future<void> tap(Finder target) async {
+        await reveal(target);
         await t.tap(target.hitTestable());
         await t.pump(const Duration(milliseconds: 350));
       }
@@ -142,7 +151,7 @@ void main() {
           Key('reader-image-skip-${reader().session.currentPage!.id}'),
         );
         await until(() => skip.evaluate().length == 1, 'last image failed');
-        await t.ensureVisible(skip);
+        await reveal(skip);
         await t.pump(const Duration(milliseconds: 200));
         await capture('$mode-last-failure');
         if (mode == 'missing') await tap(find.text('沉浸'));
@@ -160,7 +169,7 @@ void main() {
             () => find.text('跳过这一张').evaluate().isNotEmpty,
             'last image reopened',
           );
-          await t.ensureVisible(
+          await reveal(
             find.byKey(
               Key('reader-image-skip-${reader().session.currentPage!.id}'),
             ),
