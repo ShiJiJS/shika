@@ -13,12 +13,14 @@ def seed_workspace_packs(base, assets, count=27):
         raise RuntimeError("Unexpected native workspace fixture path")
     with Image.open(assets / "flower-portrait.jpg") as source:
         cover = source.convert("RGB").resize((240, 360))
-    if count not in (27, 73):
+    if count not in (27, 73, 1003):
         raise RuntimeError("Unexpected native workspace pack count")
     for index in range(1, count + 1):
         folder = destination / f"图包{index:02d}"
         folder.mkdir(parents=True, exist_ok=True)
-        for page in (1, 2, 10):
+        if count == 1003:
+            (folder / "notes.txt").write_text(f"retain fixture attachment {index}", encoding="utf-8")
+        for page in ((1,) if count == 1003 else (1, 2, 10)):
             target = folder / f"{page}.jpg"
             if target.exists():
                 continue

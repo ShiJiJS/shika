@@ -72,10 +72,12 @@ def create_e2e_app():
     app = create_app(settings, backup_fault_hook=backup_fault)
     install_preview_fixture(app, BASE, PORTRAIT, FIXTURE_KEY)
     install_reader_fixture(app, FIXTURE_KEY)
-    trace = deque(maxlen=300)
+    trace = deque(maxlen=2000)
     checkpoint = {"phase": "ready"}
     restore_gate = threading.Event()
     restore_gate.set()
+    purge_gate = threading.Event()
+    purge_gate.set()
 
     @app.middleware("http")
     async def observe(request, call_next):
@@ -220,6 +222,7 @@ def create_e2e_app():
             "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
             "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
             "purge-selected", "purge-review", "purge-files", "purge-saved", "purge-saved-reopened", "purge-unknown", "purge-result", "purge-finished",
+            "bulk-selected", "bulk-review", "bulk-unknown", "bulk-receipt", "bulk-paged", "bulk-selection", "bulk-next-review",
             "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
             "restore-selected", "restore-unknown", "restore-reopened", "restore-paged", "restore-stop-unknown", "restore-stopped",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
@@ -279,6 +282,33 @@ def create_e2e_app():
         elif action == "workspace-packs":
             details = seed_workspace_packs(BASE, Path("/fixture-assets"))
             controls["busy_covers"] = 2
+        elif action == "purge-restart-packs":
+            details = seed_workspace_packs(BASE, Path("/fixture-assets"), 1003)
+        elif action == "hold-purge-restart":
+            purge_gate.clear()
+            def hold_purge(phase, identity):
+                if phase == "purge_claiming":
+                    while not purge_gate.wait(.1):
+                        if app.state.pack_purge.stop.is_set():
+                            return
+            app.state.pack_purge.fault_hook = hold_purge
+        elif action == "release-purge-restart":
+            purge_gate.set()
+        elif action == "purge-restart-stats":
+            from sqlalchemy import func
+
+            from video_viewer.models import PackFileStep, PackTrashItem, Task
+
+            with app.state.db.read() as session:
+                task = session.scalar(select(Task).where(Task.kind == "pack_permanent").order_by(Task.created_at.desc()).limit(1))
+                original_ids = list(session.scalars(select(PackTrashItem.id).order_by(PackTrashItem.id)))
+                if task is None:
+                    return {"task": None, "all_trash_ids": original_ids}
+                counts = dict(session.execute(select(PackFileStep.outcome, func.count()).where(PackFileStep.operation_id == task.id).group_by(PackFileStep.outcome)).all())
+                active = session.scalar(select(func.count()).select_from(PackTrashItem).where(PackTrashItem.status == "active"))
+                remaining = list(session.scalars(select(PackTrashItem.id).where(PackTrashItem.status == "active").order_by(PackTrashItem.id)))
+                submitted = list(session.execute(select(PackFileStep.requested_id, PackFileStep.original_path).where(PackFileStep.operation_id == task.id).order_by(PackFileStep.requested_id)))
+                return {"task": {"id": task.id, "status": task.status, "phase": task.phase}, "members": counts, "active_trash": active, "remaining_ids": remaining, "all_trash_ids": original_ids, "submitted_ids": [row.requested_id for row in submitted], "submitted_paths": [row.original_path for row in submitted]}
         elif action == "purge-pack-attachments":
             folder = BASE / "shorts" / "图包"
             if str(folder) != "/media/shorts/图包" or folder.is_symlink() or folder.resolve() != folder:
