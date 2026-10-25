@@ -51,6 +51,13 @@ void main() {
         200,
         scrollable: find.byType(Scrollable).last,
       );
+      await frames(t);
+      await Scrollable.ensureVisible(
+        t.element(find.text('默认播放顺序')),
+        alignment: .5,
+      );
+      await frames(t);
+      expect(find.text('默认播放顺序').hitTestable(), findsOneWidget);
       await t.tap(find.text('默认播放顺序'));
       await frames(t);
       await t.tap(find.text('顺序播放').last);

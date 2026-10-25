@@ -220,6 +220,7 @@ def watch():
                 "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
                 "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
                 "purge-selected", "purge-review", "purge-files", "purge-unknown", "purge-result", "purge-finished",
+                "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
                 "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
             }:
@@ -231,7 +232,7 @@ def watch():
                         json.dumps(json.load(response), ensure_ascii=False, indent=2),
                         encoding="utf-8",
                     )
-                if PREFIX in {"lf6-trash", "lf6-purge"}:
+                if PREFIX in {"lf6-trash", "lf6-purge", "lf7-tasks"}:
                     request = urllib.request.Request(
                         "http://127.0.0.1:8761/__fixture/actions/pack-trash-hashes",
                         headers=HEADERS, method="POST",
@@ -300,6 +301,7 @@ def main():
     mode.add_argument("--pack-controls", action="store_true")
     mode.add_argument("--pack-trash", action="store_true")
     mode.add_argument("--pack-purge", action="store_true")
+    mode.add_argument("--maintenance-tasks", action="store_true")
     mode.add_argument("--pack-cleanup", action="store_true")
     mode.add_argument("--pack-recovery", action="store_true")
     parser.add_argument("--workspace-viewport", choices=("390", "360"), default="390")
@@ -328,7 +330,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.pack_purge:
+    if args.maintenance_tasks:
+        PREFIX = "lf7-tasks"
+    elif args.pack_purge:
         PREFIX = "lf6-purge"
     elif args.pack_trash:
         PREFIX = "lf6-trash"
@@ -374,7 +378,7 @@ def main():
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     prepare_emulator()
-    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge:
+    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.maintenance_tasks:
         def device(*command):
             return subprocess.check_output(
                 [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
@@ -436,6 +440,7 @@ def main():
                 "lf5-controls": "integration_test/server_pack_reader_controls_test.dart",
                 "lf6-trash": "integration_test/server_pack_trash_test.dart",
                 "lf6-purge": "integration_test/server_pack_purge_test.dart",
+                "lf7-tasks": "integration_test/server_maintenance_tasks_test.dart",
                 "lf6-cleanup": "integration_test/server_pack_cleanup_test.dart",
                 "lf5-recovery": "integration_test/server_pack_reader_recovery_test.dart",
             }[PREFIX],
@@ -472,6 +477,7 @@ def main():
                 or args.pack_cleanup
                 or args.pack_trash
                 or args.pack_purge
+                or args.maintenance_tasks
                 else 3
                 if args.backups
                 else 2

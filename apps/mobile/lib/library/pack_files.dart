@@ -593,6 +593,16 @@ class PackFileTask {
 class PackFileJournal {
   PackFileJournal(this.store);
   final FileCommandStore store;
+  void Function()? onChanged;
+  int? cachedCount(String scope) {
+    if (_book == null) return null;
+    try {
+      return _map(_map(_book!['scopes'])[scope] ?? <String, dynamic>{}).length;
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<void> _tail = Future.value();
   Map<String, dynamic>? _book;
   Future<T> _edit<T>(
@@ -601,6 +611,7 @@ class PackFileJournal {
     bool write = true,
   }) {
     final result = _tail.then((_) async {
+      final initializing = _book == null;
       if (_book == null) {
         final text = await store.read();
         try {
@@ -624,6 +635,7 @@ class PackFileJournal {
         await store.write(jsonEncode(next));
         _book = next;
       }
+      if (write || initializing) onChanged?.call();
       return value;
     });
     _tail = result.then<void>((_) {}, onError: (Object _, StackTrace _) {});

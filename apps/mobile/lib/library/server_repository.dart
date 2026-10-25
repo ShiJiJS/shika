@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:crypto/crypto.dart' as crypto;
+
 import 'credentials.dart';
 import 'file_command_store.dart';
 import 'backup_work_store.dart';
@@ -14,6 +16,7 @@ part 'server_pack_catalog.dart';
 part 'server_pack_reading.dart';
 part 'server_pack_trash.dart';
 part 'server_pack_purge.dart';
+part 'server_maintenance_tasks.dart';
 
 typedef Json = Map<String, dynamic>;
 
@@ -49,11 +52,29 @@ class ServerLibraryRepository extends LibraryRepository
          connected: false,
        ) {
     libraryPreparation.value = const LibraryPreparation(ready: false);
+    packFileJournal.onChanged = publish;
   }
   final Set<_ServerPackReader> _readers = {};
   final Set<_ServerPackTrash> _trashReaders = {};
   final Set<_ServerPackPurge> _purgeReaders = {};
+  final Set<_ServerMaintenanceTasks> _taskReaders = {};
   int _readerEpoch = 0;
+  @override
+  MaintenanceTaskCatalog createMaintenanceTasks() {
+    if (!capabilities.maintenanceTasks || _fileScope == null) {
+      throw const LibraryFailure('当前服务尚不支持操作任务，请升级服务端');
+    }
+    final reader = _ServerMaintenanceTasks(
+      this,
+      api,
+      _generation,
+      _readerEpoch,
+      _fileScope!,
+    );
+    _taskReaders.add(reader);
+    return reader;
+  }
+
   @override
   PackPurgeGateway createPackPurge() {
     ensureNotRestoring();
@@ -93,6 +114,9 @@ class ServerLibraryRepository extends LibraryRepository
   @override
   void _resetReaders() {
     _readerEpoch++;
+    for (final reader in _taskReaders.toList()) {
+      reader.dispose();
+    }
     for (final gateway in _purgeReaders.toList()) {
       gateway.dispose();
     }
@@ -153,6 +177,35 @@ class ServerLibraryRepository extends LibraryRepository
   Future<void> _fileWrites = Future.value();
   @override
   bool get fileOperationPending => _fileState['pending'] != null;
+  bool _packJournalError = false;
+  @override
+  int? get maintenancePendingCount {
+    final scope = _fileScope;
+    if (scope == null || _packJournalError) return null;
+    final count = packFileJournal.cachedCount(scope);
+    if (count == null) return null;
+    try {
+      return count +
+          (fileOperationPending ? 1 : 0) +
+          (_backups?.pendingReceipts.length ?? 0);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  bool get maintenanceNeedsCheck {
+    if (_packJournalError || fileOperationPending || backupRestorePending) {
+      return true;
+    }
+    try {
+      return (maintenancePendingCount ?? 0) > 0 ||
+          (_backups?.pendingReceipts.isNotEmpty ?? false);
+    } catch (_) {
+      return true;
+    }
+  }
+
   LibrarySnapshot _state;
   ServerApi? _api;
   Json? _round;
@@ -1521,6 +1574,12 @@ class ServerLibraryRepository extends LibraryRepository
     }
     _fileScope = scope;
     _fileState = saved['scope'] == scope ? saved : {'scope': scope};
+    try {
+      await packFileJournal.pending(scope);
+      _packJournalError = false;
+    } catch (_) {
+      _packJournalError = true;
+    }
     final last = _fileState['lastDelete'];
     _state = _state.copy(
       clearDelete: last == null,
@@ -1569,9 +1628,17 @@ class ServerLibraryRepository extends LibraryRepository
 
   @override
   Future<void> reconcileFileOperation() {
+    return _reconcileFileReceipt(null);
+  }
+
+  Future<void> _reconcileFileReceipt(String? expectedRequestId) {
     final target = api, generation = _generation;
     return serializeFiles(() async {
       if (!fileOperationPending) return;
+      if (expectedRequestId != null &&
+          object(_fileState['pending'])['key'] != expectedRequestId) {
+        return;
+      }
       final task = await runFileCommand(
         target,
         generation,
@@ -2250,6 +2317,7 @@ class ServerLibraryRepository extends LibraryRepository
   @override
   void dispose() {
     _disposed = true;
+    packFileJournal.onChanged = null;
     _preparationTimer?.cancel();
     _preparationRead.cancel();
     cancelVideoRead();
