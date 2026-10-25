@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from sqlalchemy import delete, select
 
+from .authority import Authority
 from .backup_format import (
     SETTING_KEYS,
     TABLES,
@@ -403,6 +404,10 @@ class Backups:
             )
             session.flush()
             PlaybackDefaults.current(session)
+            # Same commit as library replacement. Never restore this value from
+            # the package or invalidate credentials needed for original GETs.
+            Authority.rotate(session)
+            session.flush()
             if self.fault_hook:
                 self.fault_hook("after_replace_before_commit", task_id)
             task = session.get(Task, task_id)

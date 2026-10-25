@@ -41,3 +41,5 @@
 恢复、历史查询/代次、公开任务协议、App文件传输/系统选择器和上述完整链路尚未完成；未声明`backup_v2`能力，现有v1保护仍在。模块经过真实SQLite/接口数据验证，不代表v2全量替换或真机恢复已经通过。#32/#24继续开放。
 
 后续PR #49已增加完整只读历史包/任务与成员分页/8类原回执、复制实际SHA与禁止覆盖发布，固定源码联合66项及发布前后真实SIGKILL通过，见[历史设计](LF7-BACKUP-HISTORY-DESIGN.md)和[证据](evidence/lf7-backup-history/README.md)。它仍未接正式历史引用、恢复事务/代次或App，不能替代上述完整恢复验收。
+
+后续[PR #50](https://github.com/ShiJiJS/video_viewer/pull/50)接实际恢复事务的服务端代次和旧写入隔离，375项服务端全集通过；见[协议](LF7-AUTHORITY-DESIGN.md)及[证据](evidence/lf7-authority/README.md)。App代次/日志历史化、完整v2协调器和历史路由仍未接，不冒充完整替换完成。

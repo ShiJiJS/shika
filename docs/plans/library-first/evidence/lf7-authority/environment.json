@@ -1,0 +1,14 @@
+{
+  "image": "video-viewer-server:defaults-test",
+  "image_id": "sha256:f47b2448845830235682911999f4cc2b1d53efb6604e91519915d0aefc7a8936",
+  "container": "read-only; services/server mounted /source; tmpfs /tmp:mode=1777; --shm-size=64m",
+  "python": "3.13",
+  "commands": [
+    "pytest -q -s",
+    "ruff check video_viewer migrations tests",
+    "pytest --collect-only -q tests/test_management_authority.py",
+    "bash scripts/dev.sh python3 -m py_compile services/server/video_viewer/authority.py services/server/video_viewer/app.py services/server/video_viewer/backups.py services/server/video_viewer/db.py services/server/video_viewer/models.py services/server/video_viewer/security.py services/server/migrations/versions/0014_management_authority.py services/server/tests/test_management_authority.py"
+  ],
+  "compile_exit_code": 0,
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca"
+}

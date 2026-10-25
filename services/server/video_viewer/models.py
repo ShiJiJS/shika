@@ -36,6 +36,7 @@ class AccessToken(Base):
     __tablename__ = "access_tokens"
     digest: Mapped[str] = mapped_column(String, primary_key=True)
     expires_at: Mapped[float] = mapped_column(Float)
+    issued_epoch: Mapped[str] = mapped_column(String, default="", server_default="")
 
 
 class Root(Base):

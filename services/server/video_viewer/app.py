@@ -12,6 +12,8 @@ from pydantic import BaseModel, ConfigDict, Field, SecretStr, model_validator
 from sqlalchemy import select
 from starlette.concurrency import run_in_threadpool
 
+from .authority import HEADER as EPOCH_HEADER
+from .authority import Authority
 from .backups import Backups
 from .catalog import Catalog
 from .config import Settings
@@ -209,7 +211,9 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         app.state.reading = Reading(db, app.state.packs)
         app.state.pack_files = PackOperations(db, app.state.packs, app.state.reading)
         app.state.pack_purge_plans = PackPurgePlans(db, configured)
-        app.state.pack_purge = PackPurge(app.state.pack_files, app.state.pack_purge_plans, configured)
+        app.state.pack_purge = PackPurge(
+            app.state.pack_files, app.state.pack_purge_plans, configured
+        )
         app.state.pack_files.purge = app.state.pack_purge
         app.state.pack_restore_plans = PackRestorePlans(app.state.pack_files)
         app.state.pack_missing = PackMissing(db)
@@ -265,8 +269,39 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             status_code=422,
         )
 
-    def authorized(request: Request, authorization: Annotated[str | None, Header()] = None):
-        return request.app.state.auth.require(authorization)
+    @app.middleware("http")
+    async def authority_header(request, call_next):
+        response = await call_next(request)
+        if getattr(request.state, "authenticated", False):
+
+            def current():
+                with request.app.state.db.read() as session:
+                    return Authority.current(session)
+
+            response.headers[EPOCH_HEADER] = await run_in_threadpool(current)
+        return response
+
+    async def authorized(
+        request: Request,
+        authorization: Annotated[str | None, Header()] = None,
+        management_epoch: Annotated[
+            str | None,
+            Header(alias=EPOCH_HEADER, min_length=32, max_length=32, pattern=r"^[a-f0-9]{32}$"),
+        ] = None,
+    ):
+        principal = await run_in_threadpool(request.app.state.auth.authenticate, authorization)
+        request.state.authenticated = True
+        if len(request.headers.getlist(EPOCH_HEADER)) > 1:
+            raise LibraryError("invalid_management_epoch", "管理数据代次请求头重复", 422)
+        # Revoking one's own token is independent of media generation. It never
+        # authorizes a media write or clears another connection's session.
+        if request.method == "DELETE" and request.url.path == "/api/v1/auth/session":
+            yield principal.digest
+            return
+        with request.app.state.db.authority.bind(principal, management_epoch):
+            if request.method not in {"GET", "HEAD", "OPTIONS"}:
+                await run_in_threadpool(request.app.state.db.check_authority)
+            yield principal.digest
 
     auth_required = [Depends(authorized)]
     app.include_router(pack_router(auth_required))
@@ -305,11 +340,13 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     def info(request: Request):
         with request.app.state.db.read() as session:
             server_id = session.get(Setting, "server_id").value
+            epoch = Authority.current(session)
         return {
             "server_id": server_id,
             "api_version": 1,
             "sqlite_version": sqlite3.sqlite_version,
-            "schema_version": "0013",
+            "schema_version": "0014",
+            "management_epoch": epoch,
             "capabilities": [
                 "typed_roots",
                 "pack_tags",
@@ -329,6 +366,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "pack_restore_plans",
                 "managed_playback_defaults",
                 "pack_missing_cleanup",
+                "management_authority",
             ],
         }
 
@@ -502,9 +540,14 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         sort: Literal["path", "name", "newest", "recent"] = "path",
     ):
         return request.app.state.catalog.selection(
-            directory_id=directory_id, search=search, orientation=orientation,
-            duration=duration, file_type=file_type, tag_ids=tag_ids or (),
-            source=source, sort=sort,
+            directory_id=directory_id,
+            search=search,
+            orientation=orientation,
+            duration=duration,
+            file_type=file_type,
+            tag_ids=tag_ids or (),
+            source=source,
+            sort=sort,
         )
 
     @app.get("/api/v1/videos/{video_id}/thumbnail", dependencies=auth_required)
@@ -570,7 +613,9 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         limit: Annotated[int, Query(ge=1, le=200)] = 24,
     ):
         if kind == "pack":
-            return request.app.state.packs.list(offset=offset, limit=limit, source="recent", sort="recent")
+            return request.app.state.packs.list(
+                offset=offset, limit=limit, source="recent", sort="recent"
+            )
         return request.app.state.catalog.videos(
             offset=offset, limit=limit, source="recent", sort="recent"
         )
@@ -706,13 +751,17 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
 
     @app.post("/api/v1/packs/forget-missing", dependencies=auth_required, status_code=202)
     def forget_missing_packs(body: ForgetMissingInput, request: Request):
-        return {**operation_task(request, request.app.state.pack_missing.submit(body.request_id)),
-                "request_id": body.request_id}
+        return {
+            **operation_task(request, request.app.state.pack_missing.submit(body.request_id)),
+            "request_id": body.request_id,
+        }
 
     @app.get("/api/v1/pack-missing-requests/{request_id}", dependencies=auth_required)
     def missing_pack_receipt(request_id: str, request: Request):
-        return {**operation_task(request, request.app.state.pack_missing.receipt(request_id)),
-                "request_id": request_id}
+        return {
+            **operation_task(request, request.app.state.pack_missing.receipt(request_id)),
+            "request_id": request_id,
+        }
 
     @app.post("/api/v1/trash/permanent", dependencies=auth_required, status_code=202)
     def permanent_trash(body: PermanentInput, request: Request):

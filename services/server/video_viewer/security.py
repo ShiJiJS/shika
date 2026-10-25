@@ -7,6 +7,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import VerificationError
 from sqlalchemy import delete
 
+from .authority import Authority, Principal, valid_epoch
 from .errors import LibraryError
 from .models import AccessToken, Setting
 
@@ -17,6 +18,7 @@ class Authentication:
         self.hasher = PasswordHasher()
         self.login_slots = threading.BoundedSemaphore(1)
         with db.write() as session:
+            Authority.initialize(session)
             record = session.get(Setting, "passphrase_hash")
             unchanged = record and self.matches(record.value, settings.passphrase)
             if not unchanged:
@@ -53,22 +55,33 @@ class Authentication:
         expires = time.time() + self.settings.token_seconds
         with self.db.write() as session:
             session.execute(delete(AccessToken).where(AccessToken.expires_at < time.time()))
-            session.add(AccessToken(digest=self.digest(token), expires_at=expires))
-        return {"access_token": token, "token_type": "bearer", "expires_at": expires}
+            epoch = Authority.current(session)
+            session.add(
+                AccessToken(digest=self.digest(token), expires_at=expires, issued_epoch=epoch)
+            )
+        return {
+            "access_token": token,
+            "token_type": "bearer",
+            "expires_at": expires,
+            "management_epoch": epoch,
+        }
 
     @staticmethod
     def digest(token):
         return hashlib.sha256(token.encode()).hexdigest()
 
     def require(self, header):
+        return self.authenticate(header).digest
+
+    def authenticate(self, header):
         if not header or not header.startswith("Bearer ") or len(header) > 256:
             raise LibraryError("unauthorized", "请连接并验证口令", 401)
         digest = self.digest(header[7:])
         with self.db.read() as session:
             token = session.get(AccessToken, digest)
-            if not token or token.expires_at <= time.time():
+            if not token or token.expires_at <= time.time() or not valid_epoch(token.issued_epoch):
                 raise LibraryError("unauthorized", "连接凭据已失效，请重新连接", 401)
-        return digest
+            return Principal(digest, token.issued_epoch)
 
     def revoke(self, digest):
         with self.db.write() as session:

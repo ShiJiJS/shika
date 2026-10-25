@@ -87,16 +87,17 @@ def test_0011_upgrade_preserves_old_pack_and_video_tables_and_snapshots_before_d
             )
         ]
         before = {t: connection.execute(f'SELECT * FROM "{t}"').fetchall() for t in tables}
+        columns = {t: [row[1] for row in connection.execute(f'PRAGMA table_info("{t}")')] for t in tables}
         assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0011",)
     db.migrate()
     try:
         with sqlite3.connect(db.path) as connection:
             assert all(
-                connection.execute(f'SELECT * FROM "{t}"').fetchall() == rows
+                connection.execute('SELECT '+','.join('"'+column+'"' for column in columns[t])+f' FROM "{t}"').fetchall() == rows
                 for t, rows in before.items()
             )
             assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == (
-                "0013",
+                "0014",
             )
             for table in ("pack_restore_plans", "pack_restore_members", "pack_restore_batches", "pack_missing_cleanups", "pack_missing_members"):
                 assert connection.execute(f'SELECT COUNT(*) FROM "{table}"').fetchone() == (0,)
