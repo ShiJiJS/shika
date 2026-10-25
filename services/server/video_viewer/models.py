@@ -411,6 +411,26 @@ class PackTrashItem(Base):
     )
 
 
+class PackMissingCleanup(Base):
+    __tablename__ = "pack_missing_cleanups"
+    id: Mapped[str] = mapped_column(ForeignKey("tasks.id"), primary_key=True)
+    request_id: Mapped[str] = mapped_column(String, unique=True)
+    historical: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class PackMissingMember(Base):
+    __tablename__ = "pack_missing_members"
+    cleanup_id: Mapped[str] = mapped_column(ForeignKey("pack_missing_cleanups.id"), primary_key=True)
+    pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id"), primary_key=True)
+    root_id: Mapped[str] = mapped_column(ForeignKey("roots.id"))
+    generation: Mapped[int] = mapped_column(Integer)
+    name: Mapped[str] = mapped_column(String)
+    path: Mapped[str] = mapped_column(Text)
+    outcome: Mapped[str] = mapped_column(String, default="pending")
+    error: Mapped[str | None] = mapped_column(String, nullable=True)
+    __table_args__ = (Index("ix_pack_missing_pending", "cleanup_id", "outcome", "pack_id"),)
+
+
 class PackRestorePlan(Base):
     __tablename__ = "pack_restore_plans"
     id: Mapped[str] = mapped_column(ForeignKey("tasks.id"), primary_key=True)

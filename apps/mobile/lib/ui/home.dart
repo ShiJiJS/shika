@@ -14,6 +14,8 @@ import '../features/preview/video_preview_route.dart';
 import '../features/packs/pack_trash_page.dart';
 import '../features/settings/maintenance_tasks_page.dart';
 import '../features/settings/default_settings_sheet.dart';
+import '../features/settings/media_root_sheet.dart';
+import '../features/settings/missing_media_page.dart';
 import '../library/repository.dart';
 import 'paper.dart';
 import 'player.dart';
@@ -217,7 +219,9 @@ class _LibraryHomeState extends State<LibraryHome> {
       unawaited(loadLibrary());
     }
     if (page == 'trash') unawaited(loadTrash());
-    if (page == 'roots') unawaited(loadMissing());
+    if (page == 'roots' && !repo.capabilities.packMissingCleanup) {
+      unawaited(loadMissing());
+    }
   }
 
   void restoreEntryForConnection() {
@@ -550,7 +554,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     }
     if (next == 'roots') {
       missingItems = [];
-      unawaited(loadMissing());
+      if (!repo.capabilities.packMissingCleanup) unawaited(loadMissing());
     } else {
       missingGeneration++;
       repo.cancelMissingRead();
@@ -1466,6 +1470,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   String rootScanLabel(MediaRoot root) {
+    if (!root.enabled) return '已停用 · 标签与阅读记录保留';
     final state = repo.libraryPreparation.value;
     final detail = state.roots[root.id];
     final scan = detail?['scan'] as Map?;
@@ -2170,7 +2175,9 @@ class _LibraryHomeState extends State<LibraryHome> {
       settingRow(
         Icons.folder_outlined,
         '媒体目录',
-        '${data.roots.length} 个目录 · ${repo.missingCount} 个缺失视频',
+        repo.capabilities.typedRoots
+            ? '${data.roots.length} 个目录 · 视频与图包分别接入'
+            : '${data.roots.length} 个目录 · ${repo.missingCount} 个缺失视频',
         () => go('roots'),
       ),
       const SizedBox(height: 14),
@@ -2330,10 +2337,10 @@ class _LibraryHomeState extends State<LibraryHome> {
           leading: const Icon(Icons.folder_outlined),
           title: Text(r.name),
           subtitle: Text(
-            '${r.path}\n${rootScanLabel(r)}',
+            '${r.path}\n${r.kind == MediaKind.video ? '视频' : '图包'} · ${rootScanLabel(r)}',
             style: TextStyle(
               fontSize: 12,
-              color: r.available
+              color: !r.enabled || r.available
                   ? Paper.of(context).olive
                   : Paper.of(context).danger,
             ),
@@ -2356,7 +2363,21 @@ class _LibraryHomeState extends State<LibraryHome> {
           repo.libraryPreparation.value.scanning ? '同步进行中' : '同步外部变更',
         ),
       ),
-      if (missingTotal > 0 || missingItems.isNotEmpty) ...[
+      if (repo.capabilities.packMissingCleanup)
+        settingRow(
+          Icons.broken_image_outlined,
+          '缺失内容',
+          '视频与图包分别核对 · 离线和停用目录保留记录',
+          () async {
+            await Navigator.of(context).push<void>(
+              MaterialPageRoute(
+                builder: (_) => MissingMediaPage(repository: repo),
+              ),
+            );
+          },
+        ),
+      if (!repo.capabilities.packMissingCleanup &&
+          (missingTotal > 0 || missingItems.isNotEmpty)) ...[
         const SizedBox(height: 30),
         Text('缺失视频', style: Paper.of(context).title.copyWith(fontSize: 20)),
         note('保留标签记录，重新找到同一文件后继续关联。'),
@@ -2398,64 +2419,8 @@ class _LibraryHomeState extends State<LibraryHome> {
       const SizedBox(height: 20),
     ],
   );
-  Future<void> rootForm([MediaRoot? root]) async {
-    final name = TextEditingController(text: root?.name ?? ''),
-        path = TextEditingController(text: root?.path ?? '');
-    String formError = '';
-    bool saving = false;
-    await sheet<void>(
-      StatefulBuilder(
-        builder: (context, local) => SheetFrame(
-          title: root == null ? '添加媒体目录' : '编辑媒体目录',
-          children: [
-            const SizedBox(height: 12),
-            TextField(
-              controller: name,
-              decoration: const InputDecoration(labelText: '名称'),
-            ),
-            const SizedBox(height: 18),
-            TextField(
-              controller: path,
-              decoration: const InputDecoration(labelText: '挂载目录'),
-            ),
-            note('扫描包含子目录，不修改源文件位置。'),
-            if (formError.isNotEmpty) note(formError),
-            FilledButton(
-              onPressed: saving
-                  ? null
-                  : () async {
-                      local(() {
-                        saving = true;
-                        formError = '';
-                      });
-                      try {
-                        await repo.saveRoot(
-                          MediaRoot(
-                            root?.id ?? '',
-                            name.text.trim(),
-                            path.text.trim().replaceAll(RegExp(r'/+$'), ''),
-                            kind: root?.kind ?? MediaKind.video,
-                            enabled: root?.enabled ?? true,
-                          ),
-                        );
-                        if (context.mounted) Navigator.pop(context);
-                      } catch (e) {
-                        if (context.mounted) {
-                          local(() => formError = e.toString());
-                        }
-                      } finally {
-                        if (context.mounted) local(() => saving = false);
-                      }
-                    },
-              child: const Text('保存'),
-            ),
-          ],
-        ),
-      ),
-    );
-    name.dispose();
-    path.dispose();
-  }
+  Future<void> rootForm([MediaRoot? root]) =>
+      sheet<void>(MediaRootSheet(repository: repo, root: root));
 
   Future<void> queryFileResult() async {
     if (queryingFiles) return;

@@ -34,6 +34,7 @@ class ServiceCapabilities {
   bool get packRestorePlans => values.contains('pack_restore_plans');
   bool get managedPlaybackDefaults =>
       values.contains('managed_playback_defaults');
+  bool get packMissingCleanup => values.contains('pack_missing_cleanup');
 }
 
 enum VideoStatus { available, missing, trash }

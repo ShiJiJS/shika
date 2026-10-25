@@ -357,7 +357,7 @@ def test_0009_upgrade_keeps_existing_column_values_and_adds_purge_journals(envir
         assert connection.execute(
             "SELECT DISTINCT purged_pages FROM pack_trash_items"
         ).fetchall() == [(0,)]
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0012",)
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0013",)
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
         for name in ["pack_purge_plans", "pack_purge_entries"]:
             assert connection.execute(f'SELECT COUNT(*) FROM "{name}"').fetchone() == (0,)

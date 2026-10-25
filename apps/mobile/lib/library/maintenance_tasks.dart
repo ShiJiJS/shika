@@ -35,6 +35,7 @@ class MaintenanceTask {
       processed = _count(raw['processed']),
       succeeded = _count(raw['succeeded']),
       failed = _count(raw['failed']),
+      skipped = _count(raw['skipped']),
       stopped = _count(raw['stopped']),
       remaining = _count(raw['remaining']),
       rootIssues = _count(raw['root_issues']),
@@ -66,6 +67,14 @@ class MaintenanceTask {
                 pagesDeleted != pagesTotal)) ||
         (state == 'processing' && !['queued', 'running'].contains(status)) ||
         (total != null && processed != null && processed! > total!) ||
+        (kind == 'pack_forget_missing' &&
+            (total == null ||
+                processed == null ||
+                succeeded == null ||
+                skipped == null ||
+                failed != 0 ||
+                processed != succeeded! + skipped! ||
+                (state == 'completed' && processed != total))) ||
         (kind == 'pack_restore_plan' &&
             (stopped == null ||
                 remaining == null ||
@@ -92,6 +101,7 @@ class MaintenanceTask {
       processed,
       succeeded,
       failed,
+      skipped,
       stopped,
       remaining,
       rootIssues,
@@ -113,6 +123,7 @@ class MaintenanceTask {
         'pack_permanent': '永久删除图包图片',
         'pack_purge_preview': '核对图片删除清单',
         'pack_restore_plan': '批量恢复图包',
+        'pack_forget_missing': '清除失效图包记录',
         'backup_export': '导出管理备份',
         'backup_inspect': '校验管理备份',
         'backup_restore': '恢复管理数据',
@@ -128,6 +139,9 @@ class MaintenanceTask {
     'interrupted': '已中断，待核对',
   }[state]!;
   String get progressLabel {
+    if (kind == 'pack_forget_missing') {
+      return '已核对 ${processed ?? 0}/${total ?? 0} 个图包\n清除 ${succeeded ?? 0} · 保留 ${skipped ?? 0}';
+    }
     if (kind == 'pack_permanent' && pagesTotal != null) {
       return pagesDeleted == null
           ? '删除结果待核对'
@@ -177,6 +191,8 @@ class MaintenanceItem {
   final String? error;
   String get label => outcome == 'succeeded'
       ? '已完成'
+      : outcome == 'skipped'
+      ? '已保留，未清除'
       : outcome == 'stopped'
       ? '已停止，未执行恢复'
       : outcome == 'pending'
@@ -190,6 +206,7 @@ enum MaintenanceReceiptSource {
   backup,
   restorePlan,
   purgeSelection,
+  missingCleanup,
 }
 
 /// A scoped local intent; the gateway binds it to an issued object and request.
@@ -217,6 +234,7 @@ class MaintenanceReceipt {
       [
         MaintenanceReceiptSource.restorePlan,
         MaintenanceReceiptSource.purgeSelection,
+        MaintenanceReceiptSource.missingCleanup,
       ].contains(source)
       ? 'pack'
       : source.name;

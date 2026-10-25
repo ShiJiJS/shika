@@ -96,9 +96,9 @@ def test_0011_upgrade_preserves_old_pack_and_video_tables_and_snapshots_before_d
                 for t, rows in before.items()
             )
             assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == (
-                "0012",
+                "0013",
             )
-            for table in ("pack_restore_plans", "pack_restore_members", "pack_restore_batches"):
+            for table in ("pack_restore_plans", "pack_restore_members", "pack_restore_batches", "pack_missing_cleanups", "pack_missing_members"):
                 assert connection.execute(f'SELECT COUNT(*) FROM "{table}"').fetchone() == (0,)
             assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
         assert db.last_migration_snapshot.is_file()

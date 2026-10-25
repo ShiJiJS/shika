@@ -202,6 +202,18 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
           packCommand: command,
         ),
     ];
+    for (final entry in await owner.packFileJournal.missingPending(fileScope)) {
+      result.add(
+        MaintenanceReceipt(
+          id: 'missing:${entry.requestId}',
+          requestId: entry.requestId,
+          title: '清除失效图包记录',
+          source: MaintenanceReceiptSource.missingCleanup,
+          kind: 'pack_forget_missing',
+          historical: entry.historical,
+        ),
+      );
+    }
     final videoPending = owner._fileState['pending'];
     if (videoPending != null && videoPending is! Map) {
       throw const LibraryFailure('本机视频操作记录无法读取');
@@ -259,6 +271,18 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
 
   @override
   Future<MaintenanceTask?> reconcile(MaintenanceReceipt receipt) async {
+    if (receipt.source == MaintenanceReceiptSource.missingCleanup) {
+      check();
+      if (!identical(issued[receipt.id], receipt)) {
+        throw const LibraryFailure('本机原请求已变化，请重新读取');
+      }
+      final gateway = owner.createPackMissing();
+      try {
+        return await gateway.query(receipt.requestId);
+      } finally {
+        gateway.dispose();
+      }
+    }
     check();
     if (!identical(issued[receipt.id], receipt)) {
       throw const LibraryFailure('本机操作记录已更新，请重新读取任务');

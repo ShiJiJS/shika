@@ -17,6 +17,8 @@ from .models import (
     ImagePack,
     PackFileOperation,
     PackFileStep,
+    PackMissingCleanup,
+    PackMissingMember,
     PackPurgePlan,
     PackRestoreBatch,
     PackRestoreMember,
@@ -43,6 +45,7 @@ class MaintenanceTasks:
                 PackFileOperation.historical.is_(True),
                 PackPurgePlan.historical.is_(True),
                 PackRestorePlan.historical.is_(True),
+                PackMissingCleanup.historical.is_(True),
                 Task.error == "restored_history",
             ),
             False,
@@ -67,7 +70,7 @@ class MaintenanceTasks:
         file_task = or_(
             FileOperation.id.is_not(None),
             Task.kind.in_(
-                ("pack_trash", "pack_restore", "pack_undo", "pack_permanent", "pack_restore_plan")
+                ("pack_trash", "pack_restore", "pack_undo", "pack_permanent", "pack_restore_plan", "pack_forget_missing")
             ),
         )
         valid_result = func.coalesce(
@@ -81,6 +84,10 @@ class MaintenanceTasks:
             False,
         )
         valid_result = case(
+            (Task.kind == "pack_forget_missing", func.coalesce(and_(
+                total >= 0, processed == total, succeeded >= 0, counter("skipped") >= 0,
+                failed == 0, succeeded + counter("skipped") == total,
+            ), False)),
             (
                 Task.kind == "pack_restore_plan",
                 func.coalesce(
@@ -143,6 +150,7 @@ class MaintenanceTasks:
                 failed.label("failed"),
                 counter("stopped").label("stopped"),
                 counter("remaining").label("remaining"),
+                counter("skipped").label("skipped"),
                 root_issues.label("root_issues"),
                 counter("pages_total").label("pages_total"),
                 counter("pages_deleted").label("pages_deleted"),
@@ -155,6 +163,7 @@ class MaintenanceTasks:
             .outerjoin(PackFileOperation, PackFileOperation.id == Task.id)
             .outerjoin(PackPurgePlan, PackPurgePlan.id == Task.id)
             .outerjoin(PackRestorePlan, PackRestorePlan.id == Task.id)
+            .outerjoin(PackMissingCleanup, PackMissingCleanup.id == Task.id)
         )
 
     def page(self, offset, limit, family="all", state="all"):
@@ -199,7 +208,15 @@ class MaintenanceTasks:
 
     def items(self, identity, offset, limit, unfinished):
         summary = self.task(identity)
-        if summary["kind"] == "pack_restore_plan":
+        if summary["kind"] == "pack_forget_missing":
+            step = PackMissingMember
+            statement = select(
+                step.pack_id.label("id"), step.pack_id.label("requested_id"),
+                step.pack_id.label("media_id"), step.name, step.path,
+                case((step.outcome == "pending", "checking_missing"), else_="completed").label("phase"),
+                step.outcome, step.error,
+            )
+        elif summary["kind"] == "pack_restore_plan":
             step = PackRestoreMember
             statement = select(
                 step.trash_id.label("id"),
@@ -240,7 +257,8 @@ class MaintenanceTasks:
             statement = select(literal(1)).where(literal(False))
         if step is not None:
             statement = statement.where(
-                (step.plan_id if step is PackRestoreMember else step.operation_id) == identity
+                (step.plan_id if step is PackRestoreMember else
+                 step.cleanup_id if step is PackMissingMember else step.operation_id) == identity
             )
             if unfinished:
                 statement = statement.where(step.outcome != "succeeded")
@@ -250,7 +268,8 @@ class MaintenanceTasks:
                 []
                 if step is None
                 else session.execute(
-                    statement.order_by(step.ordinal if step is PackRestoreMember else step.id)
+                    statement.order_by(step.ordinal if step is PackRestoreMember else
+                                       step.pack_id if step is PackMissingMember else step.id)
                     .offset(offset)
                     .limit(limit)
                 ).mappings()

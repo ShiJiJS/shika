@@ -5,10 +5,12 @@ import 'dart:math';
 import 'file_command_store.dart';
 import 'models.dart';
 import 'pack_reading.dart';
+import 'pack_missing.dart';
 import 'server_api.dart';
 
 part 'pack_restore_plans.dart';
 part 'pack_purge_selections.dart';
+part 'pack_missing_journal.dart';
 
 typedef PackFileCall = Future<Map<String, dynamic>> Function(
   String method,
@@ -617,6 +619,10 @@ class PackFileJournal {
     try {
       return _map(_map(_book!['scopes'])[scope] ?? <String, dynamic>{}).length +
           _restoreRows(scope).length +
+          _map(
+            _map(_book![_missingNamespace] ?? <String, dynamic>{})[scope] ??
+                <String, dynamic>{},
+          ).length +
           _purgeSelectionRows(_book!, scope).length;
     } catch (_) {
       return null;

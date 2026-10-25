@@ -60,7 +60,7 @@ def create_e2e_app():
         marker.write_text("dedicated generated emulator fixture")
     controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False, "lose_default_response": False,
                 "fail_restore": False, "slow_restore": False, "slow_page": False,
-                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_pack_names": False, "fail_pack_anchor": False, "fail_pack_trash": False}
+                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_pack_names": False, "fail_pack_anchor": False, "fail_pack_trash": False, "lose_missing_response": False}
 
     def backup_fault(phase, _task_id):
         if controls["fail_restore"] and phase == "after_replace_before_commit":
@@ -91,13 +91,18 @@ def create_e2e_app():
             }
             if (request.method == "PATCH" and request.url.path in {"/api/v1/video-tags", "/api/v1/playback-defaults", "/api/v1/reading-defaults"}) or (
                 request.method == "POST" and request.url.path in {
-                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans"
+                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans", "/api/v1/packs/forget-missing"
                 }
             ):
                 body = await request.json()
                 entry["command_hash"] = hashlib.sha256(
                     str(body.get("request_id")).encode()
                 ).hexdigest()
+            if (request.method == "POST" and request.url.path == "/api/v1/roots") or (
+                request.method == "PUT" and request.url.path.startswith("/api/v1/roots/")
+            ):
+                body = await request.json()
+                entry["root_input"] = {k: body[k] for k in ("name", "path", "kind", "enabled") if k in body}
             entry["query_lists"] = {
                 key: request.query_params.getlist(key)
                 for key in ("tag_ids", "anchor_ids") if key in request.query_params
@@ -132,6 +137,10 @@ def create_e2e_app():
             if request.query_params.get("search") == "片":
                 await asyncio.sleep(0.75)
         response = await call_next(request)
+        if (controls["lose_missing_response"] and request.method == "POST"
+            and request.url.path == "/api/v1/packs/forget-missing" and response.status_code == 202):
+            controls["lose_missing_response"] = False
+            response = JSONResponse({"error": {"code": "fixture_response_lost", "message": "清理结果待核对，请查询原请求"}}, status_code=503)
         if (controls["lose_default_response"] and request.method == "PATCH"
             and request.url.path in {"/api/v1/playback-defaults", "/api/v1/reading-defaults"}
             and response.status_code == 200):
@@ -231,6 +240,7 @@ def create_e2e_app():
             "purge-selected", "purge-review", "purge-files", "purge-saved", "purge-saved-reopened", "purge-unknown", "purge-result", "purge-finished",
             "bulk-selected", "bulk-review", "bulk-unknown", "bulk-receipt", "bulk-paged", "bulk-selection", "bulk-next-review",
             "defaults-video", "defaults-reader", "defaults-unknown", "defaults-reopened", "defaults-migration",
+            "roots-created", "roots-disabled", "roots-conflict", "missing-paged", "missing-preserved", "missing-unknown", "missing-reopened", "missing-result", "missing-task-paged",
             "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
             "restore-selected", "restore-unknown", "restore-reopened", "restore-paged", "restore-stop-unknown", "restore-stopped",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
@@ -290,6 +300,27 @@ def create_e2e_app():
         elif action == "workspace-packs":
             details = seed_workspace_packs(BASE, Path("/fixture-assets"))
             controls["busy_covers"] = 2
+        elif action == "missing-native-folders":
+            directory = BASE / "shorts" / "图包"
+            if str(directory) != "/media/shorts/图包" or directory.is_symlink():
+                raise RuntimeError("Unexpected missing fixture root")
+            for number in range(1, 26):
+                target = directory / f"图包{number:02d}"
+                if target.is_symlink() or target.resolve().parent != directory:
+                    raise RuntimeError("Unexpected missing fixture member")
+                shutil.rmtree(target)
+            details = {"missing": 25}
+        elif action == "return-native-missing-one":
+            target = BASE / "shorts" / "图包" / "图包25"
+            if str(target) != "/media/shorts/图包/图包25" or target.is_symlink():
+                raise RuntimeError("Unexpected returned fixture pack")
+            target.mkdir(exist_ok=True)
+            shutil.copyfile(Path("/fixture-assets/flower-portrait.jpg"), target / "1.jpg")
+        elif action == "lose-missing-response":
+            controls["lose_missing_response"] = True
+        elif action == "missing-native-stats":
+            from .pack_missing_fixture import missing_snapshot
+            details = missing_snapshot(app.state.db)
         elif action == "purge-restart-packs":
             details = seed_workspace_packs(BASE, Path("/fixture-assets"), 1003)
         elif action == "hold-purge-restart":

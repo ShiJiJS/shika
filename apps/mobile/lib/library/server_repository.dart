@@ -18,6 +18,7 @@ part 'server_pack_trash.dart';
 part 'server_pack_purge.dart';
 part 'server_maintenance_tasks.dart';
 part 'server_playback_defaults.dart';
+part 'server_pack_missing.dart';
 
 typedef Json = Map<String, dynamic>;
 
@@ -60,7 +61,25 @@ class ServerLibraryRepository extends LibraryRepository
   final Set<_ServerPackPurge> _purgeReaders = {};
   final Set<_ServerMaintenanceTasks> _taskReaders = {};
   final Set<_ServerPlaybackDefaults> _defaultsReaders = {};
+  final Set<_ServerPackMissing> _missingReaders = {};
   int _readerEpoch = 0;
+  @override
+  PackMissingCatalog createPackMissing() {
+    ensureNotRestoring();
+    if (!capabilities.packMissingCleanup || _fileScope == null) {
+      throw const LibraryFailure('当前服务尚不支持图包缺失管理，请升级服务端');
+    }
+    final value = _ServerPackMissing(
+      this,
+      api,
+      _generation,
+      _readerEpoch,
+      _fileScope!,
+    );
+    _missingReaders.add(value);
+    return value;
+  }
+
   @override
   PlaybackDefaultsGateway createPlaybackDefaults() {
     ensureNotRestoring();
@@ -169,6 +188,9 @@ class ServerLibraryRepository extends LibraryRepository
   @override
   void _resetReaders() {
     _readerEpoch++;
+    for (final reader in _missingReaders.toList()) {
+      reader.dispose();
+    }
     for (final reader in _defaultsReaders.toList()) {
       reader.dispose();
     }
@@ -2156,6 +2178,7 @@ class ServerLibraryRepository extends LibraryRepository
   @override
   Future<void> saveRoot(MediaRoot root) async {
     ensureNotRestoring();
+    final target = api, generation = _generation;
     if (!capabilities.typedRoots &&
         (root.kind != MediaKind.video || !root.enabled)) {
       throw const LibraryFailure('请升级服务端后使用图包目录或停用目录');
@@ -2163,6 +2186,7 @@ class ServerLibraryRepository extends LibraryRepository
     await call(
       root.id.isEmpty ? 'POST' : 'PUT',
       '/api/v1/roots${root.id.isEmpty ? '' : '/${root.id}'}',
+      using: target,
       body: {
         'name': root.name,
         'path': root.path,
@@ -2170,7 +2194,7 @@ class ServerLibraryRepository extends LibraryRepository
         if (capabilities.typedRoots) 'enabled': root.enabled,
       },
     );
-    await synchronize(api, _generation);
+    await synchronize(target, generation);
   }
 
   @override
@@ -2309,6 +2333,7 @@ class ServerLibraryRepository extends LibraryRepository
         }
         if (_fileScope != null) {
           await packFileJournal.historicalPurgeSelections(_fileScope!);
+          await packFileJournal.historicalMissing(_fileScope!);
         }
         await serializeFiles(() => saveFileState({'scope': _fileScope}));
         _scanRead.cancel();
