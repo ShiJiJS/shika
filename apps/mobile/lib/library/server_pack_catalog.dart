@@ -23,6 +23,7 @@ mixin _ServerPackCatalog on LibraryRepository {
   );
 
   RequestScope _packRead = RequestScope(),
+      _packContinuationRead = RequestScope(),
       _packTagRead = RequestScope(),
       _packTagNamesRead = RequestScope(),
       _packDirectoryRead = RequestScope();
@@ -35,6 +36,7 @@ mixin _ServerPackCatalog on LibraryRepository {
   void _resetPackConnection() {
     _resetReaders();
     cancelPackRead();
+    _packContinuationRead.cancel();
     cancelPackTagRead();
     cancelPackTagNamesRead();
     cancelPackDirectoryRead();
@@ -152,6 +154,26 @@ mixin _ServerPackCatalog on LibraryRepository {
   }) => _readPacks(query, offset: offset, limit: limit);
 
   @override
+  Future<LibraryPack?> loadPackContinuation() async {
+    _packContinuationRead.cancel();
+    final scope = _packContinuationRead = RequestScope();
+    final page = await _readPacks(
+      PackQuery(source: BrowseSource.recent),
+      offset: 0,
+      limit: 1,
+      request: scope,
+    );
+    if (page.offset != 0 ||
+        page.limit != 1 ||
+        page.items.length > 1 ||
+        page.total < page.items.length ||
+        (page.items.isEmpty && page.total > 0)) {
+      throw const LibraryFailure('续读摘要不完整，请重试');
+    }
+    return page.items.firstOrNull;
+  }
+
+  @override
   Future<CatalogPage<LibraryPack>> restorePackEntry(
     PackQuery query, {
     required List<String> anchors,
@@ -186,10 +208,11 @@ mixin _ServerPackCatalog on LibraryRepository {
     required int offset,
     required int limit,
     List<String>? anchors,
+    RequestScope? request,
   }) async {
     _packQuerySupported(query);
-    cancelPackRead();
-    final scope = _packRead = RequestScope();
+    if (request == null) cancelPackRead();
+    final scope = request ?? (_packRead = RequestScope());
     final target = api, generation = _generation;
     final directory = query.folder.isEmpty
         ? null

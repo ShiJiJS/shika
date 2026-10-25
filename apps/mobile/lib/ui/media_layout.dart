@@ -28,6 +28,43 @@ abstract final class MediaLayout {
       max(55, MediaQuery.textScalerOf(context).scale(16) * 1.5 + 31);
   static double scope(BuildContext context) =>
       max(44, MediaQuery.textScalerOf(context).scale(12) * 3.4);
+  static const continuationMeta = TextStyle(fontSize: 12, height: 1.5);
+  static final continuationTitle = Paper.title.copyWith(
+    fontSize: 16,
+    height: 1.5,
+  );
+  static double continuation(
+    BuildContext context, {
+    required String title,
+    required String position,
+  }) {
+    // Native fallback fonts can exceed fontSize * height. Measure the same
+    // styles/text as the row instead of guessing or clipping enlarged text.
+    double line(String text, TextStyle style) {
+      final painter = TextPainter(
+        text: TextSpan(
+          text: text,
+          style: DefaultTextStyle.of(context).style.merge(style),
+        ),
+        textScaler: MediaQuery.textScalerOf(context),
+        textDirection: Directionality.of(context),
+        locale: Localizations.maybeLocaleOf(context),
+        maxLines: 1,
+      )..layout();
+      final height = painter.height;
+      painter.dispose();
+      return height;
+    }
+
+    return max(
+      85,
+      line('继续阅读', continuationMeta) +
+          line(title, continuationTitle) +
+          line(position, continuationMeta) +
+          25, // 17 padding, two 3dp gaps, 2dp progress line.
+    );
+  }
+
   static bool largeText(BuildContext context) =>
       MediaQuery.textScalerOf(context).scale(13) > 17;
   static double toolbar(BuildContext context) => largeText(context)

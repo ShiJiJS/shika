@@ -1,0 +1,38 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart
+Running Gradle task 'assembleDebug'...                             13.6s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          468ms
+00:00 +0: real continuation stays read-only and opens the complete library range
+FIDELITY_METRICS:{"state":"continue-empty","size":[360.0,809.0],"dpr":3.0,"viewPadding":[0.0,45.333333333333336,0.0,24.0],"padding":[0.0,45.333333333333336,0.0,24.0],"textScale":2.0,"keys":{"app-navigation":[0.0,726.0,360.0,59.0],"pack-search":[60.0,183.33333333333334,284.0,66.0],"pack-count":[16.0,266.83333333333337,100.31161499023438,40.0]},"texts":[{"text":"媒体库","rect":[20.0,46.333333333333336,232.0,69.0],"fontSize":24.0},{"text":"视频","rect":[20.0,126.33333333333334,60.49993896484375,43.0],"fontSize":15.0},{"text":"图包","rect":[102.49993896484375,126.33333333333334,60.49993896484375,43.0],"fontSize":15.0},{"text":"搜索图包名称、目录","rect":[76.0,191.33333333333334,252.0,48.0],"fontSize":16.0},{"text":"4 个图包","rect":[16.0,266.83333333333337,100.31161499023438,40.0],"fontSize":13.0},{"text":"阅读状态","rect":[25.750442504882812,323.33333333333337,104.4001235961914,37.0],"fontSize":13.0},{"text":"名称 ↓","rect":[138.15056610107422,321.83333333333337,85.44931030273438,40.0],"fontSize":13.0},{"text":"快速整理","rect":[231.5998764038086,323.33333333333337,104.4001235961914,37.0],"fontSize":13.0},{"text":"6 张","rect":[124.42863464355469,527.3333333333334,40.57136535644531,34.0],"fontSize":11.0},{"text":"示例作者 NO.019 - 灵梦 · 新年快乐","rect":[16.0,576.3333333333334,158.0,48.0],"fontSize":16.0},{"text":"6 张可读","rect":[16.0,624.3333333333334,110.0,36.0],"fontSize":12.0},{"text":"# 和服  # 角色","rect":[16.0,660.3333333333334,139.42022705078125,34.0],"fontSize":11.0},{"text":"6 张","rect":[294.4286346435547,527.3333333333334,40.57136535644531,34.0],"fontSize":11.0},{"text":"在读","rect":[195.0,530.3333333333334,44.500152587890625,31.0],"fontSize":11.0},{"text":"示例作者 NO.034 - 夏日祭","rect":[186.0,576.3333333333334,158.0,48.0],"fontSize":16.0},{"text":"6 张可读","rect":[186.0,624.3333333333334,110.0,36.0],"fontSize":12.0},{"text":"# 和服  # 户外","rect":[186.0,660.3333333333334,139.42022705078125,34.0],"fontSize":11.0},{"text":"媒体库","rect":[37.125022888183594,752.0,60.74995422363281,29.0],"fontSize":10.0},{"text":"标签","rect":[122.25001525878906,752.0,40.499969482421875,29.0],"fontSize":10.0},{"text":"最近","rect":[197.25001525878906,752.0,40.499969482421875,29.0],"fontSize":10.0},{"text":"设置","rect":[272.25001525878906,752.0,40.499969482421875,29.0],"fontSize":10.0}]}
+FIDELITY_METRICS:{"state":"continue-read","size":[360.0,809.0],"dpr":3.0,"viewPadding":[0.0,45.333333333333336,0.0,24.0],"padding":[0.0,45.333333333333336,0.0,24.0],"textScale":2.0,"keys":{},"texts":[{"text":"示例作者 NO.034 - 夏日祭","rect":[48.0,47.333333333333336,216.0,57.00000000000001],"fontSize":20.0},{"text":"6 张","rect":[48.0,104.33333333333334,44.19132995605469,37.0],"fontSize":12.0},{"text":"4 / 6","rect":[249.96484375,578.0,50.03515625,34.0],"fontSize":12.0},{"text":"总览","rect":[29.750076293945312,648.0,48.499847412109375,34.0],"fontSize":12.0},{"text":"横向\n翻页","rect":[113.75007629394531,648.0,48.499847412109375,68.0],"fontSize":12.0},{"text":"整包\n标签","rect":[197.7500762939453,648.0,48.499847412109375,68.0],"fontSize":12.0},{"text":"沉浸","rect":[281.7500762939453,648.0,48.499847412109375,34.0],"fontSize":12.0},{"text":"媒体库 · 全部图包","rect":[20.0,734.5,176.6256866455078,37.0],"fontSize":12.0},{"text":"2 / 4","rect":[196.6256866455078,736.0,49.07421875,34.0],"fontSize":12.0},{"text":"下一包","rect":[261.6999053955078,734.5,78.30009460449219,37.0],"fontSize":13.0}]}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 0.600 pixels on the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart:57:9)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart:183:7)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart line 57
+The test description was:
+  real continuation stays read-only and opens the complete library range
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +0 -1: real continuation stays read-only and opens the complete library range [E]
+  Test failed. See exception logs above.
+  The test description was: real continuation stays read-only and opens the complete library range
+  
+00:06 +0 -1: (tearDownAll)
+00:07 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart: real continuation stays read-only and opens the complete library range

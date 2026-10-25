@@ -20,7 +20,33 @@ p.add_argument("--reference-input", type=Path, required=True)
 p.add_argument("--height", type=int, default=905)
 p.add_argument("--width", type=int, default=390)
 p.add_argument("--scale", choices=("1", "2"), default="1")
+p.add_argument("--scenario", choices=("fidelity", "continuation"), default="fidelity")
 args = p.parse_args()
+scenes = (
+    [
+        "home",
+        "packs",
+        "video-tags",
+        "pack-tags",
+        "settings",
+        "settings-bottom",
+        "dark",
+        "dark-bottom",
+    ]
+    if args.scenario == "fidelity"
+    else [
+        "continue-empty",
+        "continue-read",
+        "continue-library",
+        "continue-reader",
+        "continue-return",
+        "continue-scope",
+        "continue-multi",
+        "continue-error",
+        "continue-retry",
+        "continue-recent",
+    ]
+)
 out = args.output.resolve()
 out.mkdir(parents=True, exist_ok=False)
 base = ROOT / ".dev/prototype-fidelity" / out.name
@@ -87,6 +113,7 @@ paths = run(
 ).splitlines()
 paths += [
     "apps/mobile/integration_test/prototype_fidelity_test.dart",
+    "apps/mobile/integration_test/server_pack_continuation_test.dart",
     "services/server/tests/prototype_fidelity_fixture.py",
     "scripts/run-prototype-fidelity-test.py",
 ]
@@ -112,16 +139,7 @@ def watch():
             name = current["display"]
             if not name or current["ack"] or name in screens:
                 continue
-            assert name in (
-                "home",
-                "packs",
-                "video-tags",
-                "pack-tags",
-                "settings",
-                "dark",
-                "settings-bottom",
-                "dark-bottom",
-            )
+            assert name in scenes
             window = "\n".join(
                 line.strip()
                 for line in shell("dumpsys", "window").splitlines()
@@ -212,7 +230,9 @@ try:
                 str(ROOT / "scripts/dev.sh"),
                 "flutter",
                 "test",
-                "integration_test/prototype_fidelity_test.dart",
+                "integration_test/prototype_fidelity_test.dart"
+                if args.scenario == "fidelity"
+                else "integration_test/server_pack_continuation_test.dart",
                 "--no-uninstall",
                 "-d",
                 "emulator-5554",
@@ -236,7 +256,7 @@ try:
     assert (
         result.returncode == 0 and "PROTOTYPE_FIDELITY_VERIFIED" in log and not errors
     )
-    assert len(screens) == 8 and len(metrics) == 8
+    assert screens == scenes and len(metrics) == len(scenes)
     after = media()
     save("media-after.json", after)
     assert before == after
@@ -247,6 +267,7 @@ try:
             "screens": screens,
             "window": [args.width, args.height],
             "scale": args.scale,
+            "scenario": args.scenario,
         },
     )
     print(json.dumps({"passed": True, "screens": screens, "output": str(out)}))
