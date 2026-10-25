@@ -1,0 +1,90 @@
+{
+  "source": "cbf2df9868faca4aabc07f24cfee48dd1f700031",
+  "phase": "snapshot_written",
+  "viewport": [
+    390,
+    844
+  ],
+  "scale": 1,
+  "elapsed_seconds": 117.26,
+  "verified": {
+    "request_id": "1792940137724781-2072173706",
+    "restore_id": "619da196-6530-4b15-b587-3bb5ca132b76",
+    "original_epoch": "9e4a52f58ca94ba1bade8ce25ea1d678",
+    "current_epoch": "78b2486809213f925422e819710a7d05",
+    "retained_intents": 6,
+    "graphs": [
+      {
+        "request_id": "restart-trash-1792940131536566",
+        "id": "e7883eec-6023-4b7a-b4fa-5b0d3618e4e3",
+        "graph_id": "552a7245-12d2-4f61-8b41-82a3848a27b0"
+      },
+      {
+        "request_id": "restart-pack-restore-1792940131536566",
+        "id": "81eb0276-88b6-4dd2-9289-86a9b5a294ac",
+        "graph_id": "552a7245-12d2-4f61-8b41-82a3848a27b0"
+      }
+    ],
+    "file_bytes": 2443926,
+    "file_sha256": "d8bd334c12c8b0aca32cee68186af4d830114716c6e2d0e709208247fe526b16"
+  },
+  "events": [
+    {
+      "event": "screenshot",
+      "name": "restart-confirmed",
+      "pid": "18420"
+    },
+    {
+      "event": "screenshot",
+      "name": "restart-unknown-before-stop",
+      "pid": "18420"
+    },
+    {
+      "event": "force-stop",
+      "old_pid": "18420",
+      "absent": true,
+      "request_id": "1792940137724781-2072173706"
+    },
+    {
+      "event": "restore-completed",
+      "absent": true,
+      "task_id": "619da196-6530-4b15-b587-3bb5ca132b76"
+    },
+    {
+      "event": "runner",
+      "phase": 0,
+      "exit_code": 79,
+      "intentional_stop": true
+    },
+    {
+      "event": "new-process",
+      "old_pid": "18420",
+      "new_pid": "18666"
+    },
+    {
+      "event": "screenshot",
+      "name": "restart-historical-intents",
+      "pid": "18666"
+    },
+    {
+      "event": "screenshot",
+      "name": "restart-original-restore",
+      "pid": "18666"
+    },
+    {
+      "event": "cancel-real-snapshot-save",
+      "pid": "18666"
+    },
+    {
+      "event": "screenshot",
+      "name": "restart-readonly-selection",
+      "pid": "18666"
+    },
+    {
+      "event": "runner",
+      "phase": 1,
+      "exit_code": 0,
+      "intentional_stop": false
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_restart_test.dart
+Running Gradle task 'assembleDebug'...                             20.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          876ms
+00:00 +0: v2 original secure journals survive actual force-stop and epoch replacement
+ARCHIVE_RESTART_STOP_READY:{"phase":"snapshot_written","request_id":"1792940319513596-3487844113","scope":"[\"http://10.0.2.2:8762\",\"e2653d58388cc4bc5f8cbbf0fca35d53\",\"78b2486809213f925422e819710a7d05\"]"}
+00:25 +0: v2 original secure journals survive actual force-stop and epoch replacement - did not complete [E]
+00:25 +0: (tearDownAll) - did not complete [E]
+00:25 +0: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_restart_test.dart: (tearDownAll) (did not complete)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_restart_test.dart: v2 original secure journals survive actual force-stop and epoch replacement (did not complete)
+No tests were found.

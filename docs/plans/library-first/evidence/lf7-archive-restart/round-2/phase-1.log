@@ -1,0 +1,10 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_restart_test.dart
+Running Gradle task 'assembleDebug'...                             13.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          582ms
+00:00 +0: v2 original secure journals survive actual force-stop and epoch replacement
+ARCHIVE_RESTART_NEW_PROCESS
+ARCHIVE_RESTART_CANCEL_SAF
+ARCHIVE_RESTART_VERIFIED:{"request_id":"1792940455623790-1299203357","restore_id":"6ae94c40-21e8-4c71-83f3-9df04d276f2c","original_epoch":"c362a3dfd66e8a09605aabf0b622263e","current_epoch":"13f1452a730315971e3651f5cd95b381","retained_intents":6,"graphs":[{"request_id":"restart-trash-1792940450392011","id":"62a8df8e-0d70-460b-a86d-f0ba81e6843c","graph_id":"0d990ba4-9acd-4d2f-baef-a873f69fdaef"},{"request_id":"restart-pack-restore-1792940450392011","id":"2db8ca8b-7a0e-48db-ab99-91fcd86023e5","graph_id":"0d990ba4-9acd-4d2f-baef-a873f69fdaef"}],"file_bytes":3138106,"file_sha256":"f8c38aabcaef9518eba3ebcbb99c6769b31c067322cc1b19a2267a25d83d1735"}
+00:10 +1: (tearDownAll)
+00:11 +1: All tests passed!

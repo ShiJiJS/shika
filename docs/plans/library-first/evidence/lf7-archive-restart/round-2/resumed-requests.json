@@ -1,0 +1,268 @@
+[
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/requests/restore/1792940455623790-1299203357",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks/6ae94c40-21e8-4c71-83f3-9df04d276f2c",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/receipts/pack_file_operations/pack_files:restart-trash-1792940450392011",
+    "query": {
+      "epoch": "c362a3dfd66e8a09605aabf0b622263e"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/62a8df8e-0d70-460b-a86d-f0ba81e6843c",
+    "query": {
+      "epoch": "c362a3dfd66e8a09605aabf0b622263e"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/62a8df8e-0d70-460b-a86d-f0ba81e6843c",
+    "query": {
+      "graph_id": "0d990ba4-9acd-4d2f-baef-a873f69fdaef"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/62a8df8e-0d70-460b-a86d-f0ba81e6843c/items",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "unfinished": "false",
+      "graph_id": "0d990ba4-9acd-4d2f-baef-a873f69fdaef"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/receipts/pack_file_operations/pack_files:restart-pack-restore-1792940450392011",
+    "query": {
+      "epoch": "c362a3dfd66e8a09605aabf0b622263e"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/2db8ca8b-7a0e-48db-ab99-91fcd86023e5",
+    "query": {
+      "epoch": "c362a3dfd66e8a09605aabf0b622263e"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/2db8ca8b-7a0e-48db-ab99-91fcd86023e5",
+    "query": {
+      "graph_id": "0d990ba4-9acd-4d2f-baef-a873f69fdaef"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/2db8ca8b-7a0e-48db-ab99-91fcd86023e5/items",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "unfinished": "false",
+      "graph_id": "0d990ba4-9acd-4d2f-baef-a873f69fdaef"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "family": "all",
+      "state": "all"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "family": "all",
+      "state": "historical"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/requests/restore/1792940455623790-1299203357",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks/6ae94c40-21e8-4c71-83f3-9df04d276f2c",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks/6ae94c40-21e8-4c71-83f3-9df04d276f2c",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/6ae94c40-21e8-4c71-83f3-9df04d276f2c",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/a5936191-426d-4a64-bfc7-dc468ffa067a",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/a5936191-426d-4a64-bfc7-dc468ffa067a/download",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "family": "all",
+      "state": "historical"
+    },
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "13f1452a730315971e3651f5cd95b381"
+  }
+]

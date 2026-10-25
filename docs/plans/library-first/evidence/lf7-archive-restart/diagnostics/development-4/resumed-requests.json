@@ -1,0 +1,324 @@
+[
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/requests/restore/1792940137724781-2072173706",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks/619da196-6530-4b15-b587-3bb5ca132b76",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/receipts/pack_file_operations/pack_files:restart-trash-1792940131536566",
+    "query": {
+      "epoch": "9e4a52f58ca94ba1bade8ce25ea1d678"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/e7883eec-6023-4b7a-b4fa-5b0d3618e4e3",
+    "query": {
+      "epoch": "9e4a52f58ca94ba1bade8ce25ea1d678"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/e7883eec-6023-4b7a-b4fa-5b0d3618e4e3",
+    "query": {
+      "graph_id": "552a7245-12d2-4f61-8b41-82a3848a27b0"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/e7883eec-6023-4b7a-b4fa-5b0d3618e4e3/items",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "unfinished": "false",
+      "graph_id": "552a7245-12d2-4f61-8b41-82a3848a27b0"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/receipts/pack_file_operations/pack_files:restart-pack-restore-1792940131536566",
+    "query": {
+      "epoch": "9e4a52f58ca94ba1bade8ce25ea1d678"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/81eb0276-88b6-4dd2-9289-86a9b5a294ac",
+    "query": {
+      "epoch": "9e4a52f58ca94ba1bade8ce25ea1d678"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/81eb0276-88b6-4dd2-9289-86a9b5a294ac",
+    "query": {
+      "graph_id": "552a7245-12d2-4f61-8b41-82a3848a27b0"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/81eb0276-88b6-4dd2-9289-86a9b5a294ac/items",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "unfinished": "false",
+      "graph_id": "552a7245-12d2-4f61-8b41-82a3848a27b0"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "family": "all",
+      "state": "all"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "family": "all",
+      "state": "historical"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/requests/restore/1792940137724781-2072173706",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks/619da196-6530-4b15-b587-3bb5ca132b76",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks/619da196-6530-4b15-b587-3bb5ca132b76",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/619da196-6530-4b15-b587-3bb5ca132b76",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/61a55e84-efdf-4460-b621-6648f08a7ee0",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/61a55e84-efdf-4460-b621-6648f08a7ee0/download",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "family": "all",
+      "state": "historical"
+    },
+    "epoch": "78b2486809213f925422e819710a7d05"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "78b2486809213f925422e819710a7d05"
+  }
+]
