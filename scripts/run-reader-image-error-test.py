@@ -239,7 +239,16 @@ try:
             ).fetchone()[0]
             == 1
         )
-    save("database-proof.json", verified)
+        database_rows = {
+            "packs": db.execute("SELECT id,name FROM packs ORDER BY name").fetchall(),
+            "progress": db.execute(
+                "SELECT pack_id,page_id,completed,revision FROM pack_progress ORDER BY pack_id"
+            ).fetchall(),
+            "recent": db.execute(
+                "SELECT kind,pack_id FROM recent_entries ORDER BY pack_id"
+            ).fetchall(),
+        }
+    save("database-proof.json", {"native": verified, "sql_rows": database_rows})
     save(
         "result.json",
         {
