@@ -142,6 +142,7 @@ class _ReaderImageState extends State<ReaderImage> {
             ),
             if (widget.onSkip != null)
               TextButton(
+                key: Key('reader-image-skip-${widget.page.id}'),
                 style: errorButtonStyle,
                 onPressed: widget.onSkip,
                 child: const Text('跳过这一张'),
