@@ -235,7 +235,9 @@ def write_v2(destination, graphs, *, maximum_bytes, check=None):
                         counts = {}
                         for table in TABLES:
                             count = 0
-                            result = connection.execution_options(yield_per=100).execute(
+                            # A single historical JSON cell can be large. A
+                            # row-count batch must not multiply that bound.
+                            result = connection.execution_options(yield_per=1).execute(
                                 select(table).order_by(*table.primary_key.columns)
                             )
                             for value in result.mappings():
