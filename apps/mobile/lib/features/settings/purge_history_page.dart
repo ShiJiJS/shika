@@ -237,7 +237,9 @@ class _PurgeHistoryPageState extends State<PurgeHistoryPage> {
       return ListTile(
         key: Key('purge-history-step-${step.id}'),
         contentPadding: EdgeInsets.zero,
-        title: Text('${step.packName} · ${step.relativePath}'),
+        title: Text(
+          '${step.packName} · ${step.kind == 'directory' && step.relativePath == '.' ? '图包根目录' : step.relativePath}',
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

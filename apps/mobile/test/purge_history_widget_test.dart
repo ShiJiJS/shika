@@ -135,6 +135,7 @@ void main() {
       await tap(t, find.byKey(const Key('purge-history-kind')), delta: -400);
       await tap(t, find.text('只看目录').last);
       expect(repo.readers.single.requests.last, 'steps:0:false:directory');
+      expect(find.textContaining(' · 图包根目录'), findsWidgets);
       await t.scrollUntilVisible(
         find.byKey(const Key('purge-history-total')),
         400,

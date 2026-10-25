@@ -231,6 +231,7 @@ void main() {
       await shot('history-result-next-page');
       await tap(find.byKey(const Key('purge-history-kind')));
       await tap(find.text('只看目录').last);
+      await tap(find.byTooltip('查询原历史记录'), activate: false, waitEnabled: true);
       await tap(find.byKey(const Key('purge-history-total')), activate: false);
       await shot('history-directory-results');
       await noCommands();
