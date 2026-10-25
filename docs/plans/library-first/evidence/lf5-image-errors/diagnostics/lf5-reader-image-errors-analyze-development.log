@@ -1,0 +1,7 @@
+Analyzing video-viewer...                                       
+
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • apps/mobile/integration_test/server_reader_image_error_test.dart:72:13 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • apps/mobile/integration_test/server_reader_image_error_test.dart:94:13 • curly_braces_in_flow_control_structures
+   info • The import of 'package:flutter/painting.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart'. Try removing the import directive • apps/mobile/test/pack_reader_image_error_test.dart:4:8 • unnecessary_import
+
+3 issues found. (ran in 6.4s)

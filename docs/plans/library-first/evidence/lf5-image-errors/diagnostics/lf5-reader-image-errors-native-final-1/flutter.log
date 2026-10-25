@@ -1,0 +1,30 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_image_error_test.dart
+Running Gradle task 'assembleDebug'...                             21.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,412ms
+00:00 +0: real missing and corrupt last images stop at explicit pack end
+READER_IMAGE_FAILURE d24ce319-5a9e-4af6-b492-e80c9d8899f4: HTTP request failed, statusCode: 404, http://10.0.2.2:8764/api/v1/pages/d24ce319-5a9e-4af6-b492-e80c9d8899f4/image?v=1&session=1792947158543678-2c2de629&reader=1
+READER_IMAGE_FAILURE b8abd85e-d7c7-4df6-b32b-f624b5fcc7d4: HTTP request failed, statusCode: 404, http://10.0.2.2:8764/api/v1/pages/b8abd85e-d7c7-4df6-b32b-f624b5fcc7d4/image?v=1&session=1792947158543678-2c2de629&reader=1
+READER_IMAGE_FAILURE b8abd85e-d7c7-4df6-b32b-f624b5fcc7d4: HTTP request failed, statusCode: 404, http://10.0.2.2:8764/api/v1/pages/b8abd85e-d7c7-4df6-b32b-f624b5fcc7d4/image?v=1&session=1792947158543678-2c2de629&reader=1
+READER_IMAGE_FAILURE c9398417-3650-4359-9b57-7538f958f419: HTTP request failed, statusCode: 404, http://10.0.2.2:8764/api/v1/pages/c9398417-3650-4359-9b57-7538f958f419/image?v=1&session=1792947158543678-2c2de629&reader=1
+READER_IMAGE_FAILURE c9398417-3650-4359-9b57-7538f958f419: HTTP request failed, statusCode: 404, http://10.0.2.2:8764/api/v1/pages/c9398417-3650-4359-9b57-7538f958f419/image?v=1&session=1792947158543678-2c2de629&reader=1
+READER_IMAGE_FAILURE c9398417-3650-4359-9b57-7538f958f419: HTTP request failed, statusCode: 404, http://10.0.2.2:8764/api/v1/pages/c9398417-3650-4359-9b57-7538f958f419/image?v=1&session=1792947158543678-2c2de629&reader=1
+READER_IMAGE_FAILURE d24ce319-5a9e-4af6-b492-e80c9d8899f4: Exception: Invalid image data
+READER_IMAGE_FAILURE d24ce319-5a9e-4af6-b492-e80c9d8899f4: Exception: Invalid image data
+READER_IMAGE_FAILURE b8abd85e-d7c7-4df6-b32b-f624b5fcc7d4: Exception: Invalid image data
+READER_IMAGE_FAILURE d24ce319-5a9e-4af6-b492-e80c9d8899f4: Exception: Invalid image data
+READER_IMAGE_FAILURE b8abd85e-d7c7-4df6-b32b-f624b5fcc7d4: Exception: Invalid image data
+READER_IMAGE_FAILURE d24ce319-5a9e-4af6-b492-e80c9d8899f4: Exception: Invalid image data
+READER_IMAGE_FAILURE b8abd85e-d7c7-4df6-b32b-f624b5fcc7d4: Exception: Invalid image data
+READER_IMAGE_FAILURE c9398417-3650-4359-9b57-7538f958f419: Exception: Invalid image data
+READER_IMAGE_FAILURE d24ce319-5a9e-4af6-b492-e80c9d8899f4: Exception: Invalid image data
+READER_IMAGE_FAILURE b8abd85e-d7c7-4df6-b32b-f624b5fcc7d4: Exception: Invalid image data
+READER_IMAGE_FAILURE c9398417-3650-4359-9b57-7538f958f419: Exception: Invalid image data
+READER_IMAGE_FAILURE d24ce319-5a9e-4af6-b492-e80c9d8899f4: Exception: Invalid image data
+READER_IMAGE_FAILURE b8abd85e-d7c7-4df6-b32b-f624b5fcc7d4: Exception: Invalid image data
+READER_IMAGE_FAILURE c9398417-3650-4359-9b57-7538f958f419: Exception: Invalid image data
+READER_IMAGE_FAILURE b8abd85e-d7c7-4df6-b32b-f624b5fcc7d4: Exception: Invalid image data
+READER_IMAGE_FAILURE c9398417-3650-4359-9b57-7538f958f419: Exception: Invalid image data
+READER_ERRORS_VERIFIED:{"failed_pack":"b693595b-b67e-4aff-b945-e20e56c28549","good_pack":"327c6638-1e4b-4639-a18f-3d138a09eef9","failed_progress":null,"recent":["327c6638-1e4b-4639-a18f-3d138a09eef9"],"modes":["missing","corrupt"]}
+00:22 +1: (tearDownAll)
+00:23 +1: All tests passed!

@@ -1,0 +1,12 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart
+00:00 +0: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:56463/p0/2
+00:00 +1: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:01 +2: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:56470/p0/2
+00:01 +3: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:01 +4: All tests passed!

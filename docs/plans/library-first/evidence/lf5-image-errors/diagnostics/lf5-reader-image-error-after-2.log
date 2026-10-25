@@ -1,0 +1,218 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart
+00:00 +0: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:56361/p0/2
+Pending timers:
+Timer (duration: 0:00:15.000000, periodic: false), created:
+#0      new FakeTimer._ (package:fake_async/fake_async.dart:342:62)
+#1      FakeAsync._createTimer (package:fake_async/fake_async.dart:260:29)
+#2      FakeAsync.run.<anonymous closure> (package:fake_async/fake_async.dart:185:15)
+#5      _HttpClientConnection.startTimer (dart:_http/http_impl.dart:2552:18)
+#6      _ConnectionTarget.returnConnection (dart:_http/http_impl.dart:2619:16)
+#7      _HttpClient._returnConnection (dart:_http/http_impl.dart:3126:41)
+#8      _HttpClientConnection.send.<anonymous closure>.<anonymous closure>.<anonymous closure> (dart:_http/http_impl.dart:2375:29)
+#22     FakeAsync.run.<anonymous closure>.<anonymous closure> (package:fake_async/fake_async.dart:189:18)
+#23     FakeAsync.flushMicrotasks (package:fake_async/fake_async.dart:200:32)
+#24     FakeAsync._fireTimersWhile (package:fake_async/fake_async.dart:241:5)
+#25     FakeAsync.elapse (package:fake_async/fake_async.dart:141:5)
+#26     AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2254:28)
+#29     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#30     AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#31     WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#34     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#35     WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#36     main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart:95:21)
+<asynchronous suspension>
+#37     main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart:106:9)
+<asynchronous suspension>
+#38     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#39     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 20 frames from dart:async and package:stack_trace)
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+A Timer is still pending even after the widget tree was disposed.
+'package:flutter_test/src/binding.dart':
+Failed assertion: line 2543 pos 12: '!timersPending'
+
+When the exception was thrown, this was the stack:
+#2      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2543:12)
+#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1974:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 3 frames from class _AssertionError and package:stack_trace)
+
+The test description was:
+  last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404) [E]
+  Test failed. See exception logs above.
+  The test description was: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+  
+00:00 +0 -1: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+Pending timers:
+Timer (duration: 0:00:15.000000, periodic: false), created:
+#0      new FakeTimer._ (package:fake_async/fake_async.dart:342:62)
+#1      FakeAsync._createTimer (package:fake_async/fake_async.dart:260:29)
+#2      FakeAsync.run.<anonymous closure> (package:fake_async/fake_async.dart:185:15)
+#5      _HttpClientConnection.startTimer (dart:_http/http_impl.dart:2552:18)
+#6      _ConnectionTarget.returnConnection (dart:_http/http_impl.dart:2619:16)
+#7      _HttpClient._returnConnection (dart:_http/http_impl.dart:3126:41)
+#8      _HttpClientConnection.send.<anonymous closure>.<anonymous closure>.<anonymous closure> (dart:_http/http_impl.dart:2375:29)
+#22     FakeAsync.run.<anonymous closure>.<anonymous closure> (package:fake_async/fake_async.dart:189:18)
+#23     FakeAsync.flushMicrotasks (package:fake_async/fake_async.dart:200:32)
+#24     FakeAsync._fireTimersWhile (package:fake_async/fake_async.dart:241:5)
+#25     FakeAsync.elapse (package:fake_async/fake_async.dart:141:5)
+#26     AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2254:28)
+#29     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#30     AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#31     WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#34     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#35     WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#36     main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart:95:21)
+<asynchronous suspension>
+#37     main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart:106:9)
+<asynchronous suspension>
+#38     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#39     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 20 frames from dart:async and package:stack_trace)
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+A Timer is still pending even after the widget tree was disposed.
+'package:flutter_test/src/binding.dart':
+Failed assertion: line 2543 pos 12: '!timersPending'
+
+When the exception was thrown, this was the stack:
+#2      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2543:12)
+#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1974:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 3 frames from class _AssertionError and package:stack_trace)
+
+The test description was:
+  last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -2: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200) [E]
+  Test failed. See exception logs above.
+  The test description was: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+  
+00:01 +0 -2: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:56365/p0/2
+Pending timers:
+Timer (duration: 0:00:15.000000, periodic: false), created:
+#0      new FakeTimer._ (package:fake_async/fake_async.dart:342:62)
+#1      FakeAsync._createTimer (package:fake_async/fake_async.dart:260:29)
+#2      FakeAsync.run.<anonymous closure> (package:fake_async/fake_async.dart:185:15)
+#5      _HttpClientConnection.startTimer (dart:_http/http_impl.dart:2552:18)
+#6      _ConnectionTarget.returnConnection (dart:_http/http_impl.dart:2619:16)
+#7      _HttpClient._returnConnection (dart:_http/http_impl.dart:3126:41)
+#8      _HttpClientConnection.send.<anonymous closure>.<anonymous closure>.<anonymous closure> (dart:_http/http_impl.dart:2375:29)
+#22     FakeAsync.run.<anonymous closure>.<anonymous closure> (package:fake_async/fake_async.dart:189:18)
+#23     FakeAsync.flushMicrotasks (package:fake_async/fake_async.dart:200:32)
+#24     FakeAsync._fireTimersWhile (package:fake_async/fake_async.dart:241:5)
+#25     FakeAsync.elapse (package:fake_async/fake_async.dart:141:5)
+#26     AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2254:28)
+#29     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#30     AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#31     WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#34     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#35     WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#36     main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart:95:21)
+<asynchronous suspension>
+#37     main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart:106:9)
+<asynchronous suspension>
+#38     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#39     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 20 frames from dart:async and package:stack_trace)
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+A Timer is still pending even after the widget tree was disposed.
+'package:flutter_test/src/binding.dart':
+Failed assertion: line 2543 pos 12: '!timersPending'
+
+When the exception was thrown, this was the stack:
+#2      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2543:12)
+#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1974:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 3 frames from class _AssertionError and package:stack_trace)
+
+The test description was:
+  last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -3: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404) [E]
+  Test failed. See exception logs above.
+  The test description was: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404)
+  
+00:01 +0 -3: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+Pending timers:
+Timer (duration: 0:00:15.000000, periodic: false), created:
+#0      new FakeTimer._ (package:fake_async/fake_async.dart:342:62)
+#1      FakeAsync._createTimer (package:fake_async/fake_async.dart:260:29)
+#2      FakeAsync.run.<anonymous closure> (package:fake_async/fake_async.dart:185:15)
+#5      _HttpClientConnection.startTimer (dart:_http/http_impl.dart:2552:18)
+#6      _ConnectionTarget.returnConnection (dart:_http/http_impl.dart:2619:16)
+#7      _HttpClient._returnConnection (dart:_http/http_impl.dart:3126:41)
+#8      _HttpClientConnection.send.<anonymous closure>.<anonymous closure>.<anonymous closure> (dart:_http/http_impl.dart:2375:29)
+#22     FakeAsync.run.<anonymous closure>.<anonymous closure> (package:fake_async/fake_async.dart:189:18)
+#23     FakeAsync.flushMicrotasks (package:fake_async/fake_async.dart:200:32)
+#24     FakeAsync._fireTimersWhile (package:fake_async/fake_async.dart:241:5)
+#25     FakeAsync.elapse (package:fake_async/fake_async.dart:141:5)
+#26     AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2254:28)
+#29     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#30     AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#31     WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#34     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#35     WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#36     main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart:95:21)
+<asynchronous suspension>
+#37     main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart:106:9)
+<asynchronous suspension>
+#38     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#39     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 20 frames from dart:async and package:stack_trace)
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+A Timer is still pending even after the widget tree was disposed.
+'package:flutter_test/src/binding.dart':
+Failed assertion: line 2543 pos 12: '!timersPending'
+
+When the exception was thrown, this was the stack:
+#2      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2543:12)
+#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1974:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 3 frames from class _AssertionError and package:stack_trace)
+
+The test description was:
+  last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -4: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200) [E]
+  Test failed. See exception logs above.
+  The test description was: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+  
+00:01 +0 -4: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
