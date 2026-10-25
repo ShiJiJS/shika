@@ -1,5 +1,7 @@
 # LF5 图包阅读器（实施中）
 
+最新补充为文末 PR #56：失败末张跳过、明确末尾与短横屏操作已接线并通过固定源码三轮。以下按阶段保留历史记录，完整异常、性能与目标环境范围仍继续。
+
 对应 [#30](https://github.com/ShiJiJS/video_viewer/issues/30) / [草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)，基于 LF4 / [草稿PR #38](https://github.com/ShiJiJS/video_viewer/pull/38)。`cb02a67` 接入服务端阅读模块，`278a774` / `91f1112` 已让Flutter图包卡片进入真实阅读器，支持横翻/纵向/总览/沉浸与逐包续读。最近图包列表现已接入，完整异常/来源组合和大图性能仍待收口，本阶段继续实施。
 
 ## 已接入的阅读状态
@@ -82,3 +84,13 @@ PageView不再另注册与图片竞争的水平拖动；直接滚动时保持图
 - 全局默认设置界面与正式备份v2、全域恢复隔离由LF7收口；快速整理由LF6实施。
 
 原型继续独立锁定在 `design/reference/`，没有为实现修改原型。真实NAS/正式服务未改，未发布升级APK。
+
+## 2026-10-26：失败末张与横屏错误操作（PR #56）
+
+[Draft PR #56](https://github.com/ShiJiJS/video_viewer/pull/56) 基于 #55，固定源码 `e68f487`，证据提交 `fc97f17`。原型 advance(1) 越过末张会进入 finished；App 原来把“跳过这一张”截回失败末张，且禁用了末张“下一张”。现已接到原生现有本包末尾页，可返回末张/来源，只有明确点击下一包才切换原固定范围；失败图片没有首帧，不写opened、最近、进度或完成状态。
+
+沉浸中到达末尾显示工具，返回动作在黑色画布用白色保持可读。真实844横屏发现17像素溢出，失败/末尾区改为短视口可滚动，保留字体和操作。五项真实HTTP 404/HTTP200非图片解码及完整阅读路由检查回放旧生产代码全部失败，修正后通过。
+
+完整客户端456项、analyze和新夹具/脚本Ruff lint通过。客户端全集在bc3c9fb执行，lib/test树与最终源码相同，最后仅改取证滚动；服务端生产树未改，402项全集沿用#55且本段未重跑。固定源码三轮（360双倍字号37.84秒、390普通36.09秒、844横屏38.74秒）通过，18张实际前台截图、六张源PNG前后SHA、原始轨迹及独立SQL投影保存，253份manifest输入已复核。SQL证实异常包没有progress行、recent只有手动进入且真实显示首帧的正常包。旧源码成功、17像素溢出、测试等待/取证偏移等开发记录单独保留。
+
+[设计与边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-reader-image-errors/docs/plans/library-first/LF5-IMAGE-ERROR-DESIGN.md) / [固定源码及证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-reader-image-errors/docs/plans/library-first/evidence/lf5-image-errors/README.md)。本段补PKG-03、READ-01/02/04/05、UI-04/05的失败末张路径，不关闭整项。其余图片错误码/连接恢复/迟到图片、500页4K/8K性能、全原型与目标手机/NAS、原签名发布仍开放；本段使用MemoryCredentialStore，不作为强杀/安全存储证明。生产backup_v2仍关闭，冻结原型树1cbf605独立可移除；未改正式8760/NAS/SDK或发布APK。LF5/#30、LF8/#33及总任务/#24继续开放。
