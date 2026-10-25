@@ -227,7 +227,20 @@ void main() {
     f.postRelease!.complete();
     await assertion;
     final fresh = f.repo.createPackRestorePlans();
-    expect((await fresh.receipt(command))!.requestId, 'late');
+    expect(await fresh.pending(), isEmpty);
+    final history = f.repo.createMaintenanceTasks();
+    final receipt = (await history.pending()).single;
+    expect(receipt.historical, isTrue);
+    expect(receipt.requestId, 'late');
+    expect((await history.reconcile(receipt))!.historical, isTrue);
+    expect(
+      (await f.repo.packFileJournal.restorePending(f.scope))
+          .single
+          .command
+          .requestId,
+      'late',
+    );
+    history.dispose();
     expect(
       f.server.writes
           .where((v) => v.path.endsWith('/pack-restore-plans'))

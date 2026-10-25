@@ -11,6 +11,7 @@ import 'server_backups.dart';
 import 'models.dart';
 import 'repository.dart';
 import 'server_api.dart';
+import 'scoped_journal.dart';
 
 part 'server_pack_catalog.dart';
 part 'server_pack_reading.dart';
@@ -24,6 +25,17 @@ typedef Json = Map<String, dynamic>;
 
 Json object(Object? value) => Map<String, dynamic>.from(value as Map);
 List<Json> rows(Json value) => (value['items'] as List).map(object).toList();
+
+class _ScopedBackupWork implements BackupWorkStore {
+  _ScopedBackupWork(this.book, this.scope);
+  final ScopedJournal book;
+  final String scope;
+  @override
+  Future<String?> read() => book.read(scope);
+  @override
+  Future<void> write(String value) => book.write(scope, value);
+}
+
 String requestId() =>
     '${DateTime.now().microsecondsSinceEpoch}-${Random.secure().nextInt(1 << 32).toRadixString(16)}';
 
@@ -53,6 +65,14 @@ class ServerLibraryRepository extends LibraryRepository
          port: port,
          connected: false,
        ) {
+    _videoBook = ScopedJournal(
+      readText: this.fileCommands.read,
+      writeText: this.fileCommands.write,
+    );
+    _backupBook = ScopedJournal(
+      readText: this.backupWork.read,
+      writeText: this.backupWork.write,
+    );
     libraryPreparation.value = const LibraryPreparation(ready: false);
     packFileJournal.onChanged = publish;
   }
@@ -239,6 +259,11 @@ class ServerLibraryRepository extends LibraryRepository
   }
 
   final BackupWorkStore backupWork;
+  late final ScopedJournal _videoBook, _backupBook;
+  Future<void>? _authorityRecovery;
+  Future<void> get managementSynchronization =>
+      _authorityRecovery ?? Future.value();
+  bool _backupJournalError = false;
   ServiceCapabilities _capabilities = const ServiceCapabilities.legacy();
   @override
   ServiceCapabilities get capabilities => _capabilities;
@@ -249,6 +274,12 @@ class ServerLibraryRepository extends LibraryRepository
   Object get connectionIdentity => _api ?? this;
   @override
   void ensureNotRestoring() {
+    if (_authorityRecovery != null || _connectingGeneration != null) {
+      throw const LibraryFailure('正在读取当前媒体库，请稍后重新操作');
+    }
+    if (_packJournalError || _backupJournalError) {
+      throw const LibraryFailure('本机操作日志无法读取，请先核对操作任务；原记录已保留');
+    }
     if (backupRestorePending) throw const LibraryFailure('恢复结果尚未确认，请先查询结果');
   }
 
@@ -328,12 +359,14 @@ class ServerLibraryRepository extends LibraryRepository
   String? _connectionError;
   @override
   String? get connectionError => _connectionError;
+  bool sameMediaConnection(MediaSource source, ServerApi target) =>
+      source.headers['Authorization'] ==
+          target.authorization['Authorization'] &&
+      source.headers['X-Management-Epoch'] == target.managementEpoch;
   @override
   Future<String?> playbackFailure(MediaSource source) async {
     final target = _api;
-    if (target == null ||
-        source.headers['Authorization'] !=
-            target.authorization['Authorization']) {
+    if (target == null || !sameMediaConnection(source, target)) {
       return null;
     }
     final generation = _generation;
@@ -363,8 +396,7 @@ class ServerLibraryRepository extends LibraryRepository
   Future<void> mediaUnauthorized(MediaSource source) async {
     if (_connectingGeneration == null &&
         _api != null &&
-        source.headers['Authorization'] ==
-            _api!.authorization['Authorization']) {
+        sameMediaConnection(source, _api!)) {
       await expire();
     }
   }
@@ -502,8 +534,8 @@ class ServerLibraryRepository extends LibraryRepository
     }
   }
 
-  Future<void> expire() async {
-    _connectionError = '连接凭据已失效，请重新输入口令';
+  Future<void> expire({String? message, bool clearCredentials = true}) async {
+    _connectionError = message ?? '连接凭据已失效，请重新输入口令';
     _generation++;
     cancelVideoRead();
     cancelFolderRead();
@@ -523,6 +555,8 @@ class ServerLibraryRepository extends LibraryRepository
     _capabilities = const ServiceCapabilities.legacy();
     _backups?.dispose();
     _backups = null;
+    _fileScope = null;
+    _fileState = {};
     backupStatus.value = null;
     _videos.clear();
     _directories.clear();
@@ -543,7 +577,116 @@ class ServerLibraryRepository extends LibraryRepository
       clearDelete: true,
     );
     publish();
-    await writeCredentials(credentials.clear);
+    if (clearCredentials) await writeCredentials(credentials.clear);
+  }
+
+  String commandScope(ConnectionCredentials session) => jsonEncode([
+    session.endpoint.toString(),
+    session.serverId,
+    if ((session.managementEpoch ?? session.localGeneration) != null)
+      session.managementEpoch ?? session.localGeneration,
+  ]);
+
+  Future<ConnectionCredentials> currentCredentials(
+    ConnectionCredentials session,
+    ServerApi target, {
+    ConnectionCredentials? previous,
+    bool explicit = false,
+  }) async {
+    String? local;
+    if (target.managementEpoch == null) {
+      final same =
+          previous != null &&
+          previous.endpoint == session.endpoint &&
+          previous.serverId == session.serverId;
+      if (!explicit && same && previous.localGeneration != null) {
+        local = previous.localGeneration;
+      } else {
+        var fresh = same && (explicit || previous.managementEpoch != null);
+        if (!fresh) {
+          final base = jsonEncode([
+            session.endpoint.toString(),
+            session.serverId,
+          ]);
+          try {
+            final scopes = {
+              ...(await _videoBook.entries(base)).keys,
+              ...(await _backupBook.entries(base)).keys,
+              ...await packFileJournal.serverScopes(base),
+            };
+            fresh = scopes.any((v) => !isLegacyScope(v));
+          } catch (_) {
+            fresh = true;
+          }
+        }
+        if (fresh) {
+          final random = Random.secure();
+          local = List.generate(
+            16,
+            (_) => random.nextInt(256).toRadixString(16).padLeft(2, '0'),
+          ).join();
+        }
+      }
+    }
+    return ConnectionCredentials(
+      endpoint: session.endpoint,
+      token: session.token,
+      serverId: session.serverId,
+      expiresAt: session.expiresAt,
+      managementEpoch: target.managementEpoch,
+      localGeneration: local,
+    );
+  }
+
+  void managementChanged(ServerApi target) {
+    if (_disposed || !identical(target, _api) || _authorityRecovery != null) {
+      return;
+    }
+    final work = recoverAuthority(target);
+    _authorityRecovery = work;
+    work.then(
+      (_) {
+        if (identical(_authorityRecovery, work)) {
+          _authorityRecovery = null;
+          publish();
+        }
+      },
+      onError: (Object error, StackTrace stack) {
+        if (identical(_authorityRecovery, work)) {
+          _authorityRecovery = null;
+          publish();
+        }
+      },
+    );
+  }
+
+  Future<void> recoverAuthority(ServerApi target) async {
+    if (_disposed || !identical(target, _api)) throw const RequestCancelled();
+    final invalidatedGeneration = _generation + 1;
+    await expire(
+      message: '管理数据已恢复，正在重新读取媒体库；旧操作保留在任务中心',
+      clearCredentials: false,
+    );
+    var expected = invalidatedGeneration;
+    for (var attempt = 0; attempt < 3; attempt++) {
+      if (_disposed || expected != _generation) throw const RequestCancelled();
+      final next = expected + 1;
+      try {
+        await initialize();
+        return;
+      } catch (error) {
+        if (_disposed || _generation != next) throw const RequestCancelled();
+        expected = next;
+        if (error is ApiFailure &&
+            error.code == 'management_changed' &&
+            attempt < 2) {
+          continue;
+        }
+        _connectionError = '管理数据已恢复，重新读取未完成；旧操作已保留，请重新连接';
+        publish();
+        rethrow;
+      }
+    }
   }
 
   Future<void> writeCredentials(
@@ -619,14 +762,24 @@ class ServerLibraryRepository extends LibraryRepository
         await writeCredentials(credentials.clear, generation: generation);
         throw const LibraryFailure('服务实例或版本已变化，请重新连接');
       }
+      candidate.bindAuthority(info);
+      final session = await currentCredentials(
+        saved,
+        candidate,
+        previous: saved,
+      );
       await synchronize(
         candidate,
         generation,
         allowConnection: true,
+        beforePublish: () => writeCredentials(
+          () => credentials.save(session),
+          generation: generation,
+        ),
         capabilities: ServiceCapabilities.fromInfo(info),
       );
-      await activateFileCommands(saved);
-      await activateBackupWork(saved);
+      await activateFileCommands(session);
+      await activateBackupWork(session);
     } on ApiFailure catch (error) {
       if (error.status == 401 && generation == _generation) {
         await writeCredentials(credentials.clear, generation: generation);
@@ -656,14 +809,21 @@ class ServerLibraryRepository extends LibraryRepository
       candidate.token = login['access_token'] as String;
       final info = await candidate.json('GET', '/api/v1/info');
       if (info['api_version'] != 1) throw const LibraryFailure('服务版本不兼容');
-      final session = ConnectionCredentials(
-        endpoint: location,
-        token: candidate.token,
-        serverId: info['server_id'] as String,
-        expiresAt: DateTime.fromMillisecondsSinceEpoch(
-          ((login['expires_at'] as num) * 1000).round(),
-          isUtc: true,
+      candidate.bindAuthority(info);
+      final session = await currentCredentials(
+        ConnectionCredentials(
+          endpoint: location,
+          token: candidate.token,
+          serverId: info['server_id'] as String,
+          managementEpoch: candidate.managementEpoch,
+          expiresAt: DateTime.fromMillisecondsSinceEpoch(
+            ((login['expires_at'] as num) * 1000).round(),
+            isUtc: true,
+          ),
         ),
+        candidate,
+        previous: await credentials.read(),
+        explicit: true,
       );
       await synchronize(
         candidate,
@@ -879,6 +1039,7 @@ class ServerLibraryRepository extends LibraryRepository
       _session = requestId();
     }
     _api = target;
+    target.onManagementChanged = () => managementChanged(target);
     if (capabilities != null) _capabilities = capabilities;
     if (_round != null && _round!['id'] != round['id']) {
       ++_scopeGeneration;
@@ -1634,41 +1795,63 @@ class ServerLibraryRepository extends LibraryRepository
   }
 
   Future<void> saveFileState(Json next) async {
-    await fileCommands.write(jsonEncode(next));
-    _fileState = next;
-  }
-
-  Future<void> activateFileCommands(
-    ConnectionCredentials session,
-  ) => serializeFiles(() async {
-    final scope = jsonEncode([session.endpoint.toString(), session.serverId]);
-    final text = await fileCommands.read();
-    if (_api?.token != session.token) throw const RequestCancelled();
-    Json saved = {};
-    if (text != null) {
-      try {
-        saved = object(jsonDecode(text));
-      } catch (_) {
-        /* Ignore invalid local receipts. */
-      }
-    }
-    _fileScope = scope;
-    _fileState = saved['scope'] == scope ? saved : {'scope': scope};
+    final scope = next['scope'];
+    if (scope is! String) throw const RequestCancelled();
     try {
-      await packFileJournal.pending(scope);
-      await packFileJournal.restorePending(scope);
-      await packFileJournal.purgeSelections(scope);
-      _packJournalError = false;
+      await _videoBook.write(scope, jsonEncode(next));
     } catch (_) {
       _packJournalError = true;
+      publish();
+      rethrow;
     }
-    final last = _fileState['lastDelete'];
-    _state = _state.copy(
-      clearDelete: last == null,
-      lastDelete: last == null ? null : DeleteOperation.fromJson(object(last)),
-    );
-    publish();
-  });
+    if (_fileScope == scope) _fileState = next;
+  }
+
+  Future<void> activateFileCommands(ConnectionCredentials session) =>
+      serializeFiles(() async {
+        final generation = _generation, target = _api;
+        final scope = commandScope(session);
+        if (generation != _generation ||
+            !identical(target, _api) ||
+            _api?.token != session.token) {
+          throw const RequestCancelled();
+        }
+        _fileScope = scope;
+        _fileState = {'scope': scope};
+        try {
+          final text = await _videoBook.read(scope);
+          if (generation != _generation || !identical(target, _api)) {
+            throw const RequestCancelled();
+          }
+          if (text != null) _fileState = object(jsonDecode(text));
+          await packFileJournal.pending(scope);
+          await packFileJournal.restorePending(scope);
+          await packFileJournal.purgeSelections(scope);
+          await packFileJournal.missingPending(scope);
+          for (final previous in await packFileJournal.serverScopes(scope)) {
+            if (previous != scope) {
+              await packFileJournal.historicalPurgeSelections(previous);
+              await packFileJournal.historicalMissing(previous);
+            }
+          }
+          if (generation != _generation || !identical(target, _api)) {
+            throw const RequestCancelled();
+          }
+          _packJournalError = false;
+        } on RequestCancelled {
+          rethrow;
+        } catch (_) {
+          _packJournalError = true;
+        }
+        final last = _fileState['lastDelete'];
+        _state = _state.copy(
+          clearDelete: last == null,
+          lastDelete: last == null
+              ? null
+              : DeleteOperation.fromJson(object(last)),
+        );
+        publish();
+      });
 
   Future<Json> operation(String path, Json body, {String? idempotency}) {
     ensureNotRestoring();
@@ -1678,6 +1861,7 @@ class ServerLibraryRepository extends LibraryRepository
         throw const RequestCancelled();
       }
       final old = _fileState['pending'];
+      final fresh = old == null;
       final signature = jsonEncode([path, body]);
       if (old != null && object(old)['signature'] != signature) {
         throw const LibraryFailure('上次文件操作的结果尚未确认，请先查询结果');
@@ -1704,7 +1888,7 @@ class ServerLibraryRepository extends LibraryRepository
         });
         publish();
       }
-      return runFileCommand(target, generation, submit: true);
+      return runFileCommand(target, generation, submit: fresh);
     });
   }
 
@@ -1770,12 +1954,11 @@ class ServerLibraryRepository extends LibraryRepository
       } on ApiFailure catch (error) {
         // Unknown response remains pending. Reopening only queries; it never
         // replays a destructive command into a restored or different database.
-        if ((!submit && error.status == 404) ||
-            (submit &&
-                error.status != null &&
-                error.status! >= 400 &&
-                error.status! < 500 &&
-                ![408, 429].contains(error.status))) {
+        if (submit &&
+            error.status != null &&
+            error.status! >= 400 &&
+            error.status! < 500 &&
+            ![408, 429].contains(error.status)) {
           check();
           await saveFileState({..._fileState}..remove('pending'));
           fileStatus.value = null;
@@ -1800,10 +1983,7 @@ class ServerLibraryRepository extends LibraryRepository
       } on ApiFailure catch (error) {
         if (!submit && error.status == 404) {
           check();
-          await saveFileState({..._fileState}..remove('pending'));
-          fileStatus.value = null;
-          publish();
-          throw const LibraryFailure('原任务已不存在，请核对文件状态后重新操作；未重复执行');
+          throw const LibraryFailure('原任务暂未找到，原记录已保留；未重复执行，请继续核对');
         }
         rethrow;
       }
@@ -2315,8 +2495,8 @@ class ServerLibraryRepository extends LibraryRepository
     late final ServerBackups client;
     client = ServerBackups(
       api: target,
-      scope: jsonEncode([session.endpoint.toString(), session.serverId]),
-      store: backupWork,
+      scope: commandScope(session),
+      store: _ScopedBackupWork(_backupBook, commandScope(session)),
       status: backupStatus,
       onChanged: () {
         if (!_disposed &&
@@ -2331,43 +2511,48 @@ class ServerLibraryRepository extends LibraryRepository
             !identical(target, _api)) {
           throw const RequestCancelled();
         }
-        if (_fileScope != null) {
-          await packFileJournal.historicalPurgeSelections(_fileScope!);
-          await packFileJournal.historicalMissing(_fileScope!);
+        final work = _authorityRecovery;
+        if (work != null) {
+          await work;
+          return;
         }
-        await serializeFiles(() => saveFileState({'scope': _fileScope}));
-        _scanRead.cancel();
-        _scanTask = null;
-        scanStatus.value = null;
-        await synchronize(
-          target,
-          generation,
-          beforePublish: () async {
-            _resetReaders();
-            cancelVideoTagRead();
-            cancelPackTagNamesRead();
-            cancelVideoSelection();
-            cancelPackSelection();
-            cancelVideoRead();
-            cancelFolderRead();
-            cancelTrashRead();
-            cancelMissingRead();
-            _videos.clear();
-            _directories.clear();
-            _trashIds.clear();
-            _retryKeys.clear();
-            _tagRetryKeys.clear();
-            _pendingRound = null;
-            _pendingRoundSignature = null;
-            _session = requestId();
-            _state = _state.copy(clearDelete: true);
-          },
-        );
+        if (target.managementEpoch == null) {
+          // A confirmed restore on a legacy service has no remote epoch.
+          // Retire its whole local generation instead of erasing old receipts.
+          final saved = await credentials.read();
+          if (saved == null ||
+              generation != _generation ||
+              !identical(target, _api)) {
+            throw const RequestCancelled();
+          }
+          final next = await currentCredentials(
+            saved,
+            target,
+            previous: saved,
+            explicit: true,
+          );
+          await writeCredentials(
+            () => credentials.save(next),
+            generation: generation,
+          );
+        }
+        await recoverAuthority(target);
         _scanAfterRestore = !libraryPreparation.value.ready;
       },
     );
     _backups = client;
-    await client.initialize();
+    try {
+      await client.initialize();
+      if (generation != _generation || !identical(_backups, client)) {
+        throw const RequestCancelled();
+      }
+      _backupJournalError = false;
+    } on RequestCancelled {
+      rethrow;
+    } catch (_) {
+      _backupJournalError = true;
+      rethrow;
+    }
   }
 
   Future<T> backupAction<T>(
@@ -2382,6 +2567,7 @@ class ServerLibraryRepository extends LibraryRepository
       if (!_disposed &&
           generation == _generation &&
           identical(_backups, client)) {
+        if (!client.storageHealthy) _backupJournalError = true;
         backupStatus.value = error.toString();
         if (error is ApiFailure && error.status == 401) await expire();
       }

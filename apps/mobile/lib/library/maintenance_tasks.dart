@@ -18,7 +18,36 @@ double _time(Object? value) =>
 
 class MaintenanceTask {
   MaintenanceTask(Map<String, dynamic> raw)
-    : id = _text(raw['id']),
+    : _raw = Map.unmodifiable({
+        for (final key in const [
+          'id',
+          'kind',
+          'status',
+          'phase',
+          'family',
+          'state',
+          'historical',
+          'needs_attention',
+          'created_at',
+          'finished_at',
+          'error',
+          'total',
+          'processed',
+          'succeeded',
+          'failed',
+          'skipped',
+          'stopped',
+          'remaining',
+          'root_issues',
+          'pages_total',
+          'pages_deleted',
+          'pages_pending',
+          'pack_total',
+          'pack_processed',
+        ])
+          key: raw[key],
+      }),
+      id = _text(raw['id']),
       kind = _text(raw['kind']),
       status = _text(raw['status']),
       phase = _text(raw['phase']),
@@ -93,6 +122,10 @@ class MaintenanceTask {
     }
   }
   final String id, kind, status, phase, family, state;
+  final Map<String, dynamic> _raw;
+  MaintenanceTask asHistorical() => historical
+      ? this
+      : MaintenanceTask({..._raw, 'historical': true, 'state': 'historical'});
   final bool historical, needsAttention;
   final double createdAt;
   final double? finishedAt;
@@ -222,6 +255,8 @@ class MaintenanceReceipt {
     this.restoreCommand,
     this.purgeSelectionId,
     this.historical = false,
+    this.journalScope,
+    this.historyFiles,
   });
   final String id, requestId, title, kind;
   final MaintenanceReceiptSource source;
@@ -230,6 +265,8 @@ class MaintenanceReceipt {
   final RestorePlanCommand? restoreCommand;
   final String? purgeSelectionId;
   final bool historical;
+  final String? journalScope;
+  final PackFiles? historyFiles;
   String get family =>
       [
         MaintenanceReceiptSource.restorePlan,
@@ -262,4 +299,55 @@ abstract interface class MaintenanceTaskCatalog {
   Future<String> downloadBackup(String id);
   Future<void> backupSaved(String id);
   void dispose();
+}
+
+/// A history detail stays read-only on every refresh, even if the legacy
+/// service only exposes a surviving task through its current metadata routes.
+class HistoricalTaskCatalog implements MaintenanceTaskCatalog {
+  HistoricalTaskCatalog(this.inner);
+  final MaintenanceTaskCatalog inner;
+  @override
+  bool get isCurrent => inner.isCurrent;
+  @override
+  Future<MaintenanceTask> task(String id) async =>
+      (await inner.task(id)).asHistorical();
+  @override
+  Future<CatalogPage<MaintenanceTask>> page({
+    int offset = 0,
+    int limit = 24,
+    String family = 'all',
+    String state = 'all',
+  }) async {
+    final value = await inner.page(
+      offset: offset,
+      limit: limit,
+      family: family,
+      state: state,
+    );
+    return CatalogPage(
+      items: value.items.map((v) => v.asHistorical()),
+      total: value.total,
+      offset: value.offset,
+      limit: value.limit,
+    );
+  }
+
+  @override
+  Future<CatalogPage<MaintenanceItem>> items(
+    String id, {
+    int offset = 0,
+    int limit = 24,
+    bool unfinished = true,
+  }) => inner.items(id, offset: offset, limit: limit, unfinished: unfinished);
+  @override
+  Future<List<MaintenanceReceipt>> pending() async => const [];
+  @override
+  Future<MaintenanceTask?> reconcile(MaintenanceReceipt receipt) async =>
+      throw const LibraryFailure('请从原历史记录查询任务');
+  @override
+  Future<String> downloadBackup(String id) => inner.downloadBackup(id);
+  @override
+  Future<void> backupSaved(String id) async {}
+  @override
+  void dispose() {}
 }

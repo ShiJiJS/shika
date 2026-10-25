@@ -7,6 +7,7 @@ import 'models.dart';
 import 'pack_reading.dart';
 import 'pack_missing.dart';
 import 'server_api.dart';
+import 'scoped_journal.dart';
 
 part 'pack_restore_plans.dart';
 part 'pack_purge_selections.dart';
@@ -614,6 +615,28 @@ class PackFileJournal {
   PackFileJournal(this.store);
   final FileCommandStore store;
   void Function()? onChanged;
+  Future<List<String>> serverScopes(String current) => _edit(current, (rows) {
+    final scopes = <String>{current};
+    for (final name in [
+      'scopes',
+      RestorePlanJournal.namespace,
+      'purge_selections_v1',
+      _missingNamespace,
+    ]) {
+      for (final key in _map(_book![name] ?? <String, dynamic>{}).keys) {
+        if (sameServerScope(key, current)) scopes.add(key);
+      }
+    }
+    return scopes.toList()..sort(
+      (a, b) => a == b
+          ? 0
+          : a == current
+          ? -1
+          : b == current
+          ? 1
+          : a.compareTo(b),
+    );
+  }, write: false);
   int? cachedCount(String scope) {
     if (_book == null) return null;
     try {
@@ -778,6 +801,7 @@ class PackFiles {
     required this.scope,
     required this.call,
     required this.isCurrent,
+    this.readOnly = false,
     this.pollDelay = const Duration(milliseconds: 350),
   });
   final PackFileJournal journal;
@@ -785,6 +809,7 @@ class PackFiles {
   final PackFileCall call;
   final bool Function() isCurrent;
   final Duration pollDelay;
+  final bool readOnly;
   final Map<String, Future<PackFileTask>> _sending = {};
   final Map<String, String> _sendingSignatures = {};
   final Map<String, PackFileTask> _settled = {};
@@ -802,6 +827,7 @@ class PackFiles {
 
   Future<bool> canResend(PackFileCommand command) async {
     _check();
+    if (readOnly) return false;
     final identity = await journal.identity(scope, command.requestId);
     _check();
     return identity == null;
@@ -809,6 +835,7 @@ class PackFiles {
 
   Future<PackFileTask> send(PackFileCommand command) {
     _check();
+    if (readOnly) return Future.error(const LibraryFailure('这是恢复前的记录，只能查询原结果'));
     final active = _sending[command.requestId];
     if (active != null) {
       if (_sendingSignatures[command.requestId] != command.signature) {
@@ -872,7 +899,9 @@ class PackFiles {
     Map<String, dynamic> raw,
     Map<String, String> bindings,
   ) async {
-    final task = PackFileTask.fromJson(raw);
+    final task = PackFileTask.fromJson(
+      readOnly ? {...raw, 'historical': true} : raw,
+    );
     final expected = command.kind == 'retry'
         ? command.expectedTaskKind
         : 'pack_${command.kind}';
@@ -943,7 +972,8 @@ class PackFiles {
   }) async {
     var task = submit ? await send(command) : await receipt(command);
     final deadline = DateTime.now().add(timeout);
-    while (task != null &&
+    while (!readOnly &&
+        task != null &&
         !task.settled &&
         ['queued', 'running'].contains(task.status) &&
         (keepWaiting?.call() ?? true) &&
@@ -973,11 +1003,12 @@ class PackFiles {
     _check();
     _verified.remove(_settled.remove('task:$identity'));
     final bindings = await journal.bindings(scope);
+    final raw = await call(
+      'GET',
+      '/api/v1/pack-operations/${Uri.encodeComponent(_id(identity))}',
+    );
     final result = PackFileTask.fromJson(
-      await call(
-        'GET',
-        '/api/v1/pack-operations/${Uri.encodeComponent(_id(identity))}',
-      ),
+      readOnly ? {...raw, 'historical': true} : raw,
     );
     _check();
     if (result.id != identity) throw const LibraryFailure('图包任务身份不一致');

@@ -283,25 +283,22 @@ void main() {
       expect(repo.current!.id, 'v1');
     },
   );
-  test(
-    'a missing known task clears its local receipt without replaying deletion',
-    () async {
-      lose = true;
-      await expectLater(
-        repo.deleteVideos({'v1'}, requestId: 'missing-known'),
-        throwsA(anything),
-      );
-      taskRunning = true;
-      await repo.reconcileFileOperation();
-      taskMissing = true;
-      await expectLater(
-        repo.reconcileFileOperation(),
-        throwsA(isA<LibraryFailure>()),
-      );
-      expect(repo.fileOperationPending, isFalse);
-      expect(writes, hasLength(1));
-    },
-  );
+  test('a missing known task preserves its original receipt without replaying deletion', () async {
+    lose = true;
+    await expectLater(
+      repo.deleteVideos({'v1'}, requestId: 'missing-known'),
+      throwsA(anything),
+    );
+    taskRunning = true;
+    await repo.reconcileFileOperation();
+    taskMissing = true;
+    await expectLater(
+      repo.reconcileFileOperation(),
+      throwsA(isA<LibraryFailure>()),
+    );
+    expect(repo.fileOperationPending, isTrue);
+    expect(writes, hasLength(1));
+  });
   test(
     'retry after lost response keeps original command despite new UI nonce',
     () async {
@@ -311,7 +308,7 @@ void main() {
         throwsA(anything),
       );
       await repo.deleteVideos({'v1'}, requestId: 'second-ui-attempt');
-      expect(writes.map((w) => w['request_id']), ['first', 'first']);
+      expect(writes.map((w) => w['request_id']), ['first']);
       expect(receipts, hasLength(1));
     },
   );
@@ -376,10 +373,13 @@ void main() {
       await repo.initialize();
       await expectLater(repo.reconcileFileOperation(), throwsA(anything));
       expect(writes, hasLength(1));
-      expect(repo.fileOperationPending, isFalse);
+      expect(repo.fileOperationPending, isTrue);
       expect(states['v1'], 'trash');
-      await repo.deleteVideos({'v2'}, requestId: 'new-confirmation');
-      expect(writes.last['request_id'], 'new-confirmation');
+      await expectLater(
+        repo.deleteVideos({'v2'}, requestId: 'new-confirmation'),
+        throwsA(isA<LibraryFailure>()),
+      );
+      expect(writes, hasLength(1));
     },
   );
 

@@ -224,6 +224,7 @@ class PackPurgeSelections {
 
   Future<PackPurgeSelection> save(Iterable<String> selected) async {
     _check();
+    if (files.readOnly) throw const LibraryFailure('恢复前的选择只能查看或移除，请从当前媒体库重新选择');
     final ids = selected.map(_id).toSet().toList()..sort();
     final selectedIds = ids.toSet();
     if (ids.isEmpty || ids.length > 50000) {

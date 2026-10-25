@@ -55,9 +55,39 @@ class ServerApi {
   final HttpClient _client;
   bool _closed = false;
   final RequestScope _lifetime = RequestScope();
+  String? _managementEpoch;
+  bool _authorityBound = false, _authorityChanged = false;
+  void Function()? onManagementChanged;
+  String? get managementEpoch => _managementEpoch;
 
-  Map<String, String> get authorization =>
-      token.isEmpty ? {} : {'Authorization': 'Bearer $token'};
+  /// A transport is bound once. A replacement library needs a new transport,
+  /// leaving every old gateway and in-flight command on its captured epoch.
+  void bindAuthority(Map<String, dynamic> info) {
+    final supported = ServiceCapabilities.fromInfo(info).managementAuthority;
+    final value = supported ? info['management_epoch'] : null;
+    if (supported &&
+        (value is! String || !RegExp(r'^[a-f0-9]{32}$').hasMatch(value))) {
+      throw const ApiFailure('服务管理数据身份不完整，请重新连接', code: 'invalid_response');
+    }
+    if (_authorityBound && _managementEpoch != value) {
+      throw StateError('A ServerApi cannot adopt another management epoch');
+    }
+    _managementEpoch = value as String?;
+    _authorityBound = true;
+  }
+
+  void _changed() {
+    if (_authorityChanged) return;
+    _authorityChanged = true;
+    onManagementChanged?.call();
+  }
+
+  Map<String, String> get authorization => token.isEmpty
+      ? {}
+      : {
+          'Authorization': 'Bearer $token',
+          'X-Management-Epoch': ?_managementEpoch,
+        };
 
   Uri resolve(String path) {
     final uri = endpoint.resolve(path);
@@ -73,6 +103,7 @@ class ServerApi {
     Object? body,
     Map<String, dynamic>? query,
     RequestScope? scope,
+    bool originalReceipt = false,
   }) async {
     final response = await request(
       method,
@@ -80,6 +111,7 @@ class ServerApi {
       body: body == null ? null : utf8.encode(jsonEncode(body)),
       query: query,
       scope: scope,
+      originalReceipt: originalReceipt,
     );
     if (response.bytes.isEmpty) return {};
     try {
@@ -98,9 +130,24 @@ class ServerApi {
     Map<String, dynamic>? query,
     Map<String, String> headers = const {},
     RequestScope? scope,
+    bool originalReceipt = false,
     int maximumBytes = 2 * 1024 * 1024,
     Duration timeout = const Duration(seconds: 20),
   }) async {
+    if (originalReceipt &&
+        (method != 'GET' && method != 'HEAD' ||
+            body != null ||
+            !RegExp(
+              r'^/api/v1/(tasks/[^/]+|backup-requests/(export|inspect|restore)/[^/]+|backups/[^/]+/download)$',
+            ).hasMatch(path))) {
+      throw ArgumentError('Only an original read can cross a management epoch');
+    }
+    if (headers.keys.any((key) => key.toLowerCase() == 'x-management-epoch')) {
+      throw ArgumentError('The transport owns its management epoch');
+    }
+    if (_authorityChanged && !originalReceipt) {
+      throw const ApiFailure('管理数据已恢复，请重新读取当前媒体库', code: 'management_changed');
+    }
     final elapsed = Stopwatch()..start();
     Future<ApiResponse> attempt(Duration budget) => _requestOnce(
       method,
@@ -111,6 +158,7 @@ class ServerApi {
       scope: scope,
       maximumBytes: maximumBytes,
       timeout: budget,
+      originalReceipt: originalReceipt,
     );
     try {
       return await attempt(timeout);
@@ -137,6 +185,7 @@ class ServerApi {
     Map<String, dynamic>? query,
     Map<String, String> headers = const {},
     RequestScope? scope,
+    bool originalReceipt = false,
     int maximumBytes = 2 * 1024 * 1024,
     Duration timeout = const Duration(seconds: 20),
   }) async {
@@ -206,6 +255,7 @@ class ServerApi {
       );
       if (interruption != null) interrupt(interruption!);
       final bytes = await bodyDone.future;
+      ApiFailure? failure;
       if (response.statusCode < 200 || response.statusCode >= 300) {
         var code = 'http_${response.statusCode}';
         var message = response.statusCode == 401
@@ -219,12 +269,37 @@ class ServerApi {
         } catch (_) {
           // Proxy HTML and transport diagnostics are not shown as app content.
         }
-        throw ApiFailure(message, code: code, status: response.statusCode);
+        failure = ApiFailure(message, code: code, status: response.statusCode);
       }
       final responseHeaders = <String, String>{};
       response.headers.forEach(
         (key, values) => responseHeaders[key] = values.join(', '),
       );
+      if (failure?.status != 401 && _managementEpoch != null) {
+        final epoch = responseHeaders['x-management-epoch'];
+        if (failure?.code == 'management_changed' && !originalReceipt) {
+          _changed();
+          throw failure!;
+        }
+        if (epoch == null || !RegExp(r'^[a-f0-9]{32}$').hasMatch(epoch)) {
+          throw const ApiFailure(
+            '服务管理数据身份未能确认，请查询原操作后重试',
+            code: 'authority_unavailable',
+          );
+        }
+        if ((_authorityChanged || epoch != _managementEpoch) &&
+            !originalReceipt) {
+          _changed();
+          // A successful old write may have committed before a restore. Keep
+          // its receipt unknown rather than classifying this as rejected 409.
+          throw const ApiFailure(
+            '管理数据已恢复，原操作结果请到任务中心核对',
+            code: 'management_changed',
+          );
+        }
+      }
+      if (failure != null) throw failure;
+      if (_closed || scope?.cancelled == true) throw const RequestCancelled();
       return ApiResponse(response.statusCode, bytes, responseHeaders);
     } on RequestCancelled {
       rethrow;

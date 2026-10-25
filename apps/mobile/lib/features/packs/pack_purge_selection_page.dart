@@ -15,9 +15,11 @@ class PackPurgeSelectionPage extends StatefulWidget {
     super.key,
     required this.repository,
     required this.selectionId,
+    this.files,
   });
   final LibraryRepository repository;
   final String selectionId;
+  final PackFiles? files;
   @override
   State<PackPurgeSelectionPage> createState() => _PackPurgeSelectionPageState();
 }
@@ -33,7 +35,9 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
     super.initState();
     widget.repository.addListener(changed);
     try {
-      selections = PackPurgeSelections(widget.repository.createPackFiles());
+      selections = PackPurgeSelections(
+        widget.files ?? widget.repository.createPackFiles(),
+      );
       unawaited(load());
     } catch (failure) {
       error = packFileFailureMessage(failure);
@@ -114,7 +118,9 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
 
   Future<void> showResult(PackFileTask task) async {
     if (task.kind != 'pack_permanent') throw const LibraryFailure('原删除任务类型不一致');
-    if (task.settled && !task.result!.needsAttention) {
+    if (!selections!.files.readOnly &&
+        task.settled &&
+        !task.result!.needsAttention) {
       await selections!.files.acknowledgeTask(task);
       widget.repository.packFilesChanged();
     }
@@ -122,14 +128,18 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
     if (widget.repository.capabilities.maintenanceTasks) {
       final catalog = widget.repository.createMaintenanceTasks();
       try {
-        final summary = await catalog.task(task.id);
+        final history = selections!.files.readOnly;
+        final summary =
+            await (history ? HistoricalTaskCatalog(catalog) : catalog).task(
+              task.id,
+            );
         if (!mounted || !current) return;
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         await Navigator.of(context).push<void>(
           MaterialPageRoute(
             builder: (_) => MaintenanceTaskDetail(
               repository: widget.repository,
-              catalog: catalog,
+              catalog: history ? HistoricalTaskCatalog(catalog) : catalog,
               initial: summary,
             ),
           ),

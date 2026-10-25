@@ -86,6 +86,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   bool get libraryFirst => repo.supportsFixedPreviews;
   String get landing => libraryFirst ? 'library' : 'browse';
   late String page = data.connected ? landing : 'connection';
+  bool _lastConnected = false;
   VideoBrowseContext libraryContext = VideoBrowseContext(sort: VideoSort.name);
   Object? _entryConnection;
   PlayOrder? _initialEntryOrder;
@@ -159,6 +160,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   @override
   void initState() {
     super.initState();
+    _lastConnected = data.connected;
     _browsing.addListener(changed);
     _library.addListener(libraryChanged);
     repo.libraryPreparation.addListener(preparationChanged);
@@ -205,6 +207,13 @@ class _LibraryHomeState extends State<LibraryHome> {
       if (!data.connected && repo.connectionError != null) {
         error = repo.connectionError!;
       }
+      if (!_lastConnected && data.connected && page == 'connection') {
+        page = landing;
+        error = '';
+        selected = {};
+        selecting = viewing = false;
+      }
+      _lastConnected = data.connected;
     });
     if (page == 'library' && !viewing && !libraryFirst) {
       if (libraryFirst &&
