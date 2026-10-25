@@ -280,6 +280,13 @@ def cmd_show(ctx: Context) -> int:
             if item["id"] == ctx.args.video_id:
                 video = item
                 break
+        if not video:
+            # 兼容不认 anchor_ids 的旧服务端（参数被忽略，首页第一条不是目标）：
+            # 翻页全库查找。个人库量级（几百条）三次请求内可定位。
+            for item in ctx.client.iter_videos(status=status):
+                if item["id"] == ctx.args.video_id:
+                    video = item
+                    break
         if video:
             break
     if not video:

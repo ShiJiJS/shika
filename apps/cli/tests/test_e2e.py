@@ -263,9 +263,8 @@ class StubHandler(BaseHTTPRequestHandler):
                 v for v in items
                 if search in v["name"] or search in v["path"]
             ]
-        anchor = query.get("anchor_ids")
-        if anchor:
-            items = [v for v in items if v["id"] == anchor] or items[:1]
+        # 与 NAS 部署的旧服务端一致：忽略 anchor_ids，模拟参数不被支持，
+        # 迫使 rv show 走翻页回退路径
         offset = int(query.get("offset", 0))
         limit = int(query.get("limit", 50))
         page = items[offset:offset + limit]
