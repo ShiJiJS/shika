@@ -1,0 +1,55 @@
+{
+  "source_commit": "403b5a70e4055b14156a537dbb2d25bd99915305",
+  "server_tests": 375,
+  "authority_tests": 17,
+  "server_exit_code": 0,
+  "authority_races": [
+    {
+      "explicit": false,
+      "old_request_rejected": true,
+      "new_root_rows": 0
+    },
+    {
+      "explicit": true,
+      "old_request_rejected": true,
+      "new_root_rows": 0
+    }
+  ],
+  "actual_v1_restore": {
+    "changed": true,
+    "original_get": true,
+    "restore_tasks": 1,
+    "media_unchanged": true
+  },
+  "v1_restore_process_kills": [
+    {
+      "fault": "SIGKILL",
+      "phase": "snapshot_written",
+      "restore_recovered": true,
+      "old_data_visible_before_commit": true,
+      "media_hash_preserved": true,
+      "authority_unchanged_before_commit": true,
+      "authority_changed_after_commit": true,
+      "stale_post_rejected": true,
+      "original_receipt_readable": true,
+      "historical_operations_replayed": 0
+    },
+    {
+      "fault": "SIGKILL",
+      "phase": "after_replace_before_commit",
+      "restore_recovered": true,
+      "old_data_visible_before_commit": true,
+      "media_hash_preserved": true,
+      "authority_unchanged_before_commit": true,
+      "authority_changed_after_commit": true,
+      "stale_post_rejected": true,
+      "original_receipt_readable": true,
+      "historical_operations_replayed": 0
+    }
+  ],
+  "database_schema": "0014",
+  "logical_v2_graph_schema": "0013",
+  "public_backup_v2_enabled": false,
+  "app_authority_integrated": false,
+  "full_v2_restore_verified": false
+}
