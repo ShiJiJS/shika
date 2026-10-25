@@ -373,43 +373,14 @@ class _PackTrashPageState extends State<PackTrashPage> {
     child: const Text('重新读取'),
   );
 
-  @override
-  Widget build(BuildContext context) {
-    if (_session == null) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(initializationError),
-              TextButton(onPressed: open, child: const Text('重新读取')),
-            ],
-          ),
-        ),
-      );
-    }
-    final p = Paper.of(context), locked = session.restoring || checking;
-    final selected = session.selection.ids;
+  Widget notices(bool locked, {bool inList = false}) {
+    final p = Paper.of(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: TextField(
-            key: const Key('pack-trash-search'),
-            controller: search,
-            style: const TextStyle(fontSize: 14),
-            enabled: !locked,
-            decoration: const InputDecoration(
-              hintText: '搜索名称或目录',
-              prefixIcon: Icon(Icons.search),
-            ),
-            onChanged: (value) => unawaited(session.load(query: value)),
-          ),
-        ),
         if (session.error.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: inList ? 0 : 16),
             child: MediaLayout.largeText(context)
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -435,7 +406,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
           ),
         if (session.selection.error.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: inList ? 0 : 16),
             child: Text(
               session.selection.error,
               style: TextStyle(color: p.danger),
@@ -459,6 +430,46 @@ class _PackTrashPageState extends State<PackTrashPage> {
             onPressed: locked ? null : restorePlan,
             child: const Text('查看恢复计划'),
           ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_session == null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(initializationError),
+              TextButton(onPressed: open, child: const Text('重新读取')),
+            ],
+          ),
+        ),
+      );
+    }
+    final p = Paper.of(context), locked = session.restoring || checking;
+    final selected = session.selection.ids;
+    final largeText = MediaLayout.largeText(context);
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: TextField(
+            key: const Key('pack-trash-search'),
+            controller: search,
+            style: const TextStyle(fontSize: 14),
+            enabled: !locked,
+            decoration: const InputDecoration(
+              hintText: '搜索名称或目录',
+              prefixIcon: Icon(Icons.search),
+            ),
+            onChanged: (value) => unawaited(session.load(query: value)),
+          ),
+        ),
+        if (!largeText) notices(locked),
         MediaCatalogToolbar(
           children: [
             Text(
@@ -495,6 +506,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               children: [
+                if (largeText) notices(locked, inList: true),
                 Text(
                   '普通移除保留源文件，永久删除不能恢复。恢复图包时保留剩余图片、整包标签和阅读进度。',
                   style: TextStyle(fontSize: 13, color: p.muted),

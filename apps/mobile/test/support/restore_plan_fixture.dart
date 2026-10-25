@@ -229,7 +229,11 @@ class RestoreLibrary extends TasksLibrary {
           );
           rows = [MaintenanceTask(planSummary(planBook[id]!))];
           if (losePlan) {
-            throw const ApiFailure('结果未知', code: 'reply_lost', status: 503);
+            throw const ApiFailure(
+              '恢复或停止结果待确认，请查询原请求',
+              code: 'reply_lost',
+              status: 503,
+            );
           }
           return planBook[id]!;
         }

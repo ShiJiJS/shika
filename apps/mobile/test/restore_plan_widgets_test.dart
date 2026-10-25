@@ -11,6 +11,59 @@ import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 
 void main() {
   testWidgets(
+    'large unknown-result notices leave a real scrollable trash viewport',
+    (t) async {
+      final repo = RestoreLibrary()..losePlan = true;
+      final original = VideoPlayerPlatform.instance;
+      VideoPlayerPlatform.instance = UnreadyVideo();
+      await repo.initialize();
+      t.view.devicePixelRatio = 1;
+      t.view.physicalSize = const Size(360, 740);
+      t.platformDispatcher.textScaleFactorTestValue = 2;
+      addTearDown(() async {
+        await t.pumpWidget(const SizedBox());
+        await t.pump();
+        repo.dispose();
+        VideoPlayerPlatform.instance = original;
+        t.view.resetPhysicalSize();
+        t.view.resetDevicePixelRatio();
+        t.platformDispatcher.clearTextScaleFactorTestValue();
+      });
+      await t.pumpWidget(VideoViewerApp(repository: repo));
+      Future<void> tap(Finder target) async {
+        for (var i = 0; i < 100 && target.evaluate().isEmpty; i++) {
+          await t.pump(const Duration(milliseconds: 30));
+        }
+        await t.ensureVisible(target);
+        await t.pumpAndSettle();
+        await Scrollable.ensureVisible(t.element(target), alignment: .5);
+        await t.pumpAndSettle();
+        await t.tap(target.hitTestable());
+        await t.pumpAndSettle();
+        expect(t.takeException(), isNull);
+      }
+
+      await tap(find.byKey(const Key('nav-settings')));
+      await tap(find.text('回收站'));
+      await tap(find.byKey(const Key('trash-kind-pack')));
+      await tap(find.byKey(const Key('pack-trash-select-all')));
+      await tap(find.byKey(const Key('pack-trash-restore')));
+      await tap(find.byKey(const Key('pack-restore-plan-confirm')));
+      expect(find.byKey(const Key('pack-trash-plans-pending')), findsOneWidget);
+      final list = find.byKey(const Key('pack-trash-list'));
+      expect(
+        t.getSize(list).height,
+        greaterThan(100),
+        reason: 'Warnings must not consume the entire content viewport',
+      );
+      await t.drag(list, const Offset(0, -550));
+      await t.pumpAndSettle();
+      expect(find.byType(CheckboxListTile).hitTestable(), findsWidgets);
+      expect(repo.planBodies.length, 1);
+      expect(t.takeException(), isNull);
+    },
+  );
+  testWidgets(
     'entering whole plan immediately after acceptance dismisses the root snackbar before the secondary route',
     (t) async {
       final repo = RestoreLibrary();
