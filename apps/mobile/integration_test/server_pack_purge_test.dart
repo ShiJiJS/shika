@@ -62,14 +62,14 @@ void main() {
         expect(t.takeException(), isNull);
       }
 
-      Future<void> tap(Finder target) async {
+      Future<void> tap(Finder target, {double scroll = 300}) async {
         // Large-text notices are in the trash list, and can be virtualized
         // above the first visible card after returning from a review sheet.
         if (target.evaluate().isEmpty &&
             find.byKey(const Key('pack-trash-list')).evaluate().isNotEmpty) {
           await t.scrollUntilVisible(
             target,
-            -300,
+            scroll,
             scrollable: find.descendant(
               of: find.byKey(const Key('pack-trash-list')),
               matching: find.byType(Scrollable),
@@ -148,14 +148,14 @@ void main() {
       final beforeSavedPosts = beforeSaved
           .where((r) => r['method'] == 'POST')
           .length;
-      await tap(find.byKey(const Key('pack-trash-saved-purge')));
+      await tap(find.byKey(const Key('pack-trash-saved-purge')), scroll: -300);
       await until(
         () => find.text('1 个未提交').evaluate().isNotEmpty,
         'saved selection',
       );
       await shot('saved');
       await tap(find.byTooltip('Back'));
-      await tap(find.byKey(const Key('pack-trash-saved-purge')));
+      await tap(find.byKey(const Key('pack-trash-saved-purge')), scroll: -300);
       await until(
         () => find.text('1 个未提交').evaluate().isNotEmpty,
         'reopened saved selection',
@@ -209,6 +209,22 @@ void main() {
         expect(entry.value, originalHashes[entry.key]);
       }
       await tap(find.text('关闭').last);
+      await until(
+        () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
+        'trash reload after partial result',
+      );
+      final partialLabel = find.text('已有 2 张永久删除，恢复仅限剩余 1 张');
+      if (partialLabel.evaluate().isEmpty) {
+        await t.scrollUntilVisible(
+          partialLabel,
+          300,
+          scrollable: find.descendant(
+            of: find.byKey(const Key('pack-trash-list')),
+            matching: find.byType(Scrollable),
+          ),
+          maxScrolls: 30,
+        );
+      }
       expect(find.text('已有 2 张永久删除，恢复仅限剩余 1 张'), findsOneWidget);
       await tap(find.text('查看原永久删除结果'));
       await until(
