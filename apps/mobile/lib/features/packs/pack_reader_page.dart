@@ -1230,7 +1230,7 @@ class _PackEnd extends StatelessWidget {
   final bool enabled;
   @override
   Widget build(BuildContext context) => Center(
-    child: Padding(
+    child: SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisSize: MainAxisSize.min,

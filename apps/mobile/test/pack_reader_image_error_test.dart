@@ -17,6 +17,7 @@ void main() {
     (ReaderMode.vertical, const Size(390, 844), 1.0, 200),
     (ReaderMode.horizontal, const Size(360, 740), 2.0, 404),
     (ReaderMode.vertical, const Size(844, 390), 1.0, 200),
+    (ReaderMode.horizontal, const Size(844, 390), 1.0, 404),
   ]) {
     testWidgets('last failed image can be skipped to pack end $sample', (
       t,

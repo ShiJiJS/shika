@@ -120,7 +120,7 @@ class _ReaderImageState extends State<ReaderImage> {
         ? null
         : TextButton.styleFrom(foregroundColor: Colors.white);
     Widget failure() => Center(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(12),
         child: Column(
           mainAxisSize: MainAxisSize.min,
