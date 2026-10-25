@@ -120,7 +120,7 @@ class _ReaderImageState extends State<ReaderImage> {
         ? null
         : TextButton.styleFrom(foregroundColor: Colors.white);
     Widget failure() => Center(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(12),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -142,6 +142,7 @@ class _ReaderImageState extends State<ReaderImage> {
             ),
             if (widget.onSkip != null)
               TextButton(
+                key: Key('reader-image-skip-${widget.page.id}'),
                 style: errorButtonStyle,
                 onPressed: widget.onSkip,
                 child: const Text('跳过这一张'),

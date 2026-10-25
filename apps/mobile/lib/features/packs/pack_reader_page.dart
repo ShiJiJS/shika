@@ -45,6 +45,7 @@ class PackReaderPageState extends State<PackReaderPage>
   late bool quick = widget.quick;
   final images = ReaderImages();
   bool controls = true, zoomed = false, leaving = false, _framePending = false;
+  bool showingEnd = false;
   int jumpEpoch = 0, zoomReset = 0;
   @override
   void initState() {
@@ -171,6 +172,7 @@ class PackReaderPageState extends State<PackReaderPage>
     }
     if (task!.result!.succeeded == 0 || session.cleanupFrozen) return;
     setState(() {
+      showingEnd = false;
       jumpEpoch++;
       zoomReset++;
       zoomed = false;
@@ -238,7 +240,18 @@ class PackReaderPageState extends State<PackReaderPage>
   }
 
   void jump(int index) {
-    if (session.inputBlocked || index < 0 || index >= session.total) return;
+    if (session.inputBlocked || index < 0 || index > session.total) return;
+    if (index == session.total) {
+      if (session.total == 0 || session.index != session.total - 1) return;
+      // Reaching the end is navigation, not proof of a decoded last image.
+      setState(() {
+        showingEnd = true;
+        controls = true;
+        zoomReset++;
+        zoomed = false;
+      });
+      return;
+    }
     session.show(
       index,
       end:
@@ -246,6 +259,7 @@ class PackReaderPageState extends State<PackReaderPage>
           session.preferences.mode == ReaderMode.horizontal,
     );
     setState(() {
+      showingEnd = false;
       jumpEpoch++;
       zoomReset++;
       zoomed = false;
@@ -255,6 +269,7 @@ class PackReaderPageState extends State<PackReaderPage>
   Future<void> move(String packId) async {
     if (await session.move(packId) && mounted) {
       setState(() {
+        showingEnd = false;
         jumpEpoch++;
         zoomReset++;
         zoomed = false;
@@ -294,6 +309,7 @@ class PackReaderPageState extends State<PackReaderPage>
                             );
                             if (mounted) {
                               setState(() {
+                                showingEnd = false;
                                 jumpEpoch++;
                                 zoomReset++;
                                 zoomed = false;
@@ -641,7 +657,7 @@ class PackReaderPageState extends State<PackReaderPage>
                 session.visibleFrame(index, page.id, epoch);
               }
             },
-      onSkip: thumbnail ? null : () => jump(min(session.total - 1, index + 1)),
+      onSkip: thumbnail ? null : () => jump(index + 1),
       onUnauthorized: () {
         if (session.live && !thumbnail) {
           unawaited(widget.repository.mediaUnauthorized(page.image!));
@@ -858,6 +874,7 @@ class PackReaderPageState extends State<PackReaderPage>
                                   child: LayoutBuilder(
                                     builder: (context, constraints) {
                                       final size = constraints.biggest;
+                                      if (showingEnd) return end();
                                       return session.preferences.mode ==
                                               ReaderMode.horizontal
                                           ? _HorizontalReader(
@@ -978,8 +995,7 @@ class PackReaderPageState extends State<PackReaderPage>
                                     IconButton(
                                       tooltip: '下一张',
                                       onPressed:
-                                          !session.inputBlocked &&
-                                              session.index < session.total - 1
+                                          !session.inputBlocked && !showingEnd
                                           ? () => jump(session.index + 1)
                                           : null,
                                       icon: const Icon(Icons.chevron_right),
@@ -1214,7 +1230,7 @@ class _PackEnd extends StatelessWidget {
   final bool enabled;
   @override
   Widget build(BuildContext context) => Center(
-    child: Padding(
+    child: SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -1234,10 +1250,21 @@ class _PackEnd extends StatelessWidget {
                   onPressed: enabled ? next : null,
                   child: const Text('阅读下一包'),
                 ),
-              OutlinedButton(onPressed: back, child: const Text('返回来源')),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  side: const BorderSide(color: Colors.white54),
+                ),
+                onPressed: back,
+                child: const Text('返回来源'),
+              ),
             ],
           ),
-          TextButton(onPressed: previous, child: const Text('返回最后一张')),
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: Colors.white),
+            onPressed: previous,
+            child: const Text('返回最后一张'),
+          ),
         ],
       ),
     ),

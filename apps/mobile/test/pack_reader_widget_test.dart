@@ -11,6 +11,7 @@ import 'package:video_viewer/ui/paper.dart';
 import 'media_workspace_widget_test.dart' show WorkspaceLibrary;
 
 class AssetReadingLibrary extends WorkspaceLibrary {
+  MediaSource Function(String packId, int index)? pageImage;
   final prefs = <String, ReaderPreferences>{};
   final marks = <String, ReaderMark>{};
   final revisions = <String, int>{};
@@ -44,7 +45,9 @@ class _AssetReader implements PackReader {
     width: 400,
     height: 600,
     version: 1,
-    image: const MediaSource('assets/media/flower-portrait.jpg', asset: true),
+    image:
+        repo.pageImage?.call(selected, index) ??
+        const MediaSource('assets/media/flower-portrait.jpg', asset: true),
     thumbnail: const MediaSource(
       'assets/media/flower-portrait.jpg',
       asset: true,

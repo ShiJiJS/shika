@@ -1,0 +1,40 @@
+EXE001 Shebang is present but file is not executable
+ --> scripts/run-reader-image-error-test.py:1:1
+  |
+1 | #!/usr/bin/env python3
+  | ^^^^^^^^^^^^^^^^^^^^^^
+2 | """Own one disposable 8764 fixture; retain the existing installed AVD."""
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> scripts/run-reader-image-error-test.py:4:1
+   |
+ 2 |   """Own one disposable 8764 fixture; retain the existing installed AVD."""
+ 3 |
+ 4 | / import argparse
+ 5 | | import hashlib
+ 6 | | import json
+ 7 | | from pathlib import Path
+ 8 | | import sqlite3
+ 9 | | import subprocess
+10 | | import threading
+11 | | import time
+12 | | import urllib.error
+13 | | import urllib.request
+   | |_____________________^
+14 |
+15 |   ROOT = Path(__file__).resolve().parents[1]
+   |
+help: Organize imports
+   |
+6  | import json
+   - from pathlib import Path
+7  | import sqlite3
+--------------------------------------------------------------------------------
+12 | import urllib.request
+13 + from pathlib import Path
+14 |
+   |
+
+Found 2 errors.
+[*] 1 fixable with `--fix`.

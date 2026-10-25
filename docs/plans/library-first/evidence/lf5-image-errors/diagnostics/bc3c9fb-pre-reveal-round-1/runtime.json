@@ -1,0 +1,300 @@
+[
+  {
+    "Id": "9fb288010df821020ffba44444405fd52188f4cb647e4a70410dee24678120f3",
+    "Created": "2026-10-25T17:01:24.228615302Z",
+    "Path": "uvicorn",
+    "Args": [
+      "tests.reader_image_error_fixture:create_reader_error_app",
+      "--factory",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8760",
+      "--no-access-log"
+    ],
+    "State": {
+      "Status": "running",
+      "Running": true,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 2196809,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-25T17:01:24.353886357Z",
+      "FinishedAt": "0001-01-01T00:00:00Z",
+      "Health": {
+        "Status": "starting",
+        "FailingStreak": 0,
+        "Log": []
+      }
+    },
+    "Image": "sha256:dd110541995e296e44e21c4c94269f4b1269e084d5d8dbd2958ba1cdaffc7059",
+    "ResolvConfPath": "/var/lib/docker/containers/9fb288010df821020ffba44444405fd52188f4cb647e4a70410dee24678120f3/resolv.conf",
+    "HostnamePath": "/var/lib/docker/containers/9fb288010df821020ffba44444405fd52188f4cb647e4a70410dee24678120f3/hostname",
+    "HostsPath": "/var/lib/docker/containers/9fb288010df821020ffba44444405fd52188f4cb647e4a70410dee24678120f3/hosts",
+    "LogPath": "/var/lib/docker/containers/9fb288010df821020ffba44444405fd52188f4cb647e4a70410dee24678120f3/9fb288010df821020ffba44444405fd52188f4cb647e4a70410dee24678120f3-json.log",
+    "Name": "/video-viewer-reader-errors-1792947684035485000",
+    "RestartCount": 0,
+    "Driver": "overlayfs",
+    "Platform": "linux",
+    "MountLabel": "",
+    "ProcessLabel": "",
+    "AppArmorProfile": "",
+    "ExecIDs": null,
+    "HostConfig": {
+      "Binds": [
+        "/Users/jiangxinyi/Documents/Project/video-viewer/services/server:/source:ro",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/reader-image-errors/lf5-reader-image-errors-bc3-round-1/data:/data",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/reader-image-errors/lf5-reader-image-errors-bc3-round-1/config:/fixture:ro",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/reader-image-errors/lf5-reader-image-errors-bc3-round-1/packs:/media/packs"
+      ],
+      "ContainerIDFile": "",
+      "LogConfig": {
+        "Type": "json-file",
+        "Config": {
+          "max-file": "5",
+          "max-size": "20m"
+        }
+      },
+      "NetworkMode": "bridge",
+      "PortBindings": {
+        "8760/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8764"
+          }
+        ]
+      },
+      "RestartPolicy": {
+        "Name": "no",
+        "MaximumRetryCount": 0
+      },
+      "AutoRemove": false,
+      "VolumeDriver": "",
+      "VolumesFrom": null,
+      "ConsoleSize": [
+        0,
+        0
+      ],
+      "CapAdd": null,
+      "CapDrop": null,
+      "CgroupnsMode": "private",
+      "Dns": null,
+      "DnsOptions": [],
+      "DnsSearch": [],
+      "ExtraHosts": null,
+      "GroupAdd": null,
+      "IpcMode": "private",
+      "Cgroup": "",
+      "Links": null,
+      "OomScoreAdj": 0,
+      "PidMode": "",
+      "Privileged": false,
+      "PublishAllPorts": false,
+      "ReadonlyRootfs": true,
+      "SecurityOpt": null,
+      "Tmpfs": {
+        "/tmp": "mode=1777"
+      },
+      "UTSMode": "",
+      "UsernsMode": "",
+      "ShmSize": 67108864,
+      "Runtime": "runc",
+      "Isolation": "",
+      "CpuShares": 0,
+      "Memory": 0,
+      "NanoCpus": 0,
+      "CgroupParent": "",
+      "BlkioWeight": 0,
+      "BlkioWeightDevice": [],
+      "BlkioDeviceReadBps": [],
+      "BlkioDeviceWriteBps": [],
+      "BlkioDeviceReadIOps": [],
+      "BlkioDeviceWriteIOps": [],
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuRealtimePeriod": 0,
+      "CpuRealtimeRuntime": 0,
+      "CpusetCpus": "",
+      "CpusetMems": "",
+      "Devices": [],
+      "DeviceCgroupRules": null,
+      "DeviceRequests": null,
+      "MemoryReservation": 0,
+      "MemorySwap": 0,
+      "MemorySwappiness": null,
+      "OomKillDisable": null,
+      "PidsLimit": null,
+      "Ulimits": [],
+      "CpuCount": 0,
+      "CpuPercent": 0,
+      "IOMaximumIOps": 0,
+      "IOMaximumBandwidth": 0,
+      "MaskedPaths": [
+        "/proc/acpi",
+        "/proc/asound",
+        "/proc/interrupts",
+        "/proc/kcore",
+        "/proc/keys",
+        "/proc/latency_stats",
+        "/proc/sched_debug",
+        "/proc/scsi",
+        "/proc/timer_list",
+        "/proc/timer_stats",
+        "/sys/devices/virtual/powercap",
+        "/sys/firmware"
+      ],
+      "ReadonlyPaths": [
+        "/proc/bus",
+        "/proc/fs",
+        "/proc/irq",
+        "/proc/sys",
+        "/proc/sysrq-trigger"
+      ]
+    },
+    "Storage": {
+      "RootFS": {
+        "Snapshot": {
+          "Name": "overlayfs"
+        }
+      }
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/reader-image-errors/lf5-reader-image-errors-bc3-round-1/config",
+        "Destination": "/fixture",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/reader-image-errors/lf5-reader-image-errors-bc3-round-1/packs",
+        "Destination": "/media/packs",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/services/server",
+        "Destination": "/source",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/reader-image-errors/lf5-reader-image-errors-bc3-round-1/data",
+        "Destination": "/data",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ],
+    "Config": {
+      "Hostname": "9fb288010df8",
+      "Domainname": "",
+      "User": "1000:1000",
+      "AttachStdin": false,
+      "AttachStdout": false,
+      "AttachStderr": false,
+      "ExposedPorts": {
+        "8760/tcp": {}
+      },
+      "Tty": false,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Env": [
+        "VV_READER_ERROR_FIXTURE=enabled",
+        "VV_PASSPHRASE_FILE=/fixture/passphrase",
+        "VV_MOUNTS_FILE=/fixture/mounts.json",
+        "VV_SCAN_INTERVAL=0",
+        "VV_STABILITY_SECONDS=0",
+        "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+        "PYTHON_VERSION=3.13.16",
+        "PYTHON_SHA256=f4b1bfb3c79b5bb11b8d228a12504163b4c0dab4d679828d8f5f26b6cb6ab35d",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PYTHONUNBUFFERED=1",
+        "PIP_DISABLE_PIP_VERSION_CHECK=1",
+        "PYTEST_ADDOPTS=-o cache_dir=/tmp/video-viewer-pytest-cache",
+        "RUFF_CACHE_DIR=/tmp/video-viewer-ruff-cache"
+      ],
+      "Cmd": [
+        "tests.reader_image_error_fixture:create_reader_error_app",
+        "--factory",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8760",
+        "--no-access-log"
+      ],
+      "Healthcheck": {
+        "Test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8760/health', timeout=2)"
+        ],
+        "Interval": 15000000000,
+        "Timeout": 3000000000,
+        "StartPeriod": 20000000000
+      },
+      "Image": "video-viewer-server:e2e",
+      "Volumes": null,
+      "WorkingDir": "/source",
+      "Entrypoint": [
+        "uvicorn"
+      ],
+      "Labels": {
+        "com.docker.compose.project": "video-viewer-client-e2e",
+        "com.docker.compose.service": "server",
+        "com.docker.compose.version": "5.1.2"
+      }
+    },
+    "NetworkSettings": {
+      "SandboxID": "ff4711bb37d5d65c3a1ca6869e0a2513683b4085fa326babca36b6fe8f6144b5",
+      "SandboxKey": "/var/run/docker/netns/ff4711bb37d5",
+      "Ports": {
+        "8760/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8764"
+          }
+        ]
+      },
+      "Networks": {
+        "bridge": {
+          "IPAMConfig": null,
+          "Links": null,
+          "Aliases": null,
+          "DriverOpts": null,
+          "GwPriority": 0,
+          "NetworkID": "d0ac2ed741131bf48d812afa2ae20eff7745c9d54c2a22a44521685afe20c19d",
+          "EndpointID": "4861f46fd2b50083eba9c99c42ee5e9eaf2e97c5094479273e2a3f0534536653",
+          "Gateway": "192.168.215.1",
+          "IPAddress": "192.168.215.4",
+          "MacAddress": "2a:d1:2f:f7:b0:b4",
+          "IPPrefixLen": 24,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DNSNames": null
+        }
+      }
+    },
+    "ImageManifestDescriptor": {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:af4af69d7bed73769a6d801a0f3598930030cce52672bc16c9ed98b57ca734bc",
+      "size": 3340,
+      "platform": {
+        "architecture": "arm64",
+        "os": "linux"
+      }
+    }
+  }
+]

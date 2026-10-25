@@ -1,0 +1,16 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart
+test/pack_reader_image_error_test.dart:31:77: Error: The argument type 'Null' can't be assigned to the parameter type 'HttpOverrides'.
+ - 'HttpOverrides' is from 'dart:_http'.
+      final client = HttpOverrides.runWithHttpOverrides(() => HttpClient(), null);
+                                                                            ^
+00:00 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart [E]
+  Failed to load "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart":
+  Compilation failed for testPath=/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: test/pack_reader_image_error_test.dart:31:77: Error: The argument type 'Null' can't be assigned to the parameter type 'HttpOverrides'.
+   - 'HttpOverrides' is from 'dart:_http'.
+        final client = HttpOverrides.runWithHttpOverrides(() => HttpClient(), null);
+                                                                              ^
+  .
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart
