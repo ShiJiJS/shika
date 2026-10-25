@@ -10,6 +10,7 @@ from types import SimpleNamespace
 
 from sqlalchemy import and_, delete, literal, or_, select, update
 
+from . import pack_root_evidence
 from .directory_identity import directory_stamp
 from .images import IMAGE_EXTENSIONS, inspect_image
 from .media_roots import owned_path, owner_for_path
@@ -185,7 +186,7 @@ class PackScanner:
                 continue
             try:
                 with open_directory(Path(root.path)) as fd:
-                    identity = signature(os.fstat(fd))[:2]
+                    identity = pack_root_evidence.identity(fd)
                     folders = []
                     with os.scandir(fd) as entries:
                         for entry in entries:
@@ -354,7 +355,7 @@ class PackScanner:
             accessible = True
             try:
                 with open_directory(Path(root.path)) as fd:
-                    if signature(os.fstat(fd))[:2] != inventories[root.id][0]:
+                    if pack_root_evidence.identity(fd) != inventories[root.id][0]:
                         accessible = False
             except OSError:
                 accessible = False
@@ -378,7 +379,7 @@ class PackScanner:
                     stored.available, stored.error = True, None
             item["discovered"] = len(inventories[root.id][1])
         self.scanner.change_task(task_id, phase="pack_reconciling", result=result)
-        self.reconcile(task_id, completed, result, initial_generations)
+        self.reconcile(task_id, completed, result, initial_generations, inventories)
         self.tick(task_id, result, force=True)
 
     def unavailable(self, root_id, item, code="root_unavailable"):
@@ -662,7 +663,7 @@ class PackScanner:
             pack.status, pack.location_key = "available", str(path)
         return changed or identity_changed
 
-    def reconcile(self, task_id, completed, result, initial_generations):
+    def reconcile(self, task_id, completed, result, initial_generations, inventories):
         summary = result["packs"]
         with self.db.write() as session:
             unseen = list(
@@ -750,6 +751,8 @@ class PackScanner:
                     if candidates:
                         summary["identity_ambiguous"] += 1
             for root_id in completed:
-                session.get(Root, root_id).last_scan = time.time()
+                root = session.get(Root, root_id)
+                root.last_scan = time.time()
+                pack_root_evidence.remember(session, root, inventories[root_id][0])
             # No failed/partial root can publish staged data or classify old data missing.
             session.execute(delete(ImagePack).where(ImagePack.status == "discovered"))

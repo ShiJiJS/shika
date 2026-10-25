@@ -311,11 +311,11 @@ void main() {
         'preserved member',
       );
       await tap(find.text('全部'));
+      await tap(find.byKey(const Key('task-items-next')));
       await until(
         () => find.text('共 25 项').evaluate().isNotEmpty,
         'all members',
       );
-      await tap(find.text('下一页'));
       await shot('missing-task-paged');
       expect(
         jsonEncode(

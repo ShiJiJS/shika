@@ -17,6 +17,7 @@ from video_viewer.models import (
     PackTagLink,
     RecentEntry,
     Root,
+    Setting,
     Task,
 )
 
@@ -168,9 +169,9 @@ def test_unreliable_or_returned_members_are_preserved_with_explicit_reason(libra
 def test_fixed_scope_large_members_paging_and_new_missing_not_in_original_task(library):
     client, media = library
     root = pack_root(client, media)
+    sync(client)  # Real successful root scan establishes local directory evidence.
     with client.app.state.db.write() as db:
         r = db.get(Root, root["id"])
-        r.available, r.last_scan = True, time.time()
         for i in range(1003):
             db.add(
                 ImagePack(
@@ -196,6 +197,66 @@ def test_fixed_scope_large_members_paging_and_new_missing_not_in_original_task(l
     assert all(row["outcome"] == "succeeded" for row in page["items"])
     assert submit(client) == identity  # Original receipt cannot consume the later member.
     assert client.get("/api/v1/packs?status=missing").json()["total"] == 1
+
+
+@pytest.mark.parametrize("before_admission", [True, False])
+def test_same_path_replacement_preserves_metadata_until_successful_rescan(library, before_admission):
+    client, media = library
+    root, pack, _ = missing(client, media)
+    base = Path(root["path"])
+    away = base.with_name("original-root-away")
+    started, release = hold(client)
+    if before_admission:
+        base.rename(away)
+        base.mkdir()
+    try:
+        identity = submit(client, "replaced-root")
+        assert started.wait(10)
+        if not before_admission:
+            base.rename(away)
+            base.mkdir()
+        before = tree(media)
+        release.set()
+        task = wait(client, identity)
+        assert task["result"]["succeeded"] == 0 and task["result"]["skipped"] == 1
+        assert tree(media) == before
+        with client.app.state.db.read() as db:
+            assert db.get(ImagePack, pack["id"]).status == "missing"
+            assert db.get(PackProgress, pack["id"]) and db.get(PackPreferences, pack["id"])
+            assert db.scalar(select(PackTagLink.pack_id).where(PackTagLink.pack_id == pack["id"]))
+        # Only a successful explicit sync can establish evidence for the replacement.
+        sync(client)
+        task = wait(client, submit(client, "after-rescan"))
+        assert task["result"]["succeeded"] == 2 and task["result"]["skipped"] == 0
+    finally:
+        release.set()
+        if away.exists():
+            shutil.rmtree(base)
+            away.rename(base)
+
+
+@pytest.mark.parametrize("evidence", ["absent", "corrupt", "mismatched"])
+def test_missing_or_untrusted_scan_evidence_requires_rescan(library, evidence):
+    from video_viewer.pack_root_evidence import key
+
+    client, media = library
+    root, pack, _ = missing(client, media)
+    with client.app.state.db.write() as db:
+        stored = db.get(Setting, key(root["id"]))
+        if evidence == "absent":
+            db.delete(stored)
+        elif evidence == "corrupt":
+            stored.value = "not-json"
+        else:
+            value = json.loads(stored.value)
+            value["last_scan"] += 1
+            stored.value = json.dumps(value)
+    task = wait(client, submit(client))
+    assert task["result"]["succeeded"] == 0 and task["result"]["skipped"] == 1
+    with client.app.state.db.read() as db:
+        assert db.get(ImagePack, pack["id"]).status == "missing"
+    sync(client)
+    assert wait(client, submit(client, "rescanned"))["result"]["succeeded"] == 1
 
 
 def test_restart_continues_original_members_without_double_count(environment):

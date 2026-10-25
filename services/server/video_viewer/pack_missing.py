@@ -8,6 +8,7 @@ from pathlib import Path
 
 from sqlalchemy import delete, func, insert, literal, select
 
+from . import pack_root_evidence
 from .errors import LibraryError
 from .media_roots import owner_for_path
 from .models import (
@@ -152,7 +153,9 @@ class PackMissing:
             return "目录未启用、暂不可用或归属已变化，记录保留"
         try:
             with open_directory(Path(root.path)) as root_fd:
-                identity = os.fstat(root_fd)
+                identity = pack_root_evidence.identity(root_fd)
+                if not pack_root_evidence.matches(session, root, identity):
+                    return "目录与最近成功同步不一致，请重新同步；记录保留"
                 try:
                     with open_directory(Path(member.path).parent) as parent_fd:
                         os.stat(Path(member.path).name, dir_fd=parent_fd, follow_symlinks=False)
@@ -162,8 +165,7 @@ class PackMissing:
                 # A vanished/replaced root must preserve this member, even if
                 # looking up the pack above happened to report ENOENT.
                 with open_directory(Path(root.path)) as current_fd:
-                    current = os.fstat(current_fd)
-                    if (identity.st_dev, identity.st_ino) != (current.st_dev, current.st_ino):
+                    if identity != pack_root_evidence.identity(current_fd):
                         return "目录已变化，记录保留"
         except OSError:
             return "目录无法可靠核对，记录保留"
