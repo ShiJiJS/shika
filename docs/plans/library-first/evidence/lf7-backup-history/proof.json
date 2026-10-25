@@ -1,0 +1,42 @@
+{
+  "source_commit": "ac4f4d189c307dc2237d37b48c377c33b067e7e0",
+  "combined_tests": 66,
+  "modules": {
+    "history": 12,
+    "archive": 29,
+    "task_metadata": 6,
+    "legacy_backup_and_process": 19
+  },
+  "metrics": {
+    "history": {
+      "archive_bytes": 41113806,
+      "python_peak_bytes": 2111481,
+      "indexed_tasks": 18000,
+      "page_count": 24
+    },
+    "archive": {
+      "bytes": 40947041,
+      "python_peak_bytes": 2922234,
+      "task_rows": 18000,
+      "note_length": 2048,
+      "file_sha256": "ab9b0f5a576b5d361262a10d8908cfd859ab496338401e3aee7ff2d4d0890c8d"
+    }
+  },
+  "history_process_kills": [
+    {
+      "phase": "before_publish",
+      "returncode": -9,
+      "published": false,
+      "source_unchanged": true
+    },
+    {
+      "phase": "after_publish",
+      "returncode": -9,
+      "published": true,
+      "source_unchanged": true
+    }
+  ],
+  "public_v2_enabled": false,
+  "full_v2_restore_verified": false,
+  "app_transfer_verified": false
+}

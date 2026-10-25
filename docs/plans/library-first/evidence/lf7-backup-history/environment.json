@@ -1,0 +1,12 @@
+{
+  "image": "video-viewer-server:defaults-test",
+  "image_id": "sha256:f47b2448845830235682911999f4cc2b1d53efb6604e91519915d0aefc7a8936",
+  "container": "read-only, services/server mounted /source, tmpfs /tmp:mode=1777, --shm-size=64m",
+  "python": "3.13",
+  "commands": [
+    "pytest -q -s tests/test_backup_history.py tests/test_backup_archive.py tests/test_maintenance_tasks.py tests/test_backups.py tests/test_backup_process_recovery.py",
+    "ruff check video_viewer/backup_history.py video_viewer/backup_archive.py tests/test_backup_history.py",
+    "bash scripts/dev.sh python3 -m py_compile services/server/video_viewer/backup_history.py services/server/video_viewer/backup_archive.py services/server/tests/test_backup_history.py"
+  ],
+  "compile_exit_code": 0
+}
