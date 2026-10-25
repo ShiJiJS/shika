@@ -111,6 +111,7 @@ class ArchiveGraph:
     kind: str
     database: Path
     mounts: list
+    digest: str | None = None
 
 
 @contextmanager
@@ -326,7 +327,7 @@ class StagedArchive:
                     or (verify and file_hash(path) != digest)
                 ):
                     raise LibraryError("backup_artifact_changed", "备份暂存数据在校验后已变化", 409)
-                yield ArchiveGraph(identity, kind, path, json.loads(header)["mounts"])
+                yield ArchiveGraph(identity, kind, path, json.loads(header)["mounts"], digest)
 
     def counts(self, identity="library"):
         with self._index() as connection:
