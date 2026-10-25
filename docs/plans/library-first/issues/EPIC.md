@@ -72,3 +72,9 @@ LF6执行后端 **5e89a1a / dd2dcf3**（记录d3315d2）：严格布尔确认绑
 [App设计与原型语义差异](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/LF6-PURGE-CLIENT-DESIGN.md) / [原始证据与验证边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/evidence/lf6-purge-client/README.md)。冻结原型继续独立且未改，正式NAS未部署，未发布升级APK。
 
 LF6仍实施中：下一步统一任务与整份多批次计划持久化/续作；Android安全存储强杀重开、备份v2/管理恢复、真机/NAS、完整原型一致性和历史图片失败定位仍按LF6–LF8推进，不关闭阶段或总任务。
+
+## LF7 统一任务：最新检查点（2026-10-25）
+
+[Draft PR #41](https://github.com/ShiJiJS/video_viewer/pull/41) 基于 #40，源码92d9b15：设置增加操作任务，真实服务按类型/状态和24条分页，逐项显示结果；本机未确认图包/视频/备份按原请求只读核对，404不重发，旧回执不清除新命令。原备份下载校验SHA，取消保存保留记录。316项客户端、271项服务端/Ruff及analyze通过。固定源码92d9b15连续三轮Android通过（390普通、360双倍字号、390普通）：81张图片哈希不变，任务中心请求全部GET，同一原备份下载两次。[原始证据与边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-maintenance-tasks/docs/plans/library-first/evidence/lf7-tasks/README.md)已归档。
+
+整份多批次持久计划、完整设置审计、服务端默认值迁移、v2/v1转换与前快照、安全存储强杀及LF8完整原型验收继续推进。#31、#32和总任务保持开放；冻结原型独立且未改。

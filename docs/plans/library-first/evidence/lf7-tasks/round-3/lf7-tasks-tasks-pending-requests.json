@@ -1,0 +1,18 @@
+{
+  "items": [
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "family": "all",
+        "state": "all"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

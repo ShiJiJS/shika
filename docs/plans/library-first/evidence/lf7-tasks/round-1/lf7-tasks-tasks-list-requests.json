@@ -1,0 +1,139 @@
+{
+  "items": [
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "family": "all",
+        "state": "all"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-file-requests/native-tasks-unknown",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/64aaef14-6fba-4b24-aa24-ff859ba5500f",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/64aaef14-6fba-4b24-aa24-ff859ba5500f",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/64aaef14-6fba-4b24-aa24-ff859ba5500f/items",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "unfinished": "true"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/64aaef14-6fba-4b24-aa24-ff859ba5500f",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/64aaef14-6fba-4b24-aa24-ff859ba5500f/items",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "unfinished": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/64aaef14-6fba-4b24-aa24-ff859ba5500f",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/64aaef14-6fba-4b24-aa24-ff859ba5500f/items",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "unfinished": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "family": "all",
+        "state": "all"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "family": "pack",
+        "state": "all"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}
