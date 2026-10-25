@@ -217,6 +217,7 @@ def create_e2e_app():
             "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
             "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
             "purge-selected", "purge-review", "purge-files", "purge-unknown", "purge-result", "purge-finished",
+            "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
                 "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
         }:
@@ -231,6 +232,8 @@ def create_e2e_app():
         if action == "reset-login-limit":
             with app.state.login_lock:
                 app.state.login_attempts.clear()
+        elif action == "reset-task-trace":
+            trace.clear()
         elif action == "pack-anchor":
             details = seed_workspace_packs(BASE, Path("/fixture-assets"), 73)
         elif action == "recent-pack-history":

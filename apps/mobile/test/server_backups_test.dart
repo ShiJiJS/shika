@@ -212,6 +212,44 @@ void main() {
   });
 
   test(
+    'task acknowledgement cannot replace or clear a newer export receipt',
+    () async {
+      store.value = jsonEncode({
+        'scope': 'server-1',
+        'export': {'key': 'new-key', 'task': 'new-task'},
+      });
+      await reopen();
+      final before = store.value;
+      expect(
+        await client.attachReceipt('export', 'old-key', 'old-task'),
+        isFalse,
+      );
+      await expectLater(
+        client.attachReceipt('export', 'new-key', 'wrong-task'),
+        throwsA(isA<LibraryFailure>()),
+      );
+      await client.markExportSaved('old-task');
+      expect(store.value, before);
+      expect(requests, isEmpty);
+      await client.markExportSaved('new-task');
+      expect(client.pendingReceipts, isEmpty);
+    },
+  );
+  test(
+    'stale restore reconciliation cannot query a newer restore command',
+    () async {
+      store.value = jsonEncode({
+        'scope': 'server-1',
+        'restore': {'key': 'new-restore', 'task': 'new-task'},
+      });
+      await reopen();
+      await client.reconcile(expectedRequestId: 'old-restore');
+      expect(requests, isEmpty);
+      expect(client.restorePending, isTrue);
+      expect(restored, 0);
+    },
+  );
+  test(
     'failed download reopens its accepted export without making a new snapshot',
     () async {
       failDownload = true;

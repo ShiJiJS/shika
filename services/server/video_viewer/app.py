@@ -21,6 +21,7 @@ from .file_operations import FileOperations
 from .file_state import reserved_video_ids
 from .images import ImageStreams
 from .library_state import library_state
+from .maintenance_tasks import router as maintenance_tasks_router
 from .metadata_cleanup import forget_missing
 from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
 from .pack_api import router as pack_router
@@ -255,6 +256,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     app.include_router(pack_router(auth_required))
     app.include_router(reading_router(auth_required))
     app.include_router(pack_operations_router(auth_required))
+    app.include_router(maintenance_tasks_router(auth_required))
 
     @app.get("/health")
     def health():
@@ -307,6 +309,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "pack_reader_cleanup",
                 "pack_purge_preview",
                 "pack_permanent_delete",
+                "maintenance_tasks",
             ],
         }
 

@@ -38,6 +38,21 @@ class ServerBackups {
   String? _previewDigest;
   BackupPreview? _preview;
   bool get restorePending => _state['restore'] != null;
+  List<Map<String, Object?>> get pendingReceipts {
+    final result = <Map<String, Object?>>[];
+    for (final kind in ['export', 'inspect', 'restore']) {
+      final command = _state[kind];
+      if (command == null) continue;
+      if (command is! Map) throw const LibraryFailure('本机备份操作记录无法读取');
+      result.add({
+        'kind': kind,
+        'key': command['key'],
+        'task': command['task'],
+      });
+    }
+    return List.unmodifiable(result);
+  }
+
   void _check() {
     if (_disposed) throw const RequestCancelled();
   }
@@ -276,10 +291,39 @@ class ServerBackups {
         await _reconcile();
       });
 
-  Future<void> reconcile() => _serial(_reconcile);
-  Future<void> _reconcile() async {
+  Future<bool> attachReceipt(String kind, String key, String identity) =>
+      _serial(() async {
+        if (!['export', 'inspect', 'restore'].contains(kind)) {
+          throw const LibraryFailure('备份请求类型不完整');
+        }
+        final raw = _state[kind];
+        if (raw is! Map || raw['key'] != key) return false;
+        final command = _map(raw);
+        if (command['task'] != null && command['task'] != identity) {
+          throw const LibraryFailure('备份原请求身份已变化');
+        }
+        await _save({
+          ..._state,
+          kind: {...command, 'task': identity},
+        });
+        return true;
+      });
+
+  Future<void> markExportSaved(String identity) => _serial(() async {
+    if (_state['export'] case final Map command
+        when command['task'] == identity) {
+      await _remove('export');
+    }
+  });
+
+  Future<void> reconcile({String? expectedRequestId}) =>
+      _serial(() => _reconcile(expectedRequestId: expectedRequestId));
+  Future<void> _reconcile({String? expectedRequestId}) async {
     if (!restorePending) return;
     var command = _map(_state['restore']);
+    if (expectedRequestId != null && command['key'] != expectedRequestId) {
+      return;
+    }
     if (command['task'] == null) {
       try {
         final found = await _json(

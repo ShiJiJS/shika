@@ -1,0 +1,255 @@
+"""Read-only, bounded task summaries and operation members for settings.
+
+The list projects scalar JSON counters in SQLite. It never loads a Task ORM
+object (and its potentially large result/backup manifest) for each row.
+"""
+
+from pathlib import PurePosixPath
+from typing import Annotated, Literal
+
+from fastapi import APIRouter, Query, Request
+from sqlalchemy import and_, case, func, literal, or_, select
+
+from .errors import LibraryError
+from .models import (
+    FileOperation,
+    FileStep,
+    ImagePack,
+    PackFileOperation,
+    PackFileStep,
+    PackPurgePlan,
+    Task,
+    Video,
+)
+
+
+class MaintenanceTasks:
+    def __init__(self, db):
+        self.db = db
+
+    @staticmethod
+    def summaries():
+        result = Task.result
+
+        def counter(key):
+            return case((func.json_type(result, "$." + key) == "integer", result[key].as_integer()))
+
+        historical = func.coalesce(
+            or_(
+                FileOperation.historical.is_(True),
+                PackFileOperation.historical.is_(True),
+                PackPurgePlan.historical.is_(True),
+                Task.error == "restored_history",
+            ),
+            False,
+        )
+        needs_attention = func.coalesce(
+            or_(
+                result["needs_attention"].as_boolean(), Task.error == "operation_recovery_required"
+            ),
+            False,
+        )
+        partial = func.coalesce(result["partial"].as_boolean(), False)
+        failed = counter("failed")
+        roots = func.json_each(result["roots"]).table_valued("key", "value", "type")
+        root_status = case((roots.c.type == "object", func.json_extract(roots.c.value, "$.status")))
+        root_issues = (
+            select(func.count())
+            .select_from(roots)
+            .where(root_status.in_(("unavailable", "failed")))
+            .scalar_subquery()
+        )
+        total, processed, succeeded = (counter(key) for key in ("total", "processed", "succeeded"))
+        file_task = or_(
+            FileOperation.id.is_not(None),
+            Task.kind.in_(("pack_trash", "pack_restore", "pack_undo", "pack_permanent")),
+        )
+        valid_result = func.coalesce(
+            and_(
+                total >= 0,
+                processed == total,
+                succeeded >= 0,
+                failed >= 0,
+                succeeded + failed == total,
+            ),
+            False,
+        )
+        state = case(
+            (historical, "historical"),
+            (needs_attention, "attention"),
+            (Task.status.in_(("queued", "running")), "processing"),
+            (Task.status == "interrupted", "interrupted"),
+            (file_task & ~valid_result, "attention"),
+            (
+                or_(partial, (Task.status == "completed") & or_(failed > 0, root_issues > 0)),
+                "partial",
+            ),
+            (Task.status == "completed", "completed"),
+            (Task.status == "failed", "failed"),
+            else_="attention",
+        )
+        family = case(
+            (Task.kind == "scan", "scan"),
+            (Task.kind.startswith("pack_", autoescape=True), "pack"),
+            (Task.kind.startswith("backup_", autoescape=True), "backup"),
+            (FileOperation.id.is_not(None), "video"),
+            else_="other",
+        )
+        return (
+            select(
+                Task.id,
+                Task.kind,
+                Task.status,
+                Task.phase,
+                Task.created_at,
+                Task.finished_at,
+                Task.error,
+                family.label("family"),
+                state.label("state"),
+                historical.label("historical"),
+                needs_attention.label("needs_attention"),
+                case(
+                    (Task.kind == "scan", result["progress"]["discovered"].as_integer()),
+                    else_=total,
+                ).label("total"),
+                case(
+                    (Task.kind == "scan", result["progress"]["processed"].as_integer()),
+                    else_=processed,
+                ).label("processed"),
+                succeeded.label("succeeded"),
+                failed.label("failed"),
+                root_issues.label("root_issues"),
+                counter("pages_total").label("pages_total"),
+                counter("pages_deleted").label("pages_deleted"),
+                counter("pages_pending_reconciliation").label("pages_pending"),
+                result["packs"]["progress"]["packs_discovered"].as_integer().label("pack_total"),
+                result["packs"]["progress"]["packs_processed"].as_integer().label("pack_processed"),
+            )
+            .select_from(Task)
+            .outerjoin(FileOperation, FileOperation.id == Task.id)
+            .outerjoin(PackFileOperation, PackFileOperation.id == Task.id)
+            .outerjoin(PackPurgePlan, PackPurgePlan.id == Task.id)
+        )
+
+    def page(self, offset, limit, family="all", state="all"):
+        projection = self.summaries().subquery()
+        statement = select(projection)
+        if family != "all":
+            statement = statement.where(projection.c.family == family)
+        if state == "attention":
+            statement = statement.where(
+                projection.c.state.in_(("attention", "interrupted", "failed", "partial"))
+            )
+        elif state != "all":
+            statement = statement.where(projection.c.state == state)
+        # One short serialized metadata read keeps total and page coherent while
+        # workers publish results; legacy SQLite SELECTs alone tear the pair.
+        with self.db.write_lock, self.db.read() as session:
+            total = session.scalar(select(func.count()).select_from(statement.subquery()))
+            rows = session.execute(
+                statement.order_by(projection.c.created_at.desc(), projection.c.id.desc())
+                .offset(offset)
+                .limit(limit)
+            ).mappings()
+            return {
+                "items": [dict(row) for row in rows],
+                "total": total,
+                "offset": offset,
+                "limit": limit,
+            }
+
+    def task(self, identity):
+        with self.db.read() as session:
+            row = session.execute(self.summaries().where(Task.id == identity)).mappings().first()
+            if not row:
+                raise LibraryError(
+                    "task_not_found", "原任务不存在，请核对当前内容；未重新提交", 404
+                )
+            return dict(row)
+
+    def items(self, identity, offset, limit, unfinished):
+        summary = self.task(identity)
+        if summary["family"] == "pack" and summary["kind"] != "pack_purge_preview":
+            step = PackFileStep
+            statement = select(
+                step.id,
+                step.requested_id,
+                step.pack_id.label("media_id"),
+                ImagePack.name,
+                step.original_path.label("path"),
+                step.phase,
+                step.outcome,
+                step.error,
+            ).outerjoin(ImagePack, ImagePack.id == step.pack_id)
+        elif summary["family"] == "video":
+            step = FileStep
+            statement = select(
+                step.id,
+                step.requested_id,
+                step.video_id.label("media_id"),
+                Video.name,
+                step.original_path.label("path"),
+                step.phase,
+                step.outcome,
+                step.error,
+            ).outerjoin(Video, Video.id == step.video_id)
+        else:
+            step = None
+            statement = select(literal(1)).where(literal(False))
+        if step is not None:
+            statement = statement.where(step.operation_id == identity)
+            if unfinished:
+                statement = statement.where(step.outcome != "succeeded")
+        with self.db.write_lock, self.db.read() as session:
+            total = session.scalar(select(func.count()).select_from(statement.subquery()))
+            records = (
+                []
+                if step is None
+                else session.execute(
+                    statement.order_by(step.id).offset(offset).limit(limit)
+                ).mappings()
+            )
+            return {
+                "operation_id": identity,
+                "historical": summary["historical"],
+                "items": [
+                    {
+                        **row,
+                        "name": row["name"] or PurePosixPath(row["path"]).name or "已移除的内容",
+                    }
+                    for row in records
+                ],
+                "total": total,
+                "offset": offset,
+                "limit": limit,
+            }
+
+
+def router(auth_required):
+    api = APIRouter(prefix="/api/v1/maintenance-tasks", dependencies=auth_required)
+
+    @api.get("")
+    def tasks(
+        request: Request,
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int, Query(ge=1, le=100)] = 24,
+        family: Literal["all", "scan", "video", "pack", "backup", "other"] = "all",
+        state: Literal["all", "processing", "attention", "completed", "historical"] = "all",
+    ):
+        return MaintenanceTasks(request.app.state.db).page(offset, limit, family, state)
+
+    @api.get("/{identity}")
+    def task(identity: str, request: Request):
+        return MaintenanceTasks(request.app.state.db).task(identity)
+
+    @api.get("/{identity}/items")
+    def items(
+        identity: str,
+        request: Request,
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int, Query(ge=1, le=100)] = 24,
+        unfinished: bool = False,
+    ):
+        return MaintenanceTasks(request.app.state.db).items(identity, offset, limit, unfinished)
+
+    return api

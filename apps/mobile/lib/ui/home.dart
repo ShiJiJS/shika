@@ -12,6 +12,7 @@ import '../features/library/browse_context.dart';
 import '../features/library/library_query_controller.dart';
 import '../features/preview/video_preview_route.dart';
 import '../features/packs/pack_trash_page.dart';
+import '../features/settings/maintenance_tasks_page.dart';
 import '../library/repository.dart';
 import 'paper.dart';
 import 'player.dart';
@@ -136,6 +137,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     'roots': '媒体目录',
     'trash': '回收站',
     'backup': '备份与恢复',
+    'tasks': '操作任务',
     'connection': '连接',
   }[page]!;
   bool get mediaPage => page == 'browse' || page == 'library';
@@ -1160,6 +1162,11 @@ class _LibraryHomeState extends State<LibraryHome> {
             'roots' => roots(),
             'trash' => trash(),
             'backup' => backup(),
+            'tasks' => MaintenanceTasksPage(
+              repository: repo,
+              saveBackup: files.save,
+              onOpenBackup: () => go('backup'),
+            ),
             'connection' => connection(),
             _ => const SizedBox(),
           },
@@ -2166,6 +2173,17 @@ class _LibraryHomeState extends State<LibraryHome> {
         '备份与恢复',
         '导出标签和管理记录',
         () => go('backup'),
+        allowDuringRestore: true,
+      ),
+      settingRow(
+        Icons.history,
+        '操作任务',
+        (repo.maintenancePendingCount ?? 0) > 0
+            ? '${repo.maintenancePendingCount} 项结果待核对'
+            : repo.maintenanceNeedsCheck
+            ? '有操作记录需要核对'
+            : '扫描、恢复与删除结果',
+        () => go('tasks'),
         allowDuringRestore: true,
       ),
       const SizedBox(height: 14),
