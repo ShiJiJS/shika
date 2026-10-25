@@ -13,7 +13,6 @@ from sqlalchemy import select, update
 from .errors import LibraryError
 from .models import (
     ImagePack,
-    PackFileStep,
     PackPage,
     PackPurgeEntry,
     PackPurgeExecution,
@@ -60,9 +59,7 @@ class PackPurgePlans:
             raise LibraryError("root_unavailable", "图包目录未启用、未映射或暂不可用")
         if item.original_path != pack.path or item.root_path != root.path:
             raise LibraryError("pack_changed", "图包接入位置与回收记录不同")
-        reservation = reserved_packs().where(PackFileStep.pack_id == pack.id)
-        if exclude_operation:
-            reservation = reservation.where(PackFileStep.operation_id != exclude_operation)
+        reservation = reserved_packs(pack_id=pack.id, exclude_operation=exclude_operation)
         if session.scalar(reservation.limit(1)):
             raise LibraryError("operation_busy", "图包已有待执行操作，请稍后核对")
         pages = list(

@@ -29,6 +29,7 @@ from .pack_operations import PackOperations
 from .pack_operations_api import router as pack_operations_router
 from .pack_purge import PackPurge
 from .pack_purge_plans import PackPurgePlans
+from .pack_restore_plans import PackRestorePlans
 from .pack_tags import PackTags
 from .packs import Packs
 from .playback import Playback
@@ -201,6 +202,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         app.state.pack_purge_plans = PackPurgePlans(db, configured)
         app.state.pack_purge = PackPurge(app.state.pack_files, app.state.pack_purge_plans, configured)
         app.state.pack_files.purge = app.state.pack_purge
+        app.state.pack_restore_plans = PackRestorePlans(app.state.pack_files)
         app.state.files = FileOperations(
             db, configured, catalog, app.state.playback, file_fault_hook
         )
@@ -211,6 +213,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         def start_regular():
             app.state.files.start()
             app.state.pack_files.start()
+            app.state.pack_restore_plans.start()
             app.state.pack_purge_plans.start()
             scanner.start()
 
@@ -221,6 +224,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             app.state.backups.close()
             scanner.close()
             app.state.files.close()
+            app.state.pack_restore_plans.close()
             app.state.pack_files.close()
             app.state.pack_purge_plans.close()
             db.close()
@@ -293,7 +297,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             "server_id": server_id,
             "api_version": 1,
             "sqlite_version": sqlite3.sqlite_version,
-            "schema_version": "0011",
+            "schema_version": "0012",
             "capabilities": [
                 "typed_roots",
                 "pack_tags",
@@ -310,6 +314,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "pack_purge_preview",
                 "pack_permanent_delete",
                 "maintenance_tasks",
+                "pack_restore_plans",
             ],
         }
 

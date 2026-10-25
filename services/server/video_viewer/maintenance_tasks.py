@@ -18,6 +18,9 @@ from .models import (
     PackFileOperation,
     PackFileStep,
     PackPurgePlan,
+    PackRestoreBatch,
+    PackRestoreMember,
+    PackRestorePlan,
     Task,
     Video,
 )
@@ -39,6 +42,7 @@ class MaintenanceTasks:
                 FileOperation.historical.is_(True),
                 PackFileOperation.historical.is_(True),
                 PackPurgePlan.historical.is_(True),
+                PackRestorePlan.historical.is_(True),
                 Task.error == "restored_history",
             ),
             False,
@@ -62,7 +66,9 @@ class MaintenanceTasks:
         total, processed, succeeded = (counter(key) for key in ("total", "processed", "succeeded"))
         file_task = or_(
             FileOperation.id.is_not(None),
-            Task.kind.in_(("pack_trash", "pack_restore", "pack_undo", "pack_permanent")),
+            Task.kind.in_(
+                ("pack_trash", "pack_restore", "pack_undo", "pack_permanent", "pack_restore_plan")
+            ),
         )
         valid_result = func.coalesce(
             and_(
@@ -73,6 +79,23 @@ class MaintenanceTasks:
                 succeeded + failed == total,
             ),
             False,
+        )
+        valid_result = case(
+            (
+                Task.kind == "pack_restore_plan",
+                func.coalesce(
+                    and_(
+                        total >= 1,
+                        succeeded >= 0,
+                        failed >= 0,
+                        counter("stopped") >= 0,
+                        processed == succeeded + failed,
+                        processed + counter("stopped") == total,
+                    ),
+                    False,
+                ),
+            ),
+            else_=valid_result,
         )
         state = case(
             (historical, "historical"),
@@ -129,11 +152,16 @@ class MaintenanceTasks:
             .outerjoin(FileOperation, FileOperation.id == Task.id)
             .outerjoin(PackFileOperation, PackFileOperation.id == Task.id)
             .outerjoin(PackPurgePlan, PackPurgePlan.id == Task.id)
+            .outerjoin(PackRestorePlan, PackRestorePlan.id == Task.id)
         )
 
     def page(self, offset, limit, family="all", state="all"):
         projection = self.summaries().subquery()
-        statement = select(projection)
+        # The parent is the user-authorized operation; bounded implementation
+        # batches stay available by ID without flooding the task list.
+        statement = select(projection).where(
+            projection.c.id.not_in(select(PackRestoreBatch.operation_id))
+        )
         if family != "all":
             statement = statement.where(projection.c.family == family)
         if state == "attention":
@@ -169,7 +197,19 @@ class MaintenanceTasks:
 
     def items(self, identity, offset, limit, unfinished):
         summary = self.task(identity)
-        if summary["family"] == "pack" and summary["kind"] != "pack_purge_preview":
+        if summary["kind"] == "pack_restore_plan":
+            step = PackRestoreMember
+            statement = select(
+                step.trash_id.label("id"),
+                step.trash_id.label("requested_id"),
+                step.pack_id.label("media_id"),
+                step.name,
+                step.path,
+                step.phase,
+                step.outcome,
+                step.error,
+            )
+        elif summary["family"] == "pack" and summary["kind"] != "pack_purge_preview":
             step = PackFileStep
             statement = select(
                 step.id,
@@ -197,7 +237,9 @@ class MaintenanceTasks:
             step = None
             statement = select(literal(1)).where(literal(False))
         if step is not None:
-            statement = statement.where(step.operation_id == identity)
+            statement = statement.where(
+                (step.plan_id if step is PackRestoreMember else step.operation_id) == identity
+            )
             if unfinished:
                 statement = statement.where(step.outcome != "succeeded")
         with self.db.write_lock, self.db.read() as session:
@@ -206,7 +248,9 @@ class MaintenanceTasks:
                 []
                 if step is None
                 else session.execute(
-                    statement.order_by(step.id).offset(offset).limit(limit)
+                    statement.order_by(step.ordinal if step is PackRestoreMember else step.id)
+                    .offset(offset)
+                    .limit(limit)
                 ).mappings()
             )
             return {

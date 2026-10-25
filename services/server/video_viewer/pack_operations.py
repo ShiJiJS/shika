@@ -17,6 +17,7 @@ from .models import (
     PackPage,
     PackPreferences,
     PackProgress,
+    PackRestoreBatch,
     PackSession,
     PackSessionEntry,
     PackTrashItem,
@@ -49,6 +50,7 @@ class PackOperations:
                     .join(Task)
                     .where(
                         PackFileOperation.historical.is_(False),
+                        PackFileOperation.id.not_in(select(PackRestoreBatch.operation_id)),
                         or_(
                             Task.status.in_(("queued", "running", "interrupted")),
                             Task.error == "operation_recovery_required",
@@ -195,7 +197,7 @@ class PackOperations:
                     root_path=root.path,
                     original_path=pack.path,
                 )
-                if session.scalar(reserved_packs().where(PackFileStep.pack_id == pack.id).limit(1)):
+                if session.scalar(reserved_packs(pack_id=pack.id).limit(1)):
                     step.outcome, step.error = "failed", "operation_busy"
                 elif (kind == "trash" and pack.status not in ("available", "missing")) or (
                     kind != "trash" and (item.status != "active" or pack.status != "trash")
@@ -500,6 +502,9 @@ class PackOperations:
             if not operation or operation.historical:
                 raise LibraryError("pack_operation_not_found", "图包操作不存在", 404)
 
+            if session.scalar(select(PackRestoreBatch.plan_id).where(PackRestoreBatch.operation_id == identity)):
+                raise LibraryError("plan_owned_operation", "请在整份恢复计划查看结果，不能单独重放子批次")
+
             def action():
                 task = session.get(Task, identity)
                 if task.status not in ("queued", "running"):
@@ -510,11 +515,7 @@ class PackOperations:
                         )
                     ):
                         if session.scalar(
-                            reserved_packs()
-                            .where(
-                                PackFileStep.pack_id == step.pack_id,
-                                PackFileStep.operation_id != identity,
-                            )
+                            reserved_packs(pack_id=step.pack_id, exclude_operation=identity)
                             .limit(1)
                         ):
                             raise LibraryError("operation_busy", "该图包已有进行中的操作")

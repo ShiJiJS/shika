@@ -20,6 +20,8 @@ from .models import (
     PackFileStep,
     PackPage,
     PackProgress,
+    PackRestoreMember,
+    PackRestorePlan,
     Root,
 )
 from .paths import beneath, excluded, open_directory, open_regular, signature
@@ -72,8 +74,8 @@ def digest_pages(session, pack_id, *, require_owned=True):
     return (count, digest.hexdigest()) if count else None
 
 
-def reserved_packs():
-    return (
+def reserved_packs(*, pack_id=None, exclude_operation=None, exclude_plan=None):
+    steps = (
         select(PackFileStep.pack_id)
         .join(PackFileOperation)
         .where(PackFileOperation.historical.is_(False), or_(
@@ -81,6 +83,18 @@ def reserved_packs():
             and_(PackFileStep.phase == "needs_attention", PackFileStep.outcome != "succeeded"),
         ))
     )
+    members = (
+        select(PackRestoreMember.pack_id)
+        .join(PackRestorePlan)
+        .where(PackRestorePlan.historical.is_(False), PackRestoreMember.outcome == "pending")
+    )
+    if exclude_operation:
+        steps = steps.where(PackFileStep.operation_id != exclude_operation)
+    if exclude_plan:
+        members = members.where(PackRestoreMember.plan_id != exclude_plan)
+    reserved = steps.union(members).subquery()
+    statement = select(reserved.c.pack_id)
+    return statement.where(reserved.c.pack_id == pack_id) if pack_id else statement
 
 
 class PackDeferred(Exception):
@@ -149,6 +163,7 @@ class PackScanner:
                 )
             )
         initial_catalog = not old
+        initial_generations = {pack.id: pack.generation for pack in old}
         by_inode = defaultdict(list)
         for pack in old:
             if pack.device and pack.inode:
@@ -222,8 +237,9 @@ class PackScanner:
                     )
                     if located and (
                         located.status in ("trash", "deleted")
+                        or initial_generations.get(located.id) != located.generation
                         or session.scalar(
-                            reserved_packs().where(PackFileStep.pack_id == located.id).limit(1)
+                            reserved_packs(pack_id=located.id).limit(1)
                         )
                     ):
                         summary["protected_packs"] += 1
@@ -269,9 +285,9 @@ class PackScanner:
                             candidate
                             and (
                                 candidate.status in ("trash", "deleted")
+                                or initial_generations.get(candidate.id) != candidate.generation
                                 or session.scalar(
-                                    reserved_packs()
-                                    .where(PackFileStep.pack_id == candidate.id)
+                                    reserved_packs(pack_id=candidate.id)
                                     .limit(1)
                                 )
                             )
@@ -329,8 +345,7 @@ class PackScanner:
                                 failed
                                 and failed.status not in ("trash", "deleted")
                                 and not session.scalar(
-                                    reserved_packs()
-                                    .where(PackFileStep.pack_id == failed.id)
+                                    reserved_packs(pack_id=failed.id)
                                     .limit(1)
                                 )
                             ):
@@ -363,7 +378,7 @@ class PackScanner:
                     stored.available, stored.error = True, None
             item["discovered"] = len(inventories[root.id][1])
         self.scanner.change_task(task_id, phase="pack_reconciling", result=result)
-        self.reconcile(task_id, completed, result)
+        self.reconcile(task_id, completed, result, initial_generations)
         self.tick(task_id, result, force=True)
 
     def unavailable(self, root_id, item, code="root_unavailable"):
@@ -647,7 +662,7 @@ class PackScanner:
             pack.status, pack.location_key = "available", str(path)
         return changed or identity_changed
 
-    def reconcile(self, task_id, completed, result):
+    def reconcile(self, task_id, completed, result, initial_generations):
         summary = result["packs"]
         with self.db.write() as session:
             unseen = list(
@@ -661,6 +676,10 @@ class PackScanner:
                     )
                 )
             )
+            # A restore can release its reservation after this scan skipped the
+            # directory. Only this scan's unchanged original candidates can be
+            # declared missing; newly restored identities await the next scan.
+            unseen = [pack for pack in unseen if initial_generations.get(pack.id) == pack.generation]
             unseen_ids = {pack.id for pack in unseen}
             for pack in unseen:
                 pack.status, pack.location_key = "missing", None
@@ -692,7 +711,8 @@ class PackScanner:
                     owned_path(session, ImagePack.path, ImagePack.root_id),
                 )
             ):
-                missing[digest_pages(session, pack.id)].append(pack)
+                if pack.id in initial_generations and pack.generation == initial_generations[pack.id] + int(pack.id in unseen_ids):
+                    missing[digest_pages(session, pack.id)].append(pack)
             for fresh in current:
                 if fresh.status != "discovered":
                     continue

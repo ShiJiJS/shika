@@ -32,6 +32,10 @@ class Restore(Input):
     trash_ids: list[Identity] = Field(min_length=1, max_length=1000)
 
 
+class RestorePlan(Input):
+    trash_ids: list[Identity] = Field(min_length=1, max_length=50000)
+
+
 class Permanent(Input):
     plan_id: Identity
     digest: str = Field(pattern="^[0-9a-f]{64}$")
@@ -81,6 +85,23 @@ def router(auth_required):
     def prepare_purge(body: Restore, request: Request):
         plans = request.app.state.pack_purge_plans
         return plans.view(plans.submit(body.trash_ids, body.request_id))
+
+    @api.post("/pack-restore-plans", status_code=202)
+    def prepare_restore(body: RestorePlan, request: Request):
+        plans = request.app.state.pack_restore_plans
+        return plans.view(plans.submit(body.trash_ids, body.request_id))
+
+    @api.get("/pack-restore-requests/{request_id}")
+    def restore_plan_receipt(request_id: str, request: Request):
+        return request.app.state.pack_restore_plans.view(request_id=request_id)
+
+    @api.get("/pack-restore-plans/{identity}")
+    def restore_plan(identity: str, request: Request):
+        return request.app.state.pack_restore_plans.view(identity)
+
+    @api.post("/pack-restore-plans/{identity}/stop", status_code=202)
+    def stop_restore(identity: str, body: Input, request: Request):
+        return request.app.state.pack_restore_plans.request_stop(identity, body.request_id)
 
     @api.get("/pack-purge-requests/{request_id}")
     def purge_preview_receipt(request_id: str, request: Request):
