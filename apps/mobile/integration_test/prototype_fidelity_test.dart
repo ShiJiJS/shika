@@ -9,6 +9,7 @@ import 'package:video_viewer/features/library/tag_catalog_page.dart';
 import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
+import 'package:video_viewer/ui/paper.dart';
 import 'package:video_viewer/ui/preferences.dart';
 
 Future<Map<String, dynamic>> control(String path, {bool post = false}) async {
@@ -200,7 +201,13 @@ void main() {
         .position
         .jumpTo(0);
     await preferences.setDark(true);
-    await t.pump(const Duration(milliseconds: 350));
+    await until(
+      () =>
+          Theme.of(t.element(find.byKey(const Key('app-shell'))))
+              .scaffoldBackgroundColor ==
+          Paper.darkTheme.scaffoldBackgroundColor,
+      'actual animated dark theme has settled',
+    );
     await capture('dark');
     await bottom('dark-bottom');
     expect(t.takeException(), isNull);
