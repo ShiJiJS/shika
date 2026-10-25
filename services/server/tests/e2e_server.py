@@ -219,7 +219,7 @@ def create_e2e_app():
             "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
             "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
             "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
-            "purge-selected", "purge-review", "purge-files", "purge-unknown", "purge-result", "purge-finished",
+            "purge-selected", "purge-review", "purge-files", "purge-saved", "purge-saved-reopened", "purge-unknown", "purge-result", "purge-finished",
             "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
             "restore-selected", "restore-unknown", "restore-reopened", "restore-paged", "restore-stop-unknown", "restore-stopped",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",

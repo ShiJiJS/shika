@@ -162,8 +162,19 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
     final commands = await owner.packFileJournal.pending(fileScope);
     final bindings = await owner.packFileJournal.bindings(fileScope);
     final plans = await owner.packFileJournal.restorePending(fileScope);
+    final selections = await owner.packFileJournal.purgeSelections(fileScope);
     check();
     final result = <MaintenanceReceipt>[
+      for (final value in selections)
+        MaintenanceReceipt(
+          id: 'purge-selection:${value.id}',
+          requestId: value.id,
+          title: '图包删除选择 · ${value.remaining.length} 个未提交',
+          source: MaintenanceReceiptSource.purgeSelection,
+          kind: 'purge_selection',
+          purgeSelectionId: value.id,
+          historical: value.historical,
+        ),
       for (final value in plans)
         MaintenanceReceipt(
           id: 'restore-plan:${value.command.key}',
@@ -251,6 +262,9 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
     check();
     if (!identical(issued[receipt.id], receipt)) {
       throw const LibraryFailure('本机操作记录已更新，请重新读取任务');
+    }
+    if (receipt.source == MaintenanceReceiptSource.purgeSelection) {
+      throw const LibraryFailure('这是保存的选择，请打开后逐批核对；没有自动提交删除');
     }
     if (receipt.source == MaintenanceReceiptSource.restorePlan) {
       final plans = PackRestorePlans(

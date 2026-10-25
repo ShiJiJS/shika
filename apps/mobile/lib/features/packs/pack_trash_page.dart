@@ -10,6 +10,7 @@ import 'pack_file_action.dart';
 import 'pack_trash_session.dart';
 import 'pack_purge_review.dart';
 import 'pack_purge_result.dart';
+import 'pack_purge_selection_page.dart';
 import '../settings/maintenance_task_detail.dart';
 
 class PackTrashPage extends StatefulWidget {
@@ -209,7 +210,14 @@ class _PackTrashPageState extends State<PackTrashPage> {
       )) {
         throw const LibraryFailure('所选图包有待核对操作，请先查询原结果');
       }
-      command = await showPackPurgeReview(context, widget.repository, ids);
+      final saved = await PackPurgeSelections(session.files).save(ids);
+      if (!mounted || !session.live) return;
+      command = await showPackPurgeReview(
+        context,
+        widget.repository,
+        saved.remaining,
+        selectionId: saved.id,
+      );
     } catch (failure) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -217,6 +225,13 @@ class _PackTrashPageState extends State<PackTrashPage> {
         );
       }
     } finally {
+      if (mounted && session.live) {
+        try {
+          await session.loadPending();
+        } catch (failure) {
+          session.error = packFileFailureMessage(failure);
+        }
+      }
       if (mounted) setState(() => checking = false);
     }
     if (mounted && command != null && session.live) {
@@ -255,6 +270,44 @@ class _PackTrashPageState extends State<PackTrashPage> {
       if (mounted) setState(() => checking = false);
     }
     if (mounted && retry != null) await retryPermanent(retry);
+  }
+
+  Future<void> savedSelection() async {
+    if (checking || session.restoring || !session.live) return;
+    final values = session.purgeSelections;
+    if (values.isEmpty) return;
+    var value = values.first;
+    if (values.length > 1) {
+      final picked = await paperSheet<PackPurgeSelection>(
+        context,
+        SheetFrame(
+          title: '保存的删除选择',
+          children: [
+            for (final row in values)
+              ListTile(
+                title: Text(
+                  '${row.remaining.length} 个未提交 · 原选择 ${row.ids.length} 个',
+                ),
+                subtitle: row.historical ? const Text('历史选择，不能继续执行') : null,
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => Navigator.pop(context, row),
+              ),
+          ],
+        ),
+      );
+      if (picked == null || !mounted || !session.live) return;
+      value = picked;
+    }
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        builder: (_) => PackPurgeSelectionPage(
+          repository: widget.repository,
+          selectionId: value.id,
+        ),
+      ),
+    );
+    if (mounted && session.live) await session.load();
   }
 
   Future<void> restore() async {
@@ -424,6 +477,12 @@ class _PackTrashPageState extends State<PackTrashPage> {
             onPressed: locked ? null : () => restorePlan(pending: true),
             child: Text('${session.pendingPlans.length} 项恢复或停止请求待核对'),
           ),
+        if (session.purgeSelections.isNotEmpty)
+          TextButton(
+            key: const Key('pack-trash-saved-purge'),
+            onPressed: locked ? null : savedSelection,
+            child: Text('${session.purgeSelections.length} 份保存的删除选择'),
+          ),
         if (session.lastPlan != null)
           TextButton(
             key: const Key('pack-trash-plan-result'),
@@ -573,8 +632,11 @@ class _PackTrashPageState extends State<PackTrashPage> {
         if (session.canPrevious || session.canNext)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 4,
               children: [
                 TextButton(
                   key: const Key('pack-trash-previous'),

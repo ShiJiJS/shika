@@ -6,6 +6,7 @@ import '../../library/repository.dart';
 import '../../ui/paper.dart';
 import 'maintenance_task_session.dart';
 import 'maintenance_task_detail.dart';
+import '../packs/pack_purge_selection_page.dart';
 
 class MaintenanceTasksPage extends StatefulWidget {
   const MaintenanceTasksPage({
@@ -71,6 +72,20 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
   }
 
   Future<void> pending(MaintenanceReceipt receipt) async {
+    if (receipt.source == MaintenanceReceiptSource.purgeSelection) {
+      final s = session!;
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      await Navigator.of(context).push<void>(
+        MaterialPageRoute(
+          builder: (_) => PackPurgeSelectionPage(
+            repository: widget.repository,
+            selectionId: receipt.purgeSelectionId!,
+          ),
+        ),
+      );
+      if (mounted && s.live) await s.load();
+      return;
+    }
     final s = session!, task = await session!.query(receipt);
     if (!mounted || !s.live) return;
     if (task != null) {
@@ -103,7 +118,8 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
         .where(
           (v) =>
               (s.family == 'all' || s.family == v.family) &&
-              ['all', 'attention'].contains(s.filter),
+              (s.filter == 'all' ||
+                  s.filter == (v.historical ? 'historical' : 'attention')),
         )
         .toList();
     final known = receipts.map((v) => v.taskId).whereType<String>().toSet();
@@ -202,7 +218,7 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
                       : Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Text(
-                            '本机 ${receipts.length} 项结果待核对',
+                            '本机 ${receipts.length} 项待处理记录',
                             style: TextStyle(color: p.danger),
                           ),
                         );
@@ -216,6 +232,11 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
                     subtitle: Text(
                       s.querying == receipt.id
                           ? '正在查询原请求…'
+                          : receipt.source ==
+                                MaintenanceReceiptSource.purgeSelection
+                          ? receipt.historical
+                                ? '历史选择 · 只读查看'
+                                : '保存的选择 · 每批仍需核对确认'
                           : '本机结果待核对 · 只查询原请求',
                     ),
                     trailing: const Icon(Icons.chevron_right),

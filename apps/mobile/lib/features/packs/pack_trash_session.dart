@@ -29,6 +29,7 @@ class PackTrashSession extends ChangeNotifier {
   final PackFiles files;
   PackRestorePlans? plans;
   List<RestorePlanPending> pendingPlans = const [];
+  List<PackPurgeSelection> purgeSelections = const [];
   RestorePlan? lastPlan;
   late final CatalogSelection selection;
   bool _disposed = false, active = true, loading = false, restoring = false;
@@ -56,6 +57,7 @@ class PackTrashSession extends ChangeNotifier {
     hasLoaded = false;
     pending = const [];
     pendingPlans = const [];
+    purgeSelections = const [];
     lastPlan = null;
     failures.clear();
     error = '服务连接或管理数据已变化，请返回后重新打开回收站';
@@ -128,9 +130,13 @@ class PackTrashSession extends ChangeNotifier {
   Future<void> loadPending() async {
     final commands = await files.pending();
     final restores = await plans?.pending() ?? <RestorePlanPending>[];
+    final selections = repository.capabilities.packPermanentDelete
+        ? await PackPurgeSelections(files).list()
+        : <PackPurgeSelection>[];
     if (live) {
       pending = commands;
       pendingPlans = restores;
+      purgeSelections = selections;
       _notify();
     }
   }
