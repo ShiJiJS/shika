@@ -236,7 +236,7 @@ class _ArchiveBackupPageState extends State<ArchiveBackupPage> {
         if (snapshotError.isNotEmpty) note(snapshotError),
         TextButton(
           onPressed: current ? widget.onOpenTasks : null,
-          child: const Text('查看后台操作结果与恢复前快照'),
+          child: const Text('查看后台操作结果'),
         ),
       ],
     );
@@ -396,6 +396,9 @@ class _ArchiveRestorePageState extends State<ArchiveRestorePage> {
                   key: Key('archive-mapping-${root.id}'),
                   controller: fields[root.id],
                   enabled: editable,
+                  maxLines: null,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
                   style: const TextStyle(fontSize: 16),
                   decoration: InputDecoration(
                     labelText:

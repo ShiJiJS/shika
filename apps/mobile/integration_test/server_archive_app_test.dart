@@ -124,7 +124,7 @@ void main() {
               child: child!,
             ),
             home: Scaffold(
-              appBar: AppBar(title: const Text('备份与恢复')),
+              appBar: AppBar(title: const Text('备份与恢复', style: Paper.title)),
               body: ArchiveBackupPage(
                 key: UniqueKey(),
                 repository: repo,
