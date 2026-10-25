@@ -50,6 +50,7 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
 
   Future<void> detail(MaintenanceTask task) async {
     final s = session!;
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     final result = await Navigator.of(context).push<String>(
       MaterialPageRoute(
         builder: (_) => MaintenanceTaskDetail(
@@ -101,7 +102,7 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
     final receipts = s.pending
         .where(
           (v) =>
-              (s.family == 'all' || s.family == v.source.name) &&
+              (s.family == 'all' || s.family == v.family) &&
               ['all', 'attention'].contains(s.filter),
         )
         .toList();

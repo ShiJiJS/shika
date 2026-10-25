@@ -221,6 +221,7 @@ def watch():
                 "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
                 "purge-selected", "purge-review", "purge-files", "purge-unknown", "purge-result", "purge-finished",
                 "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
+                "restore-selected", "restore-unknown", "restore-reopened", "restore-paged", "restore-stop-unknown", "restore-stopped",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
                 "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
             }:
@@ -232,7 +233,7 @@ def watch():
                         json.dumps(json.load(response), ensure_ascii=False, indent=2),
                         encoding="utf-8",
                     )
-                if PREFIX in {"lf6-trash", "lf6-purge", "lf7-tasks"}:
+                if PREFIX in {"lf6-trash", "lf6-purge", "lf7-tasks", "lf7-restore"}:
                     request = urllib.request.Request(
                         "http://127.0.0.1:8761/__fixture/actions/pack-trash-hashes",
                         headers=HEADERS, method="POST",
@@ -242,6 +243,10 @@ def watch():
                             json.dumps(json.load(response), ensure_ascii=False, indent=2),
                             encoding="utf-8",
                         )
+                if PREFIX == "lf7-restore":
+                    request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/restore-plan-stats", headers=HEADERS, method="POST")
+                    with urllib.request.urlopen(request, timeout=2) as response:
+                        (EVIDENCE / f"{PREFIX}-{phase}-plan.json").write_text(json.dumps(json.load(response),ensure_ascii=False,indent=2),encoding="utf-8")
                 if PREFIX == "lf5-recovery":
                     request = urllib.request.Request(
                         "http://127.0.0.1:8761/__fixture/reader/stats",
@@ -302,6 +307,7 @@ def main():
     mode.add_argument("--pack-trash", action="store_true")
     mode.add_argument("--pack-purge", action="store_true")
     mode.add_argument("--maintenance-tasks", action="store_true")
+    mode.add_argument("--restore-plans", action="store_true")
     mode.add_argument("--pack-cleanup", action="store_true")
     mode.add_argument("--pack-recovery", action="store_true")
     parser.add_argument("--workspace-viewport", choices=("390", "360"), default="390")
@@ -330,7 +336,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.maintenance_tasks:
+    if args.restore_plans:
+        PREFIX = "lf7-restore"
+    elif args.maintenance_tasks:
         PREFIX = "lf7-tasks"
     elif args.pack_purge:
         PREFIX = "lf6-purge"
@@ -378,7 +386,7 @@ def main():
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     prepare_emulator()
-    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.maintenance_tasks:
+    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.maintenance_tasks or args.restore_plans:
         def device(*command):
             return subprocess.check_output(
                 [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
@@ -441,6 +449,7 @@ def main():
                 "lf6-trash": "integration_test/server_pack_trash_test.dart",
                 "lf6-purge": "integration_test/server_pack_purge_test.dart",
                 "lf7-tasks": "integration_test/server_maintenance_tasks_test.dart",
+                "lf7-restore": "integration_test/server_restore_plans_test.dart",
                 "lf6-cleanup": "integration_test/server_pack_cleanup_test.dart",
                 "lf5-recovery": "integration_test/server_pack_reader_recovery_test.dart",
             }[PREFIX],
@@ -458,6 +467,7 @@ def main():
             "w", encoding="utf-8"
         ) as log:
             code = 0
+            killed_restore_pid = None
             for phase in range(
                 1
                 if args.plain_name
@@ -482,6 +492,7 @@ def main():
                 if args.backups
                 else 2
             ):
+                forced_restore_kill = False
                 if phase:
                     subprocess.run(
                         [
@@ -525,6 +536,43 @@ def main():
                             check=True, capture_output=True, timeout=10,
                         )
                         events.append({"phase": "android-back", "time": time.time()})
+                    elif line.strip() == "VV_E2E_RESTORE_FORCE_STOP":
+                        if not args.restore_plans or phase != 0:
+                            raise RuntimeError("Unexpected restore force-stop signal")
+                        killed_restore_pid = subprocess.check_output([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],text=True,timeout=10).strip()
+                        if not killed_restore_pid:
+                            raise RuntimeError("App was not live at forced interruption")
+                        subprocess.run([ADB,"-s","emulator-5554","shell","am","force-stop","io.github.shijijs.video_viewer"],check=True,timeout=10)
+                        absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10)
+                        if absent.stdout.strip():
+                            raise RuntimeError("App survived forced interruption")
+                        forced_restore_kill = True
+                        events.append({"phase":"restore-app-force-stopped","pid":killed_restore_pid,"pid_absent":True,"time":time.time()})
+                        request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/release-restore-plan",headers=HEADERS,method="POST")
+                        with urllib.request.urlopen(request,timeout=3) as response:
+                            json.load(response)
+                        deadline = time.monotonic()+30
+                        while True:
+                            request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/restore-plan-stats",headers=HEADERS,method="POST")
+                            with urllib.request.urlopen(request,timeout=3) as response:
+                                stats = json.load(response)
+                            if stats["plan"]["status"] == "completed":
+                                break
+                            if time.monotonic()>deadline:
+                                raise RuntimeError("Server did not finish whole plan while app was absent")
+                            stop.wait(.1)
+                        if stats["member_counts"] != {"succeeded":27} or len(stats["batches"]) != 14:
+                            raise RuntimeError("Whole-selection continuation did not finish unique batches")
+                        still_absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10)
+                        if still_absent.stdout.strip():
+                            raise RuntimeError("App restarted before the server completed its plan")
+                        (EVIDENCE/f"{PREFIX}-without-app-plan.json").write_text(json.dumps(stats,ensure_ascii=False,indent=2),encoding="utf-8")
+                        events.append({"phase":"restore-completed-without-app","members":27,"batches":14,"pid_absent":True,"time":time.time()})
+                    elif line.strip() == "VV_E2E_RESTORE_REOPENED":
+                        reopened = subprocess.check_output([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],text=True,timeout=10).strip()
+                        if not args.restore_plans or not killed_restore_pid or not reopened or reopened == killed_restore_pid:
+                            raise RuntimeError("Restore did not reopen in a different Android process")
+                        events.append({"phase":"restore-app-reopened","old_pid":killed_restore_pid,"new_pid":reopened,"time":time.time()})
                     elif line.strip() == "VV_E2E_DEVICE_BACKGROUND":
                         subprocess.run(
                             [
@@ -551,6 +599,11 @@ def main():
                             {"phase": "android-foregrounded", "time": time.time()}
                         )
                 code = process.wait()
+                if args.restore_plans and phase == 0:
+                    if not forced_restore_kill or code == 0:
+                        raise RuntimeError("First restore phase ended without a forced live-process interruption")
+                    events.append({"phase":"restore-expected-test-interruption","runner_exit_code":code,"time":time.time()})
+                    code = 0
                 if code:
                     break
     finally:

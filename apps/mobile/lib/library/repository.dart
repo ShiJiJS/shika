@@ -17,6 +17,8 @@ export 'pack_models.dart';
 /// This boundary describes client-visible behavior, independent of transport.
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
+  PackRestorePlans createPackRestorePlans() =>
+      throw const LibraryFailure('当前服务尚不支持整份恢复计划，请升级服务端');
   MaintenanceTaskCatalog createMaintenanceTasks() =>
       throw const LibraryFailure('当前服务尚不支持操作任务，请升级服务端');
   int? get maintenancePendingCount => null;

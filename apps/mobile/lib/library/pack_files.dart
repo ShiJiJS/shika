@@ -7,6 +7,8 @@ import 'models.dart';
 import 'pack_reading.dart';
 import 'server_api.dart';
 
+part 'pack_restore_plans.dart';
+
 typedef PackFileCall = Future<Map<String, dynamic>> Function(
   String method,
   String path, {
@@ -597,7 +599,8 @@ class PackFileJournal {
   int? cachedCount(String scope) {
     if (_book == null) return null;
     try {
-      return _map(_map(_book!['scopes'])[scope] ?? <String, dynamic>{}).length;
+      return _map(_map(_book!['scopes'])[scope] ?? <String, dynamic>{}).length +
+          _restoreRows(scope).length;
     } catch (_) {
       return null;
     }
@@ -609,6 +612,7 @@ class PackFileJournal {
     String scope,
     T Function(Map<String, dynamic>) action, {
     bool write = true,
+    String namespace = 'scopes',
   }) {
     final result = _tail.then((_) async {
       final initializing = _book == null;
@@ -626,12 +630,12 @@ class PackFileJournal {
         }
       }
       final next = _map(jsonDecode(jsonEncode(_book)));
-      final scopes = _map(next['scopes']);
+      final scopes = _map(next[namespace] ?? <String, dynamic>{});
       final commands = _map(scopes[scope] ?? <String, dynamic>{});
       final value = action(commands);
       if (write) {
         scopes[scope] = commands;
-        next['scopes'] = scopes;
+        next[namespace] = scopes;
         await store.write(jsonEncode(next));
         _book = next;
       }
@@ -679,6 +683,12 @@ class PackFileJournal {
               continue;
             }
             throw const LibraryFailure('这项图包操作的结果尚未确认，请先查询原结果');
+          }
+        }
+        for (final row in _restoreRows(scope).values) {
+          final other = RestorePlanCommand.fromJson(_map(_map(row)['command']));
+          if (other.resources.intersection(command.resources).isNotEmpty) {
+            throw const LibraryFailure('这批图包已有恢复计划，请先查询原结果');
           }
         }
         if (commands.length >= 256) {

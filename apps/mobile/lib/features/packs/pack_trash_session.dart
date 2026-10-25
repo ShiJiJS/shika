@@ -19,11 +19,17 @@ class PackTrashSession extends ChangeNotifier {
       cancelRead: this.catalog.cancelSelection,
     )..addListener(_notify);
     repository.addListener(_ownerChanged);
+    if (repository.capabilities.packRestorePlans) {
+      plans = repository.createPackRestorePlans();
+    }
   }
   static const pageSize = 24;
   final LibraryRepository repository;
   final PackTrashCatalog catalog;
   final PackFiles files;
+  PackRestorePlans? plans;
+  List<RestorePlanPending> pendingPlans = const [];
+  RestorePlan? lastPlan;
   late final CatalogSelection selection;
   bool _disposed = false, active = true, loading = false, restoring = false;
   bool hasLoaded = false;
@@ -49,6 +55,8 @@ class PackTrashSession extends ChangeNotifier {
     _items = const [];
     hasLoaded = false;
     pending = const [];
+    pendingPlans = const [];
+    lastPlan = null;
     failures.clear();
     error = '服务连接或管理数据已变化，请返回后重新打开回收站';
     _notify();
@@ -119,8 +127,10 @@ class PackTrashSession extends ChangeNotifier {
 
   Future<void> loadPending() async {
     final commands = await files.pending();
+    final restores = await plans?.pending() ?? <RestorePlanPending>[];
     if (live) {
       pending = commands;
+      pendingPlans = restores;
       _notify();
     }
   }
@@ -176,6 +186,44 @@ class PackTrashSession extends ChangeNotifier {
     if (!live || !active || restoring || selection.ids.isEmpty) return;
     selection.cancel();
     final ids = selection.ids.toList()..sort();
+    if (plans != null) {
+      restoring = true;
+      error = message = '';
+      _notify();
+      try {
+        final plan = await plans!.send(
+          RestorePlanCommand.restore(packFileRequestId(), ids),
+        );
+        if (!live) return;
+        if (plan == null) {
+          error = '原恢复结果待确认，请查询原请求；未重复提交';
+          return;
+        }
+        lastPlan = plan;
+        selection.cancel(clear: true);
+        failures.clear();
+        message = '整份 ${plan.total} 个图包的恢复计划已受理，可离开页面，在操作任务查看进度';
+        repository.packFilesChanged();
+      } catch (failure) {
+        if (live) error = packFileFailureMessage(failure);
+      } finally {
+        if (!_disposed) {
+          restoring = false;
+          if (live) {
+            final actionError = error;
+            try {
+              await loadPending();
+              if (active) await load();
+              if (actionError.isNotEmpty) error = actionError;
+            } catch (failure) {
+              error = packFileFailureMessage(failure);
+            }
+          }
+          _notify();
+        }
+      }
+      return;
+    }
     restoring = true;
     error = message = '';
     failures.clear();

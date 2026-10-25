@@ -4,6 +4,7 @@ import asyncio
 import hashlib
 import os
 import shutil
+import threading
 import time
 from collections import deque
 from pathlib import Path
@@ -73,6 +74,8 @@ def create_e2e_app():
     install_reader_fixture(app, FIXTURE_KEY)
     trace = deque(maxlen=300)
     checkpoint = {"phase": "ready"}
+    restore_gate = threading.Event()
+    restore_gate.set()
 
     @app.middleware("http")
     async def observe(request, call_next):
@@ -143,12 +146,12 @@ def create_e2e_app():
         if (
             controls["lose_file_response"]
             and request.method == "POST"
-            and request.url.path in {"/api/v1/videos/trash", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans"}
+            and (request.url.path in {"/api/v1/videos/trash", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans", "/api/v1/pack-restore-plans"} or request.url.path.startswith("/api/v1/pack-restore-plans/") and request.url.path.endswith("/stop"))
             and response.status_code == 202
         ):
             controls["lose_file_response"] = False
             response = JSONResponse(
-                {"error": {"code": "fixture_response_lost", "message": "恢复结果待确认，请查询原结果" if request.url.path == "/api/v1/pack-trash/restore" else "删除结果待确认，请查询结果"}},
+                {"error": {"code": "fixture_response_lost", "message": "恢复或停止结果待确认，请查询原请求" if "pack-restore-plans" in request.url.path else "恢复结果待确认，请查询原结果" if request.url.path == "/api/v1/pack-trash/restore" else "删除结果待确认，请查询结果"}},
                 status_code=503,
             )
             entry["status"] = 503
@@ -218,6 +221,7 @@ def create_e2e_app():
             "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
             "purge-selected", "purge-review", "purge-files", "purge-unknown", "purge-result", "purge-finished",
             "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
+            "restore-selected", "restore-unknown", "restore-reopened", "restore-paged", "restore-stop-unknown", "restore-stopped",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
                 "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
         }:
@@ -234,6 +238,36 @@ def create_e2e_app():
                 app.state.login_attempts.clear()
         elif action == "reset-task-trace":
             trace.clear()
+        elif action == "hold-restore-plan":
+            restore_gate.clear()
+            app.state.pack_restore_plans.batch_size = 2
+            def hold_restore(phase, identity):
+                if phase == "restore_child_accepted":
+                    while not restore_gate.wait(.1):
+                        if app.state.pack_restore_plans.stop.is_set():
+                            return
+            app.state.pack_restore_plans.fault_hook = hold_restore
+        elif action == "release-restore-plan":
+            restore_gate.set()
+        elif action == "restore-plan-stats":
+            from sqlalchemy import func
+
+            from video_viewer.models import (
+                ImagePack,
+                PackRestoreBatch,
+                PackRestoreMember,
+                PackRestorePlan,
+                Task,
+            )
+            with app.state.db.write_lock, app.state.db.read() as session:
+                identity = session.scalar(select(PackRestorePlan.id).join(Task).order_by(Task.created_at.desc(), Task.id.desc()).limit(1))
+                if not identity:
+                    return {"plan": None}
+                plan = app.state.pack_restore_plans.view(identity)
+                batches = list(session.scalars(select(PackRestoreBatch.operation_id).where(PackRestoreBatch.plan_id == identity)))
+                counts = dict(session.execute(select(PackRestoreMember.outcome,func.count()).where(PackRestoreMember.plan_id == identity).group_by(PackRestoreMember.outcome)).all())
+                packs = [{"id":p.id,"status":p.status,"generation":p.generation} for p in session.scalars(select(ImagePack).order_by(ImagePack.id))]
+            return {"plan":plan,"batches":batches,"member_counts":counts,"packs":packs}
         elif action == "pack-anchor":
             details = seed_workspace_packs(BASE, Path("/fixture-assets"), 73)
         elif action == "recent-pack-history":

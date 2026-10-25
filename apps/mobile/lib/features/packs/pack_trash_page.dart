@@ -10,6 +10,7 @@ import 'pack_file_action.dart';
 import 'pack_trash_session.dart';
 import 'pack_purge_review.dart';
 import 'pack_purge_result.dart';
+import '../settings/maintenance_task_detail.dart';
 
 class PackTrashPage extends StatefulWidget {
   const PackTrashPage({
@@ -257,10 +258,110 @@ class _PackTrashPageState extends State<PackTrashPage> {
   }
 
   Future<void> restore() async {
+    if (session.plans != null) {
+      final count = session.selection.ids.length;
+      final approved = await paperSheet<bool>(
+        context,
+        SheetFrame(
+          title: '恢复已选 $count 个图包',
+          children: [
+            const Text('整份选择交给服务端按批次恢复，标签和阅读进度保留。受理后可以离开，在操作任务查看进度或停止后续批次。'),
+            const SizedBox(height: 16),
+            Wrap(
+              alignment: WrapAlignment.end,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('取消'),
+                ),
+                FilledButton(
+                  key: const Key('pack-restore-plan-confirm'),
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('确认整份恢复'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+      if (!mounted || approved != true || !session.live) return;
+    }
     await session.restoreSelected();
     if (mounted && session.message.isNotEmpty) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(session.message)));
+    }
+  }
+
+  Future<void> restorePlan({bool pending = false}) async {
+    if (checking || !session.live || session.plans == null) return;
+    RestorePlanCommand? command;
+    if (pending) {
+      final entries = session.pendingPlans;
+      if (entries.isEmpty) return;
+      if (entries.length == 1) {
+        command = entries.single.command;
+      } else {
+        command = await paperSheet<RestorePlanCommand>(
+          context,
+          SheetFrame(
+            title: '恢复计划与停止请求',
+            children: [
+              for (final entry in entries)
+                ListTile(
+                  title: Text(entry.command.label),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.pop(context, entry.command),
+                ),
+            ],
+          ),
+        );
+        if (command == null || !mounted || !session.live) return;
+      }
+    }
+    setState(() => checking = true);
+    MaintenanceTaskCatalog? catalog;
+    try {
+      final plan = command != null
+          ? await session.plans!.receipt(command)
+          : await session.plans!.task(session.lastPlan!.id);
+      if (!mounted || !session.live) return;
+      if (plan == null) throw const LibraryFailure('原请求尚未确认，记录已保留；未重复提交');
+      session.lastPlan = plan;
+      catalog = widget.repository.createMaintenanceTasks();
+      final summary = await catalog.task(plan.id);
+      if (!mounted || !session.live) return;
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => MaintenanceTaskDetail(
+            repository: widget.repository,
+            catalog: catalog!,
+            initial: summary,
+          ),
+        ),
+      );
+      if (mounted && session.live) await session.load();
+    } catch (failure) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(packFileFailureMessage(failure))),
+        );
+      }
+    } finally {
+      catalog?.dispose();
+      if (mounted) {
+        if (session.live) {
+          try {
+            await session.loadPending();
+          } catch (failure) {
+            session.error = packFileFailureMessage(failure);
+          }
+        }
+        if (mounted) setState(() => checking = false);
+      }
     }
   }
 
@@ -272,43 +373,14 @@ class _PackTrashPageState extends State<PackTrashPage> {
     child: const Text('重新读取'),
   );
 
-  @override
-  Widget build(BuildContext context) {
-    if (_session == null) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(initializationError),
-              TextButton(onPressed: open, child: const Text('重新读取')),
-            ],
-          ),
-        ),
-      );
-    }
-    final p = Paper.of(context), locked = session.restoring || checking;
-    final selected = session.selection.ids;
+  Widget notices(bool locked, {bool inList = false}) {
+    final p = Paper.of(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: TextField(
-            key: const Key('pack-trash-search'),
-            controller: search,
-            style: const TextStyle(fontSize: 14),
-            enabled: !locked,
-            decoration: const InputDecoration(
-              hintText: '搜索名称或目录',
-              prefixIcon: Icon(Icons.search),
-            ),
-            onChanged: (value) => unawaited(session.load(query: value)),
-          ),
-        ),
         if (session.error.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: inList ? 0 : 16),
             child: MediaLayout.largeText(context)
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -334,7 +406,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
           ),
         if (session.selection.error.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: inList ? 0 : 16),
             child: Text(
               session.selection.error,
               style: TextStyle(color: p.danger),
@@ -346,6 +418,58 @@ class _PackTrashPageState extends State<PackTrashPage> {
             onPressed: locked ? null : checkPending,
             child: Text('${session.pending.length} 项图包操作待核对'),
           ),
+        if (session.pendingPlans.isNotEmpty)
+          TextButton(
+            key: const Key('pack-trash-plans-pending'),
+            onPressed: locked ? null : () => restorePlan(pending: true),
+            child: Text('${session.pendingPlans.length} 项恢复或停止请求待核对'),
+          ),
+        if (session.lastPlan != null)
+          TextButton(
+            key: const Key('pack-trash-plan-result'),
+            onPressed: locked ? null : restorePlan,
+            child: const Text('查看恢复计划'),
+          ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_session == null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(initializationError),
+              TextButton(onPressed: open, child: const Text('重新读取')),
+            ],
+          ),
+        ),
+      );
+    }
+    final p = Paper.of(context), locked = session.restoring || checking;
+    final selected = session.selection.ids;
+    final largeText = MediaLayout.largeText(context);
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: TextField(
+            key: const Key('pack-trash-search'),
+            controller: search,
+            style: const TextStyle(fontSize: 14),
+            enabled: !locked,
+            decoration: const InputDecoration(
+              hintText: '搜索名称或目录',
+              prefixIcon: Icon(Icons.search),
+            ),
+            onChanged: (value) => unawaited(session.load(query: value)),
+          ),
+        ),
+        if (!largeText) notices(locked),
         MediaCatalogToolbar(
           children: [
             Text(
@@ -382,6 +506,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               children: [
+                if (largeText) notices(locked, inList: true),
                 Text(
                   '普通移除保留源文件，永久删除不能恢复。恢复图包时保留剩余图片、整包标签和阅读进度。',
                   style: TextStyle(fontSize: 13, color: p.muted),

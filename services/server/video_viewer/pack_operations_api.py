@@ -99,9 +99,15 @@ def router(auth_required):
     def restore_plan(identity: str, request: Request):
         return request.app.state.pack_restore_plans.view(identity)
 
+    @api.get("/pack-restore-stop-requests/{request_id}")
+    def restore_stop_receipt(request_id: str, request: Request):
+        return request.app.state.pack_restore_plans.stop_receipt(request_id)
+
     @api.post("/pack-restore-plans/{identity}/stop", status_code=202)
     def stop_restore(identity: str, body: Input, request: Request):
-        return request.app.state.pack_restore_plans.request_stop(identity, body.request_id)
+        plans = request.app.state.pack_restore_plans
+        plans.request_stop(identity, body.request_id)
+        return plans.stop_receipt(body.request_id)
 
     @api.get("/pack-purge-requests/{request_id}")
     def purge_preview_receipt(request_id: str, request: Request):
