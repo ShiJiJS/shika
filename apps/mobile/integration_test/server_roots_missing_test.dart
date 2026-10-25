@@ -87,6 +87,22 @@ void main() {
         await t.pump(const Duration(milliseconds: 120));
         await Scrollable.ensureVisible(t.element(target.last), alignment: .5);
         await t.pump(const Duration(milliseconds: 160));
+        // A native keyboard inset can finish changing after ensureVisible's
+        // first layout. Scroll the actual enclosing sheet until its target
+        // centre is inside the clip, just as a user would before tapping.
+        for (
+          var i = 0;
+          target.last.hitTestable().evaluate().isEmpty && i < 8;
+          i++
+        ) {
+          final scroll = find.ancestor(
+            of: target.last,
+            matching: find.byType(Scrollable),
+          );
+          if (scroll.evaluate().isEmpty) break;
+          await t.drag(scroll.first, const Offset(0, -120));
+          await t.pump(const Duration(milliseconds: 160));
+        }
         await until(
           () => target.last.hitTestable().evaluate().isNotEmpty,
           'action target is visible and hittable',
