@@ -18,6 +18,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--viewport", choices=("360", "390", "844"), required=True)
 parser.add_argument("--scale", choices=("1", "2"), required=True)
 parser.add_argument("--output", type=Path, required=True)
+parser.add_argument("--scenario", choices=("last", "visible"), default="last")
 args = parser.parse_args()
 out = args.output.resolve()
 out.mkdir(parents=True, exist_ok=False)
@@ -82,6 +83,7 @@ paths = run(
     "apps/mobile/lib",
     "services/server/video_viewer",
     "apps/mobile/integration_test/server_reader_image_error_test.dart",
+    "apps/mobile/integration_test/server_visible_page_skip_test.dart",
     "services/server/tests/reader_image_error_fixture.py",
     "scripts/run-reader-image-error-test.py",
 ).splitlines()
@@ -89,6 +91,7 @@ paths = sorted(
     set(paths)
     | {
         "apps/mobile/integration_test/server_reader_image_error_test.dart",
+        "apps/mobile/integration_test/server_visible_page_skip_test.dart",
         "services/server/tests/reader_image_error_fixture.py",
         "scripts/run-reader-image-error-test.py",
     }
@@ -193,7 +196,9 @@ try:
                 str(ROOT / "scripts/dev.sh"),
                 "flutter",
                 "test",
-                "integration_test/server_reader_image_error_test.dart",
+                "integration_test/server_visible_page_skip_test.dart"
+                if args.scenario == "visible"
+                else "integration_test/server_reader_image_error_test.dart",
                 "--no-uninstall",
                 "-d",
                 "emulator-5554",
@@ -208,30 +213,36 @@ try:
         )
     save("requests.json", state()["requests"])
     assert process.returncode == 0 and not watcher_errors
-    assert len(screens) == 6
+    assert len(screens) == (5 if args.scenario == "visible" else 6)
     after = media()
     save("media-after.json", after)
     assert before == after
     text = (out / "flutter.log").read_text()
+    marker = (
+        "READER_VISIBLE_SKIP_VERIFIED:"
+        if args.scenario == "visible"
+        else "READER_ERRORS_VERIFIED:"
+    )
     verified = json.loads(
-        next(
-            row.split("READER_ERRORS_VERIFIED:", 1)[1]
-            for row in text.splitlines()
-            if "READER_ERRORS_VERIFIED:" in row
-        )
+        next(row.split(marker, 1)[1] for row in text.splitlines() if marker in row)
     )
     db_file = base / "data/library.sqlite3"
     with sqlite3.connect(db_file.as_uri() + "?mode=ro", uri=True) as db:
-        assert (
-            db.execute(
-                "SELECT count(*) FROM pack_progress WHERE pack_id=?",
-                (verified["failed_pack"],),
-            ).fetchone()[0]
-            == 0
+        failed_progress = db.execute(
+            "SELECT page_id,completed FROM pack_progress WHERE pack_id=?",
+            (verified["failed_pack"],),
+        ).fetchall()
+        assert failed_progress == (
+            [(verified["previous_page"], 0)] if args.scenario == "visible" else []
         )
-        assert db.execute(
+        recent = db.execute(
             "SELECT pack_id FROM recent_entries WHERE kind='pack'"
-        ).fetchall() == [(verified["good_pack"],)]
+        ).fetchall()
+        assert {v[0] for v in recent} == (
+            {verified["failed_pack"], verified["good_pack"]}
+            if args.scenario == "visible"
+            else {verified["good_pack"]}
+        )
         assert (
             db.execute(
                 "SELECT count(*) FROM pack_progress WHERE pack_id=?",
@@ -254,6 +265,7 @@ try:
         {
             "exit_code": 0,
             "source": source,
+            "scenario": args.scenario,
             "source_files": source_files,
             "screens": screens,
             "viewport": [width, height],

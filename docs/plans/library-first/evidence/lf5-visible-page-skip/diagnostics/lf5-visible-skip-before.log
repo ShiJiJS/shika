@@ -1,0 +1,31 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_visible_skip_test.dart
+00:00 +0: visible failed last image skips while viewport remains on previous page
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:53236/last
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Partial visible image did not reach expected state: index=1
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_visible_skip_test.dart:59:9)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_visible_skip_test.dart:71:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  visible failed last image skips while viewport remains on previous page
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +0 -1: visible failed last image skips while viewport remains on previous page [E]
+  Test failed. See exception logs above.
+  The test description was: visible failed last image skips while viewport remains on previous page
+  
+00:02 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_visible_skip_test.dart: visible failed last image skips while viewport remains on previous page

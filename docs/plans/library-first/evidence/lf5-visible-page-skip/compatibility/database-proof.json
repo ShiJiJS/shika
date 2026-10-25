@@ -1,0 +1,40 @@
+{
+  "native": {
+    "failed_pack": "10e58fc8-f12e-4eb6-aefc-2e95bd78b8a0",
+    "good_pack": "f04b6d07-1f42-4ef8-8b67-48b195963c80",
+    "failed_progress": null,
+    "recent": [
+      "f04b6d07-1f42-4ef8-8b67-48b195963c80"
+    ],
+    "modes": [
+      "missing",
+      "corrupt"
+    ]
+  },
+  "sql_rows": {
+    "packs": [
+      [
+        "10e58fc8-f12e-4eb6-aefc-2e95bd78b8a0",
+        "异常图包 A"
+      ],
+      [
+        "f04b6d07-1f42-4ef8-8b67-48b195963c80",
+        "正常图包 B"
+      ]
+    ],
+    "progress": [
+      [
+        "f04b6d07-1f42-4ef8-8b67-48b195963c80",
+        "74bdb239-a060-4038-957a-ab9292766943",
+        0,
+        1
+      ]
+    ],
+    "recent": [
+      [
+        "pack",
+        "f04b6d07-1f42-4ef8-8b67-48b195963c80"
+      ]
+    ]
+  }
+}

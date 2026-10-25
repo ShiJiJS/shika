@@ -47,7 +47,7 @@ def create_reader_error_app():
         path = request.url.path
         record = None
         if path.startswith("/api/"):
-            record = {"method": request.method, "path": path}
+            record = {"method": request.method, "path": path, "phase": state["display"]}
             trace.append(record)
         matching = request.method == "GET" and path in {
             f"/api/v1/pages/{identity}/image" for identity in state["pages"]
@@ -74,7 +74,7 @@ def create_reader_error_app():
         return response
 
     @app.post("/__reader_errors/arm/{mode}")
-    def arm(mode: str, pack_id: str, x_fixture_key: str = Header()):
+    def arm(mode: str, pack_id: str, last_only: bool = False, x_fixture_key: str = Header()):
         guard(x_fixture_key)
         if mode not in {"missing", "corrupt", "none"}:
             raise HTTPException(422)
@@ -82,11 +82,15 @@ def create_reader_error_app():
             pack = db.get(ImagePack, pack_id)
             if pack is None or pack.path != "/media/packs/异常图包 A":
                 raise HTTPException(409)
+            pages = [
+                p.id
+                for p in db.scalars(
+                    select(PackPage).where(PackPage.pack_id == pack_id).order_by(PackPage.ordinal)
+                )
+            ]
             state.update(
                 mode=mode,
-                pages=[
-                    p.id for p in db.scalars(select(PackPage).where(PackPage.pack_id == pack_id))
-                ],
+                pages=pages[-1:] if last_only else pages,
             )
         return {"mode": mode, "page_ids": state["pages"]}
 
