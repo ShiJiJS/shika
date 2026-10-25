@@ -18,6 +18,12 @@ void main() {
   testWidgets(
     'real continuation stays read-only and opens the complete library range',
     (t) async {
+      final previousError = FlutterError.onError;
+      FlutterError.onError = (details) {
+        debugPrint('CONTINUATION_LAYOUT_ERROR:$details');
+        previousError?.call(details);
+      };
+      addTearDown(() => FlutterError.onError = previousError);
       final repo = ServerLibraryRepository(MemoryCredentialStore(), port: 8768);
       final preferences = UiPreferences(preloadAdjacent: false);
       addTearDown(() async {

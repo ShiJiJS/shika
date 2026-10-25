@@ -79,7 +79,12 @@ def create_fidelity_app():
             with app.state.db.read() as db:
                 epoch = Authority.current(db)
             response = JSONResponse(
-                {"error": {"code": "fixture_unavailable", "message": "续读摘要暂不可用"}},
+                {
+                    "error": {
+                        "code": "fixture_unavailable",
+                        "message": "连接暂时中断，请检查服务器与网络连接后重试。图包列表仍可正常浏览。",
+                    }
+                },
                 status_code=503,
                 headers={"X-Management-Epoch": epoch},
             )

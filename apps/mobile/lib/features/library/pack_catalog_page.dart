@@ -171,6 +171,20 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   bool get hasContinuation =>
       continuationEligible &&
       (continuation != null || continuationError.isNotEmpty);
+  String get continuationPosition {
+    final pack = continuation, index = pack?.progress?.pageIndex;
+    return pack == null
+        ? ''
+        : index == null
+        ? '续读位置待确认 · ${pack.pageCount} 张'
+        : '第 ${index + 1} / ${pack.pageCount} 张';
+  }
+
+  double get continuationExtent => MediaLayout.continuation(
+    context,
+    title: continuation?.name ?? '续读位置暂不可用',
+    position: continuationPosition,
+  );
   PackLibraryState get data => catalog.state;
   bool get recent => entry.source == BrowseSource.recent;
   int get columns => recent ? 1 : 2;
@@ -186,7 +200,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   double get listHeader => recent
       ? max(52, MediaQuery.textScalerOf(context).scale(13) * 1.5 + 32)
       : MediaLayout.toolbar(context) +
-            (hasContinuation ? MediaLayout.continuation(context) : 0) +
+            (hasContinuation ? continuationExtent : 0) +
             (entry.query.count > 0 || entry.query.search.isNotEmpty
                 ? MediaLayout.scope(context)
                 : 0);
@@ -450,15 +464,11 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   Widget continuationHeader() {
     final p = Paper.of(context), pack = continuation;
     final index = pack?.progress?.pageIndex;
-    final position = pack == null
-        ? ''
-        : index == null
-        ? '续读位置待确认 · ${pack.pageCount} 张'
-        : '第 ${index + 1} / ${pack.pageCount} 张';
+    final position = continuationPosition;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: MediaLayout.side),
       child: SizedBox(
-        height: MediaLayout.continuation(context),
+        height: continuationExtent,
         child: DecoratedBox(
           decoration: BoxDecoration(
             border: Border(bottom: BorderSide(color: p.line)),
@@ -475,13 +485,17 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                         children: [
                           const Text(
                             '续读位置暂不可用',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 13),
                           ),
-                          Text(
-                            continuationError,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 12, color: p.muted),
+                          Flexible(
+                            child: Text(
+                              continuationError,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 12, color: p.muted),
+                            ),
                           ),
                         ],
                       ),
@@ -529,9 +543,9 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                             children: [
                               Text(
                                 continuationLoading ? '正在核对续读位置' : '继续阅读',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  height: 1.5,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: MediaLayout.continuationMeta.copyWith(
                                   color: p.muted,
                                 ),
                               ),
@@ -540,9 +554,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                 pack.name,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: p.title.copyWith(
-                                  fontSize: 16,
-                                  height: 1.5,
+                                style: MediaLayout.continuationTitle.copyWith(
+                                  color: p.ink,
                                 ),
                               ),
                               const SizedBox(height: 3),
@@ -551,9 +564,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                 key: const Key('pack-continuation-position'),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  height: 1.5,
+                                style: MediaLayout.continuationMeta.copyWith(
                                   color: p.muted,
                                 ),
                               ),

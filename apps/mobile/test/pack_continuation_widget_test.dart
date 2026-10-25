@@ -16,6 +16,7 @@ class ContinuationLibrary extends DeepPacks {
   int summaryReads = 0, readers = 0;
   String latest = 'p58';
   bool failSummary = false, unknownPage = false;
+  String failureMessage = '续读网络暂不可用';
   Completer<LibraryPack?>? gate;
   Object identity = Object();
   @override
@@ -49,7 +50,7 @@ class ContinuationLibrary extends DeepPacks {
   @override
   Future<LibraryPack?> loadPackContinuation() async {
     summaryReads++;
-    if (failSummary) throw const LibraryFailure('续读网络暂不可用');
+    if (failSummary) throw LibraryFailure(failureMessage);
     if (gate != null) return gate!.future;
     return summary;
   }
@@ -215,6 +216,14 @@ void main() {
           (page.position().context.scrollInset - before.scrollInset).abs(),
           lessThan(2),
         );
+        expect(t.takeException(), isNull);
+        page.scroll.jumpTo(0);
+        repo.failSummary = true;
+        repo.failureMessage = '连接暂时中断，请检查服务器与网络连接后重试。' * 12;
+        await page.load(restore: true);
+        await frames(t);
+        expect(find.text('重试').hitTestable(), findsOneWidget);
+        expect(page.data.total, 73);
         expect(t.takeException(), isNull);
       },
     );
