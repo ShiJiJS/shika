@@ -195,7 +195,7 @@ void main() {
       );
       await shot('unknown');
       await tap(find.text('稍后处理'));
-      await tap(find.byKey(const Key('pack-trash-pending')));
+      await tap(find.byKey(const Key('pack-trash-pending')), scroll: -300);
       await until(
         () => find.text('已确认删除 2/3 张').evaluate().isNotEmpty,
         'partial receipt',
