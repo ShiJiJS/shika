@@ -127,8 +127,9 @@ void main() {
         final end = DateTime.now().add(const Duration(seconds: 60));
         var direction = 1;
         bool ready() =>
-            target.hitTestable().evaluate().isNotEmpty &&
-            (!activate && !waitEnabled || target.evaluate().every(enabled));
+            target.hitTestable().evaluate().length == 1 &&
+            (!activate && !waitEnabled ||
+                target.hitTestable().evaluate().every(enabled));
         while (!ready()) {
           if (DateTime.now().isAfter(end)) {
             debugPrint(
@@ -155,7 +156,7 @@ void main() {
           await t.pump(const Duration(milliseconds: 100));
         }
         expect(target.hitTestable(), findsOneWidget);
-        if (activate) await t.tap(target);
+        if (activate) await t.tap(target.hitTestable());
         await t.pump(const Duration(milliseconds: 180));
       }
 
