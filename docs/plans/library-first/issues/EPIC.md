@@ -187,3 +187,11 @@ App流式文件网关、真实系统选择器/取消、两类统计/分页根映
 原生App三轮（360双倍、390普通、390普通）使用实际服务、生产安全日志适配器与私有磁盘，27根真实分页、一次恢复POST、免口令新代次、前快照原文件与源媒体SHA保持均独立核对。真实系统选择器另跑三轮40MiB取消/保存/重新选取/超限清理/主动取消；二者分开记证，不宣称一条大文件恢复整路或Android内存测量。App路径使用私有文件选择/保存适配器，不冒充系统选择器；没有把App重建当强停。
 
 生产backup_v2仍关闭，8762只读源码夹具独立测试开放；没有改SDK、正式8760/NAS或发布APK。v2真实强停/新PID、完整历史专用清单与页细项接线、其它命令/来源组合、历史图片失败、暗色/横屏/手势、目标手机/NAS和原签名发布继续。原型树保持1cbf605且独立可移除；LF7/#32及总任务/#24保持开放。
+
+## 2026-10-25：v2 App 三处真实强停与原日志重开（PR #54）
+
+[Draft PR #54](https://github.com/ShiJiJS/video_viewer/pull/54)基于#53，固定源码2839c5d。真实v2完整替换在snapshot_written、after_replace_before_commit、restore_committed三个服务位置扣留202，安全日志先落盘；宿主强停活跃PID并确认消失后，服务在App缺席时完成同一任务，新PID免口令自动重连新代次。六条旧本机意图、原私有文件和两个真实受理的图包任务/原graph成员都保留；重开只GET和既有启动扫描，不重发原写入。实际系统快照保存取消后不结算旧记录，历史未提交选择不能继续删除。
+
+固定源码三轮（360双倍字号115.47秒、390普通79.17/81.29秒）通过，164份manifest输入已入库并独立核对；首段有意强停的非零退出和开发失败日志分开保留。analyze/Ruff/Python语法及24项服务端针对检查通过。App/服务端生产树未改，433/398项全集沿用#53且本轮未重跑；这里不是40MiB全路恢复、Android内存或整机断电验证。[契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-archive-restart/docs/plans/library-first/LF7-ARCHIVE-RESTART-DESIGN.md) / [固定源码、原始日志与独立核对](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-archive-restart/docs/plans/library-first/evidence/lf7-archive-restart/README.md)。
+
+接下来继续历史专用永久删除精确清单/逐页结果及只读页面（原graph绑定、有界分页、不得借用当前投影或执行/结算接口），然后其它命令/来源强停、历史图片失败、暗色/横屏/手势、目标设备/NAS和原签名发布。生产backup_v2仍关闭；原型树1cbf605独立未改，未改SDK/正式8760/NAS或发布APK。LF7/#32、总任务/#24保持开放。
