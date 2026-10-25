@@ -93,7 +93,7 @@ void main() {
       await host(t, scale: 2);
       await detail(t);
       await tap(t, find.byKey(const Key('task-history-purge-review')));
-      expect(find.text('历史删除明细'), findsOneWidget);
+      expect(find.text('历史明细'), findsOneWidget);
       await tap(t, find.byKey(const Key('purge-history-next')));
       expect(repo.readers.single.requests, contains('review:24'));
       expect(find.text('原图包 26'), findsOneWidget);

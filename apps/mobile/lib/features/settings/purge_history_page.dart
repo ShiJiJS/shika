@@ -295,7 +295,7 @@ class _PurgeHistoryPageState extends State<PurgeHistoryPage> {
                     () => Navigator.pop(context),
                   ),
                   Expanded(
-                    child: Text(files ? '原图片清单' : '历史删除明细', style: p.title),
+                    child: Text(files ? '原图片清单' : '历史明细', style: p.title),
                   ),
                   iconAction(
                     '查询原历史记录',
