@@ -20,6 +20,8 @@ from .models import (
     PackFileStep,
     PackPage,
     PackProgress,
+    PackRestoreMember,
+    PackRestorePlan,
     Root,
 )
 from .paths import beneath, excluded, open_directory, open_regular, signature
@@ -72,8 +74,8 @@ def digest_pages(session, pack_id, *, require_owned=True):
     return (count, digest.hexdigest()) if count else None
 
 
-def reserved_packs():
-    return (
+def reserved_packs(*, pack_id=None, exclude_operation=None, exclude_plan=None):
+    steps = (
         select(PackFileStep.pack_id)
         .join(PackFileOperation)
         .where(PackFileOperation.historical.is_(False), or_(
@@ -81,6 +83,18 @@ def reserved_packs():
             and_(PackFileStep.phase == "needs_attention", PackFileStep.outcome != "succeeded"),
         ))
     )
+    members = (
+        select(PackRestoreMember.pack_id)
+        .join(PackRestorePlan)
+        .where(PackRestorePlan.historical.is_(False), PackRestoreMember.outcome == "pending")
+    )
+    if exclude_operation:
+        steps = steps.where(PackFileStep.operation_id != exclude_operation)
+    if exclude_plan:
+        members = members.where(PackRestoreMember.plan_id != exclude_plan)
+    reserved = steps.union(members).subquery()
+    statement = select(reserved.c.pack_id)
+    return statement.where(reserved.c.pack_id == pack_id) if pack_id else statement
 
 
 class PackDeferred(Exception):
@@ -223,7 +237,7 @@ class PackScanner:
                     if located and (
                         located.status in ("trash", "deleted")
                         or session.scalar(
-                            reserved_packs().where(PackFileStep.pack_id == located.id).limit(1)
+                            reserved_packs(pack_id=located.id).limit(1)
                         )
                     ):
                         summary["protected_packs"] += 1
@@ -270,8 +284,7 @@ class PackScanner:
                             and (
                                 candidate.status in ("trash", "deleted")
                                 or session.scalar(
-                                    reserved_packs()
-                                    .where(PackFileStep.pack_id == candidate.id)
+                                    reserved_packs(pack_id=candidate.id)
                                     .limit(1)
                                 )
                             )
@@ -329,8 +342,7 @@ class PackScanner:
                                 failed
                                 and failed.status not in ("trash", "deleted")
                                 and not session.scalar(
-                                    reserved_packs()
-                                    .where(PackFileStep.pack_id == failed.id)
+                                    reserved_packs(pack_id=failed.id)
                                     .limit(1)
                                 )
                             ):

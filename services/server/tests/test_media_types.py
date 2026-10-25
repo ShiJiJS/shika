@@ -201,7 +201,7 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         == 200
     )
     info = client.get("/api/v1/info").json()
-    assert info["schema_version"] == "0011"
+    assert info["schema_version"] == "0012"
     assert set(info["capabilities"]) == {
         "typed_roots",
         "pack_tags",
@@ -218,6 +218,7 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         "pack_purge_preview",
         "pack_permanent_delete",
         "maintenance_tasks",
+        "pack_restore_plans",
     }
     schema = client.get("/openapi.json").json()
     assert schema["components"]["schemas"]["RootInput"]["properties"]["enabled"]
@@ -338,7 +339,7 @@ def test_crash_recovery_uses_journal_before_retrying_upgrade(tmp_path):
             ).fetchone()
             is None
         )
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0011",)
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0012",)
     assert not (tmp_path / "migration-pending.json").exists()
     db.close()
 
@@ -403,7 +404,7 @@ def test_0007_fixed_sessions_survive_sequence_revision_upgrade(tmp_path):
         assert connection.execute(
             "SELECT DISTINCT sequence_revision FROM playback_rounds"
         ).fetchall() == [(0,)]
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0011",)
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0012",)
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
     assert db.last_migration_snapshot is not None
     db.close()
@@ -549,7 +550,7 @@ def test_0005_pack_management_data_survives_directory_evidence_upgrade(tmp_path)
         ).fetchone() == connection.execute("SELECT content_version FROM packs").fetchone()
         assert connection.execute("SELECT recovery_reason FROM pack_progress").fetchone() == (None,)
         assert connection.execute("SELECT revision FROM pack_preferences").fetchone() == (0,)
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0011",)
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0012",)
         assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
     assert db.last_migration_snapshot is not None
     db.close()

@@ -411,6 +411,39 @@ class PackTrashItem(Base):
     )
 
 
+class PackRestorePlan(Base):
+    __tablename__ = "pack_restore_plans"
+    id: Mapped[str] = mapped_column(ForeignKey("tasks.id"), primary_key=True)
+    request_key: Mapped[str] = mapped_column(String, unique=True)
+    request_hash: Mapped[str] = mapped_column(String)
+    historical: Mapped[bool] = mapped_column(Boolean, default=False)
+    stop_requested: Mapped[bool] = mapped_column(Boolean, default=False)
+    batch_size: Mapped[int] = mapped_column(Integer)
+    __table_args__ = (CheckConstraint("batch_size BETWEEN 1 AND 1000"),)
+
+
+class PackRestoreMember(Base):
+    __tablename__ = "pack_restore_members"
+    plan_id: Mapped[str] = mapped_column(ForeignKey("pack_restore_plans.id"), primary_key=True)
+    ordinal: Mapped[int] = mapped_column(Integer, primary_key=True)
+    pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id"), index=True)
+    trash_id: Mapped[str] = mapped_column(ForeignKey("pack_trash_items.id"))
+    name: Mapped[str] = mapped_column(String)
+    path: Mapped[str] = mapped_column(Text)
+    source: Mapped[dict] = mapped_column(JSON)
+    phase: Mapped[str] = mapped_column(String, default="waiting")
+    outcome: Mapped[str] = mapped_column(String, default="pending", index=True)
+    error: Mapped[str | None] = mapped_column(String, nullable=True)
+    __table_args__ = (UniqueConstraint("plan_id", "trash_id"),)
+
+
+class PackRestoreBatch(Base):
+    __tablename__ = "pack_restore_batches"
+    plan_id: Mapped[str] = mapped_column(ForeignKey("pack_restore_plans.id"), primary_key=True)
+    ordinal: Mapped[int] = mapped_column(Integer, primary_key=True)
+    operation_id: Mapped[str] = mapped_column(ForeignKey("pack_file_operations.id"), unique=True)
+
+
 class PackPurgePlan(Base):
     __tablename__ = "pack_purge_plans"
     historical: Mapped[bool] = mapped_column(Boolean, default=False, server_default="0")
