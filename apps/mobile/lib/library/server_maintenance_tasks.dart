@@ -156,77 +156,110 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
     );
   }
 
+  PackFiles historicalFiles(String sourceScope) => PackFiles(
+    journal: owner.packFileJournal,
+    scope: sourceScope,
+    readOnly: true,
+    isCurrent: () => isCurrent,
+    call: (method, path, {body}) {
+      if (method != 'GET' || body != null) {
+        throw const LibraryFailure('历史记录只能查询原结果');
+      }
+      return get(path);
+    },
+  );
+
+  String localId(String sourceScope, String value) => sourceScope == fileScope
+      ? value
+      : 'historical:${Uri.encodeComponent(sourceScope)}:$value';
+
   @override
   Future<List<MaintenanceReceipt>> pending() async {
     check();
-    final commands = await owner.packFileJournal.pending(fileScope);
-    final bindings = await owner.packFileJournal.bindings(fileScope);
-    final plans = await owner.packFileJournal.restorePending(fileScope);
-    final selections = await owner.packFileJournal.purgeSelections(fileScope);
-    check();
-    final result = <MaintenanceReceipt>[
-      for (final value in selections)
-        MaintenanceReceipt(
-          id: 'purge-selection:${value.id}',
-          requestId: value.id,
-          title: '图包删除选择 · ${value.remaining.length} 个未提交',
-          source: MaintenanceReceiptSource.purgeSelection,
-          kind: 'purge_selection',
-          purgeSelectionId: value.id,
-          historical: value.historical,
-        ),
-      for (final value in plans)
-        MaintenanceReceipt(
-          id: 'restore-plan:${value.command.key}',
-          requestId: value.command.requestId,
-          title: value.command.label,
-          source: MaintenanceReceiptSource.restorePlan,
-          kind: value.command.kind,
-          taskId: value.taskId,
-          restoreCommand: value.command,
-        ),
-      for (final command in commands)
-        MaintenanceReceipt(
-          id: 'pack:${command.requestId}',
-          requestId: command.requestId,
-          source: MaintenanceReceiptSource.pack,
-          title:
-              command.label ??
-              (command.kind == 'permanent'
-                  ? '永久删除图包图片'
-                  : command.kind == 'restore'
-                  ? '恢复图包'
-                  : '图包操作'),
-          kind: command.kind,
-          taskId: bindings[command.requestId],
-          packCommand: command,
-        ),
-    ];
-    for (final entry in await owner.packFileJournal.missingPending(fileScope)) {
-      result.add(
-        MaintenanceReceipt(
-          id: 'missing:${entry.requestId}',
-          requestId: entry.requestId,
-          title: '清除失效图包记录',
-          source: MaintenanceReceiptSource.missingCleanup,
-          kind: 'pack_forget_missing',
-          historical: entry.historical,
-        ),
+    final result = <MaintenanceReceipt>[];
+    for (final sourceScope in await owner.packFileJournal.serverScopes(
+      fileScope,
+    )) {
+      final historical = sourceScope != fileScope;
+      final commands = await owner.packFileJournal.pending(sourceScope);
+      final bindings = await owner.packFileJournal.bindings(sourceScope);
+      final plans = await owner.packFileJournal.restorePending(sourceScope);
+      final selections = await owner.packFileJournal.purgeSelections(
+        sourceScope,
       );
+      final files = historical ? historicalFiles(sourceScope) : null;
+      result.addAll([
+        for (final value in selections)
+          MaintenanceReceipt(
+            id: localId(sourceScope, 'purge-selection:${value.id}'),
+            requestId: value.id,
+            title: '图包删除选择 · ${value.remaining.length} 个未提交',
+            source: MaintenanceReceiptSource.purgeSelection,
+            kind: 'purge_selection',
+            purgeSelectionId: value.id,
+            historical: historical || value.historical,
+            journalScope: sourceScope,
+            historyFiles: files,
+          ),
+        for (final value in plans)
+          MaintenanceReceipt(
+            id: localId(sourceScope, 'restore-plan:${value.command.key}'),
+            requestId: value.command.requestId,
+            title: value.command.label,
+            source: MaintenanceReceiptSource.restorePlan,
+            kind: value.command.kind,
+            taskId: value.taskId,
+            restoreCommand: value.command,
+            historical: historical,
+            journalScope: sourceScope,
+          ),
+        for (final command in commands)
+          MaintenanceReceipt(
+            id: localId(sourceScope, 'pack:${command.requestId}'),
+            requestId: command.requestId,
+            source: MaintenanceReceiptSource.pack,
+            title:
+                command.label ??
+                (command.kind == 'permanent'
+                    ? '永久删除图包图片'
+                    : command.kind == 'restore'
+                    ? '恢复图包'
+                    : '图包操作'),
+            kind: command.kind,
+            taskId: bindings[command.requestId],
+            packCommand: command,
+            historical: historical,
+            journalScope: sourceScope,
+          ),
+      ]);
+      for (final entry in await owner.packFileJournal.missingPending(
+        sourceScope,
+      )) {
+        result.add(
+          MaintenanceReceipt(
+            id: localId(sourceScope, 'missing:${entry.requestId}'),
+            requestId: entry.requestId,
+            title: '清除失效图包记录',
+            source: MaintenanceReceiptSource.missingCleanup,
+            kind: 'pack_forget_missing',
+            historical: historical || entry.historical,
+            journalScope: sourceScope,
+          ),
+        );
+      }
     }
-    final videoPending = owner._fileState['pending'];
-    if (videoPending != null && videoPending is! Map) {
-      throw const LibraryFailure('本机视频操作记录无法读取');
-    }
-    if (videoPending case final Map raw) {
-      final key = id(raw['key']), path = raw['path'];
+    for (final entry in (await owner._videoBook.entries(fileScope)).entries) {
+      final pending = entry.value['pending'];
+      if (pending == null) continue;
+      if (pending is! Map) throw const LibraryFailure('本机视频操作记录无法读取');
+      final key = id(pending['key']), path = pending['path'];
       if (path is! String || !path.startsWith('/api/v1/')) {
         throw const LibraryFailure('本机视频操作记录不完整');
       }
       final kind = path.split('/').last;
       result.add(
         MaintenanceReceipt(
-          id: 'video:$key',
+          id: localId(entry.key, 'video:$key'),
           requestId: key,
           title:
               const {
@@ -238,39 +271,114 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
               '视频操作',
           source: MaintenanceReceiptSource.video,
           kind: kind,
-          taskId: raw['task'] == null ? null : id(raw['task']),
+          taskId: pending['task'] == null ? null : id(pending['task']),
+          historical: entry.key != fileScope,
+          journalScope: entry.key,
         ),
       );
     }
-    for (final raw
-        in owner._backups?.pendingReceipts ?? <Map<String, Object?>>[]) {
-      final key = id(raw['key']), kind = id(raw['kind']);
-      if (!['export', 'inspect', 'restore'].contains(kind)) {
-        throw const LibraryFailure('本机备份操作记录不完整');
+    for (final entry in (await owner._backupBook.entries(fileScope)).entries) {
+      for (final kind in ['export', 'inspect', 'restore']) {
+        final raw = entry.value[kind];
+        if (raw == null) continue;
+        if (raw is! Map) throw const LibraryFailure('本机备份操作记录无法读取');
+        final key = id(raw['key']);
+        result.add(
+          MaintenanceReceipt(
+            id: localId(entry.key, 'backup:$kind:$key'),
+            requestId: key,
+            title: const {
+              'export': '导出管理备份',
+              'inspect': '校验管理备份',
+              'restore': '恢复管理数据',
+            }[kind]!,
+            source: MaintenanceReceiptSource.backup,
+            kind: kind,
+            taskId: raw['task'] == null ? null : id(raw['task']),
+            historical: entry.key != fileScope,
+            journalScope: entry.key,
+          ),
+        );
       }
-      result.add(
-        MaintenanceReceipt(
-          id: 'backup:$kind:$key',
-          requestId: key,
-          title: const {
-            'export': '导出管理备份',
-            'inspect': '校验管理备份',
-            'restore': '恢复管理数据',
-          }[kind]!,
-          source: MaintenanceReceiptSource.backup,
-          kind: kind,
-          taskId: raw['task'] == null ? null : id(raw['task']),
-        ),
-      );
     }
+    check();
     issued
       ..clear()
       ..addEntries(result.map((value) => MapEntry(value.id, value)));
     return List.unmodifiable(result);
   }
 
+  Future<MaintenanceTask?> historicalReceipt(MaintenanceReceipt receipt) async {
+    final sourceScope = receipt.journalScope;
+    if (sourceScope == null || !sameServerScope(sourceScope, fileScope)) {
+      throw const LibraryFailure('历史记录所属连接不一致');
+    }
+    String? identity;
+    String expected;
+    if (receipt.source == MaintenanceReceiptSource.pack) {
+      final value = await historicalFiles(sourceScope)
+          .receipt(receipt.packCommand!);
+      if (value == null) return null;
+      identity = value.id;
+      expected = value.kind;
+    } else if (receipt.source == MaintenanceReceiptSource.restorePlan) {
+      final plans = PackRestorePlans(
+        journal: owner.packFileJournal,
+        scope: sourceScope,
+        readOnly: true,
+        isCurrent: () => isCurrent,
+        call: (method, path, {body}) {
+          if (method != 'GET' || body != null) {
+            throw const LibraryFailure('历史记录只能查询原结果');
+          }
+          return get(path);
+        },
+      );
+      final value = await plans.receipt(receipt.restoreCommand!);
+      if (value == null) return null;
+      identity = value.id;
+      expected = 'pack_restore_plan';
+    } else {
+      final namespace = receipt.source == MaintenanceReceiptSource.video
+          ? 'file-requests'
+          : receipt.source == MaintenanceReceiptSource.missingCleanup
+          ? 'pack-missing-requests'
+          : 'backup-requests/${receipt.kind}';
+      Json raw;
+      try {
+        raw = await get(
+          '/api/v1/$namespace/${Uri.encodeComponent(receipt.requestId)}',
+        );
+      } on ApiFailure catch (error) {
+        if (error.status == 404) return null;
+        rethrow;
+      }
+      expected = receipt.source == MaintenanceReceiptSource.video
+          ? receipt.kind
+          : receipt.source == MaintenanceReceiptSource.missingCleanup
+          ? 'pack_forget_missing'
+          : 'backup_${receipt.kind}';
+      if (raw['kind'] != expected) throw const LibraryFailure('原历史任务类型不一致');
+      identity = id(raw['id']);
+    }
+    if (receipt.taskId != null && receipt.taskId != identity) {
+      throw const LibraryFailure('原历史任务身份不一致');
+    }
+    final summary = await task(identity);
+    if (summary.kind != expected) throw const LibraryFailure('原历史任务类型不一致');
+    return summary.asHistorical();
+  }
+
   @override
   Future<MaintenanceTask?> reconcile(MaintenanceReceipt receipt) async {
+    if (receipt.historical &&
+        receipt.source != MaintenanceReceiptSource.purgeSelection) {
+      check();
+      if (!identical(issued[receipt.id], receipt)) {
+        throw const LibraryFailure('本机历史记录已变化，请重新读取');
+      }
+      return historicalReceipt(receipt);
+    }
     if (receipt.source == MaintenanceReceiptSource.missingCleanup) {
       check();
       if (!identical(issued[receipt.id], receipt)) {

@@ -20,6 +20,7 @@ from video_viewer.file_transfer import rename_new
 from video_viewer.media import MediaInspectionError
 from video_viewer.models import Root, Video
 
+from .client_authority_fixture import install as install_authority_fixture
 from .generate_media import encode, generate
 from .preview_fixture import install as install_preview_fixture
 from .reader_fixture import install as install_reader_fixture
@@ -70,6 +71,7 @@ def create_e2e_app():
             time.sleep(6)
 
     app = create_app(settings, backup_fault_hook=backup_fault)
+    install_authority_fixture(app, BASE, FIXTURE_KEY, FIXTURE_PASSPHRASE)
     install_preview_fixture(app, BASE, PORTRAIT, FIXTURE_KEY)
     install_reader_fixture(app, FIXTURE_KEY)
     trace = deque(maxlen=2000)
@@ -88,6 +90,8 @@ def create_e2e_app():
                 "query": dict(request.query_params),
                 "authenticated": bool(request.headers.get("authorization")),
                 "range": request.headers.get("range"),
+                "management_epoch": request.headers.get("X-Management-Epoch"),
+                "fixture_actor": request.headers.get("X-Fixture-Actor"),
             }
             if (request.method == "PATCH" and request.url.path in {"/api/v1/video-tags", "/api/v1/playback-defaults", "/api/v1/reading-defaults"}) or (
                 request.method == "POST" and request.url.path in {
@@ -213,6 +217,7 @@ def create_e2e_app():
         controlled(x_fixture_key)
         if phase not in {
             "ready",
+            "authority-before", "authority-history", "authority-selection", "authority-current",
             "library",
             "roots",
             "outage",

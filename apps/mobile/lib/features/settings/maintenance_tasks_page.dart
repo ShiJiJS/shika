@@ -56,7 +56,9 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
       MaterialPageRoute(
         builder: (_) => MaintenanceTaskDetail(
           repository: widget.repository,
-          catalog: s.catalog,
+          catalog: task.historical
+              ? HistoricalTaskCatalog(s.catalog)
+              : s.catalog,
           initial: task,
           saveBackup: widget.saveBackup,
           canOpenBackup: widget.onOpenBackup != null,
@@ -80,6 +82,7 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
           builder: (_) => PackPurgeSelectionPage(
             repository: widget.repository,
             selectionId: receipt.purgeSelectionId!,
+            files: receipt.historyFiles,
           ),
         ),
       );
@@ -218,7 +221,9 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
                       : Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Text(
-                            '本机 ${receipts.length} 项待处理记录',
+                            receipts.every((v) => v.historical)
+                                ? '本机 ${receipts.length} 项历史记录'
+                                : '本机 ${receipts.length} 项待处理记录',
                             style: TextStyle(color: p.danger),
                           ),
                         );
@@ -237,6 +242,8 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
                           ? receipt.historical
                                 ? '历史选择 · 只读查看'
                                 : '保存的选择 · 每批仍需核对确认'
+                          : receipt.historical
+                          ? '历史记录 · 只读查询原结果'
                           : '本机结果待核对 · 只查询原请求',
                     ),
                     trailing: const Icon(Icons.chevron_right),

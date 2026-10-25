@@ -226,14 +226,70 @@ void main() {
     await f.repo.connect('http://127.0.0.1', f.server.server.port, 'test');
     f.postRelease!.complete();
     await assertion;
+    f.complete(f.originals['late']!);
     final fresh = f.repo.createPackRestorePlans();
-    expect((await fresh.receipt(command))!.requestId, 'late');
+    expect(await fresh.pending(), isEmpty);
+    final history = f.repo.createMaintenanceTasks();
+    final receipt = (await history.pending()).single;
+    expect(receipt.historical, isTrue);
+    expect(receipt.requestId, 'late');
+    expect((await history.reconcile(receipt))!.historical, isTrue);
+    expect(
+      (await f.repo.packFileJournal.restorePending(f.scope))
+          .single
+          .command
+          .requestId,
+      'late',
+    );
+    history.dispose();
     expect(
       f.server.writes
           .where((v) => v.path.endsWith('/pack-restore-plans'))
           .length,
       1,
     );
+  });
+  test('historical completed restore and accepted stop keep both original receipts', () async {
+    final f = RestoreServerFixture();
+    await f.start();
+    addTearDown(f.close);
+    final gateway = f.repo.createPackRestorePlans();
+    final restore = RestorePlanCommand.restore('historical-restore', [
+      'a',
+      'b',
+    ]);
+    final plan = (await gateway.send(restore))!;
+    final stop = RestorePlanCommand.stop('historical-stop', plan.id);
+    f.loseStop = true;
+    await expectLater(gateway.send(stop), throwsA(isA<LibraryFailure>()));
+    f.complete(plan.id, stopped: 1);
+    await f.repo.connect('http://127.0.0.1', f.server.server.port, 'test');
+    final writes = f.server.writes.length;
+    final catalog = f.repo.createMaintenanceTasks();
+    final records = await catalog.pending();
+    expect(records, hasLength(2));
+    for (final row in records) {
+      expect(row.historical, isTrue);
+      expect((await catalog.reconcile(row))!.historical, isTrue);
+    }
+    final readOnly = PackRestorePlans(
+      journal: f.repo.packFileJournal,
+      scope: f.scope,
+      readOnly: true,
+      isCurrent: () => true,
+      call: (method, path, {body}) async =>
+          throw StateError('No new request permitted'),
+    );
+    await expectLater(readOnly.send(restore), throwsA(isA<LibraryFailure>()));
+    expect(
+      (await f.repo.packFileJournal.restorePending(f.scope))
+          .map((r) => r.command.requestId)
+          .toSet(),
+      {'historical-restore', 'historical-stop'},
+    );
+    expect(await f.repo.createPackRestorePlans().pending(), isEmpty);
+    expect(f.server.writes.length, writes);
+    catalog.dispose();
   });
   test('new server session submits one durable whole selection; disposal does not own server continuation', () async {
     final repo = RestoreLibrary(count: 1027);

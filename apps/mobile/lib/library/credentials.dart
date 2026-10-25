@@ -9,16 +9,22 @@ class ConnectionCredentials {
     required this.token,
     required this.serverId,
     required this.expiresAt,
+    this.managementEpoch,
+    this.localGeneration,
   });
   final Uri endpoint;
   final String token, serverId;
   final DateTime expiresAt;
+  final String? managementEpoch;
+  final String? localGeneration;
 
   String encode() => jsonEncode({
     'endpoint': endpoint.toString(),
     'token': token,
     'serverId': serverId,
     'expiresAt': expiresAt.toUtc().toIso8601String(),
+    if (managementEpoch != null) 'managementEpoch': managementEpoch,
+    if (localGeneration != null) 'localGeneration': localGeneration,
   });
 
   static ConnectionCredentials? decode(String? text) {
@@ -36,10 +42,23 @@ class ConnectionCredentials {
       }
       final token = data['token'] as String;
       if (token.isEmpty || token.length > 256) return null;
+      final epoch = data['managementEpoch'];
+      if (epoch != null &&
+          (epoch is! String || !RegExp(r'^[a-f0-9]{32}$').hasMatch(epoch))) {
+        return null;
+      }
+      final local = data['localGeneration'];
+      if (local != null && epoch != null) return null;
+      if (local != null &&
+          (local is! String || !RegExp(r'^[a-f0-9]{32}$').hasMatch(local))) {
+        return null;
+      }
       return ConnectionCredentials(
         endpoint: endpoint,
         token: token,
         serverId: data['serverId'] as String,
+        managementEpoch: epoch as String?,
+        localGeneration: local as String?,
         expiresAt: DateTime.parse(data['expiresAt'] as String),
       );
     } catch (_) {

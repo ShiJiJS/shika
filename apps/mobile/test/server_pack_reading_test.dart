@@ -574,7 +574,7 @@ void main() {
       throwsA(isA<RequestCancelled>()),
     );
   });
-  test('confirmed restore invalidates reader handles and pending reads even on the same connection', () async {
+  test('confirmed legacy restore replaces the transport and invalidates reader handles and pending reads', () async {
     final connection = repo.connectionIdentity;
     server.blockKind = 'pages';
     server.blockOffset = 0;
@@ -605,7 +605,7 @@ void main() {
     expect(server.fixture.writes.length, before);
     server.restoreRelease!.complete();
     await restore;
-    expect(identical(connection, repo.connectionIdentity), isTrue);
+    expect(identical(connection, repo.connectionIdentity), isFalse);
     expect(repo.backupRestorePending, isFalse);
     server.release!.complete();
     await cancelled;

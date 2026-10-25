@@ -1,0 +1,18 @@
+{
+  "source_commit": "aa48c9e344e80f7a44f237b6260a1fac37c358cd",
+  "e2e_image_id": "sha256:2f7d2a162ab49844e1ffa1d9daee30b5b85685f1fa4e1139256b1ee5867e27b5",
+  "server_production_changed": false,
+  "server_full_baseline": "375 tests in PR #50; not rerun in this stage",
+  "isolated_port": 8761,
+  "container": "video-viewer-client-e2e-server-1",
+  "avd": "video_viewer_api_36",
+  "api_level": 36,
+  "native_secure_storage": "production adapters; dedicated authority test keys only",
+  "native_rounds": 3,
+  "native_strong_stop_rounds": 2,
+  "client_full_tests": 398,
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "python_compile_exit_code": 0,
+  "flutter_analyze": "No issues found",
+  "ruff": "full video_viewer/migrations/tests; exit 0"
+}

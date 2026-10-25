@@ -623,12 +623,8 @@ void main() {
       fixture.server.server.port,
       'fixture',
     );
-    final files = repo.createPackFiles(), before = fixture.server.writes.length;
-    await expectLater(files.pending(), throwsA(isA<LibraryFailure>()));
-    await expectLater(
-      files.send(PackFileCommand.trash('corrupt', ['p0'])),
-      throwsA(isA<LibraryFailure>()),
-    );
+    final before = fixture.server.writes.length;
+    expect(() => repo.createPackFiles(), throwsA(isA<LibraryFailure>()));
     expect(fixture.store.value, '{broken');
     expect(fixture.server.writes.length, before);
   });

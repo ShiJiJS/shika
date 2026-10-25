@@ -1,0 +1,60 @@
+{
+  "events": [
+    {
+      "phase": "viewport",
+      "width_dp": 390,
+      "height_dp": 844,
+      "text_scale": "1"
+    },
+    {
+      "phase": "authority-before",
+      "pid": "9318",
+      "time": 1792923066.4044979
+    },
+    {
+      "phase": "verified-force-stop",
+      "old_pid": "9318",
+      "absent": true
+    },
+    {
+      "phase": "restored-while-absent",
+      "absent": true
+    },
+    {
+      "phase": "runner-0",
+      "exit_code": 79,
+      "intentional_stop": true
+    },
+    {
+      "phase": "verified-new-process",
+      "old_pid": "9318",
+      "new_pid": "9460"
+    },
+    {
+      "phase": "authority-history",
+      "pid": "9460",
+      "time": 1792923126.566182
+    },
+    {
+      "phase": "authority-selection",
+      "pid": "9460",
+      "time": 1792923130.922078
+    },
+    {
+      "phase": "authority-current",
+      "pid": "9460",
+      "time": 1792923136.268446
+    },
+    {
+      "phase": "runner-1",
+      "exit_code": 0,
+      "intentional_stop": false
+    }
+  ],
+  "watcher_errors": [],
+  "restored_viewport": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420",
+    "font_scale": "1.0"
+  }
+}
