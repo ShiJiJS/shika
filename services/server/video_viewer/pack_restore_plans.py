@@ -17,6 +17,7 @@ from .models import (
     PackRestoreMember,
     PackRestorePlan,
     PackTrashItem,
+    RequestRecord,
     Root,
     Task,
 )
@@ -388,7 +389,16 @@ class PackRestorePlans:
                 "historical": plan.historical,
                 "stop_requested": plan.stop_requested,
                 "batch_size": plan.batch_size,
+                "request_id": plan.request_key.removeprefix("pack_restore_plan:"),
             }
+
+    def stop_receipt(self, request_id):
+        with self.db.read() as session:
+            record = session.get(RequestRecord, "pack_restore_plan.stop:" + request_id)
+            if not record:
+                raise LibraryError("restore_stop_not_found", "原停止请求不存在；未重新提交", 404)
+            identity = record.result["plan_id"]
+        return {**self.view(identity), "stop_request_id": request_id}
 
     def request_stop(self, identity, request_id):
         changed = False

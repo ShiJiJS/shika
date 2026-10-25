@@ -231,7 +231,21 @@ def test_stop_before_first_child_keeps_all_members_unexecuted_and_repeat_is_read
     assert client.get(f"/api/v1/maintenance-tasks/{identity}").json()["state"] == "partial"
     previous_future = plans.futures[identity]
     previous_future.result(timeout=10)
-    assert client.post(endpoint, json={"request_id": "early-stop"}).json() == result
+    assert client.post(endpoint, json={"request_id": "early-stop"}).json() == {
+        **result,
+        "stop_request_id": "early-stop",
+    }
+    assert client.get("/api/v1/pack-restore-stop-requests/early-stop").json() == {
+        **result,
+        "stop_request_id": "early-stop",
+    }
+    assert client.get("/api/v1/pack-restore-stop-requests/unknown-stop").status_code == 404
+    assert (
+        client.get(
+            "/api/v1/pack-restore-stop-requests/early-stop", headers={"Authorization": ""}
+        ).status_code
+        == 401
+    )
     assert plans.futures[identity] is previous_future
     assert totals(client) == (1, 3, 0)
     with client.app.state.db.read() as session:

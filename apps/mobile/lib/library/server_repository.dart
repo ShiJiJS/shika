@@ -60,6 +60,31 @@ class ServerLibraryRepository extends LibraryRepository
   final Set<_ServerMaintenanceTasks> _taskReaders = {};
   int _readerEpoch = 0;
   @override
+  PackRestorePlans createPackRestorePlans() {
+    if (!capabilities.packRestorePlans || _fileScope == null) {
+      throw const LibraryFailure('当前服务尚不支持整份恢复计划，请升级服务端');
+    }
+    final target = api, generation = _generation, epoch = _readerEpoch;
+    bool current() =>
+        !_disposed &&
+        generation == _generation &&
+        epoch == _readerEpoch &&
+        identical(target, _api);
+    return PackRestorePlans(
+      journal: packFileJournal,
+      scope: _fileScope!,
+      isCurrent: current,
+      call: (method, path, {body}) async {
+        if (!current()) throw const RequestCancelled();
+        if (method != 'GET') ensureNotRestoring();
+        final result = await call(method, path, using: target, body: body);
+        if (!current()) throw const RequestCancelled();
+        return result;
+      },
+    );
+  }
+
+  @override
   MaintenanceTaskCatalog createMaintenanceTasks() {
     if (!capabilities.maintenanceTasks || _fileScope == null) {
       throw const LibraryFailure('当前服务尚不支持操作任务，请升级服务端');
@@ -1576,6 +1601,7 @@ class ServerLibraryRepository extends LibraryRepository
     _fileState = saved['scope'] == scope ? saved : {'scope': scope};
     try {
       await packFileJournal.pending(scope);
+      await packFileJournal.restorePending(scope);
       _packJournalError = false;
     } catch (_) {
       _packJournalError = true;

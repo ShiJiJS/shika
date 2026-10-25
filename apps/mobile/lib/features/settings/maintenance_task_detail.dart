@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../library/repository.dart';
+import '../../library/models.dart';
 import '../../ui/paper.dart';
 import '../packs/pack_file_action.dart';
 import '../packs/pack_purge_result.dart';
@@ -31,6 +32,9 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
   bool busy = true, unfinished = true, acting = false;
   String error = '';
   int _read = 0;
+  PackRestorePlans? plans;
+  RestorePlan? restorePlan;
+  bool stopPending = false;
   bool get current => widget.catalog.isCurrent;
   bool get members =>
       task.family == 'video' ||
@@ -39,6 +43,10 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
   void initState() {
     super.initState();
     widget.repository.addListener(ownerChanged);
+    if (task.kind == 'pack_restore_plan' &&
+        widget.repository.capabilities.packRestorePlans) {
+      plans = widget.repository.createPackRestorePlans();
+    }
     unawaited(load(0));
   }
 
@@ -54,6 +62,21 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
       error = '';
     });
     try {
+      if (plans != null) {
+        var missingStop = false;
+        for (final entry in await plans!.pending()) {
+          if (entry.command.kind == 'stop' && entry.taskId == task.id) {
+            if (await plans!.receipt(entry.command) == null) missingStop = true;
+          }
+        }
+        final plan = await plans!.task(task.id);
+        if (!mounted || !current || serial != _read) return;
+        setState(() {
+          restorePlan = plan;
+          stopPending = missingStop;
+        });
+        if (missingStop) error = '原停止请求尚未确认，记录已保留；查询不会重复提交';
+      }
       final value = await widget.catalog.task(task.id);
       if (!mounted || !current || serial != _read) return;
       if (value.kind != task.kind) throw StateError('task kind changed');
@@ -76,6 +99,88 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
       }
     } finally {
       if (mounted && serial == _read) setState(() => busy = false);
+    }
+  }
+
+  Future<void> stopRestoring() async {
+    if (plans == null ||
+        busy ||
+        acting ||
+        !current ||
+        restorePlan == null ||
+        restorePlan!.settled ||
+        restorePlan!.historical ||
+        stopPending) {
+      return;
+    }
+    final approved = await paperSheet<bool>(
+      context,
+      SheetFrame(
+        title: '停止后续恢复批次',
+        children: [
+          const Text('当前已受理批次会先核对真实结果，尚未开始的图包才停止。已经恢复的图包不会重新移入回收站。'),
+          const SizedBox(height: 16),
+          Wrap(
+            alignment: WrapAlignment.end,
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('取消'),
+              ),
+              FilledButton(
+                key: const Key('restore-plan-stop-confirm'),
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('确认停止后续批次'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+    if (!mounted || !current || approved != true) return;
+    setState(() {
+      acting = true;
+      error = '';
+    });
+    try {
+      final result = await plans!.send(
+        RestorePlanCommand.stop(packFileRequestId(), task.id),
+      );
+      if (!mounted || !current) return;
+      if (result == null) throw const LibraryFailure('原停止请求尚未确认，已保留记录；未重复提交');
+      setState(() => restorePlan = result);
+      widget.repository.packFilesChanged();
+      await load(0);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              result.stopRequested ? '已受理停止后续批次，请查询实际结果' : '计划已结束，没有后续批次',
+            ),
+          ),
+        );
+      }
+    } catch (failure) {
+      if (mounted && current) {
+        var pending = true;
+        try {
+          pending = (await plans!.pending()).any(
+            (e) => e.command.kind == 'stop' && e.taskId == task.id,
+          );
+        } catch (_) {
+          /* keep uncertainty visible */
+        }
+        if (mounted) {
+          setState(() {
+            error = packFileFailureMessage(failure);
+            stopPending = pending;
+          });
+        }
+      }
+    } finally {
+      if (mounted) setState(() => acting = false);
     }
   }
 
@@ -267,6 +372,36 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
                 child: const Text('查看逐项图片结果'),
               ),
             ),
+          if (task.kind == 'pack_restore_plan' && !task.historical) ...[
+            const Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Text('整份计划由服务端推进，可以离开本页。已停止的图包没有执行恢复，仍保留在回收站。'),
+            ),
+            if (stopPending)
+              Text('停止结果待核对，请查询原请求。', style: TextStyle(color: p.danger)),
+            if (restorePlan?.stopRequested == true &&
+                restorePlan?.settled != true)
+              const Text('停止请求已受理，正在核对当前批次。'),
+            if (plans != null &&
+                restorePlan != null &&
+                !restorePlan!.settled &&
+                !restorePlan!.stopRequested)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  key: const Key('restore-plan-stop'),
+                  onPressed:
+                      busy ||
+                          acting ||
+                          stopPending ||
+                          !current ||
+                          widget.repository.backupRestorePending
+                      ? null
+                      : stopRestoring,
+                  child: const Text('停止后续批次'),
+                ),
+              ),
+          ],
           if (task.kind == 'backup_export' &&
               task.state == 'completed' &&
               widget.saveBackup != null)
@@ -388,7 +523,8 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
                                   item.path,
                                   style: const TextStyle(fontSize: 12),
                                 ),
-                              if (item.error != null)
+                              if (item.error != null &&
+                                  item.error != 'plan_stopped')
                                 Text(
                                   maintenanceErrorLabel(item.error!),
                                   style: TextStyle(color: p.danger),
@@ -439,6 +575,7 @@ String maintenanceErrorLabel(String code) =>
       'operation_busy': '同一内容还有待核对操作，请先查询原结果。',
       'service_stopped': '服务曾中断，请查询原结果。',
       'operation_recovery_required': '文件操作还需要核对，请保留原任务。',
+      'plan_stopped': '已按要求停止未开始的批次，已恢复的图包保持不变。',
       'backup_upgrade_required': '当前管理数据需要媒体库备份 v2 支持。',
       'invalid_mapping': '目录映射不正确，请重新核对。',
       'backup_checksum_mismatch': '备份完整性校验失败，请核对原文件。',

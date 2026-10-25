@@ -161,8 +161,19 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
     check();
     final commands = await owner.packFileJournal.pending(fileScope);
     final bindings = await owner.packFileJournal.bindings(fileScope);
+    final plans = await owner.packFileJournal.restorePending(fileScope);
     check();
     final result = <MaintenanceReceipt>[
+      for (final value in plans)
+        MaintenanceReceipt(
+          id: 'restore-plan:${value.command.key}',
+          requestId: value.command.requestId,
+          title: value.command.label,
+          source: MaintenanceReceiptSource.restorePlan,
+          kind: value.command.kind,
+          taskId: value.taskId,
+          restoreCommand: value.command,
+        ),
       for (final command in commands)
         MaintenanceReceipt(
           id: 'pack:${command.requestId}',
@@ -240,6 +251,26 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
     check();
     if (!identical(issued[receipt.id], receipt)) {
       throw const LibraryFailure('本机操作记录已更新，请重新读取任务');
+    }
+    if (receipt.source == MaintenanceReceiptSource.restorePlan) {
+      final plans = PackRestorePlans(
+        journal: owner.packFileJournal,
+        scope: fileScope,
+        isCurrent: () => isCurrent,
+        call: (method, path, {body}) {
+          if (method != 'GET' || body != null) {
+            throw const LibraryFailure('查询原计划不会重新提交');
+          }
+          return get(path);
+        },
+      );
+      final value = await plans.receipt(receipt.restoreCommand!);
+      if (value == null) return null;
+      final summary = await task(value.id);
+      if (summary.kind != 'pack_restore_plan' || summary.total != value.total) {
+        throw const LibraryFailure('原恢复计划身份不一致');
+      }
+      return summary;
     }
     if (receipt.source == MaintenanceReceiptSource.pack) {
       final files = PackFiles(

@@ -141,6 +141,8 @@ class MaintenanceTasks:
                 ).label("processed"),
                 succeeded.label("succeeded"),
                 failed.label("failed"),
+                counter("stopped").label("stopped"),
+                counter("remaining").label("remaining"),
                 root_issues.label("root_issues"),
                 counter("pages_total").label("pages_total"),
                 counter("pages_deleted").label("pages_deleted"),

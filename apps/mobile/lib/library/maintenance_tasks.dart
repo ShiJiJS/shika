@@ -35,6 +35,8 @@ class MaintenanceTask {
       processed = _count(raw['processed']),
       succeeded = _count(raw['succeeded']),
       failed = _count(raw['failed']),
+      stopped = _count(raw['stopped']),
+      remaining = _count(raw['remaining']),
       rootIssues = _count(raw['root_issues']),
       pagesTotal = _count(raw['pages_total']),
       pagesDeleted = _count(raw['pages_deleted']),
@@ -64,6 +66,15 @@ class MaintenanceTask {
                 pagesDeleted != pagesTotal)) ||
         (state == 'processing' && !['queued', 'running'].contains(status)) ||
         (total != null && processed != null && processed! > total!) ||
+        (kind == 'pack_restore_plan' &&
+            (stopped == null ||
+                remaining == null ||
+                total == null ||
+                processed == null ||
+                succeeded == null ||
+                failed == null ||
+                processed != succeeded! + failed! ||
+                processed! + stopped! + remaining! != total)) ||
         (pagesTotal != null &&
             (pagesDeleted ?? 0) + (pagesPending ?? 0) > pagesTotal!) ||
         (packTotal != null &&
@@ -81,6 +92,8 @@ class MaintenanceTask {
       processed,
       succeeded,
       failed,
+      stopped,
+      remaining,
       rootIssues,
       pagesTotal,
       pagesDeleted,
@@ -137,9 +150,14 @@ class MaintenanceTask {
       lines.add(
         [
           if (succeeded != null) '完成 $succeeded',
-          if (failed != null) '未完成 $failed',
+          if (failed != null)
+            '${kind == 'pack_restore_plan' ? '失败' : '未完成'} $failed',
         ].join(' · '),
       );
+    }
+    if (kind == 'pack_restore_plan') {
+      if ((stopped ?? 0) > 0) lines.add('已停止 $stopped 个尚未开始的图包');
+      if ((remaining ?? 0) > 0) lines.add('还有 $remaining 个等待后续批次');
     }
     return lines.join('\n');
   }
@@ -159,12 +177,14 @@ class MaintenanceItem {
   final String? error;
   String get label => outcome == 'succeeded'
       ? '已完成'
+      : outcome == 'stopped'
+      ? '已停止，未执行恢复'
       : outcome == 'pending'
       ? '等待处理'
       : '未完成，请核对原结果';
 }
 
-enum MaintenanceReceiptSource { pack, video, backup }
+enum MaintenanceReceiptSource { pack, video, backup, restorePlan }
 
 /// A scoped local intent; the gateway binds it to an issued object and request.
 class MaintenanceReceipt {
@@ -176,11 +196,15 @@ class MaintenanceReceipt {
     required this.kind,
     this.taskId,
     this.packCommand,
+    this.restoreCommand,
   });
   final String id, requestId, title, kind;
   final MaintenanceReceiptSource source;
   final String? taskId;
   final PackFileCommand? packCommand;
+  final RestorePlanCommand? restoreCommand;
+  String get family =>
+      source == MaintenanceReceiptSource.restorePlan ? 'pack' : source.name;
 }
 
 abstract interface class MaintenanceTaskCatalog {

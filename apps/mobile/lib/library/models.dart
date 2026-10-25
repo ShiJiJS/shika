@@ -31,6 +31,7 @@ class ServiceCapabilities {
   bool get packPurgePreview => values.contains('pack_purge_preview');
   bool get packPermanentDelete => values.contains('pack_permanent_delete');
   bool get maintenanceTasks => values.contains('maintenance_tasks');
+  bool get packRestorePlans => values.contains('pack_restore_plans');
 }
 
 enum VideoStatus { available, missing, trash }
