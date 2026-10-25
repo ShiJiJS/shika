@@ -1,0 +1,38 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart
+Running Gradle task 'assembleDebug'...                             14.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          514ms
+00:00 +0: v2 App export, paged mapping, replacement, snapshot and original tasks
+ARCHIVE_SCREENSHOT:/data/user/0/io.github.shijijs.video_viewer/files/archive-app-evidence/backup-start.png
+ARCHIVE_SCREENSHOT:/data/user/0/io.github.shijijs.video_viewer/files/archive-app-evidence/restore-first-page.png
+ARCHIVE_SCREENSHOT:/data/user/0/io.github.shijijs.video_viewer/files/archive-app-evidence/restore-confirm-off.png
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following LibraryFailure was thrown running a test:
+请先连接视频库
+
+When the exception was thrown, this was the stack:
+#0      ServerLibraryRepository.api (package:video_viewer/library/server_repository.dart:514:33)
+#1      main.<anonymous closure>.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart:180:18)
+#2      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart:80:22)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart:178:7)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  v2 App export, paged mapping, replacement, snapshot and original tasks
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:08 +0 -1: v2 App export, paged mapping, replacement, snapshot and original tasks [E]
+  Test failed. See exception logs above.
+  The test description was: v2 App export, paged mapping, replacement, snapshot and original tasks
+  
+00:08 +0 -1: (tearDownAll)
+00:09 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart: v2 App export, paged mapping, replacement, snapshot and original tasks

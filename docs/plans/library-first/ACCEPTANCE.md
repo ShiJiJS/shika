@@ -99,3 +99,10 @@
 ## 2026-10-25：完整管理恢复服务端补证（验收项保持开放）
 
 [PR #52](https://github.com/ShiJiJS/video_viewer/pull/52) / [恢复契约](LF7-RESTORE-V2-DESIGN.md) / [固定源码与证据](evidence/lf7-backup-restore/README.md)补充BAK-02/03和SET-05的服务端部分：33表完整替换、实际/null映射、前快照、正式历史及权威代次共同提交，连续恢复后原图与本机备份控制回执保留，旧任务不重放。三处真实进程SIGKILL、约39MiB网络文件和18,000行核对另有记录；Python分配量不作为Android/RSS结论。当前仍未开放backup_v2能力，系统选择器/有界文件、App统计/映射/历史页面与原生全流程继续，详见[下一步](LF7-APP-ARCHIVE-PLAN.md)，不能据服务端测试勾选完整BAK/UI验收。
+
+
+## 2026-10-25：App流式管理文件与原图历史（PR #53）
+
+[Draft PR #53](https://github.com/ShiJiJS/video_viewer/pull/53)基于#52。最终App/验收源码38ae54a，服务端树ff9699c不变：v2文件以私有文件ID、长度、SHA和所属服务代次传递，HTTP与Android SAF按块处理并协商真实上限。设置中分两类统计、24根分页映射、跨页草稿、默认关闭的完整替换确认和直接恢复前快照入口已接通。任务详情支持原导出/原快照流式下载，回执按原epoch、详情/成员按原graph；旧v1未知意图不改协议重发。
+
+生产backup_v2仍关闭，8762只读源码夹具独立测试开放；没有改SDK、正式8760/NAS或发布APK。v2真实强停/新PID、完整历史专用清单与页细项接线、其它命令/来源组合、历史图片失败、暗色/横屏/手势、目标手机/NAS和原签名发布继续。原型树保持1cbf605且独立可移除；LF7/#32及总任务/#24保持开放。

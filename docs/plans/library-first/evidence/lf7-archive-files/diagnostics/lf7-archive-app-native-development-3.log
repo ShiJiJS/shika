@@ -1,0 +1,37 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart
+Running Gradle task 'assembleDebug'...                             12.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          568ms
+00:00 +0: v2 App export, paged mapping, replacement, snapshot and original tasks
+ARCHIVE_SCREENSHOT:/data/user/0/io.github.shijijs.video_viewer/files/archive-app-evidence/backup-start.png
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+Surface already converted to an image
+'package:integration_test/src/_callback_io.dart':
+Failed assertion: line 70 pos 12: '!_isSurfaceRendered'
+
+When the exception was thrown, this was the stack:
+#2      _IOCallbackManager.convertFlutterSurfaceToImage (package:integration_test/src/_callback_io.dart:70:12)
+#3      IntegrationTestWidgetsFlutterBinding.convertFlutterSurfaceToImage (package:integration_test/integration_test.dart:205:27)
+#4      main.<anonymous closure>.shot (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart:104:23)
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart:159:13)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 3 frames from class _AssertionError and package:stack_trace)
+
+The test description was:
+  v2 App export, paged mapping, replacement, snapshot and original tasks
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +0 -1: v2 App export, paged mapping, replacement, snapshot and original tasks [E]
+  Test failed. See exception logs above.
+  The test description was: v2 App export, paged mapping, replacement, snapshot and original tasks
+  
+00:05 +0 -1: (tearDownAll)
+00:05 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart: v2 App export, paged mapping, replacement, snapshot and original tasks

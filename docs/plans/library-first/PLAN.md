@@ -1,6 +1,7 @@
 # 媒体库与图包改造实施方案
 
-状态：LF0–LF6对应实现和验证见各阶段记录，完整验收继续推进。LF7已接任务中心、整份恢复/停止、永久删除剩余选择、服务端默认值与旧本机值明确迁移；[Draft PR #47](https://github.com/ShiJiJS/video_viewer/pull/47) 补上目录类型/启停和分类型缺失页面，图包清理使用持久父任务、固定成员及原请求安全日志，并核对成功扫描的根目录身份。实现与本阶段实际回归/原生结果见 [目录与缺失设计](LF7-ROOTS-MISSING-DESIGN.md)、[LF7记录](LF7.md)及[证据](evidence/lf7-roots-missing/README.md)。[Draft PR #48](https://github.com/ShiJiJS/video_viewer/pull/48)已增加备份v2文件/磁盘校验及v1转换模块（29项文件与19项旧备份回归），尚未接公开恢复；[Draft PR #49](https://github.com/ShiJiJS/video_viewer/pull/49)补只读完整历史包/分页/回执及发布前后SIGKILL（联合66项通过），[Draft PR #50](https://github.com/ShiJiJS/video_viewer/pull/50)补实际恢复事务的服务端代次和旧写入隔离（375项全集通过）；[Draft PR #51](https://github.com/ShiJiJS/video_viewer/pull/51)接App不可变代次、旧日志历史分册与免口令重连（398项客户端通过，原生证据见LF7最新记录）；[Draft PR #52](https://github.com/ShiJiJS/video_viewer/pull/52)已接服务端完整替换协调与正式历史路由，固定源码全量验证记录见LF7最新记录；App有界文件传输/系统选择器/映射及历史页面、其它命令/来源强停、历史图片失败根因和LF8全原型/真机NAS仍待完成。规划日期2026-10-23，最近实施记录2026-10-25。
+[Draft PR #53](https://github.com/ShiJiJS/video_viewer/pull/53)基于#52。最终App/验收源码38ae54a，服务端树ff9699c不变：v2文件以私有文件ID、长度、SHA和所属服务代次传递，HTTP与Android SAF按块处理并协商真实上限。设置中分两类统计、24根分页映射、跨页草稿、默认关闭的完整替换确认和直接恢复前快照入口已接通。任务详情支持原导出/原快照流式下载，回执按原epoch、详情/成员按原graph；旧v1未知意图不改协议重发。 生产backup_v2仍关闭，8762只读源码夹具独立测试开放；没有改SDK、正式8760/NAS或发布APK。v2真实强停/新PID、完整历史专用清单与页细项接线、其它命令/来源组合、历史图片失败、暗色/横屏/手势、目标手机/NAS和原签名发布继续。原型树保持1cbf605且独立可移除；LF7/#32及总任务/#24保持开放。
+
 
 用户已确认以当前完整原型为实施方向。本次先确定框架、拆分任务和验收依据，后续分阶段实现。总任务和子任务链接见 [ISSUES.md](ISSUES.md)。
 

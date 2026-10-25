@@ -1,0 +1,14 @@
+SAF_STAGE:cancel-save
+SAF_DONE:cancel-save
+SAF_STAGE:save-large
+SAF_DONE:save-large
+SAF_STAGE:cancel-pick
+SAF_DONE:cancel-pick
+SAF_STAGE:pick-large
+SAF_DONE:pick-large
+SAF_STAGE:pick-over-limit
+SAF_DONE:pick-over-limit
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-native-backup-files-test.py", line 78, in <module>
+    assert code == 0 and seen == expected, (code, seen)
+AssertionError: (1, ['cancel-save', 'save-large', 'cancel-pick', 'pick-large', 'pick-over-limit'])
