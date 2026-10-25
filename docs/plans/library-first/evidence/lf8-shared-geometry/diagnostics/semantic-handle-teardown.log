@@ -1,0 +1,64 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/default_settings_widget_test.dart: reader draft remains reachable and cancel never writes at 390.0/1.0
+00:01 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:01 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:02 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preference_switch_test.dart: whole-row pointer, switch and keyboard each toggle once
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+A SemanticsHandle was active at the end of the test.
+All SemanticsHandle instances must be disposed by calling dispose() on the SemanticsHandle.
+
+When the exception was thrown, this was the stack:
+#0      WidgetTester._verifySemanticsHandlesWereDisposed (package:flutter_test/src/widget_tester.dart:1074:7)
+#1      WidgetTester._endOfTestVerifications (package:flutter_test/src/widget_tester.dart:1063:5)
+#2      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1969:22)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  whole-row pointer, switch and keyboard each toggle once
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +2 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:02 +2 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preference_switch_test.dart: whole-row pointer, switch and keyboard each toggle once [E]
+  Test failed. See exception logs above.
+  The test description was: whole-row pointer, switch and keyboard each toggle once
+  
+00:02 +2 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preference_switch_test.dart: disabled preference has no semantic activation or pointer write
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+A SemanticsHandle was active at the end of the test.
+All SemanticsHandle instances must be disposed by calling dispose() on the SemanticsHandle.
+
+When the exception was thrown, this was the stack:
+#0      WidgetTester._verifySemanticsHandlesWereDisposed (package:flutter_test/src/widget_tester.dart:1074:7)
+#1      WidgetTester._endOfTestVerifications (package:flutter_test/src/widget_tester.dart:1063:5)
+#2      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1969:22)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  disabled preference has no semantic activation or pointer write
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +2 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:02 +2 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preference_switch_test.dart: disabled preference has no semantic activation or pointer write [E]
+  Test failed. See exception logs above.
+  The test description was: disabled preference has no semantic activation or pointer write
+  
+00:02 +3 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:02 +4 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: four destinations keep library, tag results and actual recent video scopes independent
+00:03 +5 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: four destinations keep library, tag results and actual recent video scopes independent
+00:03 +6 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: a late search cannot replace the next query and a failed fresh query retries from zero
+00:03 +7 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+00:04 +8 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: tag dock opens the complete intersection directly and returns to its own results
+00:05 +9 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: changing appearance preserves pack source and the next search still reaches the repository
+00:05 +10 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack label search remains usable with a narrow keyboard and large system text
+00:06 +11 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+00:06 +12 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(360.0, 740.0) at text scale 2.0
+00:06 +13 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(844.0, 390.0) at text scale 1.6
+00:06 +14 -2: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preference_switch_test.dart: disabled preference has no semantic activation or pointer write
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preference_switch_test.dart: whole-row pointer, switch and keyboard each toggle once

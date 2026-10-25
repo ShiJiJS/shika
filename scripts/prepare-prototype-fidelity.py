@@ -30,6 +30,12 @@ for(const state of scenes){
  await page.cdp('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});
  await page.goto('http://127.0.0.1:8767/library-first/app.html?snapshot=1'+(state==='home'?'':'&state='+state.replace('-bottom','')));
  await page.waitForFunction(()=>document.querySelector('.app') && document.fonts.status==='loaded' && [...document.images].every(i=>i.complete&&i.naturalWidth>0));
+ if(state==='pack-tags'){
+  await page.waitForSelector('button[aria-label="筛选标签 和服"]');
+  await page.click('button[aria-label="筛选标签 和服"]');
+  await page.click('button[aria-label="筛选标签 户外"]');
+  await page.waitForFunction(()=>document.querySelector('button[aria-label="筛选标签 户外"]').getAttribute('aria-pressed')==='true' && document.querySelector('button[aria-label="筛选标签 和服"]').getAttribute('aria-pressed')==='false');
+ }
  if(state.endsWith('-bottom'))await page.evaluate(()=>{const e=document.querySelector('.settings-page');e.scrollTop=e.scrollHeight;});
  await page.evaluate(async()=>{await Promise.all(document.getAnimations().filter(a=>Number.isFinite(a.effect?.getTiming().iterations)).map(a=>a.finished.catch(()=>{})));});
  const metrics=await page.evaluate(()=>({size:[innerWidth,innerHeight],dpr:devicePixelRatio,fontStatus:document.fonts.status,

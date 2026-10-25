@@ -1,0 +1,82 @@
+{
+  "verified": true,
+  "source": "a9da39524006413821d9d6ce2e633ccd6c17551b",
+  "prototype": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "inputs": 235,
+  "native_screens": 40,
+  "targeted_checks": 16,
+  "source_files": 137,
+  "windows": [
+    {
+      "run": "normal-1",
+      "window": [
+        390.0,
+        905.0
+      ],
+      "viewPadding": [
+        0.0,
+        49.0,
+        0.0,
+        24.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "run": "normal-2",
+      "window": [
+        390.0,
+        905.0
+      ],
+      "viewPadding": [
+        0.0,
+        49.0,
+        0.0,
+        24.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "run": "normal-3",
+      "window": [
+        390.0,
+        905.0
+      ],
+      "viewPadding": [
+        0.0,
+        49.0,
+        0.0,
+        24.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "run": "large",
+      "window": [
+        360.0,
+        809.0
+      ],
+      "viewPadding": [
+        0.0,
+        45.333333333333336,
+        0.0,
+        24.0
+      ],
+      "scale": 2.0
+    },
+    {
+      "run": "landscape",
+      "window": [
+        844.0,
+        442.0
+      ],
+      "viewPadding": [
+        0.0,
+        28.0,
+        0.0,
+        24.0
+      ],
+      "scale": 1.0
+    }
+  ],
+  "scope": "shared geometry only; full LF8 remains open"
+}

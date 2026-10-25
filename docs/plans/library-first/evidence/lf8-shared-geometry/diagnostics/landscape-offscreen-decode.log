@@ -1,0 +1,37 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/prototype_fidelity_test.dart
+Running Gradle task 'assembleDebug'...                             12.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          522ms
+00:00 +0: full native workspace with frozen public reference media
+FIDELITY_METRICS:{"state":"home","size":[844.0,463.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"app-shell":[0.0,0.0,844.0,463.0],"app-navigation":[0.0,389.0,844.0,50.0],"video-search":[60.0,125.0,768.0,42.0],"library-count":[16.0,189.0,639.2752685546875,20.0]},"texts":[{"text":"媒体库","rect":[20.0,36.5,716.0,34.0],"fontSize":24.0,"fontFamily":"PaperSerif"},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0,"fontFamily":null},{"text":"图包","rect":[72.50021362304688,89.5,30.500213623046875,21.0],"fontSize":15.0,"fontFamily":null},{"text":"搜索视频名称、目录","rect":[76.0,133.0,736.0,24.0],"fontSize":16.0,"fontFamily":"Roboto"},{"text":"2 个视频","rect":[16.0,189.0,639.2752685546875,20.0],"fontSize":13.0,"fontFamily":null},{"text":"名称 ↓","rect":[663.2752685546875,189.0,43.22465515136719,20.0],"fontSize":13.0,"fontFamily":null},{"text":"预览此范围","rect":[750.4999237060547,189.5,65.50007629394531,19.0],"fontSize":13.0,"fontFamily":null},{"text":"00:06","rect":[378.357421875,423.0,28.642578125,16.0],"fontSize":11.0,"fontFamily":null},{"text":"水边的花.mp4","rect":[16.0,454.0,105.6162109375,24.0],"fontSize":16.0,"fontFamily":"PaperSerif"},{"text":"00:06","rect":[790.357421875,423.0,28.642578125,16.0],"fontSize":11.0,"fontFamily":null},{"text":"风里的花园.mp4","rect":[428.0,454.0,121.86624145507812,24.0],"fontSize":16.0,"fontFamily":"PaperSerif"},{"text":"媒体库","rect":[294.1250228881836,418.0,30.749954223632812,14.0],"fontSize":10.0,"fontFamily":null},{"text":"标签","rect":[374.25001525878906,418.0,20.499969482421875,14.0],"fontSize":10.0,"fontFamily":null},{"text":"最近","rect":[449.25001525878906,418.0,20.499969482421875,14.0],"fontSize":10.0,"fontFamily":null},{"text":"设置","rect":[524.2500152587891,418.0,20.499969482421875,14.0],"fontSize":10.0,"fontFamily":null}]}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Actual decoded catalog images: 4
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/prototype_fidelity_test.dart:59:47)
+<asynchronous suspension>
+#2      main.<anonymous closure>.images (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/prototype_fidelity_test.dart:72:7)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/prototype_fidelity_test.dart:169:5)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  full native workspace with frozen public reference media
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:39 +0 -1: full native workspace with frozen public reference media [E]
+  Test failed. See exception logs above.
+  The test description was: full native workspace with frozen public reference media
+  
+00:39 +0 -1: (tearDownAll)
+00:39 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/prototype_fidelity_test.dart: full native workspace with frozen public reference media
