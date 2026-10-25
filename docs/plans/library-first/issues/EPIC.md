@@ -1,8 +1,10 @@
 ## 目标
 
-将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于 2026-10-23 确认当前 `design/reference/library-first/` 原型方向并要求先确定框架、写规划和 GitHub issues。当前 LF0–LF2 已实现并验证，等待依赖 PR 合并；LF3 固定预览与原生兼容已通过完整 I2 两阶段首轮，仍待来源组合/重复验收；LF4 四入口、双类型媒体库与独立标签已接线，标签分页、跨页批选、图包名称和深列表稳定返回已补齐，剩余来源/错误组合仍在验证，LF5 真实阅读器和最近图包已接入，197项客户端/163项服务端检查通过，完整原生异常/大图验收待补，LF6 后端、卡片/阅读器整理及双类型回收站/跨页恢复已接入，客户端代码未变、271项与既有原生检查点保留；永久删除精确清单与逐页执行/恢复后端已接，当前264项服务端/Ruff通过；App双确认和原生验收、完整后台批次与安全存储重开待实施，历史图片失败仍待定位；LF7–LF8 待实施，尚未发布新版。
+将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8原型一致性收口进行中；最新[Draft PR #59](https://github.com/ShiJiJS/video_viewer/pull/59)补齐真实图包续读与原范围返回。各阶段未收口项目及当前证据见[45项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-continuation/docs/plans/library-first/RESULTS.md)，仍需依赖PR合并、完整同版验收、目标手机/NAS及原签名升级验证，尚未发布新版。
 
-LF4最新检查点：独立视频标签分页、完整筛选范围跨页全选/排除与每1000项追加、图包名称与首50项外初选均已接入。`be7be51` 补齐图包深列表稳定返回、有限120项窗口及原位失败/取消重试；当前171项客户端测试/静态检查、43项定位/图包相关服务端回归/Ruff通过。同提交真实Android完整路径连续三轮通过（含360宽2倍字号）：73包完整筛选、编辑移出交集、实际503后邻居定位、前补与插入后位置保留。此前名称/标签分页/跨页选择三轮证据各自保留。证据随[LF4记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf4-media-library/docs/plans/library-first/LF4.md)提交；剩余来源/错误组合及旧流程回归继续验证，图包阅读/最近依赖LF5，LF4继续开放。
+## 历史阶段记录（各自固定版本）
+
+LF4阶段检查点：独立视频标签分页、完整筛选范围跨页全选/排除与每1000项追加、图包名称与首50项外初选均已接入。`be7be51` 补齐图包深列表稳定返回、有限120项窗口及原位失败/取消重试；当前171项客户端测试/静态检查、43项定位/图包相关服务端回归/Ruff通过。同提交真实Android完整路径连续三轮通过（含360宽2倍字号）：73包完整筛选、编辑移出交集、实际503后邻居定位、前补与插入后位置保留。此前名称/标签分页/跨页选择三轮证据各自保留。证据随[LF4记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf4-media-library/docs/plans/library-first/LF4.md)提交；剩余来源/错误组合及旧流程回归继续验证，图包阅读/最近依赖LF5，LF4继续开放。
 
 LF5实施中：[草稿PR #39](https://github.com/ShiJiJS/video_viewer/pull/39)已接入固定完整图包范围、逐包进度/偏好、实际首帧后的独立最近、只读回执和原生阅读器。最近图包按冻结历史行接线，列表/分页/全选/阅读共享来源和排序；修正分页尾部返回定位，媒体库筛选独立保留。当前完整197项客户端测试/静态检查及163项服务端测试/Ruff通过；`d8e3082`最近来源真实Android路径连续三轮通过（含360双倍字号），旧阅读器主路径三轮按`91f1112`独立保留，当前版本再完整回归一次通过。9024f88补齐单指翻页与双指缩放的实际分工，完整197项客户端回归通过，同实现原生操作专项三轮通过（含双倍字号及实际ADB返回），独立证据另行归档。aafccee新增真实图片503、两类进度回执、Android后台和整包标签固定范围恢复专项，同实现原生路径三轮通过（含双倍字号）；197项客户端回归补充无假时钟推进的生命周期保存断言。最近回收/恢复依赖LF6，其它错误码/连接与管理恢复组合、强杀和大图内存仍待补，见[LF5记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-pack-reader/docs/plans/library-first/LF5.md)。
 
@@ -36,7 +38,7 @@ LF6执行后端 **5e89a1a / dd2dcf3**（记录d3315d2）：严格布尔确认绑
 
 ## 实施任务
 
-当前 PR：[LF0 #34](https://github.com/ShiJiJS/video_viewer/pull/34) → [LF1 #35](https://github.com/ShiJiJS/video_viewer/pull/35) → [LF2 #36](https://github.com/ShiJiJS/video_viewer/pull/36) → [LF3 草稿 #37](https://github.com/ShiJiJS/video_viewer/pull/37) → [LF4 四入口与媒体库草稿 #38](https://github.com/ShiJiJS/video_viewer/pull/38) → [LF5 阅读会话草稿 #39](https://github.com/ShiJiJS/video_viewer/pull/39) → [LF6 逻辑整理草稿 #40](https://github.com/ShiJiJS/video_viewer/pull/40)。前序阶段实现完成不等于整体原型验收完成，子任务等待对应依赖合并。
+早期依赖 PR：[LF0 #34](https://github.com/ShiJiJS/video_viewer/pull/34) → [LF1 #35](https://github.com/ShiJiJS/video_viewer/pull/35) → [LF2 #36](https://github.com/ShiJiJS/video_viewer/pull/36) → [LF3 草稿 #37](https://github.com/ShiJiJS/video_viewer/pull/37) → [LF4 四入口与媒体库草稿 #38](https://github.com/ShiJiJS/video_viewer/pull/38) → [LF5 阅读会话草稿 #39](https://github.com/ShiJiJS/video_viewer/pull/39) → [LF6 逻辑整理草稿 #40](https://github.com/ShiJiJS/video_viewer/pull/40)。后续实施进度见下方记录，最新#59基于#58。前序阶段实现完成不等于整体原型验收完成，子任务等待对应依赖合并。
 
 - [ ] https://github.com/ShiJiJS/video_viewer/issues/25 — [LF0] 锁定原型基线与可运行的模块骨架
 - [ ] https://github.com/ShiJiJS/video_viewer/issues/26 — [LF1] 兼容迁移数据模型：媒体类型、图包标签与服务能力
@@ -234,9 +236,22 @@ App流式文件网关、真实系统选择器/取消、两类统计/分页根映
 [45项收口台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-prototype-fidelity/docs/plans/library-first/RESULTS.md) / [具体差异与尺寸边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-prototype-fidelity/docs/plans/library-first/LF8-SHARED-GEOMETRY.md) / [原始证据和只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-prototype-fidelity/docs/plans/library-first/evidence/lf8-shared-geometry/README.md)。HTML390×844去掉12px假系统区、原生390×905去掉实际49/24dp系统区后比较390×832内容，不拉伸Android画面；大字和横屏按各自实测安全区分别记证。
 
 尚需推进（不关闭LF8或总任务）：
-- [ ] 图包库真实继续阅读区与原范围返回。
+- [x] 图包库真实继续阅读区与原范围返回。
 - [ ] 权威两类库存计数；不能用分页缓存或当前筛选数冒充。
 - [ ] 可识别的图包标题/作者与保守回退，以及服务端排序/分页/范围一致性。
 - [ ] 预览、阅读、管理、键盘和动作的完整同版对照；500页4K/8K性能、目标手机/NAS与原签名升级发布。
 
 冻结原型树1cbf605仍独立可移除，未改正式8760/NAS/SDK或发布正式APK；生产backup_v2仍关闭。#33与#24保持开放。
+
+
+## 2026-10-26：图包库真实继续阅读（PR #59）
+
+[Draft PR #59](https://github.com/ShiJiJS/video_viewer/pull/59)基于#58，固定源码c4aaf3b，证据提交daf1863。图包媒体库在无筛选/搜索且非多选时显示真实最近打开包与页码；摘要独立于24条分页和列表取消通道，只读且不创建历史。点击从该包续读，保持原媒体库完整范围，返回原位置。搜索、多选、最近来源不展示全库续读条；失败保留列表并就地重试。
+
+普通三轮、360双倍字号及844短横屏共五轮同源码通过，每轮10个真实前台检查点，共50图；公开2视频/4包/24PNG，实际打开后从3/6翻到4/6，续读仍为完整4包范围。两次显式opened、SQL最近/进度/会话投影、只读区间、26个源文件SHA与设备配置恢复均核对。202份manifest输入只读校验通过。客户端471项、服务端续读/阅读16项、analyze/Ruff通过；不是服务端全集或目标设备性能证明。
+
+原生字体的实际行高取代估算，普通续读86dp（参考85）、双倍字号147dp，无裁切；共享“更多”菜单收起搜索键盘，修复短横屏进入多选时的4.7dp溢出。两轮独立存量视觉复核后无本段必须修正项；首轮材料、字体/键盘失败诊断与最终五轮分别保存。长标题/错误说明省略仍是已知显示边界，未缩字号或缩短压力输入。
+
+[设计与异步约定](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-continuation/docs/plans/library-first/LF8-PACK-CONTINUATION.md) / [原始证据与可重跑校验](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-continuation/docs/plans/library-first/evidence/lf8-pack-continuation/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-continuation/docs/plans/library-first/RESULTS.md)。本段补LIB-02、NAV-02、READ-04/05、REC-01与UI-01/04/05的明确组合，不关闭整项；使用MemoryCredentialStore，不新增强杀/安全存储或覆盖升级证明。
+
+下一步继续权威两类总数、保守标题/作者与服务端排序，再核对完整预览/阅读/管理、键盘和手势；500页4K/8K、目标手机/NAS和原签名升级仍待验证。冻结原型1cbf605独立可移除，生产backup_v2仍关闭；未改正式8760/NAS/SDK或发布正式APK。LF8/#33与总任务/#24保持开放。
