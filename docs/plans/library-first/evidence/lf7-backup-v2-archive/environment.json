@@ -1,0 +1,14 @@
+{
+  "container_image": "video-viewer-server:defaults-test",
+  "image_id": "sha256:f47b2448845830235682911999f4cc2b1d53efb6604e91519915d0aefc7a8936",
+  "python": "container Python 3.13",
+  "run": "read-only container; services/server mounted /source; tmpfs /tmp:mode=1777; --shm-size=64m for pytest",
+  "commands": [
+    "ruff check video_viewer/backup_archive.py video_viewer/backup_v2_schema.py tests/test_backup_archive.py",
+    "pytest -q -s tests/test_backup_archive.py",
+    "pytest -q tests/test_backups.py tests/test_backup_process_recovery.py",
+    "bash scripts/dev.sh python3 -m py_compile services/server/video_viewer/backup_archive.py services/server/video_viewer/backup_v2_schema.py services/server/tests/test_backup_archive.py"
+  ],
+  "compile_exit_code": 0,
+  "legacy_source": "a60e8a9; subsequent changes only archive writer batch size and stronger tests; old API source unchanged"
+}

@@ -1,0 +1,21 @@
+{
+  "source_commit": "94f8dc6d704da7b267c289dccb5cafe7b47b0290",
+  "archive_tests": 29,
+  "legacy_regression_tests": 19,
+  "managed_tables": 33,
+  "large_archive": {
+    "bytes": 40947094,
+    "python_peak_bytes": 2957764,
+    "task_rows": 18000,
+    "note_length": 2048,
+    "file_sha256": "2c333515b510f7213dccbfc85546e5ee2ce2785005e187fd19ba5200407c1b98"
+  },
+  "limits": {
+    "v2_row_bytes": 268435456,
+    "v1_compatibility_max_bytes": 268435456,
+    "v2_file_bytes": "caller supplied"
+  },
+  "public_v2_enabled": false,
+  "full_restore_verified": false,
+  "app_streaming_verified": false
+}
