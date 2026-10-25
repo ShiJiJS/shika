@@ -1,0 +1,77 @@
+{
+  "events": [
+    {
+      "phase": "emulator-immersive-guidance-confirmed",
+      "time": 1792900379.918124
+    },
+    {
+      "phase": "workspace-viewport",
+      "width_dp": 390,
+      "height_dp": 844,
+      "density_dpi": 480,
+      "text_scale": "1"
+    },
+    {
+      "phase": "ready",
+      "time": 1792900388.925205
+    },
+    {
+      "phase": "bulk-selected",
+      "time": 1792900571.703198
+    },
+    {
+      "phase": "bulk-review",
+      "time": 1792900591.586237
+    },
+    {
+      "phase": "bulk-unknown",
+      "time": 1792900599.769363
+    },
+    {
+      "phase": "purge-app-force-stopped",
+      "pid": "7054",
+      "pid_absent": true,
+      "time": 1792900601.232084
+    },
+    {
+      "phase": "purge-completed-without-app",
+      "members": 1000,
+      "unsubmitted": 3,
+      "pid_absent": true,
+      "time": 1792900657.208255
+    },
+    {
+      "phase": "purge-expected-test-interruption",
+      "runner_exit_code": 79,
+      "time": 1792900657.2089741
+    },
+    {
+      "phase": "android-force-stopped",
+      "resume_phase": 1,
+      "time": 1792900657.3409972
+    },
+    {
+      "phase": "purge-app-reopened",
+      "old_pid": "7054",
+      "new_pid": "7225",
+      "time": 1792900685.880955
+    },
+    {
+      "phase": "bulk-receipt",
+      "time": 1792900696.2874959
+    },
+    {
+      "phase": "bulk-paged",
+      "time": 1792900700.9692879
+    },
+    {
+      "phase": "bulk-selection",
+      "time": 1792900705.772344
+    },
+    {
+      "phase": "bulk-next-review",
+      "time": 1792900709.51313
+    }
+  ],
+  "errors": []
+}
