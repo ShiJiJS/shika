@@ -206,6 +206,38 @@ def test_changed_member_fails_without_replacing_identity_or_blocking_later_batch
     assert failed["items"][0]["error"] == "stale_pack_state"
 
 
+def test_stop_before_first_child_keeps_all_members_unexecuted_and_repeat_is_readonly(
+    library, monkeypatch
+):
+    client, media = library
+    _, _, rows = fixture(client, media, 3)
+    plans = client.app.state.pack_restore_plans
+    enqueue = plans.enqueue
+    monkeypatch.setattr(plans, "enqueue", lambda identity: None)
+    original = submit(client, [r["id"] for r in rows])
+    monkeypatch.setattr(plans, "enqueue", enqueue)
+    identity = original["id"]
+    endpoint = f"/api/v1/pack-restore-plans/{identity}/stop"
+    assert client.post(endpoint, json={"request_id": "early-stop"}).status_code == 202
+    result = wait(client, identity)
+    assert result["result"]["stopped"] == 3
+    assert (
+        result["result"]["processed"]
+        == result["result"]["succeeded"]
+        == result["result"]["failed"]
+        == 0
+    )
+    assert result["phase"] == "stopped" and result["status"] == "completed"
+    assert client.get(f"/api/v1/maintenance-tasks/{identity}").json()["state"] == "partial"
+    previous_future = plans.futures[identity]
+    previous_future.result(timeout=10)
+    assert client.post(endpoint, json={"request_id": "early-stop"}).json() == result
+    assert plans.futures[identity] is previous_future
+    assert totals(client) == (1, 3, 0)
+    with client.app.state.db.read() as session:
+        assert {p.generation for p in session.scalars(select(ImagePack))} == {2}
+
+
 @pytest.mark.parametrize(
     "phase", ["restore_child_accepted", "restore_child_finished", "before_logical_commit"]
 )

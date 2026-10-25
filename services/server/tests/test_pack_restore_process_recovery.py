@@ -104,6 +104,17 @@ def test_sigkill_resumes_original_plan_without_replaying_a_committed_child(
             assert result["batch_size"] == 2
             assert client.get("/api/v1/pack-trash").json()["total"] == 0
             assert tree(media) == originals
+            # Startup scanning can still own temporary discovered records. Wait
+            # for its authoritative result, then assert stable identity too.
+            deadline = time.monotonic() + 20
+            while time.monotonic() < deadline:
+                scans = [
+                    t for t in client.get("/api/v1/tasks").json()["items"] if t["kind"] == "scan"
+                ]
+                if all(t["status"] not in ("queued", "running") for t in scans):
+                    break
+                time.sleep(0.02)
+            assert scans and all(t["status"] == "completed" for t in scans), scans
             # Generation is exposed only by SQLite: one trash and one restore.
             import sqlite3
 
@@ -118,6 +129,9 @@ def test_sigkill_resumes_original_plan_without_replaying_a_committed_child(
                     "SELECT COUNT(*) FROM pack_restore_members"
                 ).fetchone() == (7,)
                 assert connection.execute("PRAGMA foreign_key_check").fetchall() == []
+                assert {r[0] for r in connection.execute("SELECT id FROM packs")} == {
+                    p["id"] for p in packs
+                }
             print(
                 json.dumps(
                     {
