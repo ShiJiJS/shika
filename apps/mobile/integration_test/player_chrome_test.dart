@@ -242,7 +242,12 @@ void main() {
       await tap(t, find.byKey(const Key('nav-settings')));
       expect(
         t
-            .widget<SwitchListTile>(find.byKey(const Key('dark-mode-setting')))
+            .widget<Switch>(
+              find.descendant(
+                of: find.byKey(const Key('dark-mode-setting')),
+                matching: find.byType(Switch),
+              ),
+            )
             .value,
         isTrue,
       );

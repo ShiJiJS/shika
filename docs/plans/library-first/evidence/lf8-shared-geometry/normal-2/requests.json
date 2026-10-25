@@ -1,0 +1,140 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/971fe41b-ef3d-4119-add2-1a0a35c5657b/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/ff4a55a5-8103-459d-8a41-e9306fa156af/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "home"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/34d2860f-a1fc-46b3-94bb-c47bf19aa6a0/cover",
+    "status": 200,
+    "phase": "home"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/c4876aea-a49b-41de-98d5-e9fcd0855914/cover",
+    "status": 200,
+    "phase": "home"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/b8e6364e-e0bc-4383-a0d0-1ac8505a6780/cover",
+    "status": 200,
+    "phase": "home"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/5aefa8f3-8625-478f-a675-8a1057689475/cover",
+    "status": 200,
+    "phase": "home"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "packs"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "packs"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "packs"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "status": 200,
+    "phase": "video-tags"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "video-tags"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "video-tags"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "video-tags"
+  }
+]

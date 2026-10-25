@@ -85,21 +85,13 @@ class AppShell extends StatelessWidget {
                         tab.label,
                         style: TextStyle(
                           fontSize: 10,
+                          fontWeight: selected == tab.id
+                              ? FontWeight.w600
+                              : FontWeight.w400,
                           color: selected == tab.id
                               ? Paper.of(context).olive
                               : Paper.of(context).muted,
                         ),
-                      ),
-                      AnimatedContainer(
-                        duration: MediaQuery.disableAnimationsOf(context)
-                            ? Duration.zero
-                            : const Duration(milliseconds: 160),
-                        margin: const EdgeInsets.only(top: 3),
-                        width: 18,
-                        height: 2,
-                        color: selected == tab.id
-                            ? Paper.of(context).olive
-                            : Colors.transparent,
                       ),
                     ],
                   ),

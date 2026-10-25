@@ -355,30 +355,13 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
       return Column(
         children: [
           if (!recent)
-            SizedBox(
-              height: MediaLayout.search(context),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  children: [
-                    iconAction('筛选视频', Icons.filter_list, filter),
-                    Expanded(
-                      child: TextField(
-                        key: const Key('video-search'),
-                        controller: search,
-                        style: const TextStyle(fontSize: 14),
-                        decoration: const InputDecoration(
-                          hintText: '搜索视频名称、目录',
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(12),
-                        ),
-                        onChanged: (value) =>
-                            changeEntry(entry.copyWith(search: value)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            MediaCatalogSearch(
+              fieldKey: const Key('video-search'),
+              controller: search,
+              hint: '搜索视频名称、目录',
+              filterLabel: '筛选视频',
+              onFilter: filter,
+              onChanged: (value) => changeEntry(entry.copyWith(search: value)),
             ),
           if (busy || (data.loading && data.items.isNotEmpty))
             const LinearProgressIndicator(minHeight: 2),
@@ -526,7 +509,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                 ),
                               ),
                             if (!selecting)
-                              FilledButton(
+                              FilledButton.icon(
                                 onPressed:
                                     busy ||
                                         data.items.isEmpty ||
@@ -539,7 +522,11 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                     horizontal: 12,
                                   ),
                                 ),
-                                child: const Text(
+                                icon: const Icon(
+                                  Icons.smart_display_outlined,
+                                  size: 16,
+                                ),
+                                label: const Text(
                                   '预览此范围',
                                   style: TextStyle(fontSize: 13),
                                 ),

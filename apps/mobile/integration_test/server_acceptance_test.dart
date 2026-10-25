@@ -80,7 +80,14 @@ void main() {
     expect(repo.current!.id, videoId);
     await ui.nav('settings');
     final toggle = find.byKey(const Key('dark-mode-setting'));
-    expect(t.widget<SwitchListTile>(toggle).value, isTrue);
+    expect(
+      t
+          .widget<Switch>(
+            find.descendant(of: toggle, matching: find.byType(Switch)),
+          )
+          .value,
+      isTrue,
+    );
     if (resume) {
       await ui.tap(toggle);
       await ui.until(() => !preferences.dark, 'settings updates appearance');

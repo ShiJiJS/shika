@@ -862,30 +862,13 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       return Column(
         children: [
           if (!recent)
-            SizedBox(
-              height: MediaLayout.search(context),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  children: [
-                    iconAction('筛选图包', Icons.filter_list, filter),
-                    Expanded(
-                      child: TextField(
-                        key: const Key('pack-search'),
-                        controller: search,
-                        style: const TextStyle(fontSize: 14),
-                        decoration: const InputDecoration(
-                          hintText: '搜索图包名称、目录',
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(12),
-                        ),
-                        onChanged: (value) =>
-                            change(entry.query.copy(search: value)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            MediaCatalogSearch(
+              fieldKey: const Key('pack-search'),
+              controller: search,
+              hint: '搜索图包名称、目录',
+              filterLabel: '筛选图包',
+              onFilter: filter,
+              onChanged: (value) => change(entry.query.copy(search: value)),
             ),
           if (error.isNotEmpty) note(error),
           if (pendingFiles.isNotEmpty)

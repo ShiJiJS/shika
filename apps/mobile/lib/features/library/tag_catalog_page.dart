@@ -317,6 +317,7 @@ class TagCatalogPageState extends State<TagCatalogPage> {
           style: const TextStyle(fontSize: 16),
           decoration: const InputDecoration(
             hintText: '搜索标签',
+            fillColor: Colors.transparent,
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           ),
           onChanged: (_) => load(),
@@ -399,37 +400,45 @@ class TagCatalogPageState extends State<TagCatalogPage> {
                       },
                 style: TextButton.styleFrom(
                   minimumSize: const Size(44, 32),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   textStyle: const TextStyle(fontSize: 13),
                 ),
                 child: const Text('清除选择'),
               ),
             ],
           ),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  matching == null ? '正在统计…' : '匹配 $matching 个$type',
-                  style: const TextStyle(fontSize: 15),
-                ),
-              ),
-              if (!pack)
-                TextButton(
-                  key: const Key('tag-view-results'),
-                  onPressed: matching == null
-                      ? null
-                      : () => widget.onView({...selected}),
-                  style: TextButton.styleFrom(
-                    minimumSize: const Size(44, 32),
-                    textStyle: const TextStyle(fontSize: 13),
+          ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 32),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    matching == null ? '正在统计…' : '匹配 $matching 个$type',
+                    style: const TextStyle(fontSize: 15),
                   ),
-                  child: const Text('查看结果 →'),
                 ),
-            ],
+                if (!pack)
+                  TextButton(
+                    key: const Key('tag-view-results'),
+                    onPressed: matching == null
+                        ? null
+                        : () => widget.onView({...selected}),
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(44, 32),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      textStyle: const TextStyle(fontSize: 13),
+                    ),
+                    child: const Text('查看结果 →'),
+                  ),
+              ],
+            ),
           ),
           const SizedBox(height: 6),
           FilledButton(
             key: Key(pack ? 'tag-view-results' : 'tag-preview-results'),
+            style: FilledButton.styleFrom(
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
             onPressed:
                 matching == null ||
                     matching == 0 ||

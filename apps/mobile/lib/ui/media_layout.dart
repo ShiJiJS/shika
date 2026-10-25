@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'dart:math';
 
+import 'paper.dart';
+
 /// Frozen library-first P2 dimensions, excluding the platform's safe areas.
 abstract final class MediaLayout {
   static const header = 52.0, navigation = 49.0, kindBar = 40.0;
@@ -23,18 +25,80 @@ abstract final class MediaLayout {
   static double meta(BuildContext context) =>
       max(28, MediaQuery.textScalerOf(context).scale(12) * 1.5);
   static double search(BuildContext context) =>
-      max(52, MediaQuery.textScalerOf(context).scale(14) * 1.5 + 26);
+      max(55, MediaQuery.textScalerOf(context).scale(16) * 1.5 + 31);
   static double scope(BuildContext context) =>
       max(44, MediaQuery.textScalerOf(context).scale(12) * 3.4);
   static bool largeText(BuildContext context) =>
       MediaQuery.textScalerOf(context).scale(13) > 17;
   static double toolbar(BuildContext context) => largeText(context)
       ? max(44, MediaQuery.textScalerOf(context).scale(13) * 1.5 + 16) * 2 + 16
-      : 58;
+      : 60;
   static Duration motion(BuildContext context, int milliseconds) =>
       MediaQuery.disableAnimationsOf(context)
       ? Duration.zero
       : Duration(milliseconds: milliseconds);
+}
+
+/// Both media catalogs use the same reference search geometry. Taller system
+/// text grows the field rather than clipping or reducing its type size.
+class MediaCatalogSearch extends StatelessWidget {
+  const MediaCatalogSearch({
+    super.key,
+    required this.fieldKey,
+    required this.controller,
+    required this.hint,
+    required this.filterLabel,
+    required this.onFilter,
+    required this.onChanged,
+  });
+  final Key fieldKey;
+  final TextEditingController controller;
+  final String hint, filterLabel;
+  final VoidCallback onFilter;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = Paper.of(context);
+    return SizedBox(
+      height: MediaLayout.search(context),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 5, 16, 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(
+              width: 44,
+              child: iconAction(filterLabel, Icons.filter_list, onFilter),
+            ),
+            const SizedBox(width: 4),
+            Expanded(
+              child: TextField(
+                key: fieldKey,
+                controller: controller,
+                style: const TextStyle(fontSize: 16, height: 1.5),
+                decoration: InputDecoration(
+                  hintText: hint,
+                  hintStyle: TextStyle(color: p.muted),
+                  isDense: true,
+                  fillColor: Colors.transparent,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(7),
+                    borderSide: BorderSide(color: p.line),
+                  ),
+                ),
+                onChanged: onChanged,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 /// Keeps P2's compact row at ordinary type sizes and gives controls their own
@@ -46,7 +110,7 @@ class MediaCatalogToolbar extends StatelessWidget {
   Widget build(BuildContext context) => SizedBox(
     height: MediaLayout.toolbar(context),
     child: Padding(
-      padding: const EdgeInsets.fromLTRB(16, 2, 12, 14),
+      padding: const EdgeInsets.fromLTRB(16, 2, 16, 14),
       child: MediaLayout.largeText(context)
           ? Column(
               children: [
