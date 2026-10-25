@@ -1,0 +1,43 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart
+Running Gradle task 'assembleDebug'...                             18.3s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        2,930ms
+00:00 +0: LF7 real root policy, missing-pack preservation and original cleanup receipt
+媒体目录 | 目录扫描 | 扫描完成 · 27 / 27 个 | 5.4 MB / 5.4 MB 已核对 | 扫描记录保存在服务端，关闭应用不会中断扫描。 | 重新扫描 | 扫描包含子目录 | 添加目录 | 添加媒体目录 | 名称 | 挂载目录 | 媒体类型 | 视频 | 图包 | 启用目录 | 停用后保留标签和阅读记录，暂不显示内容或扫描此目录 | 扫描包含子目录，不修改源文件位置。 | 保存
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Timed out: tap Found 1 widget with key [<'root-save'>]: [
+  FilledButton-[<'root-save'>](dependencies: [IconTheme, InheritedCupertinoTheme, MediaQuery,
+_InheritedTheme, _LocalizationsScope-[GlobalKey#499e2], _ScrollableScope], state:
+_ButtonStyleState#16e57),
+]
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:67:13)
+<asynchronous suspension>
+#2      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:90:9)
+<asynchronous suspension>
+#3      main.<anonymous closure>.saveRoot (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:109:9)
+<asynchronous suspension>
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:171:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF7 real root policy, missing-pack preservation and original cleanup receipt
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:14 +0 -1: LF7 real root policy, missing-pack preservation and original cleanup receipt [E]
+  Test failed. See exception logs above.
+  The test description was: LF7 real root policy, missing-pack preservation and original cleanup receipt
+  
+01:14 +0 -1: (tearDownAll)
+01:15 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart: LF7 real root policy, missing-pack preservation and original cleanup receipt

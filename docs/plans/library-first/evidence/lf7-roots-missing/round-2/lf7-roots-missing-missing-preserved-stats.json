@@ -1,0 +1,35 @@
+{
+  "action": "missing-native-stats",
+  "completed": true,
+  "cleanups": [
+    {
+      "id": "a030ca27-6598-4fe4-b3ec-c4bd6bcd94e2",
+      "status": "completed",
+      "result": {
+        "total": 25,
+        "processed": 25,
+        "succeeded": 0,
+        "failed": 0,
+        "skipped": 25,
+        "partial": true
+      },
+      "request_hash": "363fc5e22421937a7ebd1e49ad41f9132d6c9fc71bca12801cdc0edc9cd20f49",
+      "members": {
+        "skipped": 25
+      }
+    }
+  ],
+  "first_pack": {
+    "id": "6e0058b7-c02e-46fe-8eaa-9bdff0824463",
+    "status": "missing",
+    "progress": true,
+    "preferences": true,
+    "tag_links": 1,
+    "recent": 1,
+    "session_members": 1
+  },
+  "pack_statuses": {
+    "available": 2,
+    "missing": 25
+  }
+}

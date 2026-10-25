@@ -1,0 +1,17 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart
+Running Gradle task 'assembleDebug'...                             46.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+adb shell am force-stop failed: ProcessException: Process timed out:
+
+  Command: /Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb -s emulator-5554 shell am force-stop io.github.shijijs.video_viewer
+Installing build/app/outputs/flutter-apk/app-debug.apk...          12.6s
+Error: ADB exited with exit code 1
+Performing Streamed Install
+
+adb: failed to install /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/build/app/outputs/flutter-apk/app-debug.apk:
+00:00 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart [E]
+  Failed to load "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart": Unable to start the app on the device.
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart

@@ -1,0 +1,48 @@
+............................................................F........... [ 22%]
+........................................................................ [ 45%]
+........................................................................ [ 68%]
+........................................................................ [ 90%]
+.............................                                            [100%]
+=================================== FAILURES ===================================
+_ test_return_anchor_locates_only_current_matches_after_insert_and_tag_removal _
+
+library = (<starlette.testclient.TestClient object at 0xffff900c4af0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_return_anchor_locates_onl0/media'))
+samples = PosixPath('/tmp/pytest-of-viewer/pytest-0/formats0')
+
+    def test_return_anchor_locates_only_current_matches_after_insert_and_tag_removal(library, samples):
+        client, media = library
+        for index in range(61):
+            put(samples / "h264.mov", media / "selected" / f"video-{index:03d}.mov")
+        put(samples / "h264.mov", media / "outside" / "video-000.mov")
+>       scan(client)
+
+tests/test_fixed_preview.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = <starlette.testclient.TestClient object at 0xffff900c4af0>
+timeout = 30
+
+    def scan(client, timeout=30):
+        response = client.post("/api/v1/scans")
+        assert response.status_code == 202, response.text
+        task_id = response.json()["id"]
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            task = client.get(f"/api/v1/tasks/{task_id}").json()
+            if task["status"] in {"completed", "failed", "interrupted"}:
+                assert task["status"] == "completed", task
+                return task
+            time.sleep(0.02)
+>       raise AssertionError(f"scan timeout: {task}")
+E       AssertionError: scan timeout: {'id': '4de16d97-fe1a-455a-83ed-42054dd22cea', 'kind': 'scan', 'status': 'running', 'phase': 'processing_media', 'created_at': 1792906077.4467678, 'finished_at': None, 'result': {'imported': 53, 'unchanged': 0, 'deferred': 0, 'failed': 0, 'thumbnail_failed': 0, 'failure_reasons': {}, 'warning_reasons': {}, 'warnings': [], 'missing': 0, 'identity_matched': 0, 'identity_ambiguous': 0, 'roots': [{'id': 'main', 'status': 'processing_media', 'discovered': 62, 'processed': 53, 'bytes_total': 1405416, 'bytes_processed': 1201404}], 'issues': [], 'progress': {'discovered': 62, 'processed': 53, 'bytes_total': 1405416, 'bytes_processed': 1201404, 'updated_at': 1792906106.3369029}}, 'error': None}
+
+tests/conftest.py:68: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_fixed_preview.py::test_return_anchor_locates_only_current_matches_after_insert_and_tag_removal
+1 failed, 316 passed, 1 warning in 1010.83s (0:16:50)

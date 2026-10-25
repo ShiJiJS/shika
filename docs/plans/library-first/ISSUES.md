@@ -1,6 +1,6 @@
 # GitHub 实施任务
 
-总任务：[媒体库与图包升级 #24](https://github.com/ShiJiJS/video_viewer/issues/24)。最新阶段状态统一见 [PLAN.md](PLAN.md) 和对应LF记录。当前LF7实施中：任务中心、整份恢复/停止、永久删除剩余选择及服务端默认值/本机迁移已接入；目录类型/启停和图包缺失管理、备份v2、其它命令强停及最终原型/目标设备仍继续推进。近期草稿：[任务中心 #41](https://github.com/ShiJiJS/video_viewer/pull/41) → [恢复服务端 #42](https://github.com/ShiJiJS/video_viewer/pull/42) → [恢复App #43](https://github.com/ShiJiJS/video_viewer/pull/43) → [删除选择 #44](https://github.com/ShiJiJS/video_viewer/pull/44) → [真实1003包强停 #45](https://github.com/ShiJiJS/video_viewer/pull/45) → [设置默认值 #46](https://github.com/ShiJiJS/video_viewer/pull/46)。以下依赖是实施顺序，不是完成状态。
+总任务：[媒体库与图包升级 #24](https://github.com/ShiJiJS/video_viewer/issues/24)。最新阶段状态统一见 [PLAN.md](PLAN.md) 和对应LF记录。当前LF7实施中：任务中心、整份恢复/停止、永久删除剩余选择及服务端默认值/本机迁移已接入；目录类型/启停和图包缺失管理已接入，实际验证见LF7证据；备份v2、其它命令强停及最终原型/目标设备仍继续推进。近期草稿：[任务中心 #41](https://github.com/ShiJiJS/video_viewer/pull/41) → [恢复服务端 #42](https://github.com/ShiJiJS/video_viewer/pull/42) → [恢复App #43](https://github.com/ShiJiJS/video_viewer/pull/43) → [删除选择 #44](https://github.com/ShiJiJS/video_viewer/pull/44) → [真实1003包强停 #45](https://github.com/ShiJiJS/video_viewer/pull/45) → [设置默认值 #46](https://github.com/ShiJiJS/video_viewer/pull/46) → [目录与缺失管理 #47](https://github.com/ShiJiJS/video_viewer/pull/47)。以下依赖是实施顺序，不是完成状态。
 
 | 编号 | 任务 | 依赖 |
 | --- | --- | --- |

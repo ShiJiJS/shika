@@ -1,0 +1,53 @@
+{
+  "action": "missing-native-stats",
+  "completed": true,
+  "cleanups": [
+    {
+      "id": "31568874-a1b7-4b18-8e0e-ae3f87d572d5",
+      "status": "completed",
+      "result": {
+        "total": 25,
+        "processed": 25,
+        "succeeded": 0,
+        "failed": 0,
+        "skipped": 25,
+        "partial": true
+      },
+      "request_hash": "687ceccbddc6d0ea770ff4c08520f18d197144783ade38e17ebf71292f9917f7",
+      "members": {
+        "skipped": 25
+      }
+    },
+    {
+      "id": "01568f11-76a9-46d9-af24-7e14482675b0",
+      "status": "completed",
+      "result": {
+        "total": 25,
+        "processed": 25,
+        "succeeded": 24,
+        "failed": 0,
+        "skipped": 1,
+        "partial": true
+      },
+      "request_hash": "4e165dc422c1bba7046040b75addad97c7c4c3ffe6789e6cd1f745834295e871",
+      "members": {
+        "skipped": 1,
+        "succeeded": 24
+      }
+    }
+  ],
+  "first_pack": {
+    "id": "29b9e9b9-a835-4b81-983a-d56985b4b1d2",
+    "status": "deleted",
+    "progress": false,
+    "preferences": false,
+    "tag_links": 0,
+    "recent": 0,
+    "session_members": 1
+  },
+  "pack_statuses": {
+    "available": 2,
+    "deleted": 24,
+    "missing": 1
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "host_health": 200,
+  "guest_connection_probe": "two TCP health probes yielded no response; third adb subprocess timed out at 12 seconds",
+  "device_adb_state": "device; ordinary shell commands returned before later hangs",
+  "process_alive": 21164,
+  "recovery": "terminate owned test emulator and cold boot; not a spontaneous crash",
+  "limitation": "shell TCP probes yielded no HTTP output but stdin/EOF handling was not independently validated; not proof of NAT cause. Recovery is based on actual App HttpException and ADB restore timeout."
+}

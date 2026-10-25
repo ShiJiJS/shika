@@ -1,0 +1,42 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart
+Running Gradle task 'assembleDebug'...                             64.9s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        2,726ms
+00:00 +0: LF7 real root policy, missing-pack preservation and original cleanup receipt
+媒体目录 | 端到端相机 | /media/camera
+视频 · 可访问 · 10/25 13:55 | 端到端短视频 | /media/shorts
+视频 · 可访问 · 10/25 13:55 | 原生图包目录 | /media/shorts/图包
+图包 · 可访问 · 10/25 13:55 | 同步外部变更 | 缺失内容 | 视频与图包分别核对 · 离线和停用目录保留记录 | 编辑媒体目录 | 名称 | 挂载目录 | 媒体类型 | 视频 | 图包 | 已有内容的目录不能直接更改类型，请新建正确类型的接入目录。 | 启用目录 | 停用后保留标签和阅读记录，暂不显示内容或扫描此目录 | 扫描包含子目录，不修改源文件位置。 | 暂时无法连接服务，请检查地址和网络后重试 | 保存
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Timed out: root saved
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:71:13)
+<asynchronous suspension>
+#2      main.<anonymous closure>.saveRoot (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:130:9)
+<asynchronous suspension>
+#3      main.<anonymous closure>.enabled (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:145:9)
+<asynchronous suspension>
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:260:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF7 real root policy, missing-pack preservation and original cleanup receipt
+════════════════════════════════════════════════════════════════════════════════════════════════════
+02:54 +0 -1: LF7 real root policy, missing-pack preservation and original cleanup receipt [E]
+  Test failed. See exception logs above.
+  The test description was: LF7 real root policy, missing-pack preservation and original cleanup receipt
+  
+02:54 +0 -1: (tearDownAll)
+02:55 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart: LF7 real root policy, missing-pack preservation and original cleanup receipt

@@ -1,0 +1,38 @@
+{
+  "client_full": {
+    "passed": 369,
+    "log": "client-tests.log"
+  },
+  "server_full": {
+    "passed": 316,
+    "failed": 1,
+    "reason": "62-video scan exceeded unchanged 30s fixture deadline; running with 53 imported and no media failures",
+    "seconds": 1010.83,
+    "log": "server-tests.log"
+  },
+  "failed_case_isolated_recheck": {
+    "passed": 1,
+    "failed": 0,
+    "seconds": 13.54,
+    "same_code_and_assertions": true,
+    "log": "server-isolated-recheck.log"
+  },
+  "server_targeted": {
+    "passed": 15,
+    "log": "server-targeted.log"
+  },
+  "analyze": "passed; analyze.log",
+  "ruff": "passed; ruff.log",
+  "native": {
+    "passed_rounds": 3,
+    "source_commit": "59f78b6f0edf2519309953c23ae2a9591bb14162",
+    "seconds": [
+      308.89,
+      138.03,
+      197.17
+    ],
+    "independent_verifier": "passed; proof.json",
+    "checkpoints": 27,
+    "android_focus_guard": "all app-owned, no system overlay"
+  }
+}

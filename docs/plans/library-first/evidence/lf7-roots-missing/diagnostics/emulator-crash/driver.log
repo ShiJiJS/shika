@@ -1,0 +1,171 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.39kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 101B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 52.24kB 0.0s done
+#5 DONE 0.0s
+
+#6 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.0s done
+#6 DONE 0.0s
+
+#7 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [runtime 3/9] WORKDIR /app
+#8 CACHED
+
+#9 [runtime 4/9] COPY requirements.lock ./
+#9 CACHED
+
+#10 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#10 CACHED
+
+#11 [runtime 6/9] COPY video_viewer ./video_viewer
+#11 DONE 0.1s
+
+#12 [runtime 7/9] COPY migrations ./migrations
+#12 DONE 0.1s
+
+#13 [runtime 8/9] COPY alembic.ini ./
+#13 DONE 0.1s
+
+#14 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#14 DONE 0.3s
+
+#15 [test 1/4] COPY requirements-test.lock ./
+#15 DONE 0.1s
+
+#16 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#16 1.017 Requirement already satisfied: alembic==1.20.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 7)) (1.20.0)
+#16 1.018 Requirement already satisfied: annotated-doc==0.0.5 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 13)) (0.0.5)
+#16 1.018 Requirement already satisfied: annotated-types==0.8.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 19)) (0.8.0)
+#16 1.018 Requirement already satisfied: anyio==4.15.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 25)) (4.15.1)
+#16 1.018 Requirement already satisfied: argon2-cffi==25.1.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 32)) (25.1.0)
+#16 1.018 Requirement already satisfied: argon2-cffi-bindings==26.1.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 38)) (26.1.0)
+#16 1.604 Collecting certifi==2026.7.22 (from -r requirements-test.lock (line 83))
+#16 2.139   Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+#16 2.286 Requirement already satisfied: cffi==2.1.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 89)) (2.1.1)
+#16 2.289 Requirement already satisfied: click==8.5.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 193)) (8.5.0)
+#16 2.290 Requirement already satisfied: fastapi==0.143.3 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 199)) (0.143.3)
+#16 2.291 Requirement already satisfied: h11==0.16.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 205)) (0.16.0)
+#16 2.436 Collecting httpcore==1.0.9 (from -r requirements-test.lock (line 212))
+#16 2.549   Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#16 2.736 Collecting httpx==0.28.1 (from -r requirements-test.lock (line 216))
+#16 2.853   Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#16 2.882 Requirement already satisfied: idna==3.20 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 220)) (3.20)
+#16 2.985 Collecting iniconfig==2.3.1 (from -r requirements-test.lock (line 227))
+#16 3.096   Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+#16 3.099 Requirement already satisfied: mako==1.4.3 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 231)) (1.4.3)
+#16 3.101 Requirement already satisfied: markupsafe==3.0.4 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 237)) (3.0.4)
+#16 3.102 Requirement already satisfied: opentelemetry-api==1.45.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 392)) (1.45.1)
+#16 3.219 Collecting packaging==26.3 (from -r requirements-test.lock (line 398))
+#16 3.331   Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#16 3.479 Collecting pluggy==1.7.0 (from -r requirements-test.lock (line 402))
+#16 3.591   Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+#16 3.597 Requirement already satisfied: pycparser==3.11 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 406)) (3.11)
+#16 3.597 Requirement already satisfied: pydantic==2.14.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 412)) (2.14.1)
+#16 3.597 Requirement already satisfied: pydantic-core==2.50.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 418)) (2.50.1)
+#16 3.707 Collecting pygments==2.21.0 (from -r requirements-test.lock (line 559))
+#16 3.820   Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#16 4.002      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 9.0 MB/s  0:00:00
+#16 4.172 Collecting pytest==9.1.1 (from -r requirements-test.lock (line 563))
+#16 4.284   Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+#16 5.035 Collecting ruff==0.17.1 (from -r requirements-test.lock (line 567))
+#16 5.150   Downloading ruff-0.17.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (9.9 MB)
+#16 5.733      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9.9/9.9 MB 17.7 MB/s  0:00:00
+#16 5.753 Requirement already satisfied: sqlalchemy==2.1.4 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 587)) (2.1.4)
+#16 5.753 Requirement already satisfied: starlette==1.8.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 664)) (1.8.0)
+#16 5.753 Requirement already satisfied: typing-extensions==4.16.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 670)) (4.16.0)
+#16 5.754 Requirement already satisfied: typing-inspection==0.4.4 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 683)) (0.4.4)
+#16 5.754 Requirement already satisfied: uvicorn==0.54.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 690)) (0.54.0)
+#16 5.754 Requirement already satisfied: pillow==13.0.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 697)) (13.0.0)
+#16 5.830 Installing collected packages: ruff, pygments, pluggy, packaging, iniconfig, certifi, pytest, httpcore, httpx
+#16 6.592 
+#16 6.594 Successfully installed certifi-2026.7.22 httpcore-1.0.9 httpx-0.28.1 iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-9.1.1 ruff-0.17.1
+#16 6.594 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#16 DONE 6.8s
+
+#17 [test 3/4] COPY tests ./tests
+#17 DONE 0.1s
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 DONE 0.0s
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 0.9s done
+#19 exporting manifest sha256:56e4a591c6032dfb99e65618d823d99ef6b5b692b24cfec49ace6fc42cd9d327
+#19 exporting manifest sha256:56e4a591c6032dfb99e65618d823d99ef6b5b692b24cfec49ace6fc42cd9d327 done
+#19 exporting config sha256:d5ffb1c979dff007595357f0463700472a0f3c41ac2a330deaf3b150d68bef6f done
+#19 exporting attestation manifest sha256:86baf9e0ff7ae894abe5a4f831e3e5651e1227a5bb4441bc69c08d191f771ae3 0.0s done
+#19 exporting manifest list sha256:62abadb8aeba3c94c1bc6ca9d0e1bd9a2dd3da07e1d69cf89a87cd4baf5739cd done
+#19 naming to docker.io/library/video-viewer-server:e2e done
+#19 unpacking to docker.io/library/video-viewer-server:e2e
+#19 unpacking to docker.io/library/video-viewer-server:e2e 0.3s done
+#19 DONE 1.2s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.0s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart
+Running Gradle task 'assembleDebug'...                             13.9s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           4.3s
+00:00 +0: LF7 real root policy, missing-pack preservation and original cleanup receipt
+01:58 +0: LF7 real root policy, missing-pack preservation and original cleanup receipt - did not complete [E]
+01:58 +0: (tearDownAll) - did not complete [E]
+01:58 +0: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart: (tearDownAll) (did not complete)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart: LF7 real root policy, missing-pack preservation and original cleanup receipt (did not complete)
+No tests were found.
+unhandled error during finalization of test:
+/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart
+PathNotFoundException: Deletion failed, path = '/var/folders/pt/953rhgfj5g1gm_pjr862pnhr0000gn/T/flutter_tools.6e15dX/flutter_test_listener.cvzeX8' (OS Error: No such file or directory, errno = 2)
+#0      _Directory._deleteSync (dart:io/directory_impl.dart:216:7)
+#1      FileSystemEntity.deleteSync (dart:io/file_system_entity.dart:425:7)
+#2      ForwardingFileSystemEntity.deleteSync (package:file/src/forwarding/forwarding_file_system_entity.dart:70:16)
+#3      ErrorHandlingDirectory.deleteSync.<anonymous closure> (package:flutter_tools/src/base/error_handling_io.dart:717:22)
+#4      _runSync (package:flutter_tools/src/base/error_handling_io.dart:1118:16)
+#5      ErrorHandlingDirectory.deleteSync (package:flutter_tools/src/base/error_handling_io.dart:716:12)
+#6      FlutterPlatform._createListenerDart.<anonymous closure> (package:flutter_tools/src/test/flutter_platform.dart:786:15)
+#7      FlutterPlatform._startTest.finalize (package:flutter_tools/src/test/flutter_platform.dart:591:26)
+<asynchronous suspension>
+#8      FlutterPlatform._startTest (package:flutter_tools/src/test/flutter_platform.dart:762:7)
+<asynchronous suspension>
+
+Fixture host controller failed: Command '['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'exec-out', 'screencap', '-p']' timed out after 15 seconds
+adb: device 'emulator-5554' not found
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'wm', 'size', 'reset']' returned non-zero exit status 1.

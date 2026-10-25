@@ -1,0 +1,73 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart
+Running Gradle task 'assembleDebug'...                             28.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           5.5s
+00:00 +0: LF7 real root policy, missing-pack preservation and original cleanup receipt
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following HttpException was thrown running a test:
+Software caused connection abort, uri = http://10.0.2.2:8761/__fixture/actions/workspace-packs
+
+When the exception was thrown, this was the stack:
+#4      new _RawSocket.<anonymous closure> (dart:io-patch/socket_patch.dart:2357:21)
+#12     _NativeSocket.reportError (dart:io-patch/socket_patch.dart:1968:14)
+#13     _NativeSocket.multiplex (dart:io-patch/socket_patch.dart:1763:17)
+#14     _RawReceivePort._handleMessage (dart:isolate-patch/isolate_patch.dart:192:12)
+#17     new _RawSocket (dart:io-patch/socket_patch.dart:2356:19)
+#18     _RawSocket.startConnect.<anonymous closure>.<anonymous closure> (dart:io-patch/socket_patch.dart:2330:16)
+#26     _RawSocket.startConnect.<anonymous closure> (dart:io-patch/socket_patch.dart:2319:56)
+#34     _RawSocket.startConnect (dart:io-patch/socket_patch.dart:2318:7)
+#35     RawSocket.startConnect (dart:io-patch/socket_patch.dart:41:23)
+#36     Socket._startConnect (dart:io-patch/socket_patch.dart:2574:22)
+#37     Socket.startConnect (dart:io/socket.dart:918:21)
+#38     _ConnectionTarget.connect (dart:_http/http_impl.dart:2701:20)
+#39     _HttpClient._getConnection.connect (dart:_http/http_impl.dart:3200:12)
+#40     _HttpClient._getConnection (dart:_http/http_impl.dart:3205:12)
+#41     _HttpClient._openUrl (dart:_http/http_impl.dart:3026:12)
+#42     _HttpClient.openUrl (dart:_http/http_impl.dart:2868:7)
+#43     fixture.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/support/fixture.dart:16:36)
+#44     fixture (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/support/fixture.dart:27:7)
+#45     main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:23:26)
+#47     main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:22:7)
+#48     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+#50     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:189:25)
+#51     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:19)
+#53     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1942:5)
+#56     TestWidgetsFlutterBinding._runTest (package:flutter_test/src/binding.dart:1927:10)
+#57     LiveTestWidgetsFlutterBinding.runTest (package:flutter_test/src/binding.dart:3060:12)
+#58     IntegrationTestWidgetsFlutterBinding.runTest (package:integration_test/integration_test.dart:237:17)
+#59     testWidgets.<anonymous closure> (package:flutter_test/src/widget_tester.dart:184:24)
+#60     Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:253:25)
+#62     Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:252:15)
+#67     Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:250:17)
+#68     Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:318:17)
+#73     Invoker._waitForOutstandingCallbacks (package:test_api/src/backend/invoker.dart:314:5)
+#74     Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:457:21)
+#76     Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:455:15)
+#81     Invoker._onRun.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:445:11)
+#82     Invoker._guardIfGuarded (package:test_api/src/backend/invoker.dart:500:15)
+#83     Invoker._onRun.<anonymous closure> (package:test_api/src/backend/invoker.dart:444:9)
+#90     Invoker._onRun (package:test_api/src/backend/invoker.dart:442:11)
+#91     LiveTestController.run (package:test_api/src/backend/live_test_controller.dart:161:11)
+#92     RemoteListener._runLiveTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:320:16)
+#97     RemoteListener._runLiveTest (package:test_api/src/backend/remote_listener.dart:319:5)
+#98     RemoteListener._serializeTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:261:7)
+#116    _GuaranteeSink.add (package:stream_channel/src/guarantee_channel.dart:125:12)
+#117    new _MultiChannel.<anonymous closure> (package:stream_channel/src/multi_channel.dart:159:31)
+#119    CastStreamSubscription._onData (dart:_internal/async_cast.dart:95:11)
+#133    _GuaranteeSink.add (package:stream_channel/src/guarantee_channel.dart:125:12)
+#134    main.<anonymous closure> (file:///var/folders/pt/953rhgfj5g1gm_pjr862pnhr0000gn/T/flutter_tools.lB9l0J/flutter_test_listener.RT93cH/listener.dart:56:22)
+#137    _runExtension (dart:developer-patch/developer.dart:113:23)
+(elided 88 frames from dart:async and package:stack_trace)
+
+The test description was:
+  LF7 real root policy, missing-pack preservation and original cleanup receipt
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:26 +0 -1: LF7 real root policy, missing-pack preservation and original cleanup receipt [E]
+  Test failed. See exception logs above.
+  The test description was: LF7 real root policy, missing-pack preservation and original cleanup receipt
+  
+00:27 +0 -1: (tearDownAll)
+00:27 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart: LF7 real root policy, missing-pack preservation and original cleanup receipt

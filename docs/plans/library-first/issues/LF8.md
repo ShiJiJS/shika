@@ -8,7 +8,7 @@
 
 ## 依赖
 
-LF0 (#25)、LF1 (#26)、LF2 (#27)、LF3 (#28)、LF4 (#29)、LF5 (#30)、LF6 (#31)、LF7 (#32)
+LF0 (#25), LF1 (#26), LF2 (#27), LF3 (#28), LF4 (#29), LF5 (#30), LF6 (#31), LF7 (#32)
 
 ## 实施范围
 
@@ -34,4 +34,14 @@ LF0 (#25)、LF1 (#26)、LF2 (#27)、LF3 (#28)、LF4 (#29)、LF5 (#30)、LF6 (#31
 
 验收 ID：全部验收项；真实目标环境验证是独立门槛。
 
-本地方案：`docs/plans/library-first/PLAN.md`；验收表：`docs/plans/library-first/ACCEPTANCE.md`。方案与独立原型已随 LF0 纳入版本控制，提交与证据见 `docs/plans/library-first/LF0.md`。当前原型：`design/reference/library-first/`，设置差异：`SETTINGS-AUDIT.md`。禁止只接 Demo 就关闭真实服务任务；不改真实 NAS 文件来做故障测试。
+本地方案：`docs/plans/library-first/PLAN.md`；验收表：`docs/plans/library-first/ACCEPTANCE.md`。这些文件目前已写入 Mac 工作区，尚未推送，LF0 (#25) 负责纳入 Git 基线。当前原型：`prototypes/library-first/`，设置差异：`SETTINGS-AUDIT.md`。禁止只接 Demo 就关闭真实服务任务；不改真实 NAS 文件来做故障测试。
+
+## 2026-10-25：PR #47 原生截图复查项
+
+#47的目录类型/启停、分类型缺失页、固定清理与原回执路径在固定59f78b6原生三轮通过，27检查点的窗口/请求/文件/数据库与源码已独立复核；不等于LF8整项通过。证据：[目录与缺失管理](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-roots-missing/docs/plans/library-first/evidence/lf7-roots-missing/README.md)。
+
+- [ ] 新建目录尚未首次扫描时，当前沿用红色“目录暂不可用”；统一未扫描、离线、停用状态与提示，避免混淆。
+- [ ] 任务详情SelectableText编号在部分普通/双倍字号截图中缺字或裁剪；需复查实际渲染与采集时序并修正，不能以接口任务ID正确替代文本显示验收。
+- [ ] 继续完整深浅色、横屏、视频手势与目标手机/NAS验收；当前App/Repository重建是在同一进程，不算新增强停证据。
+
+系统ANR曾真实遮挡早期截图，已保留诊断和受控恢复记录。正式三轮每个截图均要求App持有Android前台焦点，系统窗口遮挡会让宿主验收失败。原型基线保持独立未改，未发布APK。

@@ -1,0 +1,115 @@
+{
+  "ready": true,
+  "media": {
+    "video": {
+      "ready": true,
+      "scanning": false
+    },
+    "pack": {
+      "ready": true,
+      "scanning": false,
+      "counts": {
+        "imported": 27,
+        "updated": 0,
+        "failed_pages": 0,
+        "failed_packs": 0,
+        "protected_packs": 0,
+        "unchanged": 0,
+        "deferred": 0,
+        "failed": 0,
+        "missing": 0,
+        "identity_matched": 0,
+        "identity_ambiguous": 0,
+        "thumbnail_failed": 0,
+        "unsupported_files": 0,
+        "loose_images": 0,
+        "symlinks_skipped": 0,
+        "failure_reasons": {},
+        "issues": [],
+        "progress": {
+          "discovered": 81,
+          "processed": 81,
+          "packs_discovered": 27,
+          "packs_processed": 27,
+          "peak_decoder_kib": 159700,
+          "updated_at": 1792906382.3460877
+        }
+      },
+      "indexed": 27
+    }
+  },
+  "scanning": false,
+  "task_id": "95a09358-a2bd-4228-9829-9d15a7d690b7",
+  "status": "completed",
+  "phase": "completed",
+  "updated_at": 1792906382.355254,
+  "progress": {
+    "discovered": 27,
+    "processed": 27,
+    "bytes_total": 5632670,
+    "bytes_processed": 5632670,
+    "updated_at": 1792906382.355254
+  },
+  "counts": {
+    "imported": 0,
+    "unchanged": 27,
+    "deferred": 0,
+    "failed": 0,
+    "thumbnail_failed": 0
+  },
+  "failure_reasons": {},
+  "warning_reasons": {},
+  "indexed": 27,
+  "roots": [
+    {
+      "id": "1c77c3f2-7f0b-4e6c-bfe5-222026a67ec0",
+      "ready": true,
+      "kind": "pack",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1792906382.32252,
+      "error": null,
+      "scan": {
+        "id": "1c77c3f2-7f0b-4e6c-bfe5-222026a67ec0",
+        "kind": "pack",
+        "status": "completed",
+        "discovered": 27,
+        "processed": 27
+      }
+    },
+    {
+      "id": "camera",
+      "ready": true,
+      "kind": "video",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1792906327.2107837,
+      "error": null,
+      "scan": {
+        "id": "camera",
+        "status": "completed",
+        "discovered": 2,
+        "processed": 2,
+        "bytes_total": 1313295,
+        "bytes_processed": 1313295
+      }
+    },
+    {
+      "id": "shorts",
+      "ready": true,
+      "kind": "video",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1792906327.211245,
+      "error": null,
+      "scan": {
+        "id": "shorts",
+        "status": "completed",
+        "discovered": 25,
+        "processed": 25,
+        "bytes_total": 4319375,
+        "bytes_processed": 4319375
+      }
+    }
+  ]
+}

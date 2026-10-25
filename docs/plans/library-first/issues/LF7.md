@@ -88,3 +88,11 @@ App尚未替换旧循环，不能据服务端通过关闭DEL-04/06。继续原�
 [契约与设置缺项审计](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-managed-defaults/docs/plans/library-first/LF7-DEFAULTS-DESIGN.md) / [完整证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-managed-defaults/docs/plans/library-first/evidence/lf7-defaults/README.md)。旧v1拒绝遗漏明确保存的新默认值，合法v1恢复重建隐式默认；v2仍未完成。
 
 下一步先补目录类型/启停的实际App控件（当前新建仍固定视频）与图包缺失管理，再继续v2类型化全数据图/根映射/前快照/完整替换/跨设备权威代次和历史只读、有界传输、真实文件选择器，以及其它命令/来源强停、历史图片失败根因、全原型暗色横屏、真机NAS与原签名升级。冻结原型独立未改，未改正式8760/NAS、未发布APK，LF7和总任务保持开放。
+
+## 2026-10-25：目录类型与图包缺失管理（PR #47）
+
+[Draft PR #47](https://github.com/ShiJiJS/video_viewer/pull/47)基于#46。真实设置表单已接视频/图包类型、启停及冲突保留；缺失内容按类型24条分页。0013持久父任务和固定成员只清失效管理元数据，保留源字节、墓碑和历史会话；后来新增缺失不进入原范围。执行必须匹配最近成功扫描的根目录身份，同路径替换、离线、停用、返回或占用均保留。原request_id先写安全日志，未知/404重开只查询原请求，不自动重复提交。
+
+实现4e569ad，目录身份修复ed60bc9，当前宿主截图守卫59f78b6。369项客户端/analyze/Ruff及15项新增服务端针对检查通过。服务端全量316通过/1项旧视频扫描30秒超时，同一用例不改码独立重跑13.54秒通过；不称作一次全量317通过。原生曾遇到QEMU崩溃、连接异常和Launcher/System UI无响应，均保留诊断。固定59f78b6正式三轮308.89/138.03/197.17秒全部退出0，27检查点的窗口/请求/文件/数据库及源码独立核对通过；每轮保留25、清24/返回1、2次明确POST/1次原GET，原视频范围保持。App/Repository同进程重建不是强停；新建根未扫描文案及任务编号截图缺字/裁剪继续视觉复查，完整UI验收不关闭。
+
+[设计](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-roots-missing/docs/plans/library-first/LF7-ROOTS-MISSING-DESIGN.md) / [实际结果与诊断](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-roots-missing/docs/plans/library-first/evidence/lf7-roots-missing/README.md)。仍需v2/v1转换、全任务图/回执和设置、根映射/前快照/完整替换/权威代次与历史只读、有界传输和系统选择器，以及其它强停组合、历史图片失败、全原型暗色横屏/手势、真机NAS与原签名升级。原型保持独立且未改，未动8760/NAS、未发布APK；LF7和总任务保持开放。

@@ -1,0 +1,57 @@
+........................................................................ [ 23%]
+........................................................................ [ 46%]
+........................................................................ [ 69%]
+........F............................................................... [ 92%]
+........................                                                 [100%]
+=================================== FAILURES ===================================
+_ test_0011_upgrade_preserves_old_pack_and_video_tables_and_snapshots_before_ddl _
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_0011_upgrade_preserves_ol0/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_0011_upgrade_preserves_ol0/media'))
+
+    def test_0011_upgrade_preserves_old_pack_and_video_tables_and_snapshots_before_ddl(environment):
+        settings, media = environment
+        client, _ = connect(settings)
+        try:
+            fixture(client, media, 2)
+        finally:
+            client.__exit__(None, None, None)
+        db = Database(settings.data_dir)
+        config = Config(str(Path(__file__).parents[1] / "alembic.ini"))
+        config.set_main_option("script_location", str(Path(__file__).parents[1] / "migrations"))
+        with db.engine.begin() as connection:
+            config.attributes["connection"] = connection
+            command.downgrade(config, "0011")
+        with sqlite3.connect(db.path) as connection:
+            tables = [
+                r[0]
+                for r in connection.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table' AND name!='alembic_version'"
+                )
+            ]
+            before = {t: connection.execute(f'SELECT * FROM "{t}"').fetchall() for t in tables}
+            assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0011",)
+        db.migrate()
+        try:
+            with sqlite3.connect(db.path) as connection:
+                assert all(
+                    connection.execute(f'SELECT * FROM "{t}"').fetchall() == rows
+                    for t, rows in before.items()
+                )
+>               assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == (
+                    "0012",
+                )
+E               AssertionError: assert ('0013',) == ('0012',)
+E                 
+E                 At index 0 diff: '0013' != '0012'
+E                 Use -v to get more diff
+
+tests/test_pack_restore_history_migration.py:98: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_pack_restore_history_migration.py::test_0011_upgrade_preserves_old_pack_and_video_tables_and_snapshots_before_ddl
+1 failed, 311 passed, 1 warning in 347.54s (0:05:47)
