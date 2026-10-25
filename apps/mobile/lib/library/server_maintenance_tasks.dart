@@ -325,6 +325,7 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
       final plans = PackRestorePlans(
         journal: owner.packFileJournal,
         scope: sourceScope,
+        readOnly: true,
         isCurrent: () => isCurrent,
         call: (method, path, {body}) {
           if (method != 'GET' || body != null) {

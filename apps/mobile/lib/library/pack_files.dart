@@ -988,6 +988,7 @@ class PackFiles {
 
   Future<void> acknowledge(PackFileCommand command) async {
     _check();
+    if (readOnly) throw const LibraryFailure('历史记录保留在原分册，不结算当前操作');
     if (_settled[command.requestId] == null) {
       throw const LibraryFailure('请先查询并核对这次图包操作结果');
     }

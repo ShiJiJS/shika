@@ -213,11 +213,13 @@ class PackRestorePlans {
     required this.scope,
     required this.call,
     required this.isCurrent,
+    this.readOnly = false,
   });
   final PackFileJournal journal;
   final String scope;
   final PackFileCall call;
   final bool Function() isCurrent;
+  final bool readOnly;
   final _sending = <String, Future<RestorePlan?>>{};
   final _signatures = <String, String>{};
   void _check() {
@@ -243,6 +245,7 @@ class PackRestorePlans {
 
   Future<RestorePlan?> send(RestorePlanCommand command) {
     _check();
+    if (readOnly) return Future.error(const LibraryFailure('历史恢复计划只能查询原结果'));
     if (_sending[command.key] case final Future<RestorePlan?> active) {
       if (_signatures[command.key] != command.signature) {
         return Future.error(const LibraryFailure('请求标识已用于不同的恢复计划'));
@@ -336,7 +339,7 @@ class PackRestorePlans {
     }
     await journal.bindRestore(scope, command, plan.id);
     _check();
-    if (command.kind == 'stop' || plan.settled) {
+    if (!readOnly && (command.kind == 'stop' || plan.settled)) {
       await journal.forgetRestore(scope, command, identity: plan.id);
       _check();
     }
