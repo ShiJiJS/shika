@@ -115,6 +115,9 @@ void main() {
             t.state<PackReaderPageState>(find.byType(PackReaderPage)).controls,
             isFalse,
           );
+          await until(
+            () => find.text('跳过这一张').hitTestable().evaluate().length == 1,
+          );
         }
         await t.tap(find.text('跳过这一张').hitTestable());
         await until(

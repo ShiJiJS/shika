@@ -4,13 +4,13 @@
 import argparse
 import hashlib
 import json
-from pathlib import Path
 import sqlite3
 import subprocess
 import threading
 import time
 import urllib.error
 import urllib.request
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ADB = ROOT / ".dev/android-sdk/platform-tools/adb"
