@@ -7,6 +7,8 @@ import 'pack_files.dart';
 import 'pack_trash.dart';
 import 'pack_purge.dart';
 import 'maintenance_tasks.dart';
+import 'playback_defaults.dart';
+export 'playback_defaults.dart';
 export 'maintenance_tasks.dart';
 export 'pack_purge.dart';
 export 'pack_trash.dart';
@@ -17,6 +19,9 @@ export 'pack_models.dart';
 /// This boundary describes client-visible behavior, independent of transport.
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
+  PlaybackDefaultsGateway createPlaybackDefaults() =>
+      throw const LibraryFailure('当前服务尚不支持服务端默认播放顺序，请升级服务端');
+  Future<PlayOrder> defaultVideoOrder(PlayOrder fallback) async => fallback;
   PackRestorePlans createPackRestorePlans() =>
       throw const LibraryFailure('当前服务尚不支持整份恢复计划，请升级服务端');
   MaintenanceTaskCatalog createMaintenanceTasks() =>

@@ -5,6 +5,41 @@ import 'package:video_viewer/ui/preferences.dart';
 import 'package:video_viewer/library/models.dart';
 
 void main() {
+  test('default migration decisions survive reopening and stay separate per service', () async {
+    final directory = await Directory.systemTemp.createTemp(
+      'vv-default-migration-',
+    );
+    final file = File('${directory.path}/appearance.json');
+    try {
+      final preferences = UiPreferences(
+        file: file,
+        videoOrder: PlayOrder.sequential,
+      );
+      await Future.wait([
+        preferences.markDefaultMigration('["http://one:8760","instance-a"]'),
+        preferences.setDark(true),
+      ]);
+      final reopened = await UiPreferences.load(file: file);
+      expect(
+        reopened.defaultMigrationDone('["http://one:8760","instance-a"]'),
+        isTrue,
+      );
+      expect(
+        reopened.defaultMigrationDone('["http://two:8760","instance-a"]'),
+        isFalse,
+      );
+      expect(
+        reopened.defaultMigrationDone('["http://one:8760","instance-b"]'),
+        isFalse,
+      );
+      expect(reopened.dark, isTrue);
+      expect(reopened.videoOrder, PlayOrder.sequential);
+      preferences.dispose();
+      reopened.dispose();
+    } finally {
+      await directory.delete(recursive: true);
+    }
+  });
   test(
     'preloading and appearance survive reopening without resetting each other',
     () async {
@@ -58,7 +93,8 @@ void main() {
     final directory = await Directory.systemTemp.createTemp(
       'vv-default-failure-',
     );
-    final blocked = await Directory('${directory.path}/appearance.json').create();
+    final blocked = await Directory('${directory.path}/appearance.json')
+        .create();
     final file = File(blocked.path);
     final preferences = UiPreferences(file: file);
     try {

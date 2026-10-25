@@ -219,6 +219,7 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         "pack_permanent_delete",
         "maintenance_tasks",
         "pack_restore_plans",
+        "managed_playback_defaults",
     }
     schema = client.get("/openapi.json").json()
     assert schema["components"]["schemas"]["RootInput"]["properties"]["enabled"]
