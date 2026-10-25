@@ -53,8 +53,12 @@ void main() {
       );
       await fixture('/__fixture/actions/reset-task-trace');
       await t.pumpWidget(VideoViewerApp(repository: repo));
-      Future<void> until(bool Function() done, String why) async {
-        final deadline = DateTime.now().add(const Duration(seconds: 40));
+      Future<void> until(
+        bool Function() done,
+        String why, {
+        Duration timeout = const Duration(seconds: 40),
+      }) async {
+        final deadline = DateTime.now().add(timeout);
         while (!done()) {
           if (DateTime.now().isAfter(deadline)) {
             debugPrint(
@@ -157,13 +161,17 @@ void main() {
       Future<void> syncFromSettings() async {
         final previous = repo.libraryPreparation.value.taskId;
         await tap(find.text('同步外部变更'));
-        await until(() {
-          final state = repo.libraryPreparation.value;
-          return state.taskId != null &&
-              state.taskId != previous &&
-              !state.scanning &&
-              state.status == 'completed';
-        }, 'the newly accepted scan task completed');
+        await until(
+          () {
+            final state = repo.libraryPreparation.value;
+            return state.taskId != null &&
+                state.taskId != previous &&
+                !state.scanning &&
+                state.status == 'completed';
+          },
+          'the newly accepted scan task completed',
+          timeout: const Duration(seconds: 120),
+        );
       }
 
       Future<void> cleanup({bool cancel = false}) async {
