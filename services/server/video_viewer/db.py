@@ -12,6 +12,7 @@ from alembic.script import ScriptDirectory
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import Session
 
+from .authority import Authority
 from .errors import LibraryError
 
 
@@ -25,6 +26,7 @@ class Database:
             connect_args={"check_same_thread": False, "timeout": 15},
         )
         self.write_lock = RLock()
+        self.authority = Authority()
         self.maintenance_task = None
         self.maintenance_owner = None
 
@@ -144,7 +146,17 @@ class Database:
             if self.maintenance_task and self.maintenance_owner != get_ident():
                 raise LibraryError("restore_in_progress", "管理数据正在恢复，请稍后重试", 503)
             with session.begin():
+                # A SELECT does not begin a transaction in SQLite's legacy
+                # driver. Reserve its writer before checking the request lease.
+                session.connection().exec_driver_sql("BEGIN IMMEDIATE")
+                self.authority.check(session)
                 yield session
+
+    def check_authority(self):
+        # Cheap admission check before reading a large request body. The final
+        # check in write() closes the check-to-commit race with restore.
+        with self.write_lock, self.read() as session:
+            self.authority.check(session)
 
     def close(self):
         self.engine.dispose()
