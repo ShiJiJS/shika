@@ -8,7 +8,7 @@ import '../../library/models.dart';
 /// Preparation is read-only. Only authorize() creates a physical command, and
 /// the existing file journal persists that command before any destructive POST.
 class PackPurgeReviewSession extends ChangeNotifier {
-  PackPurgeReviewSession(this.gateway, Iterable<String> ids)
+  PackPurgeReviewSession(this.gateway, Iterable<String> ids, {this.selectionId})
     : ids = List.unmodifiable((ids.toSet().toList()..sort()).take(1000)) {
     if (this.ids.isEmpty) throw const LibraryFailure('请先选择图包');
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -17,6 +17,7 @@ class PackPurgeReviewSession extends ChangeNotifier {
     });
   }
   final PackPurgeGateway gateway;
+  final String? selectionId;
   final List<String> ids;
   late final Timer _timer;
   String requestId = packFileRequestId(), error = '';
@@ -101,6 +102,7 @@ class PackPurgeReviewSession extends ChangeNotifier {
       digest: plan!.digest!,
       trashIds: ids,
       imageCount: plan!.imageCount,
+      selectionId: selectionId,
       label: '永久删除 ${ids.length} 个图包中的 ${plan!.imageCount} 张图片',
     );
   }

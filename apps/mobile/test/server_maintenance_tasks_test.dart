@@ -219,6 +219,29 @@ void main() {
       isTrue,
     );
   });
+  test('durable deletion selections are discoverable and never reconciled as a submitted operation', () async {
+    await fixture.start();
+    final saved = await PackPurgeSelections(fixture.repo.createPackFiles())
+        .save(['trash-0', 'trash-1']);
+    final catalog = fixture.repo.createMaintenanceTasks();
+    final writes = fixture.server.writes.length;
+    final pending = await catalog.pending();
+    expect(pending.single.source, MaintenanceReceiptSource.purgeSelection);
+    expect(pending.single.purgeSelectionId, saved.id);
+    expect(pending.single.family, 'pack');
+    expect(fixture.repo.maintenancePendingCount, 1);
+    await expectLater(
+      catalog.reconcile(pending.single),
+      throwsA(isA<LibraryFailure>()),
+    );
+    expect(fixture.server.writes.length, writes);
+    expect(
+      (await PackPurgeSelections(
+        fixture.repo.createPackFiles(),
+      ).list()).single.ids,
+      saved.ids,
+    );
+  });
   test('unknown, forged and stale local receipts never submit or discard original intent', () async {
     await fixture.start();
     final command = PackFileCommand.restore('unknown', ['trash-0']);

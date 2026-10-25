@@ -8,6 +8,7 @@ import 'pack_reading.dart';
 import 'server_api.dart';
 
 part 'pack_restore_plans.dart';
+part 'pack_purge_selections.dart';
 
 typedef PackFileCall = Future<Map<String, dynamic>> Function(
   String method,
@@ -156,9 +157,14 @@ class PackFileCommand {
     Iterable<String> targets = const [],
     this.expectedImages,
     this.expectedTaskKind,
+    this.purgeSelectionId,
   }) : body = _freeze(body) as Map<String, dynamic>,
        targets = List.unmodifiable(targets) {
     _id(requestId);
+    if (purgeSelectionId != null) {
+      _id(purgeSelectionId);
+      if (kind != 'permanent') throw const LibraryFailure('删除选择与操作类型不一致');
+    }
     if (this.targets.isNotEmpty) _ids(this.targets);
     if (expectedTaskKind != null &&
         ![
@@ -247,6 +253,7 @@ class PackFileCommand {
     required Iterable<String> trashIds,
     required int imageCount,
     String? label,
+    String? selectionId,
   }) {
     if (!RegExp(r'^[0-9a-f]{64}$').hasMatch(digest)) {
       throw const LibraryFailure('永久删除确认摘要不完整');
@@ -260,6 +267,7 @@ class PackFileCommand {
       expectedImages: imageCount,
       expectedTaskKind: 'pack_permanent',
       label: label,
+      purgeSelectionId: selectionId,
     );
   }
   factory PackFileCommand.retry(
@@ -289,6 +297,7 @@ class PackFileCommand {
   final List<String> targets;
   final int? expectedImages;
   final String? expectedTaskKind;
+  final String? purgeSelectionId;
   final String? label;
   final PackCleanupContext? readerContext;
   String? get readingSessionId =>
@@ -305,6 +314,7 @@ class PackFileCommand {
         'expected_kind': expectedTaskKind,
       },
     if (readerContext != null) readerContext!.toJson(),
+    if (purgeSelectionId != null) {'purge_selection_id': purgeSelectionId},
   ]);
   Set<String> get resources => {
     for (final id in (body['pack_ids'] as List? ?? const [])) 'pack:$id',
@@ -323,6 +333,7 @@ class PackFileCommand {
     if (expectedTaskKind != null) 'expected_kind': expectedTaskKind,
     if (label != null) 'label': label,
     if (readerContext != null) 'reader_context': readerContext!.toJson(),
+    if (purgeSelectionId != null) 'purge_selection_id': purgeSelectionId,
   };
   factory PackFileCommand.fromJson(Map<String, dynamic> value) {
     final kind = value['kind'], body = _map(value['body']);
@@ -360,6 +371,9 @@ class PackFileCommand {
         digest: _id(body['digest']),
         trashIds: (value['targets'] as List).cast<String>(),
         imageCount: _integer(value['expected_images']),
+        selectionId: value['purge_selection_id'] == null
+            ? null
+            : _id(value['purge_selection_id']),
       );
       if (value['expected_kind'] != 'pack_permanent') {
         throw const LibraryFailure('永久删除类型不完整');
@@ -384,7 +398,8 @@ class PackFileCommand {
         jsonEncode(result.targets) !=
             jsonEncode(value['targets'] ?? const []) ||
         result.expectedImages != value['expected_images'] ||
-        result.expectedTaskKind != value['expected_kind']) {
+        result.expectedTaskKind != value['expected_kind'] ||
+        result.purgeSelectionId != value['purge_selection_id']) {
       throw const LibraryFailure('本机图包操作记录不完整');
     }
     final label = value['label'];
@@ -399,6 +414,7 @@ class PackFileCommand {
       targets: result.targets,
       expectedImages: result.expectedImages,
       expectedTaskKind: result.expectedTaskKind,
+      purgeSelectionId: result.purgeSelectionId,
       label: label as String?,
       readerContext: value['reader_context'] == null
           ? null
@@ -600,7 +616,8 @@ class PackFileJournal {
     if (_book == null) return null;
     try {
       return _map(_map(_book!['scopes'])[scope] ?? <String, dynamic>{}).length +
-          _restoreRows(scope).length;
+          _restoreRows(scope).length +
+          _purgeSelectionRows(_book!, scope).length;
     } catch (_) {
       return null;
     }
@@ -613,6 +630,7 @@ class PackFileJournal {
     T Function(Map<String, dynamic>) action, {
     bool write = true,
     String namespace = 'scopes',
+    void Function(Map<String, dynamic> book)? alongside,
   }) {
     final result = _tail.then((_) async {
       final initializing = _book == null;
@@ -636,6 +654,7 @@ class PackFileJournal {
       if (write) {
         scopes[scope] = commands;
         next[namespace] = scopes;
+        alongside?.call(next);
         await store.write(jsonEncode(next));
         _book = next;
       }
@@ -696,7 +715,7 @@ class PackFileJournal {
         }
         commands[command.requestId] = {'command': command.toJson()};
         return null;
-      });
+      }, alongside: (book) => _claimPurgeSelection(book, scope, command));
   Future<void> accepted(
     String scope,
     PackFileCommand command,
@@ -708,7 +727,11 @@ class PackFileJournal {
     }
     row['task_id'] = identity;
     commands[command.requestId] = row;
-  });
+  }, alongside: (book) => _bindPurgeSelection(book, scope, command, identity));
+  Future<void> rejected(String scope, PackFileCommand command) =>
+      _edit(scope, (commands) {
+        commands.remove(command.requestId);
+      }, alongside: (book) => _rejectPurgeSelection(book, scope, command));
   Future<void> forget(String scope, String requestId) =>
       _edit(scope, (commands) {
         commands.remove(requestId);
@@ -829,7 +852,7 @@ class PackFiles {
             failure.status! >= 400 &&
             failure.status! < 500 &&
             ![408, 429].contains(failure.status)) {
-          await journal.forget(scope, command.requestId);
+          await journal.rejected(scope, command);
         }
         rethrow;
       }

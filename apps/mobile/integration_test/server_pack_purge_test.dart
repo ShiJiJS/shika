@@ -127,6 +127,33 @@ void main() {
         (await fixture('/__fixture/actions/pack-trash-hashes'))['hashes'],
         originalHashes,
       );
+      // Leaving the cancelled review retains the complete choice, but opening
+      // its new home must not prepare or authorize another physical operation.
+      final beforeSaved =
+          (await fixture('/__fixture/trace', method: 'GET'))['items'] as List;
+      final beforeSavedPosts = beforeSaved
+          .where((r) => r['method'] == 'POST')
+          .length;
+      await tap(find.byKey(const Key('pack-trash-saved-purge')));
+      await until(
+        () => find.text('1 个未提交').evaluate().isNotEmpty,
+        'saved selection',
+      );
+      await shot('saved');
+      await tap(find.byTooltip('Back'));
+      await tap(find.byKey(const Key('pack-trash-saved-purge')));
+      await until(
+        () => find.text('1 个未提交').evaluate().isNotEmpty,
+        'reopened saved selection',
+      );
+      await shot('saved-reopened');
+      final afterSaved =
+          (await fixture('/__fixture/trace', method: 'GET'))['items'] as List;
+      expect(
+        afterSaved.where((r) => r['method'] == 'POST').length,
+        beforeSavedPosts,
+      );
+      await tap(find.byTooltip('Back'));
       await tap(find.byKey(const Key('pack-trash-permanent')));
       await until(
         () =>

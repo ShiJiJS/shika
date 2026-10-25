@@ -184,7 +184,13 @@ class MaintenanceItem {
       : '未完成，请核对原结果';
 }
 
-enum MaintenanceReceiptSource { pack, video, backup, restorePlan }
+enum MaintenanceReceiptSource {
+  pack,
+  video,
+  backup,
+  restorePlan,
+  purgeSelection,
+}
 
 /// A scoped local intent; the gateway binds it to an issued object and request.
 class MaintenanceReceipt {
@@ -197,14 +203,23 @@ class MaintenanceReceipt {
     this.taskId,
     this.packCommand,
     this.restoreCommand,
+    this.purgeSelectionId,
+    this.historical = false,
   });
   final String id, requestId, title, kind;
   final MaintenanceReceiptSource source;
   final String? taskId;
   final PackFileCommand? packCommand;
   final RestorePlanCommand? restoreCommand;
+  final String? purgeSelectionId;
+  final bool historical;
   String get family =>
-      source == MaintenanceReceiptSource.restorePlan ? 'pack' : source.name;
+      [
+        MaintenanceReceiptSource.restorePlan,
+        MaintenanceReceiptSource.purgeSelection,
+      ].contains(source)
+      ? 'pack'
+      : source.name;
 }
 
 abstract interface class MaintenanceTaskCatalog {

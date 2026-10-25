@@ -1602,6 +1602,7 @@ class ServerLibraryRepository extends LibraryRepository
     try {
       await packFileJournal.pending(scope);
       await packFileJournal.restorePending(scope);
+      await packFileJournal.purgeSelections(scope);
       _packJournalError = false;
     } catch (_) {
       _packJournalError = true;
@@ -2272,6 +2273,9 @@ class ServerLibraryRepository extends LibraryRepository
             generation != _generation ||
             !identical(target, _api)) {
           throw const RequestCancelled();
+        }
+        if (_fileScope != null) {
+          await packFileJournal.historicalPurgeSelections(_fileScope!);
         }
         await serializeFiles(() => saveFileState({'scope': _fileScope}));
         _scanRead.cancel();

@@ -9,10 +9,15 @@ import 'pack_purge_review_session.dart';
 Future<PackFileCommand?> showPackPurgeReview(
   BuildContext context,
   LibraryRepository repository,
-  Iterable<String> ids,
-) => paperSheet<PackFileCommand>(
+  Iterable<String> ids, {
+  String? selectionId,
+}) => paperSheet<PackFileCommand>(
   context,
-  PackPurgeReview(repository: repository, ids: List.of(ids)),
+  PackPurgeReview(
+    repository: repository,
+    ids: List.of(ids),
+    selectionId: selectionId,
+  ),
 );
 
 class PackPurgeReview extends StatefulWidget {
@@ -20,9 +25,11 @@ class PackPurgeReview extends StatefulWidget {
     super.key,
     required this.repository,
     required this.ids,
+    this.selectionId,
   });
   final LibraryRepository repository;
   final List<String> ids;
+  final String? selectionId;
   @override
   State<PackPurgeReview> createState() => _PackPurgeReviewState();
 }
@@ -37,6 +44,7 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
       session = PackPurgeReviewSession(
         widget.repository.createPackPurge(),
         widget.ids,
+        selectionId: widget.selectionId,
       )..addListener(changed);
       unawaited(session!.load(submit: true));
     } catch (failure) {
@@ -97,7 +105,7 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
         const Text('只删除本次核对清单中的图片，其他附件保留。永久删除不可撤销，管理备份也不能找回图片。'),
         const SizedBox(height: 12),
         if (widget.ids.length > 1000)
-          Text('共选 ${widget.ids.length} 个，本批核对1000个。其余图包保持选择，完成后可继续下一批。'),
+          Text('剩余 ${widget.ids.length} 个，本批核对1000个。其余选择已保存，后续批次仍需逐批核对确认。'),
         if (s?.busy == true)
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
