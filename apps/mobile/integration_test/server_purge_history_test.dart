@@ -125,7 +125,7 @@ void main() {
         bool waitEnabled = false,
       }) async {
         final end = DateTime.now().add(const Duration(seconds: 60));
-        var attempts = 0, direction = 1;
+        var direction = 1;
         bool ready() =>
             target.hitTestable().evaluate().isNotEmpty &&
             (!activate && !waitEnabled || target.evaluate().every(enabled));
@@ -134,13 +134,23 @@ void main() {
             debugPrint(
               'HISTORY_VISIBLE:${t.widgetList<Text>(find.byType(Text)).map((v) => v.data).join(' | ')}',
             );
-            fail('History control not visible/enabled: $target');
+            fail(
+              'History control did not become actionable; see visible text above',
+            );
           }
           final list = find.byType(ListView).hitTestable();
           if (target.hitTestable().evaluate().isEmpty &&
               list.evaluate().isNotEmpty) {
+            final scrollable = find
+                .descendant(of: list.last, matching: find.byType(Scrollable))
+                .first;
+            final state = t.state<ScrollableState>(scrollable);
+            final before = state.position.pixels;
             await t.drag(list.last, Offset(0, -260.0 * direction));
-            if (++attempts % 40 == 0) direction = -direction;
+            await t.pump(const Duration(milliseconds: 100));
+            if (state.mounted && (state.position.pixels - before).abs() < 1) {
+              direction = -direction;
+            }
           }
           await t.pump(const Duration(milliseconds: 100));
         }
