@@ -1,0 +1,64 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_backups_test.dart: task acknowledgement cannot replace or clear a newer export receipt
+00:00 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_backups_test.dart: stale restore reconciliation cannot query a newer restore command
+00:00 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_backups_test.dart: failed download reopens its accepted export without making a new snapshot
+00:00 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_backups_test.dart: a successful HTTP download with different bytes is not reported as a valid backup
+00:00 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_backups_test.dart: same actual import file reopens its saved validation task and shows counts
+00:00 +5: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_backups_test.dart: bad and demo packages never reach a restore and failed checksum explains why
+00:00 +6: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_backups_test.dart: uncertain accepted restore survives restart and only queries its original command
+00:00 +7: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_backups_test.dart: accepted restore with a task ID is queried across restart without a second POST
+00:00 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: late old connection cannot publish stale capabilities
+00:00 +8 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: late old connection cannot publish stale capabilities
+00:00 +8 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_backups_test.dart: task completion is not reported until authoritative state can be refreshed [E]
+  Expected: true
+    Actual: <false>
+  
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test/server_backups_test.dart 376:5                 main.<fn>
+  
+00:00 +9 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: late old connection cannot publish stale capabilities
+00:00 +10 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: late old connection cannot publish stale capabilities
+00:00 +11 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: late old connection cannot publish stale capabilities
+00:00 +12 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: late old connection cannot publish stale capabilities
+00:00 +13 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: late old connection cannot publish stale capabilities
+00:00 +14 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: late old connection cannot publish stale capabilities
+00:00 +15 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: lost accepted pack response is reconciled from task center by original GET and local acknowledgement
+00:00 +16 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: lost accepted pack response is reconciled from task center by original GET and local acknowledgement
+00:00 +17 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: lost accepted pack response is reconciled from task center by original GET and local acknowledgement
+00:00 +18 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: lost accepted pack response is reconciled from task center by original GET and local acknowledgement
+00:00 +19 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: lost accepted pack response is reconciled from task center by original GET and local acknowledgement
+00:00 +20 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: lost accepted pack response is reconciled from task center by original GET and local acknowledgement
+00:00 +21 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: lost accepted pack response is reconciled from task center by original GET and local acknowledgement
+00:00 +22 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: lost accepted pack response is reconciled from task center by original GET and local acknowledgement
+00:00 +23 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: initial preparation stays locked and live progress does not reload catalog pages
+00:00 +24 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: durable deletion selections are discoverable and never reconciled as a submitted operation
+00:01 +25 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: empty current video can be reopened and selected without expanding scope
+00:01 +26 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: unknown, forged and stale local receipts never submit or discard original intent
+00:01 +27 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: background scan completion invalidates externally renamed directory paths
+00:01 +28 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: uncertain image purge keeps journal; settled exact original task later retires it
+00:01 +29 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: a cancelled old page cannot publish after a newer search
+00:01 +30 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: historical original video receipt clears only its local pending record with no replay
+00:01 +31 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: retrying a round after losing the accepted response reuses its command ID
+00:01 +32 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: accepted export receipt binds original task; verified original download retires only after save
+00:01 +33 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_maintenance_tasks_test.dart: accepted export receipt binds original task; verified original download retires only after save
+00:01 +34 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:01 +35 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:01 +36 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:01 +37 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:01 +38 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:01 +39 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:01 +40 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:01 +41 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:01 +42 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:02 +43 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:02 +44 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:02 +45 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:02 +46 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:02 +47 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+00:02 +48 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: unavailable root and failed scan publish authoritative status without fake success
+00:03 +49 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: scan clears cached directory paths that disappeared outside the app
+00:04 +50 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_backups_test.dart: task completion is not reported until authoritative state can be refreshed

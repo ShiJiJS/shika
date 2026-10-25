@@ -1,0 +1,13 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_restore_plans_test.dart
+00:00 +0: persist all 1027 targets before POST; current server owns subsequent work and GET settles only that plan
+00:00 +1: lost accepted response reopens via original GET; explicitly sending same intent never posts twice
+00:00 +2: unknown 404 and malformed receipt retain exact intent and never fall through to POST
+00:00 +3: stop is durably separate; lost reply is queried by original stop ID and cannot stop another plan
+00:00 +4: write failure and invalid persisted namespace block POST and do not erase old video/pack receipts
+00:00 +5: file receipt and plan admission use one serialized resource guard in either order
+00:00 +6: late response after connection replacement preserves scoped journal and cannot publish old result
+00:00 +7: historical completed restore and accepted stop keep both original receipts
+00:01 +8: new server session submits one durable whole selection; disposal does not own server continuation
+00:01 +9: leaving while acceptance is in flight keeps all original targets, errors do not clear selection
+00:01 +10: reject inconsistent counters and stopped members are distinct from failures
+00:01 +11: All tests passed!
