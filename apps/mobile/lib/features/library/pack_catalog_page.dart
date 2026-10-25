@@ -506,19 +506,22 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                       ? null
                       : () => open(anchor: pack.id),
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 6, bottom: 10),
+                    padding: const EdgeInsets.only(top: 6, bottom: 11),
                     child: Row(
                       children: [
                         SizedBox(
                           width: 44,
                           height: 58,
-                          child: PackCover(
-                            pack: pack!,
-                            repository: repo,
-                            active: widget.active,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(3),
+                            child: PackCover(
+                              pack: pack!,
+                              repository: repo,
+                              active: widget.active,
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 14),
+                        const SizedBox(width: 11),
                         Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -527,11 +530,12 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                               Text(
                                 continuationLoading ? '正在核对续读位置' : '继续阅读',
                                 style: TextStyle(
-                                  fontSize: 13,
-                                  height: 1.45,
+                                  fontSize: 12,
+                                  height: 1.5,
                                   color: p.muted,
                                 ),
                               ),
+                              const SizedBox(height: 3),
                               Text(
                                 pack.name,
                                 maxLines: 1,
@@ -541,19 +545,20 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                   height: 1.5,
                                 ),
                               ),
+                              const SizedBox(height: 3),
                               Text(
                                 position,
                                 key: const Key('pack-continuation-position'),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: 13,
-                                  height: 1.45,
+                                  fontSize: 12,
+                                  height: 1.5,
                                   color: p.muted,
                                 ),
                               ),
                               SizedBox(
-                                width: 130,
+                                width: double.infinity,
                                 height: 2,
                                 child: LinearProgressIndicator(
                                   value: index == null || pack.pageCount == 0
@@ -566,8 +571,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 14),
-                        const Icon(Icons.chevron_right, size: 19),
+                        const SizedBox(width: 11),
+                        const Icon(Icons.chevron_right, size: 22),
                       ],
                     ),
                   ),
