@@ -131,3 +131,14 @@ App尚未替换旧循环，不能据服务端通过关闭DEL-04/06。继续原�
 最终客户端全集398项、analyze、全量服务端Ruff和新增夹具/runner编译通过；生产服务未改，375项服务端沿用#50。固定源码原生三轮通过：390普通运行中实际v1恢复、360双倍字号及390普通两次真实SecureStorage强停重开。后两轮确认旧PID消失后才在App缺席时恢复，新PID无需再登录；主动强停首段非零与Flutter附带终结异常如实保留，实际通过的是重开段。独立核对12个窗口/截图检查点、每轮27源文件SHA、五类旧回执只有GET404、App仅一次登录及唯一新代次导出POST；旧安全日志与27未提交选择保留。见[契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-client-authority/docs/plans/library-first/LF7-CLIENT-AUTHORITY-DESIGN.md) / [固定源码、原始日志及独立核对](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-client-authority/docs/plans/library-first/evidence/lf7-client-authority/README.md)。
 
 这是实际v1恢复后的客户端隔离；图包本机意图使用合成未受理ID，不代表图包物理操作或完整v2恢复。当前原GET查不到就保留未知，完整v2协调器/根映射/物理真相/前快照/原子替换/正式历史引用与公开历史路由、App有界传输及系统选择器继续，backup_v2仍关闭。其它强停组合、历史图片失败、完整原型/暗色横屏/手势、真机NAS与原签名发布继续。冻结原型独立未改，SDK/正式8760/NAS及发布APK未变；LF7/#32和总任务/#24保持开放。
+
+
+## 2026-10-25：完整管理恢复协调器（PR #52）
+
+[Draft PR #52](https://github.com/ShiJiJS/video_viewer/pull/52)基于#51。已接v2/已校验v1转换、持久维护预约、可下载恢复前快照、明确/null根映射、实际文件只读核对、33表原子完整替换、正式历史引用与新权威代次。当前已明确恢复的内容不受旧回收标记覆盖，实际永久删除页ID不复活；导入未完成任务只读不重放。历史按原epoch/graph定位父子成员和8类回执，连续恢复保留本机历次备份控制回执与原文件。
+
+固定最终源码0c841f3（实现04d9834、初始化修复8193272）。服务端全集396项（433.47秒）通过，新增21项纳入全集；全目录Ruff及111文件编译通过。另行固定源码4项进程/网络复跑32.01秒通过，三处真实SIGKILL均正确恢复或保持已完成，媒体SHA不变。实际40,949,448字节网络上传/下载/完整恢复、18,000行独立SQLite核对通过，服务端Python分配峰值5,634,876字节；配置64MiB，默认限制仍32MiB，不代表总RSS或Android性能。33表非空关联、19表逐字段保持、连续两次恢复/原epoch严格读取、旧POST拒绝/冷启动不重放、回滚/预约/坏文件/模拟中止/磁盘及历史图变化均有检查。完整失败和中止诊断单独保留，不累加成最终通过数。
+
+[恢复契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-backup-restore/docs/plans/library-first/LF7-RESTORE-V2-DESIGN.md) / [固定源码、原始日志及核对](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-backup-restore/docs/plans/library-first/evidence/lf7-backup-restore/README.md) / [下一步App文件接线](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-backup-restore/docs/plans/library-first/LF7-APP-ARCHIVE-PLAN.md)。初始化前SQLite写入和旧能力清单断言在全量检查中发现并修正；默认播放设置GET已改为只读。客户端398项及原生三轮沿用#51，本轮未改App或重跑，不作为v2 App验收。
+
+App流式文件网关、真实系统选择器/取消、两类统计/分页根映射/确认、历史页面与原epoch网关继续；backup_v2仍关闭。旧专用永久删除清单/页明细等GET尚需审计，通用历史入口不代表所有页面完成。其它强停组合、历史图片失败、暗色/横屏/手势与目标设备/NAS及签名升级继续。冻结原型独立未改，未改SDK/正式8760/NAS或发布APK；LF7/#32及总任务/#24保持开放。

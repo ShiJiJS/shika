@@ -1,0 +1,89 @@
+...F.                                                                    [100%]
+=================================== FAILURES ===================================
+__ test_complete_33_table_restore_and_continuous_epochs_keep_original_graphs ___
+
+library = (<starlette.testclient.TestClient object at 0xffffa0d21940>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_complete_33_table_restore0/media'))
+samples = PosixPath('/tmp/pytest-of-viewer/pytest-0/formats0')
+
+    def test_complete_33_table_restore_and_continuous_epochs_keep_original_graphs(library, samples):
+        from sqlalchemy import func, select
+    
+        from video_viewer.backup_v2_schema import TABLES
+    
+        from .test_backup_archive import seed_complete_graph
+        from .test_pack_operations import trash
+        from .test_packs import sync
+    
+        client, media = library
+        root = seed_complete_graph(client, media, samples)
+        with client.app.state.db.read() as session:
+            expected_counts = {t.name: session.scalar(select(func.count()).select_from(t)) for t in TABLES}
+        assert all(expected_counts.values()), expected_counts
+        # Enable the real pack root before export, then mark it after the backup.
+        assert client.put('/api/v1/roots/' + root['id'], json={
+            'name': root['name'], 'path': root['path'], 'kind': 'pack', 'enabled': True,
+        }).status_code == 200
+        sync(client)
+        raw, first_export = export(client, 'full-export')
+        preview = inspect(client, raw, 'full-inspect')
+        pack = client.get('/api/v1/packs').json()['items'][0]
+        late_operation = trash(client, [pack['id']], 'late-pack-mark')
+        epoch_a = client.get('/api/v1/info').json()['management_epoch']
+        before = tree(media)
+        first = restore(client, preview, {'main': str(media), root['id']: root['path']}, 'full-first')
+        assert first['status'] == 'completed', first
+        assert all(first['result']['imported_counts'].values())
+        epoch_b = client.get('/api/v1/info').json()['management_epoch']
+        client.headers['X-Management-Epoch'] = epoch_b
+        old = client.get('/api/v1/management-history/epochs/' + epoch_a)
+        assert old.status_code == 200, old.text
+        graph_a = old.json()['graph_id']
+        original = client.get('/api/v1/management-history/tasks/' + late_operation['id'] + '/record', params={'epoch': epoch_a}).json()
+        assert original['result'] == late_operation['result'] and original['error'] is None
+        for path in ('/api/v1/pack-file-requests/late-pack-mark', '/api/v1/pack-operations/' + late_operation['id']):
+            response = client.get(path)
+            assert response.status_code == 200, response.text
+            assert response.json()['historical'] and response.json()['result'] == late_operation['result']
+        legacy_summary = client.get('/api/v1/maintenance-tasks/' + late_operation['id'])
+        assert legacy_summary.status_code == 200 and legacy_summary.json()['graph_id'] == graph_a
+        members = client.get('/api/v1/maintenance-tasks/' + late_operation['id'] + '/items').json()
+        assert members['graph_id'] == graph_a and members['total'] == 1
+        second_raw, _ = export(client, 'second-export')
+        second_preview = inspect(client, second_raw, 'second-inspect')
+        second = restore(client, second_preview, {'main': str(media), root['id']: root['path']}, 'full-second')
+        assert second['status'] == 'completed', second
+        epoch_c = client.get('/api/v1/info').json()['management_epoch']
+        assert len({epoch_a, epoch_b, epoch_c}) == 3
+        client.headers['X-Management-Epoch'] = epoch_c
+        assert client.get('/api/v1/management-history/epochs/' + epoch_a).json()['graph_id'] == graph_a
+        assert client.get('/api/v1/management-history/epochs/' + epoch_b).status_code == 200
+        assert client.get('/api/v1/management-history/epochs/' + '0' * 32).status_code == 404
+        original_again = client.get('/api/v1/management-history/tasks/' + late_operation['id'] + '/record').json()
+        assert original_again['result'] == late_operation['result'] and original_again['error'] is None
+        # Explicit graph selection stays exact: the B projection retains its marker.
+        projection = client.get('/api/v1/management-history/tasks/' + late_operation['id'] + '/record', params={'epoch': epoch_b}).json()
+        assert projection['error'] == 'restored_history'
+        assert client.get('/api/v1/management-history/tasks/' + late_operation['id'], params={'epoch': epoch_a, 'graph_id': projection['graph_id']}).status_code == 422
+        assert client.get('/api/v1/management-history/tasks/' + late_operation['id'], params={'epoch': '0' * 32}).status_code == 404
+        for job in (first_export, first, second):
+            current = client.get('/api/v1/tasks/' + job['id']).json()
+            assert current['status'] == 'completed' and current['finished_at'] == job['finished_at']
+        for snapshot in (first['result']['pre_snapshot_id'], second['result']['pre_snapshot_id']):
+            assert client.get(PREFIX + '/' + snapshot + '/download').status_code == 200
+        assert client.get(PREFIX + '/requests/restore/full-first').json()['id'] == first['id']
+>       assert client.post('/api/v1/packs/trash', json={'pack_ids': [pack['id']], 'request_id': 'late-pack-mark'}).status_code == 409
+E       AssertionError: assert 202 == 409
+E        +  where 202 = <Response [202 Accepted]>.status_code
+E        +    where <Response [202 Accepted]> = post('/api/v1/packs/trash', json={'pack_ids': ['53494d32-fed2-4e01-8aea-c4dcbc3d8693'], 'request_id': 'late-pack-mark'})
+E        +      where post = <starlette.testclient.TestClient object at 0xffffa0d21940>.post
+
+tests/test_management_archives.py:257: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_management_archives.py::test_complete_33_table_restore_and_continuous_epochs_keep_original_graphs
+1 failed, 4 passed, 1 warning in 18.79s

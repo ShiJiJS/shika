@@ -94,3 +94,8 @@
 ## 2026-10-25：管理恢复后的App代次与历史分册补证
 
 [PR #51](https://github.com/ShiJiJS/video_viewer/pull/51) / [契约](LF7-CLIENT-AUTHORITY-DESIGN.md) / [证据](evidence/lf7-client-authority/README.md)补充BAK-03和SET-05：398项客户端及固定源码三轮实际v1恢复，包含运行中免口令重连和两次真实安全存储强停/新PID重开；六类旧本机记录只读保留、五种原回执GET404不清除、不重发POST、27未提交选择不能继续删除，新代次导出可用。12窗口检查点/27源文件SHA及请求独立核对通过，已修复原生发现的连接表单未退出。图包本机意图为未受理合成ID，完整v2协调/正式历史路由、真实选择器与有界传输、其它强停/最终原型及目标设备仍未完成，不据此勾选整个验收项。
+
+
+## 2026-10-25：完整管理恢复服务端补证（验收项保持开放）
+
+[PR #52](https://github.com/ShiJiJS/video_viewer/pull/52) / [恢复契约](LF7-RESTORE-V2-DESIGN.md) / [固定源码与证据](evidence/lf7-backup-restore/README.md)补充BAK-02/03和SET-05的服务端部分：33表完整替换、实际/null映射、前快照、正式历史及权威代次共同提交，连续恢复后原图与本机备份控制回执保留，旧任务不重放。三处真实进程SIGKILL、约39MiB网络文件和18,000行核对另有记录；Python分配量不作为Android/RSS结论。当前仍未开放backup_v2能力，系统选择器/有界文件、App统计/映射/历史页面与原生全流程继续，详见[下一步](LF7-APP-ARCHIVE-PLAN.md)，不能据服务端测试勾选完整BAK/UI验收。

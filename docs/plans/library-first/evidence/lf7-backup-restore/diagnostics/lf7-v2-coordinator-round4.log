@@ -1,0 +1,206 @@
+......F.......                                                           [100%]
+=================================== FAILURES ===================================
+_ test_upload_bad_digest_over_limit_cancel_and_disk_fault_leave_no_incoming_files _
+
+    def cancel():
+        yield b'{"incomplete":'
+>       raise OSError('isolated upload cancelled')
+E       OSError: isolated upload cancelled
+
+tests/test_management_archives.py:346: OSError
+
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 125, in receive_or_disconnect
+    message = await wrap(wrapped_receive)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 120, in wrap
+    result = await func()
+             ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 84, in wrapped_receive
+    chunk = await stream.__anext__()
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/requests.py", line 243, in stream
+    message = await self._receive()
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/starlette/testclient.py", line 296, in receive
+    body = request.read()
+  File "/usr/local/lib/python3.13/site-packages/httpx/_models.py", line 474, in read
+    self._content = b"".join(self.stream)
+                    ~~~~~~~~^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/httpx/_content.py", line 63, in __iter__
+    for part in self._stream:
+                ^^^^^^^^^^^^
+  File "/source/tests/test_management_archives.py", line 346, in cancel
+    raise OSError('isolated upload cancelled')
+OSError: isolated upload cancelled
+
+The above exception was the direct cause of the following exception:
+
+  + Exception Group Traceback (most recent call last):
+  |   File "/source/tests/test_management_archives.py", line 349, in test_upload_bad_digest_over_limit_cancel_and_disk_fault_leave_no_incoming_files
+  |     client.post(PREFIX + '/imports', content=cancel(), headers={'Idempotency-Key': 'cancel-upload'})
+  |     ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.13/site-packages/httpx/_client.py", line 1144, in post
+  |     return self.request(
+  |            ~~~~~~~~~~~~^
+  |         "POST",
+  |         ^^^^^^^
+  |     ...<11 lines>...
+  |         extensions=extensions,
+  |         ^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/testclient.py", line 457, in request
+  |     return super().request(
+  |            ~~~~~~~~~~~~~~~^
+  |         method,
+  |         ^^^^^^^
+  |     ...<11 lines>...
+  |         extensions=extensions,
+  |         ^^^^^^^^^^^^^^^^^^^^^^
+  |     )
+  |     ^
+  |   File "/usr/local/lib/python3.13/site-packages/httpx/_client.py", line 825, in request
+  |     return self.send(request, auth=auth, follow_redirects=follow_redirects)
+  |            ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.13/site-packages/httpx/_client.py", line 914, in send
+  |     response = self._send_handling_auth(
+  |         request,
+  |     ...<2 lines>...
+  |         history=[],
+  |     )
+  |   File "/usr/local/lib/python3.13/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+  |     response = self._send_handling_redirects(
+  |         request,
+  |         follow_redirects=follow_redirects,
+  |         history=history,
+  |     )
+  |   File "/usr/local/lib/python3.13/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+  |     response = self._send_single_request(request)
+  |   File "/usr/local/lib/python3.13/site-packages/httpx/_client.py", line 1014, in _send_single_request
+  |     response = transport.handle_request(request)
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/testclient.py", line 354, in handle_request
+  |     raise exc
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/testclient.py", line 351, in handle_request
+  |     portal.call(self.app, scope, receive, send)
+  |     ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/from_thread.py", line 340, in call
+  |     return cast(T_Retval, self.start_task_soon(func, *args).result())
+  |                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/concurrent/futures/_base.py", line 460, in result
+  |     return self.__get_result()
+  |            ~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/concurrent/futures/_base.py", line 402, in __get_result
+  |     raise self._exception
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/from_thread.py", line 265, in _call_func
+  |     retval = await retval_or_awaitable
+  |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/applications.py", line 1216, in __call__
+  |     await super().__call__(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/applications.py", line 96, in __call__
+  |     await self.middleware_stack(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 186, in __call__
+  |     raise exc
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+  |     await self.app(scope, receive, _send)
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/telemetry/_asgi.py", line 151, in __call__
+  |     await self.app(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 203, in __call__
+  |     response = await self.dispatch_func(request, call_next)
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/source/video_viewer/app.py", line 282, in authority_header
+  |     response = await call_next(request)
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 179, in call_next
+  |     raise app_exc from app_exc.__cause__ or app_exc.__context__
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 149, in coro
+  |     await self.app(scope, receive_or_disconnect, send_no_error)
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+  |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+  |     raise exc
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+  |     await app(scope, receive, sender)
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+  |     await self.app(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 676, in __call__
+  |     await self.middleware_stack(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 2809, in app
+  |     await route.handle(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 1837, in handle
+  |     await self.original_router.handle(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 2892, in handle
+  |     await included_router._handle_selected(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 1863, in _handle_selected
+  |     await original_route.handle(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 1326, in handle
+  |     await effective_context.app(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 166, in app
+  |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+  |     raise exc
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+  |     await app(scope, receive, sender)
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 152, in app
+  |     response = await f(request)
+  |                ^^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 745, in app
+  |     raw_response = await run_endpoint_function(
+  |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |     ...<3 lines>...
+  |     )
+  |     ^
+  |   File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 372, in run_endpoint_function
+  |     return await dependant.call(**values)
+  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/source/video_viewer/management_backup_api.py", line 56, in inspect
+  |     async for chunk in request.stream():
+  |     ...<3 lines>...
+  |         await run_in_threadpool(_write, descriptor, chunk)
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/requests.py", line 243, in stream
+  |     message = await self._receive()
+  |               ^^^^^^^^^^^^^^^^^^^^^
+  |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 117, in receive_or_disconnect
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 847, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 125, in receive_or_disconnect
+    |     message = await wrap(wrapped_receive)
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 120, in wrap
+    |     result = await func()
+    |              ^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 84, in wrapped_receive
+    |     chunk = await stream.__anext__()
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/requests.py", line 243, in stream
+    |     message = await self._receive()
+    |               ^^^^^^^^^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/starlette/testclient.py", line 296, in receive
+    |     body = request.read()
+    |   File "/usr/local/lib/python3.13/site-packages/httpx/_models.py", line 474, in read
+    |     self._content = b"".join(self.stream)
+    |                     ~~~~~~~~^^^^^^^^^^^^^
+    |   File "/usr/local/lib/python3.13/site-packages/httpx/_content.py", line 63, in __iter__
+    |     for part in self._stream:
+    |                 ^^^^^^^^^^^^
+    |   File "/source/tests/test_management_archives.py", line 346, in cancel
+    |     raise OSError('isolated upload cancelled')
+    | OSError: isolated upload cancelled
+    +------------------------------------
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_management_archives.py::test_upload_bad_digest_over_limit_cancel_and_disk_fault_leave_no_incoming_files
+1 failed, 13 passed, 1 warning in 46.22s

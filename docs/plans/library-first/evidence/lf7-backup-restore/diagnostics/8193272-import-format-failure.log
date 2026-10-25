@@ -1,0 +1,24 @@
+I001 [*] Import block is un-sorted or un-formatted
+   --> tests/test_management_archives.py:534:5
+    |
+533 |   def test_bare_sqlite_writer_enables_persistent_reservation_after_migration(tmp_path):
+534 | /     import uuid
+535 | |     import pytest
+536 | |     from sqlalchemy import text
+537 | |     from video_viewer.errors import LibraryError
+    | |________________________________________________^
+538 |
+539 |       database = Database(tmp_path / "initialization")
+    |
+help: Organize imports
+    |
+534 |     import uuid
+535 +
+536 |     import pytest
+537 |     from sqlalchemy import text
+538 +
+539 |     from video_viewer.errors import LibraryError
+    |
+
+Found 1 error.
+[*] 1 fixable with `--fix`.
