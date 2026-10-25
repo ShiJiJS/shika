@@ -190,12 +190,8 @@ void main() {
         isNot(contains('恢复前图包标签$stamp')),
       );
       await show();
-      await until(
-        () => find
-            .byKey(const Key('archive-restore-point'))
-            .evaluate()
-            .isNotEmpty,
-      );
+      expect(await repo.latestArchiveRestorePoint(), isNotNull);
+      await t.pumpAndSettle();
       await visible(find.byKey(const Key('archive-restore-point')));
       await shot('backup-restore-point');
       await t.tap(find.byKey(const Key('archive-restore-point')));
