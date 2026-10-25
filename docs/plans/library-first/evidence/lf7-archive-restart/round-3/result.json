@@ -1,0 +1,95 @@
+{
+  "source": "2839c5d788f96d8b2797699a8609df0a55863ad7",
+  "source_files": {
+    "scripts/run-archive-restart-test.py": "3fb281dc0660d8d0012a881c5d5118c7b360987adf426b89653547ce3e5b7ad2",
+    "apps/mobile/integration_test/server_archive_restart_test.dart": "0450a72b851c72c0f38345b0a2c00c0990e4c1c3cedb93775f956b5a4f2f8af0",
+    "services/server/tests/archive_app_fixture.py": "1e1f36556a6fbf7395fb99d9f1b8b4ffade2f5f6989eed2362292795df20e62a"
+  },
+  "phase": "restore_committed",
+  "viewport": [
+    390,
+    844
+  ],
+  "scale": 1,
+  "elapsed_seconds": 81.29,
+  "verified": {
+    "request_id": "1792940549113420-3357286466",
+    "restore_id": "ae9b9473-3c1e-4f9d-8373-e6c4cfba8ce8",
+    "original_epoch": "13f1452a730315971e3651f5cd95b381",
+    "current_epoch": "2d1ceec6c086ad17a39ae032d34a82e5",
+    "retained_intents": 6,
+    "graphs": [
+      {
+        "request_id": "restart-trash-1792940544448238",
+        "id": "18828fcb-0737-48e3-a567-d871830b8a96",
+        "graph_id": "5554f574-71f6-4e33-ac4a-1fe24728b93f"
+      },
+      {
+        "request_id": "restart-pack-restore-1792940544448238",
+        "id": "52eebf6b-72d7-4311-a1e9-35fafc83a06d",
+        "graph_id": "5554f574-71f6-4e33-ac4a-1fe24728b93f"
+      }
+    ],
+    "file_bytes": 3504617,
+    "file_sha256": "cc87d4dd68b4d3e8d60537f5b920cab1dbf00a46301bbadc9c1e43d0952742f2"
+  },
+  "events": [
+    {
+      "event": "screenshot",
+      "name": "restart-confirmed",
+      "pid": "19991"
+    },
+    {
+      "event": "screenshot",
+      "name": "restart-unknown-before-stop",
+      "pid": "19991"
+    },
+    {
+      "event": "force-stop",
+      "old_pid": "19991",
+      "absent": true,
+      "request_id": "1792940549113420-3357286466"
+    },
+    {
+      "event": "restore-completed",
+      "absent": true,
+      "task_id": "ae9b9473-3c1e-4f9d-8373-e6c4cfba8ce8"
+    },
+    {
+      "event": "runner",
+      "phase": 0,
+      "exit_code": 79,
+      "intentional_stop": true
+    },
+    {
+      "event": "new-process",
+      "old_pid": "19991",
+      "new_pid": "20136"
+    },
+    {
+      "event": "screenshot",
+      "name": "restart-historical-intents",
+      "pid": "20136"
+    },
+    {
+      "event": "screenshot",
+      "name": "restart-original-restore",
+      "pid": "20136"
+    },
+    {
+      "event": "cancel-real-snapshot-save",
+      "pid": "20136"
+    },
+    {
+      "event": "screenshot",
+      "name": "restart-readonly-selection",
+      "pid": "20136"
+    },
+    {
+      "event": "runner",
+      "phase": 1,
+      "exit_code": 0,
+      "intentional_stop": false
+    }
+  ]
+}

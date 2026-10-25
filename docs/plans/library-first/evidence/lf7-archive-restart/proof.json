@@ -1,0 +1,29 @@
+{
+  "verified": true,
+  "source": "2839c5d788f96d8b2797699a8609df0a55863ad7",
+  "native_rounds": 3,
+  "targeted_server_tests": 24,
+  "rounds": [
+    {
+      "phase": "snapshot_written",
+      "elapsed_seconds": 115.47,
+      "old_pid": "18988",
+      "new_pid": "19215",
+      "restore_id": "99d4e63d-94b4-461e-a84a-3a9af1f2f2e5"
+    },
+    {
+      "phase": "after_replace_before_commit",
+      "elapsed_seconds": 79.17,
+      "old_pid": "19532",
+      "new_pid": "19689",
+      "restore_id": "6ae94c40-21e8-4c71-83f3-9df04d276f2c"
+    },
+    {
+      "phase": "restore_committed",
+      "elapsed_seconds": 81.29,
+      "old_pid": "19991",
+      "new_pid": "20136",
+      "restore_id": "ae9b9473-3c1e-4f9d-8373-e6c4cfba8ce8"
+    }
+  ]
+}

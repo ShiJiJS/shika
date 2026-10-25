@@ -1,0 +1,44 @@
+{
+  "container": "/video-viewer-archive-app-lf7",
+  "started_at": "2026-10-25T14:36:45.475349557Z",
+  "image": "video-viewer-server:e2e",
+  "command": [
+    "tests.archive_app_fixture:create_archive_app",
+    "--factory",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8760",
+    "--no-access-log"
+  ],
+  "ports": {
+    "8760/tcp": [
+      {
+        "HostIp": "127.0.0.1",
+        "HostPort": "8762"
+      }
+    ]
+  },
+  "mounts": [
+    {
+      "source": "/Users/jiangxinyi/Documents/Project/video-viewer/services/server",
+      "destination": "/source",
+      "rw": false
+    },
+    {
+      "source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/archive-app/data",
+      "destination": "/data",
+      "rw": true
+    },
+    {
+      "source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/archive-app/media",
+      "destination": "/media",
+      "rw": true
+    },
+    {
+      "source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/archive-app/config",
+      "destination": "/fixture",
+      "rw": false
+    }
+  ]
+}

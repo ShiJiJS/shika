@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-archive-restart-test.py", line 149, in <module>
+    if phase==0: assert forced and old_pid,'No verified force-stop reached'
+AssertionError: No verified force-stop reached

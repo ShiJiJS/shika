@@ -1,0 +1,62 @@
+{
+  "events": [
+    {
+      "event": "screenshot",
+      "name": "restart-confirmed",
+      "pid": "17794"
+    },
+    {
+      "event": "screenshot",
+      "name": "restart-unknown-before-stop",
+      "pid": "17794"
+    },
+    {
+      "event": "force-stop",
+      "old_pid": "17794",
+      "absent": true,
+      "request_id": "1792939896499267-686877416"
+    },
+    {
+      "event": "restore-completed",
+      "absent": true,
+      "task_id": "0183cd2d-237d-463a-8ec0-e42959778d33"
+    },
+    {
+      "event": "runner",
+      "phase": 0,
+      "exit_code": 79,
+      "intentional_stop": true
+    },
+    {
+      "event": "new-process",
+      "old_pid": "17794",
+      "new_pid": "18117"
+    },
+    {
+      "event": "screenshot",
+      "name": "restart-historical-intents",
+      "pid": "18117"
+    },
+    {
+      "event": "screenshot",
+      "name": "restart-original-restore",
+      "pid": "18117"
+    },
+    {
+      "event": "cancel-real-snapshot-save",
+      "pid": "18117"
+    },
+    {
+      "event": "runner",
+      "phase": 1,
+      "exit_code": 1,
+      "intentional_stop": false
+    }
+  ],
+  "errors": [],
+  "restored_viewport": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420"
+  },
+  "font_scale": "1.0"
+}

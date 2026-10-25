@@ -1,0 +1,7 @@
+ARCHIVE_RESTART_STOP_READY:{"phase":"snapshot_written","request_id":"1792939896499267-686877416","scope":"[\"http://10.0.2.2:8762\",\"e2653d58388cc4bc5f8cbbf0fca35d53\",\"900ae1ca3b167b63fe5c0bcfc598c331\"]"}
+ARCHIVE_RESTART_NEW_PROCESS
+ARCHIVE_RESTART_CANCEL_SAF
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-archive-restart-test.py", line 150, in <module>
+    else: assert code==0 and reopened and verified,'new process did not complete acceptance'
+AssertionError: new process did not complete acceptance
