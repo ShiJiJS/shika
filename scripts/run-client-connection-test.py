@@ -282,6 +282,21 @@ def watch():
                     timeout=15,
                 )
                 (EVIDENCE / f"{PREFIX}-{phase}.png").write_bytes(result.stdout)
+                if PREFIX == "lf7-roots-missing":
+                    windows = subprocess.check_output(
+                        [ADB, "-s", "emulator-5554", "shell", "dumpsys", "window"],
+                        text=True, timeout=10,
+                    )
+                    focus = "\n".join(
+                        line.strip() for line in windows.splitlines()
+                        if "mCurrentFocus=" in line or "mFocusedApp=" in line
+                    )
+                    (EVIDENCE / f"{PREFIX}-{phase}-window.txt").write_text(focus + "\n")
+                    if not any(
+                        "mCurrentFocus=" in line and "io.github.shijijs.video_viewer" in line
+                        for line in focus.splitlines()
+                    ):
+                        raise ValueError(f"Screenshot {phase} is obscured by another Android window: {focus}")
             if phase == "outage":
                 docker("stop", "--time", "0", CONTAINER)
                 events.append({"phase": "docker-stopped", "time": time.time()})
