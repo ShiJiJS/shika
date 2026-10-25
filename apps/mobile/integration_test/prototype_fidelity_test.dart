@@ -104,6 +104,11 @@ void main() {
     }
 
     Future<void> capture(String name) async {
+      await t.pumpAndSettle(
+        const Duration(milliseconds: 100),
+        EnginePhase.sendSemanticsUpdate,
+        const Duration(seconds: 10),
+      );
       final shell = t.element(find.byKey(const Key('app-shell')));
       final media = MediaQuery.of(shell);
       List<double> rectangle(Rect r) => [r.left, r.top, r.width, r.height];
@@ -167,7 +172,8 @@ void main() {
       () => find.text('4 个图包').evaluate().isNotEmpty,
       'four real scanned packs',
     );
-    await images(4);
+    final viewport = t.view.physicalSize / t.view.devicePixelRatio;
+    await images(viewport.width > viewport.height ? 2 : 4);
     await capture('packs');
     await tap(find.byKey(const Key('nav-tags')));
     await selectOutdoor();

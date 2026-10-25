@@ -20,6 +20,7 @@ import '../features/settings/media_root_sheet.dart';
 import '../features/settings/missing_media_page.dart';
 import '../library/repository.dart';
 import 'paper.dart';
+import 'preference_switch.dart';
 import 'player.dart';
 import 'sheets.dart';
 import 'preferences.dart';
@@ -2261,34 +2262,21 @@ class _LibraryHomeState extends State<LibraryHome> {
         allowDuringRestore: true,
       ),
       settingsHeading('偏好'),
-      SwitchListTile(
+      PaperPreferenceSwitch(
         key: const Key('dark-mode-setting'),
-        contentPadding: EdgeInsets.zero,
-        secondary: const Icon(Icons.dark_mode_outlined),
-        minTileHeight: 64,
-        title: const Text(
-          '暗黑模式',
-          style: TextStyle(fontSize: 15, height: 23 / 15),
-        ),
+        icon: Icons.dark_mode_outlined,
+        title: '暗黑模式',
         value: widget.preferences.dark,
         onChanged: busy
             ? null
             : (value) => perform(() => widget.preferences.setDark(value)),
       ),
       const Divider(height: 1),
-      SwitchListTile(
+      PaperPreferenceSwitch(
         key: const Key('preload-setting'),
-        contentPadding: EdgeInsets.zero,
-        secondary: const Icon(Icons.slow_motion_video),
-        minTileHeight: 70.4,
-        title: const Text(
-          '准备相邻视频',
-          style: TextStyle(fontSize: 15, height: 23 / 15),
-        ),
-        subtitle: const Text(
-          '最多前后各一条，关闭可减少网络和解码占用',
-          style: TextStyle(fontSize: 12, height: 1.7),
-        ),
+        icon: Icons.slow_motion_video,
+        title: '准备相邻视频',
+        subtitle: '前后各一条；关闭可减少网络与解码占用',
         value: widget.preferences.preloadAdjacent,
         onChanged: busy
             ? null
