@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:video_viewer/features/library/tag_catalog_page.dart';
 import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
@@ -79,6 +80,28 @@ void main() {
       );
     }
 
+    Future<void> selectOutdoor() async {
+      final page = find.byType(TagCatalogPage);
+      await until(
+        () =>
+            page.evaluate().length == 1 &&
+            !t.state<TagCatalogPageState>(page).loading &&
+            t.state<TagCatalogPageState>(page).tags.isNotEmpty,
+        'loaded tag catalog',
+      );
+      final target = find.text('户外');
+      if (target.hitTestable().evaluate().isEmpty) {
+        await t.scrollUntilVisible(
+          target,
+          160,
+          scrollable: find
+              .descendant(of: page, matching: find.byType(Scrollable))
+              .first,
+        );
+      }
+      await tap(target);
+    }
+
     Future<void> capture(String name) async {
       final shell = t.element(find.byKey(const Key('app-shell')));
       final media = MediaQuery.of(shell);
@@ -146,14 +169,14 @@ void main() {
     await images(4);
     await capture('packs');
     await tap(find.byKey(const Key('nav-tags')));
-    await tap(find.text('户外'));
+    await selectOutdoor();
     await until(
       () => find.text('匹配 2 个视频').evaluate().isNotEmpty,
       'video tag intersection',
     );
     await capture('video-tags');
     await tap(find.byKey(const Key('kind-pack')));
-    await tap(find.text('户外'));
+    await selectOutdoor();
     await until(
       () => find.text('匹配 2 个图包').evaluate().isNotEmpty,
       'pack tag intersection',

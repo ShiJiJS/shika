@@ -24,12 +24,14 @@ script = """
 const fs=await import('node:fs/promises');
 const task=await taskSpace(SPACE), page=task.page(PAGE);
 const out=OUTPUT, packs=PACKS;
-const scenes=['home','packs','video-tags','pack-tags','settings','dark'];
+const scenes=['home','packs','video-tags','pack-tags','settings','settings-bottom','dark','dark-bottom'];
 const all=[];
 for(const state of scenes){
  await page.cdp('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});
- await page.goto('http://127.0.0.1:8767/library-first/app.html?snapshot=1'+(state==='home'?'':'&state='+state));
+ await page.goto('http://127.0.0.1:8767/library-first/app.html?snapshot=1'+(state==='home'?'':'&state='+state.replace('-bottom','')));
  await page.waitForFunction(()=>document.querySelector('.app') && document.fonts.status==='loaded' && [...document.images].every(i=>i.complete&&i.naturalWidth>0));
+ if(state.endsWith('-bottom'))await page.evaluate(()=>{const e=document.querySelector('.settings-page');e.scrollTop=e.scrollHeight;});
+ await page.evaluate(async()=>{await Promise.all(document.getAnimations().filter(a=>Number.isFinite(a.effect?.getTiming().iterations)).map(a=>a.finished.catch(()=>{})));});
  const metrics=await page.evaluate(()=>({size:[innerWidth,innerHeight],dpr:devicePixelRatio,fontStatus:document.fonts.status,
   regions:[...document.querySelectorAll('.app,header,nav,section,h1,h2,h3,.kindbar,.search-row,.librarybar,.tile-cover,.home-indicator')].flatMap(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width&&r.height?[{tag:e.tagName,class:e.className,text:(e.textContent||'').trim().slice(0,70),rect:[r.x,r.y,r.width,r.height],fontSize:s.fontSize,fontFamily:s.fontFamily}]:[]})}));
  if(metrics.size[0]!==390||metrics.size[1]!==844||metrics.dpr!==1) throw Error('Wrong actual viewport');
