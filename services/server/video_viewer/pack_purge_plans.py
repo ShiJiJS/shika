@@ -11,6 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 from sqlalchemy import select, update
 
 from .errors import LibraryError
+from .management_history import reject_historical
 from .models import (
     ImagePack,
     PackPage,
@@ -108,6 +109,8 @@ class PackPurgePlans:
                 PackPurgePlan.request_key == "pack_purge_preview:" + request_id
             )
         )
+        if plan and plan.historical:
+            reject_historical(session, "pack_purge_plans", "pack_purge_preview:" + request_id)
         if plan and plan.request_hash != digest:
             raise LibraryError("idempotency_conflict", "请求标识已用于不同的图片清单")
         return plan.id if plan else None
@@ -127,6 +130,7 @@ class PackPurgePlans:
             prior = self.prior(session, request_id, digest)
             if prior:
                 return prior
+            reject_historical(session, "pack_purge_plans", "pack_purge_preview:" + request_id)
             task = Task(kind="pack_purge_preview", status="queued", phase="queued", result={})
             session.add(task)
             session.flush()

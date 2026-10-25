@@ -9,6 +9,7 @@ from sqlalchemy import func, select
 
 from .catalog_selection import membership
 from .errors import LibraryError
+from .management_history import reject_historical
 from .models import (
     ImagePack,
     PackPage,
@@ -178,9 +179,11 @@ class Reading:
         with self.db.write() as session:
             prior = session.scalar(select(PackSession).where(PackSession.request_id == request_id))
             if prior:
+                reject_historical(session, "pack_sessions", request_id)
                 if prior.request_hash != fingerprint:
                     raise LibraryError("idempotency_conflict", "请求标识已用于不同的阅读范围")
                 return self.summary(session, prior)
+            reject_historical(session, "pack_sessions", request_id)
             ids = membership(
                 session,
                 self.packs.statement(session, source=source, sort=sort, **scope),

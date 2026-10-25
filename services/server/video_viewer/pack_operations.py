@@ -10,6 +10,7 @@ from sqlalchemy import func, or_, select
 
 from .catalog_selection import membership
 from .errors import LibraryError
+from .management_history import reject_historical
 from .models import (
     ImagePack,
     PackFileOperation,
@@ -128,6 +129,8 @@ class PackOperations:
                 select(PackFileOperation).where(PackFileOperation.request_key == key)
             )
             if prior:
+                if prior.historical:
+                    reject_historical(session, "pack_file_operations", key)
                 if prior.request_hash != digest:
                     raise LibraryError("idempotency_conflict", "请求标识已用于不同的图包操作")
                 return prior.id
@@ -138,9 +141,12 @@ class PackOperations:
                 select(PackFileOperation).where(PackFileOperation.request_key == key)
             )
             if prior:
+                if prior.historical:
+                    reject_historical(session, "pack_file_operations", key)
                 if prior.request_hash != digest:
                     raise LibraryError("idempotency_conflict", "请求标识已用于不同的图包操作")
                 return prior.id
+            reject_historical(session, "pack_file_operations", key)
             if scene and (kind != "trash" or ids != [scene["pack_id"]]):
                 raise LibraryError("invalid_pack_cleanup", "阅读整理一次只能操作当前整包", 422)
             if kind == "undo":
@@ -326,7 +332,11 @@ class PackOperations:
                             step.outcome, step.error = "failed", "stale_pack_state"
                             continue
                         pack.status, pack.error = item.manifest["status"], item.manifest["error"]
-                        if item.purged_pages and pack.page_count == 0 and pack.status == "available":
+                        if (
+                            item.purged_pages
+                            and pack.page_count == 0
+                            and pack.status == "available"
+                        ):
                             pack.error = "no_readable_images"
                         item.status = "restored"
                     pack.generation += 1
@@ -476,6 +486,21 @@ class PackOperations:
                 if request_id
                 else session.get(PackFileOperation, identity)
             )
+            if not operation or operation.historical:
+                from .management_history import historical_operation
+
+                receipt = historical_operation(
+                    session,
+                    "pack_file_operations",
+                    identity=identity,
+                    request_key="pack_files:" + request_id if request_id else None,
+                )
+                if receipt is not None:
+                    return {
+                        **receipt["task"],
+                        "graph_id": receipt["graph_id"],
+                        "server_time": self.clock(),
+                    }
             if not operation:
                 raise LibraryError("pack_operation_not_found", "未找到已受理的图包操作", 404)
             task = session.get(Task, operation.id)
@@ -502,8 +527,12 @@ class PackOperations:
             if not operation or operation.historical:
                 raise LibraryError("pack_operation_not_found", "图包操作不存在", 404)
 
-            if session.scalar(select(PackRestoreBatch.plan_id).where(PackRestoreBatch.operation_id == identity)):
-                raise LibraryError("plan_owned_operation", "请在整份恢复计划查看结果，不能单独重放子批次")
+            if session.scalar(
+                select(PackRestoreBatch.plan_id).where(PackRestoreBatch.operation_id == identity)
+            ):
+                raise LibraryError(
+                    "plan_owned_operation", "请在整份恢复计划查看结果，不能单独重放子批次"
+                )
 
             def action():
                 task = session.get(Task, identity)
@@ -515,8 +544,9 @@ class PackOperations:
                         )
                     ):
                         if session.scalar(
-                            reserved_packs(pack_id=step.pack_id, exclude_operation=identity)
-                            .limit(1)
+                            reserved_packs(pack_id=step.pack_id, exclude_operation=identity).limit(
+                                1
+                            )
                         ):
                             raise LibraryError("operation_busy", "该图包已有进行中的操作")
                         step.outcome, step.error = "pending", None
@@ -532,9 +562,18 @@ class PackOperations:
     def retry_receipt(self, request_id):
         with self.db.read() as session:
             record = session.get(RequestRecord, "pack_files.retry:" + request_id)
-            if not record:
-                raise LibraryError("pack_operation_not_found", "未找到已受理的图包重试", 404)
-            identity = record.result["operation_id"]
+            if record:
+                identity = record.result["operation_id"]
+            else:
+                from .management_history import historical_receipt
+
+                receipt = historical_receipt(
+                    session, "request_records", "pack_files.retry:" + request_id
+                )
+                if receipt is not None:
+                    identity = receipt["record"]["result"]["operation_id"]
+                else:
+                    raise LibraryError("pack_operation_not_found", "未找到已受理的图包重试", 404)
         return self.task(identity)
 
     @staticmethod
@@ -558,7 +597,9 @@ class PackOperations:
                         "operation_id": item.operation_id,
                         "original_path": item.original_path,
                         "deleted_at": item.deleted_at,
-                        "page_count": session.get(ImagePack, item.pack_id).page_count if item.purged_pages else item.manifest["page_count"],
+                        "page_count": session.get(ImagePack, item.pack_id).page_count
+                        if item.purged_pages
+                        else item.manifest["page_count"],
                         "purged_pages": item.purged_pages,
                         "permanent_operation_id": session.scalar(
                             select(PackFileOperation.id)

@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 
 from .authority import Authority
 from .errors import LibraryError
+from .models import Setting
 
 
 class Database:
@@ -29,6 +30,7 @@ class Database:
         self.authority = Authority()
         self.maintenance_task = None
         self.maintenance_owner = None
+        self._management_schema = False
 
         @event.listens_for(self.engine, "connect")
         def configure(connection, _record):
@@ -141,15 +143,40 @@ class Database:
             yield session
 
     @contextmanager
-    def write(self):
+    def write(self, *, session_control=False):
         with self.write_lock, Session(self.engine, expire_on_commit=False) as session:
-            if self.maintenance_task and self.maintenance_owner != get_ident():
+            if (
+                not session_control
+                and self.maintenance_task
+                and self.maintenance_owner != get_ident()
+            ):
                 raise LibraryError("restore_in_progress", "管理数据正在恢复，请稍后重试", 503)
             with session.begin():
                 # A SELECT does not begin a transaction in SQLite's legacy
                 # driver. Reserve its writer before checking the request lease.
                 session.connection().exec_driver_sql("BEGIN IMMEDIATE")
                 self.authority.check(session)
+                # Bare SQLite users and migration probes may write before the
+                # management schema exists. Cache only presence: a later
+                # migration must still activate the persistent reservation.
+                if not self._management_schema:
+                    self._management_schema = bool(
+                        session.connection()
+                        .exec_driver_sql(
+                            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='settings'"
+                        )
+                        .first()
+                    )
+                pending = (
+                    session.get(Setting, "maintenance_restore") if self._management_schema else None
+                )
+                if (
+                    not session_control
+                    and pending
+                    and pending.value
+                    and self.maintenance_owner != get_ident()
+                ):
+                    raise LibraryError("restore_in_progress", "管理数据正在恢复，请稍后重试", 503)
                 yield session
 
     def check_authority(self):

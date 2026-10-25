@@ -70,7 +70,14 @@ class MaintenanceTasks:
         file_task = or_(
             FileOperation.id.is_not(None),
             Task.kind.in_(
-                ("pack_trash", "pack_restore", "pack_undo", "pack_permanent", "pack_restore_plan", "pack_forget_missing")
+                (
+                    "pack_trash",
+                    "pack_restore",
+                    "pack_undo",
+                    "pack_permanent",
+                    "pack_restore_plan",
+                    "pack_forget_missing",
+                )
             ),
         )
         valid_result = func.coalesce(
@@ -84,10 +91,20 @@ class MaintenanceTasks:
             False,
         )
         valid_result = case(
-            (Task.kind == "pack_forget_missing", func.coalesce(and_(
-                total >= 0, processed == total, succeeded >= 0, counter("skipped") >= 0,
-                failed == 0, succeeded + counter("skipped") == total,
-            ), False)),
+            (
+                Task.kind == "pack_forget_missing",
+                func.coalesce(
+                    and_(
+                        total >= 0,
+                        processed == total,
+                        succeeded >= 0,
+                        counter("skipped") >= 0,
+                        failed == 0,
+                        succeeded + counter("skipped") == total,
+                    ),
+                    False,
+                ),
+            ),
             (
                 Task.kind == "pack_restore_plan",
                 func.coalesce(
@@ -200,6 +217,16 @@ class MaintenanceTasks:
     def task(self, identity):
         with self.db.read() as session:
             row = session.execute(self.summaries().where(Task.id == identity)).mappings().first()
+            if not row or row["error"] == "restored_history":
+                from .management_history import current_history
+
+                history = current_history(session)
+                if history is not None:
+                    try:
+                        return history.task(identity)
+                    except LibraryError as error:
+                        if error.code != "history_not_found":
+                            raise
             if not row:
                 raise LibraryError(
                     "task_not_found", "原任务不存在，请核对当前内容；未重新提交", 404
@@ -208,13 +235,30 @@ class MaintenanceTasks:
 
     def items(self, identity, offset, limit, unfinished):
         summary = self.task(identity)
+        if summary.get("graph_id"):
+            from .management_history import current_history
+
+            with self.db.read() as session:
+                return current_history(session).members(
+                    identity,
+                    offset=offset,
+                    limit=limit,
+                    unfinished=unfinished,
+                    graph_id=summary["graph_id"],
+                )
         if summary["kind"] == "pack_forget_missing":
             step = PackMissingMember
             statement = select(
-                step.pack_id.label("id"), step.pack_id.label("requested_id"),
-                step.pack_id.label("media_id"), step.name, step.path,
-                case((step.outcome == "pending", "checking_missing"), else_="completed").label("phase"),
-                step.outcome, step.error,
+                step.pack_id.label("id"),
+                step.pack_id.label("requested_id"),
+                step.pack_id.label("media_id"),
+                step.name,
+                step.path,
+                case((step.outcome == "pending", "checking_missing"), else_="completed").label(
+                    "phase"
+                ),
+                step.outcome,
+                step.error,
             )
         elif summary["kind"] == "pack_restore_plan":
             step = PackRestoreMember
@@ -257,8 +301,14 @@ class MaintenanceTasks:
             statement = select(literal(1)).where(literal(False))
         if step is not None:
             statement = statement.where(
-                (step.plan_id if step is PackRestoreMember else
-                 step.cleanup_id if step is PackMissingMember else step.operation_id) == identity
+                (
+                    step.plan_id
+                    if step is PackRestoreMember
+                    else step.cleanup_id
+                    if step is PackMissingMember
+                    else step.operation_id
+                )
+                == identity
             )
             if unfinished:
                 statement = statement.where(step.outcome != "succeeded")
@@ -268,8 +318,13 @@ class MaintenanceTasks:
                 []
                 if step is None
                 else session.execute(
-                    statement.order_by(step.ordinal if step is PackRestoreMember else
-                                       step.pack_id if step is PackMissingMember else step.id)
+                    statement.order_by(
+                        step.ordinal
+                        if step is PackRestoreMember
+                        else step.pack_id
+                        if step is PackMissingMember
+                        else step.id
+                    )
                     .offset(offset)
                     .limit(limit)
                 ).mappings()

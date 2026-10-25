@@ -9,6 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from sqlalchemy import func, insert, or_, select, update
 
 from .errors import LibraryError
+from .management_history import reject_historical
 from .models import (
     ImagePack,
     PackFileOperation,
@@ -47,6 +48,8 @@ class PackRestorePlans:
                 PackRestorePlan.request_key == "pack_restore_plan:" + request_id
             )
         )
+        if row and row.historical:
+            reject_historical(session, "pack_restore_plans", "pack_restore_plan:" + request_id)
         if row and row.request_hash != digest:
             raise LibraryError("idempotency_conflict", "请求标识已用于不同的整份恢复计划")
         return row.id if row else None
@@ -66,6 +69,7 @@ class PackRestorePlans:
             prior = self.prior(session, request_id, digest)
             if prior:
                 return prior
+            reject_historical(session, "pack_restore_plans", "pack_restore_plan:" + request_id)
             task = Task(kind="pack_restore_plan", status="queued", phase="queued", result={})
             session.add(task)
             session.flush()
@@ -369,6 +373,24 @@ class PackRestorePlans:
                 if request_id
                 else session.get(PackRestorePlan, identity)
             )
+            if not plan or plan.historical:
+                from .management_history import historical_operation
+
+                receipt = historical_operation(
+                    session,
+                    "pack_restore_plans",
+                    identity=identity,
+                    request_key="pack_restore_plan:" + request_id if request_id else None,
+                )
+                if receipt is not None:
+                    original = receipt["record"]
+                    return {
+                        **receipt["task"],
+                        "graph_id": receipt["graph_id"],
+                        "stop_requested": original["stop_requested"],
+                        "batch_size": original["batch_size"],
+                        "request_id": original["request_key"].removeprefix("pack_restore_plan:"),
+                    }
             if not plan:
                 raise LibraryError("restore_plan_not_found", "原恢复计划不存在；未重新提交", 404)
             task = session.get(Task, plan.id)
@@ -396,8 +418,16 @@ class PackRestorePlans:
         with self.db.read() as session:
             record = session.get(RequestRecord, "pack_restore_plan.stop:" + request_id)
             if not record:
+                from .management_history import historical_receipt
+
+                receipt = historical_receipt(
+                    session, "request_records", "pack_restore_plan.stop:" + request_id
+                )
+                identity = receipt["record"]["result"]["plan_id"] if receipt else None
+            else:
+                identity = record.result["plan_id"]
+            if not identity:
                 raise LibraryError("restore_stop_not_found", "原停止请求不存在；未重新提交", 404)
-            identity = record.result["plan_id"]
         return {**self.view(identity), "stop_request_id": request_id}
 
     def request_stop(self, identity, request_id):

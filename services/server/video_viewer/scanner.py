@@ -73,6 +73,12 @@ class Scanner:
     def task(self, task_id):
         with self.db.read() as session:
             task = session.get(Task, task_id)
+            if task is None or task.error == "restored_history":
+                from .management_history import historical_task
+
+                previous = historical_task(session, task_id)
+                if previous is not None:
+                    return previous
             if not task:
                 raise LibraryError("task_not_found", "任务不存在", 404)
             return {
