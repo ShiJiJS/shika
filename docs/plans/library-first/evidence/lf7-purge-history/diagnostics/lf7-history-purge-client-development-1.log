@@ -1,0 +1,62 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_purge_history_test.dart
+test/server_purge_history_test.dart:14:10: Error: The return type of the method 'PurgeHistoryServer.malformed' is 'String', which does not match the return type, 'bool', of the overridden method, 'TaskServerFixture.malformed'.
+Change to a subtype of 'bool'.
+  String malformed = '';
+         ^
+test/server_maintenance_tasks_test.dart:38:7: Context: This is the overridden method ('malformed').
+      malformed = false;
+      ^
+test/server_purge_history_test.dart:14:10: Error: The field 'PurgeHistoryServer.malformed' has type 'String', which does not match the corresponding type, 'bool', in the overridden setter, 'TaskServerFixture.malformed'.
+  String malformed = '';
+         ^
+test/server_maintenance_tasks_test.dart:38:7: Context: This is the overridden method ('malformed').
+      malformed = false;
+      ^
+test/server_purge_history_test.dart:190:18: Error: The method 'purgeHistory' isn't defined for the type 'MaintenanceTaskCatalog'.
+ - 'MaintenanceTaskCatalog' is from 'package:video_viewer/library/maintenance_tasks.dart' ('lib/library/maintenance_tasks.dart').
+Try correcting the name to the name of an existing method, or defining a method named 'purgeHistory'.
+      () => next.purgeHistory(MaintenanceTask(historyTaskJson())),
+                 ^^^^^^^^^^^^
+test/support/purge_history_fixture.dart:165:27: Error: Not a constant expression.
+    if (fail) throw const LibraryFailure('原清单暂时无法读取');
+                          ^^^^^^^^^^^^^^
+test/support/purge_history_fixture.dart:187:27: Error: Not a constant expression.
+    if (fail) throw const LibraryFailure('原图片暂时无法读取');
+                          ^^^^^^^^^^^^^^
+test/support/purge_history_fixture.dart:212:27: Error: Not a constant expression.
+    if (fail) throw const LibraryFailure('原结果暂时无法读取');
+                          ^^^^^^^^^^^^^^
+00:00 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_purge_history_test.dart [E]
+  Failed to load "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_purge_history_test.dart":
+  Compilation failed for testPath=/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_purge_history_test.dart: test/server_purge_history_test.dart:14:10: Error: The return type of the method 'PurgeHistoryServer.malformed' is 'String', which does not match the return type, 'bool', of the overridden method, 'TaskServerFixture.malformed'.
+  Change to a subtype of 'bool'.
+    String malformed = '';
+           ^
+  test/server_maintenance_tasks_test.dart:38:7: Context: This is the overridden method ('malformed').
+        malformed = false;
+        ^
+  test/server_purge_history_test.dart:14:10: Error: The field 'PurgeHistoryServer.malformed' has type 'String', which does not match the corresponding type, 'bool', in the overridden setter, 'TaskServerFixture.malformed'.
+    String malformed = '';
+           ^
+  test/server_maintenance_tasks_test.dart:38:7: Context: This is the overridden method ('malformed').
+        malformed = false;
+        ^
+  test/server_purge_history_test.dart:190:18: Error: The method 'purgeHistory' isn't defined for the type 'MaintenanceTaskCatalog'.
+   - 'MaintenanceTaskCatalog' is from 'package:video_viewer/library/maintenance_tasks.dart' ('lib/library/maintenance_tasks.dart').
+  Try correcting the name to the name of an existing method, or defining a method named 'purgeHistory'.
+        () => next.purgeHistory(MaintenanceTask(historyTaskJson())),
+                   ^^^^^^^^^^^^
+  test/support/purge_history_fixture.dart:165:27: Error: Not a constant expression.
+      if (fail) throw const LibraryFailure('原清单暂时无法读取');
+                            ^^^^^^^^^^^^^^
+  test/support/purge_history_fixture.dart:187:27: Error: Not a constant expression.
+      if (fail) throw const LibraryFailure('原图片暂时无法读取');
+                            ^^^^^^^^^^^^^^
+  test/support/purge_history_fixture.dart:212:27: Error: Not a constant expression.
+      if (fail) throw const LibraryFailure('原结果暂时无法读取');
+                            ^^^^^^^^^^^^^^
+  .
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_purge_history_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_purge_history_test.dart

@@ -22,6 +22,7 @@ part 'server_pack_trash.dart';
 part 'server_pack_purge.dart';
 part 'server_maintenance_tasks.dart';
 part 'server_task_history.dart';
+part 'server_purge_history.dart';
 part 'server_playback_defaults.dart';
 part 'server_pack_missing.dart';
 

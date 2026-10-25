@@ -1,0 +1,47 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_purge_history_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_purge_history_test.dart: original task/graph binds member paging, exact files and typed results without commands or journal changes
+00:00 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:00 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:00 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:00 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:00 +5: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:00 +6: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:00 +7: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:00 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:00 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:00 +10: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:00 +11: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:00 +12: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:03 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical result error, all pages and directory filter stay read-only
+00:04 +14: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: failed next page retains original members and position for explicit retry
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "原图包 00": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart:165:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart line 165
+The test description was:
+  failed next page retains original members and position for explicit retry
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +14 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: failed next page retains original members and position for explicit retry [E]
+  Test failed. See exception logs above.
+  The test description was: failed next page retains original members and position for explicit retry
+  
+00:06 +14 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: a late history page cannot replace an invalidated connection
+00:06 +15 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: preview history uses the same original plan reader and legacy service remains explicit
+00:07 +16 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: failed next page retains original members and position for explicit retry

@@ -1,7 +1,11 @@
 part of 'server_repository.dart';
 
 class _ServerMaintenanceTasks
-    implements MaintenanceTaskCatalog, GraphTaskCatalog, ArchiveTaskFiles {
+    implements
+        MaintenanceTaskCatalog,
+        GraphTaskCatalog,
+        ArchiveTaskFiles,
+        HistoricalPurgeCatalog {
   _ServerMaintenanceTasks(
     this.owner,
     this.target,
@@ -556,6 +560,22 @@ class _ServerMaintenanceTasks
     );
     owner._taskReaders.add(child);
     return child;
+  }
+
+  @override
+  bool get supportsPurgeHistory => owner.capabilities.managementPurgeHistory;
+
+  @override
+  PurgeHistoryDetails purgeHistory(MaintenanceTask task) {
+    check();
+    if (!supportsPurgeHistory ||
+        !task.historical ||
+        task.graphId == null ||
+        graphId != null && graphId != task.graphId ||
+        !['pack_permanent', 'pack_purge_preview'].contains(task.kind)) {
+      throw const LibraryFailure('当前服务或原任务未提供完整历史图片明细，请升级服务后重新打开');
+    }
+    return _ServerPurgeHistory(forTask(task) as _ServerMaintenanceTasks, task);
   }
 
   Future<Json> originalTask(String identity) => get(

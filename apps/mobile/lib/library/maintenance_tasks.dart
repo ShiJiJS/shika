@@ -2,6 +2,7 @@ import 'models.dart';
 import 'pack_models.dart';
 import 'pack_files.dart';
 import 'management_archives.dart';
+import 'pack_purge.dart';
 
 Never _bad() => throw const LibraryFailure('操作任务数据不完整，请重新读取');
 String _text(Object? value, [int max = 128]) =>
@@ -314,6 +315,11 @@ abstract interface class MaintenanceTaskCatalog {
 
 abstract interface class GraphTaskCatalog {
   MaintenanceTaskCatalog forTask(MaintenanceTask task);
+}
+
+abstract interface class HistoricalPurgeCatalog {
+  bool get supportsPurgeHistory;
+  PurgeHistoryDetails purgeHistory(MaintenanceTask task);
 }
 
 abstract interface class ArchiveTaskFiles {

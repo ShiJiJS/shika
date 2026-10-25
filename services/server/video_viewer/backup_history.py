@@ -21,6 +21,7 @@ from sqlalchemy.orm import Session
 
 from .backup_archive import ArchiveGraph, _check, _private_file, _sync_directory, file_hash
 from .backup_format import canonical
+from .backup_history_purge import PurgeHistory
 from .backup_v2_schema import TABLE_MAP
 from .errors import LibraryError
 from .file_transfer import rename_new
@@ -351,6 +352,34 @@ class HistoryArchive:
                 identity, offset, limit, unfinished
             )
         return {**result, "historical": True, "graph_id": row["graph_id"]}
+
+    @contextmanager
+    def _purge_details(self, identity, graph_id):
+        if graph_id is None:
+            raise LibraryError("invalid_history_graph", "历史清单必须明确原代次或历史图", 422)
+        row = self._locate("history_tasks", "item.id=?", (identity,), graph_id)
+        kind = json.loads(row["summary"])["kind"]
+        with _engine(self._path(row)) as engine, engine.connect() as connection:
+            yield PurgeHistory(connection, identity, kind, row["graph_id"])
+
+    def purge_review(self, identity, *, offset=0, limit=24, graph_id=None):
+        _page(offset, limit)
+        with self._purge_details(identity, graph_id) as details:
+            return details.review(offset, limit)
+
+    def purge_files(self, identity, trash_id, *, offset=0, limit=100, graph_id=None):
+        _page(offset, limit)
+        with self._purge_details(identity, graph_id) as details:
+            return details.files(trash_id, offset, limit)
+
+    def purge_pages(
+        self, identity, *, offset=0, limit=24, kind="all", outcome="all", graph_id=None
+    ):
+        _page(offset, limit)
+        if kind not in {"all", "image", "directory"} or outcome not in {"all", "unfinished"}:
+            raise ValueError("Invalid history purge filter")
+        with self._purge_details(identity, graph_id) as details:
+            return details.pages(offset, limit, kind, outcome)
 
     def operation(self, namespace, identity, *, graph_id=None):
         if namespace not in RECEIPTS or namespace in {

@@ -1,0 +1,26 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart
+test/support/purge_history_fixture.dart:165:27: Error: Not a constant expression.
+    if (fail) throw const LibraryFailure('原清单暂时无法读取');
+                          ^^^^^^^^^^^^^^
+test/support/purge_history_fixture.dart:187:27: Error: Not a constant expression.
+    if (fail) throw const LibraryFailure('原图片暂时无法读取');
+                          ^^^^^^^^^^^^^^
+test/support/purge_history_fixture.dart:212:27: Error: Not a constant expression.
+    if (fail) throw const LibraryFailure('原结果暂时无法读取');
+                          ^^^^^^^^^^^^^^
+00:00 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart [E]
+  Failed to load "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart":
+  Compilation failed for testPath=/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: test/support/purge_history_fixture.dart:165:27: Error: Not a constant expression.
+      if (fail) throw const LibraryFailure('原清单暂时无法读取');
+                            ^^^^^^^^^^^^^^
+  test/support/purge_history_fixture.dart:187:27: Error: Not a constant expression.
+      if (fail) throw const LibraryFailure('原图片暂时无法读取');
+                            ^^^^^^^^^^^^^^
+  test/support/purge_history_fixture.dart:212:27: Error: Not a constant expression.
+      if (fail) throw const LibraryFailure('原结果暂时无法读取');
+                            ^^^^^^^^^^^^^^
+  .
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart

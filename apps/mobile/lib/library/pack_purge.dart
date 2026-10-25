@@ -193,3 +193,59 @@ abstract interface class PackPurgeGateway {
   });
   void dispose();
 }
+
+/// Original evidence is bound to one task/graph. No command or settlement
+/// methods are available to a history page.
+abstract interface class PurgeHistoryDetails {
+  bool get isCurrent;
+  Future<PurgeHistoryReview> review({int offset = 0, int limit = 24});
+  Future<CatalogPage<PackPurgeImage>> images(
+    PackPurgeMember member, {
+    int offset = 0,
+    int limit = 100,
+  });
+  Future<CatalogPage<PackPurgeStep>> steps({
+    int offset = 0,
+    int limit = 24,
+    bool unfinished = true,
+    String kind = 'all',
+  });
+  void dispose();
+}
+
+class PurgeHistoryReview {
+  PurgeHistoryReview(Map<String, dynamic> raw, this.members)
+    : planId = _text(raw['plan_id'], 128),
+      operationId = raw['operation_id'] == null
+          ? null
+          : _text(raw['operation_id'], 128),
+      status = _text(raw['status'], 32),
+      digest = raw['digest'] == null ? null : _hash(raw['digest']),
+      expiresAt = _time(raw['expires_at']),
+      imageCount = _count(raw['image_count']),
+      imageBytes = _count(raw['image_bytes']),
+      retainedEntries = _count(raw['retained_entries']) {
+    if (raw['historical'] != true ||
+        raw['ready'] != false ||
+        ![
+          'queued',
+          'running',
+          'completed',
+          'failed',
+          'interrupted',
+        ].contains(status) ||
+        members.items.map((m) => m.packId).toSet().length !=
+            members.items.length ||
+        members.items.fold(0, (int n, m) => n + m.imageCount) > imageCount ||
+        members.items.fold(0, (int n, m) => n + m.imageBytes) > imageBytes ||
+        members.items.fold(0, (int n, m) => n + m.retainedEntries) >
+            retainedEntries) {
+      _bad();
+    }
+  }
+  final String planId, status;
+  final String? operationId, digest;
+  final double expiresAt;
+  final int imageCount, imageBytes, retainedEntries;
+  final CatalogPage<PackPurgeMember> members;
+}

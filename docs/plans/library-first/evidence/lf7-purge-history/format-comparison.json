@@ -1,0 +1,59 @@
+{
+  "baseline": {
+    "exit_code": 1,
+    "files": [
+      "services/server/tests/e2e_server.py",
+      "services/server/tests/reader_fixture.py",
+      "services/server/tests/test_catalog_selection.py",
+      "services/server/tests/test_cleanup_and_fast_purge.py",
+      "services/server/tests/test_file_operations.py",
+      "services/server/tests/test_initial_import.py",
+      "services/server/tests/test_logical_trash.py",
+      "services/server/tests/test_media_types.py",
+      "services/server/tests/test_pack_entry_anchors.py",
+      "services/server/tests/test_pack_missing.py",
+      "services/server/tests/test_pack_restore_history_migration.py",
+      "services/server/tests/test_pack_tag_names.py",
+      "services/server/tests/test_reading.py",
+      "services/server/tests/test_thumbnail_recovery.py",
+      "services/server/tests/workspace_fixture.py",
+      "services/server/video_viewer/backup_reconcile.py",
+      "services/server/video_viewer/catalog_selection.py",
+      "services/server/video_viewer/models.py",
+      "services/server/video_viewer/pack_api.py",
+      "services/server/video_viewer/pack_operations_api.py",
+      "services/server/video_viewer/pack_scanner.py",
+      "services/server/video_viewer/pack_tags.py",
+      "services/server/video_viewer/packs.py"
+    ]
+  },
+  "current": {
+    "exit_code": 1,
+    "files": [
+      "services/server/tests/e2e_server.py",
+      "services/server/tests/reader_fixture.py",
+      "services/server/tests/test_catalog_selection.py",
+      "services/server/tests/test_cleanup_and_fast_purge.py",
+      "services/server/tests/test_file_operations.py",
+      "services/server/tests/test_initial_import.py",
+      "services/server/tests/test_logical_trash.py",
+      "services/server/tests/test_media_types.py",
+      "services/server/tests/test_pack_entry_anchors.py",
+      "services/server/tests/test_pack_missing.py",
+      "services/server/tests/test_pack_restore_history_migration.py",
+      "services/server/tests/test_pack_tag_names.py",
+      "services/server/tests/test_reading.py",
+      "services/server/tests/test_thumbnail_recovery.py",
+      "services/server/tests/workspace_fixture.py",
+      "services/server/video_viewer/backup_reconcile.py",
+      "services/server/video_viewer/catalog_selection.py",
+      "services/server/video_viewer/models.py",
+      "services/server/video_viewer/pack_api.py",
+      "services/server/video_viewer/pack_operations_api.py",
+      "services/server/video_viewer/pack_scanner.py",
+      "services/server/video_viewer/pack_tags.py",
+      "services/server/video_viewer/packs.py"
+    ]
+  },
+  "new_unformatted": []
+}
