@@ -1,0 +1,37 @@
+{
+  "source_commit": "aa48c9e344e80f7a44f237b6260a1fac37c358cd",
+  "client_tests": 398,
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "rounds": {
+    "round-1-live-390": {
+      "native_seconds": "01:02",
+      "strong_stop": false,
+      "source_files": 27,
+      "old_receipts_get_only": 5,
+      "app_logins": 1,
+      "current_export_posts": 1,
+      "requests": 78,
+      "checkpoints": 4
+    },
+    "round-2-stop-360": {
+      "native_seconds": "00:26",
+      "strong_stop": true,
+      "source_files": 27,
+      "old_receipts_get_only": 5,
+      "app_logins": 1,
+      "current_export_posts": 1,
+      "requests": 73,
+      "checkpoints": 4
+    },
+    "round-3-stop-390": {
+      "native_seconds": "00:29",
+      "strong_stop": true,
+      "source_files": 27,
+      "old_receipts_get_only": 5,
+      "app_logins": 1,
+      "current_export_posts": 1,
+      "requests": 75,
+      "checkpoints": 4
+    }
+  }
+}

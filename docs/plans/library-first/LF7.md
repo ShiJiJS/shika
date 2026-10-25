@@ -1,6 +1,8 @@
 # LF7 设置与统一任务实施记录
 
-## 最新阶段：目录类型、启停与分类型缺失管理（2026-10-25）
+最新阶段为文末PR #51的App代次/原请求历史分册：398项客户端与固定源码原生三轮通过；完整v2协调、历史路由和有界传输仍继续。
+
+## 目录类型、启停与分类型缺失管理（2026-10-25）
 
 [Draft PR #47](https://github.com/ShiJiJS/video_viewer/pull/47)基于#46，主实现4e569ad，根扫描身份保护ed60bc9，保留原因文案fd1db91；最终原生测试锚点及实际结果见[证据](evidence/lf7-roots-missing/README.md)。[契约](LF7-ROOTS-MISSING-DESIGN.md)明确旧服务兼容、连接隔离、24条分页、持久任务与本机原请求日志。
 
@@ -104,3 +106,11 @@
 固定源码服务端全集375项通过（新增17项），全量Ruff/编译通过。真实HTTP两个受理后恢复交错、锁内顺序/另一连接、令牌撤销/旧上传/严格头/回滚和13→14迁移验证通过；两处真实v1 SIGKILL确认提交前旧数据/旧代次可见、重启后一起更新、旧POST拒绝/原GET可查/源媒体保持。见[设计](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-management-authority/docs/plans/library-first/LF7-AUTHORITY-DESIGN.md) / [固定源码、原始证据及诊断](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-management-authority/docs/plans/library-first/evidence/lf7-authority/README.md)。
 
 本轮是服务端隔离，App尚未接不可变代次、旧安全日志/剩余选择历史化和迟到响应失效；旧App恢复后继续写需重新连接。完整v2预约/前快照/根映射与物理真相/原子替换/正式历史引用及孤立清理、历史路由与任务协议、App有界传输及系统选择器继续；现有v1的SIGKILL不代表新v2完成。其它强停、历史图片失败、完整原型/暗色横屏/手势、真机NAS和原签名升级继续。冻结原型独立未改，未改SDK/正式8760/NAS或发布APK；LF7/#32及总任务/#24保持开放。
+
+## 2026-10-25：App 管理代次与原请求历史分册（PR #51）
+
+[Draft PR #51](https://github.com/ShiJiJS/video_viewer/pull/51)基于#50，固定实现aa48c9e。App按不可变服务权威代次发送请求，管理恢复后替换连接、使旧网关与读取失效并免口令返回媒体库。六类本机意图保留原分册；历史选择不能继续删除，原GET404不擦记录，写盘回执未知先重读再合并，原POST不重发；成功的旧恢复/停止回执也保留，不走当前结算。旧服务回退/人工重连及本机已确认恢复分配本机代次。真实原生检查发现并修复自动重连后仍停连接表单的问题。
+
+最终客户端全集398项、analyze、全量服务端Ruff和新增夹具/runner编译通过；生产服务未改，375项服务端沿用#50。固定源码原生三轮通过：390普通运行中实际v1恢复、360双倍字号及390普通两次真实SecureStorage强停重开。后两轮确认旧PID消失后才在App缺席时恢复，新PID无需再登录；主动强停首段非零与Flutter附带终结异常如实保留，实际通过的是重开段。独立核对12个窗口/截图检查点、每轮27源文件SHA、五类旧回执只有GET404、App仅一次登录及唯一新代次导出POST；旧安全日志与27未提交选择保留。见[契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-client-authority/docs/plans/library-first/LF7-CLIENT-AUTHORITY-DESIGN.md) / [固定源码、原始日志及独立核对](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-client-authority/docs/plans/library-first/evidence/lf7-client-authority/README.md)。
+
+这是实际v1恢复后的客户端隔离；图包本机意图使用合成未受理ID，不代表图包物理操作或完整v2恢复。当前原GET查不到就保留未知，完整v2协调器/根映射/物理真相/前快照/原子替换/正式历史引用与公开历史路由、App有界传输及系统选择器继续，backup_v2仍关闭。其它强停组合、历史图片失败、完整原型/暗色横屏/手势、真机NAS与原签名发布继续。冻结原型独立未改，SDK/正式8760/NAS及发布APK未变；LF7/#32和总任务/#24保持开放。
