@@ -1,0 +1,437 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "query": {},
+    "epoch": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 404
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "family": "all",
+      "state": "all"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "family": "all",
+      "state": "historical"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c",
+    "query": {
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/items",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "unfinished": "true",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/purge-review",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/purge-pages",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "kind": "all",
+      "outcome": "unfinished",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/purge-pages",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "kind": "all",
+      "outcome": "all",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/purge-pages",
+    "query": {
+      "offset": "24",
+      "limit": "24",
+      "kind": "all",
+      "outcome": "all",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 503
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/purge-pages",
+    "query": {
+      "offset": "24",
+      "limit": "24",
+      "kind": "all",
+      "outcome": "all",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/purge-pages",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "kind": "directory",
+      "outcome": "all",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/purge-review",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/purge-review",
+    "query": {
+      "offset": "24",
+      "limit": "24",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/purge-review",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/purge-review/files",
+    "query": {
+      "trash_id": "a42d073d-e2d7-4b29-8189-bfdca5e87297",
+      "offset": "0",
+      "limit": "100",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/b497a2a0-8ff3-4e2b-a3a2-758db507be7c/purge-review/files",
+    "query": {
+      "trash_id": "a42d073d-e2d7-4b29-8189-bfdca5e87297",
+      "offset": "100",
+      "limit": "100",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "family": "all",
+      "state": "historical"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/67b82c21-5801-412d-887d-6c803b533a8d",
+    "query": {
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-history/tasks/67b82c21-5801-412d-887d-6c803b533a8d/purge-review",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "graph_id": "23cd4574-bc67-40a6-8ebc-cf417c5a36ce"
+    },
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "07a5fe9e95f511d8eaa0543e58019c6a",
+    "status": 200
+  }
+]

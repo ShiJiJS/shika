@@ -1,14 +1,14 @@
 # LF7 后续：永久删除原清单与逐页结果的历史读取
 
-这是 PR #54 后的源码审计与待实施契约，不是完成证据。完整管理恢复已保存历史图，通用任务/成员可按原 graph 读取；以下专用页面仍需接线，不能据通用查询通过就开放正式 backup_v2。
+这是 PR #54 后的原始审计与实施边界。历史专用读取、原清单/文件/逐项结果页面现已接线，见 [实现契约](LF7-PURGE-HISTORY-DESIGN.md) 与 [固定源码证据](evidence/lf7-purge-history/README.md)。下文的差距保留为实施前审计，不描述最新实现；正式 backup_v2 仍关闭。
 
-## 当前实际差距
+## 实施前实际差距（历史审计）
 
 - `pack_operations_api.py` 的 `GET /pack-purge-requests/{request_id}`、`/pack-purge-plans/{identity}`、`/pack-purge-plans/{identity}/files` 与 `/pack-operations/{identity}/pages` 仍直接读取当前库实现。
 - `PackPurgePlans.view/files` 读取当前计划和条目；files 会完整物化 manifest 中的 files 数组。`PackPurge.pages` 使用当前 PackPurgeStep / PackFileStep / ImagePack 关联。
 - `MaintenanceTaskDetail` 对历史永久删除任务隐藏逐项图片结果入口；`PackPurgeResult` 自动创建当前网关，刷新可能 acknowledgeTask，仍带当前重试能力，不能直接复用为历史读取器。
 
-## 下一段实现边界
+## 本段实现边界
 
 历史读取始终明确原 graph（或精确解析原 epoch），先核对父任务的 ID/种类和原图归属，再在该图的只读数据库查询原计划、包条目、精确文件和图片/目录结果。原图缺失、类型错误、同 ID 跨图、错误父子关系均明确拒绝，不退回当前库或另一图。元数据包含 historical 与 graph_id，不代表媒体源字节仍存在。
 
@@ -24,4 +24,4 @@ App 使用仅能读取历史任务、计划和结果的专用接口，不能 pre
 4. App 历史入口、24/100项分页、未完成筛选、离页与迟到隔离、错误保留，当前删除流程回归。真实 Android 普通及小屏双倍字号核对截图/窗口/轨迹，确认历史页面完全不 POST 执行或结算。
 5. 固定实现和原始证据入库、更新 #32/#24；其余命令强停、历史图片错误、全原型/目标设备等未完成范围仍单独记录。
 
-正式改动前保持 App/服务端生产源码为 PR #53 的已验证树，PR #54 只增加真实强停补证。冻结原型和 production backup_v2 开关不随本计划变动。
+PR #54 只增加真实强停补证；本段在其基础上修改 App/服务端历史读取源码。冻结原型和 production backup_v2 开关不随本段变动。

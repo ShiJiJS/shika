@@ -1,0 +1,80 @@
+FFPURGE_HISTORY_BOUNDED:{"sqlite_bytes": 43806720, "files": 18000, "python_peak_bytes": 2543455}
+.
+=================================== FAILURES ===================================
+___ test_original_graph_plan_files_results_and_wrong_parent_never_fall_back ____
+
+library = (<starlette.testclient.TestClient object at 0xffffb656a660>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_original_graph_plan_files0/media'))
+tmp_path = PosixPath('/tmp/pytest-of-viewer/pytest-0/test_original_graph_plan_files0')
+
+    def test_original_graph_plan_files_results_and_wrong_parent_never_fall_back(library, tmp_path):
+        client, media = library
+>       _, packs, rows, preview, operation = prepared(client, media)
+                                             ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_history_purge_details.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = <starlette.testclient.TestClient object at 0xffffb656a660>
+media = PosixPath('/tmp/pytest-of-viewer/pytest-0/test_original_graph_plan_files0/media')
+count = 2
+
+    def prepared(client, media, count=2):
+        root, packs, rows = fixture(client, media, count)
+        preview = plan(client, [v["id"] for v in rows])
+    
+        def fail(phase, identity):
+            if phase == "purge_purging":
+                with client.app.state.db.read() as db:
+                    row = db.get(PackPurgeStep, identity)
+                    if row.relative_path == "nested/2.jpg":
+                        raise OSError(errno.EACCES, "isolated original permission failure")
+    
+        client.app.state.pack_purge.fault_hook = fail
+        operation = execute(client, preview)
+        client.app.state.pack_purge.fault_hook = None
+        assert operation["result"]["pages_deleted"] == count
+>       assert operation["result"]["pages_pending"] == count
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'pages_pending'
+
+tests/test_history_purge_details.py:39: KeyError
+_ test_public_routes_after_two_complete_restores_keep_exact_epoch_and_no_writes _
+
+library = (<starlette.testclient.TestClient object at 0xffffb562e5d0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_public_routes_after_two_c0/media'))
+
+    def test_public_routes_after_two_complete_restores_keep_exact_epoch_and_no_writes(library):
+        client, media = library
+>       root, _, rows = fixture(client, media, 27)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_history_purge_details.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = <starlette.testclient.TestClient object at 0xffffb562e5d0>
+media = PosixPath('/tmp/pytest-of-viewer/pytest-0/test_public_routes_after_two_c0/media')
+count = 27
+
+    def fixture(client, media, count=1):
+        root = pack_root(client, media)
+        for number in range(count):
+            folder = Path(root["path"]) / f"pack-{number}"
+            image(folder / "1.png")
+            image(folder / "nested/2.jpg", color="blue")
+            (folder / "notes.txt").write_text("retain attachment")
+            (folder / "empty").mkdir()
+        sync(client)
+        catalog = packs(client)["items"]
+>       assert trash(client, [p["id"] for p in catalog])["result"]["succeeded"] == count
+E       assert 24 == 27
+
+tests/test_pack_purge_plans.py:39: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_history_purge_details.py::test_original_graph_plan_files_results_and_wrong_parent_never_fall_back
+FAILED tests/test_history_purge_details.py::test_public_routes_after_two_complete_restores_keep_exact_epoch_and_no_writes
+2 failed, 1 passed, 1 warning in 10.80s

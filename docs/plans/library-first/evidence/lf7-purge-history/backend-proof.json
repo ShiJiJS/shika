@@ -1,0 +1,53 @@
+{
+  "graph_file": "c33cbf8c-a907-48c9-ad3a-a05c82694de3.sqlite3",
+  "graph_sha256": "c325b8a66ece69e57845a7e6e9ae06e01be3aa2082bc662fc1c63b210c583022",
+  "original_kind": "pack_permanent",
+  "original_status": "completed",
+  "result_counters": {
+    "total": 27,
+    "succeeded": 26,
+    "failed": 1,
+    "pages_total": 153,
+    "pages_deleted": 126
+  },
+  "outcome_counts": [
+    [
+      "directory",
+      "pending",
+      2
+    ],
+    [
+      "directory",
+      "retained",
+      26
+    ],
+    [
+      "directory",
+      "succeeded",
+      26
+    ],
+    [
+      "image",
+      "failed",
+      1
+    ],
+    [
+      "image",
+      "pending",
+      26
+    ],
+    [
+      "image",
+      "succeeded",
+      126
+    ]
+  ],
+  "image_count": 127,
+  "last_file": "0127.png",
+  "failure": [
+    [
+      "0101.png",
+      "permission_denied"
+    ]
+  ]
+}

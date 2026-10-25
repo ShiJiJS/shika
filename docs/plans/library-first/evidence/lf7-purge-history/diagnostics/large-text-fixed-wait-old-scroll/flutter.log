@@ -1,0 +1,43 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_purge_history_test.dart
+Running Gradle task 'assembleDebug'...                             18.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,146ms
+00:00 +0: settings original graph purge plan, files, partial result and read-only retry
+HISTORY_VISIBLE:原图片清单 | 39 · 0039.png | 108 字节 | 40 · 0040.png | 108 字节 | 41 · 0041.png | 108 字节 | 42 · 0042.png | 108 字节 | 43 · 0043.png | 108 字节 | 44 · 0044.png | 108 字节 | 45 · 0045.png | 108 字节
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+Null check operator used on a null value
+
+When the exception was thrown, this was the stack:
+#0      Element.widget (package:flutter/src/widgets/framework.dart:3666:31)
+#1      _KeyWidgetFinder.matches (package:flutter_test/src/finders.dart:1616:22)
+#2      WhereIterator.moveNext (dart:_internal/iterable.dart:469:13)
+#3      CachingIterable._fillNext (package:flutter/src/foundation/basic_types.dart:208:27)
+#4      CachingIterable._precacheEntireList (package:flutter/src/foundation/basic_types.dart:204:12)
+#5      CachingIterable.toList (package:flutter/src/foundation/basic_types.dart:199:5)
+#6      FinderResult.toString (package:flutter_test/src/finders.dart:1127:52)
+#7      FinderBase.toString (package:flutter_test/src/finders.dart:1104:20)
+#8      _StringBase._interpolate (dart:core-patch/string_patch.dart:888:19)
+#9      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_purge_history_test.dart:137:18)
+<asynchronous suspension>
+#10     main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_purge_history_test.dart:240:7)
+<asynchronous suspension>
+#11     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#12     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  settings original graph purge plan, files, partial result and read-only retry
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:44 +0 -1: settings original graph purge plan, files, partial result and read-only retry [E]
+  Test failed. See exception logs above.
+  The test description was: settings original graph purge plan, files, partial result and read-only retry
+  
+01:44 +0 -1: (tearDownAll)
+01:44 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_purge_history_test.dart: settings original graph purge plan, files, partial result and read-only retry

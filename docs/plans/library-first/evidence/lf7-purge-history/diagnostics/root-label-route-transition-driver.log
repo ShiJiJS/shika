@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-history-purge-app-test.py", line 179, in <module>
+    assert result.returncode == 0, "Actual Android history test failed; see flutter.log"
+AssertionError: Actual Android history test failed; see flutter.log
