@@ -114,7 +114,9 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
   }
 
   Future<void> resumePack(PackCleanupContext origin, String identity) async {
-    if (!mounted || !widget.active || ModalRoute.of(context)?.isCurrent != true) {
+    if (!mounted ||
+        !widget.active ||
+        ModalRoute.of(context)?.isCurrent != true) {
       return;
     }
     final destination = switch (origin.entry.source) {
@@ -186,7 +188,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
       child: AppShell(
         showNavigation: true,
         navigationExtent: MediaLayout.navigation,
-        navigationWidth: double.infinity,
+        navigationWidth: 300,
         selected: widget.destination,
         onNavigate: navigate,
         destinations: const [
@@ -200,7 +202,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
           children: [
             Container(
               height: MediaLayout.headerExtent(context),
-              padding: const EdgeInsets.only(left: 16, right: 12),
+              padding: const EdgeInsets.only(left: 20, right: 12),
               decoration: BoxDecoration(
                 border: Border(bottom: BorderSide(color: p.line)),
               ),
@@ -277,7 +279,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
               SizedBox(
                 height: MediaLayout.kindExtent(context),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
                       for (final value in MediaKind.values)

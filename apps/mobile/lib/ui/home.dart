@@ -2152,30 +2152,72 @@ class _LibraryHomeState extends State<LibraryHome> {
     String subtitle,
     VoidCallback action, {
     bool allowDuringRestore = false,
-  }) => Column(
-    children: [
-      ListTile(
-        contentPadding: EdgeInsets.zero,
-        leading: Icon(icon),
-        title: Text(title, style: const TextStyle(fontSize: 15)),
-        subtitle: subtitle.isEmpty
-            ? null
-            : Text(
-                subtitle,
-                style: TextStyle(fontSize: 12, color: Paper.of(context).olive),
-              ),
-        trailing: const Icon(Icons.chevron_right, size: 19),
-        onTap: _busy || (!allowDuringRestore && repo.backupRestorePending)
-            ? null
-            : action,
+  }) {
+    final p = Paper.of(context);
+    final enabled =
+        !_busy && (allowDuringRestore || !repo.backupRestorePending);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: p.line)),
       ),
-      const Divider(height: 1),
-    ],
+      child: InkWell(
+        onTap: enabled ? action : null,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 64),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Row(
+              children: [
+                Icon(icon, size: 22),
+                const SizedBox(width: 13),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(fontSize: 15, height: 23 / 15),
+                      ),
+                      if (subtitle.isNotEmpty) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          subtitle,
+                          style: TextStyle(
+                            fontSize: 12,
+                            height: 1.7,
+                            color: p.muted,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 13),
+                const Icon(Icons.chevron_right, size: 19),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget settingsHeading(String label, {bool first = false}) => Padding(
+    padding: EdgeInsets.only(top: first ? 8 : 18, bottom: 6),
+    child: Text(
+      label,
+      style: TextStyle(
+        fontSize: 13,
+        height: 18.5 / 13,
+        color: Paper.of(context).muted,
+      ),
+    ),
   );
   Widget settings() => ListView(
-    padding: const EdgeInsets.symmetric(horizontal: 20),
+    padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
     children: [
-      note('连接与文件'),
+      settingsHeading('连接与文件', first: true),
       settingRow(
         Icons.link,
         '服务连接',
@@ -2191,8 +2233,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             : '${data.roots.length} 个目录 · ${repo.missingCount} 个缺失视频',
         () => go('roots'),
       ),
-      const SizedBox(height: 14),
-      note('数据维护'),
+      settingsHeading('数据维护'),
       settingRow(
         Icons.delete_outline,
         '回收站',
@@ -2204,7 +2245,7 @@ class _LibraryHomeState extends State<LibraryHome> {
       settingRow(
         Icons.save_outlined,
         '备份与恢复',
-        '导出标签和管理记录',
+        repo.capabilities.backupV2 ? '标签、目录映射、回收站与阅读记录' : '导出标签和管理记录',
         () => go('backup'),
         allowDuringRestore: true,
       ),
@@ -2219,13 +2260,16 @@ class _LibraryHomeState extends State<LibraryHome> {
         () => go('tasks'),
         allowDuringRestore: true,
       ),
-      const SizedBox(height: 14),
-      note('偏好'),
+      settingsHeading('偏好'),
       SwitchListTile(
         key: const Key('dark-mode-setting'),
         contentPadding: EdgeInsets.zero,
         secondary: const Icon(Icons.dark_mode_outlined),
-        title: const Text('暗黑模式'),
+        minTileHeight: 64,
+        title: const Text(
+          '暗黑模式',
+          style: TextStyle(fontSize: 15, height: 23 / 15),
+        ),
         value: widget.preferences.dark,
         onChanged: busy
             ? null
@@ -2236,8 +2280,15 @@ class _LibraryHomeState extends State<LibraryHome> {
         key: const Key('preload-setting'),
         contentPadding: EdgeInsets.zero,
         secondary: const Icon(Icons.slow_motion_video),
-        title: const Text('准备相邻视频'),
-        subtitle: const Text('最多准备前后各一条，关闭可减少网络和解码占用'),
+        minTileHeight: 70.4,
+        title: const Text(
+          '准备相邻视频',
+          style: TextStyle(fontSize: 15, height: 23 / 15),
+        ),
+        subtitle: const Text(
+          '最多前后各一条，关闭可减少网络和解码占用',
+          style: TextStyle(fontSize: 12, height: 1.7),
+        ),
         value: widget.preferences.preloadAdjacent,
         onChanged: busy
             ? null
