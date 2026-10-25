@@ -5,27 +5,28 @@ import hashlib
 import json
 import os
 import shutil
+import sqlite3
 import stat
 import threading
 import tracemalloc
 import uuid
+from contextlib import closing
 from dataclasses import replace
 from pathlib import Path
 
 import pytest
-from sqlalchemy import event, func, select
+from sqlalchemy import create_engine, event, func, select
 
 import video_viewer.backup_archive as codec
 from video_viewer.backup_archive import (
     StagedArchive,
-    _readonly,
     freeze_graph,
     inspect_backup,
     inspect_v2,
     write_v2,
 )
 from video_viewer.backup_format import canonical, package
-from video_viewer.backup_v2_schema import SETTING_KEYS, TABLE_NAMES, TABLES, mounts_from, sanitized
+from video_viewer.backup_v2_schema import SETTING_KEYS, TABLE_NAMES, TABLES, mounts_from
 from video_viewer.errors import LibraryError
 from video_viewer.models import Base, ImagePack, PackPage, PackTagLink, Setting, Task, Video
 
@@ -145,12 +146,12 @@ def test_complete_actual_parent_graph_and_typed_preferences_without_source_bytes
     assert stat.S_IMODE(path.stat().st_mode) == 0o600
     assert stat.S_IMODE(staged.directory.stat().st_mode) == 0o700
     assert stat.S_IMODE(graph.database.stat().st_mode) == 0o600
-    engine = _readonly(graph.database)
+    engine = create_engine(f"sqlite:///{graph.database}")
     try:
         with engine.connect() as imported, client.app.state.db.read() as original:
             for table in TABLES:
                 expected = [
-                    sanitized(table.name, r)
+                    dict(r)
                     for r in original.execute(
                         select(table).order_by(*table.primary_key.columns)
                     ).mappings()
@@ -161,7 +162,34 @@ def test_complete_actual_parent_graph_and_typed_preferences_without_source_bytes
                         select(table).order_by(*table.primary_key.columns)
                     ).mappings()
                 ]
-                assert actual == expected, table.name
+                # Compare every managed field against the live database,
+                # independently of the codec's sanitizer implementation.
+                cache_fields = {
+                    "roots": {"available", "error", "last_scan"},
+                    "videos": {"thumbnail", "device", "inode", "mtime_ns", "ctime_ns", "seen_scan"},
+                    "packs": {"device", "inode", "directory_signature", "seen_scan"},
+                    "pack_pages": {"thumbnail", "signature", "seen_scan"},
+                    "directories": {"seen_scan"},
+                }.get(table.name, set())
+                assert [{k: v for k, v in r.items() if k not in cache_fields} for r in actual] == [
+                    {k: v for k, v in r.items() if k not in cache_fields} for r in expected
+                ], table.name
+                for row in actual:
+                    if "thumbnail" in row:
+                        assert row["thumbnail"] is None
+                    if table.name in ("videos", "packs"):
+                        assert row["device"] == row["inode"] == ""
+                    if table.name == "roots":
+                        assert (
+                            not row["available"]
+                            and row["last_scan"] is None
+                            and row["error"] is None
+                        )
+                    if table.name == "packs":
+                        assert row["directory_signature"] == []
+                    if table.name == "pack_pages":
+                        assert row["signature"] == []
+
             assert (
                 imported.scalar(
                     select(func.count()).select_from(Base.metadata.tables["access_tokens"])
@@ -217,7 +245,7 @@ def test_legacy_v1_is_validated_then_converted_with_original_receipt_and_implici
         staged.counts()[name] == 0
         for name in ("packs", "pack_pages", "pack_sessions", "pack_missing_members")
     )
-    engine = _readonly(next(staged.graphs()).database)
+    engine = create_engine(f"sqlite:///{next(staged.graphs()).database}")
     try:
         with engine.connect() as connection:
             roots = list(connection.execute(select(Base.metadata.tables["roots"])).mappings())
@@ -260,7 +288,7 @@ def test_legacy_v1_is_validated_then_converted_with_original_receipt_and_implici
     pending["status"], pending["location_key"] = "discovered", None
     path.write_bytes(canonical(package(original["payload"])))
     candidate = inspect_backup(path, tmp_path / "legacy-pending", maximum_bytes=MAXIMUM)
-    engine = _readonly(next(candidate.graphs()).database)
+    engine = create_engine(f"sqlite:///{next(candidate.graphs()).database}")
     try:
         with engine.connect() as connection:
             assert connection.scalar(select(Video.status)) == "missing"
@@ -427,15 +455,32 @@ def test_large_archive_exceeds_legacy_32mib_without_whole_file_or_all_rows_in_me
     try:
         path, details = archive(client, tmp_path)
         stage = inspect_v2(path, tmp_path / "large", maximum_bytes=MAXIMUM)
+        disk_bytes = path.stat().st_size
+        with path.open("rb") as stream:
+            actual_digest = hashlib.file_digest(stream, "sha256").hexdigest()
+        with closing(sqlite3.connect(next(stage.graphs()).database)) as independent:
+            sql_rows, smallest_note, largest_note = independent.execute(
+                "SELECT count(*),min(length(json_extract(result,'$.note'))),max(length(json_extract(result,'$.note'))) FROM tasks"
+            ).fetchone()
         _, peak = tracemalloc.get_traced_memory()
     finally:
         tracemalloc.stop()
-    assert details["bytes"] > 32 * 1024 * 1024
+    assert disk_bytes == details["bytes"] and disk_bytes > 32 * 1024 * 1024
+    assert actual_digest == details["file_sha256"] == stage.details["file_sha256"]
+    assert sql_rows == 18000 and smallest_note == largest_note == 2048
     assert stage.counts()["tasks"] == 18000
     assert peak < 16 * 1024 * 1024
     print(
         "VV_ARCHIVE_MEMORY",
-        json.dumps({"bytes": details["bytes"], "python_peak_bytes": peak, "task_rows": 18000}),
+        json.dumps(
+            {
+                "bytes": disk_bytes,
+                "python_peak_bytes": peak,
+                "task_rows": sql_rows,
+                "note_length": smallest_note,
+                "file_sha256": actual_digest,
+            }
+        ),
     )
 
 
@@ -552,7 +597,7 @@ def test_live_writes_cannot_split_settings_and_rows_of_one_frozen_graph(library,
         stop.set()
         thread.join(timeout=10)
     stage = inspect_v2(path, tmp_path / "consistent", maximum_bytes=MAXIMUM)
-    engine = _readonly(next(stage.graphs()).database)
+    engine = create_engine(f"sqlite:///{next(stage.graphs()).database}")
     try:
         with engine.connect() as connection:
             revision = connection.scalar(select(Task.result).where(Task.id == task.id))["revision"]
