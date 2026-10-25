@@ -310,6 +310,7 @@ void main() {
         () => find.text('已保留，未清除').evaluate().isNotEmpty,
         'preserved member',
       );
+      expect(find.text('内容已重新出现，请同步后核对'), findsOneWidget);
       await tap(find.text('全部'));
       await tap(find.byKey(const Key('task-items-next')));
       await until(
