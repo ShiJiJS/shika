@@ -1,0 +1,123 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.39kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 0.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 101B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 10.54kB 0.1s done
+#5 DONE 0.1s
+
+#6 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.1s done
+#6 DONE 0.2s
+
+#7 [runtime 7/9] COPY migrations ./migrations
+#7 CACHED
+
+#8 [runtime 3/9] WORKDIR /app
+#8 CACHED
+
+#9 [runtime 6/9] COPY video_viewer ./video_viewer
+#9 CACHED
+
+#10 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#10 CACHED
+
+#11 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#11 CACHED
+
+#12 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [runtime 4/9] COPY requirements.lock ./
+#13 CACHED
+
+#14 [runtime 8/9] COPY alembic.ini ./
+#14 CACHED
+
+#15 [test 1/4] COPY requirements-test.lock ./
+#15 CACHED
+
+#16 [test 3/4] COPY tests ./tests
+#16 CACHED
+
+#17 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#17 CACHED
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:d3b41190d85aa434cd30aa0a6732cca8a3b79997f26605258ef99bdb831c695f done
+#19 exporting config sha256:ad50239e96466e48dd180b98410c6df85a8210a75afa9247b084e10785490ba7 done
+#19 exporting attestation manifest sha256:9a865e2c8e71e3bb5b464937b038a17ecd343d233dea81016dbe0a462242d97f 0.0s done
+#19 exporting manifest list sha256:af18a85707af59c172518b60526ec9e07465f876c3da4d53f042758db403c350
+#19 exporting manifest list sha256:af18a85707af59c172518b60526ec9e07465f876c3da4d53f042758db403c350 0.0s done
+#19 naming to docker.io/library/video-viewer-server:e2e done
+#19 unpacking to docker.io/library/video-viewer-server:e2e 0.0s done
+#19 DONE 0.1s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.0s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_purge_test.dart
+Running Gradle task 'assembleDebug'...                             26.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          825ms
+00:00 +0: LF6 exact review, cancel, lost physical reply, partial result and original retry
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "已有 2 张永久删除，恢复仅限剩余 1 张": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_purge_test.dart:212:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_purge_test.dart line 212
+The test description was:
+  LF6 exact review, cancel, lost physical reply, partial result and original retry
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:03 +0 -1: LF6 exact review, cancel, lost physical reply, partial result and original retry [E]
+  Test failed. See exception logs above.
+  The test description was: LF6 exact review, cancel, lost physical reply, partial result and original retry
+  
+01:03 +0 -1: (tearDownAll)
+01:03 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_purge_test.dart: LF6 exact review, cancel, lost physical reply, partial result and original retry

@@ -1,0 +1,38 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_purge_test.dart
+Running Gradle task 'assembleDebug'...                             25.5s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,052ms
+00:00 +0: LF6 exact review, cancel, lost physical reply, partial result and original retry
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following StateError was thrown running a test:
+Bad state: Fixture 422
+
+When the exception was thrown, this was the stack:
+#0      fixture.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/support/fixture.dart:24:9)
+<asynchronous suspension>
+<asynchronous suspension>
+#2      fixture (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/support/fixture.dart:15:12)
+<asynchronous suspension>
+#3      main.<anonymous closure>.shot (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_purge_test.dart:85:9)
+<asynchronous suspension>
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_purge_test.dart:142:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 2 frames from dart:async and package:stack_trace)
+
+The test description was:
+  LF6 exact review, cancel, lost physical reply, partial result and original retry
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:42 +0 -1: LF6 exact review, cancel, lost physical reply, partial result and original retry [E]
+  Test failed. See exception logs above.
+  The test description was: LF6 exact review, cancel, lost physical reply, partial result and original retry
+  
+00:42 +0 -1: (tearDownAll)
+00:42 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_purge_test.dart: LF6 exact review, cancel, lost physical reply, partial result and original retry

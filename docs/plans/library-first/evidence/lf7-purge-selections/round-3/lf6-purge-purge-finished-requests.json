@@ -1,0 +1,981 @@
+{
+  "items": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": {},
+      "authenticated": false,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": {},
+      "authenticated": false,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/info",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/scans",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/11006780-7dea-4c56-b77b-1bf068af0411",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "100",
+        "search": "",
+        "read_state": "all",
+        "source": "library",
+        "sort": "name"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/packs/trash",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "command_hash": "188b16b49bd97baeed5a1da73b509972b9aeb7c28185f8e9e782dcd32a7b6619",
+      "query_lists": {},
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-file-requests/native-purge-logical",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "source": "library",
+        "sort": "name"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/4af144a7-81f7-4f99-96ca-5fa6256deb2b/thumbnail",
+      "query": {
+        "session": "1792898045972142-b721f203"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/c6f944ee-5406-46e5-96ae-fd32b8f010ff/thumbnail",
+      "query": {
+        "session": "1792898045972142-b721f203"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/9a3a5cfa-01fd-401a-aa2e-7cd19bb324fe/thumbnail",
+      "query": {
+        "session": "1792898045972142-b721f203"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/869f5f54-7763-4d31-aaff-b6c813f4a68c/thumbnail",
+      "query": {
+        "session": "1792898045972142-b721f203"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/b67b10f2-53f8-4694-8795-00c9fe78f3a6/thumbnail",
+      "query": {
+        "session": "1792898045972142-b721f203"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/27082fd9-15db-4ab8-b002-7b5129b7ab33/thumbnail",
+      "query": {
+        "session": "1792898045972142-b721f203"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-purge-plans",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "command_hash": "9f55cbd6225d4875b3bf25ce0439f094fd0ec6cecd726d7d4d520e6e927b038c",
+      "query_lists": {},
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-purge-requests/1792898063727806-504510819",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-purge-plans/dceb7b0d-b556-4117-a88c-71240dea7faf/files",
+      "query": {
+        "trash_id": "de9aa0dd-b8ed-4dd0-b853-1c35432a0a12",
+        "offset": "0",
+        "limit": "100"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-purge-plans",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "command_hash": "23e3357e9a30d769269ac69450996e3014041f70bcc9749e84e4bd98c57ca2c3",
+      "query_lists": {},
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-purge-plans/a368dc8e-d5b2-4b36-b5c1-c189569ba3a1",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-trash/permanent",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "command_hash": "c65a580249ceb196a01391488f31dc0d8db3809afd737dc14c0c39ee3d02109f",
+      "query_lists": {},
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-file-requests/1792898082623867-2939837077",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-operations/7dc9cd68-0bd3-4f8a-8198-7a9cc3660e9e/pages",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "outcome": "unfinished"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-operations/7dc9cd68-0bd3-4f8a-8198-7a9cc3660e9e",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-operations/7dc9cd68-0bd3-4f8a-8198-7a9cc3660e9e/pages",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "outcome": "unfinished"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-operations/7dc9cd68-0bd3-4f8a-8198-7a9cc3660e9e/retry",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-retry-requests/1792898092707403-338051679",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-operations/7dc9cd68-0bd3-4f8a-8198-7a9cc3660e9e/pages",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "outcome": "unfinished"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "round": 1,
+    "source_commit": "fdef0e46cd7e9386e175769492aae756d6249ce2",
+    "viewport": "360",
+    "text_scale": "2",
+    "command": [
+      "bash",
+      "scripts/dev.sh",
+      "python3",
+      "scripts/run-client-connection-test.py",
+      "--pack-purge",
+      "--workspace-viewport",
+      "360",
+      "--workspace-text-scale",
+      "2"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 97.97,
+    "apk_sha256": "2de43ddff6d3b92768a410d45469c5a6e22ea5ae07d6468c675d781600106518"
+  },
+  {
+    "round": 2,
+    "source_commit": "fdef0e46cd7e9386e175769492aae756d6249ce2",
+    "viewport": "390",
+    "text_scale": "1",
+    "command": [
+      "bash",
+      "scripts/dev.sh",
+      "python3",
+      "scripts/run-client-connection-test.py",
+      "--pack-purge",
+      "--workspace-viewport",
+      "390",
+      "--workspace-text-scale",
+      "1"
+    ],
+    "exit_code": 79,
+    "elapsed_seconds": 113.69,
+    "apk_sha256": "ccee45d149bab3e5431499bd25359387aa2c941bb39aff4e0aa641ca80fae410"
+  }
+]

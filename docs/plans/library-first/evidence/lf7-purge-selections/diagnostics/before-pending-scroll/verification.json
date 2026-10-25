@@ -1,0 +1,22 @@
+[
+  {
+    "round": 1,
+    "source_commit": "bc52a8fe4c1953afc85eb3d3c9fbb2195834abf0",
+    "viewport": "360",
+    "text_scale": "2",
+    "command": [
+      "bash",
+      "scripts/dev.sh",
+      "python3",
+      "scripts/run-client-connection-test.py",
+      "--pack-purge",
+      "--workspace-viewport",
+      "360",
+      "--workspace-text-scale",
+      "2"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 106.71,
+    "apk_sha256": "3da1cf924dc0ca5d5870c62325b83273b52a9dae89d80f9818a2fde703634906"
+  }
+]

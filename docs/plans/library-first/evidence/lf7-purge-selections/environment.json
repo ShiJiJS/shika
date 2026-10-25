@@ -1,0 +1,19 @@
+{
+  "source_commit": "fdef0e46cd7e9386e175769492aae756d6249ce2",
+  "app_implementation_commit": "19ef6e5c145539ef1551fb8b837eef96c316fd92",
+  "sdk_clean": true,
+  "sdk_assert_file_sha256": "292ef7c3a0995054054274827417820556e3afa8211977037460b30e6240aa51",
+  "fixture_sha256": "d11f4ef6f9593c88e8e1585dc34909eb07d9bbfbc4a4f83d4e6c3abb0a211b66",
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "frozen_prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "checks": {
+    "client_tests": 345,
+    "analyze": "No issues found",
+    "server_runtime": "unchanged from previous 294-test checkpoint",
+    "fixture_ruff": "All checks passed"
+  },
+  "native_scope": "real Android/API and files; current purge test uses memory credential/command stores, no process restart",
+  "widget_scope": "1027 selection / explicit first 1000 / unsubmitted remaining 27; memory fixture, separate from native single-pack physical deletion",
+  "emulator_restored": "wm size 1080x2400 / density 420 / font_scale 1",
+  "native_final_source": "fdef0e46cd7e9386e175769492aae756d6249ce2"
+}
