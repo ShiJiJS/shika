@@ -8,9 +8,11 @@ from dataclasses import replace
 from pathlib import Path
 
 from fastapi import Header, HTTPException
+from fastapi.responses import JSONResponse
 from sqlalchemy import select
 
 from video_viewer.app import create_app
+from video_viewer.authority import Authority
 from video_viewer.config import Settings
 from video_viewer.models import (
     ImagePack,
@@ -52,7 +54,7 @@ def create_fidelity_app():
         target.mkdir(parents=True, exist_ok=False)
         shutil.copyfile(Path("/public") / f"flower-{orientation}.mp4", target / f"{title}.mp4")
     app = create_app(settings)
-    state = {"display": None, "ack": False, "prepared": False}
+    state = {"display": None, "ack": False, "prepared": False, "continuation_failure": False}
     trace = deque(maxlen=5000)
 
     def guard(key):
@@ -61,7 +63,28 @@ def create_fidelity_app():
 
     @app.middleware("http")
     async def record(request, call_next):
-        response = await call_next(request)
+        body = (
+            await request.json()
+            if request.url.path == "/api/v1/pack-sessions" and request.method == "POST"
+            else None
+        )
+        if (
+            state["continuation_failure"]
+            and request.method == "GET"
+            and request.url.path == "/api/v1/packs"
+            and request.query_params.get("source") == "recent"
+            and request.query_params.get("limit") == "1"
+            and request.headers.get("Authorization")
+        ):
+            with app.state.db.read() as db:
+                epoch = Authority.current(db)
+            response = JSONResponse(
+                {"error": {"code": "fixture_unavailable", "message": "续读摘要暂不可用"}},
+                status_code=503,
+                headers={"X-Management-Epoch": epoch},
+            )
+        else:
+            response = await call_next(request)
         if request.url.path.startswith("/api/"):
             trace.append(
                 {
@@ -69,6 +92,7 @@ def create_fidelity_app():
                     "path": request.url.path,
                     "status": response.status_code,
                     "phase": state["display"],
+                    **({"body": body} if body is not None else {}),
                 }
             )
         return response
@@ -137,6 +161,14 @@ def create_fidelity_app():
     def status(x_fixture_key: str = Header()):
         guard(x_fixture_key)
         return {"fixture": "prototype-fidelity-owned-8768", **state, "requests": list(trace)}
+
+    @app.post("/__fidelity/continuation-failure/{mode}")
+    def continuation_failure(mode: str, x_fixture_key: str = Header()):
+        guard(x_fixture_key)
+        if mode not in {"on", "off"}:
+            raise HTTPException(422)
+        state["continuation_failure"] = mode == "on"
+        return {"failure": state["continuation_failure"]}
 
     @app.post("/__fidelity/checkpoint/{name}")
     def checkpoint(name: str, x_fixture_key: str = Header()):

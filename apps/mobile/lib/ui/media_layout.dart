@@ -28,6 +28,12 @@ abstract final class MediaLayout {
       max(55, MediaQuery.textScalerOf(context).scale(16) * 1.5 + 31);
   static double scope(BuildContext context) =>
       max(44, MediaQuery.textScalerOf(context).scale(12) * 3.4);
+  static double continuation(BuildContext context) => max(
+    85,
+    MediaQuery.textScalerOf(context).scale(13) * 2.9 +
+        MediaQuery.textScalerOf(context).scale(16) * 1.5 +
+        20,
+  );
   static bool largeText(BuildContext context) =>
       MediaQuery.textScalerOf(context).scale(13) > 17;
   static double toolbar(BuildContext context) => largeText(context)

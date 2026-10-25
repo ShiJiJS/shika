@@ -159,6 +159,18 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   String error = '';
   List<PackFileCommand> pendingFiles = const [];
   int _pendingFilesRead = 0;
+  LibraryPack? continuation;
+  String continuationError = '';
+  bool continuationLoading = false;
+  bool get continuationEligible =>
+      entry.source == BrowseSource.library &&
+      entry.query.count == 0 &&
+      entry.query.search.isEmpty &&
+      !selecting &&
+      repo.capabilities.packReadingSessions;
+  bool get hasContinuation =>
+      continuationEligible &&
+      (continuation != null || continuationError.isNotEmpty);
   PackLibraryState get data => catalog.state;
   bool get recent => entry.source == BrowseSource.recent;
   int get columns => recent ? 1 : 2;
@@ -174,6 +186,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   double get listHeader => recent
       ? max(52, MediaQuery.textScalerOf(context).scale(13) * 1.5 + 32)
       : MediaLayout.toolbar(context) +
+            (hasContinuation ? MediaLayout.continuation(context) : 0) +
             (entry.query.count > 0 || entry.query.search.isNotEmpty
                 ? MediaLayout.scope(context)
                 : 0);
@@ -201,6 +214,9 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       search.text = entry.query.search;
       selection.cancel(clear: true);
       initialized = false;
+      continuation = null;
+      continuationError = '';
+      continuationLoading = false;
       pendingFiles = const [];
       _pendingFilesRead++;
       generation++;
@@ -226,6 +242,9 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   void repositoryChanged() {
     if (!identical(selectionConnection, repo.connectionIdentity)) {
       selectionConnection = repo.connectionIdentity;
+      continuation = null;
+      continuationError = '';
+      continuationLoading = false;
       pendingFiles = const [];
       _pendingFilesRead++;
       selection.cancel(clear: true);
@@ -290,10 +309,14 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     if (!widget.active ||
         busy ||
         _detailsOpen ||
-        ((more || before) && data.loading)) {
+        ((more || before) && (data.loading || continuationLoading))) {
       return;
     }
     final current = ++generation;
+    final continuationWork = !more && !before && continuationEligible
+        ? readContinuation()
+        : null;
+    continuationLoading = continuationWork != null;
     unawaited(loadPendingFiles());
     final oldStart = data.offset,
         oldPixels = scroll.hasClients ? scroll.offset : 0.0;
@@ -324,20 +347,29 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     } else {
       await catalog.load(entry, more: more, before: before);
     }
+    final summary = await continuationWork;
     if (!mounted || current != generation) return;
-    initialized = true;
-    dirty = false;
+    setState(() {
+      if (summary != null && continuationEligible) {
+        continuation = summary.pack;
+        continuationError = summary.error;
+      }
+      continuationLoading = false;
+      initialized = true;
+      dirty = false;
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || current != generation) return;
       if (scroll.hasClients && data.error.isEmpty) {
         double? pixels;
         if (restoring != null) {
-          pixels =
-              listHeader +
-              ((restoredAnchor ?? data.offset) - data.offset) ~/
-                  columns *
-                  stride +
-              restoring.scrollInset;
+          pixels = restoring.scrollOffset == 0 && restoring.scrollIndex == 0
+              ? 0
+              : listHeader +
+                    ((restoredAnchor ?? data.offset) - data.offset) ~/
+                        columns *
+                        stride +
+                    restoring.scrollInset;
           pendingReturn = null;
         } else if (oldStart != data.offset && data.items.isNotEmpty) {
           pixels = oldPixels + (oldStart - data.offset) ~/ columns * stride;
@@ -358,6 +390,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
         !_positioning &&
         scroll.hasClients &&
         !data.loading &&
+        !continuationLoading &&
         data.error.isEmpty &&
         data.items.isNotEmpty) {
       if (scroll.position.extentBefore < listHeader + 180 && data.hasBefore) {
@@ -379,7 +412,169 @@ class PackCatalogPageState extends State<PackCatalogPage> {
 
   void toggleSelection() {
     selection.cancel();
+    final oldHeader = listHeader;
+    final pixels = scroll.hasClients ? scroll.offset : 0.0;
+    final saved = position();
     setState(() => selecting = !selecting);
+    if (pixels >= oldHeader) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && scroll.hasClients) {
+          scroll.jumpTo(
+            (pixels + listHeader - oldHeader).clamp(
+              0,
+              scroll.position.maxScrollExtent,
+            ),
+          );
+        }
+      });
+    }
+    if (!selecting) {
+      if (pendingReturn == null) {
+        pendingReturn = saved.context;
+        returnIds = saved.ids;
+      }
+      unawaited(load(restore: initialized));
+    }
+  }
+
+  Future<({LibraryPack? pack, String error})> readContinuation() async {
+    try {
+      return (pack: await repo.loadPackContinuation(), error: '');
+    } on RequestCancelled {
+      return (pack: null, error: '续读摘要已取消，请重试');
+    } catch (failure) {
+      return (pack: null, error: failure.toString());
+    }
+  }
+
+  Widget continuationHeader() {
+    final p = Paper.of(context), pack = continuation;
+    final index = pack?.progress?.pageIndex;
+    final position = pack == null
+        ? ''
+        : index == null
+        ? '续读位置待确认 · ${pack.pageCount} 张'
+        : '第 ${index + 1} / ${pack.pageCount} 张';
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: MediaLayout.side),
+      child: SizedBox(
+        height: MediaLayout.continuation(context),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: p.line)),
+          ),
+          child: continuationError.isNotEmpty
+              ? Row(
+                  children: [
+                    Icon(Icons.menu_book_outlined, color: p.muted),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            '续读位置暂不可用',
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          Text(
+                            continuationError,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 12, color: p.muted),
+                          ),
+                        ],
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: continuationLoading
+                          ? null
+                          : () => load(restore: initialized),
+                      child: const Text('重试'),
+                    ),
+                  ],
+                )
+              : InkWell(
+                  key: const Key('pack-continuation'),
+                  onTap:
+                      pack == null ||
+                          continuationLoading ||
+                          busy ||
+                          data.loading ||
+                          data.error.isNotEmpty ||
+                          repo.backupRestorePending
+                      ? null
+                      : () => open(anchor: pack.id),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 6, bottom: 10),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 44,
+                          height: 58,
+                          child: PackCover(
+                            pack: pack!,
+                            repository: repo,
+                            active: widget.active,
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                continuationLoading ? '正在核对续读位置' : '继续阅读',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  height: 1.45,
+                                  color: p.muted,
+                                ),
+                              ),
+                              Text(
+                                pack.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: p.title.copyWith(
+                                  fontSize: 16,
+                                  height: 1.5,
+                                ),
+                              ),
+                              Text(
+                                position,
+                                key: const Key('pack-continuation-position'),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  height: 1.45,
+                                  color: p.muted,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 130,
+                                height: 2,
+                                child: LinearProgressIndicator(
+                                  value: index == null || pack.pageCount == 0
+                                      ? 0
+                                      : (index + 1) / pack.pageCount,
+                                  color: p.olive,
+                                  backgroundColor: p.line,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        const Icon(Icons.chevron_right, size: 19),
+                      ],
+                    ),
+                  ),
+                ),
+        ),
+      ),
+    );
   }
 
   Future<void> openFolder() async {
@@ -902,7 +1097,9 @@ class PackCatalogPageState extends State<PackCatalogPage> {
               ],
             ),
           Expanded(
-            child: data.loading && data.items.isEmpty
+            child:
+                (data.loading && data.items.isEmpty) ||
+                    (!initialized && continuationLoading)
                 ? const Center(child: CircularProgressIndicator())
                 : data.error.isNotEmpty && data.items.isEmpty
                 ? EmptyView(
@@ -916,6 +1113,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                     key: const Key('pack-grid'),
                     controller: scroll,
                     slivers: [
+                      if (hasContinuation)
+                        SliverToBoxAdapter(child: continuationHeader()),
                       if (!recent &&
                           (entry.query.count > 0 ||
                               entry.query.search.isNotEmpty))

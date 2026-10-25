@@ -77,6 +77,10 @@ abstract class LibraryRepository extends ChangeNotifier {
   }
 
   void cancelVideoTagRead() {}
+
+  /// Optional read-only summary of the latest available, actually opened pack.
+  /// Its read lifetime must not cancel catalog paging. Reading never opens it.
+  Future<LibraryPack?> loadPackContinuation() async => null;
   Future<CatalogPage<LibraryPack>> loadPacks(
     PackQuery query, {
     int offset = 0,
