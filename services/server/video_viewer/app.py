@@ -25,6 +25,7 @@ from .maintenance_tasks import router as maintenance_tasks_router
 from .metadata_cleanup import forget_missing
 from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
 from .pack_api import router as pack_router
+from .pack_missing import PackMissing
 from .pack_operations import PackOperations
 from .pack_operations_api import router as pack_operations_router
 from .pack_purge import PackPurge
@@ -211,6 +212,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         app.state.pack_purge = PackPurge(app.state.pack_files, app.state.pack_purge_plans, configured)
         app.state.pack_files.purge = app.state.pack_purge
         app.state.pack_restore_plans = PackRestorePlans(app.state.pack_files)
+        app.state.pack_missing = PackMissing(db)
         app.state.files = FileOperations(
             db, configured, catalog, app.state.playback, file_fault_hook
         )
@@ -223,6 +225,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             app.state.pack_files.start()
             app.state.pack_restore_plans.start()
             app.state.pack_purge_plans.start()
+            app.state.pack_missing.start()
             scanner.start()
 
         app.state.backups.start(start_regular)
@@ -233,6 +236,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             scanner.close()
             app.state.files.close()
             app.state.pack_restore_plans.close()
+            app.state.pack_missing.close()
             app.state.pack_files.close()
             app.state.pack_purge_plans.close()
             db.close()
@@ -305,7 +309,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             "server_id": server_id,
             "api_version": 1,
             "sqlite_version": sqlite3.sqlite_version,
-            "schema_version": "0012",
+            "schema_version": "0013",
             "capabilities": [
                 "typed_roots",
                 "pack_tags",
@@ -324,6 +328,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "maintenance_tasks",
                 "pack_restore_plans",
                 "managed_playback_defaults",
+                "pack_missing_cleanup",
             ],
         }
 
@@ -698,6 +703,16 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     @app.post("/api/v1/videos/forget-missing", dependencies=auth_required)
     def forget_missing_videos(body: ForgetMissingInput, request: Request):
         return forget_missing(request.app.state.db, body.request_id)
+
+    @app.post("/api/v1/packs/forget-missing", dependencies=auth_required, status_code=202)
+    def forget_missing_packs(body: ForgetMissingInput, request: Request):
+        return {**operation_task(request, request.app.state.pack_missing.submit(body.request_id)),
+                "request_id": body.request_id}
+
+    @app.get("/api/v1/pack-missing-requests/{request_id}", dependencies=auth_required)
+    def missing_pack_receipt(request_id: str, request: Request):
+        return {**operation_task(request, request.app.state.pack_missing.receipt(request_id)),
+                "request_id": request_id}
 
     @app.post("/api/v1/trash/permanent", dependencies=auth_required, status_code=202)
     def permanent_trash(body: PermanentInput, request: Request):

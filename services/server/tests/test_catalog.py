@@ -77,7 +77,7 @@ def test_authentication_recreation_migration_and_revocation(environment, samples
     assert client.get("/api/v1/videos").status_code == 401
     client.__exit__(None, None, None)
     database = sqlite3.connect(settings.data_dir / "library.sqlite3")
-    assert database.execute("select version_num from alembic_version").fetchone()[0] == "0012"
+    assert database.execute("select version_num from alembic_version").fetchone()[0] == "0013"
     assert database.execute("pragma integrity_check").fetchone()[0] == "ok"
     assert (
         database.execute("select value from settings where key='passphrase_hash'").fetchone()[0]

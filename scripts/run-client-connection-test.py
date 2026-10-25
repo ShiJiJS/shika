@@ -222,6 +222,7 @@ def watch():
                 "purge-selected", "purge-review", "purge-files", "purge-saved", "purge-saved-reopened", "purge-unknown", "purge-result", "purge-finished",
                 "bulk-selected", "bulk-review", "bulk-unknown", "bulk-receipt", "bulk-paged", "bulk-selection", "bulk-next-review",
                 "defaults-video", "defaults-reader", "defaults-unknown", "defaults-reopened", "defaults-migration",
+                "roots-created", "roots-disabled", "roots-conflict", "missing-paged", "missing-preserved", "missing-unknown", "missing-reopened", "missing-result", "missing-task-paged",
                 "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
                 "restore-selected", "restore-unknown", "restore-reopened", "restore-paged", "restore-stop-unknown", "restore-stopped",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
@@ -235,7 +236,7 @@ def watch():
                         json.dumps(json.load(response), ensure_ascii=False, indent=2),
                         encoding="utf-8",
                     )
-                if PREFIX in {"lf6-trash", "lf6-purge", "lf7-tasks", "lf7-restore", "lf7-purge-restart", "lf7-defaults"}:
+                if PREFIX in {"lf6-trash", "lf6-purge", "lf7-tasks", "lf7-restore", "lf7-purge-restart", "lf7-defaults", "lf7-roots-missing"}:
                     request = urllib.request.Request(
                         "http://127.0.0.1:8761/__fixture/actions/pack-trash-hashes",
                         headers=HEADERS, method="POST",
@@ -251,6 +252,10 @@ def watch():
                         (EVIDENCE / f"{PREFIX}-{phase}-plan.json").write_text(json.dumps(json.load(response),ensure_ascii=False,indent=2),encoding="utf-8")
                 if PREFIX == "lf7-purge-restart":
                     request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/purge-restart-stats", headers=HEADERS, method="POST")
+                    with urllib.request.urlopen(request, timeout=5) as response:
+                        (EVIDENCE / f"{PREFIX}-{phase}-stats.json").write_text(json.dumps(json.load(response), ensure_ascii=False, indent=2), encoding="utf-8")
+                if PREFIX == "lf7-roots-missing":
+                    request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/missing-native-stats", headers=HEADERS, method="POST")
                     with urllib.request.urlopen(request, timeout=5) as response:
                         (EVIDENCE / f"{PREFIX}-{phase}-stats.json").write_text(json.dumps(json.load(response), ensure_ascii=False, indent=2), encoding="utf-8")
                 if PREFIX == "lf5-recovery":
@@ -314,6 +319,7 @@ def main():
     mode.add_argument("--pack-purge", action="store_true")
     mode.add_argument("--purge-restart", action="store_true")
     mode.add_argument("--managed-defaults", action="store_true")
+    mode.add_argument("--roots-missing", action="store_true")
     mode.add_argument("--maintenance-tasks", action="store_true")
     mode.add_argument("--restore-plans", action="store_true")
     mode.add_argument("--pack-cleanup", action="store_true")
@@ -344,7 +350,9 @@ def main():
                 keepalive.terminate()
 
         atexit.register(release_wsl)
-    if args.managed_defaults:
+    if args.roots_missing:
+        PREFIX = "lf7-roots-missing"
+    elif args.managed_defaults:
         PREFIX = "lf7-defaults"
     elif args.purge_restart:
         PREFIX = "lf7-purge-restart"
@@ -398,7 +406,7 @@ def main():
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     prepare_emulator()
-    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.purge_restart or args.maintenance_tasks or args.restore_plans or args.managed_defaults:
+    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.purge_restart or args.maintenance_tasks or args.restore_plans or args.managed_defaults or args.roots_missing:
         def device(*command):
             return subprocess.check_output(
                 [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
@@ -464,6 +472,7 @@ def main():
                 "lf7-restore": "integration_test/server_restore_plans_test.dart",
                 "lf7-purge-restart": "integration_test/server_purge_restart_test.dart",
                 "lf7-defaults": "integration_test/server_defaults_test.dart",
+                "lf7-roots-missing": "integration_test/server_roots_missing_test.dart",
                 "lf6-cleanup": "integration_test/server_pack_cleanup_test.dart",
                 "lf5-recovery": "integration_test/server_pack_reader_recovery_test.dart",
             }[PREFIX],
@@ -504,6 +513,7 @@ def main():
                 or args.pack_purge
                 or args.maintenance_tasks
                 or args.managed_defaults
+                or args.roots_missing
                 else 3
                 if args.backups
                 else 2
