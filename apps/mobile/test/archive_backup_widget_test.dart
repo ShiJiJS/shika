@@ -184,13 +184,11 @@ void main() {
       target,
       450,
       scrollable: find
-          .byWidgetPredicate(
-            (w) =>
-                w is Scrollable &&
-                (w.axisDirection == AxisDirection.down ||
-                    w.axisDirection == AxisDirection.up),
+          .descendant(
+            of: find.byType(ListView).last,
+            matching: find.byType(Scrollable),
           )
-          .last,
+          .first,
     );
     await t.pumpAndSettle();
   }

@@ -91,10 +91,11 @@ void main() {
           target,
           400,
           scrollable: find
-              .byWidgetPredicate(
-                (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
+              .descendant(
+                of: find.byType(ListView).last,
+                matching: find.byType(Scrollable),
               )
-              .last,
+              .first,
         );
         await t.pumpAndSettle();
       }
