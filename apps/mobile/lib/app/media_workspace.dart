@@ -241,6 +241,8 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                     ),
                     PopupMenuButton<String>(
                       tooltip: '更多',
+                      onOpened: () =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
                       onSelected: (value) {
                         if (value == 'select') {
                           pack

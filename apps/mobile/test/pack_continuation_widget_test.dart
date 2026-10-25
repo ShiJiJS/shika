@@ -124,6 +124,23 @@ void main() {
   );
 
   testWidgets(
+    'opening catalog actions releases search focus before selecting contents',
+    (t) async {
+      final page = await start(t);
+      await t.showKeyboard(find.byKey(const Key('pack-search')));
+      expect(t.testTextInput.isVisible, isTrue);
+      await t.tap(find.byTooltip('更多'));
+      await frames(t);
+      expect(t.testTextInput.isVisible, isFalse);
+      await t.tap(find.text('多选内容'));
+      await frames(t);
+      expect(page.selecting, isTrue);
+      expect(find.byKey(const Key('pack-continuation')), findsNothing);
+      expect(t.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
     'summary failure retains catalog, retry is read-only, unknown page is not guessed',
     (t) async {
       repo.failSummary = true;
