@@ -138,6 +138,18 @@ void main() {
         );
       }
 
+      Future<void> syncFromSettings() async {
+        final previous = repo.libraryPreparation.value.taskId;
+        await tap(find.text('同步外部变更'));
+        await until(() {
+          final state = repo.libraryPreparation.value;
+          return state.taskId != null &&
+              state.taskId != previous &&
+              !state.scanning &&
+              state.status == 'completed';
+        }, 'the newly accepted scan task completed');
+      }
+
       Future<void> cleanup({bool cancel = false}) async {
         await tap(find.byKey(const Key('clear-missing-kind')));
         await tap(
@@ -182,13 +194,7 @@ void main() {
       await enabled(false);
       await shot('roots-disabled');
       await enabled(true);
-      await tap(find.text('同步外部变更'));
-      await until(
-        () =>
-            !repo.libraryPreparation.value.scanning &&
-            repo.libraryPreparation.value.ready,
-        'real root scan',
-      );
+      await syncFromSettings();
       final catalog = await repo.loadPacks(PackQuery());
       expect(catalog.total, 27);
       final first = catalog.items.firstWhere((p) => p.name == '图包01');
@@ -226,11 +232,7 @@ void main() {
       await shot('roots-conflict');
       await tap(find.byTooltip('关闭面板'));
       await fixture('/__fixture/actions/missing-native-folders');
-      await tap(find.text('同步外部变更'));
-      await until(
-        () => !repo.libraryPreparation.value.scanning,
-        'missing scan',
-      );
+      await syncFromSettings();
       await enabled(false);
       await openMissing();
       await until(
