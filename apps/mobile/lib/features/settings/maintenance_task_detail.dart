@@ -9,6 +9,7 @@ import '../../library/request_scope.dart';
 import '../../ui/paper.dart';
 import '../packs/pack_file_action.dart';
 import '../packs/pack_purge_result.dart';
+import 'purge_history_page.dart';
 
 class MaintenanceTaskDetail extends StatefulWidget {
   const MaintenanceTaskDetail({
@@ -254,6 +255,45 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
     }
   }
 
+  Future<void> historyPurge({bool results = false}) async {
+    if (acting || !current) return;
+    setState(() {
+      acting = true;
+      error = '';
+    });
+    PurgeHistoryDetails? details;
+    try {
+      final Object source = widget.catalog;
+      if (source is! HistoricalPurgeCatalog) {
+        throw const LibraryFailure('当前服务未提供历史图片明细');
+      }
+      details = source.purgeHistory(task);
+      if (!mounted || !current) {
+        details.dispose();
+        return;
+      }
+      final reader = details;
+      details = null; // The history route owns and cancels its reader.
+      await Navigator.of(context).push<void>(
+        MaterialPageRoute(
+          builder: (_) => PurgeHistoryPage(
+            repository: widget.repository,
+            details: reader,
+            task: task,
+            results: results,
+          ),
+        ),
+      );
+    } catch (failure) {
+      details?.dispose();
+      if (mounted && current) {
+        setState(() => error = packFileFailureMessage(failure));
+      }
+    } finally {
+      if (mounted) setState(() => acting = false);
+    }
+  }
+
   Future<void> download() async {
     if (acting || !current) return;
     setState(() {
@@ -443,6 +483,39 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
                 child: const Text('查看逐项图片结果'),
               ),
             ),
+          if (task.historical &&
+              ['pack_permanent', 'pack_purge_preview'].contains(task.kind)) ...[
+            if (widget.catalog case final HistoricalPurgeCatalog source
+                when source.supportsPurgeHistory && task.graphId != null)
+              Wrap(
+                spacing: 8,
+                runSpacing: 4,
+                children: [
+                  TextButton(
+                    key: const Key('task-history-purge-review'),
+                    onPressed: busy || acting || !current ? null : historyPurge,
+                    child: const Text('查看原精确清单'),
+                  ),
+                  if (task.kind == 'pack_permanent')
+                    TextButton(
+                      key: const Key('task-history-image-results'),
+                      onPressed: busy || acting || !current
+                          ? null
+                          : () => historyPurge(results: true),
+                      child: const Text('查看逐项图片结果'),
+                    ),
+                ],
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  task.graphId == null
+                      ? '这份记录未保留原图片明细，只能查看任务摘要。'
+                      : '当前服务尚未提供这份历史图片明细，请升级服务后重新打开。',
+                ),
+              ),
+          ],
           if (task.kind == 'pack_restore_plan' && !task.historical) ...[
             const Padding(
               padding: EdgeInsets.only(top: 8),

@@ -2,7 +2,7 @@
 
 import json
 import uuid
-from typing import Annotated
+from typing import Annotated, Literal
 
 from fastapi import APIRouter, Query, Request
 from fastapi.responses import FileResponse
@@ -132,6 +132,50 @@ def router(auth_required):
         path = backups.artifact(identity, original=original)
         return FileResponse(
             path, media_type="application/json", filename=f"video-viewer-{identity}.json"
+        )
+
+    @route.get("/tasks/{identity}/purge-review")
+    def purge_review(
+        identity: str,
+        request: Request,
+        offset: Annotated[int, Query(ge=0, lt=2**63)] = 0,
+        limit: Annotated[int, Query(ge=1, le=100)] = 24,
+        graph_id: str | None = None,
+        epoch: str | None = None,
+    ):
+        with request.app.state.db.read() as session:
+            history, graph = required(session), selected(session, graph_id, epoch)
+        return history.purge_review(identity, offset=offset, limit=limit, graph_id=graph)
+
+    @route.get("/tasks/{identity}/purge-review/files")
+    def purge_files(
+        identity: str,
+        request: Request,
+        trash_id: str = Query(min_length=1, max_length=128),
+        offset: Annotated[int, Query(ge=0, lt=2**63)] = 0,
+        limit: Annotated[int, Query(ge=1, le=100)] = 100,
+        graph_id: str | None = None,
+        epoch: str | None = None,
+    ):
+        with request.app.state.db.read() as session:
+            history, graph = required(session), selected(session, graph_id, epoch)
+        return history.purge_files(identity, trash_id, offset=offset, limit=limit, graph_id=graph)
+
+    @route.get("/tasks/{identity}/purge-pages")
+    def purge_pages(
+        identity: str,
+        request: Request,
+        offset: Annotated[int, Query(ge=0, lt=2**63)] = 0,
+        limit: Annotated[int, Query(ge=1, le=100)] = 24,
+        kind: Literal["all", "image", "directory"] = "all",
+        outcome: Literal["all", "unfinished"] = "all",
+        graph_id: str | None = None,
+        epoch: str | None = None,
+    ):
+        with request.app.state.db.read() as session:
+            history, graph = required(session), selected(session, graph_id, epoch)
+        return history.purge_pages(
+            identity, offset=offset, limit=limit, kind=kind, outcome=outcome, graph_id=graph
         )
 
     @route.get("/operations/{namespace}/{identity}")

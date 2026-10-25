@@ -49,6 +49,8 @@ class ServiceCapabilities {
   bool get backupV2 =>
       values.contains('backup_v2') && archiveMaximumBytes != null;
   bool get managementHistory => values.contains('management_history');
+  bool get managementPurgeHistory =>
+      managementHistory && values.contains('management_purge_history');
   final Set<String> values;
   bool get typedRoots => values.contains('typed_roots');
   bool get packTags => values.contains('pack_tags');

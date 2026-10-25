@@ -386,6 +386,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "pack_missing_cleanup",
                 "management_authority",
                 "management_history",
+                "management_purge_history",
             ],
         }
 
