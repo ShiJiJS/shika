@@ -43,6 +43,9 @@ def pump():
         log.write(line); log.flush(); lines.put(line)
 threading.Thread(target=pump, daemon=True).start()
 started = time.monotonic()
+def download_names():
+    return set(device('shell', 'ls', '-1', '/sdcard/Download', capture_output=True).stdout.decode().splitlines())
+before_downloads = download_names()
 seen = []
 try:
     while process.poll() is None or not lines.empty():
@@ -77,10 +80,17 @@ try:
     assert code == 0 and seen == expected, (code, seen)
     text = (args.output / 'flutter.log').read_text()
     assert 'SAF_VERIFIED:bytes=42008576,sha256=' in text and 'All tests passed!' in text
-    device('shell', 'sha256sum', '/sdcard/Download/video-viewer-backup.vvbackup',
-           stdout=(args.output / 'saved-sha256.txt').open('w'))
+    created = download_names() - before_downloads
+    assert len(created) == 1 and all(n.startswith('video-viewer-backup') and n.endswith('.vvbackup') for n in created), created
+    # Quote the known generated provider filename for Android's shell.
+    filename = next(iter(created))
+    assert all(c.isalnum() or c in ' .()-_' for c in filename), filename
+    actual = device('shell', 'sha256sum', "'/sdcard/Download/" + filename + "'", capture_output=True).stdout.decode()
+    expected_hash = re.search(r'SAF_VERIFIED:bytes=42008576,sha256=([a-f0-9]{64})', text)[1]
+    assert actual.split()[0] == expected_hash, actual
+    (args.output / 'saved-sha256.txt').write_text(actual)
     proof = {'device': args.device, 'stages': seen, 'exit_code': code,
-             'elapsed_seconds': round(time.monotonic() - started, 2)}
+             'elapsed_seconds': round(time.monotonic() - started, 2), 'created_document': filename, 'sha256':expected_hash}
     (args.output / 'result.json').write_text(json.dumps(proof, indent=2)+'\n')
     print(json.dumps(proof), flush=True)
 finally:
