@@ -23,6 +23,7 @@ P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已�
 - [部署、安装、日常使用与恢复手册](docs/deployment.md)
 - [V1 本机交付、安装包校验与目标环境待验项](docs/v1-validation.md)
 - [Flutter 客户端：真实服务、演示与开发](apps/mobile/README.md)
+- [rv 命令行客户端：库维护与自动化流水线入口](apps/cli/README.md)
 - [客户端数据接口与阶段边界](docs/client-data-contract.md)
 - [客户端验证和模拟器画面](docs/client-validation.md)
 - [Flutter 与真实服务联调、隔离测试实例](docs/integration-validation.md)
