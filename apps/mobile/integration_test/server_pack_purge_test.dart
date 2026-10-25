@@ -63,6 +63,20 @@ void main() {
       }
 
       Future<void> tap(Finder target) async {
+        // Large-text notices are in the trash list, and can be virtualized
+        // above the first visible card after returning from a review sheet.
+        if (target.evaluate().isEmpty &&
+            find.byKey(const Key('pack-trash-list')).evaluate().isNotEmpty) {
+          await t.scrollUntilVisible(
+            target,
+            -300,
+            scrollable: find.descendant(
+              of: find.byKey(const Key('pack-trash-list')),
+              matching: find.byType(Scrollable),
+            ),
+            maxScrolls: 30,
+          );
+        }
         await until(() => target.evaluate().isNotEmpty, 'target exists');
         await t.ensureVisible(target);
         await until(
