@@ -1,0 +1,62 @@
+[
+  {
+    "round": 1,
+    "source_commit": "459870b1a96589b1b95b8f8fce8674f0319f81ac",
+    "viewport": "390",
+    "text_scale": "1",
+    "command": [
+      "bash",
+      "scripts/dev.sh",
+      "python3",
+      "scripts/run-client-connection-test.py",
+      "--managed-defaults",
+      "--workspace-viewport",
+      "390",
+      "--workspace-text-scale",
+      "1"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 143.51,
+    "apk_sha256": "d0992a52aa59ce72fbe61045bfac8553521e228d6c6335b2c8a54ca9ce851667"
+  },
+  {
+    "round": 2,
+    "source_commit": "459870b1a96589b1b95b8f8fce8674f0319f81ac",
+    "viewport": "360",
+    "text_scale": "2",
+    "command": [
+      "bash",
+      "scripts/dev.sh",
+      "python3",
+      "scripts/run-client-connection-test.py",
+      "--managed-defaults",
+      "--workspace-viewport",
+      "360",
+      "--workspace-text-scale",
+      "2"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 125.56,
+    "apk_sha256": "3b0f79f263b9f089d18fa378718d2bf7285ce7d585cd41ee8c12ea8829daa6fc"
+  },
+  {
+    "round": 3,
+    "source_commit": "459870b1a96589b1b95b8f8fce8674f0319f81ac",
+    "viewport": "390",
+    "text_scale": "1",
+    "command": [
+      "bash",
+      "scripts/dev.sh",
+      "python3",
+      "scripts/run-client-connection-test.py",
+      "--managed-defaults",
+      "--workspace-viewport",
+      "390",
+      "--workspace-text-scale",
+      "1"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 109.66,
+    "apk_sha256": "e0117bf2d4046df8b11e3351f0a1dd8df910b13a1bc94814d103ab25e9433c9b"
+  }
+]

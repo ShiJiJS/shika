@@ -1,0 +1,145 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.39kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 101B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 118.09kB 0.0s done
+#5 DONE 0.0s
+
+#6 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.1s done
+#6 DONE 0.1s
+
+#7 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [runtime 3/9] WORKDIR /app
+#8 CACHED
+
+#9 [runtime 4/9] COPY requirements.lock ./
+#9 CACHED
+
+#10 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#10 CACHED
+
+#11 [runtime 6/9] COPY video_viewer ./video_viewer
+#11 DONE 0.1s
+
+#12 [runtime 7/9] COPY migrations ./migrations
+#12 DONE 0.1s
+
+#13 [runtime 8/9] COPY alembic.ini ./
+#13 DONE 0.1s
+
+#14 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#14 DONE 0.3s
+
+#15 [test 1/4] COPY requirements-test.lock ./
+#15 DONE 0.1s
+
+#16 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#16 2.009 Requirement already satisfied: alembic==1.20.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 7)) (1.20.0)
+#16 2.010 Requirement already satisfied: annotated-doc==0.0.5 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 13)) (0.0.5)
+#16 2.010 Requirement already satisfied: annotated-types==0.8.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 19)) (0.8.0)
+#16 2.011 Requirement already satisfied: anyio==4.15.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 25)) (4.15.1)
+#16 2.011 Requirement already satisfied: argon2-cffi==25.1.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 32)) (25.1.0)
+#16 2.011 Requirement already satisfied: argon2-cffi-bindings==26.1.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 38)) (26.1.0)
+#16 2.582 Collecting certifi==2026.7.22 (from -r requirements-test.lock (line 83))
+#16 3.137   Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+#16 3.312 Requirement already satisfied: cffi==2.1.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 89)) (2.1.1)
+#16 3.312 Requirement already satisfied: click==8.5.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 193)) (8.5.0)
+#16 3.313 Requirement already satisfied: fastapi==0.143.3 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 199)) (0.143.3)
+#16 3.313 Requirement already satisfied: h11==0.16.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 205)) (0.16.0)
+#16 3.455 Collecting httpcore==1.0.9 (from -r requirements-test.lock (line 212))
+#16 3.562   Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#16 3.750 Collecting httpx==0.28.1 (from -r requirements-test.lock (line 216))
+#16 3.865   Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#16 3.889 Requirement already satisfied: idna==3.20 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 220)) (3.20)
+#16 3.989 Collecting iniconfig==2.3.1 (from -r requirements-test.lock (line 227))
+#16 4.102   Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+#16 4.104 Requirement already satisfied: mako==1.4.3 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 231)) (1.4.3)
+#16 4.104 Requirement already satisfied: markupsafe==3.0.4 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 237)) (3.0.4)
+#16 4.105 Requirement already satisfied: opentelemetry-api==1.45.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 392)) (1.45.1)
+#16 4.207 Collecting packaging==26.3 (from -r requirements-test.lock (line 398))
+#16 4.324   Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#16 4.452 Collecting pluggy==1.7.0 (from -r requirements-test.lock (line 402))
+#16 4.567   Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+#16 4.573 Requirement already satisfied: pycparser==3.11 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 406)) (3.11)
+#16 4.573 Requirement already satisfied: pydantic==2.14.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 412)) (2.14.1)
+#16 4.573 Requirement already satisfied: pydantic-core==2.50.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 418)) (2.50.1)
+#16 4.708 Collecting pygments==2.21.0 (from -r requirements-test.lock (line 559))
+#16 4.815   Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#16 5.007      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 9.0 MB/s  0:00:00
+#16 5.174 Collecting pytest==9.1.1 (from -r requirements-test.lock (line 563))
+#16 5.285   Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+#16 5.930 Collecting ruff==0.17.1 (from -r requirements-test.lock (line 567))
+#16 6.048   Downloading ruff-0.17.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (9.9 MB)
+#16 6.681      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9.9/9.9 MB 16.9 MB/s  0:00:00
+#16 6.701 Requirement already satisfied: sqlalchemy==2.1.4 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 587)) (2.1.4)
+#16 6.703 Requirement already satisfied: starlette==1.8.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 664)) (1.8.0)
+#16 6.707 Requirement already satisfied: typing-extensions==4.16.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 670)) (4.16.0)
+#16 6.707 Requirement already satisfied: typing-inspection==0.4.4 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 683)) (0.4.4)
+#16 6.708 Requirement already satisfied: uvicorn==0.54.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 690)) (0.54.0)
+#16 6.709 Requirement already satisfied: pillow==13.0.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 697)) (13.0.0)
+#16 6.971 Installing collected packages: ruff, pygments, pluggy, packaging, iniconfig, certifi, pytest, httpcore, httpx
+#16 8.475 
+#16 8.478 Successfully installed certifi-2026.7.22 httpcore-1.0.9 httpx-0.28.1 iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-9.1.1 ruff-0.17.1
+#16 8.478 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#16 DONE 8.7s
+
+#17 [test 3/4] COPY tests ./tests
+#17 DONE 0.1s
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 DONE 0.1s
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 2.3s done
+#19 exporting manifest sha256:ad0c0fe3c9eaa3371f81adb36fd6c2d96f084d4b6e7225e45b7e362e8c982976 0.0s done
+#19 exporting config sha256:b98e5002c5a4eabef685c0aec4e2509960b044eac8a31435bc9d4146449cbe79 0.0s done
+#19 exporting attestation manifest sha256:22c5555fc1c3b12f2368dfd2650a7977d226a0fa5cda9bef7423d19d5de72eb0 0.1s done
+#19 exporting manifest list sha256:90a7d67c631b3b7d1210231601dac022498f02c416cc016066f884fd58bec56c
+#19 exporting manifest list sha256:90a7d67c631b3b7d1210231601dac022498f02c416cc016066f884fd58bec56c 0.0s done
+#19 naming to docker.io/library/video-viewer-server:e2e done
+#19 unpacking to docker.io/library/video-viewer-server:e2e
+#19 unpacking to docker.io/library/video-viewer-server:e2e 0.7s done
+#19 DONE 3.2s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.0s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_defaults_test.dart
+Running Gradle task 'assembleDebug'...                             24.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        2,469ms
+00:00 +0: LF7 managed defaults preserve current range and opened pack; migration, cancellation and unknown receipt
+VV_DEFAULTS_PROOF {"patches":2,"old_pack_preserved":true,"unread_pack_inherits":true,"current_video_range_preserved":true,"local_migration_reopened":true}
+00:59 +1: (tearDownAll)
+00:59 +1: All tests passed!

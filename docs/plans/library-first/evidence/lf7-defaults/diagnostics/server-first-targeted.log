@@ -1,0 +1,70 @@
+F......F                                                                 [100%]
+=================================== FAILURES ===================================
+____ test_defaults_do_not_change_current_round_and_only_receipt_is_replayed ____
+
+library = (<starlette.testclient.TestClient object at 0xffff9e98dbe0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_defaults_do_not_change_cu0/media'))
+
+    def test_defaults_do_not_change_current_round_and_only_receipt_is_replayed(library):
+        client, _ = library
+        active, _ = create_round(client, "random")
+        before = client.get("/api/v1/rounds/current").json()
+        assert client.get("/api/v1/playback-defaults").json() == {"order": "random", "revision": 0}
+        saved = change(client)
+        assert saved.status_code == 200 and saved.json() == {"order": "sequential", "revision": 1}
+        assert change(client).json() == saved.json()
+        assert change(client, order="random").json()["error"]["code"] == "idempotency_conflict"
+        assert change(client, "other").json()["error"]["code"] == "playback_defaults_changed"
+        receipt = client.get("/api/v1/playback-default-requests/default-1").json()
+        assert receipt == {"status": "completed", "result": saved.json()}
+        assert client.get("/api/v1/playback-default-requests/missing").status_code == 404
+        assert client.get("/api/v1/rounds/current").json() == before
+>       assert before["id"] == active["id"]
+               ^^^^^^^^^^^^
+E       KeyError: 'id'
+
+tests/test_playback_defaults.py:32: KeyError
+_________ test_v1_restore_reseeds_implicit_default_from_imported_round _________
+
+library = (<starlette.testclient.TestClient object at 0xffff975849e0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_v1_restore_reseeds_implic0/media'))
+
+    def test_v1_restore_reseeds_implicit_default_from_imported_round(library):
+        client, _ = library
+        create_round(client, "sequential")
+        raw, _ = export(client)
+        create_round(client, "random")
+>       restored, _ = restore(client, raw, {})
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_playback_defaults.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = <starlette.testclient.TestClient object at 0xffff975849e0>
+raw = b'{"created_at":1792901370.0743556,"format":"video-viewer-management","payload":{"mounts":[{"id":"main","name":"\xe6\x..."video_tags":[],"videos":[]}},"sha256":"d92965bec03ea88d0b101a10b66ff49511b3b63590da2fca7bbc38dd16eccfd4","version":1}'
+mapping = {}, request_id = None
+
+    def restore(client, raw, mapping, *, request_id=None):
+        preview = inspect(client, raw)
+        assert preview["status"] == "completed", preview
+        body = {
+            "request_id": request_id or str(uuid.uuid4()),
+            "preview_id": preview["id"],
+            "root_mapping": mapping,
+            "confirmed": True,
+        }
+        response = client.post("/api/v1/backup-restores", json=body)
+>       assert response.status_code == 202, response.text
+E       AssertionError: {"error":{"code":"invalid_mapping","message":"请为备份中的每个媒体目录明确指定路径或保持未映射"}}
+E       assert 422 == 202
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+tests/test_backups.py:69: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_playback_defaults.py::test_defaults_do_not_change_current_round_and_only_receipt_is_replayed
+FAILED tests/test_playback_defaults.py::test_v1_restore_reseeds_implicit_default_from_imported_round
+2 failed, 6 passed, 1 warning in 1.77s

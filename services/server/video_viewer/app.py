@@ -33,6 +33,7 @@ from .pack_restore_plans import PackRestorePlans
 from .pack_tags import PackTags
 from .packs import Packs
 from .playback import Playback
+from .playback_defaults import PlaybackDefaults
 from .reading import Reading
 from .reading_api import router as reading_router
 from .scanner import Scanner
@@ -83,6 +84,12 @@ class RoundInput(Input):
         if self.sort == "recent" and self.source != "recent":
             raise ValueError("Recent sorting requires the recent source")
         return self
+
+
+class PlaybackDefaultsInput(Input):
+    request_id: str = Field(min_length=1, max_length=128)
+    expected_revision: int = Field(ge=0)
+    order: Literal["random", "sequential"]
 
 
 class OrderInput(Input):
@@ -194,6 +201,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         app.state.catalog, app.state.scanner = catalog, scanner
         app.state.streams = MediaStreams(db, configured)
         app.state.playback = Playback(db, catalog, app.state.streams)
+        app.state.playback_defaults = PlaybackDefaults(db)
         app.state.tags = Tags(db, app.state.playback)
         app.state.pack_tags = PackTags(db)
         app.state.packs, app.state.images = Packs(db), ImageStreams(db, configured)
@@ -315,8 +323,21 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "pack_permanent_delete",
                 "maintenance_tasks",
                 "pack_restore_plans",
+                "managed_playback_defaults",
             ],
         }
+
+    @app.get("/api/v1/playback-defaults", dependencies=auth_required)
+    def playback_defaults(request: Request):
+        return request.app.state.playback_defaults.read()
+
+    @app.patch("/api/v1/playback-defaults", dependencies=auth_required)
+    def set_playback_defaults(body: PlaybackDefaultsInput, request: Request):
+        return request.app.state.playback_defaults.write(**body.model_dump())
+
+    @app.get("/api/v1/playback-default-requests/{request_id}", dependencies=auth_required)
+    def playback_default_receipt(request_id: str, request: Request):
+        return request.app.state.playback_defaults.receipt(request_id)
 
     @app.get("/api/v1/mounts", dependencies=auth_required)
     def mounts(request: Request):

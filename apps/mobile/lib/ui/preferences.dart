@@ -12,13 +12,21 @@ class UiPreferences extends ChangeNotifier {
     bool dark = false,
     bool preloadAdjacent = true,
     PlayOrder? videoOrder,
-  }) => UiPreferences._(file, dark, preloadAdjacent, videoOrder);
+    Set<String> migratedDefaults = const {},
+  }) => UiPreferences._(
+    file,
+    dark,
+    preloadAdjacent,
+    videoOrder,
+    migratedDefaults,
+  );
   UiPreferences._(
     this._file,
     this._dark,
     this._preloadAdjacent,
     this._videoOrder,
-  );
+    Set<String> migratedDefaults,
+  ) : _migratedDefaults = Set.of(migratedDefaults);
   final File? _file;
   bool _dark;
   bool get dark => _dark;
@@ -26,6 +34,8 @@ class UiPreferences extends ChangeNotifier {
   bool get preloadAdjacent => _preloadAdjacent;
   PlayOrder? _videoOrder;
   PlayOrder? get videoOrder => _videoOrder;
+  Set<String> _migratedDefaults;
+  bool defaultMigrationDone(String scope) => _migratedDefaults.contains(scope);
   Future<void> _changes = Future.value();
 
   static Future<UiPreferences> load({File? file}) async {
@@ -35,12 +45,16 @@ class UiPreferences extends ChangeNotifier {
     var dark = false;
     var preload = true;
     PlayOrder? order;
+    Set<String> migrated = {};
     try {
       if (await file.exists()) {
         final saved = jsonDecode(await file.readAsString());
         dark = saved is Map && saved['dark'] == true;
         preload = saved is! Map || saved['preloadAdjacent'] != false;
         if (saved is Map) {
+          migrated = (saved['defaultMigrations'] is List
+              ? (saved['defaultMigrations'] as List).whereType<String>().toSet()
+              : <String>{});
           order = PlayOrder.values
               .where((value) => value.name == saved['videoOrder'])
               .firstOrNull;
@@ -56,6 +70,7 @@ class UiPreferences extends ChangeNotifier {
       dark: dark,
       preloadAdjacent: preload,
       videoOrder: order,
+      migratedDefaults: migrated,
     );
   }
 
@@ -65,21 +80,25 @@ class UiPreferences extends ChangeNotifier {
   Future<void> setVideoOrder(PlayOrder value) => _update(videoOrder: value);
   Future<void> ensureVideoOrder(PlayOrder value) =>
       _update(videoOrder: value, onlyIfMissing: true);
+  Future<void> markDefaultMigration(String scope) => _update(migration: scope);
 
   Future<void> _update({
     bool? dark,
     bool? preload,
     PlayOrder? videoOrder,
     bool onlyIfMissing = false,
+    String? migration,
   }) {
     final work = _changes.then((_) async {
       final nextDark = dark ?? _dark, nextPreload = preload ?? _preloadAdjacent;
       final nextOrder = onlyIfMissing
           ? _videoOrder ?? videoOrder
           : videoOrder ?? _videoOrder;
+      final nextMigrations = {..._migratedDefaults, ?migration};
       if (nextDark == _dark &&
           nextPreload == _preloadAdjacent &&
-          nextOrder == _videoOrder) {
+          nextOrder == _videoOrder &&
+          setEquals(nextMigrations, _migratedDefaults)) {
         return;
       }
       await _file?.writeAsString(
@@ -87,12 +106,14 @@ class UiPreferences extends ChangeNotifier {
           'dark': nextDark,
           'preloadAdjacent': nextPreload,
           if (nextOrder != null) 'videoOrder': nextOrder.name,
+          'defaultMigrations': nextMigrations.toList()..sort(),
         }),
         flush: true,
       );
       _dark = nextDark;
       _preloadAdjacent = nextPreload;
       _videoOrder = nextOrder;
+      _migratedDefaults = nextMigrations;
       notifyListeners();
     });
     _changes = work.catchError((Object _) {});

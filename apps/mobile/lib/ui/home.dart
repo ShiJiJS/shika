@@ -13,6 +13,7 @@ import '../features/library/library_query_controller.dart';
 import '../features/preview/video_preview_route.dart';
 import '../features/packs/pack_trash_page.dart';
 import '../features/settings/maintenance_tasks_page.dart';
+import '../features/settings/default_settings_sheet.dart';
 import '../library/repository.dart';
 import 'paper.dart';
 import 'player.dart';
@@ -444,12 +445,16 @@ class _LibraryHomeState extends State<LibraryHome> {
     var pushed = false;
     try {
       if (!await perform(() async {
-        await widget.preferences.ensureVideoOrder(entryOrder);
-        await repo.beginPreview(
-          origin.entry,
-          anchor: anchor,
-          order: widget.preferences.videoOrder,
-        );
+        if (!repo.capabilities.managedPlaybackDefaults) {
+          await widget.preferences.ensureVideoOrder(entryOrder);
+        }
+        final order = await repo.defaultVideoOrder(entryOrder);
+        if (!mounted ||
+            generation != _previewGeneration ||
+            !identical(connection, repo.connectionIdentity)) {
+          throw const RequestCancelled();
+        }
+        await repo.beginPreview(origin.entry, anchor: anchor, order: order);
       })) {
         return;
       }
@@ -632,6 +637,16 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   Future<void> order() async {
+    if (libraryFirst && repo.capabilities.managedPlaybackDefaults) {
+      await sheet<void>(
+        DefaultSettingsSheet(
+          repository: repo,
+          local: widget.preferences,
+          video: true,
+        ),
+      );
+      return;
+    }
     final mode = await sheet<PlayOrder>(
       SheetFrame(
         title: libraryFirst ? '默认播放顺序' : '播放模式',
@@ -2215,11 +2230,26 @@ class _LibraryHomeState extends State<LibraryHome> {
       settingRow(
         Icons.shuffle,
         libraryFirst ? '默认播放顺序' : '播放顺序',
-        (libraryFirst ? entryOrder : data.order) == PlayOrder.random
+        libraryFirst && repo.capabilities.managedPlaybackDefaults
+            ? '保存在服务端 · 只影响新预览范围'
+            : (libraryFirst ? entryOrder : data.order) == PlayOrder.random
             ? '随机播放'
             : '顺序播放',
         order,
       ),
+      if (repo.capabilities.packReadingSessions)
+        settingRow(
+          Icons.menu_book_outlined,
+          '阅读偏好',
+          '默认阅读方式 · 每包单独记忆',
+          () => sheet<void>(
+            DefaultSettingsSheet(
+              repository: repo,
+              local: widget.preferences,
+              video: false,
+            ),
+          ),
+        ),
       if (kDebugMode && repo is DemoControls) ...[
         const SizedBox(height: 26),
         note('开发工具'),

@@ -25,6 +25,7 @@ from .file_state import reserved_steps
 from .file_transfer import rename_new, unlink_owned
 from .models import FileOperation, Observation, RequestRecord, Setting, Task, uid
 from .paths import make_directory, open_regular, signature
+from .playback_defaults import PlaybackDefaults
 from .requests import once
 
 
@@ -395,6 +396,13 @@ class Backups:
                     item.value = value
                 else:
                     session.add(Setting(key=key, value=value))
+            # v1 cannot contain explicit media defaults. Re-seed its implicit
+            # playback default from the imported round, not the replaced library.
+            session.execute(
+                delete(Setting).where(Setting.key.in_({"playback_defaults", "reader_defaults"}))
+            )
+            session.flush()
+            PlaybackDefaults.current(session)
             if self.fault_hook:
                 self.fault_hook("after_replace_before_commit", task_id)
             task = session.get(Task, task_id)

@@ -272,12 +272,19 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
     query.cancel();
     var pushed = false;
     try {
-      await widget.preferences.ensureVideoOrder(initialOrder);
-      await repo.beginPreview(
-        entry.entry,
-        anchor: anchor,
-        order: widget.preferences.videoOrder,
+      if (!repo.capabilities.managedPlaybackDefaults) {
+        await widget.preferences.ensureVideoOrder(initialOrder);
+      }
+      final order = await repo.defaultVideoOrder(
+        widget.preferences.videoOrder ?? initialOrder,
       );
+      if (!mounted ||
+          current != generation ||
+          !widget.active ||
+          !identical(connection, repo.connectionIdentity)) {
+        return;
+      }
+      await repo.beginPreview(entry.entry, anchor: anchor, order: order);
       if (!mounted ||
           current != generation ||
           !widget.active ||

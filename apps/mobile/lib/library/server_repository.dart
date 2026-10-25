@@ -17,6 +17,7 @@ part 'server_pack_reading.dart';
 part 'server_pack_trash.dart';
 part 'server_pack_purge.dart';
 part 'server_maintenance_tasks.dart';
+part 'server_playback_defaults.dart';
 
 typedef Json = Map<String, dynamic>;
 
@@ -58,7 +59,36 @@ class ServerLibraryRepository extends LibraryRepository
   final Set<_ServerPackTrash> _trashReaders = {};
   final Set<_ServerPackPurge> _purgeReaders = {};
   final Set<_ServerMaintenanceTasks> _taskReaders = {};
+  final Set<_ServerPlaybackDefaults> _defaultsReaders = {};
   int _readerEpoch = 0;
+  @override
+  PlaybackDefaultsGateway createPlaybackDefaults() {
+    ensureNotRestoring();
+    if (!capabilities.managedPlaybackDefaults || _fileScope == null) {
+      throw const LibraryFailure('当前服务尚不支持服务端默认播放顺序，请升级服务端');
+    }
+    final value = _ServerPlaybackDefaults(
+      this,
+      api,
+      _generation,
+      _readerEpoch,
+      _fileScope!,
+    );
+    _defaultsReaders.add(value);
+    return value;
+  }
+
+  @override
+  Future<PlayOrder> defaultVideoOrder(PlayOrder fallback) async {
+    if (!capabilities.managedPlaybackDefaults) return fallback;
+    final gateway = createPlaybackDefaults();
+    try {
+      return (await gateway.read()).order;
+    } finally {
+      gateway.dispose();
+    }
+  }
+
   @override
   PackRestorePlans createPackRestorePlans() {
     if (!capabilities.packRestorePlans || _fileScope == null) {
@@ -139,6 +169,9 @@ class ServerLibraryRepository extends LibraryRepository
   @override
   void _resetReaders() {
     _readerEpoch++;
+    for (final reader in _defaultsReaders.toList()) {
+      reader.dispose();
+    }
     for (final reader in _taskReaders.toList()) {
       reader.dispose();
     }

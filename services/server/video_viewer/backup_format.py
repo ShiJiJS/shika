@@ -58,7 +58,13 @@ def require_legacy_backup(session):
     fixed_round = session.scalar(
         select(PlaybackRound.id).where(PlaybackRound.membership == "fixed").limit(1)
     )
-    if typed_root or new_data or fixed_round:
+    managed_defaults = any(
+        json.loads(value).get("revision") != 0
+        for value in session.scalars(
+            select(Setting.value).where(Setting.key.in_({"reader_defaults", "playback_defaults"}))
+        )
+    )
+    if typed_root or new_data or fixed_round or managed_defaults:
         raise LibraryError("backup_upgrade_required", "当前管理数据需要媒体库备份 v2 支持", 409)
 
 
