@@ -532,8 +532,10 @@ def test_historical_graph_tampering_cannot_supply_original_result(library, sampl
 
 def test_bare_sqlite_writer_enables_persistent_reservation_after_migration(tmp_path):
     import uuid
+
     import pytest
     from sqlalchemy import text
+
     from video_viewer.errors import LibraryError
 
     database = Database(tmp_path / "initialization")
