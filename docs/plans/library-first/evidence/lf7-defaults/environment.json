@@ -1,0 +1,39 @@
+{
+  "source_commit": "459870b1a96589b1b95b8f8fce8674f0319f81ac",
+  "flutter": {
+    "frameworkVersion": "3.47.7",
+    "channel": "stable",
+    "repositoryUrl": "https://github.com/flutter/flutter.git",
+    "frameworkRevision": "abaf9c523780a608bd46686fd5e53740a07077f8",
+    "frameworkCommitDate": "2026-10-08 09:51:21 -0700",
+    "engineRevision": "deb287481e3ce9468f3434937ced4240a70539ca",
+    "engineCommitDate": "2026-10-07 17:09:12.000Z",
+    "engineContentHash": "d8a2d6c768c334d53e16277f837970ffa1e2de81",
+    "engineBuildDate": "2026-10-07 10:51:44.552",
+    "dartSdkVersion": "3.13.5",
+    "devToolsVersion": "2.60.0",
+    "flutterVersion": "3.47.7",
+    "flutterRoot": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter"
+  },
+  "sdk_clean": true,
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "frozen_prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "checks": {
+    "client": 354,
+    "server": 302,
+    "analyze": "No issues found",
+    "ruff": "All checks passed",
+    "python_compile": "passed",
+    "native_rounds": 3,
+    "independent_verifier": "passed"
+  },
+  "server_test_command": "docker run --rm --read-only --shm-size=64m --tmpfs /tmp:mode=1777 -v \"$PWD/services/server:/source\" -w /source video-viewer-server:defaults-test pytest -q -o cache_dir=/tmp/pytest-cache",
+  "server_warnings": "one preserved StarletteDeprecationWarning",
+  "native_scope": "same Android process: recreated App/Repository, real SecureCredentialStore test key and real local preference file; not process force-stop",
+  "restored_emulator": {
+    "size": "1080x2400",
+    "density": 420,
+    "font_scale": 1.0
+  },
+  "test_image_id": "sha256:f47b2448845830235682911999f4cc2b1d53efb6604e91519915d0aefc7a8936"
+}

@@ -1,0 +1,53 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/default_settings_test.dart
+test/default_settings_test.dart:241:15: Error: Undefined name 'ReaderMode'.
+        mode: ReaderMode.vertical,
+              ^^^^^^^^^^
+test/default_settings_test.dart:242:20: Error: Undefined name 'ReaderDirection'.
+        direction: ReaderDirection.rtl,
+                   ^^^^^^^^^^^^^^^
+test/default_settings_test.dart:276:31: Error: The method 'call' isn't defined for the type 'ThemeData'.
+ - 'ThemeData' is from 'package:flutter/src/material/theme_data.dart' ('../../.dev/flutter/packages/flutter/lib/src/material/theme_data.dart').
+Try correcting the name to the name of an existing method, or defining a method named 'call'.
+            theme: Paper.theme(false),
+                              ^
+00:00 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/default_settings_test.dart [E]
+  Failed to load "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/default_settings_test.dart":
+  Compilation failed for testPath=/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/default_settings_test.dart: test/default_settings_test.dart:241:15: Error: Undefined name 'ReaderMode'.
+          mode: ReaderMode.vertical,
+                ^^^^^^^^^^
+  test/default_settings_test.dart:242:20: Error: Undefined name 'ReaderDirection'.
+          direction: ReaderDirection.rtl,
+                     ^^^^^^^^^^^^^^^
+  test/default_settings_test.dart:276:31: Error: The method 'call' isn't defined for the type 'ThemeData'.
+   - 'ThemeData' is from 'package:flutter/src/material/theme_data.dart' ('../../.dev/flutter/packages/flutter/lib/src/material/theme_data.dart').
+  Try correcting the name to the name of an existing method, or defining a method named 'call'.
+              theme: Paper.theme(false),
+                                ^
+  .
+  Error: The Dart compiler exited unexpectedly.
+  package:flutter_tools/src/base/common.dart 34:3  throwToolExit
+  package:flutter_tools/src/compile.dart 1024:11   DefaultResidentCompiler._compile.<fn>
+  dart:async/zone_root.dart 48:47                  _rootRunUnary
+  dart:async/zone.dart 816:35                      _CustomZone.runUnary
+  dart:async/future_impl.dart 948:45               Future._propagateToListeners.handleValueCallback
+  dart:async/future_impl.dart 977:13               Future._propagateToListeners
+  dart:async/future_impl.dart 862:9                Future._propagateToListeners
+  dart:async/future_impl.dart 720:5                Future._completeWithValue
+  dart:async/future_impl.dart 804:7                Future._asyncCompleteWithValue.<fn>
+  dart:async/zone_root.dart 35:13                  _rootRun
+  dart:async/zone.dart 810:35                      _CustomZone.run
+  dart:async/zone.dart 702:7                       _CustomZone.runGuarded
+  dart:async/zone.dart 743:23                      _CustomZone.bindCallbackGuarded.<fn>
+  dart:async/schedule_microtask.dart 40:35         _microtaskLoop
+  dart:async/schedule_microtask.dart 49:5          _startMicrotaskLoop
+  dart:isolate-patch/isolate_patch.dart 127:13     _runPendingImmediateCallback
+  dart:isolate-patch/isolate_patch.dart 193:5      _RawReceivePort._handleMessage
+  
+00:00 +0 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preferences_test.dart: default migration decisions survive reopening and stay separate per service
+00:00 +1 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preferences_test.dart: preloading and appearance survive reopening without resetting each other
+00:00 +2 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preferences_test.dart: overlapping preference writes retain each other and initial adoption never replaces a chosen default
+00:00 +3 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preferences_test.dart: failed preference writes retain the previous values and do not break a later change
+00:00 +4 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/default_settings_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/default_settings_test.dart

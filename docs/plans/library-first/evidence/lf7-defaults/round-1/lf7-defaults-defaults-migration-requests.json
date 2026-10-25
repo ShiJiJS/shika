@@ -1,0 +1,35 @@
+{
+  "items": [
+    {
+      "method": "GET",
+      "path": "/api/v1/rounds/dfe23abe-6750-4363-8712-97f37c8f23d4/entries",
+      "query": {
+        "offset": "14",
+        "limit": "48",
+        "v": "0"
+      },
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback-defaults",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

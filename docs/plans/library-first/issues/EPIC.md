@@ -113,3 +113,13 @@ App尚未替换旧循环，不能据服务端通过关闭DEL-04/06。继续原�
 固定源码完整三轮通过（360双倍字号283.58秒、390普通328.94秒、390普通334.18秒）。独立verify.py核对原1003ID分区、精确1000删除路径、1003附件及3张余图SHA、单次永久删除POST、原回执GET及实际分页。首段预期非零强停不算测试通过；完整证据见 docs/plans/library-first/evidence/lf7-purge-secure-restart/。
 
 本轮只增加测试/夹具/证据，应用和生产服务源码未改；analyze、夹具Ruff和编译通过，345客户端/294服务端为前阶段基线。其它来源/命令及部分失败重试强停组合、v2/v1备份与完整历史化、全设置/默认值迁移、历史图片失败根因及LF8完整原型/真机NAS/签名发布继续推进；冻结原型独立未改、未改8760/NAS、未发布APK，本issue保持开放。
+
+## 服务端默认值与旧本机设置迁移（2026-10-25，PR #46）
+
+[Draft PR #46](https://github.com/ShiJiJS/video_viewer/pull/46) 基于 #45，实现459870b。默认播放顺序接入当前服务的revision/idempotency管理数据，首次从旧轮次采纳后与轮次独立；新范围进入前读取最新值。图包阅读偏好直接复用既有reading-defaults接口，已读包保留独立偏好。旧本机顺序不自动上传，明确选择并保存后迁移，决定按endpoint+server_id本机隔离；冲突要求重读，未知只GET原请求，取消草稿不写。
+
+完整354项客户端、302项服务端、analyze及变更Ruff通过。固定源码Android正式三轮通过（390普通143.51秒、360双倍字号125.56秒、390普通109.66秒）；当前视频范围完整响应/已读包保持，未读包继承新默认，App/Repository及本机文件重建能读回迁移决定。每轮2次明确PATCH/1次原回执GET，81张图片SHA不变，独立verify.py复核。此次不是进程强停，不覆盖三个视频入口全部组合或v2恢复。首轮服务端环境漏传共享内存限制，按64MiB完整重跑通过；原始失败和ADB viewport超时均单独保留，不混算成功轮次。
+
+[契约与设置缺项审计](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-managed-defaults/docs/plans/library-first/LF7-DEFAULTS-DESIGN.md) / [完整证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-managed-defaults/docs/plans/library-first/evidence/lf7-defaults/README.md)。旧v1拒绝遗漏明确保存的新默认值，合法v1恢复重建隐式默认；v2仍未完成。
+
+下一步先补目录类型/启停的实际App控件（当前新建仍固定视频）与图包缺失管理，再继续v2类型化全数据图/根映射/前快照/完整替换/跨设备权威代次和历史只读、有界传输、真实文件选择器，以及其它命令/来源强停、历史图片失败根因、全原型暗色横屏、真机NAS与原签名升级。冻结原型独立未改，未改正式8760/NAS、未发布APK，LF7和总任务保持开放。
