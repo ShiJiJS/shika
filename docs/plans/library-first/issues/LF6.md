@@ -62,3 +62,11 @@ Flutter 3.47.7 Slider跨帧弹层保存的语义断言已用延迟保存测试�
 完整 **293项客户端/analyze、265项服务端/Ruff**通过。冷启动后的API36 Android关键流程连续三轮通过（390正常、360两倍字号、390正常，均51秒）；每轮108份文件，取消不变，部分后106、原任务重试后105，27份附件哈希全部保持，只有1次永久删除POST。真实HTTP大整数签名兼容问题已修正；早期夹具422和模拟器QEMU退出均单独保留为失败诊断，不计入三轮。
 
 [App契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/LF6-PURGE-CLIENT-DESIGN.md) / [完整证据与边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf6-pack-cleanup/docs/plans/library-first/evidence/lf6-purge-client/README.md)。冻结原型独立且未改；按DEL-05只删确认图片并保留附件，与原型“删除整目录”的文案差异已记录。原生仓库使用内存注入，不能冒充SecureStorage强杀冷启动验证；没有发布升级APK，也未部署NAS。
+
+## 整份恢复服务端检查点（2026-10-25）
+
+[Draft PR #42](https://github.com/ShiJiJS/video_viewer/pull/42) 基于 #41；实现3416b1e、扫描并发修正6880055。0012持久父计划/完整成员/唯一子批次，统一包预约，最多1000项逐批后台推进；重启先核对同一子操作，停止仅取消尚未开始成员。任务入口显示父计划和原成员分页。
+
+当前294项服务端/Ruff通过：1003项两批，停止/状态变化/并发/历史/迁移，以及三个边界各三次真实HTTP/SIGKILL。启动扫描并发已用两个固定交错复现并修正；进程验收等待扫描完成再核对全部原ID/代次与文件哈希。[设计与剩余范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-durable-restore/docs/plans/library-first/LF7-RESTORE-PLAN-DESIGN.md) / [原始证据及失败诊断](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-durable-restore/docs/plans/library-first/evidence/lf7-restore-plans/README.md)。
+
+App尚未替换旧循环，不能据服务端通过关闭DEL-04/06。继续原计划安全存储、响应丢失GET、离页/Android强杀重开、任务中心停止和原生验收。永久删除剩余选择持久化、v2备份及历史化、完整设置/默认值、真机NAS与全原型验收仍待推进。本阶段未改客户端/冻结原型/真实NAS，未发布APK；#31、#32与总任务继续开放。

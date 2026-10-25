@@ -1,0 +1,26 @@
+{
+  "source_commit": "6880055d72adce0c3f0a8f66c9181dfb920ca289",
+  "server_passed": 294,
+  "ruff": "All checks passed",
+  "actual_sigkill_cases": 9,
+  "sigkill_boundaries": [
+    "restore_child_accepted",
+    "logical_committed",
+    "restore_child_finished"
+  ],
+  "attempts_each": 3,
+  "restored_members_each": 7,
+  "unique_batches_each": 4,
+  "production_batch_test": {
+    "members": 1003,
+    "batches": 2
+  },
+  "deterministic_scan_interleavings": 2,
+  "migration": "0011 to 0012; old rows and pre-DDL snapshot verified",
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "frozen_prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "client_changed": false,
+  "android_new_plan_tested": false,
+  "docker_image": "sha256:82e16eee506761001d02b1430b93170f6cb99a61a415c3dc3bf81c39125e0fbc",
+  "python": "3.13.16"
+}

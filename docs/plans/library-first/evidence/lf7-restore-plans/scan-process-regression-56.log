@@ -1,0 +1,24 @@
+All checks passed!
+..{"phase": "restore_child_accepted", "attempt": 1, "fault": "SIGKILL", "members": 7, "batches": 4, "same_request": true, "media_unchanged": true}
+.{"phase": "restore_child_accepted", "attempt": 2, "fault": "SIGKILL", "members": 7, "batches": 4, "same_request": true, "media_unchanged": true}
+.{"phase": "restore_child_accepted", "attempt": 3, "fault": "SIGKILL", "members": 7, "batches": 4, "same_request": true, "media_unchanged": true}
+.{"phase": "logical_committed", "attempt": 1, "fault": "SIGKILL", "members": 7, "batches": 4, "same_request": true, "media_unchanged": true}
+.{"phase": "logical_committed", "attempt": 2, "fault": "SIGKILL", "members": 7, "batches": 4, "same_request": true, "media_unchanged": true}
+.{"phase": "logical_committed", "attempt": 3, "fault": "SIGKILL", "members": 7, "batches": 4, "same_request": true, "media_unchanged": true}
+.{"phase": "restore_child_finished", "attempt": 1, "fault": "SIGKILL", "members": 7, "batches": 4, "same_request": true, "media_unchanged": true}
+.{"phase": "restore_child_finished", "attempt": 2, "fault": "SIGKILL", "members": 7, "batches": 4, "same_request": true, "media_unchanged": true}
+.{"phase": "restore_child_finished", "attempt": 3, "fault": "SIGKILL", "members": 7, "batches": 4, "same_request": true, "media_unchanged": true}
+..............{"fixture": "502 generated PNGs, including 4K/8K", "first_scan_seconds": 59.516, "cached_scan_seconds": 0.337, "peak_decoder_kib": 401316, "page_count": 502, "private_media": false}
+................................
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/_pytest/config/__init__.py:1464
+  /usr/local/lib/python3.13/site-packages/_pytest/config/__init__.py:1464: PytestConfigWarning: Unknown config option: cache_dir
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+56 passed, 2 warnings in 120.27s (0:02:00)

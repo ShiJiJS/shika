@@ -1,0 +1,98 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_scan_snapshot_cannot_replace_or_mark_missing_packs_restored_during_its_lifetime[tick] _
+
+library = (<starlette.testclient.TestClient object at 0xffff9df2b4d0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_scan_snapshot_cannot_repl0/media'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff9dda2520>
+boundary = 'tick'
+
+    @pytest.mark.parametrize("boundary", ["tick", "reconcile"])
+    def test_scan_snapshot_cannot_replace_or_mark_missing_packs_restored_during_its_lifetime(library, monkeypatch, boundary):
+        client, media = library
+        _, catalog, rows = fixture(client, media, 4)
+        plans = client.app.state.pack_restore_plans
+        plans.batch_size = 2
+        original = getattr(PackScanner, boundary)
+        accepted = []
+    
+        def interleave(scanner, *args, **kwargs):
+            if not accepted:
+                identity = plans.submit([r["id"] for r in rows], "during-scan")
+                accepted.append(identity)
+                plans.futures[identity].result(timeout=10)
+            return original(scanner, *args, **kwargs)
+    
+        monkeypatch.setattr(PackScanner, boundary, interleave)
+>       task = sync(client)
+               ^^^^^^^^^^^^
+
+tests/test_pack_restore_scan_concurrency.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_packs.py:26: in sync
+    job = scan(client, timeout)
+          ^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+client = <starlette.testclient.TestClient object at 0xffff9df2b4d0>
+timeout = 60
+
+    def scan(client, timeout=30):
+        response = client.post("/api/v1/scans")
+        assert response.status_code == 202, response.text
+        task_id = response.json()["id"]
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            task = client.get(f"/api/v1/tasks/{task_id}").json()
+            if task["status"] in {"completed", "failed", "interrupted"}:
+>               assert task["status"] == "completed", task
+E               AssertionError: {'id': '7a85523d-ac43-49bb-8577-a1a786cc6ed1', 'kind': 'scan', 'status': 'failed', 'phase': 'failed', ...}
+E               assert 'failed' == 'completed'
+E                 
+E                 - completed
+E                 + failed
+
+tests/conftest.py:65: AssertionError
+_ test_scan_snapshot_cannot_replace_or_mark_missing_packs_restored_during_its_lifetime[reconcile] _
+
+library = (<starlette.testclient.TestClient object at 0xffff9c1f47d0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_scan_snapshot_cannot_repl1/media'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff9dc902b0>
+boundary = 'reconcile'
+
+    @pytest.mark.parametrize("boundary", ["tick", "reconcile"])
+    def test_scan_snapshot_cannot_replace_or_mark_missing_packs_restored_during_its_lifetime(library, monkeypatch, boundary):
+        client, media = library
+        _, catalog, rows = fixture(client, media, 4)
+        plans = client.app.state.pack_restore_plans
+        plans.batch_size = 2
+        original = getattr(PackScanner, boundary)
+        accepted = []
+    
+        def interleave(scanner, *args, **kwargs):
+            if not accepted:
+                identity = plans.submit([r["id"] for r in rows], "during-scan")
+                accepted.append(identity)
+                plans.futures[identity].result(timeout=10)
+            return original(scanner, *args, **kwargs)
+    
+        monkeypatch.setattr(PackScanner, boundary, interleave)
+        task = sync(client)
+        assert task["status"] == "completed"
+>       assert task["result"]["packs"]["missing"] == 0
+E       assert 4 == 0
+
+tests/test_pack_restore_scan_concurrency.py:33: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/_pytest/config/__init__.py:1464
+  /usr/local/lib/python3.13/site-packages/_pytest/config/__init__.py:1464: PytestConfigWarning: Unknown config option: cache_dir
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_pack_restore_scan_concurrency.py::test_scan_snapshot_cannot_replace_or_mark_missing_packs_restored_during_its_lifetime[tick]
+FAILED tests/test_pack_restore_scan_concurrency.py::test_scan_snapshot_cannot_replace_or_mark_missing_packs_restored_during_its_lifetime[reconcile]
+2 failed, 2 warnings in 2.87s

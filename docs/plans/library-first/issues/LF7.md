@@ -43,3 +43,11 @@ LF1 (#26)、LF2 (#27)、LF6 (#31)
 已接设置“操作任务”、24条真实服务分页、类型/状态筛选和成员详情；原回执只读核对、迟到旧请求隔离、原导出校验与取消保存保留记录。当前316项客户端、271项服务端/Ruff及analyze通过。固定源码 `92d9b15` 连续三轮真实Android通过（390普通、360双倍字号、390普通）：81张图片哈希不变，任务入口全GET、同一原备份下载两次。PR #41 基于 #40。详细范围和证据见 `docs/plans/library-first/LF7.md`。
 
 整份多批次计划、完整设置审计、服务端默认值/旧本机值迁移、v2/v1转换与恢复前快照、安全存储强杀仍未完成；原导出下载不代表图包v2备份已完成。本 issue 与总任务保持开放。冻结原型独立且未修改。
+
+## 整份恢复服务端检查点（2026-10-25）
+
+[Draft PR #42](https://github.com/ShiJiJS/video_viewer/pull/42) 基于 #41；实现3416b1e、扫描并发修正6880055。0012持久父计划/完整成员/唯一子批次，统一包预约，最多1000项逐批后台推进；重启先核对同一子操作，停止仅取消尚未开始成员。任务入口显示父计划和原成员分页。
+
+当前294项服务端/Ruff通过：1003项两批，停止/状态变化/并发/历史/迁移，以及三个边界各三次真实HTTP/SIGKILL。启动扫描并发已用两个固定交错复现并修正；进程验收等待扫描完成再核对全部原ID/代次与文件哈希。[设计与剩余范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-durable-restore/docs/plans/library-first/LF7-RESTORE-PLAN-DESIGN.md) / [原始证据及失败诊断](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-durable-restore/docs/plans/library-first/evidence/lf7-restore-plans/README.md)。
+
+App尚未替换旧循环，不能据服务端通过关闭DEL-04/06。继续原计划安全存储、响应丢失GET、离页/Android强杀重开、任务中心停止和原生验收。永久删除剩余选择持久化、v2备份及历史化、完整设置/默认值、真机NAS与全原型验收仍待推进。本阶段未改客户端/冻结原型/真实NAS，未发布APK；#31、#32与总任务继续开放。

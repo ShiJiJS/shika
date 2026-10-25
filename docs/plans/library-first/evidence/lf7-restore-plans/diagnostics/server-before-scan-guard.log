@@ -1,0 +1,166 @@
+All checks passed!
+============================= test session starts ==============================
+platform linux -- Python 3.13.16, pytest-9.1.1, pluggy-1.7.0
+rootdir: /app
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.15.1
+collected 291 items
+
+tests/test_backup_process_recovery.py ..                                 [  0%]
+tests/test_backups.py .................                                  [  6%]
+tests/test_catalog.py .............                                      [ 10%]
+tests/test_catalog_selection.py ..                                       [ 11%]
+tests/test_cleanup_and_fast_purge.py ....                                [ 13%]
+tests/test_database_concurrency.py ..                                    [ 13%]
+tests/test_directory_lookup.py .                                         [ 14%]
+tests/test_file_operations.py .................                          [ 19%]
+tests/test_file_process_recovery.py ..                                   [ 20%]
+tests/test_fixed_preview.py .........                                    [ 23%]
+tests/test_identity.py ..........                                        [ 27%]
+tests/test_image_probe.py ..                                             [ 27%]
+tests/test_image_transport.py .                                          [ 28%]
+tests/test_initial_import.py ....                                        [ 29%]
+tests/test_legacy_fixture.py .                                           [ 29%]
+tests/test_logical_trash.py .....                                        [ 31%]
+tests/test_maintenance_tasks.py ......                                   [ 33%]
+tests/test_media_types.py ...........                                    [ 37%]
+tests/test_pack_entry_anchors.py ..                                      [ 38%]
+tests/test_pack_operations.py ...................                        [ 44%]
+tests/test_pack_purge_execution.py ..................................... [ 57%]
+.......                                                                  [ 59%]
+tests/test_pack_purge_plans.py .................................         [ 71%]
+tests/test_pack_purge_process_recovery.py ......                         [ 73%]
+tests/test_pack_restore_history_migration.py ..                          [ 73%]
+tests/test_pack_restore_plans.py .........                               [ 76%]
+tests/test_pack_restore_process_recovery.py ...F.....                    [ 80%]
+tests/test_pack_tag_names.py ..                                          [ 80%]
+tests/test_packs.py ..........................                           [ 89%]
+tests/test_playback.py ........                                          [ 92%]
+tests/test_reading.py .........                                          [ 95%]
+tests/test_stream_transport.py .                                         [ 95%]
+tests/test_tags.py ......                                                [ 97%]
+tests/test_thumbnail_recovery.py ......                                  [100%]
+
+=================================== FAILURES ===================================
+_ test_sigkill_resumes_original_plan_without_replaying_a_committed_child[logical_committed-1] _
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_sigkill_resumes_original_3/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_sigkill_resumes_original_3/media'))
+phase = 'logical_committed', attempt = 1
+
+    @pytest.mark.parametrize("attempt", [1, 2, 3])
+    @pytest.mark.parametrize(
+        "phase", ["restore_child_accepted", "logical_committed", "restore_child_finished"]
+    )
+    def test_sigkill_resumes_original_plan_without_replaying_a_committed_child(
+        environment, phase, attempt
+    ):
+        settings, media = environment
+        parent = settings.data_dir.parent
+        config, secret, marker = parent / "mounts.json", parent / "passphrase", parent / "checkpoint"
+        config.write_text(json.dumps([{"id": "main", "name": "isolated", "path": str(media)}]))
+        secret.write_text(settings.passphrase)
+        with socket.socket() as reservation:
+            reservation.bind(("127.0.0.1", 0))
+            port = reservation.getsockname()[1]
+        env = {
+            **os.environ,
+            "VV_DATA_DIR": str(settings.data_dir),
+            "VV_MOUNTS_FILE": str(config),
+            "VV_PASSPHRASE_FILE": str(secret),
+            "VV_SCAN_INTERVAL": "0",
+            "VV_STABILITY_SECONDS": "0.02",
+            "TEST_RESTORE_PHASE": phase,
+            "TEST_RESTORE_MARKER": str(marker),
+        }
+    
+        def start(factory):
+            server = subprocess.Popen(
+                [
+                    sys.executable,
+                    "-m",
+                    "uvicorn",
+                    factory,
+                    "--factory",
+                    "--host",
+                    "127.0.0.1",
+                    "--port",
+                    str(port),
+                    "--no-access-log",
+                ],
+                env=env,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+            )
+            deadline = time.monotonic() + 20
+            while time.monotonic() < deadline:
+                if server.poll() is not None:
+                    raise AssertionError(server.communicate(timeout=5)[0].decode())
+                try:
+                    if httpx.get(f"http://127.0.0.1:{port}/health", timeout=1).status_code == 200:
+                        return server
+                except httpx.TransportError:
+                    pass
+                time.sleep(0.02)
+            server.kill()
+            server.communicate(timeout=5)
+            raise AssertionError("restore process startup timed out")
+    
+        server = start("tests.pack_restore_fault_server:create_fault_app")
+        try:
+            with httpx.Client(base_url=f"http://127.0.0.1:{port}", timeout=10) as client:
+                token = client.post(
+                    "/api/v1/auth/login", json={"passphrase": settings.passphrase}
+                ).json()["access_token"]
+                client.headers["Authorization"] = "Bearer " + token
+                _, packs, rows = fixture(client, media, 7)
+                originals = tree(media)
+                response = client.post(
+                    "/api/v1/pack-restore-plans",
+                    json={"trash_ids": [r["id"] for r in rows], "request_id": "process-unknown"},
+                )
+                assert response.status_code == 202, response.text
+                identity = response.json()["id"]
+                deadline = time.monotonic() + 10
+                while time.monotonic() < deadline and not marker.exists():
+                    time.sleep(0.02)
+                assert marker.read_text() == phase
+                server.kill()
+                server.communicate(timeout=5)
+                assert server.returncode == -9
+                server = start("video_viewer.app:create_app")
+                # Reopen is GET-only; the complete seven-member selection survived.
+                original = client.get("/api/v1/pack-restore-requests/process-unknown")
+                assert original.status_code == 200 and original.json()["id"] == identity
+                result = wait(client, identity)
+                assert result["result"]["succeeded"] == 7 and result["result"]["batches"] == 4
+                assert result["batch_size"] == 2
+                assert client.get("/api/v1/pack-trash").json()["total"] == 0
+                assert tree(media) == originals
+                # Generation is exposed only by SQLite: one trash and one restore.
+                import sqlite3
+    
+                with sqlite3.connect(settings.data_dir / "library.sqlite3") as connection:
+>                   assert connection.execute("SELECT DISTINCT generation FROM packs").fetchall() == [
+                        (3,)
+                    ]
+E                   assert [(3,), (1,)] == [(3,)]
+E                     
+E                     Left contains one more item: (1,)
+E                     Use -v to get more diff
+
+tests/test_pack_restore_process_recovery.py:111: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/_pytest/config/__init__.py:1464
+  /usr/local/lib/python3.13/site-packages/_pytest/config/__init__.py:1464: PytestConfigWarning: Unknown config option: cache_dir
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_pack_restore_process_recovery.py::test_sigkill_resumes_original_plan_without_replaying_a_committed_child[logical_committed-1]
+============ 1 failed, 290 passed, 2 warnings in 331.75s (0:05:31) =============
