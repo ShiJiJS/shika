@@ -131,3 +131,12 @@ App尚未替换旧循环，不能据服务端通过关闭DEL-04/06。继续原�
 实现4e569ad，目录身份修复ed60bc9，当前宿主截图守卫59f78b6。369项客户端/analyze/Ruff及15项新增服务端针对检查通过。服务端全量316通过/1项旧视频扫描30秒超时，同一用例不改码独立重跑13.54秒通过；不称作一次全量317通过。原生曾遇到QEMU崩溃、连接异常和Launcher/System UI无响应，均保留诊断。固定59f78b6正式三轮308.89/138.03/197.17秒全部退出0，27检查点的窗口/请求/文件/数据库及源码独立核对通过；每轮保留25、清24/返回1、2次明确POST/1次原GET，原视频范围保持。App/Repository同进程重建不是强停；新建根未扫描文案及任务编号截图缺字/裁剪继续视觉复查，完整UI验收不关闭。
 
 [设计](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-roots-missing/docs/plans/library-first/LF7-ROOTS-MISSING-DESIGN.md) / [实际结果与诊断](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-roots-missing/docs/plans/library-first/evidence/lf7-roots-missing/README.md)。仍需v2/v1转换、全任务图/回执和设置、根映射/前快照/完整替换/权威代次与历史只读、有界传输和系统选择器，以及其它强停组合、历史图片失败、全原型暗色横屏/手势、真机NAS与原签名升级。原型保持独立且未改，未动8760/NAS、未发布APK；LF7和总任务保持开放。
+
+
+## 2026-10-25：备份 v2 文件模块与 v1 校验转换（PR #48）
+
+[Draft PR #48](https://github.com/ShiJiJS/video_viewer/pull/48)基于#47，最终文件模块源码94f8dc6。已实现逐记录v2文件、在线一致快照、全部33张管理表的类型/主外键/计数校验、多个历史图及私有磁盘暂存；凭据、媒体字节、缩略图和扫描身份缓存排除。v1先沿用原校验，再转换为同一暂存形式并保留原文件SHA/旧范围及默认值。扫描暂存只在私有快照排除，若存在用户/任务关联则等待同步，不能借CASCADE丢失管理状态。
+
+最终29项文件检查通过，19项既有备份/进程故障回归通过，Ruff和编译通过。真实HTTP夹具生成全部33表非空关联，独立逐管理字段核对；18,000行、每行2048字符生成40,947,094字节文件，独立文件stat/SHA及原生SQLite核对通过，Python分配峰值2,957,764字节。该量测不代表总RSS/App性能；旧v1兼容解析仍保留原最多256MiB整份JSON界限。详见[设计](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-backup-v2/docs/plans/library-first/LF7-BACKUP-V2-DESIGN.md)与[原始证据/源码SHA](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-backup-v2/docs/plans/library-first/evidence/lf7-backup-v2-archive/README.md)。
+
+当前仅文件/校验模块，尚未发布backup_v2能力或注册新API。只读完整历史查询、根映射/空映射/物理删除真相、前快照与原子完整替换、跨设备写入代次、任务协议、App流式传输/真实系统选择器继续实施。其它强停组合、历史图片失败根因、全原型暗色横屏/手势、真机NAS与原签名升级继续；原型独立未改，未修改SDK/正式8760/NAS或发布APK，LF7/#32及总任务/#24保持开放。
