@@ -242,7 +242,9 @@ class PackReaderPageState extends State<PackReaderPage>
   void jump(int index) {
     if (session.inputBlocked || index < 0 || index > session.total) return;
     if (index == session.total) {
-      if (session.total == 0 || session.index != session.total - 1) return;
+      if (session.total == 0) return;
+      // The clicked vertical image can be below the viewport's current page.
+      session.show(session.total - 1);
       // Reaching the end is navigation, not proof of a decoded last image.
       setState(() {
         showingEnd = true;
