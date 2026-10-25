@@ -1,0 +1,1 @@
+首轮普通图来自固定773026a；large材料拍摄时尚未冻结，但source.json中的全部源文件SHA与该普通轮次相同。此目录保留首轮实际交接画面，避免被收键盘修正后的c4aaf3b正式五轮覆盖。最终状态看本证据目录的normal-1/large/landscape及review/recheck.md。

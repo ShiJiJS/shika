@@ -1,0 +1,102 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart
+Running Gradle task 'assembleDebug'...                             16.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          483ms
+00:00 +0: real continuation stays read-only and opens the complete library range
+FIDELITY_METRICS:{"state":"continue-empty","size":[844.0,442.0],"dpr":3.0,"viewPadding":[0.0,28.0,0.0,24.0],"padding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"app-navigation":[0.0,368.0,844.0,50.0],"pack-search":[60.0,125.0,768.0,42.0],"pack-count":[16.0,189.0,615.9752197265625,20.0]},"texts":[{"text":"媒体库","rect":[20.0,36.5,716.0,34.0],"fontSize":24.0},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"图包","rect":[72.50021362304688,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"搜索图包名称、目录","rect":[76.0,133.0,736.0,24.0],"fontSize":16.0},{"text":"4 个图包","rect":[16.0,189.0,615.9752197265625,20.0],"fontSize":13.0},{"text":"阅读状态","rect":[643.9752197265625,189.5,52.400062561035156,19.0],"fontSize":13.0},{"text":"名称 ↓","rect":[708.3752822875977,189.0,43.22465515136719,20.0],"fontSize":13.0},{"text":"快速整理","rect":[763.5999374389648,189.5,52.400062561035156,19.0],"fontSize":13.0},{"text":"6 张","rect":[386.3394317626953,422.0,20.660568237304688,17.0],"fontSize":11.0},{"text":"6 张","rect":[798.3394317626953,422.0,20.660568237304688,17.0],"fontSize":11.0},{"text":"在读","rect":[437.0,423.0,22.499847412109375,16.0],"fontSize":11.0},{"text":"媒体库","rect":[294.1250228881836,397.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[374.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[449.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[524.2500152587891,397.0,20.499969482421875,14.0],"fontSize":10.0}]}
+FIDELITY_METRICS:{"state":"continue-read","size":[844.0,442.0],"dpr":3.0,"viewPadding":[0.0,28.0,0.0,24.0],"padding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{},"texts":[{"text":"示例作者 NO.034 - 夏日祭","rect":[48.0,30.5,236.26979064941406,29.0],"fontSize":20.0},{"text":"6 张","rect":[48.0,59.5,22.470794677734375,18.0],"fontSize":12.0},{"text":"4 / 6","rect":[758.357421875,270.5,25.642578125,17.0],"fontSize":12.0},{"text":"总览","rect":[102.24990844726562,332.0,24.50018310546875,17.0],"fontSize":12.0},{"text":"横向翻页","rect":[294.99981689453125,332.0,49.0003662109375,17.0],"fontSize":12.0},{"text":"整包标签","rect":[499.99981689453125,332.0,49.0003662109375,17.0],"fontSize":12.0},{"text":"沉浸","rect":[717.2499084472656,332.0,24.50018310546875,17.0],"fontSize":12.0},{"text":"媒体库 · 全部图包","rect":[24.0,377.0,707.9128456115723,18.0],"fontSize":12.0},{"text":"2 / 4","rect":[731.9128456115723,377.5,24.787109375,17.0],"fontSize":12.0},{"text":"下一包","rect":[780.6999549865723,376.5,39.300045013427734,19.0],"fontSize":13.0}]}
+FIDELITY_METRICS:{"state":"continue-library","size":[844.0,442.0],"dpr":3.0,"viewPadding":[0.0,28.0,0.0,24.0],"padding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"app-navigation":[0.0,368.0,844.0,50.0],"pack-search":[60.0,125.0,768.0,42.0],"pack-count":[16.0,275.0,615.9752197265625,20.0],"pack-continuation":[16.0,175.0,812.0,86.0],"pack-continuation-position":[71.0,229.0,56.59588623046875,19.0]},"texts":[{"text":"媒体库","rect":[20.0,36.5,716.0,34.0],"fontSize":24.0},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"图包","rect":[72.50021362304688,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"搜索图包名称、目录","rect":[76.0,133.0,736.0,24.0],"fontSize":16.0},{"text":"继续阅读","rect":[71.0,181.0,49.0003662109375,18.0],"fontSize":12.0},{"text":"示例作者 NO.034 - 夏日祭","rect":[71.0,202.0,189.86636352539062,24.0],"fontSize":16.0},{"text":"第 4 / 6 张","rect":[71.0,229.0,56.59588623046875,19.0],"fontSize":12.0},{"text":"4 个图包","rect":[16.0,275.0,615.9752197265625,20.0],"fontSize":13.0},{"text":"阅读状态","rect":[643.9752197265625,275.5,52.400062561035156,19.0],"fontSize":13.0},{"text":"名称 ↓","rect":[708.3752822875977,275.0,43.22465515136719,20.0],"fontSize":13.0},{"text":"快速整理","rect":[763.5999374389648,275.5,52.400062561035156,19.0],"fontSize":13.0},{"text":"媒体库","rect":[294.1250228881836,397.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[374.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[449.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[524.2500152587891,397.0,20.499969482421875,14.0],"fontSize":10.0}]}
+FIDELITY_METRICS:{"state":"continue-reader","size":[844.0,442.0],"dpr":3.0,"viewPadding":[0.0,28.0,0.0,24.0],"padding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{},"texts":[{"text":"示例作者 NO.034 - 夏日祭","rect":[48.0,30.5,236.26979064941406,29.0],"fontSize":20.0},{"text":"6 张","rect":[48.0,59.5,22.470794677734375,18.0],"fontSize":12.0},{"text":"4 / 6","rect":[758.357421875,270.5,25.642578125,17.0],"fontSize":12.0},{"text":"总览","rect":[102.24990844726562,332.0,24.50018310546875,17.0],"fontSize":12.0},{"text":"横向翻页","rect":[294.99981689453125,332.0,49.0003662109375,17.0],"fontSize":12.0},{"text":"整包标签","rect":[499.99981689453125,332.0,49.0003662109375,17.0],"fontSize":12.0},{"text":"沉浸","rect":[717.2499084472656,332.0,24.50018310546875,17.0],"fontSize":12.0},{"text":"媒体库 · 全部图包","rect":[24.0,377.0,707.9128456115723,18.0],"fontSize":12.0},{"text":"2 / 4","rect":[731.9128456115723,377.5,24.787109375,17.0],"fontSize":12.0},{"text":"下一包","rect":[780.6999549865723,376.5,39.300045013427734,19.0],"fontSize":13.0}]}
+FIDELITY_METRICS:{"state":"continue-return","size":[844.0,442.0],"dpr":3.0,"viewPadding":[0.0,28.0,0.0,24.0],"padding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"app-navigation":[0.0,368.0,844.0,50.0],"pack-search":[60.0,125.0,768.0,42.0],"pack-count":[16.0,275.0,615.9752197265625,20.0],"pack-continuation":[16.0,175.0,812.0,86.0],"pack-continuation-position":[71.0,229.0,56.59588623046875,19.0]},"texts":[{"text":"媒体库","rect":[20.0,36.5,716.0,34.0],"fontSize":24.0},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"图包","rect":[72.50021362304688,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"搜索图包名称、目录","rect":[76.0,133.0,736.0,24.0],"fontSize":16.0},{"text":"继续阅读","rect":[71.0,181.0,49.0003662109375,18.0],"fontSize":12.0},{"text":"示例作者 NO.034 - 夏日祭","rect":[71.0,202.0,189.86636352539062,24.0],"fontSize":16.0},{"text":"第 4 / 6 张","rect":[71.0,229.0,56.59588623046875,19.0],"fontSize":12.0},{"text":"4 个图包","rect":[16.0,275.0,615.9752197265625,20.0],"fontSize":13.0},{"text":"阅读状态","rect":[643.9752197265625,275.5,52.400062561035156,19.0],"fontSize":13.0},{"text":"名称 ↓","rect":[708.3752822875977,275.0,43.22465515136719,20.0],"fontSize":13.0},{"text":"快速整理","rect":[763.5999374389648,275.5,52.400062561035156,19.0],"fontSize":13.0},{"text":"媒体库","rect":[294.1250228881836,397.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[374.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[449.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[524.2500152587891,397.0,20.499969482421875,14.0],"fontSize":10.0}]}
+FIDELITY_METRICS:{"state":"continue-scope","size":[844.0,442.0],"dpr":3.0,"viewPadding":[0.0,28.0,0.0,24.0],"padding":[0.0,28.0,0.0,0.0],"textScale":1.0,"keys":{"app-navigation":[0.0,392.0,844.0,50.0],"pack-search":[60.0,125.0,768.0,42.0]},"texts":[{"text":"媒体库","rect":[20.0,36.5,716.0,34.0],"fontSize":24.0},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"图包","rect":[72.50021362304688,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"搜索图包名称、目录","rect":[76.0,133.0,736.0,24.0],"fontSize":16.0},{"text":"“灵梦”","rect":[16.0,188.0,775.800121307373,18.0],"fontSize":12.0},{"text":"清除","rect":[803.800121307373,187.0,28.199878692626953,20.0],"fontSize":null},{"text":"媒体库","rect":[294.1250228881836,421.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[374.25001525878906,421.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[449.25001525878906,421.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[524.2500152587891,421.0,20.499969482421875,14.0],"fontSize":10.0}]}
+CONTINUATION_LAYOUT_ERROR:══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 4.7 pixels on the bottom.
+
+The relevant error-causing widget was:
+  Column
+  Column:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/lib/features/library/pack_catalog_page.dart:1073:14
+
+The overflowing RenderFlex has an orientation of Axis.vertical.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#dbf9c relayoutBoundary=up9 OVERFLOWING:
+  needs compositing
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=844.0, 0.0<=h<=98.3)
+  size: Size(844.0, 98.3)
+  direction: vertical
+  mainAxisAlignment: start
+  mainAxisSize: max
+  crossAxisAlignment: center
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+FIDELITY_METRICS:{"state":"continue-multi","size":[844.0,442.0],"dpr":3.0,"viewPadding":[0.0,28.0,0.0,24.0],"padding":[0.0,28.0,0.0,0.0],"textScale":1.0,"keys":{"app-navigation":[0.0,392.0,844.0,50.0],"pack-search":[60.0,125.0,768.0,42.0]},"texts":[{"text":"媒体库","rect":[20.0,36.5,716.0,34.0],"fontSize":24.0},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"图包","rect":[72.50021362304688,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"搜索图包名称、目录","rect":[76.0,133.0,736.0,24.0],"fontSize":16.0},{"text":"全选匹配项","rect":[105.41681925455728,189.0,70.49969482421875,20.0],"fontSize":null},{"text":"已选 0","rect":[281.3333333333333,188.5,281.3333333333333,21.0],"fontSize":null},{"text":"追加标签","rect":[675.1334546407063,189.0,56.399757385253906,20.0],"fontSize":null},{"text":"媒体库","rect":[294.1250228881836,421.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[374.25001525878906,421.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[449.25001525878906,421.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[524.2500152587891,421.0,20.499969482421875,14.0],"fontSize":10.0}]}
+CONTINUATION_LAYOUT_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 4.7 pixels on
+the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart:63:9)
+#5      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart:67:15)
+#6      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart:247:13)
+<asynchronous suspension>
+#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart line 63
+The test description was:
+  real continuation stays read-only and opens the complete
+  library range
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 4.7 pixels on the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart:63:9)
+#5      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart:67:15)
+#6      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart:247:13)
+<asynchronous suspension>
+#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart line 63
+The test description was:
+  real continuation stays read-only and opens the complete library range
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:16 +0 -1: real continuation stays read-only and opens the complete library range [E]
+  Test failed. See exception logs above.
+  The test description was: real continuation stays read-only and opens the complete library range
+  
+00:16 +0 -1: (tearDownAll)
+00:16 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_continuation_test.dart: real continuation stays read-only and opens the complete library range
