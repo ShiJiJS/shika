@@ -119,12 +119,16 @@ void main() {
         return value ?? true;
       }
 
-      Future<void> tap(Finder target, {bool activate = true}) async {
+      Future<void> tap(
+        Finder target, {
+        bool activate = true,
+        bool waitEnabled = false,
+      }) async {
         final end = DateTime.now().add(const Duration(seconds: 60));
         var attempts = 0, direction = 1;
         bool ready() =>
             target.hitTestable().evaluate().isNotEmpty &&
-            (!activate || target.evaluate().every(enabled));
+            (!activate && !waitEnabled || target.evaluate().every(enabled));
         while (!ready()) {
           if (DateTime.now().isAfter(end)) {
             debugPrint(
@@ -178,11 +182,10 @@ void main() {
       await shot('history-original-partial');
       await noCommands();
       await tap(find.byKey(const Key('purge-history-outcome-false')));
-      await until(
-        () =>
-            find.byKey(const Key('purge-history-next')).evaluate().isNotEmpty ||
-            find.byType(ListTile).evaluate().length > 1,
-        'all results load',
+      await tap(
+        find.byKey(const Key('purge-history-next')),
+        activate: false,
+        waitEnabled: true,
       );
       await control('/fail-next/pages', method: 'POST');
       await tap(find.byKey(const Key('purge-history-next')));
