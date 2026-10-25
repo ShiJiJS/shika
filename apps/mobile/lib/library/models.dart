@@ -8,13 +8,47 @@ enum VideoSort { path, name, newest, recent }
 
 /// Missing capabilities mean the original video-only protocol.
 class ServiceCapabilities {
-  const ServiceCapabilities.legacy() : values = const {};
-  ServiceCapabilities(Iterable<String> values)
-    : values = Set.unmodifiable(values);
-  factory ServiceCapabilities.fromInfo(Map<String, dynamic> info) =>
-      ServiceCapabilities(
-        (info['capabilities'] as List? ?? const []).whereType<String>(),
-      );
+  const ServiceCapabilities.legacy()
+    : values = const {},
+      archiveMaximumBytes = null,
+      historyAvailable = null;
+  ServiceCapabilities(
+    Iterable<String> values, {
+    this.archiveMaximumBytes,
+    this.historyAvailable,
+  }) : values = Set.unmodifiable(values);
+  factory ServiceCapabilities.fromInfo(Map<String, dynamic> info) {
+    final values = (info['capabilities'] as List? ?? const [])
+        .whereType<String>()
+        .toSet();
+    final raw = info['management_backups'];
+    final historyAvailable = info['management_history_available'];
+    final valid =
+        raw is Map &&
+        raw['max_bytes'] is int &&
+        raw['max_bytes'] >= 4096 &&
+        raw['max_bytes'] <= 256 * 1024 * 1024 &&
+        raw['max_roots'] == 256 &&
+        raw['versions'] is List &&
+        (raw['versions'] as List).contains(2);
+    if (values.contains('backup_v2') &&
+        (!valid ||
+            !values.contains('management_authority') ||
+            !values.contains('management_history') ||
+            historyAvailable is! bool)) {
+      throw const LibraryFailure('服务端完整备份协议、管理代次或文件上限不完整，请升级服务后重新连接');
+    }
+    return ServiceCapabilities(
+      values,
+      archiveMaximumBytes: valid ? raw['max_bytes'] as int : null,
+      historyAvailable: historyAvailable is bool ? historyAvailable : null,
+    );
+  }
+  final int? archiveMaximumBytes;
+  final bool? historyAvailable;
+  bool get backupV2 =>
+      values.contains('backup_v2') && archiveMaximumBytes != null;
+  bool get managementHistory => values.contains('management_history');
   final Set<String> values;
   bool get typedRoots => values.contains('typed_roots');
   bool get packTags => values.contains('pack_tags');

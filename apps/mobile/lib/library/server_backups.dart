@@ -1,13 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io' show FileSystemException;
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 
 import 'backup_work_store.dart';
+import 'backup_document.dart';
+import 'management_archives.dart';
 import 'models.dart';
 import 'server_api.dart';
+
+part 'server_archive_backups.dart';
 
 typedef _Json = Map<String, dynamic>;
 _Json _map(Object? value) => Map<String, dynamic>.from(value as Map);
@@ -39,6 +44,8 @@ class ServerBackups {
   bool get storageHealthy => !_storageFailed;
   String? _previewDigest;
   BackupPreview? _preview;
+  ArchivePreview? _archivePreview;
+  bool get archivePreviewPending => _state['inspect'] != null;
   bool get restorePending => _state['restore'] != null;
   List<Map<String, Object?>> get pendingReceipts {
     final result = <Map<String, Object?>>[];
@@ -50,6 +57,7 @@ class ServerBackups {
         'kind': kind,
         'key': command['key'],
         'task': command['task'],
+        if (command['version'] == 2) 'version': 2,
       });
     }
     return List.unmodifiable(result);
@@ -205,13 +213,15 @@ class ServerBackups {
     }
   });
 
-  Future<_Json> _original(String kind, String key) async {
+  Future<_Json> _original(String kind, String key, {int version = 1}) async {
     try {
       final value = await _json(
         'GET',
-        '/api/v1/backup-requests/$kind/${Uri.encodeComponent(key)}',
+        version == 2
+            ? '/api/v1/management-backups/requests/$kind/${Uri.encodeComponent(key)}'
+            : '/api/v1/backup-requests/$kind/${Uri.encodeComponent(key)}',
       );
-      if (value['kind'] != 'backup_$kind' ||
+      if (value['kind'] != 'backup_$kind${version == 2 ? '_v2' : ''}' ||
           value['id'] is! String ||
           (value['id'] as String).isEmpty) {
         throw const LibraryFailure('备份原请求身份不完整，请继续核对原结果');
@@ -219,6 +229,9 @@ class ServerBackups {
       return value;
     } on ApiFailure catch (error) {
       if (error.status == 404) {
+        if (kind == 'restore') {
+          throw const LibraryFailure('未找到原恢复请求，原记录已保留；没有补执行恢复');
+        }
         throw const LibraryFailure('未找到原备份请求，原记录已保留；没有重新提交');
       }
       rethrow;
@@ -370,10 +383,23 @@ class ServerBackups {
         return true;
       });
 
-  Future<void> markExportSaved(String identity) => _serial(() async {
+  Future<void> markExportSaved(
+    String identity, {
+    BackupFileStore? files,
+  }) => _serial(() async {
     if (_state['export'] case final Map command
         when command['task'] == identity) {
+      final document = files != null && command['file'] is Map
+          ? files.restore(_map(command['file']))
+          : null;
       await _remove('export');
+      // Delete only after durable settlement; an unknown journal write retains
+      // the original private copy for reconciliation.
+      try {
+        await document?.delete();
+      } on FileSystemException {
+        /* Private OS cleanup can retry later. */
+      }
     }
   });
 
@@ -387,9 +413,10 @@ class ServerBackups {
     }
     if (command['task'] == null) {
       try {
-        final found = await _json(
-          'GET',
-          '/api/v1/backup-requests/restore/${command['key']}',
+        final found = await _original(
+          'restore',
+          command['key'],
+          version: command['version'] == 2 ? 2 : 1,
         );
         command = {...command, 'task': found['id']};
         await _save({..._state, 'restore': command});
@@ -412,6 +439,7 @@ class ServerBackups {
     });
     _preview = null;
     _previewDigest = null;
+    _archivePreview = null;
     // The coordinator may replace and dispose this transport. Its old journal
     // is settled before handing over; it must not publish into the new owner.
     await onRestored();

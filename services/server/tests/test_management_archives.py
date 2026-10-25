@@ -553,3 +553,95 @@ def test_bare_sqlite_writer_enables_persistent_reservation_after_migration(tmp_p
             assert session.scalar(text("SELECT value FROM probe")) == "before management schema"
     finally:
         database.close()
+
+
+def test_original_graph_operation_and_backup_download_require_exact_binding(library, samples):
+    from .test_pack_operations import trash
+
+    client, media = library
+    root, pack = seed(client, media, samples)
+    raw, exported = export(client, "original-download")
+    preview = inspect(client, raw)
+    marked = trash(client, [pack["id"]], "old-graph-operation")
+    old_epoch = client.get("/api/v1/info").json()["management_epoch"]
+    assert client.get("/api/v1/info").json()["management_history_available"] is False
+    restored = restore(client, preview, {"main": str(media), root["id"]: root["path"]})
+    assert restored["status"] == "completed", restored
+    info = client.get("/api/v1/info").json()
+    assert info["management_history_available"] is True
+    assert info["management_backups"] == {
+        "versions": [1, 2],
+        "max_bytes": client.app.state.settings.backup_max_bytes,
+        "max_roots": 256,
+    }
+    graph = client.get("/api/v1/management-history/epochs/" + old_epoch).json()["graph_id"]
+    base = "/api/v1/management-history"
+    op = client.get(
+        base + "/operations/pack_file_operations/" + marked["id"], params={"epoch": old_epoch}
+    )
+    assert op.status_code == 200, op.text
+    assert op.json()["graph_id"] == graph and op.json()["task"]["result"] == marked["result"]
+    assert (
+        client.get(
+            base + "/operations/request_records/anything", params={"epoch": old_epoch}
+        ).status_code
+        == 422
+    )
+    archive = client.app.state.backups.archives.history()
+    imported_graph = next(g.identity for g in archive.graphs() if g.identity != graph)
+    assert (
+        client.get(
+            base + "/operations/pack_file_operations/" + marked["id"],
+            params={"graph_id": imported_graph},
+        ).status_code
+        == 404
+    )
+    path = base + "/tasks/" + exported["id"] + "/download"
+    assert client.get(path).status_code == 422
+    assert client.get(path, params={"epoch": "0" * 32}).status_code == 404
+    downloaded = client.get(path, params={"epoch": old_epoch})
+    assert downloaded.status_code == 200 and downloaded.content == raw
+    assert client.get(path, params={"graph_id": graph}).content == raw
+    with client.app.state.backups.archives.path(exported["id"]).open("ab") as changed:
+        changed.write(b"changed")
+    bad = client.get(path, params={"graph_id": graph})
+    assert bad.status_code == 409 and bad.json()["error"]["code"] == "backup_artifact_changed"
+
+
+def test_restore_point_inspection_uses_original_snapshot_without_replacing_data(library, samples):
+    client, media = library
+    root, _ = seed(client, media, samples)
+    assert client.get(PREFIX + "/latest-restore").json() == {"item": None}
+    raw, _ = export(client)
+    preview = inspect(client, raw)
+    late = tag(client, "snapshot-only", request_id="snapshot-only-tag")
+    outcome = restore(client, preview, {"main": str(media), root["id"]: root["path"]})
+    assert outcome["status"] == "completed", outcome
+    epoch = client.get("/api/v1/info").json()["management_epoch"]
+    client.headers["X-Management-Epoch"] = epoch
+    point = client.get(PREFIX + "/latest-restore").json()["item"]
+    assert point["restore_id"] == outcome["id"]
+    assert point["snapshot_id"] == outcome["result"]["pre_snapshot_id"]
+    assert point["kind"] == "backup_snapshot_v2" and point["bytes"] > 0
+    before = tree(media)
+    path = PREFIX + "/from-snapshot/" + point["snapshot_id"]
+    accepted = client.post(path, json={"request_id": "snapshot-inspect"})
+    assert accepted.status_code == 202, accepted.text
+    inspected = wait_task(client, accepted.json()["id"])
+    assert inspected["status"] == "completed", inspected
+    assert inspected["result"]["file_sha256"] == point["file_sha256"]
+    assert inspected["result"]["counts"]["tags"] == 1
+    assert late["id"] not in {t["id"] for t in client.get("/api/v1/tags").json()["items"]}
+    assert client.get("/api/v1/info").json()["management_epoch"] == epoch
+    assert tree(media) == before
+    assert client.get(PREFIX + "/requests/inspect/snapshot-inspect").json()["id"] == inspected["id"]
+    assert (
+        client.post(
+            PREFIX + "/from-snapshot/" + preview["id"], json={"request_id": "wrong-source"}
+        ).status_code
+        == 404
+    )
+    artifact = client.app.state.backups.archives.path(point["snapshot_id"])
+    artifact.write_bytes(artifact.read_bytes() + b"changed")
+    assert client.post(path, json={"request_id": "changed-source"}).status_code == 409
+    assert client.get(PREFIX + "/requests/inspect/changed-source").status_code == 404

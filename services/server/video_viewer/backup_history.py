@@ -352,7 +352,7 @@ class HistoryArchive:
             )
         return {**result, "historical": True, "graph_id": row["graph_id"]}
 
-    def operation(self, namespace, identity):
+    def operation(self, namespace, identity, *, graph_id=None):
         if namespace not in RECEIPTS or namespace in {
             "request_records",
             "playback_rounds",
@@ -360,7 +360,10 @@ class HistoryArchive:
         }:
             raise ValueError("Not an operation receipt namespace")
         row = self._locate(
-            "history_receipts", "item.namespace=? AND item.subject=?", (namespace, identity), None
+            "history_receipts",
+            "item.namespace=? AND item.subject=?",
+            (namespace, identity),
+            graph_id,
         )
         return self.receipt(namespace, row["request_key"], graph_id=row["graph_id"])
 

@@ -7,6 +7,9 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'credentials.dart';
 import 'file_command_store.dart';
 import 'backup_work_store.dart';
+import 'backup_document.dart';
+import 'backup_file_picker.dart';
+import 'management_archives.dart';
 import 'server_backups.dart';
 import 'models.dart';
 import 'repository.dart';
@@ -18,6 +21,7 @@ part 'server_pack_reading.dart';
 part 'server_pack_trash.dart';
 part 'server_pack_purge.dart';
 part 'server_maintenance_tasks.dart';
+part 'server_task_history.dart';
 part 'server_playback_defaults.dart';
 part 'server_pack_missing.dart';
 
@@ -42,18 +46,22 @@ String requestId() =>
 /// Server IDs remain authoritative; this cache contains only visited pages and
 /// the small playback window. It is never used as a replacement NAS database.
 class ServerLibraryRepository extends LibraryRepository
-    with _ServerPackCatalog {
+    with _ServerPackCatalog
+    implements ManagementArchiveRepository {
   ServerLibraryRepository(
     this.credentials, {
     FileCommandStore? fileCommands,
     FileCommandStore? packCommands,
     BackupWorkStore? backupWork,
+    Future<BackupFileStore> Function(String owner)? archiveFileStore,
     String address = '10.0.2.2',
     int port = 8760,
   }) : fileCommands = fileCommands ?? MemoryFileCommandStore(),
        packFileJournal = PackFileJournal(
          packCommands ?? MemoryFileCommandStore(),
        ),
+       _archiveFileStoreFactory =
+           archiveFileStore ?? NativeBackupArchiveFiles.storeFor,
        backupWork = backupWork ?? MemoryBackupWorkStore(),
        _state = LibrarySnapshot(
          videos: [],
@@ -259,6 +267,7 @@ class ServerLibraryRepository extends LibraryRepository
   }
 
   final BackupWorkStore backupWork;
+  final Future<BackupFileStore> Function(String owner) _archiveFileStoreFactory;
   late final ScopedJournal _videoBook, _backupBook;
   Future<void>? _authorityRecovery;
   Future<void> get managementSynchronization =>
@@ -2568,12 +2577,85 @@ class ServerLibraryRepository extends LibraryRepository
           generation == _generation &&
           identical(_backups, client)) {
         if (!client.storageHealthy) _backupJournalError = true;
-        backupStatus.value = error.toString();
+        backupStatus.value = error is LibraryFailure
+            ? error.message
+            : '操作未完成，原任务已保留，请查询原结果';
         if (error is ApiFailure && error.status == 401) await expire();
       }
       rethrow;
     }
   }
+
+  @override
+  bool get archiveBackupsAvailable => capabilities.backupV2;
+  @override
+  Future<ArchiveRestorePoint?> latestArchiveRestorePoint() =>
+      backupAction((client) => client.latestRestorePoint());
+  @override
+  Future<ArchivePreview> inspectArchiveRestorePoint(
+    ArchiveRestorePoint point,
+  ) => backupAction((client) => client.inspectRestorePoint(point));
+  @override
+  bool get archivePreviewPending => _backups?.archivePreviewPending ?? false;
+  @override
+  Future<ArchivePreview> resumeArchivePreview() =>
+      backupAction((client) => client.resumeDocumentPreview());
+  @override
+  int get archiveMaximumBytes =>
+      capabilities.archiveMaximumBytes ??
+      (throw const LibraryFailure('当前服务未开放完整管理备份，请升级服务端'));
+  @override
+  Future<BackupFileStore> archiveFileStore() async {
+    if (!archiveBackupsAvailable || _fileScope == null) {
+      throw const LibraryFailure('请先连接支持完整管理备份的服务');
+    }
+    final generation = _generation, owner = _fileScope!;
+    final files = await _archiveFileStoreFactory(owner);
+    if (_disposed || generation != _generation || _fileScope != owner) {
+      throw const RequestCancelled();
+    }
+    if (files.owner != owner) throw const LibraryFailure('备份暂存与当前连接不一致');
+    return files;
+  }
+
+  @override
+  Future<ArchiveExport> exportArchive() async {
+    final files = await archiveFileStore();
+    return backupAction(
+      (client) =>
+          client.exportDocument(files, maximumBytes: archiveMaximumBytes),
+    );
+  }
+
+  @override
+  Future<void> archiveSaved(String identity) async {
+    final files = await archiveFileStore();
+    return backupAction(
+      (client) => client.markExportSaved(identity, files: files),
+    );
+  }
+
+  @override
+  Future<ArchivePreview> inspectArchive(BackupDocument document) {
+    if (!archiveBackupsAvailable || document.bytes > archiveMaximumBytes) {
+      throw const LibraryFailure('所选备份超过当前服务允许大小，或服务尚不支持完整管理备份');
+    }
+    return backupAction((client) => client.inspectDocument(document));
+  }
+
+  @override
+  Future<ArchiveRootPage> archiveRoots(
+    ArchivePreview preview, {
+    int offset = 0,
+    int limit = 24,
+  }) => backupAction(
+    (client) => client.documentRoots(preview, offset: offset, limit: limit),
+  );
+  @override
+  Future<void> restoreArchive(
+    ArchivePreview preview,
+    Map<String, String?> mappings,
+  ) => backupAction((client) => client.restoreDocument(preview, mappings));
 
   @override
   Future<String> exportBackupFile() =>

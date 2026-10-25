@@ -1,6 +1,7 @@
 package io.github.shijijs.video_viewer
 
 import android.media.AudioManager
+import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import io.flutter.embedding.android.FlutterActivity
@@ -9,6 +10,7 @@ import io.flutter.plugin.common.MethodChannel
 import kotlin.math.roundToInt
 
 class MainActivity : FlutterActivity() {
+    private var backupFiles: BackupFileBridge? = null
     private var originalBrightness: Float? = null
     private val audio get() = getSystemService(AUDIO_SERVICE) as AudioManager
     private fun minimumVolume() = if (Build.VERSION.SDK_INT >= 28) audio.getStreamMinVolume(AudioManager.STREAM_MUSIC) else 0
@@ -30,6 +32,7 @@ class MainActivity : FlutterActivity() {
     }
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        backupFiles = BackupFileBridge(this, flutterEngine.dartExecutor.binaryMessenger)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "video_viewer/playback").setMethodCallHandler { call, result ->
             try {
                 when (call.method) {
@@ -54,6 +57,16 @@ class MainActivity : FlutterActivity() {
                 result.error("PLAYBACK_CONTROL", error.message, null)
             }
         }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (backupFiles?.onActivityResult(requestCode, resultCode, data) != true) {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+    override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
+        backupFiles?.detach()
+        backupFiles = null
+        super.cleanUpFlutterEngine(flutterEngine)
     }
     override fun onPause() { restoreBrightness(); super.onPause() }
     override fun onDestroy() { restoreBrightness(); super.onDestroy() }

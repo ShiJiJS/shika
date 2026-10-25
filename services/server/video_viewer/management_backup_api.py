@@ -13,7 +13,7 @@ from starlette.concurrency import run_in_threadpool
 
 from .errors import LibraryError
 from .management_history import current_history
-from .models import RequestRecord
+from .models import RequestRecord, Task
 
 
 class Command(BaseModel):
@@ -69,6 +69,62 @@ def router(auth_required):
             if descriptor is not None:
                 os.close(descriptor)
             Path(filename).unlink(missing_ok=True)
+
+    @route.get("/latest-restore")
+    def latest_restore(request: Request):
+        with request.app.state.db.read() as session:
+            parent = (
+                session.execute(
+                    select(Task.id, Task.result["pre_snapshot_id"].as_string().label("snapshot_id"))
+                    .where(
+                        Task.kind.in_(("backup_restore", "backup_restore_v2")),
+                        Task.status == "completed",
+                        Task.error.is_distinct_from("restored_history"),
+                    )
+                    .order_by(Task.finished_at.desc(), Task.created_at.desc(), Task.id.desc())
+                    .limit(1)
+                )
+                .mappings()
+                .first()
+            )
+            if parent is None or not parent["snapshot_id"]:
+                return {"item": None}
+            snapshot = (
+                session.execute(
+                    select(
+                        Task.id.label("snapshot_id"),
+                        Task.kind,
+                        Task.created_at,
+                        Task.result["bytes"].as_integer().label("bytes"),
+                        Task.result["file_sha256"].as_string().label("file_sha256"),
+                    ).where(
+                        Task.id == parent["snapshot_id"],
+                        Task.kind.in_(("backup_snapshot", "backup_snapshot_v2")),
+                        Task.status == "completed",
+                        Task.error.is_distinct_from("restored_history"),
+                    )
+                )
+                .mappings()
+                .first()
+            )
+            return {"item": {"restore_id": parent["id"], **dict(snapshot)} if snapshot else None}
+
+    @route.post("/from-snapshot/{identity}", status_code=202)
+    def inspect_snapshot(identity: str, body: Command, request: Request):
+        backups = request.app.state.backups
+        with request.app.state.db.read() as session:
+            row = session.get(Task, identity)
+            if (
+                row is None
+                or row.kind not in ("backup_snapshot", "backup_snapshot_v2")
+                or row.status != "completed"
+                or row.error == "restored_history"
+            ):
+                raise LibraryError("backup_not_found", "原恢复前快照尚未完成或在本服务不可用", 404)
+            version = 2 if row.kind == "backup_snapshot_v2" else 1
+        source = backups.archives.artifact(identity) if version == 2 else backups.artifact(identity)
+        accepted = backups.archives.submit("backup_inspect_v2", body.request_id, source)
+        return request.app.state.scanner.task(accepted)
 
     @route.post("/restores", status_code=202)
     def restore(body: Restore, request: Request):

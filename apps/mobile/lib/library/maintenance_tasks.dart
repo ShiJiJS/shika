@@ -1,6 +1,7 @@
 import 'models.dart';
 import 'pack_models.dart';
 import 'pack_files.dart';
+import 'management_archives.dart';
 
 Never _bad() => throw const LibraryFailure('操作任务数据不完整，请重新读取');
 String _text(Object? value, [int max = 128]) =>
@@ -21,6 +22,7 @@ class MaintenanceTask {
     : _raw = Map.unmodifiable({
         for (final key in const [
           'id',
+          'graph_id',
           'kind',
           'status',
           'phase',
@@ -48,6 +50,7 @@ class MaintenanceTask {
           key: raw[key],
       }),
       id = _text(raw['id']),
+      graphId = raw['graph_id'] == null ? null : _text(raw['graph_id']),
       kind = _text(raw['kind']),
       status = _text(raw['status']),
       phase = _text(raw['phase']),
@@ -122,6 +125,7 @@ class MaintenanceTask {
     }
   }
   final String id, kind, status, phase, family, state;
+  final String? graphId;
   final Map<String, dynamic> _raw;
   MaintenanceTask asHistorical() => historical
       ? this
@@ -160,6 +164,11 @@ class MaintenanceTask {
         'backup_export': '导出管理备份',
         'backup_inspect': '校验管理备份',
         'backup_restore': '恢复管理数据',
+        'backup_snapshot': '恢复前快照',
+        'backup_export_v2': '导出管理备份',
+        'backup_inspect_v2': '校验管理备份',
+        'backup_restore_v2': '恢复管理数据',
+        'backup_snapshot_v2': '恢复前快照',
       }[kind] ??
       '其它操作';
   String get stateLabel => const {
@@ -257,8 +266,10 @@ class MaintenanceReceipt {
     this.historical = false,
     this.journalScope,
     this.historyFiles,
+    this.protocolVersion = 1,
   });
   final String id, requestId, title, kind;
+  final int protocolVersion;
   final MaintenanceReceiptSource source;
   final String? taskId;
   final PackFileCommand? packCommand;
@@ -301,9 +312,19 @@ abstract interface class MaintenanceTaskCatalog {
   void dispose();
 }
 
+abstract interface class GraphTaskCatalog {
+  MaintenanceTaskCatalog forTask(MaintenanceTask task);
+}
+
+abstract interface class ArchiveTaskFiles {
+  Future<ArchiveExport> downloadArchiveFile(String identity);
+  Future<String?> restoreSnapshot(String identity);
+}
+
 /// A history detail stays read-only on every refresh, even if the legacy
 /// service only exposes a surviving task through its current metadata routes.
-class HistoricalTaskCatalog implements MaintenanceTaskCatalog {
+class HistoricalTaskCatalog
+    implements MaintenanceTaskCatalog, ArchiveTaskFiles {
   HistoricalTaskCatalog(this.inner);
   final MaintenanceTaskCatalog inner;
   @override
@@ -344,6 +365,19 @@ class HistoricalTaskCatalog implements MaintenanceTaskCatalog {
   @override
   Future<MaintenanceTask?> reconcile(MaintenanceReceipt receipt) async =>
       throw const LibraryFailure('请从原历史记录查询任务');
+  @override
+  Future<ArchiveExport> downloadArchiveFile(String identity) {
+    final Object source = inner;
+    if (source is ArchiveTaskFiles) return source.downloadArchiveFile(identity);
+    throw const LibraryFailure('当前服务未提供文件流下载');
+  }
+
+  @override
+  Future<String?> restoreSnapshot(String identity) async {
+    final Object source = inner;
+    return source is ArchiveTaskFiles ? source.restoreSnapshot(identity) : null;
+  }
+
   @override
   Future<String> downloadBackup(String id) => inner.downloadBackup(id);
   @override

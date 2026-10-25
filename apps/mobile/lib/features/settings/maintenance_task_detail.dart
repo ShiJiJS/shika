@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../../library/repository.dart';
 import '../../library/models.dart';
+import '../../library/backup_file_picker.dart';
+import '../../library/request_scope.dart';
 import '../../ui/paper.dart';
 import '../packs/pack_file_action.dart';
 import '../packs/pack_purge_result.dart';
@@ -16,12 +18,14 @@ class MaintenanceTaskDetail extends StatefulWidget {
     required this.initial,
     this.saveBackup,
     this.canOpenBackup = false,
+    this.archiveFiles = const NativeBackupArchiveFiles(),
   });
   final LibraryRepository repository;
   final MaintenanceTaskCatalog catalog;
   final MaintenanceTask initial;
   final Future<bool> Function(String)? saveBackup;
   final bool canOpenBackup;
+  final BackupArchiveFiles archiveFiles;
   @override
   State<MaintenanceTaskDetail> createState() => _MaintenanceTaskDetailState();
 }
@@ -31,6 +35,8 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
   CatalogPage<MaintenanceItem>? page;
   bool busy = true, unfinished = true, acting = false;
   String error = '';
+  String? snapshot;
+  final fileScope = RequestScope();
   int _read = 0;
   PackRestorePlans? plans;
   RestorePlan? restorePlan;
@@ -44,6 +50,7 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
     super.initState();
     widget.repository.addListener(ownerChanged);
     if (task.kind == 'pack_restore_plan' &&
+        !task.historical &&
         widget.repository.capabilities.packRestorePlans) {
       plans = widget.repository.createPackRestorePlans();
     }
@@ -81,6 +88,13 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
       if (!mounted || !current || serial != _read) return;
       if (value.kind != task.kind) throw StateError('task kind changed');
       setState(() => task = value);
+      final Object source = widget.catalog;
+      if (source is ArchiveTaskFiles &&
+          ['backup_restore', 'backup_restore_v2'].contains(value.kind)) {
+        final point = await source.restoreSnapshot(value.id);
+        if (!mounted || !current || serial != _read) return;
+        setState(() => snapshot = point);
+      }
       if (members) {
         final result = await widget.catalog.items(
           task.id,
@@ -241,21 +255,78 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
   }
 
   Future<void> download() async {
-    if (acting || !current || widget.saveBackup == null) return;
+    if (acting || !current) return;
     setState(() {
       acting = true;
       error = '';
     });
     try {
-      final contents = await widget.catalog.downloadBackup(task.id);
-      if (!mounted || !current) return;
-      if (await widget.saveBackup!(contents)) {
-        if (!mounted || !current) return;
-        await widget.catalog.backupSaved(task.id);
-        if (mounted) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('原备份已保存')));
+      final Object source = widget.catalog;
+      final useFile =
+          task.kind.endsWith('_v2') ||
+          task.kind == 'backup_snapshot' ||
+          widget.repository.capabilities.backupV2;
+      if (useFile && source is ArchiveTaskFiles) {
+        final exported = await source.downloadArchiveFile(task.id);
+        try {
+          if (!mounted || !current) return;
+          if (await widget.archiveFiles.save(
+            exported.document,
+            scope: fileScope,
+          )) {
+            if (!mounted || !current) return;
+            await widget.catalog.backupSaved(task.id);
+            if (mounted) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(const SnackBar(content: Text('原备份已保存')));
+            }
+          }
+        } finally {
+          await exported.document.delete();
         }
+      } else if (widget.saveBackup != null) {
+        final contents = await widget.catalog.downloadBackup(task.id);
+        if (!mounted || !current) return;
+        if (await widget.saveBackup!(contents)) {
+          if (!mounted || !current) return;
+          await widget.catalog.backupSaved(task.id);
+          if (mounted) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('原备份已保存')));
+          }
+        }
+      }
+    } catch (failure) {
+      if (mounted && current) {
+        setState(() => error = packFileFailureMessage(failure));
+      }
+    } finally {
+      if (mounted) setState(() => acting = false);
+    }
+  }
+
+  Future<void> downloadSnapshot() async {
+    if (acting || !current || snapshot == null) return;
+    final Object source = widget.catalog;
+    if (source is! ArchiveTaskFiles) return;
+    setState(() {
+      acting = true;
+      error = '';
+    });
+    try {
+      final exported = await source.downloadArchiveFile(snapshot!);
+      try {
+        if (!mounted || !current) return;
+        final saved = await widget.archiveFiles.save(
+          exported.document,
+          scope: fileScope,
+        );
+        if (saved && mounted && current) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('恢复前快照已保存')));
+        }
+      } finally {
+        await exported.document.delete();
       }
     } catch (failure) {
       if (mounted && current) {
@@ -402,9 +473,14 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
                 ),
               ),
           ],
-          if (task.kind == 'backup_export' &&
-              task.state == 'completed' &&
-              widget.saveBackup != null)
+          if ([
+                'backup_export',
+                'backup_snapshot',
+                'backup_export_v2',
+                'backup_snapshot_v2',
+              ].contains(task.kind) &&
+              task.status == 'completed' &&
+              (widget.saveBackup != null || widget.catalog is ArchiveTaskFiles))
             Align(
               alignment: Alignment.centerLeft,
               child: TextButton(
@@ -412,6 +488,12 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
                 onPressed: acting || !current ? null : download,
                 child: const Text('下载原备份'),
               ),
+            ),
+          if (snapshot != null && !['queued', 'running'].contains(task.status))
+            TextButton(
+              key: const Key('task-download-snapshot'),
+              onPressed: acting || !current ? null : downloadSnapshot,
+              child: const Text('下载恢复前快照'),
             ),
           if (task.family == 'backup' && widget.canOpenBackup)
             Align(
@@ -561,6 +643,7 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
   @override
   void dispose() {
     _read++;
+    fileScope.cancel();
     widget.repository.removeListener(ownerChanged);
     super.dispose();
   }
