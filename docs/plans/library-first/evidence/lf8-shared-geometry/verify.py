@@ -121,6 +121,20 @@ for name in ["normal-1", "normal-2", "normal-3", "large", "landscape"]:
             title = next(t for t in m[state]["texts"] if t["text"] == "阅读偏好")
             assert title["rect"][1] + title["rect"][3] < 831
 assert all(source == sources[0] for source in sources)
+exported = read(HERE / "inputs/media-export-sha256.json")
+for pack in read(HERE / "inputs/packs.json"):
+    for index, page in enumerate(pack["pages"]):
+        raster = Path(page).with_suffix(".png").name
+        expected = next(
+            sha for path, sha in exported.items() if path.endswith("/raster/" + raster)
+        )
+        assert first_media[f"packs/{pack['folder']}/{index + 1:04d}.png"] == expected
+for orientation, folder, title in [
+    ("landscape", "横屏", "风里的花园"),
+    ("portrait", "竖屏", "水边的花"),
+]:
+    expected = exported[f"apps/mobile/assets/media/flower-{orientation}.mp4"]
+    assert first_media[f"videos/{folder}/{title}.mp4"] == expected
 assert read(HERE / "before/media-before.json") == first_media
 assert read(HERE / "before/media-after.json") == first_media
 assert "All tests passed!" in (HERE / "checks/targeted.log").read_text()

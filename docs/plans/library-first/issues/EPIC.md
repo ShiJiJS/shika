@@ -225,3 +225,18 @@ App流式文件网关、真实系统选择器/取消、两类统计/分页根映
 另按同源码跑既有末张/损坏图片844横屏回归一次35.93秒。三轮加兼容回归共21张实际窗口截图、6张源图前后SHA、原始HTTP与SQL投影已保存；119份manifest输入独立复核通过。普通字号三轮不冒充其它视口组合或安全存储强杀验收。
 
 [核查与修复说明](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-visible-page-skip/docs/plans/library-first/LF5-VISIBLE-PAGE-SKIP-AUDIT.md) / [固定源码与证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-visible-page-skip/docs/plans/library-first/evidence/lf5-visible-page-skip/README.md)。本段补READ-02/04/05与PKG-03的明确组合，不关闭整项。接下来推进整体原型对照；其它异常/连接恢复/迟到图片、500页4K/8K性能、目标手机/NAS及原签名发布仍开放。生产backup_v2仍关闭，冻结原型1cbf605独立可移除；未改正式8760/NAS/SDK或发布APK。LF5/#30、LF8/#33及总任务/#24保持开放。
+## 2026-10-26：共享比例与原型收口台账（PR #58）
+
+[Draft PR #58](https://github.com/ShiJiJS/video_viewer/pull/58)基于#57。固定App与最终原生源码a9da395，证据提交6b71cd1：两类库统一搜索55dp/输入42dp/文字16dp、范围工具60dp，顶栏与300dp居中导航对齐；设置开关约40×24可见、整行至少64dp可点，保留原回调/存储并覆盖键盘/单一开关语义；设置分组、标签确认区及文案密度已调整。
+
+真实8768新库的2视频/4包/24图，普通字号三轮、360双倍字号与844短横屏各一轮通过，共40个前台ADB检查点。16项针对组件检查、analyze/Ruff通过，235份manifest输入的源码、实际背景像素、窗口、源字节、SQLite数量及设备配置恢复独立核对通过。两轮独立存量视觉评审后，本轮问题已复核处理；早期主题过渡帧和屏外懒加载前置失败均单列诊断。没有重跑所有业务/服务端全集。
+
+[45项收口台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-prototype-fidelity/docs/plans/library-first/RESULTS.md) / [具体差异与尺寸边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-prototype-fidelity/docs/plans/library-first/LF8-SHARED-GEOMETRY.md) / [原始证据和只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-prototype-fidelity/docs/plans/library-first/evidence/lf8-shared-geometry/README.md)。HTML390×844去掉12px假系统区、原生390×905去掉实际49/24dp系统区后比较390×832内容，不拉伸Android画面；大字和横屏按各自实测安全区分别记证。
+
+尚需推进（不关闭LF8或总任务）：
+- [ ] 图包库真实继续阅读区与原范围返回。
+- [ ] 权威两类库存计数；不能用分页缓存或当前筛选数冒充。
+- [ ] 可识别的图包标题/作者与保守回退，以及服务端排序/分页/范围一致性。
+- [ ] 预览、阅读、管理、键盘和动作的完整同版对照；500页4K/8K性能、目标手机/NAS与原签名升级发布。
+
+冻结原型树1cbf605仍独立可移除，未改正式8760/NAS/SDK或发布正式APK；生产backup_v2仍关闭。#33与#24保持开放。

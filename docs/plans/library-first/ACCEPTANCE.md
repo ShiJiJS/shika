@@ -144,3 +144,12 @@
 另按同源码跑既有末张/损坏图片844横屏回归一次35.93秒。三轮加兼容回归共21张实际窗口截图、6张源图前后SHA、原始HTTP与SQL投影已保存；119份manifest输入独立复核通过。普通字号三轮不冒充其它视口组合或安全存储强杀验收。
 
 [核查与修复说明](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-visible-page-skip/docs/plans/library-first/LF5-VISIBLE-PAGE-SKIP-AUDIT.md) / [固定源码与证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-visible-page-skip/docs/plans/library-first/evidence/lf5-visible-page-skip/README.md)。本段补READ-02/04/05与PKG-03的明确组合，不关闭整项。接下来推进整体原型对照；其它异常/连接恢复/迟到图片、500页4K/8K性能、目标手机/NAS及原签名发布仍开放。生产backup_v2仍关闭，冻结原型1cbf605独立可移除；未改正式8760/NAS/SDK或发布APK。LF5/#30、LF8/#33及总任务/#24保持开放。
+
+
+## 2026-10-26：共享原型比例与逐项收口台账（PR #58）
+
+[Draft PR #58](https://github.com/ShiJiJS/video_viewer/pull/58) / [差异审计](LF8-SHARED-GEOMETRY.md) / [固定源码证据](evidence/lf8-shared-geometry/README.md)补充UI-01/03/04/05的共享区域。固定a9da395的普通三轮、360双倍字号和844短横屏各一轮真实原生通过，40检查点；16项针对组件、analyze/Ruff通过。两轮独立现状视觉评审后复核，235份输入的只读校验通过；实际暗色由原始PNG像素和稳定主题共同检查。
+
+同公开素材/真实24页夹具，普通HTML390×844去掉12px假系统区，与Android390×905去掉实测49/24dp安全区后的390×832内容比较。搜索框、首封面/标题与导航主锚线对齐，设置三组密度接近参考，开关整行/轨道/键盘各一次及禁用语义有针对检查；并排/叠加/差异图不等于整个产品已还原。大字号实际窗口360×809（内容高度约739.67dp），短横屏844×442（内容高390dp），分别保存实测安全区；不能把它们改称参考完整窗口或目标手机性能。
+
+新增[45项RESULTS台账](RESULTS.md)，每个ID继续列阶段证据和余项。图包继续阅读区、权威分类计数、标题/作者与排序、全管理/阅读页面、键盘/手势/动作、500页4K/8K、真实手机/NAS及原签名升级仍开放，不关闭UI或功能整项。服务端/全部业务全集未因本轮纯UI修正重跑；生产backup_v2仍关闭，原型树1cbf605独立未改，未发布正式APK。

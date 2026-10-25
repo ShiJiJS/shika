@@ -23,3 +23,8 @@
 代码按任务分批提交，PR 引用对应 issue 和 [验收 ID](ACCEPTANCE.md)。方案、独立原型及合成夹具已随 LF0 纳入版本控制；提交、验证和当前边界见 [LF0 记录](LF0.md)、[LF1 记录](LF1.md) 与 [LF2 记录](LF2.md)。
 
 旧 [#1](https://github.com/ShiJiJS/video_viewer/issues/1) / [#23](https://github.com/ShiJiJS/video_viewer/issues/23) 保持原状态，不把原型规划当作既有目标环境验收完成。
+
+
+## 2026-10-26：LF8共享比例与收口入口
+
+[Draft PR #58](https://github.com/ShiJiJS/video_viewer/pull/58)补齐两类库共享几何、设置与标签确认密度及独立复核证据；[RESULTS.md](RESULTS.md)现逐项登记45个验收ID。#33/#24保持开放，下一段优先真实续读区、权威类型总数、保守标题/作者与全范围排序一致性，详见[差异审计](LF8-SHARED-GEOMETRY.md)。本轮只有共享区域局部证据，不能替代完整管理/阅读/动作或目标设备验收。
