@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../library/repository.dart';
+import '../../library/backup_file_picker.dart';
 import '../../ui/paper.dart';
 import 'maintenance_task_session.dart';
 import 'maintenance_task_detail.dart';
@@ -14,10 +15,12 @@ class MaintenanceTasksPage extends StatefulWidget {
     required this.repository,
     this.saveBackup,
     this.onOpenBackup,
+    this.archiveFiles = const NativeBackupArchiveFiles(),
   });
   final LibraryRepository repository;
   final Future<bool> Function(String)? saveBackup;
   final VoidCallback? onOpenBackup;
+  final BackupArchiveFiles archiveFiles;
   @override
   State<MaintenanceTasksPage> createState() => _MaintenanceTasksPageState();
 }
@@ -52,19 +55,25 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
   Future<void> detail(MaintenanceTask task) async {
     final s = session!;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    final Object source = s.catalog;
+    final detailCatalog = source is GraphTaskCatalog
+        ? source.forTask(task)
+        : task.historical
+        ? HistoricalTaskCatalog(s.catalog)
+        : s.catalog;
     final result = await Navigator.of(context).push<String>(
       MaterialPageRoute(
         builder: (_) => MaintenanceTaskDetail(
           repository: widget.repository,
-          catalog: task.historical
-              ? HistoricalTaskCatalog(s.catalog)
-              : s.catalog,
+          catalog: detailCatalog,
           initial: task,
           saveBackup: widget.saveBackup,
+          archiveFiles: widget.archiveFiles,
           canOpenBackup: widget.onOpenBackup != null,
         ),
       ),
     );
+    if (!identical(detailCatalog, s.catalog)) detailCatalog.dispose();
     if (!mounted) return;
     if (result == 'backup') {
       widget.onOpenBackup?.call();

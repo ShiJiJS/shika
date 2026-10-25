@@ -1,0 +1,37 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart
+Running Gradle task 'assembleDebug'...                             18.2s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          914ms
+00:00 +0: v2 App export, paged mapping, replacement, snapshot and original tasks
+ARCHIVE_SCREENSHOT:/data/user/0/io.github.shijijs.video_viewer/files/archive-app-evidence/backup-start.png
+ARCHIVE_SCREENSHOT:/data/user/0/io.github.shijijs.video_viewer/files/archive-app-evidence/restore-first-page.png
+ARCHIVE_SCREENSHOT:/data/user/0/io.github.shijijs.video_viewer/files/archive-app-evidence/restore-confirm-off.png
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Archive UI timeout: null
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart:82:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart:193:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  v2 App export, paged mapping, replacement, snapshot and original tasks
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:56 +0 -1: v2 App export, paged mapping, replacement, snapshot and original tasks [E]
+  Test failed. See exception logs above.
+  The test description was: v2 App export, paged mapping, replacement, snapshot and original tasks
+  
+00:56 +0 -1: (tearDownAll)
+00:56 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_app_test.dart: v2 App export, paged mapping, replacement, snapshot and original tasks

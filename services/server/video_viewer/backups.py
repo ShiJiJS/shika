@@ -202,11 +202,13 @@ class Backups:
             ],
         }
 
-    def artifact(self, task_id, kinds=("backup_export", "backup_snapshot")):
+    def artifact(self, task_id, kinds=("backup_export", "backup_snapshot"), *, original=None):
         with self.db.read() as session:
             task = session.get(Task, task_id)
             metadata = {c.name: getattr(task, c.name) for c in Task.__table__.c} if task else None
-            if not metadata or metadata.get("error") == "restored_history":
+            if original is not None:
+                metadata = original
+            elif not metadata or metadata.get("error") == "restored_history":
                 from .management_history import historical_task
 
                 metadata = historical_task(session, task_id)

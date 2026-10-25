@@ -4,6 +4,9 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'models.dart';
+import 'backup_document.dart';
+import 'request_scope.dart';
+export 'request_scope.dart';
 export 'models.dart' show RequestCancelled;
 
 class ApiFailure extends LibraryFailure {
@@ -12,35 +15,17 @@ class ApiFailure extends LibraryFailure {
   final int? status;
 }
 
-/// Cancels obsolete HTTP work as well as preventing its result from publishing.
-class RequestScope {
-  bool cancelled = false;
-  final Set<void Function()> _callbacks = {};
-
-  void add(void Function() callback) {
-    if (cancelled) {
-      callback();
-    } else {
-      _callbacks.add(callback);
-    }
-  }
-
-  void remove(void Function() callback) => _callbacks.remove(callback);
-  void cancel() {
-    if (cancelled) return;
-    cancelled = true;
-    for (final callback in _callbacks.toList()) {
-      callback();
-    }
-    _callbacks.clear();
-  }
-}
-
 class ApiResponse {
   const ApiResponse(this.status, this.bytes, this.headers);
   final int status;
   final Uint8List bytes;
   final Map<String, String> headers;
+}
+
+class ApiFileResponse extends ApiResponse {
+  ApiFileResponse(int status, this.document, Map<String, String> headers)
+    : super(status, Uint8List(0), headers);
+  final BackupDocument document;
 }
 
 class ServerApi {
@@ -134,12 +119,104 @@ class ServerApi {
     int maximumBytes = 2 * 1024 * 1024,
     Duration timeout = const Duration(seconds: 20),
   }) async {
+    return _request(
+      method,
+      path,
+      body: body,
+      query: query,
+      headers: headers,
+      scope: scope,
+      originalReceipt: originalReceipt,
+      maximumBytes: maximumBytes,
+      timeout: timeout,
+    );
+  }
+
+  Future<ApiResponse> uploadFile(
+    String path,
+    BackupDocument document, {
+    Map<String, String> headers = const {},
+    RequestScope? scope,
+    Duration timeout = const Duration(minutes: 2),
+  }) async {
+    final elapsed = Stopwatch()..start();
+    await document.verify(scope: scope);
+    final remaining = timeout - elapsed.elapsed;
+    if (remaining <= Duration.zero) {
+      throw const ApiFailure('核对备份文件超时，请重新选择', code: 'timeout');
+    }
+    return _request(
+      'POST',
+      path,
+      bodyStream: document.verifiedRead(scope: scope),
+      contentLength: document.bytes,
+      headers: {'Content-Type': 'application/x-ndjson', ...headers},
+      scope: scope,
+      timeout: remaining,
+    );
+  }
+
+  Future<BackupDocument> downloadFile(
+    String path,
+    BackupFileStore store, {
+    required int expectedBytes,
+    required String expectedSha256,
+    required int maximumBytes,
+    Map<String, dynamic>? query,
+    bool originalReceipt = false,
+    RequestScope? scope,
+    Duration timeout = const Duration(minutes: 2),
+  }) async {
+    final response = await _request(
+      'GET',
+      path,
+      query: query,
+      fileStore: store,
+      expectedBytes: expectedBytes,
+      expectedSha256: expectedSha256,
+      maximumBytes: maximumBytes,
+      originalReceipt: originalReceipt,
+      scope: scope,
+      timeout: timeout,
+    );
+    return (response as ApiFileResponse).document;
+  }
+
+  Future<ApiResponse> _request(
+    String method,
+    String path, {
+    List<int>? body,
+    Stream<List<int>>? bodyStream,
+    int? contentLength,
+    BackupFileStore? fileStore,
+    int? expectedBytes,
+    String? expectedSha256,
+    Map<String, dynamic>? query,
+    Map<String, String> headers = const {},
+    RequestScope? scope,
+    bool originalReceipt = false,
+    int maximumBytes = 2 * 1024 * 1024,
+    Duration timeout = const Duration(seconds: 20),
+  }) async {
+    final explicitHistoryFile =
+        RegExp(r'^/api/v1/management-history/tasks/[^/]+/download$')
+            .hasMatch(path) &&
+        query != null &&
+        query.keys.every((key) => ['epoch', 'graph_id'].contains(key)) &&
+        (query['epoch'] is String &&
+                RegExp(r'^[a-f0-9]{32}$').hasMatch(query['epoch']) ||
+            query['graph_id'] is String &&
+                RegExp(
+                  r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$',
+                ).hasMatch(query['graph_id']));
     if (originalReceipt &&
         (method != 'GET' && method != 'HEAD' ||
             body != null ||
-            !RegExp(
-              r'^/api/v1/(tasks/[^/]+|backup-requests/(export|inspect|restore)/[^/]+|backups/[^/]+/download)$',
-            ).hasMatch(path))) {
+            bodyStream != null ||
+            !explicitHistoryFile &&
+                !RegExp(
+                  r'^/api/v1/(tasks/[^/]+|backup-requests/(export|inspect|restore)/[^/]+|backups/[^/]+/download|management-backups/requests/(export|inspect|restore)/[^/]+|management-backups/[^/]+/download)$',
+                ).hasMatch(path))) {
       throw ArgumentError('Only an original read can cross a management epoch');
     }
     if (headers.keys.any((key) => key.toLowerCase() == 'x-management-epoch')) {
@@ -153,6 +230,11 @@ class ServerApi {
       method,
       path,
       body: body,
+      bodyStream: bodyStream,
+      contentLength: contentLength,
+      fileStore: fileStore,
+      expectedBytes: expectedBytes,
+      expectedSha256: expectedSha256,
       query: query,
       headers: headers,
       scope: scope,
@@ -167,6 +249,7 @@ class ServerApi {
       if (error.code != 'network_unavailable' ||
           (method != 'GET' && method != 'HEAD') ||
           body != null ||
+          bodyStream != null ||
           remaining <= Duration.zero ||
           _closed ||
           scope?.cancelled == true) {
@@ -182,6 +265,11 @@ class ServerApi {
     String method,
     String path, {
     List<int>? body,
+    Stream<List<int>>? bodyStream,
+    int? contentLength,
+    BackupFileStore? fileStore,
+    int? expectedBytes,
+    String? expectedSha256,
     Map<String, dynamic>? query,
     Map<String, String> headers = const {},
     RequestScope? scope,
@@ -194,9 +282,13 @@ class ServerApi {
     StreamSubscription<List<int>>? subscription;
     Completer<Uint8List>? completion;
     Object? interruption;
+    final receiving = RequestScope();
+    BackupDocument? downloaded;
+    var returned = false;
 
     void interrupt(Object error) {
       interruption ??= error;
+      receiving.cancel();
       request?.abort(error);
       unawaited(subscription?.cancel());
       if (completion != null && !completion.isCompleted) {
@@ -227,15 +319,49 @@ class ServerApi {
       for (final entry in {...authorization, ...headers}.entries) {
         request.headers.set(entry.key, entry.value);
       }
-      if (body != null) request.add(body);
+      if (bodyStream != null) {
+        if (body != null) throw ArgumentError('Only one request body');
+        if (contentLength != null) request.contentLength = contentLength;
+        await request.addStream(bodyStream);
+      } else if (body != null) {
+        request.add(body);
+      }
       final response = await request.close().timeout(timeout);
+      final fileHeaders = <String, String>{};
+      response.headers.forEach(
+        (key, values) => fileHeaders[key] = values.join(', '),
+      );
+      if (fileStore != null &&
+          response.statusCode >= 200 &&
+          response.statusCode < 300) {
+        _verifyAuthority(fileHeaders, null, originalReceipt);
+        if (response.contentLength >= 0 &&
+            response.contentLength != expectedBytes) {
+          throw const ApiFailure(
+            '原备份文件大小不一致，请查询原任务',
+            code: 'backup_artifact_changed',
+          );
+        }
+        downloaded = await fileStore.capture(
+          response,
+          maximumBytes: maximumBytes,
+          expectedBytes: expectedBytes,
+          expectedSha256: expectedSha256,
+          scope: receiving,
+        );
+        _verifyAuthority(fileHeaders, null, originalReceipt);
+        if (_closed || scope?.cancelled == true) throw const RequestCancelled();
+        returned = true;
+        return ApiFileResponse(response.statusCode, downloaded, fileHeaders);
+      }
       final chunks = BytesBuilder(copy: false);
       final bodyDone = Completer<Uint8List>();
       completion = bodyDone;
       subscription = response.listen(
         (chunk) {
           if (bodyDone.isCompleted) return;
-          if (chunks.length + chunk.length > maximumBytes) {
+          if (chunks.length + chunk.length >
+              (fileStore == null ? maximumBytes : 2 * 1024 * 1024)) {
             interrupt(
               const ApiFailure('服务响应过大，请缩小范围后重试', code: 'response_too_large'),
             );
@@ -275,33 +401,15 @@ class ServerApi {
       response.headers.forEach(
         (key, values) => responseHeaders[key] = values.join(', '),
       );
-      if (failure?.status != 401 && _managementEpoch != null) {
-        final epoch = responseHeaders['x-management-epoch'];
-        if (failure?.code == 'management_changed' && !originalReceipt) {
-          _changed();
-          throw failure!;
-        }
-        if (epoch == null || !RegExp(r'^[a-f0-9]{32}$').hasMatch(epoch)) {
-          throw const ApiFailure(
-            '服务管理数据身份未能确认，请查询原操作后重试',
-            code: 'authority_unavailable',
-          );
-        }
-        if ((_authorityChanged || epoch != _managementEpoch) &&
-            !originalReceipt) {
-          _changed();
-          // A successful old write may have committed before a restore. Keep
-          // its receipt unknown rather than classifying this as rejected 409.
-          throw const ApiFailure(
-            '管理数据已恢复，原操作结果请到任务中心核对',
-            code: 'management_changed',
-          );
-        }
-      }
+      _verifyAuthority(responseHeaders, failure, originalReceipt);
       if (failure != null) throw failure;
       if (_closed || scope?.cancelled == true) throw const RequestCancelled();
+      returned = true;
       return ApiResponse(response.statusCode, bytes, responseHeaders);
     } on RequestCancelled {
+      if (interruption is TimeoutException) {
+        throw const ApiFailure('连接超时，请检查服务后重试', code: 'timeout');
+      }
       rethrow;
     } on ApiFailure {
       rethrow;
@@ -321,9 +429,44 @@ class ServerApi {
       );
     } finally {
       timer.cancel();
+      receiving.cancel();
+      if (!returned) {
+        request?.abort();
+        await downloaded?.delete();
+      }
       scope?.remove(cancel);
       _lifetime.remove(cancel);
       await subscription?.cancel();
+    }
+  }
+
+  void _verifyAuthority(
+    Map<String, String> responseHeaders,
+    ApiFailure? failure,
+    bool originalReceipt,
+  ) {
+    if (failure?.status != 401 && _managementEpoch != null) {
+      final epoch = responseHeaders['x-management-epoch'];
+      if (failure?.code == 'management_changed' && !originalReceipt) {
+        _changed();
+        throw failure!;
+      }
+      if (epoch == null || !RegExp(r'^[a-f0-9]{32}$').hasMatch(epoch)) {
+        throw const ApiFailure(
+          '服务管理数据身份未能确认，请查询原操作后重试',
+          code: 'authority_unavailable',
+        );
+      }
+      if ((_authorityChanged || epoch != _managementEpoch) &&
+          !originalReceipt) {
+        _changed();
+        // A successful old write may have committed before a restore. Keep
+        // its receipt unknown rather than classifying this as rejected 409.
+        throw const ApiFailure(
+          '管理数据已恢复，原操作结果请到任务中心核对',
+          code: 'management_changed',
+        );
+      }
     }
   }
 

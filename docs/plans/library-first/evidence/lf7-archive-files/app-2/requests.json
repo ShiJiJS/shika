@@ -1,0 +1,622 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/fb1580f3-d252-4f51-9cc9-817792ff385a",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/fb1580f3-d252-4f51-9cc9-817792ff385a",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/fb1580f3-d252-4f51-9cc9-817792ff385a",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/fb1580f3-d252-4f51-9cc9-817792ff385a/download",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/tags",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/imports",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b963ce06-399f-48fa-9ddb-0c34731cca82",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/b963ce06-399f-48fa-9ddb-0c34731cca82/roots",
+    "query": {
+      "offset": "0",
+      "limit": "24"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/b963ce06-399f-48fa-9ddb-0c34731cca82/roots",
+    "query": {
+      "offset": "24",
+      "limit": "24"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/restores",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/from-snapshot/b27830b1-9123-460c-945d-b8072731638a",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/scans",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/4c9ad325-2299-4a4e-87a2-bda97e60fd6e",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/4c9ad325-2299-4a4e-87a2-bda97e60fd6e/roots",
+    "query": {
+      "offset": "0",
+      "limit": "24"
+    },
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks",
+    "query": {
+      "offset": "0",
+      "limit": "100",
+      "family": "backup",
+      "state": "all"
+    },
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/da03bb18-7700-4be8-a278-adfd32691fd8",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b27830b1-9123-460c-945d-b8072731638a",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/b27830b1-9123-460c-945d-b8072731638a/download",
+    "query": {},
+    "epoch": "5c850612d59d88f06b813e6415d3f9a8"
+  }
+]

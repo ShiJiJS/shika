@@ -1,0 +1,784 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/8946d46d-eb90-4ca3-b9be-43f245ea57b6",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/8946d46d-eb90-4ca3-b9be-43f245ea57b6",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/8946d46d-eb90-4ca3-b9be-43f245ea57b6",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/8946d46d-eb90-4ca3-b9be-43f245ea57b6",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/8946d46d-eb90-4ca3-b9be-43f245ea57b6/download",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/tags",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/imports",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/aadaad24-7f7f-40c9-9d2f-9334a811a323",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/aadaad24-7f7f-40c9-9d2f-9334a811a323/roots",
+    "query": {
+      "offset": "0",
+      "limit": "24"
+    },
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/aadaad24-7f7f-40c9-9d2f-9334a811a323/roots",
+    "query": {
+      "offset": "24",
+      "limit": "24"
+    },
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/restores",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "6cfe045de565639842ee83c19412057d"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/scans",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/from-snapshot/0f4dd1e8-94c2-4b7f-a844-1daf977313cb",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/dd80d6be-963f-483a-aec9-e85c8588a12f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/dd80d6be-963f-483a-aec9-e85c8588a12f/roots",
+    "query": {
+      "offset": "0",
+      "limit": "24"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks",
+    "query": {
+      "offset": "0",
+      "limit": "100",
+      "family": "backup",
+      "state": "all"
+    },
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/942ece06-1332-40be-9f64-7636c1cdbd1f",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/0f4dd1e8-94c2-4b7f-a844-1daf977313cb",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/0f4dd1e8-94c2-4b7f-a844-1daf977313cb/download",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "a477bdb7926cf4b8f2e591fcc59b8285"
+  }
+]

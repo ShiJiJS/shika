@@ -125,3 +125,14 @@
 [恢复契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-backup-restore/docs/plans/library-first/LF7-RESTORE-V2-DESIGN.md) / [固定源码、原始日志及核对](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-backup-restore/docs/plans/library-first/evidence/lf7-backup-restore/README.md) / [下一步App文件接线](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-backup-restore/docs/plans/library-first/LF7-APP-ARCHIVE-PLAN.md)。初始化前SQLite写入和旧能力清单断言在全量检查中发现并修正；默认播放设置GET已改为只读。客户端398项及原生三轮沿用#51，本轮未改App或重跑，不作为v2 App验收。
 
 App流式文件网关、真实系统选择器/取消、两类统计/分页根映射/确认、历史页面与原epoch网关继续；backup_v2仍关闭。旧专用永久删除清单/页明细等GET尚需审计，通用历史入口不代表所有页面完成。其它强停组合、历史图片失败、暗色/横屏/手势与目标设备/NAS及签名升级继续。冻结原型独立未改，未改SDK/正式8760/NAS或发布APK；LF7/#32及总任务/#24保持开放。
+
+
+## 2026-10-25：App流式管理文件与原图历史（PR #53）
+
+[Draft PR #53](https://github.com/ShiJiJS/video_viewer/pull/53)基于#52。最终App/验收源码38ae54a，服务端树ff9699c不变：v2文件以私有文件ID、长度、SHA和所属服务代次传递，HTTP与Android SAF按块处理并协商真实上限。设置中分两类统计、24根分页映射、跨页草稿、默认关闭的完整替换确认和直接恢复前快照入口已接通。任务详情支持原导出/原快照流式下载，回执按原epoch、详情/成员按原graph；旧v1未知意图不改协议重发。
+
+433项客户端与398项服务端全集通过；全目录Ruff、analyze和127个Python文件编译通过。[设计与兼容边界](LF7-APP-ARCHIVES-DESIGN.md) / [固定源码、原始轨迹及独立核对](evidence/lf7-archive-files/README.md)。独立视觉复核发现大字号目标路径末尾不可见，已自然换行并复核；临时连接切换异常、当前快照查询误用旧回执通道及测试脚本滚动目标均已修正，诊断日志分开保留。
+
+原生App三轮（360双倍、390普通、390普通）使用实际服务、生产安全日志适配器与私有磁盘，27根真实分页、一次恢复POST、免口令新代次、前快照原文件与源媒体SHA保持均独立核对。真实系统选择器另跑三轮40MiB取消/保存/重新选取/超限清理/主动取消；二者分开记证，不宣称一条大文件恢复整路或Android内存测量。App路径使用私有文件选择/保存适配器，不冒充系统选择器；没有把App重建当强停。
+
+生产backup_v2仍关闭，8762只读源码夹具独立测试开放；没有改SDK、正式8760/NAS或发布APK。v2真实强停/新PID、完整历史专用清单与页细项接线、其它命令/来源组合、历史图片失败、暗色/横屏/手势、目标手机/NAS和原签名发布继续。原型树保持1cbf605且独立可移除；LF7/#32及总任务/#24保持开放。

@@ -1,0 +1,20 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/backup_native_files_test.dart
+Running Gradle task 'assembleDebug'...                             14.6s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          479ms
+00:00 +0: real SAF cancellation, large save, pick, bounds and late cancel
+SAF_STAGE:cancel-save
+SAF_DONE:cancel-save
+SAF_STAGE:save-large
+SAF_DONE:save-large
+SAF_STAGE:cancel-pick
+SAF_DONE:cancel-pick
+SAF_STAGE:pick-large
+SAF_DONE:pick-large
+SAF_STAGE:pick-over-limit
+SAF_EXPECTED_ERROR:pick-over-limit
+SAF_STAGE:programmatic-cancel
+SAF_DONE:programmatic-cancel
+SAF_VERIFIED:bytes=42008576,sha256=c5546c34a17fb13781fa3267ee1d3f3b4f4c6bdb654d1f9ca6b1d65d37acf161
+00:29 +1: (tearDownAll)
+00:29 +1: All tests passed!

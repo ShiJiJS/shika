@@ -1,17 +1,20 @@
 part of 'server_repository.dart';
 
-class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
+class _ServerMaintenanceTasks
+    implements MaintenanceTaskCatalog, GraphTaskCatalog, ArchiveTaskFiles {
   _ServerMaintenanceTasks(
     this.owner,
     this.target,
     this.generation,
     this.epoch,
-    this.fileScope,
-  );
+    this.fileScope, {
+    this.graphId,
+  });
   final ServerLibraryRepository owner;
   final ServerApi target;
   final int generation, epoch;
   final String fileScope;
+  final String? graphId;
   final scope = RequestScope();
   final issued = <String, MaintenanceReceipt>{};
   final downloaded = <String>{};
@@ -33,11 +36,16 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
       : throw const LibraryFailure('原操作任务标识不完整');
   Future<Json> get(String path, {Map<String, String>? query}) async {
     check();
+    final effectiveQuery = {
+      ...?query,
+      if (graphId != null && path.startsWith('/api/v1/management-history/'))
+        'graph_id': graphId!,
+    };
     final data = await owner.call(
       'GET',
       path,
       using: target,
-      query: query,
+      query: effectiveQuery,
       cancel: scope,
     );
     check();
@@ -45,7 +53,7 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
   }
 
   String route(String identity) =>
-      '/api/v1/maintenance-tasks/${Uri.encodeComponent(id(identity))}';
+      '/api/v1/${graphId == null ? 'maintenance-tasks' : 'management-history/tasks'}/${Uri.encodeComponent(id(identity))}';
   T parse<T>(T Function() action) {
     try {
       return action();
@@ -105,7 +113,10 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
     }
     return pageData(
       await get(
-        '/api/v1/maintenance-tasks',
+        graphId != null ||
+                state == 'historical' && owner.capabilities.managementHistory
+            ? '/api/v1/management-history/tasks'
+            : '/api/v1/maintenance-tasks',
         query: {
           'offset': '$offset',
           'limit': '$limit',
@@ -124,7 +135,9 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
   Future<MaintenanceTask> task(String identity) async {
     final data = await get(route(identity));
     final value = parse(() => MaintenanceTask(data));
-    if (value.id != identity) throw const LibraryFailure('原任务身份不一致，请重新读取');
+    if (value.id != identity || graphId != null && value.graphId != graphId) {
+      throw const LibraryFailure('原任务身份不一致，请重新读取');
+    }
     return value;
   }
 
@@ -144,7 +157,9 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
         'unfinished': '$unfinished',
       },
     );
-    if (data['operation_id'] != identity || data['historical'] is! bool) {
+    if (data['operation_id'] != identity ||
+        data['historical'] is! bool ||
+        graphId != null && data['graph_id'] != graphId) {
       throw const LibraryFailure('原操作明细身份不一致');
     }
     return pageData(
@@ -156,7 +171,11 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
     );
   }
 
-  PackFiles historicalFiles(String sourceScope) => PackFiles(
+  PackFiles historicalFiles(
+    String sourceScope, {
+    String? originEpoch,
+    void Function(String)? onGraph,
+  }) => PackFiles(
     journal: owner.packFileJournal,
     scope: sourceScope,
     readOnly: true,
@@ -165,7 +184,9 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
       if (method != 'GET' || body != null) {
         throw const LibraryFailure('历史记录只能查询原结果');
       }
-      return get(path);
+      return originEpoch == null
+          ? get(path)
+          : strictHistoryCall(path, originEpoch, onGraph: onGraph);
     },
   );
 
@@ -293,6 +314,7 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
               'restore': '恢复管理数据',
             }[kind]!,
             source: MaintenanceReceiptSource.backup,
+            protocolVersion: raw['version'] == 2 ? 2 : 1,
             kind: kind,
             taskId: raw['task'] == null ? null : id(raw['task']),
             historical: entry.key != fileScope,
@@ -312,6 +334,10 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
     final sourceScope = receipt.journalScope;
     if (sourceScope == null || !sameServerScope(sourceScope, fileScope)) {
       throw const LibraryFailure('历史记录所属连接不一致');
+    }
+    if (owner.capabilities.managementHistory &&
+        owner.capabilities.historyAvailable != false) {
+      return strictHistoricalReceipt(receipt);
     }
     String? identity;
     String expected;
@@ -343,6 +369,8 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
           ? 'file-requests'
           : receipt.source == MaintenanceReceiptSource.missingCleanup
           ? 'pack-missing-requests'
+          : receipt.protocolVersion == 2
+          ? 'management-backups/requests/${receipt.kind}'
           : 'backup-requests/${receipt.kind}';
       Json raw;
       try {
@@ -357,7 +385,7 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
           ? receipt.kind
           : receipt.source == MaintenanceReceiptSource.missingCleanup
           ? 'pack_forget_missing'
-          : 'backup_${receipt.kind}';
+          : 'backup_${receipt.kind}${receipt.protocolVersion == 2 ? '_v2' : ''}';
       if (raw['kind'] != expected) throw const LibraryFailure('原历史任务类型不一致');
       identity = id(raw['id']);
     }
@@ -451,6 +479,8 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
     }
     final namespace = receipt.source == MaintenanceReceiptSource.video
         ? 'file-requests'
+        : receipt.protocolVersion == 2
+        ? 'management-backups/requests/${receipt.kind}'
         : 'backup-requests/${receipt.kind}';
     Json raw;
     try {
@@ -463,7 +493,7 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
     }
     final identity = id(raw['id']);
     final expected = receipt.source == MaintenanceReceiptSource.backup
-        ? 'backup_${receipt.kind}'
+        ? 'backup_${receipt.kind}${receipt.protocolVersion == 2 ? '_v2' : ''}'
         : receipt.kind;
     if (raw['kind'] != expected ||
         (receipt.taskId != null && receipt.taskId != identity)) {
@@ -511,6 +541,87 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
   }
 
   @override
+  MaintenanceTaskCatalog forTask(MaintenanceTask task) {
+    check();
+    if (task.graphId == null) {
+      return task.historical ? HistoricalTaskCatalog(this) : this;
+    }
+    final child = _ServerMaintenanceTasks(
+      owner,
+      target,
+      generation,
+      epoch,
+      fileScope,
+      graphId: task.graphId,
+    );
+    owner._taskReaders.add(child);
+    return child;
+  }
+
+  Future<Json> originalTask(String identity) => get(
+    graphId == null
+        ? '/api/v1/tasks/${Uri.encodeComponent(id(identity))}'
+        : '/api/v1/management-history/tasks/${Uri.encodeComponent(id(identity))}/record',
+  );
+
+  @override
+  Future<String?> restoreSnapshot(String identity) async {
+    final value = await originalTask(identity);
+    if (value['id'] != identity ||
+        !['backup_restore', 'backup_restore_v2'].contains(value['kind'])) {
+      return null;
+    }
+    final raw = object(value['result'])['pre_snapshot_id'];
+    return raw == null ? null : id(raw);
+  }
+
+  @override
+  Future<ArchiveExport> downloadArchiveFile(String identity) async {
+    final value = await originalTask(identity),
+        result = object(value['result']);
+    final kind = value['kind'];
+    if (value['id'] != identity ||
+        value['status'] != 'completed' ||
+        ![
+          'backup_export',
+          'backup_snapshot',
+          'backup_export_v2',
+          'backup_snapshot_v2',
+        ].contains(kind) ||
+        result['bytes'] is! int ||
+        result['file_sha256'] is! String) {
+      throw const LibraryFailure('原备份尚未完成或下载身份不完整');
+    }
+    final files = await owner._archiveFileStoreFactory(
+      graphId == null ? fileScope : '$fileScope:graph:$graphId',
+    );
+    check();
+    final prefix = graphId != null
+        ? '/api/v1/management-history/tasks'
+        : kind.toString().endsWith('_v2')
+        ? '/api/v1/management-backups'
+        : '/api/v1/backups';
+    final document = await target.downloadFile(
+      '$prefix/${Uri.encodeComponent(id(identity))}/download',
+      files,
+      expectedBytes: result['bytes'],
+      expectedSha256: result['file_sha256'],
+      maximumBytes: owner.capabilities.archiveMaximumBytes ?? 32 * 1024 * 1024,
+      query: graphId == null ? null : {'graph_id': graphId},
+      scope: scope,
+      originalReceipt: true,
+    );
+    try {
+      check();
+    } catch (_) {
+      await document.delete();
+      rethrow;
+    }
+    downloaded.add(identity);
+    return ArchiveExport(identity, document);
+  }
+
+  @override
   void dispose() {
     disposed = true;
     scope.cancel();
@@ -553,7 +664,14 @@ class _ServerMaintenanceTasks implements MaintenanceTaskCatalog {
     if (!downloaded.contains(identity)) {
       throw const LibraryFailure('请先下载并核对这份备份');
     }
-    await owner._backups?.markExportSaved(identity);
+    final files = owner.capabilities.backupV2
+        ? await owner._archiveFileStoreFactory(fileScope)
+        : null;
+    check();
+    if (files != null && files.owner != fileScope) {
+      throw const LibraryFailure('备份暂存与原连接不一致');
+    }
+    await owner._backups?.markExportSaved(identity, files: files);
     check();
     downloaded.remove(identity);
   }

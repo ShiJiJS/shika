@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../library/models.dart';
+import '../library/management_archives.dart';
+import '../features/settings/archive_backup_page.dart';
 import '../app/app_shell.dart';
 import '../app/media_workspace.dart';
 import '../features/library/browse_context.dart';
@@ -2761,7 +2763,21 @@ class _LibraryHomeState extends State<LibraryHome> {
     );
   }
 
-  Widget backup() => ListView(
+  Widget backup() {
+    final Object archives = repo;
+    if (archives is ManagementArchiveRepository &&
+        archives.archiveBackupsAvailable) {
+      return ArchiveBackupPage(
+        key: ObjectKey(repo.connectionIdentity),
+        repository: repo,
+        archives: archives,
+        onOpenTasks: () => go('tasks'),
+      );
+    }
+    return legacyBackup();
+  }
+
+  Widget legacyBackup() => ListView(
     padding: const EdgeInsets.all(20),
     children: [
       Text('保存你的整理成果', style: Paper.of(context).title.copyWith(fontSize: 21)),

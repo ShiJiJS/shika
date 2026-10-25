@@ -1,12 +1,12 @@
 # LF7 下一步：App 管理文件流程
 
-依赖 Draft PR #52 的恢复协调器。本文是继续实施的边界，不是已完成或已通过原生验收的声明。沿用冻结的 `design/reference/library-first` 页面与尺寸，设置中的导入、预览、根映射、完整替换确认、任务与历史入口不改产品结构。
+依赖 Draft PR #52 的恢复协调器。App 文件与历史接线已在 `e6ee472` 实施，见[当前设计与验收边界](LF7-APP-ARCHIVES-DESIGN.md)；下文保留原实施边界，旧String路径仅用于旧服务兼容。本文是继续实施的边界，不是已完成或已通过原生验收的声明。沿用冻结的 `design/reference/library-first` 页面与尺寸，设置中的导入、预览、根映射、完整替换确认、任务与历史入口不改产品结构。
 
-## 当前需要替换的接线
+## 原接线与本次替换范围
 
-`ui/home.dart` 的 `BackupFiles` 仍收发完整 String；`NativeBackupFiles` 用 `readAsBytes` / UTF-8 解码，保存也构造整份 Uint8List，固定32MiB。`library/server_backups.dart` 与 `server_api.dart` 同样把 HTTP 响应聚成 BytesBuilder，再取完整文件。这些路径适合既有兼容v1，不能用“调大限制”作为v2文件接入。
+原 `ui/home.dart` 的 `BackupFiles` 收发完整 String；`NativeBackupFiles` 用 `readAsBytes` / UTF-8 解码，保存也构造整份 Uint8List，固定32MiB。`library/server_backups.dart` 与 `server_api.dart` 同样把 HTTP 响应聚成 BytesBuilder，再取完整文件。这些路径适合既有兼容v1，不能用“调大限制”作为v2文件接入。
 
-`BackupPreview` 仍以 LibrarySnapshot 和全部根为中心。新流程需要独立的已校验预览元数据及分页根描述，不在手机解码整个备份图。原服务器 v1 工作日志与未知回执继续按原协议查询，不能升级到新前缀后重发旧请求。
+原 `BackupPreview` 以 LibrarySnapshot 和全部根为中心。新流程需要独立的已校验预览元数据及分页根描述，不在手机解码整个备份图。原服务器 v1 工作日志与未知回执继续按原协议查询，不能升级到新前缀后重发旧请求。
 
 ## 文件与传输接口
 

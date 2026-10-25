@@ -1,0 +1,368 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b9f684fb-7287-412a-97d9-2e832d045caf",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b9f684fb-7287-412a-97d9-2e832d045caf",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/b9f684fb-7287-412a-97d9-2e832d045caf/download",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/tags",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/imports",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/129a644d-ba19-4cf3-b3df-9995a3e1545f",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/129a644d-ba19-4cf3-b3df-9995a3e1545f",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/129a644d-ba19-4cf3-b3df-9995a3e1545f",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/129a644d-ba19-4cf3-b3df-9995a3e1545f",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/129a644d-ba19-4cf3-b3df-9995a3e1545f",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/129a644d-ba19-4cf3-b3df-9995a3e1545f/roots",
+    "query": {
+      "offset": "0",
+      "limit": "24"
+    },
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/129a644d-ba19-4cf3-b3df-9995a3e1545f/roots",
+    "query": {
+      "offset": "24",
+      "limit": "24"
+    },
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/restores",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/afaa2b11-7e65-4343-b294-e2965b168d6a",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/afaa2b11-7e65-4343-b294-e2965b168d6a",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/afaa2b11-7e65-4343-b294-e2965b168d6a",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/afaa2b11-7e65-4343-b294-e2965b168d6a",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/afaa2b11-7e65-4343-b294-e2965b168d6a",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/afaa2b11-7e65-4343-b294-e2965b168d6a",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/afaa2b11-7e65-4343-b294-e2965b168d6a",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/afaa2b11-7e65-4343-b294-e2965b168d6a",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/afaa2b11-7e65-4343-b294-e2965b168d6a",
+    "query": {},
+    "epoch": "dae97e8dc3fb81d989dd522db9cd18ed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/scans",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "41bdd2bcad436393c061d7fcc739b0fe"
+  }
+]

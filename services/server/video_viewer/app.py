@@ -351,12 +351,20 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         with request.app.state.db.read() as session:
             server_id = session.get(Setting, "server_id").value
             epoch = Authority.current(session)
+            history = session.get(Setting, "management_history_ref")
+            history_available = bool(history and history.value)
         return {
             "server_id": server_id,
             "api_version": 1,
             "sqlite_version": sqlite3.sqlite_version,
             "schema_version": "0014",
             "management_epoch": epoch,
+            "management_history_available": history_available,
+            "management_backups": {
+                "versions": [1, 2],
+                "max_bytes": request.app.state.settings.backup_max_bytes,
+                "max_roots": 256,
+            },
             "capabilities": [
                 "typed_roots",
                 "pack_tags",
