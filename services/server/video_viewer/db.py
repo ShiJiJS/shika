@@ -30,6 +30,7 @@ class Database:
         self.authority = Authority()
         self.maintenance_task = None
         self.maintenance_owner = None
+        self._management_schema = False
 
         @event.listens_for(self.engine, "connect")
         def configure(connection, _record):
@@ -155,7 +156,20 @@ class Database:
                 # driver. Reserve its writer before checking the request lease.
                 session.connection().exec_driver_sql("BEGIN IMMEDIATE")
                 self.authority.check(session)
-                pending = session.get(Setting, "maintenance_restore")
+                # Bare SQLite users and migration probes may write before the
+                # management schema exists. Cache only presence: a later
+                # migration must still activate the persistent reservation.
+                if not self._management_schema:
+                    self._management_schema = bool(
+                        session.connection()
+                        .exec_driver_sql(
+                            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='settings'"
+                        )
+                        .first()
+                    )
+                pending = (
+                    session.get(Setting, "maintenance_restore") if self._management_schema else None
+                )
                 if (
                     not session_control
                     and pending

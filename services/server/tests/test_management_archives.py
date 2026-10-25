@@ -528,3 +528,26 @@ def test_historical_graph_tampering_cannot_supply_original_result(library, sampl
         response.status_code == 409
         and response.json()["error"]["code"] == "history_artifact_changed"
     )
+
+
+def test_bare_sqlite_writer_enables_persistent_reservation_after_migration(tmp_path):
+    import uuid
+    import pytest
+    from sqlalchemy import text
+    from video_viewer.errors import LibraryError
+
+    database = Database(tmp_path / "initialization")
+    try:
+        with database.write() as session:
+            session.execute(text("CREATE TABLE probe (value TEXT)"))
+            session.execute(text("INSERT INTO probe VALUES ('before management schema')"))
+        database.migrate()
+        with database.write() as session:
+            session.add(Setting(key="maintenance_restore", value=str(uuid.uuid4())))
+        with pytest.raises(LibraryError, match="管理数据正在恢复"):
+            with database.write() as session:
+                session.execute(text("UPDATE probe SET value='must not commit'"))
+        with database.read() as session:
+            assert session.scalar(text("SELECT value FROM probe")) == "before management schema"
+    finally:
+        database.close()
