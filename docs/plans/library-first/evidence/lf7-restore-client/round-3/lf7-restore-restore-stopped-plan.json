@@ -1,0 +1,170 @@
+{
+  "plan": {
+    "id": "90accd9e-3a26-4278-8123-551b48a0040b",
+    "kind": "pack_restore_plan",
+    "status": "completed",
+    "phase": "stopped",
+    "created_at": 1792895034.4846063,
+    "finished_at": 1792895042.7600563,
+    "error": "plan_stopped",
+    "result": {
+      "operation_id": "90accd9e-3a26-4278-8123-551b48a0040b",
+      "total": 27,
+      "processed": 2,
+      "succeeded": 2,
+      "failed": 0,
+      "stopped": 25,
+      "remaining": 0,
+      "partial": true,
+      "batches": 1
+    },
+    "historical": false,
+    "stop_requested": true,
+    "batch_size": 2,
+    "request_id": "1792895034386357-518340845"
+  },
+  "batches": [
+    "7757e708-66a2-4582-8286-e2983be84620"
+  ],
+  "member_counts": {
+    "stopped": 25,
+    "succeeded": 2
+  },
+  "packs": [
+    {
+      "id": "09310c9c-3381-46e3-b0b9-aabd3e127d82",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "0cc90c82-a35a-4ea7-819d-b180137a6713",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "2f64f060-cc56-4086-aa78-b565c3b602c0",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "2fa478e3-a4e1-4566-a456-800ddc08b663",
+      "status": "available",
+      "generation": 5
+    },
+    {
+      "id": "445c2903-d509-435f-8ee5-e17edefc8a29",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "4a9680a2-06a9-4e48-a36c-198e9c908966",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "61ffdc58-19ff-4885-92e4-27c66d2cc003",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "63c8dc32-d89d-46e4-be94-57d5eb3f700a",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "708fd9f3-59cf-4434-a8b0-9dd59541237a",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "70990075-6c4e-46f9-9582-9a642911a607",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "7cf92e6c-7dfc-483d-9abe-1c3c4db12aab",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "8cd927b5-688c-4679-9fda-cf2ebf0c2566",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "935b9fa3-68e1-48e0-9823-4bca4a671b2b",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "95657a44-04d6-4ea7-8607-6e890a24a632",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "96957410-e8d4-47d9-b958-ee540a1cbcfe",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "97d6d93d-207e-44d4-9949-34f9ec15cb33",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "9a4d08d8-bd4b-44db-8660-4aa5e3c8bac7",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "a1c40c0f-f3f2-4552-9aa6-e9e1be3a3c38",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "a1e134b5-d7bb-4b62-ae98-8f334af37085",
+      "status": "available",
+      "generation": 5
+    },
+    {
+      "id": "b39d440d-655f-49ab-98a2-c68572a44069",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "c97602f8-a470-4995-9f61-02a449b3d678",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "cd3a35e7-b9dd-434d-9e3d-24c36eea5fbc",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "df55a3dd-6289-4794-9f4e-d082f65ab8ab",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "eb0850f9-ad2e-462e-8292-a838e328f1b3",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "f87ebbef-69b8-4ebe-8c90-e6a09ee2ef50",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "fb315a6e-0ec7-490c-b377-2d4155bcf27d",
+      "status": "trash",
+      "generation": 4
+    },
+    {
+      "id": "fe6c6748-27ff-4632-ae05-f52b104ccc48",
+      "status": "trash",
+      "generation": 4
+    }
+  ]
+}

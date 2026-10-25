@@ -1,0 +1,209 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.39kB 0.0s done
+#2 DONE 0.2s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 3.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 101B 0.3s done
+#4 DONE 0.6s
+
+#5 [internal] load build context
+#5 transferring context: 296.14kB 0.1s done
+#5 DONE 0.3s
+
+#6 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.1s done
+#6 DONE 0.4s
+
+#7 [runtime 4/9] COPY requirements.lock ./
+#7 CACHED
+
+#8 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [runtime 3/9] WORKDIR /app
+#9 CACHED
+
+#10 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#10 CACHED
+
+#11 [runtime 6/9] COPY video_viewer ./video_viewer
+#11 DONE 0.3s
+
+#12 [runtime 7/9] COPY migrations ./migrations
+#12 DONE 0.2s
+
+#13 [runtime 8/9] COPY alembic.ini ./
+#13 DONE 0.5s
+
+#14 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#14 DONE 0.7s
+
+#15 [test 1/4] COPY requirements-test.lock ./
+#15 DONE 0.1s
+
+#16 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#16 5.488 Requirement already satisfied: alembic==1.20.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 7)) (1.20.0)
+#16 5.490 Requirement already satisfied: annotated-doc==0.0.5 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 13)) (0.0.5)
+#16 5.490 Requirement already satisfied: annotated-types==0.8.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 19)) (0.8.0)
+#16 5.492 Requirement already satisfied: anyio==4.15.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 25)) (4.15.1)
+#16 5.492 Requirement already satisfied: argon2-cffi==25.1.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 32)) (25.1.0)
+#16 5.492 Requirement already satisfied: argon2-cffi-bindings==26.1.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 38)) (26.1.0)
+#16 6.252 Collecting certifi==2026.7.22 (from -r requirements-test.lock (line 83))
+#16 6.764   Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+#16 6.920 Requirement already satisfied: cffi==2.1.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 89)) (2.1.1)
+#16 6.921 Requirement already satisfied: click==8.5.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 193)) (8.5.0)
+#16 6.921 Requirement already satisfied: fastapi==0.143.3 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 199)) (0.143.3)
+#16 6.922 Requirement already satisfied: h11==0.16.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 205)) (0.16.0)
+#16 7.080 Collecting httpcore==1.0.9 (from -r requirements-test.lock (line 212))
+#16 7.189   Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#16 7.374 Collecting httpx==0.28.1 (from -r requirements-test.lock (line 216))
+#16 7.476   Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#16 7.500 Requirement already satisfied: idna==3.20 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 220)) (3.20)
+#16 7.603 Collecting iniconfig==2.3.1 (from -r requirements-test.lock (line 227))
+#16 7.705   Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+#16 7.707 Requirement already satisfied: mako==1.4.3 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 231)) (1.4.3)
+#16 7.707 Requirement already satisfied: markupsafe==3.0.4 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 237)) (3.0.4)
+#16 7.708 Requirement already satisfied: opentelemetry-api==1.45.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 392)) (1.45.1)
+#16 7.821 Collecting packaging==26.3 (from -r requirements-test.lock (line 398))
+#16 7.924   Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#16 8.066 Collecting pluggy==1.7.0 (from -r requirements-test.lock (line 402))
+#16 8.171   Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+#16 8.176 Requirement already satisfied: pycparser==3.11 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 406)) (3.11)
+#16 8.176 Requirement already satisfied: pydantic==2.14.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 412)) (2.14.1)
+#16 8.177 Requirement already satisfied: pydantic-core==2.50.1 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 418)) (2.50.1)
+#16 8.326 Collecting pygments==2.21.0 (from -r requirements-test.lock (line 559))
+#16 8.441   Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#16 8.621      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 8.9 MB/s  0:00:00
+#16 8.807 Collecting pytest==9.1.1 (from -r requirements-test.lock (line 563))
+#16 8.928   Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+#16 9.599 Collecting ruff==0.17.1 (from -r requirements-test.lock (line 567))
+#16 9.701   Downloading ruff-0.17.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (9.9 MB)
+#16 11.37      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9.9/9.9 MB 6.1 MB/s  0:00:01
+#16 11.39 Requirement already satisfied: sqlalchemy==2.1.4 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 587)) (2.1.4)
+#16 11.39 Requirement already satisfied: starlette==1.8.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 664)) (1.8.0)
+#16 11.39 Requirement already satisfied: typing-extensions==4.16.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 670)) (4.16.0)
+#16 11.39 Requirement already satisfied: typing-inspection==0.4.4 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 683)) (0.4.4)
+#16 11.39 Requirement already satisfied: uvicorn==0.54.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 690)) (0.54.0)
+#16 11.40 Requirement already satisfied: pillow==13.0.0 in /usr/local/lib/python3.13/site-packages (from -r requirements-test.lock (line 697)) (13.0.0)
+#16 11.62 Installing collected packages: ruff, pygments, pluggy, packaging, iniconfig, certifi, pytest, httpcore, httpx
+#16 15.18 
+#16 15.18 Successfully installed certifi-2026.7.22 httpcore-1.0.9 httpx-0.28.1 iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-9.1.1 ruff-0.17.1
+#16 15.18 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#16 DONE 15.5s
+
+#17 [test 3/4] COPY tests ./tests
+#17 DONE 0.1s
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 DONE 0.1s
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 1.6s done
+#19 exporting manifest sha256:460804919647c2b3bbdec6cdc5f685da28bf7d2a92846a4de2792ef006acca2c
+#19 exporting manifest sha256:460804919647c2b3bbdec6cdc5f685da28bf7d2a92846a4de2792ef006acca2c 0.0s done
+#19 exporting config sha256:8b908b120bc6ce62035bcb8c2a7e87860c34b045628561f8757777b3e149d486 0.0s done
+#19 exporting attestation manifest sha256:a0b17b93d4769258c271a790a3b6759ea6c2f64db574f42d6b63fb8e1ca186f0 0.0s done
+#19 exporting manifest list sha256:9bc71972c38700cef8b0c5d27abd064ed75eb4dde3ac89f98064227837b10255 0.0s done
+#19 naming to docker.io/library/video-viewer-server:e2e done
+#19 unpacking to docker.io/library/video-viewer-server:e2e
+#19 unpacking to docker.io/library/video-viewer-server:e2e 0.6s done
+#19 DONE 2.3s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.0s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart
+Running Gradle task 'assembleDebug'...                             25.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,205ms
+00:00 +0: LF7 secure unknown restore is interrupted in a live Android process
+VV_E2E_RESTORE_FORCE_STOP
+01:12 +0: LF7 secure unknown restore is interrupted in a live Android process - did not complete [E]
+01:12 +0: (tearDownAll) - did not complete [E]
+01:12 +0: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart: (tearDownAll) (did not complete)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart: LF7 secure unknown restore is interrupted in a live Android process (did not complete)
+No tests were found.
+unhandled error during finalization of test:
+/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart
+PathNotFoundException: Deletion failed, path = '/var/folders/pt/953rhgfj5g1gm_pjr862pnhr0000gn/T/flutter_tools.YkTyaS/flutter_test_listener.dp7RMA' (OS Error: No such file or directory, errno = 2)
+#0      _Directory._deleteSync (dart:io/directory_impl.dart:216:7)
+#1      FileSystemEntity.deleteSync (dart:io/file_system_entity.dart:425:7)
+#2      ForwardingFileSystemEntity.deleteSync (package:file/src/forwarding/forwarding_file_system_entity.dart:70:16)
+#3      ErrorHandlingDirectory.deleteSync.<anonymous closure> (package:flutter_tools/src/base/error_handling_io.dart:717:22)
+#4      _runSync (package:flutter_tools/src/base/error_handling_io.dart:1118:16)
+#5      ErrorHandlingDirectory.deleteSync (package:flutter_tools/src/base/error_handling_io.dart:716:12)
+#6      FlutterPlatform._createListenerDart.<anonymous closure> (package:flutter_tools/src/test/flutter_platform.dart:786:15)
+#7      FlutterPlatform._startTest.finalize (package:flutter_tools/src/test/flutter_platform.dart:591:26)
+<asynchronous suspension>
+#8      FlutterPlatform._startTest (package:flutter_tools/src/test/flutter_platform.dart:762:7)
+<asynchronous suspension>
+
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart
+Running Gradle task 'assembleDebug'...                             58.2s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           3.2s
+00:00 +0: LF7 secure restore reopens original request and explicitly stops later batches
+VV_E2E_RESTORE_REOPENED
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<There are multiple heroes that share the same tag within a subtree.
+          Within each subtree for which heroes are to be animated (i.e. a PageRoute subtree), each
+Hero must have a unique non-null tag.
+          In this case, multiple heroes had the following tag: <SnackBar Hero tag - Text("整份 27
+个图包的恢复计划已受理，可离开页面，在操作任务查看进度")>
+          # Here is the subtree for one of the offending heroes: Hero>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart:94:9)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart:234:7)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart line 94
+The test description was:
+  LF7 secure restore reopens original request and explicitly stops later batches
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:38 +0 -1: LF7 secure restore reopens original request and explicitly stops later batches [E]
+  Test failed. See exception logs above.
+  The test description was: LF7 secure restore reopens original request and explicitly stops later batches
+  
+00:38 +0 -1: (tearDownAll)
+00:38 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart: LF7 secure restore reopens original request and explicitly stops later batches

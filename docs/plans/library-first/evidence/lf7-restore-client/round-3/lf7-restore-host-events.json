@@ -1,0 +1,73 @@
+{
+  "events": [
+    {
+      "phase": "emulator-immersive-guidance-confirmed",
+      "time": 1792894939.8000362
+    },
+    {
+      "phase": "workspace-viewport",
+      "width_dp": 390,
+      "height_dp": 844,
+      "density_dpi": 480,
+      "text_scale": "1"
+    },
+    {
+      "phase": "ready",
+      "time": 1792894947.524883
+    },
+    {
+      "phase": "restore-selected",
+      "time": 1792894985.679394
+    },
+    {
+      "phase": "restore-unknown",
+      "time": 1792894990.8643851
+    },
+    {
+      "phase": "restore-app-force-stopped",
+      "pid": "9656",
+      "pid_absent": true,
+      "time": 1792894992.409012
+    },
+    {
+      "phase": "restore-completed-without-app",
+      "members": 27,
+      "batches": 14,
+      "pid_absent": true,
+      "time": 1792894992.710711
+    },
+    {
+      "phase": "restore-expected-test-interruption",
+      "runner_exit_code": 79,
+      "time": 1792894992.71101
+    },
+    {
+      "phase": "android-force-stopped",
+      "resume_phase": 1,
+      "time": 1792894992.746878
+    },
+    {
+      "phase": "restore-app-reopened",
+      "old_pid": "9656",
+      "new_pid": "9791",
+      "time": 1792895012.4661708
+    },
+    {
+      "phase": "restore-reopened",
+      "time": 1792895017.74828
+    },
+    {
+      "phase": "restore-paged",
+      "time": 1792895022.636311
+    },
+    {
+      "phase": "restore-stop-unknown",
+      "time": 1792895039.534702
+    },
+    {
+      "phase": "restore-stopped",
+      "time": 1792895045.3655941
+    }
+  ],
+  "errors": []
+}

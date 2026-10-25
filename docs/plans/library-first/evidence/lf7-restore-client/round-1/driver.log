@@ -1,0 +1,123 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.39kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 2.5s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 101B done
+#4 DONE 0.0s
+
+#5 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#5 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 10.54kB 0.0s done
+#6 DONE 0.0s
+
+#7 [runtime 4/9] COPY requirements.lock ./
+#7 CACHED
+
+#8 [test 1/4] COPY requirements-test.lock ./
+#8 CACHED
+
+#9 [runtime 3/9] WORKDIR /app
+#9 CACHED
+
+#10 [runtime 7/9] COPY migrations ./migrations
+#10 CACHED
+
+#11 [runtime 6/9] COPY video_viewer ./video_viewer
+#11 CACHED
+
+#12 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#12 CACHED
+
+#13 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#13 CACHED
+
+#14 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#14 CACHED
+
+#15 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 && rm -rf /var/lib/apt/lists/*
+#15 CACHED
+
+#16 [test 3/4] COPY tests ./tests
+#16 CACHED
+
+#17 [runtime 8/9] COPY alembic.ini ./
+#17 CACHED
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:f1bd7a964aed0e3547a04924bd490041350068c2071673d032fbc715ab5684bd done
+#19 exporting config sha256:06a351690135058f62f9e2762f800ddeaca64ca80016a2409b0f9172ec23087a done
+#19 exporting attestation manifest sha256:624fc3e6c83806181dac742cea1f12929fca35e8f9a13aa7d851bda551be7e7a 0.0s done
+#19 exporting manifest list sha256:d9c54473f8c12a9bddde49a628f65b31bfd162971a30369c5d2a9aefa20ce5f1 0.0s done
+#19 naming to docker.io/library/video-viewer-server:e2e done
+#19 unpacking to docker.io/library/video-viewer-server:e2e 0.0s done
+#19 DONE 0.1s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.0s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart
+Running Gradle task 'assembleDebug'...                             20.3s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          629ms
+00:00 +0: LF7 secure unknown restore is interrupted in a live Android process
+VV_E2E_RESTORE_FORCE_STOP
+00:30 +0: LF7 secure unknown restore is interrupted in a live Android process - did not complete [E]
+00:30 +0: (tearDownAll) - did not complete [E]
+00:30 +0: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart: (tearDownAll) (did not complete)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart: LF7 secure unknown restore is interrupted in a live Android process (did not complete)
+No tests were found.
+unhandled error during finalization of test:
+/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart
+PathNotFoundException: Deletion failed, path = '/var/folders/pt/953rhgfj5g1gm_pjr862pnhr0000gn/T/flutter_tools.sAPYqS/flutter_test_listener.ZrEw2o' (OS Error: No such file or directory, errno = 2)
+#0      _Directory._deleteSync (dart:io/directory_impl.dart:216:7)
+#1      FileSystemEntity.deleteSync (dart:io/file_system_entity.dart:425:7)
+#2      ForwardingFileSystemEntity.deleteSync (package:file/src/forwarding/forwarding_file_system_entity.dart:70:16)
+#3      ErrorHandlingDirectory.deleteSync.<anonymous closure> (package:flutter_tools/src/base/error_handling_io.dart:717:22)
+#4      _runSync (package:flutter_tools/src/base/error_handling_io.dart:1118:16)
+#5      ErrorHandlingDirectory.deleteSync (package:flutter_tools/src/base/error_handling_io.dart:716:12)
+#6      FlutterPlatform._createListenerDart.<anonymous closure> (package:flutter_tools/src/test/flutter_platform.dart:786:15)
+#7      FlutterPlatform._startTest.finalize (package:flutter_tools/src/test/flutter_platform.dart:591:26)
+<asynchronous suspension>
+#8      FlutterPlatform._startTest (package:flutter_tools/src/test/flutter_platform.dart:762:7)
+<asynchronous suspension>
+
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_restore_plans_test.dart
+Running Gradle task 'assembleDebug'...                             20.7s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          650ms
+00:00 +0: LF7 secure restore reopens original request and explicitly stops later batches
+VV_E2E_RESTORE_REOPENED
+00:38 +1: (tearDownAll)
+00:38 +1: All tests passed!
