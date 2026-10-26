@@ -385,7 +385,20 @@ void main() {
         await t.tap(find.byTooltip('视频操作'));
         await frames(t);
         await t.tap(find.text('切换暗黑模式'));
-        await frames(t);
+        final deadline = DateTime.now().add(const Duration(seconds: 10));
+        while (!(failSave
+            ? find.byKey(const Key('preview-error')).evaluate().isNotEmpty
+            : preferences.dark)) {
+          if (DateTime.now().isAfter(deadline)) {
+            fail('Theme preference save did not settle');
+          }
+          // File flush completes on real IO, independent of pumped frame time.
+          await t.runAsync(
+            () => Future<void>.delayed(const Duration(milliseconds: 10)),
+          );
+          await t.pump(const Duration(milliseconds: 16));
+        }
+        await t.pumpAndSettle();
         expect(preferences.dark, !failSave);
         if (failSave) {
           expect(find.byKey(const Key('preview-error')), findsOneWidget);
