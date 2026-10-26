@@ -130,6 +130,8 @@ void main() {
           'texts': texts,
           'history_rows': [for (final e in find.byType(MediaHistoryRow).evaluate())
             if (e.renderObject is RenderBox) rect((e.renderObject as RenderBox).localToGlobal(Offset.zero) & (e.renderObject as RenderBox).size)],
+          'video_catalog': find.byType(VideoCatalogPage).evaluate().length != 1 ? null : {'source': catalog().entry.source.name, 'scrollOffset': catalog().scroll.hasClients ? catalog().scroll.offset : null, 'listHeader': catalog().listHeader, 'stride': catalog().stride, 'offset': catalog().data.offset},
+          'pack_catalog': find.byType(PackCatalogPage).evaluate().length != 1 ? null : {'source': t.state<PackCatalogPageState>(find.byType(PackCatalogPage)).entry.source.name, 'scrollOffset': t.state<PackCatalogPageState>(find.byType(PackCatalogPage)).scroll.hasClients ? t.state<PackCatalogPageState>(find.byType(PackCatalogPage)).scroll.offset : null, 'listHeader': t.state<PackCatalogPageState>(find.byType(PackCatalogPage)).listHeader, 'stride': t.state<PackCatalogPageState>(find.byType(PackCatalogPage)).stride},
           'round': repo.playbackIdentity,
           'current': repo.current?.id,
           'library_ready': repo.libraryPreparation.value.ready,
@@ -201,6 +203,17 @@ void main() {
         expect(media.viewInsets.bottom, greaterThan(0));
         expect(find.byKey(const Key('app-navigation')), findsNothing);
         expect(field.hitTestable(), findsOneWidget);
+        if (media.textScaler.scale(14) / 14 > 1 &&
+            media.size.height > media.size.width) {
+          final action = pack
+              ? find.byKey(const Key('pack-quick-cleanup'))
+              : find.widgetWithText(FilledButton, '预览此范围');
+          expect(action.hitTestable(), findsOneWidget);
+          expect(
+            t.getRect(action).bottom,
+            lessThanOrEqualTo(media.size.height - media.viewInsets.bottom),
+          );
+        }
         await capture(pack ? 'recent-keyboard-pack' : 'recent-keyboard-video');
       }
       FocusManager.instance.primaryFocus?.unfocus();

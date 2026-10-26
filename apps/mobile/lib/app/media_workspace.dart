@@ -179,7 +179,8 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
             MediaLayout.headerExtent(context) +
                 MediaLayout.kindExtent(context) +
                 MediaLayout.search(context) +
-                48;
+                MediaLayout.scope(context) +
+                MediaLayout.toolbar(context);
     final title = switch (widget.destination) {
       'settings' => '设置',
       'recent' => '最近看过',
