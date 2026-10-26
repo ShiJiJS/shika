@@ -61,7 +61,7 @@ void main() {
       expect(t.takeException(), isNull);
     }
 
-    Future<void> tap(Finder target) async {
+    Future<void> reveal(Finder target) async {
       for (final direction in [1, -1]) {
         for (
           var attempt = 0;
@@ -83,6 +83,10 @@ void main() {
         () => target.hitTestable().evaluate().isNotEmpty,
         'visible $target',
       );
+    }
+
+    Future<void> tap(Finder target) async {
+      await reveal(target);
       await t.tap(target);
       await t.pump(const Duration(milliseconds: 260));
     }
@@ -177,10 +181,7 @@ void main() {
       } else {
         await tap(find.byKey(const Key('nav-settings')));
       }
-      await until(
-        () => find.text('服务连接').evaluate().isNotEmpty,
-        'settings entry',
-      );
+      await reveal(find.text('服务连接'));
     }
 
     Future<void> openDefaults(bool video) async {
