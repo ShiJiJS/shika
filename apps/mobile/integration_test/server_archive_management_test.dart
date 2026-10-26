@@ -216,7 +216,7 @@ void main() {
 
       await visible(find.text('下一页'));
       await t.tap(find.text('下一页'));
-      await t.pumpAndSettle();
+      await until(() => find.text('媒体目录 · 已载入 27/27').evaluate().isNotEmpty);
       await visible(find.byKey(const Key('archive-confirm')));
       expect(
         t
@@ -255,7 +255,7 @@ void main() {
       await shot('snapshot-preview');
       await visible(find.text('下一页'));
       await t.tap(find.text('下一页'));
-      await t.pumpAndSettle();
+      await until(() => find.text('媒体目录 · 已载入 27/27').evaluate().isNotEmpty);
       await visible(find.byKey(const Key('archive-confirm')));
       expect(
         t
