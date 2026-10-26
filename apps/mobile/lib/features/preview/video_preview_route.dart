@@ -54,6 +54,8 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
         BrowseSource.tags => '标签',
         BrowseSource.recent => '最近',
       },
+      if (entry.query.count == 0 && entry.search.isEmpty)
+        entry.source == BrowseSource.recent ? '最近看过的视频' : '全部视频',
       if (entry.query.folder.isNotEmpty) basename(entry.query.folder),
       ...entry.query.tags.map((tag) => '# ${repo.tagName(tag)}'),
       if (entry.search.isNotEmpty) '“${entry.search}”',
@@ -388,6 +390,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
   @override
   Widget build(BuildContext context) {
     final current = browsing.current, p = Paper.of(context);
+    final enlarged = MediaQuery.textScalerOf(context).scale(12) > 16;
     final disabled = busy || current == null || repo.backupRestorePending;
     return PopScope<void>(
       canPop: leaving,
@@ -611,20 +614,35 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 7),
                         child: Row(
                           children: [
-                            const Text('快速整理', style: TextStyle(fontSize: 12)),
-                            const SizedBox(width: 12),
+                            if (!enlarged) ...[
+                              const Text(
+                                '快速整理',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              const SizedBox(width: 12),
+                            ],
                             Expanded(
+                              flex: enlarged ? 2 : 1,
                               child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                  ),
+                                ),
                                 onPressed: disabled ? null : tags,
                                 child: const Text('打标签'),
                               ),
                             ),
                             const SizedBox(width: 8),
                             Expanded(
+                              flex: enlarged ? 3 : 1,
                               child: FilledButton(
                                 key: const Key('preview-quick-delete'),
                                 style: FilledButton.styleFrom(
                                   backgroundColor: p.danger,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                  ),
                                 ),
                                 onPressed: disabled
                                     ? null

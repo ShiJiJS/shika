@@ -96,8 +96,9 @@ void main() {
     }, 'actual initialized playing native video');
     Future<void> capture(String state) async {
       await t.pump(const Duration(milliseconds: 200));
-      final root = find.byType(MovieStage).evaluate().isNotEmpty
-          ? find.byType(MovieStage)
+      final root =
+          find.byKey(const Key('video-preview-route')).evaluate().isNotEmpty
+          ? find.byKey(const Key('video-preview-route'))
           : find.byKey(const Key('app-shell'));
       final media = MediaQuery.of(t.element(root));
       List<double> rect(Rect r) => [r.left, r.top, r.width, r.height];
@@ -322,7 +323,10 @@ void main() {
     await tap(find.byTooltip('视频操作'));
     await capture('preview-more');
     await tap(find.text('视频详情'));
-    expect(find.text(repo.current!.name), findsOneWidget);
+    await until(
+      () => find.text(repo.current!.name).evaluate().length == 1,
+      'details entered after preceding sheet closes',
+    );
     await capture('preview-details');
     await tap(find.byTooltip('关闭面板'));
     await tap(find.byTooltip('视频操作'));
