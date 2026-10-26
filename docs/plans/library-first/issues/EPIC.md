@@ -1,6 +1,6 @@
 ## 目标
 
-将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8原型一致性收口进行中；最新[Draft PR #65](https://github.com/ShiJiJS/video_viewer/pull/65)补齐阅读器短横屏画布、固定面板动作、大字来源及同页位置复核。各阶段未收口项目及当前证据见[45项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-chrome/docs/plans/library-first/RESULTS.md)，仍需依赖PR合并、完整同版验收、目标手机/NAS及原签名升级验证，尚未发布新版。
+将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8原型一致性收口进行中；最新[Draft PR #66](https://github.com/ShiJiJS/video_viewer/pull/66)补齐视频预览控件、范围滚动与操作面板及125点同源复核；短队列高度、横屏宽度和工具图标仍需对齐原型。各阶段未收口项目及当前证据见[45项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-preview-panels/docs/plans/library-first/RESULTS.md)，仍需依赖PR合并、完整同版验收、目标手机/NAS及原签名升级验证，尚未发布新版。
 
 ## 历史阶段记录（各自固定版本）
 
@@ -340,3 +340,17 @@ App流式文件网关、真实系统选择器/取消、两类统计/分页根映
 独立存量视觉评审首轮及同清单复核：短横屏设置按钮裁切、大字标签边界冲突、大字来源省略、横屏分页收尾四项均在静态范围完成，没有新增必须修正项。正文超出时仍需滚动，不声称所有设置或四个成员均在横屏首屏显示。与实际浏览器冻结参考并排仅去真实安全区、按DPR等比降采样并补中性空白，不拉伸或挪动元素；真实平台行高差异保留。
 
 [设计与实现约束](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-chrome/docs/plans/library-first/LF8-READER-CHROME.md) / [固定源码、原图、诊断和只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-chrome/docs/plans/library-first/evidence/lf8-reader-chrome/README.md)。本段补READ-01–05及UI-02/04/05的明确组合，不关闭完整验收项。继续完整预览、阅读其它异常/方向/手势、完整管理、500页4K/8K和目标手机/NAS及原签名覆盖升级；需用户配合部分按授权暂跳过。原型1cbf605独立可移除、backup_v2生产能力仍关闭，MemoryCredentialStore不新增强杀/安全存储证明；未改正式8760/NAS/SDK或发布APK。LF8/#33及总任务/#24保持开放。
+
+## 2026-10-26：视频预览范围、播放控件与操作面板（PR #66）
+
+[Draft PR #66](https://github.com/ShiJiJS/video_viewer/pull/66)基于#65。
+
+控制条按实际文字宽度排布，空间不足时分行，保留至少88dp拖动轨道及原字号；短横屏中央播放按钮避让控制条，空间不足时保留明确的控制条播放入口。面板覆盖期间禁用播放/速度，关闭后恢复原播放意图。范围正文统一滚动，保留有界读取和当前项定位；补完整筛选来源、浅/暗色切换及大字整理动作排布。
+
+固定取证源码bd40372（生产与组件测试树bd40372），客户端完整540项、analyze、lib/test及本轮integration文件format、脚本Ruff通过。服务生产与测试树同基线40b85e1，本段未重跑服务测试。普通三轮、大字和短横屏各19点共95个视频点，另阅读器13点与最近17点同源码回归，共125个原生前台检查点；442份manifest输入只读复核通过，证据提交e97852d。
+
+真实服务路径完成单项搜索预览和返回筛选、完整范围内暂停/拖进度/速度选择、长按2倍及松手回1.5倍；整理显隐、标签取消、更多/详情、主题切换恢复、顺序队列、末尾返回及最近去重。SQL核对两轮固定1/2项来源与成员/序号、完整范围结束，工具/面板未改候选或提交标签/删除；26个源SHA及七轮设备显示配置恢复相同。组件补四种视口/字号的长来源滚动与当前定位，以及真实偏好文件读回/写入失败保留旧值。
+
+独立存量评审一轮、同清单三次追加；暗色取图等实际主题与图标颜色完成，稳定态低对比项关闭；大字结束计数和队列说明孤字项关闭。保留原始观察和全部修后材料，不外推动态结论。普通短队列83%固定高度留白、横屏640dp面板宽及工具图标仍与冻结原型不同，继续列入UI-02/05，不能以本次评审关闭代替整页一致。
+
+[实现约束](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-preview-panels/docs/plans/library-first/LF8-PREVIEW-PANELS.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-preview-panels/docs/plans/library-first/evidence/lf8-preview-panels/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-preview-panels/docs/plans/library-first/RESULTS.md)。本段补PRE-01/02/04、来源返回及UI-02/04/05明确组合；完整预览其它异常/后台/全屏设备手势与录屏、完整管理、500页4K/8K、目标手机/NAS及原签名升级继续。固定视口不能冒充实际旋转，小型公开视频不能冒充目标机性能。原型1cbf605独立未改，backup_v2生产能力仍关闭；MemoryCredentialStore不新增强杀/安全存储证明，未发布APK或修改正式8760/NAS/SDK。LF8/#33与总任务/#24保持开放。
