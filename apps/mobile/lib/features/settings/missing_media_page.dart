@@ -33,6 +33,18 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
   bool loading = true, acting = false;
   String error = '', journalError = '';
   final errorAnchor = GlobalKey();
+  final scroll = ScrollController();
+
+  void revealFailure() {
+    // An error below a long lazy list has no mounted anchor yet. Reveal the
+    // status region first, then let the shared helper locate its actual error.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !scroll.hasClients) return;
+      scroll.jumpTo(0);
+      revealFormError(errorAnchor);
+    });
+  }
+
   bool get current =>
       identical(connection, widget.repository.connectionIdentity) &&
       gateway.isCurrent &&
@@ -49,7 +61,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
   void ownerChanged() {
     if (mounted && !current) {
       setState(() => error = '服务连接或管理数据已变化，请返回后重新打开');
-      revealFormError(errorAnchor);
+      revealFailure();
     }
   }
 
@@ -115,7 +127,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
     } catch (e) {
       if (mounted && current && token == generation) {
         setState(() => error = e.toString());
-        revealFormError(errorAnchor);
+        revealFailure();
       }
     } finally {
       if (mounted && token == generation) setState(() => loading = false);
@@ -134,7 +146,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
     } catch (e) {
       if (mounted) {
         setState(() => journalError = e.toString());
-        revealFormError(errorAnchor);
+        revealFailure();
       }
     }
   }
@@ -196,7 +208,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
     } catch (e) {
       if (mounted && current) {
         setState(() => error = '清理结果未确认：$e');
-        revealFormError(errorAnchor);
+        revealFailure();
       }
       await readPending();
     } finally {
@@ -215,7 +227,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
       if (!mounted || !current) return;
       if (value == null) {
         setState(() => error = '尚未查到原清理请求，未重新提交。可以稍后继续查询或从操作任务核对。');
-        revealFormError(errorAnchor);
+        revealFailure();
       } else {
         setState(() => task = value);
         await load();
@@ -224,7 +236,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
     } catch (e) {
       if (mounted) {
         setState(() => error = e.toString());
-        revealFormError(errorAnchor);
+        revealFailure();
       }
     } finally {
       if (mounted) setState(() => acting = false);
@@ -248,7 +260,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
     } catch (e) {
       if (mounted) {
         setState(() => error = e.toString());
-        revealFormError(errorAnchor);
+        revealFailure();
       }
     } finally {
       if (mounted) setState(() => acting = false);
@@ -274,6 +286,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
     generation++;
     widget.repository.removeListener(ownerChanged);
     widget.repository.cancelMissingRead();
+    scroll.dispose();
     gateway.dispose();
     tasks.dispose();
     super.dispose();
@@ -314,13 +327,21 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
                 ),
                 Text(
                   row.path,
-                  style: TextStyle(fontSize: 12, height: 1.7, color: p.muted),
+                  style: TextStyle(
+                    fontSize: 12,
+                    height: 1.7,
+                    color: p.catalogMeta,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 5),
                   child: Text(
                     '${kind == MediaKind.video ? '视频' : '图包'}${row.tags.isEmpty ? '' : ' · ${row.tags}'}',
-                    style: TextStyle(fontSize: 12, height: 1.6, color: p.muted),
+                    style: TextStyle(
+                      fontSize: 12,
+                      height: 1.6,
+                      color: p.catalogMeta,
+                    ),
                   ),
                 ),
                 if (MediaLayout.largeText(context)) ...[
@@ -385,6 +406,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
                 },
                 child: ListView(
                   key: const Key('missing-list'),
+                  controller: scroll,
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.fromLTRB(20, 12, 20, 22),
                   children: [
@@ -457,7 +479,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
                       style: TextStyle(
                         fontSize: 13,
                         height: 1.7,
-                        color: p.muted,
+                        color: p.catalogMeta,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -466,7 +488,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
                       style: TextStyle(
                         fontSize: 13,
                         height: 1.7,
-                        color: p.muted,
+                        color: p.catalogMeta,
                       ),
                     ),
                     if (error.isNotEmpty || journalError.isNotEmpty)
@@ -546,7 +568,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
                             style: TextStyle(
                               fontSize: 13,
                               height: 1.7,
-                              color: p.muted,
+                              color: p.catalogMeta,
                             ),
                           ),
                           trailing: const Icon(Icons.chevron_right),
@@ -560,7 +582,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
                         child: Text(
                           '暂无缺失内容',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: p.muted, height: 1.7),
+                          style: TextStyle(color: p.catalogMeta, height: 1.7),
                         ),
                       ),
                     if (total > limit || offset > 0)
@@ -583,7 +605,10 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
                               total == 0
                                   ? '共 0 项'
                                   : '${offset + 1}–${offset + rows.length} / $total',
-                              style: TextStyle(fontSize: 13, color: p.muted),
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: p.catalogMeta,
+                              ),
                             ),
                             TextButton(
                               onPressed:
@@ -598,13 +623,25 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
                     if (total > 0)
                       TextButton(
                         key: const Key('clear-missing-kind'),
-                        style: TextButton.styleFrom(foregroundColor: p.danger),
+                        style: TextButton.styleFrom(
+                          foregroundColor: p.danger,
+                          textStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                         onPressed: canCleanup ? cleanup : null,
                         child: Text(
                           '清除失效${kind == MediaKind.video ? '视频' : '图包'}记录',
                         ),
                       ),
                     TextButton(
+                      style: TextButton.styleFrom(
+                        textStyle: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                       onPressed: () => Navigator.pop(context),
                       child: const Text('返回媒体目录'),
                     ),

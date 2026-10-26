@@ -197,6 +197,22 @@ void main() {
     );
   }
   testWidgets(
+    'unknown cleanup from the bottom of 24 rows reveals its status without another submit',
+    (t) async {
+      await host(t, 390, 1);
+      repo.lose = true;
+      await tap(t, find.byKey(const Key('clear-missing-kind')));
+      await tap(t, find.byKey(const Key('missing-confirm')));
+      expect(repo.cleanupPosts, 1);
+      expect(find.textContaining('清理结果未确认').hitTestable(), findsOneWidget);
+      expect(find.text('查询原清理请求').hitTestable(), findsOneWidget);
+      expect(repo.missing, hasLength(27));
+      await tap(t, find.text('查询原清理请求'));
+      expect(repo.cleanupQueries, 1);
+      expect(repo.cleanupPosts, 1);
+    },
+  );
+  testWidgets(
     'failed page reload retains members and offset; retry never submits cleanup',
     (t) async {
       await host(t, 390, 1);
