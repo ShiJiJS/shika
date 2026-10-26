@@ -164,10 +164,10 @@ void main() {
     final target = find.byKey(Key('pack-tile-${summer.id}'));
     final catalogScroll = find
         .descendant(
-          of: find.byType(PackCatalogPage),
+          of: find.byKey(const Key('pack-grid')),
           matching: find.byType(Scrollable),
         )
-        .last;
+        .first;
     await t.scrollUntilVisible(target, 160, scrollable: catalogScroll);
     await tap(target);
     await until(
