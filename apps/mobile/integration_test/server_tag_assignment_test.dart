@@ -105,7 +105,18 @@ void main() {
             final field = t.getRect(input), button = t.getRect(add);
             final view = MediaQueryData.fromView(t.view);
             final bottom = view.size.height - view.viewInsets.bottom;
-            return field.top >= 0 &&
+            final scroller = find.ancestor(
+              of: input,
+              matching: find.byWidgetPredicate(
+                (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
+              ),
+            );
+            final clip = t.getRect(scroller.first);
+            return field.top >= clip.top &&
+                field.bottom <= clip.bottom &&
+                button.top >= clip.top &&
+                button.bottom <= clip.bottom &&
+                field.top >= 0 &&
                 field.bottom <= bottom &&
                 button.top >= 0 &&
                 button.bottom <= bottom &&
