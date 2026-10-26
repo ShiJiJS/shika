@@ -1,0 +1,61 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart
+Running Gradle task 'assembleDebug'...                             13.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          519ms
+00:00 +0: real reading canvas, tools, saved strip and source return
+READER_CHROME_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Reader chrome timeout: one target Found 0 widgets with key
+[<'pack-tile-9cb0fe66-2174-4456-aa15-1ad27d5b82a2'>]: []
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:62:11)
+<asynchronous suspension>
+#2      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:70:7)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:165:5)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  real reading canvas, tools, saved strip and source return
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Reader chrome timeout: one target Found 0 widgets with key
+[<'pack-tile-9cb0fe66-2174-4456-aa15-1ad27d5b82a2'>]: []
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:62:11)
+<asynchronous suspension>
+#2      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:70:7)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:165:5)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  real reading canvas, tools, saved strip and source return
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:38 +0 -1: real reading canvas, tools, saved strip and source return [E]
+  Test failed. See exception logs above.
+  The test description was: real reading canvas, tools, saved strip and source return
+  
+00:38 +0 -1: (tearDownAll)
+00:38 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart: real reading canvas, tools, saved strip and source return

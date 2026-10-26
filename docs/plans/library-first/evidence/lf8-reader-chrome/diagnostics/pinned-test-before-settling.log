@@ -1,0 +1,166 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+00:00 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+00:00 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'reader-settings-done'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart:68:11)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart line 68
+The test description was:
+  reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +2 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:01 +2 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0 [E]
+  Test failed. See exception logs above.
+  The test description was: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+  
+00:01 +2 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(360.0, 740.0)/2.0
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'reader-settings-done'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart:68:11)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart line 68
+The test description was:
+  reader settings keep accessible mode sections stable Size(360.0, 740.0)/2.0
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +2 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:01 +2 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(360.0, 740.0)/2.0 [E]
+  Test failed. See exception logs above.
+  The test description was: reader settings keep accessible mode sections stable Size(360.0, 740.0)/2.0
+  
+00:01 +2 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(844.0, 390.0)/1.0
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'reader-settings-done'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart:68:11)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart line 68
+The test description was:
+  reader settings keep accessible mode sections stable Size(844.0, 390.0)/1.0
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +2 -3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:01 +2 -3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(844.0, 390.0)/1.0 [E]
+  Test failed. See exception logs above.
+  The test description was: reader settings keep accessible mode sections stable Size(844.0, 390.0)/1.0
+  
+00:02 +3 -3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:02 +3 -3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(844.0, 390.0)/2.0
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'reader-settings-done'>] (considering
+only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart:68:11)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart line 68
+The test description was:
+  reader settings keep accessible mode sections stable Size(844.0, 390.0)/2.0
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +3 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:02 +3 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(844.0, 390.0)/2.0 [E]
+  Test failed. See exception logs above.
+  The test description was: reader settings keep accessible mode sections stable Size(844.0, 390.0)/2.0
+  
+00:02 +3 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:50664/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:50664/p0/2
+00:02 +4 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:02 +4 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:50664/p0/2
+00:03 +5 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:03 +6 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(390.0, 844.0) / 1.0
+00:03 +7 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:03 +8 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+00:04 +9 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(360.0, 740.0) / 2.0
+00:04 +9 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:50672/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:50672/p0/2
+00:04 +10 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(360.0, 740.0) / 2.0
+00:04 +11 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(360.0, 740.0) / 2.0
+00:04 +11 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:04 +12 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(360.0, 740.0) / 2.0
+00:05 +12 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:05 +13 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+00:05 +14 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(360.0, 740.0) / 2.0
+00:05 +14 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(844.0, 390.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:50681/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:50681/p0/2
+00:05 +15 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(844.0, 390.0) / 1.0
+00:05 +15 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(844.0, 390.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:50681/p0/2
+00:05 +16 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(844.0, 390.0) / 1.0
+00:05 +17 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(844.0, 390.0) / 1.0
+00:06 +18 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(844.0, 390.0) / 1.0
+00:06 +19 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+00:06 +20 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+00:06 +21 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+00:07 +22 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+00:07 +23 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+00:07 +24 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+00:08 +25 -4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+00:08 +26 -4: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(360.0, 740.0)/2.0
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(844.0, 390.0)/1.0
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(844.0, 390.0)/2.0

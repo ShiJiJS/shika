@@ -1,0 +1,40 @@
+[
+  {
+    "state": "normal",
+    "reference": [
+      390,
+      844
+    ],
+    "native_system_window": [
+      390.0,
+      905.0
+    ],
+    "native_safe_content": [
+      390,
+      832
+    ],
+    "dpr": 3.0,
+    "top_removed": 49.0,
+    "bottom_removed": 24.0,
+    "operation": "DPR-only downsample after removing measured system safe areas. Shorter side bottom-padded neutral gray; no stretching or element relocation."
+  },
+  {
+    "state": "landscape",
+    "reference": [
+      844,
+      390
+    ],
+    "native_system_window": [
+      844.0,
+      390.0
+    ],
+    "native_safe_content": [
+      844,
+      338
+    ],
+    "dpr": 3.0,
+    "top_removed": 28.0,
+    "bottom_removed": 24.0,
+    "operation": "DPR-only downsample after removing measured system safe areas. Shorter side bottom-padded neutral gray; no stretching or element relocation."
+  }
+]

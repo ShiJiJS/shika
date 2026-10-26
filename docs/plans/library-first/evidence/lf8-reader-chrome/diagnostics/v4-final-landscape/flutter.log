@@ -1,0 +1,70 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart
+Running Gradle task 'assembleDebug'...                             25.3s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,065ms
+00:00 +0: real reading canvas, tools, saved strip and source return
+FIDELITY_METRICS:{"state":"reader-paged","size":[844.0,390.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"reader-header":[0.0,28.0,844.0,49.0],"reader-canvas":[0.0,28.0,844.0,338.0],"reader-controls":[242.0,314.0,360.0,52.0],"reader-horizontal":[0.0,28.0,844.0,338.0]},"texts":[{"text":"夏日祭","rect":[56.0,28.5,60.74995422363281,29.0],"fontSize":20.0},{"text":"示例作者 · 034","rect":[56.0,57.5,79.8206787109375,18.0],"fontSize":12.0},{"text":"3 / 6","rect":[517.0441131591797,329.0,28.955886840820312,20.0],"fontSize":14.0}],"reading":{"pack":"f6508a79-de13-4ce6-84bc-cb3206838479","index":2,"page_id":"7968dc6c-950f-412a-b7a0-0e1634bf19df","ratio":0.0,"mode":"horizontal","controls":true,"quick":false,"range":"0f839ef6-c5b9-41e7-b8fd-6eff77261826"}}
+FIDELITY_METRICS:{"state":"reader-overview","size":[844.0,390.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"reader-header":[0.0,28.0,844.0,49.0],"reader-canvas":[0.0,28.0,844.0,338.0],"reader-controls":[242.0,314.0,360.0,52.0],"reader-horizontal":[0.0,28.0,844.0,338.0],"reader-overview-sheet":[102.0,46.80000000000001,640.0,343.2]},"texts":[{"text":"夏日祭","rect":[56.0,28.5,60.74995422363281,29.0],"fontSize":20.0},{"text":"示例作者 · 034","rect":[56.0,57.5,79.8206787109375,18.0],"fontSize":12.0},{"text":"3 / 6","rect":[517.0441131591797,329.0,28.955886840820312,20.0],"fontSize":14.0},{"text":"页码总览","rect":[122.0,65.80000000000001,552.0,30.0],"fontSize":21.0},{"text":"6 张 · 文件名自然顺序","rect":[122.0,104.80000000000001,600.0,20.0],"fontSize":13.0},{"text":"1","rect":[123.0,377.1703703703704,192.66666666666663,17.0],"fontSize":12.0},{"text":"2","rect":[325.66666666666663,377.1703703703704,192.66666666666663,17.0],"fontSize":12.0},{"text":"3","rect":[528.3333333333333,377.1703703703704,192.66666666666663,17.0],"fontSize":12.0}],"reading":{"pack":"f6508a79-de13-4ce6-84bc-cb3206838479","index":2,"page_id":"7968dc6c-950f-412a-b7a0-0e1634bf19df","ratio":0.0,"mode":"horizontal","controls":true,"quick":false,"range":"0f839ef6-c5b9-41e7-b8fd-6eff77261826"}}
+READER_CHROME_JUMP:{"index":3,"busy":false,"pending":false,"sheet":0}
+FIDELITY_METRICS:{"state":"reader-jump","size":[844.0,390.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"reader-header":[0.0,28.0,844.0,49.0],"reader-canvas":[0.0,28.0,844.0,338.0],"reader-controls":[242.0,314.0,360.0,52.0],"reader-horizontal":[0.0,28.0,844.0,338.0]},"texts":[{"text":"夏日祭","rect":[56.0,28.5,60.74995422363281,29.0],"fontSize":20.0},{"text":"示例作者 · 034","rect":[56.0,57.5,79.8206787109375,18.0],"fontSize":12.0},{"text":"4 / 6","rect":[517.0721130371094,329.0,28.927886962890625,20.0],"fontSize":14.0}],"reading":{"pack":"f6508a79-de13-4ce6-84bc-cb3206838479","index":3,"page_id":"a30920e9-8d7e-4a35-a17a-6417e908e825","ratio":0.0,"mode":"horizontal","controls":true,"quick":false,"range":"0f839ef6-c5b9-41e7-b8fd-6eff77261826"}}
+FIDELITY_METRICS:{"state":"reader-settings","size":[844.0,390.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"reader-header":[0.0,28.0,844.0,49.0],"reader-canvas":[0.0,28.0,844.0,338.0],"reader-controls":[242.0,314.0,360.0,52.0],"reader-horizontal":[0.0,28.0,844.0,338.0],"reader-settings-done":[122.0,302.0,600.0,48.0]},"texts":[{"text":"夏日祭","rect":[56.0,28.5,60.74995422363281,29.0],"fontSize":20.0},{"text":"示例作者 · 034","rect":[56.0,57.5,79.8206787109375,18.0],"fontSize":12.0},{"text":"4 / 6","rect":[517.0721130371094,329.0,28.927886962890625,20.0],"fontSize":14.0},{"text":"阅读设置","rect":[122.0,65.80000000000001,552.0,30.0],"fontSize":21.0},{"text":"夏日祭","rect":[122.0,104.80000000000001,600.0,19.0],"fontSize":13.0},{"text":"横向翻页","rect":[159.0,153.8,56.399757385253906,20.0],"fontSize":null},{"text":"纵向拼接","rect":[257.3997573852539,153.8,56.399757385253906,20.0],"fontSize":null},{"text":"从左向右","rect":[138.0,216.8,64.6001205444336,24.0],"fontSize":null},{"text":"翻页方向","rect":[138.0,198.3,66.0001220703125,16.0],"fontSize":null},{"text":"完整显示","rect":[138.0,282.8,64.6001205444336,24.0],"fontSize":null},{"text":"图片适配","rect":[138.0,264.3,66.0001220703125,16.0],"fontSize":null},{"text":"左右滑动翻页，轻点图片收起工具。双击放大，再次双击复原。","rect":[122.0,333.8,600.0,21.0],"fontSize":13.0},{"text":"继续阅读","rect":[393.80012130737305,316.0,56.399757385253906,20.0],"fontSize":null}],"reading":{"pack":"f6508a79-de13-4ce6-84bc-cb3206838479","index":3,"page_id":"a30920e9-8d7e-4a35-a17a-6417e908e825","ratio":0.0,"mode":"horizontal","controls":true,"quick":false,"range":"0f839ef6-c5b9-41e7-b8fd-6eff77261826"}}
+READER_IMAGE_FAILURE 8c2f7ed5-5d31-4b94-86e8-a4886e2f65fb: HttpException: Connection closed before full header was received, uri = http://10.0.2.2:8768/api/v1/pages/8c2f7ed5-5d31-4b94-86e8-a4886e2f65fb/image?v=1&session=1792997815945102-d0719816&reader=1
+FIDELITY_METRICS:{"state":"reader-vertical","size":[844.0,390.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"reader-header":[0.0,28.0,844.0,49.0],"reader-canvas":[0.0,28.0,844.0,338.0],"reader-controls":[242.0,314.0,360.0,52.0],"reader-vertical":[0.0,28.0,844.0,338.0]},"texts":[{"text":"夏日祭","rect":[56.0,28.5,60.74995422363281,29.0],"fontSize":20.0},{"text":"示例作者 · 034","rect":[56.0,57.5,79.8206787109375,18.0],"fontSize":12.0},{"text":"4 / 6","rect":[517.0721130371094,329.0,28.927886962890625,20.0],"fontSize":14.0}],"reading":{"pack":"f6508a79-de13-4ce6-84bc-cb3206838479","index":3,"page_id":"a30920e9-8d7e-4a35-a17a-6417e908e825","ratio":0.0,"mode":"vertical","controls":true,"quick":false,"range":"0f839ef6-c5b9-41e7-b8fd-6eff77261826"}}
+FIDELITY_METRICS:{"state":"reader-strip-scroll","size":[844.0,390.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"reader-header":[0.0,28.0,844.0,49.0],"reader-canvas":[0.0,28.0,844.0,338.0],"reader-controls":[242.0,314.0,360.0,52.0],"reader-vertical":[0.0,28.0,844.0,338.0]},"texts":[{"text":"夏日祭","rect":[56.0,28.5,60.74995422363281,29.0],"fontSize":20.0},{"text":"示例作者 · 034","rect":[56.0,57.5,79.8206787109375,18.0],"fontSize":12.0},{"text":"4 / 6","rect":[517.0721130371094,329.0,28.927886962890625,20.0],"fontSize":14.0}],"reading":{"pack":"f6508a79-de13-4ce6-84bc-cb3206838479","index":3,"page_id":"a30920e9-8d7e-4a35-a17a-6417e908e825","ratio":0.04747235387045814,"mode":"vertical","controls":true,"quick":false,"range":"0f839ef6-c5b9-41e7-b8fd-6eff77261826"}}
+FIDELITY_METRICS:{"state":"reader-immersive","size":[844.0,390.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"reader-canvas":[0.0,28.0,844.0,338.0],"reader-vertical":[0.0,28.0,844.0,338.0]},"texts":[{"text":"4 / 6","rect":[790.357421875,330.0,25.642578125,17.0],"fontSize":12.0}],"reading":{"pack":"f6508a79-de13-4ce6-84bc-cb3206838479","index":3,"page_id":"a30920e9-8d7e-4a35-a17a-6417e908e825","ratio":0.04747235387045814,"mode":"vertical","controls":false,"quick":false,"range":"0f839ef6-c5b9-41e7-b8fd-6eff77261826"}}
+FIDELITY_METRICS:{"state":"reader-restored","size":[844.0,390.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"reader-header":[0.0,28.0,844.0,49.0],"reader-canvas":[0.0,28.0,844.0,338.0],"reader-controls":[242.0,314.0,360.0,52.0],"reader-vertical":[0.0,28.0,844.0,338.0]},"texts":[{"text":"夏日祭","rect":[56.0,28.5,60.74995422363281,29.0],"fontSize":20.0},{"text":"示例作者 · 034","rect":[56.0,57.5,79.8206787109375,18.0],"fontSize":12.0},{"text":"4 / 6","rect":[517.0721130371094,329.0,28.927886962890625,20.0],"fontSize":14.0}],"reading":{"pack":"f6508a79-de13-4ce6-84bc-cb3206838479","index":3,"page_id":"a30920e9-8d7e-4a35-a17a-6417e908e825","ratio":0.04747235387045814,"mode":"vertical","controls":true,"quick":false,"range":"0f839ef6-c5b9-41e7-b8fd-6eff77261826"}}
+READER_CHROME_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key
+[<'reader-range-pagination'>] (considering only hit-testable
+widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:308:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart line 308
+The test description was:
+  real reading canvas, tools, saved strip and source return
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with key [<'reader-range-pagination'>]
+(considering only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:308:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart line 308
+The test description was:
+  real reading canvas, tools, saved strip and source return
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:37 +0 -1: real reading canvas, tools, saved strip and source return [E]
+  Test failed. See exception logs above.
+  The test description was: real reading canvas, tools, saved strip and source return
+  
+00:37 +0 -1: (tearDownAll)
+00:37 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart: real reading canvas, tools, saved strip and source return

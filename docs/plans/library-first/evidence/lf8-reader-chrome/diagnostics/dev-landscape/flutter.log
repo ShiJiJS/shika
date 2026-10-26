@@ -1,0 +1,59 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart
+Running Gradle task 'assembleDebug'...                             13.5s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          651ms
+00:00 +0: real reading canvas, tools, saved strip and source return
+FIDELITY_METRICS:{"state":"reader-paged","size":[844.0,390.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"reader-header":[0.0,28.0,844.0,49.0],"reader-canvas":[0.0,28.0,844.0,338.0],"reader-controls":[242.0,314.0,360.0,52.0],"reader-horizontal":[0.0,28.0,844.0,338.0]},"texts":[{"text":"夏日祭","rect":[52.0,28.5,60.74995422363281,29.0],"fontSize":20.0},{"text":"示例作者 · 034","rect":[52.0,57.5,79.8206787109375,18.0],"fontSize":12.0},{"text":"3 / 6","rect":[517.0441131591797,329.0,28.955886840820312,20.0],"fontSize":14.0}],"reading":{"pack":"335e1101-fe37-4422-8e83-6c66ba90a69a","index":2,"page_id":"d5b8d1fb-0479-4b20-a111-be1862dd7471","ratio":0.0,"mode":"horizontal","controls":true,"quick":false,"range":"fed99cb9-ccad-4b82-ba20-494c4bbc1a29"}}
+READER_IMAGE_FAILURE 2ee2784e-7ef2-4ebc-a696-564ba2455d63: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/2ee2784e-7ef2-4ebc-a696-564ba2455d63/thumbnail?v=1&session=1792996152372343-b02da54a&reader=1
+READER_IMAGE_FAILURE 059c6f9b-31d0-4a32-a548-0d70cf52ae5f: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/059c6f9b-31d0-4a32-a548-0d70cf52ae5f/thumbnail?v=1&session=1792996152372343-b02da54a&reader=1
+FIDELITY_METRICS:{"state":"reader-overview","size":[844.0,390.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"reader-header":[0.0,28.0,844.0,49.0],"reader-canvas":[0.0,28.0,844.0,338.0],"reader-controls":[242.0,314.0,360.0,52.0],"reader-horizontal":[0.0,28.0,844.0,338.0],"reader-overview-sheet":[102.0,46.80000000000001,640.0,343.2]},"texts":[{"text":"夏日祭","rect":[52.0,28.5,60.74995422363281,29.0],"fontSize":20.0},{"text":"示例作者 · 034","rect":[52.0,57.5,79.8206787109375,18.0],"fontSize":12.0},{"text":"3 / 6","rect":[517.0441131591797,329.0,28.955886840820312,20.0],"fontSize":14.0},{"text":"页码总览","rect":[122.0,65.80000000000001,552.0,30.0],"fontSize":21.0},{"text":"6 张 · 文件名自然顺序","rect":[122.0,104.80000000000001,600.0,20.0],"fontSize":13.0},{"text":"1","rect":[123.0,377.1703703703704,192.66666666666663,17.0],"fontSize":12.0},{"text":"2","rect":[325.66666666666663,377.1703703703704,192.66666666666663,17.0],"fontSize":12.0},{"text":"3","rect":[528.3333333333333,377.1703703703704,192.66666666666663,17.0],"fontSize":12.0}],"reading":{"pack":"335e1101-fe37-4422-8e83-6c66ba90a69a","index":2,"page_id":"d5b8d1fb-0479-4b20-a111-be1862dd7471","ratio":0.0,"mode":"horizontal","controls":true,"quick":false,"range":"fed99cb9-ccad-4b82-ba20-494c4bbc1a29"}}
+READER_CHROME_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Reader chrome timeout: overview fourth page
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:62:11)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:207:5)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  real reading canvas, tools, saved strip and source return
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Reader chrome timeout: overview fourth page
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:62:11)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart:207:5)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  real reading canvas, tools, saved strip and source return
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:43 +0 -1: real reading canvas, tools, saved strip and source return [E]
+  Test failed. See exception logs above.
+  The test description was: real reading canvas, tools, saved strip and source return
+  
+00:43 +0 -1: (tearDownAll)
+00:44 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_chrome_test.dart: real reading canvas, tools, saved strip and source return

@@ -1,0 +1,125 @@
+{
+  "counts": {
+    "videos": 2,
+    "packs": 4,
+    "pack_pages": 24,
+    "recent_entries": 1,
+    "pack_progress": 1,
+    "pack_preferences": 1,
+    "pack_sessions": 2,
+    "playback_rounds": 0,
+    "pack_file_operations": 0,
+    "pack_trash_items": 0
+  },
+  "packs": [
+    {
+      "id": "f86b0230-a2be-49c8-ac32-fd55d683dc64",
+      "name": "示例作者 NO.019 - 灵梦 · 新年快乐",
+      "path": "/media/packs/示例作者 NO.019 - 灵梦 · 新年快乐"
+    },
+    {
+      "id": "2fe356b8-0cea-4fd0-850f-5389cdb38eaa",
+      "name": "示例作者 NO.034 - 夏日祭",
+      "path": "/media/packs/示例作者 NO.034 - 夏日祭"
+    },
+    {
+      "id": "6a3d4ab0-201d-4243-92ce-5476fcb8a82f",
+      "name": "示例作者 NO.051 - 加藤惠 · 和服",
+      "path": "/media/packs/示例作者 NO.051 - 加藤惠 · 和服"
+    },
+    {
+      "id": "ee30e20f-d853-423f-a4b1-afc127653ccd",
+      "name": "示例作者 NO.057 - 原野上的浪漫",
+      "path": "/media/packs/示例作者 NO.057 - 原野上的浪漫"
+    }
+  ],
+  "progress": [
+    {
+      "pack_id": "2fe356b8-0cea-4fd0-850f-5389cdb38eaa",
+      "page_id": "288825a2-3331-4ed7-bc07-b7145e97b5cb",
+      "offset_ratio": 0.10273504273504273,
+      "completed": 0,
+      "revision": 5,
+      "updated_at": 1792998133.7128386,
+      "content_version": 1,
+      "recovery_reason": null,
+      "ordinal": 3
+    }
+  ],
+  "preferences": [
+    {
+      "pack_id": "2fe356b8-0cea-4fd0-850f-5389cdb38eaa",
+      "mode": "vertical",
+      "direction": "ltr",
+      "gap": 0,
+      "fit": "contain",
+      "revision": 1
+    }
+  ],
+  "recent": [
+    {
+      "kind": "pack",
+      "video_id": null,
+      "pack_id": "2fe356b8-0cea-4fd0-850f-5389cdb38eaa",
+      "opened_at": 1792998133.7148333
+    }
+  ],
+  "sessions": [
+    {
+      "id": "6992d753-a891-4487-a893-5b30cee5230b",
+      "scope": "{\"directory_id\": null, \"search\": \"\", \"tag_ids\": [], \"read_state\": \"all\"}",
+      "source": "{\"kind\": \"library\", \"sort\": \"title\"}",
+      "candidate_count": 4
+    },
+    {
+      "id": "cfcf1292-e984-4809-bccb-690556f01837",
+      "scope": "{\"directory_id\": null, \"search\": \"\", \"tag_ids\": [], \"read_state\": \"all\"}",
+      "source": "{\"kind\": \"library\", \"sort\": \"title\"}",
+      "candidate_count": 4
+    }
+  ],
+  "entries": [
+    {
+      "session_id": "6992d753-a891-4487-a893-5b30cee5230b",
+      "ordinal": 0,
+      "pack_id": "6a3d4ab0-201d-4243-92ce-5476fcb8a82f"
+    },
+    {
+      "session_id": "6992d753-a891-4487-a893-5b30cee5230b",
+      "ordinal": 1,
+      "pack_id": "f86b0230-a2be-49c8-ac32-fd55d683dc64"
+    },
+    {
+      "session_id": "6992d753-a891-4487-a893-5b30cee5230b",
+      "ordinal": 2,
+      "pack_id": "2fe356b8-0cea-4fd0-850f-5389cdb38eaa"
+    },
+    {
+      "session_id": "6992d753-a891-4487-a893-5b30cee5230b",
+      "ordinal": 3,
+      "pack_id": "ee30e20f-d853-423f-a4b1-afc127653ccd"
+    },
+    {
+      "session_id": "cfcf1292-e984-4809-bccb-690556f01837",
+      "ordinal": 0,
+      "pack_id": "6a3d4ab0-201d-4243-92ce-5476fcb8a82f"
+    },
+    {
+      "session_id": "cfcf1292-e984-4809-bccb-690556f01837",
+      "ordinal": 1,
+      "pack_id": "f86b0230-a2be-49c8-ac32-fd55d683dc64"
+    },
+    {
+      "session_id": "cfcf1292-e984-4809-bccb-690556f01837",
+      "ordinal": 2,
+      "pack_id": "2fe356b8-0cea-4fd0-850f-5389cdb38eaa"
+    },
+    {
+      "session_id": "cfcf1292-e984-4809-bccb-690556f01837",
+      "ordinal": 3,
+      "pack_id": "ee30e20f-d853-423f-a4b1-afc127653ccd"
+    }
+  ],
+  "operations": [],
+  "trash": []
+}
