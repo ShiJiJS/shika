@@ -14,6 +14,7 @@ class PaperField extends StatefulWidget {
 
 class _PaperFieldState extends State<PaperField> with WidgetsBindingObserver {
   bool focused = false;
+  final inputAnchor = GlobalKey();
   @override
   void initState() {
     super.initState();
@@ -28,8 +29,9 @@ class _PaperFieldState extends State<PaperField> with WidgetsBindingObserver {
 
   void reveal() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && focused) {
-        Scrollable.ensureVisible(context, alignment: .5);
+      final input = inputAnchor.currentContext;
+      if (mounted && focused && input != null) {
+        Scrollable.ensureVisible(input, alignment: .5);
       }
     });
   }
@@ -82,7 +84,11 @@ class _PaperFieldState extends State<PaperField> with WidgetsBindingObserver {
                 ),
               ),
             ),
-            child: Semantics(label: widget.label, child: widget.child),
+            child: Semantics(
+              key: inputAnchor,
+              label: widget.label,
+              child: widget.child,
+            ),
           ),
         ],
       ),
