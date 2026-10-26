@@ -170,6 +170,7 @@ void main() {
         'actual resumed first frame',
       );
       expect(reader().session.index, 2);
+      final origin = reader().widget.returnContext!;
       await tap(find.byTooltip('下一张'));
       await until(
         () => reader().session.index == 3 && !reader().session.busy,
@@ -189,10 +190,41 @@ void main() {
       await until(
         () =>
             find.byType(PackReaderPage).evaluate().isEmpty &&
-            find.byKey(const Key('pack-continuation')).evaluate().length == 1 &&
+            catalog().hasContinuation &&
+            !catalog().data.loading &&
             !catalog().continuationLoading,
         'real history appears',
       );
+      await t.pumpAndSettle();
+      final restoredIndex = catalog().data.items.indexWhere(
+        (p) => p.id == origin.scrollAnchor,
+      );
+      expect(restoredIndex, greaterThanOrEqualTo(0));
+      final expectedPixels = origin.scrollOffset == 0 && origin.scrollIndex == 0
+          ? 0.0
+          : catalog().listHeader +
+                restoredIndex ~/ catalog().columns * catalog().stride +
+                origin.scrollInset;
+      final expectedReturn = expectedPixels.clamp(
+        0.0,
+        catalog().scroll.position.maxScrollExtent,
+      );
+      expect(
+        catalog().scroll.offset,
+        closeTo(expectedReturn, 1),
+        reason: 'Return retains the actual card anchor, including large text',
+      );
+      final returnedOffset = catalog().scroll.offset;
+      // Enlarged rows can place the summary outside the lazy viewport after
+      // returning to a lower card. Reveal it with a real scroll, not a new load.
+      final catalogScroll = find
+          .descendant(
+            of: find.byType(PackCatalogPage),
+            matching: find.byType(Scrollable),
+          )
+          .last;
+      await t.drag(catalogScroll, const Offset(0, 1400));
+      await t.pumpAndSettle();
       expect(find.text('第 4 / 6 张'), findsOneWidget);
       expect(catalog().scroll.offset, 0);
       final before = await progress();
@@ -285,7 +317,7 @@ void main() {
       expect(catalog().data.items.single.id, summer.id);
       await capture('continue-recent');
       debugPrint(
-        'PACK_CONTINUATION_VERIFIED:${jsonEncode({'pack': summer.id, 'seed_progress': initial, 'before_summary': before, 'after_summary': stable, 'final_progress': await progress(), 'range': range.id, 'source': range.source.name, 'candidate_count': range.candidateCount})}',
+        'PACK_CONTINUATION_VERIFIED:${jsonEncode({'pack': summer.id, 'seed_progress': initial, 'before_summary': before, 'after_summary': stable, 'final_progress': await progress(), 'range': range.id, 'source': range.source.name, 'candidate_count': range.candidateCount, 'return_anchor': origin.scrollAnchor, 'return_offset': returnedOffset, 'expected_return_offset': expectedReturn})}',
       );
       debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
       expect(t.takeException(), isNull);

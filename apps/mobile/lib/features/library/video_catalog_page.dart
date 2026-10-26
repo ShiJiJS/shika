@@ -745,7 +745,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: p.muted,
+                                            color: p.catalogMeta,
                                           ),
                                         ),
                                       ),
