@@ -162,6 +162,13 @@ void main() {
       'library',
     );
     final target = find.byKey(Key('pack-tile-${summer.id}'));
+    final catalogScroll = find
+        .descendant(
+          of: find.byType(PackCatalogPage),
+          matching: find.byType(Scrollable),
+        )
+        .last;
+    await t.scrollUntilVisible(target, 160, scrollable: catalogScroll);
     await tap(target);
     await until(
       () =>
@@ -171,6 +178,7 @@ void main() {
       'actual saved image',
     );
     expect(reader().session.index, 2);
+    final origin = reader().widget.returnContext!;
     final range = reader().session.range!;
     expect(range.candidateCount, 4);
     final rangeReader = repo.createPackReader();
@@ -200,6 +208,18 @@ void main() {
           find.byKey(const Key('reader-overview-page-3')).evaluate().length ==
           1,
       'overview loaded',
+    );
+    await until(
+      () => [0, 1, 2].every(
+        (index) => find
+            .descendant(
+              of: find.byKey(Key('reader-overview-page-$index')),
+              matching: find.byType(RawImage),
+            )
+            .evaluate()
+            .any((e) => (e.widget as RawImage).image != null),
+      ),
+      'visible overview thumbnail frames',
     );
     await capture('reader-overview');
     await tap(find.byKey(const Key('reader-overview-page-3')));
@@ -304,7 +324,21 @@ void main() {
     expect(library().data.total, 4);
     expect(library().entry.query.source, BrowseSource.library);
     expect(library().entry.query.count, 0);
+    final restoredIndex = library().data.items.indexWhere(
+      (p) => p.id == origin.scrollAnchor,
+    );
+    expect(restoredIndex, greaterThanOrEqualTo(0));
+    final expectedOffset =
+        (origin.scrollOffset == 0 && origin.scrollIndex == 0
+                ? 0.0
+                : library().listHeader +
+                      restoredIndex ~/ library().columns * library().stride +
+                      origin.scrollInset)
+            .clamp(0.0, library().scroll.position.maxScrollExtent);
+    expect(library().scroll.offset, closeTo(expectedOffset, 1));
+    final returnedOffset = library().scroll.offset;
     await capture('reader-return');
+    await t.scrollUntilVisible(target, 160, scrollable: catalogScroll);
     await tap(find.byKey(Key('pack-tile-${summer.id}')));
     await until(
       () =>
@@ -318,7 +352,7 @@ void main() {
     expect(reader().session.offsetRatio, closeTo(ratio, .02));
     await capture('reader-reopen');
     debugPrint(
-      'READER_CHROME_VERIFIED:${jsonEncode({'pack': summer.id, 'range': range.id, 'candidate_count': range.candidateCount, 'expected_ids': expectedIds, 'seed_progress': initial, 'partial': partial, 'after_panels': afterPanels, 'before_return': finalPosition, 'final_progress': await saved(), 'page_id': pageId, 'ratio': ratio, 'compact': compact})}',
+      'READER_CHROME_VERIFIED:${jsonEncode({'pack': summer.id, 'range': range.id, 'candidate_count': range.candidateCount, 'expected_ids': expectedIds, 'seed_progress': initial, 'partial': partial, 'after_panels': afterPanels, 'before_return': finalPosition, 'final_progress': await saved(), 'page_id': pageId, 'ratio': ratio, 'compact': compact, 'return_anchor': origin.scrollAnchor, 'expected_return_offset': expectedOffset, 'return_offset': returnedOffset})}',
     );
     debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
     expect(t.takeException(), isNull);

@@ -713,6 +713,7 @@ class PackReaderPageState extends State<PackReaderPage>
                         onPressed: close,
                         icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                       ),
+                      const SizedBox(width: 4),
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.zero,
@@ -754,6 +755,7 @@ class PackReaderPageState extends State<PackReaderPage>
                           child: const Text('完成'),
                         ),
                       PopupMenuButton<String>(
+                        icon: const Icon(Icons.more_horiz, size: 20),
                         enabled: usable && !session.inputBlocked,
                         tooltip: '图包更多',
                         onSelected: (value) async {
@@ -1187,7 +1189,10 @@ class PackReaderPageState extends State<PackReaderPage>
     final scope = TextButton(
       key: const Key('reader-scope'),
       onPressed: session.inputBlocked ? null : queue,
-      style: TextButton.styleFrom(alignment: Alignment.centerLeft),
+      style: TextButton.styleFrom(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.zero,
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -1196,13 +1201,21 @@ class PackReaderPageState extends State<PackReaderPage>
               sourceCaption,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 12),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Paper.of(context).muted,
+              ),
             ),
           ),
           const SizedBox(width: 10),
           Text(
             '${(session.range!.cursor ?? 0) + 1} / ${session.range!.candidateCount}',
-            style: const TextStyle(fontSize: 12),
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: Paper.of(context).muted,
+            ),
           ),
         ],
       ),
@@ -1214,14 +1227,24 @@ class PackReaderPageState extends State<PackReaderPage>
       child: const Text('上一包', style: TextStyle(fontSize: 13)),
     );
     final next = TextButton(
+      style: TextButton.styleFrom(minimumSize: const Size(84, 44)),
       onPressed: session.range?.next == null
           ? close
           : session.inputBlocked
           ? null
           : () => move(session.range!.next!.packId),
-      child: Text(
-        session.range?.next == null ? '返回来源' : '下一包',
-        style: const TextStyle(fontSize: 13),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            session.range?.next == null ? '返回来源' : '下一包',
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
+          ),
+          if (session.range?.next != null) ...[
+            const SizedBox(width: 3),
+            const Icon(Icons.chevron_right, size: 16),
+          ],
+        ],
       ),
     );
     if (quick && MediaLayout.largeText(context)) {
