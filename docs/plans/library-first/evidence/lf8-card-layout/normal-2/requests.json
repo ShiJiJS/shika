@@ -1,0 +1,158 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/50327ce2-e652-48e1-8bf1-085565bcfe2e",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/46dfd0cc-e2e7-44cd-8cc3-32bd8ea67ea9/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/f34d5f15-e684-4805-b5f7-539abee92518/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/ce15e1af-3b67-47d8-a98a-55fdf3c03d6e/cover",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/6fc27c18-5ce9-4125-bcba-c29b05baba0e/cover",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/ecee2d42-fc03-4493-93e8-2fafdec73952/cover",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/50327ce2-e652-48e1-8bf1-085565bcfe2e/cover",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/50327ce2-e652-48e1-8bf1-085565bcfe2e",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "cards-pack-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "cards-filter"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "cards-filter"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/50327ce2-e652-48e1-8bf1-085565bcfe2e",
+    "status": 200,
+    "phase": "cards-filter"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/recent",
+    "status": 200,
+    "phase": "cards-return"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/50327ce2-e652-48e1-8bf1-085565bcfe2e",
+    "status": 200,
+    "phase": "cards-return"
+  }
+]
