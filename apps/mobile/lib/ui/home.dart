@@ -908,6 +908,7 @@ class _LibraryHomeState extends State<LibraryHome> {
       if (separator || _busy)
         SizedBox(
           height: page == 'trash' && !_busy ? 1 : 2,
+          width: page == 'trash' ? double.infinity : null,
           child: _busy
               ? const LinearProgressIndicator(
                   key: Key('management-loading'),
