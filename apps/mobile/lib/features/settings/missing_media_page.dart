@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../library/models.dart';
 import '../../library/repository.dart';
 import '../../ui/paper.dart';
+import '../../ui/media_layout.dart';
 import 'maintenance_task_detail.dart';
 
 class MissingMediaPage extends StatefulWidget {
@@ -15,8 +16,8 @@ class MissingMediaPage extends StatefulWidget {
 }
 
 class _MissingRow {
-  const _MissingRow(this.id, this.name, this.path, this.tags);
-  final String id, name, path, tags;
+  const _MissingRow(this.id, this.rootId, this.name, this.path, this.tags);
+  final String id, rootId, name, path, tags;
 }
 
 class _MissingMediaPageState extends State<MissingMediaPage> {
@@ -31,6 +32,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
   static const limit = 24;
   bool loading = true, acting = false;
   String error = '', journalError = '';
+  final errorAnchor = GlobalKey();
   bool get current =>
       identical(connection, widget.repository.connectionIdentity) &&
       gateway.isCurrent &&
@@ -45,7 +47,10 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
   }
 
   void ownerChanged() {
-    if (mounted && !current) setState(() => error = '服务连接或管理数据已变化，请返回后重新打开');
+    if (mounted && !current) {
+      setState(() => error = '服务连接或管理数据已变化，请返回后重新打开');
+      revealFormError(errorAnchor);
+    }
   }
 
   Future<void> load({int at = 0}) async {
@@ -67,7 +72,8 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
             .map(
               (p) => _MissingRow(
                 p.id,
-                p.name,
+                p.rootId,
+                p.displayTitle,
                 p.path,
                 p.tagNames.values.join(' · '),
               ),
@@ -83,6 +89,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
             .map(
               (v) => _MissingRow(
                 v.id,
+                v.rootId,
                 v.name,
                 v.path,
                 v.tags.map(widget.repository.tagName).join(' · '),
@@ -108,6 +115,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
     } catch (e) {
       if (mounted && current && token == generation) {
         setState(() => error = e.toString());
+        revealFormError(errorAnchor);
       }
     } finally {
       if (mounted && token == generation) setState(() => loading = false);
@@ -124,7 +132,10 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
         });
       }
     } catch (e) {
-      if (mounted) setState(() => journalError = e.toString());
+      if (mounted) {
+        setState(() => journalError = e.toString());
+        revealFormError(errorAnchor);
+      }
     }
   }
 
@@ -133,25 +144,27 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
         context,
         SheetFrame(
           title: title,
-          children: [
-            Text(message),
-            const SizedBox(height: 18),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text('取消'),
+          footer: Wrap(
+            alignment: WrapAlignment.end,
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('取消'),
+              ),
+              FilledButton(
+                key: const Key('missing-confirm'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: Paper.of(context).danger,
+                  foregroundColor: Colors.white,
                 ),
-                FilledButton(
-                  key: const Key('missing-confirm'),
-                  onPressed: () => Navigator.pop(context, true),
-                  child: Text(action),
-                ),
-              ],
-            ),
-          ],
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(action),
+              ),
+            ],
+          ),
+          children: [Text(message, style: const TextStyle(height: 1.7))],
         ),
       ) ==
       true;
@@ -181,7 +194,10 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
       }
       if (mounted && current) await load();
     } catch (e) {
-      if (mounted && current) setState(() => error = '清理结果未确认：$e');
+      if (mounted && current) {
+        setState(() => error = '清理结果未确认：$e');
+        revealFormError(errorAnchor);
+      }
       await readPending();
     } finally {
       if (mounted) setState(() => acting = false);
@@ -199,13 +215,17 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
       if (!mounted || !current) return;
       if (value == null) {
         setState(() => error = '尚未查到原清理请求，未重新提交。可以稍后继续查询或从操作任务核对。');
+        revealFormError(errorAnchor);
       } else {
         setState(() => task = value);
         await load();
       }
       await readPending();
     } catch (e) {
-      if (mounted) setState(() => error = e.toString());
+      if (mounted) {
+        setState(() => error = e.toString());
+        revealFormError(errorAnchor);
+      }
     } finally {
       if (mounted) setState(() => acting = false);
     }
@@ -226,7 +246,10 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
       await gateway.removeLocalReceipt(receipt.requestId);
       await readPending();
     } catch (e) {
-      if (mounted) setState(() => error = e.toString());
+      if (mounted) {
+        setState(() => error = e.toString());
+        revealFormError(errorAnchor);
+      }
     } finally {
       if (mounted) setState(() => acting = false);
     }
@@ -256,176 +279,334 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
     super.dispose();
   }
 
+  String rowStatus(_MissingRow row) {
+    final root = widget.repository.snapshot.roots
+        .where((root) => root.id == row.rootId)
+        .firstOrNull;
+    if (root == null) return '目录待核对';
+    if (!root.available) return '目录暂时离线';
+    if (!root.enabled) return '目录已停用';
+    return '已确认缺失';
+  }
+
+  Widget missingRow(_MissingRow row) {
+    final p = Paper.of(context);
+    final status = Text(
+      rowStatus(row),
+      style: TextStyle(fontSize: 13, height: 1.6, color: p.danger),
+    );
+    return Container(
+      key: Key('missing-row-${row.id}'),
+      padding: const EdgeInsets.symmetric(vertical: 13),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: p.line)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  row.name,
+                  style: p.title.copyWith(fontSize: 15, height: 1.6),
+                ),
+                Text(
+                  row.path,
+                  style: TextStyle(fontSize: 12, height: 1.7, color: p.muted),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Text(
+                    '${kind == MediaKind.video ? '视频' : '图包'}${row.tags.isEmpty ? '' : ' · ${row.tags}'}',
+                    style: TextStyle(fontSize: 12, height: 1.6, color: p.muted),
+                  ),
+                ),
+                if (MediaLayout.largeText(context)) ...[
+                  const SizedBox(height: 5),
+                  status,
+                ],
+              ],
+            ),
+          ),
+          if (!MediaLayout.largeText(context)) ...[
+            const SizedBox(width: 12),
+            status,
+          ],
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final p = Paper.of(context);
+    final canCleanup =
+        !blocked &&
+        error.isEmpty &&
+        total > 0 &&
+        !widget.repository.libraryPreparation.value.scanning &&
+        (kind != MediaKind.pack ||
+            (journalError.isEmpty && !pending.any((r) => !r.historical)));
     return Scaffold(
       backgroundColor: p.background,
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            Container(
+              key: const Key('missing-header'),
+              height: MediaLayout.headerExtent(context),
+              padding: const EdgeInsets.only(left: 20, right: 12),
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: p.line)),
+              ),
               child: Row(
                 children: [
+                  Expanded(
+                    child: Semantics(
+                      header: true,
+                      child: Text('缺失内容', style: p.title),
+                    ),
+                  ),
                   iconAction(
                     '返回媒体目录',
-                    Icons.arrow_back,
+                    Icons.close,
                     () => Navigator.pop(context),
                   ),
-                  Expanded(child: Text('缺失内容', style: p.title)),
-                  iconAction(
-                    '刷新缺失内容',
-                    Icons.refresh,
-                    acting || !current ? null : () => load(at: offset),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  for (final value in MediaKind.values)
-                    ChoiceChip(
-                      key: Key('missing-kind-${value.name}'),
-                      label: Text(value == MediaKind.video ? '视频' : '图包'),
-                      selected: kind == value,
-                      onSelected: acting || !current
-                          ? null
-                          : (_) {
-                              setState(() {
-                                kind = value;
-                                rows = [];
-                                total = 0;
-                              });
-                              unawaited(load());
-                            },
-                    ),
                 ],
               ),
             ),
             if (loading || acting) const LinearProgressIndicator(),
             Expanded(
               child: RefreshIndicator(
-                onRefresh: () => load(at: offset),
+                onRefresh: () async {
+                  if (!acting && current) await load(at: offset);
+                },
                 child: ListView(
+                  key: const Key('missing-list'),
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 22),
                   children: [
-                    const Text('缺失记录保留原标签和阅读状态。外部内容重新出现后，请先同步目录。'),
-                    const SizedBox(height: 12),
-                    Text(
-                      '共 $total 个缺失${kind == MediaKind.video ? '视频' : '图包'}',
-                    ),
-                    if (error.isNotEmpty || journalError.isNotEmpty)
-                      Text(
-                        [
-                          error,
-                          journalError,
-                        ].where((s) => s.isNotEmpty).join('\n'),
-                        style: TextStyle(color: p.danger),
-                      ),
-                    if (error.isNotEmpty)
-                      TextButton(
-                        onPressed: blocked ? null : () => load(at: offset),
-                        child: const Text('重试读取缺失内容'),
-                      ),
-                    if (kind == MediaKind.pack) ...[
-                      for (final receipt in pending) ...[
-                        Text(
-                          receipt.historical
-                              ? '旧管理数据的清理请求 · 只读核对'
-                              : '本机清理结果待核对',
-                        ),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: [
-                            TextButton(
-                              onPressed: blocked ? null : () => query(receipt),
-                              child: const Text('查询原清理请求'),
+                    Row(
+                      children: [
+                        for (final value in MediaKind.values)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 22),
+                            child: TextButton(
+                              key: Key('missing-kind-${value.name}'),
+                              style: TextButton.styleFrom(
+                                foregroundColor: kind == value
+                                    ? p.ink
+                                    : p.muted,
+                                padding: EdgeInsets.zero,
+                                shape: const RoundedRectangleBorder(),
+                                minimumSize: const Size(44, 44),
+                              ),
+                              onPressed: acting || !current
+                                  ? null
+                                  : () {
+                                      if (kind == value) return;
+                                      setState(() {
+                                        kind = value;
+                                        rows = [];
+                                        total = 0;
+                                      });
+                                      unawaited(load());
+                                    },
+                              child: Semantics(
+                                selected: kind == value,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: kind == value
+                                            ? p.olive
+                                            : Colors.transparent,
+                                        width: 2,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    value == MediaKind.video ? '视频' : '图包',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: kind == value
+                                          ? FontWeight.w600
+                                          : FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                            TextButton(
-                              onPressed: blocked ? null : () => remove(receipt),
-                              child: const Text('移除本机入口'),
-                            ),
-                          ],
+                          ),
+                        const Spacer(),
+                        iconAction(
+                          '刷新缺失内容',
+                          Icons.refresh,
+                          acting || !current ? null : () => load(at: offset),
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      '保留标签与进度，重新找到同一内容后请先同步目录。只清除扫描已确认缺失的记录，离线或停用目录不作清理。',
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.7,
+                        color: p.muted,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      '共 $total 个缺失${kind == MediaKind.video ? '视频' : '图包'}',
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.7,
+                        color: p.muted,
+                      ),
+                    ),
+                    if (error.isNotEmpty || journalError.isNotEmpty)
+                      Padding(
+                        key: errorAnchor,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Semantics(
+                          liveRegion: true,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                [
+                                  error,
+                                  journalError,
+                                ].where((s) => s.isNotEmpty).join('\n'),
+                                style: TextStyle(color: p.danger, height: 1.7),
+                              ),
+                              if (error.isNotEmpty)
+                                TextButton(
+                                  onPressed: blocked
+                                      ? null
+                                      : () => load(at: offset),
+                                  child: const Text('重试读取缺失内容'),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    if (kind == MediaKind.pack) ...[
+                      for (final receipt in pending)
+                        Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
+                            border: Border(bottom: BorderSide(color: p.line)),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                receipt.historical
+                                    ? '旧管理数据的清理请求 · 只读核对'
+                                    : '本机清理结果待核对',
+                                style: TextStyle(color: p.danger, height: 1.7),
+                              ),
+                              Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: [
+                                  TextButton(
+                                    onPressed: blocked
+                                        ? null
+                                        : () => query(receipt),
+                                    child: const Text('查询原清理请求'),
+                                  ),
+                                  TextButton(
+                                    onPressed: blocked
+                                        ? null
+                                        : () => remove(receipt),
+                                    child: const Text('移除本机入口'),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       if (task != null)
                         ListTile(
                           key: const Key('missing-cleanup-task'),
                           contentPadding: EdgeInsets.zero,
-                          title: Text(task!.title),
+                          title: Text(
+                            task!.title,
+                            style: p.title.copyWith(fontSize: 15, height: 1.6),
+                          ),
                           subtitle: Text(
                             '${task!.stateLabel}\n${task!.progressLabel}',
+                            style: TextStyle(
+                              fontSize: 13,
+                              height: 1.7,
+                              color: p.muted,
+                            ),
                           ),
                           trailing: const Icon(Icons.chevron_right),
                           onTap: blocked ? null : detail,
                         ),
                     ],
-                    TextButton(
-                      key: const Key('clear-missing-kind'),
-                      onPressed:
-                          blocked ||
-                              error.isNotEmpty ||
-                              total == 0 ||
-                              widget
-                                  .repository
-                                  .libraryPreparation
-                                  .value
-                                  .scanning ||
-                              (kind == MediaKind.pack &&
-                                  (journalError.isNotEmpty ||
-                                      pending.any((r) => !r.historical)))
-                          ? null
-                          : cleanup,
-                      child: Text(
-                        '清除失效${kind == MediaKind.video ? '视频' : '图包'}记录',
-                      ),
-                    ),
-                    for (final row in rows)
-                      ListTile(
-                        key: Key('missing-row-${row.id}'),
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(row.name),
-                        subtitle: Text(
-                          '${row.path}${row.tags.isEmpty ? '' : '\n${row.tags}'}',
-                        ),
-                        trailing: const Text('缺失'),
-                      ),
+                    for (final row in rows) missingRow(row),
                     if (!loading && total == 0 && error.isEmpty)
-                      const Padding(
-                        padding: EdgeInsets.all(24),
-                        child: Text('暂无缺失内容'),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 44),
+                        child: Text(
+                          '暂无缺失内容',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: p.muted, height: 1.7),
+                        ),
                       ),
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 8,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        TextButton(
-                          onPressed: blocked || offset == 0
-                              ? null
-                              : () =>
-                                    load(at: (offset - limit).clamp(0, offset)),
-                          child: const Text('上一页'),
+                    if (total > limit || offset > 0)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Wrap(
+                          spacing: 12,
+                          runSpacing: 8,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            TextButton(
+                              onPressed: blocked || offset == 0
+                                  ? null
+                                  : () => load(
+                                      at: (offset - limit).clamp(0, offset),
+                                    ),
+                              child: const Text('上一页'),
+                            ),
+                            Text(
+                              total == 0
+                                  ? '共 0 项'
+                                  : '${offset + 1}–${offset + rows.length} / $total',
+                              style: TextStyle(fontSize: 13, color: p.muted),
+                            ),
+                            TextButton(
+                              onPressed:
+                                  blocked || offset + rows.length >= total
+                                  ? null
+                                  : () => load(at: offset + limit),
+                              child: const Text('下一页'),
+                            ),
+                          ],
                         ),
-                        Text(
-                          total == 0
-                              ? '共 0 项'
-                              : '${offset + 1}–${offset + rows.length} / $total',
+                      ),
+                    if (total > 0)
+                      TextButton(
+                        key: const Key('clear-missing-kind'),
+                        style: TextButton.styleFrom(foregroundColor: p.danger),
+                        onPressed: canCleanup ? cleanup : null,
+                        child: Text(
+                          '清除失效${kind == MediaKind.video ? '视频' : '图包'}记录',
                         ),
-                        TextButton(
-                          onPressed: blocked || offset + rows.length >= total
-                              ? null
-                              : () => load(at: offset + limit),
-                          child: const Text('下一页'),
-                        ),
-                      ],
+                      ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('返回媒体目录'),
                     ),
                   ],
                 ),

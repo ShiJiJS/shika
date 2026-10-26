@@ -11,6 +11,7 @@ import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/repository.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
+import 'package:video_viewer/ui/preferences.dart';
 
 import 'support/fixture.dart';
 
@@ -29,6 +30,7 @@ void main() {
       );
       await credentials.clear();
       await commands.write(jsonEncode({'version': 1, 'scopes': {}}));
+      final preferences = UiPreferences(preloadAdjacent: false);
       var repo = ServerLibraryRepository(
         credentials,
         packCommands: commands,
@@ -38,6 +40,7 @@ void main() {
         await t.pumpWidget(const SizedBox());
         await t.pump();
         repo.dispose();
+        preferences.dispose();
       });
       await repo.connect('http://10.0.2.2', 8761, fixturePassword);
       final video = (await repo.loadVideos(limit: 1)).items.single;
@@ -52,7 +55,9 @@ void main() {
         query: {'create': 'false'},
       );
       await fixture('/__fixture/actions/reset-task-trace');
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(
+        VideoViewerApp(repository: repo, preferences: preferences),
+      );
       Future<void> until(
         bool Function() done,
         String why, {
@@ -145,12 +150,17 @@ void main() {
         await saveRoot();
       }
 
+      var capturedEmpty = false;
       Future<void> openMissing() async {
         await tap(find.text('缺失内容'));
         await until(
           () => find.byType(MissingMediaPage).evaluate().isNotEmpty,
           'missing page',
         );
+        if (!capturedEmpty) {
+          await shot('missing-empty-video');
+          capturedEmpty = true;
+        }
         await tap(find.byKey(const Key('missing-kind-pack')));
         await until(
           () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
@@ -176,6 +186,7 @@ void main() {
 
       Future<void> cleanup({bool cancel = false}) async {
         await tap(find.byKey(const Key('clear-missing-kind')));
+        if (cancel) await shot('missing-confirm-cancel');
         await tap(
           cancel
               ? find.text('取消').last
@@ -265,6 +276,7 @@ void main() {
         () => find.text('共 25 个缺失图包').evaluate().isNotEmpty,
         '25 missing packs',
       );
+      await shot('missing-first');
       await tap(find.text('下一页'));
       await shot('missing-paged');
       await cleanup(cancel: true);
@@ -306,7 +318,9 @@ void main() {
       );
       await repo.initialize();
       expect(repo.snapshot.connected, isTrue);
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(
+        VideoViewerApp(repository: repo, preferences: preferences),
+      );
       await tap(find.byKey(const Key('nav-settings')));
       await tap(find.text('媒体目录'));
       await openMissing();
@@ -322,6 +336,11 @@ void main() {
         'original task',
       );
       await shot('missing-result');
+      await preferences.setDark(true);
+      await t.pumpAndSettle();
+      await shot('missing-dark');
+      await preferences.setDark(false);
+      await t.pumpAndSettle();
       expect(find.text('共 1 个缺失图包'), findsOneWidget);
       final result = await fixture('/__fixture/actions/missing-native-stats');
       expect(result['first_pack']['id'], first.id);
