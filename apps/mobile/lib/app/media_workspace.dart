@@ -111,6 +111,10 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
   void kindChanged(MediaKind value) {
     FocusScope.of(context).unfocus();
     setState(() => kinds[widget.destination] = value);
+    if (widget.destination == 'library' &&
+        widget.repository.catalogCounts.value == null) {
+      unawaited(widget.repository.refreshCatalogCounts());
+    }
   }
 
   Future<void> resumePack(PackCleanupContext origin, String identity) async {
@@ -279,44 +283,85 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
             widget.status,
             if (widget.destination != 'settings')
               SizedBox(
+                width: double.infinity,
                 height: MediaLayout.kindExtent(context),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    children: [
-                      for (final value in MediaKind.values)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 22),
-                          child: InkWell(
-                            key: Key('kind-${value.name}'),
-                            onTap: () => kindChanged(value),
-                            child: AnimatedContainer(
-                              duration: MediaLayout.motion(context, 160),
-                              padding: const EdgeInsets.only(top: 8, bottom: 6),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: kind == value
-                                        ? p.olive
-                                        : Colors.transparent,
-                                    width: 2,
+                  child: ValueListenableBuilder<MediaCatalogCounts?>(
+                    valueListenable: widget.repository.catalogCounts,
+                    builder: (context, counts, _) => SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          for (final value in MediaKind.values)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 22),
+                              child: InkWell(
+                                key: Key('kind-${value.name}'),
+                                onTap: () => kindChanged(value),
+                                child: AnimatedContainer(
+                                  duration: MediaLayout.motion(context, 160),
+                                  padding: const EdgeInsets.only(
+                                    top: 8,
+                                    bottom: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: kind == value
+                                            ? p.olive
+                                            : Colors.transparent,
+                                        width: 2,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        value == MediaKind.video ? '视频' : '图包',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: kind == value
+                                              ? FontWeight.w600
+                                              : FontWeight.w400,
+                                          color: kind == value
+                                              ? p.ink
+                                              : p.muted,
+                                        ),
+                                      ),
+                                      if (widget.destination == 'library' &&
+                                          widget
+                                              .repository
+                                              .capabilities
+                                              .mediaCatalogCounts) ...[
+                                        const SizedBox(width: 7),
+                                        Tooltip(
+                                          message: counts == null
+                                              ? '数量暂不可用，点选分类重试'
+                                              : '全部可浏览的${value == MediaKind.video ? '视频' : '图包'}',
+                                          child: Text(
+                                            counts?.forKind(value).toString() ??
+                                                '—',
+                                            key: Key(
+                                              'catalog-count-${value.name}',
+                                            ),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: p.muted,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ],
                                   ),
                                 ),
                               ),
-                              child: Text(
-                                value == MediaKind.video ? '视频' : '图包',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: kind == value
-                                      ? FontWeight.w600
-                                      : FontWeight.w400,
-                                  color: kind == value ? p.ink : p.muted,
-                                ),
-                              ),
                             ),
-                          ),
-                        ),
-                    ],
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),

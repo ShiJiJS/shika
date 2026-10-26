@@ -53,6 +53,7 @@ class ServiceCapabilities {
       managementHistory && values.contains('management_purge_history');
   final Set<String> values;
   bool get typedRoots => values.contains('typed_roots');
+  bool get mediaCatalogCounts => values.contains('media_catalog_counts');
   bool get packTags => values.contains('pack_tags');
   bool get imagePacks => values.contains('image_packs');
   bool get fixedVideoSessions => values.contains('fixed_video_sessions');
@@ -75,6 +76,33 @@ class ServiceCapabilities {
 }
 
 enum VideoStatus { available, missing, trash }
+
+/// Unfiltered, simultaneously read totals of currently browsable media.
+/// Unknown or incomplete responses stay unknown rather than becoming zero.
+class MediaCatalogCounts {
+  const MediaCatalogCounts(this.videos, this.packs);
+  final int videos, packs;
+  static MediaCatalogCounts? fromLibraryState(Map<String, dynamic> data) {
+    final media = data['media'];
+    if (media is! Map) return null;
+    final video = media['video'], pack = media['pack'];
+    if (video is! Map || pack is! Map) return null;
+    final videos = video['indexed'], packs = pack['indexed'];
+    if (videos is! int || packs is! int || videos < 0 || packs < 0) {
+      return null;
+    }
+    return MediaCatalogCounts(videos, packs);
+  }
+
+  int forKind(MediaKind kind) => kind == MediaKind.video ? videos : packs;
+  @override
+  bool operator ==(Object other) =>
+      other is MediaCatalogCounts &&
+      other.videos == videos &&
+      other.packs == packs;
+  @override
+  int get hashCode => Object.hash(videos, packs);
+}
 
 enum PlayOrder { random, sequential }
 

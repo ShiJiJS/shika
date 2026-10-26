@@ -231,8 +231,8 @@ class Catalog:
                 else next((root.error for root in roots if root.error), "root_unavailable"),
             }
 
+    @staticmethod
     def video_statement(
-        self,
         session,
         *,
         directory_id=None,

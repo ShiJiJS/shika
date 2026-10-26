@@ -17,7 +17,14 @@ def prepared(session, kind="video"):
 
 
 def library_state(db):
+    # Streaming imports prepared(); defer the full catalog dependency until
+    # application modules have finished initializing.
+    from .catalog import Catalog
+
     with db.read() as session:
+        # Both type totals describe one snapshot, using the same eligibility
+        # rules as the actual unfiltered catalogs, without fetching any media.
+        session.connection().exec_driver_sql("BEGIN")
         roots = list(session.scalars(select(Root).order_by(Root.name, Root.id)))
         task = session.scalar(
             select(Task).where(Task.kind == "scan").order_by(Task.created_at.desc()).limit(1)
@@ -32,6 +39,11 @@ def library_state(db):
                 "video": {
                     "ready": prepared(session),
                     "scanning": running and not task.phase.startswith("pack_"),
+                    "indexed": session.scalar(
+                        select(func.count()).select_from(
+                            Catalog.video_statement(session).order_by(None).subquery()
+                        )
+                    ),
                 },
                 "pack": {
                     "ready": prepared(session, "pack"),

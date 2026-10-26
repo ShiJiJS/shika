@@ -204,6 +204,7 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
     assert info["schema_version"] == "0014"
     assert set(info["capabilities"]) == {
         "typed_roots",
+        "media_catalog_counts",
         "pack_tags",
         "image_packs",
         "fixed_video_sessions",

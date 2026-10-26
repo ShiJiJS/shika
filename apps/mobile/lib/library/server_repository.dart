@@ -92,6 +92,71 @@ class ServerLibraryRepository extends LibraryRepository
   final Set<_ServerPlaybackDefaults> _defaultsReaders = {};
   final Set<_ServerPackMissing> _missingReaders = {};
   int _readerEpoch = 0;
+  RequestScope? _countsWork;
+  int _countsRevision = 0;
+
+  void _clearCatalogCounts() {
+    _countsWork?.cancel();
+    _countsWork = null;
+    catalogCounts.value = null;
+  }
+
+  void _acceptCatalogCounts(
+    Json? data,
+    ServerApi target,
+    int generation,
+    int revision,
+  ) {
+    if (_disposed ||
+        generation != _generation ||
+        !identical(target, _api) ||
+        revision != _countsRevision) {
+      return;
+    }
+    catalogCounts.value = !capabilities.mediaCatalogCounts || data == null
+        ? null
+        : MediaCatalogCounts.fromLibraryState(data);
+  }
+
+  @override
+  Future<void> refreshCatalogCounts() async {
+    if (_disposed ||
+        !snapshot.connected ||
+        !capabilities.mediaCatalogCounts ||
+        backupRestorePending ||
+        _connectingGeneration != null) {
+      return;
+    }
+    _countsWork?.cancel();
+    final work = _countsWork = RequestScope();
+    final target = api, generation = _generation, revision = ++_countsRevision;
+    try {
+      final data = await call(
+        'GET',
+        '/api/v1/library-state',
+        using: target,
+        cancel: work,
+      );
+      if (!work.cancelled) {
+        _acceptCatalogCounts(data, target, generation, revision);
+      }
+    } on RequestCancelled {
+      // A newer read or connection owns the result.
+    } catch (_) {
+      if (!work.cancelled) {
+        _acceptCatalogCounts(null, target, generation, revision);
+      }
+    }
+  }
+
+  @override
+  void packFilesChanged() {
+    _countsRevision++;
+    catalogCounts.value = null;
+    super.packFilesChanged();
+    unawaited(refreshCatalogCounts());
+  }
+
   @override
   PackMissingCatalog createPackMissing() {
     ensureNotRestoring();
@@ -547,6 +612,7 @@ class ServerLibraryRepository extends LibraryRepository
   Future<void> expire({String? message, bool clearCredentials = true}) async {
     _connectionError = message ?? '连接凭据已失效，请重新输入口令';
     _generation++;
+    _clearCatalogCounts();
     cancelVideoRead();
     cancelFolderRead();
     cancelTrashRead();
@@ -955,7 +1021,9 @@ class ServerLibraryRepository extends LibraryRepository
     bool allowConnection = false,
     ServiceCapabilities? capabilities,
   }) async {
+    if (_disposed || generation != _generation) throw const RequestCancelled();
     final scopeGeneration = _scopeGeneration;
+    final countsRevision = ++_countsRevision;
     final response = await Future.wait([
       call('GET', '/api/v1/roots', using: target),
       readCurrent(target, capabilities ?? _capabilities),
@@ -1020,6 +1088,7 @@ class ServerLibraryRepository extends LibraryRepository
       throw const RequestCancelled();
     }
     if (!identical(target, _api)) {
+      _clearCatalogCounts();
       _backups?.dispose();
       _backups = null;
       _pendingRound = null;
@@ -1114,6 +1183,7 @@ class ServerLibraryRepository extends LibraryRepository
       response[4],
       ready: response[4]['ready'] == true && round['library_locked'] != true,
     );
+    _acceptCatalogCounts(response[4], target, generation, countsRevision);
     publish();
     schedulePreparation(target, generation);
   }
@@ -1168,6 +1238,7 @@ class ServerLibraryRepository extends LibraryRepository
   Future<void> pollPreparation(ServerApi target, int generation) async {
     _preparationRead.cancel();
     final work = _preparationRead = RequestScope();
+    final countsRevision = _countsRevision + 1;
     bool valid() =>
         !_disposed &&
         !work.cancelled &&
@@ -1175,6 +1246,7 @@ class ServerLibraryRepository extends LibraryRepository
         identical(target, _api);
     try {
       if (!valid() || backupRestorePending) return;
+      _countsRevision = countsRevision;
       if (_scanAfterRestore) {
         await call('POST', '/api/v1/scans', using: target, cancel: work);
         if (!valid()) return;
@@ -1187,6 +1259,7 @@ class ServerLibraryRepository extends LibraryRepository
         cancel: work,
       );
       if (!valid()) return;
+      _acceptCatalogCounts(data, target, generation, countsRevision);
       final previous = libraryPreparation.value;
       final next = LibraryPreparation.fromJson(data);
       // Keep playback locked until the matching, complete round is installed.
@@ -1212,6 +1285,7 @@ class ServerLibraryRepository extends LibraryRepository
       // Another connection or restore owns this read.
     } catch (_) {
       if (valid()) {
+        _acceptCatalogCounts(null, target, generation, countsRevision);
         libraryPreparation.value = libraryPreparation.value.offline();
       }
     } finally {
@@ -2674,6 +2748,7 @@ class ServerLibraryRepository extends LibraryRepository
   @override
   void dispose() {
     _disposed = true;
+    _clearCatalogCounts();
     packFileJournal.onChanged = null;
     _preparationTimer?.cancel();
     _preparationRead.cancel();

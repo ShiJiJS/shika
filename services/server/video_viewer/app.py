@@ -367,6 +367,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             },
             "capabilities": [
                 "typed_roots",
+                "media_catalog_counts",
                 "pack_tags",
                 "image_packs",
                 "fixed_video_sessions",
