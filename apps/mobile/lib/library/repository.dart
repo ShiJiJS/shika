@@ -113,6 +113,8 @@ abstract class LibraryRepository extends ChangeNotifier {
   void cancelPackDirectoryRead() {}
   final ValueNotifier<String?> scanStatus = ValueNotifier(null);
   final libraryPreparation = ValueNotifier(const LibraryPreparation());
+  final catalogCounts = ValueNotifier<MediaCatalogCounts?>(null);
+  Future<void> refreshCatalogCounts() async {}
   Future<void> requestScan() => refresh();
   final ValueNotifier<String?> backupStatus = ValueNotifier(null);
   final ValueNotifier<String?> fileStatus = ValueNotifier(null);
@@ -124,6 +126,7 @@ abstract class LibraryRepository extends ChangeNotifier {
   void dispose() {
     scanStatus.dispose();
     libraryPreparation.dispose();
+    catalogCounts.dispose();
     backupStatus.dispose();
     fileStatus.dispose();
     super.dispose();

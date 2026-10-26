@@ -461,65 +461,80 @@ class TagCatalogPageState extends State<TagCatalogPage> {
   );
 
   @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      if (loading) const LinearProgressIndicator(minHeight: 2),
-      if (error.isNotEmpty)
-        Row(
-          children: [
-            Expanded(child: note(error)),
-            TextButton(
-              key: const Key('tag-read-retry'),
-              onPressed: loading
-                  ? null
-                  : () {
-                      unawaited(load(more: retryMore));
-                      unawaited(count());
-                    },
-              child: const Text('重试'),
-            ),
-          ],
-        ),
-      Expanded(
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(child: heading(context)),
-            if (tags.isEmpty && !loading)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(search.text.isEmpty ? '还没有$type标签' : '没有匹配的$type标签'),
-                      TextButton(
-                        onPressed: repo.backupRestorePending
-                            ? null
-                            : () => form(),
-                        child: const Text('新建标签'),
-                      ),
-                    ],
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) => Column(
+      children: [
+        if (loading) const LinearProgressIndicator(minHeight: 2),
+        if (error.isNotEmpty)
+          Row(
+            children: [
+              Expanded(child: note(error)),
+              TextButton(
+                key: const Key('tag-read-retry'),
+                onPressed: loading
+                    ? null
+                    : () {
+                        unawaited(load(more: retryMore));
+                        unawaited(count());
+                      },
+                child: const Text('重试'),
+              ),
+            ],
+          ),
+        Expanded(
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(child: heading(context)),
+              if (tags.isEmpty && !loading)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          search.text.isEmpty ? '还没有$type标签' : '没有匹配的$type标签',
+                        ),
+                        TextButton(
+                          onPressed: repo.backupRestorePending
+                              ? null
+                              : () => form(),
+                          child: const Text('新建标签'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                sliver: SliverList.builder(
+                  itemCount: tags.length + (tags.length < total ? 1 : 0),
+                  itemBuilder: (context, index) => index == tags.length
+                      ? TextButton(
+                          onPressed: loading || loadedSearch != search.text
+                              ? null
+                              : () => load(more: true),
+                          child: const Text('更多标签'),
+                        )
+                      : row(context, tags[index]),
+                ),
               ),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              sliver: SliverList.builder(
-                itemCount: tags.length + (tags.length < total ? 1 : 0),
-                itemBuilder: (context, index) => index == tags.length
-                    ? TextButton(
-                        onPressed: loading || loadedSearch != search.text
-                            ? null
-                            : () => load(more: true),
-                        child: const Text('更多标签'),
-                      )
-                    : row(context, tags[index]),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      if (MediaQuery.viewInsetsOf(context).bottom == 0) dock(context),
-    ],
+        if (MediaQuery.viewInsetsOf(context).bottom == 0)
+          ConstrainedBox(
+            // IndexedStack also lays out inactive pages while Scaffold is
+            // resizing for the keyboard. Bound the dock by actual room rather
+            // than the insets Scaffold has already consumed; retain list space.
+            constraints: BoxConstraints(maxHeight: constraints.maxHeight * .6),
+            child: SingleChildScrollView(
+              key: Key('${widget.kind.name}-tag-actions-scroll'),
+              primary: false,
+              child: dock(context),
+            ),
+          ),
+      ],
+    ),
   );
 }

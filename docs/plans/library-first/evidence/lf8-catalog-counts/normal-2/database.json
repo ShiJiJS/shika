@@ -1,0 +1,45 @@
+{
+  "counts": {
+    "videos": 2,
+    "packs": 4,
+    "pack_pages": 24,
+    "recent_entries": 0,
+    "pack_progress": 1,
+    "pack_sessions": 0,
+    "playback_rounds": 0,
+    "pack_file_operations": 2,
+    "pack_trash_items": 1
+  },
+  "progress": [
+    {
+      "pack_id": "b7e0ed52-1968-464f-84b5-fd34bbc9d8e2",
+      "page_id": "4f69555e-74c6-42b8-b067-686f76dfa898",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1000.0,
+      "content_version": 1,
+      "recovery_reason": null,
+      "ordinal": 2
+    }
+  ],
+  "recent": [],
+  "operations": [
+    {
+      "kind": "trash",
+      "historical": 0
+    },
+    {
+      "kind": "restore",
+      "historical": 0
+    }
+  ],
+  "trash": [
+    {
+      "pack_id": "b7e0ed52-1968-464f-84b5-fd34bbc9d8e2",
+      "status": "restored",
+      "purged_pages": 0
+    }
+  ],
+  "sessions": []
+}

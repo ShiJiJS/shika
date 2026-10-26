@@ -60,7 +60,10 @@ void main() {
   }
 
   Finder tagScroll() => find.descendant(
-    of: find.byType(TagCatalogPage),
+    of: find.descendant(
+      of: find.byType(TagCatalogPage),
+      matching: find.byType(CustomScrollView),
+    ),
     matching: find.byWidgetPredicate(
       (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
     ),
@@ -69,6 +72,62 @@ void main() {
     await t.pumpWidget(VideoViewerApp(repository: repo));
     await frames(t);
     await tap(t, find.byKey(const Key('nav-tags')));
+  }
+
+  for (final kind in MediaKind.values) {
+    testWidgets(
+      '${kind.name} tag dock stays reachable through a short resize',
+      (t) async {
+        double available = 61;
+        late StateSetter resize;
+        await t.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: StatefulBuilder(
+                builder: (context, setState) {
+                  resize = setState;
+                  return Align(
+                    alignment: Alignment.topLeft,
+                    child: SizedBox(
+                      width: 844,
+                      height: available,
+                      child: TagCatalogPage(
+                        repository: repo,
+                        kind: kind,
+                        active: true,
+                        onView: (_) {},
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+        await frames(t);
+        expect(t.takeException(), isNull);
+        final action = find.byKey(
+          Key(
+            kind == MediaKind.pack ? 'tag-view-results' : 'tag-preview-results',
+          ),
+        );
+        final scroll = find.byKey(Key('${kind.name}-tag-actions-scroll'));
+        await t.drag(scroll, const Offset(0, -200));
+        await frames(t);
+        expect(action.hitTestable(), findsOneWidget);
+        expect(t.takeException(), isNull);
+        resize(() => available = 450);
+        await frames(t);
+        expect(action.hitTestable(), findsOneWidget);
+        expect(
+          find.byKey(Key('${kind.name}-tag-search')).hitTestable(),
+          findsOneWidget,
+        );
+        expect(t.takeException(), isNull);
+        await t.pumpWidget(const SizedBox());
+        await frames(t);
+      },
+    );
   }
 
   testWidgets(

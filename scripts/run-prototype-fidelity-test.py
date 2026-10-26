@@ -20,10 +20,12 @@ p.add_argument("--reference-input", type=Path, required=True)
 p.add_argument("--height", type=int, default=905)
 p.add_argument("--width", type=int, default=390)
 p.add_argument("--scale", choices=("1", "2"), default="1")
-p.add_argument("--scenario", choices=("fidelity", "continuation"), default="fidelity")
+p.add_argument(
+    "--scenario", choices=("fidelity", "continuation", "counts"), default="fidelity"
+)
 args = p.parse_args()
-scenes = (
-    [
+scenes = {
+    "fidelity": [
         "home",
         "packs",
         "video-tags",
@@ -32,9 +34,8 @@ scenes = (
         "settings-bottom",
         "dark",
         "dark-bottom",
-    ]
-    if args.scenario == "fidelity"
-    else [
+    ],
+    "continuation": [
         "continue-empty",
         "continue-read",
         "continue-library",
@@ -45,8 +46,25 @@ scenes = (
         "continue-error",
         "continue-retry",
         "continue-recent",
-    ]
-)
+    ],
+    "counts": [
+        "counts-home",
+        "counts-packs",
+        "counts-filter",
+        "counts-tags",
+        "counts-recent",
+        "counts-trash",
+        "counts-restore",
+        "counts-error",
+        "counts-retry",
+    ],
+}[args.scenario]
+integration_file = {
+    "fidelity": "prototype_fidelity_test.dart",
+    "continuation": "server_pack_continuation_test.dart",
+    "counts": "server_catalog_counts_test.dart",
+}[args.scenario]
+
 out = args.output.resolve()
 out.mkdir(parents=True, exist_ok=False)
 base = ROOT / ".dev/prototype-fidelity" / out.name
@@ -114,6 +132,7 @@ paths = run(
 paths += [
     "apps/mobile/integration_test/prototype_fidelity_test.dart",
     "apps/mobile/integration_test/server_pack_continuation_test.dart",
+    "apps/mobile/integration_test/server_catalog_counts_test.dart",
     "services/server/tests/prototype_fidelity_fixture.py",
     "scripts/run-prototype-fidelity-test.py",
 ]
@@ -230,9 +249,7 @@ try:
                 str(ROOT / "scripts/dev.sh"),
                 "flutter",
                 "test",
-                "integration_test/prototype_fidelity_test.dart"
-                if args.scenario == "fidelity"
-                else "integration_test/server_pack_continuation_test.dart",
+                "integration_test/" + integration_file,
                 "--no-uninstall",
                 "-d",
                 "emulator-5554",

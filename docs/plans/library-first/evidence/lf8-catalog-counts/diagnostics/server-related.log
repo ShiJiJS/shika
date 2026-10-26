@@ -1,0 +1,75 @@
+.................................F...................................... [ 96%]
+...                                                                      [100%]
+=================================== FAILURES ===================================
+____________ test_nested_type_barriers_and_typed_directory_contract ____________
+
+library = (<starlette.testclient.TestClient object at 0xffff87f97ce0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_nested_type_barriers_and_0/media'))
+samples = PosixPath('/tmp/pytest-of-viewer/pytest-0/formats0')
+
+    def test_nested_type_barriers_and_typed_directory_contract(library, samples):
+        client, media = library
+        root = pack_root(client, media)
+        put(samples / "h264.mov", Path(root["path"]) / "video.mov")
+        put(samples / "portrait.mp4", media / "outside.mp4")
+        scan(client)
+        assert [v["name"] for v in client.get("/api/v1/videos").json()["items"]] == ["outside.mp4"]
+        assert len(client.get("/api/v1/directories").json()["items"]) == 1
+        assert (
+            client.get("/api/v1/directories", params={"kind": "pack"}).json()["items"][0]["root_id"]
+            == root["id"]
+        )
+        assert client.get("/api/v1/library-state").json()["ready"] is True
+        # Old client cannot use a pack directory as a video scope.
+        assert client.get(f"/api/v1/directories/{root['directory_id']}").json()["available"] is False
+        assert (
+            client.get(
+                "/api/v1/directories/resolve", params={"path": root["path"], "kind": "pack"}
+            ).status_code
+            == 200
+        )
+        info = client.get("/api/v1/info").json()
+        assert info["schema_version"] == "0014"
+>       assert set(info["capabilities"]) == {
+            "typed_roots",
+            "pack_tags",
+            "image_packs",
+            "fixed_video_sessions",
+            "versioned_video_queue",
+            "video_entry_anchors",
+            "catalog_selection",
+            "pack_tag_names",
+            "pack_entry_anchors",
+            "pack_reading_sessions",
+            "pack_logical_trash",
+            "pack_reader_cleanup",
+            "pack_purge_preview",
+            "pack_permanent_delete",
+            "maintenance_tasks",
+            "pack_restore_plans",
+            "managed_playback_defaults",
+            "pack_missing_cleanup",
+            "management_authority",
+            "management_history",
+            "management_purge_history",
+        }
+E       AssertionError: assert {'catalog_sel...thority', ...} == {'catalog_sel...thority', ...}
+E         
+E         Extra items in the left set:
+E         'media_catalog_counts'
+E         Use -v to get more diff
+
+tests/test_media_types.py:205: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+../usr/local/lib/python3.13/site-packages/_pytest/config/__init__.py:1464
+  /usr/local/lib/python3.13/site-packages/_pytest/config/__init__.py:1464: PytestConfigWarning: Unknown config option: cache_dir
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_media_types.py::test_nested_type_barriers_and_typed_directory_contract
+1 failed, 74 passed, 2 warnings in 125.19s (0:02:05)

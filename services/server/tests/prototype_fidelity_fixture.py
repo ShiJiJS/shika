@@ -54,7 +54,10 @@ def create_fidelity_app():
         target.mkdir(parents=True, exist_ok=False)
         shutil.copyfile(Path("/public") / f"flower-{orientation}.mp4", target / f"{title}.mp4")
     app = create_app(settings)
-    state = {"display": None, "ack": False, "prepared": False, "continuation_failure": False}
+    state = {
+        "display": None, "ack": False, "prepared": False,
+        "continuation_failure": False, "catalog_counts_failure": False,
+    }
     trace = deque(maxlen=5000)
 
     def guard(key):
@@ -68,7 +71,13 @@ def create_fidelity_app():
             if request.url.path == "/api/v1/pack-sessions" and request.method == "POST"
             else None
         )
-        if (
+        counts_failure = (
+            state["catalog_counts_failure"]
+            and request.method == "GET"
+            and request.url.path == "/api/v1/library-state"
+            and request.headers.get("Authorization")
+        )
+        if counts_failure or (
             state["continuation_failure"]
             and request.method == "GET"
             and request.url.path == "/api/v1/packs"
@@ -82,7 +91,9 @@ def create_fidelity_app():
                 {
                     "error": {
                         "code": "fixture_unavailable",
-                        "message": "连接暂时中断，请检查服务器与网络连接后重试。图包列表仍可正常浏览。",
+                        "message": "库存状态暂不可用" if counts_failure else (
+                            "连接暂时中断，请检查服务器与网络连接后重试。图包列表仍可正常浏览。"
+                        ),
                     }
                 },
                 status_code=503,
@@ -174,6 +185,14 @@ def create_fidelity_app():
             raise HTTPException(422)
         state["continuation_failure"] = mode == "on"
         return {"failure": state["continuation_failure"]}
+
+    @app.post("/__fidelity/catalog-counts-failure/{mode}")
+    def catalog_counts_failure(mode: str, x_fixture_key: str = Header()):
+        guard(x_fixture_key)
+        if mode not in {"on", "off"}:
+            raise HTTPException(422)
+        state["catalog_counts_failure"] = mode == "on"
+        return {"failure": state["catalog_counts_failure"]}
 
     @app.post("/__fidelity/checkpoint/{name}")
     def checkpoint(name: str, x_fixture_key: str = Header()):

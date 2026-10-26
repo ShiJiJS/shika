@@ -1,0 +1,20 @@
+ImportError while loading conftest '/source/tests/conftest.py'.
+tests/conftest.py:8: in <module>
+    from video_viewer.app import create_app
+video_viewer/app.py:17: in <module>
+    from .backups import Backups
+video_viewer/backups.py:27: in <module>
+    from .management_archives import KINDS, ManagementArchives
+video_viewer/management_archives.py:37: in <module>
+    from .pack_scanner import reserved_packs
+video_viewer/pack_scanner.py:15: in <module>
+    from .images import IMAGE_EXTENSIONS, inspect_image
+video_viewer/images.py:19: in <module>
+    from .streaming import DescriptorResponse
+video_viewer/streaming.py:9: in <module>
+    from .library_state import prepared
+video_viewer/library_state.py:5: in <module>
+    from .catalog import Catalog
+video_viewer/catalog.py:9: in <module>
+    from .pack_scanner import reserved_packs
+E   ImportError: cannot import name 'reserved_packs' from partially initialized module 'video_viewer.pack_scanner' (most likely due to a circular import) (/source/video_viewer/pack_scanner.py)
