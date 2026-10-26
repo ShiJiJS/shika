@@ -1,0 +1,91 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart
+00:00 +0: preview controls and range remain usable at (Size(390.0, 844.0), 1.0)
+00:01 +1: preview controls and range remain usable at (Size(360.0, 740.0), 2.0)
+PREVIEW_VIEWPORT_ERROR:══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 131 pixels on the right.
+
+The relevant error-causing widget was:
+  Row
+  Row:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/lib/ui/player.dart:1038:18
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#e2054 OVERFLOWING:
+  needs compositing
+  parentData: offset=Offset(6.0, 0.0) (can use size)
+  constraints: BoxConstraints(w=328.0, h=48.0)
+  size: Size(328.0, 48.0)
+  direction: horizontal
+  mainAxisAlignment: start
+  mainAxisSize: max
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+PREVIEW_VIEWPORT_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 131 pixels on
+the right.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart:44:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart line 44
+The test description was:
+  preview controls and range remain usable at (Size(360.0,
+  740.0), 2.0)
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 131 pixels on the right.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart:44:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart line 44
+The test description was:
+  preview controls and range remain usable at (Size(360.0, 740.0), 2.0)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +1 -1: preview controls and range remain usable at (Size(360.0, 740.0), 2.0) [E]
+  Test failed. See exception logs above.
+  The test description was: preview controls and range remain usable at (Size(360.0, 740.0), 2.0)
+  
+00:02 +1 -1: preview controls and range remain usable at (Size(844.0, 390.0), 1.0)
+00:03 +2 -1: preview controls and range remain usable at (Size(844.0, 390.0), 2.0)
+00:04 +3 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview controls and range remain usable at (Size(360.0, 740.0), 2.0)

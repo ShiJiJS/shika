@@ -1,0 +1,1 @@
+Initial verifier incorrectly expected zero pack_progress rows in video runs. The fixture prepare() intentionally seeds summer ordinal 2 with revision 1, updated_at 1000 and offset 0. Corrected verifier checks that exact seed and no pack mutation requests, rather than dropping the invariant. Native runs were not rerun or changed.

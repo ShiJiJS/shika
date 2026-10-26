@@ -1,0 +1,58 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart
+00:00 +0: preview controls and range remain usable at (Size(390.0, 844.0), 1.0)
+00:01 +1: long range context scrolls without hiding the current item at (Size(390.0, 844.0), 1.0)
+00:01 +2: preview controls and range remain usable at (Size(360.0, 740.0), 2.0)
+00:02 +3: long range context scrolls without hiding the current item at (Size(360.0, 740.0), 2.0)
+00:02 +4: preview controls and range remain usable at (Size(844.0, 390.0), 1.0)
+00:02 +5: long range context scrolls without hiding the current item at (Size(844.0, 390.0), 1.0)
+00:02 +6: preview controls and range remain usable at (Size(844.0, 390.0), 2.0)
+00:03 +7: long range context scrolls without hiding the current item at (Size(844.0, 390.0), 2.0)
+00:03 +8: preview theme persists or preserves previous preference on failure=false
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+Null check operator used on a null value
+
+When the exception was thrown, this was the stack:
+#0      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart:213:35)
+<asynchronous suspension>
+#1      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#2      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  preview theme persists or preserves previous preference on failure=false
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +8 -1: preview theme persists or preserves previous preference on failure=false [E]
+  Test failed. See exception logs above.
+  The test description was: preview theme persists or preserves previous preference on failure=false
+  
+00:03 +8 -1: preview theme persists or preserves previous preference on failure=true
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+Null check operator used on a null value
+
+When the exception was thrown, this was the stack:
+#0      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart:213:35)
+<asynchronous suspension>
+#1      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#2      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  preview theme persists or preserves previous preference on failure=true
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +8 -2: preview theme persists or preserves previous preference on failure=true [E]
+  Test failed. See exception logs above.
+  The test description was: preview theme persists or preserves previous preference on failure=true
+  
+00:03 +8 -2: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview theme persists or preserves previous preference on failure=false
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview theme persists or preserves previous preference on failure=true
