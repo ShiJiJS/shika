@@ -105,12 +105,23 @@ void main() {
 
         await t.tap(find.text('原媒体库'));
         await until(() => find.text('跳过这一张').evaluate().length == 1);
-        await t.ensureVisible(find.text('跳过这一张'));
+        // Center a tall-page action in the usable middle of the canvas;
+        // top-edge alignment would put it beneath floating landscape chrome.
+        await Scrollable.ensureVisible(
+          t.element(find.text('跳过这一张')),
+          alignment: .5,
+        );
         await t.pump(const Duration(milliseconds: 250));
         expect(requests, ['/p0/2']);
         expect(repo.openedCount, 0);
         if (sample.$1 == ReaderMode.horizontal && sample.$3 == 1) {
-          await t.tap(find.text('沉浸'));
+          if (sample.$2.width > sample.$2.height) {
+            await t.tap(find.byTooltip('图包更多'));
+            await t.pumpAndSettle();
+            await t.tap(find.text('沉浸阅读'));
+          } else {
+            await t.tap(find.text('沉浸'));
+          }
           await t.pump(const Duration(milliseconds: 250));
           expect(
             t.state<PackReaderPageState>(find.byType(PackReaderPage)).controls,
