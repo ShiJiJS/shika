@@ -188,10 +188,12 @@ class PackTrashSession extends ChangeNotifier {
     _notify();
   }
 
-  Future<void> restoreSelected() async {
-    if (!live || !active || restoring || selection.ids.isEmpty) return;
+  Future<void> restoreSelected({Set<String>? only}) async {
+    if (!live || !active || restoring || (only ?? selection.ids).isEmpty) {
+      return;
+    }
     selection.cancel();
-    final ids = selection.ids.toList()..sort();
+    final ids = (only ?? selection.ids).toList()..sort();
     if (plans != null) {
       restoring = true;
       error = message = '';
@@ -206,8 +208,10 @@ class PackTrashSession extends ChangeNotifier {
           return;
         }
         lastPlan = plan;
-        selection.cancel(clear: true);
-        failures.clear();
+        selection.ids.removeAll(ids);
+        for (final id in ids) {
+          failures.remove(id);
+        }
         message = '整份 ${plan.total} 个图包的恢复计划已受理，可离开页面，在操作任务查看进度';
         repository.packFilesChanged();
       } catch (failure) {

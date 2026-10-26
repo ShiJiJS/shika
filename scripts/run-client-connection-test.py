@@ -220,6 +220,7 @@ def watch():
                 "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
                 "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
                 "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
+                "trash-video", "trash-packs", "trash-empty", "trash-paged", "trash-confirm", "trash-receipt", "trash-single-confirm", "trash-single-restored", "trash-dark", "trash-keyboard",
                 "purge-selected", "purge-review", "purge-files", "purge-saved", "purge-saved-reopened", "purge-unknown", "purge-result", "purge-finished",
                 "bulk-selected", "bulk-review", "bulk-unknown", "bulk-receipt", "bulk-paged", "bulk-selection", "bulk-next-review",
                 "defaults-video", "defaults-reader", "defaults-unknown", "defaults-reopened", "defaults-migration",
@@ -237,7 +238,7 @@ def watch():
                         json.dumps(json.load(response), ensure_ascii=False, indent=2),
                         encoding="utf-8",
                     )
-                if PREFIX in {"lf6-trash", "lf6-purge", "lf7-tasks", "lf7-restore", "lf7-purge-restart", "lf7-defaults", "lf7-roots-missing"}:
+                if PREFIX in {"lf6-trash", "lf6-purge", "lf7-tasks", "lf7-restore", "lf7-purge-restart", "lf7-defaults", "lf7-roots-missing", "lf8-trash"}:
                     request = urllib.request.Request(
                         "http://127.0.0.1:8761/__fixture/actions/pack-trash-hashes",
                         headers=HEADERS, method="POST",
@@ -247,6 +248,10 @@ def watch():
                             json.dumps(json.load(response), ensure_ascii=False, indent=2),
                             encoding="utf-8",
                         )
+                if PREFIX == "lf8-trash":
+                    request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/restore-plan-stats", headers=HEADERS, method="POST")
+                    with urllib.request.urlopen(request, timeout=2) as response:
+                        (EVIDENCE / f"{PREFIX}-{phase}-plan.json").write_text(json.dumps(json.load(response), ensure_ascii=False, indent=2), encoding="utf-8")
                 if PREFIX == "lf7-restore":
                     request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/restore-plan-stats", headers=HEADERS, method="POST")
                     with urllib.request.urlopen(request, timeout=2) as response:
@@ -283,7 +288,7 @@ def watch():
                     timeout=15,
                 )
                 (EVIDENCE / f"{PREFIX}-{phase}.png").write_bytes(result.stdout)
-                if PREFIX == "lf7-roots-missing":
+                if PREFIX in {"lf7-roots-missing", "lf8-trash"}:
                     windows = subprocess.check_output(
                         [ADB, "-s", "emulator-5554", "shell", "dumpsys", "window"],
                         text=True, timeout=10,
@@ -332,6 +337,8 @@ def main():
     mode.add_argument("--pack-recent", action="store_true")
     mode.add_argument("--pack-controls", action="store_true")
     mode.add_argument("--pack-trash", action="store_true")
+    mode.add_argument("--trash-management", action="store_true")
+    parser.add_argument("--trash-management-baseline", action="store_true")
     mode.add_argument("--pack-purge", action="store_true")
     mode.add_argument("--purge-restart", action="store_true")
     mode.add_argument("--managed-defaults", action="store_true")
@@ -382,6 +389,8 @@ def main():
         PREFIX = "lf7-tasks"
     elif args.pack_purge:
         PREFIX = "lf6-purge"
+    elif args.trash_management:
+        PREFIX = "lf8-trash"
     elif args.pack_trash:
         PREFIX = "lf6-trash"
     elif args.pack_cleanup:
@@ -430,6 +439,7 @@ def main():
         cwd=ROOT, text=True,
     ).splitlines() + [
         "apps/mobile/integration_test/server_roots_missing_test.dart",
+        "apps/mobile/integration_test/server_trash_management_test.dart",
         "scripts/run-client-connection-test.py", "services/server/tests/e2e_server.py",
     ]
     prototype_entry = subprocess.check_output(
@@ -441,7 +451,7 @@ def main():
         "files": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in source_paths},
     }, indent=2) + "\n", encoding="utf-8")
     prepare_emulator()
-    if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.purge_restart or args.maintenance_tasks or args.restore_plans or args.managed_defaults or args.roots_missing:
+    if args.trash_management or args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.purge_restart or args.maintenance_tasks or args.restore_plans or args.managed_defaults or args.roots_missing:
         def device(*command):
             return subprocess.check_output(
                 [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
@@ -506,6 +516,7 @@ def main():
                 "lf5-recent": "integration_test/server_pack_recent_test.dart",
                 "lf5-controls": "integration_test/server_pack_reader_controls_test.dart",
                 "lf6-trash": "integration_test/server_pack_trash_test.dart",
+                "lf8-trash": "integration_test/server_trash_management_test.dart",
                 "lf6-purge": "integration_test/server_pack_purge_test.dart",
                 "lf7-tasks": "integration_test/server_maintenance_tasks_test.dart",
                 "lf7-restore": "integration_test/server_restore_plans_test.dart",
@@ -521,6 +532,10 @@ def main():
             "--reporter",
             "expanded",
         ]
+        if args.trash_management_baseline:
+            if not args.trash_management:
+                parser.error("baseline requires --trash-management")
+            command.append("--dart-define=TRASH_LAYOUT_BASELINE=true")
         if args.pack_cleanup and args.pack_cleanup_rounds > 1:
             command.append(f"--dart-define=PACK_CLEANUP_ROUNDS={args.pack_cleanup_rounds}")
         if args.plain_name:
@@ -549,6 +564,7 @@ def main():
                 or args.pack_recovery
                 or args.pack_cleanup
                 or args.pack_trash
+                or args.trash_management
                 or args.pack_purge
                 or args.maintenance_tasks
                 or args.managed_defaults

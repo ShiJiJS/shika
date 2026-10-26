@@ -14,6 +14,8 @@ import 'package:video_viewer/ui/paper.dart';
 import 'support/pack_purge_fixture.dart';
 import 'support/maintenance_fixture.dart';
 
+import 'support/reveal_action.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUpAll(() async {
@@ -58,7 +60,7 @@ void main() {
   }
 
   Future<void> tap(WidgetTester t, Finder f) async {
-    await t.ensureVisible(f);
+    await revealAction(t, f);
     await t.tap(f);
     await t.pumpAndSettle();
     expect(t.takeException(), isNull);

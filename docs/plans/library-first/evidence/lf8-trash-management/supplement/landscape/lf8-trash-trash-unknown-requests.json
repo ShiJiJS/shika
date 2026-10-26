@@ -1,0 +1,287 @@
+{
+  "items": [
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "1",
+        "search": "",
+        "read_state": "all",
+        "source": "recent",
+        "sort": "recent"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "search": "",
+        "read_state": "all",
+        "source": "library",
+        "sort": "title",
+        "anchor_ids": "73d77875-7ec1-4b68-b82d-4d2db0a71627"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {
+        "anchor_ids": [
+          "a0931e62-e7d7-49dd-bd1a-a13609dacff7",
+          "9c94f1f2-6700-43e4-a932-518ad7d75707",
+          "a700197d-3607-4576-9886-c868af0b3500",
+          "edc63db1-95bf-454a-9d3c-9ee4dcca5bef",
+          "ccfbb14f-f690-403f-8c76-1c177fde9226",
+          "cbc2b52e-840d-46ab-b4e1-06fa2f247fba",
+          "f89f9924-7b28-4909-b045-39e33351d910",
+          "8e040baf-5d0e-4321-8d64-db2f62ef91e0",
+          "c2a32c3b-488e-4506-b6c5-dd678f7c2dd2",
+          "5c004271-d0b4-492c-8040-0087f407e548",
+          "88c92cf8-9287-4a36-a89b-565c1d7b0bf4",
+          "94b7bcbe-7029-408d-8ce2-560baacc4405",
+          "947889ab-b10b-4035-86e8-4cb770460c34",
+          "8666360d-462b-40bf-af90-77cd4dba9ad2",
+          "a550702f-ee58-4f36-8f8d-5e490f598866",
+          "73d77875-7ec1-4b68-b82d-4d2db0a71627"
+        ]
+      },
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "不匹配的回收内容",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "图包",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash/selection",
+      "query": {
+        "search": "图包"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "图包",
+        "offset": "24",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-restore-plans",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "command_hash": "403b52f60573a32b71f48543c2dfc58a7602e180774325d1509ab53bd2d497e2",
+      "restore_members": [
+        "12de5747-daf8-4b68-9b2d-eeef0fdad139",
+        "1429b942-0d9c-4dcc-b201-1547793228c7",
+        "1d01d33e-a9dc-42db-8c66-b8624c506313",
+        "252cf0fc-097f-4d3b-92de-d6a49edec6a1",
+        "29a4b0fe-f00e-4860-b4ae-82462d114a88",
+        "44c49caa-6eb4-441a-878e-4aba668c8705",
+        "4760e8bf-f471-45d8-a647-ae2b38cd888a",
+        "5b3dde65-fbcb-4cb3-ad90-5cf7d6600a3e",
+        "67fb35a2-9fda-465c-8ac4-521e51e7f90e",
+        "6a9901af-f05e-4033-920a-520f1699cb3d",
+        "75eec9bc-01a9-4eca-bd75-5304c635dae4",
+        "89ff8312-afa9-4b2d-a81a-09596088566f",
+        "8d451e7b-af8b-4256-bcc8-55345ddda1c0",
+        "92312a2a-3ccf-4fec-bc38-3bc5a716e2e4",
+        "9d0ba2df-327c-493a-8ae4-5d89a7a004c7",
+        "a1e430cc-5a8c-4134-aa30-5a81258d9e8f",
+        "aff6c82f-f227-449f-a66c-60370659aa7c",
+        "b5148db1-4ec6-4f7c-88d1-2ab9fa86049c",
+        "c1a2dce3-4863-43ac-a42a-bf7a03d2590d",
+        "cd0924e4-6b32-42f2-b542-862c7c36d4a2",
+        "d0c01090-1132-47f8-a3b5-10dfd5ea8fd0",
+        "db0355c2-231a-47d2-a361-9fab33f6bca3",
+        "e3580a80-f5ba-41d1-8d72-f031e1b0a77c",
+        "e935a96c-f337-4dec-9ee4-e05c90377a0e",
+        "ea33188b-1602-4ccc-8c22-c05d27815c89",
+        "ef9d29ec-3c12-4b45-9956-6ee03073f098"
+      ],
+      "query_lists": {},
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "图包",
+        "offset": "24",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "图包",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

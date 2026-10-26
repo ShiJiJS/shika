@@ -1,0 +1,104 @@
+{
+  "items": [
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "1",
+        "search": "",
+        "read_state": "all",
+        "source": "recent",
+        "sort": "recent"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "search": "",
+        "read_state": "all",
+        "source": "library",
+        "sort": "title",
+        "anchor_ids": "73d77875-7ec1-4b68-b82d-4d2db0a71627"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {
+        "anchor_ids": [
+          "a0931e62-e7d7-49dd-bd1a-a13609dacff7",
+          "9c94f1f2-6700-43e4-a932-518ad7d75707",
+          "a700197d-3607-4576-9886-c868af0b3500",
+          "edc63db1-95bf-454a-9d3c-9ee4dcca5bef",
+          "ccfbb14f-f690-403f-8c76-1c177fde9226",
+          "cbc2b52e-840d-46ab-b4e1-06fa2f247fba",
+          "f89f9924-7b28-4909-b045-39e33351d910",
+          "8e040baf-5d0e-4321-8d64-db2f62ef91e0",
+          "c2a32c3b-488e-4506-b6c5-dd678f7c2dd2",
+          "5c004271-d0b4-492c-8040-0087f407e548",
+          "88c92cf8-9287-4a36-a89b-565c1d7b0bf4",
+          "94b7bcbe-7029-408d-8ce2-560baacc4405",
+          "947889ab-b10b-4035-86e8-4cb770460c34",
+          "8666360d-462b-40bf-af90-77cd4dba9ad2",
+          "a550702f-ee58-4f36-8f8d-5e490f598866",
+          "73d77875-7ec1-4b68-b82d-4d2db0a71627"
+        ]
+      },
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "88630ce6726da3cae6a595dbd81b851b",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

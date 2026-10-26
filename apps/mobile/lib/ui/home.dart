@@ -19,6 +19,7 @@ import '../features/settings/default_settings_sheet.dart';
 import '../features/settings/media_root_sheet.dart';
 import '../features/settings/missing_media_page.dart';
 import '../library/repository.dart';
+import 'trash_layout.dart';
 import 'paper.dart';
 import 'paper_form.dart';
 import 'media_layout.dart';
@@ -152,6 +153,16 @@ class _LibraryHomeState extends State<LibraryHome> {
   bool get mediaPage => page == 'browse' || page == 'library';
   bool get primaryPage =>
       ['browse', 'library', 'tags', 'settings'].contains(page);
+  bool get compactTrashKeyboard {
+    final media = MediaQuery.of(context);
+    return page == 'trash' &&
+        media.viewInsets.bottom > 0 &&
+        media.size.height -
+                media.viewInsets.bottom -
+                media.viewPadding.vertical <
+            300;
+  }
+
   EdgeInsets get snackMargin => EdgeInsets.fromLTRB(
     12,
     0,
@@ -896,7 +907,8 @@ class _LibraryHomeState extends State<LibraryHome> {
     children: [
       if (separator || _busy)
         SizedBox(
-          height: 2,
+          height: page == 'trash' && !_busy ? 1 : 2,
+          width: page == 'trash' ? double.infinity : null,
           child: _busy
               ? const LinearProgressIndicator(
                   key: Key('management-loading'),
@@ -1051,130 +1063,144 @@ class _LibraryHomeState extends State<LibraryHome> {
       header: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            key: const Key('management-header'),
-            height: MediaLayout.headerExtent(context),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16, right: 12),
-              child: Row(
-                children: [
-                  if (!primaryPage)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: iconAction(
+          if (!compactTrashKeyboard)
+            SizedBox(
+              key: const Key('management-header'),
+              height: MediaLayout.headerExtent(context),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: page == 'trash' ? 20 : 16,
+                  right: 12,
+                ),
+                child: Row(
+                  children: [
+                    if (!primaryPage && page != 'trash')
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4),
+                        child: iconAction(
+                          '返回设置',
+                          Icons.arrow_back,
+                          _busy ? null : () => go('settings'),
+                        ),
+                      ),
+                    Expanded(
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Paper.of(context).title,
+                      ),
+                    ),
+                    if (mediaPage) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 9),
+                        child: Text(
+                          !repo.libraryPreparation.value.ready
+                              ? '准备中'
+                              : '${data.round.isEmpty ? '00' : (_browsing.position + 1).toString().padLeft(2, '0')} / ${repo.playbackTotal.toString().padLeft(2, '0')}',
+                          key: const Key('round-position'),
+                          style: TextStyle(
+                            fontFamily: 'serif',
+                            fontSize: 13,
+                            color: Paper.of(context).olive,
+                          ),
+                        ),
+                      ),
+                      iconAction(
+                        '选择文件夹',
+                        Icons.folder_outlined,
+                        busy ? null : folder,
+                      ),
+                      iconAction(
+                        '播放模式',
+                        data.order == PlayOrder.random
+                            ? Icons.shuffle
+                            : Icons.format_list_numbered,
+                        busy ? null : order,
+                      ),
+                    ],
+                    if (page == 'trash')
+                      iconAction(
                         '返回设置',
-                        Icons.arrow_back,
+                        Icons.close,
                         _busy ? null : () => go('settings'),
                       ),
-                    ),
-                  Expanded(
-                    child: Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Paper.of(context).title,
-                    ),
-                  ),
-                  if (mediaPage) ...[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 9),
-                      child: Text(
-                        !repo.libraryPreparation.value.ready
-                            ? '准备中'
-                            : '${data.round.isEmpty ? '00' : (_browsing.position + 1).toString().padLeft(2, '0')} / ${repo.playbackTotal.toString().padLeft(2, '0')}',
-                        key: const Key('round-position'),
-                        style: TextStyle(
-                          fontFamily: 'serif',
-                          fontSize: 13,
-                          color: Paper.of(context).olive,
-                        ),
-                      ),
-                    ),
-                    iconAction(
-                      '选择文件夹',
-                      Icons.folder_outlined,
-                      busy ? null : folder,
-                    ),
-                    iconAction(
-                      '播放模式',
-                      data.order == PlayOrder.random
-                          ? Icons.shuffle
-                          : Icons.format_list_numbered,
-                      busy ? null : order,
-                    ),
-                  ],
-                  PopupMenuButton<String>(
-                    tooltip: '更多',
-                    enabled: !busy,
-                    onOpened: () => setState(() => obscured = true),
-                    onCanceled: () => setState(() => obscured = false),
-                    onSelected: menu,
-                    padding: EdgeInsets.zero,
-                    icon: const Icon(Icons.more_horiz),
-                    constraints: const BoxConstraints(minWidth: 190),
-                    itemBuilder: (_) => [
-                      if (data.lastDelete != null)
-                        const PopupMenuItem(
-                          value: 'undo',
-                          child: Text('撤销上次删除'),
-                        ),
-                      PopupMenuItem(
-                        value: 'theme',
-                        child: actionLabel(
-                          widget.preferences.dark
-                              ? Icons.light_mode_outlined
-                              : Icons.dark_mode_outlined,
-                          widget.preferences.dark ? '切换浅色模式' : '切换暗黑模式',
-                        ),
-                      ),
-                      ...(page == 'browse'
-                          ? [
-                              if (_browsing.current != null)
-                                const PopupMenuItem(
-                                  value: 'tag',
-                                  child: Text('打标签'),
-                                ),
-                              if (_browsing.current != null)
-                                const PopupMenuItem(
-                                  value: 'details',
-                                  child: Text('视频详情'),
-                                ),
-                              PopupMenuItem(
-                                value: 'review',
-                                child: Text(review ? '返回日常浏览' : '进入快速整理'),
-                              ),
-                              const PopupMenuItem(
-                                value: 'round',
-                                child: Text('开始新一轮'),
-                              ),
-                              if (_browsing.current != null)
-                                PopupMenuItem(
-                                  value: 'delete',
-                                  child: Text(
-                                    '移入回收站',
-                                    style: TextStyle(
-                                      color: Paper.of(context).danger,
+                    if (page != 'trash')
+                      PopupMenuButton<String>(
+                        tooltip: '更多',
+                        enabled: !busy,
+                        onOpened: () => setState(() => obscured = true),
+                        onCanceled: () => setState(() => obscured = false),
+                        onSelected: menu,
+                        padding: EdgeInsets.zero,
+                        icon: const Icon(Icons.more_horiz),
+                        constraints: const BoxConstraints(minWidth: 190),
+                        itemBuilder: (_) => [
+                          if (data.lastDelete != null)
+                            const PopupMenuItem(
+                              value: 'undo',
+                              child: Text('撤销上次删除'),
+                            ),
+                          PopupMenuItem(
+                            value: 'theme',
+                            child: actionLabel(
+                              widget.preferences.dark
+                                  ? Icons.light_mode_outlined
+                                  : Icons.dark_mode_outlined,
+                              widget.preferences.dark ? '切换浅色模式' : '切换暗黑模式',
+                            ),
+                          ),
+                          ...(page == 'browse'
+                              ? [
+                                  if (_browsing.current != null)
+                                    const PopupMenuItem(
+                                      value: 'tag',
+                                      child: Text('打标签'),
                                     ),
+                                  if (_browsing.current != null)
+                                    const PopupMenuItem(
+                                      value: 'details',
+                                      child: Text('视频详情'),
+                                    ),
+                                  PopupMenuItem(
+                                    value: 'review',
+                                    child: Text(review ? '返回日常浏览' : '进入快速整理'),
                                   ),
-                                ),
-                            ]
-                          : const [
-                              PopupMenuItem(
-                                value: 'roots',
-                                child: Text('媒体目录'),
-                              ),
-                              PopupMenuItem(value: 'trash', child: Text('回收站')),
-                              PopupMenuItem(
-                                value: 'backup',
-                                child: Text('备份与恢复'),
-                              ),
-                            ]),
-                    ],
-                  ),
-                ],
+                                  const PopupMenuItem(
+                                    value: 'round',
+                                    child: Text('开始新一轮'),
+                                  ),
+                                  if (_browsing.current != null)
+                                    PopupMenuItem(
+                                      value: 'delete',
+                                      child: Text(
+                                        '移入回收站',
+                                        style: TextStyle(
+                                          color: Paper.of(context).danger,
+                                        ),
+                                      ),
+                                    ),
+                                ]
+                              : const [
+                                  PopupMenuItem(
+                                    value: 'roots',
+                                    child: Text('媒体目录'),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 'trash',
+                                    child: Text('回收站'),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 'backup',
+                                    child: Text('备份与恢复'),
+                                  ),
+                                ]),
+                        ],
+                      ),
+                  ],
+                ),
               ),
             ),
-          ),
           managementStatus(),
         ],
       ),
@@ -2656,9 +2682,10 @@ class _LibraryHomeState extends State<LibraryHome> {
     }
   }
 
-  Future<void> restoreSelectedTrash() async {
-    if (restoringTrash || purgingTrash || selected.isEmpty) return;
-    final ids = {...selected};
+  Future<void> restoreSelectedTrash({Set<String>? only}) async {
+    final ids = {...?only, if (only == null) ...selected};
+    if (restoringTrash || purgingTrash || ids.isEmpty) return;
+    FocusManager.instance.primaryFocus?.unfocus();
     setState(() => restoringTrash = true);
     try {
       final failures = await repo.restoreVideos(ids);
@@ -2685,46 +2712,58 @@ class _LibraryHomeState extends State<LibraryHome> {
     final p = Paper.of(context);
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            children: [
-              for (final kind in MediaKind.values)
-                Padding(
-                  padding: const EdgeInsets.only(right: 24),
-                  child: TextButton(
-                    key: Key('trash-kind-${kind.name}'),
-                    onPressed: () {
-                      if (trashKind == kind) return;
-                      setState(() => trashKind = kind);
-                      trashGeneration++;
-                      repo.cancelTrashRead();
-                      if (kind == MediaKind.video) unawaited(loadTrash());
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: kind == trashKind ? p.olive : p.muted,
-                      shape: const RoundedRectangleBorder(),
-                      side: BorderSide.none,
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: kind == trashKind
-                                ? p.olive
-                                : Colors.transparent,
-                            width: 2,
+        if (!compactTrashKeyboard)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
+            child: Row(
+              children: [
+                for (final kind in MediaKind.values)
+                  Padding(
+                    padding: EdgeInsets.zero,
+                    child: TextButton(
+                      key: Key('trash-kind-${kind.name}'),
+                      onPressed: () {
+                        if (trashKind == kind) return;
+                        setState(() => trashKind = kind);
+                        trashGeneration++;
+                        repo.cancelTrashRead();
+                        if (kind == MediaKind.video) unawaited(loadTrash());
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: kind == trashKind
+                            ? p.ink
+                            : p.catalogMeta,
+                        padding: const EdgeInsets.only(right: 22),
+                        alignment: Alignment.centerLeft,
+                        textStyle: TextStyle(
+                          fontSize: 15,
+                          fontWeight: kind == trashKind
+                              ? FontWeight.w600
+                              : FontWeight.normal,
+                        ),
+                        minimumSize: const Size(44, 44),
+                        shape: const RoundedRectangleBorder(),
+                        side: BorderSide.none,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: kind == trashKind
+                                  ? p.olive
+                                  : Colors.transparent,
+                              width: 2,
+                            ),
                           ),
                         ),
+                        child: Text(kind == MediaKind.video ? '视频' : '图包'),
                       ),
-                      child: Text(kind == MediaKind.video ? '视频' : '图包'),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
-        ),
         Expanded(
           child: IndexedStack(
             index: trashKind == MediaKind.video ? 0 : 1,
@@ -2742,153 +2781,111 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   Widget videoTrash() {
-    final items = trashItems;
-    if (trashError.isNotEmpty) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(trashError),
-            TextButton(onPressed: () => loadTrash(), child: const Text('重试')),
-          ],
-        ),
-      );
-    }
-    if (items.isEmpty && trashLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    if (items.isEmpty) return const EmptyView('回收站是空的');
-    return Column(
+    final p = Paper.of(context);
+    final locked = busy || restoringTrash || purgingTrash || selectingAllTrash;
+    return TrashLayout(
+      listKey: const Key('video-trash-list'),
+      topInset:
+          repo.capabilities.packLogicalTrash && repo.capabilities.imagePacks
+          ? 0
+          : 18,
+      loading:
+          trashLoading || restoringTrash || purgingTrash || selectingAllTrash,
+      onRefresh: () => loadTrash(),
+      actions: TrashActions(
+        count: selected.length,
+        restoreKey: const Key('video-trash-restore'),
+        permanentKey: const Key('video-trash-permanent'),
+        onRestore: locked || selected.isEmpty ? null : restoreSelectedTrash,
+        onPermanent: locked || selected.isEmpty
+            ? null
+            : () async {
+                final ids = {...selected};
+                if (await confirm(
+                  '永久删除这些视频？',
+                  '将永久删除所选 ${ids.length} 个视频，无法撤销。',
+                  '永久删除',
+                )) {
+                  await purgeTrash(ids);
+                }
+              },
+        restoring: restoringTrash,
+      ),
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 4, 12, 0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '共 $trashTotal 个视频',
-                  style: const TextStyle(fontSize: 12),
-                ),
-              ),
-              TextButton(
-                key: const Key('trash-select-all'),
-                onPressed:
-                    busy ||
-                        selectingAllTrash ||
-                        trashLoading ||
-                        restoringTrash ||
-                        purgingTrash
-                    ? null
-                    : selectAllTrash,
-                child: Text(
-                  selectingAllTrash
-                      ? '正在全选…'
-                      : selected.length == trashTotal
-                      ? '取消全选'
-                      : '全选',
-                ),
-              ),
-            ],
+        Text(
+          '只作标记，原文件仍在原位置；恢复时保留标签。不会自动清空。',
+          style: TextStyle(fontSize: 13, height: 1.7, color: p.catalogMeta),
+        ),
+        if (trashError.isNotEmpty) ...[
+          Text(trashError, style: TextStyle(height: 1.7, color: p.danger)),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              key: const Key('video-trash-retry'),
+              onPressed: trashLoading ? null : () => loadTrash(),
+              child: const Text('重试'),
+            ),
           ),
+        ],
+        Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 8,
+          runSpacing: 4,
+          children: [
+            Text(
+              trashItems.isNotEmpty || (!trashLoading && trashError.isEmpty)
+                  ? '共 $trashTotal 个视频'
+                  : '视频回收站',
+              style: TextStyle(fontSize: 12, color: p.catalogMeta),
+            ),
+            TextButton(
+              key: const Key('trash-select-all'),
+              onPressed: locked || trashLoading ? null : selectAllTrash,
+              child: Text(
+                selectingAllTrash
+                    ? '正在全选…'
+                    : selected.length == trashTotal && trashTotal > 0
+                    ? '取消全选'
+                    : '全选',
+              ),
+            ),
+          ],
         ),
         if (restoringTrash || purgingTrash)
           ValueListenableBuilder<String?>(
             valueListenable: repo.fileStatus,
-            builder: (_, status, _) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  const SizedBox(
-                    width: 12,
-                    height: 12,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    status ?? (purgingTrash ? '正在删除，可继续浏览' : '正在恢复，可继续浏览'),
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                ],
-              ),
+            builder: (_, status, _) => Text(
+              status ?? (purgingTrash ? '正在删除，可继续浏览' : '正在恢复，可继续浏览'),
+              style: TextStyle(fontSize: 12, height: 1.7, color: p.catalogMeta),
             ),
           ),
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              note('只作标记，原文件仍在原位置；恢复时保留标签。不会自动清空。'),
-              for (final v in items)
-                CheckboxListTile(
-                  key: Key('trash-${v.id}'),
-                  contentPadding: EdgeInsets.zero,
-                  value: selected.contains(v.id),
-                  title: Text(v.name),
-                  subtitle: Text(
-                    v.originalPath ?? v.path,
-                    style: const TextStyle(fontSize: 12),
+        if (trashItems.isEmpty && !trashLoading && trashError.isEmpty)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 32),
+            child: Text('回收站是空的', textAlign: TextAlign.center),
+          ),
+        for (final v in trashItems)
+          TrashEntryRow(
+            key: Key('trash-${v.id}'),
+            title: v.displayTitle,
+            path: v.originalPath ?? v.path,
+            selected: selected.contains(v.id),
+            onToggle: locked
+                ? null
+                : () => setState(
+                    () => selected.contains(v.id)
+                        ? selected.remove(v.id)
+                        : selected.add(v.id),
                   ),
-                  onChanged:
-                      busy ||
-                          restoringTrash ||
-                          selectingAllTrash ||
-                          purgingTrash
-                      ? null
-                      : (yes) => setState(
-                          () =>
-                              yes! ? selected.add(v.id) : selected.remove(v.id),
-                        ),
-                ),
-              if (items.length < trashTotal)
-                TextButton(
-                  onPressed: trashLoading ? null : () => loadTrash(more: true),
-                  child: Text(trashLoading ? '正在加载…' : '加载更多'),
-                ),
-            ],
+            restoreKey: Key('video-trash-row-restore-${v.id}'),
+            onRestore: locked ? null : () => restoreSelectedTrash(only: {v.id}),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Expanded(child: Text('已选 ${selected.length}')),
-              OutlinedButton(
-                onPressed:
-                    busy ||
-                        restoringTrash ||
-                        purgingTrash ||
-                        selectingAllTrash ||
-                        selected.isEmpty
-                    ? null
-                    : restoreSelectedTrash,
-                child: Text(restoringTrash ? '恢复中…' : '恢复'),
-              ),
-              const SizedBox(width: 8),
-              TextButton(
-                onPressed:
-                    busy ||
-                        restoringTrash ||
-                        purgingTrash ||
-                        selectingAllTrash ||
-                        selected.isEmpty
-                    ? null
-                    : () async {
-                        final ids = {...selected};
-                        if (await confirm(
-                          '永久删除这些视频？',
-                          '将永久删除所选 ${ids.length} 个视频，无法撤销。',
-                          '永久删除',
-                        )) {
-                          await purgeTrash(ids);
-                        }
-                      },
-                style: TextButton.styleFrom(
-                  foregroundColor: Paper.of(context).danger,
-                ),
-                child: const Text('永久删除'),
-              ),
-            ],
+        if (trashItems.length < trashTotal)
+          TextButton(
+            onPressed: trashLoading ? null : () => loadTrash(more: true),
+            child: Text(trashLoading ? '正在加载…' : '加载更多'),
           ),
-        ),
       ],
     );
   }

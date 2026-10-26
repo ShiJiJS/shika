@@ -95,13 +95,15 @@ def create_e2e_app():
             }
             if (request.method == "PATCH" and request.url.path in {"/api/v1/video-tags", "/api/v1/playback-defaults", "/api/v1/reading-defaults"}) or (
                 request.method == "POST" and request.url.path in {
-                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans", "/api/v1/packs/forget-missing"
+                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans", "/api/v1/packs/forget-missing", "/api/v1/pack-restore-plans"
                 }
             ):
                 body = await request.json()
                 entry["command_hash"] = hashlib.sha256(
                     str(body.get("request_id")).encode()
                 ).hexdigest()
+                if request.url.path == "/api/v1/pack-restore-plans":
+                    entry["restore_members"] = sorted(body.get("trash_ids", []))
             if (request.method == "POST" and request.url.path == "/api/v1/roots") or (
                 request.method == "PUT" and request.url.path.startswith("/api/v1/roots/")
             ):
@@ -242,6 +244,7 @@ def create_e2e_app():
             "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
             "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
             "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
+            "trash-video", "trash-packs", "trash-empty", "trash-paged", "trash-confirm", "trash-receipt", "trash-single-confirm", "trash-single-restored", "trash-dark", "trash-keyboard",
             "purge-selected", "purge-review", "purge-files", "purge-saved", "purge-saved-reopened", "purge-unknown", "purge-result", "purge-finished",
             "bulk-selected", "bulk-review", "bulk-unknown", "bulk-receipt", "bulk-paged", "bulk-selection", "bulk-next-review",
             "defaults-video", "defaults-reader", "defaults-unknown", "defaults-reopened", "defaults-migration",

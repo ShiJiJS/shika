@@ -1,0 +1,42 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_trash_management_test.dart
+Running Gradle task 'assembleDebug'...                             15.1s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          455ms
+00:00 +0: LF6 typed trash, whole membership, uncertain restore and preserved media/reading
+TRASH_METRICS:{"state":"trash-reader","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-video","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-read-error","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-packs","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-empty","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-keyboard","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_TIMEOUT page two
+回收站 | 视频 | 图包 | 普通移除保留源文件，永久删除不能恢复。恢复图包时保留剩余图片、整包标签和阅读进度。 | 搜索名称或目录 | 共 27 个图包 | 刷新 | 全选 | 取消选择 | 图包25 | /media/shorts/图包/图包25 | 3 张 · 未读 | 恢复 | 已选 26 | 恢复所选 | 永久删除
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Timed out: page two
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_trash_management_test.dart:60:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_trash_management_test.dart:279:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF6 typed trash, whole membership, uncertain restore and preserved media/reading
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:36 +0 -1: LF6 typed trash, whole membership, uncertain restore and preserved media/reading [E]
+  Test failed. See exception logs above.
+  The test description was: LF6 typed trash, whole membership, uncertain restore and preserved media/reading
+  
+01:36 +0 -1: (tearDownAll)
+01:36 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_trash_management_test.dart: LF6 typed trash, whole membership, uncertain restore and preserved media/reading

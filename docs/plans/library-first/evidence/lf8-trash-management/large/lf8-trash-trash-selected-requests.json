@@ -1,0 +1,195 @@
+{
+  "items": [
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "1",
+        "search": "",
+        "read_state": "all",
+        "source": "recent",
+        "sort": "recent"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "search": "",
+        "read_state": "all",
+        "source": "library",
+        "sort": "title",
+        "anchor_ids": "0bb8d724-2f55-44d0-8ee3-f0249402f510"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {
+        "anchor_ids": [
+          "874036ba-2ae1-4385-a59a-8b5a1619560c",
+          "ecd4b6af-6406-4d02-8f47-ba6120504841",
+          "0f433f20-113c-479d-8a4c-42a5baf5a1b8",
+          "83eab2ed-385c-4e32-af88-fec157c6e613",
+          "f91de1ca-f34d-4a20-a872-93ad592428f1",
+          "527f3510-2b87-43ef-81c1-8b1697ed58f1",
+          "7a136b1b-1f48-47ac-8fa4-c97554ebf103",
+          "629dcece-a03b-4226-8a65-34e19ac5c052",
+          "4ab69057-0a6e-4be6-850e-44addd42881d",
+          "af8dffff-0d38-442f-803c-8021488f5cb7",
+          "e5c8381d-1ecf-4d02-89e1-f35b77af4bd0",
+          "708807db-bfe9-46be-8cf8-6cf4ea277e7a",
+          "a32dc69a-01fc-4748-a961-0fc77d4569ac",
+          "bf51ef70-cfac-4dd9-9f71-a28f223c79ea",
+          "ec3f0cf3-aecf-45d7-87ce-36d3cec28132",
+          "0bb8d724-2f55-44d0-8ee3-f0249402f510"
+        ]
+      },
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "不匹配的回收内容",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "图包",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash/selection",
+      "query": {
+        "search": "图包"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "图包",
+        "offset": "24",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "6c4e193fb946d8c51ef78d1017ec1a46",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

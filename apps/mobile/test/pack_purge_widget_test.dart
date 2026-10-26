@@ -12,6 +12,8 @@ import 'package:video_viewer/ui/paper.dart';
 
 import 'support/pack_purge_fixture.dart';
 
+import 'support/reveal_action.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late PurgeLibrary repo;
@@ -62,7 +64,7 @@ void main() {
   }
 
   Future<void> tap(WidgetTester t, Finder target) async {
-    await t.ensureVisible(target);
+    await revealAction(t, target);
     await t.tap(target);
     await t.pumpAndSettle();
     expect(t.takeException(), isNull);

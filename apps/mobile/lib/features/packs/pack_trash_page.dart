@@ -6,6 +6,7 @@ import '../../library/models.dart';
 import '../../library/repository.dart';
 import '../../ui/paper.dart';
 import '../../ui/media_layout.dart';
+import '../../ui/trash_layout.dart';
 import 'pack_file_action.dart';
 import 'pack_trash_session.dart';
 import 'pack_purge_review.dart';
@@ -31,6 +32,27 @@ class _PackTrashPageState extends State<PackTrashPage> {
   String initializationError = '';
   final search = TextEditingController();
   bool checking = false;
+  final scroll = ScrollController();
+  final statusAnchor = GlobalKey();
+  String lastError = '';
+  String lastMessage = '';
+
+  void revealStatus() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !scroll.hasClients) return;
+      scroll.jumpTo(0);
+      revealFormError(statusAnchor);
+    });
+  }
+
+  Future<void> page(int start) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    await session.load(start: start);
+    if (mounted && session.error.isEmpty && scroll.hasClients) {
+      scroll.jumpTo(0);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -50,7 +72,16 @@ class _PackTrashPageState extends State<PackTrashPage> {
   }
 
   void changed() {
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+      final failure = '${session.error}|${session.selection.error}';
+      if (failure != lastError && failure != '|') revealStatus();
+      if (session.message.isNotEmpty && session.message != lastMessage) {
+        revealStatus();
+      }
+      lastError = failure;
+      lastMessage = session.message;
+    }
   }
 
   @override
@@ -310,38 +341,44 @@ class _PackTrashPageState extends State<PackTrashPage> {
     if (mounted && session.live) await session.load();
   }
 
-  Future<void> restore() async {
+  Future<void> restore({String? id}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    final ids = id == null ? null : {id};
     if (session.plans != null) {
-      final count = session.selection.ids.length;
+      final count = (ids ?? session.selection.ids).length;
       final approved = await paperSheet<bool>(
         context,
         SheetFrame(
-          title: '恢复已选 $count 个图包',
+          title: id == null ? '恢复已选 $count 个图包' : '恢复 1 个图包',
+          footer: Wrap(
+            alignment: WrapAlignment.end,
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('取消'),
+              ),
+              FilledButton(
+                key: const Key('pack-restore-plan-confirm'),
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('确认整份恢复'),
+              ),
+            ],
+          ),
           children: [
-            const Text('整份选择交给服务端按批次恢复，标签和阅读进度保留。受理后可以离开，在操作任务查看进度或停止后续批次。'),
-            const SizedBox(height: 16),
-            Wrap(
-              alignment: WrapAlignment.end,
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('取消'),
-                ),
-                FilledButton(
-                  key: const Key('pack-restore-plan-confirm'),
-                  onPressed: () => Navigator.pop(context, true),
-                  child: const Text('确认整份恢复'),
-                ),
-              ],
+            Text(
+              id == null
+                  ? '将分批恢复所选图包，保留标签和阅读进度。受理后可离开，在操作任务查看进度或停止后续批次。'
+                  : '恢复此图包，保留标签和阅读进度。受理后可离开，在操作任务查看进度。',
+              style: TextStyle(height: 1.7),
             ),
           ],
         ),
       );
       if (!mounted || approved != true || !session.live) return;
     }
-    await session.restoreSelected();
+    await session.restoreSelected(only: ids);
     if (mounted && session.message.isNotEmpty) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(session.message)));
@@ -383,6 +420,14 @@ class _PackTrashPageState extends State<PackTrashPage> {
       if (!mounted || !session.live) return;
       if (plan == null) throw const LibraryFailure('原请求尚未确认，记录已保留；未重复提交');
       session.lastPlan = plan;
+      if (command != null) {
+        // Match direct acceptance: only the original, verified members leave
+        // selection. Other choices made while the receipt was unknown remain.
+        session.selection.ids.removeAll(command.ids);
+        for (final id in command.ids) {
+          session.failures.remove(id);
+        }
+      }
       catalog = widget.repository.createMaintenanceTasks();
       final summary = await catalog.task(plan.id);
       if (!mounted || !session.live) return;
@@ -429,8 +474,14 @@ class _PackTrashPageState extends State<PackTrashPage> {
   Widget notices(bool locked, {bool inList = false}) {
     final p = Paper.of(context);
     return Column(
+      key: statusAnchor,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (session.message.isNotEmpty)
+          Text(
+            session.message,
+            style: TextStyle(fontSize: 13, height: 1.7, color: p.catalogMeta),
+          ),
         if (session.error.isNotEmpty)
           Padding(
             padding: EdgeInsets.symmetric(horizontal: inList ? 0 : 16),
@@ -511,34 +562,105 @@ class _PackTrashPageState extends State<PackTrashPage> {
     }
     final p = Paper.of(context), locked = session.restoring || checking;
     final selected = session.selection.ids;
-    final largeText = MediaLayout.largeText(context);
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: TextField(
-            key: const Key('pack-trash-search'),
-            controller: search,
-            style: const TextStyle(fontSize: 14),
-            enabled: !locked,
-            decoration: const InputDecoration(
-              hintText: '搜索名称或目录',
-              prefixIcon: Icon(Icons.search),
+    final unavailable = locked || session.selection.loading || !session.live;
+    final pendingIds = {
+      for (final pending in session.pendingPlans)
+        if (pending.command.kind == 'restore') ...pending.command.ids,
+    };
+    final uncertain = selected.intersection(pendingIds).length;
+    return TrashLayout(
+      listKey: const Key('pack-trash-list'),
+      controller: scroll,
+      loading:
+          session.loading || session.restoring || session.selection.loading,
+      onRefresh: () => session.load(),
+      actions: TrashActions(
+        count: selected.length,
+        selectionLabel: uncertain > 0 ? '保留选择 ${selected.length}' : null,
+        restoreKey: const Key('pack-trash-restore'),
+        permanentKey: const Key('pack-trash-permanent'),
+        onRestore: unavailable || selected.isEmpty || uncertain > 0
+            ? null
+            : () => restore(),
+        onPermanent: unavailable || selected.isEmpty || uncertain > 0
+            ? null
+            : permanent,
+        showPermanent:
+            widget.repository.capabilities.packPermanentDelete &&
+            widget.repository.capabilities.packPurgePreview,
+        restoring: session.restoring,
+        children: [
+          if (uncertain > 0)
+            Text(
+              '$uncertain 个图包恢复结果待核对，请先查询原请求。',
+              style: TextStyle(fontSize: 13, height: 1.7, color: p.catalogMeta),
             ),
-            onChanged: (value) => unawaited(session.load(query: value)),
-          ),
+          if (selected.length > 1000)
+            Text(
+              '已选 ${selected.length} 个。恢复每批最多1000个；永久删除每批单独核对确认，其余保持选择。',
+              style: TextStyle(fontSize: 12, height: 1.7, color: p.catalogMeta),
+            ),
+          if (session.lastResult?.result?.failed case final int failed
+              when failed > 0)
+            TextButton(
+              onPressed: locked ? null : retryFailed,
+              child: Text('重试 $failed 个未完成项'),
+            ),
+        ],
+      ),
+      children: [
+        Text(
+          '普通移除保留源文件，永久删除不能恢复。恢复图包时保留剩余图片、整包标签和阅读进度。',
+          style: TextStyle(fontSize: 13, height: 1.7, color: p.catalogMeta),
         ),
-        if (!largeText) notices(locked),
-        MediaCatalogToolbar(
+        const SizedBox(height: 12),
+        TextField(
+          key: const Key('pack-trash-search'),
+          controller: search,
+          style: const TextStyle(fontSize: 16),
+          enabled: !locked,
+          decoration: InputDecoration(
+            hintText: '搜索名称或目录',
+            prefixIcon: const Icon(Icons.search),
+            suffixIcon: search.text.isEmpty
+                ? null
+                : IconButton(
+                    tooltip: '清除搜索',
+                    icon: const Icon(Icons.close),
+                    onPressed: () {
+                      search.clear();
+                      unawaited(session.load(query: ''));
+                    },
+                  ),
+          ),
+          onChanged: (value) {
+            if (scroll.hasClients) scroll.jumpTo(0);
+            unawaited(session.load(query: value));
+          },
+        ),
+        const SizedBox(height: 8),
+        notices(locked, inList: true),
+        Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 8,
+          runSpacing: 4,
           children: [
             Text(
               session.hasLoaded ? '共 ${session.total} 个图包' : '图包回收站',
               key: const Key('pack-trash-count'),
-              style: TextStyle(fontSize: 13, color: p.muted),
+              style: TextStyle(fontSize: 12, color: p.catalogMeta),
+            ),
+            TextButton(
+              key: const Key('pack-trash-refresh'),
+              onPressed: locked || session.loading
+                  ? null
+                  : () => session.load(),
+              child: const Text('刷新'),
             ),
             TextButton(
               key: const Key('pack-trash-select-all'),
-              onPressed: locked || session.selection.loading || session.loading
+              onPressed: unavailable || session.loading
                   ? null
                   : () => session.selectAll(),
               child: Text(session.selection.loading ? '正在全选…' : '全选'),
@@ -555,83 +677,63 @@ class _PackTrashPageState extends State<PackTrashPage> {
               ),
           ],
         ),
-        if (session.loading || session.restoring || session.selection.loading)
-          const LinearProgressIndicator(),
-        Expanded(
-          child: RefreshIndicator(
-            onRefresh: () => session.load(),
-            child: ListView(
-              key: const Key('pack-trash-list'),
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              children: [
-                if (largeText) notices(locked, inList: true),
-                Text(
-                  '普通移除保留源文件，永久删除不能恢复。恢复图包时保留剩余图片、整包标签和阅读进度。',
-                  style: TextStyle(fontSize: 13, color: p.muted),
-                ),
-                if (session.hasLoaded &&
-                    !session.loading &&
-                    session.items.isEmpty &&
-                    session.error.isEmpty)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 32),
-                    child: Text(
-                      session.search.isEmpty ? '图包回收站是空的' : '没有匹配的图包',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                for (final item in session.items)
-                  CheckboxListTile(
-                    key: Key('pack-trash-item-${item.id}'),
-                    contentPadding: EdgeInsets.zero,
-                    value: selected.contains(item.id),
-                    onChanged: locked ? null : (_) => session.toggle(item.id),
-                    title: Text(item.pack.name),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${item.pageCount} 张 · ${switch (item.pack.readState) {
-                            PackReadState.reading => '在读',
-                            PackReadState.completed => '已读',
-                            _ => '未读',
-                          }}',
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                        Text(
-                          item.originalPath,
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                        if (item.purgedPages > 0)
-                          Text(
-                            '已有 ${item.purgedPages} 张永久删除，恢复仅限剩余 ${item.pageCount} 张',
-                            style: TextStyle(fontSize: 12, color: p.danger),
-                          ),
-                        if (item.permanentOperationId != null)
-                          TextButton(
-                            onPressed: locked
-                                ? null
-                                : () => originalResult(
-                                    item.permanentOperationId!,
-                                  ),
-                            child: const Text('查看原永久删除结果'),
-                          ),
-                        if (session.failures[item.id] case final String failure)
-                          Text(
-                            failure,
-                            style: TextStyle(fontSize: 12, color: p.danger),
-                          ),
-                      ],
-                    ),
-                  ),
-              ],
+        if (session.hasLoaded &&
+            !session.loading &&
+            session.items.isEmpty &&
+            session.error.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 32),
+            child: Text(
+              session.search.isEmpty ? '图包回收站是空的' : '没有匹配的图包',
+              textAlign: TextAlign.center,
             ),
           ),
-        ),
+        for (final item in session.items)
+          TrashEntryRow(
+            key: Key('pack-trash-item-${item.id}'),
+            title: item.pack.displayTitle,
+            path: item.originalPath,
+            selected: selected.contains(item.id),
+            onToggle: locked ? null : () => session.toggle(item.id),
+            restoreKey: Key('pack-trash-row-restore-${item.id}'),
+            onRestore: unavailable || pendingIds.contains(item.id)
+                ? null
+                : () => restore(id: item.id),
+            details: [
+              Text(
+                '${item.pageCount} 张 · ${switch (item.pack.readState) {
+                  PackReadState.reading => '在读',
+                  PackReadState.completed => '已读',
+                  _ => '未读',
+                }}',
+                style: TextStyle(
+                  fontSize: 12,
+                  height: 1.6,
+                  color: p.catalogMeta,
+                ),
+              ),
+              if (item.purgedPages > 0)
+                Text(
+                  '已有 ${item.purgedPages} 张永久删除，恢复仅限剩余 ${item.pageCount} 张',
+                  style: TextStyle(fontSize: 12, height: 1.7, color: p.danger),
+                ),
+              if (item.permanentOperationId != null)
+                TextButton(
+                  onPressed: locked
+                      ? null
+                      : () => originalResult(item.permanentOperationId!),
+                  child: const Text('查看原永久删除结果'),
+                ),
+              if (session.failures[item.id] case final String failure)
+                Text(
+                  failure,
+                  style: TextStyle(fontSize: 12, height: 1.7, color: p.danger),
+                ),
+            ],
+          ),
         if (session.canPrevious || session.canNext)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 4),
             child: Wrap(
               alignment: WrapAlignment.spaceBetween,
               crossAxisAlignment: WrapCrossAlignment.center,
@@ -641,82 +743,24 @@ class _PackTrashPageState extends State<PackTrashPage> {
                 TextButton(
                   key: const Key('pack-trash-previous'),
                   onPressed: !locked && !session.loading && session.canPrevious
-                      ? () => session.load(
-                          start: session.offset - PackTrashSession.pageSize,
-                        )
+                      ? () => page(session.offset - PackTrashSession.pageSize)
                       : null,
                   child: const Text('上一页'),
                 ),
                 Text(
                   '${session.offset ~/ PackTrashSession.pageSize + 1} / ${(session.total / PackTrashSession.pageSize).ceil()}',
-                  style: const TextStyle(fontSize: 12),
+                  style: TextStyle(fontSize: 12, color: p.catalogMeta),
                 ),
                 TextButton(
                   key: const Key('pack-trash-next'),
                   onPressed: !locked && !session.loading && session.canNext
-                      ? () => session.load(
-                          start: session.offset + PackTrashSession.pageSize,
-                        )
+                      ? () => page(session.offset + PackTrashSession.pageSize)
                       : null,
                   child: const Text('下一页'),
                 ),
               ],
             ),
           ),
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (selected.length > 1000)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    '已选 ${selected.length} 个。恢复每批最多1000个；永久删除每批单独核对确认，其余保持选择。',
-                    style: TextStyle(fontSize: 12, color: p.muted),
-                  ),
-                ),
-              if (MediaLayout.largeText(context)) Text('已选 ${selected.length}'),
-              Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  if (!MediaLayout.largeText(context))
-                    Text('已选 ${selected.length}'),
-                  if (widget.repository.capabilities.packPermanentDelete &&
-                      widget.repository.capabilities.packPurgePreview)
-                    TextButton(
-                      key: const Key('pack-trash-permanent'),
-                      style: TextButton.styleFrom(foregroundColor: p.danger),
-                      onPressed:
-                          locked ||
-                              selected.isEmpty ||
-                              session.selection.loading
-                          ? null
-                          : permanent,
-                      child: const Text('永久删除'),
-                    ),
-                  FilledButton(
-                    key: const Key('pack-trash-restore'),
-                    onPressed:
-                        locked || selected.isEmpty || session.selection.loading
-                        ? null
-                        : restore,
-                    child: Text(session.restoring ? '恢复中…' : '恢复'),
-                  ),
-                ],
-              ),
-              if (session.lastResult?.result?.failed case final int failed
-                  when failed > 0)
-                TextButton(
-                  onPressed: locked ? null : retryFailed,
-                  child: Text('重试 $failed 个未完成项'),
-                ),
-            ],
-          ),
-        ),
       ],
     );
   }
@@ -726,6 +770,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
     _session?.removeListener(changed);
     _session?.dispose();
     search.dispose();
+    scroll.dispose();
     super.dispose();
   }
 }

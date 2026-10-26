@@ -1,0 +1,27 @@
+      await reveal(find.text('保留选择 26'));
+      const warning = '26 个图包恢复结果待核对，请先查询原请求。';
+      await reveal(find.text(warning));
+      final restore = find.byKey(const Key('pack-trash-restore'));
+      final permanent = find.byKey(const Key('pack-trash-permanent'));
+      expect(t.widget<OutlinedButton>(restore).onPressed, isNull);
+      expect(t.widget<TextButton>(permanent).onPressed, isNull);
+      final m = MediaQueryData.fromView(t.view);
+      for (final item in [find.text('保留选择 26'), restore, permanent, find.text(warning)]) {
+        final rect = t.getRect(item);
+        expect(rect.top, greaterThanOrEqualTo(m.viewPadding.top));
+        expect(rect.bottom, lessThanOrEqualTo(m.size.height - m.viewPadding.bottom));
+      }
+      await shot('unknown');
+      expect((await fixture('/__fixture/actions/pack-trash-hashes'))['hashes'], hashes['hashes']);
+      expect(await repo.api.json('GET', '/api/v1/playback', query: {'create': 'false'}), currentVideo);
+      final trace = (await fixture('/__fixture/trace', method: 'GET'))['items'] as List;
+      final writes = trace.where((e) => e['method'] != 'GET').toList();
+      expect(writes.length, 1);
+      expect(writes.single['path'], '/api/v1/pack-restore-plans');
+      expect(writes.single['status'], 503);
+      expect(writes.single['restore_members'], hasLength(26));
+      expect(trace.where((e) => (e['path'] as String).startsWith('/api/v1/pack-restore-requests/')), isEmpty);
+      debugPrint('TRASH_FOOTER_VERIFIED:26 retained, disabled actions, 81 source hashes and video unchanged; one original POST, zero receipt GET');
+    },
+  );
+}
