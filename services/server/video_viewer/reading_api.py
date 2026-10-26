@@ -27,7 +27,7 @@ class Scope(Input):
 class Create(Command):
     scope: Scope = Field(default_factory=Scope)
     source: Literal["library", "tags", "recent"] = "library"
-    sort: Literal["name", "newest", "recent"] = "name"
+    sort: Literal["name", "title", "newest", "recent"] = "name"
     order: Literal["sequential", "random"] = "sequential"
     anchor_pack_id: Identity | None = None
 

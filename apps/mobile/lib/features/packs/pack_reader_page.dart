@@ -203,7 +203,7 @@ class PackReaderPageState extends State<PackReaderPage>
         SheetFrame(
           title: '整包移入回收站？',
           children: [
-            Text(session.range!.pack!.name),
+            Text(session.range!.pack!.displayTitle),
             const SizedBox(height: 12),
             const Text('保留源文件、整包标签和阅读进度。移除后返回来源，可在回收站恢复。'),
             const SizedBox(height: 16),
@@ -289,7 +289,7 @@ class PackReaderPageState extends State<PackReaderPage>
           title: '阅读设置',
           children: [
             Text(
-              session.range?.pack?.name ?? '',
+              session.range?.pack?.displayTitle ?? '',
               style: TextStyle(fontSize: 13, color: Paper.of(context).muted),
             ),
             const SizedBox(height: 16),
@@ -428,10 +428,14 @@ class PackReaderPageState extends State<PackReaderPage>
         title: '图包详情',
         children: [
           Text(
-            pack.name,
+            pack.displayTitle,
             style: Paper.of(context).title.copyWith(fontSize: 20),
           ),
           const SizedBox(height: 12),
+          if (pack.readerSubtitle.isNotEmpty) ...[
+            Text(pack.readerSubtitle, style: const TextStyle(fontSize: 13)),
+            const SizedBox(height: 8),
+          ],
           Text('${pack.pageCount} 张 · ${pack.readableCount} 张可读取'),
           const SizedBox(height: 16),
           const Text('原目录', style: TextStyle(fontSize: 13)),
@@ -490,7 +494,7 @@ class PackReaderPageState extends State<PackReaderPage>
                       style: const TextStyle(fontSize: 12),
                     ),
                     title: Text(
-                      entry.pack.name,
+                      entry.pack.displayTitle,
                       style: const TextStyle(fontSize: 15),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -731,13 +735,13 @@ class PackReaderPageState extends State<PackReaderPage>
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          pack?.name ?? '图包阅读',
+                                          pack?.displayTitle ?? '图包阅读',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: p.title.copyWith(fontSize: 20),
                                         ),
                                         Text(
-                                          '${quick ? '快速整理 · ' : ''}${session.total} 张',
+                                          '${quick ? '快速整理 · ' : ''}${pack?.readerSubtitle.isNotEmpty == true ? pack!.readerSubtitle : '${session.total} 张'}',
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: p.muted,

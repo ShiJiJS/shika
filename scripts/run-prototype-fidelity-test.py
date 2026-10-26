@@ -21,7 +21,9 @@ p.add_argument("--height", type=int, default=905)
 p.add_argument("--width", type=int, default=390)
 p.add_argument("--scale", choices=("1", "2"), default="1")
 p.add_argument(
-    "--scenario", choices=("fidelity", "continuation", "counts"), default="fidelity"
+    "--scenario",
+    choices=("fidelity", "continuation", "counts", "presentation"),
+    default="fidelity",
 )
 args = p.parse_args()
 scenes = {
@@ -47,6 +49,18 @@ scenes = {
         "continue-retry",
         "continue-recent",
     ],
+    "presentation": [
+        "presentation-library",
+        "presentation-author",
+        "presentation-title",
+        "presentation-reader",
+        "presentation-details",
+        "presentation-return",
+        "presentation-newest",
+        "presentation-queue",
+        "presentation-back",
+        "presentation-recent",
+    ],
     "counts": [
         "counts-home",
         "counts-packs",
@@ -63,6 +77,7 @@ integration_file = {
     "fidelity": "prototype_fidelity_test.dart",
     "continuation": "server_pack_continuation_test.dart",
     "counts": "server_catalog_counts_test.dart",
+    "presentation": "server_pack_presentation_test.dart",
 }[args.scenario]
 
 out = args.output.resolve()
@@ -133,6 +148,7 @@ paths += [
     "apps/mobile/integration_test/prototype_fidelity_test.dart",
     "apps/mobile/integration_test/server_pack_continuation_test.dart",
     "apps/mobile/integration_test/server_catalog_counts_test.dart",
+    "apps/mobile/integration_test/server_pack_presentation_test.dart",
     "services/server/tests/prototype_fidelity_fixture.py",
     "scripts/run-prototype-fidelity-test.py",
 ]

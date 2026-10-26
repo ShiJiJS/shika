@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 from .authority import Authority
 from .errors import LibraryError
 from .models import Setting
+from .pack_title_order import title_sort_key
 
 
 class Database:
@@ -34,6 +35,7 @@ class Database:
 
         @event.listens_for(self.engine, "connect")
         def configure(connection, _record):
+            connection.create_function("vv_pack_title_key", 1, title_sort_key, deterministic=True)
             connection.execute("PRAGMA foreign_keys=ON")
             connection.execute("PRAGMA busy_timeout=15000")
             # Keep reads responsive while a large NAS library is discovered.

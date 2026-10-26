@@ -28,6 +28,9 @@ class LibraryPack {
     required this.contentVersion,
     required this.status,
     required this.createdAt,
+    this.title,
+    this.author,
+    this.number,
     this.error,
     this.cover,
     this.progress,
@@ -38,11 +41,29 @@ class LibraryPack {
   final String id, rootId, path, name, status;
   final int pageCount, readableCount, contentVersion;
   final double createdAt;
+  final String? title, author, number;
+  String get displayTitle => title?.trim().isNotEmpty == true ? title! : name;
+  String get catalogSubtitle =>
+      author?.trim().isNotEmpty == true ? author! : '$readableCount 张可读';
+  String get readerSubtitle => [
+    if (author?.trim().isNotEmpty == true) author!,
+    if (number?.trim().isNotEmpty == true) number!,
+  ].join(' · ');
   final String? error;
   final MediaSource? cover;
   final PackProgress? progress;
   final Set<String> tags;
   final Map<String, String> tagNames;
+  String get readingBadge {
+    final value = progress;
+    if (value == null) return '';
+    if (value.completed) return '已读';
+    final index = value.pageIndex;
+    return index != null && index >= 0 && index < pageCount
+        ? '在读 · ${index + 1}'
+        : '在读';
+  }
+
   PackReadState get readState => progress == null
       ? PackReadState.unread
       : progress!.completed

@@ -7,6 +7,8 @@ from sqlalchemy import exists, func, select
 from .errors import LibraryError
 from .media_roots import owned_path
 from .models import Directory, ImagePack, PackPage, PackProgress, PackTagLink, RecentEntry, Root
+from .pack_presentation import presentation
+from .pack_title_order import title_order_available
 
 
 class Packs:
@@ -36,6 +38,8 @@ class Packs:
         status="available",
         source="library",
     ):
+        if sort == "title" and not title_order_available():
+            raise LibraryError("pack_title_order_unavailable", "服务尚不支持中文标题排序，请更新服务环境", 503)
         statement = select(ImagePack).join(Root).outerjoin(PackProgress)
         if source == "recent":
             statement = statement.join(
@@ -97,6 +101,8 @@ class Packs:
 
     @staticmethod
     def ordering(sort):
+        if sort == "title":
+            return (func.vv_pack_title_key(ImagePack.name), ImagePack.id)
         if sort == "recent":
             return (RecentEntry.opened_at.desc(), ImagePack.id)
         return (
@@ -120,7 +126,11 @@ class Packs:
             page_index = session.scalar(
                 select(positions.c.position).where(positions.c.id == progress.page_id)
             )
+        display = presentation(pack.name)
         return {
+            "title": display.title,
+            "author": display.author,
+            "number": display.number,
             "id": pack.id,
             "root_id": pack.root_id,
             "path": pack.path,
