@@ -223,7 +223,7 @@ class _ArchiveBackupPageState extends State<ArchiveBackupPage> {
           style: TextStyle(fontSize: 12, height: 1.7, color: p.catalogMeta),
         ),
         if (pending) ...[
-          note('恢复结果待确认，请查询原任务。关闭页面不会取消服务端恢复。'),
+          _archiveNote(context, '恢复结果待确认，请查询原任务。关闭页面不会取消服务端恢复。'),
           FilledButton(
             key: const Key('archive-query-restore'),
             onPressed: busy || !current
@@ -257,7 +257,7 @@ class _ArchiveBackupPageState extends State<ArchiveBackupPage> {
                   }),
           ),
         ],
-        if (snapshotError.isNotEmpty) note(snapshotError),
+        if (snapshotError.isNotEmpty) _archiveNote(context, snapshotError),
         TextButton(
           onPressed: current ? widget.onOpenTasks : null,
           child: const Text('查看后台操作结果'),
@@ -454,7 +454,8 @@ class _ArchiveRestorePageState extends State<ArchiveRestorePage> {
         ),
       ),
 
-      note(
+      _archiveNote(
+        context,
         widget.preview.protocol == 1
             ? '这是旧协议的原预览，仅供查看。请返回重新选择原文件，完成新版校验后再恢复。'
             : '校验通过。恢复会替换现有管理数据，请核对目录映射；留空表示暂不启用该目录。',
@@ -544,7 +545,7 @@ class _ArchiveRestorePageState extends State<ArchiveRestorePage> {
             ],
           ),
         ),
-      if (!complete && !loading) note('请查看剩余目录并核对映射，再确认恢复。'),
+      if (!complete && !loading) _archiveNote(context, '请查看剩余目录并核对映射，再确认恢复。'),
       CheckboxListTile(
         key: const Key('archive-confirm'),
         contentPadding: EdgeInsets.zero,
@@ -554,8 +555,8 @@ class _ArchiveRestorePageState extends State<ArchiveRestorePage> {
             : null,
         title: const Text('我知道恢复会替换现有管理数据', style: TextStyle(fontSize: 13)),
       ),
-      note('恢复不会回滚磁盘文件删除，也不修改连接口令、本机暗黑模式和相邻视频准备。'),
-      if (pending) note('原恢复已提交。可关闭此页，在备份或操作任务查询结果；不会再次提交恢复。'),
+      _archiveNote(context, '恢复不会回滚磁盘文件删除，也不修改连接口令、本机暗黑模式和相邻视频准备。'),
+      if (pending) _archiveNote(context, '原恢复已提交。可关闭此页，在备份或操作任务查询结果；不会再次提交恢复。'),
     ];
     if (widget.asSheet) {
       return SheetFrame(title: '恢复备份', footer: footer, children: content);
@@ -582,3 +583,15 @@ class _ArchiveRestorePageState extends State<ArchiveRestorePage> {
     );
   }
 }
+
+Widget _archiveNote(BuildContext context, String text) => Padding(
+  padding: const EdgeInsets.symmetric(vertical: 12),
+  child: Text(
+    text,
+    style: TextStyle(
+      fontSize: 13,
+      height: 1.7,
+      color: Paper.of(context).catalogMeta,
+    ),
+  ),
+);

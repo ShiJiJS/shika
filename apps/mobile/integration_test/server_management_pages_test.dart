@@ -167,6 +167,15 @@ void main() {
         () => MediaQueryData.fromView(t.view).viewInsets.bottom > 0,
         'actual restore keyboard',
       );
+      expect(
+        t
+            .widget<EditableText>(
+              find.descendant(of: field, matching: find.byType(EditableText)),
+            )
+            .focusNode
+            .hasFocus,
+        isTrue,
+      );
       await shot('restore-keyboard');
       FocusManager.instance.primaryFocus?.unfocus();
       await SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
@@ -232,6 +241,10 @@ void main() {
             .isNotEmpty,
         'unknown original receipt',
       );
+      await revealAction(
+        t,
+        find.byKey(const Key('task-receipt-pack:native-tasks-unknown')),
+      );
       await shot('pending');
       await tap(
         find.byKey(const Key('task-receipt-pack:native-tasks-unknown')),
@@ -255,9 +268,10 @@ void main() {
       expect(await commands.pending(), isEmpty);
       await tap(find.text('全部'));
       await until(
-        () => find.text(all.items.last.name).evaluate().isNotEmpty,
-        'real operation member',
+        () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
+        'operation member read settled',
       );
+      await revealAction(t, find.text(all.items.last.name));
       await shot('detail');
       await tap(find.byTooltip('查询原结果'));
       await tap(find.byTooltip('返回操作任务'));
@@ -265,9 +279,10 @@ void main() {
       await shot('list');
       await tap(find.byKey(const Key('tasks-next')));
       await until(
-        () => find.text('2 / 2').evaluate().isNotEmpty,
-        'server task tail',
+        () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
+        'server task tail read settled',
       );
+      await revealAction(t, find.text('2 / 2'));
       await shot('paged');
       await preferences.setDark(true);
       await shot('dark');

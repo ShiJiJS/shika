@@ -7,6 +7,7 @@ import '../../library/models.dart';
 import '../../library/backup_file_picker.dart';
 import '../../library/request_scope.dart';
 import '../../ui/paper.dart';
+import '../../ui/paper_management.dart';
 import '../packs/pack_file_action.dart';
 import '../packs/pack_purge_result.dart';
 import 'purge_history_page.dart';
@@ -36,6 +37,8 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
   CatalogPage<MaintenanceItem>? page;
   bool busy = true, unfinished = true, acting = false;
   String error = '';
+  final scroll = ScrollController();
+  String shownError = '';
   String? snapshot;
   final fileScope = RequestScope();
   int _read = 0;
@@ -384,10 +387,7 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            task.title,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-          ),
+          Text(task.title, style: p.title.copyWith(fontSize: 18, height: 1.5)),
           const SizedBox(height: 8),
           Text(
             task.stateLabel,
@@ -442,7 +442,7 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
           const SizedBox(height: 12),
           SelectableText(
             '任务编号：${task.id}',
-            style: TextStyle(fontSize: 12, color: p.muted),
+            style: TextStyle(fontSize: 12, color: p.catalogMeta),
           ),
           if (members)
             Padding(
@@ -585,6 +585,13 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
     );
   }
 
+  Future<void> turn(int at) async {
+    await load(at);
+    if (mounted && current && error.isEmpty && scroll.hasClients) {
+      scroll.jumpTo(0);
+    }
+  }
+
   Widget pager() => Wrap(
     spacing: 8,
     runSpacing: 4,
@@ -594,7 +601,7 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
         key: const Key('task-items-previous'),
         onPressed: busy || acting || page!.offset == 0
             ? null
-            : () => load(page!.offset - 24),
+            : () => turn(page!.offset - 24),
         child: const Text('上一页'),
       ),
       Text('共 ${page!.total} 项'),
@@ -603,7 +610,7 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
         onPressed:
             busy || acting || page!.offset + page!.items.length >= page!.total
             ? null
-            : () => load(page!.offset + 24),
+            : () => turn(page!.offset + 24),
         child: const Text('下一页'),
       ),
     ],
@@ -611,29 +618,31 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
   @override
   Widget build(BuildContext context) {
     final p = Paper.of(context);
+    if (error != shownError) {
+      shownError = error;
+      if (error.isNotEmpty) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted && scroll.hasClients) scroll.jumpTo(0);
+        });
+      }
+    }
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                children: [
-                  iconAction(
-                    '返回操作任务',
-                    Icons.arrow_back,
-                    () => Navigator.pop(context),
-                  ),
-                  Expanded(child: Text('任务详情', style: p.title)),
-                  iconAction(
-                    '查询原结果',
-                    Icons.refresh,
-                    busy || acting || !current
-                        ? null
-                        : () => load(page?.offset ?? 0),
-                  ),
-                ],
-              ),
+            PaperManagementHeader(
+              title: '任务详情',
+              closeLabel: '返回操作任务',
+              onClose: () => Navigator.pop(context),
+              actions: [
+                iconAction(
+                  '查询原结果',
+                  Icons.refresh,
+                  busy || acting || !current
+                      ? null
+                      : () => load(page?.offset ?? 0),
+                ),
+              ],
             ),
             if (busy || acting) const LinearProgressIndicator(),
             if (!current)
@@ -651,40 +660,72 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
                   onRefresh: () => load(page?.offset ?? 0),
                   child: ListView.builder(
                     key: const PageStorageKey('maintenance-task-detail'),
+                    controller: scroll,
                     physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
-                      vertical: 8,
+                      vertical: 18,
                     ),
                     itemCount: (page?.items.length ?? 0) + 3,
                     itemBuilder: (context, index) {
-                      if (index == 0) return summary(context);
-                      if (index == 1) {
-                        return error.isNotEmpty
-                            ? Text(error, style: TextStyle(color: p.danger))
-                            : const SizedBox.shrink();
+                      if (index == 0) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (error.isNotEmpty)
+                              Text(
+                                error,
+                                style: TextStyle(color: p.danger, height: 1.7),
+                              ),
+                            summary(context),
+                          ],
+                        );
                       }
+                      if (index == 1) return const SizedBox.shrink();
                       final at = index - 2;
                       if (at < (page?.items.length ?? 0)) {
                         final item = page!.items[at];
-                        return ListTile(
+                        return Container(
                           key: Key('task-member-${item.id}'),
-                          contentPadding: EdgeInsets.zero,
-                          title: Text(item.name),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          padding: const EdgeInsets.symmetric(vertical: 13),
+                          decoration: BoxDecoration(
+                            border: Border(bottom: BorderSide(color: p.line)),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text(item.label),
+                              Text(
+                                item.name,
+                                style: p.title.copyWith(
+                                  fontSize: 15,
+                                  height: 1.6,
+                                ),
+                              ),
+                              Text(
+                                item.label,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  height: 1.7,
+                                  color: p.catalogMeta,
+                                ),
+                              ),
                               if (item.path.isNotEmpty)
                                 Text(
                                   item.path,
-                                  style: const TextStyle(fontSize: 12),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    height: 1.7,
+                                    color: p.catalogMeta,
+                                  ),
                                 ),
                               if (item.error != null &&
                                   item.error != 'plan_stopped')
                                 Text(
                                   maintenanceErrorLabel(item.error!),
-                                  style: TextStyle(color: p.danger),
+                                  style: TextStyle(
+                                    color: p.danger,
+                                    height: 1.7,
+                                  ),
                                 ),
                             ],
                           ),
@@ -719,6 +760,7 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
   void dispose() {
     _read++;
     fileScope.cancel();
+    scroll.dispose();
     widget.repository.removeListener(ownerChanged);
     super.dispose();
   }

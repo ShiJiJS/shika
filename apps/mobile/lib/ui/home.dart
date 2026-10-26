@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../library/models.dart';
 import '../library/management_archives.dart';
+import '../library/backup_file_picker.dart';
 import '../features/settings/archive_backup_page.dart';
 import '../app/app_shell.dart';
 import '../app/media_workspace.dart';
@@ -73,12 +74,14 @@ class LibraryHome extends StatefulWidget {
     required this.repository,
     this.initialError,
     this.backupFiles,
+    this.backupArchiveFiles = const NativeBackupArchiveFiles(),
     required this.preferences,
     this.initializeRepository = false,
   });
   final LibraryRepository repository;
   final String? initialError;
   final BackupFiles? backupFiles;
+  final BackupArchiveFiles backupArchiveFiles;
   final UiPreferences preferences;
   final bool initializeRepository;
   @override
@@ -1231,6 +1234,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             'tasks' => MaintenanceTasksPage(
               repository: repo,
               saveBackup: files.save,
+              archiveFiles: widget.backupArchiveFiles,
               onOpenBackup: () => go('backup'),
             ),
             'connection' => connection(),
@@ -2904,6 +2908,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         key: ObjectKey(repo.connectionIdentity),
         repository: repo,
         archives: archives,
+        files: widget.backupArchiveFiles,
         onOpenTasks: () => go('tasks'),
       );
     }
@@ -3049,16 +3054,35 @@ class _LibraryHomeState extends State<LibraryHome> {
                         ? '正在恢复…'
                         : repo.backupRestorePending
                         ? '查询恢复结果'
-                        : '恢复管理数据',
+                        : '确认恢复',
                   ),
                 ),
               ],
             ),
             children: [
-              note('校验通过。请核对媒体目录映射，恢复前将保留当前数据快照。'),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Text(
+                  '校验通过。请核对媒体目录映射，恢复前将保留当前数据快照。',
+                  style: TextStyle(
+                    fontSize: 13,
+                    height: 1.7,
+                    color: Paper.of(context).catalogMeta,
+                  ),
+                ),
+              ),
               if (preview.counts.isNotEmpty)
-                note(
-                  '视频 ${preview.counts['videos'] ?? 0} · 标签 ${preview.counts['tags'] ?? 0} · 回收站 ${preview.counts['trash_items'] ?? 0}',
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: Paper.of(context).soft,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    '视频 ${preview.counts['videos'] ?? 0} · 标签 ${preview.counts['tags'] ?? 0} · 回收站 ${preview.counts['trash_items'] ?? 0}',
+                    style: const TextStyle(fontSize: 13, height: 1.7),
+                  ),
                 ),
               for (final r in preview.snapshot.roots)
                 Padding(
@@ -3105,7 +3129,18 @@ class _LibraryHomeState extends State<LibraryHome> {
                     : (v) => local(() => checked = v!),
                 title: const Text(
                   '我知道恢复会替换现有管理数据',
-                  style: TextStyle(fontSize: 13),
+                  style: TextStyle(fontSize: 13, height: 1.8),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Text(
+                  '恢复不会回滚磁盘文件删除，也不修改连接口令、本机暗黑模式和相邻视频准备。',
+                  style: TextStyle(
+                    fontSize: 13,
+                    height: 1.7,
+                    color: Paper.of(context).catalogMeta,
+                  ),
                 ),
               ),
               if (formError.isNotEmpty)

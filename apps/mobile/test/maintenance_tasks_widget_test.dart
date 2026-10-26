@@ -8,6 +8,7 @@ import 'package:video_viewer/ui/paper.dart';
 
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 import 'support/maintenance_fixture.dart';
+import 'support/reveal_action.dart';
 
 void main() {
   late TasksLibrary repo;
@@ -159,8 +160,11 @@ void main() {
       await tap(t, find.byKey(const Key('maintenance-task-members')));
       await tap(t, find.text('全部'));
       await tap(t, find.byKey(const Key('task-items-next')));
+      await revealAction(t, find.text('海边散步图包 24'));
       expect(find.text('海边散步图包 24'), findsOneWidget);
+      await revealAction(t, find.text('海边散步图包 26'));
       expect(find.text('海边散步图包 26'), findsOneWidget);
+      await revealAction(t, find.text('共 27 项'));
       expect(find.text('共 27 项'), findsOneWidget);
       expect(t.takeException(), isNull);
     },
