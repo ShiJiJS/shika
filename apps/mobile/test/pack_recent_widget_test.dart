@@ -181,7 +181,7 @@ void main() {
               'full trailing window: shift=$shift, oldY=$oldY, anchor=$anchor, offset=${catalog().data.offset}, after=${catalog().scroll.position.extentAfter}',
         );
         repo.clearHistory();
-        await until(() => find.text('还没有阅读过图包').evaluate().isNotEmpty);
+        await until(() => find.text('还没有观看记录').evaluate().isNotEmpty);
         await tap(find.byKey(const Key('nav-library')));
         await until(
           () => find.byKey(const Key('pack-search')).evaluate().isNotEmpty,

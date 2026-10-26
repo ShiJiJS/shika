@@ -1,0 +1,69 @@
+{
+  "same_avd_pid": 44007,
+  "reason": "Temporary AVD/ADB stall; no emulator restart, uninstall or clear",
+  "actions": [
+    {
+      "args": [
+        "wm",
+        "size",
+        "reset"
+      ],
+      "timeout": true
+    },
+    {
+      "args": [
+        "wm",
+        "density",
+        "reset"
+      ],
+      "code": 224,
+      "stdout": "cmd: Failure calling service window: Broken pipe (32)\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "settings",
+        "put",
+        "system",
+        "font_scale",
+        "1.0"
+      ],
+      "code": 20,
+      "stdout": "",
+      "stderr": "cmd: Can't find service: settings\n"
+    },
+    {
+      "args": [
+        "wm",
+        "size"
+      ],
+      "code": 20,
+      "stdout": "",
+      "stderr": "cmd: Can't find service: window\n"
+    },
+    {
+      "args": [
+        "wm",
+        "density"
+      ],
+      "code": 20,
+      "stdout": "",
+      "stderr": "cmd: Can't find service: window\n"
+    },
+    {
+      "args": [
+        "settings",
+        "get",
+        "system",
+        "font_scale"
+      ],
+      "code": 20,
+      "stdout": "",
+      "stderr": "cmd: Can't find service: settings\n"
+    },
+    {
+      "owned_container_removed": "/video-viewer-prototype-fidelity-1792991968122762000",
+      "code": 0
+    }
+  ]
+}

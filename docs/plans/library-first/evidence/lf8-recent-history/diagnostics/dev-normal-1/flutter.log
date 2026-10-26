@@ -1,0 +1,58 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart
+Running Gradle task 'assembleDebug'...                             13.6s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          500ms
+00:00 +0: real recent history keeps distinct sources, fixed ranges and retry state
+FIDELITY_METRICS:{"state":"recent-empty-video","size":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"padding":[0.0,47.666666666666664,0.0,24.0],"textScale":1.0,"texts":[{"text":"最近看过","rect":[20.0,56.166666666666664,358.0,33.99999999999999],"fontSize":24.0},{"text":"视频","rect":[20.0,109.16666666666666,30.500213623046875,21.0],"fontSize":15.0},{"text":"图包","rect":[72.50021362304688,109.16666666666666,30.500213623046875,21.0],"fontSize":15.0},{"text":"最近预览的视频","rect":[20.0,160.16666666666666,291.2191925048828,19.0],"fontSize":13.0},{"text":"0 个视频","rect":[319.2191925048828,159.66666666666666,50.78080749511719,20.0],"fontSize":13.0},{"text":"还没有观看记录","rect":[145.12521362304688,495.83333333333337,99.74957275390625,20.0],"fontSize":null},{"text":"媒体库","rect":[67.1250228881836,799.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[147.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[222.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[297.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0}],"round":"","current":null,"library_ready":true}
+FIDELITY_METRICS:{"state":"recent-empty-pack","size":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"padding":[0.0,47.666666666666664,0.0,24.0],"textScale":1.0,"texts":[{"text":"最近看过","rect":[20.0,56.166666666666664,358.0,33.99999999999999],"fontSize":24.0},{"text":"视频","rect":[20.0,109.16666666666666,30.500213623046875,21.0],"fontSize":15.0},{"text":"图包","rect":[72.50021362304688,109.16666666666666,30.500213623046875,21.0],"fontSize":15.0},{"text":"最近阅读的图包","rect":[20.0,160.16666666666666,317.71922302246094,19.0],"fontSize":13.0},{"text":"0 包","rect":[345.71922302246094,159.66666666666666,24.280776977539062,20.0],"fontSize":13.0},{"text":"还没有观看记录","rect":[145.12521362304688,495.83333333333337,99.74957275390625,20.0],"fontSize":null},{"text":"媒体库","rect":[67.1250228881836,799.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[147.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[222.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[297.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0}],"round":"","current":null,"library_ready":true}
+RECENT_HISTORY_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Video order timeout: video list 1
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart:67:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart:274:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  real recent history keeps distinct sources, fixed ranges and
+  retry state
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Video order timeout: video list 1
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart:67:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart:274:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  real recent history keeps distinct sources, fixed ranges and retry state
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:51 +0 -1: real recent history keeps distinct sources, fixed ranges and retry state [E]
+  Test failed. See exception logs above.
+  The test description was: real recent history keeps distinct sources, fixed ranges and retry state
+  
+00:51 +0 -1: (tearDownAll)
+00:51 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart: real recent history keeps distinct sources, fixed ranges and retry state

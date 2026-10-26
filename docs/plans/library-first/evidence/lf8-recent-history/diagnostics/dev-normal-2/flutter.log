@@ -1,0 +1,66 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart
+Running Gradle task 'assembleDebug'...                             22.2s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,430ms
+00:00 +0: real recent history keeps distinct sources, fixed ranges and retry state
+FIDELITY_METRICS:{"state":"recent-empty-video","size":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"padding":[0.0,47.666666666666664,0.0,24.0],"textScale":1.0,"texts":[{"text":"最近看过","rect":[20.0,56.166666666666664,358.0,33.99999999999999],"fontSize":24.0},{"text":"视频","rect":[20.0,109.16666666666666,30.500213623046875,21.0],"fontSize":15.0},{"text":"图包","rect":[72.50021362304688,109.16666666666666,30.500213623046875,21.0],"fontSize":15.0},{"text":"最近预览的视频","rect":[20.0,160.16666666666666,291.2191925048828,19.0],"fontSize":13.0},{"text":"0 个视频","rect":[319.2191925048828,159.66666666666666,50.78080749511719,20.0],"fontSize":13.0},{"text":"还没有观看记录","rect":[145.12521362304688,495.83333333333337,99.74957275390625,20.0],"fontSize":null},{"text":"媒体库","rect":[67.1250228881836,799.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[147.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[222.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[297.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0}],"history_rows":[],"round":"","current":null,"library_ready":true}
+FIDELITY_METRICS:{"state":"recent-empty-pack","size":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"padding":[0.0,47.666666666666664,0.0,24.0],"textScale":1.0,"texts":[{"text":"最近看过","rect":[20.0,56.166666666666664,358.0,33.99999999999999],"fontSize":24.0},{"text":"视频","rect":[20.0,109.16666666666666,30.500213623046875,21.0],"fontSize":15.0},{"text":"图包","rect":[72.50021362304688,109.16666666666666,30.500213623046875,21.0],"fontSize":15.0},{"text":"最近阅读的图包","rect":[20.0,160.16666666666666,317.71922302246094,19.0],"fontSize":13.0},{"text":"0 包","rect":[345.71922302246094,159.66666666666666,24.280776977539062,20.0],"fontSize":13.0},{"text":"还没有观看记录","rect":[145.12521362304688,495.83333333333337,99.74957275390625,20.0],"fontSize":null},{"text":"媒体库","rect":[67.1250228881836,799.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[147.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[222.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[297.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0}],"history_rows":[],"round":"","current":null,"library_ready":true}
+FIDELITY_METRICS:{"state":"recent-video-one","size":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"padding":[0.0,47.666666666666664,0.0,24.0],"textScale":1.0,"texts":[{"text":"最近看过","rect":[20.0,56.166666666666664,358.0,33.99999999999999],"fontSize":24.0},{"text":"视频","rect":[20.0,109.16666666666666,30.500213623046875,21.0],"fontSize":15.0},{"text":"图包","rect":[72.50021362304688,109.16666666666666,30.500213623046875,21.0],"fontSize":15.0},{"text":"最近预览的视频","rect":[20.0,160.16666666666666,291.2191925048828,19.0],"fontSize":13.0},{"text":"1 个视频","rect":[319.2191925048828,159.66666666666666,50.78080749511719,20.0],"fontSize":13.0},{"text":"风里的花园","rect":[100.0,220.16666666666666,91.24946594238281,26.0],"fontSize":18.0},{"text":"0:05","rect":[100.0,254.16666666666666,26.06689453125,18.99999999999997],"fontSize":13.0},{"text":"媒体库","rect":[67.1250228881836,799.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[147.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[222.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[297.25001525878906,799.0,20.499969482421875,14.0],"fontSize":10.0}],"history_rows":[[20.0,191.66666666666666,350.0,110.99999999999997]],"round":"0b6bee3f-dbf0-4b17-9ba5-2dc55bd9487d","current":"a6c3a4a5-65ae-4cb2-aea2-ec03e01f21f5","library_ready":true}
+FIDELITY_METRICS:{"state":"recent-video-preview","size":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,0.0,0.0,0.0],"padding":[0.0,0.0,0.0,0.0],"textScale":1.0,"texts":[{"text":"视频预览","rect":[60.0,58.666666666666664,270.0,28.999999999999993],"fontSize":20.0},{"text":"最近","rect":[16.0,113.16666666666666,299.32470703125,19.0],"fontSize":13.0},{"text":"1 / 1","rect":[315.32470703125,113.16666666666666,27.67529296875,19.0],"fontSize":13.0},{"text":"横向全屏","rect":[308.6002426147461,599.0,56.399757385253906,20.0],"fontSize":null},{"text":"暂停","rect":[27.999908447265625,654.5,24.00018310546875,17.0],"fontSize":null},{"text":"00:00 / 00:05","rect":[251.431640625,654.5,73.919921875,17.0],"fontSize":12.0},{"text":"1×","rect":[335.3515625,654.5,13.6484375,17.0],"fontSize":12.0},{"text":"随机预览","rect":[48.7998161315918,734.0,48.400367736816406,17.0],"fontSize":12.0},{"text":"视频标签","rect":[170.7998161315918,734.0,48.400367736816406,17.0],"fontSize":12.0},{"text":"快速整理","rect":[292.7998161315918,734.0,48.400367736816406,17.0],"fontSize":12.0},{"text":"上一条","rect":[38.0,780.0,42.2998161315918,20.0],"fontSize":null},{"text":"本次范围最后一条","rect":[92.2998161315918,781.5,219.50030517578125,17.0],"fontSize":12.0},{"text":"结束","rect":[323.80012130737305,780.0,28.199878692626953,20.0],"fontSize":null}],"history_rows":[],"round":"95cdb63a-63b7-4f44-9a5a-fef1b59228e5","current":"a6c3a4a5-65ae-4cb2-aea2-ec03e01f21f5","library_ready":true}
+FIDELITY_METRICS:{"state":"recent-video-queue","size":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,0.0,0.0,0.0],"padding":[0.0,0.0,0.0,0.0],"textScale":1.0,"texts":[{"text":"视频预览","rect":[60.0,58.666666666666664,270.0,28.999999999999993],"fontSize":20.0},{"text":"最近","rect":[16.0,113.16666666666666,299.32470703125,19.0],"fontSize":13.0},{"text":"1 / 1","rect":[315.32470703125,113.16666666666666,27.67529296875,19.0],"fontSize":13.0},{"text":"横向全屏","rect":[308.6002426147461,599.0,56.399757385253906,20.0],"fontSize":null},{"text":"播放","rect":[27.999908447265625,654.5,24.00018310546875,17.0],"fontSize":null},{"text":"00:03 / 00:05","rect":[251.431640625,654.5,73.919921875,17.0],"fontSize":12.0},{"text":"1×","rect":[335.3515625,654.5,13.6484375,17.0],"fontSize":12.0},{"text":"随机预览","rect":[48.7998161315918,734.0,48.400367736816406,17.0],"fontSize":12.0},{"text":"视频标签","rect":[170.7998161315918,734.0,48.400367736816406,17.0],"fontSize":12.0},{"text":"快速整理","rect":[292.7998161315918,734.0,48.400367736816406,17.0],"fontSize":12.0},{"text":"上一条","rect":[38.0,780.0,42.2998161315918,20.0],"fontSize":null},{"text":"本次范围最后一条","rect":[92.2998161315918,781.5,219.50030517578125,17.0],"fontSize":12.0},{"text":"结束","rect":[323.80012130737305,780.0,28.199878692626953,20.0],"fontSize":null},{"text":"本次预览范围","rect":[20.0,162.48000000000005,302.0,30.0],"fontSize":21.0},{"text":"最近 · 1 个视频","rect":[20.0,213.48000000000005,350.0,22.0],"fontSize":12.0},{"text":"随机","rect":[57.0,261.48,28.199878692626953,20.0],"fontSize":null},{"text":"顺序","rect":[127.19987869262695,261.48,28.199878692626953,20.0],"fontSize":null},{"text":"1","rect":[26.0,334.98,27.0,17.0],"fontSize":12.0},{"text":"风里的花园","rect":[108.0,333.48,231.49981689453125,20.0],"fontSize":null},{"text":"当前","rect":[339.49981689453125,334.98,24.50018310546875,17.0],"fontSize":12.0},{"text":"打标签不会改变本次预览范围；返回后按最新标签更新结果。","rect":[20.0,772.0,350.0,20.0],"fontSize":12.0}],"history_rows":[],"round":"95cdb63a-63b7-4f44-9a5a-fef1b59228e5","current":"a6c3a4a5-65ae-4cb2-aea2-ec03e01f21f5","library_ready":true}
+VIDEO_NAME_ORDER_TIMEOUT_STATE:{"search":"","entry":"","loaded_entry":"","active":true,"viewing":false,"busy":false,"loading":false,"total":2,"error":""}
+RECENT_HISTORY_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Video order timeout: video list 1
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart:67:13)
+<asynchronous suspension>
+#2      main.<anonymous closure>.search (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart:192:9)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart:318:7)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  real recent history keeps distinct sources, fixed ranges and
+  retry state
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Video order timeout: video list 1
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart:67:13)
+<asynchronous suspension>
+#2      main.<anonymous closure>.search (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart:192:9)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart:318:7)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  real recent history keeps distinct sources, fixed ranges and retry state
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:08 +0 -1: real recent history keeps distinct sources, fixed ranges and retry state [E]
+  Test failed. See exception logs above.
+  The test description was: real recent history keeps distinct sources, fixed ranges and retry state
+  
+01:08 +0 -1: (tearDownAll)
+01:09 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart: real recent history keeps distinct sources, fixed ranges and retry state

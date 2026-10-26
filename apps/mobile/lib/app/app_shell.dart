@@ -34,21 +34,25 @@ class AppShell extends StatelessWidget {
   final double navigationExtent, navigationWidth;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    key: const Key('app-shell'),
-    bottomNavigationBar: showNavigation
-        ? SafeArea(top: false, child: _navigation(context))
-        : null,
-    body: SafeArea(
-      bottom: !showNavigation,
-      child: Column(
-        children: [
-          header,
-          Expanded(child: content),
-        ],
+  Widget build(BuildContext context) {
+    final navigationVisible =
+        showNavigation && MediaQuery.viewInsetsOf(context).bottom == 0;
+    return Scaffold(
+      key: const Key('app-shell'),
+      bottomNavigationBar: navigationVisible
+          ? SafeArea(top: false, child: _navigation(context))
+          : null,
+      body: SafeArea(
+        bottom: !navigationVisible,
+        child: Column(
+          children: [
+            header,
+            Expanded(child: content),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 
   Widget _navigation(BuildContext context) => Container(
     key: const Key('app-navigation'),
@@ -83,6 +87,8 @@ class AppShell extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         tab.label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: selected == tab.id

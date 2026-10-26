@@ -150,7 +150,14 @@ void main() {
       final query = repo.snapshot.query;
       final old = controller.load(VideoBrowseContext(search: 'old'));
       final current = controller.load(VideoBrowseContext(search: 'new'));
-      repo.requests[1].result.complete(page(24, 1, total: 1));
+      repo.requests[1].result.complete(
+        VideoPage(
+          items: page(24, 1, total: 25).items,
+          offset: 0,
+          limit: 24,
+          total: 1,
+        ),
+      );
       await current;
       repo.requests[0].result.complete(page(0, 24));
       await old;
@@ -182,6 +189,81 @@ void main() {
     expect(controller.state.total, 27);
     expect(controller.state.error, isEmpty);
   });
+
+  test(
+    'sliding pages retain at most 120 members and can page back after eviction',
+    () async {
+      final context = VideoBrowseContext();
+      for (var offset = 0; offset <= 144; offset += 24) {
+        final work = controller.load(context, more: offset != 0);
+        expect(repo.requests.last.offset, offset);
+        repo.requests.last.result.complete(page(offset, 24, total: 240));
+        await work;
+        expect(controller.state.items.length, lessThanOrEqualTo(120));
+      }
+      expect(controller.state.offset, 48);
+      expect(controller.state.items.first.id, 'video-48');
+      expect(controller.state.items.last.id, 'video-167');
+      final before = controller.load(context, before: true);
+      expect(repo.requests.last.offset, 24);
+      repo.requests.last.result.complete(page(24, 24, total: 240));
+      await before;
+      expect(controller.state.offset, 24);
+      expect(controller.state.items.map((v) => v.id), [
+        for (var i = 24; i < 144; i++) 'video-$i',
+      ]);
+    },
+  );
+
+  test(
+    'changed membership retains the old window and requests anchor restoration',
+    () async {
+      final context = VideoBrowseContext();
+      final first = controller.load(context);
+      repo.requests.last.result.complete(page(0, 24, total: 72));
+      await first;
+      final more = controller.load(context, more: true);
+      repo.requests.last.result.complete(page(23, 24, total: 72));
+      await more;
+      expect(controller.state.retryRestore, isTrue);
+      expect(controller.state.items.length, 24);
+      expect(controller.state.offset, 0);
+      expect(controller.state.error, contains('视频列表已变化'));
+      final retry = controller.restore(
+        context.copyWith(scrollIndex: 18),
+        anchors: ['video-18'],
+      );
+      repo.restores.last.result.complete(
+        VideoPage(
+          items: page(0, 24, total: 73).items,
+          total: 73,
+          offset: 0,
+          limit: 24,
+          anchorIndex: 18,
+        ),
+      );
+      await retry;
+      expect(controller.state.error, isEmpty);
+      expect(controller.state.retryRestore, isFalse);
+      expect(controller.state.anchorIndex, 18);
+    },
+  );
+
+  test(
+    'unexpected cancellation of a current return remains an explicit retry',
+    () async {
+      final context = VideoBrowseContext();
+      final first = controller.load(context);
+      repo.requests.last.result.complete(page(0, 24));
+      await first;
+      final restore = controller.restore(context, anchors: ['video-18']);
+      repo.restores.last.result.completeError(const RequestCancelled());
+      await restore;
+      expect(controller.state.items.length, 24);
+      expect(controller.state.retryRestore, isTrue);
+      expect(controller.state.error, contains('读取已取消'));
+    },
+  );
 
   test(
     'leaving a page rejects in-flight results and releases loading',

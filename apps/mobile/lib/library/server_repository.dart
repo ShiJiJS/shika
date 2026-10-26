@@ -943,7 +943,7 @@ class ServerLibraryRepository extends LibraryRepository
                 .replace(queryParameters: {'session': _session})
                 .toString(),
       tags: List<String>.from(data['tag_ids']),
-      seconds: (data['duration'] as num).ceil(),
+      seconds: (data['duration'] as num).floor(),
       type: data['type'],
       status: status ?? VideoStatus.values.byName(data['status']),
       originalPath: originalPath,

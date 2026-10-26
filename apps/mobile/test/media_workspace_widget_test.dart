@@ -6,6 +6,7 @@ import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/repository.dart';
 import 'package:video_viewer/library/state_store.dart';
 import 'package:video_viewer/main.dart';
+import 'package:video_viewer/ui/media_history.dart';
 import 'package:video_viewer/ui/player.dart';
 import 'package:video_viewer/ui/preferences.dart';
 
@@ -225,7 +226,7 @@ void main() {
       await nav(t, 'recent');
       expect(find.byKey(const Key('video-search')), findsNothing);
       expect(find.text('1 个视频'), findsOneWidget);
-      await tap(t, find.text('预览此范围'));
+      await tap(t, find.byType(MediaHistoryRow));
       expect(repo.savedPreviewEntry!.source, BrowseSource.recent);
       expect(repo.savedPreviewEntry!.query.tags, isEmpty);
       expect(repo.savedPreviewEntry!.search, isEmpty);
@@ -384,6 +385,62 @@ void main() {
     },
   );
 
+  for (final kind in MediaKind.values) {
+    for (final keyboard in [
+      (const Size(844, 390), 1.0, 280.0, 0.0),
+      (const Size(360, 740), 2.0, 303.0, 48.0),
+    ]) {
+      testWidgets(
+        '${kind.name} search keeps keyboard actions reachable and restores navigation ${keyboard.$1}/${keyboard.$2}',
+        (t) async {
+          t.view.devicePixelRatio = 1;
+          t.view.physicalSize = keyboard.$1;
+          t.platformDispatcher.textScaleFactorTestValue = keyboard.$2;
+          t.view.padding = FakeViewPadding(top: keyboard.$4);
+          t.view.viewPadding = FakeViewPadding(top: keyboard.$4);
+          addTearDown(() {
+            t.view.resetDevicePixelRatio();
+            t.view.resetPhysicalSize();
+            t.view.resetViewInsets();
+            t.view.resetPadding();
+            t.view.resetViewPadding();
+            t.platformDispatcher.clearTextScaleFactorTestValue();
+          });
+          await t.pumpWidget(VideoViewerApp(repository: repo));
+          await frames(t);
+          if (kind == MediaKind.pack) {
+            await tap(t, find.byKey(const Key('kind-pack')));
+          }
+          final field = find.byKey(Key('${kind.name}-search'));
+          t.view.viewInsets = FakeViewPadding(bottom: keyboard.$3);
+          await t.enterText(field, kind == MediaKind.video ? '花间微风' : '春日');
+          await frames(t);
+          expect(find.byKey(const Key('app-navigation')), findsNothing);
+          expect(find.text('媒体库'), findsNothing);
+          expect(t.takeException(), isNull);
+          if (keyboard.$2 > 1) {
+            final action = find.text(
+              kind == MediaKind.video ? '预览此范围' : '名称 ↓',
+            );
+            expect(action.hitTestable(), findsOneWidget);
+            expect(
+              t.getRect(action).bottom,
+              lessThanOrEqualTo(keyboard.$1.height - keyboard.$3),
+            );
+          }
+          final value = t.widget<TextField>(field).controller!.text;
+          FocusManager.instance.primaryFocus?.unfocus();
+          t.view.viewInsets = const FakeViewPadding();
+          await frames(t);
+          expect(find.byKey(const Key('app-navigation')), findsOneWidget);
+          expect(t.widget<TextField>(field).controller!.text, value);
+          expect(t.takeException(), isNull);
+          await t.pumpWidget(const SizedBox());
+          await frames(t);
+        },
+      );
+    }
+  }
   for (final sample in [
     (const Size(390, 844), 1.0),
     (const Size(360, 740), 2.0),

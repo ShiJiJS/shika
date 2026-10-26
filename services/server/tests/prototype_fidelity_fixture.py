@@ -57,6 +57,7 @@ def create_fidelity_app():
     state = {
         "display": None, "ack": False, "prepared": False,
         "continuation_failure": False, "catalog_counts_failure": False,
+        "recent_video_failure": False, "recent_pack_failure": False,
     }
     trace = deque(maxlen=5000)
 
@@ -77,7 +78,17 @@ def create_fidelity_app():
             and request.url.path == "/api/v1/library-state"
             and request.headers.get("Authorization")
         )
-        if counts_failure or (
+        recent_failure = (
+            request.method == "GET"
+            and request.query_params.get("source") == "recent"
+            and request.query_params.get("limit") != "1"
+            and request.headers.get("Authorization")
+            and (
+                (state["recent_video_failure"] and request.url.path == "/api/v1/videos")
+                or (state["recent_pack_failure"] and request.url.path == "/api/v1/packs")
+            )
+        )
+        if counts_failure or recent_failure or (
             state["continuation_failure"]
             and request.method == "GET"
             and request.url.path == "/api/v1/packs"
@@ -91,7 +102,7 @@ def create_fidelity_app():
                 {
                     "error": {
                         "code": "fixture_unavailable",
-                        "message": "库存状态暂不可用" if counts_failure else (
+                        "message": "最近记录暂不可用，请重试" if recent_failure else "库存状态暂不可用" if counts_failure else (
                             "连接暂时中断，请检查服务器与网络连接后重试。图包列表仍可正常浏览。"
                         ),
                     }
@@ -111,7 +122,7 @@ def create_fidelity_app():
                     **({"body": body} if body is not None else {}),
                     **({"query": list(request.query_params.multi_items())}
                        if request.method == "GET" and request.url.path in
-                       ("/api/v1/videos", "/api/v1/videos/selection") else {}),
+                       ("/api/v1/videos", "/api/v1/videos/selection", "/api/v1/packs") else {}),
                 }
             )
         return response
@@ -196,6 +207,14 @@ def create_fidelity_app():
             raise HTTPException(422)
         state["catalog_counts_failure"] = mode == "on"
         return {"failure": state["catalog_counts_failure"]}
+
+    @app.post("/__fidelity/recent-failure/{kind}/{mode}")
+    def recent_failure(kind: str, mode: str, x_fixture_key: str = Header()):
+        guard(x_fixture_key)
+        if kind not in {"video", "pack"} or mode not in {"on", "off"}:
+            raise HTTPException(422)
+        state[f"recent_{kind}_failure"] = mode == "on"
+        return {"failure": state[f"recent_{kind}_failure"]}
 
     @app.post("/__fidelity/checkpoint/{name}")
     def checkpoint(name: str, x_fixture_key: str = Header()):

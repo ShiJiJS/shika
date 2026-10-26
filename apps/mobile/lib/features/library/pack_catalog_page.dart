@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../library/models.dart';
 import '../../library/repository.dart';
 import '../../ui/media_layout.dart';
+import '../../ui/media_history.dart';
 import '../../ui/paper.dart';
 import '../packs/pack_sheets.dart';
 import '../packs/pack_reader_page.dart';
@@ -193,16 +194,11 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   int get columns => _geometry?.columns ?? (recent ? 1 : 2);
   double get stride => _geometry?.stride ?? _strideValue;
   double get _strideValue => recent
-      ? max(
-          111,
-          MediaQuery.textScalerOf(context).scale(18) * 1.5 +
-              MediaQuery.textScalerOf(context).scale(13) * 1.5 +
-              40,
-        )
+      ? _historyStride
       : MediaLayout.tile(context, width) + MediaLayout.rowGap;
   double get listHeader => _geometry?.header ?? _listHeaderValue;
   double get _listHeaderValue => recent
-      ? max(52, MediaQuery.textScalerOf(context).scale(13) * 1.5 + 32)
+      ? MediaLayout.historyHeader(context)
       : MediaLayout.toolbar(context) +
             (hasContinuation ? continuationExtent : 0) +
             (entry.query.count > 0 || entry.query.search.isNotEmpty
@@ -219,7 +215,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     );
     final old = _geometry;
     if (old != null &&
-        old.reflows(next) &&
+        (old.reflows(next) || (recent && old.header != next.header)) &&
         _reflow == null &&
         !_positioning &&
         !_detailsOpen &&
@@ -1047,79 +1043,45 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     }
   }
 
-  Widget recentRow(LibraryPack pack) {
-    final p = Paper.of(context), progress = pack.progress;
+  String historyPosition(LibraryPack pack) {
+    final progress = pack.progress;
     final position = progress?.pageIndex;
-    final label = position != null
+    return position != null
         ? '${progress!.completed ? '已读 · ' : ''}第 ${position + 1} / ${pack.pageCount} 张'
         : progress?.completed == true
         ? '已读 · ${pack.pageCount} 张'
         : progress != null
         ? '续读位置待确认 · ${pack.pageCount} 张'
         : '${pack.pageCount} 张';
-    return InkWell(
-      key: Key('recent-pack-${pack.id}'),
-      onTap: () => unawaited(details(pack)),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: p.line)),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 64,
-                height: 78,
-                child: PackCover(
-                  pack: pack,
-                  repository: repo,
-                  active: widget.active,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      pack.displayTitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: p.title.copyWith(fontSize: 18),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      label,
-                      key: Key('recent-pack-progress-${pack.id}'),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 13, color: p.muted),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              const Icon(Icons.chevron_right, size: 18),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
-  @override
-  void dispose() {
-    generation++;
-    repo.removeListener(repositoryChanged);
-    selection.removeListener(changed);
-    selection.dispose();
-    catalog.removeListener(changed);
-    catalog.dispose();
-    search.dispose();
-    scroll.dispose();
-    super.dispose();
+  double get _historyStride => MediaLayout.historyRow(
+    context,
+    items: data.items.map(
+      (p) => (title: p.displayTitle, subtitle: historyPosition(p)),
+    ),
+  );
+
+  Widget recentRow(LibraryPack pack) {
+    final label = historyPosition(pack);
+    return MediaHistoryRow(
+      key: Key('recent-pack-${pack.id}'),
+      title: pack.displayTitle,
+      subtitle: label,
+      subtitleKey: Key('recent-pack-progress-${pack.id}'),
+      cover: PackCover(pack: pack, repository: repo, active: widget.active),
+      selecting: selecting,
+      selected: selected.contains(pack.id),
+      onTap: busy
+          ? null
+          : () {
+              if (selecting) {
+                selection.toggle(pack.id);
+              } else {
+                unawaited(details(pack));
+              }
+            },
+    );
   }
 
   @override
@@ -1153,21 +1115,17 @@ class PackCatalogPageState extends State<PackCatalogPage> {
           if (data.loading && data.items.isNotEmpty)
             const LinearProgressIndicator(minHeight: 2),
           if (data.error.isNotEmpty && data.items.isNotEmpty)
-            Row(
-              children: [
-                Expanded(child: note('当前列表已保留：${data.error}')),
-                TextButton(
-                  key: const Key('pack-list-retry'),
-                  onPressed: data.loading
-                      ? null
-                      : () => load(
-                          more: data.retryMore,
-                          before: data.retryBefore,
-                          restore: data.retryRestore,
-                        ),
-                  child: const Text('重试'),
-                ),
-              ],
+            MediaCatalogFailure(
+              message: data.error,
+              side: recent ? 20 : 16,
+              retryKey: const Key('pack-list-retry'),
+              onRetry: data.loading
+                  ? null
+                  : () => load(
+                      more: data.retryMore,
+                      before: data.retryBefore,
+                      restore: data.retryRestore,
+                    ),
             ),
           Expanded(
             child:
@@ -1237,36 +1195,9 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                         ),
                       if (recent)
                         SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: listHeader,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                20,
-                                20,
-                                20,
-                                12,
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      '最近阅读的图包',
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        color: p.muted,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    '${data.total} 包',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: p.muted,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          child: MediaHistoryHeader(
+                            label: '最近阅读的图包',
+                            count: '${data.total} 包',
                           ),
                         ),
                       if (!recent)
@@ -1335,10 +1266,12 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                             ],
                           ),
                         ),
-                      if (data.items.isEmpty)
+                      if (recent && data.items.isEmpty)
+                        const SliverToBoxAdapter(child: MediaHistoryEmpty()),
+                      if (!recent && data.items.isEmpty)
                         SliverFillRemaining(
                           hasScrollBody: false,
-                          child: EmptyView(recent ? '还没有阅读过图包' : '没有符合条件的图包'),
+                          child: EmptyView(recent ? '还没有观看记录' : '没有符合条件的图包'),
                         ),
                       if (recent)
                         SliverPadding(
@@ -1540,7 +1473,9 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                             ),
                           ),
                         ),
-                      const SliverToBoxAdapter(child: SizedBox(height: 18)),
+                      SliverToBoxAdapter(
+                        child: SizedBox(height: recent ? 20 : 18),
+                      ),
                     ],
                   ),
           ),

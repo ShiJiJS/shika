@@ -1,0 +1,116 @@
+{
+  "counts": {
+    "videos": 2,
+    "packs": 4,
+    "pack_pages": 24,
+    "recent_entries": 4,
+    "pack_sessions": 3,
+    "playback_rounds": 3
+  },
+  "recent": [
+    {
+      "kind": "pack",
+      "video_id": null,
+      "pack_id": "f043aedc-0866-4b89-bab6-4d29fa967ae6",
+      "opened_at": 1792991733.5473087
+    },
+    {
+      "kind": "pack",
+      "video_id": null,
+      "pack_id": "06cb4e9f-d8e6-49f4-a739-89bdbb26d1ad",
+      "opened_at": 1792991727.6947584
+    },
+    {
+      "kind": "video",
+      "video_id": "7839beb6-c4c2-475f-8402-dfee3bb3f9dd",
+      "pack_id": null,
+      "opened_at": 1792991715.0677223
+    },
+    {
+      "kind": "video",
+      "video_id": "b51bfd9d-766a-4359-a2c8-e80c4c8740be",
+      "pack_id": null,
+      "opened_at": 1792991707.7240844
+    }
+  ],
+  "progress": [
+    {
+      "pack_id": "06cb4e9f-d8e6-49f4-a739-89bdbb26d1ad",
+      "page_id": "c72aa963-ea8a-4521-b119-4b5b1385d4c4",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1792991727.6910686,
+      "content_version": 1,
+      "recovery_reason": null,
+      "ordinal": 0
+    },
+    {
+      "pack_id": "f043aedc-0866-4b89-bab6-4d29fa967ae6",
+      "page_id": "1acbae31-e7f7-458b-828b-41d4deb89c88",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 3,
+      "updated_at": 1792991733.5463085,
+      "content_version": 1,
+      "recovery_reason": null,
+      "ordinal": 2
+    }
+  ],
+  "rounds": [
+    {
+      "id": "7332ea03-6f2a-4aa6-a43d-1483ac5086a9",
+      "source": "library",
+      "candidate_count": 1
+    },
+    {
+      "id": "80ba02f1-4b4c-433e-abb7-087da24b6ee8",
+      "source": "recent",
+      "candidate_count": 1
+    },
+    {
+      "id": "5c3eaa06-8020-4c8f-9e2c-d1fe3f0c814b",
+      "source": "library",
+      "candidate_count": 1
+    }
+  ],
+  "sessions": [
+    {
+      "id": "4dac8dcf-054d-401a-bbf4-2f24bee6ce0c",
+      "source": "{\"kind\": \"recent\", \"sort\": \"recent\"}",
+      "candidate_count": 2
+    },
+    {
+      "id": "9143e711-598a-404d-9d97-b3e00e9f7ccc",
+      "source": "{\"kind\": \"library\", \"sort\": \"title\"}",
+      "candidate_count": 1
+    },
+    {
+      "id": "990a90f9-7541-4808-bf98-727f880ffa57",
+      "source": "{\"kind\": \"library\", \"sort\": \"title\"}",
+      "candidate_count": 1
+    }
+  ],
+  "entries": [
+    {
+      "session_id": "4dac8dcf-054d-401a-bbf4-2f24bee6ce0c",
+      "ordinal": 0,
+      "pack_id": "f043aedc-0866-4b89-bab6-4d29fa967ae6"
+    },
+    {
+      "session_id": "4dac8dcf-054d-401a-bbf4-2f24bee6ce0c",
+      "ordinal": 1,
+      "pack_id": "06cb4e9f-d8e6-49f4-a739-89bdbb26d1ad"
+    },
+    {
+      "session_id": "9143e711-598a-404d-9d97-b3e00e9f7ccc",
+      "ordinal": 0,
+      "pack_id": "06cb4e9f-d8e6-49f4-a739-89bdbb26d1ad"
+    },
+    {
+      "session_id": "990a90f9-7541-4808-bf98-727f880ffa57",
+      "ordinal": 0,
+      "pack_id": "f043aedc-0866-4b89-bab6-4d29fa967ae6"
+    }
+  ]
+}

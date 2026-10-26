@@ -1,0 +1,93 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart
+00:00 +0: video history pages, restores a boundary anchor and keeps independent library Size(390.0, 844.0)/1.0
+00:01 +1: video history pages, restores a boundary anchor and keeps independent library Size(360.0, 740.0)/2.0
+RECENT_LAYOUT_ERROR:══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 27 pixels on the bottom.
+
+The relevant error-causing widget was:
+  Column
+  Column:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/lib/app/app_shell.dart:73:26
+
+The overflowing RenderFlex has an orientation of Axis.vertical.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#fa628 relayoutBoundary=up5 OVERFLOWING:
+  parentData: <none> (can use size)
+  constraints: BoxConstraints(w=75.0, 0.0<=h<=67.6)
+  size: Size(75.0, 67.6)
+  direction: vertical
+  mainAxisAlignment: center
+  mainAxisSize: max
+  crossAxisAlignment: center
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+RECENT_LAYOUT_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 27 pixels on
+the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart:129:13)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart:213:9)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart line 129
+The test description was:
+  video history pages, restores a boundary anchor and keeps
+  independent library Size(360.0, 740.0)/2.0
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 27 pixels on the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart:129:13)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart:213:9)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart line 129
+The test description was:
+  video history pages, restores a boundary anchor and keeps independent library Size(360.0,
+  740.0)/2.0
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +1 -1: video history pages, restores a boundary anchor and keeps independent library Size(360.0, 740.0)/2.0 [E]
+  Test failed. See exception logs above.
+  The test description was: video history pages, restores a boundary anchor and keeps independent library Size(360.0, 740.0)/2.0
+  
+00:02 +1 -1: video history pages, restores a boundary anchor and keeps independent library Size(844.0, 390.0)/1.6
+00:02 +2 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(360.0, 740.0)/2.0

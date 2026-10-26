@@ -172,6 +172,15 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
   @override
   Widget build(BuildContext context) {
     final p = Paper.of(context);
+    final media = MediaQuery.of(context);
+    final compactKeyboard =
+        media.viewInsets.bottom > 0 &&
+        media.size.height - media.viewInsets.bottom - media.padding.vertical <
+            MediaLayout.headerExtent(context) +
+                MediaLayout.kindExtent(context) +
+                MediaLayout.search(context) +
+                MediaLayout.scope(context) +
+                MediaLayout.toolbar(context);
     final title = switch (widget.destination) {
       'settings' => '设置',
       'recent' => '最近看过',
@@ -204,82 +213,89 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
         header: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              height: MediaLayout.headerExtent(context),
-              padding: const EdgeInsets.only(left: 20, right: 12),
-              decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: p.line)),
-              ),
-              child: Row(
-                children: [
-                  if (widget.destination == 'tags' && showingTagResults)
-                    iconAction(
-                      '返回标签选择',
-                      Icons.arrow_back,
-                      () => setState(() => showingTagResults = false),
+            if (!compactKeyboard)
+              Container(
+                height: MediaLayout.headerExtent(context),
+                padding: const EdgeInsets.only(left: 20, right: 12),
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: p.line)),
+                ),
+                child: Row(
+                  children: [
+                    if (widget.destination == 'tags' && showingTagResults)
+                      iconAction(
+                        '返回标签选择',
+                        Icons.arrow_back,
+                        () => setState(() => showingTagResults = false),
+                      ),
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: p.title.copyWith(fontSize: 24),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: p.title.copyWith(fontSize: 24),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  if (widget.destination == 'tags' && !showingTagResults)
-                    iconAction(
-                      '新建${pack ? '图包' : '视频'}标签',
-                      Icons.add,
-                      widget.repository.backupRestorePending
-                          ? null
-                          : () => (pack ? packTags : videoTags).currentState
-                                ?.form(),
-                    ),
-                  if (index == 0 || index == 1 || index == 4 || index == 5) ...[
-                    iconAction(
-                      '选择文件夹',
-                      Icons.folder_outlined,
-                      () => pack
-                          ? currentPack?.openFolder()
-                          : currentVideo?.openFolder(),
-                    ),
-                    PopupMenuButton<String>(
-                      tooltip: '更多',
-                      onOpened: () =>
-                          FocusManager.instance.primaryFocus?.unfocus(),
-                      onSelected: (value) {
-                        if (value == 'select') {
-                          pack
-                              ? currentPack?.toggleSelection()
-                              : currentVideo?.toggleSelection();
-                        }
-                        if (value == 'quick') {
-                          pack
-                              ? currentPack?.open(quick: true)
-                              : currentVideo?.open(quick: true);
-                        }
-                      },
-                      itemBuilder: (_) => [
-                        const PopupMenuItem(
-                          value: 'select',
-                          child: Text('多选内容'),
-                        ),
-                        if (!pack ||
-                            (widget.repository.capabilities.packReaderCleanup &&
-                                widget
-                                    .repository
-                                    .capabilities
-                                    .packLogicalTrash))
+                    if (widget.destination == 'tags' && !showingTagResults)
+                      iconAction(
+                        '新建${pack ? '图包' : '视频'}标签',
+                        Icons.add,
+                        widget.repository.backupRestorePending
+                            ? null
+                            : () => (pack ? packTags : videoTags).currentState
+                                  ?.form(),
+                      ),
+                    if (index == 0 ||
+                        index == 1 ||
+                        index == 4 ||
+                        index == 5) ...[
+                      iconAction(
+                        '选择文件夹',
+                        Icons.folder_outlined,
+                        () => pack
+                            ? currentPack?.openFolder()
+                            : currentVideo?.openFolder(),
+                      ),
+                      PopupMenuButton<String>(
+                        tooltip: '更多',
+                        onOpened: () =>
+                            FocusManager.instance.primaryFocus?.unfocus(),
+                        onSelected: (value) {
+                          if (value == 'select') {
+                            pack
+                                ? currentPack?.toggleSelection()
+                                : currentVideo?.toggleSelection();
+                          }
+                          if (value == 'quick') {
+                            pack
+                                ? currentPack?.open(quick: true)
+                                : currentVideo?.open(quick: true);
+                          }
+                        },
+                        itemBuilder: (_) => [
                           const PopupMenuItem(
-                            value: 'quick',
-                            child: Text('快速整理'),
+                            value: 'select',
+                            child: Text('多选内容'),
                           ),
-                      ],
-                    ),
+                          if (!pack ||
+                              (widget
+                                      .repository
+                                      .capabilities
+                                      .packReaderCleanup &&
+                                  widget
+                                      .repository
+                                      .capabilities
+                                      .packLogicalTrash))
+                            const PopupMenuItem(
+                              value: 'quick',
+                              child: Text('快速整理'),
+                            ),
+                        ],
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
-            ),
             widget.status,
             if (widget.destination != 'settings')
               SizedBox(

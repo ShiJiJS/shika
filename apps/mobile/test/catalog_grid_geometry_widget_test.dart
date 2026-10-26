@@ -96,7 +96,7 @@ void main() {
       final text = t.widget<Text>(tag);
       expect(text.style!.fontSize, 12);
       expect(text.style!.height, 1.6);
-      final title = find.text(item.name as String);
+      final title = find.text(item.displayTitle as String);
       expect(
         t.getRect(title).top - t.getRect(tile(kind, item.id as String)).bottom,
         closeTo(8, .01),

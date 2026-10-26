@@ -917,7 +917,7 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                                   const SizedBox(width: 13),
                                   Expanded(
                                     child: Text(
-                                      video.name,
+                                      video.displayTitle,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),

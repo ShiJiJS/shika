@@ -1,0 +1,40 @@
+[
+  {
+    "command": [
+      "shell",
+      "service",
+      "check",
+      "window"
+    ],
+    "code": 0,
+    "output": "Service window: not found\n"
+  },
+  {
+    "command": [
+      "shell",
+      "service",
+      "check",
+      "settings"
+    ],
+    "code": 0,
+    "output": "Service settings: not found\n"
+  },
+  {
+    "command": [
+      "shell",
+      "getprop",
+      "init.svc.zygote"
+    ],
+    "code": 0,
+    "output": "running\n"
+  },
+  {
+    "command": [
+      "shell",
+      "getprop",
+      "sys.boot_completed"
+    ],
+    "code": 0,
+    "output": "1\n"
+  }
+]

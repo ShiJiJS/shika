@@ -185,6 +185,23 @@ class LibraryVideo {
   final String? originalPath;
   final double createdAt;
   String get name => basename(path);
+  String get displayTitle {
+    final dot = name.lastIndexOf('.');
+    return dot > 0 &&
+            const {
+              '.mp4',
+              '.m4v',
+              '.mov',
+              '.mkv',
+              '.avi',
+              '.webm',
+            }.contains(name.substring(dot).toLowerCase())
+        ? name.substring(0, dot)
+        : name;
+  }
+
+  String get durationLabel =>
+      '${seconds ~/ 60}:${(seconds % 60).toString().padLeft(2, '0')}';
   LibraryVideo copy({
     String? path,
     Set<String>? tags,
