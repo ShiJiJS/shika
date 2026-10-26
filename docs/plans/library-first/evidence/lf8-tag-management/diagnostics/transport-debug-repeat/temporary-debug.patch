@@ -1,0 +1,18 @@
+diff --git a/apps/mobile/lib/library/server_api.dart b/apps/mobile/lib/library/server_api.dart
+index 3737ced..13ee338 100644
+--- a/apps/mobile/lib/library/server_api.dart
++++ b/apps/mobile/lib/library/server_api.dart
+@@ -415,7 +415,12 @@ class ServerApi {
+       rethrow;
+     } on TimeoutException {
+       throw const ApiFailure('连接超时，请检查服务后重试', code: 'timeout');
+-    } on IOException {
++    } on IOException catch (transportError, transportStack) {
++      assert(() {
++        // ignore: avoid_print
++        print('TAG_TRANSPORT_DIAGNOSTIC:$method $path $transportError\n$transportStack');
++        return true;
++      }());
+       request?.abort();
+       if (interruption is RequestCancelled || _closed) {
+         throw const RequestCancelled();

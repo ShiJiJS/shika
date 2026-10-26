@@ -1,0 +1,143 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.44kB 0.0s done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 2.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context:
+#4 transferring context: 101B done
+#4 DONE 0.2s
+
+#5 [internal] load build context
+#5 transferring context: 48.90kB 0.1s done
+#5 DONE 0.3s
+
+#6 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.3s done
+#6 DONE 0.4s
+
+#7 [test 1/4] COPY requirements-test.lock ./
+#7 CACHED
+
+#8 [runtime 4/9] COPY requirements.lock ./
+#8 CACHED
+
+#9 [runtime 3/9] WORKDIR /app
+#9 CACHED
+
+#10 [runtime 6/9] COPY video_viewer ./video_viewer
+#10 CACHED
+
+#11 [runtime 7/9] COPY migrations ./migrations
+#11 CACHED
+
+#12 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 libicu72=72.1-3+deb12u1 && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#13 CACHED
+
+#14 [runtime 8/9] COPY alembic.ini ./
+#14 CACHED
+
+#15 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#15 CACHED
+
+#16 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#16 CACHED
+
+#17 [test 3/4] COPY tests ./tests
+#17 DONE 0.6s
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 DONE 0.4s
+
+#19 exporting to image
+#19 exporting layers
+#19 exporting layers 0.7s done
+#19 exporting manifest sha256:29aedc259a36b3a1a1d761f1501f2294b3711b955ac3097bb81626bdf49b28f4
+#19 exporting manifest sha256:29aedc259a36b3a1a1d761f1501f2294b3711b955ac3097bb81626bdf49b28f4 0.3s done
+#19 exporting config sha256:41669253227cee16fa1cb5202683353d03ff034c781041c7aab22a94d277eece
+#19 exporting config sha256:41669253227cee16fa1cb5202683353d03ff034c781041c7aab22a94d277eece 0.2s done
+#19 exporting attestation manifest sha256:4f9c715878659156e54b2d042b4cff17a6feaef9e79244543304fa796a2e77b8 0.1s done
+#19 exporting manifest list sha256:d92dedf4104a45a494e0ba3ac04c4a74b8a7955314abeb9772c68df46da9b085
+#19 exporting manifest list sha256:d92dedf4104a45a494e0ba3ac04c4a74b8a7955314abeb9772c68df46da9b085 0.3s done
+#19 naming to docker.io/library/video-viewer-server:e2e
+#19 naming to docker.io/library/video-viewer-server:e2e 0.0s done
+#19 unpacking to docker.io/library/video-viewer-server:e2e
+#19 unpacking to docker.io/library/video-viewer-server:e2e 0.3s done
+#19 DONE 1.8s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.0s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_management_test.dart
+Running Gradle task 'assembleDebug'...                             46.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,832ms
+00:00 +0: LF8 independent tag definitions, AND results, retained edits and paging
+TAG_MANAGEMENT_BASELINE:{"video_ids":["afbde2db-a70d-4b1a-befb-7bf2030e8b15","7467c938-0e33-4ee6-ade9-5461487e227b"],"pack_id":"92275855-5132-499a-a458-cd5933e04d40","tag_ids":["143cc0a0-24fa-4b68-9c7e-9e7eda857d62","eee035c7-f2c3-478c-bfbf-91276547574a","32ea407e-54ca-4dd7-8d6a-5ed6112d000a","3a7aea7d-d5d2-43e8-abd8-f7aac87b15de","934b0355-bbc5-4203-8a19-d2ba70f59c09","f8583acc-bd53-49a5-9b2b-329f92b6daa9","366fb019-1ad7-4d63-b6db-d42818b59e2e","793323f2-2942-485d-b40d-9b81d4df09f1","c21e564d-9ff5-4bfc-acc3-9c4181953ff3","c9b26889-8097-4b15-8010-dd07e52c54c7","4d9f6ee7-b64b-4bee-9cb5-3d72a52cb211","cb1bd4ba-6447-4d6e-85db-c10d05956843","ee017efb-0552-438d-a761-e8db024e8232","5f34bd8d-2ee8-4814-b089-f154fec9ad79","e5fd2472-c85e-4979-b26d-9cc1bc973c43","1fb87e17-213b-456d-972b-8b4179636773","a4e84744-f8c9-4ea2-98c1-204338a158d5","c2dc32cc-2172-412a-be82-2f54eb7ebc31","985e2725-7b1b-43ce-9b57-5643e1849ad2","d8fd24d1-b8ec-49a5-b752-d10a6f067d94","9f639582-7576-47e4-a259-1df2fdb66c52","91f45624-f2d4-4b6a-944d-6ed2ac89f82a","c9776547-1470-401a-b1d2-8762736bf5fc","f7568beb-87a2-42e0-aa0d-98eb6d87e0ac","275be9ce-6948-45a7-b8fb-9b2573ce148b","1f92467f-360e-4fae-931c-1e688150eee8","57346172-71c3-4498-9330-62fcc56dabd8","9cde9fee-ad69-4881-bca3-a65ceb3e73c1","2ec4303c-6927-43eb-9bc5-388e120f6f39","36dbb5a2-357a-4259-a84f-53a628ccd82b","3f271d6f-5532-408a-abf3-cee8eaf82a84","89c36a5a-dcb5-49bc-8cf8-451a7bdd578e","e44560ac-d956-4475-81ea-a302447c528e","6ec87246-ee81-4126-8bac-2848cf2f4fba","ccf07761-bba5-440b-a374-57d49934dc73","3fe4d547-655c-4708-b2eb-f98ce1a922cb","3c1a2bbc-2bb1-4ee6-9889-d5e860f563ef","8468eca6-d841-494a-9db2-28ca43377424","64e113f0-9453-4ee7-ad36-1c91d0d33282","1fdf2615-b921-4187-a37a-e2811a141544","10fb782c-789d-4dea-adb0-6e0569053e21","230a62fb-6543-48c1-b97b-41652f47cc5d","39d1afe0-5c35-4d2a-b2ab-9a58e1f92448","f171a16a-5183-4ccc-8526-5c3754ed02d0","7cc2f87d-e3e3-4834-9eb2-e45176f1be43","e8c91103-4f82-4396-ba9d-dee0e66f2ac7","ab10e32f-0046-40c6-a379-b60ab498de93","0ac50188-645d-4793-8e2f-c5832b2852a1","2bed084d-df35-4973-b638-9548e03db1d8","14a81a13-3d43-4383-9343-e799a04ec3f2","9e8df958-ba3f-42db-bcce-5a5d4870c53a","756d3e35-07e9-43ab-be0d-68bc4ad3b531","c32d3585-99ee-4e88-a978-4b037f9cca33","454e8380-a495-46d3-bdbb-624d31e20128","6a4bd781-71dc-4b6c-9c98-707677fdc1f8","7b792edf-0811-416a-af54-de66089610ac","c27d403f-7a25-4392-adba-7338590b7b97","d831babd-3a27-4b75-a290-4889d5f5d2a6","15d95708-3e2d-4e69-86b9-e58026c348f6","98e10388-59ba-4e6f-a9c7-a877682bfad4","dee6a34d-55ed-4fb3-bef4-c741b643b5ed"],"pack_tag":"b2052c84-ce9f-4eb9-9502-f700e3fc1f14","playback":{"id":"f9540fd7-e2f6-43dd-b666-cee3b1af0947","library_locked":false,"active":true,"order":"random","scope":{},"membership":"legacy","source":"library","sort":"path","sequence_revision":0,"position":0,"total":27,"candidate_count":27,"revision":0,"finished":false,"current":{"id":"f702e8bd-59b7-4622-9605-0da647e9e478","root_id":"shorts","path":"/media/shorts/自然/花卉/片段24.mp4","name":"片段24.mp4","status":"available","error":null,"size":172775,"created_at":1793039307.0228474,"duration":5.005,"width":360,"height":640,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":null,"container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/f702e8bd-59b7-4622-9605-0da647e9e478/thumbnail","media_url":"/api/v1/videos/f702e8bd-59b7-4622-9605-0da647e9e478/stream","tag_ids":[]},"window":[{"position":0,"video":{"id":"f702e8bd-59b7-4622-9605-0da647e9e478","root_id":"shorts","path":"/media/shorts/自然/花卉/片段24.mp4","name":"片段24.mp4","status":"available","error":null,"size":172775,"created_at":1793039307.0228474,"duration":5.005,"width":360,"height":640,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":null,"container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/f702e8bd-59b7-4622-9605-0da647e9e478/thumbnail","media_url":"/api/v1/videos/f702e8bd-59b7-4622-9605-0da647e9e478/stream","tag_ids":[]}},{"position":1,"video":{"id":"b833e5c7-5a1f-4ef0-adce-0606fc77bd58","root_id":"shorts","path":"/media/shorts/自然/花卉/片段20.mp4","name":"片段20.mp4","status":"available","error":null,"size":172775,"created_at":1793039303.4505036,"duration":5.005,"width":360,"height":640,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":null,"container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/b833e5c7-5a1f-4ef0-adce-0606fc77bd58/thumbnail","media_url":"/api/v1/videos/b833e5c7-5a1f-4ef0-adce-0606fc77bd58/stream","tag_ids":[]}}]},"media":{"items":[{"path":"/media/shorts/自然/花卉/片段08.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段20.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段21.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段09.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段23.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段22.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段25.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段19.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段18.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段24.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段15.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段01.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段14.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段02.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段16.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段17.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段03.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段07.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段13.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段12.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段06.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段10.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段04.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段05.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段11.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/camera/旅行/横版片段.mp4","size":1290627,"sha256":"d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001"},{"path":"/media/camera/旅行/相机片段.mov","size":22668,"sha256":"13d9a170fc696f7a159eafb52db6d0c8fb1f88524948a7e121c6777477d278bd"}]}}
+TAG_MANAGEMENT_METRICS:{"state":"video","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"pack","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"dark","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":true}
+TAG_MANAGEMENT_METRICS:{"state":"create-keyboard","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":303.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"create-error","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"created","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"rename-editor","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"rename-editor-dark","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":true}
+TAG_MANAGEMENT_METRICS:{"state":"renamed","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"remove-confirm","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"removed","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_SCROLL_TARGET:{"body":[{"type":"Scrollable","rect":"Rect.fromLTRB(0.0, 139.7, 390.0, 630.0)"}]}
+TAG_MANAGEMENT_METRICS:{"state":"page-error","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"paged","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Timed out: actual result failure
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_management_test.dart:81:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_management_test.dart:284:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF8 independent tag definitions, AND results, retained edits and paging
+════════════════════════════════════════════════════════════════════════════════════════════════════
+03:06 +0 -1: LF8 independent tag definitions, AND results, retained edits and paging [E]
+  Test failed. See exception logs above.
+  The test description was: LF8 independent tag definitions, AND results, retained edits and paging
+  
+03:07 +0 -1: (tearDownAll)
+03:07 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_management_test.dart: LF8 independent tag definitions, AND results, retained edits and paging

@@ -1,0 +1,28 @@
+# Production client 4e905aa, server production unchanged from PR72; native harness versions listed per group.
+# Run at repository root. Final composition uses existing production-identical
+# large/landscape core runs plus fresh results-only runs. Each restores display.
+# Normal complete 15 at 2cde25c:
+bash scripts/dev.sh python3 scripts/run-client-connection-test.py --tag-management --evidence-dir /tmp/lf8-tags-proof-normal
+# Results supplements at 79de2d9, 2 states each:
+bash scripts/dev.sh python3 scripts/run-client-connection-test.py --tag-management --tag-results-only --workspace-viewport 360 --workspace-text-scale 2 --evidence-dir /tmp/lf8-tags-results-large
+bash scripts/dev.sh python3 scripts/run-client-connection-test.py --tag-management --tag-results-only --workspace-viewport 844 --evidence-dir /tmp/lf8-tags-results-landscape
+# The 13 core large states were captured at 4e905aa via:
+bash scripts/dev.sh python3 scripts/run-client-connection-test.py --tag-management --workspace-viewport 360 --workspace-text-scale 2 --evidence-dir /tmp/lf8-tags-settled-large
+# The 13 core landscape states were captured at c7e9799 via:
+bash scripts/dev.sh python3 scripts/run-client-connection-test.py --tag-management --workspace-viewport 844 --evidence-dir /tmp/lf8-tags-recovered-landscape
+# Those historical runs also had a weak 14th results state, intentionally excluded.
+
+# At apps/mobile, repeated 3 times on the production-identical 1063647 input:
+bash ../../scripts/dev.sh flutter test test/tag_definition_form_test.dart test/media_workspace_widget_test.dart test/tag_catalog_paging_widget_test.dart test/catalog_counts_widget_test.dart test/server_tags_repository_test.dart test/pack_tag_names_widget_test.dart --reporter expanded
+# Final check at apps/mobile:
+bash ../../scripts/dev.sh flutter analyze
+bash ../../scripts/dev.sh dart format --output=none --set-exit-if-changed lib/features/library/tag_catalog_page.dart test/tag_definition_form_test.dart test/media_workspace_widget_test.dart integration_test/server_tag_catalog_test.dart integration_test/server_pack_names_test.dart integration_test/server_tag_management_test.dart
+# Final root lint and evidence-only verification:
+.dev/venv/bin/ruff check scripts/run-client-connection-test.py services/server/tests/e2e_server.py docs/plans/library-first/evidence/lf8-tag-management/verify.py
+python3 docs/plans/library-first/evidence/lf8-tag-management/verify.py
+
+# Emulator recovery after observed QEMU exit (not a wipe/uninstall):
+bash scripts/dev.sh emulator -avd video_viewer_api_36 -port 5554 -no-window -no-boot-anim -gpu host -feature -Vulkan -no-snapshot -no-metrics -crash-report-mode never
+
+# Temporary software renderer after repeated host-process exits; not a project default:
+bash scripts/dev.sh emulator -avd video_viewer_api_36 -port 5554 -no-window -no-boot-anim -gpu swiftshader -feature -Vulkan -no-snapshot -no-metrics -crash-report-mode never
