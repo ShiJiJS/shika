@@ -11,7 +11,8 @@ class MissingLibrary extends TasksLibrary {
   final missing = <String>{for (var i = 0; i < 27; i++) 'p$i'};
   final pendingCleanup = <MissingCleanupReceipt>[];
   int cleanupPosts = 0, cleanupQueries = 0, removes = 0;
-  bool lose = false;
+  bool lose = false, failRead = false;
+  String pathPrefix = '/packs';
   final offsets = <int>[];
   @override
   ServiceCapabilities get capabilities => ServiceCapabilities([
@@ -43,6 +44,7 @@ class MissingCatalog implements PackMissingCatalog {
     int limit = 24,
   }) async {
     repo.offsets.add(offset);
+    if (repo.failRead) throw const LibraryFailure('缺失列表暂时无法读取');
     return CatalogPage(
       items: repo.missing
           .skip(offset)
@@ -51,7 +53,7 @@ class MissingCatalog implements PackMissingCatalog {
             (id) => LibraryPack(
               id: id,
               rootId: 'root',
-              path: '/packs/$id',
+              path: '${repo.pathPrefix}/$id',
               name: '缺失图包$id',
               pageCount: 3,
               readableCount: 0,
@@ -135,8 +137,13 @@ void main() {
     expect(t.takeException(), isNull);
   }
 
-  Future<void> host(WidgetTester t, double width, double scale) async {
-    t.view.physicalSize = Size(width, 740);
+  Future<void> host(
+    WidgetTester t,
+    double width,
+    double scale, {
+    double height = 740,
+  }) async {
+    t.view.physicalSize = Size(width, height);
     t.view.devicePixelRatio = 1;
     addTearDown(t.view.resetPhysicalSize);
     addTearDown(t.view.resetDevicePixelRatio);
@@ -155,14 +162,26 @@ void main() {
     await tap(t, find.byKey(const Key('missing-kind-pack')));
   }
 
-  for (final (width, scale) in [(390.0, 1.0), (360.0, 2.0)]) {
+  for (final (width, height, scale) in [
+    (390.0, 740.0, 1.0),
+    (360.0, 740.0, 2.0),
+    (844.0, 390.0, 1.0),
+    (844.0, 390.0, 2.0),
+  ]) {
     testWidgets(
       'typed missing pagination, cancel and original cleanup lookup $width/$scale',
       (t) async {
-        await host(t, width, scale);
+        await host(t, width, scale, height: height);
         expect(find.text('缺失图包p0'), findsOneWidget);
         await tap(t, find.text('下一页'));
         expect(repo.offsets.last, 24);
+        expect(
+          t
+              .widget<ListView>(find.byKey(const Key('missing-list')))
+              .controller!
+              .offset,
+          0,
+        );
         expect(find.text('缺失图包p0'), findsNothing);
         await tap(t, find.byKey(const Key('clear-missing-kind')));
         await tap(t, find.text('取消'));
@@ -177,12 +196,74 @@ void main() {
         expect(repo.cleanupQueries, 1);
         expect(repo.pendingCleanup, isEmpty);
         expect(find.byKey(const Key('missing-cleanup-task')), findsOneWidget);
+        await tap(t, find.text('共 0 个缺失图包'));
         expect(find.text('共 0 个缺失图包'), findsOneWidget);
         await t.pumpWidget(const SizedBox());
         await t.pumpAndSettle();
       },
     );
   }
+  testWidgets(
+    'unknown cleanup from the bottom of 24 rows reveals its status without another submit',
+    (t) async {
+      await host(t, 390, 1);
+      repo.lose = true;
+      await tap(t, find.byKey(const Key('clear-missing-kind')));
+      await tap(t, find.byKey(const Key('missing-confirm')));
+      expect(repo.cleanupPosts, 1);
+      expect(find.textContaining('清理结果未确认').hitTestable(), findsOneWidget);
+      expect(find.text('查询原清理请求').hitTestable(), findsOneWidget);
+      expect(repo.missing, hasLength(27));
+      await tap(t, find.text('查询原清理请求'));
+      expect(repo.cleanupQueries, 1);
+      expect(repo.cleanupPosts, 1);
+    },
+  );
+  testWidgets(
+    'failed page reload retains members and offset; retry never submits cleanup',
+    (t) async {
+      await host(t, 390, 1);
+      await tap(t, find.text('下一页'));
+      expect(repo.offsets.last, 24);
+      repo.failRead = true;
+      await tap(t, find.byTooltip('刷新缺失内容'));
+      expect(find.textContaining('缺失列表暂时无法读取').hitTestable(), findsOneWidget);
+      expect(find.text('共 27 个缺失图包'), findsOneWidget);
+      await tap(t, find.text('缺失图包p24'));
+      await tap(t, find.byKey(const Key('clear-missing-kind')));
+      expect(repo.cleanupPosts, 0);
+      expect(find.byKey(const Key('missing-confirm')), findsNothing);
+      repo.failRead = false;
+      await tap(t, find.text('重试读取缺失内容'));
+      expect(repo.offsets.last, 24);
+      expect(find.textContaining('缺失列表暂时无法读取'), findsNothing);
+      expect(find.text('缺失图包p24'), findsOneWidget);
+      expect(repo.cleanupPosts, 0);
+    },
+  );
+  testWidgets(
+    'short landscape and large text expose full long path, status and confirmation actions',
+    (t) async {
+      repo.missing
+        ..clear()
+        ..add('long');
+      repo.pathPrefix = "/图包归档/${List.filled(9, '春日写真与海边散步').join('/')}";
+      await host(t, 844, 2, height: 390);
+      final path = find.text('${repo.pathPrefix}/long');
+      await tap(t, path);
+      expect(t.widget<Text>(path).maxLines, isNull);
+      expect(t.widget<Text>(path).overflow, isNull);
+      await tap(t, find.byKey(const Key('clear-missing-kind')));
+      expect(
+        find.byKey(const Key('missing-confirm')).hitTestable(),
+        findsOneWidget,
+      );
+      expect(find.text('取消').hitTestable(), findsOneWidget);
+      await tap(t, find.text('取消'));
+      expect(repo.cleanupPosts, 0);
+      await tap(t, find.text('返回媒体目录'));
+    },
+  );
   testWidgets(
     'removing the local pending entry is explicit and never submits cleanup',
     (t) async {

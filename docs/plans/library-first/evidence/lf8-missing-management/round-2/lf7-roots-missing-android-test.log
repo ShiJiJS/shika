@@ -1,0 +1,21 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart
+Running Gradle task 'assembleDebug'...                             14.2s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          695ms
+00:00 +0: LF7 real root policy, missing-pack preservation and original cleanup receipt
+MISSING_METRICS:{"state":"roots-created","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{}}
+MISSING_METRICS:{"state":"roots-disabled","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{}}
+MISSING_METRICS:{"state":"roots-conflict","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{}}
+MISSING_METRICS:{"state":"missing-empty-video","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{"missing-header":[0.0,42.0,360.0,72.0],"missing-list":[0.0,114.0,360.0,602.0]}}
+MISSING_METRICS:{"state":"missing-first","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{"missing-header":[0.0,42.0,360.0,72.0],"missing-list":[0.0,114.0,360.0,602.0]}}
+MISSING_METRICS:{"state":"missing-paged","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{"missing-header":[0.0,42.0,360.0,72.0],"missing-list":[0.0,114.0,360.0,602.0]}}
+MISSING_METRICS:{"state":"missing-confirm-cancel","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{"missing-header":[0.0,42.0,360.0,72.0],"missing-list":[0.0,114.0,360.0,602.0],"clear-missing-kind":[20.0,598.0,320.0,48.0],"missing-confirm":[147.39926147460938,652.0,192.60073852539062,48.0]}}
+MISSING_METRICS:{"state":"missing-preserved","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{"missing-header":[0.0,42.0,360.0,72.0],"missing-list":[0.0,114.0,360.0,602.0],"missing-cleanup-task":[20.0,482.0,320.0,202.0]}}
+MISSING_METRICS:{"state":"missing-unknown","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{"missing-header":[0.0,42.0,360.0,72.0],"missing-list":[0.0,114.0,360.0,602.0]}}
+MISSING_METRICS:{"state":"missing-reopened","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{"missing-header":[0.0,42.0,360.0,72.0],"missing-list":[0.0,114.0,360.0,602.0]}}
+MISSING_METRICS:{"state":"missing-result","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{"missing-header":[0.0,42.0,360.0,72.0],"missing-list":[0.0,114.0,360.0,602.0],"missing-cleanup-task":[20.0,331.0,320.0,202.0]}}
+MISSING_METRICS:{"state":"missing-dark","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":true,"rects":{"missing-header":[0.0,42.0,360.0,72.0],"missing-list":[0.0,114.0,360.0,602.0],"missing-cleanup-task":[20.0,331.0,320.0,202.0]}}
+MISSING_METRICS:{"state":"missing-task-paged","window":[360.0,740.0],"dpr":3.0,"viewPadding":[0.0,42.0,0.0,24.0],"text13":26.0,"dark":false,"rects":{}}
+VV_MISSING_PROOF {"preserved_disabled":25,"removed":24,"returned_preserved":1,"old_id_retained":true,"current_video_unchanged":true}
+01:52 +1: (tearDownAll)
+01:53 +1: All tests passed!

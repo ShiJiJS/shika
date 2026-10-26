@@ -1,0 +1,284 @@
+{
+  "items": [
+    {
+      "method": "GET",
+      "path": "/api/v1/rounds/db93f1f5-e1d2-472f-b663-f5d1937c50d1/entries",
+      "query": {
+        "offset": "13",
+        "limit": "48",
+        "v": "0"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "source": "library",
+        "sort": "path"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/68c3f5dc-acf7-4b68-8fe6-6566f5be8d91/thumbnail",
+      "query": {
+        "session": "1793014861208760-f88f05e2"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/128a5775-5414-4dbe-b2fc-8de85a2ab6c5/thumbnail",
+      "query": {
+        "session": "1793014861208760-f88f05e2"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/d5451107-3ccd-47d8-a72c-8ad169503ac8/thumbnail",
+      "query": {
+        "session": "1793014861208760-f88f05e2"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/8f361f25-61c7-4f4d-88bc-f187bacc75ba/thumbnail",
+      "query": {
+        "session": "1793014861208760-f88f05e2"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "root_input": {
+        "name": "原生图包目录",
+        "path": "/media/shorts/图包",
+        "kind": "pack",
+        "enabled": true
+      },
+      "query_lists": {},
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/roots/fc82c566-4445-47a4-a72f-c4d04fcc5acc",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "root_input": {
+        "name": "原生图包目录",
+        "path": "/media/shorts/图包",
+        "kind": "pack",
+        "enabled": false
+      },
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "5027ac4e85e09bb91733ae0c3727ea74",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

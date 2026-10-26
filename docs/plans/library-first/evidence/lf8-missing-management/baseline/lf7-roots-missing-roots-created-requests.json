@@ -1,0 +1,217 @@
+{
+  "items": [
+    {
+      "method": "GET",
+      "path": "/api/v1/rounds/b9d1b610-90cf-4523-a192-e38605db72e5/entries",
+      "query": {
+        "offset": "10",
+        "limit": "48",
+        "v": "0"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "source": "library",
+        "sort": "path"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/66cba44f-7219-43f0-870a-c72a8ab51805/thumbnail",
+      "query": {
+        "session": "1793012856948772-7ffc5707"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/63315bf4-c0f2-4ea9-8f53-1e816bb1d454/thumbnail",
+      "query": {
+        "session": "1793012856948772-7ffc5707"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/8dbff233-3d97-4fb7-bc91-5bece27858f6/thumbnail",
+      "query": {
+        "session": "1793012856948772-7ffc5707"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/df713afe-125a-4ac1-ab2f-33ca5a2d7748/thumbnail",
+      "query": {
+        "session": "1793012856948772-7ffc5707"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/6993f6f3-1cb5-4f1a-ba34-fb74d6cdaa64/thumbnail",
+      "query": {
+        "session": "1793012856948772-7ffc5707"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/c624627c-cf98-4ab4-91a5-cb730ca8edf7/thumbnail",
+      "query": {
+        "session": "1793012856948772-7ffc5707"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "root_input": {
+        "name": "原生图包目录",
+        "path": "/media/shorts/图包",
+        "kind": "pack",
+        "enabled": true
+      },
+      "query_lists": {},
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "739670ca58d8171720371de1f209bb16",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

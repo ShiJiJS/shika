@@ -1,0 +1,49 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart
+Running Gradle task 'assembleDebug'...                             16.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          422ms
+00:00 +0: LF7 real root policy, missing-pack preservation and original cleanup receipt
+MISSING_METRICS:{"state":"roots-created","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{}}
+MISSING_METRICS:{"state":"roots-disabled","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{}}
+MISSING_METRICS:{"state":"roots-conflict","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{}}
+MISSING_METRICS:{"state":"missing-empty-video","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334]}}
+MISSING_METRICS:{"state":"missing-first","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334]}}
+MISSING_METRICS:{"state":"missing-paged","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334],"clear-missing-kind":[20.0,415.66666666666663,350.0,48.0]}}
+MISSING_METRICS:{"state":"missing-confirm-cancel","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334],"clear-missing-kind":[20.0,415.66666666666663,350.0,48.0],"missing-confirm":[237.4003677368164,756.0,132.5996322631836,48.0]}}
+MISSING_METRICS:{"state":"missing-preserved","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334],"missing-cleanup-task":[20.0,254.66666666666666,350.0,107.99999999999997]}}
+MISSING_METRICS:{"state":"missing-unknown","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334]}}
+MISSING_METRICS:{"state":"missing-reopened","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334],"clear-missing-kind":[20.0,448.66666666666663,350.0,48.0]}}
+MISSING_METRICS:{"state":"missing-result","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334],"clear-missing-kind":[20.0,459.66666666666663,350.0,48.0],"missing-cleanup-task":[20.0,254.66666666666666,350.0,107.99999999999997]}}
+MISSING_METRICS:{"state":"missing-dark","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":true,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334],"clear-missing-kind":[20.0,459.66666666666663,350.0,48.0],"missing-cleanup-task":[20.0,254.66666666666666,350.0,107.99999999999997]}}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following StateError was thrown running a test:
+Bad state: No element
+
+When the exception was thrown, this was the stack:
+#0      Iterable.first (dart:core/iterable.dart:663:7)
+#1      _FirstFinderMixin.filter (package:flutter_test/src/finders.dart:1383:28)
+#3      Iterable.single (dart:core/iterable.dart:694:13)
+#4      WidgetController.element (package:flutter_test/src/controller.dart:888:30)
+#5      main.<anonymous closure>.shot (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:131:13)
+<asynchronous suspension>
+#6      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:399:7)
+<asynchronous suspension>
+#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 2 frames from dart:async-patch and package:stack_trace)
+
+The test description was:
+  LF7 real root policy, missing-pack preservation and original cleanup receipt
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:34 +0 -1: LF7 real root policy, missing-pack preservation and original cleanup receipt [E]
+  Test failed. See exception logs above.
+  The test description was: LF7 real root policy, missing-pack preservation and original cleanup receipt
+  
+01:34 +0 -1: (tearDownAll)
+01:34 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart: LF7 real root policy, missing-pack preservation and original cleanup receipt

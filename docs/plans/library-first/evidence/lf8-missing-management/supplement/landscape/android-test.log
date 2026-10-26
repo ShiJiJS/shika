@@ -1,0 +1,10 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_missing_footer_test.dart
+Running Gradle task 'assembleDebug'...                             13.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          428ms
+00:00 +0: Read-only missing footer and complete confirmation at large/short viewports
+FOOTER_METRICS:{"state":"missing-paged","window":[844.0,390.0],"dpr":3.0,"viewPadding":[0.0,28.0,0.0,24.0],"text13":13.0,"footer":[20.0,248.0,804.0,48.0],"remaining_scroll":0.0}
+FOOTER_METRICS:{"state":"missing-confirm-cancel","window":[844.0,390.0],"dpr":3.0,"viewPadding":[0.0,28.0,0.0,24.0],"text13":13.0,"confirmation_tail_visible":true,"remaining_scroll":0.0}
+MISSING_FOOTER_VERIFIED:{"images":6,"zero_writes_after_preparation":true,"current_video_unchanged":true,"cancelled":true}
+00:33 +1: (tearDownAll)
+00:33 +1: All tests passed!

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/capture-missing-footer.py", line 170, in <module>
+    main()
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/capture-missing-footer.py", line 110, in main
+    assert result.returncode == 0, "See android-test.log"
+AssertionError: See android-test.log

@@ -7,6 +7,7 @@ Only the explicitly named e2e container may be stopped by this runner.
 
 import argparse
 import atexit
+import hashlib
 import json
 import os
 import subprocess
@@ -222,7 +223,7 @@ def watch():
                 "purge-selected", "purge-review", "purge-files", "purge-saved", "purge-saved-reopened", "purge-unknown", "purge-result", "purge-finished",
                 "bulk-selected", "bulk-review", "bulk-unknown", "bulk-receipt", "bulk-paged", "bulk-selection", "bulk-next-review",
                 "defaults-video", "defaults-reader", "defaults-unknown", "defaults-reopened", "defaults-migration",
-                "roots-created", "roots-disabled", "roots-conflict", "missing-paged", "missing-preserved", "missing-unknown", "missing-reopened", "missing-result", "missing-task-paged",
+                "roots-created", "roots-disabled", "roots-conflict", "missing-empty-video", "missing-first", "missing-confirm-cancel", "missing-dark", "missing-paged", "missing-preserved", "missing-unknown", "missing-reopened", "missing-result", "missing-task-paged",
                 "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
                 "restore-selected", "restore-unknown", "restore-reopened", "restore-paged", "restore-stop-unknown", "restore-stopped",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
@@ -310,7 +311,7 @@ def watch():
 
 
 def main():
-    global PREFIX
+    global PREFIX, EVIDENCE
     parser = argparse.ArgumentParser()
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--playback", action="store_true")
@@ -339,11 +340,15 @@ def main():
     mode.add_argument("--restore-plans", action="store_true")
     mode.add_argument("--pack-cleanup", action="store_true")
     mode.add_argument("--pack-recovery", action="store_true")
-    parser.add_argument("--workspace-viewport", choices=("390", "360"), default="390")
+    parser.add_argument("--workspace-viewport", choices=("390", "360", "844"), default="390")
     parser.add_argument("--workspace-text-scale", choices=("1", "2"), default="1")
     parser.add_argument("--pack-cleanup-rounds", type=int, choices=(1, 8), default=1)
+    parser.add_argument("--evidence-dir", type=Path)
     parser.add_argument("--plain-name")
     args = parser.parse_args()
+    if args.evidence_dir is not None:
+        EVIDENCE = args.evidence_dir.resolve()
+        EVIDENCE.mkdir(parents=True, exist_ok=False)
     if not Path(ADB).is_file() or not Path(FLUTTER).is_file():
         parser.error(
             "Flutter or ADB missing. On Mac use: bash scripts/dev.sh python3 scripts/run-client-connection-test.py"
@@ -420,6 +425,21 @@ def main():
     else:
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
+    source_paths = subprocess.check_output(
+        ["git", "ls-files", "apps/mobile/lib", "services/server/video_viewer"],
+        cwd=ROOT, text=True,
+    ).splitlines() + [
+        "apps/mobile/integration_test/server_roots_missing_test.dart",
+        "scripts/run-client-connection-test.py", "services/server/tests/e2e_server.py",
+    ]
+    prototype_entry = subprocess.check_output(
+        ["git", "ls-tree", "HEAD", "design/reference/library-first"], cwd=ROOT, text=True,
+    ).split()
+    (EVIDENCE / "source.json").write_text(json.dumps({
+        "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+        "prototype_tree": prototype_entry[2] if prototype_entry else None,
+        "files": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in source_paths},
+    }, indent=2) + "\n", encoding="utf-8")
     prepare_emulator()
     if args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.purge_restart or args.maintenance_tasks or args.restore_plans or args.managed_defaults or args.roots_missing:
         def device(*command):
@@ -438,9 +458,13 @@ def main():
                 device("settings", "delete", "system", "font_scale")
             else:
                 device("settings", "put", "system", "font_scale", old_scale)
+            (EVIDENCE / "restored-viewport.json").write_text(json.dumps({
+                "before": {"size": old_size, "density": old_density, "font_scale": old_scale},
+                "after": {"size": device("wm", "size"), "density": device("wm", "density"), "font_scale": device("settings", "get", "system", "font_scale")},
+            }, indent=2) + "\n", encoding="utf-8")
 
         atexit.register(restore_workspace_viewport)
-        width, height = (390, 844) if args.workspace_viewport == "390" else (360, 740)
+        width, height = {"390": (390, 844), "360": (360, 740), "844": (844, 390)}[args.workspace_viewport]
         device("wm", "size", f"{width * 3}x{height * 3}")
         device("wm", "density", "480")
         device("settings", "put", "system", "font_scale", args.workspace_text_scale)
@@ -585,7 +609,7 @@ def main():
                         if not killed_purge_pid:
                             raise RuntimeError("Purge App was not live at forced interruption")
                         subprocess.run([ADB,"-s","emulator-5554","shell","am","force-stop","io.github.shijijs.video_viewer"],check=True,timeout=10)
-                        absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10)
+                        absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10,check=False)
                         if absent.stdout.strip():
                             raise RuntimeError("Purge App survived forced interruption")
                         forced_purge_kill = True
@@ -605,7 +629,7 @@ def main():
                             stop.wait(.5)
                         if stats["task"]["status"] != "completed" or stats["members"] != {"succeeded":1000} or stats["active_trash"] != 3:
                             raise RuntimeError("Purge did not preserve the unsubmitted three packs: " + json.dumps(stats))
-                        still_absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10)
+                        still_absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10,check=False)
                         if still_absent.stdout.strip():
                             raise RuntimeError("App restarted before its accepted batch completed")
                         (EVIDENCE/f"{PREFIX}-without-app-stats.json").write_text(json.dumps(stats,ensure_ascii=False,indent=2),encoding="utf-8")
@@ -626,7 +650,7 @@ def main():
                         if not killed_restore_pid:
                             raise RuntimeError("App was not live at forced interruption")
                         subprocess.run([ADB,"-s","emulator-5554","shell","am","force-stop","io.github.shijijs.video_viewer"],check=True,timeout=10)
-                        absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10)
+                        absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10,check=False)
                         if absent.stdout.strip():
                             raise RuntimeError("App survived forced interruption")
                         forced_restore_kill = True
@@ -646,7 +670,7 @@ def main():
                             stop.wait(.1)
                         if stats["member_counts"] != {"succeeded":27} or len(stats["batches"]) != 14:
                             raise RuntimeError("Whole-selection continuation did not finish unique batches")
-                        still_absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10)
+                        still_absent = subprocess.run([ADB,"-s","emulator-5554","shell","pidof","io.github.shijijs.video_viewer"],capture_output=True,text=True,timeout=10,check=False)
                         if still_absent.stdout.strip():
                             raise RuntimeError("App restarted before the server completed its plan")
                         (EVIDENCE/f"{PREFIX}-without-app-plan.json").write_text(json.dumps(stats,ensure_ascii=False,indent=2),encoding="utf-8")
