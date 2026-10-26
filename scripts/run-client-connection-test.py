@@ -342,6 +342,7 @@ def main():
     mode.add_argument("--workspace", action="store_true")
     mode.add_argument("--tag-catalog", action="store_true")
     mode.add_argument("--tag-management", action="store_true")
+    parser.add_argument("--tag-results-only", action="store_true")
     mode.add_argument("--selection", action="store_true")
     mode.add_argument("--pack-names", action="store_true")
     mode.add_argument("--pack-anchor", action="store_true")
@@ -368,6 +369,8 @@ def main():
     parser.add_argument("--evidence-dir", type=Path)
     parser.add_argument("--plain-name")
     args = parser.parse_args()
+    if args.tag_results_only and not args.tag_management:
+        parser.error("--tag-results-only requires --tag-management")
     if args.evidence_dir is not None:
         EVIDENCE = args.evidence_dir.resolve()
         EVIDENCE.mkdir(parents=True, exist_ok=False)
@@ -559,6 +562,8 @@ def main():
             "--reporter",
             "expanded",
         ]
+        if args.tag_results_only:
+            command.append("--dart-define=TAG_RESULTS_ONLY=true")
         if args.purge_management_baseline:
             if not args.purge_management:
                 parser.error("baseline requires --purge-management")

@@ -169,6 +169,76 @@ void main() {
         await tap(key.evaluate().isNotEmpty ? key : find.text('保存').last);
       }
 
+      const resultsOnly = bool.fromEnvironment('TAG_RESULTS_ONLY');
+      Future<void> finishResults({required bool expectRemoved}) async {
+        await fixture('/__fixture/actions/fail-tag-results');
+        await tap(find.byKey(const Key('tag-view-results')));
+        VideoCatalogPageState results() =>
+            t.state<VideoCatalogPageState>(find.byType(VideoCatalogPage));
+        await until(
+          () => results().data.error.contains('标签结果暂时无法读取'),
+          'actual result failure',
+        );
+        await shot('results-error');
+        expect(results().entry.query.tags, {ids.first, ids[1]});
+        await tap(find.text('重试').last);
+        await until(
+          () =>
+              !results().data.loading &&
+              results().data.error.isEmpty &&
+              results().data.total == 1 &&
+              results().data.items.length == 1,
+          'actual result member loaded',
+        );
+        expect(results().data.items.single.id, videoIds.first);
+        expect(results().entry.query.tags, {ids.first, ids[1]});
+        debugPrint(
+          'TAG_RESULT_VERIFIED:${jsonEncode({'ids': results().data.items.map((v) => v.id).toList(), 'total': results().data.total, 'tags': results().entry.query.tags.toList()..sort(), 'error': results().data.error})}',
+        );
+        if (resultsOnly) {
+          await revealAction(
+            t,
+            find.text(results().data.items.single.displayTitle).last,
+          );
+        }
+        await shot('results');
+        expect(await fixture('/__fixture/actions/pack-trash-hashes'), source);
+        final finalMedia = await fixture('/__fixture/files', method: 'GET');
+        final finalPlayback = await repo.api.json('GET', '/api/v1/playback');
+        expect(finalMedia, media);
+        expect(finalPlayback, playback);
+        debugPrint(
+          'TAG_MANAGEMENT_FINAL:${jsonEncode({'playback': finalPlayback, 'media': finalMedia})}',
+        );
+        final stats = await fixture('/__fixture/actions/tag-management-stats');
+        final links = (stats['video_links'] as List)
+            .cast<Map<String, dynamic>>();
+        expect(
+          links
+              .where((v) => v['tag_id'] == ids.first)
+              .map((v) => v['video_id'])
+              .toSet(),
+          videoIds.toSet(),
+        );
+        expect(
+          links
+              .where((v) => v['tag_id'] == ids[1])
+              .map((v) => v['video_id'])
+              .toSet(),
+          {videoIds.first},
+        );
+        expect(
+          (stats['pack_links'] as List).where((v) => v['tag_id'] == packTag),
+          expectRemoved ? isEmpty : hasLength(1),
+        );
+        debugPrint(
+          resultsOnly
+              ? 'TAG_RESULTS_ONLY_VERIFIED:two-tag AND=1, 503 retry, exact member, source and playback unchanged'
+              : 'TAG_MANAGEMENT_VERIFIED:separate same names, duplicate preserved, rename retained id, cancelled removal, pack-only removal, two-tag AND=1, source and playback unchanged',
+        );
+        await fixture('/__fixture/checkpoint/done');
+      }
+
       TagCatalogPageState state() =>
           t.state<TagCatalogPageState>(find.byType(TagCatalogPage));
       await idle();
@@ -180,6 +250,10 @@ void main() {
       await tap(find.byKey(Key('video-tag-${ids.first}')));
       await tap(find.byKey(Key('video-tag-${ids[1]}')));
       await until(() => state().matching == 1, 'two tag intersection');
+      if (resultsOnly) {
+        await finishResults(expectRemoved: false);
+        return;
+      }
       await shot('video');
       await tap(find.byKey(const Key('kind-pack')));
       await until(
@@ -277,63 +351,7 @@ void main() {
       );
       await revealAction(t, find.byKey(Key('video-tag-${ids.last}')));
       await shot('paged');
-      await fixture('/__fixture/actions/fail-tag-results');
-      await tap(find.byKey(const Key('tag-view-results')));
-      VideoCatalogPageState results() =>
-          t.state<VideoCatalogPageState>(find.byType(VideoCatalogPage));
-      await until(
-        () => results().data.error.contains('标签结果暂时无法读取'),
-        'actual result failure',
-      );
-      await shot('results-error');
-      expect(results().entry.query.tags, {ids.first, ids[1]});
-      await tap(find.text('重试').last);
-      await until(
-        () =>
-            !results().data.loading &&
-            results().data.error.isEmpty &&
-            results().data.total == 1 &&
-            results().data.items.length == 1,
-        'actual result member loaded',
-      );
-      expect(results().data.items.single.id, videoIds.first);
-      expect(results().entry.query.tags, {ids.first, ids[1]});
-      debugPrint(
-        'TAG_RESULT_VERIFIED:${jsonEncode({'ids': results().data.items.map((v) => v.id).toList(), 'total': results().data.total, 'tags': results().entry.query.tags.toList()..sort(), 'error': results().data.error})}',
-      );
-      await shot('results');
-      expect(await fixture('/__fixture/actions/pack-trash-hashes'), source);
-      final finalMedia = await fixture('/__fixture/files', method: 'GET');
-      final finalPlayback = await repo.api.json('GET', '/api/v1/playback');
-      expect(finalMedia, media);
-      expect(finalPlayback, playback);
-      debugPrint(
-        'TAG_MANAGEMENT_FINAL:${jsonEncode({'playback': finalPlayback, 'media': finalMedia})}',
-      );
-      final stats = await fixture('/__fixture/actions/tag-management-stats');
-      final links = (stats['video_links'] as List).cast<Map<String, dynamic>>();
-      expect(
-        links
-            .where((v) => v['tag_id'] == ids.first)
-            .map((v) => v['video_id'])
-            .toSet(),
-        videoIds.toSet(),
-      );
-      expect(
-        links
-            .where((v) => v['tag_id'] == ids[1])
-            .map((v) => v['video_id'])
-            .toSet(),
-        {videoIds.first},
-      );
-      expect(
-        (stats['pack_links'] as List).where((v) => v['tag_id'] == packTag),
-        isEmpty,
-      );
-      debugPrint(
-        'TAG_MANAGEMENT_VERIFIED:separate same names, duplicate preserved, rename retained id, cancelled removal, pack-only removal, two-tag AND=1, source and playback unchanged',
-      );
-      await fixture('/__fixture/checkpoint/done');
+      await finishResults(expectRemoved: true);
     },
   );
 }
