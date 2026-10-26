@@ -245,6 +245,9 @@ void main() {
       await tap(find.text('添加目录'));
       await t.enterText(find.byKey(const Key('root-name')), '原生图包目录');
       await t.enterText(find.byKey(const Key('root-path')), seed['path']);
+      FocusManager.instance.primaryFocus?.unfocus();
+      await until(() => t.view.viewInsets.bottom == 0, 'root keyboard closed');
+      await t.pumpAndSettle();
       await tap(find.byKey(const Key('root-kind')));
       await tap(find.text('图包文件夹').hitTestable().last);
       await saveRoot();
