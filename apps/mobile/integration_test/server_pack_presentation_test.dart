@@ -247,6 +247,18 @@ void main() {
       expect(catalog().entry.query.search, '夏日祭');
       expect(catalog().data.total, 1);
       await capture('presentation-return');
+      // A short viewport returns to the selected cover's real scroll anchor.
+      // Bring the lazy scope header back with the same upward-list gesture.
+      await t.scrollUntilVisible(
+        find.text('清除'),
+        -180,
+        scrollable: find.descendant(
+          of: find.byType(PackCatalogPage),
+          matching: find.byWidgetPredicate(
+            (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
+          ),
+        ),
+      );
       await tap(find.text('清除'));
       await until(
         () => !catalog().data.loading && catalog().data.total == 4,
