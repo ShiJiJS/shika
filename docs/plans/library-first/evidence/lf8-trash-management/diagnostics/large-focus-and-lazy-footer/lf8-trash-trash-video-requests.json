@@ -1,0 +1,74 @@
+{
+  "items": [
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "1",
+        "search": "",
+        "read_state": "all",
+        "source": "recent",
+        "sort": "recent"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "ee4d987c7b58f53c059e7dc2f8436c83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "search": "",
+        "read_state": "all",
+        "source": "library",
+        "sort": "title",
+        "anchor_ids": "85c2502a-afe7-44ae-afd6-7e88befeeefe"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "ee4d987c7b58f53c059e7dc2f8436c83",
+      "fixture_actor": null,
+      "query_lists": {
+        "anchor_ids": [
+          "f70f589f-aa83-464a-958a-d0484511a79a",
+          "d6377104-7896-407f-b19d-d60117283322",
+          "9b6bf120-80cf-4fa1-8cc6-76125f0be460",
+          "444352cf-aa3a-4476-a5eb-559dee16b76a",
+          "73b31e1e-d2a3-4879-b130-70d4487bccd4",
+          "25e72f4c-7841-4217-a499-dea71a1b8149",
+          "4f7eb809-f72a-485b-9f11-f55fe3ce8297",
+          "889ecfe6-c841-49ba-9960-72b8c1c9e3e6",
+          "dfdc44a0-3d9d-4134-995b-a936a58b8936",
+          "e718c558-89bf-419a-9e35-a9b1387f0128",
+          "4e2e44fb-cd95-4071-9c47-fa2d6720f944",
+          "dc0399b1-2fe8-47ae-b92c-adc712aaa094",
+          "4b9b1d0f-6ff9-41ef-a032-71f35a9af315",
+          "7086a774-a44d-4334-9869-231f6ae13794",
+          "39566e09-1b62-4e04-9834-fcb5830f0e84",
+          "85c2502a-afe7-44ae-afd6-7e88befeeefe"
+        ]
+      },
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "ee4d987c7b58f53c059e7dc2f8436c83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

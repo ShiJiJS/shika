@@ -1,0 +1,110 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.44kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 2.7s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 101B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 12.53kB 0.0s done
+#5 DONE 0.0s
+
+#6 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.0s done
+#6 DONE 0.0s
+
+#7 [runtime 6/9] COPY video_viewer ./video_viewer
+#7 CACHED
+
+#8 [runtime 7/9] COPY migrations ./migrations
+#8 CACHED
+
+#9 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#9 CACHED
+
+#10 [runtime 3/9] WORKDIR /app
+#10 CACHED
+
+#11 [runtime 8/9] COPY alembic.ini ./
+#11 CACHED
+
+#12 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 libicu72=72.1-3+deb12u1 && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [test 1/4] COPY requirements-test.lock ./
+#13 CACHED
+
+#14 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#14 CACHED
+
+#15 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#15 CACHED
+
+#16 [runtime 4/9] COPY requirements.lock ./
+#16 CACHED
+
+#17 [test 3/4] COPY tests ./tests
+#17 CACHED
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:e35c415f7afc4f2ef0d13cdbbde6b0908abba011263ee656e76899a47ce50116 done
+#19 exporting config sha256:4ca81ddd5ee0a4f1c549eb0c3c8dbbc336cc875680c6f531f92cc84a4e109113 done
+#19 exporting attestation manifest sha256:d1b388b05eb59b459cbf247ae071d5c0427804bc9bc2b27fc908c26af5464901
+#19 exporting attestation manifest sha256:d1b388b05eb59b459cbf247ae071d5c0427804bc9bc2b27fc908c26af5464901 0.0s done
+#19 exporting manifest list sha256:76f659c8541c84f2bd38b22024c2839b1c732d530e85ec8a2a92d0306fe88593 0.0s done
+#19 naming to docker.io/library/video-viewer-server:e2e done
+#19 unpacking to docker.io/library/video-viewer-server:e2e done
+#19 DONE 0.1s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.0s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_trash_management_test.dart
+Running Gradle task 'assembleDebug'...                             13.3s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          623ms
+00:00 +0: LF6 typed trash, whole membership, uncertain restore and preserved media/reading
+TRASH_METRICS:{"state":"trash-reader","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-video","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-read-error","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-packs","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-empty","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-keyboard","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":303.0,"dark":false}
+TRASH_METRICS:{"state":"trash-paged","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-selected","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-dark","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":true}
+TRASH_METRICS:{"state":"trash-confirm","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-unknown","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-receipt","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-restored","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-single-confirm","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-single-restored","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_MANAGEMENT_VERIFIED:{"packs":27,"restored_bulk":26,"restored_single":1,"images":81,"original_posts":2,"receipt_gets":1,"cancel_zero_writes":true,"reading_and_tags_preserved":true,"video_unchanged":true}
+01:34 +1: (tearDownAll)
+01:34 +1: All tests passed!

@@ -1,0 +1,23 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_trash_management_test.dart
+Running Gradle task 'assembleDebug'...                             16.5s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          528ms
+00:00 +0: LF6 typed trash, whole membership, uncertain restore and preserved media/reading
+TRASH_METRICS:{"state":"trash-reader","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-video","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-read-error","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-packs","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-empty","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-keyboard","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":303.0,"dark":false}
+TRASH_METRICS:{"state":"trash-paged","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-selected","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-dark","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":true}
+TRASH_METRICS:{"state":"trash-confirm","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-unknown","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-receipt","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-restored","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-single-confirm","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_METRICS:{"state":"trash-single-restored","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+TRASH_MANAGEMENT_VERIFIED:{"packs":27,"restored_bulk":26,"restored_single":1,"images":81,"original_posts":2,"receipt_gets":1,"cancel_zero_writes":true,"reading_and_tags_preserved":true,"video_unchanged":true}
+01:35 +1: (tearDownAll)
+01:36 +1: All tests passed!

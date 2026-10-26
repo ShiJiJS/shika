@@ -1,0 +1,86 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.44kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 0.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 101B done
+#4 DONE 0.0s
+
+#5 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#5 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 12.53kB 0.0s done
+#6 DONE 0.0s
+
+#7 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#7 CACHED
+
+#8 [runtime 3/9] WORKDIR /app
+#8 CACHED
+
+#9 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#9 CACHED
+
+#10 [runtime 4/9] COPY requirements.lock ./
+#10 CACHED
+
+#11 [runtime 8/9] COPY alembic.ini ./
+#11 CACHED
+
+#12 [test 3/4] COPY tests ./tests
+#12 CACHED
+
+#13 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 libicu72=72.1-3+deb12u1 && rm -rf /var/lib/apt/lists/*
+#13 CACHED
+
+#14 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#14 CACHED
+
+#15 [runtime 6/9] COPY video_viewer ./video_viewer
+#15 CACHED
+
+#16 [runtime 7/9] COPY migrations ./migrations
+#16 CACHED
+
+#17 [test 1/4] COPY requirements-test.lock ./
+#17 CACHED
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:e35c415f7afc4f2ef0d13cdbbde6b0908abba011263ee656e76899a47ce50116 done
+#19 exporting config sha256:4ca81ddd5ee0a4f1c549eb0c3c8dbbc336cc875680c6f531f92cc84a4e109113 done
+#19 exporting attestation manifest sha256:3d006d7466a1608d85a3acb01fecebe0056787f8bbaa563643ba2cb5eed0869d 0.0s done
+#19 exporting manifest list sha256:d201d033d3a87f764224654fd5df31d5da9bb71a5f906f5770d47836fd2c3998 0.0s done
+#19 naming to docker.io/library/video-viewer-server:e2e done
+#19 unpacking to docker.io/library/video-viewer-server:e2e done
+#19 DONE 0.1s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.0s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged

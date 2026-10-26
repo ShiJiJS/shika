@@ -1,0 +1,321 @@
+{
+  "items": [
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "1",
+        "search": "",
+        "read_state": "all",
+        "source": "recent",
+        "sort": "recent"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "search": "",
+        "read_state": "all",
+        "source": "library",
+        "sort": "title",
+        "anchor_ids": "c4f25868-2f66-44cd-8c23-2452b4d5af02"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {
+        "anchor_ids": [
+          "52c42de1-8cac-4ecf-8492-7a754070d0cd",
+          "06df0e5f-134f-4495-963c-e24fa9289224",
+          "f0dda8ec-ad66-4e46-a5f8-2a7bf1ebd67e",
+          "f74e68f6-3e7f-42ff-b2bf-71fa04782ffd",
+          "de572e30-994e-41f2-a940-cc12ce9e64b4",
+          "f89659c0-f551-4864-8b0f-cf9885b7d904",
+          "19844f82-bb40-4c57-a312-c891cf6d2bb7",
+          "f3a16a3e-c6b8-4a1d-aa41-11c785420f8d",
+          "04385cd5-3464-494a-985b-b63a0db7e0cf",
+          "9579b640-b39e-405c-9f84-40ca125bf743",
+          "66c8e831-bd3a-4068-be25-6ce72ba2e4c1",
+          "abbc740d-4f66-415e-bf4c-f5d7e883399d",
+          "36b0c40f-2fa3-43b7-8fd6-d4cc8801c0f3",
+          "e7e4b23f-6351-4cc9-a044-e799f18a4338",
+          "fad4cdcd-7b6d-4fdc-a648-cbf55c229f61",
+          "c4f25868-2f66-44cd-8c23-2452b4d5af02"
+        ]
+      },
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "不匹配的回收内容",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "图包",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash/selection",
+      "query": {
+        "search": "图包"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "图包",
+        "offset": "24",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-restore-plans",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 503
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "图包",
+        "offset": "24",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "图包",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-restore-requests/1793019035893015-4022948421",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/0bbb4d7f-51dc-4ec6-975e-f67b45979023",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-restore-plans/0bbb4d7f-51dc-4ec6-975e-f67b45979023",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/0bbb4d7f-51dc-4ec6-975e-f67b45979023",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/0bbb4d7f-51dc-4ec6-975e-f67b45979023/items",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "unfinished": "true"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-trash",
+      "query": {
+        "search": "图包",
+        "offset": "0",
+        "limit": "24"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "d34c62120730daff0f3f8bf326225487",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}
