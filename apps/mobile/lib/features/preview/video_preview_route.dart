@@ -6,6 +6,7 @@ import '../../library/models.dart';
 import '../../library/repository.dart';
 import '../../ui/browsing_session.dart';
 import '../../ui/media_poster.dart';
+import '../../ui/media_layout.dart';
 import '../../ui/paper.dart';
 import '../../ui/playback_session.dart';
 import '../../ui/player.dart';
@@ -56,6 +57,11 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
       if (entry.query.folder.isNotEmpty) basename(entry.query.folder),
       ...entry.query.tags.map((tag) => '# ${repo.tagName(tag)}'),
       if (entry.search.isNotEmpty) '“${entry.search}”',
+      if (entry.query.orientation.isNotEmpty)
+        entry.query.orientation == 'portrait' ? '竖版' : '横版',
+      if (entry.query.duration.isNotEmpty)
+        entry.query.duration == 'short' ? '10 秒以内' : '10 秒以上',
+      if (entry.query.type.isNotEmpty) entry.query.type,
     ].join(' · ');
   }
 
@@ -262,6 +268,10 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
             onTap: () => Navigator.pop(context, 'details'),
           ),
           ListTile(
+            title: Text(widget.preferences.dark ? '切换浅色模式' : '切换暗黑模式'),
+            onTap: () => Navigator.pop(context, 'theme'),
+          ),
+          ListTile(
             title: const Text('本次预览范围'),
             onTap: () => Navigator.pop(context, 'queue'),
           ),
@@ -286,6 +296,8 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
     if (!mounted) return;
     final video = browsing.current;
     switch (action) {
+      case 'theme':
+        await run(() => widget.preferences.setDark(!widget.preferences.dark));
       case 'queue':
         await queue();
       case 'quick':
@@ -435,7 +447,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                       Text(
                         '${current == null ? 0 : browsing.position + 1} / ${repo.playbackTotal}',
                         key: const Key('preview-position'),
-                        style: TextStyle(color: p.olive, fontSize: 13),
+                        style: p.title.copyWith(color: p.olive, fontSize: 14),
                       ),
                       const SizedBox(width: 12),
                       const Icon(Icons.grid_view, size: 19),
@@ -700,9 +712,27 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
   LibraryRepository get repo => widget.repository;
   final pages = <int, List<LibraryVideo>>{}, failures = <int, String>{};
   final loading = <int>{};
-  late final scroll = ScrollController(
-    initialScrollOffset: repo.playbackPosition * 80.0,
-  );
+  final scroll = ScrollController();
+  final summaryKey = GlobalKey();
+  double rowExtent = 80;
+  (double, double)? geometry;
+  bool locateScheduled = false;
+
+  void locateCurrent() {
+    if (locateScheduled) return;
+    locateScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      locateScheduled = false;
+      if (!mounted || !scroll.hasClients) return;
+      final prefix = summaryKey.currentContext?.size?.height;
+      if (prefix == null) return;
+      final target = repo.playbackPosition == 0
+          ? 0.0
+          : prefix + repo.playbackPosition * rowExtent;
+      scroll.jumpTo(target.clamp(0.0, scroll.position.maxScrollExtent));
+    });
+  }
+
   late String sequence;
   late int total;
   int generation = 0;
@@ -735,16 +765,7 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
         failures.clear();
         loading.clear();
         total = repo.playbackTotal;
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted && scroll.hasClients) {
-            scroll.jumpTo(
-              (repo.playbackPosition * 80.0).clamp(
-                0.0,
-                scroll.position.maxScrollExtent,
-              ),
-            );
-          }
-        });
+        locateCurrent();
       }
     });
   }
@@ -808,137 +829,170 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
   }
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    height: MediaQuery.sizeOf(context).height * .83,
-    child: SafeArea(
-      top: false,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    '本次预览范围',
-                    style: Paper.of(context).title.copyWith(fontSize: 21),
+  Widget build(BuildContext context) {
+    final nextGeometry = (
+      MediaQuery.sizeOf(context).width,
+      MediaQuery.textScalerOf(context).scale(14),
+    );
+    rowExtent =
+        (MediaLayout.line(context, '视频名称 Aa', const TextStyle(fontSize: 14)) *
+                    2 +
+                24)
+            .clamp(80.0, double.infinity);
+    if (geometry != nextGeometry) {
+      geometry = nextGeometry;
+      locateCurrent();
+    }
+    return SizedBox(
+      height: MediaQuery.sizeOf(context).height * .83,
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '本次预览范围',
+                      style: Paper.of(context).title.copyWith(fontSize: 21),
+                    ),
                   ),
-                ),
-                IconButton(
-                  tooltip: '关闭面板',
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close),
-                ),
-              ],
-            ),
-            note('${widget.sourceLabel} · $total 个视频'),
-            Wrap(
-              spacing: 8,
-              children: [
-                for (final order in PlayOrder.values)
-                  ChoiceChip(
-                    key: Key('queue-order-${order.name}'),
-                    label: Text(order == PlayOrder.random ? '随机' : '顺序'),
-                    selected: repo.snapshot.order == order,
-                    onSelected: busy
-                        ? null
-                        : (_) => action(() => widget.onOrder(order)),
-                  ),
-              ],
-            ),
-            if (error.isNotEmpty) note(error),
-            const SizedBox(height: 8),
-            Expanded(
-              child: total == 0
-                  ? const Center(child: Text('本次范围已没有可播放的视频'))
-                  : ListView.builder(
-                      key: const Key('preview-queue'),
-                      controller: scroll,
-                      itemExtent: 80,
-                      itemCount: total,
-                      itemBuilder: (context, index) {
-                        final page = (index ~/ pageSize) * pageSize;
-                        ensure(page);
-                        final cached = pages[page];
-                        final local = index - page;
-                        final video = cached != null && local < cached.length
-                            ? cached[local]
-                            : null;
-                        if (video == null) {
-                          return Center(
-                            child: failures[page] == null
-                                ? const SizedBox(
-                                    width: 18,
-                                    height: 18,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
+                  iconAction('关闭面板', Icons.close, () => Navigator.pop(context)),
+                ],
+              ),
+              Expanded(
+                child: CustomScrollView(
+                  key: const Key('preview-queue'),
+                  controller: scroll,
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        key: summaryKey,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          note('${widget.sourceLabel} · $total 个视频'),
+                          Wrap(
+                            spacing: 8,
+                            children: [
+                              for (final order in PlayOrder.values)
+                                ChoiceChip(
+                                  key: Key('queue-order-${order.name}'),
+                                  label: Text(
+                                    order == PlayOrder.random ? '随机' : '顺序',
+                                  ),
+                                  selected: repo.snapshot.order == order,
+                                  onSelected: busy
+                                      ? null
+                                      : (_) =>
+                                            action(() => widget.onOrder(order)),
+                                ),
+                            ],
+                          ),
+                          if (error.isNotEmpty) note(error),
+                          const SizedBox(height: 8),
+                        ],
+                      ),
+                    ),
+                    if (total == 0)
+                      const SliverToBoxAdapter(
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text('本次范围已没有可播放的视频'),
+                        ),
+                      )
+                    else
+                      SliverFixedExtentList(
+                        itemExtent: rowExtent,
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          final page = (index ~/ pageSize) * pageSize;
+                          ensure(page);
+                          final cached = pages[page];
+                          final local = index - page;
+                          final video = cached != null && local < cached.length
+                              ? cached[local]
+                              : null;
+                          if (video == null) {
+                            return Center(
+                              child: failures[page] == null
+                                  ? const SizedBox(
+                                      width: 18,
+                                      height: 18,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : TextButton(
+                                      onPressed: () => setState(() {
+                                        failures.remove(page);
+                                      }),
+                                      child: const Text('队列读取失败，重试'),
                                     ),
-                                  )
-                                : TextButton(
-                                    onPressed: () => setState(() {
-                                      failures.remove(page);
-                                    }),
-                                    child: const Text('队列读取失败，重试'),
-                                  ),
-                          );
-                        }
-                        return Material(
-                          color: repo.current?.id == video.id
-                              ? Paper.of(context).soft
-                              : Colors.transparent,
-                          child: InkWell(
-                            key: Key('queue-video-${video.id}'),
-                            onTap: busy
-                                ? null
-                                : () => action(
-                                    () => widget.onPick(video.id),
-                                    close: true,
-                                  ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 6,
-                              ),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 27,
-                                    child: Text(
-                                      '${index + 1}',
-                                      style: const TextStyle(fontSize: 12),
+                            );
+                          }
+                          return Material(
+                            color: repo.current?.id == video.id
+                                ? Paper.of(context).soft
+                                : Colors.transparent,
+                            child: InkWell(
+                              key: Key('queue-video-${video.id}'),
+                              onTap: busy
+                                  ? null
+                                  : () => action(
+                                      () => widget.onPick(video.id),
+                                      close: true,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 42,
-                                    height: 56,
-                                    child: MediaPoster(video: video),
-                                  ),
-                                  const SizedBox(width: 13),
-                                  Expanded(
-                                    child: Text(
-                                      video.displayTitle,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                  horizontal: 6,
+                                ),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 27,
+                                      child: Text(
+                                        '${index + 1}',
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
                                     ),
-                                  ),
-                                  if (repo.current?.id == video.id)
-                                    const Text(
-                                      '当前',
-                                      style: TextStyle(fontSize: 12),
+                                    SizedBox(
+                                      width: 42,
+                                      height: 56,
+                                      child: MediaPoster(video: video),
                                     ),
-                                ],
+                                    const SizedBox(width: 13),
+                                    Expanded(
+                                      child: Text(
+                                        video.displayTitle,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    if (repo.current?.id == video.id)
+                                      const Text(
+                                        '当前',
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        }, childCount: total),
+                      ),
+                    SliverToBoxAdapter(
+                      child: note('打标签不会改变本次预览范围；返回后按最新标签更新结果。'),
                     ),
-            ),
-            note('打标签不会改变本次预览范围；返回后按最新标签更新结果。'),
-          ],
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

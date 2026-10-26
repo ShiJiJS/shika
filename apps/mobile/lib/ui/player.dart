@@ -1013,144 +1013,192 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     if (_controls) _scheduleHide();
   }
 
+  ({bool stacked, bool separateSpeed, double height}) _inlineLayout(
+    VideoPlayerValue value,
+    Duration position,
+    double width,
+  ) {
+    final style = DefaultTextStyle.of(context).style.copyWith(fontSize: 12);
+    double measure(String text) {
+      final painter = TextPainter(
+        text: TextSpan(text: text, style: style),
+        textDirection: Directionality.of(context),
+        textScaler: MediaQuery.textScalerOf(context),
+        maxLines: 1,
+      )..layout();
+      final result = painter.width;
+      painter.dispose();
+      return result;
+    }
+
+    final timeWidth = measure(
+      '${timeLabel(position)} / ${timeLabel(value.duration)}',
+    );
+    // Reserve the widest speed label so selecting a speed does not move the track.
+    final speedWidth = measure('1.5×') + 35;
+    final toggleWidth = (measure('暂停') + 12).clamp(40.0, double.infinity);
+    final innerWidth = width - 32;
+    final stacked = toggleWidth + 88 + timeWidth + speedWidth > innerWidth;
+    final separateSpeed = stacked && timeWidth + 8 + speedWidth > innerWidth;
+    return (
+      stacked: stacked,
+      separateSpeed: separateSpeed,
+      height: 48.0 * (stacked ? (separateSpeed ? 3 : 2) : 1),
+    );
+  }
+
   Widget _inlineControlBar(
     VideoPlayerValue value,
     Duration position,
-  ) => Positioned(
-    // Sibling hints can disappear while the speed popup is open.
-    key: const Key('playback-controls-layer'),
-    left: 10,
-    right: 10,
-    bottom: 12,
-    height: 48,
-    child: IgnorePointer(
-      ignoring: !_controls,
-      child: AnimatedOpacity(
-        opacity: _controls ? 1 : 0,
-        duration: const Duration(milliseconds: 160),
-        child: Container(
-          key: const Key('playback-controls'),
-          padding: const EdgeInsets.symmetric(horizontal: 6),
-          decoration: BoxDecoration(
-            color: const Color(0xff0d110e).withValues(alpha: .94),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Row(
-            children: [
-              TextButton(
-                onPressed: _togglePlayback,
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(40, 44),
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  textStyle: const TextStyle(fontSize: 12),
-                ),
-                child: Text(_playRequested ? '暂停' : '播放'),
+    ({bool stacked, bool separateSpeed, double height}) layout,
+  ) {
+    final toggle = TextButton(
+      onPressed: _togglePlayback,
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.white,
+        minimumSize: const Size(40, 44),
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        textStyle: const TextStyle(fontSize: 12),
+      ),
+      child: Text(_playRequested ? '暂停' : '播放'),
+    );
+    final track = Expanded(
+      child: LayoutBuilder(
+        builder: (context, constraints) => GestureDetector(
+          key: const Key('video-progress-touch'),
+          behavior: HitTestBehavior.opaque,
+          onHorizontalDragStart: !widget.interactionsEnabled
+              ? null
+              : (_) => _startSeek(),
+          onHorizontalDragUpdate: (details) =>
+              _moveSeek(details, track: true, trackWidth: constraints.maxWidth),
+          onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
+          onHorizontalDragCancel: () => unawaited(_finishSeek(cancel: true)),
+          child: SizedBox(
+            height: 48,
+            child: SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                trackHeight: 2,
+                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
+                overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
               ),
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) => GestureDetector(
-                    key: const Key('video-progress-touch'),
-                    behavior: HitTestBehavior.opaque,
-                    onHorizontalDragStart: !widget.interactionsEnabled
-                        ? null
-                        : (_) => _startSeek(),
-                    onHorizontalDragUpdate: (details) => _moveSeek(
-                      details,
-                      track: true,
-                      trackWidth: constraints.maxWidth,
-                    ),
-                    onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
-                    onHorizontalDragCancel: () =>
-                        unawaited(_finishSeek(cancel: true)),
-                    child: SizedBox(
-                      height: 48,
-                      child: SliderTheme(
-                        data: SliderTheme.of(context).copyWith(
-                          trackHeight: 2,
-                          thumbShape: const RoundSliderThumbShape(
-                            enabledThumbRadius: 7,
-                          ),
-                          overlayShape: const RoundSliderOverlayShape(
-                            overlayRadius: 12,
-                          ),
-                        ),
-                        child: IgnorePointer(
-                          child: Slider(
-                            key: const Key('video-progress'),
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            activeColor: const Color(0xffb9cba9),
-                            inactiveColor: Colors.white38,
-                            min: 0,
-                            max: value.duration.inMilliseconds > 0
-                                ? value.duration.inMilliseconds.toDouble()
-                                : 1,
-                            value: position.inMilliseconds.toDouble().clamp(
-                              0,
-                              value.duration.inMilliseconds > 0
-                                  ? value.duration.inMilliseconds.toDouble()
-                                  : 1,
-                            ),
-                            onChanged: (_) {},
-                          ),
-                        ),
-                      ),
-                    ),
+              child: IgnorePointer(
+                child: Slider(
+                  key: const Key('video-progress'),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  activeColor: const Color(0xffb9cba9),
+                  inactiveColor: Colors.white38,
+                  min: 0,
+                  max: value.duration.inMilliseconds > 0
+                      ? value.duration.inMilliseconds.toDouble()
+                      : 1,
+                  value: position.inMilliseconds.toDouble().clamp(
+                    0,
+                    value.duration.inMilliseconds > 0
+                        ? value.duration.inMilliseconds.toDouble()
+                        : 1,
                   ),
+                  onChanged: (_) {},
                 ),
               ),
+            ),
+          ),
+        ),
+      ),
+    );
+    final time = Text(
+      '${timeLabel(position)} / ${timeLabel(value.duration)}',
+      key: const Key('playback-time'),
+      style: const TextStyle(color: Colors.white, fontSize: 12),
+    );
+    final speed = PopupMenuButton<double>(
+      tooltip: '播放速度',
+      initialValue: value.playbackSpeed,
+      onOpened: () => _hideTimer?.cancel(),
+      onCanceled: _scheduleHide,
+      onSelected: (speed) {
+        widget.onSpeedChanged?.call(speed);
+        _setSpeed(speed);
+        _scheduleHide();
+      },
+      itemBuilder: (_) => [.5, 1.0, 1.5, 2.0]
+          .map((speed) => PopupMenuItem(value: speed, child: Text('$speed×')))
+          .toList(),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10, right: 4),
+        child: SizedBox(
+          height: 48,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
               Text(
-                '${timeLabel(position)} / ${timeLabel(value.duration)}',
-                key: const Key('playback-time'),
+                '${value.playbackSpeed.toString().replaceFirst(RegExp(r'\.0$'), '')}×',
                 style: const TextStyle(color: Colors.white, fontSize: 12),
               ),
-              PopupMenuButton<double>(
-                tooltip: '播放速度',
-                initialValue: value.playbackSpeed,
-                onOpened: () => _hideTimer?.cancel(),
-                onCanceled: _scheduleHide,
-                onSelected: (speed) {
-                  widget.onSpeedChanged?.call(speed);
-                  _setSpeed(speed);
-                  _scheduleHide();
-                },
-                itemBuilder: (_) => [.5, 1.0, 1.5, 2.0]
-                    .map(
-                      (speed) =>
-                          PopupMenuItem(value: speed, child: Text('$speed×')),
-                    )
-                    .toList(),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 4),
-                  child: SizedBox(
-                    height: 48,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '${value.playbackSpeed.toString().replaceFirst(RegExp(r'\.0$'), '')}×',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        const Icon(
-                          Icons.expand_more,
-                          size: 17,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              const SizedBox(width: 4),
+              const Icon(Icons.expand_more, size: 17, color: Colors.white),
             ],
           ),
         ),
       ),
-    ),
-  );
+    );
+    return Positioned(
+      // Keep the speed popup independent of hints appearing above the bar.
+      key: const Key('playback-controls-layer'),
+      left: 10,
+      right: 10,
+      bottom: 12,
+      height: layout.height,
+      child: IgnorePointer(
+        ignoring: !_controls,
+        child: AnimatedOpacity(
+          opacity: _controls ? 1 : 0,
+          duration: const Duration(milliseconds: 160),
+          child: Container(
+            key: const Key('playback-controls'),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            decoration: BoxDecoration(
+              color: const Color(0xff0d110e).withValues(alpha: .94),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: layout.stacked
+                ? Column(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        child: Row(children: [toggle, track]),
+                      ),
+                      if (layout.separateSpeed) ...[
+                        SizedBox(
+                          height: 48,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: time,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 48,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: speed,
+                          ),
+                        ),
+                      ] else
+                        SizedBox(
+                          height: 48,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [time, speed],
+                          ),
+                        ),
+                    ],
+                  )
+                : Row(children: [toggle, track, time, speed]),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   void didUpdateWidget(PlayerSurface oldWidget) {
@@ -1196,353 +1244,386 @@ class _PlayerSurfaceState extends State<PlayerSurface>
       final position = Duration(
         milliseconds: (_seeking ? _seekMs : v.position.inMilliseconds).round(),
       );
-      return Semantics(
-        label: widget.name,
-        value: '${_playRequested ? '正在播放' : '已暂停'}，${v.playbackSpeed}倍速',
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Listener(
-                onPointerCancel: (_) {
-                  _endBoost();
-                  if (_seeking) unawaited(_finishSeek(cancel: true));
-                  _finishLevel();
-                },
-                child: GestureDetector(
-                  key: const Key('video-gesture-surface'),
-                  behavior: HitTestBehavior.opaque,
-                  onTap: !widget.interactionsEnabled
-                      ? null
-                      : () {
-                          if (widget.fullscreen) {
-                            setState(() => _controls = !_controls);
-                            if (_controls) _scheduleHide();
-                          } else {
-                            _togglePlayback();
-                          }
-                        },
-                  onLongPressStart: !widget.interactionsEnabled
-                      ? null
-                      : (_) => _startBoost(),
-                  onLongPressEnd: (_) => _endBoost(),
-                  onLongPressCancel: _endBoost,
-                  onHorizontalDragStart: !widget.interactionsEnabled
-                      ? null
-                      : (_) => _startSeek(),
-                  onHorizontalDragUpdate: _moveSeek,
-                  onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
-                  onHorizontalDragCancel: () =>
-                      unawaited(_finishSeek(cancel: true)),
-                  onVerticalDragStart: widget.fullscreen ? _startLevel : null,
-                  onVerticalDragUpdate: widget.fullscreen ? _moveLevel : null,
-                  onVerticalDragEnd: widget.fullscreen
-                      ? (_) => _finishLevel()
-                      : null,
-                  onVerticalDragCancel: widget.fullscreen ? _finishLevel : null,
-                  child: Center(
-                    child: AspectRatio(
-                      aspectRatio: v.aspectRatio,
-                      child: VideoPlayer(
-                        controller,
-                        key: const Key('actual-video'),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            if (widget.inlineControls && !_playRequested)
-              Positioned.fill(
-                child: Center(
-                  child: IconButton(
-                    key: const Key('inline-play'),
-                    tooltip: '播放视频',
-                    style: IconButton.styleFrom(
-                      backgroundColor: Paper.background.withValues(alpha: .94),
-                      foregroundColor: Paper.olive,
-                      minimumSize: const Size(60, 60),
-                      shape: const CircleBorder(),
-                    ),
-                    onPressed: widget.interactionsEnabled
-                        ? _togglePlayback
-                        : null,
-                    icon: const Icon(Icons.play_arrow_outlined, size: 32),
-                  ),
-                ),
-              ),
-            if (widget.footer != null)
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 160),
-                left: 16,
-                right: widget.onFullscreen == null ? 16 : 82,
-                bottom: _controls ? 62 : 28,
-                child: widget.footer!,
-              ),
-            if (_previousSpeed != null || _feedback != null)
-              Positioned(
-                top: widget.fullscreen ? 60 : 18,
-                left: 0,
-                right: 0,
-                child: IgnorePointer(
-                  child: Center(
-                    child: Container(
-                      key: Key(
-                        _previousSpeed != null
-                            ? 'hold-speed-hint'
-                            : 'device-level-hint',
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: .55),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        _previousSpeed != null ? '2× 快进中' : _feedback!,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          final inlineLayout = _inlineLayout(v, position, constraints.maxWidth);
+          return Semantics(
+            label: widget.name,
+            value: '${_playRequested ? '正在播放' : '已暂停'}，${v.playbackSpeed}倍速',
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Listener(
+                    onPointerCancel: (_) {
+                      _endBoost();
+                      if (_seeking) unawaited(_finishSeek(cancel: true));
+                      _finishLevel();
+                    },
+                    child: GestureDetector(
+                      key: const Key('video-gesture-surface'),
+                      behavior: HitTestBehavior.opaque,
+                      onTap: !widget.interactionsEnabled
+                          ? null
+                          : () {
+                              if (widget.fullscreen) {
+                                setState(() => _controls = !_controls);
+                                if (_controls) _scheduleHide();
+                              } else {
+                                _togglePlayback();
+                              }
+                            },
+                      onLongPressStart: !widget.interactionsEnabled
+                          ? null
+                          : (_) => _startBoost(),
+                      onLongPressEnd: (_) => _endBoost(),
+                      onLongPressCancel: _endBoost,
+                      onHorizontalDragStart: !widget.interactionsEnabled
+                          ? null
+                          : (_) => _startSeek(),
+                      onHorizontalDragUpdate: _moveSeek,
+                      onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
+                      onHorizontalDragCancel: () =>
+                          unawaited(_finishSeek(cancel: true)),
+                      onVerticalDragStart: widget.fullscreen
+                          ? _startLevel
+                          : null,
+                      onVerticalDragUpdate: widget.fullscreen
+                          ? _moveLevel
+                          : null,
+                      onVerticalDragEnd: widget.fullscreen
+                          ? (_) => _finishLevel()
+                          : null,
+                      onVerticalDragCancel: widget.fullscreen
+                          ? _finishLevel
+                          : null,
+                      child: Center(
+                        child: AspectRatio(
+                          aspectRatio: v.aspectRatio,
+                          child: VideoPlayer(
+                            controller,
+                            key: const Key('actual-video'),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            if (widget.onFullscreen != null)
-              Positioned(
-                right: 12,
-                bottom: _controls ? 66 : 32,
-                child: FilledButton.tonalIcon(
-                  style: FilledButton.styleFrom(
-                    backgroundColor:
-                        (widget.inlineControls
-                                ? Paper.background
-                                : Paper.of(context).background)
-                            .withValues(alpha: .9),
-                    foregroundColor: widget.inlineControls
-                        ? Paper.olive
-                        : Paper.of(context).ink,
-                    shape: widget.inlineControls
-                        ? RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7),
-                          )
-                        : const StadiumBorder(),
-                    minimumSize: const Size(74, 36),
-                    padding: const EdgeInsets.symmetric(horizontal: 13),
-                  ),
-                  onPressed: widget.onFullscreen,
-                  icon: const Icon(Icons.fullscreen, size: 19),
-                  label: Text(widget.inlineControls ? '横向全屏' : '横屏'),
-                ),
-              ),
-            if (widget.fullscreen)
-              Positioned(
-                top: 6,
-                left: 8,
-                right: 12,
-                child: SafeArea(
-                  bottom: false,
-                  child: IgnorePointer(
-                    ignoring: !_controls,
-                    child: AnimatedOpacity(
-                      opacity: _controls ? 1 : 0,
-                      duration: const Duration(milliseconds: 160),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            key: const Key('fullscreen-exit'),
-                            tooltip: '退出全屏',
-                            onPressed: widget.onExit,
-                            style: IconButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              foregroundColor: Colors.white,
-                            ),
-                            icon: const Icon(
-                              Icons.arrow_back_ios_new,
-                              size: 22,
-                            ),
+                if (widget.inlineControls && !_playRequested)
+                  Positioned.fill(
+                    child: Center(
+                      child: IconButton(
+                        key: const Key('inline-play'),
+                        tooltip: '播放视频',
+                        style: IconButton.styleFrom(
+                          backgroundColor: Paper.background.withValues(
+                            alpha: .94,
                           ),
-                        ],
+                          foregroundColor: Paper.olive,
+                          minimumSize: const Size(60, 60),
+                          shape: const CircleBorder(),
+                        ),
+                        onPressed: widget.interactionsEnabled
+                            ? _togglePlayback
+                            : null,
+                        icon: const Icon(Icons.play_arrow_outlined, size: 32),
                       ),
                     ),
                   ),
-                ),
-              ),
-            if (widget.inlineControls)
-              _inlineControlBar(v, position)
-            else
-              Positioned(
-                key: const Key('playback-controls-layer'),
-                left: 0,
-                right: 0,
-                bottom: 0,
-                height: _controls ? 56 : 26,
-                child: GestureDetector(
-                  key: const Key('video-progress-touch'),
-                  behavior: HitTestBehavior.opaque,
-                  onHorizontalDragStart: !widget.interactionsEnabled
-                      ? null
-                      : (_) => _startSeek(),
-                  onHorizontalDragUpdate: (d) => _moveSeek(d, track: true),
-                  onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
-                  onHorizontalDragCancel: () =>
-                      unawaited(_finishSeek(cancel: true)),
-                  child: ClipRect(
-                    child: OverflowBox(
-                      alignment: Alignment.bottomCenter,
-                      minHeight: 56,
-                      maxHeight: 56,
+                if (widget.footer != null)
+                  AnimatedPositioned(
+                    duration: const Duration(milliseconds: 160),
+                    left: 16,
+                    right: widget.onFullscreen == null ? 16 : 82,
+                    bottom: _controls ? 62 : 28,
+                    child: widget.footer!,
+                  ),
+                if (_previousSpeed != null || _feedback != null)
+                  Positioned(
+                    top: widget.fullscreen ? 60 : 18,
+                    left: 0,
+                    right: 0,
+                    child: IgnorePointer(
+                      child: Center(
+                        child: Container(
+                          key: Key(
+                            _previousSpeed != null
+                                ? 'hold-speed-hint'
+                                : 'device-level-hint',
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: .55),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            _previousSpeed != null ? '2× 快进中' : _feedback!,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                if (widget.onFullscreen != null)
+                  Positioned(
+                    right: 12,
+                    bottom: _controls
+                        ? (widget.inlineControls
+                              ? inlineLayout.height + 18
+                              : 66)
+                        : 32,
+                    child: FilledButton.tonalIcon(
+                      style: FilledButton.styleFrom(
+                        backgroundColor:
+                            (widget.inlineControls
+                                    ? Paper.background
+                                    : Paper.of(context).background)
+                                .withValues(alpha: .9),
+                        foregroundColor: widget.inlineControls
+                            ? Paper.olive
+                            : Paper.of(context).ink,
+                        shape: widget.inlineControls
+                            ? RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(7),
+                              )
+                            : const StadiumBorder(),
+                        minimumSize: const Size(74, 36),
+                        padding: const EdgeInsets.symmetric(horizontal: 13),
+                      ),
+                      onPressed: widget.onFullscreen,
+                      icon: const Icon(Icons.fullscreen, size: 19),
+                      label: Text(widget.inlineControls ? '横向全屏' : '横屏'),
+                    ),
+                  ),
+                if (widget.fullscreen)
+                  Positioned(
+                    top: 6,
+                    left: 8,
+                    right: 12,
+                    child: SafeArea(
+                      bottom: false,
                       child: IgnorePointer(
                         ignoring: !_controls,
                         child: AnimatedOpacity(
                           opacity: _controls ? 1 : 0,
                           duration: const Duration(milliseconds: 160),
-                          child: Container(
-                            key: const Key('playback-controls'),
-                            decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [Colors.transparent, Color(0x75000000)],
+                          child: Row(
+                            children: [
+                              IconButton(
+                                key: const Key('fullscreen-exit'),
+                                tooltip: '退出全屏',
+                                onPressed: widget.onExit,
+                                style: IconButton.styleFrom(
+                                  backgroundColor: Colors.transparent,
+                                  foregroundColor: Colors.white,
+                                ),
+                                icon: const Icon(
+                                  Icons.arrow_back_ios_new,
+                                  size: 22,
+                                ),
                               ),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 28,
-                                  child: Row(
-                                    children: [
-                                      if (widget.fullscreen ||
-                                          widget.inlineControls)
-                                        IconButton(
-                                          tooltip: _playRequested ? '暂停' : '播放',
-                                          constraints: const BoxConstraints(
-                                            minWidth: 30,
-                                            minHeight: 28,
-                                          ),
-                                          padding: EdgeInsets.zero,
-                                          onPressed: () {
-                                            _togglePlayback();
-                                            _scheduleHide();
-                                          },
-                                          icon: Icon(
-                                            _playRequested
-                                                ? Icons.pause
-                                                : Icons.play_arrow,
-                                            color: Colors.white,
-                                            size: 20,
-                                          ),
-                                        ),
-                                      Expanded(
-                                        child: Text(
-                                          '${timeLabel(position)} / ${timeLabel(v.duration)}',
-                                          key: const Key('playback-time'),
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ),
-                                      PopupMenuButton<double>(
-                                        tooltip: '播放速度',
-                                        initialValue: v.playbackSpeed,
-                                        onOpened: () => _hideTimer?.cancel(),
-                                        onCanceled: _scheduleHide,
-                                        onSelected: (speed) {
-                                          widget.onSpeedChanged?.call(speed);
-                                          _setSpeed(speed);
-                                          _scheduleHide();
-                                        },
-                                        itemBuilder: (_) => [.5, 1.0, 1.5, 2.0]
-                                            .map(
-                                              (speed) => PopupMenuItem(
-                                                value: speed,
-                                                child: Text('$speed×'),
-                                              ),
-                                            )
-                                            .toList(),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
-                                          ),
-                                          child: Text(
-                                            '${v.playbackSpeed}×',
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                if (widget.inlineControls)
+                  _inlineControlBar(v, position, inlineLayout)
+                else
+                  Positioned(
+                    key: const Key('playback-controls-layer'),
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    height: _controls ? 56 : 26,
+                    child: GestureDetector(
+                      key: const Key('video-progress-touch'),
+                      behavior: HitTestBehavior.opaque,
+                      onHorizontalDragStart: !widget.interactionsEnabled
+                          ? null
+                          : (_) => _startSeek(),
+                      onHorizontalDragUpdate: (d) => _moveSeek(d, track: true),
+                      onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
+                      onHorizontalDragCancel: () =>
+                          unawaited(_finishSeek(cancel: true)),
+                      child: ClipRect(
+                        child: OverflowBox(
+                          alignment: Alignment.bottomCenter,
+                          minHeight: 56,
+                          maxHeight: 56,
+                          child: IgnorePointer(
+                            ignoring: !_controls,
+                            child: AnimatedOpacity(
+                              opacity: _controls ? 1 : 0,
+                              duration: const Duration(milliseconds: 160),
+                              child: Container(
+                                key: const Key('playback-controls'),
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.transparent,
+                                      Color(0x75000000),
                                     ],
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 28,
-                                  child: SliderTheme(
-                                    data: SliderTheme.of(context).copyWith(
-                                      trackHeight: 2,
-                                      thumbShape: const RoundSliderThumbShape(
-                                        enabledThumbRadius: 4,
-                                      ),
-                                      overlayShape:
-                                          const RoundSliderOverlayShape(
-                                            overlayRadius: 8,
-                                          ),
-                                    ),
-                                    child: IgnorePointer(
-                                      child: Slider(
-                                        key: const Key('video-progress'),
-                                        activeColor: Colors.white,
-                                        inactiveColor: Colors.white38,
-                                        min: 0,
-                                        max: v.duration.inMilliseconds > 0
-                                            ? v.duration.inMilliseconds
-                                                  .toDouble()
-                                            : 1,
-                                        value: position.inMilliseconds
-                                            .toDouble()
-                                            .clamp(
-                                              0,
-                                              v.duration.inMilliseconds > 0
-                                                  ? v.duration.inMilliseconds
-                                                        .toDouble()
-                                                  : 1,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 28,
+                                      child: Row(
+                                        children: [
+                                          if (widget.fullscreen ||
+                                              widget.inlineControls)
+                                            IconButton(
+                                              tooltip: _playRequested
+                                                  ? '暂停'
+                                                  : '播放',
+                                              constraints: const BoxConstraints(
+                                                minWidth: 30,
+                                                minHeight: 28,
+                                              ),
+                                              padding: EdgeInsets.zero,
+                                              onPressed: () {
+                                                _togglePlayback();
+                                                _scheduleHide();
+                                              },
+                                              icon: Icon(
+                                                _playRequested
+                                                    ? Icons.pause
+                                                    : Icons.play_arrow,
+                                                color: Colors.white,
+                                                size: 20,
+                                              ),
                                             ),
-                                        onChangeStart: (_) => _startSeek(),
-                                        onChanged: (value) {
-                                          if (_seeking) {
-                                            setState(() => _seekMs = value);
-                                          } else {
-                                            unawaited(
-                                              controller.seekTo(
-                                                Duration(
-                                                  milliseconds: value.round(),
+                                          Expanded(
+                                            child: Text(
+                                              '${timeLabel(position)} / ${timeLabel(v.duration)}',
+                                              key: const Key('playback-time'),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                          PopupMenuButton<double>(
+                                            tooltip: '播放速度',
+                                            initialValue: v.playbackSpeed,
+                                            onOpened: () =>
+                                                _hideTimer?.cancel(),
+                                            onCanceled: _scheduleHide,
+                                            onSelected: (speed) {
+                                              widget.onSpeedChanged?.call(
+                                                speed,
+                                              );
+                                              _setSpeed(speed);
+                                              _scheduleHide();
+                                            },
+                                            itemBuilder: (_) =>
+                                                [.5, 1.0, 1.5, 2.0]
+                                                    .map(
+                                                      (speed) => PopupMenuItem(
+                                                        value: speed,
+                                                        child: Text('$speed×'),
+                                                      ),
+                                                    )
+                                                    .toList(),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 8,
+                                                  ),
+                                              child: Text(
+                                                '${v.playbackSpeed}×',
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
                                                 ),
                                               ),
-                                            );
-                                          }
-                                        },
-                                        onChangeEnd: (_) =>
-                                            unawaited(_finishSeek()),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ),
+                                    SizedBox(
+                                      height: 28,
+                                      child: SliderTheme(
+                                        data: SliderTheme.of(context).copyWith(
+                                          trackHeight: 2,
+                                          thumbShape:
+                                              const RoundSliderThumbShape(
+                                                enabledThumbRadius: 4,
+                                              ),
+                                          overlayShape:
+                                              const RoundSliderOverlayShape(
+                                                overlayRadius: 8,
+                                              ),
+                                        ),
+                                        child: IgnorePointer(
+                                          child: Slider(
+                                            key: const Key('video-progress'),
+                                            activeColor: Colors.white,
+                                            inactiveColor: Colors.white38,
+                                            min: 0,
+                                            max: v.duration.inMilliseconds > 0
+                                                ? v.duration.inMilliseconds
+                                                      .toDouble()
+                                                : 1,
+                                            value: position.inMilliseconds
+                                                .toDouble()
+                                                .clamp(
+                                                  0,
+                                                  v.duration.inMilliseconds > 0
+                                                      ? v
+                                                            .duration
+                                                            .inMilliseconds
+                                                            .toDouble()
+                                                      : 1,
+                                                ),
+                                            onChangeStart: (_) => _startSeek(),
+                                            onChanged: (value) {
+                                              if (_seeking) {
+                                                setState(() => _seekMs = value);
+                                              } else {
+                                                unawaited(
+                                                  controller.seekTo(
+                                                    Duration(
+                                                      milliseconds: value
+                                                          .round(),
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            onChangeEnd: (_) =>
+                                                unawaited(_finishSeek()),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-          ],
-        ),
+              ],
+            ),
+          );
+        },
       );
     },
   );
