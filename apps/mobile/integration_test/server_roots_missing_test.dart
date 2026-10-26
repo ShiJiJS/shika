@@ -125,6 +125,35 @@ void main() {
           () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
           'reads settled',
         );
+        await t.pumpAndSettle();
+        final media = MediaQuery.of(
+          t.element(find.byKey(const Key('app-shell')).first),
+        );
+        final rects = <String, List<double>>{};
+        for (final key in [
+          'missing-header',
+          'missing-list',
+          'clear-missing-kind',
+          'missing-confirm',
+          'missing-cleanup-task',
+        ]) {
+          final target = find.byKey(Key(key));
+          if (target.evaluate().isNotEmpty) {
+            final r = t.getRect(target.first);
+            rects[key] = [r.left, r.top, r.width, r.height];
+          }
+        }
+        debugPrint(
+          'MISSING_METRICS:${jsonEncode({
+            'state': state,
+            'window': [media.size.width, media.size.height],
+            'dpr': media.devicePixelRatio,
+            'viewPadding': [media.viewPadding.left, media.viewPadding.top, media.viewPadding.right, media.viewPadding.bottom],
+            'text13': media.textScaler.scale(13),
+            'dark': preferences.dark,
+            'rects': rects,
+          })}',
+        );
         await fixture('/__fixture/checkpoint/$state');
         await t.pump(const Duration(seconds: 1));
         expect(t.takeException(), isNull);
