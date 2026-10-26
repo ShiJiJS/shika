@@ -472,28 +472,13 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
               ],
             ),
           if (data.error.isNotEmpty && data.items.isNotEmpty)
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Text(
-                      '当前列表已保留：${data.error}',
-                      style: TextStyle(color: p.danger, fontSize: 12),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  key: const Key('library-return-retry'),
-                  onPressed: () => data.retryRestore || pendingReturn != null
-                      ? load(restore: pendingReturn == null)
-                      : load(
-                          more: !data.beforeFailure,
-                          before: data.beforeFailure,
-                        ),
-                  child: const Text('重试'),
-                ),
-              ],
+            MediaCatalogFailure(
+              message: data.error,
+              side: recent ? 20 : 16,
+              retryKey: const Key('library-return-retry'),
+              onRetry: () => data.retryRestore || pendingReturn != null
+                  ? load(restore: pendingReturn == null)
+                  : load(more: !data.beforeFailure, before: data.beforeFailure),
             ),
           Expanded(
             child: data.loading && data.items.isEmpty

@@ -385,6 +385,42 @@ void main() {
     },
   );
 
+  for (final kind in MediaKind.values) {
+    testWidgets(
+      '${kind.name} short landscape search keeps room for keyboard and restores navigation',
+      (t) async {
+        t.view.devicePixelRatio = 1;
+        t.view.physicalSize = const Size(844, 390);
+        addTearDown(() {
+          t.view.resetDevicePixelRatio();
+          t.view.resetPhysicalSize();
+          t.view.resetViewInsets();
+        });
+        await t.pumpWidget(VideoViewerApp(repository: repo));
+        await frames(t);
+        if (kind == MediaKind.pack) {
+          await tap(t, find.byKey(const Key('kind-pack')));
+        }
+        final field = find.byKey(Key('${kind.name}-search'));
+        t.view.viewInsets = const FakeViewPadding(bottom: 280);
+        await t.enterText(field, kind == MediaKind.video ? '花间微风' : '春日');
+        await frames(t);
+        expect(find.byKey(const Key('app-navigation')), findsNothing);
+        expect(find.text('媒体库'), findsNothing);
+        expect(t.takeException(), isNull);
+        final value = t.widget<TextField>(field).controller!.text;
+        FocusManager.instance.primaryFocus?.unfocus();
+        t.view.viewInsets = const FakeViewPadding();
+        await frames(t);
+        expect(find.byKey(const Key('app-navigation')), findsOneWidget);
+        expect(t.widget<TextField>(field).controller!.text, value);
+        expect(t.takeException(), isNull);
+        await t.pumpWidget(const SizedBox());
+        await frames(t);
+      },
+    );
+  }
+
   for (final sample in [
     (const Size(390, 844), 1.0),
     (const Size(360, 740), 2.0),

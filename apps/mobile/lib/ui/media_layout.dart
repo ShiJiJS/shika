@@ -128,6 +128,37 @@ class MediaGridGeometry {
       columns != next.columns || stride != next.stride;
 }
 
+/// A retained list failure uses the same readable gutter and retry treatment.
+class MediaCatalogFailure extends StatelessWidget {
+  const MediaCatalogFailure({
+    super.key,
+    required this.message,
+    required this.retryKey,
+    required this.onRetry,
+    this.side = 16,
+  });
+  final String message;
+  final Key retryKey;
+  final VoidCallback? onRetry;
+  final double side;
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: side, vertical: 8),
+    child: Row(
+      children: [
+        Expanded(
+          child: Text(
+            '当前列表已保留：$message',
+            style: TextStyle(fontSize: 12, color: Paper.of(context).danger),
+          ),
+        ),
+        const SizedBox(width: 8),
+        TextButton(key: retryKey, onPressed: onRetry, child: const Text('重试')),
+      ],
+    ),
+  );
+}
+
 /// Both media catalogs use the same reference search geometry. Taller system
 /// text grows the field rather than clipping or reducing its type size.
 class MediaCatalogSearch extends StatelessWidget {

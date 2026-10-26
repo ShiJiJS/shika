@@ -1115,21 +1115,17 @@ class PackCatalogPageState extends State<PackCatalogPage> {
           if (data.loading && data.items.isNotEmpty)
             const LinearProgressIndicator(minHeight: 2),
           if (data.error.isNotEmpty && data.items.isNotEmpty)
-            Row(
-              children: [
-                Expanded(child: note('当前列表已保留：${data.error}')),
-                TextButton(
-                  key: const Key('pack-list-retry'),
-                  onPressed: data.loading
-                      ? null
-                      : () => load(
-                          more: data.retryMore,
-                          before: data.retryBefore,
-                          restore: data.retryRestore,
-                        ),
-                  child: const Text('重试'),
-                ),
-              ],
+            MediaCatalogFailure(
+              message: data.error,
+              side: recent ? 20 : 16,
+              retryKey: const Key('pack-list-retry'),
+              onRetry: data.loading
+                  ? null
+                  : () => load(
+                      more: data.retryMore,
+                      before: data.retryBefore,
+                      restore: data.retryRestore,
+                    ),
             ),
           Expanded(
             child:
