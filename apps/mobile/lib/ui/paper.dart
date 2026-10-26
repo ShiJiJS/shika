@@ -231,41 +231,58 @@ class SheetFrame extends StatelessWidget {
     ),
     child: SafeArea(
       top: false,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // A landscape IME can leave only about 114dp above the keyboard.
+          // Keep the focused fields mounted and let actions scroll with them.
+          final compact = constraints.maxHeight < 180;
+          final actions = footer == null
+              ? null
+              : Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: SizedBox(width: double.infinity, child: footer),
+                );
+          return Padding(
+            padding: EdgeInsets.fromLTRB(
+              20,
+              compact ? 4 : 10,
+              20,
+              compact ? 8 : 16,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: Paper.of(context).title.copyWith(fontSize: 21),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: Paper.of(context).title.copyWith(fontSize: 21),
+                      ),
+                    ),
+                    iconAction(
+                      '关闭面板',
+                      Icons.close,
+                      closeEnabled ? () => Navigator.pop(context) : null,
+                    ),
+                  ],
+                ),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ...children,
+                        if (compact && actions != null) actions,
+                      ],
+                    ),
                   ),
                 ),
-                iconAction(
-                  '关闭面板',
-                  Icons.close,
-                  closeEnabled ? () => Navigator.pop(context) : null,
-                ),
+                if (!compact && actions != null) actions,
               ],
             ),
-            Flexible(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: children,
-                ),
-              ),
-            ),
-            if (footer != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: SizedBox(width: double.infinity, child: footer),
-              ),
-          ],
-        ),
+          );
+        },
       ),
     ),
   );

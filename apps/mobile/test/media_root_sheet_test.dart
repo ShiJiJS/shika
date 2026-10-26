@@ -108,6 +108,34 @@ void main() {
     );
   }
   testWidgets(
+    'landscape keyboard keeps the focused input and save reachable without overflow',
+    (t) async {
+      t.view.physicalSize = const Size(844, 390);
+      t.view.devicePixelRatio = 1;
+      addTearDown(t.view.resetPhysicalSize);
+      addTearDown(t.view.resetDevicePixelRatio);
+      addTearDown(t.view.resetViewInsets);
+      await show(t);
+      final input = find.byKey(const Key('root-name'));
+      await t.tap(input);
+      await t.enterText(input, '横屏输入保留');
+      t.view.viewInsets = const FakeViewPadding(bottom: 248);
+      await frames(t);
+      expect(t.takeException(), isNull);
+      expect(t.widget<TextField>(input).controller!.text, '横屏输入保留');
+      expect(FocusManager.instance.primaryFocus?.hasFocus, isTrue);
+      await Scrollable.ensureVisible(t.element(input), alignment: .5);
+      await frames(t);
+      expect(input.hitTestable(), findsOneWidget);
+      await tap(t, find.byKey(const Key('root-save')));
+      expect(find.byKey(const Key('root-error')).hitTestable(), findsOneWidget);
+      expect(repo.calls, 0);
+      t.view.resetViewInsets();
+      await frames(t);
+      expect(t.takeException(), isNull);
+    },
+  );
+  testWidgets(
     'root kind conflict retains input and cancellation has no second write',
     (t) async {
       repo.reject = true;
