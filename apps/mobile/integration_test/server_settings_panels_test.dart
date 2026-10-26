@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:video_viewer/features/settings/default_settings_sheet.dart';
-import 'package:video_viewer/features/settings/media_root_sheet.dart';
 import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/server_repository.dart';
@@ -64,8 +63,9 @@ void main() {
 
     Future<void> tap(Finder target) async {
       await until(() => target.evaluate().isNotEmpty, 'target $target');
-      if (target.hitTestable().evaluate().isEmpty)
+      if (target.hitTestable().evaluate().isEmpty) {
         await t.ensureVisible(target);
+      }
       await until(
         () => target.hitTestable().evaluate().isNotEmpty,
         'visible $target',
@@ -113,8 +113,9 @@ void main() {
       ]) {
         final f = find.byKey(Key(key));
         if (f.evaluate().length == 1 &&
-            f.evaluate().single.renderObject is RenderBox)
+            f.evaluate().single.renderObject is RenderBox) {
           keys[key] = rect(t.getRect(f));
+        }
       }
       final texts = <Map<String, dynamic>>[];
       for (final element in find.byType(Text).evaluate()) {
@@ -146,17 +147,19 @@ void main() {
       await control('/checkpoint/$state', post: true);
       final deadline = DateTime.now().add(const Duration(seconds: 25));
       while ((await control('/state'))['ack'] != true) {
-        if (DateTime.now().isAfter(deadline))
+        if (DateTime.now().isAfter(deadline)) {
           fail('Missing host screenshot: $state');
+        }
         await t.pump(const Duration(milliseconds: 100));
       }
     }
 
     Future<void> settings() async {
-      if (find.byTooltip('返回设置').evaluate().isNotEmpty)
+      if (find.byTooltip('返回设置').evaluate().isNotEmpty) {
         await tap(find.byTooltip('返回设置'));
-      else
+      } else {
         await tap(find.byKey(const Key('nav-settings')));
+      }
       await until(
         () => find.text('服务连接').evaluate().isNotEmpty,
         'settings entry',
@@ -178,14 +181,16 @@ void main() {
       if (find
           .byKey(const Key('default-reader-direction'))
           .evaluate()
-          .isNotEmpty)
+          .isNotEmpty) {
         await tap(find.byKey(const Key('default-reader-direction')));
+      }
       await tap(find.text(label).last);
     }
 
     Future<void> fit(String label) async {
-      if (find.byKey(const Key('default-reader-fit')).evaluate().isNotEmpty)
+      if (find.byKey(const Key('default-reader-fit')).evaluate().isNotEmpty) {
         await tap(find.byKey(const Key('default-reader-fit')));
+      }
       await tap(find.text(label).last);
     }
 
@@ -203,8 +208,9 @@ void main() {
     }
 
     Future<void> rootKind(MediaKind kind) async {
-      if (find.byKey(const Key('root-kind')).evaluate().isNotEmpty)
+      if (find.byKey(const Key('root-kind')).evaluate().isNotEmpty) {
         await tap(find.byKey(const Key('root-kind')));
+      }
       await tap(find.byKey(Key('root-kind-${kind.name}')).last);
     }
 
@@ -216,7 +222,11 @@ void main() {
     await tap(port);
     await t.enterText(port, '0');
     await until(
-      () => MediaQuery.of(t.element(port)).viewInsets.bottom > 0,
+      () =>
+          MediaQuery.of(t.element(find.byKey(const Key('app-shell')).first))
+              .viewInsets
+              .bottom >
+          0,
       'real connection IME',
     );
     await capture('settings-connection-keyboard');
@@ -239,7 +249,7 @@ void main() {
     await t.enterText(find.byKey(const Key('root-name')), '保留目录草稿');
     await until(
       () =>
-          MediaQuery.of(t.element(find.byKey(const Key('root-name'))))
+          MediaQuery.of(t.element(find.byKey(const Key('app-shell')).first))
               .viewInsets
               .bottom >
           0,
@@ -307,8 +317,9 @@ void main() {
     await fit('完整显示');
     await saveDefaults();
     final restored = await repo.api.json('GET', '/api/v1/reading-defaults');
-    for (final field in ['mode', 'direction', 'gap', 'fit'])
+    for (final field in ['mode', 'direction', 'gap', 'fit']) {
       expect(restored[field], readerBefore[field]);
+    }
     await openDefaults(false);
     await capture('settings-reader-restored');
     await tap(find.byTooltip('关闭面板'));
