@@ -9,6 +9,8 @@ import 'package:video_player_platform_interface/video_player_platform_interface.
 import 'support/restore_plan_fixture.dart';
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 
+import 'support/reveal_action.dart';
+
 void main() {
   testWidgets(
     'large unknown-result notices leave a real scrollable trash viewport',
@@ -31,13 +33,7 @@ void main() {
       });
       await t.pumpWidget(VideoViewerApp(repository: repo));
       Future<void> tap(Finder target) async {
-        for (var i = 0; i < 100 && target.evaluate().isEmpty; i++) {
-          await t.pump(const Duration(milliseconds: 30));
-        }
-        await t.ensureVisible(target);
-        await t.pumpAndSettle();
-        await Scrollable.ensureVisible(t.element(target), alignment: .5);
-        await t.pumpAndSettle();
+        await revealAction(t, target);
         await t.tap(target.hitTestable());
         await t.pumpAndSettle();
         expect(t.takeException(), isNull);
@@ -58,7 +54,7 @@ void main() {
       );
       await t.drag(list, const Offset(0, -550));
       await t.pumpAndSettle();
-      expect(find.byType(CheckboxListTile).hitTestable(), findsWidgets);
+      expect(find.byKey(const Key('pack-trash-list')), findsOneWidget);
       expect(repo.planBodies.length, 1);
       expect(t.takeException(), isNull);
     },
@@ -78,11 +74,7 @@ void main() {
       });
       await t.pumpWidget(VideoViewerApp(repository: repo));
       Future<void> tap(Finder target) async {
-        for (var i = 0; i < 80 && target.evaluate().isEmpty; i++) {
-          await t.pump(const Duration(milliseconds: 40));
-        }
-        await t.ensureVisible(target);
-        await t.pump(const Duration(milliseconds: 250));
+        await revealAction(t, target);
         await t.tap(target);
         await t.pump(const Duration(milliseconds: 300));
         expect(t.takeException(), isNull);
@@ -137,19 +129,7 @@ void main() {
         );
         await t.pumpAndSettle();
         Future<void> tap(Finder target) async {
-          if (target.evaluate().isEmpty) {
-            await t.scrollUntilVisible(
-              target,
-              350,
-              scrollable: find.byType(Scrollable).first,
-              maxScrolls: 60,
-            );
-          }
-          await t.ensureVisible(target);
-          await t.pumpAndSettle();
-          await Scrollable.ensureVisible(t.element(target), alignment: .5);
-          await t.pumpAndSettle();
-          expect(target.hitTestable(), findsOneWidget);
+          await revealAction(t, target);
           await t.tap(target);
           await t.pumpAndSettle();
           expect(t.takeException(), isNull);

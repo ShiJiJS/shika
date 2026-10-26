@@ -560,6 +560,7 @@ def main():
                 or args.pack_recovery
                 or args.pack_cleanup
                 or args.pack_trash
+                or args.trash_management
                 or args.pack_purge
                 or args.maintenance_tasks
                 or args.managed_defaults

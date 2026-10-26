@@ -70,7 +70,7 @@ void main() {
         expect(error, isNull);
       }
 
-      Future<void> tap(Finder target) async {
+      Future<void> reveal(Finder target) async {
         for (final direction in [1, -1]) {
           for (var i = 0; target.evaluate().isEmpty && i < 60; i++) {
             final scroll = find.byType(Scrollable).hitTestable();
@@ -83,10 +83,16 @@ void main() {
         await until(() => target.evaluate().isNotEmpty, 'target exists');
         await t.ensureVisible(target);
         await t.pump(const Duration(milliseconds: 180));
+        await Scrollable.ensureVisible(t.element(target), alignment: .5);
+        await t.pump(const Duration(milliseconds: 180));
         await until(
           () => target.hitTestable().evaluate().isNotEmpty,
           'visible target',
         );
+      }
+
+      Future<void> tap(Finder target) async {
+        await reveal(target);
         await t.tap(target);
         await t.pump(const Duration(milliseconds: 250));
       }
@@ -267,12 +273,12 @@ void main() {
         'keyboard hidden',
       );
       await tap(find.byKey(const Key('pack-trash-select-all')));
-      await until(() => find.text('已选 27').evaluate().isNotEmpty, 'all IDs');
+      await reveal(find.text('已选 27'));
       await tap(find.byKey(Key('pack-trash-item-$excluded')));
       await tap(find.byKey(const Key('pack-trash-next')));
       await until(() => find.text('2 / 2').evaluate().isNotEmpty, 'page two');
       await shot('paged');
-      await t.ensureVisible(find.byKey(const Key('pack-trash-restore')));
+      await reveal(find.byKey(const Key('pack-trash-restore')));
       await t.pumpAndSettle();
       expect(find.text('已选 26'), findsOneWidget);
       await shot('selected');

@@ -8,6 +8,8 @@ import 'package:video_viewer/main.dart';
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 import 'support/pack_trash_fixture.dart';
 
+import 'support/reveal_action.dart';
+
 class GatedTrash extends TrashLibrary {
   bool unavailable = false;
   @override
@@ -32,6 +34,8 @@ void main() {
   for (final sample in [
     (const Size(390, 844), 1.0),
     (const Size(360, 740), 2.0),
+    (const Size(844, 390), 1.0),
+    (const Size(844, 390), 2.0),
   ]) {
     for (final scenario in ['restore', 'unknown', 'gate', 'page-error']) {
       testWidgets(
@@ -76,10 +80,7 @@ void main() {
           }
 
           Future<void> tap(Finder target) async {
-            await until(() => target.evaluate().isNotEmpty);
-            await t.ensureVisible(target);
-            await t.pump(const Duration(milliseconds: 350));
-            expect(target.hitTestable(), findsOneWidget);
+            await revealAction(t, target);
             await t.tap(target);
             await t.pump(const Duration(milliseconds: 350));
             expect(t.takeException(), isNull);
@@ -106,7 +107,8 @@ void main() {
           }
           await until(() => find.text('共 27 个图包').evaluate().isNotEmpty);
           await tap(find.byKey(const Key('pack-trash-select-all')));
-          await until(() => find.text('已选 27').evaluate().isNotEmpty);
+          await revealAction(t, find.text('已选 27'));
+          expect(find.text('已选 27'), findsOneWidget);
           if (scenario != 'unknown') {
             await tap(find.byKey(const Key('pack-trash-item-trash-0')));
             await tap(find.byKey(const Key('pack-trash-next')));
@@ -114,6 +116,7 @@ void main() {
               find.byKey(const Key('pack-trash-item-trash-24')),
               findsOneWidget,
             );
+            await revealAction(t, find.text('已选 26'));
             expect(find.text('已选 26'), findsOneWidget);
           } else {
             repo.loseAfter = true;
