@@ -113,6 +113,8 @@ void main() {
         'preview-quick',
         'preview-quick-delete',
         'preview-queue',
+        'preview-queue-frame',
+        'preview-queue-note',
         'preview-end-return',
         'inline-play',
       ]) {
@@ -435,6 +437,25 @@ void main() {
       'queue operation completed and both real cover frames decoded',
     );
     await capture('preview-queue');
+    final queueFrame = t.getRect(find.byKey(const Key('preview-queue-frame')));
+    final queueMedia = MediaQuery.of(
+      t.element(find.byKey(const Key('preview-queue'))),
+    );
+    expect(
+      queueFrame.width,
+      closeTo(queueMedia.size.width - queueMedia.viewPadding.horizontal, 1),
+    );
+    if (queueMedia.size.width == 390 && queueMedia.textScaler.scale(14) == 14) {
+      expect(
+        queueFrame.height,
+        lessThan(520),
+        reason: 'Two-video range fits its contents instead of filling 83% of the screen',
+      );
+      expect(
+        find.byKey(const Key('preview-queue-note')).hitTestable(),
+        findsOneWidget,
+      );
+    }
     await tap(find.byKey(Key('queue-video-${ids.last}')));
     await until(
       () =>

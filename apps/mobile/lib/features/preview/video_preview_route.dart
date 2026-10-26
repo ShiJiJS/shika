@@ -139,11 +139,11 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
     }
   }
 
-  Future<T?> sheet<T>(Widget child) async {
+  Future<T?> sheet<T>(Widget child, {BoxConstraints? constraints}) async {
     setState(() => obscured = true);
     browsing.setVisible(false);
     try {
-      return await paperSheet<T>(context, child);
+      return await paperSheet<T>(context, child, constraints: constraints);
     } finally {
       if (mounted) {
         setState(() => obscured = false);
@@ -165,6 +165,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
       onOrder: (order) => browsing.changeOrder(order),
       onPick: browsing.choose,
     ),
+    constraints: const BoxConstraints(maxWidth: double.infinity),
   );
 
   Future<bool> step(int delta) async {
@@ -379,7 +380,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
   }
 
   Widget tool(
-    IconData icon,
+    _PreviewGlyph icon,
     String label,
     VoidCallback action, {
     bool selected = false,
@@ -396,7 +397,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 21),
+          _PreviewToolIcon(icon),
           const SizedBox(height: 3),
           Text(label, style: const TextStyle(fontSize: 12)),
         ],
@@ -604,15 +605,13 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                 child: Row(
                   children: [
                     tool(
-                      data.order == PlayOrder.random
-                          ? Icons.shuffle
-                          : Icons.format_list_numbered,
+                      _PreviewGlyph.shuffle,
                       data.order == PlayOrder.random ? '随机预览' : '顺序预览',
                       queue,
                     ),
-                    tool(Icons.sell_outlined, '视频标签', tags),
+                    tool(_PreviewGlyph.tag, '视频标签', tags),
                     tool(
-                      Icons.filter_list,
+                      _PreviewGlyph.filter,
                       '快速整理',
                       () => setState(() => quick = !quick),
                       selected: quick,
@@ -873,18 +872,24 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
         (MediaLayout.line(context, '视频名称 Aa', const TextStyle(fontSize: 14)) *
                     2 +
                 24)
-            .clamp(80.0, double.infinity);
+            .clamp(81.0, double.infinity);
     if (geometry != nextGeometry) {
       geometry = nextGeometry;
       locateCurrent();
     }
-    return SizedBox(
-      height: MediaQuery.sizeOf(context).height * .83,
+    final p = Paper.of(context);
+    final height = MediaQuery.sizeOf(context).height;
+    return ConstrainedBox(
+      key: const Key('preview-queue-frame'),
+      constraints: BoxConstraints(
+        maxHeight: height * (height <= 700 ? .92 : .88),
+      ),
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 22),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
@@ -892,25 +897,36 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                   Expanded(
                     child: Text(
                       '本次预览范围',
-                      style: Paper.of(context).title.copyWith(fontSize: 21),
+                      style: p.title.copyWith(fontSize: 23),
                     ),
                   ),
                   iconAction('关闭面板', Icons.close, () => Navigator.pop(context)),
                 ],
               ),
-              Expanded(
+              Flexible(
                 child: CustomScrollView(
                   key: const Key('preview-queue'),
                   controller: scroll,
+                  shrinkWrap: true,
                   slivers: [
                     SliverToBoxAdapter(
                       child: Column(
                         key: summaryKey,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          note('${widget.sourceLabel} · $total 个视频'),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5, bottom: 20),
+                            child: Text(
+                              '${widget.sourceLabel} · $total 个视频',
+                              style: TextStyle(
+                                fontSize: 13,
+                                height: 1.7,
+                                color: p.catalogMeta,
+                              ),
+                            ),
+                          ),
                           Wrap(
-                            spacing: 8,
+                            spacing: 10,
                             children: [
                               for (final order in [
                                 PlayOrder.sequential,
@@ -922,6 +938,24 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                                     order == PlayOrder.random ? '随机' : '顺序',
                                   ),
                                   selected: repo.snapshot.order == order,
+                                  showCheckmark: false,
+                                  selectedColor: p.olive,
+                                  backgroundColor: p.background,
+                                  shape: const StadiumBorder(),
+                                  side: BorderSide(
+                                    color: repo.snapshot.order == order
+                                        ? p.olive
+                                        : p.olive.withValues(alpha: .35),
+                                  ),
+                                  labelStyle: TextStyle(
+                                    color: repo.snapshot.order == order
+                                        ? p.background
+                                        : p.olive,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 9,
+                                  ),
                                   onSelected: busy
                                       ? null
                                       : (_) =>
@@ -930,7 +964,7 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                             ],
                           ),
                           if (error.isNotEmpty) note(error),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 18),
                         ],
                       ),
                     ),
@@ -974,54 +1008,74 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                             color: repo.current?.id == video.id
                                 ? Paper.of(context).soft
                                 : Colors.transparent,
-                            child: InkWell(
-                              key: Key('queue-video-${video.id}'),
-                              onTap: busy
-                                  ? null
-                                  : () => action(
-                                      () => widget.onPick(video.id),
-                                      close: true,
-                                    ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
-                                  horizontal: 6,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(color: p.line),
                                 ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 27,
-                                      child: Text(
-                                        '${index + 1}',
-                                        style: const TextStyle(fontSize: 12),
+                              ),
+                              child: InkWell(
+                                key: Key('queue-video-${video.id}'),
+                                onTap: busy
+                                    ? null
+                                    : () => action(
+                                        () => widget.onPick(video.id),
+                                        close: true,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 42,
-                                      height: 56,
-                                      child: MediaPoster(video: video),
-                                    ),
-                                    const SizedBox(width: 13),
-                                    Expanded(
-                                      child: Text(
-                                        video.displayTitle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                    horizontal: 6,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 27,
+                                        child: Text(
+                                          '${index + 1}',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
-                                    ),
-                                    if (repo.current?.id == video.id)
-                                      const Text(
-                                        '当前',
-                                        style: TextStyle(fontSize: 12),
+                                      SizedBox(
+                                        width: 42,
+                                        height: 56,
+                                        child: MediaPoster(video: video),
                                       ),
-                                  ],
+                                      const SizedBox(width: 13),
+                                      Expanded(
+                                        child: Text(
+                                          video.displayTitle,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      if (repo.current?.id == video.id)
+                                        const Text(
+                                          '当前',
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           );
                         }, childCount: total),
                       ),
-                    SliverToBoxAdapter(child: note('打标签不改变本次预览范围；返回后更新筛选结果。')),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 24, bottom: 4),
+                        child: Text(
+                          '打标签不改变本次预览范围；返回后更新筛选结果。',
+                          key: const Key('preview-queue-note'),
+                          style: TextStyle(
+                            fontSize: 13,
+                            height: 1.8,
+                            color: p.catalogMeta,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -1031,4 +1085,83 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
       ),
     );
   }
+}
+
+enum _PreviewGlyph { shuffle, tag, filter }
+
+/// Paper's outlined tool shapes; button labels own their accessibility names.
+class _PreviewToolIcon extends StatelessWidget {
+  const _PreviewToolIcon(this.glyph);
+  final _PreviewGlyph glyph;
+
+  @override
+  Widget build(BuildContext context) => ExcludeSemantics(
+    child: CustomPaint(
+      size: const Size.square(21),
+      painter: _PreviewToolPainter(
+        glyph,
+        IconTheme.of(context).color ?? Paper.of(context).olive,
+      ),
+    ),
+  );
+}
+
+class _PreviewToolPainter extends CustomPainter {
+  const _PreviewToolPainter(this.glyph, this.color);
+  final _PreviewGlyph glyph;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final stroke = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.6
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round;
+    final path = Path();
+    switch (glyph) {
+      case _PreviewGlyph.shuffle:
+        path
+          ..moveTo(3, 6)
+          ..lineTo(6, 6)
+          ..lineTo(18, 18)
+          ..lineTo(21, 18)
+          ..moveTo(17, 14)
+          ..lineTo(21, 18)
+          ..lineTo(17, 22)
+          ..moveTo(3, 18)
+          ..lineTo(6, 18)
+          ..lineTo(18, 6)
+          ..lineTo(21, 6)
+          ..moveTo(17, 2)
+          ..lineTo(21, 6)
+          ..lineTo(17, 10);
+      case _PreviewGlyph.tag:
+        path
+          ..moveTo(3, 3)
+          ..lineTo(12, 3)
+          ..lineTo(21, 12)
+          ..lineTo(12, 21)
+          ..lineTo(3, 12)
+          ..close()
+          ..addOval(Rect.fromCircle(center: const Offset(8, 8), radius: 1.5));
+      case _PreviewGlyph.filter:
+        path
+          ..moveTo(3, 6)
+          ..lineTo(21, 6)
+          ..moveTo(6, 12)
+          ..lineTo(18, 12)
+          ..moveTo(9, 18)
+          ..lineTo(15, 18);
+    }
+    canvas.save();
+    canvas.scale(size.width / 24, size.height / 24);
+    canvas.drawPath(path, stroke);
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(_PreviewToolPainter oldDelegate) =>
+      oldDelegate.glyph != glyph || oldDelegate.color != color;
 }
