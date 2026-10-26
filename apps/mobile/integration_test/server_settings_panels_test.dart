@@ -103,6 +103,15 @@ void main() {
       );
     }
 
+    Future<void> focusedFieldVisible(Finder field) => until(() {
+      final media = MediaQuery.of(
+        t.element(find.byKey(const Key('app-shell')).first),
+      );
+      final rect = t.getRect(field);
+      return rect.top >= media.viewPadding.top &&
+          rect.bottom <= media.size.height - media.viewInsets.bottom;
+    }, 'focused input above system keyboard');
+
     Future<void> capture(String state) async {
       await t.pump(const Duration(milliseconds: 200));
       final media = MediaQuery.of(
@@ -252,6 +261,7 @@ void main() {
           0,
       'real connection IME',
     );
+    await focusedFieldVisible(port);
     await capture('settings-connection-keyboard');
     await hideKeyboard();
     await tap(find.byKey(const Key('connection-save')));
@@ -281,6 +291,7 @@ void main() {
           0,
       'real root IME',
     );
+    await focusedFieldVisible(find.byKey(const Key('root-name')));
     await capture('settings-root-keyboard');
     await hideKeyboard();
     await tap(find.byKey(const Key('root-save')));

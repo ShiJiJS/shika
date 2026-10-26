@@ -20,6 +20,7 @@ import '../features/settings/media_root_sheet.dart';
 import '../features/settings/missing_media_page.dart';
 import '../library/repository.dart';
 import 'paper.dart';
+import 'paper_form.dart';
 import 'media_layout.dart';
 import 'preference_switch.dart';
 import 'player.dart';
@@ -1503,6 +1504,22 @@ class _LibraryHomeState extends State<LibraryHome> {
     return '可访问 · ${root.lastScan}';
   }
 
+  Widget rootMetadata(MediaRoot root) {
+    final label = rootScanLabel(root);
+    final separateDate =
+        MediaLayout.largeText(context) && label == '可访问 · ${root.lastScan}';
+    return Text(
+      '${root.kind == MediaKind.video ? '视频' : '图包'} · ${root.enabled ? '已启用 · ' : ''}${separateDate ? '可访问\n${root.lastScan}' : label}',
+      style: TextStyle(
+        fontSize: 12,
+        height: 1.7,
+        color: !root.enabled || root.available
+            ? Paper.of(context).catalogMeta
+            : Paper.of(context).danger,
+      ),
+    );
+  }
+
   Widget browsing() {
     if (!repo.libraryPreparation.value.ready) {
       return Center(
@@ -2327,33 +2344,42 @@ class _LibraryHomeState extends State<LibraryHome> {
       if (!data.connected) Text('连接你的视频库', style: Paper.of(context).title),
       note('视频和图包共用同一媒体服务。'),
       const SizedBox(height: 12),
-      TextField(
-        key: const Key('connection-address'),
-        controller: address,
-        enabled: !_busy,
-        keyboardType: TextInputType.url,
-        textInputAction: TextInputAction.next,
-        autocorrect: false,
-        decoration: const InputDecoration(labelText: '服务地址'),
+      PaperField(
+        label: '服务地址',
+        child: TextField(
+          key: const Key('connection-address'),
+          controller: address,
+          enabled: !_busy,
+          keyboardType: TextInputType.url,
+          textInputAction: TextInputAction.next,
+          autocorrect: false,
+          decoration: const InputDecoration(),
+        ),
       ),
       const SizedBox(height: 20),
-      TextField(
-        key: const Key('connection-port'),
-        controller: port,
-        enabled: !_busy,
-        keyboardType: TextInputType.number,
-        textInputAction: TextInputAction.next,
-        decoration: const InputDecoration(labelText: '端口'),
+      PaperField(
+        label: '端口',
+        child: TextField(
+          key: const Key('connection-port'),
+          controller: port,
+          enabled: !_busy,
+          keyboardType: TextInputType.number,
+          textInputAction: TextInputAction.next,
+          decoration: const InputDecoration(),
+        ),
       ),
       const SizedBox(height: 20),
-      TextField(
-        key: const Key('connection-passphrase'),
-        controller: passphrase,
-        enabled: !_busy,
-        obscureText: true,
-        autocorrect: false,
-        enableSuggestions: false,
-        decoration: const InputDecoration(labelText: '个人口令'),
+      PaperField(
+        label: '个人口令',
+        child: TextField(
+          key: const Key('connection-passphrase'),
+          controller: passphrase,
+          enabled: !_busy,
+          obscureText: true,
+          autocorrect: false,
+          enableSuggestions: false,
+          decoration: const InputDecoration(),
+        ),
       ),
       note('口令不进入管理数据备份。'),
       const SizedBox(height: 8),
@@ -2439,16 +2465,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                         color: Paper.of(context).catalogMeta,
                       ),
                     ),
-                    Text(
-                      '${r.kind == MediaKind.video ? '视频' : '图包'} · ${r.enabled ? '已启用 · ' : ''}${rootScanLabel(r)}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        height: 1.7,
-                        color: !r.enabled || r.available
-                            ? Paper.of(context).catalogMeta
-                            : Paper.of(context).danger,
-                      ),
-                    ),
+                    rootMetadata(r),
                   ],
                 ),
               ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../library/models.dart';
 import '../../library/repository.dart';
 import '../../ui/paper.dart';
+import '../../ui/paper_form.dart';
 import '../../ui/media_layout.dart';
 
 class MediaRootSheet extends StatefulWidget {
@@ -87,44 +88,56 @@ class _MediaRootSheetState extends State<MediaRootSheet> {
     ),
     children: [
       SizedBox(height: MediaLayout.largeText(context) ? 24 : 16),
-      TextField(
-        key: const Key('root-name'),
-        controller: name,
-        enabled: !saving,
-        decoration: const InputDecoration(labelText: '名称'),
+      PaperField(
+        label: '名称',
+        child: TextField(
+          key: const Key('root-name'),
+          controller: name,
+          enabled: !saving,
+          decoration: const InputDecoration(),
+        ),
       ),
       SizedBox(height: MediaLayout.largeText(context) ? 24 : 18),
-      TextField(
-        key: const Key('root-path'),
-        controller: path,
-        enabled: !saving,
-        decoration: const InputDecoration(labelText: '挂载目录'),
+      PaperField(
+        label: '挂载目录',
+        child: TextField(
+          key: const Key('root-path'),
+          controller: path,
+          enabled: !saving,
+          decoration: const InputDecoration(),
+        ),
       ),
       SizedBox(height: MediaLayout.largeText(context) ? 24 : 18),
       if (widget.repository.capabilities.typedRoots) ...[
-        DropdownButtonFormField<MediaKind>(
-          key: const Key('root-kind'),
-          initialValue: kind,
-          isExpanded: true,
-          decoration: const InputDecoration(labelText: '内容类型'),
-          items: [
-            for (final value in MediaKind.values)
-              DropdownMenuItem(
-                key: Key('root-kind-${value.name}'),
-                value: value,
-                child: Text(value == MediaKind.video ? '视频文件' : '图包文件夹'),
-              ),
-          ],
-          onChanged: saving
-              ? null
-              : (value) {
-                  if (value != null) {
-                    FocusScope.of(context).unfocus();
-                    setState(() => kind = value);
-                  }
-                },
+        PaperSettingRow(
+          label: '内容类型',
+          child: DropdownButtonFormField<MediaKind>(
+            key: const Key('root-kind'),
+            initialValue: kind,
+            isExpanded: true,
+            isDense: false,
+            alignment: AlignmentDirectional.centerEnd,
+            decoration: PaperSettingRow.decoration,
+            items: [
+              for (final value in MediaKind.values)
+                DropdownMenuItem(
+                  key: Key('root-kind-${value.name}'),
+                  value: value,
+                  child: Text(value == MediaKind.video ? '视频文件' : '图包文件夹'),
+                ),
+            ],
+            onChanged: saving
+                ? null
+                : (value) {
+                    if (value != null) {
+                      FocusScope.of(context).unfocus();
+                      setState(() => kind = value);
+                    }
+                  },
+          ),
         ),
-        if (widget.root != null) note('已有内容的目录不能直接更改类型，请新建正确类型的接入目录。'),
+        if (widget.root != null && error.isEmpty)
+          note('已有内容的目录不能直接更改类型，请新建正确类型的接入目录。'),
         SwitchListTile(
           key: const Key('root-enabled'),
           contentPadding: EdgeInsets.zero,
@@ -140,14 +153,16 @@ class _MediaRootSheetState extends State<MediaRootSheet> {
         ),
       ] else
         const Text('当前服务仅支持视频目录；升级服务后可选择图包类型或停用目录。'),
-      note('填写媒体服务内的挂载路径。扫描包含子目录，不修改源文件位置。'),
+      note('使用服务内挂载路径，扫描含子目录，不改源文件位置。'),
       const SizedBox(height: 12),
       if (error.isNotEmpty)
         Padding(
           key: errorAnchor,
           padding: const EdgeInsets.only(bottom: 12),
           child: Text(
-            error,
+            error.contains('不能') && error.contains('类型')
+                ? '$error。请新建正确类型的接入目录。'
+                : error,
             key: const Key('root-error'),
             style: TextStyle(color: Paper.of(context).danger),
           ),

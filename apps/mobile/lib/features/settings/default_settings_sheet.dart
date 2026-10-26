@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../library/repository.dart';
 import '../../library/models.dart';
 import '../../ui/paper.dart';
+import '../../ui/paper_form.dart';
 import '../../ui/paper_icons.dart';
 import '../../ui/media_layout.dart';
 import '../../ui/preferences.dart';
@@ -198,28 +199,35 @@ class _DefaultSettingsSheetState extends State<DefaultSettingsSheet> {
                   ),
               ],
             ),
-            SizedBox(height: MediaLayout.largeText(context) ? 24 : 18),
-            DropdownButtonFormField<ReaderDirection>(
-              key: const Key('default-reader-direction'),
-              initialValue: session.preferences.direction,
-              isExpanded: true,
-              decoration: const InputDecoration(labelText: '默认翻页方向'),
-              items: [
-                for (final value in ReaderDirection.values)
-                  DropdownMenuItem(
-                    value: value,
-                    child: Text(value == ReaderDirection.ltr ? '从左向右' : '从右向左'),
-                  ),
-              ],
-              onChanged: session.blocked
-                  ? null
-                  : (value) {
-                      if (value != null) {
-                        session.selectPreferences(
-                          session.preferences.copy(direction: value),
-                        );
-                      }
-                    },
+            SizedBox(height: MediaLayout.largeText(context) ? 16 : 0),
+            PaperSettingRow(
+              label: '默认翻页方向',
+              child: DropdownButtonFormField<ReaderDirection>(
+                key: const Key('default-reader-direction'),
+                initialValue: session.preferences.direction,
+                isExpanded: true,
+                isDense: false,
+                alignment: AlignmentDirectional.centerEnd,
+                decoration: PaperSettingRow.decoration,
+                items: [
+                  for (final value in ReaderDirection.values)
+                    DropdownMenuItem(
+                      value: value,
+                      child: Text(
+                        value == ReaderDirection.ltr ? '从左向右' : '从右向左',
+                      ),
+                    ),
+                ],
+                onChanged: session.blocked
+                    ? null
+                    : (value) {
+                        if (value != null) {
+                          session.selectPreferences(
+                            session.preferences.copy(direction: value),
+                          );
+                        }
+                      },
+              ),
             ),
             SwitchListTile(
               key: const Key('default-reader-gap'),
@@ -232,28 +240,33 @@ class _DefaultSettingsSheetState extends State<DefaultSettingsSheet> {
                       session.preferences.copy(gap: v),
                     ),
             ),
-            SizedBox(height: MediaLayout.largeText(context) ? 24 : 18),
-            DropdownButtonFormField<ReaderFit>(
-              key: const Key('default-reader-fit'),
-              initialValue: session.preferences.fit,
-              isExpanded: true,
-              decoration: const InputDecoration(labelText: '图片适配'),
-              items: [
-                for (final value in ReaderFit.values)
-                  DropdownMenuItem(
-                    value: value,
-                    child: Text(value == ReaderFit.contain ? '完整显示' : '铺满宽度'),
-                  ),
-              ],
-              onChanged: session.blocked
-                  ? null
-                  : (value) {
-                      if (value != null) {
-                        session.selectPreferences(
-                          session.preferences.copy(fit: value),
-                        );
-                      }
-                    },
+            SizedBox(height: MediaLayout.largeText(context) ? 16 : 0),
+            PaperSettingRow(
+              label: '图片适配',
+              child: DropdownButtonFormField<ReaderFit>(
+                key: const Key('default-reader-fit'),
+                initialValue: session.preferences.fit,
+                isExpanded: true,
+                isDense: false,
+                alignment: AlignmentDirectional.centerEnd,
+                decoration: PaperSettingRow.decoration,
+                items: [
+                  for (final value in ReaderFit.values)
+                    DropdownMenuItem(
+                      value: value,
+                      child: Text(value == ReaderFit.contain ? '完整显示' : '铺满宽度'),
+                    ),
+                ],
+                onChanged: session.blocked
+                    ? null
+                    : (value) {
+                        if (value != null) {
+                          session.selectPreferences(
+                            session.preferences.copy(fit: value),
+                          );
+                        }
+                      },
+              ),
             ),
           ],
           const SizedBox(height: 14),

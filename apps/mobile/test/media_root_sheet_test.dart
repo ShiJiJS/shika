@@ -157,7 +157,8 @@ void main() {
       await tap(t, find.byKey(const Key('root-kind')));
       await tap(t, find.text('视频文件').hitTestable().last);
       await tap(t, find.byKey(const Key('root-save')));
-      expect(find.text('已有内容的目录不能更改类型'), findsOneWidget);
+      expect(find.textContaining('已有内容的目录不能更改类型'), findsOneWidget);
+      expect(find.textContaining('请新建正确类型的接入目录'), findsOneWidget);
       final error = find.byKey(const Key('root-error'));
       expect(error.hitTestable(), findsOneWidget);
       expect(

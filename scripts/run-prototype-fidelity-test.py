@@ -185,6 +185,9 @@ paths += [
     "apps/mobile/integration_test/server_reader_chrome_test.dart",
     "apps/mobile/integration_test/server_preview_panels_test.dart",
     "apps/mobile/integration_test/server_settings_panels_test.dart",
+    "apps/mobile/integration_test/server_connection_test.dart",
+    "apps/mobile/integration_test/server_defaults_test.dart",
+    "apps/mobile/integration_test/server_roots_missing_test.dart",
     "services/server/tests/prototype_fidelity_fixture.py",
     "scripts/run-prototype-fidelity-test.py",
 ]
