@@ -263,22 +263,23 @@ void main() {
       final search = find.byKey(const Key('pack-trash-search'));
       await tap(search);
       await t.enterText(search, '不匹配的回收内容');
-      await until(
-        () => find.text('没有匹配的图包').evaluate().isNotEmpty,
-        'empty search',
-      );
       FocusManager.instance.primaryFocus?.unfocus();
       await SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
       await until(
         () => MediaQueryData.fromView(t.view).viewInsets.bottom == 0,
         'keyboard hidden',
       );
+      await until(
+        () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
+        'empty search read settled',
+      );
+      await reveal(find.text('没有匹配的图包'));
       await shot('empty');
       await tap(search);
       await t.enterText(search, '图包');
       await until(
-        () => find.text('共 27 个图包').evaluate().isNotEmpty,
-        'search all',
+        () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
+        'search all read settled',
       );
       await until(
         () => MediaQueryData.fromView(t.view).viewInsets.bottom > 0,
@@ -291,6 +292,8 @@ void main() {
         () => MediaQueryData.fromView(t.view).viewInsets.bottom == 0,
         'keyboard hidden',
       );
+      await reveal(find.text('共 27 个图包'));
+      expect(find.text('共 27 个图包'), findsOneWidget);
       await tap(find.byKey(const Key('pack-trash-select-all')));
       await reveal(find.text('已选 27'));
       await tap(find.byKey(Key('pack-trash-item-$excluded')));
@@ -352,9 +355,10 @@ void main() {
       await shot('receipt');
       await tap(find.byTooltip('返回操作任务'));
       await until(
-        () => find.text('共 1 个图包').evaluate().isNotEmpty,
-        'excluded remains',
+        () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
+        'excluded read settled',
       );
+      await reveal(find.text('共 1 个图包'));
       await reveal(find.text('已选 0'));
       expect(find.text('已选 0'), findsOneWidget);
       await shot('restored');
