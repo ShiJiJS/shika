@@ -108,6 +108,10 @@ def create_e2e_app():
                     entry["purge_input"] = {key: body.get(key) for key in ("plan_id", "digest", "confirmed")}
                 if request.url.path == "/api/v1/pack-restore-plans":
                     entry["restore_members"] = sorted(body.get("trash_ids", []))
+            if request.method in {"POST", "PATCH", "DELETE"} and any(request.url.path == path or request.url.path.startswith(path + "/") for path in ("/api/v1/tags", "/api/v1/pack-tags")):
+                body = await request.json()
+                entry["tag_input"] = {"name": body.get("name")}
+                entry["command_hash"] = hashlib.sha256(str(body.get("request_id")).encode()).hexdigest()
             if (request.method == "POST" and request.url.path == "/api/v1/roots") or (
                 request.method == "PUT" and request.url.path.startswith("/api/v1/roots/")
             ):

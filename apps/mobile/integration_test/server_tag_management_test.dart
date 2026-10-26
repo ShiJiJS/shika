@@ -66,6 +66,9 @@ void main() {
       final source = await fixture('/__fixture/actions/pack-trash-hashes');
       final media = await fixture('/__fixture/files', method: 'GET');
       final playback = await repo.api.json('GET', '/api/v1/playback');
+      debugPrint(
+        'TAG_MANAGEMENT_BASELINE:${jsonEncode({'video_ids': videoIds, 'pack_id': packId, 'tag_ids': ids, 'pack_tag': packTag, 'playback': playback, 'media': media})}',
+      );
       await t.pumpWidget(
         VideoViewerApp(repository: repo, preferences: preferences),
       );
@@ -118,6 +121,19 @@ void main() {
         );
       }
 
+      Future<void> enterName(String value) async {
+        final field = find.byKey(const Key('tag-name'));
+        await tap(field);
+        await t.enterText(field, value);
+        await t.pumpAndSettle();
+        await until(
+          () => t.widget<TextField>(field).controller!.text == value,
+          'edited name delivered',
+        );
+        await hideKeyboard();
+        expect(t.widget<TextField>(field).controller!.text, value);
+      }
+
       Future<void> save() async {
         final key = find.byKey(const Key('tag-definition-save'));
         await tap(key.evaluate().isNotEmpty ? key : find.text('保存').last);
@@ -159,8 +175,7 @@ void main() {
         '分页00',
       );
       await shot('create-error');
-      await t.enterText(find.byKey(const Key('tag-name')), '仅图包新标签');
-      await hideKeyboard();
+      await enterName('仅图包新标签');
       await save();
       await until(
         () => state().tags.any((v) => v.name == '仅图包新标签'),
@@ -168,8 +183,7 @@ void main() {
       );
       await shot('created');
       await tap(find.byTooltip('管理图包标签 分页00'));
-      await t.enterText(find.byKey(const Key('tag-name')), '图包改名');
-      await hideKeyboard();
+      await enterName('图包改名');
       await save();
       await until(() => state().tags.any((v) => v.name == '图包改名'), 'rename');
       expect(state().selected, {packTag});
@@ -222,8 +236,13 @@ void main() {
       );
       await shot('results');
       expect(await fixture('/__fixture/actions/pack-trash-hashes'), source);
-      expect(await fixture('/__fixture/files', method: 'GET'), media);
-      expect(await repo.api.json('GET', '/api/v1/playback'), playback);
+      final finalMedia = await fixture('/__fixture/files', method: 'GET');
+      final finalPlayback = await repo.api.json('GET', '/api/v1/playback');
+      expect(finalMedia, media);
+      expect(finalPlayback, playback);
+      debugPrint(
+        'TAG_MANAGEMENT_FINAL:${jsonEncode({'playback': finalPlayback, 'media': finalMedia})}',
+      );
       final stats = await fixture('/__fixture/actions/tag-management-stats');
       final links = (stats['video_links'] as List).cast<Map<String, dynamic>>();
       expect(
