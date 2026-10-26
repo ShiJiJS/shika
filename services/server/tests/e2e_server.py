@@ -102,6 +102,10 @@ def create_e2e_app():
                 entry["command_hash"] = hashlib.sha256(
                     str(body.get("request_id")).encode()
                 ).hexdigest()
+                if request.url.path == "/api/v1/pack-purge-plans":
+                    entry["purge_members"] = sorted(body.get("trash_ids", []))
+                if request.url.path == "/api/v1/pack-trash/permanent":
+                    entry["purge_input"] = {key: body.get(key) for key in ("plan_id", "digest", "confirmed")}
                 if request.url.path == "/api/v1/pack-restore-plans":
                     entry["restore_members"] = sorted(body.get("trash_ids", []))
             if (request.method == "POST" and request.url.path == "/api/v1/roots") or (
@@ -358,6 +362,29 @@ def create_e2e_app():
                 remaining = list(session.scalars(select(PackTrashItem.id).where(PackTrashItem.status == "active").order_by(PackTrashItem.id)))
                 submitted = list(session.execute(select(PackFileStep.requested_id, PackFileStep.original_path).where(PackFileStep.operation_id == task.id).order_by(PackFileStep.requested_id)))
                 return {"task": {"id": task.id, "status": task.status, "phase": task.phase}, "members": counts, "active_trash": active, "remaining_ids": remaining, "all_trash_ids": original_ids, "submitted_ids": [row.requested_id for row in submitted], "submitted_paths": [row.original_path for row in submitted]}
+        elif action == "purge-management-stats":
+            from video_viewer.models import (
+                PackFileStep,
+                PackPurgeEntry,
+                PackPurgeExecution,
+                PackPurgePlan,
+                PackPurgeStep,
+                Task,
+            )
+
+            with app.state.db.read() as session:
+                preview = session.scalar(select(Task).where(Task.kind == "pack_purge_preview").order_by(Task.created_at.desc()).limit(1))
+                task = session.scalar(select(Task).where(Task.kind == "pack_permanent").order_by(Task.created_at.desc()).limit(1))
+                plan = session.get(PackPurgePlan, preview.id) if preview else None
+                members = list(session.scalars(select(PackPurgeEntry).where(PackPurgeEntry.plan_id == preview.id))) if preview else []
+                execution = session.get(PackPurgeExecution, task.id) if task else None
+                steps = list(session.execute(select(PackPurgeStep, PackFileStep.original_path).join(PackFileStep, PackPurgeStep.parent_id == PackFileStep.id).where(PackFileStep.operation_id == task.id))) if task else []
+                return {
+                    "preview": {"id": preview.id, "status": preview.status, "digest": plan.digest} if preview else None,
+                    "members": [{"trash_id": row.trash_id, "path": row.path, "digest": row.digest, "images": row.image_count, "retained": row.retained_entries, "manifest": row.manifest} for row in members],
+                    "task": {"id": task.id, "status": task.status, "phase": task.phase, "result": task.result, "plan_id": execution.plan_id} if task else None,
+                    "steps": [{"id": row.id, "path": path, "relative_path": row.relative_path, "kind": row.kind, "sha256": row.expected_hash, "phase": row.phase, "outcome": row.outcome} for row, path in steps],
+                }
         elif action == "purge-pack-attachments":
             folder = BASE / "shorts" / "图包"
             if str(folder) != "/media/shorts/图包" or folder.is_symlink() or folder.resolve() != folder:

@@ -135,7 +135,7 @@ void main() {
         await tap(t, find.text('取消').last);
         expect(repo.physicalPosts, hasLength(1));
         expect(remaining.every(repo.records.containsKey), isTrue);
-        await tap(t, find.byTooltip('Back'));
+        await tap(t, find.byTooltip('返回回收站'));
         await tap(t, find.byKey(const Key('pack-trash-saved-purge')));
         expect(find.text('27 个未提交'), findsOneWidget);
         expect(repo.physicalPosts, hasLength(1));
@@ -166,7 +166,7 @@ void main() {
       expect(repo.queries, 0);
       expect(repo.preparations, isEmpty);
       expect(repo.physicalPosts, isEmpty);
-      await tap(t, find.byTooltip('Back'));
+      await tap(t, find.byTooltip('返回回收站'));
       await repo.journal.historicalPurgeSelections('trash-fixture');
       repo.localReceipts = [
         MaintenanceReceipt(

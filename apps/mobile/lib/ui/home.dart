@@ -2639,6 +2639,91 @@ class _LibraryHomeState extends State<LibraryHome> {
     }
   }
 
+  Future<bool> confirmVideoPurge(Set<String> ids, Object identity) async {
+    var checked = false;
+    return await sheet<bool>(
+          AnimatedBuilder(
+            animation: repo,
+            builder: (context, _) => StatefulBuilder(
+              builder: (context, local) {
+                final live = identical(identity, repo.connectionIdentity),
+                    p = Paper.of(context);
+                if (!live) checked = false;
+                return SheetFrame(
+                  title: '永久删除',
+                  footer: Wrap(
+                    alignment: WrapAlignment.end,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('取消'),
+                      ),
+                      FilledButton(
+                        key: const Key('video-purge-submit'),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: p.danger,
+                          foregroundColor: Theme.of(context)
+                              .colorScheme
+                              .onError,
+                        ),
+                        onPressed: live && checked
+                            ? () => Navigator.pop(context, true)
+                            : null,
+                        child: const Text('确认永久删除'),
+                      ),
+                    ],
+                  ),
+                  children: [
+                    Text(
+                      '永久删除 ${ids.length} 个视频？',
+                      style: const TextStyle(fontSize: 14, height: 1.6),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      '永久删除会移除所选视频的源文件，不能撤销；管理备份也不能恢复已删除文件。',
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.7,
+                        color: p.catalogMeta,
+                      ),
+                    ),
+                    if (!live)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Text(
+                          '连接或管理数据已变化，请关闭后重新选择。',
+                          key: const Key('video-purge-stale'),
+                          style: TextStyle(
+                            fontSize: 13,
+                            height: 1.7,
+                            color: p.danger,
+                          ),
+                        ),
+                      ),
+                    CheckboxListTile(
+                      key: const Key('video-purge-confirm'),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      contentPadding: EdgeInsets.zero,
+                      value: checked,
+                      onChanged: live
+                          ? (v) => local(() => checked = v ?? false)
+                          : null,
+                      title: const Text(
+                        '我确认永久删除所选源文件',
+                        style: TextStyle(fontSize: 13, height: 1.8),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ) ==
+        true;
+  }
+
   Future<void> purgeTrash(Set<String> ids) async {
     if (purgingTrash) return;
     setState(() => purgingTrash = true);
@@ -2812,11 +2897,11 @@ class _LibraryHomeState extends State<LibraryHome> {
             ? null
             : () async {
                 final ids = {...selected};
-                if (await confirm(
-                  '永久删除这些视频？',
-                  '将永久删除所选 ${ids.length} 个视频，无法撤销。',
-                  '永久删除',
-                )) {
+                final identity = repo.connectionIdentity;
+                final approved = await confirmVideoPurge(ids, identity);
+                if (mounted &&
+                    approved &&
+                    identical(identity, repo.connectionIdentity)) {
                   await purgeTrash(ids);
                 }
               },

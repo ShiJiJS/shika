@@ -100,8 +100,8 @@ void main() {
         await tap(t, find.text('海边散步图包 trash-0'));
         expect(find.text('0.jpg'), findsOneWidget);
         expect(find.text('2.jpg'), findsOneWidget);
-        await tap(t, find.byTooltip('关闭面板').last);
-        await tap(t, find.byTooltip('关闭面板').last);
+        await tap(t, find.byTooltip('返回图包清单'));
+        await tap(t, find.byTooltip('返回删除复核'));
         await tap(t, find.text('取消').last);
         expect(repo.physicalPosts, isEmpty);
         await tap(t, find.byKey(const Key('pack-trash-permanent')));

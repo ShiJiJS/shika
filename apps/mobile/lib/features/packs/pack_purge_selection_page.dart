@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../library/repository.dart';
 import '../../library/models.dart';
 import '../../ui/paper.dart';
+import '../../ui/paper_management.dart';
 import 'pack_file_action.dart';
 import 'pack_purge_review.dart';
 import '../settings/maintenance_task_detail.dart';
@@ -29,6 +30,7 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
   PackPurgeSelection? selection;
   bool busy = false, loading = false;
   String error = '';
+  final scroll = ScrollController();
   bool get current => selections?.isCurrent == true;
   @override
   void initState() {
@@ -61,6 +63,7 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
     } catch (failure) {
       if (mounted && current) {
         setState(() => error = packFileFailureMessage(failure));
+        if (scroll.hasClients) scroll.jumpTo(0);
       }
     } finally {
       if (mounted) {
@@ -104,6 +107,7 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
     } catch (failure) {
       if (mounted && current) {
         setState(() => error = packFileFailureMessage(failure));
+        if (scroll.hasClients) scroll.jumpTo(0);
       }
     } finally {
       if (mounted && current) {
@@ -193,6 +197,7 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
     } catch (failure) {
       if (mounted && current) {
         setState(() => error = packFileFailureMessage(failure));
+        if (scroll.hasClients) scroll.jumpTo(0);
       }
     } finally {
       if (mounted && current) {
@@ -253,14 +258,19 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
   Widget build(BuildContext context) {
     final value = selection, p = Paper.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('保存的删除选择')),
       body: SafeArea(
         child: Column(
           children: [
+            PaperManagementHeader(
+              title: '保存的删除选择',
+              closeLabel: '返回回收站',
+              onClose: () => Navigator.pop(context),
+            ),
             if (loading) const LinearProgressIndicator(),
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.all(16),
+                controller: scroll,
+                padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
                 children: [
                   if (!current)
                     Text(
@@ -278,17 +288,28 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
                       '原选择 ${value.ids.length} 个图包',
                       style: const TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                        fontFamily: 'PaperSerif',
+                        height: 1.6,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       '${value.remaining.length} 个未提交',
                       key: const Key('purge-selection-remaining'),
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.7,
+                        color: p.catalogMeta,
+                      ),
                     ),
                     const SizedBox(height: 12),
-                    const Text(
+                    Text(
                       '选择会保存在本机。每批最多1000个，重新核对图片清单并明确确认后才会永久删除；打开或离开此页不会自动执行。',
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.7,
+                        color: p.catalogMeta,
+                      ),
                     ),
                     if (value.historical)
                       const Padding(
@@ -299,25 +320,30 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
                     if (value.batches.isNotEmpty)
                       const Text(
                         '已确认的批次',
-                        style: TextStyle(fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 14, height: 1.7),
                       ),
                     for (final (index, b) in value.batches.indexed)
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
+                      PaperActionRow(
                         key: Key('purge-selection-batch-$index'),
-                        title: Text(
-                          '第 ${index + 1} 批 · ${b.command.targets.length} 个图包',
-                        ),
-                        subtitle: Text(
-                          b.rejected
-                              ? '未受理，选择保留；下一次需重新核对'
-                              : b.taskId == null
-                              ? '原结果待核对 · 只查询原请求'
-                              : '查看原操作的真实结果',
-                        ),
+                        title:
+                            '第 ${index + 1} 批 · ${b.command.targets.length} 个图包',
+                        details: [
+                          Text(
+                            b.rejected
+                                ? '未受理，选择保留；下一次需重新核对'
+                                : b.taskId == null
+                                ? '原结果待核对 · 只查询原请求'
+                                : '查看原操作的真实结果',
+                            style: TextStyle(
+                              fontSize: 13,
+                              height: 1.7,
+                              color: p.catalogMeta,
+                            ),
+                          ),
+                        ],
                         trailing: b.rejected
                             ? null
-                            : const Icon(Icons.chevron_right),
+                            : const Icon(Icons.chevron_right, size: 19),
                         onTap: busy || b.rejected ? null : () => batch(b),
                       ),
                     const SizedBox(height: 12),
@@ -357,6 +383,7 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
   @override
   void dispose() {
     widget.repository.removeListener(changed);
+    scroll.dispose();
     super.dispose();
   }
 }

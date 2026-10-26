@@ -188,7 +188,14 @@ class _PackTrashPageState extends State<PackTrashPage> {
       SheetFrame(
         title: '重试原任务',
         children: [
-          const Text('只重试原清单中未完成的内容，已经删除的图片不会重复处理。图片永久删除后不能恢复。'),
+          Text(
+            '只重试原清单中未完成的内容，已经删除的图片不会重复处理。图片永久删除后不能恢复。',
+            style: TextStyle(
+              fontSize: 13,
+              height: 1.7,
+              color: Paper.of(context).catalogMeta,
+            ),
+          ),
           const SizedBox(height: 16),
           Wrap(
             alignment: WrapAlignment.end,
@@ -201,6 +208,10 @@ class _PackTrashPageState extends State<PackTrashPage> {
               ),
               FilledButton(
                 onPressed: () => Navigator.pop(context, true),
+                style: FilledButton.styleFrom(
+                  backgroundColor: Paper.of(context).danger,
+                  foregroundColor: Theme.of(context).colorScheme.onError,
+                ),
                 child: const Text('确认重试原任务'),
               ),
             ],
