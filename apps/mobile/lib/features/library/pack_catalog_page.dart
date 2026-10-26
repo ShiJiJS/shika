@@ -154,6 +154,9 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   bool _positioning = false, _detailsOpen = false, _refreshScheduled = false;
   int generation = 0;
   double width = 390;
+  MediaGridGeometry? _geometry;
+  ({String id, double inset, bool top, int generation})? _reflow;
+  int _layoutRevision = 0;
   PackBrowseContext? pendingReturn;
   List<String> returnIds = const [];
   String error = '';
@@ -187,23 +190,77 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   );
   PackLibraryState get data => catalog.state;
   bool get recent => entry.source == BrowseSource.recent;
-  int get columns => recent ? 1 : 2;
-  double get stride => recent
+  int get columns => _geometry?.columns ?? (recent ? 1 : 2);
+  double get stride => _geometry?.stride ?? _strideValue;
+  double get _strideValue => recent
       ? max(
           111,
           MediaQuery.textScalerOf(context).scale(18) * 1.5 +
               MediaQuery.textScalerOf(context).scale(13) * 1.5 +
               40,
         )
-      : MediaLayout.tile(width, scaler: MediaQuery.textScalerOf(context)) +
-            MediaLayout.rowGap;
-  double get listHeader => recent
+      : MediaLayout.tile(context, width) + MediaLayout.rowGap;
+  double get listHeader => _geometry?.header ?? _listHeaderValue;
+  double get _listHeaderValue => recent
       ? max(52, MediaQuery.textScalerOf(context).scale(13) * 1.5 + 32)
       : MediaLayout.toolbar(context) +
             (hasContinuation ? continuationExtent : 0) +
             (entry.query.count > 0 || entry.query.search.isNotEmpty
                 ? MediaLayout.scope(context)
                 : 0);
+
+  void layoutGrid(BuildContext context, double nextWidth) {
+    final next = MediaGridGeometry(
+      recent ? 1 : MediaLayout.columns(context),
+      recent
+          ? _strideValue
+          : MediaLayout.tile(context, nextWidth) + MediaLayout.rowGap,
+      _listHeaderValue,
+    );
+    final old = _geometry;
+    if (old != null &&
+        old.reflows(next) &&
+        _reflow == null &&
+        !_positioning &&
+        !_detailsOpen &&
+        scroll.hasClients &&
+        data.items.isNotEmpty) {
+      final saved = position();
+      _reflow = (
+        id: saved.ids.first,
+        inset: saved.context.scrollInset,
+        top: saved.context.scrollOffset == 0,
+        generation: generation,
+      );
+    }
+    width = nextWidth;
+    _geometry = next;
+    if (_reflow == null) return;
+    final revision = ++_layoutRevision;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || revision != _layoutRevision) return;
+      final saved = _reflow;
+      _reflow = null;
+      if (saved == null ||
+          saved.generation != generation ||
+          _positioning ||
+          _detailsOpen ||
+          !scroll.hasClients) {
+        return;
+      }
+      final index = data.items.indexWhere((item) => item.id == saved.id);
+      if (index < 0) return;
+      final inset = saved.inset < 0
+          ? saved.inset
+          : min(saved.inset, stride - 1);
+      final pixels = saved.top
+          ? 0.0
+          : listHeader + index ~/ columns * stride + inset;
+      scroll.jumpTo(pixels.clamp(0.0, scroll.position.maxScrollExtent));
+      nearBottom();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -1068,7 +1125,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, box) {
-      width = box.maxWidth;
+      layoutGrid(context, box.maxWidth);
       final p = Paper.of(context), recent = entry.source == BrowseSource.recent;
       return Column(
         children: [
@@ -1299,13 +1356,10 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                           sliver: SliverGrid.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
+                                  crossAxisCount: columns,
                                   crossAxisSpacing: 12,
                                   mainAxisSpacing: 18,
-                                  mainAxisExtent: MediaLayout.tile(
-                                    box.maxWidth,
-                                    scaler: MediaQuery.textScalerOf(context),
-                                  ),
+                                  mainAxisExtent: stride - MediaLayout.rowGap,
                                 ),
                             itemCount: data.items.length,
                             itemBuilder: (context, index) {
@@ -1453,6 +1507,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                       ],
                                     ),
                                   ),
+                                  const SizedBox(height: 4),
                                   Text(
                                     key: Key('pack-tag-names-${pack.id}'),
                                     pack.tags.isEmpty
@@ -1465,8 +1520,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                               .join('  '),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 11,
+                                    style: MediaLayout.cardTags.copyWith(
                                       color: p.olive,
                                     ),
                                   ),

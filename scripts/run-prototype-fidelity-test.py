@@ -20,9 +20,10 @@ p.add_argument("--reference-input", type=Path, required=True)
 p.add_argument("--height", type=int, default=905)
 p.add_argument("--width", type=int, default=390)
 p.add_argument("--scale", choices=("1", "2"), default="1")
+p.add_argument("--expected-columns", choices=(2, 4), type=int, default=2)
 p.add_argument(
     "--scenario",
-    choices=("fidelity", "continuation", "counts", "presentation"),
+    choices=("fidelity", "continuation", "counts", "presentation", "cards"),
     default="fidelity",
 )
 args = p.parse_args()
@@ -48,6 +49,14 @@ scenes = {
         "continue-error",
         "continue-retry",
         "continue-recent",
+    ],
+    "cards": [
+        "cards-video",
+        "cards-video-meta",
+        "cards-packs",
+        "cards-pack-meta",
+        "cards-filter",
+        "cards-return",
     ],
     "presentation": [
         "presentation-library",
@@ -78,6 +87,7 @@ integration_file = {
     "continuation": "server_pack_continuation_test.dart",
     "counts": "server_catalog_counts_test.dart",
     "presentation": "server_pack_presentation_test.dart",
+    "cards": "server_catalog_cards_test.dart",
 }[args.scenario]
 
 out = args.output.resolve()
@@ -149,6 +159,7 @@ paths += [
     "apps/mobile/integration_test/server_pack_continuation_test.dart",
     "apps/mobile/integration_test/server_catalog_counts_test.dart",
     "apps/mobile/integration_test/server_pack_presentation_test.dart",
+    "apps/mobile/integration_test/server_catalog_cards_test.dart",
     "services/server/tests/prototype_fidelity_fixture.py",
     "scripts/run-prototype-fidelity-test.py",
 ]
@@ -267,6 +278,7 @@ try:
                 "test",
                 "integration_test/" + integration_file,
                 "--no-uninstall",
+                f"--dart-define=GRID_COLUMNS={args.expected_columns}",
                 "-d",
                 "emulator-5554",
                 "--reporter",

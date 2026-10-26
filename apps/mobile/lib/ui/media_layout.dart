@@ -13,15 +13,39 @@ abstract final class MediaLayout {
   static double kindExtent(BuildContext context) =>
       max(kindBar, MediaQuery.textScalerOf(context).scale(15) * 1.5 + 16);
   static double cover(double width) => width <= 380 ? 185 : 211;
-  static double tile(
-    double width, {
-    TextScaler scaler = TextScaler.noScaling,
-  }) =>
+  static final cardTitle = Paper.title.copyWith(fontSize: 16, height: 1.5);
+  static const cardTags = TextStyle(fontSize: 12, height: 1.6);
+  static double line(BuildContext context, String text, TextStyle style) {
+    final painter = TextPainter(
+      text: TextSpan(
+        text: text,
+        style: DefaultTextStyle.of(context).style.merge(style),
+      ),
+      textScaler: MediaQuery.textScalerOf(context),
+      textDirection: Directionality.of(context),
+      locale: Localizations.maybeLocaleOf(context),
+      maxLines: 1,
+    )..layout();
+    final result = painter.height;
+    painter.dispose();
+    return result;
+  }
+
+  static double tile(BuildContext context, double width) =>
       cover(width) +
-      79 +
-      max(0, scaler.scale(16) - 16) * 1.5 +
-      max(0, scaler.scale(12) * 1.5 - 28) +
-      max(0, scaler.scale(11) - 11) * 1.4;
+      8 +
+      line(context, '标题 Aa', cardTitle) +
+      meta(context) +
+      4 +
+      line(context, '# 标签 Aa', cardTags);
+  static int columns(BuildContext context) {
+    // Keyboard insets must not turn a portrait grid into a landscape grid.
+    final media = MediaQuery.of(context);
+    final width = media.size.width - media.viewPadding.horizontal;
+    final height = media.size.height - media.viewPadding.vertical;
+    return width > height && height <= 500 ? 4 : 2;
+  }
+
   static double meta(BuildContext context) =>
       max(28, MediaQuery.textScalerOf(context).scale(12) * 1.5);
   static double search(BuildContext context) =>
@@ -74,6 +98,15 @@ abstract final class MediaLayout {
       MediaQuery.disableAnimationsOf(context)
       ? Duration.zero
       : Duration(milliseconds: milliseconds);
+}
+
+/// Last-rendered geometry also owns the index/pixel conversion during reflow.
+class MediaGridGeometry {
+  const MediaGridGeometry(this.columns, this.stride, this.header);
+  final int columns;
+  final double stride, header;
+  bool reflows(MediaGridGeometry next) =>
+      columns != next.columns || stride != next.stride;
 }
 
 /// Both media catalogs use the same reference search geometry. Taller system
