@@ -1,0 +1,20 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_purge_management_test.dart
+Running Gradle task 'assembleDebug'...                             13.2s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          541ms
+00:00 +0: LF8 purge management, exact review, cancellation and partial retry
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-video-confirm","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-selected","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-review","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-members","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-files","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-saved","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-saved-dark","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":true}
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-saved-reopened","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-unknown","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-result","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-retry-confirm","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+PURGE_MANAGEMENT_METRICS:{"state":"purge-ui-finished","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+PURGE_MANAGEMENT_VERIFIED:108 source files, cancelled video and pack confirmation, exact images, one physical POST, one original retry, 105 preserved files including 27 attachments
+01:07 +1: (tearDownAll)
+01:07 +1: All tests passed!

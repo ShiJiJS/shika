@@ -1,0 +1,53 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and only deletes the captured choice (390.0, 844.0, 1.0)
+00:01 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and only deletes the captured choice (390.0, 844.0, 1.0)
+00:01 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and only deletes the captured choice (390.0, 844.0, 1.0)
+00:02 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0)
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "子目录/原图100.jpg": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      revealAction (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/support/reveal_action.dart:21:3)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart:155:9)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/support/reveal_action.dart line 21
+The test description was:
+  exact images use one full page, retain page on failure and preserve unconfirmed review (360.0,
+  740.0, 2.0)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +2 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and only deletes the captured choice (390.0, 844.0, 1.0)
+00:02 +2 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0) [E]
+  Test failed. See exception logs above.
+  The test description was: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0)
+  
+00:02 +3 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and only deletes the captured choice (390.0, 844.0, 1.0)
+00:03 +4 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and only deletes the captured choice (390.0, 844.0, 1.0)
+00:03 +5 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and only deletes the captured choice (390.0, 844.0, 1.0)
+00:03 +6 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and only deletes the captured choice (390.0, 844.0, 1.0)
+00:03 +7 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and only deletes the captured choice (390.0, 844.0, 1.0)
+01:59 +7 -2: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart [E]
+  Bad state: Cannot close sink while adding stream.
+  package:stream_channel/src/guarantee_channel.dart 180:7      _GuaranteeSink.close
+  package:flutter_tools/src/test/flutter_platform.dart 765:43  FlutterPlatform._startTest
+  
+One or more uncaught errors occurred shutting down:
+  Bad state: Cannot add event while adding stream.
+01:59 +7 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and only deletes the captured choice (390.0, 844.0, 1.0) - did not complete [E]
+01:59 +7 -2: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and only deletes the captured choice (390.0, 844.0, 1.0) (did not complete)

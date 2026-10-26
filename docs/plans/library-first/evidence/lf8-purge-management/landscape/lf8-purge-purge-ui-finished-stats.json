@@ -1,0 +1,292 @@
+{
+  "preview": {
+    "id": "20c56e69-c6a0-480a-bc8b-425ac6dea956",
+    "status": "completed",
+    "digest": "ced0988ba3b299da96de993c074b3330d31f1a7ddab9d5c3b4791f574eae76dc"
+  },
+  "members": [
+    {
+      "trash_id": "ce6b2609-be1d-460d-966b-bde18f36b2f6",
+      "path": "/media/shorts/图包/图包01",
+      "digest": "31396e9be2a6d1a293fac433d84fea352e960d0331879733d151fe5736d3c238",
+      "images": 3,
+      "retained": 1,
+      "manifest": {
+        "schema": 1,
+        "source": {
+          "pack_id": "b61189da-266f-4ffc-b97a-632212a701be",
+          "trash_id": "ce6b2609-be1d-460d-966b-bde18f36b2f6",
+          "name": "图包01",
+          "path": "/media/shorts/图包/图包01",
+          "root_id": "8d7dabd3-7590-4d45-8cae-9e98e0d2fb16",
+          "root_path": "/media/shorts/图包",
+          "mount_id": "shorts",
+          "root_policy": [
+            [
+              "8d7dabd3-7590-4d45-8cae-9e98e0d2fb16",
+              "/media/shorts/图包",
+              "pack",
+              true,
+              "shorts"
+            ],
+            [
+              "camera",
+              "/media/camera",
+              "video",
+              true,
+              "camera"
+            ],
+            [
+              "shorts",
+              "/media/shorts",
+              "video",
+              true,
+              "shorts"
+            ]
+          ],
+          "generation": 2,
+          "content_version": 1,
+          "directory_identity": [
+            "37",
+            "249704"
+          ],
+          "directory_signature": [
+            "37",
+            "249704",
+            192,
+            "1793035853054125385",
+            "1793035853054125385",
+            null
+          ],
+          "pages": [
+            {
+              "id": "4b698d94-a27c-4e1e-a439-e434a06fbe69",
+              "path": "/media/shorts/图包/图包01/1.jpg",
+              "relative_path": "1.jpg",
+              "signature": [
+                "37",
+                "249705",
+                12337,
+                "1793035852571528736",
+                "1793035852571528736"
+              ],
+              "sha256": "076312a73d63c9ce38747edd8a3301d86845cc49e5d04b95371a83416ec269e4",
+              "size": 12337
+            },
+            {
+              "id": "a72dcdaa-2588-4b7b-a992-b9f853ec1910",
+              "path": "/media/shorts/图包/图包01/2.jpg",
+              "relative_path": "2.jpg",
+              "signature": [
+                "37",
+                "249706",
+                12330,
+                "1793035852574115505",
+                "1793035852574115505"
+              ],
+              "sha256": "2ed48c0a8fd2a4de881933d7330717075cf8139121ab72eed66b6edf9b03e3cd",
+              "size": 12330
+            },
+            {
+              "id": "a74f7f4e-7dae-4013-915f-6c5c578fa107",
+              "path": "/media/shorts/图包/图包01/10.jpg",
+              "relative_path": "10.jpg",
+              "signature": [
+                "37",
+                "249707",
+                12404,
+                "1793035852575784059",
+                "1793035852575784059"
+              ],
+              "sha256": "760ff86d07d32499d6c5cc22e8e204513f7f126ac8d9ab8a33d4742afe69ea0e",
+              "size": 12404
+            }
+          ]
+        },
+        "root_identity": [
+          "37",
+          "249703"
+        ],
+        "directory_stamp": [
+          "37",
+          "249704",
+          192,
+          "1793035853054125385",
+          "1793035853054125385",
+          null
+        ],
+        "tree": {
+          ".": {
+            "kind": "directory",
+            "signature": [
+              "37",
+              "249704",
+              192,
+              "1793035853054125385",
+              "1793035853054125385",
+              null
+            ]
+          },
+          "1.jpg": {
+            "kind": "file",
+            "signature": [
+              "37",
+              "249705",
+              12337,
+              "1793035852571528736",
+              "1793035852571528736"
+            ]
+          },
+          "10.jpg": {
+            "kind": "file",
+            "signature": [
+              "37",
+              "249707",
+              12404,
+              "1793035852575784059",
+              "1793035852575784059"
+            ]
+          },
+          "2.jpg": {
+            "kind": "file",
+            "signature": [
+              "37",
+              "249706",
+              12330,
+              "1793035852574115505",
+              "1793035852574115505"
+            ]
+          },
+          "notes.txt": {
+            "kind": "file",
+            "signature": [
+              "37",
+              "249812",
+              26,
+              "1793035853054727847",
+              "1793035853054727847"
+            ]
+          }
+        },
+        "files": [
+          {
+            "id": "4b698d94-a27c-4e1e-a439-e434a06fbe69",
+            "path": "/media/shorts/图包/图包01/1.jpg",
+            "relative_path": "1.jpg",
+            "signature": [
+              "37",
+              "249705",
+              12337,
+              "1793035852571528736",
+              "1793035852571528736"
+            ],
+            "sha256": "076312a73d63c9ce38747edd8a3301d86845cc49e5d04b95371a83416ec269e4",
+            "size": 12337
+          },
+          {
+            "id": "a74f7f4e-7dae-4013-915f-6c5c578fa107",
+            "path": "/media/shorts/图包/图包01/10.jpg",
+            "relative_path": "10.jpg",
+            "signature": [
+              "37",
+              "249707",
+              12404,
+              "1793035852575784059",
+              "1793035852575784059"
+            ],
+            "sha256": "760ff86d07d32499d6c5cc22e8e204513f7f126ac8d9ab8a33d4742afe69ea0e",
+            "size": 12404
+          },
+          {
+            "id": "a72dcdaa-2588-4b7b-a992-b9f853ec1910",
+            "path": "/media/shorts/图包/图包01/2.jpg",
+            "relative_path": "2.jpg",
+            "signature": [
+              "37",
+              "249706",
+              12330,
+              "1793035852574115505",
+              "1793035852574115505"
+            ],
+            "sha256": "2ed48c0a8fd2a4de881933d7330717075cf8139121ab72eed66b6edf9b03e3cd",
+            "size": 12330
+          }
+        ],
+        "image_count": 3,
+        "image_bytes": 37071,
+        "retained_entries": 1
+      }
+    }
+  ],
+  "task": {
+    "id": "85d8d7f6-b2cf-497f-aec5-569f66e22f65",
+    "status": "completed",
+    "phase": "completed",
+    "result": {
+      "operation_id": "85d8d7f6-b2cf-497f-aec5-569f66e22f65",
+      "total": 1,
+      "processed": 1,
+      "succeeded": 1,
+      "failed": 0,
+      "partial": false,
+      "needs_attention": false,
+      "pages_pending_reconciliation": 0,
+      "pages_deleted": 3,
+      "pages_total": 3,
+      "items": [
+        {
+          "requested_id": "ce6b2609-be1d-460d-966b-bde18f36b2f6",
+          "trash_id": "ce6b2609-be1d-460d-966b-bde18f36b2f6",
+          "pack_id": "b61189da-266f-4ffc-b97a-632212a701be",
+          "outcome": "succeeded",
+          "phase": "committed",
+          "error": null,
+          "pages_deleted": 3,
+          "pages_total": 3
+        }
+      ],
+      "reading_transition": null,
+      "reading_restored": false,
+      "undo_expires_at": null
+    },
+    "plan_id": "20c56e69-c6a0-480a-bc8b-425ac6dea956"
+  },
+  "steps": [
+    {
+      "id": "cea8128b-07f9-4aa8-9d2a-1e498706557e",
+      "path": "/media/shorts/图包/图包01",
+      "relative_path": "1.jpg",
+      "kind": "image",
+      "sha256": "076312a73d63c9ce38747edd8a3301d86845cc49e5d04b95371a83416ec269e4",
+      "phase": "committed",
+      "outcome": "succeeded"
+    },
+    {
+      "id": "b5472d23-3a26-4930-90d1-c98ceb2bfc31",
+      "path": "/media/shorts/图包/图包01",
+      "relative_path": "10.jpg",
+      "kind": "image",
+      "sha256": "760ff86d07d32499d6c5cc22e8e204513f7f126ac8d9ab8a33d4742afe69ea0e",
+      "phase": "committed",
+      "outcome": "succeeded"
+    },
+    {
+      "id": "305b4d2c-9b79-4e42-a208-f941a5ca88c5",
+      "path": "/media/shorts/图包/图包01",
+      "relative_path": "2.jpg",
+      "kind": "image",
+      "sha256": "2ed48c0a8fd2a4de881933d7330717075cf8139121ab72eed66b6edf9b03e3cd",
+      "phase": "committed",
+      "outcome": "succeeded"
+    },
+    {
+      "id": "a1149056-d3c1-44a9-b945-4e603f29601a",
+      "path": "/media/shorts/图包/图包01",
+      "relative_path": ".",
+      "kind": "directory",
+      "sha256": null,
+      "phase": "retained",
+      "outcome": "retained"
+    }
+  ]
+}
