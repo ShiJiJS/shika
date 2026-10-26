@@ -286,10 +286,11 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
                   if (value != null && current) ...[
                     Text(
                       '原选择 ${value.ids.length} 个图包',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontFamily: 'PaperSerif',
                         height: 1.6,
+                        color: Paper.of(context).ink,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -318,7 +319,7 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
                       ),
                     const SizedBox(height: 16),
                     if (value.batches.isNotEmpty)
-                      const Text(
+                      Text(
                         '已确认的批次',
                         style: TextStyle(fontSize: 14, height: 1.7),
                       ),

@@ -227,4 +227,66 @@ void main() {
       expect(repo.physicalPosts, hasLength(1));
     },
   );
+  testWidgets(
+    'saved choice keeps readable primary ink when appearance changes while open',
+    (t) async {
+      final repo = PurgeLibrary(count: 1);
+      await repo.initialize();
+      final saved = await PackPurgeSelections(repo.createPackFiles())
+          .save(['trash-0']);
+      final dark = ValueNotifier(false);
+      t.view.physicalSize = const Size(390, 844);
+      t.view.devicePixelRatio = 1;
+      addTearDown(() async {
+        await t.pumpWidget(const SizedBox());
+        repo.dispose();
+        dark.dispose();
+        t.view.resetPhysicalSize();
+        t.view.resetDevicePixelRatio();
+      });
+      await t.pumpWidget(
+        ValueListenableBuilder<bool>(
+          valueListenable: dark,
+          builder: (context, value, _) => MaterialApp(
+            theme: value ? Paper.darkTheme : Paper.theme,
+            home: Builder(
+              builder: (context) => Scaffold(
+                body: TextButton(
+                  onPressed: () => Navigator.of(context).push<void>(
+                    MaterialPageRoute(
+                      builder: (_) => PackPurgeSelectionPage(
+                        repository: repo,
+                        selectionId: saved.id,
+                      ),
+                    ),
+                  ),
+                  child: const Text('打开选择'),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await t.pumpAndSettle();
+      await tap(t, find.text('打开选择'));
+      for (final value in [false, true, false]) {
+        dark.value = value;
+        await t.pumpAndSettle();
+        final heading = find.text('原选择 1 个图包');
+        final rich = t.widget<RichText>(
+          find.descendant(of: heading, matching: find.byType(RichText)),
+        );
+        final foreground = rich.text.style!.color!;
+        final background = Theme.of(t.element(heading)).scaffoldBackgroundColor;
+        final a = foreground.computeLuminance(),
+            b = background.computeLuminance();
+        final contrast = ((a > b ? a : b) + .05) / ((a > b ? b : a) + .05);
+        expect(
+          contrast,
+          greaterThanOrEqualTo(4.5),
+          reason: 'The rendered heading must remain readable against its current page',
+        );
+      }
+    },
+  );
 }

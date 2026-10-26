@@ -83,7 +83,11 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
                             padding: const EdgeInsets.only(bottom: 18),
                             child: Text(
                               '${plan.members.length} 个图包 · ${plan.imageCount} 张图片',
-                              style: const TextStyle(fontSize: 14, height: 1.7),
+                              style: TextStyle(
+                                fontSize: 14,
+                                height: 1.7,
+                                color: Paper.of(context).ink,
+                              ),
                             ),
                           );
                         }
@@ -186,7 +190,11 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
       children: [
         Text(
           '永久删除 ${plan?.members.length ?? widget.ids.length.clamp(0, 1000)} 个图包中的图片？',
-          style: const TextStyle(fontSize: 14, height: 1.6),
+          style: TextStyle(
+            fontSize: 14,
+            height: 1.6,
+            color: Paper.of(context).ink,
+          ),
         ),
         const SizedBox(height: 12),
         _note(context, '只删除本次核对清单中的图片，其他附件保留。永久删除不可撤销，管理备份也不能找回图片。'),
@@ -205,7 +213,11 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
           Text(
             '${plan.members.length} 个图包 · ${plan.imageCount} 张图片',
             key: const Key('pack-purge-summary'),
-            style: const TextStyle(fontSize: 14, height: 1.7),
+            style: TextStyle(
+              fontSize: 14,
+              height: 1.7,
+              color: Paper.of(context).ink,
+            ),
           ),
           _note(
             context,
@@ -357,10 +369,11 @@ class _PurgeImagesState extends State<_PurgeImages> {
                       children: [
                         Text(
                           widget.member.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             fontFamily: 'PaperSerif',
                             height: 1.6,
+                            color: Paper.of(context).ink,
                           ),
                         ),
                         _note(context, widget.member.path),
@@ -440,7 +453,11 @@ class _PurgeImagesState extends State<_PurgeImages> {
                       children: [
                         Text(
                           image.relativePath,
-                          style: const TextStyle(fontSize: 15, height: 1.6),
+                          style: TextStyle(
+                            fontSize: 15,
+                            height: 1.6,
+                            color: Paper.of(context).ink,
+                          ),
                         ),
                         _note(context, _bytes(image.size)),
                       ],

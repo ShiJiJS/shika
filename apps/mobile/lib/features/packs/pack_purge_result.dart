@@ -164,10 +164,11 @@ class _PackPurgeResultState extends State<PackPurgeResult> {
                     Text(
                       '已确认删除 ${result.pagesDeleted}/${result.pagesTotal} 张',
                       key: const Key('pack-purge-result-count'),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontFamily: 'PaperSerif',
                         height: 1.6,
+                        color: Paper.of(context).ink,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -243,7 +244,11 @@ class _PackPurgeResultState extends State<PackPurgeResult> {
                         children: [
                           Text(
                             '${row.packName} · ${row.relativePath}',
-                            style: const TextStyle(fontSize: 15, height: 1.6),
+                            style: TextStyle(
+                              fontSize: 15,
+                              height: 1.6,
+                              color: Paper.of(context).ink,
+                            ),
                           ),
                           note(
                             '${row.kind == 'image' ? '图片' : '目录'} · ${row.outcome == 'succeeded'

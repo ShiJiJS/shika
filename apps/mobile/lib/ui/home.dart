@@ -2678,7 +2678,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                   children: [
                     Text(
                       '永久删除 ${ids.length} 个视频？',
-                      style: const TextStyle(fontSize: 14, height: 1.6),
+                      style: TextStyle(fontSize: 14, height: 1.6, color: p.ink),
                     ),
                     const SizedBox(height: 12),
                     Text(
