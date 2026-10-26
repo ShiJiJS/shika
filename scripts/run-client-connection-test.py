@@ -432,9 +432,12 @@ def main():
         "apps/mobile/integration_test/server_roots_missing_test.dart",
         "scripts/run-client-connection-test.py", "services/server/tests/e2e_server.py",
     ]
+    prototype_entry = subprocess.check_output(
+        ["git", "ls-tree", "HEAD", "design/reference/library-first"], cwd=ROOT, text=True,
+    ).split()
     (EVIDENCE / "source.json").write_text(json.dumps({
         "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-        "prototype_tree": subprocess.check_output(["git", "rev-parse", "HEAD:design/reference/library-first"], cwd=ROOT, text=True).strip(),
+        "prototype_tree": prototype_entry[2] if prototype_entry else None,
         "files": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in source_paths},
     }, indent=2) + "\n", encoding="utf-8")
     prepare_emulator()

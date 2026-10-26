@@ -175,6 +175,13 @@ void main() {
         expect(find.text('缺失图包p0'), findsOneWidget);
         await tap(t, find.text('下一页'));
         expect(repo.offsets.last, 24);
+        expect(
+          t
+              .widget<ListView>(find.byKey(const Key('missing-list')))
+              .controller!
+              .offset,
+          0,
+        );
         expect(find.text('缺失图包p0'), findsNothing);
         await tap(t, find.byKey(const Key('clear-missing-kind')));
         await tap(t, find.text('取消'));

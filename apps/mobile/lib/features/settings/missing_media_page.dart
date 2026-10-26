@@ -68,6 +68,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
   Future<void> load({int at = 0}) async {
     if (!current) return;
     final token = ++generation, selected = kind;
+    final changedPage = at != offset;
     gateway.cancelPages();
     widget.repository.cancelMissingRead();
     setState(() {
@@ -115,6 +116,13 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
         total = count;
         offset = at;
       });
+      if (changedPage) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted && token == generation && scroll.hasClients) {
+            scroll.jumpTo(0);
+          }
+        });
+      }
       await readPending();
       if (task != null) {
         final value = await tasks.task(task!.id);
