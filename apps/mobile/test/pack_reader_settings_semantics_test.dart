@@ -13,6 +13,8 @@ void main() {
   for (final sample in [
     (const Size(390, 844), 1.0),
     (const Size(360, 740), 2.0),
+    (const Size(844, 390), 1.0),
+    (const Size(844, 390), 2.0),
   ]) {
     testWidgets(
       'reader settings keep accessible mode sections stable ${sample.$1}/${sample.$2}',
@@ -62,6 +64,14 @@ void main() {
 
           await until(() => state().session.opened && !state().session.busy);
           await tap(find.byTooltip('阅读设置'));
+          await t.pumpAndSettle();
+          final done = find.byKey(const Key('reader-settings-done'));
+          expect(done.hitTestable(), findsOneWidget);
+          expect(t.getRect(done).bottom, lessThanOrEqualTo(sample.$1.height));
+          expect(
+            t.getRect(find.text('纵向拼接')).bottom,
+            lessThan(t.getRect(find.text('翻页方向')).top),
+          );
           for (var round = 0; round < 3; round++) {
             repo.preferenceStarted = Completer<void>();
             repo.preferenceRelease = Completer<void>();

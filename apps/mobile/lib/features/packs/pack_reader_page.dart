@@ -287,6 +287,11 @@ class PackReaderPageState extends State<PackReaderPage>
         animation: session,
         builder: (context, _) => SheetFrame(
           title: '阅读设置',
+          footer: FilledButton(
+            key: const Key('reader-settings-done'),
+            onPressed: () => Navigator.pop(context),
+            child: const Text('继续阅读'),
+          ),
           children: [
             Text(
               session.range?.pack?.displayTitle ?? '',
@@ -321,6 +326,7 @@ class PackReaderPageState extends State<PackReaderPage>
                   ),
               ],
             ),
+            SizedBox(height: MediaLayout.largeText(context) ? 24 : 16),
             if (session.preferences.mode == ReaderMode.horizontal) ...[
               DropdownButtonFormField<ReaderDirection>(
                 decoration: const InputDecoration(labelText: '翻页方向'),
@@ -347,6 +353,7 @@ class PackReaderPageState extends State<PackReaderPage>
                         }
                       },
               ),
+              SizedBox(height: MediaLayout.largeText(context) ? 24 : 16),
               DropdownButtonFormField<ReaderFit>(
                 decoration: const InputDecoration(labelText: '图片适配'),
                 initialValue: session.preferences.fit,
@@ -390,11 +397,6 @@ class PackReaderPageState extends State<PackReaderPage>
               style: const TextStyle(fontSize: 13, height: 1.6),
             ),
             status(context),
-            const SizedBox(height: 12),
-            FilledButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('继续阅读'),
-            ),
           ],
         ),
       ),
@@ -471,7 +473,37 @@ class PackReaderPageState extends State<PackReaderPage>
           final page = session.queuePage;
           return SheetFrame(
             title: '本次图包范围',
+            footer: page == null
+                ? null
+                : Row(
+                    key: const Key('reader-range-pagination'),
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: page.offset > 0 && !session.loadingQueue
+                            ? () => session.loadQueue(
+                                offset: max(0, page.offset - 40),
+                              )
+                            : null,
+                        child: const Text('上一页'),
+                      ),
+                      TextButton(
+                        onPressed:
+                            page.offset + page.entries.length < page.total &&
+                                !session.loadingQueue
+                            ? () => session.loadQueue(offset: page.offset + 40)
+                            : null,
+                        child: const Text('下一页'),
+                      ),
+                    ],
+                  ),
             children: [
+              Text(
+                sourceCaption,
+                key: const Key('reader-range-caption'),
+                style: const TextStyle(fontSize: 13, height: 1.6),
+              ),
+              const SizedBox(height: 8),
               Text(
                 '${session.range?.candidateCount ?? 0} 个图包 · 只在这次范围内切换',
                 style: const TextStyle(fontSize: 13),
@@ -508,27 +540,6 @@ class PackReaderPageState extends State<PackReaderPage>
                           }
                         : null,
                   ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      onPressed: page.offset > 0 && !session.loadingQueue
-                          ? () => session.loadQueue(
-                              offset: max(0, page.offset - 40),
-                            )
-                          : null,
-                      child: const Text('上一页'),
-                    ),
-                    TextButton(
-                      onPressed:
-                          page.offset + page.entries.length < page.total &&
-                              !session.loadingQueue
-                          ? () => session.loadQueue(offset: page.offset + 40)
-                          : null,
-                      child: const Text('下一页'),
-                    ),
-                  ],
-                ),
               ],
             ],
           );
@@ -1247,13 +1258,15 @@ class PackReaderPageState extends State<PackReaderPage>
         ],
       ),
     );
-    if (quick && MediaLayout.largeText(context)) {
+    if (MediaLayout.largeText(context)) {
       return Column(
         children: [
           scope,
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [previous, next],
+            mainAxisAlignment: quick
+                ? MainAxisAlignment.spaceBetween
+                : MainAxisAlignment.end,
+            children: [if (quick) previous, next],
           ),
         ],
       );

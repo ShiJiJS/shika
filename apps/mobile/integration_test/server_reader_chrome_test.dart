@@ -105,6 +105,9 @@ void main() {
         'reader-vertical',
         'reader-overview-sheet',
         'reader-trash-pack',
+        'reader-settings-done',
+        'reader-range-pagination',
+        'reader-range-caption',
         'pack-search',
       ]) {
         final target = find.byKey(Key(key));
@@ -236,6 +239,13 @@ void main() {
     expect(await reader().session.flush(), isTrue);
     await capture('reader-jump');
     await tap(find.byTooltip('阅读设置'));
+    final done = find.byKey(const Key('reader-settings-done'));
+    expect(done.hitTestable(), findsOneWidget);
+    final media = MediaQuery.of(t.element(find.byType(PackReaderPage)));
+    expect(
+      t.getRect(done).bottom,
+      lessThanOrEqualTo(window.height - media.viewPadding.bottom),
+    );
     await capture('reader-settings');
     await tap(find.widgetWithText(ChoiceChip, '纵向拼接'));
     await until(
@@ -295,6 +305,14 @@ void main() {
       'full range',
     );
     final afterPanels = await saved();
+    expect(
+      find.byKey(const Key('reader-range-pagination')).hitTestable(),
+      findsOneWidget,
+    );
+    expect(
+      t.getRect(find.byKey(const Key('reader-range-pagination'))).bottom,
+      lessThanOrEqualTo(window.height - media.viewPadding.bottom),
+    );
     expect(
       afterPanels,
       partial,
