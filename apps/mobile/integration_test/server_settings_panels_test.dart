@@ -103,17 +103,30 @@ void main() {
       );
     }
 
-    Future<void> focusedFieldVisible(Finder field) => until(() {
-      final media = MediaQuery.of(
-        t.element(find.byKey(const Key('app-shell')).first),
+    Future<void> focusedFieldVisible(Finder field) async {
+      await t.pumpAndSettle(const Duration(milliseconds: 100));
+      await until(() {
+        if (field.evaluate().isEmpty) return false;
+        final media = MediaQuery.of(
+          t.element(find.byKey(const Key('app-shell')).first),
+        );
+        final rect = t.getRect(field);
+        return rect.top >= media.viewPadding.top &&
+            rect.bottom <= media.size.height - media.viewInsets.bottom;
+      }, 'focused input above system keyboard');
+      expect(
+        t
+            .widget<EditableText>(
+              find.descendant(of: field, matching: find.byType(EditableText)),
+            )
+            .focusNode
+            .hasFocus,
+        isTrue,
       );
-      final rect = t.getRect(field);
-      return rect.top >= media.viewPadding.top &&
-          rect.bottom <= media.size.height - media.viewInsets.bottom;
-    }, 'focused input above system keyboard');
+    }
 
     Future<void> capture(String state) async {
-      await t.pump(const Duration(milliseconds: 200));
+      await t.pumpAndSettle(const Duration(milliseconds: 100));
       final media = MediaQuery.of(
         t.element(find.byKey(const Key('app-shell')).first),
       );
