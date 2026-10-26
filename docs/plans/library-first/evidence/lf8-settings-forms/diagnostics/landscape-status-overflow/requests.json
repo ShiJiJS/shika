@@ -1,0 +1,262 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "status",
+        "missing"
+      ],
+      [
+        "limit",
+        "1"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/rounds",
+    "status": 201,
+    "phase": null,
+    "body": {
+      "request_id": "1793009061832815-a8b0fc4a",
+      "order": "sequential",
+      "scope": {
+        "tag_ids": []
+      },
+      "membership": "fixed",
+      "source": "library",
+      "sort": "path"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/reading-defaults",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback-defaults",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "24"
+      ],
+      [
+        "source",
+        "library"
+      ],
+      [
+        "sort",
+        "path"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "settings-connection-keyboard"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "settings-root-add"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/roots/videos",
+    "status": 409,
+    "phase": "settings-root-edit"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback-defaults",
+    "status": 200,
+    "phase": "settings-root-conflict"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "settings-playback-draft"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback-defaults",
+    "status": 200,
+    "phase": "settings-playback-draft"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/reading-defaults",
+    "status": 200,
+    "phase": "settings-playback-draft"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/reading-defaults",
+    "status": 200,
+    "phase": "settings-reader-draft"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/reading-defaults",
+    "status": 200,
+    "phase": "settings-reader-draft"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/reading-defaults",
+    "status": 200,
+    "phase": "settings-reader-draft"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/reading-defaults",
+    "status": 200,
+    "phase": "settings-reader-saved"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/reading-defaults",
+    "status": 200,
+    "phase": "settings-reader-saved"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/reading-defaults",
+    "status": 200,
+    "phase": "settings-reader-saved"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "settings-reader-restored"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/reading-defaults",
+    "status": 200,
+    "phase": "settings-dark-roots"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "settings-dark-reader"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "settings-dark-reader",
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "24"
+      ],
+      [
+        "source",
+        "library"
+      ],
+      [
+        "sort",
+        "path"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/240e43c1-b220-4c35-8f00-0fe844411c99/thumbnail",
+    "status": 200,
+    "phase": "settings-dark-reader"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/4d84de02-95ab-4c84-8782-1d48b07420da/thumbnail",
+    "status": 200,
+    "phase": "settings-dark-reader"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 200,
+    "phase": "settings-return"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback-defaults",
+    "status": 200,
+    "phase": "settings-return"
+  }
+]

@@ -1,0 +1,20 @@
+INFO         |   androidboot.veritymode=enforcing
+INFO         | Monitoring duration of emulator setup.
+INFO         | Successfully initialized netsim WiFi
+INFO         | Activated packet streamer for uwb emulation
+INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
+INFO         | setDisplayActiveConfig: id:0, 1080x2400
+INFO         | emulatorSetupEnvironment: Environment scene is not required
+USER_INFO    | Emulator is performing a full startup. This may take upto two minutes, or more.
+INFO         | Boot completed in 12280 ms
+INFO         | Increasing screen off timeout, logcat buffer size to 2M.
+ERROR        | bad color buffer handle 1087
+ERROR        | bad color buffer handle 2347
+ERROR        | detected a hanging thread 'QEMU2 main loop'. No response for 15020 ms
+ERROR        | detected a hanging thread 'QEMU2 CPU0 thread'. No response for 15022 ms
+ERROR        | detected a hanging thread 'QEMU2 CPU1 thread'. No response for 15022 ms
+ERROR        | detected a hanging thread 'QEMU2 CPU2 thread'. No response for 15022 ms
+ERROR        | detected a hanging thread 'QEMU2 CPU3 thread'. No response for 15022 ms
+ERROR        | detected a hanging thread 'QEMU2 main loop'. No response for 15028 ms
+[87632:16104682:20261026,184440.949200:WARNING in_range_cast.h:38] value -97304226 out of range

@@ -1,0 +1,32 @@
+{
+  "procName": "qemu-system-aarch64-headless",
+  "exception": {
+    "codes": "0x0000000000000001, 0x0000000000000000",
+    "rawCodes": [
+      1,
+      0
+    ],
+    "type": "EXC_BAD_ACCESS",
+    "signal": "SIGSEGV",
+    "subtype": "KERN_INVALID_ADDRESS at 0x0000000000000000"
+  },
+  "termination": {
+    "flags": 0,
+    "code": 11,
+    "namespace": "SIGNAL",
+    "indicator": "Segmentation fault: 11",
+    "byProc": "exc handler",
+    "byPid": 87622
+  },
+  "faultingThread": 3,
+  "symbols": [
+    "android::crashreport::CrashReporter::GenerateDumpAndDie(char const*)",
+    "_ZZN7android11crashreport13CrashReporter12hangDetectorEvENK3$_0clINSt3__117basic_string_viewIcNS4_11char_traitsIcEEEEEEDaT_",
+    "std::__1::__function::__func<android::crashreport::CrashReporter::hangDetector()::$_0, std::__1::allocator<android::crashreport::CrashReporter::hangDetector()::$_0>, void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>&&)",
+    "std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>) const",
+    "android::crashreport::HangDetector::LooperWatcher::process(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)> const&)",
+    "android::crashreport::HangDetector::workerThread()",
+    "std::__1::__function::__func<android::base::FunctorThread::FunctorThread<android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0, void*>(android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0&&, android::base::ThreadFlags)::'lambda'(), std::__1::allocator<android::base::FunctorThread::FunctorThread<android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0, void*>(android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0&&, android::base::ThreadFlags)::'lambda'()>, long ()>::operator()()",
+    "android::base::Thread::thread_main(void*)"
+  ]
+}

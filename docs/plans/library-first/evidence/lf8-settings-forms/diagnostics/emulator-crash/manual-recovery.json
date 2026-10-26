@@ -1,0 +1,14 @@
+{
+  "reason": "Confirmed QEMU crash/exit; reopen same AVD without wiping data, restore pre-run baseline.",
+  "before": {
+    "size": "Physical size: 1080x2400\nOverride size: 2532x1170",
+    "density": "Physical density: 420\nOverride density: 480",
+    "font": "1"
+  },
+  "after": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420",
+    "font": "1.0"
+  },
+  "owned_8768_removed": true
+}

@@ -1,0 +1,153 @@
+{
+  "counts": {
+    "videos": 2,
+    "packs": 4,
+    "pack_pages": 24,
+    "pack_progress": 1,
+    "pack_preferences": 1,
+    "pack_sessions": 2,
+    "recent_entries": 1,
+    "playback_rounds": 0,
+    "file_operations": 0,
+    "pack_file_operations": 0,
+    "pack_trash_items": 0
+  },
+  "sessions": [
+    {
+      "id": "10292b1e-3011-4cd4-99fc-3e7b45f21a87",
+      "request_id": "1793011774009737-733567503-0",
+      "request_hash": "2ffee5e6e67074bf01420a1709b9007eb52f3e3f6b14418a86fc986bb72d3caf",
+      "scope": "{\"directory_id\": null, \"search\": \"\", \"tag_ids\": [], \"read_state\": \"all\"}",
+      "source": "{\"kind\": \"library\", \"sort\": \"title\"}",
+      "order": "sequential",
+      "cursor": 2,
+      "revision": 0,
+      "finished": 0,
+      "candidate_count": 4,
+      "created_at": 1793011774.562494
+    },
+    {
+      "id": "5c812f09-3912-4a9b-9540-b292dfd57370",
+      "request_id": "1793011797223664-1058266525-5",
+      "request_hash": "2ffee5e6e67074bf01420a1709b9007eb52f3e3f6b14418a86fc986bb72d3caf",
+      "scope": "{\"directory_id\": null, \"search\": \"\", \"tag_ids\": [], \"read_state\": \"all\"}",
+      "source": "{\"kind\": \"library\", \"sort\": \"title\"}",
+      "order": "sequential",
+      "cursor": 2,
+      "revision": 0,
+      "finished": 0,
+      "candidate_count": 4,
+      "created_at": 1793011797.7424843
+    }
+  ],
+  "pack_entries": [
+    {
+      "session_id": "10292b1e-3011-4cd4-99fc-3e7b45f21a87",
+      "ordinal": 0,
+      "pack_id": "37e9c11f-5851-414f-a0b0-d094051bac3e"
+    },
+    {
+      "session_id": "10292b1e-3011-4cd4-99fc-3e7b45f21a87",
+      "ordinal": 1,
+      "pack_id": "b35a308c-476b-4e8e-969c-0670d21231df"
+    },
+    {
+      "session_id": "10292b1e-3011-4cd4-99fc-3e7b45f21a87",
+      "ordinal": 2,
+      "pack_id": "f21aa024-0ab9-4c4c-a763-4fff17e60c0f"
+    },
+    {
+      "session_id": "10292b1e-3011-4cd4-99fc-3e7b45f21a87",
+      "ordinal": 3,
+      "pack_id": "1e4ebe80-cf0f-4f7c-ba5a-e8ab015f053e"
+    },
+    {
+      "session_id": "5c812f09-3912-4a9b-9540-b292dfd57370",
+      "ordinal": 0,
+      "pack_id": "37e9c11f-5851-414f-a0b0-d094051bac3e"
+    },
+    {
+      "session_id": "5c812f09-3912-4a9b-9540-b292dfd57370",
+      "ordinal": 1,
+      "pack_id": "b35a308c-476b-4e8e-969c-0670d21231df"
+    },
+    {
+      "session_id": "5c812f09-3912-4a9b-9540-b292dfd57370",
+      "ordinal": 2,
+      "pack_id": "f21aa024-0ab9-4c4c-a763-4fff17e60c0f"
+    },
+    {
+      "session_id": "5c812f09-3912-4a9b-9540-b292dfd57370",
+      "ordinal": 3,
+      "pack_id": "1e4ebe80-cf0f-4f7c-ba5a-e8ab015f053e"
+    }
+  ],
+  "preferences": [
+    {
+      "pack_id": "f21aa024-0ab9-4c4c-a763-4fff17e60c0f",
+      "mode": "vertical",
+      "direction": "ltr",
+      "gap": 0,
+      "fit": "contain",
+      "revision": 1
+    }
+  ],
+  "roots": [
+    {
+      "id": "packs",
+      "name": "图包",
+      "path": "/media/packs",
+      "mount_id": "packs",
+      "available": 1,
+      "error": null,
+      "last_scan": 1793011753.2786047,
+      "kind": "pack",
+      "enabled": 1
+    },
+    {
+      "id": "videos",
+      "name": "短视频",
+      "path": "/media/videos",
+      "mount_id": "videos",
+      "available": 1,
+      "error": null,
+      "last_scan": 1793011749.9340706,
+      "kind": "video",
+      "enabled": 1
+    }
+  ],
+  "rounds": [],
+  "entries": [],
+  "recent": [
+    {
+      "kind": "pack",
+      "video_id": null,
+      "pack_id": "f21aa024-0ab9-4c4c-a763-4fff17e60c0f",
+      "opened_at": 1793011798.503218
+    }
+  ],
+  "progress": [
+    {
+      "pack_id": "f21aa024-0ab9-4c4c-a763-4fff17e60c0f",
+      "page_id": "d21986a3-1cb4-4c22-bd5e-a9eda0f293a7",
+      "offset_ratio": 0.04747235387045814,
+      "completed": 0,
+      "revision": 5,
+      "updated_at": 1793011798.5020518,
+      "content_version": 1,
+      "recovery_reason": null
+    }
+  ],
+  "progress_pages": [
+    {
+      "name": "示例作者 NO.034 - 夏日祭",
+      "ordinal": 3
+    }
+  ],
+  "defaults": [
+    {
+      "key": "playback_defaults",
+      "value": "{\"order\": \"random\", \"revision\": 0}"
+    }
+  ]
+}
