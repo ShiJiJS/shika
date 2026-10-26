@@ -80,16 +80,25 @@ class RoundInput(Input):
     membership: Literal["legacy", "fixed"] = "legacy"
     source: Literal["library", "tags", "recent"] = "library"
     sort: Literal["path", "name", "newest", "recent"] = "path"
+    name_locale: Literal["zh-CN"] | None = None
 
     @model_validator(mode="after")
     def compatible_context(self):
         if self.membership == "legacy" and (
-            self.scope.search or self.source != "library" or self.sort != "path"
+            self.scope.search or self.source != "library" or self.sort != "path" or self.name_locale
         ):
             raise ValueError("Entry search/source/sort require fixed membership")
         if self.sort == "recent" and self.source != "recent":
             raise ValueError("Recent sorting requires the recent source")
+        if self.name_locale and self.sort != "name":
+            raise ValueError("Name locale requires name sorting")
         return self
+
+
+def localized_video_sort(sort, name_locale):
+    if name_locale and sort != "name":
+        raise LibraryError("invalid_sort", "中文名称排序仅适用于名称顺序", 422)
+    return "name_zh" if name_locale else sort
 
 
 class PlaybackDefaultsInput(Input):
@@ -370,6 +379,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "typed_roots",
                 "media_catalog_counts",
                 *(["pack_presentation"] if title_order_available() else []),
+                *(["video_name_order"] if title_order_available() else []),
                 "pack_tags",
                 "image_packs",
                 "fixed_video_sessions",
@@ -533,6 +543,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
         source: Literal["library", "tags", "recent"] = "library",
         sort: Literal["path", "name", "newest", "recent"] = "path",
+        name_locale: Literal["zh-CN"] | None = None,
         anchor_ids: Annotated[list[str] | None, Query(max_length=16)] = None,
     ):
         return request.app.state.catalog.videos(
@@ -546,7 +557,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             file_type=file_type,
             tag_ids=tag_ids or (),
             source=source,
-            sort=sort,
+            sort=localized_video_sort(sort, name_locale),
             anchor_ids=anchor_ids or (),
         )
 
@@ -561,6 +572,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
         source: Literal["library", "tags", "recent"] = "library",
         sort: Literal["path", "name", "newest", "recent"] = "path",
+        name_locale: Literal["zh-CN"] | None = None,
     ):
         return request.app.state.catalog.selection(
             directory_id=directory_id,
@@ -570,7 +582,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             file_type=file_type,
             tag_ids=tag_ids or (),
             source=source,
-            sort=sort,
+            sort=localized_video_sort(sort, name_locale),
         )
 
     @app.get("/api/v1/videos/{video_id}/thumbnail", dependencies=auth_required)
@@ -613,7 +625,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             body.request_id,
             membership=body.membership,
             source=body.source,
-            sort=body.sort,
+            sort=localized_video_sort(body.sort, body.name_locale),
         )
 
     @app.patch("/api/v1/rounds/{round_id}/order", dependencies=auth_required)

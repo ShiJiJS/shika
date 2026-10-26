@@ -225,7 +225,10 @@ class Playback:
             "scope": round.scope,
             "membership": round.membership,
             "source": round.source,
-            "sort": round.sort,
+            # Keep the public enum readable by pre-locale clients. The stored
+            # source order remains name_zh and is never recalculated on resume.
+            "sort": "name" if round.sort == "name_zh" else round.sort,
+            **({"name_locale": "zh-CN"} if round.sort == "name_zh" else {}),
             "sequence_revision": round.sequence_revision,
             "position": selected or 0,
             "total": len(entries),

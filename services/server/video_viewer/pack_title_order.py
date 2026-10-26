@@ -1,4 +1,4 @@
-"""Bounded, process-local Chinese title keys using the runtime's pinned ICU.
+"""Bounded Chinese name/pack-title keys using the runtime's pinned ICU.
 
 Keys are ephemeral, not persisted in SQLite: ICU upgrades must not leave stale
 on-disk keys. Each thread owns its collator; SQL applies the same key before
@@ -20,7 +20,7 @@ class _ChineseCollator:
     def __init__(self):
         location = ctypes.util.find_library("icui18n")
         if not location:
-            raise RuntimeError("Chinese pack ordering requires ICU (Debian libicu72)")
+            raise RuntimeError("Chinese media ordering requires ICU (Debian libicu72)")
         self.library = c.CDLL(location)
         version = re.search(r"(?:\.so\.|\.)(\d+)(?:\.dylib)?$", location)
         suffix = "_" + version[1] if version else ""
@@ -40,7 +40,7 @@ class _ChineseCollator:
         if error.value > 0 or not self.handle:
             if self.handle:
                 close(self.handle)
-            raise RuntimeError(f"Cannot initialize Chinese pack ordering: ICU {error.value}")
+            raise RuntimeError(f"Cannot initialize Chinese media ordering: ICU {error.value}")
         self.cleanup = weakref.finalize(self, close, self.handle)
 
     def sort_key(self, text):
@@ -49,7 +49,7 @@ class _ChineseCollator:
         target = c.create_string_buffer(size)
         actual = self.key(self.handle, source, len(source) // 2, target, size)
         if actual != size or size < 1:
-            raise RuntimeError("ICU returned an invalid pack title key")
+            raise RuntimeError("ICU returned an invalid media name key")
         return target.raw
 
 
@@ -70,8 +70,18 @@ def title_order_available():
         return False
 
 
-@lru_cache(maxsize=4096)
-def title_sort_key(name):
+def _key(text):
     if not hasattr(_thread, "collator"):
         _thread.collator = _ChineseCollator()
-    return _thread.collator.sort_key(presentation(name).title)
+    return _thread.collator.sort_key(text)
+
+
+@lru_cache(maxsize=4096)
+def name_sort_key(name):
+    # Video filenames are literal; never apply pack author/volume parsing.
+    return _key(name)
+
+
+@lru_cache(maxsize=4096)
+def title_sort_key(name):
+    return _key(presentation(name).title)

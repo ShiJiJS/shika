@@ -1349,6 +1349,12 @@ class ServerLibraryRepository extends LibraryRepository
     return resolved.id;
   }
 
+  Json _videoOrder(VideoSort sort) => {
+    'sort': sort.name,
+    if (sort == VideoSort.name && capabilities.videoNameOrder)
+      'name_locale': 'zh-CN',
+  };
+
   Future<Json> scopeBody(VideoQuery scope, {RequestScope? cancel}) async => {
     if (scope.folder.isNotEmpty)
       'directory_id': await directoryId(scope.folder, cancel: cancel),
@@ -1421,7 +1427,7 @@ class ServerLibraryRepository extends LibraryRepository
         if (search.isNotEmpty) 'search': search,
         if (entry != null && capabilities.fixedVideoSessions) ...{
           'source': entry.source.name,
-          'sort': entry.sort.name,
+          ..._videoOrder(entry.sort),
         },
       },
       cancel: work,
@@ -1527,7 +1533,7 @@ class ServerLibraryRepository extends LibraryRepository
         ...filters,
         'search': entry.search,
         'source': entry.source.name,
-        'sort': entry.sort.name,
+        ..._videoOrder(entry.sort),
       },
     );
     _packCurrent(target, generation, work);
@@ -1662,7 +1668,7 @@ class ServerLibraryRepository extends LibraryRepository
         if (entry != null) ...{
           'membership': 'fixed',
           'source': entry.source.name,
-          'sort': entry.sort.name,
+          ..._videoOrder(entry.sort),
         },
       });
       if (_pendingRoundSignature != signature) {
@@ -1675,7 +1681,7 @@ class ServerLibraryRepository extends LibraryRepository
           if (entry != null) ...{
             'membership': 'fixed',
             'source': entry.source.name,
-            'sort': entry.sort.name,
+            ..._videoOrder(entry.sort),
           },
         };
       }

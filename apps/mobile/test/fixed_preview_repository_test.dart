@@ -12,6 +12,7 @@ typedef Json = Map<String, dynamic>;
 class PreviewServer {
   late HttpServer server;
   bool supportsFixed = true, loseCreate = false, loseOrder = false;
+  bool supportsNameOrder = false;
   Json? round;
   final creates = <Json>[], orders = <Json>[], opens = <Json>[];
   final reads = <Uri>[];
@@ -38,6 +39,8 @@ class PreviewServer {
     'membership': 'fixed',
     'source': creates.last['source'],
     'sort': creates.last['sort'],
+    if (creates.last['name_locale'] != null)
+      'name_locale': creates.last['name_locale'],
     'scope': creates.last['scope'],
     'order': creates.last['order'],
     'position': position,
@@ -82,7 +85,9 @@ class PreviewServer {
               'fixed_video_sessions',
               'versioned_video_queue',
               'video_entry_anchors',
+              'catalog_selection',
             ],
+            if (supportsNameOrder) 'video_name_order',
           ],
         };
       } else if (path.endsWith('/roots')) {
@@ -219,6 +224,12 @@ class PreviewServer {
             'sequence_revision': round!['sequence_revision'],
           };
         }
+      } else if (path.endsWith('/videos/selection')) {
+        result = {
+          'kind': 'video',
+          'ids': [for (var i = 0; i < 30; i++) 'v$i'],
+          'total': 30,
+        };
       } else if (path.endsWith('/videos')) {
         final unavailable = request.uri.queryParameters['status'] == 'missing';
         final restoring = request.uri.queryParametersAll['anchor_ids'];
@@ -261,6 +272,82 @@ void main() {
   });
   Future<void> connect() =>
       repo.connect('http://127.0.0.1', fixture.server.port, 'test-only');
+
+  for (final supported in [false, true]) {
+    test(
+      'name order capability $supported is shared by list, anchor, selection and preview',
+      () async {
+        fixture.supportsNameOrder = supported;
+        await connect();
+        const wire = 'name';
+        final entry = VideoEntryScope(
+          search: 'folder',
+          source: BrowseSource.tags,
+          sort: VideoSort.name,
+        );
+        await repo.loadVideoEntry(entry);
+        expect(fixture.reads.last.queryParameters['sort'], wire);
+        expect(
+          fixture.reads.last.queryParameters['name_locale'],
+          supported ? 'zh-CN' : null,
+        );
+        expect(fixture.creates, isEmpty);
+        await repo.restoreVideoEntry(
+          entry,
+          anchors: ['v28'],
+          fallbackIndex: 28,
+        );
+        expect(fixture.reads.last.queryParameters['sort'], wire);
+        expect(fixture.reads.last.queryParametersAll['anchor_ids'], ['v28']);
+        expect(
+          fixture.reads.last.queryParameters['name_locale'],
+          supported ? 'zh-CN' : null,
+        );
+        expect(await repo.selectVideoIds(entry), hasLength(30));
+        expect(fixture.reads.last.queryParameters['sort'], wire);
+        expect(
+          fixture.reads.last.queryParameters['name_locale'],
+          supported ? 'zh-CN' : null,
+        );
+        expect(fixture.creates, isEmpty);
+        fixture.loseCreate = true;
+        await expectLater(
+          repo.beginPreview(entry, anchor: 'v25'),
+          throwsA(isA<LibraryFailure>()),
+        );
+        await repo.beginPreview(entry, anchor: 'v25');
+        expect(fixture.creates[0], fixture.creates[1]);
+        expect(fixture.creates.last['sort'], wire);
+        expect(fixture.creates.last['name_locale'], supported ? 'zh-CN' : null);
+        expect(repo.savedPreviewEntry!.sort, VideoSort.name);
+        final identity = repo.playbackIdentity;
+        await repo.connect(
+          'http://127.0.0.1',
+          fixture.server.port,
+          'test-only',
+        );
+        expect(repo.playbackIdentity, identity);
+        expect(repo.savedPreviewEntry!.sort, VideoSort.name);
+        expect(repo.savedPreviewEntry!.search, 'folder');
+        expect(repo.savedPreviewEntry!.source, BrowseSource.tags);
+        expect(fixture.opens, isEmpty);
+        for (final sort in [
+          VideoSort.path,
+          VideoSort.newest,
+          VideoSort.recent,
+        ]) {
+          await repo.loadVideoEntry(
+            VideoEntryScope(source: BrowseSource.recent, sort: sort),
+          );
+          expect(fixture.reads.last.queryParameters['sort'], sort.name);
+          expect(
+            fixture.reads.last.queryParameters.containsKey('name_locale'),
+            isFalse,
+          );
+        }
+      },
+    );
+  }
 
   test('return location sends bounded stable IDs and accepts the located page offset', () async {
     await connect();

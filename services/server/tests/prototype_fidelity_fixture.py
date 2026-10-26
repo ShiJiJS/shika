@@ -68,7 +68,7 @@ def create_fidelity_app():
     async def record(request, call_next):
         body = (
             await request.json()
-            if request.url.path == "/api/v1/pack-sessions" and request.method == "POST"
+            if request.url.path in ("/api/v1/pack-sessions", "/api/v1/rounds") and request.method == "POST"
             else None
         )
         counts_failure = (
@@ -109,6 +109,9 @@ def create_fidelity_app():
                     "status": response.status_code,
                     "phase": state["display"],
                     **({"body": body} if body is not None else {}),
+                    **({"query": list(request.query_params.multi_items())}
+                       if request.method == "GET" and request.url.path in
+                       ("/api/v1/videos", "/api/v1/videos/selection") else {}),
                 }
             )
         return response

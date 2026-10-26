@@ -7,6 +7,7 @@ from .file_state import reserved_video_ids
 from .media_roots import enabled_path, owner_for_path
 from .models import Directory, ImagePack, RecentEntry, Root, Setting, Video, VideoTag, uid
 from .pack_scanner import reserved_packs
+from .pack_title_order import title_order_available
 from .paths import beneath, excluded, validate_path
 
 
@@ -294,7 +295,11 @@ class Catalog:
 
     @staticmethod
     def video_ordering(source, sort):
-        if sort == "recent":
+        if sort == "name_zh":
+            if not title_order_available():
+                raise LibraryError("video_name_order_unavailable", "服务尚不支持中文名称排序，请更新服务环境", 503)
+            ordering = (func.vv_video_name_key(Video.name), Video.path, Video.id)
+        elif sort == "recent":
             if source != "recent":
                 raise LibraryError("invalid_sort", "最近排序仅适用于最近入口", 422)
             ordering = (RecentEntry.opened_at.desc(), Video.id)
