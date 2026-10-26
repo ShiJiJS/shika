@@ -374,6 +374,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
       onPressed: busy ? null : action,
       style: TextButton.styleFrom(
         backgroundColor: selected ? Paper.of(context).soft : null,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         padding: const EdgeInsets.symmetric(vertical: 7),
       ),
       child: Column(
@@ -895,7 +896,10 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                           Wrap(
                             spacing: 8,
                             children: [
-                              for (final order in PlayOrder.values)
+                              for (final order in [
+                                PlayOrder.sequential,
+                                PlayOrder.random,
+                              ])
                                 ChoiceChip(
                                   key: Key('queue-order-${order.name}'),
                                   label: Text(

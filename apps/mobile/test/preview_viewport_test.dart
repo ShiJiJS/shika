@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 import 'package:video_viewer/library/demo_repository.dart';
 import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/features/preview/video_preview_route.dart';
+import 'package:video_viewer/features/library/browse_context.dart';
 import 'package:video_viewer/ui/paper.dart';
 import 'package:video_viewer/library/state_store.dart';
 import 'package:video_viewer/main.dart';
@@ -168,6 +171,84 @@ void main() {
         await frames(t);
         expect(picked, last);
         expect(find.byKey(const Key('preview-queue')), findsNothing);
+        expect(t.takeException(), isNull);
+        await t.pumpWidget(const SizedBox());
+        await frames(t);
+      },
+    );
+  }
+  for (final failSave in [false, true]) {
+    testWidgets(
+      'preview theme persists or preserves previous preference on failure=$failSave',
+      (t) async {
+        final previous = VideoPlayerPlatform.instance;
+        VideoPlayerPlatform.instance = ReadyVideo();
+        final directory = await Directory.systemTemp.createTemp(
+          'preview-theme-',
+        );
+        final file = File(
+          failSave ? directory.path : '${directory.path}/appearance.json',
+        );
+        final preferences = UiPreferences(file: file, preloadAdjacent: false);
+        final repo = DemoLibraryRepository(
+          MemoryStateStore(),
+          latency: Duration.zero,
+        );
+        addTearDown(() async {
+          repo.dispose();
+          preferences.dispose();
+          VideoPlayerPlatform.instance = previous;
+          await directory.delete(recursive: true);
+        });
+        await repo.initialize();
+        final origin = VideoBrowseContext(
+          query: VideoQuery(
+            orientation: 'landscape',
+            duration: 'long',
+            type: 'MP4',
+          ),
+        );
+        await t.runAsync(
+          () => repo.beginPreview(origin.entry, order: PlayOrder.sequential),
+        );
+        final round = repo.playbackIdentity,
+            current = repo.current!.id,
+            members = [...repo.snapshot.round];
+        await t.pumpWidget(
+          ListenableBuilder(
+            listenable: preferences,
+            builder: (context, _) => MaterialApp(
+              theme: preferences.dark ? Paper.darkTheme : Paper.theme,
+              home: VideoPreviewRoute(
+                repository: repo,
+                preferences: preferences,
+                origin: origin,
+              ),
+            ),
+          ),
+        );
+        await frames(t);
+        expect(find.text('媒体库 · 横版 · 10 秒以上 · MP4'), findsOneWidget);
+        await t.tap(find.byTooltip('视频操作'));
+        await frames(t);
+        await t.tap(find.text('切换暗黑模式'));
+        await frames(t);
+        expect(preferences.dark, !failSave);
+        if (failSave) {
+          expect(find.byKey(const Key('preview-error')), findsOneWidget);
+        } else {
+          final saved = await t.runAsync(() => UiPreferences.load(file: file));
+          expect(saved!.dark, isTrue);
+          saved.dispose();
+          expect(
+            Theme.of(t.element(find.byKey(const Key('video-preview-route'))))
+                .brightness,
+            Brightness.dark,
+          );
+        }
+        expect(repo.playbackIdentity, round);
+        expect(repo.current!.id, current);
+        expect(repo.snapshot.round, members);
         expect(t.takeException(), isNull);
         await t.pumpWidget(const SizedBox());
         await frames(t);
