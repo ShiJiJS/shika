@@ -212,7 +212,7 @@ def watch():
                 "prepared",
                 "workspace-video", "workspace-packs", "workspace-video-tags",
                 "workspace-pack-tags", "workspace-settings", "workspace-dark",
-                "tag-ui-video", "tag-ui-pack", "tag-ui-dark", "tag-ui-create-keyboard", "tag-ui-create-error", "tag-ui-created", "tag-ui-renamed", "tag-ui-remove-confirm", "tag-ui-removed", "tag-ui-page-error", "tag-ui-paged", "tag-ui-results",
+                "tag-ui-video", "tag-ui-pack", "tag-ui-dark", "tag-ui-create-keyboard", "tag-ui-create-error", "tag-ui-created", "tag-ui-rename-editor", "tag-ui-rename-editor-dark", "tag-ui-renamed", "tag-ui-remove-confirm", "tag-ui-removed", "tag-ui-page-error", "tag-ui-paged", "tag-ui-results",
                 "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
                 "selection-videos", "selection-packs",
                 "pack-names-card", "pack-names-retry", "pack-names-saved", "pack-names-renamed",

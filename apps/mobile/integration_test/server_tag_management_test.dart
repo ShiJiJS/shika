@@ -90,7 +90,12 @@ void main() {
         'reads settled',
       );
       Future<void> tap(Finder target) async {
-        await revealAction(t, target);
+        try {
+          await revealAction(t, target);
+        } catch (_) {
+          await fixture('/__fixture/checkpoint/error');
+          rethrow;
+        }
         await t.tap(target);
         await t.pump(const Duration(milliseconds: 200));
         await idle();
@@ -143,11 +148,19 @@ void main() {
           t.state<TagCatalogPageState>(find.byType(TagCatalogPage));
       await idle();
       await tap(find.byKey(const Key('nav-tags')));
+      await until(
+        () => state().tags.any((v) => v.id == ids.first),
+        'video tags loaded',
+      );
       await tap(find.byKey(Key('video-tag-${ids.first}')));
       await tap(find.byKey(Key('video-tag-${ids[1]}')));
       await until(() => state().matching == 1, 'two tag intersection');
       await shot('video');
       await tap(find.byKey(const Key('kind-pack')));
+      await until(
+        () => state().tags.any((v) => v.id == packTag),
+        'pack tags loaded',
+      );
       await tap(find.byKey(Key('pack-tag-$packTag')));
       await until(() => state().matching == 1, 'pack namespace');
       await shot('pack');
@@ -184,6 +197,12 @@ void main() {
       await shot('created');
       await tap(find.byTooltip('管理图包标签 分页00'));
       await enterName('图包改名');
+      await shot('rename-editor');
+      await preferences.setDark(true);
+      await t.pumpAndSettle();
+      await shot('rename-editor-dark');
+      await preferences.setDark(false);
+      await t.pumpAndSettle();
       await save();
       await until(() => state().tags.any((v) => v.name == '图包改名'), 'rename');
       expect(state().selected, {packTag});
@@ -218,6 +237,10 @@ void main() {
       );
       await shot('removed');
       await tap(find.byKey(const Key('kind-video')));
+      await until(
+        () => state().tags.any((v) => v.id == ids.first),
+        'video tags loaded again',
+      );
       expect(state().selected, {ids.first, ids[1]});
       await fixture('/__fixture/actions/fail-tag-page');
       await tap(find.text('更多标签'));

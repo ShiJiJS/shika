@@ -177,6 +177,7 @@ class TagCatalogPageState extends State<TagCatalogPage> {
     final input = TextEditingController(text: tag?.name ?? '');
     final errorAnchor = GlobalKey();
     var formError = '';
+    var confirming = false;
     final removed = await paperSheet<bool>(
       context,
       AnimatedBuilder(
@@ -236,6 +237,81 @@ class TagCatalogPageState extends State<TagCatalogPage> {
               }
             }
 
+            if (confirming) {
+              return PopScope(
+                canPop: !saving,
+                child: SheetFrame(
+                  title: '移除$editingType标签',
+                  closeEnabled: !saving,
+                  footer: Wrap(
+                    alignment: WrapAlignment.end,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      TextButton(
+                        onPressed: saving
+                            ? null
+                            : () => local(() {
+                                confirming = false;
+                                formError = '';
+                              }),
+                        child: const Text('取消'),
+                      ),
+                      FilledButton(
+                        key: const Key('tag-definition-remove-confirm'),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: p.danger,
+                          foregroundColor: p.background,
+                        ),
+                        onPressed: saving || !current
+                            ? null
+                            : () => write(remove: true),
+                        child: Text(saving ? '正在移除…' : '确认移除标签'),
+                      ),
+                    ],
+                  ),
+                  children: [
+                    Text(
+                      tag!.name,
+                      style: TextStyle(fontSize: 14, height: 1.6, color: p.ink),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      '移除这个$editingType标签及其关联，保留所有媒体内容。另一类同名标签不受影响。',
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.7,
+                        color: p.catalogMeta,
+                      ),
+                    ),
+                    if (!current)
+                      Text(
+                        '连接或管理数据已变化，请关闭后重新打开。',
+                        key: const Key('tag-definition-stale'),
+                        style: TextStyle(
+                          fontSize: 13,
+                          height: 1.7,
+                          color: p.danger,
+                        ),
+                      ),
+                    if (formError.isNotEmpty)
+                      Padding(
+                        key: errorAnchor,
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          formError,
+                          key: const Key('tag-definition-error'),
+                          style: TextStyle(
+                            fontSize: 13,
+                            height: 1.7,
+                            color: p.danger,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            }
             return PopScope(
               canPop: !saving,
               child: SheetFrame(
@@ -262,68 +338,10 @@ class TagCatalogPageState extends State<TagCatalogPage> {
                         style: TextButton.styleFrom(foregroundColor: p.danger),
                         onPressed: saving || !current
                             ? null
-                            : () async {
-                                final confirmed = await paperSheet<bool>(
-                                  context,
-                                  SheetFrame(
-                                    title: '移除$editingType标签',
-                                    footer: Wrap(
-                                      alignment: WrapAlignment.end,
-                                      spacing: 8,
-                                      runSpacing: 8,
-                                      children: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: const Text('取消'),
-                                        ),
-                                        FilledButton(
-                                          key: const Key(
-                                            'tag-definition-remove-confirm',
-                                          ),
-                                          style: FilledButton.styleFrom(
-                                            backgroundColor: p.danger,
-                                            foregroundColor: p.background,
-                                          ),
-                                          onPressed: () =>
-                                              Navigator.pop(context, true),
-                                          child: const Text('确认移除标签'),
-                                        ),
-                                      ],
-                                    ),
-                                    children: [
-                                      Text(
-                                        tag.name,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          height: 1.6,
-                                          color: p.ink,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 12),
-                                      Text(
-                                        '移除这个$editingType标签及其关联，保留所有媒体内容。另一类同名标签不受影响。',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          height: 1.7,
-                                          color: p.catalogMeta,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                // Recheck after the separate confirmation, not only
-                                // when its callback was built on the previous frame.
-                                if (confirmed == true &&
-                                    context.mounted &&
-                                    identical(
-                                      identity,
-                                      repo.connectionIdentity,
-                                    ) &&
-                                    !repo.backupRestorePending) {
-                                  await write(remove: true);
-                                }
-                              },
+                            : () => local(() {
+                                confirming = true;
+                                formError = '';
+                              }),
                         child: const Text('移除这个标签'),
                       ),
                   ],

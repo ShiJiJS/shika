@@ -57,6 +57,7 @@ void main() {
       repo.dispose();
       t.view.resetPhysicalSize();
       t.view.resetDevicePixelRatio();
+      t.view.resetViewInsets();
     });
     await t.pumpWidget(
       MaterialApp(
@@ -108,6 +109,15 @@ void main() {
           );
           unawaited(state.form());
           await t.pumpAndSettle();
+          final field = find.byKey(const Key('tag-name'));
+          expect(
+            MediaQuery.textScalerOf(t.element(field)).scale(13),
+            13 * profile.$3,
+          );
+          t.view.viewInsets = FakeViewPadding(
+            bottom: profile.$1 > profile.$2 ? 150 : 300,
+          );
+          await t.pumpAndSettle();
           await tap(t, find.byKey(const Key('tag-definition-save')));
           expect(repo.writes, isEmpty);
           expect(find.text('请输入1至100字的标签名称'), findsOneWidget);
@@ -142,6 +152,8 @@ void main() {
         unawaited(state.edit(const TagCatalogItem('same-id', '同名', 2)));
         await t.pumpAndSettle();
         await tap(t, find.byKey(const Key('tag-definition-remove')));
+        expect(find.byType(SheetFrame), findsOneWidget);
+        expect(find.byKey(const Key('tag-name')), findsNothing);
         await tap(t, find.text('取消'));
         expect(repo.writes, isEmpty);
         expect(state.selected, {'same-id'});
@@ -232,8 +244,16 @@ void main() {
     repo.identity = Object();
     repo.signal();
     await t.pumpAndSettle();
-    await tap(t, find.byKey(const Key('tag-definition-remove-confirm')));
+    expect(
+      t
+          .widget<FilledButton>(
+            find.byKey(const Key('tag-definition-remove-confirm')),
+          )
+          .onPressed,
+      isNull,
+    );
     expect(repo.writes, isEmpty);
+    await tap(t, find.text('取消'));
     expect(find.byKey(const Key('tag-name')), findsOneWidget);
   });
 }
