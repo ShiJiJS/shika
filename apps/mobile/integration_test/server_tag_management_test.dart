@@ -151,7 +151,7 @@ void main() {
       await hideKeyboard();
       await save();
       await until(
-        () => find.textContaining('已有同名标签').evaluate().isNotEmpty,
+        () => find.textContaining('已有同名').evaluate().isNotEmpty,
         'duplicate tag stays open',
       );
       expect(

@@ -114,7 +114,7 @@ void main() {
       await tap(find.byTooltip('管理视频标签 分页60'));
       await t.enterText(find.byKey(const Key('tag-name')), '分页60改名');
       await SystemChannels.textInput.invokeMethod<void>('TextInput.hide');
-      await tap(find.text('保存'));
+      await tap(find.byKey(const Key('tag-definition-save')));
       expect(state.selected, {ids.first, ids.last});
       final renamed = await repo.loadVideoTags(search: '分页60改名');
       expect(renamed.items.single.id, ids.last);
