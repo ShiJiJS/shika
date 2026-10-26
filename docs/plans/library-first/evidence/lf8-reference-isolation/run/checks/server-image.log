@@ -1,0 +1,66 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.44kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#2 DONE 2.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 101B done
+#3 DONE 0.0s
+
+#4 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#4 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 1.43MB 0.0s done
+#5 DONE 0.1s
+
+#6 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#6 CACHED
+
+#7 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#7 CACHED
+
+#8 [test 3/4] COPY tests ./tests
+#8 CACHED
+
+#9 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 libicu72=72.1-3+deb12u1 && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [runtime 6/9] COPY video_viewer ./video_viewer
+#10 CACHED
+
+#11 [runtime 7/9] COPY migrations ./migrations
+#11 CACHED
+
+#12 [runtime 4/9] COPY requirements.lock ./
+#12 CACHED
+
+#13 [runtime 8/9] COPY alembic.ini ./
+#13 CACHED
+
+#14 [runtime 3/9] WORKDIR /app
+#14 CACHED
+
+#15 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#15 CACHED
+
+#16 [test 1/4] COPY requirements-test.lock ./
+#16 CACHED
+
+#17 [test 4/4] COPY pyproject.toml ./
+#17 CACHED
+
+#18 exporting to image
+#18 exporting layers done
+#18 exporting manifest sha256:bbd9efb635ee96a97e669ff09ca17e5ee1172f26c03280dc2126ff445324405b done
+#18 exporting config sha256:ec42f9ba15d8f6a459d412071b93002c0debe7c0a2a7b20053bc1c54d8baf5b5 done
+#18 exporting attestation manifest sha256:bfd32d854476a19c8f5249c974002685a5959ea481e1cc19baa1997ee18367d2 0.0s done
+#18 exporting manifest list sha256:c4be4e8cd40255928b52b1c52a94a076c6a57c965682cdaaa05c28b19ddc3fe0 0.0s done
+#18 naming to docker.io/library/video-viewer-reference-check:7c70e5983f8e done
+#18 unpacking to docker.io/library/video-viewer-reference-check:7c70e5983f8e done
+#18 DONE 0.1s

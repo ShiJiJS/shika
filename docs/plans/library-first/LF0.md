@@ -29,3 +29,7 @@
 参考版本标记：`design-lf-2026-10-23`。对应提交由此 Git tag 固定；骨架与最终证据使用后续提交，不把参考代码混入 App。
 
 提交锚点：Mac 工具链 `cc719e2`；规划与可移除参考 `22436bb`（tag `design-lf-2026-10-23`）；App 骨架、合成测试夹具和原生回归为 `70f9c6e`；后续提交仅整理 SQL dump 空白和交付链接。
+
+## 2026-10-27：可移除边界的实际演练
+
+[PR #75](https://github.com/ShiJiJS/video_viewer/pull/75)按固定7c70e59导出完整源码，仅移除副本的72份参考文件后，通过643项客户端、447项Linux服务测试及debug/release构建。12,145份保留文件、原参考文件及APK资产清单经独立哈希复核。原型1cbf605在原仓库继续独立保留。服务格式仍有27份存量文件未过，不冒称全部门禁通过；开发签名构建不替代手机原签名升级。详见[实施记录](LF8-REFERENCE-ISOLATION.md)与[原始证据](evidence/lf8-reference-isolation/README.md)。

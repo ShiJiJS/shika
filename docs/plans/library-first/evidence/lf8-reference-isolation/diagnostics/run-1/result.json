@@ -1,0 +1,197 @@
+{
+  "source_commit": "36db1f461a7994f3cb55f1c297703204fd88012d",
+  "script_sha256": "7fa413d1733fd2ee5ce28c9f805c6c58090c76f501cf4aecc68463b27ba481e7",
+  "started_at": "2026-10-26T22:07:58.856410+00:00",
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "steps": [
+    {
+      "name": "flutter-pub-get",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-reference-isolation/run-1/workspace/scripts/dev.sh",
+        "flutter",
+        "pub",
+        "get",
+        "--offline",
+        "--enforce-lockfile"
+      ],
+      "cwd": "workspace/apps/mobile",
+      "required": true,
+      "status": "passed",
+      "pid": 97934,
+      "exit_code": 0,
+      "log_sha256": "d4cb7a3c68b4133b4f6e58c67ff5bfd13725d8021e930388cdc98da8a575919d"
+    },
+    {
+      "name": "flutter-analyze",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-reference-isolation/run-1/workspace/scripts/dev.sh",
+        "flutter",
+        "analyze",
+        "--no-pub"
+      ],
+      "cwd": "workspace/apps/mobile",
+      "required": true,
+      "status": "passed",
+      "pid": 97970,
+      "exit_code": 0,
+      "log_sha256": "77ba040f55796143220aeae5be547318f1161b0d25a34a107f279e58db154d55"
+    },
+    {
+      "name": "flutter-test",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-reference-isolation/run-1/workspace/scripts/dev.sh",
+        "flutter",
+        "test",
+        "--no-pub",
+        "test"
+      ],
+      "cwd": "workspace/apps/mobile",
+      "required": true,
+      "status": "passed",
+      "pid": 98111,
+      "exit_code": 0,
+      "log_sha256": "1e0c3b498181ec64a98567034eebb54384334115bbb017e4afd1ab5a8e2b5092"
+    },
+    {
+      "name": "android-debug",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-reference-isolation/run-1/workspace/scripts/dev.sh",
+        "flutter",
+        "build",
+        "apk",
+        "--debug",
+        "--no-pub",
+        "--target-platform",
+        "android-arm64"
+      ],
+      "cwd": "workspace/apps/mobile",
+      "required": true,
+      "status": "passed",
+      "pid": 99296,
+      "exit_code": 0,
+      "log_sha256": "a91b19d7d961a1f99637d21e3e1b807cf01b63883f35d827124ccb9350780b74"
+    },
+    {
+      "name": "android-release",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-reference-isolation/run-1/workspace/scripts/dev.sh",
+        "flutter",
+        "build",
+        "apk",
+        "--release",
+        "--no-pub",
+        "--target-platform",
+        "android-arm64"
+      ],
+      "cwd": "workspace/apps/mobile",
+      "required": true,
+      "status": "failed",
+      "pid": 570,
+      "exit_code": 1,
+      "log_sha256": "0c3264a39c1ce311ebdff291d6d1edf4f43201d1c3493b03649bbe4bfe840351"
+    },
+    {
+      "name": "server-image",
+      "command": [
+        "docker",
+        "build",
+        "--target",
+        "test",
+        "-t",
+        "video-viewer-reference-check:36db1f461a79",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-reference-isolation/run-1/workspace/services/server"
+      ],
+      "cwd": "workspace",
+      "required": true,
+      "status": "passed",
+      "pid": 2053,
+      "exit_code": 0,
+      "log_sha256": "c43ccdf1322a170b94bc954e8039403530ad0f719c3cc17ba4431e471e525fc1"
+    },
+    {
+      "name": "server-ruff",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--read-only",
+        "--shm-size=64m",
+        "--tmpfs",
+        "/tmp:mode=1777",
+        "video-viewer-reference-check:36db1f461a79",
+        "ruff",
+        "check",
+        "."
+      ],
+      "cwd": "workspace",
+      "required": true,
+      "status": "passed",
+      "pid": 2183,
+      "exit_code": 0,
+      "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "name": "server-format",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--read-only",
+        "--shm-size=64m",
+        "--tmpfs",
+        "/tmp:mode=1777",
+        "video-viewer-reference-check:36db1f461a79",
+        "ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "cwd": "workspace",
+      "required": false,
+      "status": "failed",
+      "pid": 2193,
+      "exit_code": 1,
+      "log_sha256": "d916eb6325c7935a52367eb0934f58bf3d6263e8e82a96d6bb2f2a555df3616b"
+    },
+    {
+      "name": "server-pytest",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--read-only",
+        "--shm-size=64m",
+        "--tmpfs",
+        "/tmp:mode=1777",
+        "video-viewer-reference-check:36db1f461a79"
+      ],
+      "cwd": "workspace",
+      "required": true,
+      "status": "passed",
+      "pid": 2194,
+      "exit_code": 0,
+      "log_sha256": "624fe08f54064357f761d9bd0daf6339709942a6c3ec3087d58d47615bc76875"
+    }
+  ],
+  "complete": false,
+  "removed_reference_files": 72,
+  "retained_tracked_files": 12145,
+  "app_package_root_is_export": true,
+  "apks": {
+    "debug": {
+      "sha256": "d85b29d03d3b1930c96d5c97ffb8616dc39ac4b7ed81683ea0abb231ededd6b8",
+      "bytes": 94554648,
+      "flutter_assets": 21,
+      "design_paths": []
+    }
+  },
+  "mutated_tracked_files": [],
+  "original_reference_unchanged": true,
+  "reference_absent_in_export": true,
+  "finished_at": "2026-10-26T22:22:51.844238+00:00"
+}
