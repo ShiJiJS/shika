@@ -183,9 +183,9 @@ void main() {
       (t) async {
         final previous = VideoPlayerPlatform.instance;
         VideoPlayerPlatform.instance = ReadyVideo();
-        final directory = await Directory.systemTemp.createTemp(
-          'preview-theme-',
-        );
+        final directory = (await t.runAsync(
+          () => Directory.systemTemp.createTemp('preview-theme-'),
+        ))!;
         final file = File(
           failSave ? directory.path : '${directory.path}/appearance.json',
         );
@@ -198,13 +198,13 @@ void main() {
           repo.dispose();
           preferences.dispose();
           VideoPlayerPlatform.instance = previous;
-          await directory.delete(recursive: true);
+          await t.runAsync(() => directory.delete(recursive: true));
         });
         await repo.initialize();
         final origin = VideoBrowseContext(
           query: VideoQuery(
             orientation: 'landscape',
-            duration: 'long',
+            duration: 'short',
             type: 'MP4',
           ),
         );
@@ -228,7 +228,7 @@ void main() {
           ),
         );
         await frames(t);
-        expect(find.text('媒体库 · 横版 · 10 秒以上 · MP4'), findsOneWidget);
+        expect(find.text('媒体库 · 横版 · 10 秒以内 · MP4'), findsOneWidget);
         await t.tap(find.byTooltip('视频操作'));
         await frames(t);
         await t.tap(find.text('切换暗黑模式'));

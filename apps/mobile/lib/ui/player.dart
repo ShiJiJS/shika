@@ -1246,7 +1246,9 @@ class _PlayerSurfaceState extends State<PlayerSurface>
       );
       return LayoutBuilder(
         builder: (context, constraints) {
-          final inlineLayout = _inlineLayout(v, position, constraints.maxWidth);
+          final inlineLayout = widget.inlineControls
+              ? _inlineLayout(v, position, constraints.maxWidth)
+              : (stacked: false, separateSpeed: false, height: 48.0);
           return Semantics(
             label: widget.name,
             value: '${_playRequested ? '正在播放' : '已暂停'}，${v.playbackSpeed}倍速',
