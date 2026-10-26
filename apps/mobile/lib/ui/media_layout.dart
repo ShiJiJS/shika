@@ -158,9 +158,15 @@ class MediaCatalogToolbar extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: children.skip(1).toList(),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: children.skip(1).toList(),
+                      ),
+                    ),
                   ),
                 ),
               ],
