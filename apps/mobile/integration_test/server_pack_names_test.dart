@@ -115,10 +115,7 @@ void main() {
       }
 
       Finder chosen(String id) => find.byKey(Key('chosen-pack-tag-$id'));
-      Finder editorInput() => find.descendant(
-        of: find.byType(PackTagEditor),
-        matching: find.byType(TextField),
-      );
+      Finder editorInput() => find.byKey(const Key('tag-assignment-search'));
       Future<void> text(Finder input, String value) async {
         await tap(input);
         await t.enterText(input, value);

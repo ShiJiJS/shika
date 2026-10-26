@@ -1,0 +1,40 @@
+{
+  "commit": "dee928f118562533977db0bbc3a58f88fb8e621d",
+  "apk_sha256": "4a287d7bad79daaa853a753c1bbb22aaf9b06f4515e3f696acd0341e7d05a7a6",
+  "kernel_sha256": "ffc196b13cedae9b535ff06f3b9c88c54c459043b2e09ef27576c8723f1bd1ae",
+  "embedded_sources": {
+    "apps/mobile/integration_test/server_tag_assignment_test.dart": {
+      "sha256": "125563beb502873c2f659dbee4c1dd6244120b51d546312e07829f6283488c30",
+      "full_source_embedded": true
+    },
+    "apps/mobile/lib/ui/media_tag_editor.dart": {
+      "sha256": "10ab23b54ddbd156b0bdfd22d29090984c0ce09ad72d406f5e1e1d989b4b4685",
+      "full_source_embedded": true
+    },
+    "apps/mobile/lib/ui/sheets.dart": {
+      "sha256": "f1103cfedec8f357878733aa55da1a1cf94b1b5f12bef149c240111c4d757cbf",
+      "full_source_embedded": true
+    },
+    "apps/mobile/lib/features/packs/pack_sheets.dart": {
+      "sha256": "3cab3f5c7c17e6371aa2ac38ddf95bce08b5e96ae067c77e3e65d2041b5508c3",
+      "full_source_embedded": true
+    },
+    "apps/mobile/lib/features/library/video_catalog_page.dart": {
+      "sha256": "8a777ff6946cea791a046edfc16426015a8ebd52111760760e343dee758ead3d",
+      "full_source_embedded": true
+    },
+    "apps/mobile/lib/features/library/pack_catalog_page.dart": {
+      "sha256": "4686633be31a3bc969d2e29550623474be99396dcea6fb5029b409699d7a9871",
+      "full_source_embedded": true
+    },
+    "apps/mobile/lib/features/preview/video_preview_route.dart": {
+      "sha256": "a16b550bf05f269ded5c73600497f91572d1bdab81c55c51e96f98cabe63b19e",
+      "full_source_embedded": true
+    },
+    "apps/mobile/lib/ui/home.dart": {
+      "sha256": "f11375c4a4d9a5458de259d01b2079e4d649640496f76965d41caf84cd8fb57d",
+      "full_source_embedded": true
+    }
+  },
+  "scope": "On-site check of built debug APK before next build; APK itself not archived or published"
+}

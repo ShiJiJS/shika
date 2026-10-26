@@ -1,0 +1,26 @@
+{
+  "events": [
+    {
+      "phase": "emulator-immersive-guidance-confirmed",
+      "time": 1793051101.799542
+    },
+    {
+      "phase": "workspace-viewport",
+      "width_dp": 360,
+      "height_dp": 740,
+      "density_dpi": 480,
+      "text_scale": "2"
+    },
+    {
+      "phase": "ready",
+      "time": 1793051142.161115
+    },
+    {
+      "phase": "tag-ui-assign-video-single",
+      "time": 1793051349.27295
+    }
+  ],
+  "errors": [
+    "Screenshot tag-ui-assign-video-single is obscured by another Android window: mCurrentFocus=Window{4251fe9 u0 Application Not Responding: com.android.systemui}\nmFocusedApp=ActivityRecord{165348065 u0 io.github.shijijs.video_viewer/.MainActivity t612}"
+  ]
+}

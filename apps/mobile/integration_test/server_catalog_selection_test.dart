@@ -101,7 +101,7 @@ void main() {
       await shot('videos');
       await tap(find.text('追加标签'));
       await tap(find.widgetWithText(FilterChip, '追加'));
-      await tap(find.text('完成'));
+      await tap(find.byKey(const Key('tag-assignment-save')));
       expect(repo.tagVideoCount(added), 26);
       final updated = await repo.loadVideos(limit: 200);
       for (final video in updated.items) {

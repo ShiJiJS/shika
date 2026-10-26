@@ -1,0 +1,44 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart
+Running Gradle task 'assembleDebug'...                             86.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           5.3s
+00:00 +0: LF8 native single assignments, independent creation and complete batch append
+TAG_ASSIGNMENT_METRICS:{"state":"video-single","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-dark","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":true}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with type "FilterChip" that are ancestors of
+widgets with text "追加" (considering only hit-testable widgets with a RenderBox): []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      revealAction (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/support/reveal_action.dart:37:3)
+<asynchronous suspension>
+#5      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:87:9)
+<asynchronous suspension>
+#6      main.<anonymous closure>.single (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:274:9)
+<asynchronous suspension>
+#7      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:311:7)
+<asynchronous suspension>
+#8      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#9      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/support/reveal_action.dart line 37
+The test description was:
+  LF8 native single assignments, independent creation and complete batch append
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:28 +0 -1: LF8 native single assignments, independent creation and complete batch append [E]
+  Test failed. See exception logs above.
+  The test description was: LF8 native single assignments, independent creation and complete batch append
+  
+01:29 +0 -1: (tearDownAll)
+01:30 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart: LF8 native single assignments, independent creation and complete batch append

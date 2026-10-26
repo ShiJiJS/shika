@@ -744,7 +744,10 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   Future<void> tag(Set<String> ids) async {
-    final saved = await sheet<bool>(TagEditor(repository: repo, ids: {...ids}));
+    final saved = await sheet<bool>(
+      TagEditor(repository: repo, ids: {...ids}),
+      dismissible: false,
+    );
     if (saved == true) {
       _browsing.followRepository();
       setState(() {
@@ -1018,27 +1021,39 @@ class _LibraryHomeState extends State<LibraryHome> {
   Widget build(BuildContext context) {
     if (!data.connected || !libraryFirst) return legacyBuild(context);
     final primary = ['library', 'tags', 'recent', 'settings'].contains(page);
-    return Stack(
-      children: [
-        Offstage(
-          offstage: !primary,
-          child: TickerMode(
-            enabled: primary,
-            child: MediaWorkspace(
-              key: ObjectKey(repo.connectionIdentity),
-              repository: repo,
-              preferences: widget.preferences,
-              destination: primary ? page : 'settings',
-              active: primary,
-              onNavigate: go,
-              settings: settings(),
-              status: managementStatus(separator: false),
-              defaultOrder: entryOrder,
+    final media = MediaQuery.of(context);
+    final covered = ModalRoute.of(context)?.isCurrent == false;
+    // The modal route owns its keyboard. Keep the source library's viewport
+    // stable while the sheet is open, including retained read failures.
+    return MediaQuery(
+      data: covered
+          ? media.copyWith(
+              viewInsets: EdgeInsets.zero,
+              padding: media.viewPadding,
+            )
+          : media,
+      child: Stack(
+        children: [
+          Offstage(
+            offstage: !primary,
+            child: TickerMode(
+              enabled: primary,
+              child: MediaWorkspace(
+                key: ObjectKey(repo.connectionIdentity),
+                repository: repo,
+                preferences: widget.preferences,
+                destination: primary ? page : 'settings',
+                active: primary,
+                onNavigate: go,
+                settings: settings(),
+                status: managementStatus(separator: false),
+                defaultOrder: entryOrder,
+              ),
             ),
           ),
-        ),
-        if (!primary) legacyBuild(context),
-      ],
+          if (!primary) legacyBuild(context),
+        ],
+      ),
     );
   }
 

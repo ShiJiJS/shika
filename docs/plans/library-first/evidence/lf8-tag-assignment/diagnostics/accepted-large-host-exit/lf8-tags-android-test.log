@@ -1,0 +1,39 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart
+Running Gradle task 'assembleDebug'...                             54.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,640ms
+00:00 +0: LF8 native single assignments, independent creation and complete batch append
+TAG_ASSIGNMENT_METRICS:{"state":"video-single","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-dark","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":0.0,"dark":true}
+TAG_ASSIGNMENT_METRICS:{"state":"video-error","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-keyboard","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":303.0,"dark":false,"input_rect":[20.0,241.0,259.79975509643555,309.0],"add_rect":[267.79975509643555,261.0,340.0,309.0],"focused":true}
+TAG_ASSIGNMENT_SAVED:{"kind":"video","id":"12ebdac5-316f-43d8-8744-ff8b8979ba87","tags":["202fd8da-833e-466f-bbe9-4f94d24701a4","7e0fa0f2-6087-4d7d-b959-628b0e64badd"],"source_reloaded":true}
+TAG_ASSIGNMENT_METRICS:{"state":"video-saved","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-single","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-error","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-keyboard","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":303.0,"dark":false,"input_rect":[20.0,241.0,259.79975509643555,309.0],"add_rect":[267.79975509643555,261.0,340.0,309.0],"focused":true}
+TAG_ASSIGNMENT_SAVED:{"kind":"pack","id":"0d0f30fe-0db0-4b35-a08c-4a2076ebb70d","tags":["bd1f163f-db70-44d0-8beb-0a7ca7273c7c","d8341031-5036-4d5a-b74f-c2ca8b04aba7"],"source_reloaded":true}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-saved","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":0.0,"dark":false}
+03:21 +0: LF8 native single assignments, independent creation and complete batch append - did not complete [E]
+03:21 +0: (tearDownAll) - did not complete [E]
+03:21 +0: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart: (tearDownAll) (did not complete)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart: LF8 native single assignments, independent creation and complete batch append (did not complete)
+No tests were found.
+unhandled error during finalization of test:
+/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart
+PathNotFoundException: Deletion failed, path = '/var/folders/pt/953rhgfj5g1gm_pjr862pnhr0000gn/T/flutter_tools.369IVU/flutter_test_listener.7L6PKA' (OS Error: No such file or directory, errno = 2)
+#0      _Directory._deleteSync (dart:io/directory_impl.dart:216:7)
+#1      FileSystemEntity.deleteSync (dart:io/file_system_entity.dart:425:7)
+#2      ForwardingFileSystemEntity.deleteSync (package:file/src/forwarding/forwarding_file_system_entity.dart:70:16)
+#3      ErrorHandlingDirectory.deleteSync.<anonymous closure> (package:flutter_tools/src/base/error_handling_io.dart:717:22)
+#4      _runSync (package:flutter_tools/src/base/error_handling_io.dart:1118:16)
+#5      ErrorHandlingDirectory.deleteSync (package:flutter_tools/src/base/error_handling_io.dart:716:12)
+#6      FlutterPlatform._createListenerDart.<anonymous closure> (package:flutter_tools/src/test/flutter_platform.dart:786:15)
+#7      FlutterPlatform._startTest.finalize (package:flutter_tools/src/test/flutter_platform.dart:591:26)
+<asynchronous suspension>
+#8      FlutterPlatform._startTest (package:flutter_tools/src/test/flutter_platform.dart:762:7)
+<asynchronous suspension>
+

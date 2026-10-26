@@ -140,11 +140,20 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
     }
   }
 
-  Future<T?> sheet<T>(Widget child, {BoxConstraints? constraints}) async {
+  Future<T?> sheet<T>(
+    Widget child, {
+    BoxConstraints? constraints,
+    bool dismissible = true,
+  }) async {
     setState(() => obscured = true);
     browsing.setVisible(false);
     try {
-      return await paperSheet<T>(context, child, constraints: constraints);
+      return await paperSheet<T>(
+        context,
+        child,
+        constraints: constraints,
+        dismissible: dismissible,
+      );
     } finally {
       if (mounted) {
         setState(() => obscured = false);
@@ -156,7 +165,10 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
   Future<void> tags() async {
     final id = browsing.current?.id;
     if (id == null) return;
-    await sheet<bool>(TagEditor(repository: repo, ids: {id}));
+    await sheet<bool>(
+      TagEditor(repository: repo, ids: {id}, initial: browsing.current!.tags),
+      dismissible: false,
+    );
   }
 
   Future<void> queue() => sheet<void>(

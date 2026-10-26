@@ -1,0 +1,38 @@
+{
+  "events": [
+    {
+      "phase": "emulator-immersive-guidance-confirmed",
+      "time": 1793047131.1789691
+    },
+    {
+      "phase": "workspace-viewport",
+      "width_dp": 844,
+      "height_dp": 390,
+      "density_dpi": 480,
+      "text_scale": "1"
+    },
+    {
+      "phase": "ready",
+      "time": 1793047156.7470531
+    },
+    {
+      "phase": "tag-ui-assign-video-single",
+      "time": 1793047347.097383
+    },
+    {
+      "phase": "capture-ack",
+      "state": "tag-ui-assign-video-single",
+      "time": 1793047348.120672
+    },
+    {
+      "phase": "tag-ui-assign-video-dark",
+      "time": 1793047352.604199
+    },
+    {
+      "phase": "capture-ack",
+      "state": "tag-ui-assign-video-dark",
+      "time": 1793047353.827384
+    }
+  ],
+  "errors": []
+}
