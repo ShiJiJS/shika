@@ -1,0 +1,213 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/0215c45d-0caf-4bcb-8ad4-5f1900371e89",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/a6c34a98-50be-4567-8fc0-9371e80edf21/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/510d96cc-5b2e-4e6d-bb12-d6aee0b3f158/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/faa4f89d-6bc2-455c-a4cc-9826751ef47d/cover",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/9bb29f2f-2fe1-4ed7-bee7-ddc08c5e9932/cover",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/0215c45d-0caf-4bcb-8ad4-5f1900371e89",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/0215c45d-0caf-4bcb-8ad4-5f1900371e89/cover",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/8a81e580-885f-4cdf-952d-100b0687094c/cover",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-sessions",
+    "status": 201,
+    "phase": "continue-empty",
+    "body": {
+      "request_id": "1792984897658311-3261987584-0",
+      "scope": {
+        "directory_id": null,
+        "search": "",
+        "tag_ids": [],
+        "read_state": "all"
+      },
+      "source": "library",
+      "sort": "title",
+      "order": "sequential",
+      "anchor_pack_id": "0215c45d-0caf-4bcb-8ad4-5f1900371e89"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/0215c45d-0caf-4bcb-8ad4-5f1900371e89/pages",
+    "status": 200,
+    "phase": "continue-empty"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pages/e3fe8526-8c2f-4c89-9b3c-6b34b138d502/image",
+    "status": 200,
+    "phase": "continue-empty"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-sessions/44006399-6fa3-4bcf-a0b6-5aae96e45263/opened",
+    "status": 200,
+    "phase": "continue-empty"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pages/7c758fbe-8f7e-41a4-97e9-fe36a3883f60/image",
+    "status": 200,
+    "phase": "continue-empty"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/packs/0215c45d-0caf-4bcb-8ad4-5f1900371e89/progress",
+    "status": 200,
+    "phase": "continue-empty"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/0215c45d-0caf-4bcb-8ad4-5f1900371e89",
+    "status": 200,
+    "phase": "continue-empty"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "continue-read"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "continue-read"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "continue-read"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "continue-read"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "continue-read"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "continue-read"
+  }
+]

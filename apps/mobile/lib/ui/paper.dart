@@ -10,6 +10,7 @@ class PaperPalette {
   Color get line => dark ? const Color(0xff354135) : Paper.line;
   Color get danger => dark ? const Color(0xffeda699) : Paper.danger;
   Color get muted => dark ? const Color(0xff9aa494) : const Color(0xff7a8172);
+  Color get catalogMeta => dark ? muted : const Color(0xff626e59);
   Color get videoSurface => dark ? Colors.black : const Color(0xffe6e4db);
   TextStyle get title => Paper.title.copyWith(color: ink);
 }

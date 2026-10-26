@@ -10,7 +10,7 @@
 | NAV-02 | 已有阶段证据 / 未收口 | [LF4设计与阶段记录](LF4.md) | 合并当前分支后复跑完整来源/筛选/冷启组合，并记录实际系统返回路径。 |
 | NAV-03 | 已有阶段证据 / 未收口 | [LF4设计与阶段记录](LF4.md) | 合并当前分支后复跑完整来源/筛选/冷启组合，并记录实际系统返回路径。 |
 | LIB-01 | 新增分类总数证据 / 未收口 | [LF4阶段记录](LF4.md)、[权威总数](evidence/lf8-catalog-counts/README.md) | 分类总数、筛选分离和真实零已补证；文件名/时长、视频中文排序与长列表最终组合继续。 |
-| LIB-02 | 新增呈现/排序证据 / 未收口 | [LF4阶段记录](LF4.md)、[续读](evidence/lf8-pack-continuation/README.md)、[总数](evidence/lf8-catalog-counts/README.md)、[呈现/排序](evidence/lf8-pack-presentation/README.md) | 图包标题/作者与完整范围中文排序已补证；共享标签字号/上距、横屏列数及长列表继续。 |
+| LIB-02 | 新增卡片/网格证据 / 未收口 | [LF4阶段记录](LF4.md)、[续读](evidence/lf8-pack-continuation/README.md)、[总数](evidence/lf8-catalog-counts/README.md)、[呈现/排序](evidence/lf8-pack-presentation/README.md)、[卡片/网格](evidence/lf8-card-layout/README.md) | 标题/作者、完整范围中文排序、共享标签12/1.6与4dp间距及短横屏四列已补证；长列表完整来源/失败组合继续。 |
 | LIB-03 | 已有阶段证据 / 未收口 | [LF4阶段记录](LF4.md)、[摘要独立于分页](LF8-PACK-CONTINUATION.md) | 超单页续读、晚到摘要及28包标题排序/锚点/全选/固定范围一致已补证；完整来源/跨页失败组合继续。 |
 | TAG-01 | 已有阶段证据 / 未收口 | [LF1](LF1.md)、[LF4](LF4.md) | 两套真实标签已有阶段证据；名称排序、跨页/编辑/失败和完整视觉仍需最终同版复核。 |
 | TAG-02 | 已有阶段证据 / 未收口 | [LF1](LF1.md)、[LF4](LF4.md) | 两套真实标签已有阶段证据；名称排序、跨页/编辑/失败和完整视觉仍需最终同版复核。 |
@@ -45,16 +45,16 @@
 | BAK-03 | 已有阶段证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) | backup_v2生产能力仍关闭；真实选择器/大文件有界传输、更多故障与最终整条流程继续。 |
 | UP-01 | 已有阶段证据 / 未收口 | [LF1](LF1.md)、[本机开发配置](../../macos-development.md) | 目标手机原签名覆盖安装、同版旧服务/客户端组合和发布回退演练继续。 |
 | UP-02 | 待发布演练 | [LF1](LF1.md)、[本机开发配置](../../macos-development.md) | 迁移原签名的授权与准备不等于已覆盖安装；未发布本轮APK。 |
-| UI-01 | 局部证据 / 未收口 | [共享差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[续读对照](evidence/lf8-pack-continuation/README.md) | 390宽公共素材的真实原生和HTML已采集，搜索/工具/顶栏/导航尺寸对齐；真实续读与权威分类总数已补证；图包标题/作者与排序已补证；标签密度/上距、横屏列数和视频中文排序继续。 |
+| UI-01 | 新增卡片/网格证据 / 未收口 | [共享差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[续读对照](evidence/lf8-pack-continuation/README.md)、[卡片/网格](evidence/lf8-card-layout/README.md) | 搜索/工具/顶栏/导航、续读、分类总数、图包标题/作者/排序已有证据；卡片标签密度、上距、作者/方向色与短横屏四列补齐；视频中文排序、标签顺序、菜单图标及完整页面仍继续。 |
 | UI-02 | 阶段证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 沿用LF3/LF5/LF6局部原生证据；本轮未重新验证阅读器/预览/整理全链和手势录屏。 |
 | UI-03 | 局部证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 设置普通/暗色/页底与共享密度已补证；目录、缺失、回收、备份、任务等完整管理页继续。 |
 | UI-04 | 阶段证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 共享16项针对检查含设置开关语义；新增续读错误/重试、多选收键盘与大字/短横屏证据；库存段补未知重试与标签61dp缩高/恢复。完整原生表单、恢复和其它错误组合继续。 |
-| UI-05 | 局部证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 共享布局、续读与库存分别记录普通三轮及大字/横屏实际窗口/安全区；完整状态与目标设备继续。 |
+| UI-05 | 新增网格重排证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[卡片/网格](evidence/lf8-card-layout/README.md) | 本段普通三轮/大字/短横屏实际窗口另补；120项两类组件验证旋转/字号变更锚点及不重查，原生固定视口不冒充深列表旋转。完整状态与目标设备继续。 |
 | UI-06 | 待完整动作收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 沿用已有路由/加载与减少动态效果；新增续读有逐步点击/回读，但尚无完整动作时长/手势录屏。 |
 
 ## 下一段推进顺序
 
-1. 真实续读区和权威分类总数已有阶段证据；图包标题/作者与完整范围中文排序已补证；继续共享标签密度、横屏排布及视频中文排序，不在App只重排一页。
+1. 续读、分类总数、图包标题/作者/完整范围排序以及共享卡片标签密度和短横屏排布已有阶段证据；继续视频中文排序及完整最近形态，排序不得只重排App的一页缓存。
 2. 按验收ID复核视频/阅读/管理页面的同状态视觉、键盘和动作，修复影响内容理解或操作的偏差。
 3. 自动化继续覆盖可独立完成的性能样本和升级前置；需要真实手机/NAS配合的部分保留待验证，按用户授权暂时跳过。
 4. 只有全部必要项目逐项通过才关闭#24与LF8，之后交付原签名、递增versionCode的配套版本和回退说明。

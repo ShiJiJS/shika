@@ -57,17 +57,72 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   int generation = 0;
   String error = '';
   double width = 390;
+  MediaGridGeometry? _geometry;
+  ({String id, double inset, bool top, int generation})? _reflow;
+  int _layoutRevision = 0;
   VideoBrowseContext? pendingReturn;
   List<String> returnIds = const [];
   VideoLibraryState get data => query.state;
-  double get stride =>
-      MediaLayout.tile(width, scaler: MediaQuery.textScalerOf(context)) +
-      MediaLayout.rowGap;
-  double get listHeader =>
+  int get columns => _geometry?.columns ?? 2;
+  double get stride => _geometry?.stride ?? _strideValue;
+  double get _strideValue =>
+      MediaLayout.tile(context, width) + MediaLayout.rowGap;
+  double get listHeader => _geometry?.header ?? _listHeaderValue;
+  double get _listHeaderValue =>
       MediaLayout.toolbar(context) +
       (entry.query.count > 0 || entry.search.isNotEmpty
           ? MediaLayout.scope(context)
           : 0);
+
+  void layoutGrid(BuildContext context, double nextWidth) {
+    final next = MediaGridGeometry(
+      entry.source == BrowseSource.recent ? 2 : MediaLayout.columns(context),
+      MediaLayout.tile(context, nextWidth) + MediaLayout.rowGap,
+      _listHeaderValue,
+    );
+    final old = _geometry;
+    if (old != null &&
+        old.reflows(next) &&
+        _reflow == null &&
+        !_positioning &&
+        !viewing &&
+        scroll.hasClients &&
+        data.items.isNotEmpty) {
+      final saved = position();
+      _reflow = (
+        id: saved.ids.first,
+        inset: saved.context.scrollInset,
+        top: saved.context.scrollOffset == 0,
+        generation: generation,
+      );
+    }
+    width = nextWidth;
+    _geometry = next;
+    if (_reflow == null) return;
+    final revision = ++_layoutRevision;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || revision != _layoutRevision) return;
+      final saved = _reflow;
+      _reflow = null;
+      if (saved == null ||
+          saved.generation != generation ||
+          _positioning ||
+          viewing ||
+          !scroll.hasClients) {
+        return;
+      }
+      final index = data.items.indexWhere((item) => item.id == saved.id);
+      if (index < 0) return;
+      final inset = saved.inset < 0
+          ? saved.inset
+          : min(saved.inset, stride - 1);
+      final pixels = saved.top
+          ? 0.0
+          : listHeader + index ~/ columns * stride + inset;
+      scroll.jumpTo(pixels.clamp(0.0, scroll.position.maxScrollExtent));
+      nearEdge();
+    });
+  }
 
   @override
   void initState() {
@@ -136,7 +191,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
 
   ({VideoBrowseContext context, List<String> ids}) position() {
     final pixels = scroll.hasClients ? scroll.offset : 0.0;
-    final local = max(0, ((pixels - listHeader) / stride).floor() * 2);
+    final local = max(0, ((pixels - listHeader) / stride).floor() * columns);
     final index = local.clamp(0, max(0, data.items.length - 1)).toInt();
     return (
       context: entry.copyWith(
@@ -182,11 +237,13 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
         if (restoring != null) {
           pixels =
               listHeader +
-              ((data.anchorIndex ?? data.offset) - data.offset) ~/ 2 * stride +
+              ((data.anchorIndex ?? data.offset) - data.offset) ~/
+                  columns *
+                  stride +
               restoring.scrollInset;
           pendingReturn = null;
         } else if (before) {
-          pixels = oldPixels + (oldStart - data.offset) ~/ 2 * stride;
+          pixels = oldPixels + (oldStart - data.offset) ~/ columns * stride;
         }
         if (pixels != null) {
           scroll.jumpTo(pixels.clamp(0.0, scroll.position.maxScrollExtent));
@@ -202,6 +259,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
         viewing ||
         busy ||
         _positioning ||
+        _reflow != null ||
         data.loading ||
         data.error.isNotEmpty ||
         !scroll.hasClients ||
@@ -350,7 +408,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) {
-      width = constraints.maxWidth;
+      layoutGrid(context, constraints.maxWidth);
       final p = Paper.of(context), recent = entry.source == BrowseSource.recent;
       return Column(
         children: [
@@ -553,13 +611,10 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                         sliver: SliverGrid.builder(
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
+                                crossAxisCount: columns,
                                 crossAxisSpacing: MediaLayout.columnGap,
                                 mainAxisSpacing: MediaLayout.rowGap,
-                                mainAxisExtent: MediaLayout.tile(
-                                  width,
-                                  scaler: MediaQuery.textScalerOf(context),
-                                ),
+                                mainAxisExtent: stride - MediaLayout.rowGap,
                               ),
                           itemCount: data.items.length,
                           itemBuilder: (context, index) {
@@ -690,7 +745,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 12,
-                                            color: p.muted,
+                                            color: p.catalogMeta,
                                           ),
                                         ),
                                       ),
@@ -710,14 +765,15 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                     ],
                                   ),
                                 ),
+                                const SizedBox(height: 4),
                                 Text(
+                                  key: Key('video-tag-names-${video.id}'),
                                   video.tags
                                       .map((id) => '# ${repo.tagName(id)}')
                                       .join('  '),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 11,
+                                  style: MediaLayout.cardTags.copyWith(
                                     color: p.olive,
                                   ),
                                 ),

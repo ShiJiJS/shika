@@ -1,0 +1,164 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/6f46ad51-e122-4c48-8917-d8b7067734de",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/c15c3e70-35fe-4dcf-8dbf-1e2ba3a945eb/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be00f444-d4cf-40e8-b05b-2da0db73eb3e/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/8a765dcf-146f-4d5b-bb79-8d84a85ea456/cover",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/fc8017ca-248f-4706-b30b-0f0b1cde21be/cover",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/6f46ad51-e122-4c48-8917-d8b7067734de/cover",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/4d35631a-a301-4e7c-bdb4-b67b3b3a6362/cover",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/6f46ad51-e122-4c48-8917-d8b7067734de",
+    "status": 200,
+    "phase": "cards-video-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "cards-packs"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "cards-pack-meta"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "cards-filter"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "cards-filter"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/6f46ad51-e122-4c48-8917-d8b7067734de",
+    "status": 200,
+    "phase": "cards-filter"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/recent",
+    "status": 200,
+    "phase": "cards-return"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/6f46ad51-e122-4c48-8917-d8b7067734de",
+    "status": 200,
+    "phase": "cards-return"
+  }
+]
