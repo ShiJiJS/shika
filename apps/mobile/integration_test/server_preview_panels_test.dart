@@ -10,6 +10,7 @@ import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/player.dart';
+import 'package:video_viewer/ui/paper.dart';
 import 'package:video_viewer/ui/preferences.dart';
 
 import 'prototype_fidelity_test.dart' show control;
@@ -149,6 +150,8 @@ void main() {
           'queue_decoded': find.descendant(of: find.byKey(const Key('preview-queue')), matching: find.byType(RawImage)).evaluate().where((e) => (e.widget as RawImage).image != null).length,
           'queue_order_enabled': find.byKey(const Key('queue-order-sequential')).evaluate().isEmpty ? null : t.widget<ChoiceChip>(find.byKey(const Key('queue-order-sequential'))).onSelected != null,
           'dark': preferences.dark,
+          'theme_primary': Theme.of(t.element(root)).colorScheme.primary.toARGB32(),
+          'back_color': find.byKey(const Key('preview-back')).evaluate().isEmpty ? null : IconTheme.of(t.element(find.descendant(of: find.byKey(const Key('preview-back')), matching: find.byType(Icon)))).color?.toARGB32(),
           'players': players?.map((p) => {'initialized': p.value.isInitialized, 'playing': p.value.isPlaying, 'position_ms': p.value.position.inMilliseconds, 'speed': p.value.playbackSpeed}).toList(),
           'round': repo.playbackIdentity,
           'current': repo.current?.id,
@@ -360,10 +363,28 @@ void main() {
     await until(() => preferences.dark, 'dark preference saved');
     expect(repo.current!.id, ids.first);
     expect(repo.playbackIdentity, range);
+    await until(() {
+      final route = find.byKey(const Key('video-preview-route'));
+      final back = find.descendant(
+        of: find.byKey(const Key('preview-back')),
+        matching: find.byType(Icon),
+      );
+      return Theme.of(t.element(route)).colorScheme.primary ==
+              const PaperPalette(true).olive &&
+          IconTheme.of(t.element(back)).color == const PaperPalette(true).olive;
+    }, 'dark theme and rendered back action settled');
     await capture('preview-dark');
     await tap(find.byTooltip('视频操作'));
     await tap(find.text('切换浅色模式'));
     await until(() => !preferences.dark, 'light preference restored');
+    await until(
+      () =>
+          Theme.of(t.element(find.byKey(const Key('video-preview-route'))))
+              .colorScheme
+              .primary ==
+          const PaperPalette(false).olive,
+      'light theme settled',
+    );
     await capture('preview-light');
     await tap(find.byKey(const Key('preview-scope')));
     await tap(find.byKey(const Key('queue-order-sequential')));

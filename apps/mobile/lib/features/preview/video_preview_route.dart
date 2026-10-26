@@ -182,7 +182,23 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
         SheetFrame(
           title: '本次范围已到末尾',
           children: [
-            note('$sourceLabel · 共 ${repo.playbackTotal} 个视频'),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: DefaultTextStyle.merge(
+                style: TextStyle(
+                  fontSize: 12,
+                  height: 1.7,
+                  color: Paper.of(context).olive,
+                ),
+                child: Wrap(
+                  spacing: 8,
+                  children: [
+                    Text(sourceLabel),
+                    Text('共 ${repo.playbackTotal} 个视频'),
+                  ],
+                ),
+              ),
+            ),
             Row(
               children: [
                 Expanded(
@@ -1005,9 +1021,7 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                           );
                         }, childCount: total),
                       ),
-                    SliverToBoxAdapter(
-                      child: note('打标签不会改变本次预览范围；返回后按最新标签更新结果。'),
-                    ),
+                    SliverToBoxAdapter(child: note('打标签不改变本次预览范围；返回后更新筛选结果。')),
                   ],
                 ),
               ),

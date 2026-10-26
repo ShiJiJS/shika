@@ -8,6 +8,7 @@ import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/features/preview/video_preview_route.dart';
 import 'package:video_viewer/features/library/browse_context.dart';
 import 'package:video_viewer/ui/paper.dart';
+import 'package:video_viewer/ui/media_layout.dart';
 import 'package:video_viewer/library/state_store.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/player.dart';
@@ -117,7 +118,29 @@ void main() {
       expect(repo.current!.id, current);
       await t.tap(find.byTooltip('关闭面板'));
       await frames(t);
-      await t.tap(find.byKey(const Key('preview-back')));
+      for (
+        var step = 0;
+        step <= repo.playbackTotal &&
+            find.byKey(const Key('preview-end-return')).evaluate().isEmpty;
+        step++
+      ) {
+        await t.tap(find.byKey(const Key('preview-next')));
+        await frames(t);
+      }
+      final count = find.text('共 ${repo.playbackTotal} 个视频');
+      expect(count, findsOneWidget);
+      expect(
+        t.getSize(count).height,
+        closeTo(
+          MediaLayout.line(
+            t.element(count),
+            '共 ${repo.playbackTotal} 个视频',
+            DefaultTextStyle.of(t.element(count)).style,
+          ),
+          .1,
+        ),
+      );
+      await t.tap(find.byKey(const Key('preview-end-return')));
       await frames(t);
       expect(find.byKey(const Key('video-preview-route')), findsNothing);
       expect(t.takeException(), isNull);
