@@ -11,6 +11,9 @@ import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/request_scope.dart';
 import 'package:video_viewer/library/state_store.dart';
 import 'package:video_viewer/ui/paper.dart';
+import 'package:video_viewer/ui/paper_management.dart';
+
+import 'support/reveal_action.dart';
 
 class _Files implements BackupArchiveFiles {
   _Files(this.document);
@@ -36,7 +39,8 @@ class _Repository extends DemoLibraryRepository
     : super(MemoryStateStore(), scenario: DemoScenario.empty);
   final BackupDocument document;
   int exports = 0, saved = 0, restores = 0, queries = 0;
-  bool pending = false, fail = false, legacy = false;
+  bool pending = false, fail = false, legacy = false, failRoots = false;
+  int rootTotal = 27;
   Map<String, String?>? mappings;
   @override
   bool get archiveBackupsAvailable => true;
@@ -81,7 +85,7 @@ class _Repository extends DemoLibraryRepository
     fileVersion: 2,
     fileSha256: document.sha256,
     bytes: document.bytes,
-    rootsTotal: 27,
+    rootsTotal: rootTotal,
     counts: {
       'videos': 42,
       'tags': 2,
@@ -96,20 +100,22 @@ class _Repository extends DemoLibraryRepository
     ArchivePreview preview, {
     int offset = 0,
     int limit = 24,
-  }) async => ArchiveRootPage(
-    total: 27,
-    offset: offset,
-    items: [
-      for (var n = offset; n < (offset + limit).clamp(0, 27); n++)
-        ArchiveRoot.fromJson({
-          'id': '$n',
-          'name': '媒体目录$n',
-          'original_path': '/原媒体/较长的图包目录名称/$n',
-          'kind': n.isEven ? 'video' : 'pack',
-          'suggested_path': '/当前/$n',
-        }),
-    ],
-  );
+  }) async => failRoots
+      ? throw const LibraryFailure('目录分页暂时无法读取')
+      : ArchiveRootPage(
+          total: rootTotal,
+          offset: offset,
+          items: [
+            for (var n = offset; n < (offset + limit).clamp(0, rootTotal); n++)
+              ArchiveRoot.fromJson({
+                'id': '$n',
+                'name': '媒体目录$n',
+                'original_path': '/原媒体/较长的图包目录名称/$n',
+                'kind': n.isEven ? 'video' : 'pack',
+                'suggested_path': '/当前/$n',
+              }),
+          ],
+        );
   @override
   Future<void> restoreArchive(
     ArchivePreview preview,
@@ -149,20 +155,20 @@ void main() {
   Future<void> show(
     WidgetTester t, {
     double width = 390,
+    double height = 844,
     double scale = 1,
   }) async {
-    t.view.physicalSize = Size(width, 844);
+    t.view.physicalSize = Size(width, height);
     t.view.devicePixelRatio = 1;
     addTearDown(t.view.resetPhysicalSize);
     addTearDown(t.view.resetDevicePixelRatio);
+    addTearDown(t.view.resetViewInsets);
     await t.pumpWidget(
       MaterialApp(
         theme: Paper.theme,
-        builder: (_, child) => MediaQuery(
-          data: MediaQueryData(
-            size: Size(width, 844),
-            textScaler: TextScaler.linear(scale),
-          ),
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: TextScaler.linear(scale)),
           child: child!,
         ),
         home: Scaffold(
@@ -179,20 +185,76 @@ void main() {
     await t.pumpAndSettle();
   }
 
-  Future<void> visible(WidgetTester t, Finder target) async {
-    await t.scrollUntilVisible(
-      target,
-      450,
-      scrollable: find
-          .descendant(
-            of: find.byType(ListView).last,
-            matching: find.byType(Scrollable),
-          )
-          .first,
-    );
-    await t.pumpAndSettle();
-  }
+  Future<void> visible(WidgetTester t, Finder target) =>
+      revealAction(t, target);
 
+  for (final profile in [
+    (390.0, 844.0, 1.0),
+    (360.0, 740.0, 2.0),
+    (844.0, 390.0, 1.0),
+    (844.0, 390.0, 2.0),
+  ]) {
+    testWidgets(
+      'short archive preview keeps its focused draft and cancels without restore $profile',
+      (t) async {
+        repository.rootTotal = 2;
+        await show(t, width: profile.$1, height: profile.$2, scale: profile.$3);
+        final open = find.byKey(const Key('archive-resume-preview'));
+        await visible(t, open);
+        await t.tap(open);
+        await t.pumpAndSettle();
+        expect(find.byType(SheetFrame), findsOneWidget);
+        final field = find.byKey(const Key('archive-mapping-0'));
+        await visible(t, field);
+        await t.enterText(field, '/保留/输入');
+        await t.showKeyboard(field);
+        t.view.viewInsets = const FakeViewPadding(bottom: 280);
+        await t.pumpAndSettle();
+        expect(MediaQuery.viewInsetsOf(t.element(field)).bottom, 280);
+        expect(
+          t
+              .widget<EditableText>(
+                find.descendant(of: field, matching: find.byType(EditableText)),
+              )
+              .focusNode
+              .hasFocus,
+          isTrue,
+        );
+        expect(t.widget<TextField>(field).controller!.text, '/保留/输入');
+        t.view.resetViewInsets();
+        await t.pumpAndSettle();
+        final submit = find.byKey(const Key('archive-restore-submit'));
+        await visible(t, submit);
+        expect(t.widget<FilledButton>(submit).onPressed, isNull);
+        await visible(t, find.byKey(const Key('archive-restore-close')));
+        await t.tap(find.byKey(const Key('archive-restore-close')));
+        await t.pumpAndSettle();
+        expect(repository.restores, 0);
+        expect(t.takeException(), isNull);
+      },
+    );
+  }
+  testWidgets('root page failure keeps the previous page and edited mapping', (
+    t,
+  ) async {
+    await show(t);
+    await visible(t, find.byKey(const Key('archive-resume-preview')));
+    await t.tap(find.byKey(const Key('archive-resume-preview')));
+    await t.pumpAndSettle();
+    final first = find.byKey(const Key('archive-mapping-0'));
+    await visible(t, first);
+    await t.enterText(first, '/仍保留/本页');
+    FocusManager.instance.primaryFocus?.unfocus();
+    repository.failRoots = true;
+    await visible(t, find.text('下一页'));
+    await t.tap(find.text('下一页'));
+    await t.pumpAndSettle();
+    expect(find.text('目录分页暂时无法读取'), findsOneWidget);
+    expect(find.text('媒体目录 · 已载入 24/27'), findsOneWidget);
+    await visible(t, first);
+    expect(t.widget<TextField>(first).controller!.text, '/仍保留/本页');
+    expect(repository.restores, 0);
+  });
   testWidgets(
     'restore point enters the mapping preview with confirmation off',
     (t) async {
@@ -348,15 +410,11 @@ void main() {
       repository.pending = true;
       await show(t);
       expect(
-        t
-            .widget<FilledButton>(find.byKey(const Key('archive-export')))
-            .onPressed,
+        t.widget<PaperActionRow>(find.byKey(const Key('archive-export'))).onTap,
         isNull,
       );
       expect(
-        t
-            .widget<OutlinedButton>(find.byKey(const Key('archive-pick')))
-            .onPressed,
+        t.widget<PaperActionRow>(find.byKey(const Key('archive-pick'))).onTap,
         isNull,
       );
       await visible(t, find.byKey(const Key('archive-query-restore')));

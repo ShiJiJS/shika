@@ -222,7 +222,7 @@ void main() {
         throwsA(isA<LibraryFailure>()),
       );
       expect((await commands.pending()).length, 1);
-      await tap(find.byKey(const Key('nav-settings')));
+      await tap(find.byTooltip('返回设置'));
       await fixture('/__fixture/actions/reset-task-trace');
       await tap(find.text('操作任务'));
       await until(
