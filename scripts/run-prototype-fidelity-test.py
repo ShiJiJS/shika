@@ -29,9 +29,9 @@ p.add_argument(
 args = p.parse_args()
 scenes = {
     "recent": [
-        "recent-empty-video", "recent-empty-pack", "recent-video-one",
+        "recent-empty-video", "recent-empty-pack", "recent-keyboard-video", "recent-video-one",
         "recent-video-preview", "recent-video-queue", "recent-video-two",
-        "recent-video-error", "recent-video-retry", "recent-packs-two",
+        "recent-video-error", "recent-video-retry", "recent-keyboard-pack", "recent-packs-two",
         "recent-pack-reader", "recent-pack-range", "recent-pack-return",
         "recent-pack-error", "recent-pack-retry", "recent-isolation",
     ],
