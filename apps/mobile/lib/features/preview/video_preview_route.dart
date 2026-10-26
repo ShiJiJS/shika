@@ -8,6 +8,7 @@ import '../../ui/browsing_session.dart';
 import '../../ui/media_poster.dart';
 import '../../ui/media_layout.dart';
 import '../../ui/paper.dart';
+import '../../ui/paper_icons.dart';
 import '../../ui/playback_session.dart';
 import '../../ui/player.dart';
 import '../../ui/preferences.dart';
@@ -380,7 +381,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
   }
 
   Widget tool(
-    _PreviewGlyph icon,
+    PaperGlyph icon,
     String label,
     VoidCallback action, {
     bool selected = false,
@@ -397,7 +398,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _PreviewToolIcon(icon),
+          PaperIcon(icon),
           const SizedBox(height: 3),
           Text(label, style: const TextStyle(fontSize: 12)),
         ],
@@ -605,13 +606,13 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                 child: Row(
                   children: [
                     tool(
-                      _PreviewGlyph.shuffle,
+                      PaperGlyph.shuffle,
                       data.order == PlayOrder.random ? '随机预览' : '顺序预览',
                       queue,
                     ),
-                    tool(_PreviewGlyph.tag, '视频标签', tags),
+                    tool(PaperGlyph.tag, '视频标签', tags),
                     tool(
-                      _PreviewGlyph.filter,
+                      PaperGlyph.filter,
                       '快速整理',
                       () => setState(() => quick = !quick),
                       selected: quick,
@@ -1085,83 +1086,4 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
       ),
     );
   }
-}
-
-enum _PreviewGlyph { shuffle, tag, filter }
-
-/// Paper's outlined tool shapes; button labels own their accessibility names.
-class _PreviewToolIcon extends StatelessWidget {
-  const _PreviewToolIcon(this.glyph);
-  final _PreviewGlyph glyph;
-
-  @override
-  Widget build(BuildContext context) => ExcludeSemantics(
-    child: CustomPaint(
-      size: const Size.square(21),
-      painter: _PreviewToolPainter(
-        glyph,
-        IconTheme.of(context).color ?? Paper.of(context).olive,
-      ),
-    ),
-  );
-}
-
-class _PreviewToolPainter extends CustomPainter {
-  const _PreviewToolPainter(this.glyph, this.color);
-  final _PreviewGlyph glyph;
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final stroke = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.6
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
-    final path = Path();
-    switch (glyph) {
-      case _PreviewGlyph.shuffle:
-        path
-          ..moveTo(3, 6)
-          ..lineTo(6, 6)
-          ..lineTo(18, 18)
-          ..lineTo(21, 18)
-          ..moveTo(17, 14)
-          ..lineTo(21, 18)
-          ..lineTo(17, 22)
-          ..moveTo(3, 18)
-          ..lineTo(6, 18)
-          ..lineTo(18, 6)
-          ..lineTo(21, 6)
-          ..moveTo(17, 2)
-          ..lineTo(21, 6)
-          ..lineTo(17, 10);
-      case _PreviewGlyph.tag:
-        path
-          ..moveTo(3, 3)
-          ..lineTo(12, 3)
-          ..lineTo(21, 12)
-          ..lineTo(12, 21)
-          ..lineTo(3, 12)
-          ..close()
-          ..addOval(Rect.fromCircle(center: const Offset(8, 8), radius: 1.5));
-      case _PreviewGlyph.filter:
-        path
-          ..moveTo(3, 6)
-          ..lineTo(21, 6)
-          ..moveTo(6, 12)
-          ..lineTo(18, 12)
-          ..moveTo(9, 18)
-          ..lineTo(15, 18);
-    }
-    canvas.save();
-    canvas.scale(size.width / 24, size.height / 24);
-    canvas.drawPath(path, stroke);
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(_PreviewToolPainter oldDelegate) =>
-      oldDelegate.glyph != glyph || oldDelegate.color != color;
 }
