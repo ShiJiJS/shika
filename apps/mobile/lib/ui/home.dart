@@ -2325,12 +2325,14 @@ class _LibraryHomeState extends State<LibraryHome> {
       Text('连接你的视频库', style: Paper.of(context).title),
       const SizedBox(height: 26),
       TextField(
+        key: const Key('connection-address'),
         controller: address,
         enabled: !_busy,
         decoration: const InputDecoration(labelText: '服务地址'),
       ),
       const SizedBox(height: 20),
       TextField(
+        key: const Key('connection-port'),
         controller: port,
         enabled: !_busy,
         keyboardType: TextInputType.number,
@@ -2338,6 +2340,7 @@ class _LibraryHomeState extends State<LibraryHome> {
       ),
       const SizedBox(height: 20),
       TextField(
+        key: const Key('connection-passphrase'),
         controller: passphrase,
         enabled: !_busy,
         obscureText: true,
@@ -2345,6 +2348,7 @@ class _LibraryHomeState extends State<LibraryHome> {
       ),
       const SizedBox(height: 26),
       FilledButton(
+        key: const Key('connection-save'),
         onPressed: _busy
             ? null
             : () async {
