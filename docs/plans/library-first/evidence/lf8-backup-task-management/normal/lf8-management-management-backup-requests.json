@@ -1,0 +1,37 @@
+{
+  "items": [
+    {
+      "method": "POST",
+      "path": "/api/v1/scans",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "a36df9b7fdffcdebe2073a75ccc4aade",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "a36df9b7fdffcdebe2073a75ccc4aade",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "a36df9b7fdffcdebe2073a75ccc4aade",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "items": [
+    {
+      "method": "POST",
+      "path": "/api/v1/scans",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "3a506245a1c8d6caf571674943602550",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "3a506245a1c8d6caf571674943602550",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "items": [
+    {
+      "method": "POST",
+      "path": "/api/v1/scans",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/backups",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/2cfd56be-7333-4058-9fcc-3729441cf1f2",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/backups/2cfd56be-7333-4058-9fcc-3729441cf1f2/download",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/backups",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/410924c4-e348-4edb-a99e-c7417e058f60",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/backups/410924c4-e348-4edb-a99e-c7417e058f60/download",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "98320c79de54bb32e573391a22171a83",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

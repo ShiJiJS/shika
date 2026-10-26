@@ -1,0 +1,39 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_management_test.dart
+Running Gradle task 'assembleDebug'...                             16.3s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,146ms
+00:00 +0: LF8 real App v2 export, keyboard mapping, replacement and snapshot
+ARCHIVE_UI_METRICS:{"state":"archive-ui-backup-start","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-backup-dark","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":true}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-restore-first-page","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":0.0,"dark":false}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-restore-keyboard","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"viewPadding":[0.0,42.0,0.0,24.0],"keyboard":303.0,"dark":false}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following StateError was thrown running a test:
+Bad state: No element
+
+When the exception was thrown, this was the stack:
+#0      Iterable.single (dart:core/iterable.dart:694:25)
+#1      WidgetController.element (package:flutter_test/src/controller.dart:888:30)
+#2      revealAction (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/support/reveal_action.dart:24:36)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_management_test.dart:220:7)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF8 real App v2 export, keyboard mapping, replacement and snapshot
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:00 +0 -1: LF8 real App v2 export, keyboard mapping, replacement and snapshot [E]
+  Test failed. See exception logs above.
+  The test description was: LF8 real App v2 export, keyboard mapping, replacement and snapshot
+  
+01:00 +0 -1: (tearDownAll)
+01:01 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_management_test.dart: LF8 real App v2 export, keyboard mapping, replacement and snapshot

@@ -1,0 +1,105 @@
+{
+  "items": [
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "family": "all",
+        "state": "all"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "3a506245a1c8d6caf571674943602550",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-file-requests/native-tasks-unknown",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "3a506245a1c8d6caf571674943602550",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/e5eb91ff-95e1-4c07-95a6-575524ae0c73",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "3a506245a1c8d6caf571674943602550",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "3a506245a1c8d6caf571674943602550",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/e5eb91ff-95e1-4c07-95a6-575524ae0c73",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "3a506245a1c8d6caf571674943602550",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/e5eb91ff-95e1-4c07-95a6-575524ae0c73/items",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "unfinished": "true"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "3a506245a1c8d6caf571674943602550",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/e5eb91ff-95e1-4c07-95a6-575524ae0c73",
+      "query": {},
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "3a506245a1c8d6caf571674943602550",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/maintenance-tasks/e5eb91ff-95e1-4c07-95a6-575524ae0c73/items",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "unfinished": "false"
+      },
+      "authenticated": true,
+      "range": null,
+      "management_epoch": "3a506245a1c8d6caf571674943602550",
+      "fixture_actor": null,
+      "query_lists": {},
+      "status": 200
+    }
+  ]
+}

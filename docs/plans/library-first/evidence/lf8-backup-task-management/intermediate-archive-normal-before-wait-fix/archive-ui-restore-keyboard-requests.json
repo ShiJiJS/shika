@@ -1,0 +1,268 @@
+{
+  "items": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": {},
+      "epoch": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/info",
+      "query": {},
+      "epoch": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "query": {
+        "create": "false"
+      },
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "status": "missing",
+        "limit": "1"
+      },
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "query": {
+        "limit": "1"
+      },
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "query": {
+        "offset": "0",
+        "limit": "200"
+      },
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": {
+        "offset": "0",
+        "limit": "24",
+        "source": "library",
+        "sort": "name"
+      },
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/management-backups/latest-restore",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/management-backups",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/290a5339-f9c3-426d-9c9f-97e8d66ee6c2",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/290a5339-f9c3-426d-9c9f-97e8d66ee6c2",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/290a5339-f9c3-426d-9c9f-97e8d66ee6c2",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/290a5339-f9c3-426d-9c9f-97e8d66ee6c2",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/290a5339-f9c3-426d-9c9f-97e8d66ee6c2",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/290a5339-f9c3-426d-9c9f-97e8d66ee6c2",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/management-backups/290a5339-f9c3-426d-9c9f-97e8d66ee6c2/download",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/tags",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-tags",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/management-backups/imports",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tasks/df1f8ae9-6301-4413-aca4-ea1181be2c96",
+      "query": {},
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/management-backups/df1f8ae9-6301-4413-aca4-ea1181be2c96/roots",
+      "query": {
+        "offset": "0",
+        "limit": "24"
+      },
+      "epoch": "a2e8f1ebfe14f2ba59f1d30b8c569c39"
+    }
+  ]
+}
