@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:video_viewer/features/library/tag_catalog_page.dart';
+import 'package:video_viewer/features/library/video_catalog_page.dart';
 import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/server_repository.dart';
@@ -276,10 +277,29 @@ void main() {
       );
       await revealAction(t, find.byKey(Key('video-tag-${ids.last}')));
       await shot('paged');
+      await fixture('/__fixture/actions/fail-tag-results');
       await tap(find.byKey(const Key('tag-view-results')));
+      VideoCatalogPageState results() =>
+          t.state<VideoCatalogPageState>(find.byType(VideoCatalogPage));
       await until(
-        () => find.text('标签结果').evaluate().isNotEmpty,
-        'library results',
+        () => results().data.error.contains('标签结果暂时无法读取'),
+        'actual result failure',
+      );
+      await shot('results-error');
+      expect(results().entry.query.tags, {ids.first, ids[1]});
+      await tap(find.text('重试').last);
+      await until(
+        () =>
+            !results().data.loading &&
+            results().data.error.isEmpty &&
+            results().data.total == 1 &&
+            results().data.items.length == 1,
+        'actual result member loaded',
+      );
+      expect(results().data.items.single.id, videoIds.first);
+      expect(results().entry.query.tags, {ids.first, ids[1]});
+      debugPrint(
+        'TAG_RESULT_VERIFIED:${jsonEncode({'ids': results().data.items.map((v) => v.id).toList(), 'total': results().data.total, 'tags': results().entry.query.tags.toList()..sort(), 'error': results().data.error})}',
       );
       await shot('results');
       expect(await fixture('/__fixture/actions/pack-trash-hashes'), source);

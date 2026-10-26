@@ -61,7 +61,7 @@ def create_e2e_app():
         marker.write_text("dedicated generated emulator fixture")
     controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False, "lose_default_response": False,
                 "fail_restore": False, "slow_restore": False, "slow_page": False,
-                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_pack_names": False, "fail_pack_anchor": False, "fail_pack_trash": False, "lose_missing_response": False}
+                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_tag_results": False, "fail_pack_names": False, "fail_pack_anchor": False, "fail_pack_trash": False, "lose_missing_response": False}
 
     def backup_fault(phase, _task_id):
         if controls["fail_restore"] and phase == "after_replace_before_commit":
@@ -142,6 +142,10 @@ def create_e2e_app():
                 controls["fail_tag_page"] = False
                 entry["status"] = 503
                 return JSONResponse({"error": {"code": "fixture_tag_page", "message": "Isolated tag page failure"}}, status_code=503)
+            if controls["fail_tag_results"] and request.method == "GET" and request.url.path == "/api/v1/videos" and request.query_params.get("source") == "tags" and request.query_params.get("limit") == "24":
+                controls["fail_tag_results"] = False
+                entry["status"] = 503
+                return JSONResponse({"error": {"code": "fixture_tag_results", "message": "标签结果暂时无法读取，请重试"}}, status_code=503)
             if controls["slow_page"] and request.url.path == "/api/v1/videos" and int(request.query_params.get("offset", "0")) > 0:
                 await asyncio.sleep(3)
             if controls["fail_streams"] and request.url.path.endswith("/stream"):
@@ -244,7 +248,7 @@ def create_e2e_app():
             "prepared",
             "workspace-video", "workspace-packs", "workspace-video-tags",
             "workspace-pack-tags", "workspace-settings", "workspace-dark",
-            "tag-ui-video", "tag-ui-pack", "tag-ui-dark", "tag-ui-create-keyboard", "tag-ui-create-error", "tag-ui-created", "tag-ui-rename-editor", "tag-ui-rename-editor-dark", "tag-ui-renamed", "tag-ui-remove-confirm", "tag-ui-removed", "tag-ui-page-error", "tag-ui-paged", "tag-ui-results",
+            "tag-ui-video", "tag-ui-pack", "tag-ui-dark", "tag-ui-create-keyboard", "tag-ui-create-error", "tag-ui-created", "tag-ui-rename-editor", "tag-ui-rename-editor-dark", "tag-ui-renamed", "tag-ui-remove-confirm", "tag-ui-removed", "tag-ui-page-error", "tag-ui-paged", "tag-ui-results-error", "tag-ui-results",
             "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
             "selection-videos", "selection-packs",
             "pack-names-card", "pack-names-retry", "pack-names-saved", "pack-names-renamed",
@@ -500,6 +504,8 @@ def create_e2e_app():
             scanner.submit()
         elif action == "fail-pack-names":
             controls["fail_pack_names"] = True
+        elif action == "fail-tag-results":
+            controls["fail_tag_results"] = True
         elif action == "fail-tag-page":
             controls["fail_tag_page"] = True
         elif action == "slow-pages":
