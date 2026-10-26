@@ -1,0 +1,44 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart
+Running Gradle task 'assembleDebug'...                          
+integration_test/server_catalog_counts_test.dart:141:30: Error: Too few positional arguments: 1 required, 0 given.
+        while ((await control())['ack'] != true) {
+                             ^
+integration_test/prototype_fidelity_test.dart:15:30: Context: Found this candidate, but the arguments don't match.
+Future<Map<String, dynamic>> control(String path, {bool post = false}) async {
+                             ^^^^^^^
+Target kernel_snapshot_program failed: Exception
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileFlutterBuildDebug'.
+> Process 'command '/Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/bin/flutter'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 27s
+Running Gradle task 'assembleDebug'...                             28.3s
+00:00 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart [E]
+  Failed to load "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart": Gradle task assembleDebug failed with exit code 1
+  package:flutter_tools/src/base/common.dart 34:3                    throwToolExit
+  package:flutter_tools/src/android/gradle.dart 653:7                AndroidGradleBuilder.buildGradleApp
+  ===== asynchronous gap ===========================
+  package:flutter_tools/src/android/gradle.dart 246:5                AndroidGradleBuilder.buildApk
+  ===== asynchronous gap ===========================
+  package:flutter_tools/src/android/android_device.dart 571:7        AndroidDevice.startApp
+  ===== asynchronous gap ===========================
+  package:flutter_tools/src/test/integration_test_device.dart 59:39  IntegrationTestTestDevice.start
+  ===== asynchronous gap ===========================
+  package:flutter_tools/src/test/flutter_platform.dart 679:51        FlutterPlatform._startTest.<fn>
+  ===== asynchronous gap ===========================
+  package:flutter_tools/src/base/async_guard.dart 108:24             asyncGuard.<fn>
+  
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart

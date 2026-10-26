@@ -1,0 +1,100 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart
+Running Gradle task 'assembleDebug'...                             13.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          547ms
+00:00 +0: authoritative type totals survive scopes, real trash/restore and failed reads
+FIDELITY_METRICS:{"state":"counts-home","size":[844.0,442.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"app-navigation":[0.0,368.0,844.0,50.0],"catalog-count-video":[57.500213623046875,91.5,6.994140625,17.0],"catalog-count-pack":[123.99456787109375,91.5,6.994140625,17.0],"video-search":[60.0,125.0,768.0,42.0]},"texts":[{"text":"媒体库","rect":[20.0,36.5,716.0,34.0],"fontSize":24.0},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"2","rect":[57.500213623046875,91.5,6.994140625,17.0],"fontSize":12.0},{"text":"图包","rect":[86.49435424804688,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"4","rect":[123.99456787109375,91.5,6.994140625,17.0],"fontSize":12.0},{"text":"搜索视频名称、目录","rect":[76.0,133.0,736.0,24.0],"fontSize":16.0},{"text":"2 个视频","rect":[16.0,189.0,639.2752685546875,20.0],"fontSize":13.0},{"text":"名称 ↓","rect":[663.2752685546875,189.0,43.22465515136719,20.0],"fontSize":13.0},{"text":"预览此范围","rect":[750.4999237060547,189.5,65.50007629394531,19.0],"fontSize":13.0},{"text":"00:06","rect":[378.357421875,423.0,28.642578125,16.0],"fontSize":11.0},{"text":"00:06","rect":[790.357421875,423.0,28.642578125,16.0],"fontSize":11.0},{"text":"媒体库","rect":[294.1250228881836,397.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[374.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[449.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[524.2500152587891,397.0,20.499969482421875,14.0],"fontSize":10.0}],"counts":{"video":2,"pack":4}}
+FIDELITY_METRICS:{"state":"counts-packs","size":[844.0,442.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"app-navigation":[0.0,368.0,844.0,50.0],"catalog-count-video":[57.500213623046875,91.5,6.994140625,17.0],"catalog-count-pack":[123.99456787109375,91.5,6.994140625,17.0],"pack-search":[60.0,125.0,768.0,42.0],"pack-count":[16.0,189.0,615.9752197265625,20.0]},"texts":[{"text":"媒体库","rect":[20.0,36.5,716.0,34.0],"fontSize":24.0},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"2","rect":[57.500213623046875,91.5,6.994140625,17.0],"fontSize":12.0},{"text":"图包","rect":[86.49435424804688,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"4","rect":[123.99456787109375,91.5,6.994140625,17.0],"fontSize":12.0},{"text":"搜索图包名称、目录","rect":[76.0,133.0,736.0,24.0],"fontSize":16.0},{"text":"4 个图包","rect":[16.0,189.0,615.9752197265625,20.0],"fontSize":13.0},{"text":"阅读状态","rect":[643.9752197265625,189.5,52.400062561035156,19.0],"fontSize":13.0},{"text":"名称 ↓","rect":[708.3752822875977,189.0,43.22465515136719,20.0],"fontSize":13.0},{"text":"快速整理","rect":[763.5999374389648,189.5,52.400062561035156,19.0],"fontSize":13.0},{"text":"6 张","rect":[386.3394317626953,422.0,20.660568237304688,17.0],"fontSize":11.0},{"text":"6 张","rect":[798.3394317626953,422.0,20.660568237304688,17.0],"fontSize":11.0},{"text":"在读","rect":[437.0,423.0,22.499847412109375,16.0],"fontSize":11.0},{"text":"媒体库","rect":[294.1250228881836,397.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[374.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[449.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[524.2500152587891,397.0,20.499969482421875,14.0],"fontSize":10.0}],"counts":{"video":2,"pack":4}}
+FIDELITY_METRICS:{"state":"counts-filter","size":[844.0,442.0],"dpr":3.0,"padding":[0.0,28.0,0.0,0.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"app-navigation":[0.0,392.0,844.0,50.0],"catalog-count-video":[57.500213623046875,91.5,6.994140625,17.0],"catalog-count-pack":[123.99456787109375,91.5,6.994140625,17.0],"pack-search":[60.0,125.0,768.0,42.0]},"texts":[{"text":"媒体库","rect":[20.0,36.5,716.0,34.0],"fontSize":24.0},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"2","rect":[57.500213623046875,91.5,6.994140625,17.0],"fontSize":12.0},{"text":"图包","rect":[86.49435424804688,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"4","rect":[123.99456787109375,91.5,6.994140625,17.0],"fontSize":12.0},{"text":"搜索图包名称、目录","rect":[76.0,133.0,736.0,24.0],"fontSize":16.0},{"text":"“no-pack-matches”","rect":[16.0,188.5,775.800121307373,17.0],"fontSize":12.0},{"text":"清除","rect":[803.800121307373,187.0,28.199878692626953,20.0],"fontSize":null},{"text":"媒体库","rect":[294.1250228881836,421.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[374.25001525878906,421.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[449.25001525878906,421.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[524.2500152587891,421.0,20.499969482421875,14.0],"fontSize":10.0}],"counts":{"video":2,"pack":4}}
+CATALOG_COUNTS_ERROR:══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 79 pixels on the bottom.
+
+The relevant error-causing widget was:
+  Column
+  Column:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/lib/features/library/tag_catalog_page.dart:464:41
+
+The overflowing RenderFlex has an orientation of Axis.vertical.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#49727 relayoutBoundary=up8 OVERFLOWING:
+  needs compositing
+  parentData: not positioned; offset=Offset(0.0, 0.0) (can use
+    size)
+  constraints: BoxConstraints(0.0<=w<=844.0, 0.0<=h<=61.0)
+  size: Size(844.0, 61.0)
+  direction: vertical
+  mainAxisAlignment: start
+  mainAxisSize: max
+  crossAxisAlignment: center
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+FIDELITY_METRICS:{"state":"counts-tags","size":[844.0,442.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"app-navigation":[0.0,368.0,844.0,50.0]},"texts":[{"text":"标签","rect":[20.0,36.5,764.0,34.0],"fontSize":24.0},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"图包","rect":[72.50021362304688,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"视频标签","rect":[20.0,138.0,93.0,33.0],"fontSize":23.0},{"text":"选择一个或多个标签，确定视频预览范围。","rect":[20.0,180.0,251.7502899169922,22.0],"fontSize":13.0},{"text":"搜索标签","rect":[36.0,224.0,772.0,24.0],"fontSize":16.0},{"text":"全部视频","rect":[20.0,244.0,727.9999389648438,19.0],"fontSize":13.0},{"text":"清除选择","rect":[759.9999389648438,244.0,52.00006103515625,19.0],"fontSize":null},{"text":"匹配 2 个视频","rect":[20.0,277.0,711.7753143310547,23.0],"fontSize":15.0},{"text":"查看结果 →","rect":[743.7753143310547,279.0,68.22468566894531,19.0],"fontSize":null},{"text":"预览这 2 个视频","rect":[372.0921745300293,323.5,99.8156509399414,21.0],"fontSize":null},{"text":"媒体库","rect":[294.1250228881836,397.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[374.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[449.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[524.2500152587891,397.0,20.499969482421875,14.0],"fontSize":10.0}],"counts":{"video":2,"pack":4}}
+CATALOG_COUNTS_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 79 pixels on
+the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.capture (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart:168:9)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart:199:7)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart line 168
+The test description was:
+  authoritative type totals survive scopes, real trash/restore
+  and failed reads
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 79 pixels on the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.capture (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart:168:9)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart:199:7)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart line 168
+The test description was:
+  authoritative type totals survive scopes, real trash/restore and failed reads
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:11 +0 -1: authoritative type totals survive scopes, real trash/restore and failed reads [E]
+  Test failed. See exception logs above.
+  The test description was: authoritative type totals survive scopes, real trash/restore and failed reads
+  
+00:11 +0 -1: (tearDownAll)
+00:11 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_catalog_counts_test.dart: authoritative type totals survive scopes, real trash/restore and failed reads
