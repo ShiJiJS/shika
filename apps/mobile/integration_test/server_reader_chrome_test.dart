@@ -68,9 +68,8 @@ void main() {
 
     Future<void> tap(Finder target) async {
       await until(() => target.evaluate().length == 1, 'one target $target');
-      if (target.hitTestable().evaluate().isEmpty) {
-        await t.ensureVisible(target);
-      }
+      await t.ensureVisible(target);
+      await t.pumpAndSettle(const Duration(milliseconds: 100));
       await until(
         () => target.hitTestable().evaluate().length == 1,
         'hit $target',
@@ -204,6 +203,9 @@ void main() {
     );
     await capture('reader-overview');
     await tap(find.byKey(const Key('reader-overview-page-3')));
+    debugPrint(
+      'READER_CHROME_JUMP:${jsonEncode({'index': reader().session.index, 'busy': reader().session.busy, 'pending': reader().session.hasPending, 'sheet': find.byKey(const Key('reader-overview-sheet')).evaluate().length})}',
+    );
     await until(
       () =>
           reader().session.index == 3 &&
