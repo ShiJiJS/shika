@@ -153,6 +153,16 @@ class _LibraryHomeState extends State<LibraryHome> {
   bool get mediaPage => page == 'browse' || page == 'library';
   bool get primaryPage =>
       ['browse', 'library', 'tags', 'settings'].contains(page);
+  bool get compactTrashKeyboard {
+    final media = MediaQuery.of(context);
+    return page == 'trash' &&
+        media.viewInsets.bottom > 0 &&
+        media.size.height -
+                media.viewInsets.bottom -
+                media.viewPadding.vertical <
+            300;
+  }
+
   EdgeInsets get snackMargin => EdgeInsets.fromLTRB(
     12,
     0,
@@ -1052,143 +1062,144 @@ class _LibraryHomeState extends State<LibraryHome> {
       header: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            key: const Key('management-header'),
-            height: MediaLayout.headerExtent(context),
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: page == 'trash' ? 20 : 16,
-                right: 12,
-              ),
-              child: Row(
-                children: [
-                  if (!primaryPage && page != 'trash')
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4),
-                      child: iconAction(
+          if (!compactTrashKeyboard)
+            SizedBox(
+              key: const Key('management-header'),
+              height: MediaLayout.headerExtent(context),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: page == 'trash' ? 20 : 16,
+                  right: 12,
+                ),
+                child: Row(
+                  children: [
+                    if (!primaryPage && page != 'trash')
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4),
+                        child: iconAction(
+                          '返回设置',
+                          Icons.arrow_back,
+                          _busy ? null : () => go('settings'),
+                        ),
+                      ),
+                    Expanded(
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Paper.of(context).title,
+                      ),
+                    ),
+                    if (mediaPage) ...[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 9),
+                        child: Text(
+                          !repo.libraryPreparation.value.ready
+                              ? '准备中'
+                              : '${data.round.isEmpty ? '00' : (_browsing.position + 1).toString().padLeft(2, '0')} / ${repo.playbackTotal.toString().padLeft(2, '0')}',
+                          key: const Key('round-position'),
+                          style: TextStyle(
+                            fontFamily: 'serif',
+                            fontSize: 13,
+                            color: Paper.of(context).olive,
+                          ),
+                        ),
+                      ),
+                      iconAction(
+                        '选择文件夹',
+                        Icons.folder_outlined,
+                        busy ? null : folder,
+                      ),
+                      iconAction(
+                        '播放模式',
+                        data.order == PlayOrder.random
+                            ? Icons.shuffle
+                            : Icons.format_list_numbered,
+                        busy ? null : order,
+                      ),
+                    ],
+                    if (page == 'trash')
+                      iconAction(
                         '返回设置',
-                        Icons.arrow_back,
+                        Icons.close,
                         _busy ? null : () => go('settings'),
                       ),
-                    ),
-                  Expanded(
-                    child: Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Paper.of(context).title,
-                    ),
-                  ),
-                  if (mediaPage) ...[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 9),
-                      child: Text(
-                        !repo.libraryPreparation.value.ready
-                            ? '准备中'
-                            : '${data.round.isEmpty ? '00' : (_browsing.position + 1).toString().padLeft(2, '0')} / ${repo.playbackTotal.toString().padLeft(2, '0')}',
-                        key: const Key('round-position'),
-                        style: TextStyle(
-                          fontFamily: 'serif',
-                          fontSize: 13,
-                          color: Paper.of(context).olive,
-                        ),
-                      ),
-                    ),
-                    iconAction(
-                      '选择文件夹',
-                      Icons.folder_outlined,
-                      busy ? null : folder,
-                    ),
-                    iconAction(
-                      '播放模式',
-                      data.order == PlayOrder.random
-                          ? Icons.shuffle
-                          : Icons.format_list_numbered,
-                      busy ? null : order,
-                    ),
-                  ],
-                  if (page == 'trash')
-                    iconAction(
-                      '返回设置',
-                      Icons.close,
-                      _busy ? null : () => go('settings'),
-                    ),
-                  if (page != 'trash')
-                    PopupMenuButton<String>(
-                      tooltip: '更多',
-                      enabled: !busy,
-                      onOpened: () => setState(() => obscured = true),
-                      onCanceled: () => setState(() => obscured = false),
-                      onSelected: menu,
-                      padding: EdgeInsets.zero,
-                      icon: const Icon(Icons.more_horiz),
-                      constraints: const BoxConstraints(minWidth: 190),
-                      itemBuilder: (_) => [
-                        if (data.lastDelete != null)
-                          const PopupMenuItem(
-                            value: 'undo',
-                            child: Text('撤销上次删除'),
+                    if (page != 'trash')
+                      PopupMenuButton<String>(
+                        tooltip: '更多',
+                        enabled: !busy,
+                        onOpened: () => setState(() => obscured = true),
+                        onCanceled: () => setState(() => obscured = false),
+                        onSelected: menu,
+                        padding: EdgeInsets.zero,
+                        icon: const Icon(Icons.more_horiz),
+                        constraints: const BoxConstraints(minWidth: 190),
+                        itemBuilder: (_) => [
+                          if (data.lastDelete != null)
+                            const PopupMenuItem(
+                              value: 'undo',
+                              child: Text('撤销上次删除'),
+                            ),
+                          PopupMenuItem(
+                            value: 'theme',
+                            child: actionLabel(
+                              widget.preferences.dark
+                                  ? Icons.light_mode_outlined
+                                  : Icons.dark_mode_outlined,
+                              widget.preferences.dark ? '切换浅色模式' : '切换暗黑模式',
+                            ),
                           ),
-                        PopupMenuItem(
-                          value: 'theme',
-                          child: actionLabel(
-                            widget.preferences.dark
-                                ? Icons.light_mode_outlined
-                                : Icons.dark_mode_outlined,
-                            widget.preferences.dark ? '切换浅色模式' : '切换暗黑模式',
-                          ),
-                        ),
-                        ...(page == 'browse'
-                            ? [
-                                if (_browsing.current != null)
-                                  const PopupMenuItem(
-                                    value: 'tag',
-                                    child: Text('打标签'),
-                                  ),
-                                if (_browsing.current != null)
-                                  const PopupMenuItem(
-                                    value: 'details',
-                                    child: Text('视频详情'),
-                                  ),
-                                PopupMenuItem(
-                                  value: 'review',
-                                  child: Text(review ? '返回日常浏览' : '进入快速整理'),
-                                ),
-                                const PopupMenuItem(
-                                  value: 'round',
-                                  child: Text('开始新一轮'),
-                                ),
-                                if (_browsing.current != null)
+                          ...(page == 'browse'
+                              ? [
+                                  if (_browsing.current != null)
+                                    const PopupMenuItem(
+                                      value: 'tag',
+                                      child: Text('打标签'),
+                                    ),
+                                  if (_browsing.current != null)
+                                    const PopupMenuItem(
+                                      value: 'details',
+                                      child: Text('视频详情'),
+                                    ),
                                   PopupMenuItem(
-                                    value: 'delete',
-                                    child: Text(
-                                      '移入回收站',
-                                      style: TextStyle(
-                                        color: Paper.of(context).danger,
+                                    value: 'review',
+                                    child: Text(review ? '返回日常浏览' : '进入快速整理'),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 'round',
+                                    child: Text('开始新一轮'),
+                                  ),
+                                  if (_browsing.current != null)
+                                    PopupMenuItem(
+                                      value: 'delete',
+                                      child: Text(
+                                        '移入回收站',
+                                        style: TextStyle(
+                                          color: Paper.of(context).danger,
+                                        ),
                                       ),
                                     ),
+                                ]
+                              : const [
+                                  PopupMenuItem(
+                                    value: 'roots',
+                                    child: Text('媒体目录'),
                                   ),
-                              ]
-                            : const [
-                                PopupMenuItem(
-                                  value: 'roots',
-                                  child: Text('媒体目录'),
-                                ),
-                                PopupMenuItem(
-                                  value: 'trash',
-                                  child: Text('回收站'),
-                                ),
-                                PopupMenuItem(
-                                  value: 'backup',
-                                  child: Text('备份与恢复'),
-                                ),
-                              ]),
-                      ],
-                    ),
-                ],
+                                  PopupMenuItem(
+                                    value: 'trash',
+                                    child: Text('回收站'),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 'backup',
+                                    child: Text('备份与恢复'),
+                                  ),
+                                ]),
+                        ],
+                      ),
+                  ],
+                ),
               ),
             ),
-          ),
           managementStatus(),
         ],
       ),
@@ -2700,50 +2711,51 @@ class _LibraryHomeState extends State<LibraryHome> {
     final p = Paper.of(context);
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            children: [
-              for (final kind in MediaKind.values)
-                Padding(
-                  padding: const EdgeInsets.only(right: 22),
-                  child: TextButton(
-                    key: Key('trash-kind-${kind.name}'),
-                    onPressed: () {
-                      if (trashKind == kind) return;
-                      setState(() => trashKind = kind);
-                      trashGeneration++;
-                      repo.cancelTrashRead();
-                      if (kind == MediaKind.video) unawaited(loadTrash());
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: kind == trashKind
-                          ? p.ink
-                          : p.catalogMeta,
-                      padding: EdgeInsets.zero,
-                      minimumSize: const Size(44, 44),
-                      shape: const RoundedRectangleBorder(),
-                      side: BorderSide.none,
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: kind == trashKind
-                                ? p.olive
-                                : Colors.transparent,
-                            width: 2,
+        if (!compactTrashKeyboard)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                for (final kind in MediaKind.values)
+                  Padding(
+                    padding: const EdgeInsets.only(right: 22),
+                    child: TextButton(
+                      key: Key('trash-kind-${kind.name}'),
+                      onPressed: () {
+                        if (trashKind == kind) return;
+                        setState(() => trashKind = kind);
+                        trashGeneration++;
+                        repo.cancelTrashRead();
+                        if (kind == MediaKind.video) unawaited(loadTrash());
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: kind == trashKind
+                            ? p.ink
+                            : p.catalogMeta,
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(44, 44),
+                        shape: const RoundedRectangleBorder(),
+                        side: BorderSide.none,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.only(bottom: 4),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: kind == trashKind
+                                  ? p.olive
+                                  : Colors.transparent,
+                              width: 2,
+                            ),
                           ),
                         ),
+                        child: Text(kind == MediaKind.video ? '视频' : '图包'),
                       ),
-                      child: Text(kind == MediaKind.video ? '视频' : '图包'),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
-        ),
         Expanded(
           child: IndexedStack(
             index: trashKind == MediaKind.video ? 0 : 1,

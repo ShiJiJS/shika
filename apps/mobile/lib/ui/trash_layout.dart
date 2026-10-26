@@ -30,16 +30,20 @@ class TrashLayout extends StatelessWidget {
       return Column(
         children: [
           if (loading) const LinearProgressIndicator(),
-          Expanded(
+          Flexible(
+            fit: pinned ? FlexFit.loose : FlexFit.tight,
             child: RefreshIndicator(
               onRefresh: onRefresh,
               child: ListView(
                 key: listKey,
                 controller: controller,
+                // A short result keeps its actions directly after the rows;
+                // a full, bounded page uses the available height and pins them.
+                shrinkWrap: pinned,
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
+                padding: EdgeInsets.fromLTRB(20, 18, 20, pinned ? 0 : 22),
                 children: [...children, if (!pinned) actions],
               ),
             ),

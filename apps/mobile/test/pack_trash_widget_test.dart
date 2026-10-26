@@ -37,7 +37,13 @@ void main() {
     (const Size(844, 390), 1.0),
     (const Size(844, 390), 2.0),
   ]) {
-    for (final scenario in ['restore', 'unknown', 'gate', 'page-error']) {
+    for (final scenario in [
+      'restore',
+      'unknown',
+      'gate',
+      'page-error',
+      'keyboard',
+    ]) {
       testWidgets(
         'typed trash $scenario from settings ${sample.$1} / ${sample.$2}',
         (t) async {
@@ -49,6 +55,7 @@ void main() {
             await t.pump();
             repo.dispose();
             VideoPlayerPlatform.instance = original;
+            t.view.resetViewInsets();
             t.view.resetPhysicalSize();
             t.view.resetDevicePixelRatio();
             t.platformDispatcher.clearTextScaleFactorTestValue();
@@ -109,6 +116,24 @@ void main() {
           await tap(find.byKey(const Key('pack-trash-select-all')));
           await revealAction(t, find.text('已选 27'));
           expect(find.text('已选 27'), findsOneWidget);
+          if (scenario == 'keyboard') {
+            t.view.viewInsets = const FakeViewPadding(bottom: 280);
+            await t.pumpAndSettle();
+            final field = find.byKey(const Key('pack-trash-search'));
+            await revealAction(t, field);
+            expect(
+              t.getRect(field).bottom,
+              lessThanOrEqualTo(sample.$1.height - 279),
+            );
+            final action = find.byKey(const Key('pack-trash-restore'));
+            await revealAction(t, action);
+            expect(
+              t.getRect(action).bottom,
+              lessThanOrEqualTo(sample.$1.height - 279),
+            );
+            t.view.resetViewInsets();
+            await t.pumpAndSettle();
+          }
           if (scenario != 'unknown') {
             await tap(find.byKey(const Key('pack-trash-item-trash-0')));
             await tap(find.byKey(const Key('pack-trash-next')));

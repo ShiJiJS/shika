@@ -418,6 +418,14 @@ class _PackTrashPageState extends State<PackTrashPage> {
       if (!mounted || !session.live) return;
       if (plan == null) throw const LibraryFailure('原请求尚未确认，记录已保留；未重复提交');
       session.lastPlan = plan;
+      if (command != null) {
+        // Match direct acceptance: only the original, verified members leave
+        // selection. Other choices made while the receipt was unknown remain.
+        session.selection.ids.removeAll(command.ids);
+        for (final id in command.ids) {
+          session.failures.remove(id);
+        }
+      }
       catalog = widget.repository.createMaintenanceTasks();
       final summary = await catalog.task(plan.id);
       if (!mounted || !session.live) return;

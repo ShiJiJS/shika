@@ -332,6 +332,8 @@ void main() {
         () => find.text('共 1 个图包').evaluate().isNotEmpty,
         'excluded remains',
       );
+      await reveal(find.text('已选 0'));
+      expect(find.text('已选 0'), findsOneWidget);
       await shot('restored');
       await tap(find.byKey(Key('pack-trash-row-restore-$excluded')));
       await until(
@@ -351,6 +353,7 @@ void main() {
         await t.pump(const Duration(milliseconds: 100));
       }
       await tap(find.byKey(const Key('pack-trash-refresh')));
+      await tap(find.byTooltip('清除搜索'));
       await until(
         () => find.text('图包回收站是空的').evaluate().isNotEmpty,
         'single restored',

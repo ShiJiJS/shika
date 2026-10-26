@@ -6,6 +6,33 @@ import 'package:video_viewer/features/packs/pack_trash_session.dart';
 import 'support/pack_trash_fixture.dart';
 
 void main() {
+  test(
+    'failed next-page read retains prior members, offset and selection',
+    () async {
+      final repo = TrashLibrary();
+      final view = PackTrashSession(repo);
+      addTearDown(() {
+        view.dispose();
+        repo.dispose();
+      });
+      await view.load();
+      await view.selectAll();
+      view.toggle('trash-0');
+      final ids = view.items.map((v) => v.id).toList();
+      repo.failPage = true;
+      await view.load(start: 24);
+      expect(view.offset, 0);
+      expect(view.items.map((v) => v.id), ids);
+      expect(view.selection.ids.length, 26);
+      expect(view.error, isNotEmpty);
+      expect(repo.posts, isEmpty);
+      repo.failPage = false;
+      await view.load(start: 24);
+      expect(view.offset, 24);
+      expect(view.items, hasLength(3));
+      expect(view.selection.ids.length, 26);
+    },
+  );
   test('whole filtered membership survives paging and exclusions; restore uses trash IDs', () async {
     final repo = TrashLibrary(count: 1027);
     final view = PackTrashSession(repo);
