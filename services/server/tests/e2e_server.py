@@ -249,6 +249,7 @@ def create_e2e_app():
             "bulk-selected", "bulk-review", "bulk-unknown", "bulk-receipt", "bulk-paged", "bulk-selection", "bulk-next-review",
             "defaults-video", "defaults-reader", "defaults-unknown", "defaults-reopened", "defaults-migration",
             "roots-created", "roots-disabled", "roots-conflict", "missing-empty-video", "missing-first", "missing-confirm-cancel", "missing-dark", "missing-paged", "missing-preserved", "missing-unknown", "missing-reopened", "missing-result", "missing-task-paged",
+            "management-backup", "management-backup-cancel", "management-backup-saved", "management-restore-preview", "management-restore-keyboard", "management-backup-error", "management-pending", "management-detail", "management-list", "management-paged", "management-dark", "management-historical", "management-task-backup-saved",
             "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
             "restore-selected", "restore-unknown", "restore-reopened", "restore-paged", "restore-stop-unknown", "restore-stopped",
                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",

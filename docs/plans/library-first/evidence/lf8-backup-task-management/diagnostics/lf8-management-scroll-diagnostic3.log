@@ -1,0 +1,44 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart
+00:00 +0: root page failure keeps the previous page and edited mapping
+SCROLL AxisDirection.down: 1140.0/2652.0 viewport 716.0
+SCROLL AxisDirection.down: 0.0/0.0 viewport 24.0
+SCROLL AxisDirection.down: 0.0/0.0 viewport 24.0
+SCROLL AxisDirection.down: 0.0/0.0 viewport 24.0
+SCROLL AxisDirection.down: 0.0/0.0 viewport 24.0
+SCROLL AxisDirection.down: 0.0/0.0 viewport 24.0
+SCROLL AxisDirection.down: 0.0/0.0 viewport 24.0
+SCROLL AxisDirection.down: 0.0/0.0 viewport 24.0
+恢复备份 | 媒体目录8 · 视频 | 留空表示暂不启用 | 原目录：/原媒体/较长的图包目录名称/8 | 媒体目录9 · 图包 | 留空表示暂不启用 | 原目录：/原媒体/较长的图包目录名称/9 | 媒体目录10 · 视频 | 留空表示暂不启用 | 原目录：/原媒体/较长的图包目录名称/10 | 媒体目录11 · 图包 | 留空表示暂不启用 | 原目录：/原媒体/较长的图包目录名称/11 | 媒体目录12 · 视频 | 留空表示暂不启用 | 原目录：/原媒体/较长的图包目录名称/12 | 媒体目录13 · 图包 | 留空表示暂不启用 | 原目录：/原媒体/较长的图包目录名称/13 | 媒体目录14 · 视频 | 留空表示暂不启用 | 原目录：/原媒体/较长的图包目录名称/14 | 取消 | 确认恢复
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "下一页": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      revealAction (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/support/reveal_action.dart:21:3)
+<asynchronous suspension>
+#5      main.visible (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart:189:7)
+<asynchronous suspension>
+#6      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart:256:5)
+<asynchronous suspension>
+#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/support/reveal_action.dart line 21
+The test description was:
+  root page failure keeps the previous page and edited mapping
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -1: root page failure keeps the previous page and edited mapping [E]
+  Test failed. See exception logs above.
+  The test description was: root page failure keeps the previous page and edited mapping
+  
+00:01 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: root page failure keeps the previous page and edited mapping

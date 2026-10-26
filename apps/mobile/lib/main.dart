@@ -9,6 +9,7 @@ import 'library/credentials.dart';
 import 'library/server_repository.dart';
 import 'library/file_command_store.dart';
 import 'library/backup_work_store.dart';
+import 'library/backup_file_picker.dart';
 import 'ui/home.dart';
 import 'ui/paper.dart';
 import 'ui/preferences.dart';
@@ -73,12 +74,14 @@ class VideoViewerApp extends StatefulWidget {
     required this.repository,
     this.initialError,
     this.backupFiles,
+    this.backupArchiveFiles = const NativeBackupArchiveFiles(),
     this.preferences,
     this.initializeRepository = false,
   });
   final LibraryRepository repository;
   final String? initialError;
   final BackupFiles? backupFiles;
+  final BackupArchiveFiles backupArchiveFiles;
   final UiPreferences? preferences;
   final bool initializeRepository;
   @override
@@ -120,6 +123,7 @@ class _VideoViewerAppState extends State<VideoViewerApp> {
         repository: widget.repository,
         initialError: widget.initialError,
         backupFiles: widget.backupFiles,
+        backupArchiveFiles: widget.backupArchiveFiles,
         preferences: preferences,
         initializeRepository: widget.initializeRepository,
       ),

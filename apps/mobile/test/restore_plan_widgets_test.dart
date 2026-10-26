@@ -171,8 +171,10 @@ void main() {
         await tap(find.byTooltip('查询原结果'));
         expect(find.textContaining('已停止 25'), findsOneWidget);
         expect(find.byKey(const Key('restore-plan-stop')), findsNothing);
+        await revealAction(t, find.byKey(const Key('task-member-member-2')));
         expect(find.text('已停止，未执行恢复'), findsWidgets);
         await tap(find.byKey(const Key('task-items-next')));
+        await revealAction(t, find.byKey(const Key('task-member-member-26')));
         expect(find.byKey(const Key('task-member-member-26')), findsOneWidget);
         expect(await repo.createPackRestorePlans().pending(), isEmpty);
         expect(t.takeException(), isNull);

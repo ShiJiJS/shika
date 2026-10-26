@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../library/models.dart';
 import '../library/management_archives.dart';
+import '../library/backup_file_picker.dart';
 import '../features/settings/archive_backup_page.dart';
 import '../app/app_shell.dart';
 import '../app/media_workspace.dart';
@@ -15,6 +16,7 @@ import '../features/library/library_query_controller.dart';
 import '../features/preview/video_preview_route.dart';
 import '../features/packs/pack_trash_page.dart';
 import '../features/settings/maintenance_tasks_page.dart';
+import 'paper_management.dart';
 import '../features/settings/default_settings_sheet.dart';
 import '../features/settings/media_root_sheet.dart';
 import '../features/settings/missing_media_page.dart';
@@ -72,12 +74,14 @@ class LibraryHome extends StatefulWidget {
     required this.repository,
     this.initialError,
     this.backupFiles,
+    this.backupArchiveFiles = const NativeBackupArchiveFiles(),
     required this.preferences,
     this.initializeRepository = false,
   });
   final LibraryRepository repository;
   final String? initialError;
   final BackupFiles? backupFiles;
+  final BackupArchiveFiles backupArchiveFiles;
   final UiPreferences preferences;
   final bool initializeRepository;
   @override
@@ -989,7 +993,8 @@ class _LibraryHomeState extends State<LibraryHome> {
       if (data.connected && (busy || page == 'roots'))
         ValueListenableBuilder<String?>(
           valueListenable: repo.scanStatus,
-          builder: (context, message, _) => message == null || message == error
+          builder: (context, message, _) =>
+              message == null || message == error || message == error
               ? const SizedBox()
               : Padding(
                   padding: const EdgeInsets.symmetric(
@@ -1063,7 +1068,12 @@ class _LibraryHomeState extends State<LibraryHome> {
       header: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!compactTrashKeyboard)
+          if (page == 'backup' || page == 'tasks')
+            PaperManagementHeader(
+              title: title,
+              onClose: _busy ? null : () => go('settings'),
+            )
+          else if (!compactTrashKeyboard)
             SizedBox(
               key: const Key('management-header'),
               height: MediaLayout.headerExtent(context),
@@ -1201,7 +1211,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                 ),
               ),
             ),
-          managementStatus(),
+          managementStatus(separator: page != 'backup' && page != 'tasks'),
         ],
       ),
       content: Stack(
@@ -1225,6 +1235,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             'tasks' => MaintenanceTasksPage(
               repository: repo,
               saveBackup: files.save,
+              archiveFiles: widget.backupArchiveFiles,
               onOpenBackup: () => go('backup'),
             ),
             'connection' => connection(),
@@ -2898,69 +2909,91 @@ class _LibraryHomeState extends State<LibraryHome> {
         key: ObjectKey(repo.connectionIdentity),
         repository: repo,
         archives: archives,
+        files: widget.backupArchiveFiles,
         onOpenTasks: () => go('tasks'),
       );
     }
     return legacyBackup();
   }
 
-  Widget legacyBackup() => ListView(
-    padding: const EdgeInsets.all(20),
-    children: [
-      Text('保存你的整理成果', style: Paper.of(context).title.copyWith(fontSize: 21)),
-      note('备份标签、视频关联、媒体目录映射、回收站索引和播放轮次，不包含原视频及访问口令。'),
-      ValueListenableBuilder<String?>(
-        valueListenable: repo.backupStatus,
-        builder: (context, message, _) => message == null
-            ? const SizedBox()
-            : Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text(
-                  message,
-                  key: const Key('backup-status'),
-                  style: const TextStyle(fontSize: 12),
+  Widget legacyBackup() {
+    final p = Paper.of(context);
+    return ListView(
+      key: const PageStorageKey('legacy-backup-content'),
+      padding: const EdgeInsets.fromLTRB(20, 36, 20, 22),
+      children: [
+        const Text('保存你的整理成果', style: TextStyle(fontSize: 14, height: 1.6)),
+        const SizedBox(height: 12),
+        Text(
+          '备份视频标签与关联、目录映射、回收站索引和播放轮次。不包含媒体文件与个人口令。',
+          style: TextStyle(fontSize: 13, height: 1.7, color: p.catalogMeta),
+        ),
+        ValueListenableBuilder<String?>(
+          valueListenable: repo.backupStatus,
+          builder: (context, message, _) => message == null || message == error
+              ? const SizedBox()
+              : Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                    message,
+                    key: const Key('backup-status'),
+                    style: TextStyle(
+                      fontSize: 13,
+                      height: 1.7,
+                      color: p.catalogMeta,
+                    ),
+                  ),
                 ),
-              ),
-      ),
-      const SizedBox(height: 14),
-      FilledButton(
-        onPressed: busy
-            ? null
-            : () async {
-                bool saved = false;
-                if (await perform(
-                      () async => saved = await files.save(
-                        await repo.exportBackupFile(),
-                      ),
-                    ) &&
-                    saved) {
-                  notice('已导出管理数据备份');
-                }
-              },
-        child: const Text('导出备份'),
-      ),
-      const SizedBox(height: 12),
-      OutlinedButton(
-        onPressed: busy
-            ? null
-            : () async {
-                String? text;
-                if (await perform(() async {
-                      text = await files.open();
-                      if (text != null) await repo.inspectBackupFile(text!);
-                    }) &&
-                    text != null) {
-                  await restoreForm(text!);
-                }
-              },
-        child: const Text('选择备份文件'),
-      ),
-      const SizedBox(height: 18),
-      note('完整恢复会替换现有管理数据。已永久删除的视频不会从备份中恢复，也不会回滚磁盘上的文件移动。恢复前会保留当前数据快照。'),
-    ],
-  );
-  Future<void> restoreForm(String text) async {
-    final preview = await repo.inspectBackupFile(text);
+        ),
+        const SizedBox(height: 20),
+        PaperActionRow(
+          key: const Key('backup-export'),
+          title: '导出备份',
+          trailing: const Icon(Icons.keyboard_arrow_down, size: 20),
+          onTap: busy
+              ? null
+              : () async {
+                  bool saved = false;
+                  if (await perform(
+                    () async =>
+                        saved = await files.save(await repo.exportBackupFile()),
+                  )) {
+                    final result = saved ? '备份已保存到所选位置' : '保存已取消，可在操作任务下载原备份';
+                    repo.backupStatus.value = result;
+                    notice(result);
+                  }
+                },
+        ),
+        PaperActionRow(
+          key: const Key('backup-pick'),
+          title: '选择备份文件',
+          onTap: busy
+              ? null
+              : () async {
+                  String? text;
+                  BackupPreview? preview;
+                  if (await perform(() async {
+                        text = await files.open();
+                        if (text != null) {
+                          preview = await repo.inspectBackupFile(text!);
+                        }
+                      }) &&
+                      text != null &&
+                      preview != null) {
+                    await restoreForm(text!, preview!);
+                  }
+                },
+        ),
+        const SizedBox(height: 24),
+        Text(
+          '先校验，再核对目录映射。恢复前保留当前管理数据快照。已永久删除的源文件不会从备份恢复，也不会回滚磁盘上的文件移动。',
+          style: TextStyle(fontSize: 13, height: 1.8, color: p.catalogMeta),
+        ),
+      ],
+    );
+  }
+
+  Future<void> restoreForm(String text, BackupPreview preview) async {
     if (!mounted) return;
     final mappings = {
       for (final r in preview.snapshot.roots)
@@ -2970,6 +3003,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     };
     bool checked = false, restoring = false;
     String formError = '';
+    final errorAnchor = GlobalKey();
     await sheet<void>(
       StatefulBuilder(
         builder: (context, local) => PopScope(
@@ -2977,29 +3011,121 @@ class _LibraryHomeState extends State<LibraryHome> {
           child: SheetFrame(
             title: '恢复备份',
             closeEnabled: !restoring,
+            footer: Wrap(
+              alignment: WrapAlignment.end,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                TextButton(
+                  key: const Key('restore-cancel'),
+                  onPressed: restoring ? null : () => Navigator.pop(context),
+                  child: Text(repo.backupRestorePending ? '关闭' : '取消'),
+                ),
+                FilledButton(
+                  key: const Key('restore-submit'),
+                  onPressed:
+                      restoring || (!checked && !repo.backupRestorePending)
+                      ? null
+                      : () async {
+                          if (!repo.backupRestorePending && !checked) {
+                            local(() => formError = '请确认替换现有管理数据');
+                            return;
+                          }
+                          local(() {
+                            restoring = true;
+                            formError = '';
+                          });
+                          final completed = await perform(() async {
+                            if (repo.backupRestorePending) {
+                              await repo.reconcileBackupRestore();
+                            } else {
+                              await repo.restoreBackup(text, mappings);
+                            }
+                          }, allowMaintenance: true);
+                          if (!context.mounted) return;
+                          if (completed) {
+                            Navigator.pop(context);
+                            notice('管理数据已恢复');
+                          } else {
+                            local(() => formError = error);
+                            revealFormError(errorAnchor);
+                          }
+                          if (context.mounted) local(() => restoring = false);
+                        },
+                  child: Text(
+                    restoring
+                        ? '正在恢复…'
+                        : repo.backupRestorePending
+                        ? '查询恢复结果'
+                        : '确认恢复',
+                  ),
+                ),
+              ],
+            ),
             children: [
-              note('校验通过。请核对媒体目录映射，恢复前将保留当前数据快照。'),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Text(
+                  '校验通过。请核对媒体目录映射，恢复前将保留当前数据快照。',
+                  style: TextStyle(
+                    fontSize: 13,
+                    height: 1.7,
+                    color: Paper.of(context).catalogMeta,
+                  ),
+                ),
+              ),
               if (preview.counts.isNotEmpty)
-                note(
-                  '视频 ${preview.counts['videos'] ?? 0} · 标签 ${preview.counts['tags'] ?? 0} · 回收站 ${preview.counts['trash_items'] ?? 0}',
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: Paper.of(context).soft,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    '视频 ${preview.counts['videos'] ?? 0} · 标签 ${preview.counts['tags'] ?? 0} · 回收站 ${preview.counts['trash_items'] ?? 0}',
+                    style: const TextStyle(fontSize: 13, height: 1.7),
+                  ),
                 ),
               for (final r in preview.snapshot.roots)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16),
-                  child: TextFormField(
-                    key: Key('mapping-${r.id}'),
-                    initialValue: mappings[r.id],
-                    enabled: !restoring && !repo.backupRestorePending,
-                    decoration: InputDecoration(
-                      labelText: r.name,
-                      helperText: '原目录：${r.path}',
-                      hintText: preview.importId == null ? null : '留空表示暂不映射',
-                    ),
-                    onChanged: (value) => mappings[r.id] = value,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      PaperField(
+                        label:
+                            '${r.name} · ${r.kind == MediaKind.pack ? '图包' : '视频'}',
+                        child: TextFormField(
+                          key: Key('mapping-${r.id}'),
+                          initialValue: mappings[r.id],
+                          enabled: !restoring && !repo.backupRestorePending,
+                          maxLines: null,
+                          scrollPhysics: const NeverScrollableScrollPhysics(),
+                          style: const TextStyle(fontSize: 16),
+                          decoration: InputDecoration(
+                            hintText: preview.importId == null
+                                ? null
+                                : '留空表示暂不映射',
+                          ),
+                          onChanged: (value) => mappings[r.id] = value,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        '原目录：${r.path}',
+                        style: TextStyle(
+                          fontSize: 12,
+                          height: 1.7,
+                          color: Paper.of(context).catalogMeta,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               CheckboxListTile(
                 key: const Key('restore-confirm'),
+                controlAffinity: ListTileControlAffinity.leading,
                 contentPadding: EdgeInsets.zero,
                 value: checked,
                 onChanged: restoring || repo.backupRestorePending
@@ -3007,52 +3133,29 @@ class _LibraryHomeState extends State<LibraryHome> {
                     : (v) => local(() => checked = v!),
                 title: const Text(
                   '我知道恢复会替换现有管理数据',
-                  style: TextStyle(fontSize: 13),
+                  style: TextStyle(fontSize: 13, height: 1.8),
                 ),
               ),
-              if (formError.isNotEmpty) note(formError),
-              FilledButton(
-                key: const Key('restore-submit'),
-                onPressed: restoring
-                    ? null
-                    : () async {
-                        if (!repo.backupRestorePending && !checked) {
-                          local(() => formError = '请确认替换现有管理数据');
-                          return;
-                        }
-                        local(() {
-                          restoring = true;
-                          formError = '';
-                        });
-                        final completed = await perform(() async {
-                          if (repo.backupRestorePending) {
-                            await repo.reconcileBackupRestore();
-                          } else {
-                            await repo.restoreBackup(text, mappings);
-                          }
-                        }, allowMaintenance: true);
-                        if (!context.mounted) return;
-                        if (completed) {
-                          Navigator.pop(context);
-                          notice('管理数据已恢复');
-                        } else {
-                          local(() => formError = error);
-                        }
-                        if (context.mounted) local(() => restoring = false);
-                      },
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Text(
-                  restoring
-                      ? '正在恢复…'
-                      : repo.backupRestorePending
-                      ? '查询恢复结果'
-                      : '恢复管理数据',
+                  '恢复不会回滚磁盘文件删除，也不修改连接口令、本机暗黑模式和相邻视频准备。',
+                  style: TextStyle(
+                    fontSize: 13,
+                    height: 1.7,
+                    color: Paper.of(context).catalogMeta,
+                  ),
                 ),
               ),
-              TextButton(
-                key: const Key('restore-cancel'),
-                onPressed: restoring ? null : () => Navigator.pop(context),
-                child: Text(repo.backupRestorePending ? '关闭' : '取消'),
-              ),
+              if (formError.isNotEmpty)
+                Text(
+                  formError,
+                  key: errorAnchor,
+                  style: TextStyle(
+                    color: Paper.of(context).danger,
+                    height: 1.7,
+                  ),
+                ),
             ],
           ),
         ),

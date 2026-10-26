@@ -1,0 +1,23 @@
+Repository: /Users/jiangxinyi/Documents/Project/video-viewer
+Production/unit/main-native source: e10bbbc6f31eaa698cd45737f103aab2d3e9f90b
+Archive-native waiting fix / final analyze / format: 30bc9d72a7c1a7da8baea149ec2b3361e43e40e1
+
+From apps/mobile, three independent completed runs:
+bash ../../scripts/dev.sh flutter test test/archive_backup_widget_test.dart test/backup_recovery_widget_test.dart test/maintenance_tasks_widget_test.dart test/maintenance_task_session_test.dart test/backup_management_layout_test.dart test/maintenance_management_layout_test.dart test/restore_plan_widgets_test.dart --reporter expanded
+
+bash ../../scripts/dev.sh flutter analyze
+bash ../../scripts/dev.sh dart format --output=none --set-exit-if-changed lib/ui/paper_management.dart lib/ui/home.dart lib/main.dart lib/features/settings/archive_backup_page.dart lib/features/settings/maintenance_tasks_page.dart lib/features/settings/maintenance_task_detail.dart test/archive_backup_widget_test.dart test/backup_management_layout_test.dart test/maintenance_management_layout_test.dart test/backup_recovery_widget_test.dart test/maintenance_tasks_widget_test.dart test/restore_plan_widgets_test.dart integration_test/server_management_pages_test.dart integration_test/server_archive_management_test.dart
+
+From repository root:
+.dev/venv/bin/ruff check scripts/run-client-connection-test.py scripts/run-archive-management-test.py services/server/tests/e2e_server.py
+.dev/venv/bin/ruff check docs/plans/library-first/evidence/lf8-backup-task-management/verify.py
+
+Native profiles, sequential on owned emulator-5554; exact output folders retained in archived source/log metadata:
+bash scripts/dev.sh python3 scripts/run-client-connection-test.py --management-pages --workspace-viewport 390 --workspace-text-scale 1 --evidence-dir /tmp/lf8-management-final-normal
+bash scripts/dev.sh python3 scripts/run-client-connection-test.py --management-pages --workspace-viewport 360 --workspace-text-scale 2 --evidence-dir /tmp/lf8-management-final-large
+bash scripts/dev.sh python3 scripts/run-client-connection-test.py --management-pages --workspace-viewport 844 --workspace-text-scale 1 --evidence-dir /tmp/lf8-management-final-landscape
+bash scripts/dev.sh python3 scripts/run-archive-management-test.py --viewport 390 --scale 1 --output /tmp/lf8-archive-management-final2-normal
+bash scripts/dev.sh python3 scripts/run-archive-management-test.py --viewport 360 --scale 2 --output /tmp/lf8-archive-management-final2-large
+bash scripts/dev.sh python3 scripts/run-archive-management-test.py --viewport 844 --scale 1 --output /tmp/lf8-archive-management-final2-landscape
+
+8761 is an owned disposable public fixture reset by its runner. 8762 is an already-running owned opt-in public fixture; its runner does not restart/reset services. Neither runner touches production 8760/NAS/SDK or publishes an APK. Private injected file boundaries do not prove Android system document-provider behavior.

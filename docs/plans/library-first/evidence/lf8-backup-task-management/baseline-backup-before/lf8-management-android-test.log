@@ -1,0 +1,45 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_management_pages_test.dart
+Running Gradle task 'assembleDebug'...                             14.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          583ms
+00:00 +0: LF8 backup management, cancelled preview, paged tasks and original results
+MANAGEMENT_METRICS:{"state":"management-backup","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+MANAGEMENT_METRICS:{"state":"management-backup-cancel","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+MANAGEMENT_METRICS:{"state":"management-backup-saved","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+MANAGEMENT_METRICS:{"state":"management-restore-preview","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+MANAGEMENT_METRICS:{"state":"management-restore-keyboard","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":303.0,"dark":false}
+MANAGEMENT_METRICS:{"state":"management-backup-error","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _KeyWidgetFinder:<Found 0 widgets with key [<'nav-settings'>]: []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      revealAction (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/support/reveal_action.dart:21:3)
+<asynchronous suspension>
+#5      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_management_pages_test.dart:105:9)
+<asynchronous suspension>
+#6      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_management_pages_test.dart:225:7)
+<asynchronous suspension>
+#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/support/reveal_action.dart line 21
+The test description was:
+  LF8 backup management, cancelled preview, paged tasks and original results
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:44 +0 -1: LF8 backup management, cancelled preview, paged tasks and original results [E]
+  Test failed. See exception logs above.
+  The test description was: LF8 backup management, cancelled preview, paged tasks and original results
+  
+01:44 +0 -1: (tearDownAll)
+01:44 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_management_pages_test.dart: LF8 backup management, cancelled preview, paged tasks and original results
