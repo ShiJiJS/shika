@@ -113,6 +113,7 @@ void main() {
         'preview-quick-delete',
         'preview-queue',
         'preview-end-return',
+        'inline-play',
       ]) {
         final f = find.byKey(Key(name));
         if (f.evaluate().length == 1 &&
@@ -255,6 +256,13 @@ void main() {
         .isEmpty) {
       await t.tap(find.byKey(const Key('video-gesture-surface')).last);
     }
+    await tap(find.byKey(const Key('preview-scope')));
+    await tap(find.byKey(const Key('queue-order-sequential')));
+    await until(
+      () => repo.snapshot.order == PlayOrder.sequential,
+      'explicit source order for controls comparison',
+    );
+    await tap(find.byTooltip('关闭面板'));
     final session = t.widget<MovieStage>(find.byType(MovieStage)).session!;
     final controller = session.debugPlayers.single;
     await tap(
@@ -289,7 +297,14 @@ void main() {
       () => controller.value.playbackSpeed == 1.5,
       'native selected speed',
     );
-    await tap(find.byKey(const Key('inline-play')));
+    await tap(
+      find
+          .descendant(
+            of: find.byKey(const Key('playback-controls')),
+            matching: find.byType(TextButton),
+          )
+          .first,
+    );
     await until(() => controller.value.isPlaying, 'resume before hold');
     final surface = t.getRect(
       find.byKey(const Key('video-gesture-surface')).last,

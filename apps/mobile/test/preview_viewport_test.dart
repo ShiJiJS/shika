@@ -56,6 +56,30 @@ void main() {
       await frames(t);
       expect(find.byType(MovieStage), findsOneWidget);
       expect(t.takeException(), isNull);
+      final controls = find.byKey(const Key('playback-controls'));
+      final play = find
+          .descendant(of: controls, matching: find.byType(TextButton))
+          .first;
+      await t.tap(play);
+      await frames(t);
+      expect(
+        t
+            .widget<MovieStage>(find.byType(MovieStage))
+            .session!
+            .debugPlayers
+            .single
+            .value
+            .isPlaying,
+        isFalse,
+      );
+      final center = find.byKey(const Key('inline-play'));
+      if (center.evaluate().isNotEmpty) {
+        expect(center.hitTestable(), findsOneWidget);
+        expect(t.getRect(center).overlaps(t.getRect(controls)), isFalse);
+      }
+      expect(play.hitTestable(), findsOneWidget);
+      await t.tap(play);
+      await frames(t);
       final identity = repo.playbackIdentity;
       final current = repo.current!.id;
       await t.tap(find.byKey(const Key('preview-quick')));

@@ -1310,8 +1310,17 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                     ),
                   ),
                 ),
-                if (widget.inlineControls && !_playRequested)
+                if (widget.inlineControls &&
+                    !_playRequested &&
+                    (!_controls ||
+                        constraints.maxHeight - inlineLayout.height - 12 >= 60))
                   Positioned.fill(
+                    bottom:
+                        _controls &&
+                            constraints.maxHeight <
+                                2 * (inlineLayout.height + 42)
+                        ? inlineLayout.height + 12
+                        : 0,
                     child: Center(
                       child: IconButton(
                         key: const Key('inline-play'),
