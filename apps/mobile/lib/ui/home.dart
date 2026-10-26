@@ -993,7 +993,8 @@ class _LibraryHomeState extends State<LibraryHome> {
       if (data.connected && (busy || page == 'roots'))
         ValueListenableBuilder<String?>(
           valueListenable: repo.scanStatus,
-          builder: (context, message, _) => message == null || message == error
+          builder: (context, message, _) =>
+              message == null || message == error || message == error
               ? const SizedBox()
               : Padding(
                   padding: const EdgeInsets.symmetric(
@@ -2929,7 +2930,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         ),
         ValueListenableBuilder<String?>(
           valueListenable: repo.backupStatus,
-          builder: (context, message, _) => message == null
+          builder: (context, message, _) => message == null || message == error
               ? const SizedBox()
               : Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
@@ -2957,7 +2958,9 @@ class _LibraryHomeState extends State<LibraryHome> {
                     () async =>
                         saved = await files.save(await repo.exportBackupFile()),
                   )) {
-                    notice(saved ? '已导出管理数据备份' : '保存已取消，可在操作任务下载原备份');
+                    final result = saved ? '备份已保存到所选位置' : '保存已取消，可在操作任务下载原备份';
+                    repo.backupStatus.value = result;
+                    notice(result);
                   }
                 },
         ),
@@ -3122,6 +3125,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                 ),
               CheckboxListTile(
                 key: const Key('restore-confirm'),
+                controlAffinity: ListTileControlAffinity.leading,
                 contentPadding: EdgeInsets.zero,
                 value: checked,
                 onChanged: restoring || repo.backupRestorePending

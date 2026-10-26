@@ -25,10 +25,11 @@ class _Repository extends DemoLibraryRepository {
 
 class _Files implements BackupFiles {
   String? selected;
+  bool saved = false;
   @override
   Future<String?> open() async => selected;
   @override
-  Future<bool> save(String text) async => false;
+  Future<bool> save(String text) async => saved;
 }
 
 void main() {
@@ -68,6 +69,13 @@ void main() {
 
         await tap(find.byKey(const Key('nav-settings')));
         await tap(find.text('备份与恢复'));
+        await tap(find.byKey(const Key('backup-export')));
+        expect(t.widget<Text>(find.byKey(const Key('backup-status'))).data,
+            '保存已取消，可在操作任务下载原备份');
+        files.saved = true;
+        await tap(find.byKey(const Key('backup-export')));
+        expect(t.widget<Text>(find.byKey(const Key('backup-status'))).data,
+            '备份已保存到所选位置');
         await tap(find.byKey(const Key('backup-pick')));
         expect(repo.inspections, 1);
         expect(

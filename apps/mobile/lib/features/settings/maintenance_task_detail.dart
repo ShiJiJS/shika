@@ -454,6 +454,13 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
                   for (final flag in [true, false])
                     ChoiceChip(
                       label: Text(flag ? '未完成' : '全部'),
+                      labelStyle: TextStyle(fontSize: 13, color: p.ink),
+                      selectedColor: p.soft,
+                      backgroundColor: p.background,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      side: BorderSide(color: p.line),
                       selected: unfinished == flag,
                       onSelected: busy || acting || !current
                           ? null
