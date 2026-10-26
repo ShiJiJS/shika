@@ -2,7 +2,7 @@
 
 对应 #24／#33，补 LF0 已声明但尚未实测的隔离边界。原型保留在 `design/reference/`，标记与冻结树 `1cbf605af8f03fa067a4ce8e914bb809e3a487ca` 保持不变；本段只删除一次性源码副本中的参考目录。
 
-`scripts/check-reference-isolation.py --output .dev/<新目录>` 导出指定提交的全部已跟踪文件，在导出副本中移除 `design/reference/`。副本不含 Git 元数据、未跟踪凭据或生成配置，并通过 Git discovery 上界防止借用父目录的原仓库。只共享本机 SDK、Gradle 与包缓存，App 的 package root 必须实际指向副本；使用离线、锁文件约束解析依赖。
+`scripts/check-reference-isolation.py --output .dev/<新目录>` 导出指定提交的全部已跟踪文件，在导出副本中移除 `design/reference/`。副本不含 Git 元数据、未跟踪凭据或生成配置，并通过 Git discovery 上界防止借用父目录的原仓库。只共享本机 SDK、Gradle 与包缓存，App 的 package root 必须实际指向副本；初次使用离线、锁文件约束解析依赖，构建保留 Flutter 标准插件注册过程。原型已移除的源码也支持运行，参考元数据记为 null／0，不新增运行时依赖。
 
 在该副本里执行 Flutter analyze、完整客户端测试、ARM64 debug 与 release APK 构建，检查 APK 的 Flutter 资产列表没有参考目录；在副本的 server 构建上下文中生成 Linux 测试镜像，执行 Ruff 与完整 pytest。服务格式检查单独记结果，原有格式问题不伪装成原型依赖，也不为通过本段而批量重排生产服务代码。
 
@@ -13,3 +13,5 @@
 ## 当前状态
 
 演练脚本已准备，完整运行与结果核验待完成。
+
+首轮在 debug 后复用 `--no-pub` 构建 release，当前 Flutter 因跳过模式专用注册而残留 integration_test 插件，release 失败；同一副本改用标准 release 命令已通过。修正演练脚本后重新完整执行，保留首轮失败，不删除测试依赖或修改 SDK。release 额外检查 Flutter 引擎为 ARM64、DEX 无 integration_test 插件路径；各 JNI 依赖 ABI 另行列明。

@@ -72,7 +72,7 @@ def main():
         )
     original = ROOT / REFERENCE
     original_hashes = tree_hashes(original)
-    if not (original / "REFERENCE_ONLY.json").exists():
+    if original.exists() and not (original / "REFERENCE_ONLY.json").exists():
         parser.error(
             "The original reference marker must exist for this removal exercise"
         )
@@ -81,6 +81,9 @@ def main():
     workspace.mkdir()
     logs = output / "checks"
     logs.mkdir()
+    (output / "original-reference-files.json").write_text(
+        json.dumps(original_hashes, ensure_ascii=False, indent=2) + "\n"
+    )
     env = os.environ.copy()
     env["VV_DEV_HOME"] = str(Path(env.get("VV_DEV_HOME", private)).resolve())
     # The export lives below the real checkout; prevent accidental parent Git
@@ -88,15 +91,14 @@ def main():
     env["GIT_CEILING_DIRECTORIES"] = str(output)
     env.pop("LF8_ASSIGNMENT_SHOTS", None)
     env.pop("LF8_TAG_SHOTS", None)
+    prototype_entry = subprocess.check_output(
+        ["git", "ls-tree", commit, REFERENCE + "/library-first"], cwd=ROOT, text=True
+    ).split()
     result = {
         "source_commit": commit,
         "script_sha256": sha(Path(__file__)),
         "started_at": datetime.now(timezone.utc).isoformat(),
-        "prototype_tree": subprocess.check_output(
-            ["git", "rev-parse", commit + ":" + REFERENCE + "/library-first"],
-            cwd=ROOT,
-            text=True,
-        ).strip(),
+        "prototype_tree": prototype_entry[2] if prototype_entry else None,
         "steps": [],
         "complete": False,
     }
@@ -155,13 +157,14 @@ def main():
             if archive.wait() or extracted.returncode:
                 raise RuntimeError("Clean source export failed")
         copied_reference = workspace / REFERENCE
-        marker = json.loads((copied_reference / "REFERENCE_ONLY.json").read_text())
-        if marker.get("production_dependency") is not False:
-            raise RuntimeError(
-                "Exported reference is not marked independently removable"
-            )
         result["removed_reference_files"] = len(tree_hashes(copied_reference))
-        shutil.rmtree(copied_reference)
+        if copied_reference.exists():
+            marker = json.loads((copied_reference / "REFERENCE_ONLY.json").read_text())
+            if marker.get("production_dependency") is not False:
+                raise RuntimeError(
+                    "Exported reference is not marked independently removable"
+                )
+            shutil.rmtree(copied_reference)
         assert not copied_reference.exists()
         assert (
             subprocess.run(
@@ -188,6 +191,7 @@ def main():
         result["retained_tracked_files"] = len(manifest)
         mobile = workspace / "apps/mobile"
         dev = ["bash", str(workspace / "scripts/dev.sh")]
+        run("flutter-version", [*dev, "flutter", "--version", "--machine"], mobile)
         ready = run(
             "flutter-pub-get",
             [*dev, "flutter", "pub", "get", "--offline", "--enforce-lockfile"],
@@ -201,6 +205,7 @@ def main():
                 unquote(urlparse(urljoin(config.as_uri(), package["rootUri"])).path)
             ).resolve()
             assert package_root == mobile.resolve(), package_root
+            shutil.copy2(config, output / "package-config.json")
             result["app_package_root_is_export"] = True
             run("flutter-analyze", [*dev, "flutter", "analyze", "--no-pub"], mobile)
             run("flutter-test", [*dev, "flutter", "test", "--no-pub", "test"], mobile)
@@ -214,7 +219,8 @@ def main():
                         "build",
                         "apk",
                         "--" + mode,
-                        "--no-pub",
+                        # Flutter must regenerate the mode-specific plugin
+                        # registrant when switching from debug to release.
                         "--target-platform",
                         "android-arm64",
                     ],
@@ -234,6 +240,28 @@ def main():
                         for n in names
                         if n.startswith("assets/flutter_assets/")
                     }
+                    native_abis = sorted(
+                        {
+                            n.split("/")[1]
+                            for n in names
+                            if n.startswith("lib/") and n.endswith(".so")
+                        }
+                    )
+                    flutter_abis = sorted(
+                        {
+                            n.split("/")[1]
+                            for n in names
+                            if n.startswith("lib/") and n.endswith("/libflutter.so")
+                        }
+                    )
+                    test_plugin = any(
+                        b"dev/flutter/plugins/integration_test" in bundle.read(n)
+                        for n in names
+                        if n.startswith("classes") and n.endswith(".dex")
+                    )
+                    assert flutter_abis == ["arm64-v8a"]
+                    if mode == "release":
+                        assert not test_plugin
                 (output / (mode + "-apk-assets.json")).write_text(
                     json.dumps(assets, indent=2) + "\n"
                 )
@@ -242,6 +270,9 @@ def main():
                     "bytes": apk.stat().st_size,
                     "flutter_assets": len(assets),
                     "design_paths": [],
+                    "native_abis": native_abis,
+                    "flutter_engine_abis": flutter_abis,
+                    "integration_test_plugin_dex_path": test_plugin,
                 }
         image = "video-viewer-reference-check:" + commit[:12]
         if run(
@@ -288,6 +319,7 @@ def main():
         )
         names = {step["name"] for step in result["steps"] if step["status"] == "passed"}
         expected = {
+            "flutter-version",
             "flutter-pub-get",
             "flutter-analyze",
             "flutter-test",
@@ -297,7 +329,9 @@ def main():
             "server-ruff",
             "server-pytest",
         }
-        result["complete"] = expected.issubset(names)
+        result["complete"] = expected.issubset(names) and all(
+            step["status"] == "passed" for step in result["steps"] if step["required"]
+        )
         result["finished_at"] = datetime.now(timezone.utc).isoformat()
         save()
         return 0 if result["complete"] else 1
