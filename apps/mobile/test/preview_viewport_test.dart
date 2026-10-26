@@ -102,7 +102,14 @@ void main() {
           .first;
       expect(t.widget<TextButton>(coveredPlay).onPressed, isNull);
       expect(
-        t.widget<PopupMenuButton<double>>(find.byTooltip('播放速度')).enabled,
+        t
+            .widget<PopupMenuButton<double>>(
+              find.descendant(
+                of: find.byKey(const Key('playback-controls')),
+                matching: find.byType(PopupMenuButton<double>),
+              ),
+            )
+            .enabled,
         isFalse,
       );
       expect(t.takeException(), isNull);
