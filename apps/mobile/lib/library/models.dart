@@ -54,6 +54,7 @@ class ServiceCapabilities {
   final Set<String> values;
   bool get typedRoots => values.contains('typed_roots');
   bool get packPresentation => values.contains('pack_presentation');
+  bool get videoNameOrder => values.contains('video_name_order');
   bool get mediaCatalogCounts => values.contains('media_catalog_counts');
   bool get packTags => values.contains('pack_tags');
   bool get imagePacks => values.contains('image_packs');

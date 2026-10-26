@@ -11,9 +11,9 @@
 | NAV-01 | 已有阶段证据 / 未收口 | [LF4设计与阶段记录](LF4.md) | 合并当前分支后复跑完整来源/筛选/冷启组合，并记录实际系统返回路径。 |
 | NAV-02 | 已有阶段证据 / 未收口 | [LF4设计与阶段记录](LF4.md) | 合并当前分支后复跑完整来源/筛选/冷启组合，并记录实际系统返回路径。 |
 | NAV-03 | 已有阶段证据 / 未收口 | [LF4设计与阶段记录](LF4.md) | 合并当前分支后复跑完整来源/筛选/冷启组合，并记录实际系统返回路径。 |
-| LIB-01 | 新增分类总数证据 / 未收口 | [LF4阶段记录](LF4.md)、[权威总数](evidence/lf8-catalog-counts/README.md) | 分类总数、筛选分离和真实零已补证；文件名/时长、视频中文排序与长列表最终组合继续。 |
+| LIB-01 | 新增视频中文顺序证据 / 未收口 | [LF4阶段记录](LF4.md)、[权威总数](evidence/lf8-catalog-counts/README.md)、[中文顺序](evidence/lf8-video-name-order/README.md) | 分类总数及视频列表/锚点/全选/固定范围的中文顺序已补证；文件名/时长显示、完整最近和长列表最终来源/失败组合继续。 |
 | LIB-02 | 新增卡片/网格证据 / 未收口 | [LF4阶段记录](LF4.md)、[续读](evidence/lf8-pack-continuation/README.md)、[总数](evidence/lf8-catalog-counts/README.md)、[呈现/排序](evidence/lf8-pack-presentation/README.md)、[卡片/网格](evidence/lf8-card-layout/README.md) | 标题/作者、完整范围中文排序、共享标签12/1.6与4dp间距及短横屏四列已补证；长列表完整来源/失败组合继续。 |
-| LIB-03 | 已有阶段证据 / 未收口 | [LF4阶段记录](LF4.md)、[摘要独立于分页](LF8-PACK-CONTINUATION.md) | 超单页续读、晚到摘要及28包标题排序/锚点/全选/固定范围一致已补证；完整来源/跨页失败组合继续。 |
+| LIB-03 | 新增视频跨页顺序证据 / 未收口 | [LF4阶段记录](LF4.md)、[摘要独立于分页](LF8-PACK-CONTINUATION.md)、[视频排序约定](LF8-VIDEO-NAME-ORDER.md) | 图包28项和视频27项分别补完整排序/锚点/全选/固定范围一致，新增/改名后不重排；完整来源/跨页失败组合继续。 |
 | TAG-01 | 已有阶段证据 / 未收口 | [LF1](LF1.md)、[LF4](LF4.md) | 两套真实标签已有阶段证据；名称排序、跨页/编辑/失败和完整视觉仍需最终同版复核。 |
 | TAG-02 | 已有阶段证据 / 未收口 | [LF1](LF1.md)、[LF4](LF4.md) | 两套真实标签已有阶段证据；名称排序、跨页/编辑/失败和完整视觉仍需最终同版复核。 |
 | PRE-01 | 已有阶段证据 / 未收口 | [LF3](LF3.md) | 最终同版手势录屏、全屏/后台/相邻解码与范围组合；目标手机验证。 |
@@ -47,7 +47,7 @@
 | BAK-03 | 已有阶段证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) | backup_v2生产能力仍关闭；真实选择器/大文件有界传输、更多故障与最终整条流程继续。 |
 | UP-01 | 已有阶段证据 / 未收口 | [LF1](LF1.md)、[本机开发配置](../../macos-development.md) | 目标手机原签名覆盖安装、同版旧服务/客户端组合和发布回退演练继续。 |
 | UP-02 | 待发布演练 | [LF1](LF1.md)、[本机开发配置](../../macos-development.md) | 迁移原签名的授权与准备不等于已覆盖安装；未发布本轮APK。 |
-| UI-01 | 新增卡片/网格证据 / 未收口 | [共享差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[续读对照](evidence/lf8-pack-continuation/README.md)、[卡片/网格](evidence/lf8-card-layout/README.md) | 搜索/工具/顶栏/导航、续读、分类总数、图包标题/作者/排序已有证据；卡片标签密度、上距、作者/方向色与短横屏四列补齐；视频中文排序、标签顺序、菜单图标及完整页面仍继续。 |
+| UI-01 | 新增视频中文顺序对照 / 未收口 | [共享差异审计](LF8-SHARED-GEOMETRY.md)、[卡片/网格](evidence/lf8-card-layout/README.md)、[视频中文顺序](evidence/lf8-video-name-order/README.md) | 共享尺寸、续读/分类总数、两类中文顺序及卡片已补证；新视频对照等真实ready后采集。文件名/时长显示、标签顺序/图标、完整最近及其它完整页面继续。 |
 | UI-02 | 阶段证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 沿用LF3/LF5/LF6局部原生证据；本轮未重新验证阅读器/预览/整理全链和手势录屏。 |
 | UI-03 | 局部证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 设置普通/暗色/页底与共享密度已补证；目录、缺失、回收、备份、任务等完整管理页继续。 |
 | UI-04 | 阶段证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 共享16项针对检查含设置开关语义；新增续读错误/重试、多选收键盘与大字/短横屏证据；库存段补未知重试与标签61dp缩高/恢复。完整原生表单、恢复和其它错误组合继续。 |
@@ -56,7 +56,7 @@
 
 ## 下一段推进顺序
 
-1. 续读、分类总数、图包标题/作者/完整范围排序以及共享卡片标签密度和短横屏排布已有阶段证据；继续视频中文排序及完整最近形态，排序不得只重排App的一页缓存。
+1. 续读、分类总数、图包呈现、两类完整范围中文排序以及共享卡片排布已有阶段证据；继续完整最近形态、视频显示信息和其余页面/动作。排序不得只重排App的一页缓存。
 2. 按验收ID复核视频/阅读/管理页面的同状态视觉、键盘和动作，修复影响内容理解或操作的偏差。
 3. 自动化继续覆盖可独立完成的性能样本和升级前置；需要真实手机/NAS配合的部分保留待验证，按用户授权暂时跳过。
 4. 只有全部必要项目逐项通过才关闭#24与LF8，之后交付原签名、递增versionCode的配套版本和回退说明。
@@ -99,3 +99,14 @@
 独立存量视觉评审一轮及修正复核一轮：作者/方向偏浅的唯一问题已修正，相邻标题/标签/网格未损坏。首轮大字续读脚本等屏外摘要挂载超时，现先核对真实返回锚点，再实际滚回顶部；失败与首轮图片单列，不忽略异常。并排复用已核对冻结字节的冷库浏览器参考，仅移除真实安全区并按DPR等比降采样，不挪列或拉伸。
 
 [设计与返回约定](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-card-layout/docs/plans/library-first/LF8-CARD-LAYOUT.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-card-layout/docs/plans/library-first/evidence/lf8-card-layout/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-card-layout/docs/plans/library-first/RESULTS.md)。本段补LIB-02及UI-01/04/05局部组合，不关闭整项。标签顺序/菜单图标、桌面滚动条列宽、视频中文排序、完整最近/预览/阅读/管理及手势、500页4K/8K、目标手机/NAS和原签名升级继续。冻结原型1cbf605独立可移除，backup_v2仍关闭；未改正式8760/NAS/SDK或发布APK。LF8/#33与总任务/#24保持开放。
+
+
+## 2026-10-26：视频中文名称顺序与预览退出（PR #63）
+
+[Draft PR #63](https://github.com/ShiJiJS/video_viewer/pull/63)基于#62。实现a769d28、固定取证a8e94b2，生产树相同；证据提交8d65cb0。视频名称顺序在服务端贯穿分页、锚点、完整全选和固定播放范围，公开样本为“风里的花园→水边的花”。新客户端附可选name_locale=zh-CN，公共sort仍为name，旧请求和旧App可解析性保留；已有范围不因改名/新增或随机后恢复而改变原序。
+
+真实回归同时修复退出时先销毁播放器、退场页面仍绘制导致的“No active player with ID”。现先卸载原生视图、等待本帧结束，再释放和返回；界面/系统返回两项检查在旧源码均失败、修正后通过。完整客户端505项、9个相关服务文件88项、analyze/Ruff通过；普通三轮/大字/短横屏40个视频点，加卡片6、共享8、图包呈现10，共64张同版原生图、256份manifest输入复核通过。27项跨页/固定成员与序号、实际解码/队列跳转/原筛选返回/最近去重、公开源SHA和设备恢复均核对。
+
+首屏等真实ready及可用动作后与实际浏览器冷库参考并排，冻结源字节核对，不挪列或拉伸。旧销毁异常、末尾面板固定帧等待不足、原生空字符串输入未生效的诊断单列；最终通过可见“清除”按钮验证实际查询清空。未新增独立视觉评审或完整手势录屏，88项非服务端全集，2视频夹具非真机/NAS性能证明。
+
+[设计与兼容约定](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-name-order/docs/plans/library-first/LF8-VIDEO-NAME-ORDER.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-name-order/docs/plans/library-first/evidence/lf8-video-name-order/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-name-order/docs/plans/library-first/RESULTS.md)。本段补LIB-01/03、预览/返回和UI局部组合；完整最近形态、视频文件名/时长显示、其它完整页面/手势、500页4K/8K、目标手机/NAS及原签名升级继续。原型1cbf605独立未改，backup_v2仍关闭；未发布APK或改正式8760/NAS/SDK，LF8/#33与总任务/#24保持开放。

@@ -206,6 +206,7 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         "typed_roots",
         "media_catalog_counts",
         "pack_presentation",
+        "video_name_order",
         "pack_tags",
         "image_packs",
         "fixed_video_sessions",

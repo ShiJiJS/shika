@@ -1,0 +1,342 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "status",
+        "missing"
+      ],
+      [
+        "limit",
+        "1"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/82367aef-aec9-4fe8-86e9-cf57c0c43f43",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "24"
+      ],
+      [
+        "source",
+        "library"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/b9afa625-dd92-4094-bb20-d3628cc94c0b/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/ad9ce392-0415-49e7-9ec1-45cd89ecaa5e/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/f11ce09e-f178-4a35-80a1-a23bf096d2ea/cover",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/5c326216-2246-422a-ace5-6206a14f83a5/cover",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/8f56352c-d4ba-488d-bda5-b182130fc145/cover",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/82367aef-aec9-4fe8-86e9-cf57c0c43f43/cover",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/82367aef-aec9-4fe8-86e9-cf57c0c43f43",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "presentation-library"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "presentation-author"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/82367aef-aec9-4fe8-86e9-cf57c0c43f43",
+    "status": 200,
+    "phase": "presentation-author"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-sessions",
+    "status": 201,
+    "phase": "presentation-title",
+    "body": {
+      "request_id": "1792988587991300-1196022365-0",
+      "scope": {
+        "directory_id": null,
+        "search": "夏日祭",
+        "tag_ids": [],
+        "read_state": "all"
+      },
+      "source": "library",
+      "sort": "title",
+      "order": "sequential",
+      "anchor_pack_id": "82367aef-aec9-4fe8-86e9-cf57c0c43f43"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/82367aef-aec9-4fe8-86e9-cf57c0c43f43/pages",
+    "status": 200,
+    "phase": "presentation-title"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pages/b68c4dbf-0988-448b-ad85-f9efc3258e22/image",
+    "status": 200,
+    "phase": "presentation-title"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-sessions/1532416f-6ee6-4e36-9865-5cefe0488f64/opened",
+    "status": 200,
+    "phase": "presentation-title"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "presentation-reader"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "presentation-details"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "presentation-return"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "presentation-return"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "presentation-return"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "presentation-return"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "presentation-return"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-sessions",
+    "status": 201,
+    "phase": "presentation-newest",
+    "body": {
+      "request_id": "1792988596505647-3579174969-2",
+      "scope": {
+        "directory_id": null,
+        "search": "",
+        "tag_ids": [],
+        "read_state": "all"
+      },
+      "source": "library",
+      "sort": "newest",
+      "order": "sequential",
+      "anchor_pack_id": "8f56352c-d4ba-488d-bda5-b182130fc145"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs/8f56352c-d4ba-488d-bda5-b182130fc145/pages",
+    "status": 200,
+    "phase": "presentation-newest"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pages/5315c291-7696-415a-b5af-5037d98cd41d/image",
+    "status": 200,
+    "phase": "presentation-newest"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-sessions/73ccd76a-edf0-40f0-97c5-217fa3a3cecc/opened",
+    "status": 200,
+    "phase": "presentation-newest"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-sessions/73ccd76a-edf0-40f0-97c5-217fa3a3cecc/entries",
+    "status": 200,
+    "phase": "presentation-newest"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "presentation-queue"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "presentation-queue"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "presentation-back",
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "24"
+      ],
+      [
+        "source",
+        "recent"
+      ],
+      [
+        "sort",
+        "recent"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "presentation-back"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "presentation-back"
+  }
+]

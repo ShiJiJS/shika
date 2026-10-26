@@ -61,8 +61,11 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
 
   Future<void> leave() async {
     if (closing) return;
-    closing = true;
+    setState(() => closing = true);
     browsing.setVisible(false);
+    // Unmount native views before releasing their platform player IDs. The
+    // route can still rebuild while its reverse transition is on screen.
+    await WidgetsBinding.instance.endOfFrame;
     await playback.close();
     if (!mounted) return;
     setState(() => leaving = true);
@@ -444,7 +447,9 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    current == null || !data.connected
+                    closing
+                        ? const ColoredBox(color: Colors.black)
+                        : current == null || !data.connected
                         ? EmptyView(
                             data.connected ? '本次范围已没有可播放的视频' : '连接已失效，请返回重新连接',
                             action: TextButton(

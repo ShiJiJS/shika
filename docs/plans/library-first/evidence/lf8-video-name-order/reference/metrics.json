@@ -1,0 +1,32 @@
+{
+  "viewport": [
+    390,
+    844,
+    1
+  ],
+  "setup": {
+    "history_before": [
+      "summer",
+      "v-portrait"
+    ],
+    "history_after": [],
+    "snapshot": true
+  },
+  "kind": "video",
+  "sort": "名称",
+  "order": [
+    {
+      "id": "v-landscape",
+      "title": "风里的花园"
+    },
+    {
+      "id": "v-portrait",
+      "title": "水边的花"
+    }
+  ],
+  "loaded": [
+    "runtime/prototype.js",
+    "vendor/alpine.min.js",
+    "style.css"
+  ]
+}
