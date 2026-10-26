@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'dart:async';
 import 'dart:ui' as ui;
 
@@ -17,7 +18,11 @@ import 'support/reveal_action.dart';
 
 class AssignmentLibrary extends WorkspaceLibrary {
   Object owner = Object();
-  bool restoring = false, failSave = false, failCreate = false;
+  bool restoring = false,
+      failSave = false,
+      failCreate = false,
+      failMore = false;
+  final videoOffsets = <int>[];
   Completer<void>? pending;
   final writes =
       <
@@ -34,6 +39,17 @@ class AssignmentLibrary extends WorkspaceLibrary {
   Object get connectionIdentity => owner;
   @override
   bool get backupRestorePending => restoring;
+  @override
+  Future<CatalogPage<VideoTag>> loadVideoTags({
+    String search = '',
+    int offset = 0,
+    int limit = 50,
+  }) async {
+    videoOffsets.add(offset);
+    if (offset > 0 && failMore) throw const LibraryFailure('视频下一页未读取');
+    return super.loadVideoTags(search: search, offset: offset, limit: limit);
+  }
+
   @override
   Future<void> editTag({
     String? original,
@@ -125,9 +141,29 @@ void main() {
       WidgetTester t, {
       bool batch = false,
       Set<String>? targets,
+      bool paged = false,
     }) async {
       repo = AssignmentLibrary();
       await repo.initialize();
+      if (paged) {
+        final seeded = repo.snapshot.copy(
+          tags: [
+            ...repo.snapshot.tags,
+            for (var i = 0; i < 61; i++) '分页${i.toString().padLeft(2, '0')}',
+          ],
+          videos: repo.snapshot.videos.map(
+            (v) => v.id == 'v1' ? v.copy(tags: {'自然', '分页60'}) : v,
+          ),
+        );
+        await repo.store.write(
+          jsonEncode({
+            'format': 'video-viewer-flutter-demo',
+            'version': 1,
+            'data': seeded.toJson(),
+          }),
+        );
+        await repo.initialize();
+      }
       result = null;
       addTearDown(() async {
         await t.pumpWidget(const SizedBox());
@@ -170,6 +206,41 @@ void main() {
     Set<String> links() => pack
         ? repo.packLinks['p1']!
         : repo.snapshot.videos.firstWhere((v) => v.id == 'v1').tags;
+    if (!pack) {
+      testWidgets(
+        'video off-page selection survives paging failure, exact-offset retry, search and save',
+        (t) async {
+          await host(t, paged: true);
+          expect(
+            find.byKey(const Key('chosen-video-tag-分页60')),
+            findsOneWidget,
+          );
+          repo.failMore = true;
+          await tap(t, find.text('更多标签'));
+          expect(repo.videoOffsets.last, 50);
+          expect(find.text('视频下一页未读取'), findsOneWidget);
+          repo.failMore = false;
+          await tap(t, find.text('重试读取标签'));
+          expect(repo.videoOffsets.last, 50);
+          expect(find.byType(FilterChip), findsNWidgets(66));
+          await t.enterText(search, '分页00');
+          await t.pumpAndSettle();
+          await tap(t, find.widgetWithText(FilterChip, '分页00'));
+          expect(
+            find.byKey(const Key('chosen-video-tag-分页00')),
+            findsOneWidget,
+          );
+          expect(t.widget<FilledButton>(save).onPressed, isNotNull);
+          await tap(t, save);
+          expect(repo.writes.single.tags, {'自然', '分页60', '分页00'});
+          for (var i = 0; i < 100 && result == null; i++) {
+            await t.pump(const Duration(milliseconds: 20));
+          }
+          expect(result, isTrue);
+          expect(links(), {'自然', '分页60', '分页00'});
+        },
+      );
+    }
     testWidgets(
       'single replacement creates only current namespace and returns persisted IDs pack=$pack',
       (t) async {

@@ -175,9 +175,18 @@ void main() {
         await shot('$type-error');
         await tap(input);
         await t.enterText(input, '现场新标签');
+        await SystemChannels.textInput.invokeMethod<void>('TextInput.show');
+        await until(
+          () => MediaQueryData.fromView(t.view).viewInsets.bottom > 0,
+          'native keyboard opened',
+        );
         await shot('$type-keyboard');
         await hideKeyboard();
         await tap(find.byKey(const Key('tag-assignment-save')));
+        await until(
+          () => find.byKey(const Key('tag-assignment-save')).evaluate().isEmpty,
+          'assignment saved and sheet closed',
+        );
         final stats = await fixture('/__fixture/actions/tag-management-stats');
         final defs = (stats[pack ? 'pack_tags' : 'video_tags'] as List)
             .cast<Map>();
@@ -230,6 +239,10 @@ void main() {
       await hideKeyboard();
       await tap(find.widgetWithText(FilterChip, '追加'));
       await tap(find.byKey(const Key('tag-assignment-save')));
+      await until(
+        () => find.byKey(const Key('tag-assignment-save')).evaluate().isEmpty,
+        'assignment saved and sheet closed',
+      );
       expect(repo.tagVideoCount(added), 26);
       final updated = await repo.loadVideos(limit: 200);
       for (final video in updated.items) {
@@ -259,6 +272,10 @@ void main() {
       await hideKeyboard();
       await tap(find.widgetWithText(FilterChip, '追加'));
       await tap(find.byKey(const Key('tag-assignment-save')));
+      await until(
+        () => find.byKey(const Key('tag-assignment-save')).evaluate().isEmpty,
+        'assignment saved and sheet closed',
+      );
       final packPage = await repo.loadPacks(PackQuery(), limit: 200);
       for (final pack in packPage.items) {
         expect(pack.tags, contains(packKept.id));

@@ -56,6 +56,7 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
       namesLoading = false,
       connectionChanged = false,
       retryMore = false,
+      hasPagedChoices = false,
       remove = false;
   String? loadedSearch;
   String error = '', readError = '', namesError = '';
@@ -201,6 +202,7 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
       setState(() {
         items = append ? [...items, ...pageItems] : pageItems;
         total = pageTotal;
+        hasPagedChoices = hasPagedChoices || pageTotal > 50;
         loadedSearch = query;
         retryMore = false;
         acceptNames(
@@ -338,6 +340,48 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
   Widget build(BuildContext context) {
     final p = Paper.of(context);
     final enabled = !saving && writable;
+    final size = MediaQuery.sizeOf(context);
+    final wide = size.width >= 600 && size.height < 500;
+    final searchField = PaperField(
+      label: '搜索$type标签',
+      child: TextField(
+        key: const Key('tag-assignment-search'),
+        controller: search,
+        enabled: enabled,
+        decoration: const InputDecoration(hintText: '输入标签名称'),
+        onChanged: (_) => load(),
+        textInputAction: TextInputAction.search,
+      ),
+    );
+    final createField = Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Expanded(
+          child: PaperField(
+            label: '新增$type标签',
+            child: TextField(
+              key: const Key('tag-assignment-new'),
+              controller: newName,
+              enabled: enabled,
+              maxLength: 100,
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(
+                hintText: '输入新标签名称',
+                counterText: '',
+              ),
+              onChanged: (_) => setState(() {}),
+              onSubmitted: (_) => create(),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        TextButton(
+          key: const Key('tag-assignment-add'),
+          onPressed: enabled && newName.text.trim().isNotEmpty ? create : null,
+          child: const Text('添加'),
+        ),
+      ],
+    );
     return PopScope(
       canPop: !saving,
       child: SheetFrame(
@@ -412,7 +456,9 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
                 ),
               ],
             ),
-          if (chosen.isNotEmpty) ...[
+          if (chosen.isNotEmpty &&
+              (hasPagedChoices ||
+                  chosen.any((id) => !items.any((tag) => tag.id == id)))) ...[
             const SizedBox(height: 12),
             Wrap(
               spacing: 8,
@@ -434,17 +480,17 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
             ),
           ],
           const SizedBox(height: 16),
-          PaperField(
-            label: '搜索$type标签',
-            child: TextField(
-              key: const Key('tag-assignment-search'),
-              controller: search,
-              enabled: enabled,
-              decoration: const InputDecoration(hintText: '输入标签名称'),
-              onChanged: (_) => load(),
-              textInputAction: TextInputAction.search,
-            ),
-          ),
+          if (wide && !widget.selectionOnly)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: searchField),
+                const SizedBox(width: 16),
+                Expanded(child: createField),
+              ],
+            )
+          else
+            searchField,
           const SizedBox(height: 12),
           if (loading || namesLoading) const LinearProgressIndicator(),
           if (removed) note('部分已选标签已被移除，请取消这些选择后再保存。'),
@@ -487,31 +533,9 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
               onPressed: enabled ? () => load(more: true) : null,
               child: const Text('更多标签'),
             ),
-          if (!widget.selectionOnly) ...[
+          if (!widget.selectionOnly && !wide) ...[
             const SizedBox(height: 16),
-            PaperField(
-              label: '新增$type标签',
-              child: TextField(
-                key: const Key('tag-assignment-new'),
-                controller: newName,
-                enabled: enabled,
-                maxLength: 100,
-                textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(hintText: '输入新标签名称'),
-                onChanged: (_) => setState(() {}),
-                onSubmitted: (_) => create(),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                key: const Key('tag-assignment-add'),
-                onPressed: enabled && newName.text.trim().isNotEmpty
-                    ? create
-                    : null,
-                child: const Text('添加'),
-              ),
-            ),
+            createField,
           ],
           if (!writable && !connectionChanged) note('正在恢复管理数据，请完成后重新打开。'),
           if (error.isNotEmpty)
