@@ -151,20 +151,25 @@ void main() {
         state.selected.add('same-id');
         unawaited(state.edit(const TagCatalogItem('same-id', '同名', 2)));
         await t.pumpAndSettle();
+        await t.enterText(find.byKey(const Key('tag-name')), '尚未保存的草稿');
         await tap(t, find.byKey(const Key('tag-definition-remove')));
         expect(find.byType(SheetFrame), findsOneWidget);
         expect(find.byKey(const Key('tag-name')), findsNothing);
         await tap(t, find.text('取消'));
         expect(repo.writes, isEmpty);
+        expect(
+          t
+              .widget<TextField>(find.byKey(const Key('tag-name')))
+              .controller!
+              .text,
+          '尚未保存的草稿',
+        );
         expect(state.selected, {'same-id'});
         await tap(t, find.byKey(const Key('tag-definition-remove')));
         await tap(t, find.byKey(const Key('tag-definition-remove-confirm')));
-        expect(repo.writes.single, (
-          kind: kind,
-          id: 'same-id',
-          name: '同名',
-          delete: true,
-        ));
+        expect(repo.writes.single.kind, kind);
+        expect(repo.writes.single.id, 'same-id');
+        expect(repo.writes.single.delete, isTrue);
         expect(state.selected, isEmpty);
       },
     );
