@@ -196,10 +196,12 @@ class SheetFrame extends StatelessWidget {
     required this.title,
     required this.children,
     this.closeEnabled = true,
+    this.footer,
   });
   final String title;
   final List<Widget> children;
   final bool closeEnabled;
+  final Widget? footer;
   @override
   Widget build(BuildContext context) => ConstrainedBox(
     constraints: BoxConstraints(
@@ -235,6 +237,11 @@ class SheetFrame extends StatelessWidget {
                 ),
               ),
             ),
+            if (footer != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: SizedBox(width: double.infinity, child: footer),
+              ),
           ],
         ),
       ),

@@ -1,0 +1,148 @@
+{
+  "counts": {
+    "videos": 2,
+    "packs": 4,
+    "pack_pages": 24,
+    "recent_entries": 4,
+    "pack_progress": 2,
+    "pack_preferences": 2,
+    "pack_sessions": 3,
+    "playback_rounds": 3,
+    "pack_file_operations": 0,
+    "pack_trash_items": 0
+  },
+  "packs": [
+    {
+      "id": "8f3f129f-cff6-4422-9a3e-65be0a61e5a1",
+      "name": "示例作者 NO.019 - 灵梦 · 新年快乐",
+      "path": "/media/packs/示例作者 NO.019 - 灵梦 · 新年快乐"
+    },
+    {
+      "id": "a6a0594b-fe97-494b-8d95-27cde1a8c5cc",
+      "name": "示例作者 NO.034 - 夏日祭",
+      "path": "/media/packs/示例作者 NO.034 - 夏日祭"
+    },
+    {
+      "id": "e470b970-1734-4d86-9be5-d477c5584b43",
+      "name": "示例作者 NO.051 - 加藤惠 · 和服",
+      "path": "/media/packs/示例作者 NO.051 - 加藤惠 · 和服"
+    },
+    {
+      "id": "21fddfbf-83fe-430a-adfa-f7cf0b1b9754",
+      "name": "示例作者 NO.057 - 原野上的浪漫",
+      "path": "/media/packs/示例作者 NO.057 - 原野上的浪漫"
+    }
+  ],
+  "progress": [
+    {
+      "pack_id": "a6a0594b-fe97-494b-8d95-27cde1a8c5cc",
+      "page_id": "ae7331c1-078d-45b8-a0c2-f49ee21749f1",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 3,
+      "updated_at": 1792998261.40698,
+      "content_version": 1,
+      "recovery_reason": null,
+      "ordinal": 2
+    },
+    {
+      "pack_id": "e470b970-1734-4d86-9be5-d477c5584b43",
+      "page_id": "5bfeece4-3016-45b0-b2b9-7c6c8f53875a",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1792998255.595482,
+      "content_version": 1,
+      "recovery_reason": null,
+      "ordinal": 0
+    }
+  ],
+  "preferences": [
+    {
+      "pack_id": "a6a0594b-fe97-494b-8d95-27cde1a8c5cc",
+      "mode": "horizontal",
+      "direction": "ltr",
+      "gap": 0,
+      "fit": "contain",
+      "revision": 0
+    },
+    {
+      "pack_id": "e470b970-1734-4d86-9be5-d477c5584b43",
+      "mode": "horizontal",
+      "direction": "ltr",
+      "gap": 0,
+      "fit": "contain",
+      "revision": 0
+    }
+  ],
+  "recent": [
+    {
+      "kind": "pack",
+      "video_id": null,
+      "pack_id": "a6a0594b-fe97-494b-8d95-27cde1a8c5cc",
+      "opened_at": 1792998261.4074519
+    },
+    {
+      "kind": "pack",
+      "video_id": null,
+      "pack_id": "e470b970-1734-4d86-9be5-d477c5584b43",
+      "opened_at": 1792998255.596367
+    },
+    {
+      "kind": "video",
+      "video_id": "e0a49357-111c-4821-a854-b8b902e01242",
+      "pack_id": null,
+      "opened_at": 1792998244.655611
+    },
+    {
+      "kind": "video",
+      "video_id": "eed31291-3863-46c2-bfc8-0d4f00b47a32",
+      "pack_id": null,
+      "opened_at": 1792998238.187208
+    }
+  ],
+  "sessions": [
+    {
+      "id": "6bbe1169-7d3b-46e9-84f6-11bdfc80d0b3",
+      "scope": "{\"directory_id\": null, \"search\": \"\", \"tag_ids\": [], \"read_state\": \"all\"}",
+      "source": "{\"kind\": \"recent\", \"sort\": \"recent\"}",
+      "candidate_count": 2
+    },
+    {
+      "id": "8207e08e-3397-4a8e-9ce6-a5dac4d43e65",
+      "scope": "{\"directory_id\": null, \"search\": \"\\u590f\\u65e5\\u796d\", \"tag_ids\": [], \"read_state\": \"all\"}",
+      "source": "{\"kind\": \"library\", \"sort\": \"title\"}",
+      "candidate_count": 1
+    },
+    {
+      "id": "eb47077a-f210-4f35-8fc2-79fcfad604dd",
+      "scope": "{\"directory_id\": null, \"search\": \"\\u52a0\\u85e4\\u60e0\", \"tag_ids\": [], \"read_state\": \"all\"}",
+      "source": "{\"kind\": \"library\", \"sort\": \"title\"}",
+      "candidate_count": 1
+    }
+  ],
+  "entries": [
+    {
+      "session_id": "6bbe1169-7d3b-46e9-84f6-11bdfc80d0b3",
+      "ordinal": 0,
+      "pack_id": "a6a0594b-fe97-494b-8d95-27cde1a8c5cc"
+    },
+    {
+      "session_id": "6bbe1169-7d3b-46e9-84f6-11bdfc80d0b3",
+      "ordinal": 1,
+      "pack_id": "e470b970-1734-4d86-9be5-d477c5584b43"
+    },
+    {
+      "session_id": "8207e08e-3397-4a8e-9ce6-a5dac4d43e65",
+      "ordinal": 0,
+      "pack_id": "a6a0594b-fe97-494b-8d95-27cde1a8c5cc"
+    },
+    {
+      "session_id": "eb47077a-f210-4f35-8fc2-79fcfad604dd",
+      "ordinal": 0,
+      "pack_id": "e470b970-1734-4d86-9be5-d477c5584b43"
+    }
+  ],
+  "operations": [],
+  "trash": []
+}
