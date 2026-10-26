@@ -240,6 +240,7 @@ def create_e2e_app():
             "prepared",
             "workspace-video", "workspace-packs", "workspace-video-tags",
             "workspace-pack-tags", "workspace-settings", "workspace-dark",
+            "tag-ui-video", "tag-ui-pack", "tag-ui-dark", "tag-ui-create-keyboard", "tag-ui-create-error", "tag-ui-created", "tag-ui-renamed", "tag-ui-remove-confirm", "tag-ui-removed", "tag-ui-page-error", "tag-ui-paged", "tag-ui-results",
             "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
             "selection-videos", "selection-packs",
             "pack-names-card", "pack-names-retry", "pack-names-saved", "pack-names-renamed",
@@ -273,6 +274,15 @@ def create_e2e_app():
                 app.state.login_attempts.clear()
         elif action == "reset-task-trace":
             trace.clear()
+        elif action == "tag-management-stats":
+            from video_viewer.models import PackTag, PackTagLink, Tag, VideoTag
+            with app.state.db.read() as session:
+                return {
+                    "video_tags": [{"id":r.id,"name":r.name} for r in session.scalars(select(Tag).order_by(Tag.name,Tag.id).limit(200))],
+                    "pack_tags": [{"id":r.id,"name":r.name} for r in session.scalars(select(PackTag).order_by(PackTag.name,PackTag.id).limit(200))],
+                    "video_links": [{"video_id":r.video_id,"tag_id":r.tag_id} for r in session.scalars(select(VideoTag).order_by(VideoTag.video_id,VideoTag.tag_id).limit(200))],
+                    "pack_links": [{"pack_id":r.pack_id,"tag_id":r.tag_id} for r in session.scalars(select(PackTagLink).order_by(PackTagLink.pack_id,PackTagLink.tag_id).limit(200))],
+                }
         elif action == "hold-restore-plan":
             restore_gate.clear()
             app.state.pack_restore_plans.batch_size = 2
