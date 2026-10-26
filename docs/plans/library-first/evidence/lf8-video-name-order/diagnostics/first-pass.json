@@ -1,0 +1,158 @@
+{
+  "source": "a769d28661555c02bc63dc75d454e089eb376c50",
+  "purpose": "Passed before ready/button precondition was added; not counted as formal screenshots.",
+  "runs": {
+    "normal-1": {
+      "passed": true,
+      "screens": [
+        "video-order-library",
+        "video-order-filter",
+        "video-order-preview",
+        "video-order-filter-return",
+        "video-order-queue",
+        "video-order-last",
+        "video-order-return",
+        "video-order-recent"
+      ],
+      "window": [
+        390,
+        905
+      ],
+      "scale": "1",
+      "scenario": "video-order"
+    },
+    "normal-2": {
+      "passed": true,
+      "screens": [
+        "video-order-library",
+        "video-order-filter",
+        "video-order-preview",
+        "video-order-filter-return",
+        "video-order-queue",
+        "video-order-last",
+        "video-order-return",
+        "video-order-recent"
+      ],
+      "window": [
+        390,
+        905
+      ],
+      "scale": "1",
+      "scenario": "video-order"
+    },
+    "normal-3": {
+      "passed": true,
+      "screens": [
+        "video-order-library",
+        "video-order-filter",
+        "video-order-preview",
+        "video-order-filter-return",
+        "video-order-queue",
+        "video-order-last",
+        "video-order-return",
+        "video-order-recent"
+      ],
+      "window": [
+        390,
+        905
+      ],
+      "scale": "1",
+      "scenario": "video-order"
+    },
+    "large": {
+      "passed": true,
+      "screens": [
+        "video-order-library",
+        "video-order-filter",
+        "video-order-preview",
+        "video-order-filter-return",
+        "video-order-queue",
+        "video-order-last",
+        "video-order-return",
+        "video-order-recent"
+      ],
+      "window": [
+        360,
+        809
+      ],
+      "scale": "2",
+      "scenario": "video-order"
+    },
+    "landscape": {
+      "passed": true,
+      "screens": [
+        "video-order-library",
+        "video-order-filter",
+        "video-order-preview",
+        "video-order-filter-return",
+        "video-order-queue",
+        "video-order-last",
+        "video-order-return",
+        "video-order-recent"
+      ],
+      "window": [
+        844,
+        442
+      ],
+      "scale": "1",
+      "scenario": "video-order"
+    },
+    "cards": {
+      "passed": true,
+      "screens": [
+        "cards-video",
+        "cards-video-meta",
+        "cards-packs",
+        "cards-pack-meta",
+        "cards-filter",
+        "cards-return"
+      ],
+      "window": [
+        844,
+        442
+      ],
+      "scale": "1",
+      "scenario": "cards"
+    },
+    "shared": {
+      "passed": true,
+      "screens": [
+        "home",
+        "packs",
+        "video-tags",
+        "pack-tags",
+        "settings",
+        "settings-bottom",
+        "dark",
+        "dark-bottom"
+      ],
+      "window": [
+        390,
+        905
+      ],
+      "scale": "1",
+      "scenario": "fidelity"
+    },
+    "presentation": {
+      "passed": true,
+      "screens": [
+        "presentation-library",
+        "presentation-author",
+        "presentation-title",
+        "presentation-reader",
+        "presentation-details",
+        "presentation-return",
+        "presentation-newest",
+        "presentation-queue",
+        "presentation-back",
+        "presentation-recent"
+      ],
+      "window": [
+        390,
+        905
+      ],
+      "scale": "1",
+      "scenario": "presentation"
+    }
+  }
+}
