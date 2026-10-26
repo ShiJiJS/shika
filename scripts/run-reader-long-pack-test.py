@@ -178,6 +178,8 @@ def watch():
         while not stop.wait(0.2):
             current = state()
             name = current["display"]
+            if name == "verified":
+                return
             if name and name != "verified" and record_process is None:
                 begin_record()
             if record_process is not None and record_process.poll() is not None:
