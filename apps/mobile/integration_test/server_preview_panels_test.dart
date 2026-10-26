@@ -111,8 +111,13 @@ void main() {
         'playback-time',
         'video-progress-touch',
         'preview-quick',
+        'preview-cleanup',
         'preview-quick-delete',
         'preview-queue',
+        'preview-queue-frame',
+        'preview-queue-title',
+        'preview-queue-count',
+        'preview-queue-note',
         'preview-end-return',
         'inline-play',
       ]) {
@@ -435,6 +440,34 @@ void main() {
       'queue operation completed and both real cover frames decoded',
     );
     await capture('preview-queue');
+    final queueFrame = t.getRect(find.byKey(const Key('preview-queue-frame')));
+    final queueMedia = MediaQuery.of(
+      t.element(find.byKey(const Key('preview-queue'))),
+    );
+    expect(
+      queueFrame.width,
+      closeTo(queueMedia.size.width - queueMedia.viewPadding.horizontal, 1),
+    );
+    if (queueMedia.size.width == 390 && queueMedia.textScaler.scale(14) == 14) {
+      expect(
+        queueFrame.height,
+        lessThan(520),
+        reason: 'Two-video range fits its contents instead of filling 83% of the screen',
+      );
+      expect(
+        find.byKey(const Key('preview-queue-note')).hitTestable(),
+        findsOneWidget,
+      );
+    }
+    final queueNote = find.byKey(const Key('preview-queue-note'));
+    await t.ensureVisible(queueNote);
+    await t.pump(const Duration(milliseconds: 100));
+    final noteRect = t.getRect(queueNote);
+    final queueViewport = t.getRect(find.byKey(const Key('preview-queue')));
+    expect(noteRect.top, greaterThanOrEqualTo(queueViewport.top - 1));
+    expect(noteRect.bottom, lessThanOrEqualTo(queueViewport.bottom + 1));
+    expect(find.byTooltip('关闭面板').hitTestable(), findsOneWidget);
+    await capture('preview-queue-bottom');
     await tap(find.byKey(Key('queue-video-${ids.last}')));
     await until(
       () =>

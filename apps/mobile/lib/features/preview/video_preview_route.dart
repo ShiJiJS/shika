@@ -8,6 +8,7 @@ import '../../ui/browsing_session.dart';
 import '../../ui/media_poster.dart';
 import '../../ui/media_layout.dart';
 import '../../ui/paper.dart';
+import '../../ui/paper_icons.dart';
 import '../../ui/playback_session.dart';
 import '../../ui/player.dart';
 import '../../ui/preferences.dart';
@@ -139,11 +140,11 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
     }
   }
 
-  Future<T?> sheet<T>(Widget child) async {
+  Future<T?> sheet<T>(Widget child, {BoxConstraints? constraints}) async {
     setState(() => obscured = true);
     browsing.setVisible(false);
     try {
-      return await paperSheet<T>(context, child);
+      return await paperSheet<T>(context, child, constraints: constraints);
     } finally {
       if (mounted) {
         setState(() => obscured = false);
@@ -165,6 +166,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
       onOrder: (order) => browsing.changeOrder(order),
       onPick: browsing.choose,
     ),
+    constraints: const BoxConstraints(maxWidth: double.infinity),
   );
 
   Future<bool> step(int delta) async {
@@ -379,7 +381,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
   }
 
   Widget tool(
-    IconData icon,
+    PaperGlyph icon,
     String label,
     VoidCallback action, {
     bool selected = false,
@@ -396,7 +398,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 21),
+          PaperIcon(icon),
           const SizedBox(height: 3),
           Text(label, style: const TextStyle(fontSize: 12)),
         ],
@@ -409,6 +411,25 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
     final current = browsing.current, p = Paper.of(context);
     final enlarged = MediaQuery.textScalerOf(context).scale(12) > 16;
     final disabled = busy || current == null || repo.backupRestorePending;
+    final quickTag = TextButton(
+      onPressed: disabled ? null : tags,
+      style: TextButton.styleFrom(
+        foregroundColor: p.ink,
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        textStyle: const TextStyle(fontSize: 13),
+      ),
+      child: const Text('打标签'),
+    );
+    final quickDelete = TextButton(
+      key: const Key('preview-quick-delete'),
+      onPressed: disabled ? null : () => remove(current.id),
+      style: TextButton.styleFrom(
+        foregroundColor: p.danger,
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        textStyle: const TextStyle(fontSize: 13),
+      ),
+      child: const Text('移入回收站'),
+    );
     return PopScope<void>(
       canPop: leaving,
       onPopInvokedWithResult: (didPop, _) {
@@ -604,15 +625,13 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                 child: Row(
                   children: [
                     tool(
-                      data.order == PlayOrder.random
-                          ? Icons.shuffle
-                          : Icons.format_list_numbered,
+                      PaperGlyph.shuffle,
                       data.order == PlayOrder.random ? '随机预览' : '顺序预览',
                       queue,
                     ),
-                    tool(Icons.sell_outlined, '视频标签', tags),
+                    tool(PaperGlyph.tag, '视频标签', tags),
                     tool(
-                      Icons.filter_list,
+                      PaperGlyph.filter,
                       '快速整理',
                       () => setState(() => quick = !quick),
                       selected: quick,
@@ -627,46 +646,26 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                     : const Duration(milliseconds: 160),
                 alignment: Alignment.topCenter,
                 child: quick
-                    ? Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 7),
+                    ? Container(
+                        key: const Key('preview-cleanup'),
+                        color: p.soft,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Row(
                           children: [
                             if (!enlarged) ...[
                               const Text(
                                 '快速整理',
-                                style: TextStyle(fontSize: 12),
+                                style: TextStyle(fontSize: 13),
                               ),
-                              const SizedBox(width: 12),
+                              const Spacer(),
+                              quickTag,
+                              const SizedBox(width: 7),
+                              quickDelete,
+                            ] else ...[
+                              Expanded(flex: 2, child: quickTag),
+                              const SizedBox(width: 8),
+                              Expanded(flex: 3, child: quickDelete),
                             ],
-                            Expanded(
-                              flex: enlarged ? 2 : 1,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                  ),
-                                ),
-                                onPressed: disabled ? null : tags,
-                                child: const Text('打标签'),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              flex: enlarged ? 3 : 1,
-                              child: FilledButton(
-                                key: const Key('preview-quick-delete'),
-                                style: FilledButton.styleFrom(
-                                  backgroundColor: p.danger,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                  ),
-                                ),
-                                onPressed: disabled
-                                    ? null
-                                    : () => remove(current.id),
-                                child: const Text('移入回收站'),
-                              ),
-                            ),
                           ],
                         ),
                       )
@@ -873,44 +872,92 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
         (MediaLayout.line(context, '视频名称 Aa', const TextStyle(fontSize: 14)) *
                     2 +
                 24)
-            .clamp(80.0, double.infinity);
+            .clamp(81.0, double.infinity);
     if (geometry != nextGeometry) {
       geometry = nextGeometry;
       locateCurrent();
     }
-    return SizedBox(
-      height: MediaQuery.sizeOf(context).height * .83,
+    final p = Paper.of(context);
+    final height = MediaQuery.sizeOf(context).height;
+    return ConstrainedBox(
+      key: const Key('preview-queue-frame'),
+      constraints: BoxConstraints(
+        maxHeight: height * (height <= 700 ? .92 : .88),
+      ),
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 22),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      '本次预览范围',
-                      style: Paper.of(context).title.copyWith(fontSize: 21),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final style = p.title.copyWith(fontSize: 23);
+                        final measure = TextPainter(
+                          text: TextSpan(
+                            text: '本次预览范围',
+                            style: DefaultTextStyle.of(context).style
+                                .merge(style),
+                          ),
+                          textScaler: MediaQuery.textScalerOf(context),
+                          textDirection: Directionality.of(context),
+                          locale: Localizations.maybeLocaleOf(context),
+                        )..layout();
+                        final wrap = measure.width > constraints.maxWidth;
+                        measure.dispose();
+                        return Text(
+                          wrap ? '本次预览\n范围' : '本次预览范围',
+                          key: const Key('preview-queue-title'),
+                          semanticsLabel: '本次预览范围',
+                          style: style,
+                        );
+                      },
                     ),
                   ),
                   iconAction('关闭面板', Icons.close, () => Navigator.pop(context)),
                 ],
               ),
-              Expanded(
+              Flexible(
                 child: CustomScrollView(
                   key: const Key('preview-queue'),
                   controller: scroll,
+                  shrinkWrap: true,
                   slivers: [
                     SliverToBoxAdapter(
                       child: Column(
                         key: summaryKey,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          note('${widget.sourceLabel} · $total 个视频'),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5, bottom: 20),
+                            child: DefaultTextStyle(
+                              style: DefaultTextStyle.of(context).style.merge(
+                                TextStyle(
+                                  fontSize: 13,
+                                  height: 1.7,
+                                  color: p.catalogMeta,
+                                ),
+                              ),
+                              child: Wrap(
+                                spacing: 8,
+                                runSpacing: 4,
+                                children: [
+                                  Text(widget.sourceLabel),
+                                  Text(
+                                    '$total 个视频',
+                                    key: const Key('preview-queue-count'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                           Wrap(
-                            spacing: 8,
+                            spacing: 10,
                             children: [
                               for (final order in [
                                 PlayOrder.sequential,
@@ -922,6 +969,24 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                                     order == PlayOrder.random ? '随机' : '顺序',
                                   ),
                                   selected: repo.snapshot.order == order,
+                                  showCheckmark: false,
+                                  selectedColor: p.olive,
+                                  backgroundColor: p.background,
+                                  shape: const StadiumBorder(),
+                                  side: BorderSide(
+                                    color: repo.snapshot.order == order
+                                        ? p.olive
+                                        : p.olive.withValues(alpha: .35),
+                                  ),
+                                  labelStyle: TextStyle(
+                                    color: repo.snapshot.order == order
+                                        ? p.background
+                                        : p.olive,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 9,
+                                  ),
                                   onSelected: busy
                                       ? null
                                       : (_) =>
@@ -930,7 +995,7 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                             ],
                           ),
                           if (error.isNotEmpty) note(error),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 18),
                         ],
                       ),
                     ),
@@ -974,54 +1039,74 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                             color: repo.current?.id == video.id
                                 ? Paper.of(context).soft
                                 : Colors.transparent,
-                            child: InkWell(
-                              key: Key('queue-video-${video.id}'),
-                              onTap: busy
-                                  ? null
-                                  : () => action(
-                                      () => widget.onPick(video.id),
-                                      close: true,
-                                    ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 12,
-                                  horizontal: 6,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(color: p.line),
                                 ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 27,
-                                      child: Text(
-                                        '${index + 1}',
-                                        style: const TextStyle(fontSize: 12),
+                              ),
+                              child: InkWell(
+                                key: Key('queue-video-${video.id}'),
+                                onTap: busy
+                                    ? null
+                                    : () => action(
+                                        () => widget.onPick(video.id),
+                                        close: true,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 42,
-                                      height: 56,
-                                      child: MediaPoster(video: video),
-                                    ),
-                                    const SizedBox(width: 13),
-                                    Expanded(
-                                      child: Text(
-                                        video.displayTitle,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                    horizontal: 6,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 27,
+                                        child: Text(
+                                          '${index + 1}',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
-                                    ),
-                                    if (repo.current?.id == video.id)
-                                      const Text(
-                                        '当前',
-                                        style: TextStyle(fontSize: 12),
+                                      SizedBox(
+                                        width: 42,
+                                        height: 56,
+                                        child: MediaPoster(video: video),
                                       ),
-                                  ],
+                                      const SizedBox(width: 13),
+                                      Expanded(
+                                        child: Text(
+                                          video.displayTitle,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      if (repo.current?.id == video.id)
+                                        const Text(
+                                          '当前',
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           );
                         }, childCount: total),
                       ),
-                    SliverToBoxAdapter(child: note('打标签不改变本次预览范围；返回后更新筛选结果。')),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 24, bottom: 4),
+                        child: Text(
+                          '修改标签不改变本次范围；返回后更新筛选结果。',
+                          key: const Key('preview-queue-note'),
+                          style: TextStyle(
+                            fontSize: 13,
+                            height: 1.8,
+                            color: p.catalogMeta,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

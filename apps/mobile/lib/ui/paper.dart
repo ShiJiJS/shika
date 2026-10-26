@@ -164,6 +164,7 @@ Future<T?> paperSheet<T>(
   BuildContext context,
   Widget child, {
   bool dismissible = true,
+  BoxConstraints? constraints,
 }) async {
   final navigator = Navigator.of(context);
   final route = ModalBottomSheetRoute<T>(
@@ -173,6 +174,7 @@ Future<T?> paperSheet<T>(
     ),
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
     isScrollControlled: true,
+    constraints: constraints,
     isDismissible: dismissible,
     enableDrag: dismissible,
     useSafeArea: true,

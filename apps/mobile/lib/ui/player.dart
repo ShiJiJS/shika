@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 
 import '../library/models.dart';
 import 'paper.dart';
+import 'paper_icons.dart';
 import 'device_controls.dart';
 import 'media_poster.dart';
 import 'playback_session.dart';
@@ -1337,7 +1338,11 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                         onPressed: widget.interactionsEnabled
                             ? _togglePlayback
                             : null,
-                        icon: const Icon(Icons.play_arrow_outlined, size: 32),
+                        icon: const PaperIcon(
+                          PaperGlyph.play,
+                          size: 28,
+                          color: Paper.olive,
+                        ),
                       ),
                     ),
                   ),
