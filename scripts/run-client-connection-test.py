@@ -248,6 +248,10 @@ def watch():
                             json.dumps(json.load(response), ensure_ascii=False, indent=2),
                             encoding="utf-8",
                         )
+                if PREFIX == "lf8-trash":
+                    request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/restore-plan-stats", headers=HEADERS, method="POST")
+                    with urllib.request.urlopen(request, timeout=2) as response:
+                        (EVIDENCE / f"{PREFIX}-{phase}-plan.json").write_text(json.dumps(json.load(response), ensure_ascii=False, indent=2), encoding="utf-8")
                 if PREFIX == "lf7-restore":
                     request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/restore-plan-stats", headers=HEADERS, method="POST")
                     with urllib.request.urlopen(request, timeout=2) as response:

@@ -95,13 +95,15 @@ def create_e2e_app():
             }
             if (request.method == "PATCH" and request.url.path in {"/api/v1/video-tags", "/api/v1/playback-defaults", "/api/v1/reading-defaults"}) or (
                 request.method == "POST" and request.url.path in {
-                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans", "/api/v1/packs/forget-missing"
+                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans", "/api/v1/packs/forget-missing", "/api/v1/pack-restore-plans"
                 }
             ):
                 body = await request.json()
                 entry["command_hash"] = hashlib.sha256(
                     str(body.get("request_id")).encode()
                 ).hexdigest()
+                if request.url.path == "/api/v1/pack-restore-plans":
+                    entry["restore_members"] = sorted(body.get("trash_ids", []))
             if (request.method == "POST" and request.url.path == "/api/v1/roots") or (
                 request.method == "PUT" and request.url.path.startswith("/api/v1/roots/")
             ):
