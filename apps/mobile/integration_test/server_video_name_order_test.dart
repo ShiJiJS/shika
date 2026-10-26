@@ -124,6 +124,7 @@ void main() {
           'texts': texts,
           'round': repo.playbackIdentity,
           'current': repo.current?.id,
+          'library_ready': repo.libraryPreparation.value.ready,
         })}',
       );
       await control('/checkpoint/$state', post: true);
@@ -139,10 +140,17 @@ void main() {
       () =>
           find.byType(VideoCatalogPage).evaluate().length == 1 &&
           catalog().initialized &&
+          repo.libraryPreparation.value.ready &&
           !catalog().data.loading,
       'initial library',
     );
     final names = catalog().data.items.map((v) => v.name).toList();
+    expect(
+      t
+          .widget<FilledButton>(find.widgetWithText(FilledButton, '预览此范围'))
+          .onPressed,
+      isNotNull,
+    );
     expect(names, ['风里的花园.mp4', '水边的花.mp4']);
     final ids = catalog().data.items.map((v) => v.id).toList();
     await until(

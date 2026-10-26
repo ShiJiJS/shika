@@ -188,6 +188,15 @@ void main() {
       await frames(t);
       await t.tap(find.byKey(const Key('preview-end-return')));
       await frames(t);
+      final exitDeadline = DateTime.now().add(const Duration(seconds: 5));
+      while (find
+              .byKey(const Key('video-preview-route'))
+              .evaluate()
+              .isNotEmpty &&
+          DateTime.now().isBefore(exitDeadline)) {
+        await t.runAsync(() => Future<void>.delayed(Duration.zero));
+        await t.pump(const Duration(milliseconds: 100));
+      }
       expect(find.byKey(const Key('video-preview-route')), findsNothing);
       expect(find.byKey(const Key('video-grid')), findsOneWidget);
       expect(
