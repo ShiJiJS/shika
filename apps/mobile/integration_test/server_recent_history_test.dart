@@ -197,6 +197,14 @@ void main() {
       );
       await (pack ? packReady(1) : videoReady(1));
       if (keyboardCaptured.add(pack)) {
+        await until(
+          () =>
+              MediaQuery.of(t.element(find.byKey(const Key('app-shell'))))
+                  .viewInsets
+                  .bottom >
+              0,
+          'actual system keyboard visible',
+        );
         final media = MediaQuery.of(
           t.element(find.byKey(const Key('app-shell'))),
         );
