@@ -2,16 +2,16 @@
 
 更新：2026-10-26。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
-共享布局阶段基线为a9da395；最新图包续读阶段源码为c4aaf3b，见[真实续读约定](LF8-PACK-CONTINUATION.md)与[原生证据](evidence/lf8-pack-continuation/README.md)。后续分类总数阶段源码910cfb2，见[库存约定](LF8-CATALOG-COUNTS.md)与[库存/横屏及续读回归证据](evidence/lf8-catalog-counts/README.md)。该段补同快照总数、未知重试和标签缩高布局；续读段新增真实续读、独立摘要读取与菜单收键盘；共享布局的设置开关、标签确认区和主题稳定证据继续作为历史基线。原型树1cbf605未改。各阶段链接中的实现提交、真实服务/Demo区分、操作步骤与原始证据继续有效，但未来修改后须按受影响路径复核，不能把历史全集视为当前HEAD所有组合已通过。
+共享布局阶段基线为a9da395；最新图包续读阶段源码为c4aaf3b，见[真实续读约定](LF8-PACK-CONTINUATION.md)与[原生证据](evidence/lf8-pack-continuation/README.md)。后续分类总数阶段源码910cfb2，见[库存约定](LF8-CATALOG-COUNTS.md)与[库存/横屏及续读回归证据](evidence/lf8-catalog-counts/README.md)。该段补同快照总数、未知重试和标签缩高布局；续读段新增真实续读、独立摘要读取与菜单收键盘；共享布局的设置开关、标签确认区和主题稳定证据继续作为历史基线。图包呈现/排序阶段为4e391a2，见[约定](LF8-PACK-PRESENTATION.md)与[69点同版证据](evidence/lf8-pack-presentation/README.md)；主标题/作者和完整范围排序已补，新增大字长操作行可达性修正。原型树1cbf605未改。各阶段链接中的实现提交、真实服务/Demo区分、操作步骤与原始证据继续有效，但未来修改后须按受影响路径复核，不能把历史全集视为当前HEAD所有组合已通过。
 
 | 验收ID | 当前证据状态 | 证据入口（含该阶段实现提交/步骤） | 尚需完成 |
 | --- | --- | --- | --- |
 | NAV-01 | 已有阶段证据 / 未收口 | [LF4设计与阶段记录](LF4.md) | 合并当前分支后复跑完整来源/筛选/冷启组合，并记录实际系统返回路径。 |
 | NAV-02 | 已有阶段证据 / 未收口 | [LF4设计与阶段记录](LF4.md) | 合并当前分支后复跑完整来源/筛选/冷启组合，并记录实际系统返回路径。 |
 | NAV-03 | 已有阶段证据 / 未收口 | [LF4设计与阶段记录](LF4.md) | 合并当前分支后复跑完整来源/筛选/冷启组合，并记录实际系统返回路径。 |
-| LIB-01 | 新增分类总数证据 / 未收口 | [LF4阶段记录](LF4.md)、[权威总数](evidence/lf8-catalog-counts/README.md) | 分类总数、筛选分离和真实零已补证；文件名/时长、排序与长列表最终组合继续。 |
-| LIB-02 | 新增续读及总数证据 / 未收口 | [LF4阶段记录](LF4.md)、[续读](evidence/lf8-pack-continuation/README.md)、[总数](evidence/lf8-catalog-counts/README.md) | 标题/作者与一致排序仍有明确原型差异；长列表再收口。 |
-| LIB-03 | 已有阶段证据 / 未收口 | [LF4阶段记录](LF4.md)、[摘要独立于分页](LF8-PACK-CONTINUATION.md) | 超单页续读与晚到摘要已补证；完整来源/排序/跨页失败组合继续。 |
+| LIB-01 | 新增分类总数证据 / 未收口 | [LF4阶段记录](LF4.md)、[权威总数](evidence/lf8-catalog-counts/README.md) | 分类总数、筛选分离和真实零已补证；文件名/时长、视频中文排序与长列表最终组合继续。 |
+| LIB-02 | 新增呈现/排序证据 / 未收口 | [LF4阶段记录](LF4.md)、[续读](evidence/lf8-pack-continuation/README.md)、[总数](evidence/lf8-catalog-counts/README.md)、[呈现/排序](evidence/lf8-pack-presentation/README.md) | 图包标题/作者与完整范围中文排序已补证；共享标签字号/上距、横屏列数及长列表继续。 |
+| LIB-03 | 已有阶段证据 / 未收口 | [LF4阶段记录](LF4.md)、[摘要独立于分页](LF8-PACK-CONTINUATION.md) | 超单页续读、晚到摘要及28包标题排序/锚点/全选/固定范围一致已补证；完整来源/跨页失败组合继续。 |
 | TAG-01 | 已有阶段证据 / 未收口 | [LF1](LF1.md)、[LF4](LF4.md) | 两套真实标签已有阶段证据；名称排序、跨页/编辑/失败和完整视觉仍需最终同版复核。 |
 | TAG-02 | 已有阶段证据 / 未收口 | [LF1](LF1.md)、[LF4](LF4.md) | 两套真实标签已有阶段证据；名称排序、跨页/编辑/失败和完整视觉仍需最终同版复核。 |
 | PRE-01 | 已有阶段证据 / 未收口 | [LF3](LF3.md) | 最终同版手势录屏、全屏/后台/相邻解码与范围组合；目标手机验证。 |
@@ -45,7 +45,7 @@
 | BAK-03 | 已有阶段证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) | backup_v2生产能力仍关闭；真实选择器/大文件有界传输、更多故障与最终整条流程继续。 |
 | UP-01 | 已有阶段证据 / 未收口 | [LF1](LF1.md)、[本机开发配置](../../macos-development.md) | 目标手机原签名覆盖安装、同版旧服务/客户端组合和发布回退演练继续。 |
 | UP-02 | 待发布演练 | [LF1](LF1.md)、[本机开发配置](../../macos-development.md) | 迁移原签名的授权与准备不等于已覆盖安装；未发布本轮APK。 |
-| UI-01 | 局部证据 / 未收口 | [共享差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[续读对照](evidence/lf8-pack-continuation/README.md) | 390宽公共素材的真实原生和HTML已采集，搜索/工具/顶栏/导航尺寸对齐；真实续读与权威分类总数已补证；标题/作者与排序继续。 |
+| UI-01 | 局部证据 / 未收口 | [共享差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[续读对照](evidence/lf8-pack-continuation/README.md) | 390宽公共素材的真实原生和HTML已采集，搜索/工具/顶栏/导航尺寸对齐；真实续读与权威分类总数已补证；图包标题/作者与排序已补证；标签密度/上距、横屏列数和视频中文排序继续。 |
 | UI-02 | 阶段证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 沿用LF3/LF5/LF6局部原生证据；本轮未重新验证阅读器/预览/整理全链和手势录屏。 |
 | UI-03 | 局部证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 设置普通/暗色/页底与共享密度已补证；目录、缺失、回收、备份、任务等完整管理页继续。 |
 | UI-04 | 阶段证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 共享16项针对检查含设置开关语义；新增续读错误/重试、多选收键盘与大字/短横屏证据；库存段补未知重试与标签61dp缩高/恢复。完整原生表单、恢复和其它错误组合继续。 |
@@ -54,7 +54,7 @@
 
 ## 下一段推进顺序
 
-1. 真实续读区和权威分类总数已有阶段证据；继续补保守标题/作者呈现；排序须保持服务端范围/分页一致，不能在App只重排一页。
+1. 真实续读区和权威分类总数已有阶段证据；图包标题/作者与完整范围中文排序已补证；继续共享标签密度、横屏排布及视频中文排序，不在App只重排一页。
 2. 按验收ID复核视频/阅读/管理页面的同状态视觉、键盘和动作，修复影响内容理解或操作的偏差。
 3. 自动化继续覆盖可独立完成的性能样本和升级前置；需要真实手机/NAS配合的部分保留待验证，按用户授权暂时跳过。
 4. 只有全部必要项目逐项通过才关闭#24与LF8，之后交付原签名、递增versionCode的配套版本和回退说明。
@@ -71,3 +71,18 @@
 [设计与异步约定](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-catalog-counts/docs/plans/library-first/LF8-CATALOG-COUNTS.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-catalog-counts/docs/plans/library-first/evidence/lf8-catalog-counts/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-catalog-counts/docs/plans/library-first/RESULTS.md)。本段补LIB-01/02、UI-01/04/05的明确组合，不关闭整项。管理网关用于验证计数更新，不替代删除确认UI验收；MemoryCredentialStore不新增强杀/安全存储证明。
 
 下一段继续保守标题/作者与服务端一致排序，随后完整预览/阅读/管理、键盘手势、500页4K/8K、目标手机/NAS和原签名覆盖升级。冻结原型1cbf605独立可移除，backup_v2保持关闭；未改正式8760/NAS/SDK或发布APK。LF8/#33与总任务/#24保持开放。
+
+
+## 2026-10-26：图包标题、作者与完整范围排序（PR #61）
+
+[Draft PR #61](https://github.com/ShiJiJS/video_viewer/pull/61)基于#60，固定源码4e391a2、证据提交614b135。图包卡片分开标题/作者，未知格式回退原名；原name/path/ID保留。续读、阅读器、范围、详情和最近复用显示标题，阅读头显示作者/编号；阅读角标补实际页码并移到左上，多选隐藏。
+
+能力pack_presentation将App图包名称排序统一映射为title；SQLite内同一ICU中文标题键贯穿分页、锚点、完整全选和创建阅读范围。保留name/默认旧调用、旧固定会话及newest/recent；不在App只重排一页。Docker固定已有ICU运行库，裸环境缺依赖不广告能力；无schema迁移或重扫要求。双倍字号切最近加入曾向右溢出51dp，现大字操作行可横向滚动，保留字号与两端完整动作。
+
+客户端494项、服务端8文件相关111项、analyze/Ruff通过。普通三轮、大字、短横屏共50个展示/排序检查点，另库存9点与续读10点回归；262份manifest输入核对69个前台窗口/原始图、同版源码、SQL范围ID/ordinal、26个源SHA及设备恢复。服务含28包跨页与创建后改名/新增不重排。续读回归的显式refresh沿用一次扫描，标题/库存流程无扫描；不是服务端全集或目标机性能证明。
+
+实际浏览器和原生四包顺序一致；参考以未保存snapshot配置冷库history为空、保留第三张页码，加载的HTML/CSS/运行脚本与冻结Git字节核对。完整并排不挪列或拉伸，已明确保留差异：桌面滚动条使参考列167.5dp/原生173dp，共享标签仍11dp，参考12dp/1.6行高和4dp上距；标签顺序、次要文字颜色、菜单图标与横屏列数继续复核。视频中文排序及完整管理/阅读/预览、手势、500页4K/8K、目标手机/NAS和原签名升级也仍开放。
+
+[设计与兼容约定](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-presentation/docs/plans/library-first/LF8-PACK-PRESENTATION.md) / [原始证据及只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-presentation/docs/plans/library-first/evidence/lf8-pack-presentation/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-presentation/docs/plans/library-first/RESULTS.md)。本段补LIB-02/03及UI-01/04/05局部组合，不关闭整项；未新增独立视觉评审或手势录屏，MemoryCredentialStore不新增强停/安全存储证明。早期验证预期、指标锚点/懒加载与真实大字溢出日志均单列，失败轮次不计正式图。
+
+下一段继续共享卡片标签密度与横屏排布、视频中文排序，再收口完整页面和动作。原型1cbf605独立可移除，backup_v2保持关闭；未改正式8760/NAS/SDK或发布APK。LF8/#33及总任务/#24保持开放。
