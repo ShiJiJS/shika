@@ -94,7 +94,8 @@ void main() {
           find.byKey(const Key('root-path')),
           '/media/packs///',
         );
-        await tap(t, find.byKey(const Key('root-kind-pack')));
+        await tap(t, find.byKey(const Key('root-kind')));
+        await tap(t, find.text('图包文件夹').hitTestable().last);
         await tap(t, find.byKey(const Key('root-enabled')));
         await tap(t, find.byKey(const Key('root-save')));
         expect(repo.calls, 1);
@@ -125,9 +126,16 @@ void main() {
         isFalse,
       );
       await t.enterText(find.byKey(const Key('root-name')), '保留输入');
-      await tap(t, find.byKey(const Key('root-kind-video')));
+      await tap(t, find.byKey(const Key('root-kind')));
+      await tap(t, find.text('视频文件').hitTestable().last);
       await tap(t, find.byKey(const Key('root-save')));
       expect(find.text('已有内容的目录不能更改类型'), findsOneWidget);
+      final error = find.byKey(const Key('root-error'));
+      expect(error.hitTestable(), findsOneWidget);
+      expect(
+        t.getRect(error).bottom,
+        lessThanOrEqualTo(t.getRect(find.byKey(const Key('root-save'))).top),
+      );
       expect(
         t
             .widget<TextField>(find.byKey(const Key('root-name')))

@@ -57,7 +57,7 @@ void main() {
       await t.pumpAndSettle();
       expect(
         t
-            .widget<FilledButton>(find.widgetWithText(FilledButton, '连接'))
+            .widget<FilledButton>(find.byKey(const Key('connection-save')))
             .onPressed,
         isNotNull,
       );

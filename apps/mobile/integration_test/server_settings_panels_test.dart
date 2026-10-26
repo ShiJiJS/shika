@@ -117,12 +117,16 @@ void main() {
         'root-kind',
         'root-enabled',
         'root-save',
+        'root-error',
         'defaults-save',
+        'defaults-error',
         'default-reader-direction',
         'default-reader-fit',
         'default-reader-gap',
         'default-mode-horizontal',
         'default-mode-vertical',
+        'management-header',
+        'root-scan-summary',
       ]) {
         final f = find.byKey(Key(key));
         if (f.evaluate().length == 1 &&
@@ -224,7 +228,12 @@ void main() {
       if (find.byKey(const Key('root-kind')).evaluate().isNotEmpty) {
         await tap(find.byKey(const Key('root-kind')));
       }
-      await tap(find.byKey(Key('root-kind-${kind.name}')).last);
+      await tap(
+        find
+            .text(kind == MediaKind.video ? '视频文件' : '图包文件夹')
+            .hitTestable()
+            .last,
+      );
     }
 
     await settings();
@@ -256,6 +265,9 @@ void main() {
     await settings();
     await tap(find.text('媒体目录'));
     await capture('settings-roots');
+    await tap(find.byKey(const Key('root-scan-summary')));
+    await capture('settings-scan-details');
+    await tap(find.byKey(const Key('root-scan-summary')));
     await tap(find.text('添加目录'));
     await capture('settings-root-add');
     await tap(find.byKey(const Key('root-name')));
@@ -272,6 +284,14 @@ void main() {
     await hideKeyboard();
     await tap(find.byKey(const Key('root-save')));
     expect(find.text('请填写名称和挂载目录'), findsOneWidget);
+    await until(
+      () => find
+          .byKey(const Key('root-error'))
+          .hitTestable()
+          .evaluate()
+          .isNotEmpty,
+      'visible root validation',
+    );
     expect(
       t.widget<TextField>(find.byKey(const Key('root-name'))).controller!.text,
       '保留目录草稿',
@@ -290,6 +310,14 @@ void main() {
     await until(
       () => find.textContaining('已有内容的目录不能直接更改媒体类型').evaluate().isNotEmpty,
       'actual root kind conflict',
+    );
+    await until(
+      () => find
+          .byKey(const Key('root-error'))
+          .hitTestable()
+          .evaluate()
+          .isNotEmpty,
+      'visible root conflict',
     );
     expect(
       t.widget<TextField>(find.byKey(const Key('root-name'))).controller!.text,

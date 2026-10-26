@@ -1,4 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+
+/// Keep failures visible when a form's submit action is outside its scroll body.
+void revealFormError(GlobalKey anchor) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    final context = anchor.currentContext;
+    if (context == null || !context.mounted) return;
+    unawaited(
+      Scrollable.ensureVisible(
+        context,
+        alignment: .5,
+        duration: MediaQuery.disableAnimationsOf(context)
+            ? Duration.zero
+            : const Duration(milliseconds: 160),
+      ),
+    );
+  });
+}
 
 class PaperPalette {
   const PaperPalette(this.dark);
@@ -104,6 +123,7 @@ abstract final class Paper {
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: p.background,
+        constraints: const BoxConstraints(maxWidth: double.infinity),
         showDragHandle: false,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(21)),

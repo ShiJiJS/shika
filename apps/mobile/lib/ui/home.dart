@@ -20,6 +20,7 @@ import '../features/settings/media_root_sheet.dart';
 import '../features/settings/missing_media_page.dart';
 import '../library/repository.dart';
 import 'paper.dart';
+import 'media_layout.dart';
 import 'preference_switch.dart';
 import 'player.dart';
 import 'sheets.dart';
@@ -145,7 +146,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     'trash': '回收站',
     'backup': '备份与恢复',
     'tasks': '操作任务',
-    'connection': '连接',
+    'connection': data.connected ? '服务器连接' : '连接',
   }[page]!;
   bool get mediaPage => page == 'browse' || page == 'library';
   bool get primaryPage =>
@@ -1050,7 +1051,8 @@ class _LibraryHomeState extends State<LibraryHome> {
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            height: 52,
+            key: const Key('management-header'),
+            height: MediaLayout.headerExtent(context),
             child: Padding(
               padding: const EdgeInsets.only(left: 16, right: 12),
               child: Row(
@@ -2322,12 +2324,16 @@ class _LibraryHomeState extends State<LibraryHome> {
   Widget connection() => ListView(
     padding: const EdgeInsets.all(20),
     children: [
-      Text('连接你的视频库', style: Paper.of(context).title),
-      const SizedBox(height: 26),
+      if (!data.connected) Text('连接你的视频库', style: Paper.of(context).title),
+      note('视频和图包共用同一媒体服务。'),
+      const SizedBox(height: 12),
       TextField(
         key: const Key('connection-address'),
         controller: address,
         enabled: !_busy,
+        keyboardType: TextInputType.url,
+        textInputAction: TextInputAction.next,
+        autocorrect: false,
         decoration: const InputDecoration(labelText: '服务地址'),
       ),
       const SizedBox(height: 20),
@@ -2336,6 +2342,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         controller: port,
         enabled: !_busy,
         keyboardType: TextInputType.number,
+        textInputAction: TextInputAction.next,
         decoration: const InputDecoration(labelText: '端口'),
       ),
       const SizedBox(height: 20),
@@ -2344,9 +2351,12 @@ class _LibraryHomeState extends State<LibraryHome> {
         controller: passphrase,
         enabled: !_busy,
         obscureText: true,
+        autocorrect: false,
+        enableSuggestions: false,
         decoration: const InputDecoration(labelText: '个人口令'),
       ),
-      const SizedBox(height: 26),
+      note('口令不进入管理数据备份。'),
+      const SizedBox(height: 8),
       FilledButton(
         key: const Key('connection-save'),
         onPressed: _busy
@@ -2364,14 +2374,31 @@ class _LibraryHomeState extends State<LibraryHome> {
                   go(repo.backupRestorePending ? 'backup' : landing);
                 }
               },
-        child: Text(_busy ? '正在连接…' : '连接'),
+        child: Text(
+          _busy
+              ? '正在连接…'
+              : data.connected
+              ? '连接并保存'
+              : '连接',
+        ),
       ),
     ],
   );
+  bool get rootScanNeedsAttention {
+    final state = repo.libraryPreparation.value;
+    return !state.ready ||
+        state.scanning ||
+        state.syncError != null ||
+        state.failed > 0 ||
+        state.thumbnailFailed > 0 ||
+        state.deferred > 0 ||
+        state.failureDetail.isNotEmpty;
+  }
+
   Widget roots() => ListView(
     padding: const EdgeInsets.symmetric(horizontal: 20),
     children: [
-      if (repo is! DemoControls) ...[
+      if (repo is! DemoControls && rootScanNeedsAttention) ...[
         preparationCard(),
         const SizedBox(height: 12),
       ],
@@ -2385,24 +2412,52 @@ class _LibraryHomeState extends State<LibraryHome> {
         ],
       ),
       for (final r in data.roots)
-        ListTile(
+        Container(
           key: Key('root-${r.id}'),
-          contentPadding: EdgeInsets.zero,
-          leading: const Icon(Icons.folder_outlined),
-          title: Text(r.name),
-          subtitle: Text(
-            '${r.path}\n${r.kind == MediaKind.video ? '视频' : '图包'} · ${rootScanLabel(r)}',
-            style: TextStyle(
-              fontSize: 12,
-              color: !r.enabled || r.available
-                  ? Paper.of(context).olive
-                  : Paper.of(context).danger,
-            ),
+          padding: const EdgeInsets.symmetric(vertical: 13),
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Paper.of(context).line)),
           ),
-          trailing: iconAction(
-            '编辑目录 ${r.name}',
-            Icons.edit_outlined,
-            busy ? null : () => rootForm(r),
+          child: Row(
+            children: [
+              const Icon(Icons.folder_outlined),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      r.name,
+                      style: Paper.of(context).title
+                          .copyWith(fontSize: 15, height: 1.6),
+                    ),
+                    Text(
+                      r.path,
+                      style: TextStyle(
+                        fontSize: 12,
+                        height: 1.7,
+                        color: Paper.of(context).catalogMeta,
+                      ),
+                    ),
+                    Text(
+                      '${r.kind == MediaKind.video ? '视频' : '图包'} · ${r.enabled ? '已启用 · ' : ''}${rootScanLabel(r)}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        height: 1.7,
+                        color: !r.enabled || r.available
+                            ? Paper.of(context).catalogMeta
+                            : Paper.of(context).danger,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              iconAction(
+                '编辑目录 ${r.name}',
+                Icons.edit_outlined,
+                busy ? null : () => rootForm(r),
+              ),
+            ],
           ),
         ),
       const SizedBox(height: 20),
@@ -2417,6 +2472,20 @@ class _LibraryHomeState extends State<LibraryHome> {
           repo.libraryPreparation.value.scanning ? '同步进行中' : '同步外部变更',
         ),
       ),
+      if (repo is! DemoControls && !rootScanNeedsAttention)
+        ExpansionTile(
+          key: const Key('root-scan-details'),
+          tilePadding: EdgeInsets.zero,
+          title: Text(
+            repo.libraryPreparation.value.summary,
+            key: const Key('root-scan-summary'),
+            style: TextStyle(
+              fontSize: 13,
+              color: Paper.of(context).catalogMeta,
+            ),
+          ),
+          children: [preparationCard()],
+        ),
       if (repo.capabilities.packMissingCleanup)
         settingRow(
           Icons.broken_image_outlined,
@@ -2470,6 +2539,7 @@ class _LibraryHomeState extends State<LibraryHome> {
           child: const Text('重试读取缺失记录'),
         ),
       ],
+      note('图包目录的直属文件夹识别为包，包内递归读取图片；不会改变源文件位置。'),
       const SizedBox(height: 20),
     ],
   );

@@ -182,9 +182,11 @@ void main() {
       );
       await open('阅读偏好');
       await tap(find.text('纵向拼接'));
-      await tap(find.text('从右向左'));
-      await tap(find.text('图片间距'));
-      await tap(find.text('铺满宽度'));
+      await tap(find.byKey(const Key('default-reader-direction')));
+      await tap(find.text('从右向左').last);
+      await tap(find.byKey(const Key('default-reader-gap')));
+      await tap(find.byKey(const Key('default-reader-fit')));
+      await tap(find.text('铺满宽度').last);
       await shot('reader');
       await fixture('/__fixture/actions/lose-default-response');
       await tap(find.text('保存默认设置'));
@@ -240,10 +242,17 @@ void main() {
       await tap(find.byKey(const Key('nav-settings')));
       await open('阅读偏好');
       await shot('reopened');
-      final chosen = t.widget<ChoiceChip>(
-        find.widgetWithText(ChoiceChip, '纵向拼接'),
+      final chosen = t.widget<Semantics>(
+        find
+            .ancestor(
+              of: find.byKey(const Key('default-mode-vertical')),
+              matching: find.byWidgetPredicate(
+                (w) => w is Semantics && w.properties.selected != null,
+              ),
+            )
+            .first,
       );
-      expect(chosen.selected, isTrue);
+      expect(chosen.properties.selected, isTrue);
       await tap(find.byTooltip('关闭面板'));
       await open('默认播放顺序');
       expect(find.textContaining('此设备旧默认'), findsNothing);
