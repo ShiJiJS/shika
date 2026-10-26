@@ -1,0 +1,43 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart
+Running Gradle task 'assembleDebug'...                             17.7s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          503ms
+00:00 +0: LF7 real root policy, missing-pack preservation and original cleanup receipt
+MISSING_METRICS:{"state":"roots-created","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{}}
+MISSING_METRICS:{"state":"roots-disabled","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{}}
+MISSING_METRICS:{"state":"roots-conflict","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{}}
+MISSING_METRICS:{"state":"missing-empty-video","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334]}}
+MISSING_METRICS:{"state":"missing-first","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334]}}
+MISSING_METRICS:{"state":"missing-paged","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334],"clear-missing-kind":[20.0,415.66666666666663,350.0,48.0]}}
+MISSING_METRICS:{"state":"missing-confirm-cancel","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334],"clear-missing-kind":[20.0,415.66666666666663,350.0,48.0],"missing-confirm":[237.4003677368164,756.0,132.5996322631836,48.0]}}
+MISSING_METRICS:{"state":"missing-preserved","window":[390.0,844.0],"dpr":3.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"text13":13.0,"dark":false,"rects":{"missing-header":[0.0,47.666666666666664,390.0,51.99999999999999],"missing-list":[0.0,99.66666666666666,390.0,720.3333333333334],"missing-cleanup-task":[20.0,254.66666666666666,350.0,107.99999999999997]}}
+缺失内容 | 图包17 | /media/shorts/图包/图包17 | 图包 | 已确认缺失 | 图包18 | /media/shorts/图包/图包18 | 图包 | 已确认缺失 | 图包19 | /media/shorts/图包/图包19 | 图包 | 已确认缺失 | 图包20 | /media/shorts/图包/图包20 | 图包 | 已确认缺失 | 图包21 | /media/shorts/图包/图包21 | 图包 | 已确认缺失 | 图包22 | /media/shorts/图包/图包22 | 图包 | 已确认缺失 | 图包23 | /media/shorts/图包/图包23 | 图包 | 已确认缺失 | 图包24 | /media/shorts/图包/图包24 | 图包 | 已确认缺失
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Timed out: unknown cleanup
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:76:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart:334:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF7 real root policy, missing-pack preservation and original cleanup receipt
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:53 +0 -1: LF7 real root policy, missing-pack preservation and original cleanup receipt [E]
+  Test failed. See exception logs above.
+  The test description was: LF7 real root policy, missing-pack preservation and original cleanup receipt
+  
+01:53 +0 -1: (tearDownAll)
+01:54 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_roots_missing_test.dart: LF7 real root policy, missing-pack preservation and original cleanup receipt

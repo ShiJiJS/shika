@@ -1,0 +1,24 @@
+{
+  "procName": "qemu-system-aarch64-headless",
+  "captureTime": "2026-10-26 19:20:01.5160 +0800",
+  "exception": {
+    "codes": "0x0000000000000001, 0x0000000000000000",
+    "rawCodes": [
+      1,
+      0
+    ],
+    "type": "EXC_BAD_ACCESS",
+    "signal": "SIGSEGV",
+    "subtype": "KERN_INVALID_ADDRESS at 0x0000000000000000"
+  },
+  "termination": {
+    "flags": 0,
+    "code": 11,
+    "namespace": "SIGNAL",
+    "indicator": "Segmentation fault: 11",
+    "byProc": "exc handler",
+    "byPid": 10489
+  },
+  "faultingThread": 3,
+  "asi": null
+}
