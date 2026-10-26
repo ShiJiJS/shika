@@ -12,9 +12,12 @@ from pathlib import Path
 from fastapi import Header, HTTPException
 from fastapi.responses import JSONResponse
 from sqlalchemy import select
+from starlette.concurrency import run_in_threadpool
 
 from video_viewer import scanner as scan_module
 from video_viewer.app import create_app
+from video_viewer.authority import HEADER as EPOCH_HEADER
+from video_viewer.authority import Authority
 from video_viewer.config import Settings
 from video_viewer.file_transfer import rename_new
 from video_viewer.media import MediaInspectionError
@@ -145,7 +148,14 @@ def create_e2e_app():
             if controls["fail_tag_results"] and request.method == "GET" and request.url.path == "/api/v1/videos" and request.query_params.get("source") == "tags" and request.query_params.get("limit") == "24":
                 controls["fail_tag_results"] = False
                 entry["status"] = 503
-                return JSONResponse({"error": {"code": "fixture_tag_results", "message": "标签结果暂时无法读取，请重试"}}, status_code=503)
+                def current_epoch():
+                    with app.state.db.read() as session:
+                        return Authority.current(session)
+                return JSONResponse(
+                    {"error": {"code": "fixture_tag_results", "message": "标签结果暂时无法读取，请重试"}},
+                    status_code=503,
+                    headers={EPOCH_HEADER: await run_in_threadpool(current_epoch)},
+                )
             if controls["slow_page"] and request.url.path == "/api/v1/videos" and int(request.query_params.get("offset", "0")) > 0:
                 await asyncio.sleep(3)
             if controls["fail_streams"] and request.url.path.endswith("/stream"):
