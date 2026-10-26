@@ -587,7 +587,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
                       ),
                     if (total > limit || offset > 0)
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        padding: const EdgeInsets.symmetric(vertical: 4),
                         child: Wrap(
                           spacing: 12,
                           runSpacing: 8,
