@@ -146,6 +146,8 @@ void main() {
           'textScale': media.textScaler.scale(14) / 14,
           'texts': texts,
           'keys': keys,
+          'queue_decoded': find.descendant(of: find.byKey(const Key('preview-queue')), matching: find.byType(RawImage)).evaluate().where((e) => (e.widget as RawImage).image != null).length,
+          'queue_order_enabled': find.byKey(const Key('queue-order-sequential')).evaluate().isEmpty ? null : t.widget<ChoiceChip>(find.byKey(const Key('queue-order-sequential'))).onSelected != null,
           'dark': preferences.dark,
           'players': players?.map((p) => {'initialized': p.value.isInitialized, 'playing': p.value.isPlaying, 'position_ms': p.value.position.inMilliseconds, 'speed': p.value.playbackSpeed}).toList(),
           'round': repo.playbackIdentity,
@@ -386,6 +388,31 @@ void main() {
     final queueIds = rows.map((r) => r['video']['id'] as String).toList();
     expect(queueIds, ids);
     expect(repo.current!.id, ids.first);
+    await until(
+      () =>
+          t
+                  .widget<ChoiceChip>(
+                    find.byKey(const Key('queue-order-sequential')),
+                  )
+                  .onSelected !=
+              null &&
+          find
+                  .byKey(Key('queue-video-${ids.first}'))
+                  .hitTestable()
+                  .evaluate()
+                  .length ==
+              1 &&
+          find
+                  .descendant(
+                    of: find.byKey(const Key('preview-queue')),
+                    matching: find.byType(RawImage),
+                  )
+                  .evaluate()
+                  .where((e) => (e.widget as RawImage).image != null)
+                  .length >=
+              2,
+      'queue operation completed and both real cover frames decoded',
+    );
     await capture('preview-queue');
     await tap(find.byKey(Key('queue-video-${ids.last}')));
     await until(
