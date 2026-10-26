@@ -141,14 +141,54 @@ class _PackFileActionState extends State<PackFileAction> {
   @override
   Widget build(BuildContext context) => SheetFrame(
     title: attempted ? '核对图包操作' : widget.title,
+    footer: Wrap(
+      alignment: WrapAlignment.end,
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(attempted ? '稍后处理' : '取消'),
+        ),
+        if (resend)
+          TextButton(
+            onPressed: busy ? null : () => perform(true),
+            child: const Text('重新提交原请求'),
+          ),
+        FilledButton(
+          style: attempted || !['trash', 'permanent'].contains(command.kind)
+              ? null
+              : FilledButton.styleFrom(
+                  backgroundColor: Paper.of(context).danger,
+                  foregroundColor: Theme.of(context).colorScheme.onError,
+                ),
+          onPressed: busy ? null : () => perform(!attempted),
+          child: Text(attempted ? '查询原结果' : actionLabel),
+        ),
+      ],
+    ),
     children: [
       if (widget.description != null)
         Padding(
           padding: const EdgeInsets.only(bottom: 12),
-          child: Text(widget.description!),
+          child: Text(
+            widget.description!,
+            style: TextStyle(
+              fontSize: 13,
+              height: 1.7,
+              color: Paper.of(context).catalogMeta,
+            ),
+          ),
         ),
       if (!attempted && widget.confirm && command.kind == 'trash')
-        const Text('从媒体库中移除，保留源文件、整包标签和阅读进度。可以在图包回收站恢复。'),
+        Text(
+          '从媒体库中移除，保留源文件、整包标签和阅读进度。可以在图包回收站恢复。',
+          style: TextStyle(
+            fontSize: 13,
+            height: 1.7,
+            color: Paper.of(context).catalogMeta,
+          ),
+        ),
       if (busy)
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
@@ -157,35 +197,16 @@ class _PackFileActionState extends State<PackFileAction> {
       if (error.isNotEmpty)
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Text(error, key: const Key('pack-operation-error')),
-        ),
-      const SizedBox(height: 16),
-      Wrap(
-        alignment: WrapAlignment.end,
-        spacing: 8,
-        runSpacing: 8,
-        children: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(attempted ? '稍后处理' : '取消'),
-          ),
-          if (resend)
-            TextButton(
-              onPressed: busy ? null : () => perform(true),
-              child: const Text('重新提交原请求'),
+          child: Text(
+            error,
+            key: const Key('pack-operation-error'),
+            style: TextStyle(
+              fontSize: 13,
+              height: 1.7,
+              color: Paper.of(context).danger,
             ),
-          FilledButton(
-            style: attempted || !['trash', 'permanent'].contains(command.kind)
-                ? null
-                : FilledButton.styleFrom(
-                    backgroundColor: Paper.of(context).danger,
-                    foregroundColor: Theme.of(context).colorScheme.onError,
-                  ),
-            onPressed: busy ? null : () => perform(!attempted),
-            child: Text(attempted ? '查询原结果' : actionLabel),
           ),
-        ],
-      ),
+        ),
     ],
   );
 }

@@ -47,7 +47,7 @@
 | DEL-02 | 已有阶段证据 / 未收口 | [LF6](LF6.md)、[LF7](LF7.md) | 各类原操作与连接/重开组合继续；截图不替代源文件/回执的已有精确证据。 |
 | DEL-03 | 已有阶段证据 / 未收口 | [LF6](LF6.md)、[LF7](LF7.md) | 各类原操作与连接/重开组合继续；截图不替代源文件/回执的已有精确证据。 |
 | DEL-04 | 新增双类型回收站证据 / 未收口 | [LF6](LF6.md)、[LF7](LF7.md)、[回收站45点](evidence/lf8-trash-management/README.md) | 各类原操作与连接/重开组合继续；截图不替代源文件/回执的已有精确证据。 |
-| DEL-05 | 已有阶段证据 / 未收口 | [LF6](LF6.md)、[LF7](LF7.md) | 各类原操作与连接/重开组合继续；截图不替代源文件/回执的已有精确证据。 |
+| DEL-05 | 新增永久删除复核与部分失败证据 / 未收口 | [LF6](LF6.md)、[LF7](LF7.md)、[本轮36点](evidence/lf8-purge-management/README.md) | 精确计划／一次删除／同任务重试与27附件保留已核对；更多批次、断电和连接／重开组合继续。 |
 | DEL-06 | 新增双类型回收站证据 / 未收口 | [LF6](LF6.md)、[LF7](LF7.md)、[缺失39+4点](evidence/lf8-missing-management/README.md)、[回收站45点](evidence/lf8-trash-management/README.md) | 已受理丢回执后同进程重建仅GET原请求、不重放清理已补；各类原操作/连接/真实强停组合继续。 |
 | SET-01 | 新增连接表单证据 / 未收口 | [LF7](LF7.md)、[设置155点](evidence/lf8-settings-forms/README.md) | 真实端口错误/输入保留和普通、大字、横屏IME已补；完整旧服务/升级组合继续。 |
 | SET-02 | 新增默认表单证据 / 未收口 | [LF7](LF7.md)、[设置155点](evidence/lf8-settings-forms/README.md) | 模式/方向/间距/适配、取消零写、保存读回恢复与固定当前范围已补；全部新范围入口/迁移/故障和备份v2组合继续。 |
@@ -61,9 +61,9 @@
 | UP-02 | 待发布演练 | [LF1](LF1.md)、[本机开发配置](../../macos-development.md) | 迁移原签名的授权与准备不等于已覆盖安装；未发布本轮APK。 |
 | UI-01 | 新增最近完整形态对照 / 未收口 | [共享差异审计](LF8-SHARED-GEOMETRY.md)、[最近最终证据](evidence/lf8-recent-history-final/README.md) | 最近两类111dp行、空态、显示标题/时长已补同状态原型对照，保留真实总数兼容差异；标签顺序/图标和其它完整页面继续。 |
 | UI-02 | 新增阅读/预览对照 / 未收口 | [阅读器82点](evidence/lf8-reader-chrome/README.md)、[预览125点](evidence/lf8-preview-panels/README.md)、[几何100点](evidence/lf8-preview-geometry/README.md) | 普通/大字/短横屏画布、四工具/来源、范围与设置两轮视觉问题清单完成；完整预览/整理全链及手势录屏继续。 预览段补同源普通三轮/大字/短横屏、控制条避让与结束返回；几何段100点补短队列高度、横屏全宽、Paper轮廓及紧凑整理条，大字孤字/动作权重复核关闭；完整动作/其它状态继续。 |
-| UI-03 | 新增备份与任务管理证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[设置155点](evidence/lf8-settings-forms/README.md)、[回收站45点](evidence/lf8-trash-management/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 连接、媒体目录、默认偏好与缺失页指定浅暗状态已复核；缺失另补39+4点同生产源码，1问题/1提升关闭；回收站指定流程另补45点；永久删除复核、备份与任务等完整管理页继续。  本段补备份开放行、短／长恢复、任务同一正文滚动与详情，真实IME／三视口／失败保页，静态证据边界见本段说明。 |
-| UI-04 | 新增备份与任务管理证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[设置155点](evidence/lf8-settings-forms/README.md)、[回收站45点](evidence/lf8-trash-management/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 共享16项针对检查含设置开关语义；新增续读错误/重试、多选收键盘与大字/短横屏证据；库存段补未知重试与标签61dp缩高/恢复。最近段补两类503保留/重试及真实键盘，错误提示问题复核关闭；完整表单与其它恢复组合继续。 阅读段补设置/范围固定底部动作和长正文滚动检查、四视口设置语义及HTTP图片错误回归。 预览段补长来源滚动/当前定位、偏好文件保存读回与失败保留、面板覆盖禁用播放/速度。 设置段补真实IME与可见焦点、错误滚入、默认值保存读回及三种视口同清单复核，完整其它状态继续。  缺失段补四视口组件、同源39+4点与完整确认末尾，长列表错误/原请求显露和成功翻页起点已修正。  本段补备份开放行、短／长恢复、任务同一正文滚动与详情，真实IME／三视口／失败保页，静态证据边界见本段说明。 |
-| UI-05 | 新增备份与任务管理证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[卡片/网格](evidence/lf8-card-layout/README.md)、[设置155点](evidence/lf8-settings-forms/README.md)、[回收站45点](evidence/lf8-trash-management/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 最近段同源普通三轮/大字/短横屏及真实键盘已补，双倍字号完整按钮裁切修正复核关闭；120项两类组件验证旋转/字号变更锚点及不重查，原生固定视口不冒充深列表旋转。完整状态与目标设备继续。 阅读段另补同源码普通三轮/大字/短横屏，组件双向旋转保持同页比例；固定视口原生不冒充实际旋转。 预览段补同源普通三轮/大字/短横屏、控制条避让与结束返回；几何段100点补短队列高度、横屏全宽、Paper轮廓及紧凑整理条，大字孤字/动作权重复核关闭；完整动作/其它状态继续。 设置段补真实IME与可见焦点、错误滚入、默认值保存读回及三种视口同清单复核，完整其它状态继续。  缺失段补四视口组件、同源39+4点与完整确认末尾，长列表错误/原请求显露和成功翻页起点已修正。  本段补备份开放行、短／长恢复、任务同一正文滚动与详情，真实IME／三视口／失败保页，静态证据边界见本段说明。 |
+| UI-03 | 新增永久删除管理证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[设置155点](evidence/lf8-settings-forms/README.md)、[回收站45点](evidence/lf8-trash-management/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 连接、媒体目录、默认偏好与缺失页指定浅暗状态已复核；缺失另补39+4点同生产源码，1问题/1提升关闭；回收站指定流程另补45点；更多管理状态组合继续。  本段补备份开放行、短／长恢复、任务同一正文滚动与详情，真实IME／三视口／失败保页，静态证据边界见本段说明。 本段补永久删除短复核与完整清单／结果、三视口36点、翻页失败保页和稳定浅暗动作；[原始证据与边界](evidence/lf8-purge-management/README.md)。 |
+| UI-04 | 新增永久删除管理证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[设置155点](evidence/lf8-settings-forms/README.md)、[回收站45点](evidence/lf8-trash-management/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 共享16项针对检查含设置开关语义；新增续读错误/重试、多选收键盘与大字/短横屏证据；库存段补未知重试与标签61dp缩高/恢复。最近段补两类503保留/重试及真实键盘，错误提示问题复核关闭；完整表单与其它恢复组合继续。 阅读段补设置/范围固定底部动作和长正文滚动检查、四视口设置语义及HTTP图片错误回归。 预览段补长来源滚动/当前定位、偏好文件保存读回与失败保留、面板覆盖禁用播放/速度。 设置段补真实IME与可见焦点、错误滚入、默认值保存读回及三种视口同清单复核，完整其它状态继续。  缺失段补四视口组件、同源39+4点与完整确认末尾，长列表错误/原请求显露和成功翻页起点已修正。  本段补备份开放行、短／长恢复、任务同一正文滚动与详情，真实IME／三视口／失败保页，静态证据边界见本段说明。 本段补永久删除短复核与完整清单／结果、三视口36点、翻页失败保页和稳定浅暗动作；[原始证据与边界](evidence/lf8-purge-management/README.md)。 |
+| UI-05 | 新增永久删除管理证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[卡片/网格](evidence/lf8-card-layout/README.md)、[设置155点](evidence/lf8-settings-forms/README.md)、[回收站45点](evidence/lf8-trash-management/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 最近段同源普通三轮/大字/短横屏及真实键盘已补，双倍字号完整按钮裁切修正复核关闭；120项两类组件验证旋转/字号变更锚点及不重查，原生固定视口不冒充深列表旋转。完整状态与目标设备继续。 阅读段另补同源码普通三轮/大字/短横屏，组件双向旋转保持同页比例；固定视口原生不冒充实际旋转。 预览段补同源普通三轮/大字/短横屏、控制条避让与结束返回；几何段100点补短队列高度、横屏全宽、Paper轮廓及紧凑整理条，大字孤字/动作权重复核关闭；完整动作/其它状态继续。 设置段补真实IME与可见焦点、错误滚入、默认值保存读回及三种视口同清单复核，完整其它状态继续。  缺失段补四视口组件、同源39+4点与完整确认末尾，长列表错误/原请求显露和成功翻页起点已修正。  本段补备份开放行、短／长恢复、任务同一正文滚动与详情，真实IME／三视口／失败保页，静态证据边界见本段说明。 本段补永久删除短复核与完整清单／结果、三视口36点、翻页失败保页和稳定浅暗动作；[原始证据与边界](evidence/lf8-purge-management/README.md)。 |
 | UI-06 | 待完整动作收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 沿用已有路由/加载与减少动态效果；新增续读有逐步点击/回读，但尚无完整动作时长/手势录屏。 |
 
 ## 下一段推进顺序
@@ -206,3 +206,14 @@
 独立存量六份静态报告按冻结2问题／2提升复核，可见项已闭合；v1响应式确认行、暗色跨页详情和部分archive字段不在对应帧内，未扩大为所有组合或手势／动效通过。原始日志的尾随空白保留，源文件与文档另通过diff检查。
 
 [实现与边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-backup-task-management/docs/plans/library-first/LF8-BACKUP-TASK-MANAGEMENT.md) / [原图、固定源码及只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-backup-task-management/docs/plans/library-first/evidence/lf8-backup-task-management/README.md)。本段补BAK-01/02/03与UI-03/04/05明确组合，不勾选整体验收。永久删除复核／部分失败、大文件／更多备份故障与实际选择器、完整预览／阅读手势、500页4K/8K、目标手机/NAS及原签名升级继续；需配合部分按授权暂跳过。冻结原型1cbf605独立未改且可移除，backup_v2生产仍关闭，未发布APK或改正式8760/NAS/SDK。#24/#33保持开放。
+
+
+## 2026-10-27：永久删除复核、完整清单与部分失败（PR #72）
+
+[Draft PR #72](https://github.com/ShiJiJS/video_viewer/pull/72) 基于#71，最终源码35a29d4，证据提交adeb1e2及527份manifest输入已逐字节复核。视频采用短底部前置勾选确认，图包保留精确图片清单／摘要／有效期和附件保留；保存选择、图包／图片清单及结果改为完整Paper管理页，20dp正文、52／72dp页头、单一正文滚动、真实分页和原请求／原任务重试。成功翻页归位，失败保页并揭示错误，完成空态移除零项页控。
+
+90项相关客户端检查连续三轮、analyze、11个变更Dart文件格式与Ruff通过；未重跑客户端或服务端全集。普通／双倍字号／短横屏各12点，同源码36个原生前台点。每轮108份真实源文件，取消／保存重开零物理提交；两次准备503/202、一次删除503、一次原任务重试202。相同task/plan逐项结果与SHA核对，最终差集恰为清单3张图片，其余105份SHA不变，27份附件保留、目录retained。视频原生仅取消确认；勾选分发与代次变化由组件边界检查，不外推真实视频源删除。
+
+独立存量首轮冻结1问题／1提升，三视口36张最终PNG均已亲看，原1问题／1提升在可见范围闭合；静态图不认证动效／手势与行为。初次暗色图捕到主题与嵌套文字过渡中间帧，最终等待过渡结束并检查三个实际按钮文字／背景对比≥4.5，未更换主题色板。失败脚本定位、busy无限加载、长清单揭示距离和Demo队列测试诊断单列保留，不计最终成功点。
+
+[实现与边界](LF8-PURGE-MANAGEMENT.md) / [原图、固定源码与只读复核](evidence/lf8-purge-management/README.md)。本段补DEL-05与UI-03/04/05明确组合，不关闭整体验收。更多批次／断电、备份大文件／故障／系统选择器、预览／阅读其它异常与手势、500页4K/8K、目标手机/NAS与原签名覆盖升级继续；需配合部分按授权暂跳过。冻结原型1cbf605独立未改且可移除，backup_v2生产仍关闭，未发布APK或改正式8760/NAS/SDK。#24/#33保持开放。

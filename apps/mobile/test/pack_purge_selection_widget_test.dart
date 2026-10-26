@@ -135,7 +135,7 @@ void main() {
         await tap(t, find.text('取消').last);
         expect(repo.physicalPosts, hasLength(1));
         expect(remaining.every(repo.records.containsKey), isTrue);
-        await tap(t, find.byTooltip('Back'));
+        await tap(t, find.byTooltip('返回回收站'));
         await tap(t, find.byKey(const Key('pack-trash-saved-purge')));
         expect(find.text('27 个未提交'), findsOneWidget);
         expect(repo.physicalPosts, hasLength(1));
@@ -166,7 +166,7 @@ void main() {
       expect(repo.queries, 0);
       expect(repo.preparations, isEmpty);
       expect(repo.physicalPosts, isEmpty);
-      await tap(t, find.byTooltip('Back'));
+      await tap(t, find.byTooltip('返回回收站'));
       await repo.journal.historicalPurgeSelections('trash-fixture');
       repo.localReceipts = [
         MaintenanceReceipt(
@@ -225,6 +225,98 @@ void main() {
       expect(await choices.list(), isEmpty);
       expect((await files.pending()).single.requestId, 'unknown');
       expect(repo.physicalPosts, hasLength(1));
+    },
+  );
+  testWidgets(
+    'saved choice keeps readable primary ink when appearance changes while open',
+    (t) async {
+      final repo = PurgeLibrary(count: 1);
+      await repo.initialize();
+      final saved = await PackPurgeSelections(repo.createPackFiles())
+          .save(['trash-0']);
+      final dark = ValueNotifier(false);
+      t.view.physicalSize = const Size(390, 844);
+      t.view.devicePixelRatio = 1;
+      addTearDown(() async {
+        await t.pumpWidget(const SizedBox());
+        repo.dispose();
+        dark.dispose();
+        t.view.resetPhysicalSize();
+        t.view.resetDevicePixelRatio();
+      });
+      await t.pumpWidget(
+        ValueListenableBuilder<bool>(
+          valueListenable: dark,
+          builder: (context, value, _) => MaterialApp(
+            theme: Paper.theme,
+            darkTheme: Paper.darkTheme,
+            themeMode: value ? ThemeMode.dark : ThemeMode.light,
+            home: Builder(
+              builder: (context) => Scaffold(
+                body: TextButton(
+                  onPressed: () => Navigator.of(context).push<void>(
+                    MaterialPageRoute(
+                      builder: (_) => PackPurgeSelectionPage(
+                        repository: repo,
+                        selectionId: saved.id,
+                      ),
+                    ),
+                  ),
+                  child: const Text('打开选择'),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await t.pumpAndSettle();
+      await tap(t, find.text('打开选择'));
+      for (final value in [false, true, false]) {
+        dark.value = value;
+        await t.pumpAndSettle();
+        for (final label in ['重新读取', '移除保存的选择', '核对下一批 1 个']) {
+          final text = find.text(label);
+          final span = t
+              .widget<RichText>(
+                find.descendant(of: text, matching: find.byType(RichText)),
+              )
+              .text;
+          final background = label.startsWith('核对')
+              ? t
+                    .widget<Material>(
+                      find
+                          .descendant(
+                            of: find.byKey(const Key('purge-selection-next')),
+                            matching: find.byType(Material),
+                          )
+                          .first,
+                    )
+                    .color!
+              : Theme.of(t.element(text)).scaffoldBackgroundColor;
+          final a = span.style!.color!.computeLuminance(),
+              b = background.computeLuminance();
+          expect(
+            ((a > b ? a : b) + .05) / ((a > b ? b : a) + .05),
+            greaterThanOrEqualTo(4.5),
+            reason:
+                '$label dark=$value foreground=${span.style!.color} background=$background',
+          );
+        }
+        final heading = find.text('原选择 1 个图包');
+        final rich = t.widget<RichText>(
+          find.descendant(of: heading, matching: find.byType(RichText)),
+        );
+        final foreground = rich.text.style!.color!;
+        final background = Theme.of(t.element(heading)).scaffoldBackgroundColor;
+        final a = foreground.computeLuminance(),
+            b = background.computeLuminance();
+        final contrast = ((a > b ? a : b) + .05) / ((a > b ? b : a) + .05);
+        expect(
+          contrast,
+          greaterThanOrEqualTo(4.5),
+          reason: 'The rendered heading must remain readable against its current page',
+        );
+      }
     },
   );
 }

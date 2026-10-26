@@ -1,0 +1,223 @@
+{
+  "preview": {
+    "id": "705ca716-b46e-4e17-9c5e-57c189e1272d",
+    "status": "completed",
+    "digest": "d37e26a0917f3592ab261da44e815baf45bfa56bee6d804ce6443610479ab19b"
+  },
+  "members": [
+    {
+      "trash_id": "329f3071-6b77-4868-8307-e75d55430ef9",
+      "path": "/media/shorts/图包/图包01",
+      "digest": "c34ea491e20179b4098f740c9e40ccc3a44159a542784d1916b34ea64759bfa4",
+      "images": 3,
+      "retained": 1,
+      "manifest": {
+        "schema": 1,
+        "source": {
+          "pack_id": "9b388e11-aa8c-4121-86bd-f8957084ca2c",
+          "trash_id": "329f3071-6b77-4868-8307-e75d55430ef9",
+          "name": "图包01",
+          "path": "/media/shorts/图包/图包01",
+          "root_id": "2f61d515-68a8-44a4-9df1-a375db41f0be",
+          "root_path": "/media/shorts/图包",
+          "mount_id": "shorts",
+          "root_policy": [
+            [
+              "2f61d515-68a8-44a4-9df1-a375db41f0be",
+              "/media/shorts/图包",
+              "pack",
+              true,
+              "shorts"
+            ],
+            [
+              "camera",
+              "/media/camera",
+              "video",
+              true,
+              "camera"
+            ],
+            [
+              "shorts",
+              "/media/shorts",
+              "video",
+              true,
+              "shorts"
+            ]
+          ],
+          "generation": 2,
+          "content_version": 1,
+          "directory_identity": [
+            "37",
+            "248532"
+          ],
+          "directory_signature": [
+            "37",
+            "248532",
+            192,
+            "1793035267244099409",
+            "1793035267244099409",
+            null
+          ],
+          "pages": [
+            {
+              "id": "dcb4b75a-9a39-47d1-b608-1c6c33f4217e",
+              "path": "/media/shorts/图包/图包01/1.jpg",
+              "relative_path": "1.jpg",
+              "signature": [
+                "37",
+                "248533",
+                12337,
+                "1793035266747157654",
+                "1793035266747157654"
+              ],
+              "sha256": "076312a73d63c9ce38747edd8a3301d86845cc49e5d04b95371a83416ec269e4",
+              "size": 12337
+            },
+            {
+              "id": "4a6ffa84-c145-4775-b04d-8eb00d92e1c4",
+              "path": "/media/shorts/图包/图包01/2.jpg",
+              "relative_path": "2.jpg",
+              "signature": [
+                "37",
+                "248534",
+                12330,
+                "1793035266751431561",
+                "1793035266751431561"
+              ],
+              "sha256": "2ed48c0a8fd2a4de881933d7330717075cf8139121ab72eed66b6edf9b03e3cd",
+              "size": 12330
+            },
+            {
+              "id": "2b9244f1-ac0f-484a-9020-340155aabbcf",
+              "path": "/media/shorts/图包/图包01/10.jpg",
+              "relative_path": "10.jpg",
+              "signature": [
+                "37",
+                "248535",
+                12404,
+                "1793035266753867912",
+                "1793035266753867912"
+              ],
+              "sha256": "760ff86d07d32499d6c5cc22e8e204513f7f126ac8d9ab8a33d4742afe69ea0e",
+              "size": 12404
+            }
+          ]
+        },
+        "root_identity": [
+          "37",
+          "248531"
+        ],
+        "directory_stamp": [
+          "37",
+          "248532",
+          192,
+          "1793035267244099409",
+          "1793035267244099409",
+          null
+        ],
+        "tree": {
+          ".": {
+            "kind": "directory",
+            "signature": [
+              "37",
+              "248532",
+              192,
+              "1793035267244099409",
+              "1793035267244099409",
+              null
+            ]
+          },
+          "1.jpg": {
+            "kind": "file",
+            "signature": [
+              "37",
+              "248533",
+              12337,
+              "1793035266747157654",
+              "1793035266747157654"
+            ]
+          },
+          "10.jpg": {
+            "kind": "file",
+            "signature": [
+              "37",
+              "248535",
+              12404,
+              "1793035266753867912",
+              "1793035266753867912"
+            ]
+          },
+          "2.jpg": {
+            "kind": "file",
+            "signature": [
+              "37",
+              "248534",
+              12330,
+              "1793035266751431561",
+              "1793035266751431561"
+            ]
+          },
+          "notes.txt": {
+            "kind": "file",
+            "signature": [
+              "37",
+              "248640",
+              26,
+              "1793035267244581204",
+              "1793035267244581204"
+            ]
+          }
+        },
+        "files": [
+          {
+            "id": "dcb4b75a-9a39-47d1-b608-1c6c33f4217e",
+            "path": "/media/shorts/图包/图包01/1.jpg",
+            "relative_path": "1.jpg",
+            "signature": [
+              "37",
+              "248533",
+              12337,
+              "1793035266747157654",
+              "1793035266747157654"
+            ],
+            "sha256": "076312a73d63c9ce38747edd8a3301d86845cc49e5d04b95371a83416ec269e4",
+            "size": 12337
+          },
+          {
+            "id": "2b9244f1-ac0f-484a-9020-340155aabbcf",
+            "path": "/media/shorts/图包/图包01/10.jpg",
+            "relative_path": "10.jpg",
+            "signature": [
+              "37",
+              "248535",
+              12404,
+              "1793035266753867912",
+              "1793035266753867912"
+            ],
+            "sha256": "760ff86d07d32499d6c5cc22e8e204513f7f126ac8d9ab8a33d4742afe69ea0e",
+            "size": 12404
+          },
+          {
+            "id": "4a6ffa84-c145-4775-b04d-8eb00d92e1c4",
+            "path": "/media/shorts/图包/图包01/2.jpg",
+            "relative_path": "2.jpg",
+            "signature": [
+              "37",
+              "248534",
+              12330,
+              "1793035266751431561",
+              "1793035266751431561"
+            ],
+            "sha256": "2ed48c0a8fd2a4de881933d7330717075cf8139121ab72eed66b6edf9b03e3cd",
+            "size": 12330
+          }
+        ],
+        "image_count": 3,
+        "image_bytes": 37071,
+        "retained_entries": 1
+      }
+    }
+  ],
+  "task": null,
+  "steps": []
+}

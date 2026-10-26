@@ -1,0 +1,10 @@
+# Repository root. All final native runs at 35a29d4, sequential on the same AVD.
+bash scripts/dev.sh python3 scripts/run-client-connection-test.py --purge-management --workspace-viewport 390 --evidence-dir /tmp/lf8-purge-final-normal
+bash scripts/dev.sh python3 scripts/run-client-connection-test.py --purge-management --workspace-viewport 360 --workspace-text-scale 2 --evidence-dir /tmp/lf8-purge-settled-large
+bash scripts/dev.sh python3 scripts/run-client-connection-test.py --purge-management --workspace-viewport 844 --evidence-dir /tmp/lf8-purge-settled-landscape
+# apps/mobile, repeated three times; checks/source.json pins exact tests/support.
+bash ../../scripts/dev.sh flutter test test/pack_purge_widget_test.dart test/pack_purge_selection_widget_test.dart test/pack_purge_test.dart test/pack_purge_selections_test.dart test/server_pack_purge_test.dart test/pack_file_action_test.dart test/pack_files_test.dart test/pack_trash_session_test.dart test/trash_management_layout_test.dart test/purge_management_layout_test.dart test/video_purge_confirmation_test.dart
+bash ../../scripts/dev.sh flutter analyze
+# root; exact format inputs are in checks/format.log and the source commit diff.
+.dev/venv/bin/ruff check scripts/run-client-connection-test.py services/server/tests/e2e_server.py docs/plans/library-first/evidence/lf8-purge-management/verify.py
+python3 docs/plans/library-first/evidence/lf8-purge-management/verify.py
