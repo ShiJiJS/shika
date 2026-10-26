@@ -242,6 +242,7 @@ def create_e2e_app():
             "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
             "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
             "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
+            "trash-video", "trash-packs", "trash-empty", "trash-paged", "trash-confirm", "trash-receipt", "trash-single-confirm", "trash-single-restored", "trash-dark", "trash-keyboard",
             "purge-selected", "purge-review", "purge-files", "purge-saved", "purge-saved-reopened", "purge-unknown", "purge-result", "purge-finished",
             "bulk-selected", "bulk-review", "bulk-unknown", "bulk-receipt", "bulk-paged", "bulk-selection", "bulk-next-review",
             "defaults-video", "defaults-reader", "defaults-unknown", "defaults-reopened", "defaults-migration",
