@@ -1,0 +1,13 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart
+Running Gradle task 'assembleDebug'...                             13.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          505ms
+00:00 +0: real recent history keeps distinct sources, fixed ranges and retry state
+01:41 +0: real recent history keeps distinct sources, fixed ranges and retry state - did not complete [E]
+01:41 +0: (tearDownAll) - did not complete [E]
+01:41 +0: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart: (tearDownAll) (did not complete)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_recent_history_test.dart: real recent history keeps distinct sources, fixed ranges and retry state (did not complete)
+No tests were found.
