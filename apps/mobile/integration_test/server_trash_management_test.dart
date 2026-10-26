@@ -377,6 +377,11 @@ void main() {
       await tap(find.byKey(const Key('pack-trash-refresh')));
       await tap(find.byTooltip('清除搜索'));
       await until(
+        () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
+        'empty read settled',
+      );
+      await reveal(find.text('图包回收站是空的'));
+      await until(
         () => find.text('图包回收站是空的').evaluate().isNotEmpty,
         'single restored',
       );
