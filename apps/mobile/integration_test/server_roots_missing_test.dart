@@ -126,8 +126,13 @@ void main() {
           'reads settled',
         );
         await t.pumpAndSettle();
+        final missingPage = find.byType(MissingMediaPage);
         final media = MediaQuery.of(
-          t.element(find.byKey(const Key('app-shell')).first),
+          t.element(
+            missingPage.evaluate().isNotEmpty
+                ? missingPage
+                : find.byKey(const Key('app-shell')).first,
+          ),
         );
         final rects = <String, List<double>>{};
         for (final key in [
