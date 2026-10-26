@@ -457,7 +457,7 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
               ],
             ),
           if (chosen.isNotEmpty &&
-              (hasPagedChoices ||
+              ((hasPagedChoices && !wide) ||
                   chosen.any((id) => !items.any((tag) => tag.id == id)))) ...[
             const SizedBox(height: 12),
             Wrap(

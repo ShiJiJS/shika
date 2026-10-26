@@ -142,6 +142,7 @@ void main() {
       bool batch = false,
       Set<String>? targets,
       bool paged = false,
+      bool offPage = true,
     }) async {
       repo = AssignmentLibrary();
       await repo.initialize();
@@ -152,7 +153,7 @@ void main() {
             for (var i = 0; i < 61; i++) '分页${i.toString().padLeft(2, '0')}',
           ],
           videos: repo.snapshot.videos.map(
-            (v) => v.id == 'v1' ? v.copy(tags: {'自然', '分页60'}) : v,
+            (v) => v.id == 'v1' ? v.copy(tags: {'自然', if (offPage) '分页60'}) : v,
           ),
         );
         await repo.store.write(
@@ -230,6 +231,29 @@ void main() {
       },
     );
     if (!pack) {
+      testWidgets('long directory opens with a complete first candidate row', (
+        t,
+      ) async {
+        t.view.physicalSize = const Size(844, 390);
+        t.view.devicePixelRatio = 1;
+        addTearDown(t.view.resetPhysicalSize);
+        addTearDown(t.view.resetDevicePixelRatio);
+        await host(t, paged: true, offPage: false);
+        final first = find.byType(FilterChip).first;
+        final candidate = t.getRect(first);
+        final scroller = find
+            .ancestor(
+              of: first,
+              matching: find.byWidgetPredicate(
+                (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
+              ),
+            )
+            .first;
+        final clip = t.getRect(scroller);
+        expect(candidate.top, greaterThanOrEqualTo(clip.top));
+        expect(candidate.bottom, lessThanOrEqualTo(clip.bottom));
+        expect(first.hitTestable(), findsOneWidget);
+      });
       testWidgets(
         'video off-page selection survives paging failure, exact-offset retry, search and save',
         (t) async {

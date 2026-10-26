@@ -21,6 +21,12 @@ void main() {
   testWidgets(
     'LF8 native single assignments, independent creation and complete batch append',
     (t) async {
+      final originalErrorHandler = FlutterError.onError;
+      FlutterError.onError = (details) {
+        debugPrint('TAG_ASSIGNMENT_FLUTTER_ERROR: $details');
+        originalErrorHandler?.call(details);
+      };
+      addTearDown(() => FlutterError.onError = originalErrorHandler);
       await fixture('/__fixture/actions/reset-login-limit');
       final seed = await fixture('/__fixture/actions/workspace-packs');
       final store = MemoryCredentialStore();
