@@ -96,6 +96,29 @@ void main() {
       }
 
       Future<void> shot(String phase) async {
+        if (phase.endsWith('-single') ||
+            phase.endsWith('-batch') ||
+            phase == 'video-dark') {
+          await until(
+            () =>
+                find
+                    .byKey(const Key('tag-assignment-save'))
+                    .evaluate()
+                    .isNotEmpty &&
+                find.byType(FilterChip).evaluate().isNotEmpty &&
+                find.byType(LinearProgressIndicator).evaluate().isEmpty,
+            'assignment panel and real tag choices rendered before capture',
+          );
+        }
+        if (phase.endsWith('-error')) {
+          await until(
+            () => find
+                .byKey(const Key('tag-assignment-error'))
+                .evaluate()
+                .isNotEmpty,
+            'assignment form error rendered before capture',
+          );
+        }
         expect(t.takeException(), isNull);
         final geometry = <String, Object>{};
         if (phase.endsWith('-keyboard')) {
