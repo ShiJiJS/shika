@@ -81,7 +81,22 @@ void main() {
       await repo.saveRoot(
         MediaRoot('', '长包合成夹具', '/media/packs', kind: MediaKind.pack),
       );
-      await repo.refresh();
+      var resumedScanWaits = 0;
+      for (var attempt = 0; ; attempt++) {
+        try {
+          await repo.refresh();
+          break;
+        } on LibraryFailure catch (error) {
+          if (error.message != '扫描仍在服务端进行，可稍后刷新查询进度' || attempt >= 2) {
+            rethrow;
+          }
+          resumedScanWaits++;
+          debugPrint(
+            'LONG_READER_PREPARATION: continue querying the original scan',
+          );
+          await Future<void>.delayed(const Duration(milliseconds: 250));
+        }
+      }
       final catalog = await repo.loadPacks(PackQuery());
       expect(catalog.total, 4);
       final long = catalog.items.singleWhere((p) => p.name == '04-long');
@@ -360,6 +375,7 @@ void main() {
       }
 
       final result = {
+        'resumed_scan_waits': resumedScanWaits,
         'long_pack': long.id,
         'large_pack': large.id,
         'last_page_id': pageId,

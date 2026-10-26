@@ -331,6 +331,16 @@ try:
         "long-reopened",
     }
     verified = final["measurements"][-1]["client"]
+    scan_posts = [
+        r for r in final["requests"] if r["method"] == "POST" and r["path"] == "/api/v1/scans"
+    ]
+    assert len(scan_posts) == 1 and scan_posts[0]["status"] == 202
+    scan_queries = {
+        r["path"]
+        for r in final["requests"]
+        if r["method"] == "GET" and r["path"].startswith("/api/v1/tasks/")
+    }
+    assert len(scan_queries) == 1
     assert verified["visited_indexes"] == list(range(500))
     assert len(verified["large_frames"]) == 9
     assert {row["index"] for row in verified["large_frames"]} == {0, 1, 2}
