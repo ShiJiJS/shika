@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8767/library-first/app.html?state=packs&snapshot=1",
+  "order": [
+    {
+      "id": "kimono",
+      "title": "加藤惠 · 和服",
+      "author": "示例作者",
+      "folder": "示例作者 NO.051 - 加藤惠 · 和服"
+    },
+    {
+      "id": "newyear",
+      "title": "灵梦 · 新年快乐",
+      "author": "示例作者",
+      "folder": "示例作者 NO.019 - 灵梦 · 新年快乐"
+    },
+    {
+      "id": "summer",
+      "title": "夏日祭",
+      "author": "示例作者",
+      "folder": "示例作者 NO.034 - 夏日祭"
+    },
+    {
+      "id": "field",
+      "title": "原野上的浪漫",
+      "author": "示例作者",
+      "folder": "示例作者 NO.057 - 原野上的浪漫"
+    }
+  ],
+  "collator": {
+    "locale": "zh-CN",
+    "usage": "sort",
+    "sensitivity": "variant",
+    "ignorePunctuation": false,
+    "collation": "pinyin",
+    "numeric": false,
+    "caseFirst": "false"
+  }
+}

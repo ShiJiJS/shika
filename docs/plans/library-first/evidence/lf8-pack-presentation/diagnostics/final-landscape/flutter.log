@@ -1,0 +1,61 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_presentation_test.dart
+Running Gradle task 'assembleDebug'...                             17.3s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          700ms
+00:00 +0: real title and author presentation uses complete Chinese title and newest ranges
+FIDELITY_METRICS:{"state":"presentation-library","size":[844.0,442.0],"dpr":3.0,"padding":[0.0,28.0,0.0,24.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"app-navigation":[0.0,368.0,844.0,50.0],"catalog-count-video":[57.500213623046875,91.5,6.994140625,17.0],"catalog-count-pack":[123.99456787109375,91.5,6.994140625,17.0],"pack-search":[60.0,125.0,768.0,42.0],"pack-count":[16.0,189.0,615.9752197265625,20.0]},"texts":[{"text":"媒体库","rect":[20.0,36.5,716.0,34.0],"fontSize":24.0},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"2","rect":[57.500213623046875,91.5,6.994140625,17.0],"fontSize":12.0},{"text":"图包","rect":[86.49435424804688,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"4","rect":[123.99456787109375,91.5,6.994140625,17.0],"fontSize":12.0},{"text":"搜索图包、作者、目录","rect":[76.0,133.0,736.0,24.0],"fontSize":16.0},{"text":"4 个图包","rect":[16.0,189.0,615.9752197265625,20.0],"fontSize":13.0},{"text":"阅读状态","rect":[643.9752197265625,189.5,52.400062561035156,19.0],"fontSize":13.0},{"text":"名称 ↓","rect":[708.3752822875977,189.0,43.22465515136719,20.0],"fontSize":13.0},{"text":"快速整理","rect":[763.5999374389648,189.5,52.400062561035156,19.0],"fontSize":13.0},{"text":"6 张","rect":[380.5292053222656,418.0,22.470794677734375,18.0],"fontSize":12.0},{"text":"6 张","rect":[792.5292053222656,418.0,22.470794677734375,18.0],"fontSize":12.0},{"text":"媒体库","rect":[294.1250228881836,397.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[374.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[449.25001525878906,397.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[524.2500152587891,397.0,20.499969482421875,14.0],"fontSize":10.0}],"counts":{"video":2,"pack":4}}
+FIDELITY_METRICS:{"state":"presentation-author","size":[844.0,442.0],"dpr":3.0,"padding":[0.0,28.0,0.0,0.0],"viewPadding":[0.0,28.0,0.0,24.0],"textScale":1.0,"keys":{"app-navigation":[0.0,392.0,844.0,50.0],"catalog-count-video":[57.500213623046875,91.5,6.994140625,17.0],"catalog-count-pack":[123.99456787109375,91.5,6.994140625,17.0],"pack-search":[60.0,125.0,768.0,42.0]},"texts":[{"text":"媒体库","rect":[20.0,36.5,716.0,34.0],"fontSize":24.0},{"text":"视频","rect":[20.0,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"2","rect":[57.500213623046875,91.5,6.994140625,17.0],"fontSize":12.0},{"text":"图包","rect":[86.49435424804688,89.5,30.500213623046875,21.0],"fontSize":15.0},{"text":"4","rect":[123.99456787109375,91.5,6.994140625,17.0],"fontSize":12.0},{"text":"搜索图包、作者、目录","rect":[76.0,133.0,736.0,24.0],"fontSize":16.0},{"text":"“示例作者”","rect":[16.0,188.0,775.800121307373,18.0],"fontSize":12.0},{"text":"清除","rect":[803.800121307373,187.0,28.199878692626953,20.0],"fontSize":null},{"text":"媒体库","rect":[294.1250228881836,421.0,30.749954223632812,14.0],"fontSize":10.0},{"text":"标签","rect":[374.25001525878906,421.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"最近","rect":[449.25001525878906,421.0,20.499969482421875,14.0],"fontSize":10.0},{"text":"设置","rect":[524.2500152587891,421.0,20.499969482421875,14.0],"fontSize":10.0}],"counts":{"video":2,"pack":4}}
+PACK_PRESENTATION_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "在读 · 3":
+[]>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_presentation_test.dart:214:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_presentation_test.dart line 214
+The test description was:
+  real title and author presentation uses complete Chinese title
+  and newest ranges
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "在读 · 3": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_presentation_test.dart:214:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_presentation_test.dart line 214
+The test description was:
+  real title and author presentation uses complete Chinese title and newest ranges
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:08 +0 -1: real title and author presentation uses complete Chinese title and newest ranges [E]
+  Test failed. See exception logs above.
+  The test description was: real title and author presentation uses complete Chinese title and newest ranges
+  
+00:08 +0 -1: (tearDownAll)
+00:08 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_pack_presentation_test.dart: real title and author presentation uses complete Chinese title and newest ranges
