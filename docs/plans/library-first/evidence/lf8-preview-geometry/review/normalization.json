@@ -1,0 +1,66 @@
+[
+  {
+    "name": "normal-1",
+    "state": "queue",
+    "native_dpr": 3.0,
+    "safe_top": 47.666666666666664,
+    "safe_bottom": 24.0,
+    "current_size": [
+      390,
+      772
+    ],
+    "reference_size": [
+      390,
+      844
+    ],
+    "method": "Remove actual native system safe areas, DPR-only downsample and neutral padding. No stretching or moving elements."
+  },
+  {
+    "name": "normal-1",
+    "state": "paused",
+    "native_dpr": 3.0,
+    "safe_top": 47.666666666666664,
+    "safe_bottom": 24.0,
+    "current_size": [
+      390,
+      772
+    ],
+    "reference_size": [
+      390,
+      844
+    ],
+    "method": "Remove actual native system safe areas, DPR-only downsample and neutral padding. No stretching or moving elements."
+  },
+  {
+    "name": "landscape",
+    "state": "queue",
+    "native_dpr": 3.0,
+    "safe_top": 28.0,
+    "safe_bottom": 24.0,
+    "current_size": [
+      844,
+      338
+    ],
+    "reference_size": [
+      844,
+      390
+    ],
+    "method": "Remove actual native system safe areas, DPR-only downsample and neutral padding. No stretching or moving elements."
+  },
+  {
+    "name": "landscape",
+    "state": "paused",
+    "native_dpr": 3.0,
+    "safe_top": 28.0,
+    "safe_bottom": 24.0,
+    "current_size": [
+      844,
+      338
+    ],
+    "reference_size": [
+      844,
+      390
+    ],
+    "method": "Remove actual native system safe areas, DPR-only downsample and neutral padding. No stretching or moving elements."
+  }
+]
