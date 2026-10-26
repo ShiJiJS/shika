@@ -187,8 +187,9 @@ void main() {
             method: 'GET',
           );
           if (captured['captured'] == checkpoint) break;
-          if (DateTime.now().isAfter(deadline))
+          if (DateTime.now().isAfter(deadline)) {
             fail('Host capture was not acknowledged: $checkpoint');
+          }
           await t.pump(const Duration(milliseconds: 300));
         }
       }
@@ -222,8 +223,9 @@ void main() {
               await tap(retry);
             }
           }
-          if (DateTime.now().isAfter(deadline))
+          if (DateTime.now().isAfter(deadline)) {
             fail('Catalogue did not load actual members');
+          }
           await t.pump(const Duration(milliseconds: 100));
         }
         final id = pack
