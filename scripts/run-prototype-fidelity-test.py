@@ -28,7 +28,7 @@ p.add_argument(
 )
 args = p.parse_args()
 scenes = {
-    "preview": ["preview-library", "preview-filter", "preview-preview", "preview-filter-return", "preview-paused", "preview-seek", "preview-speed-menu", "preview-boost", "preview-quick", "preview-tags", "preview-more", "preview-details", "preview-dark", "preview-light", "preview-queue", "preview-last", "preview-end", "preview-return", "preview-recent"],
+    "preview": ["preview-library", "preview-filter", "preview-preview", "preview-filter-return", "preview-paused", "preview-seek", "preview-speed-menu", "preview-boost", "preview-quick", "preview-tags", "preview-more", "preview-details", "preview-dark", "preview-light", "preview-queue", "preview-queue-bottom", "preview-last", "preview-end", "preview-return", "preview-recent"],
     "reader": ["reader-paged", "reader-overview", "reader-jump", "reader-settings", "reader-vertical", "reader-strip-scroll", "reader-immersive", "reader-restored", "reader-range", "reader-quick", "reader-quick-exit", "reader-return", "reader-reopen"],
     "recent": [
         "recent-empty-video", "recent-empty-pack", "recent-keyboard-video", "recent-video-one",

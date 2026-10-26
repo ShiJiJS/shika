@@ -111,9 +111,12 @@ void main() {
         'playback-time',
         'video-progress-touch',
         'preview-quick',
+        'preview-cleanup',
         'preview-quick-delete',
         'preview-queue',
         'preview-queue-frame',
+        'preview-queue-title',
+        'preview-queue-count',
         'preview-queue-note',
         'preview-end-return',
         'inline-play',
@@ -456,6 +459,15 @@ void main() {
         findsOneWidget,
       );
     }
+    final queueNote = find.byKey(const Key('preview-queue-note'));
+    await t.ensureVisible(queueNote);
+    await t.pump(const Duration(milliseconds: 100));
+    final noteRect = t.getRect(queueNote);
+    final queueViewport = t.getRect(find.byKey(const Key('preview-queue')));
+    expect(noteRect.top, greaterThanOrEqualTo(queueViewport.top - 1));
+    expect(noteRect.bottom, lessThanOrEqualTo(queueViewport.bottom + 1));
+    expect(find.byTooltip('关闭面板').hitTestable(), findsOneWidget);
+    await capture('preview-queue-bottom');
     await tap(find.byKey(Key('queue-video-${ids.last}')));
     await until(
       () =>

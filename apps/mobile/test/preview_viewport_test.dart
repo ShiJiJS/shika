@@ -96,6 +96,22 @@ void main() {
       await frames(t);
       expect(find.byKey(const Key('preview-queue')), findsOneWidget);
       expect(
+        t.widget<Text>(find.byKey(const Key('preview-queue-title'))).data,
+        isIn(['本次预览范围', '本次预览\n范围']),
+      );
+      final queueCount = find.byKey(const Key('preview-queue-count'));
+      expect(
+        t.getSize(queueCount).height,
+        closeTo(
+          MediaLayout.line(
+            t.element(queueCount),
+            '${repo.playbackTotal} 个视频',
+            DefaultTextStyle.of(t.element(queueCount)).style,
+          ),
+          .1,
+        ),
+      );
+      expect(
         t.getSize(find.byKey(const Key('preview-queue-frame'))).width,
         profile.$1.width,
       );
@@ -223,7 +239,8 @@ void main() {
         );
         scroll.position.jumpTo(0);
         await frames(t);
-        expect(find.text('$source · ${members.length} 个视频'), findsOneWidget);
+        expect(find.text(source), findsOneWidget);
+        expect(find.text('${members.length} 个视频'), findsOneWidget);
         expect(find.byTooltip('关闭面板').hitTestable(), findsOneWidget);
         await Scrollable.ensureVisible(
           t.element(find.byKey(const Key('queue-order-sequential'))),

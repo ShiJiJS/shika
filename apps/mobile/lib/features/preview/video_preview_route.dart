@@ -411,6 +411,25 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
     final current = browsing.current, p = Paper.of(context);
     final enlarged = MediaQuery.textScalerOf(context).scale(12) > 16;
     final disabled = busy || current == null || repo.backupRestorePending;
+    final quickTag = TextButton(
+      onPressed: disabled ? null : tags,
+      style: TextButton.styleFrom(
+        foregroundColor: p.ink,
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        textStyle: const TextStyle(fontSize: 13),
+      ),
+      child: const Text('打标签'),
+    );
+    final quickDelete = TextButton(
+      key: const Key('preview-quick-delete'),
+      onPressed: disabled ? null : () => remove(current.id),
+      style: TextButton.styleFrom(
+        foregroundColor: p.danger,
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        textStyle: const TextStyle(fontSize: 13),
+      ),
+      child: const Text('移入回收站'),
+    );
     return PopScope<void>(
       canPop: leaving,
       onPopInvokedWithResult: (didPop, _) {
@@ -627,46 +646,26 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                     : const Duration(milliseconds: 160),
                 alignment: Alignment.topCenter,
                 child: quick
-                    ? Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 7),
+                    ? Container(
+                        key: const Key('preview-cleanup'),
+                        color: p.soft,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Row(
                           children: [
                             if (!enlarged) ...[
                               const Text(
                                 '快速整理',
-                                style: TextStyle(fontSize: 12),
+                                style: TextStyle(fontSize: 13),
                               ),
-                              const SizedBox(width: 12),
+                              const Spacer(),
+                              quickTag,
+                              const SizedBox(width: 7),
+                              quickDelete,
+                            ] else ...[
+                              Expanded(flex: 2, child: quickTag),
+                              const SizedBox(width: 8),
+                              Expanded(flex: 3, child: quickDelete),
                             ],
-                            Expanded(
-                              flex: enlarged ? 2 : 1,
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                  ),
-                                ),
-                                onPressed: disabled ? null : tags,
-                                child: const Text('打标签'),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              flex: enlarged ? 3 : 1,
-                              child: FilledButton(
-                                key: const Key('preview-quick-delete'),
-                                style: FilledButton.styleFrom(
-                                  backgroundColor: p.danger,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                  ),
-                                ),
-                                onPressed: disabled
-                                    ? null
-                                    : () => remove(current.id),
-                                child: const Text('移入回收站'),
-                              ),
-                            ),
                           ],
                         ),
                       )
@@ -896,9 +895,28 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
               Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      '本次预览范围',
-                      style: p.title.copyWith(fontSize: 23),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final style = p.title.copyWith(fontSize: 23);
+                        final measure = TextPainter(
+                          text: TextSpan(
+                            text: '本次预览范围',
+                            style: DefaultTextStyle.of(context).style
+                                .merge(style),
+                          ),
+                          textScaler: MediaQuery.textScalerOf(context),
+                          textDirection: Directionality.of(context),
+                          locale: Localizations.maybeLocaleOf(context),
+                        )..layout();
+                        final wrap = measure.width > constraints.maxWidth;
+                        measure.dispose();
+                        return Text(
+                          wrap ? '本次预览\n范围' : '本次预览范围',
+                          key: const Key('preview-queue-title'),
+                          semanticsLabel: '本次预览范围',
+                          style: style,
+                        );
+                      },
                     ),
                   ),
                   iconAction('关闭面板', Icons.close, () => Navigator.pop(context)),
@@ -917,12 +935,24 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(top: 5, bottom: 20),
-                            child: Text(
-                              '${widget.sourceLabel} · $total 个视频',
-                              style: TextStyle(
-                                fontSize: 13,
-                                height: 1.7,
-                                color: p.catalogMeta,
+                            child: DefaultTextStyle(
+                              style: DefaultTextStyle.of(context).style.merge(
+                                TextStyle(
+                                  fontSize: 13,
+                                  height: 1.7,
+                                  color: p.catalogMeta,
+                                ),
+                              ),
+                              child: Wrap(
+                                spacing: 8,
+                                runSpacing: 4,
+                                children: [
+                                  Text(widget.sourceLabel),
+                                  Text(
+                                    '$total 个视频',
+                                    key: const Key('preview-queue-count'),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -1067,7 +1097,7 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 24, bottom: 4),
                         child: Text(
-                          '打标签不改变本次预览范围；返回后更新筛选结果。',
+                          '修改标签不改变本次范围；返回后更新筛选结果。',
                           key: const Key('preview-queue-note'),
                           style: TextStyle(
                             fontSize: 13,
