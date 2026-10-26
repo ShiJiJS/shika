@@ -91,6 +91,30 @@ void main() {
       );
       Future<void> tap(Finder target) async {
         try {
+          final catalogs = find.byType(TagCatalogPage);
+          if (catalogs.evaluate().isNotEmpty && target.evaluate().isEmpty) {
+            final body = find.descendant(
+              of: catalogs,
+              matching: find.byType(CustomScrollView),
+            );
+            final scroller = find.descendant(
+              of: body,
+              matching: find.byWidgetPredicate(
+                (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
+              ),
+            );
+            debugPrint(
+              'TAG_SCROLL_TARGET:${jsonEncode({
+                'body': scroller.evaluate().map((e) => {'type': e.widget.runtimeType.toString(), 'rect': t.getRect(find.byWidget(e.widget)).toString()}).toList(),
+              })}',
+            );
+            await t.scrollUntilVisible(
+              target,
+              160,
+              scrollable: scroller.first,
+              maxScrolls: 80,
+            );
+          }
           await revealAction(t, target);
         } catch (_) {
           await fixture('/__fixture/checkpoint/error');
