@@ -284,6 +284,15 @@ def create_e2e_app():
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase
+        checkpoint.pop("captured", None)
+        return checkpoint
+
+    @app.post("/__fixture/captured/{phase}")
+    def captured(phase: str, x_fixture_key: str | None = Header(default=None)):
+        controlled(x_fixture_key)
+        if checkpoint["phase"] != phase:
+            raise HTTPException(status_code=409)
+        checkpoint["captured"] = phase
         return checkpoint
 
     @app.post("/__fixture/actions/{action}")

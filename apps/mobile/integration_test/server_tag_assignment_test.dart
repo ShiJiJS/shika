@@ -97,6 +97,41 @@ void main() {
 
       Future<void> shot(String phase) async {
         expect(t.takeException(), isNull);
+        final geometry = <String, Object>{};
+        if (phase.endsWith('-keyboard')) {
+          final input = find.byKey(const Key('tag-assignment-new'));
+          final add = find.byKey(const Key('tag-assignment-add'));
+          bool visible() {
+            final field = t.getRect(input), button = t.getRect(add);
+            final view = MediaQueryData.fromView(t.view);
+            final bottom = view.size.height - view.viewInsets.bottom;
+            return field.top >= 0 &&
+                field.bottom <= bottom &&
+                button.top >= 0 &&
+                button.bottom <= bottom &&
+                input.hitTestable().evaluate().isNotEmpty &&
+                add.hitTestable().evaluate().isNotEmpty;
+          }
+
+          await until(
+            visible,
+            'focused new field and add action visible above native IME',
+          );
+          final editable = t.widget<EditableText>(
+            find.descendant(of: input, matching: find.byType(EditableText)),
+          );
+          expect(editable.focusNode.hasFocus, isTrue);
+          List<double> rect(Finder f) {
+            final r = t.getRect(f);
+            return [r.left, r.top, r.right, r.bottom];
+          }
+
+          geometry.addAll({
+            'input_rect': rect(input),
+            'add_rect': rect(add),
+            'focused': true,
+          });
+        }
         final view = MediaQueryData.fromView(t.view);
         debugPrint(
           'TAG_ASSIGNMENT_METRICS:${jsonEncode({
@@ -106,10 +141,22 @@ void main() {
             'text13': view.textScaler.scale(13),
             'keyboard': view.viewInsets.bottom,
             'dark': preferences.dark,
+            ...geometry,
           })}',
         );
-        await fixture('/__fixture/checkpoint/tag-ui-assign-$phase');
-        await t.pump(const Duration(seconds: 2));
+        final checkpoint = 'tag-ui-assign-$phase';
+        await fixture('/__fixture/checkpoint/$checkpoint');
+        final deadline = DateTime.now().add(const Duration(seconds: 30));
+        while (true) {
+          final captured = await fixture(
+            '/__fixture/checkpoint',
+            method: 'GET',
+          );
+          if (captured['captured'] == checkpoint) break;
+          if (DateTime.now().isAfter(deadline))
+            fail('Host capture was not acknowledged: $checkpoint');
+          await t.pump(const Duration(milliseconds: 300));
+        }
       }
 
       Future<void> hideKeyboard() async {
@@ -121,13 +168,30 @@ void main() {
       }
 
       Future<void> single(bool pack) async {
-        await until(() {
+        var retried = false;
+        final deadline = DateTime.now().add(const Duration(seconds: 60));
+        while (true) {
           final page = find.byType(pack ? PackCatalogPage : VideoCatalogPage);
-          if (page.evaluate().isEmpty) return false;
-          return pack
-              ? t.state<PackCatalogPageState>(page).data.items.isNotEmpty
-              : t.state<VideoCatalogPageState>(page).data.items.isNotEmpty;
-        }, 'catalogue loaded actual items before single assignment');
+          if (page.evaluate().isNotEmpty) {
+            final ready = pack
+                ? t.state<PackCatalogPageState>(page).data.items.isNotEmpty
+                : t.state<VideoCatalogPageState>(page).data.items.isNotEmpty;
+            if (ready) break;
+            final retry = find
+                .descendant(of: page, matching: find.text('重试'))
+                .hitTestable();
+            if (!retried && retry.evaluate().isNotEmpty) {
+              debugPrint(
+                'TAG_ASSIGNMENT_CATALOG_RETRY:${pack ? 'pack' : 'video'}',
+              );
+              retried = true;
+              await tap(retry);
+            }
+          }
+          if (DateTime.now().isAfter(deadline))
+            fail('Catalogue did not load actual members');
+          await t.pump(const Duration(milliseconds: 100));
+        }
         final id = pack
             ? t
                   .state<PackCatalogPageState>(find.byType(PackCatalogPage))

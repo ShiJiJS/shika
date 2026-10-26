@@ -206,6 +206,29 @@ void main() {
     Set<String> links() => pack
         ? repo.packLinks['p1']!
         : repo.snapshot.videos.firstWhere((v) => v.id == 'v1').tags;
+    testWidgets(
+      'new assignment row remains visible after keyboard metrics pack=$pack',
+      (t) async {
+        t.view.physicalSize = const Size(360, 740);
+        t.view.devicePixelRatio = 1;
+        t.platformDispatcher.textScaleFactorTestValue = 2;
+        addTearDown(t.view.resetPhysicalSize);
+        addTearDown(t.view.resetDevicePixelRatio);
+        addTearDown(t.view.resetViewInsets);
+        addTearDown(t.platformDispatcher.clearTextScaleFactorTestValue);
+        await host(t, paged: !pack);
+        await tap(t, input);
+        await t.enterText(input, '现场新标签');
+        t.view.viewInsets = const FakeViewPadding(bottom: 303);
+        await t.pumpAndSettle();
+        final keyboardTop = 740 - 303;
+        expect(t.getRect(input).top, greaterThanOrEqualTo(0));
+        expect(t.getRect(input).bottom, lessThanOrEqualTo(keyboardTop));
+        expect(t.getRect(add).bottom, lessThanOrEqualTo(keyboardTop));
+        expect(input.hitTestable(), findsOneWidget);
+        expect(add.hitTestable(), findsOneWidget);
+      },
+    );
     if (!pack) {
       testWidgets(
         'video off-page selection survives paging failure, exact-offset retry, search and save',

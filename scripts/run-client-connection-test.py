@@ -315,6 +315,14 @@ def watch():
                         for line in focus.splitlines()
                     ):
                         raise ValueError(f"Screenshot {phase} is obscured by another Android window: {focus}")
+            if phase.startswith("tag-ui-assign-"):
+                request = urllib.request.Request(
+                    "http://127.0.0.1:8761/__fixture/captured/" + phase,
+                    headers=HEADERS, method="POST",
+                )
+                with urllib.request.urlopen(request, timeout=5) as response:
+                    assert json.load(response)["captured"] == phase
+                events.append({"phase": "capture-ack", "state": phase, "time": time.time()})
             if phase == "outage":
                 docker("stop", "--time", "0", CONTAINER)
                 events.append({"phase": "docker-stopped", "time": time.time()})
