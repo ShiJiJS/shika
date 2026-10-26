@@ -264,7 +264,7 @@ class _PackPurgeResultState extends State<PackPurgeResult> {
                         ],
                       ),
                     ),
-                  if (page != null)
+                  if (page != null && page!.total > 0)
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Wrap(

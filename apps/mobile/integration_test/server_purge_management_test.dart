@@ -197,6 +197,36 @@ void main() {
       );
       await shot('saved');
       await preferences.setDark(true);
+      // Theme and nested button/default-text animations finish on distinct
+      // frames. A single large pump can capture their intermediate pairing.
+      await t.pumpAndSettle();
+      for (final label in ['重新读取', '移除保存的选择', '核对下一批 1 个']) {
+        final text = find.text(label);
+        final span = t
+            .widget<RichText>(
+              find.descendant(of: text, matching: find.byType(RichText)),
+            )
+            .text;
+        final background = label.startsWith('核对')
+            ? t
+                  .widget<Material>(
+                    find
+                        .descendant(
+                          of: find.byKey(const Key('purge-selection-next')),
+                          matching: find.byType(Material),
+                        )
+                        .first,
+                  )
+                  .color!
+            : Theme.of(t.element(text)).scaffoldBackgroundColor;
+        final a = span.style!.color!.computeLuminance(),
+            b = background.computeLuminance();
+        expect(
+          ((a > b ? a : b) + .05) / ((a > b ? b : a) + .05),
+          greaterThanOrEqualTo(4.5),
+          reason: 'Settled dark action: $label',
+        );
+      }
       await shot('saved-dark');
       await preferences.setDark(false);
       await t.pumpAndSettle();
