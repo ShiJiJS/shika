@@ -1,0 +1,40 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart
+00:00 +0: video definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+00:00 +1: pack definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+00:00 +2: video definition keeps failed draft and has no directory error (360.0, 740.0, 2.0)
+00:01 +3: pack definition keeps failed draft and has no directory error (360.0, 740.0, 2.0)
+00:01 +4: video definition keeps failed draft and has no directory error (844.0, 390.0, 1.0)
+00:01 +5: pack definition keeps failed draft and has no directory error (844.0, 390.0, 1.0)
+00:01 +6: video definition keeps failed draft and has no directory error (844.0, 390.0, 2.0)
+00:01 +7: pack definition keeps failed draft and has no directory error (844.0, 390.0, 2.0)
+00:01 +8: video removal requires separate confirmation and returns the exact selected id
+00:01 +9: pack removal requires separate confirmation and returns the exact selected id
+00:01 +10: old callbacks cannot submit to a new connection even before rebuild
+00:02 +11: a pending definition disables repeated submit and closing
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+type 'RawTooltip' is not a subtype of type 'IconButton' in type cast
+
+When the exception was thrown, this was the stack:
+#0      WidgetController.widget (package:flutter_test/src/controller.dart:828:44)
+#1      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart:212:14)
+<asynchronous suspension>
+#2      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  a pending definition disables repeated submit and closing
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +11 -1: a pending definition disables repeated submit and closing [E]
+  Test failed. See exception logs above.
+  The test description was: a pending definition disables repeated submit and closing
+  
+00:02 +11 -1: a connection switch during removal confirmation never submits
+00:02 +12 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: a pending definition disables repeated submit and closing

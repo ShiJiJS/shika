@@ -12,9 +12,12 @@ from pathlib import Path
 from fastapi import Header, HTTPException
 from fastapi.responses import JSONResponse
 from sqlalchemy import select
+from starlette.concurrency import run_in_threadpool
 
 from video_viewer import scanner as scan_module
 from video_viewer.app import create_app
+from video_viewer.authority import HEADER as EPOCH_HEADER
+from video_viewer.authority import Authority
 from video_viewer.config import Settings
 from video_viewer.file_transfer import rename_new
 from video_viewer.media import MediaInspectionError
@@ -61,7 +64,7 @@ def create_e2e_app():
         marker.write_text("dedicated generated emulator fixture")
     controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False, "lose_default_response": False,
                 "fail_restore": False, "slow_restore": False, "slow_page": False,
-                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_pack_names": False, "fail_pack_anchor": False, "fail_pack_trash": False, "lose_missing_response": False}
+                "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_tag_results": False, "fail_pack_names": False, "fail_pack_anchor": False, "fail_pack_trash": False, "lose_missing_response": False}
 
     def backup_fault(phase, _task_id):
         if controls["fail_restore"] and phase == "after_replace_before_commit":
@@ -108,6 +111,10 @@ def create_e2e_app():
                     entry["purge_input"] = {key: body.get(key) for key in ("plan_id", "digest", "confirmed")}
                 if request.url.path == "/api/v1/pack-restore-plans":
                     entry["restore_members"] = sorted(body.get("trash_ids", []))
+            if request.method in {"POST", "PATCH", "DELETE"} and any(request.url.path == path or request.url.path.startswith(path + "/") for path in ("/api/v1/tags", "/api/v1/pack-tags")):
+                body = await request.json()
+                entry["tag_input"] = {"name": body.get("name")}
+                entry["command_hash"] = hashlib.sha256(str(body.get("request_id")).encode()).hexdigest()
             if (request.method == "POST" and request.url.path == "/api/v1/roots") or (
                 request.method == "PUT" and request.url.path.startswith("/api/v1/roots/")
             ):
@@ -138,6 +145,17 @@ def create_e2e_app():
                 controls["fail_tag_page"] = False
                 entry["status"] = 503
                 return JSONResponse({"error": {"code": "fixture_tag_page", "message": "Isolated tag page failure"}}, status_code=503)
+            if controls["fail_tag_results"] and request.method == "GET" and request.url.path == "/api/v1/videos" and request.query_params.get("source") == "tags" and request.query_params.get("limit") == "24":
+                controls["fail_tag_results"] = False
+                entry["status"] = 503
+                def current_epoch():
+                    with app.state.db.read() as session:
+                        return Authority.current(session)
+                return JSONResponse(
+                    {"error": {"code": "fixture_tag_results", "message": "标签结果暂时无法读取，请重试"}},
+                    status_code=503,
+                    headers={EPOCH_HEADER: await run_in_threadpool(current_epoch)},
+                )
             if controls["slow_page"] and request.url.path == "/api/v1/videos" and int(request.query_params.get("offset", "0")) > 0:
                 await asyncio.sleep(3)
             if controls["fail_streams"] and request.url.path.endswith("/stream"):
@@ -240,6 +258,7 @@ def create_e2e_app():
             "prepared",
             "workspace-video", "workspace-packs", "workspace-video-tags",
             "workspace-pack-tags", "workspace-settings", "workspace-dark",
+            "tag-ui-video", "tag-ui-pack", "tag-ui-dark", "tag-ui-create-keyboard", "tag-ui-create-error", "tag-ui-created", "tag-ui-rename-editor", "tag-ui-rename-editor-dark", "tag-ui-renamed", "tag-ui-remove-confirm", "tag-ui-removed", "tag-ui-page-error", "tag-ui-paged", "tag-ui-results-error", "tag-ui-results",
             "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
             "selection-videos", "selection-packs",
             "pack-names-card", "pack-names-retry", "pack-names-saved", "pack-names-renamed",
@@ -273,6 +292,15 @@ def create_e2e_app():
                 app.state.login_attempts.clear()
         elif action == "reset-task-trace":
             trace.clear()
+        elif action == "tag-management-stats":
+            from video_viewer.models import PackTag, PackTagLink, Tag, VideoTag
+            with app.state.db.read() as session:
+                return {
+                    "video_tags": [{"id":r.id,"name":r.name} for r in session.scalars(select(Tag).order_by(Tag.name,Tag.id).limit(200))],
+                    "pack_tags": [{"id":r.id,"name":r.name} for r in session.scalars(select(PackTag).order_by(PackTag.name,PackTag.id).limit(200))],
+                    "video_links": [{"video_id":r.video_id,"tag_id":r.tag_id} for r in session.scalars(select(VideoTag).order_by(VideoTag.video_id,VideoTag.tag_id).limit(200))],
+                    "pack_links": [{"pack_id":r.pack_id,"tag_id":r.tag_id} for r in session.scalars(select(PackTagLink).order_by(PackTagLink.pack_id,PackTagLink.tag_id).limit(200))],
+                }
         elif action == "hold-restore-plan":
             restore_gate.clear()
             app.state.pack_restore_plans.batch_size = 2
@@ -486,6 +514,8 @@ def create_e2e_app():
             scanner.submit()
         elif action == "fail-pack-names":
             controls["fail_pack_names"] = True
+        elif action == "fail-tag-results":
+            controls["fail_tag_results"] = True
         elif action == "fail-tag-page":
             controls["fail_tag_page"] = True
         elif action == "slow-pages":

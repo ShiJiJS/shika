@@ -212,6 +212,7 @@ def watch():
                 "prepared",
                 "workspace-video", "workspace-packs", "workspace-video-tags",
                 "workspace-pack-tags", "workspace-settings", "workspace-dark",
+                "tag-ui-video", "tag-ui-pack", "tag-ui-dark", "tag-ui-create-keyboard", "tag-ui-create-error", "tag-ui-created", "tag-ui-rename-editor", "tag-ui-rename-editor-dark", "tag-ui-renamed", "tag-ui-remove-confirm", "tag-ui-removed", "tag-ui-page-error", "tag-ui-paged", "tag-ui-results-error", "tag-ui-results",
                 "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
                 "selection-videos", "selection-packs",
                 "pack-names-card", "pack-names-retry", "pack-names-saved", "pack-names-renamed",
@@ -240,7 +241,7 @@ def watch():
                         json.dumps(json.load(response), ensure_ascii=False, indent=2),
                         encoding="utf-8",
                     )
-                if PREFIX in {"lf6-trash", "lf6-purge", "lf7-tasks", "lf7-restore", "lf7-purge-restart", "lf7-defaults", "lf7-roots-missing", "lf8-trash", "lf8-management", "lf8-purge"}:
+                if PREFIX in {"lf6-trash", "lf6-purge", "lf7-tasks", "lf7-restore", "lf7-purge-restart", "lf7-defaults", "lf7-roots-missing", "lf8-trash", "lf8-management", "lf8-purge", "lf8-tags"}:
                     request = urllib.request.Request(
                         "http://127.0.0.1:8761/__fixture/actions/pack-trash-hashes",
                         headers=HEADERS, method="POST",
@@ -250,6 +251,10 @@ def watch():
                             json.dumps(json.load(response), ensure_ascii=False, indent=2),
                             encoding="utf-8",
                         )
+                if PREFIX == "lf8-tags":
+                    request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/tag-management-stats", headers=HEADERS, method="POST")
+                    with urllib.request.urlopen(request, timeout=5) as response:
+                        (EVIDENCE / f"{PREFIX}-{phase}-stats.json").write_text(json.dumps(json.load(response),ensure_ascii=False,indent=2),encoding="utf-8")
                 if PREFIX == "lf8-purge":
                     request = urllib.request.Request("http://127.0.0.1:8761/__fixture/actions/purge-management-stats", headers=HEADERS, method="POST")
                     with urllib.request.urlopen(request, timeout=5) as response:
@@ -294,7 +299,7 @@ def watch():
                     timeout=15,
                 )
                 (EVIDENCE / f"{PREFIX}-{phase}.png").write_bytes(result.stdout)
-                if PREFIX in {"lf7-roots-missing", "lf8-trash", "lf8-management", "lf8-purge"}:
+                if PREFIX in {"lf7-roots-missing", "lf8-trash", "lf8-management", "lf8-purge", "lf8-tags"}:
                     windows = subprocess.check_output(
                         [ADB, "-s", "emulator-5554", "shell", "dumpsys", "window"],
                         text=True, timeout=10,
@@ -336,6 +341,8 @@ def main():
     mode.add_argument("--anchor", action="store_true")
     mode.add_argument("--workspace", action="store_true")
     mode.add_argument("--tag-catalog", action="store_true")
+    mode.add_argument("--tag-management", action="store_true")
+    parser.add_argument("--tag-results-only", action="store_true")
     mode.add_argument("--selection", action="store_true")
     mode.add_argument("--pack-names", action="store_true")
     mode.add_argument("--pack-anchor", action="store_true")
@@ -362,6 +369,8 @@ def main():
     parser.add_argument("--evidence-dir", type=Path)
     parser.add_argument("--plain-name")
     args = parser.parse_args()
+    if args.tag_results_only and not args.tag_management:
+        parser.error("--tag-results-only requires --tag-management")
     if args.evidence_dir is not None:
         EVIDENCE = args.evidence_dir.resolve()
         EVIDENCE.mkdir(parents=True, exist_ok=False)
@@ -422,6 +431,8 @@ def main():
         PREFIX = "lf4-pack-names"
     elif args.selection:
         PREFIX = "lf4-selection"
+    elif args.tag_management:
+        PREFIX = "lf8-tags"
     elif args.tag_catalog:
         PREFIX = "lf4-tag-catalog"
     elif args.workspace:
@@ -455,6 +466,7 @@ def main():
         "apps/mobile/integration_test/server_trash_management_test.dart",
         "apps/mobile/integration_test/server_management_pages_test.dart",
         "apps/mobile/integration_test/server_purge_management_test.dart",
+        "apps/mobile/integration_test/server_tag_management_test.dart",
         "scripts/run-client-connection-test.py", "services/server/tests/e2e_server.py",
     ]
     prototype_entry = subprocess.check_output(
@@ -466,7 +478,7 @@ def main():
         "files": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in source_paths},
     }, indent=2) + "\n", encoding="utf-8")
     prepare_emulator()
-    if args.purge_management or args.management_pages or args.trash_management or args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.purge_restart or args.maintenance_tasks or args.restore_plans or args.managed_defaults or args.roots_missing:
+    if args.tag_management or args.purge_management or args.management_pages or args.trash_management or args.workspace or args.tag_catalog or args.selection or args.pack_names or args.pack_anchor or args.pack_reader or args.pack_recent or args.pack_controls or args.pack_recovery or args.pack_cleanup or args.pack_trash or args.pack_purge or args.purge_restart or args.maintenance_tasks or args.restore_plans or args.managed_defaults or args.roots_missing:
         def device(*command):
             return subprocess.check_output(
                 [ADB, "-s", "emulator-5554", "shell", *command], text=True, timeout=10
@@ -524,6 +536,7 @@ def main():
                 "lf3-anchor": "integration_test/server_anchor_test.dart",
                 "lf4-workspace": "integration_test/server_workspace_test.dart",
                 "lf4-tag-catalog": "integration_test/server_tag_catalog_test.dart",
+                "lf8-tags": "integration_test/server_tag_management_test.dart",
                 "lf4-selection": "integration_test/server_catalog_selection_test.dart",
                 "lf4-pack-names": "integration_test/server_pack_names_test.dart",
                 "lf4-pack-anchor": "integration_test/server_pack_anchor_test.dart",
@@ -549,6 +562,8 @@ def main():
             "--reporter",
             "expanded",
         ]
+        if args.tag_results_only:
+            command.append("--dart-define=TAG_RESULTS_ONLY=true")
         if args.purge_management_baseline:
             if not args.purge_management:
                 parser.error("baseline requires --purge-management")
@@ -576,6 +591,7 @@ def main():
                 or args.anchor
                 or args.workspace
                 or args.tag_catalog
+                or args.tag_management
                 or args.selection
                 or args.pack_names
                 or args.pack_anchor

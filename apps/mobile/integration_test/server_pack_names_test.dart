@@ -216,7 +216,7 @@ void main() {
       await shot('saved');
       await manage('名称60');
       await text(find.byKey(const Key('tag-name')), '名称60改名');
-      await tap(find.text('保存'));
+      await tap(find.byKey(const Key('tag-definition-save')));
       await library();
       await until(
         () => cardText().contains('名称60改名'),

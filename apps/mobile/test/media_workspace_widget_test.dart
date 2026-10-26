@@ -266,7 +266,7 @@ void main() {
       await tap(t, find.byTooltip('返回标签选择'));
       await tap(t, find.byTooltip('管理图包标签 自然'));
       await t.enterText(find.byKey(const Key('tag-name')), '图包自然');
-      await tap(t, find.text('保存'));
+      await tap(t, find.byKey(const Key('tag-definition-save')));
       expect(repo.packNames['自然'], '图包自然');
       expect(repo.tagName('自然'), '自然');
       await nav(t, 'library');

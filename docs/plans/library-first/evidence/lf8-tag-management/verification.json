@@ -1,0 +1,63 @@
+{
+  "verified": true,
+  "production_client": "4e905aa",
+  "inputs": 1091,
+  "native_checkpoints": 45,
+  "composed_groups": [
+    {
+      "group": "normal",
+      "scope": "complete",
+      "source": "2cde25c99ddd3dbc56267987adfcb3de0689c605",
+      "valid_checkpoints": 15,
+      "image_hashes": 81,
+      "video_files": 27,
+      "video_tags": 61,
+      "intersection": 1,
+      "ui_mutation_attempts": 4
+    },
+    {
+      "group": "large",
+      "scope": "core",
+      "source": "4e905aaa53b7ea0eecc9dccf914fbd3920ecdf97",
+      "valid_checkpoints": 13,
+      "image_hashes": 81,
+      "video_files": 27,
+      "video_tags": 61,
+      "intersection": 1,
+      "ui_mutation_attempts": 4
+    },
+    {
+      "group": "landscape",
+      "scope": "core",
+      "source": "c7e9799b07b8552727ae5261aa241a2207932234",
+      "valid_checkpoints": 13,
+      "image_hashes": 81,
+      "video_files": 27,
+      "video_tags": 61,
+      "intersection": 1,
+      "ui_mutation_attempts": 4
+    },
+    {
+      "group": "large-results",
+      "scope": "results-only",
+      "source": "79de2d9294dca2d9fdd71e18b45e3a8e6e225bc5",
+      "valid_checkpoints": 2,
+      "image_hashes": 81,
+      "video_files": 27,
+      "video_tags": 61,
+      "intersection": 1,
+      "ui_mutation_attempts": 0
+    },
+    {
+      "group": "landscape-results",
+      "scope": "results-only",
+      "source": "79de2d9294dca2d9fdd71e18b45e3a8e6e225bc5",
+      "valid_checkpoints": 2,
+      "image_hashes": 81,
+      "video_files": 27,
+      "video_tags": 61,
+      "intersection": 1,
+      "ui_mutation_attempts": 0
+    }
+  ]
+}

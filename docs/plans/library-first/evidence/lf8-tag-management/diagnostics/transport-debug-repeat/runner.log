@@ -1,0 +1,116 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 30B 0.0s
+#2 transferring dockerfile: 1.44kB 0.0s done
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 0.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 101B 0.0s done
+#4 DONE 0.0s
+
+#5 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#5 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.1s done
+#5 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 12.53kB 0.0s done
+#6 DONE 0.2s
+
+#7 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#7 CACHED
+
+#8 [runtime 4/9] COPY requirements.lock ./
+#8 CACHED
+
+#9 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#9 CACHED
+
+#10 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#10 CACHED
+
+#11 [runtime 6/9] COPY video_viewer ./video_viewer
+#11 CACHED
+
+#12 [test 3/4] COPY tests ./tests
+#12 CACHED
+
+#13 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 libicu72=72.1-3+deb12u1 && rm -rf /var/lib/apt/lists/*
+#13 CACHED
+
+#14 [runtime 3/9] WORKDIR /app
+#14 CACHED
+
+#15 [runtime 7/9] COPY migrations ./migrations
+#15 CACHED
+
+#16 [runtime 8/9] COPY alembic.ini ./
+#16 CACHED
+
+#17 [test 1/4] COPY requirements-test.lock ./
+#17 CACHED
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers 0.0s done
+#19 exporting manifest sha256:29aedc259a36b3a1a1d761f1501f2294b3711b955ac3097bb81626bdf49b28f4 done
+#19 exporting config sha256:41669253227cee16fa1cb5202683353d03ff034c781041c7aab22a94d277eece 0.0s done
+#19 exporting attestation manifest sha256:6e1ac5847dbe5054de42317baa61f6f49c734bbd4e2fbbd297bd928d0516894c
+#19 exporting attestation manifest sha256:6e1ac5847dbe5054de42317baa61f6f49c734bbd4e2fbbd297bd928d0516894c 0.1s done
+#19 exporting manifest list sha256:5b3e2a2dc4aafbfec266c733548976bb29c4e7c9c31946413ac96c5cd804351a 0.0s done
+#19 naming to docker.io/library/video-viewer-server:e2e
+#19 naming to docker.io/library/video-viewer-server:e2e 0.0s done
+#19 unpacking to docker.io/library/video-viewer-server:e2e 0.1s done
+#19 DONE 0.3s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.1s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_management_test.dart
+Running Gradle task 'assembleDebug'...                             53.2s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           4.0s
+00:00 +0: LF8 independent tag definitions, AND results, retained edits and paging
+TAG_MANAGEMENT_BASELINE:{"video_ids":["3de5b0ac-b1f2-44d7-a381-2e3ec9600a0c","1e62a044-c2df-41e1-a493-49d84cec071e"],"pack_id":"5f53f38e-6561-4577-82bd-c97cc72e39a4","tag_ids":["d7487f6b-1b62-47b4-90fa-68387a3ef8cf","d7c84f2b-a21f-477a-99ba-4f9cf5711f35","f1a1d02f-84fb-4f67-b3a2-ce5a4ce31a6b","00067f3e-9ca3-402b-af3a-9a4023ddd098","f704327e-0e8c-4b44-81de-67448506aa96","96296880-53bc-471c-a548-212d7412e376","4e18eb60-5313-4417-b141-8614654bba6e","a86c4b30-3d96-4308-9a24-a9697f3ea49d","7e9a26cb-75cd-4917-ad2a-304d84534bb2","46ad670d-5c3e-4fc2-ae03-e02ac148c2e0","988c497c-983b-4e96-809f-52141a50f632","1324722f-5a8e-4541-b2e4-f9ff77efec38","e27b06c0-79a4-4053-b23d-77af0fb08d74","a364ca3c-6f18-4a3b-8a5c-6e8312fad218","b1494141-8857-4404-baee-49a1f2e90386","f090fd79-7312-4397-a382-9ab5926f8b8b","d667b0e8-7b79-46e0-bade-3a86961049e0","2966c857-ee0d-47fb-8e30-8ea8c62bda54","12a079fd-5ed6-4a1c-81e7-acfd17740bfa","ebbdfa9f-e632-4ece-8fc0-fa7d137bf8f4","e6f5e267-48d7-405a-8aba-33a2111e5512","6c65a99a-a273-4e9d-aaeb-93082a86c4f2","35b991fa-0bc2-47c7-9c4b-3c75151aa4c1","9bfc7bb8-08e8-45f4-b588-e94a5678a4b0","f56c367a-50c1-4178-851a-e032a94e7ab5","655178da-84b4-4016-99a9-2fbea6332265","7a7149ea-f386-44d9-aafa-4dd5a96198e4","12ad7b80-224a-434f-959a-38225b53e065","02c2a801-f721-4296-b8e8-4b375c1c00a3","90c0c61a-ca51-4d45-b80e-7a009eb8a060","f1599101-03cf-4ba0-b42c-2f16859fda0f","9be1f5bb-0324-42f5-ae66-cf27076a9e3f","e7218ff2-72cd-49e6-a9ad-5a8a2fcb23b4","db8d90cf-cbe2-47ea-b9bd-58be7d593f2f","a255cef5-3778-469b-bc8b-09261330db14","3a97c324-895d-400f-bcc1-60b2d8c3a92f","65d40045-d061-48ca-b66a-abfe0079812c","cf624d27-cfd4-47c2-9a27-35f043357725","46418eff-60c9-47ec-b4f4-ea68ee883b1c","48b5d75f-11c6-4512-ad12-7327e8e66ae9","88998a7e-f451-4b05-9258-f876c0f0a159","c47af94c-3c6c-4a1d-a2cf-1ede8a0bff95","e6d3b181-6cdc-41ef-8c8e-4f1e644612be","a057e526-062a-412b-818b-09217cb1b837","42cbba13-4906-4730-98e1-e86ecc6d695f","50b55b00-fc9b-4eb0-a2d5-2bd32a497f25","c456b558-c450-4b38-b17d-c7b2d66b2bab","225761eb-c80b-4fa9-9545-9a35cb597773","3b25eb69-1eb7-4711-b5c8-d3b5c82f0d80","df33ac3f-dbe4-49bd-a0ea-871020e248df","0b7f5ba6-cd2b-48c4-a2bb-f27effb0ff3c","b44bb675-c5ba-48a0-a779-2e71be06ccee","41735268-d803-495a-9740-77b449490fb5","ee88f97a-3120-40a7-ba20-83ac21ec1548","cfc99262-cabd-4ff1-af18-8aa2b05ab087","205a024e-bb18-4e60-8e5c-40b30eaea98a","92d5314b-6f7f-4967-bbf6-b6bfe7d92f37","fa004ac7-0f6d-474b-b0e7-4cc112f0aee6","6715194c-9eeb-4cd8-af7a-44904793ab39","e874036a-654c-4ade-8cf6-557b85869f65","cedaa75a-ddeb-42ed-9405-d411e10abd7d"],"pack_tag":"c126307d-9169-4e5c-884c-c0e740402eb9","playback":{"id":"78268a10-f8f7-4dc3-b463-fc6483532901","library_locked":false,"active":true,"order":"random","scope":{},"membership":"legacy","source":"library","sort":"path","sequence_revision":0,"position":0,"total":27,"candidate_count":27,"revision":0,"finished":false,"current":{"id":"69c90516-3e1b-4882-9210-b64ce81bc33d","root_id":"shorts","path":"/media/shorts/自然/花卉/片段25.mp4","name":"片段25.mp4","status":"available","error":null,"size":172775,"created_at":1793039729.0277529,"duration":5.005,"width":360,"height":640,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":null,"container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/69c90516-3e1b-4882-9210-b64ce81bc33d/thumbnail","media_url":"/api/v1/videos/69c90516-3e1b-4882-9210-b64ce81bc33d/stream","tag_ids":[]},"window":[{"position":0,"video":{"id":"69c90516-3e1b-4882-9210-b64ce81bc33d","root_id":"shorts","path":"/media/shorts/自然/花卉/片段25.mp4","name":"片段25.mp4","status":"available","error":null,"size":172775,"created_at":1793039729.0277529,"duration":5.005,"width":360,"height":640,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":null,"container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/69c90516-3e1b-4882-9210-b64ce81bc33d/thumbnail","media_url":"/api/v1/videos/69c90516-3e1b-4882-9210-b64ce81bc33d/stream","tag_ids":[]}},{"position":1,"video":{"id":"ac0656ae-749b-4934-a63c-1807f1f73975","root_id":"shorts","path":"/media/shorts/自然/花卉/片段21.mp4","name":"片段21.mp4","status":"available","error":null,"size":172775,"created_at":1793039727.3875782,"duration":5.005,"width":360,"height":640,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":null,"container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/ac0656ae-749b-4934-a63c-1807f1f73975/thumbnail","media_url":"/api/v1/videos/ac0656ae-749b-4934-a63c-1807f1f73975/stream","tag_ids":[]}}]},"media":{"items":[{"path":"/media/shorts/自然/花卉/片段08.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段20.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段21.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段09.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段23.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段22.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段25.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段19.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段18.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段24.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段15.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段01.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段14.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段02.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段16.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段17.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段03.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段07.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段13.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段12.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段06.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段10.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段04.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段05.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段11.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/camera/旅行/横版片段.mp4","size":1290627,"sha256":"d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001"},{"path":"/media/camera/旅行/相机片段.mov","size":22668,"sha256":"13d9a170fc696f7a159eafb52db6d0c8fb1f88524948a7e121c6777477d278bd"}]}}
+TAG_MANAGEMENT_METRICS:{"state":"video","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"pack","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"dark","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":true}
+TAG_MANAGEMENT_METRICS:{"state":"create-keyboard","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":303.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"create-error","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"created","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"rename-editor","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"rename-editor-dark","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":true}
+TAG_MANAGEMENT_METRICS:{"state":"renamed","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"remove-confirm","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"removed","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_SCROLL_TARGET:{"body":[{"type":"Scrollable","rect":"Rect.fromLTRB(0.0, 139.7, 390.0, 630.0)"}]}
+TAG_MANAGEMENT_METRICS:{"state":"page-error","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"paged","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"results-error","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_RESULT_VERIFIED:{"ids":["3de5b0ac-b1f2-44d7-a381-2e3ec9600a0c"],"total":1,"tags":["d7487f6b-1b62-47b4-90fa-68387a3ef8cf","d7c84f2b-a21f-477a-99ba-4f9cf5711f35"],"error":""}
+TAG_MANAGEMENT_METRICS:{"state":"results","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_FINAL:{"playback":{"id":"78268a10-f8f7-4dc3-b463-fc6483532901","library_locked":false,"active":true,"order":"random","scope":{},"membership":"legacy","source":"library","sort":"path","sequence_revision":0,"position":0,"total":27,"candidate_count":27,"revision":0,"finished":false,"current":{"id":"69c90516-3e1b-4882-9210-b64ce81bc33d","root_id":"shorts","path":"/media/shorts/自然/花卉/片段25.mp4","name":"片段25.mp4","status":"available","error":null,"size":172775,"created_at":1793039729.0277529,"duration":5.005,"width":360,"height":640,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":null,"container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/69c90516-3e1b-4882-9210-b64ce81bc33d/thumbnail","media_url":"/api/v1/videos/69c90516-3e1b-4882-9210-b64ce81bc33d/stream","tag_ids":[]},"window":[{"position":0,"video":{"id":"69c90516-3e1b-4882-9210-b64ce81bc33d","root_id":"shorts","path":"/media/shorts/自然/花卉/片段25.mp4","name":"片段25.mp4","status":"available","error":null,"size":172775,"created_at":1793039729.0277529,"duration":5.005,"width":360,"height":640,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":null,"container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/69c90516-3e1b-4882-9210-b64ce81bc33d/thumbnail","media_url":"/api/v1/videos/69c90516-3e1b-4882-9210-b64ce81bc33d/stream","tag_ids":[]}},{"position":1,"video":{"id":"ac0656ae-749b-4934-a63c-1807f1f73975","root_id":"shorts","path":"/media/shorts/自然/花卉/片段21.mp4","name":"片段21.mp4","status":"available","error":null,"size":172775,"created_at":1793039727.3875782,"duration":5.005,"width":360,"height":640,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":null,"container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/ac0656ae-749b-4934-a63c-1807f1f73975/thumbnail","media_url":"/api/v1/videos/ac0656ae-749b-4934-a63c-1807f1f73975/stream","tag_ids":[]}}]},"media":{"items":[{"path":"/media/shorts/自然/花卉/片段08.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段20.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段21.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段09.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段23.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段22.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段25.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段19.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段18.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段24.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段15.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段01.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段14.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段02.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段16.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段17.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段03.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段07.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段13.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段12.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段06.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段10.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段04.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段05.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/shorts/自然/花卉/片段11.mp4","size":172775,"sha256":"de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd"},{"path":"/media/camera/旅行/横版片段.mp4","size":1290627,"sha256":"d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001"},{"path":"/media/camera/旅行/相机片段.mov","size":22668,"sha256":"13d9a170fc696f7a159eafb52db6d0c8fb1f88524948a7e121c6777477d278bd"}]}}
+TAG_MANAGEMENT_VERIFIED:separate same names, duplicate preserved, rename retained id, cancelled removal, pack-only removal, two-tag AND=1, source and playback unchanged
+02:18 +1: (tearDownAll)
+02:19 +1: All tests passed!

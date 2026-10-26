@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../library/models.dart';
 import '../../library/repository.dart';
 import '../../ui/paper.dart';
+import '../../ui/paper_form.dart';
 
 class TagCatalogItem {
   const TagCatalogItem(this.id, this.name, this.count);
@@ -170,112 +171,242 @@ class TagCatalogPageState extends State<TagCatalogPage> {
   Future<void> form() => edit();
 
   Future<void> edit([TagCatalogItem? tag]) async {
-    if (repo.backupRestorePending) return;
+    if (saving || repo.backupRestorePending) return;
+    final identity = repo.connectionIdentity;
+    final editingPack = pack, editingType = type;
     final input = TextEditingController(text: tag?.name ?? '');
-    await paperSheet<bool>(
+    final errorAnchor = GlobalKey();
+    var formError = '';
+    var confirming = false;
+    final removed = await paperSheet<bool>(
       context,
-      StatefulBuilder(
-        builder: (context, local) => SheetFrame(
-          title: tag == null ? '新建$type标签' : '管理$type标签',
-          closeEnabled: !saving,
-          children: [
-            TextField(
-              key: const Key('tag-name'),
-              controller: input,
-              enabled: !saving,
-              decoration: const InputDecoration(labelText: '标签名称'),
-              maxLength: 100,
-            ),
-            if (error.isNotEmpty) note(error),
-            FilledButton(
-              onPressed: saving
-                  ? null
-                  : () async {
-                      local(() {
-                        saving = true;
-                        error = '';
-                      });
-                      try {
-                        if (pack) {
-                          await repo.editPackTag(
-                            original: tag?.id,
-                            name: input.text,
-                          );
-                        } else {
-                          await repo.editTag(
-                            original: tag?.id,
-                            name: input.text,
-                          );
-                        }
-                        if (context.mounted) Navigator.pop(context, true);
-                      } catch (failure) {
-                        if (context.mounted) {
-                          local(() => error = failure.toString());
-                        }
-                      } finally {
-                        if (context.mounted) {
-                          local(() => saving = false);
-                        } else {
-                          saving = false;
-                        }
-                      }
-                    },
-              child: Text(saving ? '正在保存…' : '保存'),
-            ),
-            if (tag != null)
-              TextButton(
-                onPressed: saving
-                    ? null
-                    : () async {
-                        final confirmed = await paperSheet<bool>(
-                          context,
-                          SheetFrame(
-                            title: '移除$type标签',
-                            children: [
-                              note('移除「${tag.name}」及其关联，保留所有媒体内容。另一类同名标签不受影响。'),
-                              FilledButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                child: const Text('确认移除标签'),
-                              ),
-                            ],
+      AnimatedBuilder(
+        animation: repo,
+        builder: (context, _) => StatefulBuilder(
+          builder: (context, local) {
+            final p = Paper.of(context);
+            final current =
+                identical(identity, repo.connectionIdentity) &&
+                !repo.backupRestorePending;
+            Future<void> write({bool remove = false}) async {
+              if (saving ||
+                  !identical(identity, repo.connectionIdentity) ||
+                  repo.backupRestorePending) {
+                return;
+              }
+              final name = input.text.trim();
+              if (!remove && (name.isEmpty || name.runes.length > 100)) {
+                local(() => formError = '请输入1至100字的标签名称');
+                revealFormError(errorAnchor);
+                return;
+              }
+              local(() {
+                saving = true;
+                formError = '';
+              });
+              try {
+                if (editingPack) {
+                  await repo.editPackTag(
+                    original: tag?.id,
+                    name: name,
+                    delete: remove,
+                  );
+                } else {
+                  await repo.editTag(
+                    original: tag?.id,
+                    name: name,
+                    delete: remove,
+                  );
+                }
+                if (context.mounted &&
+                    identical(identity, repo.connectionIdentity) &&
+                    !repo.backupRestorePending) {
+                  Navigator.pop(context, remove);
+                }
+              } catch (failure) {
+                if (context.mounted) {
+                  local(() => formError = failure.toString());
+                  revealFormError(errorAnchor);
+                }
+              } finally {
+                if (context.mounted) {
+                  local(() => saving = false);
+                } else {
+                  saving = false;
+                }
+              }
+            }
+
+            if (confirming) {
+              return PopScope(
+                canPop: !saving,
+                child: SheetFrame(
+                  title: '移除$editingType标签',
+                  closeEnabled: !saving,
+                  footer: Wrap(
+                    alignment: WrapAlignment.end,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      TextButton(
+                        onPressed: saving
+                            ? null
+                            : () => local(() {
+                                confirming = false;
+                                formError = '';
+                              }),
+                        child: const Text('取消'),
+                      ),
+                      FilledButton(
+                        key: const Key('tag-definition-remove-confirm'),
+                        style: FilledButton.styleFrom(
+                          backgroundColor: p.danger,
+                          foregroundColor: p.background,
+                        ),
+                        onPressed: saving || !current
+                            ? null
+                            : () => write(remove: true),
+                        child: Text(saving ? '正在移除…' : '确认移除标签'),
+                      ),
+                    ],
+                  ),
+                  children: [
+                    Text(
+                      tag!.name,
+                      style: TextStyle(fontSize: 14, height: 1.6, color: p.ink),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      '移除这个$editingType标签及其关联，保留所有媒体内容。另一类同名标签不受影响。',
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.7,
+                        color: p.catalogMeta,
+                      ),
+                    ),
+                    if (!current)
+                      Text(
+                        '连接或管理数据已变化，请关闭后重新打开。',
+                        key: const Key('tag-definition-stale'),
+                        style: TextStyle(
+                          fontSize: 13,
+                          height: 1.7,
+                          color: p.danger,
+                        ),
+                      ),
+                    if (formError.isNotEmpty)
+                      Padding(
+                        key: errorAnchor,
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
+                          formError,
+                          key: const Key('tag-definition-error'),
+                          style: TextStyle(
+                            fontSize: 13,
+                            height: 1.7,
+                            color: p.danger,
                           ),
-                        );
-                        if (confirmed != true || !context.mounted) return;
-                        local(() {
-                          saving = true;
-                          error = '';
-                        });
-                        try {
-                          if (pack) {
-                            await repo.editPackTag(
-                              original: tag.id,
-                              delete: true,
-                            );
-                          } else {
-                            await repo.editTag(original: tag.id, delete: true);
-                          }
-                          selected.remove(tag.id);
-                          if (context.mounted) Navigator.pop(context, true);
-                        } catch (failure) {
-                          if (context.mounted) {
-                            local(() => error = failure.toString());
-                          }
-                        } finally {
-                          if (context.mounted) {
-                            local(() => saving = false);
-                          } else {
-                            saving = false;
-                          }
-                        }
-                      },
-                child: const Text('移除这个标签'),
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            }
+            return PopScope(
+              canPop: !saving,
+              child: SheetFrame(
+                title: tag == null ? '新建$editingType标签' : '管理$editingType标签',
+                closeEnabled: !saving,
+                footer: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FilledButton(
+                      key: const Key('tag-definition-save'),
+                      onPressed: saving || !current ? null : () => write(),
+                      child: Text(
+                        saving
+                            ? '正在保存…'
+                            : tag == null
+                            ? '创建标签'
+                            : '保存名称',
+                      ),
+                    ),
+                    if (tag != null)
+                      TextButton(
+                        key: const Key('tag-definition-remove'),
+                        style: TextButton.styleFrom(foregroundColor: p.danger),
+                        onPressed: saving || !current
+                            ? null
+                            : () => local(() {
+                                confirming = true;
+                                formError = '';
+                              }),
+                        child: const Text('移除这个标签'),
+                      ),
+                  ],
+                ),
+                children: [
+                  Text(
+                    tag == null
+                        ? '新标签只出现在$editingType分类中。'
+                        : '只修改$editingType标签及其关联。',
+                    style: TextStyle(
+                      fontSize: 13,
+                      height: 1.7,
+                      color: p.catalogMeta,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  PaperField(
+                    label: '标签名称',
+                    child: TextField(
+                      key: const Key('tag-name'),
+                      controller: input,
+                      enabled: !saving && current,
+                      style: TextStyle(fontSize: 16, color: p.ink),
+                      decoration: const InputDecoration(hintText: '输入标签名称'),
+                      maxLength: 100,
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (_) => write(),
+                    ),
+                  ),
+                  if (!current)
+                    Text(
+                      '连接或管理数据已变化，请关闭后重新打开。',
+                      key: const Key('tag-definition-stale'),
+                      style: TextStyle(
+                        fontSize: 13,
+                        height: 1.7,
+                        color: p.danger,
+                      ),
+                    ),
+                  if (formError.isNotEmpty)
+                    Padding(
+                      key: errorAnchor,
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        formError,
+                        key: const Key('tag-definition-error'),
+                        style: TextStyle(
+                          fontSize: 13,
+                          height: 1.7,
+                          color: p.danger,
+                        ),
+                      ),
+                    ),
+                ],
               ),
-          ],
+            );
+          },
         ),
       ),
     );
     input.dispose();
     if (mounted && widget.active) {
+      if (removed == true && identical(identity, repo.connectionIdentity)) {
+        selected.remove(tag!.id);
+      }
       await load();
       await count();
     }
@@ -307,7 +438,7 @@ class TagCatalogPageState extends State<TagCatalogPage> {
           style: TextStyle(
             fontSize: 13,
             height: 1.7,
-            color: Paper.of(context).muted,
+            color: Paper.of(context).catalogMeta,
           ),
         ),
         const SizedBox(height: 12),
@@ -330,41 +461,51 @@ class TagCatalogPageState extends State<TagCatalogPage> {
     decoration: BoxDecoration(
       border: Border(bottom: BorderSide(color: Paper.of(context).line)),
     ),
-    child: ListTile(
-      key: Key('${widget.kind.name}-tag-${tag.id}'),
-      minLeadingWidth: 20,
-      horizontalTitleGap: 16,
-      minTileHeight: 65,
-      contentPadding: EdgeInsets.zero,
-      leading: Icon(
-        selected.contains(tag.id)
-            ? Icons.check_circle
-            : Icons.radio_button_unchecked,
-        color: Paper.of(context).olive,
-        size: 20,
-      ),
-      title: Text(
-        tag.name,
-        style: Paper.of(context).title.copyWith(fontSize: 20),
-      ),
-      subtitle: Text(
-        '${tag.count} 个$type',
-        style: TextStyle(fontSize: 12, color: Paper.of(context).muted),
-      ),
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        setState(() {
-          selected.contains(tag.id)
-              ? selected.remove(tag.id)
-              : selected.add(tag.id);
-        });
-        unawaited(count());
-      },
-      trailing: IconButton(
-        tooltip: '管理$type标签 ${tag.name}',
-        onPressed: repo.backupRestorePending ? null : () => edit(tag),
-        icon: const Icon(Icons.more_horiz),
-        iconSize: 18,
+    child: Semantics(
+      selected: selected.contains(tag.id),
+      child: ListTile(
+        key: Key('${widget.kind.name}-tag-${tag.id}'),
+        minLeadingWidth: 20,
+        horizontalTitleGap: 16,
+        minTileHeight: 65,
+        contentPadding: EdgeInsets.zero,
+        leading: Container(
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: selected.contains(tag.id) ? Paper.of(context).olive : null,
+            border: Border.all(
+              color: Paper.of(context).olive.withValues(alpha: .7),
+            ),
+          ),
+          child: selected.contains(tag.id)
+              ? Icon(Icons.check, size: 15, color: Paper.of(context).background)
+              : null,
+        ),
+        title: Text(
+          tag.name,
+          style: Paper.of(context).title.copyWith(fontSize: 20),
+        ),
+        subtitle: Text(
+          '${tag.count} 个$type',
+          style: TextStyle(fontSize: 12, color: Paper.of(context).muted),
+        ),
+        onTap: () {
+          FocusScope.of(context).unfocus();
+          setState(() {
+            selected.contains(tag.id)
+                ? selected.remove(tag.id)
+                : selected.add(tag.id);
+          });
+          unawaited(count());
+        },
+        trailing: IconButton(
+          tooltip: '管理$type标签 ${tag.name}',
+          onPressed: repo.backupRestorePending ? null : () => edit(tag),
+          icon: const Icon(Icons.more_horiz),
+          iconSize: 18,
+        ),
       ),
     ),
   );
@@ -387,7 +528,7 @@ class TagCatalogPageState extends State<TagCatalogPage> {
                   selected.isEmpty ? '全部$type' : '同时包含 ${selected.length} 个标签',
                   style: TextStyle(
                     fontSize: 13,
-                    color: Paper.of(context).muted,
+                    color: Paper.of(context).catalogMeta,
                   ),
                 ),
               ),
@@ -468,7 +609,22 @@ class TagCatalogPageState extends State<TagCatalogPage> {
         if (error.isNotEmpty)
           Row(
             children: [
-              Expanded(child: note(error)),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
+                  child: Text(
+                    error,
+                    style: TextStyle(
+                      fontSize: 13,
+                      height: 1.7,
+                      color: Paper.of(context).danger,
+                    ),
+                  ),
+                ),
+              ),
               TextButton(
                 key: const Key('tag-read-retry'),
                 onPressed: loading

@@ -1,0 +1,39 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_management_test.dart
+Running Gradle task 'assembleDebug'...                             18.3s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          909ms
+00:00 +0: LF8 independent tag definitions, AND results, retained edits and paging
+TAG_MANAGEMENT_METRICS:{"state":"video","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"pack","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"dark","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":true}
+TAG_MANAGEMENT_METRICS:{"state":"create-keyboard","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":303.0,"dark":false}
+TAG_MANAGEMENT_METRICS:{"state":"create-error","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Timed out: created definition
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_management_test.dart:77:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_management_test.dart:165:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF8 independent tag definitions, AND results, retained edits and paging
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:32 +0 -1: LF8 independent tag definitions, AND results, retained edits and paging [E]
+  Test failed. See exception logs above.
+  The test description was: LF8 independent tag definitions, AND results, retained edits and paging
+  
+01:32 +0 -1: (tearDownAll)
+01:32 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_management_test.dart: LF8 independent tag definitions, AND results, retained edits and paging
