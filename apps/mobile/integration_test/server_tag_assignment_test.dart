@@ -121,6 +121,13 @@ void main() {
       }
 
       Future<void> single(bool pack) async {
+        await until(() {
+          final page = find.byType(pack ? PackCatalogPage : VideoCatalogPage);
+          if (page.evaluate().isEmpty) return false;
+          return pack
+              ? t.state<PackCatalogPageState>(page).data.items.isNotEmpty
+              : t.state<VideoCatalogPageState>(page).data.items.isNotEmpty;
+        }, 'catalogue loaded actual items before single assignment');
         final id = pack
             ? t
                   .state<PackCatalogPageState>(find.byType(PackCatalogPage))
@@ -219,6 +226,10 @@ void main() {
       final videoState = t.state<VideoCatalogPageState>(
         find.byType(VideoCatalogPage),
       );
+      await until(
+        () => videoState.data.items.length == 24,
+        'video catalogue first 24 members loaded',
+      );
       expect(videoState.data.items.length, 24);
       final excludedVideo = videoState.data.items.first.id;
       await multi();
@@ -252,6 +263,10 @@ void main() {
       await tap(find.byKey(const Key('kind-pack')));
       final packState = t.state<PackCatalogPageState>(
         find.byType(PackCatalogPage),
+      );
+      await until(
+        () => packState.data.items.length == 24,
+        'pack catalogue first 24 members loaded',
       );
       expect(packState.data.items.length, 24);
       final excludedPack = packState.data.items.first.id;
