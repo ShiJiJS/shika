@@ -62,6 +62,19 @@ void main() {
     }
 
     Future<void> tap(Finder target) async {
+      for (final direction in [1, -1]) {
+        for (
+          var attempt = 0;
+          attempt < 12 && target.evaluate().isEmpty;
+          attempt++
+        ) {
+          final scroll = find.byType(Scrollable);
+          if (scroll.evaluate().isEmpty) break;
+          await t.drag(scroll.last, Offset(0, -direction * 220));
+          await t.pump(const Duration(milliseconds: 100));
+        }
+        if (target.evaluate().isNotEmpty) break;
+      }
       await until(() => target.evaluate().isNotEmpty, 'target $target');
       if (target.hitTestable().evaluate().isEmpty) {
         await t.ensureVisible(target);
