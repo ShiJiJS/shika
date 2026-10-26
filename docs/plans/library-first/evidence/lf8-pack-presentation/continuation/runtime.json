@@ -1,0 +1,318 @@
+[
+  {
+    "Id": "91dd34388d9c2c620b7f17ccf4796e103fba4acba64b859707565a896611f183",
+    "Created": "2026-10-26T02:25:25.521462836Z",
+    "Path": "uvicorn",
+    "Args": [
+      "tests.prototype_fidelity_fixture:create_fidelity_app",
+      "--factory",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8760",
+      "--no-access-log"
+    ],
+    "State": {
+      "Status": "running",
+      "Running": true,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 2411904,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-26T02:25:25.698562268Z",
+      "FinishedAt": "0001-01-01T00:00:00Z",
+      "Health": {
+        "Status": "starting",
+        "FailingStreak": 0,
+        "Log": []
+      }
+    },
+    "Image": "sha256:dd110541995e296e44e21c4c94269f4b1269e084d5d8dbd2958ba1cdaffc7059",
+    "ResolvConfPath": "/var/lib/docker/containers/91dd34388d9c2c620b7f17ccf4796e103fba4acba64b859707565a896611f183/resolv.conf",
+    "HostnamePath": "/var/lib/docker/containers/91dd34388d9c2c620b7f17ccf4796e103fba4acba64b859707565a896611f183/hostname",
+    "HostsPath": "/var/lib/docker/containers/91dd34388d9c2c620b7f17ccf4796e103fba4acba64b859707565a896611f183/hosts",
+    "LogPath": "/var/lib/docker/containers/91dd34388d9c2c620b7f17ccf4796e103fba4acba64b859707565a896611f183/91dd34388d9c2c620b7f17ccf4796e103fba4acba64b859707565a896611f183-json.log",
+    "Name": "/video-viewer-prototype-fidelity-1792981525449757000",
+    "RestartCount": 0,
+    "Driver": "overlayfs",
+    "Platform": "linux",
+    "MountLabel": "",
+    "ProcessLabel": "",
+    "AppArmorProfile": "",
+    "ExecIDs": null,
+    "HostConfig": {
+      "Binds": [
+        "/Users/jiangxinyi/Documents/Project/video-viewer/services/server:/source:ro",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/assets/media:/public:ro",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/lf8-presentation-v4-continuation/config:/fixture:ro",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/lf8-presentation-v4-continuation/data:/data",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/lf8-presentation-v4-continuation/packs:/media/packs",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/lf8-presentation-v4-continuation/videos:/media/videos"
+      ],
+      "ContainerIDFile": "",
+      "LogConfig": {
+        "Type": "json-file",
+        "Config": {
+          "max-file": "5",
+          "max-size": "20m"
+        }
+      },
+      "NetworkMode": "bridge",
+      "PortBindings": {
+        "8760/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8768"
+          }
+        ]
+      },
+      "RestartPolicy": {
+        "Name": "no",
+        "MaximumRetryCount": 0
+      },
+      "AutoRemove": false,
+      "VolumeDriver": "",
+      "VolumesFrom": null,
+      "ConsoleSize": [
+        0,
+        0
+      ],
+      "CapAdd": null,
+      "CapDrop": null,
+      "CgroupnsMode": "private",
+      "Dns": null,
+      "DnsOptions": [],
+      "DnsSearch": [],
+      "ExtraHosts": null,
+      "GroupAdd": null,
+      "IpcMode": "private",
+      "Cgroup": "",
+      "Links": null,
+      "OomScoreAdj": 0,
+      "PidMode": "",
+      "Privileged": false,
+      "PublishAllPorts": false,
+      "ReadonlyRootfs": true,
+      "SecurityOpt": null,
+      "Tmpfs": {
+        "/tmp": "mode=1777"
+      },
+      "UTSMode": "",
+      "UsernsMode": "",
+      "ShmSize": 6299844608,
+      "Runtime": "runc",
+      "Isolation": "",
+      "CpuShares": 0,
+      "Memory": 0,
+      "NanoCpus": 0,
+      "CgroupParent": "",
+      "BlkioWeight": 0,
+      "BlkioWeightDevice": [],
+      "BlkioDeviceReadBps": [],
+      "BlkioDeviceWriteBps": [],
+      "BlkioDeviceReadIOps": [],
+      "BlkioDeviceWriteIOps": [],
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuRealtimePeriod": 0,
+      "CpuRealtimeRuntime": 0,
+      "CpusetCpus": "",
+      "CpusetMems": "",
+      "Devices": [],
+      "DeviceCgroupRules": null,
+      "DeviceRequests": null,
+      "MemoryReservation": 0,
+      "MemorySwap": 0,
+      "MemorySwappiness": null,
+      "OomKillDisable": null,
+      "PidsLimit": null,
+      "Ulimits": [],
+      "CpuCount": 0,
+      "CpuPercent": 0,
+      "IOMaximumIOps": 0,
+      "IOMaximumBandwidth": 0,
+      "MaskedPaths": [
+        "/proc/acpi",
+        "/proc/asound",
+        "/proc/interrupts",
+        "/proc/kcore",
+        "/proc/keys",
+        "/proc/latency_stats",
+        "/proc/sched_debug",
+        "/proc/scsi",
+        "/proc/timer_list",
+        "/proc/timer_stats",
+        "/sys/devices/virtual/powercap",
+        "/sys/firmware"
+      ],
+      "ReadonlyPaths": [
+        "/proc/bus",
+        "/proc/fs",
+        "/proc/irq",
+        "/proc/sys",
+        "/proc/sysrq-trigger"
+      ]
+    },
+    "Storage": {
+      "RootFS": {
+        "Snapshot": {
+          "Name": "overlayfs"
+        }
+      }
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/services/server",
+        "Destination": "/source",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/assets/media",
+        "Destination": "/public",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/lf8-presentation-v4-continuation/config",
+        "Destination": "/fixture",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/lf8-presentation-v4-continuation/data",
+        "Destination": "/data",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/lf8-presentation-v4-continuation/packs",
+        "Destination": "/media/packs",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/lf8-presentation-v4-continuation/videos",
+        "Destination": "/media/videos",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ],
+    "Config": {
+      "Hostname": "91dd34388d9c",
+      "Domainname": "",
+      "User": "1000:1000",
+      "AttachStdin": false,
+      "AttachStdout": false,
+      "AttachStderr": false,
+      "ExposedPorts": {
+        "8760/tcp": {}
+      },
+      "Tty": false,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Env": [
+        "VV_FIDELITY_FIXTURE=enabled",
+        "VV_PASSPHRASE_FILE=/fixture/passphrase",
+        "VV_MOUNTS_FILE=/fixture/mounts.json",
+        "VV_SCAN_INTERVAL=0",
+        "VV_STABILITY_SECONDS=0",
+        "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+        "PYTHON_VERSION=3.13.16",
+        "PYTHON_SHA256=f4b1bfb3c79b5bb11b8d228a12504163b4c0dab4d679828d8f5f26b6cb6ab35d",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PYTHONUNBUFFERED=1",
+        "PIP_DISABLE_PIP_VERSION_CHECK=1",
+        "PYTEST_ADDOPTS=-o cache_dir=/tmp/video-viewer-pytest-cache",
+        "RUFF_CACHE_DIR=/tmp/video-viewer-ruff-cache"
+      ],
+      "Cmd": [
+        "tests.prototype_fidelity_fixture:create_fidelity_app",
+        "--factory",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8760",
+        "--no-access-log"
+      ],
+      "Healthcheck": {
+        "Test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8760/health', timeout=2)"
+        ],
+        "Interval": 15000000000,
+        "Timeout": 3000000000,
+        "StartPeriod": 20000000000
+      },
+      "Image": "video-viewer-server:e2e",
+      "Volumes": null,
+      "WorkingDir": "/source",
+      "Entrypoint": [
+        "uvicorn"
+      ],
+      "Labels": {
+        "com.docker.compose.project": "video-viewer-client-e2e",
+        "com.docker.compose.service": "server",
+        "com.docker.compose.version": "5.1.2"
+      }
+    },
+    "NetworkSettings": {
+      "SandboxID": "1d3296c690d8a71cf3a7080d8f9cc839c4c44110f96d4483b38a0369ef425a7e",
+      "SandboxKey": "/var/run/docker/netns/1d3296c690d8",
+      "Ports": {
+        "8760/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8768"
+          }
+        ]
+      },
+      "Networks": {
+        "bridge": {
+          "IPAMConfig": null,
+          "Links": null,
+          "Aliases": null,
+          "DriverOpts": null,
+          "GwPriority": 0,
+          "NetworkID": "d0ac2ed741131bf48d812afa2ae20eff7745c9d54c2a22a44521685afe20c19d",
+          "EndpointID": "abe2c3bfbb374421355ad7fb0bbee94998e52a0a1bd073fb7304b2bf986e9c11",
+          "Gateway": "192.168.215.1",
+          "IPAddress": "192.168.215.4",
+          "MacAddress": "5a:8d:b6:59:02:1c",
+          "IPPrefixLen": 24,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DNSNames": null
+        }
+      }
+    },
+    "ImageManifestDescriptor": {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:af4af69d7bed73769a6d801a0f3598930030cce52672bc16c9ed98b57ca734bc",
+      "size": 3340,
+      "platform": {
+        "architecture": "arm64",
+        "os": "linux"
+      }
+    }
+  }
+]

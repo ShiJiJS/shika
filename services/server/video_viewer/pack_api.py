@@ -21,6 +21,9 @@ class PackSummary(BaseModel):
     root_id: str
     path: str
     name: str
+    title: str
+    author: str | None
+    number: str | None
     status: str
     error: str | None
     page_count: int
@@ -78,7 +81,7 @@ def router(auth_required):
         search: Annotated[str, Query(max_length=200)] = "",
         tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
         read_state: Literal["all", "unread", "reading", "completed"] = "all",
-        sort: Literal["name", "newest", "recent"] = "name",
+        sort: Literal["name", "title", "newest", "recent"] = "name",
         source: Literal["library", "tags", "recent"] = "library",
         status: Literal["available", "missing", "trash", "unreadable"] = "available",
         anchor_ids: Annotated[list[str] | None, Query(max_length=16)] = None,
@@ -103,7 +106,7 @@ def router(auth_required):
         search: Annotated[str, Query(max_length=200)] = "",
         tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
         read_state: Literal["all", "unread", "reading", "completed"] = "all",
-        sort: Literal["name", "newest", "recent"] = "name",
+        sort: Literal["name", "title", "newest", "recent"] = "name",
         source: Literal["library", "tags", "recent"] = "library",
     ):
         return request.app.state.packs.selection(

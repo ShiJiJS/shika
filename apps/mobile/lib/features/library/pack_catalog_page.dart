@@ -182,7 +182,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
 
   double get continuationExtent => MediaLayout.continuation(
     context,
-    title: continuation?.name ?? '续读位置暂不可用',
+    title: continuation?.displayTitle ?? '续读位置暂不可用',
     position: continuationPosition,
   );
   PackLibraryState get data => catalog.state;
@@ -551,7 +551,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                               ),
                               const SizedBox(height: 3),
                               Text(
-                                pack.name,
+                                pack.displayTitle,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: MediaLayout.continuationTitle.copyWith(
@@ -740,7 +740,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       action = await paperSheet<String>(
         context,
         SheetFrame(
-          title: pack.name,
+          title: pack.displayTitle,
           children: [
             ListTile(
               contentPadding: EdgeInsets.zero,
@@ -797,9 +797,9 @@ class PackCatalogPageState extends State<PackCatalogPage> {
         files: repo.createPackFiles(),
         command: PackFileCommand.trash(packFileRequestId(), [
           pack.id,
-        ], label: pack.name),
+        ], label: pack.displayTitle),
         title: '整包移入回收站？',
-        description: '${pack.name} · ${pack.pageCount} 张',
+        description: '${pack.displayTitle} · ${pack.pageCount} 张',
       );
       if (outcome == null || !mounted || !outcome.files.isCurrent()) return;
       await outcome.files.acknowledge(outcome.command);
@@ -945,7 +945,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
         context,
         StatefulBuilder(
           builder: (sheetContext, local) => SheetFrame(
-            title: pack.name,
+            title: pack.displayTitle,
             children: [
               SizedBox(
                 height: 230,
@@ -1027,7 +1027,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      pack.name,
+                      pack.displayTitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: p.title.copyWith(fontSize: 18),
@@ -1076,7 +1076,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
             MediaCatalogSearch(
               fieldKey: const Key('pack-search'),
               controller: search,
-              hint: '搜索图包名称、目录',
+              hint: '搜索图包、作者、目录',
               filterLabel: '筛选图包',
               onFilter: filter,
               onChanged: (value) => change(entry.query.copy(search: value)),
@@ -1339,48 +1339,55 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                           ),
                                         ),
                                         Positioned(
-                                          right: 5,
-                                          bottom: 5,
+                                          right: 7,
+                                          bottom: 7,
                                           child: IgnorePointer(
-                                            child: ColoredBox(
-                                              color: Colors.black54,
+                                            child: DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xbf18241c),
+                                                borderRadius:
+                                                    BorderRadius.circular(3),
+                                              ),
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                      horizontal: 4,
-                                                      vertical: 2,
+                                                      horizontal: 6,
+                                                      vertical: 3,
                                                     ),
                                                 child: Text(
                                                   '${pack.pageCount} 张',
                                                   style: const TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 11,
+                                                    fontSize: 12,
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                        if (pack.progress != null)
+                                        if (pack.progress != null && !selecting)
                                           Positioned(
-                                            left: 5,
-                                            bottom: 5,
+                                            left: 8,
+                                            top: 8,
                                             child: IgnorePointer(
-                                              child: ColoredBox(
-                                                color: Colors.black54,
+                                              child: DecoratedBox(
+                                                decoration: BoxDecoration(
+                                                  color: p.background
+                                                      .withValues(alpha: .93),
+                                                  borderRadius:
+                                                      BorderRadius.circular(3),
+                                                ),
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.symmetric(
-                                                        horizontal: 4,
-                                                        vertical: 2,
+                                                        horizontal: 7,
+                                                        vertical: 4,
                                                       ),
                                                   child: Text(
-                                                    pack.progress!.completed
-                                                        ? '已读'
-                                                        : '在读',
-                                                    style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 11,
+                                                    pack.readingBadge,
+                                                    style: TextStyle(
+                                                      color: p.olive,
+                                                      fontSize: 12,
                                                     ),
                                                   ),
                                                 ),
@@ -1409,7 +1416,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    pack.name,
+                                    pack.displayTitle,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: p.title.copyWith(
@@ -1423,7 +1430,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            '${pack.readableCount} 张可读',
+                                            pack.catalogSubtitle,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -1433,7 +1440,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                           ),
                                         ),
                                         IconButton(
-                                          tooltip: '图包操作 ${pack.name}',
+                                          tooltip: '图包操作 ${pack.displayTitle}',
                                           onPressed: () => actions(pack),
                                           constraints: const BoxConstraints(
                                             minWidth: 32,

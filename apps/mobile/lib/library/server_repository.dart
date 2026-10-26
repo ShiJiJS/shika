@@ -1556,7 +1556,7 @@ class ServerLibraryRepository extends LibraryRepository
         'search': query.search,
         'read_state': query.readState.name,
         'source': query.source.name,
-        'sort': query.sort.name,
+        'sort': _packSort(query.sort),
         'directory_id': ?directory,
         if (query.tags.isNotEmpty) 'tag_ids': query.tags.toList()..sort(),
       },

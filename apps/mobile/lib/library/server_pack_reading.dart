@@ -211,7 +211,7 @@ class _ServerPackReader implements PackReader {
     if (available > total) bad();
     final source = map(data['source']);
     final kind = enumeration(BrowseSource.values, source['kind']);
-    if (!['name', 'newest', 'recent'].contains(source['sort']) ||
+    if (!['name', 'title', 'newest', 'recent'].contains(source['sort']) ||
         (source['sort'] == 'recent' && kind != BrowseSource.recent)) {
       bad();
     }
@@ -295,7 +295,7 @@ class _ServerPackReader implements PackReader {
         final entry = operation.entry, raw = map(data['scope']);
         final expected = createScopes[operation.requestId];
         if ((result as PackReadingRange).source != entry.source ||
-            map(data['source'])['sort'] != entry.query.sort.name ||
+            map(data['source'])['sort'] != owner._packSort(entry.query.sort) ||
             result.random != entry.random ||
             raw['search'] != entry.query.search ||
             raw['read_state'] != entry.query.readState.name ||
@@ -412,7 +412,7 @@ class _ServerPackReader implements PackReader {
         body = {
           'scope': scope,
           'source': operation.entry.source.name,
-          'sort': query.sort.name,
+          'sort': owner._packSort(query.sort),
           'order': operation.entry.random ? 'random' : 'sequential',
           'anchor_pack_id': operation.entry.anchorId,
         };

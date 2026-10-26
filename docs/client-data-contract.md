@@ -123,3 +123,10 @@ Schema0009声明 `pack_reading_sessions`。`POST /api/v1/pack-sessions` 带reque
 `recent?kind=pack` 只含实际opened并按包去重，视频仍为默认kind=video；packs及selection支持source=recent与sort=recent，并保留完整图包过滤。客户端PackQuery自身携带来源/排序，列表、定位、选择和PackReadingEntry共享同一查询；最近页不继承媒体库草稿。图包摘要progress增加可选零基page_index，由当前受控清单内的pageId位置计算；旧服务缺失或保存页已不在有效清单时为null，不猜ordinal/文件名页码，也不因GET改写进度。Schema0009保留旧pageId/比例/完成/revision，补当前清单版本与偏好revision；扫描删页选择最近可读页，记录page_removed，实际打开确认后清除说明。原页损坏读取时返回page_unreadable。完整备份v2与跨恢复代次隔离由LF7完成。
 
 客户端读取句柄由 `LibraryRepository.createPackReader()` 创建，绑定连接/代次/阅读元数据代次。`ReaderCommand<T>` 保留原request_id和版本，submit单次发送、receipt只读，不自动重发未知结果；范围/页/队列及写回执严格校验身份、数量、版本和媒体地址。确认恢复发布新状态前销毁旧句柄；连接对象相同也不能跨恢复代次回写。`isCurrent` 提供轻量归属检查，原生页面已在首帧、后台flush和离页处使用它；完整后台/恢复组合仍需原生验收。
+
+
+## 图包可选展示字段与中文标题排序（LF8）
+
+图包摘要新增派生字段 `title`、可空 `author` / `number`，不改变 `name` / `path` / `id` 或schema。明确编号目录才解析作者/标题，未知格式回退完整原名；数值前导零保留，原名依然是扫描和身份依据。客户端显示字段缺失/无效时沿用原名与既有元信息。
+
+能力 `pack_presentation` 存在时，新客户端名称排序在packs、selection、锚点与创建pack-session中统一映射为 `sort=title`；旧能力仍发name，原name/缺省调用、newest/recent和已建固定会话语义保留。title在SQLite内按同一ICU中文标题键及稳定ID排序，再分页或建立成员快照；不在客户端重排一页。ICU键不持久化，标准Docker显式固定运行库；缺依赖的裸开发环境不广告此能力，直接title请求明确503。解析范围、显示回退与验证边界见[设计约定](plans/library-first/LF8-PACK-PRESENTATION.md)。

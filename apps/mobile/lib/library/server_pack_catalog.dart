@@ -85,6 +85,11 @@ mixin _ServerPackCatalog on LibraryRepository {
     return directory['id'] as String;
   }
 
+  String _packSort(PackSort sort) =>
+      sort == PackSort.name && capabilities.packPresentation
+      ? 'title'
+      : sort.name;
+
   LibraryPack _pack(Json data, ServerApi target) {
     final progress = data['progress'] == null ? null : object(data['progress']);
     final pageIndex = progress?['page_index'];
@@ -111,6 +116,9 @@ mixin _ServerPackCatalog on LibraryRepository {
       rootId: data['root_id'],
       path: data['path'],
       name: data['name'],
+      title: data['title'] is String ? data['title'] as String : null,
+      author: data['author'] is String ? data['author'] as String : null,
+      number: data['number'] is String ? data['number'] as String : null,
       pageCount: data['page_count'],
       readableCount: data['readable_count'],
       contentVersion: data['content_version'],
@@ -229,7 +237,7 @@ mixin _ServerPackCatalog on LibraryRepository {
         'search': query.search,
         'read_state': query.readState.name,
         'source': query.source.name,
-        'sort': query.sort.name,
+        'sort': _packSort(query.sort),
         'directory_id': ?directory,
         if (query.tags.isNotEmpty) 'tag_ids': query.tags.toList()..sort(),
         if (anchors != null) 'anchor_ids': anchors.take(16).toList(),

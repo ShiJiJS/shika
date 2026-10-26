@@ -36,6 +36,7 @@ from .pack_purge import PackPurge
 from .pack_purge_plans import PackPurgePlans
 from .pack_restore_plans import PackRestorePlans
 from .pack_tags import PackTags
+from .pack_title_order import title_order_available
 from .packs import Packs
 from .playback import Playback
 from .playback_defaults import PlaybackDefaults
@@ -368,6 +369,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             "capabilities": [
                 "typed_roots",
                 "media_catalog_counts",
+                *(["pack_presentation"] if title_order_available() else []),
                 "pack_tags",
                 "image_packs",
                 "fixed_video_sessions",
