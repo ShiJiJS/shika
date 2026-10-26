@@ -12,6 +12,10 @@ import 'package:video_viewer/ui/paper.dart';
 import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/repository.dart';
 import 'package:video_viewer/ui/sheets.dart';
+import 'package:video_viewer/main.dart';
+import 'package:video_viewer/features/library/video_catalog_page.dart';
+
+import 'fixed_preview_widget_test.dart' as fixed;
 
 import 'media_workspace_widget_test.dart' show WorkspaceLibrary;
 import 'support/reveal_action.dart';
@@ -21,7 +25,8 @@ class AssignmentLibrary extends WorkspaceLibrary {
   bool restoring = false,
       failSave = false,
       failCreate = false,
-      failMore = false;
+      failMore = false,
+      failCatalog = false;
   final videoOffsets = <int>[];
   Completer<void>? pending;
   final writes =
@@ -39,6 +44,16 @@ class AssignmentLibrary extends WorkspaceLibrary {
   Object get connectionIdentity => owner;
   @override
   bool get backupRestorePending => restoring;
+  @override
+  Future<VideoPage> loadVideoEntry(
+    VideoEntryScope entry, {
+    int offset = 0,
+    int limit = 24,
+  }) async {
+    if (failCatalog) throw const LibraryFailure('保留列表读取错误');
+    return super.loadVideoEntry(entry, offset: offset, limit: limit);
+  }
+
   @override
   Future<CatalogPage<VideoTag>> loadVideoTags({
     String search = '',
@@ -129,6 +144,51 @@ void main() {
     await t.pumpAndSettle();
     expect(t.takeException(), isNull);
   }
+
+  testWidgets(
+    'modal keyboard keeps a failed source library at its original viewport',
+    (t) async {
+      t.view.physicalSize = const Size(844, 390);
+      t.view.devicePixelRatio = 1;
+      addTearDown(t.view.resetPhysicalSize);
+      addTearDown(t.view.resetDevicePixelRatio);
+      addTearDown(t.view.resetViewInsets);
+      final repo = AssignmentLibrary();
+      await repo.initialize();
+      addTearDown(repo.dispose);
+      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await fixed.frames(t);
+      final page = t.state<VideoCatalogPageState>(
+        find.byType(VideoCatalogPage),
+      );
+      final members = page.data.items.map((v) => v.id).toList();
+      repo.failCatalog = true;
+      await page.load();
+      await fixed.frames(t);
+      expect(page.data.error, isNotEmpty);
+      expect(find.byKey(const Key('library-return-retry')), findsOneWidget);
+      final edit = find
+          .byWidgetPredicate(
+            (w) => w is Tooltip && w.message?.startsWith('编辑标签 ') == true,
+          )
+          .first;
+      await revealAction(t, edit);
+      await t.tap(edit);
+      await fixed.frames(t);
+      expect(find.byKey(const Key('tag-assignment-new')), findsOneWidget);
+      t.view.viewInsets = const FakeViewPadding(bottom: 248);
+      await fixed.frames(t);
+      expect(t.takeException(), isNull);
+      expect(MediaQuery.of(page.context).viewInsets.bottom, 0);
+      final field = find.byKey(const Key('tag-assignment-new'));
+      expect(MediaQuery.of(t.element(field)).viewInsets.bottom, 248);
+      expect(page.data.items.map((v) => v.id).toList(), members);
+      expect(page.data.error, isNotEmpty);
+      t.view.resetViewInsets();
+      await t.pumpWidget(const SizedBox());
+      await fixed.frames(t);
+    },
+  );
 
   final save = find.byKey(const Key('tag-assignment-save'));
   final input = find.byKey(const Key('tag-assignment-new'));
