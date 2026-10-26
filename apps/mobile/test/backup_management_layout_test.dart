@@ -70,12 +70,16 @@ void main() {
         await tap(find.byKey(const Key('nav-settings')));
         await tap(find.text('备份与恢复'));
         await tap(find.byKey(const Key('backup-export')));
-        expect(t.widget<Text>(find.byKey(const Key('backup-status'))).data,
-            '保存已取消，可在操作任务下载原备份');
+        expect(
+          t.widget<Text>(find.byKey(const Key('backup-status'))).data,
+          '保存已取消，可在操作任务下载原备份',
+        );
         files.saved = true;
         await tap(find.byKey(const Key('backup-export')));
-        expect(t.widget<Text>(find.byKey(const Key('backup-status'))).data,
-            '备份已保存到所选位置');
+        expect(
+          t.widget<Text>(find.byKey(const Key('backup-status'))).data,
+          '备份已保存到所选位置',
+        );
         await tap(find.byKey(const Key('backup-pick')));
         expect(repo.inspections, 1);
         expect(
