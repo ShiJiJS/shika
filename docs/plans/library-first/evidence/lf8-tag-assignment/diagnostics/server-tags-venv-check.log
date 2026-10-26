@@ -1,0 +1,19 @@
+ImportError while loading conftest '/Users/jiangxinyi/Documents/Project/video-viewer/services/server/tests/conftest.py'.
+services/server/tests/conftest.py:8: in <module>
+    from video_viewer.app import create_app
+services/server/video_viewer/app.py:17: in <module>
+    from .backups import Backups
+services/server/video_viewer/backups.py:23: in <module>
+    from .backup_reconcile import mappings_for, recommended_mapping, reconcile
+services/server/video_viewer/backup_reconcile.py:10: in <module>
+    from .file_transfer import FileTransfer
+services/server/video_viewer/file_transfer.py:13: in <module>
+    _rename = _libc.renameat2
+              ^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.14/3.14.8_2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/ctypes/__init__.py:486: in __getattr__
+    func = self.__getitem__(name)
+           ^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.14/3.14.8_2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/ctypes/__init__.py:491: in __getitem__
+    func = self._FuncPtr((name_or_ordinal, self))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: dlsym(RTLD_DEFAULT, renameat2): symbol not found

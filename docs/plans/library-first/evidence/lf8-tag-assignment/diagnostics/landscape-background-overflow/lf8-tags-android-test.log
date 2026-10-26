@@ -1,0 +1,106 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart
+Running Gradle task 'assembleDebug'...                             43.6s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        2,105ms
+00:00 +0: LF8 native single assignments, independent creation and complete batch append
+TAG_ASSIGNMENT_METRICS:{"state":"video-single","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-dark","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":true}
+TAG_ASSIGNMENT_METRICS:{"state":"video-error","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-keyboard","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":248.0,"dark":false,"input_rect":[430.0,85.0,763.800121307373,129.0],"add_rect":[771.800121307373,81.0,824.0,129.0],"focused":true}
+TAG_ASSIGNMENT_SAVED:{"kind":"video","id":"336e7303-c3d6-4a05-9a79-14c467e74b33","tags":["068cbcfb-e34c-4763-ae70-0fc4a9b41bc6","9469c2c6-af7a-42db-8b29-a854f4295fe3"],"source_reloaded":true}
+TAG_ASSIGNMENT_METRICS:{"state":"video-saved","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-single","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-error","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-keyboard","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":248.0,"dark":false,"input_rect":[430.0,85.0,763.800121307373,129.0],"add_rect":[771.800121307373,81.0,824.0,129.0],"focused":true}
+TAG_ASSIGNMENT_SAVED:{"kind":"pack","id":"2eb807c4-a77d-48f8-a4f2-a13e47cceefb","tags":["7a07a526-7d48-4eba-88ad-002d4927cf38","f1c2a4b2-94c1-4492-b327-b3571db7c54c"],"source_reloaded":true}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-saved","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"videos","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-batch","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_FLUTTER_ERROR: ══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞══════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 29 pixels on the bottom.
+
+The relevant error-causing widget was:
+  Column
+  Column:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/lib/features/library/video_catalog_page.dart:442:14
+
+The overflowing RenderFlex has an orientation of Axis.vertical.
+The edge of the RenderFlex that is overflowing has been marked in
+the rendering with a yellow and black striped pattern. This is
+usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget)
+to force the children of the RenderFlex to fit within the
+available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that
+there is content that cannot be seen. If the content is
+legitimately bigger than the available space, consider clipping
+it with a ClipRect widget before putting it in the flex, or using
+a scrollable container rather than a Flex, like a ListView.
+The specific RenderFlex in question is: RenderFlex#67316 relayoutBoundary=up9 OVERFLOWING:
+  needs compositing
+  parentData: offset=Offset(0.0, 0.0) (can use size)
+  constraints: BoxConstraints(0.0<=w<=844.0, 0.0<=h<=74.0)
+  size: Size(844.0, 74.0)
+  direction: vertical
+  mainAxisAlignment: start
+  mainAxisSize: max
+  crossAxisAlignment: center
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+═════════════════════════════════════════════════════════════════
+
+TAG_ASSIGNMENT_FLUTTER_ERROR: ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 29 pixels on
+the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.shot (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:128:9)
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:422:13)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart line 128
+The test description was:
+  LF8 native single assignments, independent creation and
+  complete batch append
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 29 pixels on the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.shot (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:128:9)
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:422:13)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart line 128
+The test description was:
+  LF8 native single assignments, independent creation and complete batch append
+════════════════════════════════════════════════════════════════════════════════════════════════════
+02:24 +0 -1: LF8 native single assignments, independent creation and complete batch append [E]
+  Test failed. See exception logs above.
+  The test description was: LF8 native single assignments, independent creation and complete batch append
+  
+02:24 +0 -1: (tearDownAll)
+02:25 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart: LF8 native single assignments, independent creation and complete batch append

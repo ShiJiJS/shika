@@ -1,0 +1,41 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart
+Running Gradle task 'assembleDebug'...                             52.7s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        2,095ms
+00:00 +0: LF8 native single assignments, independent creation and complete batch append
+TAG_ASSIGNMENT_METRICS:{"state":"video-single","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-dark","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":0.0,"dark":true}
+TAG_ASSIGNMENT_METRICS:{"state":"video-error","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-keyboard","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":303.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-saved","window":[360.0,740.0],"dpr":3.0,"text13":26.0,"keyboard":0.0,"dark":false}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Timed out: catalogue loaded actual items before single assignment
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:73:13)
+<asynchronous suspension>
+#2      main.<anonymous closure>.single (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:124:9)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:213:7)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  LF8 native single assignments, independent creation and complete batch append
+════════════════════════════════════════════════════════════════════════════════════════════════════
+02:08 +0 -1: LF8 native single assignments, independent creation and complete batch append [E]
+  Test failed. See exception logs above.
+  The test description was: LF8 native single assignments, independent creation and complete batch append
+  
+02:09 +0 -1: (tearDownAll)
+02:09 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart: LF8 native single assignments, independent creation and complete batch append

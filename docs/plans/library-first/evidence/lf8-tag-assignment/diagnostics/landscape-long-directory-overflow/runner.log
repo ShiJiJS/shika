@@ -1,0 +1,137 @@
+ Container video-viewer-client-e2e-server-1 Stopping 
+ Container video-viewer-client-e2e-server-1 Stopped 
+ Container video-viewer-client-e2e-server-1 Removing 
+ Container video-viewer-client-e2e-server-1 Removed 
+ Network video-viewer-client-e2e_default Removing 
+ Network video-viewer-client-e2e_default Removed 
+ Image video-viewer-server:e2e Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 629B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.44kB 0.0s done
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#3 DONE 0.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 101B 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 12.60kB 0.1s done
+#5 DONE 0.2s
+
+#6 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#6 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.1s done
+#6 DONE 0.1s
+
+#7 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#7 CACHED
+
+#8 [test 3/4] COPY tests ./tests
+#8 CACHED
+
+#9 [runtime 6/9] COPY video_viewer ./video_viewer
+#9 CACHED
+
+#10 [runtime 4/9] COPY requirements.lock ./
+#10 CACHED
+
+#11 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#11 CACHED
+
+#12 [test 2/4] RUN pip install --no-cache-dir --require-hashes -r requirements-test.lock
+#12 CACHED
+
+#13 [runtime 3/9] WORKDIR /app
+#13 CACHED
+
+#14 [runtime 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=7:5.1.9-0+deb12u1 libicu72=72.1-3+deb12u1 && rm -rf /var/lib/apt/lists/*
+#14 CACHED
+
+#15 [runtime 7/9] COPY migrations ./migrations
+#15 CACHED
+
+#16 [runtime 8/9] COPY alembic.ini ./
+#16 CACHED
+
+#17 [test 1/4] COPY requirements-test.lock ./
+#17 CACHED
+
+#18 [test 4/4] COPY pyproject.toml ./
+#18 CACHED
+
+#19 exporting to image
+#19 exporting layers done
+#19 exporting manifest sha256:d1c65ef22de295ae9a71559748fafac09c48e5cf4946abd2fafffe3a15098b26 done
+#19 exporting config sha256:47d0db3c3cb28b4dd6ad131647b85de73a8e44c9b2af1f71735ed7e263cfc925 done
+#19 exporting attestation manifest sha256:7d869d6bba098263629e927cae9b213f142006cc607606c16a082f9803dba674 0.1s done
+#19 exporting manifest list sha256:b345807f6b281ca9bf4d3d28b959ac1108b3c2ebac7cf7dd02502ebb1dbf2c98 0.0s done
+#19 naming to docker.io/library/video-viewer-server:e2e 0.0s done
+#19 unpacking to docker.io/library/video-viewer-server:e2e 0.0s done
+#19 DONE 0.3s
+
+#20 resolving provenance for metadata file
+#20 DONE 0.0s
+ Image video-viewer-server:e2e Built 
+ Network video-viewer-client-e2e_default Creating 
+ Network video-viewer-client-e2e_default Created 
+ Container video-viewer-client-e2e-server-1 Creating 
+ Container video-viewer-client-e2e-server-1 Created 
+ Container video-viewer-client-e2e-server-1 Starting 
+ Container video-viewer-client-e2e-server-1 Started 
+Isolated emulator fixture ready at port 8761; main service unchanged
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart
+Running Gradle task 'assembleDebug'...                             63.6s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...           3.6s
+00:00 +0: LF8 native single assignments, independent creation and complete batch append
+TAG_ASSIGNMENT_METRICS:{"state":"video-single","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-dark","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":true}
+TAG_ASSIGNMENT_METRICS:{"state":"video-error","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-keyboard","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":248.0,"dark":false,"input_rect":[430.0,85.0,763.800121307373,129.0],"add_rect":[771.800121307373,81.0,824.0,129.0],"focused":true}
+TAG_ASSIGNMENT_SAVED:{"kind":"video","id":"20f2d900-1de8-47f6-a6ed-416a2421cfe3","tags":["0c9c1d08-b079-4ad6-b4fe-3616a375307f","f4938b7a-99ff-4a0f-abf3-ebb17459d045"],"source_reloaded":true}
+TAG_ASSIGNMENT_METRICS:{"state":"video-saved","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-single","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-error","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-keyboard","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":248.0,"dark":false,"input_rect":[430.0,85.0,763.800121307373,129.0],"add_rect":[771.800121307373,81.0,824.0,129.0],"focused":true}
+TAG_ASSIGNMENT_SAVED:{"kind":"pack","id":"905c6457-e064-4db4-abe0-929e58b064f1","tags":["4890b7c9-6ae8-4230-87ba-328010088e4b","91f57671-ebf5-4008-8ec5-5eb93a6c2965"],"source_reloaded":true}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-saved","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"videos","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"video-batch","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"packs","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_METRICS:{"state":"pack-batch","window":[844.0,390.0],"dpr":3.0,"text13":13.0,"keyboard":0.0,"dark":false}
+TAG_ASSIGNMENT_VERIFIED:{"videos":["20f2d900-1de8-47f6-a6ed-416a2421cfe3","f1cb1849-08d4-4fa7-9c92-5558d73862b2","1588c677-a7aa-4d51-a424-b07e8f75ce5e","d3f2cce8-50fc-48be-ae36-9d653077e043","b174524e-8946-4f09-a4c7-c937fdb57e22","f8fe84d2-0046-447c-a4c1-aae9b8fa2175","a9356ad8-d633-46ee-86f4-421e7675ef31","b3ca233b-d2d7-46ff-b086-c3634ff55909","9eff323e-5327-4da7-bfb8-426bc37b1ebd","d9f65507-5892-4a9a-8e72-5aa8ff5d262c","78ede99b-993c-492e-ac57-2ee345a66eb1","009dc84e-2910-4a12-a216-20c58f4237e6","211a5bab-e0a7-4477-b0ea-ae19883739ee","15dc20d3-8809-4de3-b478-16cf8b7c6e8b","be0590f2-0785-4d4c-b670-c4cc8946ae89","b9aa9e8f-254a-4b98-877e-949be6d4392e","1114ea98-6de6-4591-94b2-e6db78de8ea0","36dcb79f-8f06-407e-bbdb-224070cb239b","c304bf5a-a676-4631-ae0a-23a0c3349cdc","8cd64324-1fc5-466a-8c39-1de367e8d022","a2428ccf-040e-4ef1-ab88-47c2b97470c6","b2bb703a-997d-4a31-bee8-a15794de129f","47b7a49b-6318-4f8a-b5b5-1a757c2d545b","506bdd55-2896-4cf4-8cd8-26e8be50eb76","a275bce7-2116-477d-afd0-7bd9b02c89f9","36f6744b-0c45-4a5e-82f4-6531927fa9a4","a0f7da28-ffdb-452b-a5fa-ec5e1329fb27"],"packs":["905c6457-e064-4db4-abe0-929e58b064f1","238c617f-4e1e-479f-9ad4-47bf21800aab","85f2f0da-f441-4c4a-b907-7d79a0147231","ad21b04b-ddbf-4fcd-bbec-dbc472409aa9","0633e1ab-f329-45e9-9fd6-6b865f5a00d8","e0224829-cd6a-4d76-bd81-e45688d9339f","e21f5205-a599-45bb-bb1b-e2d5537b5672","cf44225e-c282-4e82-9f74-01567ded15b8","7a8817de-1da8-4f1d-a744-2454b22fc5d3","0b831bb2-2462-407e-84d7-cb4e3a31292a","edac436c-bfc8-4895-8c2e-d7319eb4a81d","066c4665-8ece-4c9c-8ca4-5fb03bbcf89e","c21e9f48-86b1-4996-9f24-0fce8294d519","cdd03fe9-f12d-4c91-ae8d-b63d4b0e017f","706e4bd3-ffb2-4546-a928-ba8bcf94f4ac","b6ea7edd-8468-4e54-839a-13fcf3a9ab32","b0bb3dc0-f549-4354-86cf-144363572b2c","68367921-faba-4d4c-b68c-03f2e94c4a6b","c6252e0c-fac6-4fe8-9e63-fa2ca5f68a36","b50b20d1-ba6e-4e88-a9cc-476f5266390a","d2f31f5c-24bd-420c-b2b8-ee5788ad8c87","6d08052e-f076-43ea-9558-88a2cb5cf715","b8908aa6-b7fa-4eb1-a481-d0b635e40417","304b6274-8d55-4825-a8da-2df42d02497f","4aead717-0d0b-47e5-b3cb-f16a64e436f3","c2efd4a6-293d-48b5-9fe7-f278cf8d314c","53d65801-9a5b-4377-a701-791db8600101"],"excluded_video":"20f2d900-1de8-47f6-a6ed-416a2421cfe3","excluded_pack":"905c6457-e064-4db4-abe0-929e58b064f1","video_preserved":"ab8c8ddf-fe40-4150-a9d0-4790ed8fa323","video_appended":"0c9c1d08-b079-4ad6-b4fe-3616a375307f","pack_preserved":"95de7fbe-ed89-4cdc-874f-f102651b160a","pack_appended":"91f57671-ebf5-4008-8ec5-5eb93a6c2965","video_created":"f4938b7a-99ff-4a0f-abf3-ebb17459d045","pack_created":"4890b7c9-6ae8-4230-87ba-328010088e4b"}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 29 pixels on the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.shot (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:122:9)
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart:458:13)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart line 122
+The test description was:
+  LF8 native single assignments, independent creation and complete batch append
+════════════════════════════════════════════════════════════════════════════════════════════════════
+02:58 +0 -1: LF8 native single assignments, independent creation and complete batch append [E]
+  Test failed. See exception logs above.
+  The test description was: LF8 native single assignments, independent creation and complete batch append
+  
+02:58 +0 -1: (tearDownAll)
+02:59 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_tag_assignment_test.dart: LF8 native single assignments, independent creation and complete batch append
