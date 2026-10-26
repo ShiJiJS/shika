@@ -211,9 +211,12 @@ void main() {
         'title search',
       );
       expect(catalog().data.items.single.id, pack.id);
-      expect(find.text('在读 · 3'), findsOneWidget);
       expect(await progress(), before);
       FocusManager.instance.primaryFocus?.unfocus();
+      await until(
+        () => find.text('在读 · 3').evaluate().length == 1,
+        'title card and its actual reading badge after keyboard closes',
+      );
       await capture('presentation-title');
       await tap(find.byKey(Key('pack-tile-${pack.id}')));
       await until(
