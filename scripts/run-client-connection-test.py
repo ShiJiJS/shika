@@ -345,6 +345,7 @@ def main():
     mode.add_argument("--tag-management", action="store_true")
     parser.add_argument("--tag-results-only", action="store_true")
     parser.add_argument("--tag-assignment", action="store_true")
+    parser.add_argument("--skia", action="store_true", help="Use test-only Skia rendering on an unstable emulator")
     mode.add_argument("--selection", action="store_true")
     mode.add_argument("--pack-names", action="store_true")
     mode.add_argument("--pack-anchor", action="store_true")
@@ -567,6 +568,8 @@ def main():
             "--reporter",
             "expanded",
         ]
+        if args.skia:
+            command.append("--no-enable-impeller")
         if args.tag_results_only:
             command.append("--dart-define=TAG_RESULTS_ONLY=true")
         if args.purge_management_baseline:
