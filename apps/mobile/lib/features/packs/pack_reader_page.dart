@@ -687,6 +687,431 @@ class PackReaderPageState extends State<PackReaderPage>
     final usable = pack != null && session.live;
     final darkBars =
         !controls || Theme.of(context).brightness == Brightness.dark;
+    final window = MediaQuery.sizeOf(context);
+    final compact = window.width > window.height && window.height <= 500;
+    final chromeButtonStyle = IconButton.styleFrom(
+      minimumSize: const Size(44, 44),
+      padding: EdgeInsets.zero,
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    );
+    final header = chrome(
+      controls
+          ? ColoredBox(
+              color: compact
+                  ? p.background.withValues(alpha: .93)
+                  : p.background,
+              child: ConstrainedBox(
+                key: const Key('reader-header'),
+                constraints: BoxConstraints(minHeight: compact ? 48 : 52),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(8, 0, 12, compact ? 1 : 5),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        style: chromeButtonStyle,
+                        tooltip: '返回来源',
+                        onPressed: close,
+                        icon: const Icon(Icons.arrow_back_ios_new, size: 18),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.zero,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                pack?.displayTitle ?? '图包阅读',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: p.title.copyWith(fontSize: 20),
+                              ),
+                              Text(
+                                '${quick ? '快速整理 · ' : ''}${pack?.readerSubtitle.isNotEmpty == true ? pack!.readerSubtitle : '${session.total} 张'}',
+                                style: TextStyle(fontSize: 12, color: p.muted),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      if (!quick)
+                        IconButton(
+                          style: chromeButtonStyle,
+                          tooltip: '阅读设置',
+                          onPressed: usable && !session.inputBlocked
+                              ? settings
+                              : null,
+                          icon: const Icon(Icons.tune, size: 20),
+                        ),
+                      if (quick)
+                        TextButton(
+                          onPressed: session.inputBlocked
+                              ? null
+                              : () => setState(() => quick = false),
+                          child: const Text('完成'),
+                        ),
+                      PopupMenuButton<String>(
+                        enabled: usable && !session.inputBlocked,
+                        tooltip: '图包更多',
+                        onSelected: (value) async {
+                          if (value == 'cleanup') {
+                            await removeCurrent();
+                          }
+                          if (value == 'quick') {
+                            setState(() {
+                              quick = !quick;
+                              controls = true;
+                            });
+                          }
+                          if (value == 'details') await details();
+                          if (value == 'previous') {
+                            await move(session.range!.previous!.packId);
+                          }
+                          if (value == 'tags' &&
+                              session.range?.pack != null &&
+                              await session.flush()) {
+                            await widget.editTags(session.range!.pack!);
+                            if (session.live) await session.reload();
+                          }
+                          if (value == 'queue') await queue();
+                          if (value == 'overview') await overview();
+                          if (value == 'immerse') {
+                            setState(() => controls = false);
+                          }
+                        },
+                        itemBuilder: (_) => [
+                          if (compact && usable) ...[
+                            const PopupMenuItem(
+                              value: 'overview',
+                              child: Text('页码总览'),
+                            ),
+                            if (!quick)
+                              const PopupMenuItem(
+                                value: 'immerse',
+                                child: Text('沉浸阅读'),
+                              ),
+                          ],
+                          if (session.cleanupSupported)
+                            PopupMenuItem(
+                              value: 'quick',
+                              child: Text(quick ? '退出快速整理' : '快速整理当前范围'),
+                            ),
+                          if (session.cleanupSupported && !quick)
+                            const PopupMenuItem(
+                              value: 'cleanup',
+                              child: Text('整包移入回收站'),
+                            ),
+                          if (usable)
+                            const PopupMenuItem(
+                              value: 'details',
+                              child: Text('图包详情'),
+                            ),
+                          if (usable)
+                            const PopupMenuItem(
+                              value: 'tags',
+                              child: Text('整包标签'),
+                            ),
+                          if (session.range?.previous != null)
+                            const PopupMenuItem(
+                              value: 'previous',
+                              child: Text('上一包'),
+                            ),
+                          if (usable)
+                            const PopupMenuItem(
+                              value: 'queue',
+                              child: Text('本次图包范围'),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : const SizedBox.shrink(),
+    );
+    final notices = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (controls) ColoredBox(color: p.background, child: status(context)),
+        if (session.recoveryReason != null && controls)
+          ColoredBox(
+            color: p.background,
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                session.recoveryReason == 'page_removed'
+                    ? '上次阅读的图片已移除，已定位到附近可读图片'
+                    : '上次阅读的图片不可读取，已定位到附近图片',
+                style: TextStyle(fontSize: 12, color: p.olive),
+              ),
+            ),
+          ),
+      ],
+    );
+    final canvas = Expanded(
+      key: const Key('reader-stage-layout'),
+      child: ColoredBox(
+        key: const Key('reader-canvas'),
+        color: const Color(0xff11150f),
+        child: !usable
+            ? Center(
+                child: session.busy
+                    ? const CircularProgressIndicator()
+                    : Text(
+                        session.invalidated
+                            ? session.error
+                            : session.range == null
+                            ? '正在准备阅读范围'
+                            : '本次范围暂无可读取的图包',
+                        style: const TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+              )
+            : Stack(
+                children: [
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      ignoring: session.cleanupBusy || session.cleanupFrozen,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final size = constraints.biggest;
+                          if (showingEnd) return end();
+                          return session.preferences.mode ==
+                                  ReaderMode.horizontal
+                              ? _HorizontalReader(
+                                  key: ValueKey(
+                                    'horizontal-${session.packEpoch}',
+                                  ),
+                                  session: session,
+                                  jumpEpoch: jumpEpoch,
+                                  resetZoom: zoomReset,
+                                  size: size,
+                                  picture: picture,
+                                  end: end,
+                                  tap: () => setState(() {
+                                    if (!quick) {
+                                      controls = !controls;
+                                    }
+                                  }),
+                                  onZoom: (value) {
+                                    if (mounted && zoomed != value) {
+                                      setState(() => zoomed = value);
+                                    }
+                                  },
+                                )
+                              : _VerticalReader(
+                                  key: ValueKey(
+                                    'vertical-${session.packEpoch}',
+                                  ),
+                                  session: session,
+                                  jumpEpoch: jumpEpoch,
+                                  size: size,
+                                  picture: picture,
+                                  end: end,
+                                  tap: () => setState(() {
+                                    if (!quick) {
+                                      controls = !controls;
+                                    }
+                                  }),
+                                );
+                        },
+                      ),
+                    ),
+                  ),
+                  if (!controls)
+                    Positioned(
+                      right: 16,
+                      bottom: 12,
+                      child: GestureDetector(
+                        onTap: () => setState(() => controls = true),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 7,
+                          ),
+                          color: Colors.black54,
+                          child: Text(
+                            '${session.index + 1} / ${session.total}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+      ),
+    );
+    final bottom = chrome(
+      controls && usable
+          ? ColoredBox(
+              color: compact
+                  ? p.background.withValues(alpha: .93)
+                  : p.background,
+              child: Padding(
+                key: const Key('reader-controls'),
+                padding: EdgeInsets.fromLTRB(
+                  compact ? 12 : 16,
+                  3,
+                  compact ? 12 : 16,
+                  compact ? 5 : 9,
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          style: chromeButtonStyle,
+                          tooltip: '上一张',
+                          onPressed: !session.inputBlocked && session.index > 0
+                              ? () => jump(session.index - 1)
+                              : null,
+                          icon: const Icon(Icons.chevron_left, size: 20),
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                            height: 44,
+                            child: SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                trackHeight: 3,
+                                thumbShape: const RoundSliderThumbShape(
+                                  enabledThumbRadius: 7.5,
+                                ),
+                                overlayShape: const RoundSliderOverlayShape(
+                                  overlayRadius: 16,
+                                ),
+                              ),
+                              child: Slider(
+                                // A fresh Slider state avoids reparenting its internal
+                                // global-key semantics while a modal blocks this route
+                                // (Flutter 3.47, flutter/flutter#193706).
+                                key: ValueKey(
+                                  !session.inputBlocked && session.total > 1,
+                                ),
+                                value: session.index.toDouble(),
+                                min: 0,
+                                max: max(1, session.total - 1).toDouble(),
+                                onChanged:
+                                    !session.inputBlocked && session.total > 1
+                                    ? (value) => jump(value.round())
+                                    : null,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '${session.index + 1} / ${session.total}',
+                          style: p.title.copyWith(fontSize: 14),
+                        ),
+                        IconButton(
+                          style: chromeButtonStyle,
+                          tooltip: '下一张',
+                          onPressed: !session.inputBlocked && !showingEnd
+                              ? () => jump(session.index + 1)
+                              : null,
+                          icon: const Icon(Icons.chevron_right, size: 20),
+                        ),
+                      ],
+                    ),
+                    if (!quick && !compact)
+                      Row(
+                        key: const Key('reader-tools'),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          tool('总览', Icons.grid_view_outlined, overview),
+                          tool(
+                            session.preferences.mode == ReaderMode.horizontal
+                                ? '横向翻页'
+                                : '纵向拼接',
+                            session.preferences.mode == ReaderMode.horizontal
+                                ? Icons.chrome_reader_mode_outlined
+                                : Icons.view_day_outlined,
+                            settings,
+                          ),
+                          tool('整包标签', Icons.sell_outlined, () async {
+                            if (await session.flush()) {
+                              await widget.editTags(session.range!.pack!);
+                              if (session.live) {
+                                await session.reload();
+                              }
+                            }
+                          }),
+                          if (!quick)
+                            tool(
+                              '沉浸',
+                              Icons.fullscreen,
+                              () => setState(() => controls = false),
+                            ),
+                        ],
+                      ),
+                    if (quick)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4, bottom: 4),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 10,
+                                  ),
+                                ),
+                                onPressed: session.inputBlocked
+                                    ? null
+                                    : () async {
+                                        if (await session.flush()) {
+                                          await widget.editTags(
+                                            session.range!.pack!,
+                                          );
+                                          if (session.live) {
+                                            await session.reload();
+                                          }
+                                        }
+                                      },
+                                child: const Text('整包标签'),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: FilledButton(
+                                key: const Key('reader-trash-pack'),
+                                style: FilledButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 10,
+                                  ),
+                                  backgroundColor: p.danger,
+                                  foregroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .onError,
+                                ),
+                                onPressed:
+                                    session.inputBlocked || !session.opened
+                                    ? null
+                                    : removeCurrent,
+                                child: const Text('移入回收站'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    if (!compact || quick) ...[
+                      Divider(height: 8, color: p.line),
+                      rangeNavigation(),
+                    ],
+                  ],
+                ),
+              ),
+            )
+          : const SizedBox.shrink(),
+    );
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: controls ? p.background : const Color(0xff11150f),
@@ -707,418 +1132,50 @@ class PackReaderPageState extends State<PackReaderPage>
           key: const Key('pack-reader-route'),
           backgroundColor: controls ? p.background : const Color(0xff11150f),
           body: SafeArea(
-            child: Column(
-              children: [
-                chrome(
-                  controls
-                      ? ColoredBox(
-                          color: p.background,
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(minHeight: 52),
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  tooltip: '返回来源',
-                                  onPressed: close,
-                                  icon: const Icon(Icons.arrow_back),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 2,
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          pack?.displayTitle ?? '图包阅读',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: p.title.copyWith(fontSize: 20),
-                                        ),
-                                        Text(
-                                          '${quick ? '快速整理 · ' : ''}${pack?.readerSubtitle.isNotEmpty == true ? pack!.readerSubtitle : '${session.total} 张'}',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: p.muted,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                if (!quick)
-                                  IconButton(
-                                    tooltip: '阅读设置',
-                                    onPressed: usable && !session.inputBlocked
-                                        ? settings
-                                        : null,
-                                    icon: const Icon(Icons.tune),
-                                  ),
-                                if (quick)
-                                  TextButton(
-                                    onPressed: session.inputBlocked
-                                        ? null
-                                        : () => setState(() => quick = false),
-                                    child: const Text('完成'),
-                                  ),
-                                PopupMenuButton<String>(
-                                  enabled: usable && !session.inputBlocked,
-                                  tooltip: '图包更多',
-                                  onSelected: (value) async {
-                                    if (value == 'cleanup') {
-                                      await removeCurrent();
-                                    }
-                                    if (value == 'quick') {
-                                      setState(() {
-                                        quick = !quick;
-                                        controls = true;
-                                      });
-                                    }
-                                    if (value == 'details') await details();
-                                    if (value == 'previous') {
-                                      await move(
-                                        session.range!.previous!.packId,
-                                      );
-                                    }
-                                    if (value == 'tags' &&
-                                        session.range?.pack != null &&
-                                        await session.flush()) {
-                                      await widget.editTags(
-                                        session.range!.pack!,
-                                      );
-                                      if (session.live) await session.reload();
-                                    }
-                                    if (value == 'queue') await queue();
-                                  },
-                                  itemBuilder: (_) => [
-                                    if (session.cleanupSupported)
-                                      PopupMenuItem(
-                                        value: 'quick',
-                                        child: Text(
-                                          quick ? '退出快速整理' : '快速整理当前范围',
-                                        ),
-                                      ),
-                                    if (session.cleanupSupported && !quick)
-                                      const PopupMenuItem(
-                                        value: 'cleanup',
-                                        child: Text('整包移入回收站'),
-                                      ),
-                                    if (usable)
-                                      const PopupMenuItem(
-                                        value: 'details',
-                                        child: Text('图包详情'),
-                                      ),
-                                    if (usable)
-                                      const PopupMenuItem(
-                                        value: 'tags',
-                                        child: Text('整包标签'),
-                                      ),
-                                    if (session.range?.previous != null)
-                                      const PopupMenuItem(
-                                        value: 'previous',
-                                        child: Text('上一包'),
-                                      ),
-                                    if (usable)
-                                      const PopupMenuItem(
-                                        value: 'queue',
-                                        child: Text('本次图包范围'),
-                                      ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                ),
-                if (controls)
-                  ColoredBox(color: p.background, child: status(context)),
-                if (session.recoveryReason != null && controls)
-                  ColoredBox(
-                    color: p.background,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        session.recoveryReason == 'page_removed'
-                            ? '上次阅读的图片已移除，已定位到附近可读图片'
-                            : '上次阅读的图片不可读取，已定位到附近图片',
-                        style: TextStyle(fontSize: 12, color: p.olive),
+            child: LayoutBuilder(
+              builder: (context, available) => Stack(
+                fit: StackFit.expand,
+                children: [
+                  Column(
+                    children: [
+                      if (!compact) header,
+                      if (!compact) notices,
+                      canvas,
+                      if (!compact) bottom,
+                    ],
+                  ),
+                  if (compact)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [header, notices],
                       ),
                     ),
-                  ),
-                Expanded(
-                  child: ColoredBox(
-                    color: const Color(0xff11150f),
-                    child: !usable
-                        ? Center(
-                            child: session.busy
-                                ? const CircularProgressIndicator()
-                                : Text(
-                                    session.invalidated
-                                        ? session.error
-                                        : session.range == null
-                                        ? '正在准备阅读范围'
-                                        : '本次范围暂无可读取的图包',
-                                    style: const TextStyle(color: Colors.white),
-                                    textAlign: TextAlign.center,
-                                  ),
-                          )
-                        : Stack(
-                            children: [
-                              Positioned.fill(
-                                child: IgnorePointer(
-                                  ignoring:
-                                      session.cleanupBusy ||
-                                      session.cleanupFrozen,
-                                  child: LayoutBuilder(
-                                    builder: (context, constraints) {
-                                      final size = constraints.biggest;
-                                      if (showingEnd) return end();
-                                      return session.preferences.mode ==
-                                              ReaderMode.horizontal
-                                          ? _HorizontalReader(
-                                              key: ValueKey(
-                                                'horizontal-${session.packEpoch}',
-                                              ),
-                                              session: session,
-                                              jumpEpoch: jumpEpoch,
-                                              resetZoom: zoomReset,
-                                              size: size,
-                                              picture: picture,
-                                              end: end,
-                                              tap: () => setState(() {
-                                                if (!quick) {
-                                                  controls = !controls;
-                                                }
-                                              }),
-                                              onZoom: (value) {
-                                                if (mounted &&
-                                                    zoomed != value) {
-                                                  setState(
-                                                    () => zoomed = value,
-                                                  );
-                                                }
-                                              },
-                                            )
-                                          : _VerticalReader(
-                                              key: ValueKey(
-                                                'vertical-${session.packEpoch}',
-                                              ),
-                                              session: session,
-                                              jumpEpoch: jumpEpoch,
-                                              size: size,
-                                              picture: picture,
-                                              end: end,
-                                              tap: () => setState(() {
-                                                if (!quick) {
-                                                  controls = !controls;
-                                                }
-                                              }),
-                                            );
-                                    },
-                                  ),
-                                ),
-                              ),
-                              if (!controls)
-                                Positioned(
-                                  right: 16,
-                                  bottom: 12,
-                                  child: GestureDetector(
-                                    onTap: () =>
-                                        setState(() => controls = true),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 7,
-                                      ),
-                                      color: Colors.black54,
-                                      child: Text(
-                                        '${session.index + 1} / ${session.total}',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                            ],
+                  if (compact && controls && usable)
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: quick ? 430 : 360,
+                            maxHeight: available.maxHeight * .6,
                           ),
-                  ),
-                ),
-                chrome(
-                  controls && usable
-                      ? ColoredBox(
-                          color: p.background,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      tooltip: '上一张',
-                                      onPressed:
-                                          !session.inputBlocked &&
-                                              session.index > 0
-                                          ? () => jump(session.index - 1)
-                                          : null,
-                                      icon: const Icon(Icons.chevron_left),
-                                    ),
-                                    Expanded(
-                                      child: Slider(
-                                        // A fresh Slider state avoids reparenting its internal
-                                        // global-key semantics while a modal blocks this route
-                                        // (Flutter 3.47, flutter/flutter#193706).
-                                        key: ValueKey(
-                                          !session.inputBlocked &&
-                                              session.total > 1,
-                                        ),
-                                        value: session.index.toDouble(),
-                                        min: 0,
-                                        max: max(
-                                          1,
-                                          session.total - 1,
-                                        ).toDouble(),
-                                        onChanged:
-                                            !session.inputBlocked &&
-                                                session.total > 1
-                                            ? (value) => jump(value.round())
-                                            : null,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${session.index + 1} / ${session.total}',
-                                      style: const TextStyle(fontSize: 12),
-                                    ),
-                                    IconButton(
-                                      tooltip: '下一张',
-                                      onPressed:
-                                          !session.inputBlocked && !showingEnd
-                                          ? () => jump(session.index + 1)
-                                          : null,
-                                      icon: const Icon(Icons.chevron_right),
-                                    ),
-                                  ],
-                                ),
-                                if (!quick)
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      tool(
-                                        '总览',
-                                        Icons.grid_view_outlined,
-                                        overview,
-                                      ),
-                                      tool(
-                                        session.preferences.mode ==
-                                                ReaderMode.horizontal
-                                            ? '横向翻页'
-                                            : '纵向拼接',
-                                        session.preferences.mode ==
-                                                ReaderMode.horizontal
-                                            ? Icons.chrome_reader_mode_outlined
-                                            : Icons.view_day_outlined,
-                                        settings,
-                                      ),
-                                      tool(
-                                        '整包标签',
-                                        Icons.sell_outlined,
-                                        () async {
-                                          if (await session.flush()) {
-                                            await widget.editTags(
-                                              session.range!.pack!,
-                                            );
-                                            if (session.live) {
-                                              await session.reload();
-                                            }
-                                          }
-                                        },
-                                      ),
-                                      if (!quick)
-                                        tool(
-                                          '沉浸',
-                                          Icons.fullscreen,
-                                          () =>
-                                              setState(() => controls = false),
-                                        ),
-                                    ],
-                                  ),
-                                if (quick)
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 4,
-                                      bottom: 4,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 8,
-                                                    vertical: 10,
-                                                  ),
-                                            ),
-                                            onPressed: session.inputBlocked
-                                                ? null
-                                                : () async {
-                                                    if (await session.flush()) {
-                                                      await widget.editTags(
-                                                        session.range!.pack!,
-                                                      );
-                                                      if (session.live) {
-                                                        await session.reload();
-                                                      }
-                                                    }
-                                                  },
-                                            child: const Text('整包标签'),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 12),
-                                        Expanded(
-                                          child: FilledButton(
-                                            key: const Key('reader-trash-pack'),
-                                            style: FilledButton.styleFrom(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 8,
-                                                    vertical: 10,
-                                                  ),
-                                              backgroundColor: p.danger,
-                                              foregroundColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .onError,
-                                            ),
-                                            onPressed:
-                                                session.inputBlocked ||
-                                                    !session.opened
-                                                ? null
-                                                : removeCurrent,
-                                            child: const Text('移入回收站'),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                Divider(height: 8, color: p.line),
-                                rangeNavigation(),
-                              ],
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(9),
                             ),
+                            child: SingleChildScrollView(child: bottom),
                           ),
-                        )
-                      : const SizedBox.shrink(),
-                ),
-              ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ),
@@ -1128,16 +1185,21 @@ class PackReaderPageState extends State<PackReaderPage>
 
   Widget rangeNavigation() {
     final scope = TextButton(
+      key: const Key('reader-scope'),
       onPressed: session.inputBlocked ? null : queue,
+      style: TextButton.styleFrom(alignment: Alignment.centerLeft),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(
+          Flexible(
             child: Text(
               sourceCaption,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontSize: 12),
             ),
           ),
+          const SizedBox(width: 10),
           Text(
             '${(session.range!.cursor ?? 0) + 1} / ${session.range!.candidateCount}',
             style: const TextStyle(fontSize: 12),
@@ -1194,12 +1256,12 @@ class PackReaderPageState extends State<PackReaderPage>
       onTap: session.inputBlocked ? null : action,
       borderRadius: BorderRadius.circular(4),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 3.5),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 21),
-            const SizedBox(height: 3),
+            Icon(icon, size: 20),
+            const SizedBox(height: 4),
             Text(
               MediaLayout.largeText(context) && label.length == 4
                   ? '${label.substring(0, 2)}\n${label.substring(2)}'

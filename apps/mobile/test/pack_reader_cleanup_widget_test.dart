@@ -12,6 +12,8 @@ void main() {
   for (final sample in [
     (const Size(390, 844), 1.0),
     (const Size(360, 740), 2.0),
+    (const Size(844, 390), 1.0),
+    (const Size(844, 390), 2.0),
   ]) {
     for (final scenario in ['quick', 'normal', 'unknown', 'tail']) {
       testWidgets(

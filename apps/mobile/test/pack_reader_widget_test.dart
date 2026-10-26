@@ -267,6 +267,28 @@ void main() {
         );
         await t.pump(const Duration(milliseconds: 500));
         expect(repo.openedCount, 1);
+        final compact = sample.$1.width > sample.$1.height;
+        if (compact) {
+          // The picture uses the full reading surface; chrome floats over it.
+          final canvas = t.getRect(find.byKey(const Key('reader-canvas')));
+          expect(canvas.top, 0);
+          expect(canvas.height, sample.$1.height);
+          expect(find.byKey(const Key('reader-tools')), findsNothing);
+          expect(find.byKey(const Key('reader-scope')), findsNothing);
+          final actions = t.getRect(find.byKey(const Key('reader-controls')));
+          expect(actions.width, lessThan(sample.$1.width / 2));
+          expect(actions.bottom, lessThanOrEqualTo(canvas.bottom));
+          await tap(find.byTooltip('图包更多'));
+          await tap(find.text('页码总览'));
+          expect(
+            find.byKey(const Key('reader-overview-sheet')),
+            findsOneWidget,
+          );
+          await t.binding.handlePopRoute();
+          await t.pumpAndSettle();
+          expect(state().session.index, 0);
+          expect(repo.openedCount, 1);
+        }
         final horizontal = find.byKey(const Key('reader-horizontal'));
         expect(horizontal, findsOneWidget);
         final hold = await t.startGesture(t.getCenter(horizontal));
@@ -370,6 +392,23 @@ void main() {
         t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
         expect(await state().session.flush(), isTrue);
         expect(repo.marks['p0']!.pageId, 'p0-1');
+        final pageId = state().session.currentPage!.id;
+        // Reflow the actual live reader, including a partially read strip.
+        t.view.physicalSize = compact
+            ? const Size(390, 844)
+            : const Size(844, 390);
+        await until(
+          () =>
+              state().session.currentPage?.id == pageId &&
+              (state().session.offsetRatio - ratio).abs() < .02,
+        );
+        await t.pump(const Duration(milliseconds: 500));
+        expect(state().session.currentPage!.id, pageId);
+        expect(state().session.offsetRatio, closeTo(ratio, .02));
+        expect(repo.openedCount, 1);
+        expect(repo.scopes, 1);
+        t.view.physicalSize = sample.$1;
+        await until(() => (state().session.offsetRatio - ratio).abs() < .02);
         await tap(find.byTooltip('返回来源'));
         await until(() => find.byType(PackReaderPage).evaluate().isEmpty);
         await tap(find.text('打开图包'));
