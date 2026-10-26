@@ -94,6 +94,17 @@ void main() {
       await t.tap(find.byKey(const Key('preview-scope')));
       await frames(t);
       expect(find.byKey(const Key('preview-queue')), findsOneWidget);
+      final coveredPlay = find
+          .descendant(
+            of: find.byKey(const Key('playback-controls')),
+            matching: find.byType(TextButton),
+          )
+          .first;
+      expect(t.widget<TextButton>(coveredPlay).onPressed, isNull);
+      expect(
+        t.widget<PopupMenuButton<double>>(find.byTooltip('播放速度')).enabled,
+        isFalse,
+      );
       expect(t.takeException(), isNull);
       expect(repo.playbackIdentity, identity);
       expect(repo.current!.id, current);

@@ -263,6 +263,15 @@ void main() {
       'explicit source order for controls comparison',
     );
     await tap(find.byTooltip('关闭面板'));
+    await decoded();
+    await until(
+      () =>
+          find.byType(PlayerSurface).evaluate().length == 1 &&
+          t
+              .widget<PlayerSurface>(find.byType(PlayerSurface))
+              .interactionsEnabled,
+      'source order applied and visible player resumed',
+    );
     final session = t.widget<MovieStage>(find.byType(MovieStage)).session!;
     final controller = session.debugPlayers.single;
     await tap(

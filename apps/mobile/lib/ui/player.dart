@@ -1053,7 +1053,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     ({bool stacked, bool separateSpeed, double height}) layout,
   ) {
     final toggle = TextButton(
-      onPressed: _togglePlayback,
+      onPressed: widget.interactionsEnabled ? _togglePlayback : null,
       style: TextButton.styleFrom(
         foregroundColor: Colors.white,
         minimumSize: const Size(40, 44),
@@ -1113,6 +1113,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     );
     final speed = PopupMenuButton<double>(
       tooltip: '播放速度',
+      enabled: widget.interactionsEnabled,
       initialValue: value.playbackSpeed,
       onOpened: () => _hideTimer?.cancel(),
       onCanceled: _scheduleHide,
