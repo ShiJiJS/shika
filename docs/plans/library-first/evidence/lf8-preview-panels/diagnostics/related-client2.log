@@ -1,0 +1,27 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_exit_lifecycle_test.dart: initialized native view detaches before decoder disposal, system back=false
+00:01 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_exit_lifecycle_test.dart: initialized native view detaches before decoder disposal, system back=false
+00:01 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_exit_lifecycle_test.dart: initialized native view detaches before decoder disposal, system back=false
+00:02 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_exit_lifecycle_test.dart: initialized native view detaches before decoder disposal, system back=false
+00:02 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview controls and range remain usable at (Size(390.0, 844.0), 1.0)
+00:02 +5: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview controls and range remain usable at (Size(390.0, 844.0), 1.0)
+00:02 +6: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:03 +7: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:03 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: long range context scrolls without hiding the current item at (Size(390.0, 844.0), 1.0)
+00:04 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: long range context scrolls without hiding the current item at (Size(390.0, 844.0), 1.0)
+00:04 +10: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: long range context scrolls without hiding the current item at (Size(390.0, 844.0), 1.0)
+00:05 +11: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: long range context scrolls without hiding the current item at (Size(390.0, 844.0), 1.0)
+00:06 +12: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: long range context scrolls without hiding the current item at (Size(390.0, 844.0), 1.0)
+00:43 +12 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart [E]
+  Bad state: Cannot close sink while adding stream.
+  package:stream_channel/src/guarantee_channel.dart 180:7      _GuaranteeSink.close
+  package:flutter_tools/src/test/flutter_platform.dart 765:43  FlutterPlatform._startTest
+  
+One or more uncaught errors occurred shutting down:
+  Bad state: Cannot add event while adding stream.
+00:43 +12 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: long range context scrolls without hiding the current item at (Size(390.0, 844.0), 1.0) - did not complete [E]
+00:43 +12 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: long range context scrolls without hiding the current item at (Size(390.0, 844.0), 1.0) (did not complete)

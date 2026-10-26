@@ -1,0 +1,82 @@
+[
+  {
+    "name": "normal-1",
+    "state": "preview-paused",
+    "native_original": [
+      1170,
+      2532
+    ],
+    "dpr": 3.0,
+    "remove_top_dp": 47.666666666666664,
+    "remove_bottom_dp": 24.0,
+    "normalized_native": [
+      390,
+      772
+    ],
+    "reference": [
+      390,
+      844
+    ],
+    "method": "Only remove actual system safe areas, downsample by DPR, and pad the shorter image with neutral gray. No stretch or element movement."
+  },
+  {
+    "name": "normal-1",
+    "state": "preview-queue",
+    "native_original": [
+      1170,
+      2532
+    ],
+    "dpr": 3.0,
+    "remove_top_dp": 47.666666666666664,
+    "remove_bottom_dp": 24.0,
+    "normalized_native": [
+      390,
+      772
+    ],
+    "reference": [
+      390,
+      844
+    ],
+    "method": "Only remove actual system safe areas, downsample by DPR, and pad the shorter image with neutral gray. No stretch or element movement."
+  },
+  {
+    "name": "landscape",
+    "state": "preview-paused",
+    "native_original": [
+      2532,
+      1170
+    ],
+    "dpr": 3.0,
+    "remove_top_dp": 28.0,
+    "remove_bottom_dp": 24.0,
+    "normalized_native": [
+      844,
+      338
+    ],
+    "reference": [
+      844,
+      390
+    ],
+    "method": "Only remove actual system safe areas, downsample by DPR, and pad the shorter image with neutral gray. No stretch or element movement."
+  },
+  {
+    "name": "landscape",
+    "state": "preview-queue",
+    "native_original": [
+      2532,
+      1170
+    ],
+    "dpr": 3.0,
+    "remove_top_dp": 28.0,
+    "remove_bottom_dp": 24.0,
+    "normalized_native": [
+      844,
+      338
+    ],
+    "reference": [
+      844,
+      390
+    ],
+    "method": "Only remove actual system safe areas, downsample by DPR, and pad the shorter image with neutral gray. No stretch or element movement."
+  }
+]

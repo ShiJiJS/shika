@@ -1,0 +1,124 @@
+{
+  "counts": {
+    "videos": 2,
+    "packs": 4,
+    "pack_pages": 24,
+    "pack_progress": 1,
+    "pack_preferences": 0,
+    "pack_sessions": 0,
+    "recent_entries": 2,
+    "playback_rounds": 2,
+    "file_operations": 0,
+    "pack_file_operations": 0,
+    "pack_trash_items": 0
+  },
+  "rounds": [
+    {
+      "id": "e7018dd7-9cff-434d-b000-a256f85c8ec0",
+      "request_id": "1793002750358264-b13dedeb",
+      "request_hash": "3ed94d6366beb929eddb4c8c7f12936ccfd0c2444a26b79feff2a9b82fa80234",
+      "order": "random",
+      "scope": "{\"tag_ids\": [], \"search\": \"\\u98ce\\u91cc\\u7684\\u82b1\\u56ed\"}",
+      "cursor": 0,
+      "revision": 0,
+      "finished": 0,
+      "candidate_count": 1,
+      "created_at": 1793002750.2634234,
+      "membership": "fixed",
+      "source": "library",
+      "sort": "name_zh",
+      "sequence_revision": 0
+    },
+    {
+      "id": "32b2a2c7-a15d-4ae8-ad02-b7d016b5d543",
+      "request_id": "1793002754879006-89076e7b",
+      "request_hash": "ff01153443eca3aeba3cb7fe5964b97a4c65313037163650589cd3d498f265b0",
+      "order": "sequential",
+      "scope": "{\"tag_ids\": []}",
+      "cursor": 1,
+      "revision": 4,
+      "finished": 1,
+      "candidate_count": 2,
+      "created_at": 1793002754.7840002,
+      "membership": "fixed",
+      "source": "library",
+      "sort": "name_zh",
+      "sequence_revision": 2
+    }
+  ],
+  "round_entries": [
+    {
+      "round_id": "32b2a2c7-a15d-4ae8-ad02-b7d016b5d543",
+      "ordinal": 0,
+      "video_id": "296ba110-7ba7-4800-b541-e636e9316e22",
+      "source_ordinal": 0
+    },
+    {
+      "round_id": "32b2a2c7-a15d-4ae8-ad02-b7d016b5d543",
+      "ordinal": 1,
+      "video_id": "ed4063d9-9a95-4848-ae37-d9721db814a9",
+      "source_ordinal": 1
+    },
+    {
+      "round_id": "e7018dd7-9cff-434d-b000-a256f85c8ec0",
+      "ordinal": 0,
+      "video_id": "296ba110-7ba7-4800-b541-e636e9316e22",
+      "source_ordinal": 0
+    }
+  ],
+  "recent": [
+    {
+      "kind": "video",
+      "video_id": "ed4063d9-9a95-4848-ae37-d9721db814a9",
+      "pack_id": null,
+      "opened_at": 1793002779.4662426
+    },
+    {
+      "kind": "video",
+      "video_id": "296ba110-7ba7-4800-b541-e636e9316e22",
+      "pack_id": null,
+      "opened_at": 1793002754.9297612
+    }
+  ],
+  "tags": [
+    {
+      "video_id": "296ba110-7ba7-4800-b541-e636e9316e22",
+      "tag_id": "16c6b1af-129f-4cd6-bb29-5cbfe821e556"
+    },
+    {
+      "video_id": "296ba110-7ba7-4800-b541-e636e9316e22",
+      "tag_id": "2571b7de-81d2-4617-88b6-d4eb075d5955"
+    },
+    {
+      "video_id": "ed4063d9-9a95-4848-ae37-d9721db814a9",
+      "tag_id": "16c6b1af-129f-4cd6-bb29-5cbfe821e556"
+    },
+    {
+      "video_id": "ed4063d9-9a95-4848-ae37-d9721db814a9",
+      "tag_id": "a1ca162d-7a23-4232-bd12-3314906d6ba0"
+    }
+  ],
+  "progress": [
+    {
+      "pack_id": "e9cab186-8496-4100-9ab3-dbfd0241ff88",
+      "page_id": "bc678fe5-3f24-4840-a703-6ec00f36f560",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1000.0,
+      "content_version": 1,
+      "recovery_reason": null
+    }
+  ],
+  "sessions": [],
+  "entries": [],
+  "operations": [],
+  "pack_operations": [],
+  "trash": [],
+  "progress_pages": [
+    {
+      "name": "示例作者 NO.034 - 夏日祭",
+      "ordinal": 2
+    }
+  ]
+}

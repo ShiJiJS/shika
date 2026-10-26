@@ -1,0 +1,14 @@
+{
+  "reason": "Primary intentionally stopped the batch to fix an incomplete queue screenshot; the interrupted runner did not reach its own final cleanup. Removed only its recorded container and restored the original display configuration.",
+  "before": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420"
+  },
+  "after": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420"
+  },
+  "font_before": "1.0",
+  "font_after": "1.0",
+  "container": "edc9530de4db8d55e4c2d7c3c9d8fc4e13a0bc42e30115210319006369795a36"
+}

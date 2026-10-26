@@ -1,0 +1,18 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart
+test/preview_viewport_test.dart:225:25: Error: The argument type 'BuildContext' can't be assigned to the parameter type 'VideoBrowseContext'.
+ - 'BuildContext' is from 'package:flutter/src/widgets/framework.dart' ('../../.dev/flutter/packages/flutter/lib/src/widgets/framework.dart').
+ - 'VideoBrowseContext' is from 'package:video_viewer/features/library/browse_context.dart' ('lib/features/library/browse_context.dart').
+                origin: context,
+                        ^
+00:00 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart [E]
+  Failed to load "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart":
+  Compilation failed for testPath=/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: test/preview_viewport_test.dart:225:25: Error: The argument type 'BuildContext' can't be assigned to the parameter type 'VideoBrowseContext'.
+   - 'BuildContext' is from 'package:flutter/src/widgets/framework.dart' ('../../.dev/flutter/packages/flutter/lib/src/widgets/framework.dart').
+   - 'VideoBrowseContext' is from 'package:video_viewer/features/library/browse_context.dart' ('lib/features/library/browse_context.dart').
+                  origin: context,
+                          ^
+  .
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart
