@@ -202,19 +202,42 @@ void main() {
         );
       }
 
-      Future<void> single(bool pack) async {
+      Future<void> waitCatalogue(
+        bool pack, {
+        String? target,
+        Set<String>? expectedTags,
+      }) async {
         var retried = false;
         final deadline = DateTime.now().add(const Duration(seconds: 60));
         while (true) {
           final page = find.byType(pack ? PackCatalogPage : VideoCatalogPage);
           if (page.evaluate().isNotEmpty) {
-            final ready = pack
-                ? t.state<PackCatalogPageState>(page).data.items.isNotEmpty
-                : t.state<VideoCatalogPageState>(page).data.items.isNotEmpty;
-            if (ready) break;
-            final retry = find
-                .descendant(of: page, matching: find.text('重试'))
-                .hitTestable();
+            final contents = pack
+                ? t
+                      .state<PackCatalogPageState>(page)
+                      .data
+                      .items
+                      .map((p) => (id: p.id, tags: p.tags))
+                      .toList()
+                : t
+                      .state<VideoCatalogPageState>(page)
+                      .data
+                      .items
+                      .map((v) => (id: v.id, tags: v.tags))
+                      .toList();
+            final ready = target == null
+                ? contents.isNotEmpty
+                : contents.any(
+                    (item) =>
+                        item.id == target &&
+                        item.tags.length == expectedTags!.length &&
+                        item.tags.containsAll(expectedTags),
+                  );
+            if (ready) {
+              await t.pump(const Duration(milliseconds: 160));
+              break;
+            }
+            final retry = find.descendant(of: page, matching: find.text('重试'));
             if (!retried && retry.evaluate().isNotEmpty) {
               debugPrint(
                 'TAG_ASSIGNMENT_CATALOG_RETRY:${pack ? 'pack' : 'video'}',
@@ -224,10 +247,15 @@ void main() {
             }
           }
           if (DateTime.now().isAfter(deadline)) {
-            fail('Catalogue did not load actual members');
+            await fixture('/__fixture/checkpoint/error');
+            fail('Catalogue did not load expected actual members/tags');
           }
           await t.pump(const Duration(milliseconds: 100));
         }
+      }
+
+      Future<void> single(bool pack) async {
+        await waitCatalogue(pack);
         final id = pack
             ? t
                   .state<PackCatalogPageState>(find.byType(PackCatalogPage))
@@ -271,6 +299,8 @@ void main() {
         await tap(search);
         await t.enterText(search, '追加');
         await idle();
+        await t.testTextInput.receiveAction(TextInputAction.search);
+        await hideKeyboard();
         await tap(find.widgetWithText(FilterChip, '追加'));
         final input = find.byKey(const Key('tag-assignment-new'));
         await tap(input);
@@ -304,6 +334,11 @@ void main() {
             .map((link) => link['tag_id'])
             .toSet();
         expect(linked, {pack ? packAdded.id : added, created});
+        final expectedTags = {pack ? packAdded.id : added, created as String};
+        await waitCatalogue(pack, target: id, expectedTags: expectedTags);
+        debugPrint(
+          'TAG_ASSIGNMENT_SAVED:${jsonEncode({'kind': type, 'id': id, 'tags': expectedTags.toList()..sort(), 'source_reloaded': true})}',
+        );
         await shot('$type-saved');
       }
 
