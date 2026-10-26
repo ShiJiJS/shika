@@ -1,0 +1,74 @@
+[
+  {
+    "command": [
+      "wm",
+      "size"
+    ],
+    "out": "Physical size: 1080x2400\nOverride size: 2532x1170\n"
+  },
+  {
+    "command": [
+      "wm",
+      "density"
+    ],
+    "out": "Physical density: 420\nOverride density: 480\n"
+  },
+  {
+    "command": [
+      "settings",
+      "get",
+      "system",
+      "font_scale"
+    ],
+    "out": "1\n"
+  },
+  {
+    "command": [
+      "wm",
+      "size",
+      "reset"
+    ],
+    "out": ""
+  },
+  {
+    "command": [
+      "wm",
+      "density",
+      "reset"
+    ],
+    "out": ""
+  },
+  {
+    "command": [
+      "settings",
+      "put",
+      "system",
+      "font_scale",
+      "1.0"
+    ],
+    "out": ""
+  },
+  {
+    "command": [
+      "wm",
+      "size"
+    ],
+    "out": "Physical size: 1080x2400\n"
+  },
+  {
+    "command": [
+      "wm",
+      "density"
+    ],
+    "out": "Physical density: 420\n"
+  },
+  {
+    "command": [
+      "settings",
+      "get",
+      "system",
+      "font_scale"
+    ],
+    "out": "1.0\n"
+  }
+]

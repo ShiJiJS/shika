@@ -1,0 +1,68 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart
+00:00 +0: four destinations keep library, tag results and actual recent video scopes independent
+00:02 +1: pack cards, per-type queries and same-name tag management stay separate from video
+00:02 +2: tag dock opens the complete intersection directly and returns to its own results
+00:03 +3: changing appearance preserves pack source and the next search still reaches the repository
+00:04 +4: pack label search remains usable with a narrow keyboard and large system text
+00:04 +5: video search keeps keyboard actions reachable and restores navigation Size(844.0, 390.0)/1.0
+00:04 +6: video search keeps keyboard actions reachable and restores navigation Size(360.0, 740.0)/2.0
+00:04 +7: pack search keeps keyboard actions reachable and restores navigation Size(844.0, 390.0)/1.0
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: null
+  Actual: FlutterError:<A RenderFlex overflowed by 29 pixels on the bottom.>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart:429:11)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart line 429
+The test description was:
+  pack search keeps keyboard actions reachable and restores navigation Size(844.0, 390.0)/1.0
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:05 +7 -1: pack search keeps keyboard actions reachable and restores navigation Size(844.0, 390.0)/1.0 [E]
+  Test failed. See exception logs above.
+  The test description was: pack search keeps keyboard actions reachable and restores navigation Size(844.0, 390.0)/1.0
+  
+00:05 +7 -1: pack search keeps keyboard actions reachable and restores navigation Size(360.0, 740.0)/2.0
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _HitTestableWidgetFinder:<Found 0 widgets with text "快速整理" (considering only hit-testable
+widgets with a RenderBox): []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart:434:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart line 434
+The test description was:
+  pack search keeps keyboard actions reachable and restores navigation Size(360.0, 740.0)/2.0
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:05 +7 -2: pack search keeps keyboard actions reachable and restores navigation Size(360.0, 740.0)/2.0 [E]
+  Test failed. See exception logs above.
+  The test description was: pack search keeps keyboard actions reachable and restores navigation Size(360.0, 740.0)/2.0
+  
+00:05 +7 -2: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+00:06 +8 -2: library surfaces fit Size(360.0, 740.0) at text scale 2.0
+00:06 +9 -2: library surfaces fit Size(844.0, 390.0) at text scale 1.6
+00:06 +10 -2: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack search keeps keyboard actions reachable and restores navigation Size(360.0, 740.0)/2.0
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack search keeps keyboard actions reachable and restores navigation Size(844.0, 390.0)/1.0

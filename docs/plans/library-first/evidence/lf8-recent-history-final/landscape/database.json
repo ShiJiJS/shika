@@ -1,0 +1,196 @@
+{
+  "counts": {
+    "videos": 2,
+    "packs": 4,
+    "pack_pages": 24,
+    "recent_entries": 4,
+    "pack_progress": 2,
+    "pack_sessions": 3,
+    "playback_rounds": 3,
+    "pack_file_operations": 0,
+    "pack_trash_items": 0
+  },
+  "videos": [
+    {
+      "id": "b2061f30-2e15-4c5b-97a8-1c17d858022f",
+      "name": "水边的花",
+      "path": "/media/videos/竖屏/水边的花.mp4",
+      "created_at": 1792994332.066264
+    },
+    {
+      "id": "29819be5-b7fc-4424-b985-2a71d5684159",
+      "name": "风里的花园",
+      "path": "/media/videos/横屏/风里的花园.mp4",
+      "created_at": 1792994332.4815326
+    }
+  ],
+  "packs": [
+    {
+      "id": "e1d1e350-10d0-4950-be81-a10760d85ecf",
+      "name": "示例作者 NO.019 - 灵梦 · 新年快乐",
+      "path": "/media/packs/示例作者 NO.019 - 灵梦 · 新年快乐",
+      "created_at": 1792994333.351869
+    },
+    {
+      "id": "4db8b800-6917-4e6e-8076-43e596415f8d",
+      "name": "示例作者 NO.034 - 夏日祭",
+      "path": "/media/packs/示例作者 NO.034 - 夏日祭",
+      "created_at": 1792994334.1935008
+    },
+    {
+      "id": "870c5c65-a936-4d5c-b1ac-048e012cbd68",
+      "name": "示例作者 NO.051 - 加藤惠 · 和服",
+      "path": "/media/packs/示例作者 NO.051 - 加藤惠 · 和服",
+      "created_at": 1792994335.019367
+    },
+    {
+      "id": "3882b052-7a9a-411e-8d80-9d00aed73d16",
+      "name": "示例作者 NO.057 - 原野上的浪漫",
+      "path": "/media/packs/示例作者 NO.057 - 原野上的浪漫",
+      "created_at": 1792994335.8127277
+    }
+  ],
+  "progress": [
+    {
+      "pack_id": "4db8b800-6917-4e6e-8076-43e596415f8d",
+      "page_id": "368aa24d-b4e1-4e27-ad70-65b19246c64c",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 3,
+      "updated_at": 1792994389.1581328,
+      "content_version": 1,
+      "recovery_reason": null,
+      "ordinal": 2
+    },
+    {
+      "pack_id": "870c5c65-a936-4d5c-b1ac-048e012cbd68",
+      "page_id": "b7cd86dc-d16b-41e7-bdad-07aaceb72f2b",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1792994383.7686367,
+      "content_version": 1,
+      "recovery_reason": null,
+      "ordinal": 0
+    }
+  ],
+  "recent": [
+    {
+      "kind": "pack",
+      "video_id": null,
+      "pack_id": "4db8b800-6917-4e6e-8076-43e596415f8d",
+      "opened_at": 1792994389.1602232
+    },
+    {
+      "kind": "pack",
+      "video_id": null,
+      "pack_id": "870c5c65-a936-4d5c-b1ac-048e012cbd68",
+      "opened_at": 1792994383.7698786
+    },
+    {
+      "kind": "video",
+      "video_id": "b2061f30-2e15-4c5b-97a8-1c17d858022f",
+      "pack_id": null,
+      "opened_at": 1792994373.0676422
+    },
+    {
+      "kind": "video",
+      "video_id": "29819be5-b7fc-4424-b985-2a71d5684159",
+      "pack_id": null,
+      "opened_at": 1792994367.120548
+    }
+  ],
+  "rounds": [
+    {
+      "id": "67dcdce8-7f12-4d39-8e87-d98301aa2c0b",
+      "sort": "name_zh",
+      "membership": "fixed",
+      "source": "library",
+      "scope": "{\"tag_ids\": [], \"search\": \"\\u98ce\\u91cc\\u7684\\u82b1\\u56ed\"}",
+      "candidate_count": 1,
+      "sequence_revision": 0
+    },
+    {
+      "id": "d999ed40-28d0-4947-ba5b-079821b5457c",
+      "sort": "recent",
+      "membership": "fixed",
+      "source": "recent",
+      "scope": "{\"tag_ids\": []}",
+      "candidate_count": 1,
+      "sequence_revision": 0
+    },
+    {
+      "id": "462c62c5-96d5-471f-956d-bd14b0e9e5d4",
+      "sort": "name_zh",
+      "membership": "fixed",
+      "source": "library",
+      "scope": "{\"tag_ids\": [], \"search\": \"\\u6c34\\u8fb9\\u7684\\u82b1\"}",
+      "candidate_count": 1,
+      "sequence_revision": 0
+    }
+  ],
+  "round_entries": [
+    {
+      "round_id": "462c62c5-96d5-471f-956d-bd14b0e9e5d4",
+      "ordinal": 0,
+      "source_ordinal": 0,
+      "video_id": "b2061f30-2e15-4c5b-97a8-1c17d858022f"
+    },
+    {
+      "round_id": "67dcdce8-7f12-4d39-8e87-d98301aa2c0b",
+      "ordinal": 0,
+      "source_ordinal": 0,
+      "video_id": "29819be5-b7fc-4424-b985-2a71d5684159"
+    },
+    {
+      "round_id": "d999ed40-28d0-4947-ba5b-079821b5457c",
+      "ordinal": 0,
+      "source_ordinal": 0,
+      "video_id": "29819be5-b7fc-4424-b985-2a71d5684159"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "3e52acc2-d77c-404a-a244-708abd6ec863",
+      "scope": "{\"directory_id\": null, \"search\": \"\\u52a0\\u85e4\\u60e0\", \"tag_ids\": [], \"read_state\": \"all\"}",
+      "source": "{\"kind\": \"library\", \"sort\": \"title\"}",
+      "candidate_count": 1
+    },
+    {
+      "id": "4d8cd2d8-4be0-44aa-9a21-7c205be1e3dd",
+      "scope": "{\"directory_id\": null, \"search\": \"\", \"tag_ids\": [], \"read_state\": \"all\"}",
+      "source": "{\"kind\": \"recent\", \"sort\": \"recent\"}",
+      "candidate_count": 2
+    },
+    {
+      "id": "c7a9aaf1-c00c-48d3-87b6-23970ff73bbf",
+      "scope": "{\"directory_id\": null, \"search\": \"\\u590f\\u65e5\\u796d\", \"tag_ids\": [], \"read_state\": \"all\"}",
+      "source": "{\"kind\": \"library\", \"sort\": \"title\"}",
+      "candidate_count": 1
+    }
+  ],
+  "entries": [
+    {
+      "session_id": "3e52acc2-d77c-404a-a244-708abd6ec863",
+      "ordinal": 0,
+      "pack_id": "870c5c65-a936-4d5c-b1ac-048e012cbd68"
+    },
+    {
+      "session_id": "4d8cd2d8-4be0-44aa-9a21-7c205be1e3dd",
+      "ordinal": 0,
+      "pack_id": "4db8b800-6917-4e6e-8076-43e596415f8d"
+    },
+    {
+      "session_id": "4d8cd2d8-4be0-44aa-9a21-7c205be1e3dd",
+      "ordinal": 1,
+      "pack_id": "870c5c65-a936-4d5c-b1ac-048e012cbd68"
+    },
+    {
+      "session_id": "c7a9aaf1-c00c-48d3-87b6-23970ff73bbf",
+      "ordinal": 0,
+      "pack_id": "4db8b800-6917-4e6e-8076-43e596415f8d"
+    }
+  ],
+  "operations": [],
+  "trash": []
+}
