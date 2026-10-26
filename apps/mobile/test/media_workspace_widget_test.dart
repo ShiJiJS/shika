@@ -6,6 +6,7 @@ import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/repository.dart';
 import 'package:video_viewer/library/state_store.dart';
 import 'package:video_viewer/main.dart';
+import 'package:video_viewer/ui/media_history.dart';
 import 'package:video_viewer/ui/player.dart';
 import 'package:video_viewer/ui/preferences.dart';
 
@@ -225,7 +226,7 @@ void main() {
       await nav(t, 'recent');
       expect(find.byKey(const Key('video-search')), findsNothing);
       expect(find.text('1 个视频'), findsOneWidget);
-      await tap(t, find.text('预览此范围'));
+      await tap(t, find.byType(MediaHistoryRow));
       expect(repo.savedPreviewEntry!.source, BrowseSource.recent);
       expect(repo.savedPreviewEntry!.query.tags, isEmpty);
       expect(repo.savedPreviewEntry!.search, isEmpty);

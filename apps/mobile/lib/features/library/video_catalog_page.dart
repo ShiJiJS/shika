@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import '../../library/models.dart';
 import '../../library/repository.dart';
 import '../../ui/media_layout.dart';
+import '../../ui/media_history.dart';
 import '../../ui/media_poster.dart';
 import '../../ui/paper.dart';
 import '../../ui/preferences.dart';
-import '../../ui/player.dart' show timeLabel;
 import '../../ui/sheets.dart';
 import '../preview/video_preview_route.dart';
 import 'browse_context.dart';
@@ -63,26 +63,37 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   VideoBrowseContext? pendingReturn;
   List<String> returnIds = const [];
   VideoLibraryState get data => query.state;
-  int get columns => _geometry?.columns ?? 2;
+  bool get recent => entry.source == BrowseSource.recent;
+  int get columns => _geometry?.columns ?? (recent ? 1 : 2);
   double get stride => _geometry?.stride ?? _strideValue;
-  double get _strideValue =>
-      MediaLayout.tile(context, width) + MediaLayout.rowGap;
+  double get _strideValue => recent
+      ? _historyStride
+      : MediaLayout.tile(context, width) + MediaLayout.rowGap;
+  double get _historyStride => MediaLayout.historyRow(
+    context,
+    items: data.items.map(
+      (v) => (title: v.displayTitle, subtitle: v.durationLabel),
+    ),
+  );
   double get listHeader => _geometry?.header ?? _listHeaderValue;
-  double get _listHeaderValue =>
-      MediaLayout.toolbar(context) +
-      (entry.query.count > 0 || entry.search.isNotEmpty
-          ? MediaLayout.scope(context)
-          : 0);
+  double get _listHeaderValue => recent
+      ? MediaLayout.historyHeader(context)
+      : MediaLayout.toolbar(context) +
+            (entry.query.count > 0 || entry.search.isNotEmpty
+                ? MediaLayout.scope(context)
+                : 0);
 
   void layoutGrid(BuildContext context, double nextWidth) {
     final next = MediaGridGeometry(
-      entry.source == BrowseSource.recent ? 2 : MediaLayout.columns(context),
-      MediaLayout.tile(context, nextWidth) + MediaLayout.rowGap,
+      recent ? 1 : MediaLayout.columns(context),
+      recent
+          ? _historyStride
+          : MediaLayout.tile(context, nextWidth) + MediaLayout.rowGap,
       _listHeaderValue,
     );
     final old = _geometry;
     if (old != null &&
-        old.reflows(next) &&
+        (old.reflows(next) || (recent && old.header != next.header)) &&
         _reflow == null &&
         !_positioning &&
         !viewing &&
@@ -221,9 +232,26 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
       returnIds = saved.ids;
     }
     final restoring = pendingReturn;
+    int? restoredAnchor;
     _positioning = restoring != null || before;
     if (restoring != null) {
       await query.restore(restoring, anchors: returnIds);
+      if (!mounted || current != generation) return;
+      restoredAnchor = data.anchorIndex;
+      final viewport = scroll.hasClients
+          ? scroll.position.viewportDimension
+          : MediaQuery.sizeOf(context).height;
+      final through =
+          (restoredAnchor ?? data.offset) +
+          ((viewport / stride).ceil() + 1) * columns;
+      while (mounted &&
+          current == generation &&
+          data.error.isEmpty &&
+          data.hasAfter &&
+          data.offset + data.items.length < through &&
+          data.items.length < LibraryQueryController.maximumItems) {
+        await query.load(restoring, more: true);
+      }
     } else {
       await query.load(entry, more: more, before: before);
     }
@@ -237,12 +265,12 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
         if (restoring != null) {
           pixels =
               listHeader +
-              ((data.anchorIndex ?? data.offset) - data.offset) ~/
+              ((restoredAnchor ?? data.offset) - data.offset) ~/
                   columns *
                   stride +
               restoring.scrollInset;
           pendingReturn = null;
-        } else if (before) {
+        } else if (oldStart != data.offset) {
           pixels = oldPixels + (oldStart - data.offset) ~/ columns * stride;
         }
         if (pixels != null) {
@@ -457,8 +485,8 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                 ),
                 TextButton(
                   key: const Key('library-return-retry'),
-                  onPressed: () => pendingReturn != null
-                      ? load()
+                  onPressed: () => data.retryRestore || pendingReturn != null
+                      ? load(restore: pendingReturn == null)
                       : load(
                           more: !data.beforeFailure,
                           before: data.beforeFailure,
@@ -483,7 +511,8 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                     controller: scroll,
                     physics: const AlwaysScrollableScrollPhysics(),
                     slivers: [
-                      if (entry.query.count > 0 || entry.search.isNotEmpty)
+                      if (!recent &&
+                          (entry.query.count > 0 || entry.search.isNotEmpty))
                         SliverToBoxAdapter(
                           child: SizedBox(
                             height: MediaLayout.scope(context),
@@ -530,258 +559,299 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                             ),
                           ),
                         ),
-                      SliverToBoxAdapter(
-                        child: MediaCatalogToolbar(
-                          children: [
-                            Text(
-                              '${data.total} 个视频',
-                              key: const Key('library-count'),
-                              style: TextStyle(fontSize: 13, color: p.muted),
-                            ),
-                            if (!recent)
-                              PopupMenuButton<VideoSort>(
-                                tooltip: '视频排序',
-                                initialValue: entry.sort,
-                                onSelected: (value) =>
-                                    changeEntry(entry.copyWith(sort: value)),
-                                itemBuilder: (_) => const [
-                                  PopupMenuItem(
-                                    value: VideoSort.name,
-                                    child: Text('名称'),
-                                  ),
-                                  PopupMenuItem(
-                                    value: VideoSort.newest,
-                                    child: Text('最近加入'),
-                                  ),
-                                ],
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                  ),
-                                  child: Text(
-                                    entry.sort == VideoSort.newest
-                                        ? '最近加入 ↓'
-                                        : '名称 ↓',
-                                    style: const TextStyle(fontSize: 13),
-                                  ),
-                                ),
-                              ),
-                            if (!selecting)
-                              FilledButton.icon(
-                                onPressed:
-                                    busy ||
-                                        data.items.isEmpty ||
-                                        !repo.libraryPreparation.value.ready
-                                    ? null
-                                    : () => open(anchor: data.items.first.id),
-                                style: FilledButton.styleFrom(
-                                  minimumSize: const Size(44, 40),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                  ),
-                                ),
-                                icon: const Icon(
-                                  Icons.smart_display_outlined,
-                                  size: 16,
-                                ),
-                                label: const Text(
-                                  '预览此范围',
-                                  style: TextStyle(fontSize: 13),
-                                ),
-                              ),
-                          ],
+                      if (recent)
+                        SliverToBoxAdapter(
+                          child: MediaHistoryHeader(
+                            label: '最近预览的视频',
+                            count: '${data.total} 个视频',
+                          ),
                         ),
-                      ),
-                      if (data.items.isEmpty && !data.loading)
+                      if (!recent)
+                        SliverToBoxAdapter(
+                          child: MediaCatalogToolbar(
+                            children: [
+                              Text(
+                                '${data.total} 个视频',
+                                key: const Key('library-count'),
+                                style: TextStyle(fontSize: 13, color: p.muted),
+                              ),
+                              if (!recent)
+                                PopupMenuButton<VideoSort>(
+                                  tooltip: '视频排序',
+                                  initialValue: entry.sort,
+                                  onSelected: (value) =>
+                                      changeEntry(entry.copyWith(sort: value)),
+                                  itemBuilder: (_) => const [
+                                    PopupMenuItem(
+                                      value: VideoSort.name,
+                                      child: Text('名称'),
+                                    ),
+                                    PopupMenuItem(
+                                      value: VideoSort.newest,
+                                      child: Text('最近加入'),
+                                    ),
+                                  ],
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                    ),
+                                    child: Text(
+                                      entry.sort == VideoSort.newest
+                                          ? '最近加入 ↓'
+                                          : '名称 ↓',
+                                      style: const TextStyle(fontSize: 13),
+                                    ),
+                                  ),
+                                ),
+                              if (!selecting)
+                                FilledButton.icon(
+                                  onPressed:
+                                      busy ||
+                                          data.items.isEmpty ||
+                                          !repo.libraryPreparation.value.ready
+                                      ? null
+                                      : () => open(anchor: data.items.first.id),
+                                  style: FilledButton.styleFrom(
+                                    minimumSize: const Size(44, 40),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                    ),
+                                  ),
+                                  icon: const Icon(
+                                    Icons.smart_display_outlined,
+                                    size: 16,
+                                  ),
+                                  label: const Text(
+                                    '预览此范围',
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      if (recent && data.items.isEmpty && !data.loading)
+                        const SliverToBoxAdapter(child: MediaHistoryEmpty()),
+                      if (!recent && data.items.isEmpty && !data.loading)
                         SliverFillRemaining(
                           hasScrollBody: false,
                           child: EmptyView(
                             recent
-                                ? '还没有打开过视频'
+                                ? '还没有观看记录'
                                 : entry.query.count > 0 ||
                                       entry.search.isNotEmpty
                                 ? '没有符合条件的视频'
                                 : '视频库还是空的',
                           ),
                         ),
-                      SliverPadding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: MediaLayout.side,
+                      if (recent)
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          sliver: SliverFixedExtentList.builder(
+                            itemExtent: stride,
+                            itemCount: data.items.length,
+                            itemBuilder: (context, index) {
+                              final video = data.items[index];
+                              return MediaHistoryRow(
+                                key: Key('recent-video-${video.id}'),
+                                title: video.displayTitle,
+                                subtitle: video.durationLabel,
+                                cover: MediaPoster(
+                                  video: video,
+                                  onUnauthorized: () => unawaited(
+                                    repo.mediaUnauthorized(video.source),
+                                  ),
+                                ),
+                                selecting: selecting,
+                                selected: selected.contains(video.id),
+                                onTap: busy
+                                    ? null
+                                    : () {
+                                        if (selecting) {
+                                          selection.toggle(video.id);
+                                        } else {
+                                          unawaited(open(anchor: video.id));
+                                        }
+                                      },
+                              );
+                            },
+                          ),
                         ),
-                        sliver: SliverGrid.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: columns,
-                                crossAxisSpacing: MediaLayout.columnGap,
-                                mainAxisSpacing: MediaLayout.rowGap,
-                                mainAxisExtent: stride - MediaLayout.rowGap,
-                              ),
-                          itemCount: data.items.length,
-                          itemBuilder: (context, index) {
-                            final video = data.items[index];
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: MediaLayout.cover(width),
-                                  width: double.infinity,
-                                  child: Stack(
-                                    fit: StackFit.expand,
-                                    children: [
-                                      InkWell(
-                                        key: Key('tile-${video.id}'),
-                                        onTap: busy
-                                            ? null
-                                            : () {
-                                                if (selecting) {
-                                                  selection.toggle(video.id);
-                                                } else {
-                                                  unawaited(
-                                                    open(anchor: video.id),
-                                                  );
-                                                }
-                                              },
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            3,
-                                          ),
-                                          child: ColoredBox(
-                                            color: const Color(0xff20261f),
-                                            child: MediaPoster(
-                                              video: video,
-                                              fit: BoxFit.contain,
-                                              onUnauthorized: () => unawaited(
-                                                repo.mediaUnauthorized(
-                                                  video.source,
+                      if (!recent)
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: MediaLayout.side,
+                          ),
+                          sliver: SliverGrid.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: columns,
+                                  crossAxisSpacing: MediaLayout.columnGap,
+                                  mainAxisSpacing: MediaLayout.rowGap,
+                                  mainAxisExtent: stride - MediaLayout.rowGap,
+                                ),
+                            itemCount: data.items.length,
+                            itemBuilder: (context, index) {
+                              final video = data.items[index];
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: MediaLayout.cover(width),
+                                    width: double.infinity,
+                                    child: Stack(
+                                      fit: StackFit.expand,
+                                      children: [
+                                        InkWell(
+                                          key: Key('tile-${video.id}'),
+                                          onTap: busy
+                                              ? null
+                                              : () {
+                                                  if (selecting) {
+                                                    selection.toggle(video.id);
+                                                  } else {
+                                                    unawaited(
+                                                      open(anchor: video.id),
+                                                    );
+                                                  }
+                                                },
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              3,
+                                            ),
+                                            child: ColoredBox(
+                                              color: const Color(0xff20261f),
+                                              child: MediaPoster(
+                                                video: video,
+                                                fit: BoxFit.contain,
+                                                onUnauthorized: () => unawaited(
+                                                  repo.mediaUnauthorized(
+                                                    video.source,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      if (!selecting)
-                                        const IgnorePointer(
-                                          child: Center(
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                color: Color(0xe6f7f6ed),
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Padding(
-                                                padding: EdgeInsets.all(7),
-                                                child: Icon(
-                                                  Icons.play_arrow_outlined,
-                                                  size: 20,
-                                                  color: Color(0xff526347),
+                                        if (!selecting)
+                                          const IgnorePointer(
+                                            child: Center(
+                                              child: DecoratedBox(
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xe6f7f6ed),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(7),
+                                                  child: Icon(
+                                                    Icons.play_arrow_outlined,
+                                                    size: 20,
+                                                    color: Color(0xff526347),
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      if (selecting)
+                                        if (selecting)
+                                          Positioned(
+                                            top: 6,
+                                            left: 6,
+                                            child: IgnorePointer(
+                                              child: Icon(
+                                                selected.contains(video.id)
+                                                    ? Icons.check_circle
+                                                    : Icons
+                                                          .radio_button_unchecked,
+                                                color:
+                                                    selected.contains(video.id)
+                                                    ? p.olive
+                                                    : Colors.white,
+                                              ),
+                                            ),
+                                          ),
                                         Positioned(
-                                          top: 6,
-                                          left: 6,
+                                          right: 5,
+                                          bottom: 5,
                                           child: IgnorePointer(
-                                            child: Icon(
-                                              selected.contains(video.id)
-                                                  ? Icons.check_circle
-                                                  : Icons
-                                                        .radio_button_unchecked,
-                                              color: selected.contains(video.id)
-                                                  ? p.olive
-                                                  : Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      Positioned(
-                                        right: 5,
-                                        bottom: 5,
-                                        child: IgnorePointer(
-                                          child: ColoredBox(
-                                            color: Colors.black54,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 4,
-                                                    vertical: 2,
+                                            child: ColoredBox(
+                                              color: Colors.black54,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 4,
+                                                      vertical: 2,
+                                                    ),
+                                                child: Text(
+                                                  video.durationLabel,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 11,
                                                   ),
-                                              child: Text(
-                                                timeLabel(
-                                                  Duration(
-                                                    seconds: video.seconds,
-                                                  ),
-                                                ),
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 11,
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  video.name,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: p.title.copyWith(
-                                    fontSize: 16,
-                                    height: 1.5,
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    video.displayTitle,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: p.title.copyWith(
+                                      fontSize: 16,
+                                      height: 1.5,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: MediaLayout.meta(context),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          video.portrait ? '竖屏' : '横屏',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: p.catalogMeta,
+                                  SizedBox(
+                                    height: MediaLayout.meta(context),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            video.portrait ? '竖屏' : '横屏',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: p.catalogMeta,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      IconButton(
-                                        tooltip: '编辑标签 ${video.name}',
-                                        padding: EdgeInsets.zero,
-                                        constraints: const BoxConstraints(
-                                          minWidth: 32,
-                                          minHeight: 28,
+                                        IconButton(
+                                          tooltip: '编辑标签 ${video.name}',
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(
+                                            minWidth: 32,
+                                            minHeight: 28,
+                                          ),
+                                          iconSize: 18,
+                                          onPressed: repo.backupRestorePending
+                                              ? null
+                                              : () => editTags({video.id}),
+                                          icon: const Icon(Icons.more_horiz),
                                         ),
-                                        iconSize: 18,
-                                        onPressed: repo.backupRestorePending
-                                            ? null
-                                            : () => editTags({video.id}),
-                                        icon: const Icon(Icons.more_horiz),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  key: Key('video-tag-names-${video.id}'),
-                                  video.tags
-                                      .map((id) => '# ${repo.tagName(id)}')
-                                      .join('  '),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: MediaLayout.cardTags.copyWith(
-                                    color: p.olive,
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    key: Key('video-tag-names-${video.id}'),
+                                    video.tags
+                                        .map((id) => '# ${repo.tagName(id)}')
+                                        .join('  '),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: MediaLayout.cardTags.copyWith(
+                                      color: p.olive,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                          },
+                                ],
+                              );
+                            },
+                          ),
                         ),
-                      ),
                       if (data.loading && data.items.isNotEmpty)
                         const SliverToBoxAdapter(
                           child: Padding(
@@ -793,7 +863,9 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                             ),
                           ),
                         ),
-                      const SliverToBoxAdapter(child: SizedBox(height: 18)),
+                      SliverToBoxAdapter(
+                        child: SizedBox(height: recent ? 20 : 18),
+                      ),
                     ],
                   ),
           ),

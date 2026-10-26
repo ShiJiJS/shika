@@ -13,6 +13,7 @@ void main() {
   late MemoryCredentialStore credentials;
   final oldStarted = Completer<void>(), releaseOld = Completer<void>();
   var delayed = false;
+  var videoDuration = 1.0;
   var dropRoundResponse = false;
   var scanPolls = 0, scanSubmits = 0, missingTotal = 0;
   var rootUnavailable = false, scanFailed = false, renamedDirectory = false;
@@ -41,7 +42,7 @@ void main() {
     'path': '/media/$id.mp4',
     'width': 100,
     'height': 200,
-    'duration': 1.0,
+    'duration': videoDuration,
     'type': 'MP4',
     'status': 'available',
     'tag_ids': [],
@@ -49,6 +50,7 @@ void main() {
     'media_url': '/api/v1/videos/$id/stream',
   };
   setUp(() async {
+    videoDuration = 1.0;
     scope = {'tag_ids': <String>[]};
     dropRoundResponse = false;
     submittedRounds.clear();
@@ -236,6 +238,14 @@ void main() {
   tearDown(() async {
     repo.dispose();
     await server.close(force: true);
+  });
+
+  test('fractional duration follows the player whole-second clock', () async {
+    videoDuration = 5.98;
+    await repo.initialize();
+    final page = await repo.loadVideoEntry(VideoEntryScope());
+    expect(page.items.single.seconds, 5);
+    expect(page.items.single.durationLabel, '0:05');
   });
 
   test('late old connection cannot publish stale capabilities', () async {

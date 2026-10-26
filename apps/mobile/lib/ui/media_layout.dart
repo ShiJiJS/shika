@@ -15,6 +15,25 @@ abstract final class MediaLayout {
   static double cover(double width) => width <= 380 ? 185 : 211;
   static final cardTitle = Paper.title.copyWith(fontSize: 16, height: 1.5);
   static const cardTags = TextStyle(fontSize: 12, height: 1.6);
+  static final historyTitle = Paper.title.copyWith(fontSize: 18);
+  static const historyMeta = TextStyle(fontSize: 13);
+  static double historyRow(
+    BuildContext context, {
+    Iterable<({String title, String subtitle})> items = const [],
+  }) {
+    // Fallback glyph metrics differ even within Chinese. Measure the actual
+    // bounded window, not one sample that can miss a taller title or numeral.
+    var title = line(context, '最近 Aa', historyTitle);
+    var subtitle = line(context, '第 3 / 6 张', historyMeta);
+    for (final item in items) {
+      title = max(title, line(context, item.title, historyTitle));
+      subtitle = max(subtitle, line(context, item.subtitle, historyMeta));
+    }
+    return max(78, title + 8 + subtitle) + 33;
+  }
+
+  static double historyHeader(BuildContext context) =>
+      line(context, '最近预览的视频 Aa', historyMeta) + 32;
   static double line(BuildContext context, String text, TextStyle style) {
     final painter = TextPainter(
       text: TextSpan(

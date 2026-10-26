@@ -23,11 +23,18 @@ p.add_argument("--scale", choices=("1", "2"), default="1")
 p.add_argument("--expected-columns", choices=(2, 4), type=int, default=2)
 p.add_argument(
     "--scenario",
-    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order"),
+    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent"),
     default="fidelity",
 )
 args = p.parse_args()
 scenes = {
+    "recent": [
+        "recent-empty-video", "recent-empty-pack", "recent-video-one",
+        "recent-video-preview", "recent-video-queue", "recent-video-two",
+        "recent-video-error", "recent-video-retry", "recent-packs-two",
+        "recent-pack-reader", "recent-pack-range", "recent-pack-return",
+        "recent-pack-error", "recent-pack-retry", "recent-isolation",
+    ],
     "video-order": [
         "video-order-library", "video-order-filter", "video-order-preview",
         "video-order-filter-return", "video-order-queue", "video-order-last",
@@ -88,6 +95,7 @@ scenes = {
     ],
 }[args.scenario]
 integration_file = {
+    "recent": "server_recent_history_test.dart",
     "video-order": "server_video_name_order_test.dart",
     "fidelity": "prototype_fidelity_test.dart",
     "continuation": "server_pack_continuation_test.dart",
@@ -167,6 +175,7 @@ paths += [
     "apps/mobile/integration_test/server_pack_presentation_test.dart",
     "apps/mobile/integration_test/server_catalog_cards_test.dart",
     "apps/mobile/integration_test/server_video_name_order_test.dart",
+    "apps/mobile/integration_test/server_recent_history_test.dart",
     "services/server/tests/prototype_fidelity_fixture.py",
     "scripts/run-prototype-fidelity-test.py",
 ]
