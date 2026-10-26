@@ -1,0 +1,14 @@
+{
+  "reason": "Confirmed second QEMU hang/exit; reopen same AVD without wiping and restore original display.",
+  "before": {
+    "size": "Physical size: 1080x2400\nOverride size: 1170x2532",
+    "density": "Physical density: 420\nOverride density: 480",
+    "font": "1"
+  },
+  "after": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420",
+    "font": "1.0"
+  },
+  "owned_8768_removed_by_runner": true
+}

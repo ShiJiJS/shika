@@ -23,11 +23,12 @@ p.add_argument("--scale", choices=("1", "2"), default="1")
 p.add_argument("--expected-columns", choices=(2, 4), type=int, default=2)
 p.add_argument(
     "--scenario",
-    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview"),
+    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings"),
     default="fidelity",
 )
 args = p.parse_args()
 scenes = {
+    "settings": ["settings-home", "settings-connection", "settings-connection-keyboard", "settings-connection-invalid", "settings-roots", "settings-scan-details", "settings-root-add", "settings-root-keyboard", "settings-root-invalid", "settings-root-edit", "settings-root-conflict", "settings-playback", "settings-playback-draft", "settings-reader", "settings-reader-draft", "settings-reader-saved", "settings-reader-restored", "settings-dark", "settings-dark-roots", "settings-dark-reader", "settings-return"],
     "preview": ["preview-library", "preview-filter", "preview-preview", "preview-filter-return", "preview-paused", "preview-seek", "preview-speed-menu", "preview-boost", "preview-quick", "preview-tags", "preview-more", "preview-details", "preview-dark", "preview-light", "preview-queue", "preview-queue-bottom", "preview-last", "preview-end", "preview-return", "preview-recent"],
     "reader": ["reader-paged", "reader-overview", "reader-jump", "reader-settings", "reader-vertical", "reader-strip-scroll", "reader-immersive", "reader-restored", "reader-range", "reader-quick", "reader-quick-exit", "reader-return", "reader-reopen"],
     "recent": [
@@ -97,6 +98,7 @@ scenes = {
     ],
 }[args.scenario]
 integration_file = {
+    "settings": "server_settings_panels_test.dart",
     "preview": "server_preview_panels_test.dart",
     "reader": "server_reader_chrome_test.dart",
     "recent": "server_recent_history_test.dart",
@@ -182,6 +184,10 @@ paths += [
     "apps/mobile/integration_test/server_recent_history_test.dart",
     "apps/mobile/integration_test/server_reader_chrome_test.dart",
     "apps/mobile/integration_test/server_preview_panels_test.dart",
+    "apps/mobile/integration_test/server_settings_panels_test.dart",
+    "apps/mobile/integration_test/server_connection_test.dart",
+    "apps/mobile/integration_test/server_defaults_test.dart",
+    "apps/mobile/integration_test/server_roots_missing_test.dart",
     "services/server/tests/prototype_fidelity_fixture.py",
     "scripts/run-prototype-fidelity-test.py",
 ]
@@ -342,34 +348,39 @@ finally:
     stop.set()
     if "watcher" in globals():
         watcher.join(timeout=12)
-    for name in ("size", "density"):
-        value = original[name]
-        shell(
-            "wm",
-            name,
-            value.split("Override " + name + ":")[-1].strip()
-            if "Override " in value
-            else "reset",
+    try:
+        for name in ("size", "density"):
+            value = original[name]
+            shell(
+                "wm",
+                name,
+                value.split("Override " + name + ":")[-1].strip()
+                if "Override " in value
+                else "reset",
+            )
+        shell("settings", "put", "system", "font_scale", font)
+        save(
+            "restored-viewport.json",
+            {
+                "before": original,
+                "after": {name: shell("wm", name) for name in original},
+                "font_before": font,
+                "font_after": shell("settings", "get", "system", "font_scale"),
+                "errors": errors,
+            },
         )
-    shell("settings", "put", "system", "font_scale", font)
-    save(
-        "restored-viewport.json",
-        {
-            "before": original,
-            "after": {name: shell("wm", name) for name in original},
-            "font_before": font,
-            "font_after": shell("settings", "get", "system", "font_scale"),
-            "errors": errors,
-        },
-    )
-    if container:
-        (out / "server.log").write_text(
-            subprocess.run(
-                ["docker", "logs", container],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                check=False,
-            ).stdout
-        )
-        run("docker", "rm", "-f", container)
+    except Exception as exc:
+        save("restore-error.json", {"before": original, "font_before": font, "error": str(exc), "errors": errors})
+        raise
+    finally:
+        if container:
+            (out / "server.log").write_text(
+                subprocess.run(
+                    ["docker", "logs", container],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    check=False,
+                ).stdout
+            )
+            run("docker", "rm", "-f", container)

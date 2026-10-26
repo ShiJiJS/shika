@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../../library/repository.dart';
 import '../../library/models.dart';
 import '../../ui/paper.dart';
+import '../../ui/paper_form.dart';
+import '../../ui/paper_icons.dart';
+import '../../ui/media_layout.dart';
 import '../../ui/preferences.dart';
 import 'default_settings_session.dart';
 
@@ -21,6 +24,16 @@ class DefaultSettingsSheet extends StatefulWidget {
 }
 
 class _DefaultSettingsSheetState extends State<DefaultSettingsSheet> {
+  final errorAnchor = GlobalKey();
+  String lastError = '';
+
+  void revealFailure() {
+    if (session.error.isNotEmpty && session.error != lastError) {
+      revealFormError(errorAnchor);
+    }
+    lastError = session.error;
+  }
+
   late final session = DefaultSettingsSession(
     widget.repository,
     widget.local,
@@ -29,11 +42,13 @@ class _DefaultSettingsSheetState extends State<DefaultSettingsSheet> {
   @override
   void initState() {
     super.initState();
+    session.addListener(revealFailure);
     session.load();
   }
 
   @override
   void dispose() {
+    session.removeListener(revealFailure);
     session.dispose();
     super.dispose();
   }
@@ -47,19 +62,48 @@ class _DefaultSettingsSheetState extends State<DefaultSettingsSheet> {
     animation: session,
     builder: (context, _) => SheetFrame(
       title: widget.video ? '默认播放顺序' : '阅读偏好',
+      footer: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (session.ready)
+            FilledButton(
+              key: const Key('defaults-save'),
+              onPressed: session.blocked ? null : save,
+              child: const Text('保存默认设置'),
+            ),
+          if (session.pending)
+            OutlinedButton(
+              onPressed: session.busy || !session.current
+                  ? null
+                  : () => save(query: true),
+              child: const Text('核对原设置请求'),
+            ),
+          if (!session.ready || session.pending || session.needsReload)
+            TextButton(
+              onPressed: session.busy || !session.current ? null : session.load,
+              child: const Text('读取服务端当前设置'),
+            ),
+        ],
+      ),
       children: [
         Text(
           widget.video
               ? '保存在当前服务，只影响新进入的预览范围。当前预览顺序不变。'
               : '保存在当前服务，作为未阅读图包的默认方式。已阅读图包继续使用各自偏好。',
-          style: TextStyle(fontSize: 13, color: Paper.of(context).muted),
+          style: TextStyle(
+            fontSize: 13,
+            height: 1.7,
+            color: Paper.of(context).catalogMeta,
+          ),
         ),
         const SizedBox(height: 16),
         if (session.busy) const LinearProgressIndicator(),
         if (session.ready) ...[
           if (widget.video) ...[
-            for (final value in PlayOrder.values)
+            for (final value in [PlayOrder.sequential, PlayOrder.random])
               ListTile(
+                contentPadding: EdgeInsets.zero,
                 title: Text(value == PlayOrder.random ? '随机播放' : '顺序播放'),
                 subtitle: Text(
                   value == PlayOrder.random ? '范围内随机排列' : '沿用入口列表的排序',
@@ -93,45 +137,102 @@ class _DefaultSettingsSheetState extends State<DefaultSettingsSheet> {
               ),
             ],
           ] else ...[
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
+            Row(
               children: [
                 for (final value in ReaderMode.values)
-                  ChoiceChip(
-                    label: Text(
-                      value == ReaderMode.horizontal ? '横向翻页' : '纵向拼接',
-                    ),
-                    selected: session.preferences.mode == value,
-                    onSelected: session.blocked
-                        ? null
-                        : (_) => session.selectPreferences(
-                            session.preferences.copy(mode: value),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: value == ReaderMode.vertical ? 5 : 0,
+                        right: value == ReaderMode.horizontal ? 5 : 0,
+                      ),
+                      child: Semantics(
+                        selected: session.preferences.mode == value,
+                        child: OutlinedButton(
+                          key: Key('default-mode-${value.name}'),
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(0, 97),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 15,
+                              horizontal: 8,
+                            ),
+                            backgroundColor: session.preferences.mode == value
+                                ? Paper.of(context).soft
+                                : null,
+                            foregroundColor: session.preferences.mode == value
+                                ? Paper.of(context).olive
+                                : Paper.of(context).ink,
+                            side: BorderSide(
+                              color: session.preferences.mode == value
+                                  ? Paper.of(context).olive
+                                  : Paper.of(context).line,
+                            ),
                           ),
+                          onPressed: session.blocked
+                              ? null
+                              : () => session.selectPreferences(
+                                  session.preferences.copy(mode: value),
+                                ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              PaperIcon(
+                                value == ReaderMode.horizontal
+                                    ? PaperGlyph.horizontal
+                                    : PaperGlyph.vertical,
+                                size: 29,
+                                color: session.preferences.mode == value
+                                    ? Paper.of(context).olive
+                                    : Paper.of(context).ink,
+                              ),
+                              const SizedBox(height: 9),
+                              Text(
+                                value == ReaderMode.horizontal
+                                    ? '横向翻页'
+                                    : '纵向拼接',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
               ],
             ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (final value in ReaderDirection.values)
-                  ChoiceChip(
-                    label: Text(value == ReaderDirection.ltr ? '从左向右' : '从右向左'),
-                    selected: session.preferences.direction == value,
-                    onSelected: session.blocked
-                        ? null
-                        : (_) => session.selectPreferences(
+            SizedBox(height: MediaLayout.largeText(context) ? 16 : 0),
+            PaperSettingRow(
+              label: '默认翻页方向',
+              child: DropdownButtonFormField<ReaderDirection>(
+                key: const Key('default-reader-direction'),
+                initialValue: session.preferences.direction,
+                isExpanded: true,
+                isDense: false,
+                alignment: AlignmentDirectional.centerEnd,
+                decoration: PaperSettingRow.decoration,
+                items: [
+                  for (final value in ReaderDirection.values)
+                    DropdownMenuItem(
+                      value: value,
+                      child: Text(
+                        value == ReaderDirection.ltr ? '从左向右' : '从右向左',
+                      ),
+                    ),
+                ],
+                onChanged: session.blocked
+                    ? null
+                    : (value) {
+                        if (value != null) {
+                          session.selectPreferences(
                             session.preferences.copy(direction: value),
-                          ),
-                  ),
-              ],
+                          );
+                        }
+                      },
+              ),
             ),
             SwitchListTile(
+              key: const Key('default-reader-gap'),
               contentPadding: EdgeInsets.zero,
-              title: const Text('图片间距'),
-              subtitle: const Text('纵向拼接时留出间距'),
+              title: const Text('纵向图片间距'),
               value: session.preferences.gap,
               onChanged: session.blocked
                   ? null
@@ -139,48 +240,46 @@ class _DefaultSettingsSheetState extends State<DefaultSettingsSheet> {
                       session.preferences.copy(gap: v),
                     ),
             ),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (final value in ReaderFit.values)
-                  ChoiceChip(
-                    label: Text(value == ReaderFit.contain ? '完整显示' : '铺满宽度'),
-                    selected: session.preferences.fit == value,
-                    onSelected: session.blocked
-                        ? null
-                        : (_) => session.selectPreferences(
+            SizedBox(height: MediaLayout.largeText(context) ? 16 : 0),
+            PaperSettingRow(
+              label: '图片适配',
+              child: DropdownButtonFormField<ReaderFit>(
+                key: const Key('default-reader-fit'),
+                initialValue: session.preferences.fit,
+                isExpanded: true,
+                isDense: false,
+                alignment: AlignmentDirectional.centerEnd,
+                decoration: PaperSettingRow.decoration,
+                items: [
+                  for (final value in ReaderFit.values)
+                    DropdownMenuItem(
+                      value: value,
+                      child: Text(value == ReaderFit.contain ? '完整显示' : '铺满宽度'),
+                    ),
+                ],
+                onChanged: session.blocked
+                    ? null
+                    : (value) {
+                        if (value != null) {
+                          session.selectPreferences(
                             session.preferences.copy(fit: value),
-                          ),
-                  ),
-              ],
+                          );
+                        }
+                      },
+              ),
             ),
           ],
-          const SizedBox(height: 16),
-          FilledButton(
-            onPressed: session.blocked ? null : save,
-            child: const Text('保存默认设置'),
-          ),
+          const SizedBox(height: 14),
         ],
         if (session.error.isNotEmpty)
           Padding(
+            key: errorAnchor,
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
               session.error,
+              key: const Key('defaults-error'),
               style: TextStyle(color: Paper.of(context).danger),
             ),
-          ),
-        if (session.pending)
-          OutlinedButton(
-            onPressed: session.busy || !session.current
-                ? null
-                : () => save(query: true),
-            child: const Text('核对原设置请求'),
-          ),
-        if (!session.ready || session.pending || session.needsReload)
-          TextButton(
-            onPressed: session.busy || !session.current ? null : session.load,
-            child: const Text('读取服务端当前设置'),
           ),
       ],
     ),

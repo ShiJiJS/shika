@@ -123,8 +123,14 @@ void main() {
           find.byType(CircularProgressIndicator).evaluate().isEmpty,
       '$expected videos',
     );
-    Finder field(String label) => find.byWidgetPredicate(
-      (widget) => widget is TextField && widget.decoration?.labelText == label,
+    Finder field(String label) => find.byKey(
+      Key(
+        {
+          '服务地址': 'connection-address',
+          '端口': 'connection-port',
+          '个人口令': 'connection-passphrase',
+        }[label]!,
+      ),
     );
     Future<void> start() async {
       await t.pumpWidget(

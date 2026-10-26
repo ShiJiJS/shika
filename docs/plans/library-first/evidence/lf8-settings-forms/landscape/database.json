@@ -1,0 +1,103 @@
+{
+  "counts": {
+    "videos": 2,
+    "packs": 4,
+    "pack_pages": 24,
+    "pack_progress": 1,
+    "pack_preferences": 0,
+    "pack_sessions": 0,
+    "recent_entries": 0,
+    "playback_rounds": 1,
+    "file_operations": 0,
+    "pack_file_operations": 0,
+    "pack_trash_items": 0
+  },
+  "sessions": [],
+  "pack_entries": [],
+  "preferences": [],
+  "roots": [
+    {
+      "id": "packs",
+      "name": "图包",
+      "path": "/media/packs",
+      "mount_id": "packs",
+      "available": 1,
+      "error": null,
+      "last_scan": 1793011186.157143,
+      "kind": "pack",
+      "enabled": 1
+    },
+    {
+      "id": "videos",
+      "name": "短视频",
+      "path": "/media/videos",
+      "mount_id": "videos",
+      "available": 1,
+      "error": null,
+      "last_scan": 1793011182.7113767,
+      "kind": "video",
+      "enabled": 1
+    }
+  ],
+  "rounds": [
+    {
+      "id": "328b4266-6e0a-4eff-a080-2da5323dfd3c",
+      "request_id": "1793011206034096-e7953eb",
+      "request_hash": "7ed810b13730048a24a577e180b8cfc2819724dc5ca0eaaeaf52c165c41da74b",
+      "order": "sequential",
+      "scope": "{\"tag_ids\": []}",
+      "cursor": 0,
+      "revision": 0,
+      "finished": 0,
+      "candidate_count": 2,
+      "created_at": 1793011206.481161,
+      "membership": "fixed",
+      "source": "library",
+      "sort": "path",
+      "sequence_revision": 0
+    }
+  ],
+  "entries": [
+    {
+      "round_id": "328b4266-6e0a-4eff-a080-2da5323dfd3c",
+      "ordinal": 0,
+      "video_id": "d19ec9e3-ca7e-4309-a48a-5b673affa01a",
+      "source_ordinal": 0
+    },
+    {
+      "round_id": "328b4266-6e0a-4eff-a080-2da5323dfd3c",
+      "ordinal": 1,
+      "video_id": "c193f75e-e07f-480f-85a3-651eb39bce50",
+      "source_ordinal": 1
+    }
+  ],
+  "recent": [],
+  "progress": [
+    {
+      "pack_id": "41ad2637-842b-449d-a02c-057967771e35",
+      "page_id": "11b83979-90fd-47d6-9ba4-6f2bc09a4323",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1000.0,
+      "content_version": 1,
+      "recovery_reason": null
+    }
+  ],
+  "progress_pages": [
+    {
+      "name": "示例作者 NO.034 - 夏日祭",
+      "ordinal": 2
+    }
+  ],
+  "defaults": [
+    {
+      "key": "playback_defaults",
+      "value": "{\"order\": \"random\", \"revision\": 0}"
+    },
+    {
+      "key": "reader_defaults",
+      "value": "{\"mode\": \"horizontal\", \"direction\": \"ltr\", \"gap\": false, \"fit\": \"contain\", \"revision\": 2}"
+    }
+  ]
+}

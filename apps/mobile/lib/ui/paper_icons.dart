@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'paper.dart';
 
-enum PaperGlyph { shuffle, tag, filter, play }
+enum PaperGlyph { shuffle, tag, filter, play, horizontal, vertical }
 
 /// Paper's outlined tool shapes; button labels own their accessibility names.
 class PaperIcon extends StatelessWidget {
@@ -38,6 +38,32 @@ class _PaperIconPainter extends CustomPainter {
       ..strokeJoin = StrokeJoin.round;
     final path = Path();
     switch (glyph) {
+      case PaperGlyph.horizontal:
+        path
+          ..addRRect(
+            RRect.fromRectAndRadius(
+              const Rect.fromLTWH(5, 3, 14, 18),
+              const Radius.circular(1),
+            ),
+          )
+          ..moveTo(1, 12)
+          ..lineTo(6, 12)
+          ..moveTo(18, 12)
+          ..lineTo(23, 12);
+      case PaperGlyph.vertical:
+        path
+          ..addRRect(
+            RRect.fromRectAndRadius(
+              const Rect.fromLTWH(5, 2, 14, 8),
+              const Radius.circular(1),
+            ),
+          )
+          ..addRRect(
+            RRect.fromRectAndRadius(
+              const Rect.fromLTWH(5, 14, 14, 8),
+              const Radius.circular(1),
+            ),
+          );
       case PaperGlyph.shuffle:
         path
           ..moveTo(3, 6)

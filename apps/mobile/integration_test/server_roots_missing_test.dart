@@ -206,7 +206,8 @@ void main() {
       await tap(find.text('添加目录'));
       await t.enterText(find.byKey(const Key('root-name')), '原生图包目录');
       await t.enterText(find.byKey(const Key('root-path')), seed['path']);
-      await tap(find.byKey(const Key('root-kind-pack')));
+      await tap(find.byKey(const Key('root-kind')));
+      await tap(find.text('图包文件夹').hitTestable().last);
       await saveRoot();
       var roots =
           (await repo.api.json('GET', '/api/v1/roots'))['items'] as List;
@@ -240,7 +241,8 @@ void main() {
       final label = await repo.createPackTag('缺失前标签');
       await repo.setPackTags({first.id}, {label.id});
       await editRoot();
-      await tap(find.byKey(const Key('root-kind-video')));
+      await tap(find.byKey(const Key('root-kind')));
+      await tap(find.text('视频文件').hitTestable().last);
       await tap(find.byKey(const Key('root-save')));
       await until(
         () => find.textContaining('已有内容的目录不能直接更改媒体类型').evaluate().isNotEmpty,

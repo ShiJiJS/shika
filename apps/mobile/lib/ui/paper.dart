@@ -1,4 +1,23 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+
+/// Keep failures visible when a form's submit action is outside its scroll body.
+void revealFormError(GlobalKey anchor) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    final context = anchor.currentContext;
+    if (context == null || !context.mounted) return;
+    unawaited(
+      Scrollable.ensureVisible(
+        context,
+        alignment: .5,
+        duration: MediaQuery.disableAnimationsOf(context)
+            ? Duration.zero
+            : const Duration(milliseconds: 160),
+      ),
+    );
+  });
+}
 
 class PaperPalette {
   const PaperPalette(this.dark);
@@ -104,6 +123,7 @@ abstract final class Paper {
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: p.background,
+        constraints: const BoxConstraints(maxWidth: double.infinity),
         showDragHandle: false,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(21)),
@@ -145,7 +165,7 @@ class EmptyView extends StatelessWidget {
   final Widget? action;
   @override
   Widget build(BuildContext context) => Center(
-    child: Padding(
+    child: SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -211,41 +231,58 @@ class SheetFrame extends StatelessWidget {
     ),
     child: SafeArea(
       top: false,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // A landscape IME can leave only about 114dp above the keyboard.
+          // Keep the focused fields mounted and let actions scroll with them.
+          final compact = constraints.maxHeight < 180;
+          final actions = footer == null
+              ? null
+              : Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: SizedBox(width: double.infinity, child: footer),
+                );
+          return Padding(
+            padding: EdgeInsets.fromLTRB(
+              20,
+              compact ? 4 : 10,
+              20,
+              compact ? 8 : 16,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: Paper.of(context).title.copyWith(fontSize: 21),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: Paper.of(context).title.copyWith(fontSize: 21),
+                      ),
+                    ),
+                    iconAction(
+                      '关闭面板',
+                      Icons.close,
+                      closeEnabled ? () => Navigator.pop(context) : null,
+                    ),
+                  ],
+                ),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ...children,
+                        if (compact && actions != null) actions,
+                      ],
+                    ),
                   ),
                 ),
-                iconAction(
-                  '关闭面板',
-                  Icons.close,
-                  closeEnabled ? () => Navigator.pop(context) : null,
-                ),
+                if (!compact && actions != null) actions,
               ],
             ),
-            Flexible(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: children,
-                ),
-              ),
-            ),
-            if (footer != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: SizedBox(width: double.infinity, child: footer),
-              ),
-          ],
-        ),
+          );
+        },
       ),
     ),
   );

@@ -94,7 +94,8 @@ void main() {
           find.byKey(const Key('root-path')),
           '/media/packs///',
         );
-        await tap(t, find.byKey(const Key('root-kind-pack')));
+        await tap(t, find.byKey(const Key('root-kind')));
+        await tap(t, find.text('图包文件夹').hitTestable().last);
         await tap(t, find.byKey(const Key('root-enabled')));
         await tap(t, find.byKey(const Key('root-save')));
         expect(repo.calls, 1);
@@ -106,6 +107,34 @@ void main() {
       },
     );
   }
+  testWidgets(
+    'landscape keyboard keeps the focused input and save reachable without overflow',
+    (t) async {
+      t.view.physicalSize = const Size(844, 390);
+      t.view.devicePixelRatio = 1;
+      addTearDown(t.view.resetPhysicalSize);
+      addTearDown(t.view.resetDevicePixelRatio);
+      addTearDown(t.view.resetViewInsets);
+      await show(t);
+      final input = find.byKey(const Key('root-name'));
+      await t.tap(input);
+      await t.enterText(input, '横屏输入保留');
+      t.view.viewInsets = const FakeViewPadding(bottom: 248);
+      await frames(t);
+      expect(t.takeException(), isNull);
+      expect(t.widget<TextField>(input).controller!.text, '横屏输入保留');
+      expect(FocusManager.instance.primaryFocus?.hasFocus, isTrue);
+      await Scrollable.ensureVisible(t.element(input), alignment: .5);
+      await frames(t);
+      expect(input.hitTestable(), findsOneWidget);
+      await tap(t, find.byKey(const Key('root-save')));
+      expect(find.byKey(const Key('root-error')).hitTestable(), findsOneWidget);
+      expect(repo.calls, 0);
+      t.view.resetViewInsets();
+      await frames(t);
+      expect(t.takeException(), isNull);
+    },
+  );
   testWidgets(
     'root kind conflict retains input and cancellation has no second write',
     (t) async {
@@ -125,9 +154,17 @@ void main() {
         isFalse,
       );
       await t.enterText(find.byKey(const Key('root-name')), '保留输入');
-      await tap(t, find.byKey(const Key('root-kind-video')));
+      await tap(t, find.byKey(const Key('root-kind')));
+      await tap(t, find.text('视频文件').hitTestable().last);
       await tap(t, find.byKey(const Key('root-save')));
-      expect(find.text('已有内容的目录不能更改类型'), findsOneWidget);
+      expect(find.textContaining('已有内容的目录不能更改类型'), findsOneWidget);
+      expect(find.textContaining('请新建正确类型的接入目录'), findsOneWidget);
+      final error = find.byKey(const Key('root-error'));
+      expect(error.hitTestable(), findsOneWidget);
+      expect(
+        t.getRect(error).bottom,
+        lessThanOrEqualTo(t.getRect(find.byKey(const Key('root-save'))).top),
+      );
       expect(
         t
             .widget<TextField>(find.byKey(const Key('root-name')))
