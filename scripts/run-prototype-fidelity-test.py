@@ -345,34 +345,39 @@ finally:
     stop.set()
     if "watcher" in globals():
         watcher.join(timeout=12)
-    for name in ("size", "density"):
-        value = original[name]
-        shell(
-            "wm",
-            name,
-            value.split("Override " + name + ":")[-1].strip()
-            if "Override " in value
-            else "reset",
+    try:
+        for name in ("size", "density"):
+            value = original[name]
+            shell(
+                "wm",
+                name,
+                value.split("Override " + name + ":")[-1].strip()
+                if "Override " in value
+                else "reset",
+            )
+        shell("settings", "put", "system", "font_scale", font)
+        save(
+            "restored-viewport.json",
+            {
+                "before": original,
+                "after": {name: shell("wm", name) for name in original},
+                "font_before": font,
+                "font_after": shell("settings", "get", "system", "font_scale"),
+                "errors": errors,
+            },
         )
-    shell("settings", "put", "system", "font_scale", font)
-    save(
-        "restored-viewport.json",
-        {
-            "before": original,
-            "after": {name: shell("wm", name) for name in original},
-            "font_before": font,
-            "font_after": shell("settings", "get", "system", "font_scale"),
-            "errors": errors,
-        },
-    )
-    if container:
-        (out / "server.log").write_text(
-            subprocess.run(
-                ["docker", "logs", container],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-                check=False,
-            ).stdout
-        )
-        run("docker", "rm", "-f", container)
+    except Exception as exc:
+        save("restore-error.json", {"before": original, "font_before": font, "error": str(exc), "errors": errors})
+        raise
+    finally:
+        if container:
+            (out / "server.log").write_text(
+                subprocess.run(
+                    ["docker", "logs", container],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    check=False,
+                ).stdout
+            )
+            run("docker", "rm", "-f", container)
