@@ -276,9 +276,9 @@ void main() {
       await t.pumpAndSettle();
       expect(find.text('已选 26'), findsOneWidget);
       await shot('selected');
-      preferences.dark = true;
+      await preferences.setDark(true);
       await shot('dark');
-      preferences.dark = false;
+      await preferences.setDark(false);
       await t.pumpAndSettle();
       if (baseline) {
         expect(
