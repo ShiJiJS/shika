@@ -160,7 +160,9 @@ class _MediaRootSheetState extends State<MediaRootSheet> {
           key: errorAnchor,
           padding: const EdgeInsets.only(bottom: 12),
           child: Text(
-            error.contains('不能') && error.contains('类型')
+            error.contains('不能') &&
+                    error.contains('类型') &&
+                    !error.contains('新建')
                 ? '$error。请新建正确类型的接入目录。'
                 : error,
             key: const Key('root-error'),
