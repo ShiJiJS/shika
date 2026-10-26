@@ -907,7 +907,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     children: [
       if (separator || _busy)
         SizedBox(
-          height: 2,
+          height: page == 'trash' && !_busy ? 1 : 2,
           child: _busy
               ? const LinearProgressIndicator(
                   key: Key('management-loading'),
@@ -2713,12 +2713,12 @@ class _LibraryHomeState extends State<LibraryHome> {
       children: [
         if (!compactTrashKeyboard)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
             child: Row(
               children: [
                 for (final kind in MediaKind.values)
                   Padding(
-                    padding: const EdgeInsets.only(right: 22),
+                    padding: EdgeInsets.zero,
                     child: TextButton(
                       key: Key('trash-kind-${kind.name}'),
                       onPressed: () {
@@ -2732,7 +2732,14 @@ class _LibraryHomeState extends State<LibraryHome> {
                         foregroundColor: kind == trashKind
                             ? p.ink
                             : p.catalogMeta,
-                        padding: EdgeInsets.zero,
+                        padding: const EdgeInsets.only(right: 22),
+                        alignment: Alignment.centerLeft,
+                        textStyle: TextStyle(
+                          fontSize: 15,
+                          fontWeight: kind == trashKind
+                              ? FontWeight.w600
+                              : FontWeight.normal,
+                        ),
                         minimumSize: const Size(44, 44),
                         shape: const RoundedRectangleBorder(),
                         side: BorderSide.none,
@@ -2777,6 +2784,10 @@ class _LibraryHomeState extends State<LibraryHome> {
     final locked = busy || restoringTrash || purgingTrash || selectingAllTrash;
     return TrashLayout(
       listKey: const Key('video-trash-list'),
+      topInset:
+          repo.capabilities.packLogicalTrash && repo.capabilities.imagePacks
+          ? 0
+          : 18,
       loading:
           trashLoading || restoringTrash || purgingTrash || selectingAllTrash,
       onRefresh: () => loadTrash(),

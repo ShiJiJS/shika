@@ -117,10 +117,24 @@ void main() {
           await revealAction(t, find.text('已选 27'));
           expect(find.text('已选 27'), findsOneWidget);
           if (scenario == 'keyboard') {
-            t.view.viewInsets = const FakeViewPadding(bottom: 280);
-            await t.pumpAndSettle();
             final field = find.byKey(const Key('pack-trash-search'));
             await revealAction(t, field);
+            await t.showKeyboard(field);
+            t.view.viewInsets = const FakeViewPadding(bottom: 280);
+            await t.pumpAndSettle();
+            await revealAction(t, field);
+            expect(
+              t
+                  .widget<EditableText>(
+                    find.descendant(
+                      of: field,
+                      matching: find.byType(EditableText),
+                    ),
+                  )
+                  .focusNode
+                  .hasFocus,
+              isTrue,
+            );
             expect(
               t.getRect(field).bottom,
               lessThanOrEqualTo(sample.$1.height - 279),

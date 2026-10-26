@@ -104,6 +104,13 @@ void main() {
         );
         await t.pumpAndSettle();
         final m = MediaQueryData.fromView(t.view);
+        if (name == 'keyboard') {
+          expect(
+            m.viewInsets.bottom,
+            greaterThan(0),
+            reason: 'Capture a stable real IME, not its opening transition',
+          );
+        }
         debugPrint(
           'TRASH_METRICS:${jsonEncode({
             'state': 'trash-$name',
@@ -276,7 +283,11 @@ void main() {
       await reveal(find.text('已选 27'));
       await tap(find.byKey(Key('pack-trash-item-$excluded')));
       await tap(find.byKey(const Key('pack-trash-next')));
-      await until(() => find.text('2 / 2').evaluate().isNotEmpty, 'page two');
+      await until(
+        () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
+        'page two settled',
+      );
+      await reveal(find.text('2 / 2'));
       await shot('paged');
       await reveal(find.byKey(const Key('pack-trash-restore')));
       await t.pumpAndSettle();

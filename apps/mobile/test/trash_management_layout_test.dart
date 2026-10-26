@@ -49,6 +49,20 @@ void main() {
       await tap(find.byKey(const Key('pack-trash-restore')));
       await tap(find.byKey(const Key('pack-restore-plan-confirm')));
       expect(repo.planBodies.single['trash_ids'], hasLength(26));
+      await revealAction(t, find.byKey(const Key('pack-trash-restore')));
+      expect(find.text('保留选择 26'), findsOneWidget);
+      expect(
+        t
+            .widget<OutlinedButton>(find.byKey(const Key('pack-trash-restore')))
+            .onPressed,
+        isNull,
+      );
+      expect(
+        t
+            .widget<TextButton>(find.byKey(const Key('pack-trash-permanent')))
+            .onPressed,
+        isNull,
+      );
       await tap(find.byKey(const Key('pack-trash-item-trash-0')));
       await tap(find.byKey(const Key('pack-trash-plans-pending')));
       await tap(find.byTooltip('返回操作任务'));
@@ -133,7 +147,7 @@ void main() {
         await tap(find.byKey(const Key('pack-trash-row-restore-trash-1')));
         if (wholePlan) {
           final plans = repo as RestoreLibrary;
-          expect(find.text('恢复已选 1 个图包'), findsOneWidget);
+          expect(find.text('恢复 1 个图包'), findsOneWidget);
           await tap(find.text('取消'));
           expect(plans.planBodies, isEmpty);
           expect(find.text('已选 1'), findsOneWidget);

@@ -349,7 +349,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
       final approved = await paperSheet<bool>(
         context,
         SheetFrame(
-          title: '恢复已选 $count 个图包',
+          title: id == null ? '恢复已选 $count 个图包' : '恢复 1 个图包',
           footer: Wrap(
             alignment: WrapAlignment.end,
             spacing: 8,
@@ -367,8 +367,10 @@ class _PackTrashPageState extends State<PackTrashPage> {
             ],
           ),
           children: [
-            const Text(
-              '整份选择交给服务端按批次恢复，标签和阅读进度保留。受理后可以离开，在操作任务查看进度或停止后续批次。',
+            Text(
+              id == null
+                  ? '将分批恢复所选图包，保留标签和阅读进度。受理后可离开，在操作任务查看进度或停止后续批次。'
+                  : '恢复此图包，保留标签和阅读进度。受理后可离开，在操作任务查看进度。',
               style: TextStyle(height: 1.7),
             ),
           ],
@@ -561,6 +563,11 @@ class _PackTrashPageState extends State<PackTrashPage> {
     final p = Paper.of(context), locked = session.restoring || checking;
     final selected = session.selection.ids;
     final unavailable = locked || session.selection.loading || !session.live;
+    final pendingIds = {
+      for (final pending in session.pendingPlans)
+        if (pending.command.kind == 'restore') ...pending.command.ids,
+    };
+    final uncertain = selected.intersection(pendingIds).length;
     return TrashLayout(
       listKey: const Key('pack-trash-list'),
       controller: scroll,
@@ -569,15 +576,25 @@ class _PackTrashPageState extends State<PackTrashPage> {
       onRefresh: () => session.load(),
       actions: TrashActions(
         count: selected.length,
+        selectionLabel: uncertain > 0 ? '保留选择 ${selected.length}' : null,
         restoreKey: const Key('pack-trash-restore'),
         permanentKey: const Key('pack-trash-permanent'),
-        onRestore: unavailable || selected.isEmpty ? null : () => restore(),
-        onPermanent: unavailable || selected.isEmpty ? null : permanent,
+        onRestore: unavailable || selected.isEmpty || uncertain > 0
+            ? null
+            : () => restore(),
+        onPermanent: unavailable || selected.isEmpty || uncertain > 0
+            ? null
+            : permanent,
         showPermanent:
             widget.repository.capabilities.packPermanentDelete &&
             widget.repository.capabilities.packPurgePreview,
         restoring: session.restoring,
         children: [
+          if (uncertain > 0)
+            Text(
+              '$uncertain 个图包恢复结果待核对，请先查询原请求。',
+              style: TextStyle(fontSize: 13, height: 1.7, color: p.catalogMeta),
+            ),
           if (selected.length > 1000)
             Text(
               '已选 ${selected.length} 个。恢复每批最多1000个；永久删除每批单独核对确认，其余保持选择。',
@@ -679,7 +696,9 @@ class _PackTrashPageState extends State<PackTrashPage> {
             selected: selected.contains(item.id),
             onToggle: locked ? null : () => session.toggle(item.id),
             restoreKey: Key('pack-trash-row-restore-${item.id}'),
-            onRestore: unavailable ? null : () => restore(id: item.id),
+            onRestore: unavailable || pendingIds.contains(item.id)
+                ? null
+                : () => restore(id: item.id),
             details: [
               Text(
                 '${item.pageCount} 张 · ${switch (item.pack.readState) {

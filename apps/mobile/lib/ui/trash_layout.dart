@@ -13,6 +13,7 @@ class TrashLayout extends StatelessWidget {
     required this.onRefresh,
     this.controller,
     this.loading = false,
+    this.topInset = 0,
   });
   final Key listKey;
   final List<Widget> children;
@@ -20,6 +21,7 @@ class TrashLayout extends StatelessWidget {
   final Future<void> Function() onRefresh;
   final ScrollController? controller;
   final bool loading;
+  final double topInset;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -31,6 +33,7 @@ class TrashLayout extends StatelessWidget {
         children: [
           if (loading) const LinearProgressIndicator(),
           Flexible(
+            key: const ValueKey('trash-content'),
             fit: pinned ? FlexFit.loose : FlexFit.tight,
             child: RefreshIndicator(
               onRefresh: onRefresh,
@@ -39,11 +42,13 @@ class TrashLayout extends StatelessWidget {
                 controller: controller,
                 // A short result keeps its actions directly after the rows;
                 // a full, bounded page uses the available height and pins them.
-                shrinkWrap: pinned,
+                // Keep the viewport type stable as the IME changes the dock;
+                // replacing it would dispose the focused search field.
+                shrinkWrap: true,
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.fromLTRB(20, 18, 20, pinned ? 0 : 22),
+                padding: EdgeInsets.fromLTRB(20, topInset, 20, pinned ? 0 : 22),
                 children: [...children, if (!pinned) actions],
               ),
             ),
@@ -68,10 +73,12 @@ class TrashActions extends StatelessWidget {
     required this.restoreKey,
     required this.permanentKey,
     this.restoring = false,
+    this.selectionLabel,
     this.showPermanent = true,
     this.children = const [],
   });
   final int count;
+  final String? selectionLabel;
   final VoidCallback? onRestore, onPermanent;
   final Key restoreKey, permanentKey;
   final bool restoring;
@@ -90,7 +97,10 @@ class TrashActions extends StatelessWidget {
         if (MediaLayout.largeText(context))
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: Text('已选 $count', style: const TextStyle(fontSize: 13)),
+            child: Text(
+              selectionLabel ?? '已选 $count',
+              style: const TextStyle(fontSize: 13),
+            ),
           ),
         Wrap(
           alignment: WrapAlignment.spaceBetween,
@@ -99,7 +109,10 @@ class TrashActions extends StatelessWidget {
           runSpacing: 8,
           children: [
             if (!MediaLayout.largeText(context))
-              Text('已选 $count', style: const TextStyle(fontSize: 13)),
+              Text(
+                selectionLabel ?? '已选 $count',
+                style: const TextStyle(fontSize: 13),
+              ),
             OutlinedButton(
               key: restoreKey,
               onPressed: onRestore,

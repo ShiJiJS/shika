@@ -519,8 +519,10 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
           if (task.kind == 'pack_restore_plan' && !task.historical) ...[
             const Padding(
               padding: EdgeInsets.only(top: 8),
-              child: Text('整份计划由服务端推进，可以离开本页。已停止的图包没有执行恢复，仍保留在回收站。'),
+              child: Text('可离开本页，在操作任务查看结果。'),
             ),
+            if ((restorePlan?.stopped ?? 0) > 0)
+              const Text('已停止的图包没有执行恢复，仍保留在回收站。'),
             if (stopPending)
               Text('停止结果待核对，请查询原请求。', style: TextStyle(color: p.danger)),
             if (restorePlan?.stopRequested == true &&
