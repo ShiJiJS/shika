@@ -81,6 +81,12 @@ void main() {
           if (target.evaluate().isNotEmpty) break;
         }
         await until(() => target.evaluate().isNotEmpty, 'target exists');
+        // A completed restore may rebuild the lazy list while the condition
+        // settles. Mount the target again after that real asynchronous read.
+        if (target.evaluate().isEmpty) {
+          await reveal(target);
+          return;
+        }
         await t.ensureVisible(target);
         await t.pump(const Duration(milliseconds: 180));
         await Scrollable.ensureVisible(t.element(target), alignment: .5);
@@ -363,6 +369,11 @@ void main() {
         if ((await repo.loadPacks(PackQuery())).total == 27) break;
         await t.pump(const Duration(milliseconds: 100));
       }
+      await until(
+        () => find.byType(LinearProgressIndicator).evaluate().isEmpty,
+        'single restore reads settled',
+      );
+      await t.pumpAndSettle();
       await tap(find.byKey(const Key('pack-trash-refresh')));
       await tap(find.byTooltip('清除搜索'));
       await until(
