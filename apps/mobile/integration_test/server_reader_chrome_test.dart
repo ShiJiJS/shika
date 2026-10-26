@@ -305,10 +305,16 @@ void main() {
       'full range',
     );
     final afterPanels = await saved();
-    expect(
-      find.byKey(const Key('reader-range-pagination')).hitTestable(),
-      findsOneWidget,
-    );
+    // This four-pack fixture has one page, so both paging buttons are disabled.
+    // A non-clickable Row's empty center is not a pointer hit target.
+    expect(find.byKey(const Key('reader-range-pagination')), findsOneWidget);
+    for (final label in ['上一页', '下一页']) {
+      final button = find.ancestor(
+        of: find.text(label),
+        matching: find.byType(TextButton),
+      );
+      expect(t.widget<TextButton>(button).onPressed, isNull);
+    }
     expect(
       t.getRect(find.byKey(const Key('reader-range-pagination'))).bottom,
       lessThanOrEqualTo(window.height - media.viewPadding.bottom),
