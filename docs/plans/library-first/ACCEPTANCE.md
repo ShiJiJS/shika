@@ -322,3 +322,13 @@
 [Draft PR #71](https://github.com/ShiJiJS/video_viewer/pull/71)补BAK-01/02/03、UI-03/04/05的明确组合：Paper备份／短长恢复预览／任务列表及详情，37项相关检查三轮、三视口63点，原请求、源SHA与完整恢复／快照独立核对。生产e10bbbc，archive等待脚本30bc9d7；证据b9ccf92及521份manifest输入已复核。
 
 [逐项结果](RESULTS.md)和[原始证据／边界](evidence/lf8-backup-task-management/README.md)保留失败、中间版本及静态未覆盖组合。整体验收继续开放；下一段推进永久删除复核与部分失败，其它大文件／故障／系统选择器、手势、性能和需配合部分仍按台账推进。原型独立未改且可移除，backup_v2生产仍关闭，未发布APK。
+
+## 2026-10-27：原型可移除构建演练与当前整合回归（PR #75）
+
+[Draft PR #75](https://github.com/ShiJiJS/video_viewer/pull/75)基于#74，固定源码7c70e59。将整个Git提交导出到新建副本，仅移除副本内72份`design/reference/`文件，12,145份保留文件与固定提交全部blob独立逐字节核对；App package root实际指向副本，Git discovery上界避免借用父仓库。构建后保留源码与原仓库参考文件SHA均未变，副本参考目录保持不存在。冻结原型树1cbf605在原仓库独立保留。
+
+同一副本Flutter analyze、完整643项客户端测试、debug/release APK构建、服务镜像Ruff check和完整Linux pytest 447项通过；初次pub解析离线且强制锁文件，构建使用标准Flutter模式注册。两包Flutter资产清单不含原型路径，Flutter引擎仅ARM64，JNI依赖另含armeabi-v7a/x86_64；release DEX无integration_test插件路径。APK仅本机构建，沿现有开发签名、未递增版本，不作为原签名升级包。服务格式检查仍有27份存量文件失败，单列保留，未误报全部门禁通过。
+
+首轮debug后错误复用`--no-pub`使release残留测试插件注册而失败，`complete:false`与原始日志保留；同副本标准release通过只作诊断，修正脚本后按7c70e59重新完整跑第二轮。未修改SDK或移除开发测试依赖。输出安全检查拒绝仓库根目录、整个.dev及已有目录；实际只删除一次性导出副本。
+
+[实施与边界](LF8-REFERENCE-ISOLATION.md) / [固定源码、原始日志与只读复核](evidence/lf8-reference-isolation/README.md)。此段证明实际移除参考目录后的构建/测试隔离，服务用例覆盖大于32MiB HTTP备份和500页4K/8K扫描，但不证明Android长包渲染、真机/NAS性能、系统选择器、完整手势或原签名覆盖升级。#24/#33及整体验收保持开放；需用户配合项按授权暂跳过。原型树独立未改，backup_v2生产仍关闭，未发布APK或修改正式8760/NAS。

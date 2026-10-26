@@ -1,0 +1,17 @@
+[
+  {
+    "case": "checkout",
+    "exit_code": 2,
+    "expected_refusal": true
+  },
+  {
+    "case": "dev-root",
+    "exit_code": 2,
+    "expected_refusal": true
+  },
+  {
+    "case": "existing-run",
+    "exit_code": 2,
+    "expected_refusal": true
+  }
+]
