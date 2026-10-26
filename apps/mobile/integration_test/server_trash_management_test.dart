@@ -73,9 +73,15 @@ void main() {
       Future<void> reveal(Finder target) async {
         for (final direction in [1, -1]) {
           for (var i = 0; target.evaluate().isEmpty && i < 60; i++) {
-            final scroll = find.byType(Scrollable).hitTestable();
+            final scroll = find
+                .byWidgetPredicate(
+                  (w) =>
+                      w is Scrollable &&
+                      axisDirectionToAxis(w.axisDirection) == Axis.vertical,
+                )
+                .hitTestable();
             if (scroll.evaluate().isEmpty) break;
-            await t.drag(scroll.last, Offset(0, -240.0 * direction));
+            await t.drag(scroll.first, Offset(0, -240.0 * direction));
             await t.pump(const Duration(milliseconds: 100));
           }
           if (target.evaluate().isNotEmpty) break;
