@@ -83,10 +83,7 @@ void main() {
   }
 
   Finder chosen() => find.byKey(const Key('chosen-pack-tag-t60'));
-  Finder input() => find.descendant(
-    of: find.byType(PackTagEditor),
-    matching: find.byType(TextField),
-  );
+  Finder input() => find.byKey(const Key('tag-assignment-search'));
   Finder save() => find.widgetWithText(FilledButton, '保存整包标签');
   Future<void> close(WidgetTester t) async {
     expect(t.takeException(), isNull);

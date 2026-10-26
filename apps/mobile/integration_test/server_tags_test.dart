@@ -106,7 +106,7 @@ void main() {
       for (final name in names) {
         await ui.tagChip(name);
       }
-      await ui.text('完成');
+      await ui.tap(find.byKey(const Key('tag-assignment-save')));
       await ui.until(
         () => find.byType(TagEditor).evaluate().isEmpty,
         'tags committed',
@@ -216,14 +216,14 @@ void main() {
       await ui.tagChip('花卉');
       if (!remove) await ui.tagChip('自然');
       if (loseResponse) await fixture('/__fixture/actions/lose-tag-response');
-      await ui.text('完成');
+      await ui.tap(find.byKey(const Key('tag-assignment-save')));
       if (loseResponse) {
         await ui.until(
           () => find.textContaining('连接已中断').evaluate().isNotEmpty,
           'accepted write lost response',
         );
         expect(await links(second), {nature, flower});
-        await ui.text('完成');
+        await ui.tap(find.byKey(const Key('tag-assignment-save')));
       }
       await ui.until(
         () => find.byType(TagEditor).evaluate().isEmpty,

@@ -96,7 +96,7 @@ def create_e2e_app():
                 "management_epoch": request.headers.get("X-Management-Epoch"),
                 "fixture_actor": request.headers.get("X-Fixture-Actor"),
             }
-            if (request.method == "PATCH" and request.url.path in {"/api/v1/video-tags", "/api/v1/playback-defaults", "/api/v1/reading-defaults"}) or (
+            if (request.method == "PATCH" and request.url.path in {"/api/v1/video-tags", "/api/v1/pack-tag-links", "/api/v1/playback-defaults", "/api/v1/reading-defaults"}) or (
                 request.method == "POST" and request.url.path in {
                     "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans", "/api/v1/packs/forget-missing", "/api/v1/pack-restore-plans"
                 }
@@ -105,6 +105,8 @@ def create_e2e_app():
                 entry["command_hash"] = hashlib.sha256(
                     str(body.get("request_id")).encode()
                 ).hexdigest()
+                if request.url.path in {"/api/v1/video-tags", "/api/v1/pack-tag-links"}:
+                    entry["assignment"] = {key: body.get(key) for key in ("video_ids", "pack_ids", "tag_ids", "mode")}
                 if request.url.path == "/api/v1/pack-purge-plans":
                     entry["purge_members"] = sorted(body.get("trash_ids", []))
                 if request.url.path == "/api/v1/pack-trash/permanent":
@@ -258,6 +260,7 @@ def create_e2e_app():
             "prepared",
             "workspace-video", "workspace-packs", "workspace-video-tags",
             "workspace-pack-tags", "workspace-settings", "workspace-dark",
+            "tag-ui-assign-video-single", "tag-ui-assign-video-dark", "tag-ui-assign-video-error", "tag-ui-assign-video-keyboard", "tag-ui-assign-video-saved", "tag-ui-assign-pack-single", "tag-ui-assign-pack-error", "tag-ui-assign-pack-keyboard", "tag-ui-assign-pack-saved", "tag-ui-assign-videos", "tag-ui-assign-video-batch", "tag-ui-assign-packs", "tag-ui-assign-pack-batch", "tag-ui-assign-verified",
             "tag-ui-video", "tag-ui-pack", "tag-ui-dark", "tag-ui-create-keyboard", "tag-ui-create-error", "tag-ui-created", "tag-ui-rename-editor", "tag-ui-rename-editor-dark", "tag-ui-renamed", "tag-ui-remove-confirm", "tag-ui-removed", "tag-ui-page-error", "tag-ui-paged", "tag-ui-results-error", "tag-ui-results",
             "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
             "selection-videos", "selection-packs",

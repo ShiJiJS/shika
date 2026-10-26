@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../library/models.dart';
 import '../library/repository.dart';
 import 'paper.dart';
+import 'media_tag_editor.dart';
 
 class FolderPicker extends StatefulWidget {
   const FolderPicker({
@@ -280,109 +281,34 @@ class _ScopeSheetState extends State<ScopeSheet> {
   );
 }
 
-class TagEditor extends StatefulWidget {
+class TagEditor extends StatelessWidget {
   const TagEditor({
     super.key,
     required this.repository,
     required this.ids,
+    this.initial,
     this.appendOnly = false,
   });
   final LibraryRepository repository;
   final Set<String> ids;
+  final Set<String>? initial;
   final bool appendOnly;
   @override
-  State<TagEditor> createState() => _TagEditorState();
-}
-
-class _TagEditorState extends State<TagEditor> {
-  late Set<String> selected = widget.ids.length == 1 && !widget.appendOnly
-      ? {
-          ...widget.repository.snapshot.videos
-              .firstWhere((v) => v.id == widget.ids.first)
-              .tags,
-        }
-      : {};
-  String search = '', error = '';
-  bool remove = false, busy = false;
-  @override
-  Widget build(BuildContext context) => SheetFrame(
-    title: '打标签',
-    children: [
-      note(
-        widget.ids.length == 1 && !widget.appendOnly
-            ? '编辑当前视频的标签'
-            : '将修改 ${widget.ids.length} 个视频，其他标签保持不变',
-      ),
-      if (widget.ids.length > 1 && !widget.appendOnly)
-        Row(
-          children: [
-            ChoiceChip(
-              label: const Text('添加标签'),
-              selected: !remove,
-              onSelected: (_) => setState(() => remove = false),
-            ),
-            const SizedBox(width: 8),
-            ChoiceChip(
-              label: const Text('移除标签'),
-              selected: remove,
-              onSelected: (_) => setState(() => remove = true),
-            ),
-          ],
-        ),
-      TextField(
-        decoration: const InputDecoration(
-          hintText: '搜索标签',
-          prefixIcon: Icon(Icons.search),
-        ),
-        onChanged: (v) => setState(() => search = v),
-      ),
-      const SizedBox(height: 16),
-      Wrap(
-        spacing: 8,
-        runSpacing: 6,
-        children: widget.repository.snapshot.tags
-            .where((t) => widget.repository.tagName(t).contains(search))
-            .map(
-              (tag) => FilterChip(
-                label: Text(widget.repository.tagName(tag)),
-                selected: selected.contains(tag),
-                backgroundColor: Paper.of(context).soft,
-                side: BorderSide.none,
-                onSelected: busy
-                    ? null
-                    : (yes) => setState(
-                        () => yes ? selected.add(tag) : selected.remove(tag),
-                      ),
-              ),
-            )
-            .toList(),
-      ),
-      if (error.isNotEmpty) note(error),
-      const SizedBox(height: 20),
-      FilledButton(
-        onPressed: busy
-            ? null
-            : () async {
-                setState(() {
-                  busy = true;
-                  error = '';
-                });
-                try {
-                  await widget.repository.setVideoTags(
-                    widget.ids,
-                    selected,
-                    remove: remove,
-                    replace: widget.ids.length == 1 && !widget.appendOnly,
-                  );
-                  if (context.mounted) Navigator.pop(context, true);
-                } catch (e) {
-                  if (mounted) setState(() => error = e.toString());
-                } finally {
-                  if (mounted) setState(() => busy = false);
-                }
-              },
-        child: Text(busy ? '保存中…' : '完成'),
-      ),
-    ],
-  );
+  Widget build(BuildContext context) {
+    final matches = repository.snapshot.videos.where((v) => ids.contains(v.id));
+    final single = ids.length == 1 && !appendOnly;
+    final tags =
+        initial ?? (matches.length == 1 ? matches.single.tags : <String>{});
+    return MediaTagEditor(
+      repository: repository,
+      kind: MediaKind.video,
+      ids: ids,
+      initial: tags,
+      initialNames: {for (final id in tags) id: repository.tagName(id)},
+      initialKnown: !single || initial != null || matches.length == 1,
+      appendOnly: appendOnly,
+      allowRemoval: ids.length > 1 && !appendOnly,
+      onSaved: (_) => Navigator.pop(context, true),
+    );
+  }
 }

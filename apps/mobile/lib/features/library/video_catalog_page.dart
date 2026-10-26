@@ -341,6 +341,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
     await paperSheet<bool>(
       context,
       TagEditor(repository: repo, ids: ids, appendOnly: appendOnly),
+      dismissible: false,
     );
     if (mounted && widget.active) await load(restore: true);
   }

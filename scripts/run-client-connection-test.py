@@ -212,6 +212,7 @@ def watch():
                 "prepared",
                 "workspace-video", "workspace-packs", "workspace-video-tags",
                 "workspace-pack-tags", "workspace-settings", "workspace-dark",
+                "tag-ui-assign-video-single", "tag-ui-assign-video-dark", "tag-ui-assign-video-error", "tag-ui-assign-video-keyboard", "tag-ui-assign-video-saved", "tag-ui-assign-pack-single", "tag-ui-assign-pack-error", "tag-ui-assign-pack-keyboard", "tag-ui-assign-pack-saved", "tag-ui-assign-videos", "tag-ui-assign-video-batch", "tag-ui-assign-packs", "tag-ui-assign-pack-batch", "tag-ui-assign-verified",
                 "tag-ui-video", "tag-ui-pack", "tag-ui-dark", "tag-ui-create-keyboard", "tag-ui-create-error", "tag-ui-created", "tag-ui-rename-editor", "tag-ui-rename-editor-dark", "tag-ui-renamed", "tag-ui-remove-confirm", "tag-ui-removed", "tag-ui-page-error", "tag-ui-paged", "tag-ui-results-error", "tag-ui-results",
                 "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
                 "selection-videos", "selection-packs",
@@ -343,6 +344,7 @@ def main():
     mode.add_argument("--tag-catalog", action="store_true")
     mode.add_argument("--tag-management", action="store_true")
     parser.add_argument("--tag-results-only", action="store_true")
+    parser.add_argument("--tag-assignment", action="store_true")
     mode.add_argument("--selection", action="store_true")
     mode.add_argument("--pack-names", action="store_true")
     mode.add_argument("--pack-anchor", action="store_true")
@@ -369,6 +371,8 @@ def main():
     parser.add_argument("--evidence-dir", type=Path)
     parser.add_argument("--plain-name")
     args = parser.parse_args()
+    if args.tag_assignment and (not args.tag_management or args.tag_results_only):
+        parser.error("--tag-assignment requires --tag-management and excludes --tag-results-only")
     if args.tag_results_only and not args.tag_management:
         parser.error("--tag-results-only requires --tag-management")
     if args.evidence_dir is not None:
@@ -467,6 +471,7 @@ def main():
         "apps/mobile/integration_test/server_management_pages_test.dart",
         "apps/mobile/integration_test/server_purge_management_test.dart",
         "apps/mobile/integration_test/server_tag_management_test.dart",
+        "apps/mobile/integration_test/server_tag_assignment_test.dart",
         "scripts/run-client-connection-test.py", "services/server/tests/e2e_server.py",
     ]
     prototype_entry = subprocess.check_output(
@@ -536,7 +541,7 @@ def main():
                 "lf3-anchor": "integration_test/server_anchor_test.dart",
                 "lf4-workspace": "integration_test/server_workspace_test.dart",
                 "lf4-tag-catalog": "integration_test/server_tag_catalog_test.dart",
-                "lf8-tags": "integration_test/server_tag_management_test.dart",
+                "lf8-tags": "integration_test/server_tag_assignment_test.dart" if args.tag_assignment else "integration_test/server_tag_management_test.dart",
                 "lf4-selection": "integration_test/server_catalog_selection_test.dart",
                 "lf4-pack-names": "integration_test/server_pack_names_test.dart",
                 "lf4-pack-anchor": "integration_test/server_pack_anchor_test.dart",

@@ -684,6 +684,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
           initialNames: initialNames,
           appendOnly: appendOnly,
         ),
+        dismissible: false,
       );
     } finally {
       if (mounted) {

@@ -744,7 +744,10 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   Future<void> tag(Set<String> ids) async {
-    final saved = await sheet<bool>(TagEditor(repository: repo, ids: {...ids}));
+    final saved = await sheet<bool>(
+      TagEditor(repository: repo, ids: {...ids}),
+      dismissible: false,
+    );
     if (saved == true) {
       _browsing.followRepository();
       setState(() {

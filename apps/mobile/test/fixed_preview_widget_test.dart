@@ -230,7 +230,7 @@ void main() {
       await frames(t);
       await t.tap(find.widgetWithText(FilterChip, '花卉'));
       await frames(t);
-      await t.tap(find.widgetWithText(FilledButton, '完成'));
+      await t.tap(find.byKey(const Key('tag-assignment-save')));
       await frames(t);
       expect(repo.current!.id, selected);
       expect(repo.snapshot.round, hasLength(3));
