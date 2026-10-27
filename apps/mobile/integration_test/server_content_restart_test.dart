@@ -265,6 +265,8 @@ void main() {
         await capture('content-cold-recent');
         await tap(find.byKey(const Key('nav-library')));
         if (contentCase == 'reader') {
+          await libraryReady();
+          await tap(find.byKey(const Key('kind-pack')));
           await packReady();
         } else {
           await libraryReady();
