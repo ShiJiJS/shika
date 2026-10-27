@@ -1,0 +1,17 @@
+diff --git a/apps/mobile/lib/library/server_api.dart b/apps/mobile/lib/library/server_api.dart
+index 3737ced0..00066a79 100644
+--- a/apps/mobile/lib/library/server_api.dart
++++ b/apps/mobile/lib/library/server_api.dart
+@@ -415,7 +415,11 @@ class ServerApi {
+       rethrow;
+     } on TimeoutException {
+       throw const ApiFailure('连接超时，请检查服务后重试', code: 'timeout');
+-    } on IOException {
++    } on IOException catch (error, stack) {
++      assert(() {
++        print('LF8_TRANSPORT_DIAGNOSTIC: $error\n$stack');
++        return true;
++      }());
+       request?.abort();
+       if (interruption is RequestCancelled || _closed) {
+         throw const RequestCancelled();

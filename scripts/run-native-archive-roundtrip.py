@@ -209,7 +209,25 @@ def main():
             raw = device("exec-out", "cat", "/sdcard/lf8-archive-native-window.xml")
             tree = ET.fromstring(raw)
             nodes = list(tree.iter("node"))
-            if any(n.get("package") == "com.google.android.documentsui" for n in nodes):
+            ready = any(n.get("package") == "com.google.android.documentsui" for n in nodes)
+            if stage in {"save", "save-named"}:
+                ready = ready and any(
+                    n.get("class") == "android.widget.EditText"
+                    and n.get("resource-id") == "android:id/title"
+                    and (stage == "save" or n.get("text") == unique_name)
+                    for n in nodes
+                ) and any(
+                    n.get("resource-id") == "android:id/button1"
+                    and n.get("text") == "SAVE"
+                    for n in nodes
+                )
+            if stage == "pick":
+                ready = ready and any(
+                    n.get("resource-id") == "android:id/title"
+                    and n.get("text") == created_name
+                    for n in nodes
+                )
+            if ready:
                 (out / ("system-" + stage + ".xml")).write_bytes(raw)
                 (out / ("system-" + stage + ".png")).write_bytes(
                     device("exec-out", "screencap", "-p")
@@ -336,7 +354,16 @@ def main():
         login = api("auth/login", "POST", {"passphrase": "archive-app-isolated-only"})
         headers["Authorization"] = "Bearer " + login["access_token"]
         info = api("info")
+        assert "backup_v2" in info["capabilities"]
+        save("public-info-before.json", info)
         headers["X-Management-Epoch"] = info["management_epoch"]
+        deadline = time.monotonic() + 90
+        preparation = api("library-state")
+        while preparation["scanning"]:
+            assert time.monotonic() < deadline, "Initial fixture scan did not finish"
+            time.sleep(0.1)
+            preparation = api("library-state")
+        save("initial-scan.json", preparation)
         api(
             "roots/packs",
             "PUT",
@@ -576,6 +603,11 @@ def main():
         )
         assert "All tests passed!" in text
         assert row["state"] == "completed" and row["kind"] == "backup_restore_v2"
+        final_info = api("info")
+        assert "backup_v2" in final_info["capabilities"]
+        assert final_info["management_history_available"] is True
+        assert final_info["management_epoch"] != info["management_epoch"]
+        save("public-info-after.json", final_info)
         assert (save_descriptor["bytes"] > 32 * 1024 * 1024) == args.large
         journals = [
             json.loads(r.split("ARCHIVE_JOURNAL:", 1)[1])

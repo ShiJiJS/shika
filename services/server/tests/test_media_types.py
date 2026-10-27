@@ -227,8 +227,8 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         "management_authority",
         "management_history",
         "management_purge_history",
+        "backup_v2",
     }
-    assert "backup_v2" not in info["capabilities"]
     schema = client.get("/openapi.json").json()
     assert schema["components"]["schemas"]["RootInput"]["properties"]["enabled"]
     assert (

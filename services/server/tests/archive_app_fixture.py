@@ -1,7 +1,6 @@
 """Opt-in isolated Android archive fixture; never used by production startup."""
 
 import asyncio
-import json
 import os
 import threading
 import uuid
@@ -9,7 +8,6 @@ from collections import deque
 from pathlib import Path
 
 from fastapi import Header, HTTPException
-from fastapi.responses import JSONResponse
 from PIL import Image
 
 from video_viewer.app import create_app
@@ -100,13 +98,6 @@ def create_archive_app():
                 controls["response_held"] = held
             if held and not await asyncio.to_thread(response_gate.wait, 120):
                 raise RuntimeError("Archive restart response gate timed out")
-        if request.url.path == "/api/v1/info" and response.status_code == 200:
-            # Exercise the unreleased App path without advertising production
-            # readiness before native UI/history/restart acceptance is complete.
-            payload = json.loads(b"".join([part async for part in response.body_iterator]))
-            payload["capabilities"].append("backup_v2")
-            headers = {k: v for k, v in response.headers.items() if k.lower() != "content-length"}
-            return JSONResponse(payload, headers=headers)
         return response
 
     @app.get("/__archive_fixture/trace")
