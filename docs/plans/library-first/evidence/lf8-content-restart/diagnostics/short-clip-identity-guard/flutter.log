@@ -1,0 +1,40 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart
+Running Gradle task 'assembleDebug'...                             14.9s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          396ms
+00:00 +0: active fullscreen real process restart is read-only until explicit reopen
+FIDELITY_METRICS:{"state":"content-start","case":"fullscreen","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: 'f0da15da-e3c8-40b1-8799-b09805b415a4'
+  Actual: 'c61910ff-238b-46a7-a32e-447b5ad65e7a'
+   Which: is different.
+          Expected: f0da15da-e ...
+            Actual: c61910ff-2 ...
+                    ^
+           Differ at offset 0
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart:443:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart line 443
+The test description was:
+  active fullscreen real process restart is read-only until explicit reopen
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:09 +0 -1: active fullscreen real process restart is read-only until explicit reopen [E]
+  Test failed. See exception logs above.
+  The test description was: active fullscreen real process restart is read-only until explicit reopen
+  
+00:09 +0 -1: (tearDownAll)
+00:09 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart: active fullscreen real process restart is read-only until explicit reopen

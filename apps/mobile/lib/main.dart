@@ -14,8 +14,8 @@ import 'ui/home.dart';
 import 'ui/paper.dart';
 import 'ui/preferences.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+/// Shared by the real entry point and isolated native startup checks.
+Future<void> configureApplicationWindow() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -25,6 +25,11 @@ Future<void> main() async {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureApplicationWindow();
   const demo =
       String.fromEnvironment('LIBRARY_MODE', defaultValue: 'server') == 'demo';
   final LibraryRepository repository = demo

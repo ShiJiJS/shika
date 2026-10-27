@@ -1,0 +1,47 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart
+Running Gradle task 'assembleDebug'...                             15.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          761ms
+00:00 +0: active reader real process restart is read-only until explicit reopen
+FIDELITY_METRICS:{"state":"content-start","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+FIDELITY_METRICS:{"state":"content-stop-ready","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":{"range":"cbae12bd-c330-4d70-af91-b8fc03f62d32","page":"1056d4a6-b6a0-46ab-945f-b2efd12dba0b","index":3,"ratio":0.1541025641025641,"mode":"vertical","geometry":[0.0,-90.0,390.0,584.0266222961731],"decoded":1},"preload":false}
+CONTENT_STOP_READY:{"case":"reader","credential_available":true,"playback":null,"recent":{"items":[],"total":0,"offset":0,"limit":24},"range":"","video_id":null,"pack_id":"474df263-44ab-4ead-998e-3907512e8332","preload":false,"index":3,"page":"1056d4a6-b6a0-46ab-945f-b2efd12dba0b","ratio":0.1541025641025641,"mode":"vertical","geometry":[0.0,-90.0,390.0,584.0266222961731],"reading_range":"cbae12bd-c330-4d70-af91-b8fc03f62d32","pack_detail":{"id":"474df263-44ab-4ead-998e-3907512e8332","root_id":"packs","path":"/media/packs/示例作者 NO.034 - 夏日祭","name":"示例作者 NO.034 - 夏日祭","title":"夏日祭","author":"示例作者","number":"034","status":"available","error":null,"page_count":6,"readable_count":6,"content_version":1,"tag_ids":["6da91aad-52c2-4a87-85a8-d13dfaa0144d","f3262e60-a053-4193-a821-99cc1615696e"],"tag_names":{"6da91aad-52c2-4a87-85a8-d13dfaa0144d":"和服","f3262e60-a053-4193-a821-99cc1615696e":"户外"},"created_at":1793088855.3697002,"cover_url":"/api/v1/packs/474df263-44ab-4ead-998e-3907512e8332/cover?v=1","progress":{"page_id":"1056d4a6-b6a0-46ab-945f-b2efd12dba0b","page_index":3,"offset_ratio":0.1541025641025641,"completed":false,"revision":3,"updated_at":1793088888.4017217}}}
+00:10 +0: active reader real process restart is read-only until explicit reopen - did not complete [E]
+00:10 +0: (tearDownAll) - did not complete [E]
+00:10 +0: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart: (tearDownAll) (did not complete)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart: active reader real process restart is read-only until explicit reopen (did not complete)
+No tests were found.
+unhandled error during finalization of test:
+/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart
+PathNotFoundException: Deletion failed, path = '/var/folders/pt/953rhgfj5g1gm_pjr862pnhr0000gn/T/flutter_tools.YFcab4/flutter_test_listener.UPdiG2' (OS Error: No such file or directory, errno = 2)
+#0      _Directory._deleteSync (dart:io/directory_impl.dart:216:7)
+#1      FileSystemEntity.deleteSync (dart:io/file_system_entity.dart:425:7)
+#2      ForwardingFileSystemEntity.deleteSync (package:file/src/forwarding/forwarding_file_system_entity.dart:70:16)
+#3      ErrorHandlingDirectory.deleteSync.<anonymous closure> (package:flutter_tools/src/base/error_handling_io.dart:717:22)
+#4      _runSync (package:flutter_tools/src/base/error_handling_io.dart:1118:16)
+#5      ErrorHandlingDirectory.deleteSync (package:flutter_tools/src/base/error_handling_io.dart:716:12)
+#6      FlutterPlatform._createListenerDart.<anonymous closure> (package:flutter_tools/src/test/flutter_platform.dart:786:15)
+#7      FlutterPlatform._startTest.finalize (package:flutter_tools/src/test/flutter_platform.dart:591:26)
+<asynchronous suspension>
+#8      FlutterPlatform._startTest (package:flutter_tools/src/test/flutter_platform.dart:762:7)
+<asynchronous suspension>
+
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart
+Running Gradle task 'assembleDebug'...                             14.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          481ms
+00:00 +0: active reader real process restart is read-only until explicit reopen
+CONTENT_NEW_PROCESS
+FIDELITY_METRICS:{"state":"content-cold-library","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+FIDELITY_METRICS:{"state":"content-cold-recent","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+FIDELITY_METRICS:{"state":"content-readonly-complete","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+CONTENT_READONLY_READY
+FIDELITY_METRICS:{"state":"content-reopened","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":{"range":"d4a50542-288a-4f4e-9d33-c2ea660940b9","page":"1056d4a6-b6a0-46ab-945f-b2efd12dba0b","index":3,"ratio":0.1541025641025641,"mode":"vertical","geometry":[0.0,-90.0,390.0,584.0266222961731],"decoded":1},"preload":false}
+FIDELITY_METRICS:{"state":"content-return","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+CONTENT_RESTART_VERIFIED:{"case":"reader","original":{"case":"reader","credential_available":true,"playback":null,"recent":{"items":[],"total":0,"offset":0,"limit":24},"range":"","video_id":null,"pack_id":"474df263-44ab-4ead-998e-3907512e8332","preload":false,"index":3,"page":"1056d4a6-b6a0-46ab-945f-b2efd12dba0b","ratio":0.1541025641025641,"mode":"vertical","geometry":[0.0,-90.0,390.0,584.0266222961731],"reading_range":"cbae12bd-c330-4d70-af91-b8fc03f62d32","pack_detail":{"id":"474df263-44ab-4ead-998e-3907512e8332","root_id":"packs","path":"/media/packs/示例作者 NO.034 - 夏日祭","name":"示例作者 NO.034 - 夏日祭","title":"夏日祭","author":"示例作者","number":"034","status":"available","error":null,"page_count":6,"readable_count":6,"content_version":1,"tag_ids":["6da91aad-52c2-4a87-85a8-d13dfaa0144d","f3262e60-a053-4193-a821-99cc1615696e"],"tag_names":{"6da91aad-52c2-4a87-85a8-d13dfaa0144d":"和服","f3262e60-a053-4193-a821-99cc1615696e":"户外"},"created_at":1793088855.3697002,"cover_url":"/api/v1/packs/474df263-44ab-4ead-998e-3907512e8332/cover?v=1","progress":{"page_id":"1056d4a6-b6a0-46ab-945f-b2efd12dba0b","page_index":3,"offset_ratio":0.1541025641025641,"completed":false,"revision":3,"updated_at":1793088888.4017217}}},"auto_opened":false,"explicit_reopened":true}
+PROTOTYPE_FIDELITY_VERIFIED
+00:13 +1: (tearDownAll)
+00:14 +1: All tests passed!

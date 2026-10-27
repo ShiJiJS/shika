@@ -1,0 +1,86 @@
+{
+  "playback_rounds": [
+    {
+      "id": "dd0bede9-dbe7-4a25-a7ee-878124b5ec7e",
+      "request_id": "1793088970397865-81fcf68d",
+      "request_hash": "3dbbe3ae9291483987c77a2196f27d79e78943ae57930d420061142f4712e55f",
+      "order": "sequential",
+      "scope": "{\"tag_ids\": []}",
+      "cursor": 1,
+      "revision": 0,
+      "finished": 0,
+      "candidate_count": 2,
+      "created_at": 1793088970.4019628,
+      "membership": "fixed",
+      "source": "library",
+      "sort": "name_zh",
+      "sequence_revision": 0
+    },
+    {
+      "id": "c75ae753-4603-46d1-a617-b7f5afddc6fd",
+      "request_id": "1793089011776623-6c4f803f",
+      "request_hash": "3dbbe3ae9291483987c77a2196f27d79e78943ae57930d420061142f4712e55f",
+      "order": "sequential",
+      "scope": "{\"tag_ids\": []}",
+      "cursor": 1,
+      "revision": 0,
+      "finished": 0,
+      "candidate_count": 2,
+      "created_at": 1793089011.8461804,
+      "membership": "fixed",
+      "source": "library",
+      "sort": "name_zh",
+      "sequence_revision": 0
+    }
+  ],
+  "round_entries": [
+    {
+      "round_id": "c75ae753-4603-46d1-a617-b7f5afddc6fd",
+      "ordinal": 0,
+      "video_id": "f29b13ba-a09d-4bf1-88ef-8e69c392fc28",
+      "source_ordinal": 0
+    },
+    {
+      "round_id": "dd0bede9-dbe7-4a25-a7ee-878124b5ec7e",
+      "ordinal": 0,
+      "video_id": "f29b13ba-a09d-4bf1-88ef-8e69c392fc28",
+      "source_ordinal": 0
+    },
+    {
+      "round_id": "c75ae753-4603-46d1-a617-b7f5afddc6fd",
+      "ordinal": 1,
+      "video_id": "2733db38-abbd-44cf-b327-6f3f92897ff4",
+      "source_ordinal": 1
+    },
+    {
+      "round_id": "dd0bede9-dbe7-4a25-a7ee-878124b5ec7e",
+      "ordinal": 1,
+      "video_id": "2733db38-abbd-44cf-b327-6f3f92897ff4",
+      "source_ordinal": 1
+    }
+  ],
+  "recent_entries": [
+    {
+      "id": "d7ddcfc6-f97a-4550-96f9-bb127581e642",
+      "kind": "video",
+      "video_id": "2733db38-abbd-44cf-b327-6f3f92897ff4",
+      "pack_id": null,
+      "opened_at": 1793089012.1993098
+    }
+  ],
+  "pack_sessions": [],
+  "pack_session_entries": [],
+  "pack_progress": [
+    {
+      "pack_id": "3bd7b409-9d4f-44ab-8c15-a22b343fa4d8",
+      "page_id": "7214968c-e178-458b-8b6a-0a0a0fb01823",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1000.0,
+      "content_version": 1,
+      "recovery_reason": null
+    }
+  ],
+  "pack_preferences": []
+}

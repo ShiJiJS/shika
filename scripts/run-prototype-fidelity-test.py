@@ -25,14 +25,16 @@ p.add_argument("--height", type=int, default=905)
 p.add_argument("--width", type=int, default=390)
 p.add_argument("--scale", choices=("1", "2"), default="1")
 p.add_argument("--expected-columns", choices=(2, 4), type=int, default=2)
+p.add_argument("--content-case", choices=("video", "fullscreen", "reader"), default="video")
 p.add_argument("--cold-source", choices=("library", "tags", "recent"), default="library")
 p.add_argument(
     "--scenario",
-    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings", "preview-lifecycle", "preview-stability", "video-tag-definitions", "navigation-restart", "thumbnail-recovery", "thumbnail-pagination"),
+    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings", "preview-lifecycle", "preview-stability", "video-tag-definitions", "navigation-restart", "thumbnail-recovery", "thumbnail-pagination", "content-restart"),
     default="fidelity",
 )
 args = p.parse_args()
 scenes = {
+    "content-restart": ["content-start", "content-stop-ready", "content-cold-library", "content-cold-recent", "content-readonly-complete", "content-reopened", "content-return"],
     "thumbnail-pagination": ["pages-reader", "pages-held", "pages-next-pending", "pages-second", "pages-first-return", "pages-close-pending", "pages-cancelled", "pages-reopened", "pages-jump-list", "pages-jump", "pages-return"],
     "thumbnail-recovery": ["thumb-reader", "thumb-auto-recovered", "thumb-bounded", "thumb-manual-recovered", "thumb-hold", "thumb-cancelled", "thumb-reopened", "thumb-return"],
     "navigation-restart": ["nav-start", "nav-sort-menu", "nav-sort-selected", "nav-video-draft", "nav-pack-draft", "nav-library-video-preview", "nav-library-video-panel", "nav-library-video-panel-return", "nav-library-video-return", "nav-library-pack-reader", "nav-library-pack-panel", "nav-library-pack-panel-return", "nav-library-pack-return", "nav-tag-video-preview", "nav-tag-video-return", "nav-tag-pack-reader", "nav-tag-pack-return", "nav-recent-video-preview", "nav-recent-video-return", "nav-recent-pack-reader", "nav-recent-pack-return", "nav-library-isolation", "nav-stop-ready", "nav-cold-library", "nav-cold-tags", "nav-cold-recent-video", "nav-cold-recent-pack", "nav-cold-final-library"],
@@ -109,6 +111,7 @@ scenes = {
     ],
 }[args.scenario]
 integration_file = {
+    "content-restart": "server_content_restart_test.dart",
     "thumbnail-pagination": "server_thumbnail_pagination_test.dart",
     "thumbnail-recovery": "server_thumbnail_recovery_test.dart",
     "navigation-restart": "server_navigation_restart_test.dart",
@@ -186,7 +189,7 @@ def media():
 original = {name: shell("wm", name) for name in ("size", "density")}
 font = shell("settings", "get", "system", "font_scale")
 save("original-viewport.json", {"display":original, "font":font})
-if args.scenario in {"preview-lifecycle", "video-tag-definitions", "navigation-restart", "thumbnail-recovery", "thumbnail-pagination"}:
+if args.scenario in {"preview-lifecycle", "video-tag-definitions", "navigation-restart", "thumbnail-recovery", "thumbnail-pagination", "content-restart"}:
     assert shell("getprop", "ro.boot.qemu.avd_name") == "video_viewer_api_36"
     assert shell("getprop", "sys.boot_completed") == "1"
     save("environment.json", {
@@ -227,6 +230,7 @@ paths += [
     "apps/mobile/integration_test/server_preview_state_stability_test.dart",
     "apps/mobile/integration_test/server_video_tag_definitions_test.dart",
     "apps/mobile/integration_test/server_navigation_restart_test.dart",
+    "apps/mobile/integration_test/server_content_restart_test.dart",
     "apps/mobile/integration_test/server_thumbnail_recovery_test.dart",
     "apps/mobile/integration_test/server_thumbnail_pagination_test.dart",
     "apps/mobile/test/viewer_return_counts_test.dart",
@@ -293,6 +297,8 @@ def watch():
                 save("device-actions.json", actions)
                 state("/ack/" + name, post=True)
                 continue
+            if args.scenario == "content-restart" and name == "content-readonly-boundary":
+                continue
             if args.scenario == "preview-lifecycle" and name.startswith("lifecycle-device-") and name != "lifecycle-device-levels":
                 if name == "lifecycle-device-home":
                     command = ["input", "keyevent", "3"]
@@ -322,7 +328,7 @@ def watch():
             (out / (name + "-window.txt")).write_text(window + "\n")
             png = device("exec-out", "screencap", "-p")
             (out / (name + ".png")).write_bytes(png)
-            if args.scenario == "preview-lifecycle" and name in landscape_video_states:
+            if (args.scenario == "preview-lifecycle" and name in landscape_video_states) or (args.scenario == "content-restart" and args.content_case != "reader" and name in {"content-stop-ready", "content-reopened"}):
                 frame = inspect_video_frame(out / (name + ".png"))
                 video_frames[name] = frame
                 save("video-frames.json", video_frames)
@@ -411,6 +417,88 @@ def navigation_run(command, log):
     return subprocess.CompletedProcess(command, 0)
 
 
+def content_restart_run(command, log):
+    package = "io.github.shijijs.video_viewer"
+    old_pid = None
+    events = []
+
+    def snapshot(name):
+        connection = sqlite3.connect("file:" + str(base / "data/library.sqlite3") + "?mode=ro", uri=True)
+        connection.row_factory = sqlite3.Row
+        try:
+            connection.execute("BEGIN")
+            result = {table: sorted([dict(row) for row in connection.execute("SELECT * FROM " + table)], key=lambda row: json.dumps(row, sort_keys=True)) for table in ["playback_rounds", "round_entries", "recent_entries", "pack_sessions", "pack_session_entries", "pack_progress", "pack_preferences"]}
+            save(name, result)
+            return result
+        finally:
+            connection.close()
+
+    def pid():
+        return subprocess.run([str(ADB), "-s", "emulator-5554", "shell", "pidof", package], capture_output=True, text=True, timeout=10, check=False).stdout.strip()
+
+    for phase in (0, 1):
+        if phase:
+            before_resume = state()["requests"]
+            save("requests-before-resume.json", before_resume)
+        invocation = [*command, "--dart-define=CONTENT_CASE=" + args.content_case]
+        if phase:
+            invocation.append("--dart-define=CONTENT_RESTART_RESUME=true")
+        process = subprocess.Popen(invocation, cwd=ROOT / "apps/mobile", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        timer = threading.Timer(480, process.kill)
+        timer.start()
+        reopened = readonly = False
+        try:
+            with (out / f"phase-{phase}.log").open("w") as phase_log:
+                for line in process.stdout:
+                    log.write(line)
+                    log.flush()
+                    phase_log.write(line)
+                    phase_log.flush()
+                    if "CONTENT_STOP_READY:" in line:
+                        assert phase == 0 and old_pid is None
+                        original = json.loads(line.split("CONTENT_STOP_READY:", 1)[1])
+                        assert original["case"] == args.content_case
+                        save("before-stop.json", original)
+                        old_pid = pid()
+                        assert old_pid
+                        snapshot("sql-before-stop.json")
+                        shell("am", "force-stop", package)
+                        assert not pid()
+                        stopped = snapshot("sql-after-stop.json")
+                        events.append({"event": "force-stop", "old_pid": old_pid, "absent": True, "case": args.content_case})
+                        save("restart-events.json", events)
+                    if "CONTENT_NEW_PROCESS" in line:
+                        current = pid()
+                        assert phase == 1 and current and current != old_pid
+                        reopened = True
+                        events.append({"event": "new-process", "old_pid": old_pid, "new_pid": current})
+                        save("restart-events.json", events)
+                    if "CONTENT_READONLY_READY" in line:
+                        assert phase == 1 and reopened
+                        assert snapshot("sql-after-readonly.json") == stopped
+                        requests = state()["requests"]
+                        assert requests[:len(before_resume)] == before_resume
+                        resumed = requests[len(before_resume):]
+                        assert all(r["method"] == "GET" and not r["path"].endswith(("/stream", "/image")) for r in resumed)
+                        save("resumed-requests-readonly.json", resumed)
+                        save("requests-readonly-boundary.json", requests)
+                        readonly = True
+                        state("/ack/content-readonly-boundary", post=True)
+                code = process.wait(timeout=20)
+                save(f"phase-{phase}-exit.json", {"code": code, "intentional_force_stop": phase == 0})
+            if phase == 0:
+                assert old_pid and not pid(), "No verified active-content force-stop"
+            else:
+                assert code == 0 and reopened and readonly
+                snapshot("sql-after-reopen.json")
+        finally:
+            timer.cancel()
+            if process.poll() is None:
+                process.kill()
+                process.wait(timeout=20)
+    return subprocess.CompletedProcess(command, 0)
+
+
 try:
     container = run(
         "docker",
@@ -450,6 +538,8 @@ try:
         "VV_FIDELITY_THUMBNAIL_PAGINATION=" + ("enabled" if args.scenario == "thumbnail-pagination" else "disabled"),
         "-e",
         "VV_FIDELITY_THUMBNAILS=" + ("enabled" if args.scenario == "thumbnail-recovery" else "disabled"),
+        "-e",
+        "VV_FIDELITY_CONTENT_RESTART=" + ("enabled" if args.scenario == "content-restart" else "disabled"),
         "-e",
         "VV_FIDELITY_NAVIGATION_RESTART=" + ("enabled" if args.scenario == "navigation-restart" else "disabled"),
         "-e",
@@ -527,7 +617,7 @@ try:
                 "--reporter",
                 "expanded",
             ]
-        result = navigation_run(command, log) if args.scenario == "navigation-restart" else subprocess.run(command, cwd=ROOT / "apps/mobile", stdout=log, stderr=subprocess.STDOUT, timeout=480, check=False)
+        result = content_restart_run(command, log) if args.scenario == "content-restart" else navigation_run(command, log) if args.scenario == "navigation-restart" else subprocess.run(command, cwd=ROOT / "apps/mobile", stdout=log, stderr=subprocess.STDOUT, timeout=480, check=False)
     end_recording()
     save("recordings.json", recordings)
     save("fixture-final.json", state())
