@@ -1,0 +1,324 @@
+[
+  {
+    "Id": "13ecf0ed7baa227771f5908abe99463af55effc610dbbac10a7e39263ce2e6d8",
+    "Created": "2026-10-27T07:38:09.232325716Z",
+    "Path": "uvicorn",
+    "Args": [
+      "tests.prototype_fidelity_fixture:create_fidelity_app",
+      "--factory",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8760",
+      "--no-access-log"
+    ],
+    "State": {
+      "Status": "running",
+      "Running": true,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 3099898,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-10-27T07:38:09.315294829Z",
+      "FinishedAt": "0001-01-01T00:00:00Z",
+      "Health": {
+        "Status": "starting",
+        "FailingStreak": 0,
+        "Log": []
+      }
+    },
+    "Image": "sha256:4ed2b8b1ed3218b237ddd5a4a9bc934420011690a42fcfa79df58dce84aa70d0",
+    "ResolvConfPath": "/var/lib/docker/containers/13ecf0ed7baa227771f5908abe99463af55effc610dbbac10a7e39263ce2e6d8/resolv.conf",
+    "HostnamePath": "/var/lib/docker/containers/13ecf0ed7baa227771f5908abe99463af55effc610dbbac10a7e39263ce2e6d8/hostname",
+    "HostsPath": "/var/lib/docker/containers/13ecf0ed7baa227771f5908abe99463af55effc610dbbac10a7e39263ce2e6d8/hosts",
+    "LogPath": "/var/lib/docker/containers/13ecf0ed7baa227771f5908abe99463af55effc610dbbac10a7e39263ce2e6d8/13ecf0ed7baa227771f5908abe99463af55effc610dbbac10a7e39263ce2e6d8-json.log",
+    "Name": "/video-viewer-prototype-fidelity-1793086689068828000",
+    "RestartCount": 0,
+    "Driver": "overlayfs",
+    "Platform": "linux",
+    "MountLabel": "",
+    "ProcessLabel": "",
+    "AppArmorProfile": "",
+    "ExecIDs": null,
+    "HostConfig": {
+      "Binds": [
+        "/Users/jiangxinyi/Documents/Project/video-viewer/services/server:/source:ro",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/assets/media:/public:ro",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/pagination-native-4/config:/fixture:ro",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/pagination-native-4/data:/data",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/pagination-native-4/packs:/media/packs",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/pagination-native-4/videos:/media/videos"
+      ],
+      "ContainerIDFile": "",
+      "LogConfig": {
+        "Type": "json-file",
+        "Config": {
+          "max-file": "5",
+          "max-size": "20m"
+        }
+      },
+      "NetworkMode": "bridge",
+      "PortBindings": {
+        "8760/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8768"
+          }
+        ]
+      },
+      "RestartPolicy": {
+        "Name": "no",
+        "MaximumRetryCount": 0
+      },
+      "AutoRemove": false,
+      "VolumeDriver": "",
+      "VolumesFrom": null,
+      "ConsoleSize": [
+        0,
+        0
+      ],
+      "CapAdd": null,
+      "CapDrop": null,
+      "CgroupnsMode": "private",
+      "Dns": null,
+      "DnsOptions": [],
+      "DnsSearch": [],
+      "ExtraHosts": null,
+      "GroupAdd": null,
+      "IpcMode": "private",
+      "Cgroup": "",
+      "Links": null,
+      "OomScoreAdj": 0,
+      "PidMode": "",
+      "Privileged": false,
+      "PublishAllPorts": false,
+      "ReadonlyRootfs": true,
+      "SecurityOpt": null,
+      "Tmpfs": {
+        "/tmp": "mode=1777"
+      },
+      "UTSMode": "",
+      "UsernsMode": "",
+      "ShmSize": 268435456,
+      "Runtime": "runc",
+      "Isolation": "",
+      "CpuShares": 0,
+      "Memory": 0,
+      "NanoCpus": 0,
+      "CgroupParent": "",
+      "BlkioWeight": 0,
+      "BlkioWeightDevice": [],
+      "BlkioDeviceReadBps": [],
+      "BlkioDeviceWriteBps": [],
+      "BlkioDeviceReadIOps": [],
+      "BlkioDeviceWriteIOps": [],
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuRealtimePeriod": 0,
+      "CpuRealtimeRuntime": 0,
+      "CpusetCpus": "",
+      "CpusetMems": "",
+      "Devices": [],
+      "DeviceCgroupRules": null,
+      "DeviceRequests": null,
+      "MemoryReservation": 0,
+      "MemorySwap": 0,
+      "MemorySwappiness": null,
+      "OomKillDisable": null,
+      "PidsLimit": null,
+      "Ulimits": [],
+      "CpuCount": 0,
+      "CpuPercent": 0,
+      "IOMaximumIOps": 0,
+      "IOMaximumBandwidth": 0,
+      "MaskedPaths": [
+        "/proc/acpi",
+        "/proc/asound",
+        "/proc/interrupts",
+        "/proc/kcore",
+        "/proc/keys",
+        "/proc/latency_stats",
+        "/proc/sched_debug",
+        "/proc/scsi",
+        "/proc/timer_list",
+        "/proc/timer_stats",
+        "/sys/devices/virtual/powercap",
+        "/sys/firmware"
+      ],
+      "ReadonlyPaths": [
+        "/proc/bus",
+        "/proc/fs",
+        "/proc/irq",
+        "/proc/sys",
+        "/proc/sysrq-trigger"
+      ]
+    },
+    "Storage": {
+      "RootFS": {
+        "Snapshot": {
+          "Name": "overlayfs"
+        }
+      }
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/pagination-native-4/packs",
+        "Destination": "/media/packs",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/pagination-native-4/videos",
+        "Destination": "/media/videos",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/services/server",
+        "Destination": "/source",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/assets/media",
+        "Destination": "/public",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/pagination-native-4/config",
+        "Destination": "/fixture",
+        "Mode": "ro",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/pagination-native-4/data",
+        "Destination": "/data",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ],
+    "Config": {
+      "Hostname": "13ecf0ed7baa",
+      "Domainname": "",
+      "User": "1000:1000",
+      "AttachStdin": false,
+      "AttachStdout": false,
+      "AttachStderr": false,
+      "ExposedPorts": {
+        "8760/tcp": {}
+      },
+      "Tty": false,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Env": [
+        "VV_SCAN_INTERVAL=0",
+        "VV_STABILITY_SECONDS=0",
+        "VV_FIDELITY_FIXTURE=enabled",
+        "VV_FIDELITY_PREVIEW_LIFECYCLE=disabled",
+        "VV_FIDELITY_PREVIEW_MUTATION=disabled",
+        "VV_FIDELITY_TAG_DEFINITIONS=disabled",
+        "VV_FIDELITY_THUMBNAIL_PAGINATION=enabled",
+        "VV_FIDELITY_NAVIGATION_RESTART=disabled",
+        "VV_PASSPHRASE_FILE=/fixture/passphrase",
+        "VV_MOUNTS_FILE=/fixture/mounts.json",
+        "VV_FIDELITY_THUMBNAILS=disabled",
+        "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+        "PYTHON_VERSION=3.13.16",
+        "PYTHON_SHA256=f4b1bfb3c79b5bb11b8d228a12504163b4c0dab4d679828d8f5f26b6cb6ab35d",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PYTHONUNBUFFERED=1",
+        "PIP_DISABLE_PIP_VERSION_CHECK=1",
+        "PYTEST_ADDOPTS=-o cache_dir=/tmp/video-viewer-pytest-cache",
+        "RUFF_CACHE_DIR=/tmp/video-viewer-ruff-cache"
+      ],
+      "Cmd": [
+        "tests.prototype_fidelity_fixture:create_fidelity_app",
+        "--factory",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8760",
+        "--no-access-log"
+      ],
+      "Healthcheck": {
+        "Test": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8760/health', timeout=2)"
+        ],
+        "Interval": 15000000000,
+        "Timeout": 3000000000,
+        "StartPeriod": 20000000000
+      },
+      "Image": "video-viewer-server:e2e",
+      "Volumes": null,
+      "WorkingDir": "/source",
+      "Entrypoint": [
+        "uvicorn"
+      ],
+      "Labels": {
+        "com.docker.compose.project": "video-viewer-client-e2e",
+        "com.docker.compose.service": "server",
+        "com.docker.compose.version": "5.1.2"
+      }
+    },
+    "NetworkSettings": {
+      "SandboxID": "f705e78999d1a6981e9224a005462da800e111441b0e2ec1e9daed629500d682",
+      "SandboxKey": "/var/run/docker/netns/f705e78999d1",
+      "Ports": {
+        "8760/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8768"
+          }
+        ]
+      },
+      "Networks": {
+        "bridge": {
+          "IPAMConfig": null,
+          "Links": null,
+          "Aliases": null,
+          "DriverOpts": null,
+          "GwPriority": 0,
+          "NetworkID": "d0ac2ed741131bf48d812afa2ae20eff7745c9d54c2a22a44521685afe20c19d",
+          "EndpointID": "131dc34c2d967c0569c6a0ec30ff2f2e9cf57f435899ff94aa4cf928ef53d623",
+          "Gateway": "192.168.215.1",
+          "IPAddress": "192.168.215.4",
+          "MacAddress": "72:28:67:19:bb:a9",
+          "IPPrefixLen": 24,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DNSNames": null
+        }
+      }
+    },
+    "ImageManifestDescriptor": {
+      "mediaType": "application/vnd.oci.image.manifest.v1+json",
+      "digest": "sha256:d1c65ef22de295ae9a71559748fafac09c48e5cf4946abd2fafffe3a15098b26",
+      "size": 3340,
+      "platform": {
+        "architecture": "arm64",
+        "os": "linux"
+      }
+    }
+  }
+]

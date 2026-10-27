@@ -1,0 +1,111 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart
+00:00 +0: 24 overview cells cancel queued and active
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <3>
+  Actual: <14>
+the remaining 21 cells wait without opening sockets
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart:138:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart line 138
+The test description was:
+  24 overview cells cancel queued and active
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: 24 overview cells cancel queued and active [E]
+  Test failed. See exception logs above.
+  The test description was: 24 overview cells cancel queued and active
+  
+00:00 +0 -1: 24 overview cells decode within capacity
+READER_IMAGE_FAILURE page-18: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/18
+READER_IMAGE_FAILURE page-4: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/4
+READER_IMAGE_FAILURE page-5: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/5
+READER_IMAGE_FAILURE page-6: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/6
+READER_IMAGE_FAILURE page-7: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/7
+READER_IMAGE_FAILURE page-8: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/8
+READER_IMAGE_FAILURE page-9: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/9
+READER_IMAGE_FAILURE page-10: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/10
+READER_IMAGE_FAILURE page-11: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/11
+READER_IMAGE_FAILURE page-12: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/12
+READER_IMAGE_FAILURE page-13: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/13
+READER_IMAGE_FAILURE page-14: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/14
+READER_IMAGE_FAILURE page-15: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/15
+READER_IMAGE_FAILURE page-16: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/16
+READER_IMAGE_FAILURE page-17: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/17
+READER_IMAGE_FAILURE page-3: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/3
+READER_IMAGE_FAILURE page-19: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/19
+READER_IMAGE_FAILURE page-20: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/20
+READER_IMAGE_FAILURE page-21: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/21
+READER_IMAGE_FAILURE page-22: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/22
+READER_IMAGE_FAILURE page-23: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/23
+READER_IMAGE_FAILURE page-6: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/6
+READER_IMAGE_FAILURE page-19: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/19
+READER_IMAGE_FAILURE page-8: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/8
+READER_IMAGE_FAILURE page-9: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/9
+READER_IMAGE_FAILURE page-10: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/10
+READER_IMAGE_FAILURE page-11: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/11
+READER_IMAGE_FAILURE page-12: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/12
+READER_IMAGE_FAILURE page-13: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/13
+READER_IMAGE_FAILURE page-14: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/14
+READER_IMAGE_FAILURE page-15: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/15
+READER_IMAGE_FAILURE page-16: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/16
+READER_IMAGE_FAILURE page-17: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/17
+READER_IMAGE_FAILURE page-3: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/3
+READER_IMAGE_FAILURE page-7: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/7
+READER_IMAGE_FAILURE page-20: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/20
+READER_IMAGE_FAILURE page-21: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/21
+READER_IMAGE_FAILURE page-22: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/22
+READER_IMAGE_FAILURE page-23: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/23
+READER_IMAGE_FAILURE page-9: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/9
+READER_IMAGE_FAILURE page-10: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/10
+READER_IMAGE_FAILURE page-11: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/11
+READER_IMAGE_FAILURE page-12: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/12
+READER_IMAGE_FAILURE page-13: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/13
+READER_IMAGE_FAILURE page-14: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/14
+READER_IMAGE_FAILURE page-15: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/15
+READER_IMAGE_FAILURE page-16: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/16
+READER_IMAGE_FAILURE page-17: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/17
+READER_IMAGE_FAILURE page-3: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/3
+READER_IMAGE_FAILURE page-7: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/7
+READER_IMAGE_FAILURE page-20: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/20
+READER_IMAGE_FAILURE page-21: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/21
+READER_IMAGE_FAILURE page-22: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/22
+READER_IMAGE_FAILURE page-23: HTTP request failed, statusCode: 503, http://127.0.0.1:59440/23
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+all 24 actual decodes; requests=63, live=0, peak=24
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart:88:11)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart:152:13)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  24 overview cells decode within capacity
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +0 -2: 24 overview cells decode within capacity [E]
+  Test failed. See exception logs above.
+  The test description was: 24 overview cells decode within capacity
+  
+00:04 +0 -2: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart: 24 overview cells cancel queued and active
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart: 24 overview cells decode within capacity

@@ -1,0 +1,764 @@
+{
+  "fixture": "prototype-fidelity-owned-8768",
+  "display": "thumb-return",
+  "ack": true,
+  "prepared": true,
+  "continuation_failure": false,
+  "catalog_counts_failure": false,
+  "recent_video_failure": false,
+  "recent_pack_failure": false,
+  "public_additions": [],
+  "tag_definition_failure": "off",
+  "tag_definition_failures": [],
+  "thumbnail_manifest": "off",
+  "manifest_events": [],
+  "thumbnail_mode": "off",
+  "thumbnail_attempts": {},
+  "thumbnail_streams": [
+    {
+      "path": "/api/v1/pages/757cce73-ee9c-4316-bf31-04c456ba3b0f/thumbnail",
+      "cancelled": true
+    },
+    {
+      "path": "/api/v1/pages/a9a9aa19-a7ed-4659-8a25-3444ac128029/thumbnail",
+      "cancelled": true
+    },
+    {
+      "path": "/api/v1/pages/3195778b-06f3-4b5c-80f1-d4772abf30c7/thumbnail",
+      "cancelled": true
+    }
+  ],
+  "requests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/info",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "status": 404,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": null,
+      "query": [
+        [
+          "status",
+          "missing"
+        ],
+        [
+          "limit",
+          "1"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": null,
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": null,
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": null,
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "1"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": null,
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/8f85021d-c739-4326-b0ac-627467024768/cover",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/6fa440bf-8e8a-4635-9fe4-4770e7b0d950/cover",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/72dabc43-ef11-4e5d-93fb-f400dbc2f147/cover",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cee6222b-7e42-4a4b-9d43-406255323587/cover",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-sessions",
+      "status": 201,
+      "phase": null,
+      "body": {
+        "request_id": "1793086924484230-1366929208-0",
+        "scope": {
+          "directory_id": null,
+          "search": "",
+          "tag_ids": [],
+          "read_state": "all"
+        },
+        "source": "library",
+        "sort": "title",
+        "order": "sequential",
+        "anchor_pack_id": "cee6222b-7e42-4a4b-9d43-406255323587"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cee6222b-7e42-4a4b-9d43-406255323587/pages",
+      "status": 200,
+      "phase": null,
+      "query": [
+        [
+          "v",
+          "1"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "40"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/3195778b-06f3-4b5c-80f1-d4772abf30c7/image",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-sessions/ec39dee6-1945-44f0-b551-e321bef63a0b/opened",
+      "status": 200,
+      "phase": null,
+      "body": {
+        "request_id": "1793086925112514-4019597323-1",
+        "expected_session_revision": 0,
+        "expected_revision": 1,
+        "content_version": 1,
+        "pack_id": "cee6222b-7e42-4a4b-9d43-406255323587",
+        "page_id": "3195778b-06f3-4b5c-80f1-d4772abf30c7"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cee6222b-7e42-4a4b-9d43-406255323587",
+      "status": 200,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cee6222b-7e42-4a4b-9d43-406255323587/pages",
+      "status": 200,
+      "phase": "thumb-reader",
+      "query": [
+        [
+          "v",
+          "1"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/757cce73-ee9c-4316-bf31-04c456ba3b0f/thumbnail",
+      "status": 503,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a9a9aa19-a7ed-4659-8a25-3444ac128029/thumbnail",
+      "status": 503,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/3195778b-06f3-4b5c-80f1-d4772abf30c7/thumbnail",
+      "status": 503,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/410c2605-353c-4cdd-83c6-41e936eee66f/thumbnail",
+      "status": 503,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/209dd2bf-f07a-4269-9f0e-8da24ec9569a/thumbnail",
+      "status": 503,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/978af376-716a-44ce-9dda-e737e48e0a11/thumbnail",
+      "status": 503,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a9a9aa19-a7ed-4659-8a25-3444ac128029/thumbnail",
+      "status": 200,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/3195778b-06f3-4b5c-80f1-d4772abf30c7/thumbnail",
+      "status": 200,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/757cce73-ee9c-4316-bf31-04c456ba3b0f/thumbnail",
+      "status": 200,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/410c2605-353c-4cdd-83c6-41e936eee66f/thumbnail",
+      "status": 200,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/209dd2bf-f07a-4269-9f0e-8da24ec9569a/thumbnail",
+      "status": 200,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/978af376-716a-44ce-9dda-e737e48e0a11/thumbnail",
+      "status": 200,
+      "phase": "thumb-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cee6222b-7e42-4a4b-9d43-406255323587/pages",
+      "status": 200,
+      "phase": "thumb-auto-recovered",
+      "query": [
+        [
+          "v",
+          "1"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/757cce73-ee9c-4316-bf31-04c456ba3b0f/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a9a9aa19-a7ed-4659-8a25-3444ac128029/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/3195778b-06f3-4b5c-80f1-d4772abf30c7/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/410c2605-353c-4cdd-83c6-41e936eee66f/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/978af376-716a-44ce-9dda-e737e48e0a11/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/209dd2bf-f07a-4269-9f0e-8da24ec9569a/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/757cce73-ee9c-4316-bf31-04c456ba3b0f/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a9a9aa19-a7ed-4659-8a25-3444ac128029/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/3195778b-06f3-4b5c-80f1-d4772abf30c7/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/410c2605-353c-4cdd-83c6-41e936eee66f/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/978af376-716a-44ce-9dda-e737e48e0a11/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/209dd2bf-f07a-4269-9f0e-8da24ec9569a/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/757cce73-ee9c-4316-bf31-04c456ba3b0f/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a9a9aa19-a7ed-4659-8a25-3444ac128029/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/3195778b-06f3-4b5c-80f1-d4772abf30c7/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/410c2605-353c-4cdd-83c6-41e936eee66f/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/209dd2bf-f07a-4269-9f0e-8da24ec9569a/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/978af376-716a-44ce-9dda-e737e48e0a11/thumbnail",
+      "status": 503,
+      "phase": "thumb-auto-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/757cce73-ee9c-4316-bf31-04c456ba3b0f/thumbnail",
+      "status": 200,
+      "phase": "thumb-bounded"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a9a9aa19-a7ed-4659-8a25-3444ac128029/thumbnail",
+      "status": 200,
+      "phase": "thumb-bounded"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/3195778b-06f3-4b5c-80f1-d4772abf30c7/thumbnail",
+      "status": 200,
+      "phase": "thumb-bounded"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "thumb-bounded"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/410c2605-353c-4cdd-83c6-41e936eee66f/thumbnail",
+      "status": 200,
+      "phase": "thumb-bounded"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/209dd2bf-f07a-4269-9f0e-8da24ec9569a/thumbnail",
+      "status": 200,
+      "phase": "thumb-bounded"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/978af376-716a-44ce-9dda-e737e48e0a11/thumbnail",
+      "status": 200,
+      "phase": "thumb-bounded"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cee6222b-7e42-4a4b-9d43-406255323587/pages",
+      "status": 200,
+      "phase": "thumb-manual-recovered",
+      "query": [
+        [
+          "v",
+          "1"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/757cce73-ee9c-4316-bf31-04c456ba3b0f/thumbnail",
+      "status": 200,
+      "phase": "thumb-manual-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a9a9aa19-a7ed-4659-8a25-3444ac128029/thumbnail",
+      "status": 200,
+      "phase": "thumb-manual-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/3195778b-06f3-4b5c-80f1-d4772abf30c7/thumbnail",
+      "status": 200,
+      "phase": "thumb-manual-recovered"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "thumb-device-back"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cee6222b-7e42-4a4b-9d43-406255323587/pages",
+      "status": 200,
+      "phase": "thumb-cancelled",
+      "query": [
+        [
+          "v",
+          "1"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/757cce73-ee9c-4316-bf31-04c456ba3b0f/thumbnail",
+      "status": 200,
+      "phase": "thumb-cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/3195778b-06f3-4b5c-80f1-d4772abf30c7/thumbnail",
+      "status": 200,
+      "phase": "thumb-cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a9a9aa19-a7ed-4659-8a25-3444ac128029/thumbnail",
+      "status": 200,
+      "phase": "thumb-cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/410c2605-353c-4cdd-83c6-41e936eee66f/thumbnail",
+      "status": 200,
+      "phase": "thumb-cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/978af376-716a-44ce-9dda-e737e48e0a11/thumbnail",
+      "status": 200,
+      "phase": "thumb-cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/209dd2bf-f07a-4269-9f0e-8da24ec9569a/thumbnail",
+      "status": 200,
+      "phase": "thumb-cancelled"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cee6222b-7e42-4a4b-9d43-406255323587",
+      "status": 200,
+      "phase": "thumb-reopened"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "thumb-reopened"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "thumb-reopened",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "1"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "thumb-reopened",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "anchor_ids",
+          "8f85021d-c739-4326-b0ac-627467024768"
+        ],
+        [
+          "anchor_ids",
+          "6fa440bf-8e8a-4635-9fe4-4770e7b0d950"
+        ],
+        [
+          "anchor_ids",
+          "cee6222b-7e42-4a4b-9d43-406255323587"
+        ],
+        [
+          "anchor_ids",
+          "72dabc43-ef11-4e5d-93fb-f400dbc2f147"
+        ]
+      ]
+    }
+  ]
+}
