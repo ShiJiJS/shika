@@ -467,7 +467,9 @@ LF0–LF6 对应实现与验证见各阶段文档。LF7 任务中心见 [LF7记�
 [实施范围](LF8-PREVIEW-LIFECYCLE.md) / [原始证据与只读复核](evidence/lf8-preview-lifecycle/README.md)。本段补PRE-04/05、NAV-02及UI-02的明确行为组合；实际三个小视频不证明重叠初始化/迟到回执、全部格式/来源/主题/字体或目标手机/NAS性能。MemoryCredentialStore/内存偏好与Home不新增强停/凭据/落盘证明。原型1cbf605独立未改且可移除，backup_v2生产仍关闭，未改正式8760/NAS或发布APK。#24/#33/#78保持开放，需用户配合项按授权暂跳过。
 
 
-## 2026-10-27：本地视频画面与开发启动配置
+## 2026-10-27：本地视频画面与开发启动配置（PR #79）
+
+[Draft PR #79](https://github.com/ShiJiJS/video_viewer/pull/79)已创建并附于任务。
 
 对应#78/#33/#24，基于#77，当前完整App采集固定7740f4d。最小同源比较确认：关闭宿主解码时，Flutter textureView在Impeller/Skia均复现129列绿条；platformView与原生MediaPlayer两入口无该条。byte-buffer codec逻辑/裁切960×540、stride1024仅为独立路径数据，不证明Surface根因。选择software GPU、Vulkan关闭、GLDMA关闭、宿主解码开启的本地配置，保留产品播放器实现；实际AVC属性2、日志c2.goldfish.h264.decoder。
 

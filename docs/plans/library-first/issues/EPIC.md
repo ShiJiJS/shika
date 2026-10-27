@@ -1,6 +1,6 @@
 ## 目标
 
-将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8原型一致性收口进行中；最新[Draft PR #77](https://github.com/ShiJiJS/video_viewer/pull/77)补当前视频预览全屏/后台手势的三轮行为证据和15项相关检查；实际画面绿边登记[#78](https://github.com/ShiJiJS/video_viewer/issues/78)，UI-02仍未通过。#76的长包/646项与开发签名构建、#75的参考隔离证据继续保留。原型仍独立且可移除，当前结果与余项见[验收台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-lifecycle/docs/plans/library-first/RESULTS.md)。仍需依赖PR合并、完整同版验收、目标手机/NAS及原签名升级验证，尚未发布新版。
+将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8原型一致性收口进行中；最新[Draft PR #79](https://github.com/ShiJiJS/video_viewer/pull/79)验证本地视频画面配置并修复模拟器启动器，当前预览连续三轮行为及固定样本画面通过，阅读/设置相邻与release诊断排除检查通过。#77的旧绿边与崩溃证据保留，具体软解路径根因及完整UI-02等余项继续由[#78](https://github.com/ShiJiJS/video_viewer/issues/78)与LF8跟踪；#76/#75的历史固定树证据继续保留。原型仍独立且可移除，当前结果与余项见[验收台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-rendering/docs/plans/library-first/RESULTS.md)。仍需依赖PR合并、完整同版验收、目标手机/NAS及原签名升级验证，尚未发布新版。
 
 ## 历史阶段记录（各自固定版本）
 
@@ -484,3 +484,14 @@ App流式文件网关、真实系统选择器/取消、两类统计/分页根映
 **实际画面仍有未解决问题：**关闭宿主解码后的横屏右侧绿边已与源帧和相同生产树的宿主解码原图对照，登记[渲染/稳定性 #78](https://github.com/ShiJiJS/video_viewer/issues/78)。根因尚未证明，不能以行为通过或录屏可解码判定UI-02画面完整性通过；保留原图继续定位，不裁边或换素材掩盖。
 
 [实施范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-lifecycle/docs/plans/library-first/LF8-PREVIEW-LIFECYCLE.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-lifecycle/docs/plans/library-first/evidence/lf8-preview-lifecycle/README.md)。本段补PRE-04/05、NAV-02及UI-02的明确行为组合；实际三个小视频不证明重叠初始化/迟到回执、全部格式/来源/主题/字体或目标手机/NAS性能。MemoryCredentialStore/内存偏好与Home不新增强停/凭据/落盘证明。原型1cbf605独立未改且可移除，backup_v2生产仍关闭，未改正式8760/NAS或发布APK。#24/#33/#78保持开放，需用户配合项按授权暂跳过。
+
+
+## 2026-10-27：视频画面与启动环境（PR #79）
+
+[Draft PR #79](https://github.com/ShiJiJS/video_viewer/pull/79)基于#77。同源最小对照在Impeller/Skia纹理软解路径均复现129列绿条，原生MediaPlayer两入口及platform view无该条；buffer crop/stride另存，不据此断言Surface根因。保留产品播放器实现，选择software GPU、Vulkan关闭、GLDMA关闭、宿主解码开启；实际AVC属性2、c2.goldfish.h264.decoder。
+
+7740f4d当前App连续三轮通过：45前台点、21次fling、6次Home往返、15个横屏原图已知绿条/非黑帧检查、12段录屏全帧解码。阅读13点通过；设置旧驱动两次取了弹层下被刻意归零的来源页insets，宿主实际键盘原图/Window/IME保留，eb5cc46仅改驱动读真实FlutterView，保留IME/焦点/遮挡断言后21点通过。启动器的离线残留与短暂shell生命周期问题有6项CLI旧失败/修后检查及真实启动、复用证据。
+
+flutter analyze/Ruff、正常release构建、manifest/DEX诊断与integration_test排除、原型页面资产排除及原证书核对通过；仍0.1.4+5，只本地构建。原型1cbf605独立未改可移除，未改正式8760/NAS、SDK或发布APK；全集沿用既有固定业务树证明。本地固定样本通过不关闭完整UI-02/05、其它格式/异常/迟到回执及目标手机/NAS；#24/#33/#78继续开放，接续短队列留白与横屏面板比例等已登记原型差异。
+
+[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-rendering/docs/plans/library-first/LF8-VIDEO-RENDERING.md) / [444项原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-rendering/docs/plans/library-first/evidence/lf8-video-rendering/README.md)。

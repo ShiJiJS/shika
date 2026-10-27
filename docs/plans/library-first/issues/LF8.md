@@ -1,6 +1,6 @@
 总任务：#24
 
-最新阶段：[当前预览全屏/后台 PR #77](https://github.com/ShiJiJS/video_viewer/pull/77)，三轮45点/12段录屏的行为补证已提交；实际画面绿边登记[#78](https://github.com/ShiJiJS/video_viewer/issues/78)，UI-02及整体验收保持开放，详见文末。
+最新阶段：[本地视频画面与启动环境 PR #79](https://github.com/ShiJiJS/video_viewer/pull/79)，当前预览连续三轮、固定样本15个横屏画面检查及阅读/设置相邻通过；诊断入口已核对不进入release。旧软解绿边复现与具体根因由[#78](https://github.com/ShiJiJS/video_viewer/issues/78)继续保留，UI-02及整体验收保持开放，详见文末。
 
 ## 目标
 
@@ -303,3 +303,14 @@ LF0 (#25), LF1 (#26), LF2 (#27), LF3 (#28), LF4 (#29), LF5 (#30), LF6 (#31), LF7
 **实际画面仍有未解决问题：**关闭宿主解码后的横屏右侧绿边已与源帧和相同生产树的宿主解码原图对照，登记[渲染/稳定性 #78](https://github.com/ShiJiJS/video_viewer/issues/78)。根因尚未证明，不能以行为通过或录屏可解码判定UI-02画面完整性通过；保留原图继续定位，不裁边或换素材掩盖。
 
 [实施范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-lifecycle/docs/plans/library-first/LF8-PREVIEW-LIFECYCLE.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-lifecycle/docs/plans/library-first/evidence/lf8-preview-lifecycle/README.md)。本段补PRE-04/05、NAV-02及UI-02的明确行为组合；实际三个小视频不证明重叠初始化/迟到回执、全部格式/来源/主题/字体或目标手机/NAS性能。MemoryCredentialStore/内存偏好与Home不新增强停/凭据/落盘证明。原型1cbf605独立未改且可移除，backup_v2生产仍关闭，未改正式8760/NAS或发布APK。#24/#33/#78保持开放，需用户配合项按授权暂跳过。
+
+
+## 2026-10-27：视频画面与启动环境（PR #79）
+
+[Draft PR #79](https://github.com/ShiJiJS/video_viewer/pull/79)基于#77。同源最小对照在Impeller/Skia纹理软解路径均复现129列绿条，原生MediaPlayer两入口及platform view无该条；buffer crop/stride另存，不据此断言Surface根因。保留产品播放器实现，选择software GPU、Vulkan关闭、GLDMA关闭、宿主解码开启；实际AVC属性2、c2.goldfish.h264.decoder。
+
+7740f4d当前App连续三轮通过：45前台点、21次fling、6次Home往返、15个横屏原图已知绿条/非黑帧检查、12段录屏全帧解码。阅读13点通过；设置旧驱动两次取了弹层下被刻意归零的来源页insets，宿主实际键盘原图/Window/IME保留，eb5cc46仅改驱动读真实FlutterView，保留IME/焦点/遮挡断言后21点通过。启动器的离线残留与短暂shell生命周期问题有6项CLI旧失败/修后检查及真实启动、复用证据。
+
+flutter analyze/Ruff、正常release构建、manifest/DEX诊断与integration_test排除、原型页面资产排除及原证书核对通过；仍0.1.4+5，只本地构建。原型1cbf605独立未改可移除，未改正式8760/NAS、SDK或发布APK；全集沿用既有固定业务树证明。本地固定样本通过不关闭完整UI-02/05、其它格式/异常/迟到回执及目标手机/NAS；#24/#33/#78继续开放，接续短队列留白与横屏面板比例等已登记原型差异。
+
+[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-rendering/docs/plans/library-first/LF8-VIDEO-RENDERING.md) / [444项原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-rendering/docs/plans/library-first/evidence/lf8-video-rendering/README.md)。
