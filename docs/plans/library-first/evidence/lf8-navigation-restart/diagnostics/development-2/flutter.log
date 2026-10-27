@@ -1,0 +1,93 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_navigation_restart_test.dart
+Running Gradle task 'assembleDebug'...                             14.3s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          515ms
+00:00 +0: all content sources return independently and survive a real process restart
+FIDELITY_METRICS:{"state":"nav-start","cold_source":"library","physical":[1170.0,2532.0],"dpr":3.0,"text_scale":1.0,"dark":false,"preload":false,"video":{"entry":{"query":{"folder":"","tags":[],"orientation":"","duration":"","type":""},"search":"","source":"library","sort":"name"},"total":27,"offset":0,"scroll":0.0,"selected":[],"selecting":false},"pack":null,"reading":null,"round":"","current":null}
+FIDELITY_METRICS:{"state":"nav-video-draft","cold_source":"library","physical":[1170.0,2532.0],"dpr":3.0,"text_scale":1.0,"dark":false,"preload":false,"video":{"entry":{"query":{"folder":"","tags":["c755de5c-226d-4df7-8120-b897e06718f2"],"orientation":"","duration":"","type":""},"search":"导航视频","source":"library","sort":"newest"},"total":27,"offset":0,"scroll":0.0,"selected":["db22f4b9-3c29-498f-93a7-558efb4f91c6"],"selecting":true},"pack":null,"reading":null,"round":"","current":null}
+FIDELITY_METRICS:{"state":"nav-pack-draft","cold_source":"library","physical":[1170.0,2532.0],"dpr":3.0,"text_scale":1.0,"dark":false,"preload":false,"video":null,"pack":{"query":{"folder":"","tag_ids":["49701ff9-af43-45d4-8477-7bf8b89ef824"],"search":"导航图包","read_state":"all","source":"library","sort":"name"},"total":27,"offset":0,"scroll":0.0,"selected":["78da00bb-4f47-4d96-abeb-c547fed97e78"],"selecting":true},"reading":null,"round":"","current":null}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: [
+            'db22f4b9-3c29-498f-93a7-558efb4f91c6',
+            '8fb2b323-d1fe-47cc-97d1-1be920212ee5',
+            '0fcb5b59-dd38-47a6-a398-78ec9206fa3a',
+            '332a0c82-8dc9-4026-a20a-3196455c418f',
+            'ed115d57-7a99-4bed-92df-32b860531c1c',
+            '32076313-e044-4d05-b03a-195111adc440',
+            'ec69ee8e-7474-46d8-90ba-4d899d2203f9',
+            '6a5e26f8-51b4-47e3-b1c4-be457819141c',
+            '2d39012a-3051-4e60-b9de-0b2925e253be',
+            'e75ddfaf-9a6a-4d0f-a4c5-35683c0e667b',
+            '59fa700b-ab34-4b50-9a01-5153a8926b07',
+            '139cfe61-709e-4d1b-8406-bf3fe7c8fea1',
+            'e357c2e5-1cb3-4f24-8bfd-418aa63e1aea',
+            '94cdd443-1984-460a-a528-97c6316753e4',
+            'fa4c0db2-aa69-4cfe-9e0f-4cabfcc1c46a',
+            '7110c5de-0f87-4045-b5dd-3e3d9ce48ff1',
+            'b094fb93-725c-4764-a7b3-865e40a885da',
+            'ee1ccf9b-a8f5-44a0-b667-ebff0a4c62d6',
+            'bb95ec5a-4780-40a7-b0d4-dc46f3c59f5f',
+            '7e018817-8d04-4098-89d0-e61fadd338bb',
+            '60c0dcf5-d6cc-4ce9-a4fd-de0004c687c4',
+            '8cafbf51-2ea9-4e2c-b6f2-fcdeb3ea55b1',
+            '07132e26-96c3-40cb-80f6-fb4612513f8c',
+            'e7be9bcf-b7ce-4345-b22e-1dc0220e4338',
+            ...
+          ]
+  Actual: [
+            '94cdd443-1984-460a-a528-97c6316753e4',
+            'ee1ccf9b-a8f5-44a0-b667-ebff0a4c62d6',
+            'ec69ee8e-7474-46d8-90ba-4d899d2203f9',
+            '332a0c82-8dc9-4026-a20a-3196455c418f',
+            '74d2d192-bf0e-4f54-b345-6b3684cd9345',
+            '8cafbf51-2ea9-4e2c-b6f2-fcdeb3ea55b1',
+            'e7be9bcf-b7ce-4345-b22e-1dc0220e4338',
+            'e357c2e5-1cb3-4f24-8bfd-418aa63e1aea',
+            '32076313-e044-4d05-b03a-195111adc440',
+            'a42955ea-6ba0-49b9-9882-7a8be17abad6',
+            'ed115d57-7a99-4bed-92df-32b860531c1c',
+            '59fa700b-ab34-4b50-9a01-5153a8926b07',
+            '2384e205-8498-4b08-9b5e-3a7f40ecfc6e',
+            '7110c5de-0f87-4045-b5dd-3e3d9ce48ff1',
+            'b094fb93-725c-4764-a7b3-865e40a885da',
+            '8fb2b323-d1fe-47cc-97d1-1be920212ee5',
+            'fa4c0db2-aa69-4cfe-9e0f-4cabfcc1c46a',
+            '07132e26-96c3-40cb-80f6-fb4612513f8c',
+            '139cfe61-709e-4d1b-8406-bf3fe7c8fea1',
+            '60c0dcf5-d6cc-4ce9-a4fd-de0004c687c4',
+            'e75ddfaf-9a6a-4d0f-a4c5-35683c0e667b',
+            '6a5e26f8-51b4-47e3-b1c4-be457819141c',
+            'db22f4b9-3c29-498f-93a7-558efb4f91c6',
+            '2d39012a-3051-4e60-b9de-0b2925e253be',
+            ...
+          ]
+   Which: at location [0] is '94cdd443-1984-460a-a528-97c6316753e4' instead of
+'db22f4b9-3c29-498f-93a7-558efb4f91c6'
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.openVideo (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_navigation_restart_test.dart:289:9)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_navigation_restart_test.dart:595:7)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_navigation_restart_test.dart line 289
+The test description was:
+  all content sources return independently and survive a real process restart
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:24 +0 -1: all content sources return independently and survive a real process restart [E]
+  Test failed. See exception logs above.
+  The test description was: all content sources return independently and survive a real process restart
+  
+00:25 +0 -1: (tearDownAll)
+00:25 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_navigation_restart_test.dart: all content sources return independently and survive a real process restart

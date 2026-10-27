@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 520, in <module>
+    result = navigation_run(command, log) if args.scenario == "navigation-restart" else subprocess.run(command, cwd=ROOT / "apps/mobile", stdout=log, stderr=subprocess.STDOUT, timeout=480, check=False)
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 393, in navigation_run
+    assert old_pid and not pid(), "No verified force-stop"
+AssertionError: No verified force-stop
