@@ -1,5 +1,6 @@
 """Disposable public media for native/reference comparison; never production."""
 
+import asyncio
 import hashlib
 import json
 import os
@@ -9,7 +10,7 @@ from dataclasses import replace
 from pathlib import Path
 
 from fastapi import Header, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from sqlalchemy import select
 
 from video_viewer.app import create_app
@@ -62,6 +63,7 @@ def create_fidelity_app():
     lifecycle = os.environ.get("VV_FIDELITY_PREVIEW_LIFECYCLE") == "enabled"
     preview_mutation = os.environ.get("VV_FIDELITY_PREVIEW_MUTATION") == "enabled"
     tag_definitions = os.environ.get("VV_FIDELITY_TAG_DEFINITIONS") == "enabled"
+    thumbnails = os.environ.get("VV_FIDELITY_THUMBNAILS") == "enabled"
     video_samples = [
         ("landscape", "横屏", "风里的花园"),
         ("portrait", "竖屏", "水边的花"),
@@ -84,6 +86,7 @@ def create_fidelity_app():
         "recent_video_failure": False, "recent_pack_failure": False,
         "public_additions": [],
         "tag_definition_failure": "off", "tag_definition_failures": [],
+        "thumbnail_mode": "off", "thumbnail_attempts": {}, "thumbnail_streams": [],
     }
     trace = deque(maxlen=5000)
 
@@ -98,7 +101,7 @@ def create_fidelity_app():
             if (request.url.path in ("/api/v1/pack-sessions", "/api/v1/rounds") and request.method == "POST")
             or ((preview_mutation or tag_definitions) and request.method in {"POST", "PATCH", "DELETE"}
                 and (request.url.path in {"/api/v1/video-tags", "/api/v1/tags"} or request.url.path.startswith("/api/v1/tags/")))
-            or (navigation and request.method in {"POST", "PATCH"}
+            or ((navigation or thumbnails) and request.method in {"POST", "PATCH"}
                 and (request.url.path == "/api/v1/playback-defaults" or request.url.path.startswith("/api/v1/pack-sessions/") or request.url.path.endswith("/progress")))
             else None
         )
@@ -123,7 +126,36 @@ def create_fidelity_app():
             and request.url.path.startswith("/api/v1/tags/")
             and request.method == {"rename": "PATCH", "remove": "DELETE"}.get(state["tag_definition_failure"])
         )
-        if tag_write_failure:
+        thumbnail = (thumbnails and request.method == "GET"
+                     and request.url.path.startswith("/api/v1/pages/")
+                     and request.url.path.endswith("/thumbnail")
+                     and request.headers.get("Authorization"))
+        mode = state["thumbnail_mode"]
+        if thumbnail and mode != "off":
+            path = request.url.path
+            n = state["thumbnail_attempts"].get(path, 0) + 1
+            state["thumbnail_attempts"][path] = n
+            if mode == "hold":
+                event = {"path": path, "cancelled": False}
+                state["thumbnail_streams"].append(event)
+                data = next(Path("/fixture/raster").glob("*.png")).read_bytes()
+
+                async def held_body():
+                    try:
+                        yield data[:16]
+                        await asyncio.sleep(30)
+                        yield data[16:]
+                    except asyncio.CancelledError:
+                        event["cancelled"] = True
+                        raise
+
+                response = StreamingResponse(held_body(), media_type="image/png",
+                                             headers={"Content-Length": str(len(data))})
+            elif mode == "bounded" or (mode == "recover" and n <= 2):
+                response = JSONResponse({"error": {"code": "fixture_thumbnail_busy"}}, status_code=503)
+            else:
+                response = await call_next(request)
+        elif tag_write_failure:
             state["tag_definition_failures"].append({"method": request.method, "path": request.url.path, "body": body})
             with app.state.db.read() as db:
                 epoch = Authority.current(db)
@@ -242,6 +274,17 @@ def create_fidelity_app():
             raise HTTPException(422)
         state["continuation_failure"] = mode == "on"
         return {"failure": state["continuation_failure"]}
+
+    @app.post("/__fidelity/thumbnail-failure/{mode}")
+    def thumbnail_failure(mode: str, x_fixture_key: str = Header()):
+        guard(x_fixture_key)
+        if not thumbnails:
+            raise HTTPException(404)
+        if mode not in {"off", "recover", "bounded", "hold"}:
+            raise HTTPException(422)
+        state["thumbnail_mode"] = mode
+        state["thumbnail_attempts"] = {}
+        return {"mode": mode}
 
     @app.post("/__fidelity/catalog-counts-failure/{mode}")
     def catalog_counts_failure(mode: str, x_fixture_key: str = Header()):
