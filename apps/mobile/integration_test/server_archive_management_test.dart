@@ -186,6 +186,7 @@ void main() {
   const largeDocument = bool.fromEnvironment('ARCHIVE_LARGE_DOCUMENT');
   const cancelInputs = bool.fromEnvironment('ARCHIVE_CANCEL_INPUTS');
   const captureFailures = bool.fromEnvironment('ARCHIVE_CAPTURE_FAILURES');
+  const resumeFailure = bool.fromEnvironment('ARCHIVE_RESUME_FAILURE');
   const ownedPrefix = nativeDocuments
       ? 'video_viewer.archive_native_app'
       : 'video_viewer.archive_app';
@@ -194,8 +195,10 @@ void main() {
   ) async {
     final credentials = SecureCredentialStore(key: '$ownedPrefix.connection');
     final work = SecureBackupWorkStore(key: '$ownedPrefix.backups');
-    await credentials.clear();
-    await work.write('{"version":2,"scopes":{}}');
+    if (!resumeFailure) {
+      await credentials.clear();
+      await work.write('{"version":2,"scopes":{}}');
+    }
     final repo = _ObservedArchiveRepository(
       credentials,
       captureFailures: captureFailures,
@@ -210,11 +213,16 @@ void main() {
         ? systemFiles
         : privateFiles;
     final preferences = UiPreferences(preloadAdjacent: false);
-    await repo.connect(
-      'http://10.0.2.2',
-      archivePort,
-      'archive-app-isolated-only',
-    );
+    if (resumeFailure) {
+      await repo.initialize();
+      expect(repo.snapshot.connected, isTrue);
+    } else {
+      await repo.connect(
+        'http://10.0.2.2',
+        archivePort,
+        'archive-app-isolated-only',
+      );
+    }
     final originalEpoch = repo.api.managementEpoch;
     expect(repo.archiveBackupsAvailable, isTrue);
     expect(repo.archiveMaximumBytes, 64 * 1024 * 1024);
@@ -311,6 +319,51 @@ void main() {
     }
 
     await show();
+    if (resumeFailure) {
+      final persisted = jsonDecode((await work.read())!) as Map;
+      final scopes = (persisted['scopes'] as Map).values.cast<Map>();
+      final original = Map<String, dynamic>.from(
+        scopes.single['inspect'] as Map,
+      );
+      await shot('resume-start');
+      final resume = find.byKey(const Key('archive-resume-preview'));
+      await visible(resume);
+      await t.tap(resume);
+      await until(
+        () => find.byKey(const Key('archive-counts')).evaluate().isNotEmpty,
+      );
+      await shot('resume-preview');
+      await visible(find.text('下一页'));
+      await t.tap(find.text('下一页'));
+      await until(() => find.text('媒体目录 · 已载入 27/27').evaluate().isNotEmpty);
+      await visible(find.byKey(const Key('archive-confirm')));
+      expect(
+        t
+            .widget<CheckboxListTile>(find.byKey(const Key('archive-confirm')))
+            .value,
+        isFalse,
+      );
+      expect(
+        t
+            .widget<FilledButton>(
+              find.byKey(const Key('archive-restore-submit')),
+            )
+            .onPressed,
+        isNull,
+      );
+      await shot('resume-confirm-off');
+      final after = jsonDecode((await work.read())!) as Map;
+      final restored =
+          (after['scopes'] as Map).values.cast<Map>().single['inspect'] as Map;
+      expect(restored['key'], original['key']);
+      expect(restored['digest'], original['digest']);
+      expect(restored['file'], original['file']);
+      expect(restored['task'], isNotNull);
+      debugPrint(
+        'ARCHIVE_RESUME_VERIFIED:${jsonEncode({'original_key': original['key'], 'task': restored['task'], 'sha256': original['digest'], 'roots': 27, 'epoch': repo.api.managementEpoch, 'confirmation_off': true})}',
+      );
+      return;
+    }
     await shot('backup-start');
     await preferences.setDark(true);
     await shot('backup-dark');
