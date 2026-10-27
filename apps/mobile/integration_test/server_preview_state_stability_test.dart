@@ -334,16 +334,6 @@ void main() {
     expect(catalog().data.total, 0);
     expect(catalog().data.items, isEmpty);
     await capture('stability-empty');
-    await t.scrollUntilVisible(
-      find.text('清除'),
-      -140,
-      scrollable: find.descendant(
-        of: find.byKey(const Key('video-grid')),
-        matching: find.byWidgetPredicate(
-          (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
-        ),
-      ),
-    );
     await tap(find.text('清除'));
     await until(
       () => !catalog().data.loading && catalog().data.total == 3,

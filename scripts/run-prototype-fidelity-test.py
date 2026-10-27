@@ -383,6 +383,18 @@ try:
                 raise
             time.sleep(0.2)
     save("prepared.json", state("/prepare", post=True))
+    if args.scenario == "preview-stability":
+        rejected = urllib.request.Request(
+            "http://127.0.0.1:8768/__fidelity/add-public-video",
+            method="POST",
+            headers={"X-Fixture-Key": "not-the-owned-fixture-key"},
+        )
+        try:
+            urllib.request.urlopen(rejected, timeout=20)
+            raise AssertionError("Public addition accepted an invalid fixture key")
+        except urllib.error.HTTPError as error:
+            assert error.code == 403
+            save("control-guard.json", {"invalid_key_status": error.code, "files_before_authorized_addition": len(media())})
     before = media()
     assert len(before) == (27 if args.scenario == "preview-lifecycle" else 26)
     save("media-before.json", before)
