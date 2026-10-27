@@ -1,0 +1,474 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name",
+      "name_locale": "zh-CN"
+    },
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314",
+    "body": {
+      "request_id": "1793124030429642-2760133845"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/c46d9534-9e36-45d4-8314-243efeadc36e",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/c46d9534-9e36-45d4-8314-243efeadc36e/download",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/c46d9534-9e36-45d4-8314-243efeadc36e",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/tags",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/imports",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314",
+    "idempotency_key": "1793124064312017-1676487127"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/cc7ce2bd-474c-4a8f-a66b-37db82731125",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/cc7ce2bd-474c-4a8f-a66b-37db82731125/roots",
+    "query": {
+      "offset": "0",
+      "limit": "24"
+    },
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/cc7ce2bd-474c-4a8f-a66b-37db82731125/roots",
+    "query": {
+      "offset": "24",
+      "limit": "24"
+    },
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/restores",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314",
+    "body": {
+      "request_id": "1793124086369533-1103655951",
+      "preview_id": "cc7ce2bd-474c-4a8f-a66b-37db82731125",
+      "confirmed": true,
+      "root_mapping": {
+        "00046a65-26ca-4e0d-8e5f-e44289261662": "/media/videos/目录05",
+        "0c4b9487-5d00-4aa5-939d-103ed68df56b": "/media/videos/目录24",
+        "1393ea59-bcc2-4f50-bc92-05883f704842": "/media/videos/目录09",
+        "22f04c1b-27c0-4b71-b3d9-78ab64d93c56": "/media/videos/目录10",
+        "2c7ec76a-d8e3-400b-b3a8-620addefa861": "/media/videos/目录21",
+        "35cae311-feb2-4cb5-a4a9-5b11f9d605c8": "/media/videos/目录06",
+        "35ff7090-4e80-438a-9bce-b2e7bec9aa15": "/media/videos/目录20",
+        "370f6cca-1be8-4078-9114-ad48126df333": "/media/videos/目录00",
+        "43ba730f-56df-4713-b354-b9c5065df746": "/media/videos/目录03",
+        "48006f38-7bdc-470b-bb48-4f8967058806": "/media/videos/目录02",
+        "5be7ccef-8518-40a0-9d51-5a1106525b08": "/media/videos/目录22",
+        "734b32e8-c34b-450b-91fb-6a951a62b506": "/media/videos/目录14",
+        "8a0130ba-4a52-4491-ac96-a51dd4d1bbd1": "/media/videos/目录23",
+        "981191d4-0b7a-446a-a318-effa1673ceb5": "/media/videos/目录01",
+        "9b141225-fbb9-4987-b83a-8120df446e56": "/media/videos/目录07",
+        "9cf8851b-6b13-48c4-8ff8-8c80f07afa29": "/media/videos/目录18",
+        "9fc86017-4bf1-4fdf-a376-4681692be50c": "/media/videos/目录15",
+        "b11cafb1-883f-49c3-a24d-ecf956231d0f": "/media/videos/目录13",
+        "b14be123-1e07-422f-b95b-de6ef6cd13fa": "/media/videos/目录17",
+        "bacd784c-0590-413d-887a-f3ebc23dfe87": "/media/videos/目录19",
+        "cb855854-0a29-457a-9d78-1855062afda0": "/media/videos/目录12",
+        "e2a5ec83-8111-434d-90f3-388c80749676": "/media/videos/目录04",
+        "e54d397a-81e8-40a2-8315-020b99dc8fc3": "/media/videos/目录16",
+        "f9079ebe-553e-411e-976f-dcf27a3cd457": "/media/videos/目录11",
+        "fb79d5d0-8b2a-4114-8527-e7c489f2a022": "/media/videos/目录08",
+        "packs": "/media/packs",
+        "videos": "/media/videos"
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/5e9ad4a1-28c8-420b-a4fd-68d856b84fba",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/5e9ad4a1-28c8-420b-a4fd-68d856b84fba",
+    "query": {},
+    "epoch": "56b4132e00a9cc92445c182eb13c8314"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name",
+      "name_locale": "zh-CN"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name",
+      "name_locale": "zh-CN"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/scans",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/from-snapshot/51993fb2-c81f-4878-b737-731182b9f0df",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a",
+    "body": {
+      "request_id": "1793124091828862-536329521"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b4ee95f4-2e26-4c2d-8a65-d21cf3163aa1",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/b4ee95f4-2e26-4c2d-8a65-d21cf3163aa1",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/b4ee95f4-2e26-4c2d-8a65-d21cf3163aa1/roots",
+    "query": {
+      "offset": "0",
+      "limit": "24"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/b4ee95f4-2e26-4c2d-8a65-d21cf3163aa1/roots",
+    "query": {
+      "offset": "24",
+      "limit": "24"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/maintenance-tasks",
+    "query": {
+      "offset": "0",
+      "limit": "100",
+      "family": "backup",
+      "state": "all"
+    },
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/5e9ad4a1-28c8-420b-a4fd-68d856b84fba",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/51993fb2-c81f-4878-b737-731182b9f0df",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/51993fb2-c81f-4878-b737-731182b9f0df/download",
+    "query": {},
+    "epoch": "b4edaffb508a0cdca8c6de851069572a"
+  }
+]

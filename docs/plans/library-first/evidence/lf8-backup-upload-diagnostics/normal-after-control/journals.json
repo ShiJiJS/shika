@@ -1,0 +1,174 @@
+[
+  {
+    "stage": "before-system-save",
+    "state": {
+      "version": 2,
+      "scopes": {
+        "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]": {
+          "scope": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]",
+          "export": {
+            "key": "1793124030429642-2760133845",
+            "version": 2,
+            "task": "c46d9534-9e36-45d4-8314-243efeadc36e",
+            "file": {
+              "owner": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]",
+              "id": "81c085b4a4a75eb3ead7e06ce9fd619d",
+              "bytes": 19202,
+              "sha256": "e2a2195fefeae778ea701bc0d28e12cb1fd392a843cb97bd92a779ce9c6762b9"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "stage": "after-system-save-cancelled",
+    "state": {
+      "version": 2,
+      "scopes": {
+        "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]": {
+          "scope": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]",
+          "export": {
+            "key": "1793124030429642-2760133845",
+            "version": 2,
+            "task": "c46d9534-9e36-45d4-8314-243efeadc36e",
+            "file": {
+              "owner": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]",
+              "id": "81c085b4a4a75eb3ead7e06ce9fd619d",
+              "bytes": 19202,
+              "sha256": "e2a2195fefeae778ea701bc0d28e12cb1fd392a843cb97bd92a779ce9c6762b9"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "stage": "before-system-save",
+    "state": {
+      "version": 2,
+      "scopes": {
+        "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]": {
+          "scope": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]",
+          "export": {
+            "key": "1793124030429642-2760133845",
+            "version": 2,
+            "task": "c46d9534-9e36-45d4-8314-243efeadc36e",
+            "file": {
+              "owner": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]",
+              "id": "81c085b4a4a75eb3ead7e06ce9fd619d",
+              "bytes": 19202,
+              "sha256": "e2a2195fefeae778ea701bc0d28e12cb1fd392a843cb97bd92a779ce9c6762b9"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "stage": "after-system-pick-cancelled",
+    "state": {
+      "version": 2,
+      "scopes": {
+        "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]": {
+          "scope": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]"
+        }
+      }
+    }
+  },
+  {
+    "stage": "before-restore-confirmation",
+    "state": {
+      "version": 2,
+      "scopes": {
+        "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]": {
+          "scope": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]",
+          "inspect": {
+            "key": "1793124064312017-1676487127",
+            "version": 2,
+            "digest": "e2a2195fefeae778ea701bc0d28e12cb1fd392a843cb97bd92a779ce9c6762b9",
+            "file": {
+              "owner": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]",
+              "id": "9540b4aa8030479cb10aa9c841ff0899",
+              "bytes": 19202,
+              "sha256": "e2a2195fefeae778ea701bc0d28e12cb1fd392a843cb97bd92a779ce9c6762b9"
+            },
+            "task": "cc7ce2bd-474c-4a8f-a66b-37db82731125"
+          }
+        }
+      }
+    }
+  },
+  {
+    "stage": "after-restore-and-snapshot",
+    "state": {
+      "version": 2,
+      "scopes": {
+        "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]": {
+          "scope": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]",
+          "inspect": {
+            "key": "1793124064312017-1676487127",
+            "version": 2,
+            "digest": "e2a2195fefeae778ea701bc0d28e12cb1fd392a843cb97bd92a779ce9c6762b9",
+            "file": {
+              "owner": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"56b4132e00a9cc92445c182eb13c8314\"]",
+              "id": "9540b4aa8030479cb10aa9c841ff0899",
+              "bytes": 19202,
+              "sha256": "e2a2195fefeae778ea701bc0d28e12cb1fd392a843cb97bd92a779ce9c6762b9"
+            },
+            "task": "cc7ce2bd-474c-4a8f-a66b-37db82731125"
+          },
+          "restore": {
+            "key": "1793124086369533-1103655951",
+            "version": 2,
+            "body": {
+              "preview_id": "cc7ce2bd-474c-4a8f-a66b-37db82731125",
+              "confirmed": true,
+              "root_mapping": {
+                "00046a65-26ca-4e0d-8e5f-e44289261662": "/media/videos/目录05",
+                "0c4b9487-5d00-4aa5-939d-103ed68df56b": "/media/videos/目录24",
+                "1393ea59-bcc2-4f50-bc92-05883f704842": "/media/videos/目录09",
+                "22f04c1b-27c0-4b71-b3d9-78ab64d93c56": "/media/videos/目录10",
+                "2c7ec76a-d8e3-400b-b3a8-620addefa861": "/media/videos/目录21",
+                "35cae311-feb2-4cb5-a4a9-5b11f9d605c8": "/media/videos/目录06",
+                "35ff7090-4e80-438a-9bce-b2e7bec9aa15": "/media/videos/目录20",
+                "370f6cca-1be8-4078-9114-ad48126df333": "/media/videos/目录00",
+                "43ba730f-56df-4713-b354-b9c5065df746": "/media/videos/目录03",
+                "48006f38-7bdc-470b-bb48-4f8967058806": "/media/videos/目录02",
+                "5be7ccef-8518-40a0-9d51-5a1106525b08": "/media/videos/目录22",
+                "734b32e8-c34b-450b-91fb-6a951a62b506": "/media/videos/目录14",
+                "8a0130ba-4a52-4491-ac96-a51dd4d1bbd1": "/media/videos/目录23",
+                "981191d4-0b7a-446a-a318-effa1673ceb5": "/media/videos/目录01",
+                "9b141225-fbb9-4987-b83a-8120df446e56": "/media/videos/目录07",
+                "9cf8851b-6b13-48c4-8ff8-8c80f07afa29": "/media/videos/目录18",
+                "9fc86017-4bf1-4fdf-a376-4681692be50c": "/media/videos/目录15",
+                "b11cafb1-883f-49c3-a24d-ecf956231d0f": "/media/videos/目录13",
+                "b14be123-1e07-422f-b95b-de6ef6cd13fa": "/media/videos/目录17",
+                "bacd784c-0590-413d-887a-f3ebc23dfe87": "/media/videos/目录19",
+                "cb855854-0a29-457a-9d78-1855062afda0": "/media/videos/目录12",
+                "e2a5ec83-8111-434d-90f3-388c80749676": "/media/videos/目录04",
+                "e54d397a-81e8-40a2-8315-020b99dc8fc3": "/media/videos/目录16",
+                "f9079ebe-553e-411e-976f-dcf27a3cd457": "/media/videos/目录11",
+                "fb79d5d0-8b2a-4114-8527-e7c489f2a022": "/media/videos/目录08",
+                "packs": "/media/packs",
+                "videos": "/media/videos"
+              }
+            },
+            "task": "5e9ad4a1-28c8-420b-a4fd-68d856b84fba",
+            "settled": true
+          }
+        },
+        "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"b4edaffb508a0cdca8c6de851069572a\"]": {
+          "scope": "[\"http://10.0.2.2:8769\",\"b417df557f9821673876a84b4a4c1a9f\",\"b4edaffb508a0cdca8c6de851069572a\"]",
+          "inspect": {
+            "key": "1793124091828862-536329521",
+            "version": 2,
+            "digest": "acd0dd31d9554aad7fdffcdedf1ec9eda1e7bb127820d971dfda9f0c5d117f78",
+            "source_snapshot": "51993fb2-c81f-4878-b737-731182b9f0df",
+            "task": "b4ee95f4-2e26-4c2d-8a65-d21cf3163aa1"
+          }
+        }
+      }
+    }
+  }
+]

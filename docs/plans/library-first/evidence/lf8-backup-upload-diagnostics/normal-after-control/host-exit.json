@@ -1,0 +1,13 @@
+{
+  "code": 0,
+  "command": [
+    "bash",
+    "scripts/dev.sh",
+    "python3",
+    "scripts/run-native-archive-roundtrip.py",
+    "--output",
+    ".dev/lf8-backup-upload-diagnostics/normal-after-control-final",
+    "--cancel-first",
+    "--diagnose"
+  ]
+}

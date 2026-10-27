@@ -1,0 +1,28 @@
+{
+  "owned_avd_pid": 53026,
+  "owned_avd_absent": true,
+  "command": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64 -avd video_viewer_api_36 -port 5554 -no-boot-anim -gpu software -feature -Vulkan -feature -GLDMA -feature HardwareDecoder -no-snapshot -no-metrics -crash-report-mode never",
+  "containers": [
+    {
+      "id": "7bb1e1d3d4a45e4a07716d9dc14306af06762c9c49ce8df8058dc6b0e02394b0",
+      "absent": true
+    },
+    {
+      "id": "1c7a1336fb97bf43fd97a0df8fff8888be543e023692f835820688f4ad7a491d",
+      "absent": true
+    },
+    {
+      "id": "495f8a47e8326bb68f5dde94dafe1a6fb34b4c88618b82f31e38710cb5edd3e5",
+      "absent": true
+    },
+    {
+      "id": "718de534846e17881516f5f50d60a91e6121904cdb0beee3bd11d1ec41b59d8d",
+      "absent": true
+    }
+  ],
+  "restored_display": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420",
+    "font_scale": "1.0"
+  }
+}

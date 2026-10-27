@@ -1,0 +1,108 @@
+[
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name",
+      "name_locale": "zh-CN"
+    },
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/requests/inspect/1793123927263881-629801960",
+    "query": {},
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/24a11ef0-653a-432a-ba13-7f80a6ded052",
+    "query": {},
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/24a11ef0-653a-432a-ba13-7f80a6ded052/roots",
+    "query": {
+      "offset": "0",
+      "limit": "24"
+    },
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/24a11ef0-653a-432a-ba13-7f80a6ded052/roots",
+    "query": {
+      "offset": "24",
+      "limit": "24"
+    },
+    "epoch": "715e175c8c615d3e9c4a784cc6d4fae8"
+  }
+]
