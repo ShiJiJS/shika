@@ -93,6 +93,26 @@ void main() {
     }
 
     Future<void> tap(Finder target) async {
+      if (target.evaluate().isEmpty &&
+          find.byType(TagCatalogPage).evaluate().length == 1 &&
+          find.byType(SheetFrame).evaluate().isEmpty) {
+        final body = find.descendant(
+          of: find.byType(TagCatalogPage),
+          matching: find.byType(CustomScrollView),
+        );
+        final scroller = find.descendant(
+          of: body,
+          matching: find.byWidgetPredicate(
+            (w) => w is Scrollable && w.axisDirection == AxisDirection.down,
+          ),
+        );
+        await t.scrollUntilVisible(
+          target,
+          160,
+          scrollable: scroller.first,
+          maxScrolls: 40,
+        );
+      }
       await until(() => target.evaluate().length == 1, 'unique $target');
       if (target.hitTestable().evaluate().isEmpty) {
         await t.ensureVisible(target);
