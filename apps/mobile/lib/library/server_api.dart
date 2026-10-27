@@ -9,10 +9,23 @@ import 'request_scope.dart';
 export 'request_scope.dart';
 export 'models.dart' show RequestCancelled;
 
+/// The awaited Dart operation, not proof of server admission or packet delivery.
+enum ApiTransportPhase { opening, sending, waitingForHeaders, readingResponse }
+
 class ApiFailure extends LibraryFailure {
-  const ApiFailure(super.message, {required this.code, this.status});
+  const ApiFailure(
+    super.message, {
+    required this.code,
+    this.status,
+    this.transportPhase,
+    this.transportCause,
+  });
   final String code;
   final int? status;
+
+  /// Diagnostic context stays in memory; the UI still displays only message.
+  final ApiTransportPhase? transportPhase;
+  final IOException? transportCause;
 }
 
 class ApiResponse {
@@ -285,6 +298,7 @@ class ServerApi {
     final receiving = RequestScope();
     BackupDocument? downloaded;
     var returned = false;
+    var phase = ApiTransportPhase.opening;
 
     void interrupt(Object error) {
       interruption ??= error;
@@ -319,6 +333,7 @@ class ServerApi {
       for (final entry in {...authorization, ...headers}.entries) {
         request.headers.set(entry.key, entry.value);
       }
+      phase = ApiTransportPhase.sending;
       if (bodyStream != null) {
         if (body != null) throw ArgumentError('Only one request body');
         if (contentLength != null) request.contentLength = contentLength;
@@ -326,7 +341,9 @@ class ServerApi {
       } else if (body != null) {
         request.add(body);
       }
+      phase = ApiTransportPhase.waitingForHeaders;
       final response = await request.close().timeout(timeout);
+      phase = ApiTransportPhase.readingResponse;
       final fileHeaders = <String, String>{};
       response.headers.forEach(
         (key, values) => fileHeaders[key] = values.join(', '),
@@ -415,7 +432,7 @@ class ServerApi {
       rethrow;
     } on TimeoutException {
       throw const ApiFailure('连接超时，请检查服务后重试', code: 'timeout');
-    } on IOException {
+    } on IOException catch (error) {
       request?.abort();
       if (interruption is RequestCancelled || _closed) {
         throw const RequestCancelled();
@@ -423,9 +440,11 @@ class ServerApi {
       if (interruption is TimeoutException) {
         throw const ApiFailure('连接超时，请检查服务后重试', code: 'timeout');
       }
-      throw const ApiFailure(
+      throw ApiFailure(
         '暂时无法连接服务，请检查地址和网络后重试',
         code: 'network_unavailable',
+        transportPhase: phase,
+        transportCause: error,
       );
     } finally {
       timer.cancel();

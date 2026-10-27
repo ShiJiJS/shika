@@ -11,12 +11,52 @@ import 'package:video_viewer/library/backup_work_store.dart';
 import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/file_command_store.dart';
 import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/request_scope.dart';
 import 'package:video_viewer/library/server_repository.dart';
+import 'package:video_viewer/library/server_api.dart';
+import 'package:video_viewer/library/management_archives.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/preferences.dart';
 
 import '../test/support/reveal_action.dart';
+
+class _ObservedArchiveRepository extends ServerLibraryRepository {
+  _ObservedArchiveRepository(
+    super.credentials, {
+    super.backupWork,
+    super.fileCommands,
+    super.packCommands,
+    super.port,
+    required this.captureFailures,
+  });
+  final bool captureFailures;
+  ApiFailure? lastUploadFailure;
+
+  @override
+  Future<ArchivePreview> inspectArchive(BackupDocument document) {
+    final result = super.inspectArchive(document);
+    if (!captureFailures) return result;
+    return result.onError<ApiFailure>((error, stack) {
+      lastUploadFailure = error;
+      final cause = error.transportCause;
+      final detail = switch (cause) {
+        SocketException e => {
+          'message': e.message,
+          'errno': e.osError?.errorCode,
+        },
+        FileSystemException e => {
+          'message': e.message,
+          'errno': e.osError?.errorCode,
+        },
+        HttpException e => {'message': e.message},
+        _ => <String, Object?>{},
+      };
+      debugPrint(
+        'ARCHIVE_TRANSPORT_FAILURE:${jsonEncode({'phase': error.transportPhase?.name, 'cause_type': cause.runtimeType.toString(), 'code': error.code, 'bytes': document.bytes, 'sha256': document.sha256, ...detail})}',
+      );
+      Error.throwWithStackTrace(error, stack);
+    });
+  }
+}
 
 /// Default private-file boundary preserves the existing UI checks; opt-in
 /// ARCHIVE_NATIVE_DOCUMENTS drives the same pages with real Android DocumentsUI.
@@ -145,6 +185,7 @@ void main() {
   const nativeDocuments = bool.fromEnvironment('ARCHIVE_NATIVE_DOCUMENTS');
   const largeDocument = bool.fromEnvironment('ARCHIVE_LARGE_DOCUMENT');
   const cancelInputs = bool.fromEnvironment('ARCHIVE_CANCEL_INPUTS');
+  const captureFailures = bool.fromEnvironment('ARCHIVE_CAPTURE_FAILURES');
   const ownedPrefix = nativeDocuments
       ? 'video_viewer.archive_native_app'
       : 'video_viewer.archive_app';
@@ -155,8 +196,9 @@ void main() {
     final work = SecureBackupWorkStore(key: '$ownedPrefix.backups');
     await credentials.clear();
     await work.write('{"version":2,"scopes":{}}');
-    final repo = ServerLibraryRepository(
+    final repo = _ObservedArchiveRepository(
       credentials,
+      captureFailures: captureFailures,
       backupWork: work,
       fileCommands: SecureFileCommandStore(key: '$ownedPrefix.videos'),
       packCommands: SecureFileCommandStore(key: '$ownedPrefix.packs'),
@@ -184,6 +226,17 @@ void main() {
       repo.dispose();
       preferences.dispose();
     });
+    Future<void> checkpoint(String name) async {
+      await control('/checkpoint/archive-ui-$name', method: 'POST');
+      final deadline = DateTime.now().add(const Duration(seconds: 25));
+      while (!(await control('/status'))['display_ack']) {
+        if (DateTime.now().isAfter(deadline)) {
+          fail('Host did not capture $name');
+        }
+        await t.pump(const Duration(milliseconds: 100));
+      }
+    }
+
     Future<void> until(bool Function() ready) async {
       final end = DateTime.now().add(
         largeDocument
@@ -191,6 +244,13 @@ void main() {
             : const Duration(seconds: 40),
       );
       while (!ready()) {
+        if (captureFailures &&
+            repo.lastUploadFailure != null &&
+            find.byKey(const Key('archive-error')).evaluate().isNotEmpty) {
+          debugPrint('ARCHIVE_FAILURE_JOURNAL:${await work.read()}');
+          await checkpoint('unexpected-failure');
+          fail('Archive upload failed: ${repo.backupStatus.value}');
+        }
         if (DateTime.now().isAfter(end)) {
           fail('Archive UI timeout: ${repo.backupStatus.value}');
         }
@@ -227,14 +287,7 @@ void main() {
           'dark': preferences.dark,
         })}',
       );
-      await control('/checkpoint/archive-ui-$name', method: 'POST');
-      final deadline = DateTime.now().add(const Duration(seconds: 25));
-      while (!(await control('/status'))['display_ack']) {
-        if (DateTime.now().isAfter(deadline)) {
-          fail('Host did not capture $name');
-        }
-        await t.pump(const Duration(milliseconds: 100));
-      }
+      await checkpoint(name);
     }
 
     Future<void> show() async {

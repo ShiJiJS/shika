@@ -36,6 +36,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--large", action="store_true")
     parser.add_argument("--cancel-first", action="store_true")
+    parser.add_argument("--diagnose", action="store_true")
     args = parser.parse_args()
     scenes = list(SCENES)
     if args.cancel_first:
@@ -261,7 +262,9 @@ def main():
                 name = state["display"]
                 if not name or state["display_ack"]:
                     continue
-                assert name == "archive-ui-" + scenes[len(events)], name
+                failure = args.diagnose and name == "archive-ui-unexpected-failure"
+                if not failure:
+                    assert name == "archive-ui-" + scenes[len(events)], name
                 current = focus()
                 assert any(
                     "mCurrentFocus=" in r and PACKAGE in r for r in current.splitlines()
@@ -274,7 +277,10 @@ def main():
                     name + "-requests.json",
                     control("/trace")["items"][len(before_trace) :],
                 )
-                events.append({"state": name, "epoch": state["epoch"]})
+                if failure:
+                    save("upload-failure-capture.json", {"state": name, "epoch": state["epoch"]})
+                else:
+                    events.append({"state": name, "epoch": state["epoch"]})
                 control("/ack/" + name, "POST")
         except Exception as failure:  # noqa: BLE001 - preserve capture failure
             errors.append(repr(failure))
@@ -455,6 +461,8 @@ def main():
             command.append("--dart-define=ARCHIVE_LARGE_DOCUMENT=true")
         if args.cancel_first:
             command.append("--dart-define=ARCHIVE_CANCEL_INPUTS=true")
+        if args.diagnose:
+            command.append("--dart-define=ARCHIVE_CAPTURE_FAILURES=true")
         process = subprocess.Popen(
             command,
             cwd=ROOT / "apps/mobile",
