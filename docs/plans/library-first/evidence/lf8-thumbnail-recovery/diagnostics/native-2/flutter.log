@@ -1,0 +1,45 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_thumbnail_recovery_test.dart
+Running Gradle task 'assembleDebug'...                             28.1s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          955ms
+00:00 +0: overview bounded recovery, manual recovery, cancellation and unchanged reading
+FIDELITY_METRICS:{"state":"thumb-reader","size":[390.0,844.0],"dpr":3.0,"padding":[0.0,47.666666666666664,0.0,24.0],"viewPadding":[0.0,47.666666666666664,0.0,24.0],"textScale":1.0,"keys":{"reader-header":[0.0,47.666666666666664,390.0,52.99999999999999],"reader-canvas":[0.0,100.66666666666666,390.0,559.3333333333334],"reader-controls":[0.0,660.0,390.0,160.0],"reader-tools":[16.0,707.0,358.0,48.0],"reader-scope":[16.0,763.0,274.0,48.0],"reader-horizontal":[0.0,100.66666666666666,390.0,559.3333333333334]},"texts":[{"text":"夏日祭","rect":[56.0,48.166666666666664,60.74995422363281,28.999999999999993],"fontSize":20.0},{"text":"示例作者 · 034","rect":[56.0,77.16666666666666,79.8206787109375,18.0],"fontSize":12.0},{"text":"3 / 6","rect":[301.0441131591797,675.0,28.955886840820312,20.0],"fontSize":14.0},{"text":"总览","rect":[48.499908447265625,734.5,24.50018310546875,17.0],"fontSize":12.0},{"text":"横向翻页","rect":[125.74981689453125,734.5,49.0003662109375,17.0],"fontSize":12.0},{"text":"整包标签","rect":[215.24981689453125,734.5,49.0003662109375,17.0],"fontSize":12.0},{"text":"沉浸","rect":[316.9999084472656,734.5,24.50018310546875,17.0],"fontSize":12.0},{"text":"媒体库 · 全部图包","rect":[16.0,778.0,94.08853149414062,18.0],"fontSize":12.0},{"text":"3 / 4","rect":[120.08853149414062,778.5,24.892578125,17.0],"fontSize":12.0},{"text":"下一包","rect":[302.84997749328613,777.5,39.300045013427734,19.0],"fontSize":13.0}],"reading":{"pack":"fb460be9-981a-48ff-adcb-b03da01d15e6","index":2,"page_id":"fc9e311f-9e64-44ff-a016-df988cdecbe7","ratio":0.0,"mode":"horizontal","controls":true,"quick":false,"range":"691d4cfb-522b-4d61-b8ce-aa04ea96dc80"}}
+READER_IMAGE_FAILURE ebaf5cf5-a29f-411f-bd2f-6650b896a739: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/ebaf5cf5-a29f-411f-bd2f-6650b896a739/thumbnail?v=1&session=1793085002771584-5a6e2c49&reader=1
+READER_IMAGE_FAILURE a47484a4-499b-476d-90a5-e53f3f0b857f: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/a47484a4-499b-476d-90a5-e53f3f0b857f/thumbnail?v=1&session=1793085002771584-5a6e2c49&reader=1
+READER_IMAGE_FAILURE fc9e311f-9e64-44ff-a016-df988cdecbe7: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/fc9e311f-9e64-44ff-a016-df988cdecbe7/thumbnail?v=1&session=1793085002771584-5a6e2c49&reader=1
+READER_IMAGE_FAILURE 6f2d08e2-c7f3-44e2-9dec-c39eca570f07: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/6f2d08e2-c7f3-44e2-9dec-c39eca570f07/thumbnail?v=1&session=1793085002771584-5a6e2c49&reader=1
+READER_IMAGE_FAILURE dcffc72e-d526-47d5-9ca4-82161c7a7ffd: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/dcffc72e-d526-47d5-9ca4-82161c7a7ffd/thumbnail?v=1&session=1793085002771584-5a6e2c49&reader=1
+READER_IMAGE_FAILURE 1df89764-cebf-4327-8f91-5f6b8afb9b9f: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/1df89764-cebf-4327-8f91-5f6b8afb9b9f/thumbnail?v=1&session=1793085002771584-5a6e2c49&reader=1
+READER_IMAGE_FAILURE 6f2d08e2-c7f3-44e2-9dec-c39eca570f07: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/6f2d08e2-c7f3-44e2-9dec-c39eca570f07/thumbnail?v=1&session=1793085002771584-5a6e2c49&reader=1
+READER_IMAGE_FAILURE ebaf5cf5-a29f-411f-bd2f-6650b896a739: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/ebaf5cf5-a29f-411f-bd2f-6650b896a739/thumbnail?v=1&session=1793085002771584-5a6e2c49&reader=1
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Thumbnail poll: six thumbnail counts 3
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.poll (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_thumbnail_recovery_test.dart:58:49)
+<asynchronous suspension>
+#2      main.<anonymous closure>.counts (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_thumbnail_recovery_test.dart:206:9)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_thumbnail_recovery_test.dart:215:7)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  overview bounded recovery, manual recovery, cancellation and unchanged reading
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:31 +0 -1: overview bounded recovery, manual recovery, cancellation and unchanged reading [E]
+  Test failed. See exception logs above.
+  The test description was: overview bounded recovery, manual recovery, cancellation and unchanged reading
+  
+00:31 +0 -1: (tearDownAll)
+00:32 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_thumbnail_recovery_test.dart: overview bounded recovery, manual recovery, cancellation and unchanged reading

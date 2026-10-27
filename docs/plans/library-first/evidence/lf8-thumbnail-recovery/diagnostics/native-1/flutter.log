@@ -1,0 +1,48 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_thumbnail_recovery_test.dart
+Running Gradle task 'assembleDebug'...                             16.9s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          601ms
+00:00 +0: overview bounded recovery, manual recovery, cancellation and unchanged reading
+FIDELITY_METRICS:{"state":"thumb-reader","size":[390.0,844.0],"dpr":3.0,"padding":[0.0,47.666666666666664,0.0,24.0],"viewPadding":[0.0,47.666666666666664,0.0,24.0],"textScale":1.0,"keys":{"reader-header":[0.0,47.666666666666664,390.0,52.99999999999999],"reader-canvas":[0.0,100.66666666666666,390.0,559.3333333333334],"reader-controls":[0.0,660.0,390.0,160.0],"reader-tools":[16.0,707.0,358.0,48.0],"reader-scope":[16.0,763.0,274.0,48.0],"reader-horizontal":[0.0,100.66666666666666,390.0,559.3333333333334]},"texts":[{"text":"夏日祭","rect":[56.0,48.166666666666664,60.74995422363281,28.999999999999993],"fontSize":20.0},{"text":"示例作者 · 034","rect":[56.0,77.16666666666666,79.8206787109375,18.0],"fontSize":12.0},{"text":"3 / 6","rect":[301.0441131591797,675.0,28.955886840820312,20.0],"fontSize":14.0},{"text":"总览","rect":[48.499908447265625,734.5,24.50018310546875,17.0],"fontSize":12.0},{"text":"横向翻页","rect":[125.74981689453125,734.5,49.0003662109375,17.0],"fontSize":12.0},{"text":"整包标签","rect":[215.24981689453125,734.5,49.0003662109375,17.0],"fontSize":12.0},{"text":"沉浸","rect":[316.9999084472656,734.5,24.50018310546875,17.0],"fontSize":12.0},{"text":"媒体库 · 全部图包","rect":[16.0,778.0,94.08853149414062,18.0],"fontSize":12.0},{"text":"3 / 4","rect":[120.08853149414062,778.5,24.892578125,17.0],"fontSize":12.0},{"text":"下一包","rect":[302.84997749328613,777.5,39.300045013427734,19.0],"fontSize":13.0}],"reading":{"pack":"b6adedfa-d3d1-4362-87dc-d0c76807f799","index":2,"page_id":"2ddf2bf2-b53c-43e1-ae23-9a5b676fe7a0","ratio":0.0,"mode":"horizontal","controls":true,"quick":false,"range":"e65679c4-b2ce-429d-a1a3-1661cbf5e728"}}
+READER_IMAGE_FAILURE eb62d12a-f88c-4695-a884-675a7fa967e0: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/eb62d12a-f88c-4695-a884-675a7fa967e0/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE edf33852-b146-4072-9441-bad89488df6a: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/edf33852-b146-4072-9441-bad89488df6a/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE 2ddf2bf2-b53c-43e1-ae23-9a5b676fe7a0: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/2ddf2bf2-b53c-43e1-ae23-9a5b676fe7a0/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE 2986e29a-0682-4613-913a-e8141b5f30a0: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/2986e29a-0682-4613-913a-e8141b5f30a0/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE 8c0a0175-6fb9-4c03-9725-54cbb0457d9f: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/8c0a0175-6fb9-4c03-9725-54cbb0457d9f/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE 9d759921-a76c-4885-8cfb-c9412c47af75: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/9d759921-a76c-4885-8cfb-c9412c47af75/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE eb62d12a-f88c-4695-a884-675a7fa967e0: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/eb62d12a-f88c-4695-a884-675a7fa967e0/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE edf33852-b146-4072-9441-bad89488df6a: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/edf33852-b146-4072-9441-bad89488df6a/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE 2ddf2bf2-b53c-43e1-ae23-9a5b676fe7a0: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/2ddf2bf2-b53c-43e1-ae23-9a5b676fe7a0/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE 8c0a0175-6fb9-4c03-9725-54cbb0457d9f: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/8c0a0175-6fb9-4c03-9725-54cbb0457d9f/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE 2986e29a-0682-4613-913a-e8141b5f30a0: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/2986e29a-0682-4613-913a-e8141b5f30a0/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE 9d759921-a76c-4885-8cfb-c9412c47af75: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/9d759921-a76c-4885-8cfb-c9412c47af75/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+READER_IMAGE_FAILURE 8c0a0175-6fb9-4c03-9725-54cbb0457d9f: HTTP request failed, statusCode: 503, http://10.0.2.2:8768/api/v1/pages/8c0a0175-6fb9-4c03-9725-54cbb0457d9f/thumbnail?v=1&session=1793084880176733-875f4660&reader=1
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Thumbnail timeout: six auto-decoded thumbnails
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_thumbnail_recovery_test.dart:49:49)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_thumbnail_recovery_test.dart:216:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  overview bounded recovery, manual recovery, cancellation and unchanged reading
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:47 +0 -1: overview bounded recovery, manual recovery, cancellation and unchanged reading [E]
+  Test failed. See exception logs above.
+  The test description was: overview bounded recovery, manual recovery, cancellation and unchanged reading
+  
+00:47 +0 -1: (tearDownAll)
+00:48 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_thumbnail_recovery_test.dart: overview bounded recovery, manual recovery, cancellation and unchanged reading

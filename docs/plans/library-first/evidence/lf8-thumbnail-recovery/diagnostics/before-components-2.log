@@ -1,0 +1,43 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart
+00:00 +0: overview thumbnail recover preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53844/thumb
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53844/thumb
+00:01 +1: overview thumbnail bounded preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53850/thumb
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53850/thumb
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53850/thumb
+00:01 +2: overview thumbnail close-timer preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53855/thumb
+00:02 +3: overview thumbnail close-request preserves reader and cancels work
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+in-flight thumbnail socket cancelled while body pending; requests=[/thumb]
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart:118:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart:148:15)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  overview thumbnail close-request preserves reader and cancels work
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +3 -1: overview thumbnail close-request preserves reader and cancels work [E]
+  Test failed. See exception logs above.
+  The test description was: overview thumbnail close-request preserves reader and cancels work
+  
+00:04 +3 -1: overview thumbnail manual preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53859/thumb
+00:04 +4 -1: overview thumbnail unauthorized preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 401, http://127.0.0.1:53865/thumb
+00:04 +5 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail close-request preserves reader and cancels work
