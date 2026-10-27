@@ -40,6 +40,8 @@ void main() {
       PlaybackSession? session;
       var peakPlayers = 0, swipes = 0, homeCount = 0;
       final rounds = <String>[];
+      final members = <String, dynamic>{};
+      late List<String> catalogIds;
       void bounded() {
         final players = session?.debugPlayers ?? <VideoPlayerController>[];
         if (players.length > peakPlayers) peakPlayers = players.length;
@@ -210,8 +212,33 @@ void main() {
         session = t.widget<MovieStage>(find.byType(MovieStage)).session!;
         rounds.add(repo.playbackIdentity);
         await ready();
-        expect(repo.playbackTotal, 2);
+        expect(repo.playbackTotal, 3);
+        await tap(find.byKey(const Key('preview-scope')));
+        await tap(find.byKey(const Key('queue-order-sequential')));
+        await until(
+          () => repo.snapshot.order == PlayOrder.sequential,
+          'explicit sequential order',
+        );
+        final target = find.byKey(Key('queue-video-${catalogIds.first}'));
+        if (target.hitTestable().evaluate().isEmpty)
+          await t.ensureVisible(target);
+        await tap(target);
+        await until(
+          () => find.byKey(const Key('preview-queue')).evaluate().isEmpty,
+          'queue closes',
+        );
+        await ready();
         expect(repo.playbackPosition, 0);
+        final entries = await repo.api.json(
+          'GET',
+          '/api/v1/rounds/${repo.playbackIdentity}/entries',
+          query: {'limit': '100'},
+        );
+        expect(
+          (entries['items'] as List).map((r) => r['video']['id']).toList(),
+          catalogIds,
+        );
+        members[repo.playbackIdentity] = entries;
       }
 
       Future<void> backToLibrary() async {
@@ -232,6 +259,9 @@ void main() {
         await session?.close();
         await device.setVolume(originalLevels['volume']!);
         await device.restoreBrightness();
+        debugPrint(
+          'PREVIEW_DEVICE_RESTORED:${jsonEncode(await device.levels())}',
+        );
         WidgetsBinding.instance.removeObserver(lifecycle);
         repo.dispose();
         preferences.dispose();
@@ -256,6 +286,13 @@ void main() {
       );
       expect(find.byType(MovieStage), findsNothing);
       expect((await repo.api.json('GET', '/api/v1/recent'))['total'], 0);
+      catalogIds = t
+          .state<VideoCatalogPageState>(find.byType(VideoCatalogPage))
+          .data
+          .items
+          .map((v) => v.id)
+          .toList();
+      expect(catalogIds.length, 3);
       await capture('lifecycle-library');
       await enter();
       final identity = repo.playbackIdentity, first = repo.current!.id;
@@ -363,13 +400,20 @@ void main() {
       await tap(find.widgetWithText(TextButton, '播放'));
       await ready();
       for (var i = 0; i < 6; i++) {
-        final next = i.isEven;
+        final next = const [true, true, false, false, true, false][i];
+        final targetIndex = repo.playbackPosition + (next ? 1 : -1);
         await t.fling(surface(), Offset(0, next ? -400 : 400), 1600);
         await until(
-          () => repo.playbackPosition == (next ? 1 : 0),
+          () => repo.playbackPosition == targetIndex,
           'swipe committed',
         );
         await ready();
+        if (targetIndex == 1) {
+          await until(
+            () => session!.debugPlayers.length == 3,
+            'middle prepares exactly current plus neighbors',
+          );
+        }
         swipes++;
         expect(repo.playbackIdentity, identity);
       }
@@ -400,10 +444,10 @@ void main() {
       expect(session!.debugPlayers.length, 1);
       await capture('lifecycle-single-swiped');
       await backToLibrary();
-      expect((await repo.api.json('GET', '/api/v1/recent'))['total'], 2);
+      expect((await repo.api.json('GET', '/api/v1/recent'))['total'], 3);
       await capture('lifecycle-return');
       debugPrint(
-        'PREVIEW_LIFECYCLE_RESULT:${jsonEncode({'rounds': rounds, 'peak_players': peakPlayers, 'swipes': swipes, 'home_count': homeCount, 'events': lifecycle.events, 'original_levels': originalLevels})}',
+        'PREVIEW_LIFECYCLE_RESULT:${jsonEncode({'rounds': rounds, 'members': members, 'catalog_ids': catalogIds, 'peak_players': peakPlayers, 'swipes': swipes, 'home_count': homeCount, 'events': lifecycle.events, 'original_levels': originalLevels})}',
       );
       debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
     },

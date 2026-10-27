@@ -321,6 +321,8 @@ try:
         "-e",
         "VV_FIDELITY_FIXTURE=enabled",
         "-e",
+        "VV_FIDELITY_PREVIEW_LIFECYCLE=" + ("enabled" if args.scenario == "preview-lifecycle" else "disabled"),
+        "-e",
         "VV_PASSPHRASE_FILE=/fixture/passphrase",
         "-e",
         "VV_MOUNTS_FILE=/fixture/mounts.json",
@@ -351,7 +353,7 @@ try:
             time.sleep(0.2)
     save("prepared.json", state("/prepare", post=True))
     before = media()
-    assert len(before) == 26
+    assert len(before) == (27 if args.scenario == "preview-lifecycle" else 26)
     save("media-before.json", before)
     shell("wm", "size", f"{args.width * 3}x{args.height * 3}")
     shell("wm", "density", "480")

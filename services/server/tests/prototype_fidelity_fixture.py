@@ -46,10 +46,14 @@ def create_fidelity_app():
         for index, page in enumerate(pack["pages"]):
             source = Path("/fixture/raster") / Path(page).with_suffix(".png").name
             shutil.copyfile(source, target / f"{index + 1:04d}.png")
-    for orientation, folder, title in (
+    lifecycle = os.environ.get("VV_FIDELITY_PREVIEW_LIFECYCLE") == "enabled"
+    video_samples = [
         ("landscape", "横屏", "风里的花园"),
         ("portrait", "竖屏", "水边的花"),
-    ):
+    ]
+    if lifecycle:
+        video_samples.append(("landscape", "补充横屏", "晨光里的花"))
+    for orientation, folder, title in video_samples:
         target = Path("/media/videos") / folder
         target.mkdir(parents=True, exist_ok=False)
         shutil.copyfile(Path("/public") / f"flower-{orientation}.mp4", target / f"{title}.mp4")
@@ -146,7 +150,7 @@ def create_fidelity_app():
         with app.state.db.write() as db:
             videos = db.scalars(select(Video)).all()
             packs = db.scalars(select(ImagePack)).all()
-            assert len(videos) == 2 and len(packs) == 4
+            assert len(videos) == len(video_samples) and len(packs) == 4
             video_tags = {name: Tag(name=name) for name in ("户外", "自然", "喜欢")}
             pack_tags = {
                 name: PackTag(name=name) for name in ("和服", "户外", "白裙", "角色", "喜欢")
@@ -155,7 +159,7 @@ def create_fidelity_app():
             db.flush()
             for video in videos:
                 video.name = Path(video.name).stem
-                landscape = "风里" in video.name
+                landscape = "风里" in video.name or "晨光" in video.name
                 orientation = "landscape" if landscape else "portrait"
                 poster = f"fidelity-{orientation}.jpg"
                 shutil.copyfile(
@@ -185,7 +189,7 @@ def create_fidelity_app():
                         )
                     )
         state["prepared"] = True
-        return {"videos": 2, "packs": 4, "pages": sum(len(p["pages"]) for p in descriptions)}
+        return {"videos": len(video_samples), "packs": 4, "pages": sum(len(p["pages"]) for p in descriptions)}
 
     @app.get("/__fidelity/state")
     def status(x_fixture_key: str = Header()):
