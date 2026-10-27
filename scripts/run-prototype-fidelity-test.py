@@ -171,6 +171,7 @@ def media():
 
 original = {name: shell("wm", name) for name in ("size", "density")}
 font = shell("settings", "get", "system", "font_scale")
+save("original-viewport.json", {"display":original, "font":font})
 if args.scenario == "preview-lifecycle":
     assert shell("getprop", "ro.boot.qemu.avd_name") == "video_viewer_api_36"
     assert shell("getprop", "sys.boot_completed") == "1"
@@ -180,6 +181,8 @@ if args.scenario == "preview-lifecycle":
         "abi": shell("getprop", "ro.product.cpu.abi"),
         "emulator_process": [line for line in run("ps", "-axo", "command").splitlines() if "qemu-system-aarch64" in line and "-avd video_viewer_api_36" in line],
         "renderer_override": False,
+        "host_avc_decoder": shell("getprop", "ro.boot.qemu.hwcodec.avcdec"),
+        "host_vpx_decoder": shell("getprop", "ro.boot.qemu.hwcodec.vpxdec"),
     })
 container = None
 stop = threading.Event()
@@ -423,7 +426,11 @@ finally:
     stop.set()
     if "watcher" in globals():
         watcher.join(timeout=12)
-    end_recording()
+    try:
+        end_recording()
+    except Exception as error:  # noqa: BLE001 - continue device/container cleanup
+        errors.append("recording cleanup: " + repr(error))
+        save("recording-cleanup-error.json", {"error":repr(error)})
     save("recordings.json", recordings)
     try:
         for name in ("size", "density"):
