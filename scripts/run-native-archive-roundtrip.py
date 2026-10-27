@@ -336,6 +336,8 @@ def main():
         login = api("auth/login", "POST", {"passphrase": "archive-app-isolated-only"})
         headers["Authorization"] = "Bearer " + login["access_token"]
         info = api("info")
+        assert "backup_v2" in info["capabilities"]
+        save("public-info-before.json", info)
         headers["X-Management-Epoch"] = info["management_epoch"]
         api(
             "roots/packs",
@@ -576,6 +578,11 @@ def main():
         )
         assert "All tests passed!" in text
         assert row["state"] == "completed" and row["kind"] == "backup_restore_v2"
+        final_info = api("info")
+        assert "backup_v2" in final_info["capabilities"]
+        assert final_info["management_history_available"] is True
+        assert final_info["management_epoch"] != info["management_epoch"]
+        save("public-info-after.json", final_info)
         assert (save_descriptor["bytes"] > 32 * 1024 * 1024) == args.large
         journals = [
             json.loads(r.split("ARCHIVE_JOURNAL:", 1)[1])
