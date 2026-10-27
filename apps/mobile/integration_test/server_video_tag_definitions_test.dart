@@ -146,7 +146,14 @@ void main() {
           () => t.view.viewInsets.bottom > 0,
           'actual native keyboard shown',
         );
+        await t.pumpAndSettle();
         await t.ensureVisible(field);
+        await t.pumpAndSettle();
+        final view = MediaQueryData.fromView(t.view);
+        expect(
+          t.getRect(field).bottom,
+          lessThanOrEqualTo(view.size.height - view.viewInsets.bottom),
+        );
       } else {
         await hideKeyboard();
       }
