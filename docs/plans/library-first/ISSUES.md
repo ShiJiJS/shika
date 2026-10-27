@@ -1,5 +1,7 @@
 # GitHub 实施任务
 
+当前恢复推进：[全屏强停复核PR #87](https://github.com/ShiJiJS/video_viewer/pull/87)，三类内容各一次同版21点；旧全屏失败来自测试误滚动，详见[阶段边界](LF8-FULLSCREEN-RESTART.md)。后续继续真实系统保存／选择与HTTP备份／完整恢复联验。以下保留历史阶段说明，最新总状态见[逐项台账](RESULTS.md)。
+
 当前视频预览：[全屏/后台行为 PR #77](https://github.com/ShiJiJS/video_viewer/pull/77)，45点/12段录屏与15项相关检查；实际绿边登记[#78](https://github.com/ShiJiJS/video_viewer/issues/78)，保留UI-02未通过状态。[台账](RESULTS.md)。
 
 图包阅读阶段：[图包瞬断重试与500页/大图 PR #76](https://github.com/ShiJiJS/video_viewer/pull/76)，三轮原生、646项客户端与开发签名release构建的范围见[逐项台账](RESULTS.md)。#24/#33继续开放。

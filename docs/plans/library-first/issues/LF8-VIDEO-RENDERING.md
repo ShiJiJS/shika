@@ -26,3 +26,9 @@ flutter analyze/Ruff、正常release构建、manifest/DEX诊断与integration_te
 - [ ] 补原图/录屏及逐项台账，真实手机/NAS与其它格式仍分别验证；不要用ffmpeg能解码录屏替代画面完整性。
 
 需用户配合项按授权暂跳过。保持原型树1cbf605独立且可移除，不改正式8760/NAS、不发布APK，不据此关闭#24/#33。
+
+## 2026-10-27：API36专用模拟器再次挂起退出（PR #87）
+
+[PR #87](https://github.com/ShiJiJS/video_viewer/pull/87)中，全屏完整双进程验证后，后续普通视频准备期间QEMU报告bad color buffer handle、QEMU2 main loop及CPU线程无响应并退出；ADB消失，原显示恢复失败。软件GPU、GLDMA off、host AVC2，未改SDK或renderer。旧launcher及QEMU日志PID均确认消失；按原配置重启、先恢复原显示，普通视频与图包后续完成，不把中断轮计成功或将重新运行称无中断稳定性通过。
+
+[原始模拟器／App／恢复失败与进程证据](https://github.com/ShiJiJS/video_viewer/tree/codex/lf8-fullscreen-restart/docs/plans/library-first/evidence/lf8-fullscreen-restart/diagnostics/emulator-exit)。根因尚未证明，不将其直接定性为App错误。本段公开视频画面检查无绿边，不关闭已有其它解码路径绿边问题。另已证明旧全屏“换片”来自测试ensureVisible误滚动，并非短片自然结束，详见本PR证据。

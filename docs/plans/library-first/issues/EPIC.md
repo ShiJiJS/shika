@@ -1,6 +1,6 @@
 ## 目标
 
-将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8尚未终验。最新阶段：[内容页强停与暂停 PR #86](https://github.com/ShiJiJS/video_viewer/pull/86)。普通视频／纵向图包各一次，共14认可点、18相关组件与188输入只读复核通过；全屏准备中目标已变化，身份断言失败，仍待验证，不计成功。按用户要求暂停，不开启下一项；[整体进度](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/PROGRESS-2026-10-27.md)区分已有实现和未终验／发布事项。#24/#33保持开放。 原型继续独立可移除，历史证据保留固定版本边界，当前未发布新版。
+将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8尚未终验。最新阶段：[全屏强停复核 PR #87](https://github.com/ShiJiJS/video_viewer/pull/87)。用户已恢复推进；修正测试对已可见按钮强制ensureVisible、误滚动视频分页的问题，撤回“短片自然换片”的解释。f6a565e同版普通视频／全屏／图包各一次共21点、4项相关组件与177输入只读复核通过，生产代码未改；QEMU一次挂起退出另存，原配置重启后完成余下两例，不称连续稳定性通过。下一步现有系统文件选择＋HTTP导出／导入／完整恢复同次联验；独立40MiB文件处理已实现并有证据，生产backup_v2仍关闭。#24/#33保持开放。
 
 ## 历史阶段记录（各自固定版本）
 
@@ -553,3 +553,13 @@ flutter analyze/Ruff、正常release构建、manifest/DEX诊断与integration_te
 全屏仍未验收：5秒样本在准备期间已换到下一条，第一份原始runner成功被独立身份核查拒绝；395bf7c加同一视频断言并调整暂停／旋转准备后明确失败，尚未强停。两提交仅驱动不同，生产App／服务／runner相同，证据保留两份诊断与审计；不将其直接定性为产品恢复缺陷。后续先隔离自然结束与准备时序，再补全屏目标身份验证。现有视频协议未保存秒数，不声称按秒续播。
 
 [整体进度](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/PROGRESS-2026-10-27.md)／[阶段边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/LF8-CONTENT-RESTART.md)／[原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/evidence/lf8-content-restart/README.md)。LF0–LF7已有阶段实现，LF8及目标手机／真实NAS、原签名覆盖／回滚和正式发布仍未终验；backup_v2生产仍关闭、#78保留开放。专用AVD已恢复显示并关闭，原型1cbf605独立可移除，未发布APK。#24/#33保持开放，暂停不等于完成，不再启动下一阶段。
+
+## 2026-10-27：恢复推进、全屏目标身份与误滚动修正（PR #87）
+
+[草稿PR #87](https://github.com/ShiJiJS/video_viewer/pull/87)基于#86。生产播放器本来循环；旧“短视频自然换片”解释撤回。fb663a6的操作探针证明暂停按钮本已可点，ensureVisible却把视频page从0滚到0.8916、点击后约0.9709，后续服务收到位置PATCH、播放器释放，探针以No element失败；旧#86另记录实际当前ID改变。仅修测试为可见目标原位点击，禁止借滚动视频容器显露控件，并逐步核对原生URL／video_id。
+
+f6a565e同版普通视频、横向全屏、纵向图包各一次双进程，共21点：活跃内容强停、旧PID消失、新PID免口令回媒体库、无自动内容；最近和媒体库只读区间七表逐行相同，无写入／stream／阅读image。明确点开才新范围；全屏各时点同ID，图包第4张／约15.41%偏移／纵向模式及相对画布几何恢复。4项既有播放生命周期组件和静态检查通过，[177输入只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-fullscreen-restart/docs/plans/library-first/evidence/lf8-fullscreen-restart/README.md)通过；不与旧14点累加，不称全集或每例三轮。
+
+全屏完整通过后首个普通视频轮遭QEMU图形／主循环挂起退出，ADB消失与显示恢复失败原样保存；确认旧launcher和QEMU PID消失后按原配置重启，先恢复原显示，再完成普通视频／图包。不是App通过或已证明的App恢复缺陷，也不是连续无中断稳定性结果。最终设备已关闭。#78仍保留其它渲染／环境稳定性问题。
+
+[阶段边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-fullscreen-restart/docs/plans/library-first/LF8-FULLSCREEN-RESTART.md)。用户已明确恢复推进，#24/#33继续开放。下一步把现有真实系统保存／选择与HTTP备份／完整恢复串成同一次流程，随后补大文件／故障组合；独立系统40MiB文件处理早已实现并测试，不再笼统标为未编写或把分段结果拼成整路通过。生产backup_v2仍关闭，原型1cbf605独立可移除，正式8760／NAS／签名／SDK／APK未操作。

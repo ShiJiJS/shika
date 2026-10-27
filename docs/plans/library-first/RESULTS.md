@@ -2,7 +2,7 @@
 
 更新：2026-10-27。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
-最新阶段：[内容页强停部分验证 PR #86](https://github.com/ShiJiJS/video_viewer/pull/86)已收尾并按用户要求暂停。普通视频／纵向图包各一次、共14认可点，18项相关组件及[188输入只读复核](evidence/lf8-content-restart/README.md)通过；全屏因短样本准备中目标已变化，同一视频断言失败，仍待验证，不计成功。#24/#33保持开放，不开启下一项；[整体进度](PROGRESS-2026-10-27.md)区分实现、验证和发布剩余工作。前段[PR #85](https://github.com/ShiJiJS/video_viewer/pull/85)的总览容量／跨页证据继续保留，不将历史结果视为当前整版全集通过。
+最新阶段：[全屏强停复核 PR #87](https://github.com/ShiJiJS/video_viewer/pull/87)。用户已恢复推进；修正测试对已可见按钮强制ensureVisible、误滚动视频分页的问题，撤回“短片自然换片”的解释。f6a565e同版普通视频／全屏／图包各一次共21点、4项相关组件与177输入只读复核通过，生产代码未改；QEMU一次挂起退出另存，原配置重启后完成余下两例，不称连续稳定性通过。下一步现有系统文件选择＋HTTP导出／导入／完整恢复同次联验；独立40MiB文件处理已实现并有证据，生产backup_v2仍关闭。#24/#33保持开放。
 
 共享布局阶段基线为a9da395；最新图包续读阶段源码为c4aaf3b，见[真实续读约定](LF8-PACK-CONTINUATION.md)与[原生证据](evidence/lf8-pack-continuation/README.md)。后续分类总数阶段源码910cfb2，见[库存约定](LF8-CATALOG-COUNTS.md)与[库存/横屏及续读回归证据](evidence/lf8-catalog-counts/README.md)。该段补同快照总数、未知重试和标签缩高布局；续读段新增真实续读、独立摘要读取与菜单收键盘；共享布局的设置开关、标签确认区和主题稳定证据继续作为历史基线。图包呈现/排序阶段为4e391a2，见[约定](LF8-PACK-PRESENTATION.md)与[69点同版证据](evidence/lf8-pack-presentation/README.md)；主标题/作者和完整范围排序已补，新增大字长操作行可达性修正。原型树1cbf605未改。各阶段链接中的实现提交、真实服务/Demo区分、操作步骤与原始证据继续有效，但未来修改后须按受影响路径复核，不能把历史全集视为当前HEAD所有组合已通过。
 
@@ -22,7 +22,7 @@
 
 | 验收ID | 当前证据状态 | 证据入口（含该阶段实现提交/步骤） | 尚需完成 |
 | --- | --- | --- | --- |
-| NAV-01 | 新增普通视频／图包内容页强停 / 全屏待验证 | [LF4契约](LF4.md)、[三来源84点](evidence/lf8-navigation-restart/README.md)、[内容页14点](evidence/lf8-content-restart/README.md) | 普通视频／纵向图包各一次真实强停、新PID免口令、媒体库与最近只读七表相同、明确点击后重开通过。全屏准备中目标身份断言失败仍待验证；断线／其它来源／目标安装继续。原入口三来源与设置页强停证据保留，未把共享启动配置等同正式main升级验证。 |
+| NAV-01 | 新增普通视频／全屏／图包内容页强停 / 明确组合通过 | [LF4契约](LF4.md)、[三来源84点](evidence/lf8-navigation-restart/README.md)、[同版内容页21点](evidence/lf8-fullscreen-restart/README.md) | 三类各一次真实强停、新PID免口令、媒体库与最近只读七表相同，明确点击后同一视频／图包页码偏移重开通过；全屏旧失败定位为测试误滚动，生产未改。其它来源下活跃内容强停／断线／目标安装继续。原三来源及设置页证据保留，未把共享启动配置等同正式main升级验证，且不宣称模拟器无中断稳定性。 |
 | NAV-02 | 新增六来源与系统返回 / 明确组合通过 | [当前导航与位置](evidence/lf8-navigation-restart/README.md)、[全屏返回](evidence/lf8-preview-lifecycle/README.md) | 两类型×媒体库／标签／最近均实际进入返回；两类前两来源跨24分页、完整27成员与同卡片位置，系统返回先关队列／总览。其它目录／属性筛选、失效／空来源及目标终验继续，不将少量最近当长列表。 |
 | NAV-03 | 新增双类型与三来源隔离 / 明确组合通过 | [LF4契约](LF4.md)、[当前导航／冷启](evidence/lf8-navigation-restart/README.md) | 搜索、同名独立标签、不同排序、各1项选择切换以及最近不继承媒体库条件已实测；三种最后来源的冷启动恢复分属对应入口。其它连接／异常组合与整体目标终验仍按相应条目推进。 |
 | LIB-01 | 新增视频中文顺序证据 / 未收口 | [LF4阶段记录](LF4.md)、[权威总数](evidence/lf8-catalog-counts/README.md)、[中文顺序](evidence/lf8-video-name-order/README.md) | 分类总数及视频列表/锚点/全选/固定范围的中文顺序已补证；最近段补显示标题/时长和24项/120项窗口、页尾锚点；长列表其它来源/失败组合继续。 |
@@ -56,9 +56,9 @@
 | SET-03 | 已有阶段证据 / 未收口 | [LF7](LF7.md) | 设置入口已有阶段证据；长管理页、键盘/错误/旧服务组合和完整视觉继续。 |
 | SET-04 | 新增目录与缺失管理证据 / 未收口 | [LF7](LF7.md)、[设置155点](evidence/lf8-settings-forms/README.md)、[缺失39+4点](evidence/lf8-missing-management/README.md) | 类型冲突、目录表单、实际根状态、停用保留25/清理24保留返回1及确认已补；旧服务/扫描异常与其它完整组合继续。 |
 | SET-05 | 已有阶段证据 / 未收口 | [LF7](LF7.md) | 设置入口已有阶段证据；长管理页、键盘/错误/旧服务组合和完整视觉继续。 |
-| BAK-01 | 新增备份与恢复预览证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 设置真实入口、27目录明确恢复／快照仅预览、保存取消／格式错误和原任务已补；backup_v2生产仍关闭，系统选择器、大文件、更多故障与整体验收继续。 |
-| BAK-02 | 新增备份与恢复预览证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 设置真实入口、27目录明确恢复／快照仅预览、保存取消／格式错误和原任务已补；backup_v2生产仍关闭，系统选择器、大文件、更多故障与整体验收继续。 |
-| BAK-03 | 新增备份与恢复预览证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 设置真实入口、27目录明确恢复／快照仅预览、保存取消／格式错误和原任务已补；backup_v2生产仍关闭，系统选择器、大文件、更多故障与整体验收继续。 |
+| BAK-01 | 新增备份与恢复预览证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 设置真实入口、27目录明确恢复／快照仅预览、取消／格式错误和原任务已补；独立真实系统40MiB文件保存／选入早有证据。backup_v2生产仍关闭，尚需系统选择器＋HTTP导出／导入／完整恢复同次联验、大文件整路及更多故障，不能将独立结果拼成整路通过。 |
+| BAK-02 | 新增备份与恢复预览证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 设置真实入口、27目录明确恢复／快照仅预览、取消／格式错误和原任务已补；独立真实系统40MiB文件保存／选入早有证据。backup_v2生产仍关闭，尚需系统选择器＋HTTP导出／导入／完整恢复同次联验、大文件整路及更多故障，不能将独立结果拼成整路通过。 |
+| BAK-03 | 新增备份与恢复预览证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 设置真实入口、27目录明确恢复／快照仅预览、取消／格式错误和原任务已补；独立真实系统40MiB文件保存／选入早有证据。backup_v2生产仍关闭，尚需系统选择器＋HTTP导出／导入／完整恢复同次联验、大文件整路及更多故障，不能将独立结果拼成整路通过。 |
 | UP-01 | 已有阶段证据 / 未收口 | [LF1](LF1.md)、[本机开发配置](../../macos-development.md) | 目标手机原签名覆盖安装、同版旧服务/客户端组合和发布回退演练继续。 |
 | UP-02 | 待发布演练 | [LF1](LF1.md)、[本机开发配置](../../macos-development.md) | 迁移原签名的授权与准备不等于已覆盖安装；未发布本轮APK。 |
 | UI-01 | 新增标签分配与真实IME证据 / 未收口 | [共享差异审计](LF8-SHARED-GEOMETRY.md)、[最近最终证据](evidence/lf8-recent-history-final/README.md) | 最近两类111dp行、空态、显示标题/时长已补同状态原型对照，保留真实总数兼容差异；标签顺序/图标和其它完整页面继续。  标签段补20dp锚线/描边选择、外置字段、单层确认、失败草稿、浅暗编辑和三视口45点；[证据与边界](evidence/lf8-tag-management/README.md)。 标签分配段补三尺寸42点、真实IME、单项来源读回与批量追加；低高度操作及体量固定清单闭合，[证据](evidence/lf8-tag-assignment/README.md)。 |
@@ -350,3 +350,13 @@ flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX�
 全屏仍未验收：5秒样本在准备期间已换到下一条，第一份原始runner成功被独立身份核查拒绝；395bf7c加同一视频断言并调整暂停／旋转准备后明确失败，尚未强停。两提交仅驱动不同，生产App／服务／runner相同，证据保留两份诊断与审计；不将其直接定性为产品恢复缺陷。后续先隔离自然结束与准备时序，再补全屏目标身份验证。现有视频协议未保存秒数，不声称按秒续播。
 
 [整体进度](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/PROGRESS-2026-10-27.md)／[阶段边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/LF8-CONTENT-RESTART.md)／[原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/evidence/lf8-content-restart/README.md)。LF0–LF7已有阶段实现，LF8及目标手机／真实NAS、原签名覆盖／回滚和正式发布仍未终验；backup_v2生产仍关闭、#78保留开放。专用AVD已恢复显示并关闭，原型1cbf605独立可移除，未发布APK。#24/#33保持开放，暂停不等于完成，不再启动下一阶段。
+
+## 2026-10-27：恢复推进、全屏目标身份与误滚动修正（PR #87）
+
+[草稿PR #87](https://github.com/ShiJiJS/video_viewer/pull/87)基于#86。生产播放器本来循环；旧“短视频自然换片”解释撤回。fb663a6的操作探针证明暂停按钮本已可点，ensureVisible却把视频page从0滚到0.8916、点击后约0.9709，后续服务收到位置PATCH、播放器释放，探针以No element失败；旧#86另记录实际当前ID改变。仅修测试为可见目标原位点击，禁止借滚动视频容器显露控件，并逐步核对原生URL／video_id。
+
+f6a565e同版普通视频、横向全屏、纵向图包各一次双进程，共21点：活跃内容强停、旧PID消失、新PID免口令回媒体库、无自动内容；最近和媒体库只读区间七表逐行相同，无写入／stream／阅读image。明确点开才新范围；全屏各时点同ID，图包第4张／约15.41%偏移／纵向模式及相对画布几何恢复。4项既有播放生命周期组件和静态检查通过，[177输入只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-fullscreen-restart/docs/plans/library-first/evidence/lf8-fullscreen-restart/README.md)通过；不与旧14点累加，不称全集或每例三轮。
+
+全屏完整通过后首个普通视频轮遭QEMU图形／主循环挂起退出，ADB消失与显示恢复失败原样保存；确认旧launcher和QEMU PID消失后按原配置重启，先恢复原显示，再完成普通视频／图包。不是App通过或已证明的App恢复缺陷，也不是连续无中断稳定性结果。最终设备已关闭。#78仍保留其它渲染／环境稳定性问题。
+
+[阶段边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-fullscreen-restart/docs/plans/library-first/LF8-FULLSCREEN-RESTART.md)。用户已明确恢复推进，#24/#33继续开放。下一步把现有真实系统保存／选择与HTTP备份／完整恢复串成同一次流程，随后补大文件／故障组合；独立系统40MiB文件处理早已实现并测试，不再笼统标为未编写或把分段结果拼成整路通过。生产backup_v2仍关闭，原型1cbf605独立可移除，正式8760／NAS／签名／SDK／APK未操作。
