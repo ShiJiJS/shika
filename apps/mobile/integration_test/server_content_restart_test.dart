@@ -378,6 +378,11 @@ void main() {
         playing = t.widget<MovieStage>(find.byType(MovieStage)).session;
         await playerReady();
         if (contentCase == 'fullscreen') {
+          await tap(find.widgetWithText(TextButton, '暂停'));
+          await until(
+            () => !playing!.debugPlayers.single.value.isPlaying,
+            'paused before rotating short public clip',
+          );
           await tap(find.text('横向全屏'));
           await until(
             () =>
@@ -385,7 +390,7 @@ void main() {
                 find.byKey(const Key('fullscreen-exit')).evaluate().isNotEmpty,
             'actual landscape fullscreen',
           );
-          await playerReady();
+          expect(playing!.debugPlayers.single.value.isPlaying, isFalse);
         }
       }
       if (contentCase != 'reader') {
@@ -434,10 +439,18 @@ void main() {
           s.currentPage!.id,
         );
       }
+      if (contentCase != 'reader') {
+        expect(repo.current!.id, videoId);
+      }
       await book.writeAsString(jsonEncode(original), flush: true);
+      if (contentCase == 'fullscreen') {
+        await tap(find.widgetWithText(TextButton, '播放'));
+        await playerReady();
+      }
       await capture('content-stop-ready');
       if (contentCase != 'reader') {
         await playerReady();
+        expect(repo.current!.id, videoId);
       } else {
         await readerReady();
       }
