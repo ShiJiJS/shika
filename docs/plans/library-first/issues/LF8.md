@@ -1,6 +1,6 @@
 总任务：#24
 
-最新阶段：[预览状态／返回库存 PR #80](https://github.com/ShiJiJS/video_viewer/pull/80)，修复视频/阅读器返回媒体库后的权威总数刷新；25项相关、同源码三轮42点及阅读相邻13点通过。标签保存/外部新增/来源标签删除后的固定范围与返回结果已补证。#79的本地画面配置与#78的软解复现记录继续保留，完整UI及目标终验仍开放，详见文末。
+最新阶段：[视频标签定义与离页保护 PR #81](https://github.com/ShiJiJS/video_viewer/pull/81)，真实视频目录CRUD、同名隔离、409保草稿与503原请求重试已补。生产6f7ce97，51项相关检查、普通三轮45点和大字／短横屏各15点通过；最终横屏输入已亲看，292项输入只读复核通过。完整终验仍开放，历史阶段按各自固定版本保留，详见文末。
 
 ## 目标
 
@@ -324,3 +324,13 @@ flutter analyze/Ruff、正常release构建、manifest/DEX诊断与integration_te
 当前20点基线及源码核对确认#67已完成短队列收高/横屏范围/工具形态，纠正#79末段误列的旧待办。原型1cbf605独立可移除未改；本段未重跑全集或release、未改正式8760/NAS/SDK或发布APK。#24/#33/#78保持开放，继续视频标签定义真实改名/删除与失败读回、目标手机/NAS及原签名升级等明确余项。
 
 [方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-state-stability/docs/plans/library-first/LF8-PREVIEW-STATE-STABILITY.md) / [原图、请求、SQL与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-state-stability/docs/plans/library-first/evidence/lf8-preview-state-stability/README.md)。
+
+## 2026-10-27：视频标签定义与失败恢复（PR #81）
+
+[Draft PR #81](https://github.com/ShiJiJS/video_viewer/pull/81)基于#80，补视频标签目录真实创建／改名／移除及失败读回。生产6f7ce97增加计数入口mounted／active检查：关闭面板后列表迟到，已离开或销毁页面不继续计数。两类型×离开／销毁四项在旧码真实四败，修后与定义／分页／分配组件合计51项通过，analyze／格式／Ruff通过。
+
+普通同驱动三轮45点；大字68ce0fb、短横屏a40dc0f各完整15点，共75点，生产和组件树相同。真实409保草稿、视频“和服”201与图包同名独立、改名503原请求重试保原ID／2关联、移除确认取消回原草稿／关闭零写、移除503重试200、重开目录／返回媒体库均补证。每轮7次UI写请求、3条成功命令，图包完整5定义／8关联和种子进度保留，26源文件SHA不变，无播放轮次／会话／最近写入。
+
+旁路取消域、惰性定位、未稳定IME图及外层字段留白检查失败均单列诊断，不计最终点；最终横屏亲看输入文字露出，不称键盘下所有动作同时可见。292项输入清单与只读复核通过，首批和追加AVD均恢复并关闭。未重跑全集或release、未发布APK。
+
+[实施范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/LF8-VIDEO-TAG-DEFINITIONS.md)／[固定源码、原图、API／SQL与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/evidence/lf8-video-tag-definitions/README.md)。本段补TAG-01及相关UI组合；历史记录保留各自版本边界，当前验收表不再列视频定义真实CRUD为未做。原型1cbf605独立可移除未改；正式8760／NAS／SDK和签名／版本未改，#24/#33/#78及整体验收仍开放。后续继续合并后的完整来源／冷启组合、更多异常与目标手机／NAS及原签名升级；需用户配合部分按授权暂跳过。

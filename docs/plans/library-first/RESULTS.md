@@ -2,7 +2,7 @@
 
 更新：2026-10-27。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
-当前整合阶段：[PR #80](https://github.com/ShiJiJS/video_viewer/pull/80)，生产/驱动76a2f95，修复视频／阅读器返回后的权威库存刷新。25项相关检查、三轮42点与阅读相邻13点通过；预览标签写入、外部新增和定义删除后的固定范围／来源返回分别核对。下方各历史段落保留固定源码归属，完整终验仍开放。
+当前整合阶段：[PR #81](https://github.com/ShiJiJS/video_viewer/pull/81)，生产6f7ce97修复标签目录离页／销毁后的异步计数。51项相关检查、普通三轮45点与大字／横屏各15点通过；视频定义真实CRUD、同名隔离、失败重试和取消／重开读回已补证。下方各历史段落保留固定源码及驱动归属，完整终验仍开放。
 
 共享布局阶段基线为a9da395；最新图包续读阶段源码为c4aaf3b，见[真实续读约定](LF8-PACK-CONTINUATION.md)与[原生证据](evidence/lf8-pack-continuation/README.md)。后续分类总数阶段源码910cfb2，见[库存约定](LF8-CATALOG-COUNTS.md)与[库存/横屏及续读回归证据](evidence/lf8-catalog-counts/README.md)。该段补同快照总数、未知重试和标签缩高布局；续读段新增真实续读、独立摘要读取与菜单收键盘；共享布局的设置开关、标签确认区和主题稳定证据继续作为历史基线。图包呈现/排序阶段为4e391a2，见[约定](LF8-PACK-PRESENTATION.md)与[69点同版证据](evidence/lf8-pack-presentation/README.md)；主标题/作者和完整范围排序已补，新增大字长操作行可达性修正。原型树1cbf605未改。各阶段链接中的实现提交、真实服务/Demo区分、操作步骤与原始证据继续有效，但未来修改后须按受影响路径复核，不能把历史全集视为当前HEAD所有组合已通过。
 
@@ -28,7 +28,7 @@
 | LIB-01 | 新增视频中文顺序证据 / 未收口 | [LF4阶段记录](LF4.md)、[权威总数](evidence/lf8-catalog-counts/README.md)、[中文顺序](evidence/lf8-video-name-order/README.md) | 分类总数及视频列表/锚点/全选/固定范围的中文顺序已补证；最近段补显示标题/时长和24项/120项窗口、页尾锚点；长列表其它来源/失败组合继续。 |
 | LIB-02 | 新增卡片/网格证据 / 未收口 | [LF4阶段记录](LF4.md)、[续读](evidence/lf8-pack-continuation/README.md)、[总数](evidence/lf8-catalog-counts/README.md)、[呈现/排序](evidence/lf8-pack-presentation/README.md)、[卡片/网格](evidence/lf8-card-layout/README.md) | 标题/作者、完整范围中文排序、共享标签12/1.6与4dp间距及短横屏四列已补证；长列表完整来源/失败组合继续。 |
 | LIB-03 | 新增视频跨页顺序证据 / 未收口 | [LF4阶段记录](LF4.md)、[摘要独立于分页](LF8-PACK-CONTINUATION.md)、[视频排序约定](LF8-VIDEO-NAME-ORDER.md) | 图包28项和视频27项分别补完整排序/锚点/全选/固定范围一致，新增/改名后不重排；补来源标签删除后的0结果不扩库、显式清除后3项与返回权威总数刷新；其它完整来源/跨页失败组合继续。 |
-| TAG-01 | 新增标签定义与分配证据 / 未收口 | [标签管理](LF8-TAG-MANAGEMENT.md)、[标签分配](LF8-TAG-ASSIGNMENT.md)、[分配证据](evidence/lf8-tag-assignment/README.md) | 补两类型同名隔离、真实图包定义创建409/201、原ID改名保关联、移除取消/确认；本段新增两类实际入口创建与单项替换、错误草稿及保存后来源读回。真实视频UI定义改名／删除与更多失败组合继续。 |
+| TAG-01 | 新增视频定义完整操作及失败恢复 / 未收口 | [标签管理](LF8-TAG-MANAGEMENT.md)、[标签分配](LF8-TAG-ASSIGNMENT.md)、[视频定义75点](evidence/lf8-video-tag-definitions/README.md) | 视频真实创建409/201、跨类型同名独立、原ID改名保2关联、移除确认／取消草稿、改名／移除503同请求重试与重开读回已补；图包定义与关联保留。合并后的最终同版搜索／连接切换、更多受理后故障及目标手机组合继续。 |
 | TAG-02 | 新增单项替换与跨页批量追加证据 / 未收口 | [标签管理](LF8-TAG-MANAGEMENT.md)、[标签分配](LF8-TAG-ASSIGNMENT.md)、[分配证据](evidence/lf8-tag-assignment/README.md) | 已补61标签跨50项失败保选择/同offset重试、SQL交集=1、结果503实际重试；本段两类单项替换与跨24项分页全选27再排除1项追加，精确成员／53关联和命名空间独立核对。组件补只剩1项仍追加及固定目标；更多匹配范围／分页失败组合继续。 |
 | PRE-01 | 新增预览控件/范围证据 / 未收口 | [LF3](LF3.md)、[预览125点](evidence/lf8-preview-panels/README.md) | 已补真实单项/完整范围来源返回、暂停/拖进度/倍速/长按恢复和面板只读组合；完整手势录屏、全屏/后台/相邻解码异常及目标手机继续。 |
 | PRE-02 | 新增预览控件/范围证据 / 未收口 | [LF3](LF3.md)、[预览125点](evidence/lf8-preview-panels/README.md) | 已补真实单项/完整范围来源返回、暂停/拖进度/倍速/长按恢复和面板只读组合；完整手势录屏、全屏/后台/相邻解码异常及目标手机继续。 |
@@ -302,3 +302,13 @@ flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX�
 原先26个源文件SHA不变，唯一新增文件为固定路径公开flower-landscape副本，SHA和scanner真实ID单列；不是伪称前后文件完全相同。三轮各两个固定范围的成员/序号/游标、精确标签写入／定义删除、返回结果与历史由API/SQL分别核对。源控制入口错误键403且只在专用场景标志下启用，生产服务无此测试入口。早期采集上下文／嵌套滚动错误、先行未核对库存的三轮与组件中间失败均保留，不计修后成功。
 
 [实施边界](LF8-PREVIEW-STATE-STABILITY.md) / [原图、请求、SQL、源码与只读复核](evidence/lf8-preview-state-stability/README.md)。本段补PRE-03及LIB-03/NAV-02/REC-01明确组合；阅读器返回同类修正有组件和相邻原生证明，不冒称新增图包的NAS场景。没有新视觉方向或布局变更，旧#67视觉评审保留源码边界，本段未重做独立视觉评审。未重复全集或release构建、未发布APK；其它格式/异常与目标手机/NAS及原签名升级继续。原型树1cbf605独立可移除未改，正式8760/NAS/SDK未改，#24/#33/#78仍开放。下一步继续视频标签定义真实改名／删除及失败读回等明确余项。
+
+## 2026-10-27：视频标签定义与失败恢复（PR #81）
+
+[Draft PR #81](https://github.com/ShiJiJS/video_viewer/pull/81)基于#80，补视频标签目录真实创建／改名／移除及失败读回。生产6f7ce97增加计数入口mounted／active检查：关闭面板后列表迟到，已离开或销毁页面不继续计数。两类型×离开／销毁四项在旧码真实四败，修后与定义／分页／分配组件合计51项通过，analyze／格式／Ruff通过。
+
+普通同驱动三轮45点；大字68ce0fb、短横屏a40dc0f各完整15点，共75点，生产和组件树相同。真实409保草稿、视频“和服”201与图包同名独立、改名503原请求重试保原ID／2关联、移除确认取消回原草稿／关闭零写、移除503重试200、重开目录／返回媒体库均补证。每轮7次UI写请求、3条成功命令，图包完整5定义／8关联和种子进度保留，26源文件SHA不变，无播放轮次／会话／最近写入。
+
+旁路取消域、惰性定位、未稳定IME图及外层字段留白检查失败均单列诊断，不计最终点；最终横屏亲看输入文字露出，不称键盘下所有动作同时可见。292项输入清单与只读复核通过，首批和追加AVD均恢复并关闭。未重跑全集或release、未发布APK。
+
+[实施范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/LF8-VIDEO-TAG-DEFINITIONS.md)／[固定源码、原图、API／SQL与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/evidence/lf8-video-tag-definitions/README.md)。本段补TAG-01及相关UI组合；历史记录保留各自版本边界，当前验收表不再列视频定义真实CRUD为未做。原型1cbf605独立可移除未改；正式8760／NAS／SDK和签名／版本未改，#24/#33/#78及整体验收仍开放。后续继续合并后的完整来源／冷启组合、更多异常与目标手机／NAS及原签名升级；需用户配合部分按授权暂跳过。
