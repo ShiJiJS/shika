@@ -41,6 +41,9 @@ def create_fidelity_app():
     ):
         raise RuntimeError("Requires dedicated prototype-fidelity fixture")
     descriptions = json.loads(Path("/fixture/packs.json").read_text())
+    pagination = os.environ.get("VV_FIDELITY_THUMBNAIL_PAGINATION") == "enabled"
+    if pagination:
+        descriptions = [{**p, "pages": [p["pages"][i % len(p["pages"])] for i in range(30)]} if p["id"] == "summer" else p for p in descriptions]
     navigation = os.environ.get("VV_FIDELITY_NAVIGATION_RESTART") == "enabled"
     if navigation:
         originals = descriptions
@@ -63,7 +66,7 @@ def create_fidelity_app():
     lifecycle = os.environ.get("VV_FIDELITY_PREVIEW_LIFECYCLE") == "enabled"
     preview_mutation = os.environ.get("VV_FIDELITY_PREVIEW_MUTATION") == "enabled"
     tag_definitions = os.environ.get("VV_FIDELITY_TAG_DEFINITIONS") == "enabled"
-    thumbnails = os.environ.get("VV_FIDELITY_THUMBNAILS") == "enabled"
+    thumbnails = os.environ.get("VV_FIDELITY_THUMBNAILS") == "enabled" or pagination
     video_samples = [
         ("landscape", "横屏", "风里的花园"),
         ("portrait", "竖屏", "水边的花"),
@@ -86,6 +89,7 @@ def create_fidelity_app():
         "recent_video_failure": False, "recent_pack_failure": False,
         "public_additions": [],
         "tag_definition_failure": "off", "tag_definition_failures": [],
+        "thumbnail_manifest": "off", "manifest_events": [],
         "thumbnail_mode": "off", "thumbnail_attempts": {}, "thumbnail_streams": [],
     }
     trace = deque(maxlen=5000)
@@ -131,7 +135,23 @@ def create_fidelity_app():
                      and request.url.path.endswith("/thumbnail")
                      and request.headers.get("Authorization"))
         mode = state["thumbnail_mode"]
-        if thumbnail and mode != "off":
+        manifest_mode = state["thumbnail_manifest"]
+        if (pagination and request.method == "GET" and request.url.path.startswith("/api/v1/packs/")
+                and request.url.path.endswith("/pages") and request.query_params.get("offset") == manifest_mode.split("-")[-1]):
+            event = {"path": request.url.path, "offset": request.query_params["offset"], "cancelled": False, "released": False}
+            state["manifest_events"].append(event)
+            try:
+                while state["thumbnail_manifest"] == manifest_mode:
+                    if await request.is_disconnected():
+                        event["cancelled"] = True
+                        return JSONResponse({}, status_code=499)
+                    await asyncio.sleep(.05)
+                event["released"] = True
+                response = await call_next(request)
+            except asyncio.CancelledError:
+                event["cancelled"] = True
+                raise
+        elif thumbnail and mode != "off":
             path = request.url.path
             n = state["thumbnail_attempts"].get(path, 0) + 1
             state["thumbnail_attempts"][path] = n
@@ -197,7 +217,7 @@ def create_fidelity_app():
                     **({"body": body} if body is not None else {}),
                     **({"query": list(request.query_params.multi_items())}
                        if request.method == "GET" and request.url.path in
-                       ("/api/v1/videos", "/api/v1/videos/selection", "/api/v1/packs") else {}),
+                       ("/api/v1/videos", "/api/v1/videos/selection", "/api/v1/packs") or (request.method == "GET" and request.url.path.endswith("/pages")) else {}),
                 }
             )
         return response
@@ -284,6 +304,16 @@ def create_fidelity_app():
             raise HTTPException(422)
         state["thumbnail_mode"] = mode
         state["thumbnail_attempts"] = {}
+        return {"mode": mode}
+
+    @app.post("/__fidelity/thumbnail-manifest/{mode}")
+    def thumbnail_manifest(mode: str, x_fixture_key: str = Header()):
+        guard(x_fixture_key)
+        if not pagination:
+            raise HTTPException(404)
+        if mode not in {"hold-24", "hold-0", "off"}:
+            raise HTTPException(422)
+        state["thumbnail_manifest"] = mode
         return {"mode": mode}
 
     @app.post("/__fidelity/catalog-counts-failure/{mode}")
