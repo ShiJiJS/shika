@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import shutil
+import sqlite3
 import struct
 import subprocess
 import threading
@@ -339,6 +340,17 @@ def navigation_run(command, log):
     old_pid = None
     events = []
 
+    def snapshot(name):
+        connection = sqlite3.connect("file:" + str(base / "data/library.sqlite3") + "?mode=ro", uri=True)
+        connection.row_factory = sqlite3.Row
+        try:
+            connection.execute("BEGIN")
+            result = {table: sorted([dict(row) for row in connection.execute("SELECT * FROM " + table)], key=lambda row: json.dumps(row, sort_keys=True)) for table in ["playback_rounds", "round_entries", "recent_entries", "pack_sessions", "pack_session_entries", "pack_progress", "pack_preferences"]}
+            save(name, result)
+            return result
+        finally:
+            connection.close()
+
     def pid():
         return subprocess.run([str(ADB), "-s", "emulator-5554", "shell", "pidof", package], capture_output=True, text=True, timeout=10, check=False).stdout.strip()
 
@@ -365,6 +377,7 @@ def navigation_run(command, log):
                         save("before-stop.json", json.loads(line.split("NAVIGATION_STOP_READY:", 1)[1]))
                         old_pid = pid()
                         assert old_pid
+                        before_stop = snapshot("sql-before-stop.json")
                         shell("am", "force-stop", package)
                         assert not pid()
                         events.append({"event": "force-stop", "old_pid": old_pid, "absent": True})
@@ -380,6 +393,7 @@ def navigation_run(command, log):
                 assert old_pid and not pid(), "No verified force-stop"
             else:
                 assert code == 0 and reopened
+                assert snapshot("sql-after-resume.json") == before_stop
                 after_resume = state()["requests"]
                 assert after_resume[:len(before_resume)] == before_resume
                 save("resumed-requests.json", after_resume[len(before_resume):])

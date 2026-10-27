@@ -559,7 +559,12 @@ void main() {
       await tap(find.text('应用筛选'));
       await videoReady(27);
       await tap(find.byTooltip('视频排序'));
+      await t.pumpAndSettle();
       await tap(find.text('最近加入'));
+      await until(
+        () => video().entry.sort == VideoSort.newest,
+        'newest menu selection applied',
+      );
       await videoReady(27);
       final libraryVideo = video();
       final selectedVideo = libraryVideo.data.items.first.id;
