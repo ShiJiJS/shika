@@ -222,6 +222,10 @@ try:
                 time.sleep(0.2)
             save("native-" + mode + ".json", value)
             assert value["status"] == "ready", value
+            if mode != "codec":
+                assert value["details"]["rendering_started"] and value["details"]["seek_completed"]
+                assert value["details"]["view_width"] > value["details"]["view_height"]
+                assert value["details"]["root_width"] > value["details"]["root_height"]
             assert value["source_sha256"] == sha(
                 ROOT / "apps/mobile/assets/media/flower-landscape.mp4"
             )

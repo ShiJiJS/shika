@@ -98,26 +98,54 @@ class VideoRenderProbeActivity : Activity() {
         current.setOnErrorListener { _, what, extra ->
             write("error", JSONObject().put("what", what).put("extra", extra)); true
         }
-        current.setOnPreparedListener { p ->
-            root.post {
-                if (destroyed || player !== p) return@post
-                val scale = minOf(root.width.toDouble() / p.videoWidth, root.height.toDouble() / p.videoHeight)
-                view.layoutParams = FrameLayout.LayoutParams((p.videoWidth * scale).toInt(), (p.videoHeight * scale).toInt(), Gravity.CENTER)
-                p.start()
-                p.seekTo(3000L, MediaPlayer.SEEK_CLOSEST)
-            }
-        }
-        current.setOnSeekCompleteListener { p ->
+        var rendered = false
+        var sought = false
+        var pauseScheduled = false
+        fun pauseAfterFrame() {
+            if (!rendered || !sought || pauseScheduled) return
+            pauseScheduled = true
             handler.postDelayed({
-                if (destroyed || player !== p) return@postDelayed
-                p.pause()
-                val details = JSONObject().put("video_width", p.videoWidth).put("video_height", p.videoHeight)
-                    .put("position_ms", p.currentPosition).put("playing", p.isPlaying)
-                    .put("surface_type", view.javaClass.simpleName).put("metrics", p.metrics.toString())
+                if (destroyed || player !== current) return@postDelayed
+                current.pause()
+                val details = JSONObject().put("video_width", current.videoWidth).put("video_height", current.videoHeight)
+                    .put("position_ms", current.currentPosition).put("playing", current.isPlaying)
+                    .put("surface_type", view.javaClass.simpleName).put("metrics", current.metrics.toString())
                     .put("view_width", view.width).put("view_height", view.height)
+                    .put("rendering_started", rendered).put("seek_completed", sought)
+                    .put("root_width", root.width).put("root_height", root.height)
                 write("ready", details)
-            }, 300)
+            }, 500)
         }
+        current.setOnInfoListener { _, what, _ ->
+            if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
+                rendered = true
+                pauseAfterFrame()
+            }
+            false
+        }
+        current.setOnPreparedListener { p ->
+            val startWhenLaidOut = object : Runnable {
+                override fun run() {
+                    if (destroyed || player !== p) return
+                    if (root.width <= root.height || root.height == 0) {
+                        handler.postDelayed(this, 40)
+                        return
+                    }
+                    val scale = minOf(root.width.toDouble() / p.videoWidth, root.height.toDouble() / p.videoHeight)
+                    val width = (p.videoWidth * scale).toInt()
+                    val height = (p.videoHeight * scale).toInt()
+                    if (view.width != width || view.height != height) {
+                        view.layoutParams = FrameLayout.LayoutParams(width, height, Gravity.CENTER)
+                        handler.postDelayed(this, 40)
+                        return
+                    }
+                    p.start()
+                    p.seekTo(3000L, MediaPlayer.SEEK_CLOSEST)
+                }
+            }
+            handler.post(startWhenLaidOut)
+        }
+        current.setOnSeekCompleteListener { _ -> sought = true; pauseAfterFrame() }
         current.prepareAsync()
     }
 
