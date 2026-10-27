@@ -1,0 +1,24 @@
+{
+  "evidence_verified": true,
+  "source": "5373baa9ebf8213ac5a6437a9d8f0225540808dc",
+  "checkpoints": 24,
+  "cases": {
+    "small": {
+      "bytes": 19207,
+      "sha256": "46e5570f0d1c6bf3ddf6cb31925a69c617696671f4e2971b7c3e05c36d838711",
+      "app_points": 8,
+      "system_actions": 2,
+      "note_tasks": 0
+    },
+    "large-cancel": {
+      "bytes": 40964503,
+      "sha256": "b16510b8d4f532f976bb0ab73052e191700d87503889a6c74b3ef3ac749ef0bd",
+      "app_points": 10,
+      "system_actions": 4,
+      "note_tasks": 18000
+    }
+  },
+  "manifest_inputs": 271,
+  "production_changes": false,
+  "scope": "one normal small file; one large file with real cancellation; no release/phone/cloud-provider claim"
+}

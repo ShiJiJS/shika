@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-native-archive-roundtrip.py", line 530, in <module>
+    main()
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-native-archive-roundtrip.py", line 395, in main
+    assert len(raw) == save_descriptor["bytes"]
+AssertionError

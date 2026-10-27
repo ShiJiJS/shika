@@ -1,0 +1,15 @@
+{
+  "command": [
+    "am",
+    "start",
+    "-a",
+    "android.intent.action.RUN",
+    "-f",
+    "0x20000000",
+    "-n",
+    "io.github.shijijs.video_viewer/.MainActivity"
+  ],
+  "stdout": "Starting: Intent { act=android.intent.action.RUN flg=0x20000000 cmp=io.github.shijijs.video_viewer/.MainActivity }\n",
+  "stderr": "",
+  "reason": "previous orphaned DocumentsUI was closed; Flutter is still waiting with no App PID"
+}

@@ -1,0 +1,816 @@
+{
+  "columns": {
+    "roots": [
+      "id",
+      "name",
+      "path",
+      "mount_id",
+      "kind",
+      "enabled"
+    ],
+    "tags": [
+      "id",
+      "name"
+    ],
+    "pack_tag_definitions": [
+      "id",
+      "name"
+    ],
+    "packs": [
+      "id",
+      "root_id",
+      "path",
+      "name",
+      "content_version",
+      "page_count"
+    ],
+    "pack_pages": [
+      "id",
+      "pack_id",
+      "relative_path",
+      "ordinal",
+      "width",
+      "height",
+      "size",
+      "format",
+      "sha256"
+    ]
+  },
+  "archive_rows": {
+    "roots": [
+      {
+        "id": "1ab6f5ae-8667-4187-9d9a-aa195f981853",
+        "name": "Paged root 06",
+        "path": "/media/videos/目录06",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": false
+      },
+      {
+        "id": "1d9fba29-b09c-48f2-95ae-688458b52738",
+        "name": "Paged root 05",
+        "path": "/media/videos/目录05",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "1e6b9d29-a587-4478-b2c7-61825620938d",
+        "name": "Paged root 21",
+        "path": "/media/videos/目录21",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": false
+      },
+      {
+        "id": "30ed7579-d7f5-4fa9-b917-2f7d7a0cb24e",
+        "name": "Paged root 07",
+        "path": "/media/videos/目录07",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "3c0f32aa-f28e-4896-ab8a-3a99e21fa2e1",
+        "name": "Paged root 11",
+        "path": "/media/videos/目录11",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "43f624f5-c171-414e-b6d9-911d39b70264",
+        "name": "Paged root 16",
+        "path": "/media/videos/目录16",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "483a48ee-546a-43cb-b5a5-a2ea1cadac57",
+        "name": "Paged root 22",
+        "path": "/media/videos/目录22",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "5836a1c8-06b8-4d62-9724-9add4d790337",
+        "name": "Paged root 23",
+        "path": "/media/videos/目录23",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "5eca9654-0af4-4bc9-bd7e-40fb9799f7ee",
+        "name": "Paged root 03",
+        "path": "/media/videos/目录03",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": false
+      },
+      {
+        "id": "6e988384-3dbe-42ec-a5ce-50bed184d0ec",
+        "name": "Paged root 00",
+        "path": "/media/videos/目录00",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": false
+      },
+      {
+        "id": "757c774c-ed52-446f-9893-bbdcd11f3cf3",
+        "name": "Paged root 18",
+        "path": "/media/videos/目录18",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": false
+      },
+      {
+        "id": "7957161c-2330-4c97-9b3b-aa1849a9eeaa",
+        "name": "Paged root 24",
+        "path": "/media/videos/目录24",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": false
+      },
+      {
+        "id": "81712797-4adc-48a7-9b6c-44cc2a84ab67",
+        "name": "Paged root 12",
+        "path": "/media/videos/目录12",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": false
+      },
+      {
+        "id": "89033aef-4bc0-411b-9c9a-3d70bbe37b14",
+        "name": "Paged root 13",
+        "path": "/media/videos/目录13",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "9ee26f06-6118-4fd7-b47a-837ded9470dc",
+        "name": "Paged root 04",
+        "path": "/media/videos/目录04",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "b11da947-e804-41d3-bdf0-9c6d7d52eeb1",
+        "name": "Paged root 20",
+        "path": "/media/videos/目录20",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "c0a33900-df44-4468-be4d-8d5c7652237a",
+        "name": "Paged root 14",
+        "path": "/media/videos/目录14",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "c6ea690f-7a22-4ea9-9a4d-3e9f567660fa",
+        "name": "Paged root 02",
+        "path": "/media/videos/目录02",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "cbc93387-877e-45f1-9d80-f68ef09359a6",
+        "name": "Paged root 08",
+        "path": "/media/videos/目录08",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "d0be4b31-bdad-469c-830a-8438e84acbd3",
+        "name": "Paged root 01",
+        "path": "/media/videos/目录01",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "da1731e2-6e25-4fac-9106-567482541e1c",
+        "name": "Paged root 15",
+        "path": "/media/videos/目录15",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": false
+      },
+      {
+        "id": "e15ae3c5-3ffe-4457-ba5a-e0076f0e07fe",
+        "name": "Paged root 17",
+        "path": "/media/videos/目录17",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "e1615cf3-2d57-4716-ac0c-7aa59deca674",
+        "name": "Paged root 19",
+        "path": "/media/videos/目录19",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "e9b7a02f-d7f5-4a7c-874b-6801d486d5cc",
+        "name": "Paged root 10",
+        "path": "/media/videos/目录10",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "f015b8b2-733e-4ae0-b241-68dace2b9691",
+        "name": "Paged root 09",
+        "path": "/media/videos/目录09",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": false
+      },
+      {
+        "id": "packs",
+        "name": "Pack test root",
+        "path": "/media/packs",
+        "mount_id": "packs",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "videos",
+        "name": "Videos",
+        "path": "/media/videos",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      }
+    ],
+    "tags": [
+      {
+        "id": "159eb163-e087-42af-ab9c-8e0ba2e44729",
+        "name": "Initial tags"
+      }
+    ],
+    "pack_tag_definitions": [
+      {
+        "id": "a0d634eb-057a-4e35-adca-6ebe8c7ab93a",
+        "name": "Initial pack-tags"
+      }
+    ],
+    "packs": [
+      {
+        "id": "89f8dd77-8cfe-4cff-aa68-8b0d09a4fdd9",
+        "root_id": "packs",
+        "path": "/media/packs/示例图包",
+        "name": "示例图包",
+        "content_version": 1,
+        "page_count": 1
+      }
+    ],
+    "pack_pages": [
+      {
+        "id": "7fc31db8-d5ef-4004-bf1c-26f15e03428f",
+        "pack_id": "89f8dd77-8cfe-4cff-aa68-8b0d09a4fdd9",
+        "relative_path": "001.png",
+        "ordinal": 0,
+        "width": 320,
+        "height": 480,
+        "size": 1471,
+        "format": "PNG",
+        "sha256": "b25915c6207c1b2cee47851b67a719a9199d6e8b309ede333b427aa17a472f84"
+      }
+    ]
+  },
+  "expected_restored_rows": {
+    "roots": [
+      {
+        "id": "1ab6f5ae-8667-4187-9d9a-aa195f981853",
+        "name": "Paged root 06",
+        "path": "/media/videos/目录06",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": false
+      },
+      {
+        "id": "1d9fba29-b09c-48f2-95ae-688458b52738",
+        "name": "Paged root 05",
+        "path": "/media/videos/目录05",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "1e6b9d29-a587-4478-b2c7-61825620938d",
+        "name": "Paged root 21",
+        "path": "/media/videos/目录21",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": false
+      },
+      {
+        "id": "30ed7579-d7f5-4fa9-b917-2f7d7a0cb24e",
+        "name": "Paged root 07",
+        "path": "/media/videos/目录07",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "3c0f32aa-f28e-4896-ab8a-3a99e21fa2e1",
+        "name": "Paged root 11",
+        "path": "/media/videos/目录11",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "43f624f5-c171-414e-b6d9-911d39b70264",
+        "name": "Paged root 16",
+        "path": "/media/videos/目录16",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "483a48ee-546a-43cb-b5a5-a2ea1cadac57",
+        "name": "Paged root 22",
+        "path": "/media/videos/目录22",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "5836a1c8-06b8-4d62-9724-9add4d790337",
+        "name": "Paged root 23",
+        "path": "/media/videos/目录23",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "5eca9654-0af4-4bc9-bd7e-40fb9799f7ee",
+        "name": "Paged root 03",
+        "path": "/media/videos/目录03",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": false
+      },
+      {
+        "id": "6e988384-3dbe-42ec-a5ce-50bed184d0ec",
+        "name": "Paged root 00",
+        "path": "/media/videos/目录00",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": false
+      },
+      {
+        "id": "757c774c-ed52-446f-9893-bbdcd11f3cf3",
+        "name": "Paged root 18",
+        "path": "/media/videos/目录18",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": false
+      },
+      {
+        "id": "7957161c-2330-4c97-9b3b-aa1849a9eeaa",
+        "name": "Paged root 24",
+        "path": "/media/videos/目录24",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": false
+      },
+      {
+        "id": "81712797-4adc-48a7-9b6c-44cc2a84ab67",
+        "name": "Paged root 12",
+        "path": "/media/videos/目录12",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": false
+      },
+      {
+        "id": "89033aef-4bc0-411b-9c9a-3d70bbe37b14",
+        "name": "Paged root 13",
+        "path": "/media/videos/目录13",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "9ee26f06-6118-4fd7-b47a-837ded9470dc",
+        "name": "Paged root 04",
+        "path": "/media/videos/目录04",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "b11da947-e804-41d3-bdf0-9c6d7d52eeb1",
+        "name": "Paged root 20",
+        "path": "/media/videos/目录20",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "c0a33900-df44-4468-be4d-8d5c7652237a",
+        "name": "Paged root 14",
+        "path": "/media/videos/目录14",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "c6ea690f-7a22-4ea9-9a4d-3e9f567660fa",
+        "name": "Paged root 02",
+        "path": "/media/videos/目录02",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "cbc93387-877e-45f1-9d80-f68ef09359a6",
+        "name": "Paged root 08",
+        "path": "/media/videos/目录08",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "d0be4b31-bdad-469c-830a-8438e84acbd3",
+        "name": "Paged root 01",
+        "path": "/media/videos/目录01",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "da1731e2-6e25-4fac-9106-567482541e1c",
+        "name": "Paged root 15",
+        "path": "/media/videos/目录15",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": false
+      },
+      {
+        "id": "e15ae3c5-3ffe-4457-ba5a-e0076f0e07fe",
+        "name": "Paged root 17",
+        "path": "/media/videos/目录17",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "e1615cf3-2d57-4716-ac0c-7aa59deca674",
+        "name": "Paged root 19",
+        "path": "/media/videos/目录19",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "e9b7a02f-d7f5-4a7c-874b-6801d486d5cc",
+        "name": "Paged root 10",
+        "path": "/media/videos/目录10",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      },
+      {
+        "id": "f015b8b2-733e-4ae0-b241-68dace2b9691",
+        "name": "Paged root 09",
+        "path": "/media/videos/目录09",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": false
+      },
+      {
+        "id": "packs",
+        "name": "Pack test root",
+        "path": "/media/packs",
+        "mount_id": "packs",
+        "kind": "pack",
+        "enabled": true
+      },
+      {
+        "id": "videos",
+        "name": "Videos",
+        "path": "/media/videos",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": true
+      }
+    ],
+    "tags": [
+      {
+        "id": "159eb163-e087-42af-ab9c-8e0ba2e44729",
+        "name": "Initial tags"
+      }
+    ],
+    "pack_tag_definitions": [
+      {
+        "id": "a0d634eb-057a-4e35-adca-6ebe8c7ab93a",
+        "name": "Initial pack-tags"
+      }
+    ],
+    "packs": [
+      {
+        "id": "89f8dd77-8cfe-4cff-aa68-8b0d09a4fdd9",
+        "root_id": "packs",
+        "path": "/media/packs/示例图包",
+        "name": "示例图包",
+        "content_version": 2,
+        "page_count": 1
+      }
+    ],
+    "pack_pages": [
+      {
+        "id": "7fc31db8-d5ef-4004-bf1c-26f15e03428f",
+        "pack_id": "89f8dd77-8cfe-4cff-aa68-8b0d09a4fdd9",
+        "relative_path": "001.png",
+        "ordinal": 0,
+        "width": 320,
+        "height": 480,
+        "size": 1471,
+        "format": "PNG",
+        "sha256": "b25915c6207c1b2cee47851b67a719a9199d6e8b309ede333b427aa17a472f84"
+      }
+    ]
+  },
+  "restored_rows": {
+    "roots": [
+      {
+        "id": "1ab6f5ae-8667-4187-9d9a-aa195f981853",
+        "name": "Paged root 06",
+        "path": "/media/videos/目录06",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 0
+      },
+      {
+        "id": "1d9fba29-b09c-48f2-95ae-688458b52738",
+        "name": "Paged root 05",
+        "path": "/media/videos/目录05",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 1
+      },
+      {
+        "id": "1e6b9d29-a587-4478-b2c7-61825620938d",
+        "name": "Paged root 21",
+        "path": "/media/videos/目录21",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 0
+      },
+      {
+        "id": "30ed7579-d7f5-4fa9-b917-2f7d7a0cb24e",
+        "name": "Paged root 07",
+        "path": "/media/videos/目录07",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 1
+      },
+      {
+        "id": "3c0f32aa-f28e-4896-ab8a-3a99e21fa2e1",
+        "name": "Paged root 11",
+        "path": "/media/videos/目录11",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 1
+      },
+      {
+        "id": "43f624f5-c171-414e-b6d9-911d39b70264",
+        "name": "Paged root 16",
+        "path": "/media/videos/目录16",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 1
+      },
+      {
+        "id": "483a48ee-546a-43cb-b5a5-a2ea1cadac57",
+        "name": "Paged root 22",
+        "path": "/media/videos/目录22",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 1
+      },
+      {
+        "id": "5836a1c8-06b8-4d62-9724-9add4d790337",
+        "name": "Paged root 23",
+        "path": "/media/videos/目录23",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 1
+      },
+      {
+        "id": "5eca9654-0af4-4bc9-bd7e-40fb9799f7ee",
+        "name": "Paged root 03",
+        "path": "/media/videos/目录03",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 0
+      },
+      {
+        "id": "6e988384-3dbe-42ec-a5ce-50bed184d0ec",
+        "name": "Paged root 00",
+        "path": "/media/videos/目录00",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 0
+      },
+      {
+        "id": "757c774c-ed52-446f-9893-bbdcd11f3cf3",
+        "name": "Paged root 18",
+        "path": "/media/videos/目录18",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 0
+      },
+      {
+        "id": "7957161c-2330-4c97-9b3b-aa1849a9eeaa",
+        "name": "Paged root 24",
+        "path": "/media/videos/目录24",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 0
+      },
+      {
+        "id": "81712797-4adc-48a7-9b6c-44cc2a84ab67",
+        "name": "Paged root 12",
+        "path": "/media/videos/目录12",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 0
+      },
+      {
+        "id": "89033aef-4bc0-411b-9c9a-3d70bbe37b14",
+        "name": "Paged root 13",
+        "path": "/media/videos/目录13",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 1
+      },
+      {
+        "id": "9ee26f06-6118-4fd7-b47a-837ded9470dc",
+        "name": "Paged root 04",
+        "path": "/media/videos/目录04",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 1
+      },
+      {
+        "id": "b11da947-e804-41d3-bdf0-9c6d7d52eeb1",
+        "name": "Paged root 20",
+        "path": "/media/videos/目录20",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 1
+      },
+      {
+        "id": "c0a33900-df44-4468-be4d-8d5c7652237a",
+        "name": "Paged root 14",
+        "path": "/media/videos/目录14",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 1
+      },
+      {
+        "id": "c6ea690f-7a22-4ea9-9a4d-3e9f567660fa",
+        "name": "Paged root 02",
+        "path": "/media/videos/目录02",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 1
+      },
+      {
+        "id": "cbc93387-877e-45f1-9d80-f68ef09359a6",
+        "name": "Paged root 08",
+        "path": "/media/videos/目录08",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 1
+      },
+      {
+        "id": "d0be4b31-bdad-469c-830a-8438e84acbd3",
+        "name": "Paged root 01",
+        "path": "/media/videos/目录01",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 1
+      },
+      {
+        "id": "da1731e2-6e25-4fac-9106-567482541e1c",
+        "name": "Paged root 15",
+        "path": "/media/videos/目录15",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 0
+      },
+      {
+        "id": "e15ae3c5-3ffe-4457-ba5a-e0076f0e07fe",
+        "name": "Paged root 17",
+        "path": "/media/videos/目录17",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 1
+      },
+      {
+        "id": "e1615cf3-2d57-4716-ac0c-7aa59deca674",
+        "name": "Paged root 19",
+        "path": "/media/videos/目录19",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 1
+      },
+      {
+        "id": "e9b7a02f-d7f5-4a7c-874b-6801d486d5cc",
+        "name": "Paged root 10",
+        "path": "/media/videos/目录10",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 1
+      },
+      {
+        "id": "f015b8b2-733e-4ae0-b241-68dace2b9691",
+        "name": "Paged root 09",
+        "path": "/media/videos/目录09",
+        "mount_id": "videos",
+        "kind": "pack",
+        "enabled": 0
+      },
+      {
+        "id": "packs",
+        "name": "Pack test root",
+        "path": "/media/packs",
+        "mount_id": "packs",
+        "kind": "pack",
+        "enabled": 1
+      },
+      {
+        "id": "videos",
+        "name": "Videos",
+        "path": "/media/videos",
+        "mount_id": "videos",
+        "kind": "video",
+        "enabled": 1
+      }
+    ],
+    "tags": [
+      {
+        "id": "159eb163-e087-42af-ab9c-8e0ba2e44729",
+        "name": "Initial tags"
+      }
+    ],
+    "pack_tag_definitions": [
+      {
+        "id": "a0d634eb-057a-4e35-adca-6ebe8c7ab93a",
+        "name": "Initial pack-tags"
+      }
+    ],
+    "packs": [
+      {
+        "id": "89f8dd77-8cfe-4cff-aa68-8b0d09a4fdd9",
+        "root_id": "packs",
+        "path": "/media/packs/示例图包",
+        "name": "示例图包",
+        "content_version": 2,
+        "page_count": 1
+      }
+    ],
+    "pack_pages": [
+      {
+        "id": "7fc31db8-d5ef-4004-bf1c-26f15e03428f",
+        "pack_id": "89f8dd77-8cfe-4cff-aa68-8b0d09a4fdd9",
+        "relative_path": "001.png",
+        "ordinal": 0,
+        "width": 320,
+        "height": 480,
+        "size": 1471,
+        "format": "PNG",
+        "sha256": "b25915c6207c1b2cee47851b67a719a9199d6e8b309ede333b427aa17a472f84"
+      }
+    ]
+  },
+  "matching": true,
+  "restore_tasks": [
+    {
+      "id": "07f58f08-4d0b-4e27-ae25-a11a4eed0a6f",
+      "kind": "backup_restore_v2",
+      "status": "completed",
+      "phase": "completed",
+      "result": "{\"preview_id\": \"fb15066d-fa27-4fee-910d-90b210851708\", \"root_mapping\": {\"1ab6f5ae-8667-4187-9d9a-aa195f981853\": \"/media/videos/\\u76ee\\u5f5506\", \"1d9fba29-b09c-48f2-95ae-688458b52738\": \"/media/videos/\\u76ee\\u5f5505\", \"1e6b9d29-a587-4478-b2c7-61825620938d\": \"/media/videos/\\u76ee\\u5f5521\", \"30ed7579-d7f5-4fa9-b917-2f7d7a0cb24e\": \"/media/videos/\\u76ee\\u5f5507\", \"3c0f32aa-f28e-4896-ab8a-3a99e21fa2e1\": \"/media/videos/\\u76ee\\u5f5511\", \"43f624f5-c171-414e-b6d9-911d39b70264\": \"/media/videos/\\u76ee\\u5f5516\", \"483a48ee-546a-43cb-b5a5-a2ea1cadac57\": \"/media/videos/\\u76ee\\u5f5522\", \"5836a1c8-06b8-4d62-9724-9add4d790337\": \"/media/videos/\\u76ee\\u5f5523\", \"5eca9654-0af4-4bc9-bd7e-40fb9799f7ee\": \"/media/videos/\\u76ee\\u5f5503\", \"6e988384-3dbe-42ec-a5ce-50bed184d0ec\": \"/media/videos/\\u76ee\\u5f5500\", \"757c774c-ed52-446f-9893-bbdcd11f3cf3\": \"/media/videos/\\u76ee\\u5f5518\", \"7957161c-2330-4c97-9b3b-aa1849a9eeaa\": \"/media/videos/\\u76ee\\u5f5524\", \"81712797-4adc-48a7-9b6c-44cc2a84ab67\": \"/media/videos/\\u76ee\\u5f5512\", \"89033aef-4bc0-411b-9c9a-3d70bbe37b14\": \"/media/videos/\\u76ee\\u5f5513\", \"9ee26f06-6118-4fd7-b47a-837ded9470dc\": \"/media/videos/\\u76ee\\u5f5504\", \"b11da947-e804-41d3-bdf0-9c6d7d52eeb1\": \"/media/videos/\\u76ee\\u5f5520\", \"c0a33900-df44-4468-be4d-8d5c7652237a\": \"/media/videos/\\u76ee\\u5f5514\", \"c6ea690f-7a22-4ea9-9a4d-3e9f567660fa\": \"/media/videos/\\u76ee\\u5f5502\", \"cbc93387-877e-45f1-9d80-f68ef09359a6\": \"/media/videos/\\u76ee\\u5f5508\", \"d0be4b31-bdad-469c-830a-8438e84acbd3\": \"/media/videos/\\u76ee\\u5f5501\", \"da1731e2-6e25-4fac-9106-567482541e1c\": \"/media/videos/\\u76ee\\u5f5515\", \"e15ae3c5-3ffe-4457-ba5a-e0076f0e07fe\": \"/media/videos/\\u76ee\\u5f5517\", \"e1615cf3-2d57-4716-ac0c-7aa59deca674\": \"/media/videos/\\u76ee\\u5f5519\", \"e9b7a02f-d7f5-4a7c-874b-6801d486d5cc\": \"/media/videos/\\u76ee\\u5f5510\", \"f015b8b2-733e-4ae0-b241-68dace2b9691\": \"/media/videos/\\u76ee\\u5f5509\", \"packs\": \"/media/packs\", \"videos\": \"/media/videos\"}, \"archive_version\": 2, \"pre_snapshot_id\": \"55c0f7f2-889f-4d43-b49e-e394eafafd2b\", \"restored\": true, \"counts\": {\"pack_sessions\": 0, \"pack_tag_definitions\": 1, \"playback_rounds\": 0, \"request_records\": 5, \"roots\": 27, \"tags\": 1, \"tasks\": 18006, \"directories\": 28, \"file_operations\": 0, \"pack_file_operations\": 0, \"pack_missing_cleanups\": 0, \"pack_purge_plans\": 0, \"pack_restore_plans\": 0, \"packs\": 1, \"videos\": 0, \"file_steps\": 0, \"pack_missing_members\": 0, \"pack_pages\": 1, \"pack_preferences\": 0, \"pack_purge_executions\": 0, \"pack_restore_batches\": 0, \"pack_session_entries\": 0, \"pack_tag_links\": 0, \"pack_trash_items\": 0, \"recent_entries\": 0, \"round_entries\": 0, \"trash_items\": 0, \"video_tags\": 0, \"pack_file_steps\": 0, \"pack_progress\": 0, \"pack_purge_entries\": 0, \"pack_restore_members\": 0, \"pack_purge_steps\": 0}, \"imported_counts\": {\"pack_sessions\": 0, \"pack_tag_definitions\": 1, \"playback_rounds\": 0, \"request_records\": 3, \"roots\": 27, \"tags\": 1, \"tasks\": 18003, \"directories\": 28, \"file_operations\": 0, \"pack_file_operations\": 0, \"pack_missing_cleanups\": 0, \"pack_purge_plans\": 0, \"pack_restore_plans\": 0, \"packs\": 1, \"videos\": 0, \"file_steps\": 0, \"pack_missing_members\": 0, \"pack_pages\": 1, \"pack_preferences\": 0, \"pack_purge_executions\": 0, \"pack_restore_batches\": 0, \"pack_session_entries\": 0, \"pack_tag_links\": 0, \"pack_trash_items\": 0, \"recent_entries\": 0, \"round_entries\": 0, \"trash_items\": 0, \"video_tags\": 0, \"pack_file_steps\": 0, \"pack_progress\": 0, \"pack_purge_entries\": 0, \"pack_restore_members\": 0, \"pack_purge_steps\": 0}, \"history_ref\": \"07f58f08-4d0b-4e27-ae25-a11a4eed0a6f\", \"historical_operations_replayed\": 0}"
+    }
+  ],
+  "capture": "read-only SQLite after owned container exited",
+  "pack_version_rule": "backup_restore_graph.py:437 max(imported,current)+1; current unchanged since export"
+}

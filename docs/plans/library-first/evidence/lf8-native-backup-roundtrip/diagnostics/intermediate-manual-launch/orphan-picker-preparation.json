@@ -1,0 +1,6 @@
+{
+  "action": "Back closes orphaned previous DocumentsUI before current App has a process",
+  "before": "  mCurrentFocus=Window{46e0c48 u0 com.google.android.documentsui/com.android.documentsui.picker.PickActivity}\n  mFocusedApp=ActivityRecord{125892745 u0 com.google.android.documentsui/com.android.documentsui.picker.PickActivity t725}",
+  "app_pid_before": "",
+  "after": "  mCurrentFocus=Window{c9e7813 u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}\n  mFocusedApp=ActivityRecord{210913219 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t2}"
+}
