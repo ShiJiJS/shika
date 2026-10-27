@@ -560,7 +560,21 @@ void main() {
       await videoReady(27);
       await tap(find.byTooltip('视频排序'));
       await t.pumpAndSettle();
-      await tap(find.text('最近加入'));
+      await capture('nav-sort-menu');
+      await tap(
+        find.byWidgetPredicate(
+          (w) => w is PopupMenuItem<VideoSort> && w.value == VideoSort.newest,
+        ),
+      );
+      await capture(
+        'nav-sort-selected',
+        extra: {
+          'sort_menu_present': find
+              .byType(PopupMenuItem<VideoSort>)
+              .evaluate()
+              .isNotEmpty,
+        },
+      );
       await until(
         () => video().entry.sort == VideoSort.newest,
         'newest menu selection applied',
