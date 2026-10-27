@@ -221,6 +221,17 @@ void main() {
           'explicit sequential order',
         );
         final target = find.byKey(Key('queue-video-${catalogIds.first}'));
+        await until(
+          () =>
+              target.evaluate().length == 1 &&
+              t
+                      .widget<ChoiceChip>(
+                        find.byKey(const Key('queue-order-sequential')),
+                      )
+                      .onSelected !=
+                  null,
+          'new sequence queue rows loaded and order action enabled',
+        );
         if (target.hitTestable().evaluate().isEmpty) {
           await t.ensureVisible(target);
         }
