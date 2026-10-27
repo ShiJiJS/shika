@@ -236,7 +236,7 @@ void main() {
     await error('户外');
     await capture('tagdef-create-conflict');
     await tap(find.byTooltip('关闭面板'));
-    expect((await repo.loadVideoTags()).total, 3);
+    expect((await repo.api.json('GET', '/api/v1/tags'))['total'], 3);
     await tap(find.byTooltip('新建视频标签'));
     await enter('和服');
     await save();
@@ -244,10 +244,24 @@ void main() {
       () => field.evaluate().isEmpty && state().tags.any((v) => v.name == '和服'),
       'created video-only definition',
     );
-    final created = (await repo.loadVideoTags(search: '和服')).items.single.id;
+    final created =
+        ((await repo.api.json(
+                      'GET',
+                      '/api/v1/tags',
+                      query: {'search': '和服'},
+                    ))['items']
+                    as List)
+                .single['id']
+            as String;
     expect(created, isNot(packKimonoId));
     expect(
-      (await repo.loadPackTags(search: '和服')).items.single.id,
+      ((await repo.api.json(
+                'GET',
+                '/api/v1/pack-tags',
+                query: {'search': '和服'},
+              ))['items']
+              as List)
+          .single['id'],
       packKimonoId,
     );
     await capture('tagdef-created');
@@ -274,7 +288,13 @@ void main() {
     expect(state().selected, {videoId});
     await until(() => state().matching == 2, 'rename retained associations');
     expect(
-      (await repo.loadVideoTags(search: '户外视频改名')).items.single.id,
+      ((await repo.api.json(
+                'GET',
+                '/api/v1/tags',
+                query: {'search': '户外视频改名'},
+              ))['items']
+              as List)
+          .single['id'],
       videoId,
     );
     await capture('tagdef-renamed');
