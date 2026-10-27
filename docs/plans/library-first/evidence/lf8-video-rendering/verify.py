@@ -72,6 +72,15 @@ def main():
         and "__pycache__" not in p.parts
     }
     assert actual == set(manifest)
+    tracked = set(
+        subprocess.check_output(
+            ["git", "ls-files", str(HERE)], cwd=ROOT, text=True
+        ).splitlines()
+    )
+    assert {
+        str((HERE / name).relative_to(ROOT))
+        for name in [*manifest, "manifest.json", "verification.json"]
+    } <= tracked
     for name, expected in manifest.items():
         assert sha(HERE / name) == expected, name
     source = subprocess.check_output(

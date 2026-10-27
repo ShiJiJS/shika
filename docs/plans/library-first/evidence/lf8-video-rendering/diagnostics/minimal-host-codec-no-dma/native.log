@@ -1,0 +1,435 @@
+--------- beginning of main
+10-27 10:35:43.693   462   462 D AndroidRuntime: >>>>>> START com.android.internal.os.ZygoteInit uid 0 <<<<<<
+10-27 10:35:43.699   462   462 I AndroidRuntime: Using default boot image
+10-27 10:35:43.699   462   462 I AndroidRuntime: Leaving lock profiling enabled
+10-27 10:35:43.748   602   620 D CCodec  : hidl based PersistentSurface created
+10-27 10:35:46.249   671   931 D CCodec  : allocate(c2.android.vorbis.decoder)
+10-27 10:35:46.256   671   931 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:35:46.261   671   932 D CCodec  : allocate(c2.android.vorbis.decoder)
+10-27 10:35:46.262   671   931 I CCodec  : Created component [c2.android.vorbis.decoder] for [c2.android.vorbis.decoder]
+10-27 10:35:46.263   671   932 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:35:46.267   671   932 I CCodec  : Created component [c2.android.vorbis.decoder] for [c2.android.vorbis.decoder]
+10-27 10:35:46.272   671   927 E MediaCodec: Media Quality Service not found.
+10-27 10:35:46.272   671   932 D CCodec  : [c2.android.vorbis.decoder] buffers are bound to CCodec for this session
+10-27 10:35:46.273   671   932 D CCodec  : encoding statistics level = 0
+10-27 10:35:46.273   671   932 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:35:46.273   671   932 D CCodec  :   int32_t bitrate = 96000
+10-27 10:35:46.273   671   932 D CCodec  :   int32_t channel-count = 2
+10-27 10:35:46.273   671   932 D CCodec  :   int32_t max-input-size = 32768
+10-27 10:35:46.273   671   932 D CCodec  :   string mime = "audio/vorbis"
+10-27 10:35:46.273   671   932 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:46.273   671   932 D CCodec  : }
+10-27 10:35:46.273   671   932 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:35:46.273   671   932 D CCodec  :   int32_t buffer-batch-max-output-size = 0
+10-27 10:35:46.273   671   932 D CCodec  :   int32_t buffer-batch-threshold-output-size = 0
+10-27 10:35:46.273   671   932 D CCodec  :   int32_t channel-count = 2
+10-27 10:35:46.273   671   932 D CCodec  :   string mime = "audio/raw"
+10-27 10:35:46.273   671   932 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:46.273   671   932 D CCodec  :   int32_t channel-mask = 3
+10-27 10:35:46.273   671   932 D CCodec  :   int32_t android._config-pcm-encoding = 2
+10-27 10:35:46.273   671   932 D CCodec  : }
+10-27 10:35:46.274   671   928 E MediaCodec: Media Quality Service not found.
+10-27 10:35:46.274   671   931 D CCodec  : [c2.android.vorbis.decoder] buffers are bound to CCodec for this session
+10-27 10:35:46.274   671   931 D CCodec  : encoding statistics level = 0
+10-27 10:35:46.274   671   931 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:35:46.274   671   931 D CCodec  :   int32_t bitrate = 140000
+10-27 10:35:46.274   671   931 D CCodec  :   int32_t channel-count = 1
+10-27 10:35:46.274   671   931 D CCodec  :   int32_t max-input-size = 32768
+10-27 10:35:46.274   671   931 D CCodec  :   string mime = "audio/vorbis"
+10-27 10:35:46.274   671   931 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:46.274   671   931 D CCodec  : }
+10-27 10:35:46.274   671   931 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:35:46.274   671   931 D CCodec  :   int32_t buffer-batch-max-output-size = 0
+10-27 10:35:46.274   671   931 D CCodec  :   int32_t buffer-batch-threshold-output-size = 0
+10-27 10:35:46.274   671   931 D CCodec  :   int32_t channel-count = 1
+10-27 10:35:46.274   671   931 D CCodec  :   string mime = "audio/raw"
+10-27 10:35:46.274   671   931 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:46.274   671   931 D CCodec  :   int32_t channel-mask = 1
+10-27 10:35:46.274   671   931 D CCodec  :   int32_t android._config-pcm-encoding = 2
+10-27 10:35:46.274   671   931 D CCodec  : }
+10-27 10:35:46.301   671   950 D CCodec  : allocate(c2.android.vorbis.decoder)
+10-27 10:35:46.303   671   952 D CCodec  : allocate(c2.android.vorbis.decoder)
+10-27 10:35:46.305   671   950 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:35:46.305   671   952 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:35:46.306   671   952 I CCodec  : Created component [c2.android.vorbis.decoder] for [c2.android.vorbis.decoder]
+10-27 10:35:46.309   671   950 I CCodec  : Created component [c2.android.vorbis.decoder] for [c2.android.vorbis.decoder]
+10-27 10:35:46.310   671   927 E MediaCodec: Media Quality Service not found.
+10-27 10:35:46.310   671   952 D CCodec  : [c2.android.vorbis.decoder] buffers are bound to CCodec for this session
+10-27 10:35:46.310   671   928 E MediaCodec: Media Quality Service not found.
+10-27 10:35:46.310   671   950 D CCodec  : [c2.android.vorbis.decoder] buffers are bound to CCodec for this session
+10-27 10:35:46.310   671   950 D CCodec  : encoding statistics level = 0
+10-27 10:35:46.310   671   950 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:35:46.310   671   950 D CCodec  :   int32_t bitrate = 140000
+10-27 10:35:46.310   671   950 D CCodec  :   int32_t channel-count = 1
+10-27 10:35:46.310   671   950 D CCodec  :   int32_t max-input-size = 32768
+10-27 10:35:46.310   671   950 D CCodec  :   string mime = "audio/vorbis"
+10-27 10:35:46.310   671   950 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:46.310   671   950 D CCodec  : }
+10-27 10:35:46.310   671   950 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:35:46.310   671   950 D CCodec  :   int32_t buffer-batch-max-output-size = 0
+10-27 10:35:46.310   671   950 D CCodec  :   int32_t buffer-batch-threshold-output-size = 0
+10-27 10:35:46.310   671   950 D CCodec  :   int32_t channel-count = 1
+10-27 10:35:46.310   671   950 D CCodec  :   string mime = "audio/raw"
+10-27 10:35:46.310   671   950 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:46.310   671   950 D CCodec  :   int32_t channel-mask = 1
+10-27 10:35:46.310   671   950 D CCodec  :   int32_t android._config-pcm-encoding = 2
+10-27 10:35:46.310   671   950 D CCodec  : }
+10-27 10:35:46.311   671   952 D CCodec  : encoding statistics level = 0
+10-27 10:35:46.311   671   952 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:35:46.311   671   952 D CCodec  :   int32_t bitrate = 140000
+10-27 10:35:46.311   671   952 D CCodec  :   int32_t channel-count = 1
+10-27 10:35:46.311   671   952 D CCodec  :   int32_t max-input-size = 32768
+10-27 10:35:46.311   671   952 D CCodec  :   string mime = "audio/vorbis"
+10-27 10:35:46.311   671   952 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:46.311   671   952 D CCodec  : }
+10-27 10:35:46.311   671   952 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:35:46.311   671   952 D CCodec  :   int32_t buffer-batch-max-output-size = 0
+10-27 10:35:46.311   671   952 D CCodec  :   int32_t buffer-batch-threshold-output-size = 0
+10-27 10:35:46.311   671   952 D CCodec  :   int32_t channel-count = 1
+10-27 10:35:46.311   671   952 D CCodec  :   string mime = "audio/raw"
+10-27 10:35:46.311   671   952 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:46.311   671   952 D CCodec  :   int32_t channel-mask = 1
+10-27 10:35:46.311   671   952 D CCodec  :   int32_t android._config-pcm-encoding = 2
+10-27 10:35:46.311   671   952 D CCodec  : }
+10-27 10:35:46.353   671   970 D CCodec  : allocate(c2.android.vorbis.decoder)
+10-27 10:35:46.354   671   969 D CCodec  : allocate(c2.android.vorbis.decoder)
+10-27 10:35:46.358   671   970 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:35:46.359   671   969 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:35:46.359   671   969 I CCodec  : Created component [c2.android.vorbis.decoder] for [c2.android.vorbis.decoder]
+10-27 10:35:46.359   671   970 I CCodec  : Created component [c2.android.vorbis.decoder] for [c2.android.vorbis.decoder]
+10-27 10:35:46.361   671   927 E MediaCodec: Media Quality Service not found.
+10-27 10:35:46.361   671   970 D CCodec  : [c2.android.vorbis.decoder] buffers are bound to CCodec for this session
+10-27 10:35:46.361   671   970 D CCodec  : encoding statistics level = 0
+10-27 10:35:46.361   671   970 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:35:46.361   671   970 D CCodec  :   int32_t bitrate = 239920
+10-27 10:35:46.361   671   970 D CCodec  :   int32_t channel-count = 1
+10-27 10:35:46.361   671   970 D CCodec  :   int32_t max-input-size = 32768
+10-27 10:35:46.361   671   970 D CCodec  :   string mime = "audio/vorbis"
+10-27 10:35:46.361   671   970 D CCodec  :   int32_t sample-rate = 44100
+10-27 10:35:46.361   671   970 D CCodec  : }
+10-27 10:35:46.361   671   970 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:35:46.361   671   970 D CCodec  :   int32_t buffer-batch-max-output-size = 0
+10-27 10:35:46.361   671   970 D CCodec  :   int32_t buffer-batch-threshold-output-size = 0
+10-27 10:35:46.361   671   970 D CCodec  :   int32_t channel-count = 1
+10-27 10:35:46.361   671   970 D CCodec  :   string mime = "audio/raw"
+10-27 10:35:46.361   671   970 D CCodec  :   int32_t sample-rate = 44100
+10-27 10:35:46.361   671   970 D CCodec  :   int32_t channel-mask = 1
+10-27 10:35:46.361   671   970 D CCodec  :   int32_t android._config-pcm-encoding = 2
+10-27 10:35:46.361   671   970 D CCodec  : }
+10-27 10:35:46.362   671   928 E MediaCodec: Media Quality Service not found.
+10-27 10:35:46.362   671   969 D CCodec  : [c2.android.vorbis.decoder] buffers are bound to CCodec for this session
+10-27 10:35:46.362   671   969 D CCodec  : encoding statistics level = 0
+10-27 10:35:46.362   671   969 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:35:46.362   671   969 D CCodec  :   int32_t bitrate = 140000
+10-27 10:35:46.362   671   969 D CCodec  :   int32_t channel-count = 1
+10-27 10:35:46.362   671   969 D CCodec  :   int32_t max-input-size = 32768
+10-27 10:35:46.362   671   969 D CCodec  :   string mime = "audio/vorbis"
+10-27 10:35:46.362   671   969 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:46.362   671   969 D CCodec  : }
+10-27 10:35:46.362   671   969 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:35:46.362   671   969 D CCodec  :   int32_t buffer-batch-max-output-size = 0
+10-27 10:35:46.362   671   969 D CCodec  :   int32_t buffer-batch-threshold-output-size = 0
+10-27 10:35:46.362   671   969 D CCodec  :   int32_t channel-count = 1
+10-27 10:35:46.362   671   969 D CCodec  :   string mime = "audio/raw"
+10-27 10:35:46.362   671   969 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:46.362   671   969 D CCodec  :   int32_t channel-mask = 1
+10-27 10:35:46.362   671   969 D CCodec  :   int32_t android._config-pcm-encoding = 2
+10-27 10:35:46.362   671   969 D CCodec  : }
+10-27 10:35:46.386   953   953 I AndroidRuntime: VM exiting with result code 0, cleanup skipped.
+10-27 10:35:51.663   914  1436 D CCodec  : allocate(c2.android.vorbis.decoder)
+10-27 10:35:51.664   914  1438 D CCodec  : allocate(c2.android.vorbis.decoder)
+10-27 10:35:51.670   914  1436 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:35:51.672   914  1438 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:35:51.677   914  1436 I CCodec  : Created component [c2.android.vorbis.decoder] for [c2.android.vorbis.decoder]
+10-27 10:35:51.688   914  1432 E MediaCodec: Media Quality Service not found.
+10-27 10:35:51.688   914  1436 D CCodec  : [c2.android.vorbis.decoder] buffers are bound to CCodec for this session
+10-27 10:35:51.692   914  1436 D CCodec  : encoding statistics level = 0
+10-27 10:35:51.692   914  1436 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:35:51.692   914  1436 D CCodec  :   int32_t bitrate = 160000
+10-27 10:35:51.692   914  1436 D CCodec  :   int32_t channel-count = 2
+10-27 10:35:51.692   914  1436 D CCodec  :   int32_t max-input-size = 32768
+10-27 10:35:51.692   914  1436 D CCodec  :   string mime = "audio/vorbis"
+10-27 10:35:51.692   914  1436 D CCodec  :   int32_t sample-rate = 44100
+10-27 10:35:51.692   914  1436 D CCodec  : }
+10-27 10:35:51.692   914  1436 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:35:51.692   914  1436 D CCodec  :   int32_t buffer-batch-max-output-size = 0
+10-27 10:35:51.692   914  1436 D CCodec  :   int32_t buffer-batch-threshold-output-size = 0
+10-27 10:35:51.692   914  1436 D CCodec  :   int32_t channel-count = 2
+10-27 10:35:51.692   914  1436 D CCodec  :   string mime = "audio/raw"
+10-27 10:35:51.692   914  1436 D CCodec  :   int32_t sample-rate = 44100
+10-27 10:35:51.692   914  1436 D CCodec  :   int32_t channel-mask = 3
+10-27 10:35:51.692   914  1436 D CCodec  :   int32_t android._config-pcm-encoding = 2
+10-27 10:35:51.692   914  1436 D CCodec  : }
+10-27 10:35:51.693   914  1438 I CCodec  : Created component [c2.android.vorbis.decoder] for [c2.android.vorbis.decoder]
+10-27 10:35:51.700   914  1433 E MediaCodec: Media Quality Service not found.
+10-27 10:35:51.701   914  1438 D CCodec  : [c2.android.vorbis.decoder] buffers are bound to CCodec for this session
+10-27 10:35:51.705   914  1438 D CCodec  : encoding statistics level = 0
+10-27 10:35:51.705   914  1438 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:35:51.705   914  1438 D CCodec  :   int32_t bitrate = 160000
+10-27 10:35:51.705   914  1438 D CCodec  :   int32_t channel-count = 2
+10-27 10:35:51.705   914  1438 D CCodec  :   int32_t max-input-size = 32768
+10-27 10:35:51.705   914  1438 D CCodec  :   string mime = "audio/vorbis"
+10-27 10:35:51.705   914  1438 D CCodec  :   int32_t sample-rate = 44100
+10-27 10:35:51.705   914  1438 D CCodec  : }
+10-27 10:35:51.705   914  1438 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:35:51.705   914  1438 D CCodec  :   int32_t buffer-batch-max-output-size = 0
+10-27 10:35:51.705   914  1438 D CCodec  :   int32_t buffer-batch-threshold-output-size = 0
+10-27 10:35:51.705   914  1438 D CCodec  :   int32_t channel-count = 2
+10-27 10:35:51.705   914  1438 D CCodec  :   string mime = "audio/raw"
+10-27 10:35:51.705   914  1438 D CCodec  :   int32_t sample-rate = 44100
+10-27 10:35:51.705   914  1438 D CCodec  :   int32_t channel-mask = 3
+10-27 10:35:51.705   914  1438 D CCodec  :   int32_t android._config-pcm-encoding = 2
+10-27 10:35:51.705   914  1438 D CCodec  : }
+10-27 10:35:51.843   914  1451 D CCodec  : allocate(c2.android.vorbis.decoder)
+10-27 10:35:51.852   914  1451 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:35:51.854   914  1451 I CCodec  : Created component [c2.android.vorbis.decoder] for [c2.android.vorbis.decoder]
+10-27 10:35:51.866   914  1432 E MediaCodec: Media Quality Service not found.
+10-27 10:35:51.866   914  1451 D CCodec  : [c2.android.vorbis.decoder] buffers are bound to CCodec for this session
+10-27 10:35:51.867   914  1451 D CCodec  : encoding statistics level = 0
+10-27 10:35:51.867   914  1451 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:35:51.867   914  1451 D CCodec  :   int32_t bitrate = 160000
+10-27 10:35:51.867   914  1451 D CCodec  :   int32_t channel-count = 2
+10-27 10:35:51.867   914  1451 D CCodec  :   int32_t max-input-size = 32768
+10-27 10:35:51.867   914  1451 D CCodec  :   string mime = "audio/vorbis"
+10-27 10:35:51.867   914  1451 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:51.867   914  1451 D CCodec  : }
+10-27 10:35:51.867   914  1451 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:35:51.867   914  1451 D CCodec  :   int32_t buffer-batch-max-output-size = 0
+10-27 10:35:51.867   914  1451 D CCodec  :   int32_t buffer-batch-threshold-output-size = 0
+10-27 10:35:51.867   914  1451 D CCodec  :   int32_t channel-count = 2
+10-27 10:35:51.867   914  1451 D CCodec  :   string mime = "audio/raw"
+10-27 10:35:51.867   914  1451 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:35:51.867   914  1451 D CCodec  :   int32_t channel-mask = 3
+10-27 10:35:51.867   914  1451 D CCodec  :   int32_t android._config-pcm-encoding = 2
+10-27 10:35:51.867   914  1451 D CCodec  : }
+10-27 10:35:53.694   602   971 D CCodec  : hidl based PersistentSurface created
+10-27 10:35:54.022  1544  1745 D CCodec  : allocate(c2.goldfish.hevc.decoder)
+10-27 10:35:54.023  1544  1745 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:35:54.024  1544  1745 I CCodec  : Created component [c2.goldfish.hevc.decoder] for [c2.goldfish.hevc.decoder]
+10-27 10:35:54.026  1544  1707 E MediaCodec: Media Quality Service not found.
+10-27 10:35:54.026  1544  1745 D CCodec  : [c2.goldfish.hevc.decoder] buffers are bound to CCodec for this session
+10-27 10:35:54.026  1544  1745 D CCodec  : Client requested ByteBuffer mode decoder w/o color format set: using default planar color format
+10-27 10:35:54.026  1544  1745 D CCodec  : encoding statistics level = 0
+10-27 10:35:54.026  1544  1745 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t height = 1080
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t level = 65536
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t max-input-size = 6291456
+10-27 10:35:54.026  1544  1745 D CCodec  :   string mime = "video/hevc"
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t profile = 1
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t width = 1920
+10-27 10:35:54.026  1544  1745 D CCodec  :   Rect crop(0, 0, 1919, 1079)
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t color-transfer-request = 0
+10-27 10:35:54.026  1544  1745 D CCodec  : }
+10-27 10:35:54.026  1544  1745 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t android._color-format = 2135033992
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t android._video-scaling = 1
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t rotation-degrees = 0
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t color-standard = 0
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t color-range = 2
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t color-transfer = 0
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t sar-height = 1
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t sar-width = 1
+10-27 10:35:54.026  1544  1745 D CCodec  :   Rect crop(0, 0, 1919, 1079)
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t width = 1920
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t height = 1080
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t max-height = 240
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t max-width = 320
+10-27 10:35:54.026  1544  1745 D CCodec  :   string mime = "video/raw"
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t android._dataspace = 268435456
+10-27 10:35:54.026  1544  1745 D CCodec  :   int32_t color-format = 19
+10-27 10:35:54.026  1544  1745 D CCodec  : }
+10-27 10:39:57.799  3681  3705 D FlutterJNI: Beginning load of flutter...
+10-27 10:39:57.815  3681  3705 D FlutterJNI: flutter (null) was loaded normally!
+10-27 10:39:58.344  3681  3708 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).
+10-27 10:39:58.401  3681  3716 I flutter : The Dart VM service is listening on http://127.0.0.1:34893/XOLP8XwhqxI=/
+10-27 10:39:58.782  3681  3681 D FlutterJNI: Sending viewport metrics to the engine.
+10-27 10:39:59.118  3681  3681 D FlutterJNI: Sending viewport metrics to the engine.
+10-27 10:39:59.607  3681  3681 D FlutterJNI: Sending viewport metrics to the engine.
+10-27 10:39:59.620  3681  3681 D FlutterJNI: Sending viewport metrics to the engine.
+10-27 10:39:59.660  3681  3681 D FlutterJNI: Sending viewport metrics to the engine.
+10-27 10:39:59.668  3681  3681 D FlutterJNI: Sending viewport metrics to the engine.
+10-27 10:39:59.796  3681  3681 D FlutterJNI: Sending viewport metrics to the engine.
+10-27 10:40:00.208  3681  3681 D FlutterJNI: Sending viewport metrics to the engine.
+10-27 10:40:00.742  3681  3749 D CCodec  : allocate(c2.goldfish.h264.decoder)
+10-27 10:40:00.797  3681  3749 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:40:00.812  3681  3749 I CCodec  : Created component [c2.goldfish.h264.decoder] for [c2.goldfish.h264.decoder]
+10-27 10:40:00.842  3681  3748 I MediaCodec: MediaCodec will operate in async mode
+10-27 10:40:00.844  3681  3737 E MediaCodec: Media Quality Service not found.
+10-27 10:40:00.844  3681  3748 I MediaCodec: [c2.goldfish.h264.decoder] setting surface generation to 3769345
+10-27 10:40:00.844  3681  3749 D CCodec  : [c2.goldfish.h264.decoder] buffers are bound to CCodec for this session
+10-27 10:40:00.845  3681  3749 D CCodec  : client requested max input size 62800, which is smaller than what component recommended (6291456); overriding with component recommendation.
+10-27 10:40:00.845  3681  3749 W CCodec  : This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+10-27 10:40:00.845  3681  3749 D CCodec  : encoding statistics level = 0
+10-27 10:40:00.845  3681  3749 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t height = 540
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t level = 65536
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t max-input-size = 6291456
+10-27 10:40:00.845  3681  3749 D CCodec  :   string mime = "video/avc"
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t profile = 65536
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t width = 960
+10-27 10:40:00.845  3681  3749 D CCodec  :   Rect crop(0, 0, 959, 539)
+10-27 10:40:00.845  3681  3749 D CCodec  : }
+10-27 10:40:00.845  3681  3749 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t android._color-format = 2135033992
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t android._video-scaling = 1
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t rotation-degrees = 0
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t color-standard = 1
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t color-range = 2
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t color-transfer = 3
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t sar-height = 1
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t sar-width = 1
+10-27 10:40:00.845  3681  3749 D CCodec  :   Rect crop(0, 0, 959, 539)
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t width = 960
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t height = 540
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t max-height = 540
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t max-width = 960
+10-27 10:40:00.845  3681  3749 D CCodec  :   string mime = "video/raw"
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t android._dataspace = 260
+10-27 10:40:00.845  3681  3749 D CCodec  :   int32_t color-format = 2130708361
+10-27 10:40:00.845  3681  3749 D CCodec  : }
+10-27 10:40:00.845  3681  3737 D MediaCodec: keep callback message for reclaim
+10-27 10:40:00.979  3681  3757 D CCodec  : allocate(c2.android.aac.decoder)
+10-27 10:40:01.003  3681  3757 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:40:01.380  3681  3757 I CCodec  : Created component [c2.android.aac.decoder] for [c2.android.aac.decoder]
+10-27 10:40:01.390  3681  3757 I MediaCodec: MediaCodec will operate in async mode
+10-27 10:40:01.390  3681  3737 E MediaCodec: Media Quality Service not found.
+10-27 10:40:01.390  3681  3757 D CCodec  : [c2.android.aac.decoder] buffers are bound to CCodec for this session
+10-27 10:40:01.394  3681  3757 D CCodec  : client requested max input size 713, which is smaller than what component recommended (8192); overriding with component recommendation.
+10-27 10:40:01.394  3681  3757 W CCodec  : This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+10-27 10:40:01.394  3681  3757 D CCodec  : encoding statistics level = 0
+10-27 10:40:01.394  3681  3757 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-drc-album-mode = 0
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-drc-boost-level = 127
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-drc-cut-level = 127
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-drc-effect-type = 3
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-encoded-target-level = -1
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-max-output-channel_count = 8
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-target-ref-level = 64
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t bitrate = 64000
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t channel-count = 2
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t channel-mask = 0
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t level = 0
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t max-input-size = 8192
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t max-output-channel-count = 8
+10-27 10:40:01.394  3681  3757 D CCodec  :   string mime = "audio/mp4a-latm"
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t profile = 2
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:40:01.394  3681  3757 D CCodec  : }
+10-27 10:40:01.394  3681  3757 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-drc-album-mode = 0
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-drc-boost-level = 127
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-drc-cut-level = 127
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-drc-effect-type = 3
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-drc-output-loudness = -1
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-encoded-target-level = -1
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-max-output-channel_count = 8
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t aac-target-ref-level = 64
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t buffer-batch-max-output-size = 0
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t buffer-batch-threshold-output-size = 0
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t channel-count = 2
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t channel-mask = 0
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t max-output-channel-count = 8
+10-27 10:40:01.394  3681  3757 D CCodec  :   string mime = "audio/raw"
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:40:01.394  3681  3757 D CCodec  :   int32_t android._config-pcm-encoding = 2
+10-27 10:40:01.394  3681  3757 D CCodec  : }
+10-27 10:40:01.395  3681  3737 D MediaCodec: keep callback message for reclaim
+10-27 10:40:01.842  3681  3737 D MediaCodec: keep callback message for reclaim
+10-27 10:40:01.843  3681  3737 D MediaCodec: keep callback message for reclaim
+10-27 10:40:05.344  3681  3737 D MediaCodec: keep callback message for reclaim
+10-27 10:40:05.347  3681  3737 D MediaCodec: keep callback message for reclaim
+10-27 10:40:05.348  3681  3748 I MediaCodec: [c2.goldfish.h264.decoder] setting surface generation to 3769346
+10-27 10:40:05.398  3681  3780 D CCodec  : allocate(c2.goldfish.h264.decoder)
+10-27 10:40:05.399  3681  3780 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:40:05.402  3681  3780 I CCodec  : Created component [c2.goldfish.h264.decoder] for [c2.goldfish.h264.decoder]
+10-27 10:40:05.410  3681  3779 I MediaCodec: MediaCodec will operate in async mode
+10-27 10:40:05.411  3681  3777 E MediaCodec: Media Quality Service not found.
+10-27 10:40:05.411  3681  3779 I MediaCodec: [c2.goldfish.h264.decoder] setting surface generation to 3769347
+10-27 10:40:05.411  3681  3780 D CCodec  : [c2.goldfish.h264.decoder] buffers are bound to CCodec for this session
+10-27 10:40:05.413  3681  3780 D CCodec  : client requested max input size 62800, which is smaller than what component recommended (6291456); overriding with component recommendation.
+10-27 10:40:05.413  3681  3780 W CCodec  : This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+10-27 10:40:05.413  3681  3780 D CCodec  : encoding statistics level = 0
+10-27 10:40:05.413  3681  3780 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t height = 540
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t level = 65536
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t max-input-size = 6291456
+10-27 10:40:05.413  3681  3780 D CCodec  :   string mime = "video/avc"
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t profile = 65536
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t width = 960
+10-27 10:40:05.413  3681  3780 D CCodec  :   Rect crop(0, 0, 959, 539)
+10-27 10:40:05.413  3681  3780 D CCodec  : }
+10-27 10:40:05.413  3681  3780 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t android._color-format = 2135033992
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t android._video-scaling = 1
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t rotation-degrees = 0
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t color-standard = 1
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t color-range = 2
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t color-transfer = 3
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t sar-height = 1
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t sar-width = 1
+10-27 10:40:05.413  3681  3780 D CCodec  :   Rect crop(0, 0, 959, 539)
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t width = 960
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t height = 540
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t max-height = 540
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t max-width = 960
+10-27 10:40:05.413  3681  3780 D CCodec  :   string mime = "video/raw"
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t android._dataspace = 260
+10-27 10:40:05.413  3681  3780 D CCodec  :   int32_t color-format = 2130708361
+10-27 10:40:05.413  3681  3780 D CCodec  : }
+10-27 10:40:05.414  3681  3777 D MediaCodec: keep callback message for reclaim
+10-27 10:40:05.427  3681  3783 D CCodec  : allocate(c2.android.aac.decoder)
+10-27 10:40:05.429  3681  3783 I CCodec  : setting up 'default' as default (vendor) store
+10-27 10:40:05.431  3681  3783 I CCodec  : Created component [c2.android.aac.decoder] for [c2.android.aac.decoder]
+10-27 10:40:05.440  3681  3783 I MediaCodec: MediaCodec will operate in async mode
+10-27 10:40:05.440  3681  3777 E MediaCodec: Media Quality Service not found.
+10-27 10:40:05.440  3681  3783 D CCodec  : [c2.android.aac.decoder] buffers are bound to CCodec for this session
+10-27 10:40:05.442  3681  3783 D CCodec  : client requested max input size 713, which is smaller than what component recommended (8192); overriding with component recommendation.
+10-27 10:40:05.442  3681  3783 W CCodec  : This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+10-27 10:40:05.442  3681  3783 D CCodec  : encoding statistics level = 0
+10-27 10:40:05.442  3681  3783 D CCodec  : setup formats input: AMessage(what = 0x00000000) = {
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-drc-album-mode = 0
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-drc-boost-level = 127
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-drc-cut-level = 127
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-drc-effect-type = 3
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-encoded-target-level = -1
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-max-output-channel_count = 8
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-target-ref-level = 64
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t bitrate = 64000
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t channel-count = 2
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t channel-mask = 0
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t level = 0
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t max-input-size = 8192
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t max-output-channel-count = 8
+10-27 10:40:05.442  3681  3783 D CCodec  :   string mime = "audio/mp4a-latm"
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t profile = 2
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:40:05.442  3681  3783 D CCodec  : }
+10-27 10:40:05.442  3681  3783 D CCodec  : setup formats output: AMessage(what = 0x00000000) = {
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-drc-album-mode = 0
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-drc-boost-level = 127
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-drc-cut-level = 127
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-drc-effect-type = 3
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-drc-output-loudness = -1
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-encoded-target-level = -1
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-max-output-channel_count = 8
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t aac-target-ref-level = 64
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t buffer-batch-max-output-size = 0
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t buffer-batch-threshold-output-size = 0
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t channel-count = 2
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t channel-mask = 0
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t max-output-channel-count = 8
+10-27 10:40:05.442  3681  3783 D CCodec  :   string mime = "audio/raw"
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t sample-rate = 48000
+10-27 10:40:05.442  3681  3783 D CCodec  :   int32_t android._config-pcm-encoding = 2
+10-27 10:40:05.442  3681  3783 D CCodec  : }
+10-27 10:40:05.443  3681  3777 D MediaCodec: keep callback message for reclaim
+10-27 10:40:05.562  3681  3777 D MediaCodec: keep callback message for reclaim
+10-27 10:40:05.563  3681  3777 D MediaCodec: keep callback message for reclaim
+10-27 10:40:05.827  3681  3779 I MediaCodec: [c2.goldfish.h264.decoder] setting surface generation to 3769348
+10-27 10:40:07.957  3681  3779 I MediaCodec: [c2.goldfish.h264.decoder] setting surface generation to 3769349
+10-27 10:40:08.087  3681  3777 D MediaCodec: keep callback message for reclaim
+10-27 10:40:08.089  3681  3777 D MediaCodec: keep callback message for reclaim
+10-27 10:40:08.090  3681  3779 I MediaCodec: [c2.goldfish.h264.decoder] connecting to the same surface. Nothing to do.
+10-27 10:40:08.235  3681  3681 D FlutterJNI: Sending viewport metrics to the engine.
+10-27 10:40:08.246  3681  3681 D FlutterJNI: Sending viewport metrics to the engine.
+10-27 10:40:08.252  3681  3681 D FlutterJNI: Sending viewport metrics to the engine.
