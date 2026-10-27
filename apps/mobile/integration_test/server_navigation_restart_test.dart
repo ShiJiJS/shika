@@ -112,7 +112,8 @@ void main() {
             !video().busy &&
             !video().viewing &&
             video().pendingReturn == null &&
-            video().data.total == total,
+            video().data.total == total &&
+            video().data.context.queryKey == video().entry.queryKey,
         'video list $total',
       );
       Future<void> packReady(int total) => until(
@@ -122,7 +123,8 @@ void main() {
             !packs().data.loading &&
             !packs().busy &&
             packs().pendingReturn == null &&
-            packs().data.total == total,
+            packs().data.total == total &&
+            packs().data.context.queryKey == packs().entry.queryKey,
         'pack list $total',
       );
       Future<void> nav(String value) => tap(find.byKey(Key('nav-$value')));
@@ -173,8 +175,8 @@ void main() {
             'text_scale': media.textScaler.scale(14) / 14,
             'dark': preferences.dark,
             'preload': preferences.preloadAdjacent,
-            'video': v == null ? null : {'entry': v.entry.entry.toJson(), 'total': v.data.total, 'offset': v.data.offset, 'scroll': v.scroll.offset, 'selected': v.selected.toList(), 'selecting': v.selecting},
-            'pack': p == null ? null : {'query': p.entry.query.toJson(), 'total': p.data.total, 'offset': p.data.offset, 'scroll': p.scroll.offset, 'selected': p.selected.toList(), 'selecting': p.selecting},
+            'video': v == null ? null : {'entry': v.entry.entry.toJson(), 'loaded_entry': v.data.context.entry.toJson(), 'total': v.data.total, 'offset': v.data.offset, 'scroll': v.scroll.offset, 'selected': v.selected.toList(), 'selecting': v.selecting},
+            'pack': p == null ? null : {'query': p.entry.query.toJson(), 'loaded_query': p.data.context.query.toJson(), 'total': p.data.total, 'offset': p.data.offset, 'scroll': p.scroll.offset, 'selected': p.selected.toList(), 'selecting': p.selecting},
             'reading': r == null ? null : {'id': r.session.range?.id, 'pack': r.session.range?.pack?.id, 'page': r.session.currentPage?.id, 'opened': r.session.opened},
             'round': repo.playbackIdentity,
             'current': repo.current?.id,
@@ -557,6 +559,10 @@ void main() {
       await tap(find.byTooltip('筛选视频'));
       await tap(find.widgetWithText(FilterChip, '户外'));
       await tap(find.text('应用筛选'));
+      await until(
+        () => video().entry.query.tags.contains(videoTag),
+        'video filter applied after modal completed',
+      );
       await videoReady(27);
       await tap(find.byTooltip('视频排序'));
       await t.pumpAndSettle();
@@ -600,6 +606,10 @@ void main() {
       await tap(find.widgetWithText(FilterChip, '户外'));
       await tap(find.byKey(const Key('tag-assignment-save')));
       await tap(find.text('应用筛选'));
+      await until(
+        () => packs().entry.query.tags.contains(packTag),
+        'pack filter applied after modal completed',
+      );
       await packReady(27);
       final libraryPack = packs();
       final selectedPack = libraryPack.data.items.first.id;
