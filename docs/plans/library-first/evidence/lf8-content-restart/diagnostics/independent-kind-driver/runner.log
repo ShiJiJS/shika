@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 620, in <module>
+    result = content_restart_run(command, log) if args.scenario == "content-restart" else navigation_run(command, log) if args.scenario == "navigation-restart" else subprocess.run(command, cwd=ROOT / "apps/mobile", stdout=log, stderr=subprocess.STDOUT, timeout=480, check=False)
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 492, in content_restart_run
+    assert code == 0 and reopened and readonly
+AssertionError

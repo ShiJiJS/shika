@@ -1,0 +1,505 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "status",
+        "missing"
+      ],
+      [
+        "limit",
+        "1"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback-defaults",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/playback-defaults",
+    "status": 200,
+    "phase": null,
+    "body": {
+      "request_id": "content-owned-sequential-fullscreen",
+      "expected_revision": 0,
+      "order": "sequential"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "24"
+      ],
+      [
+        "source",
+        "library"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/thumbnail",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback-defaults",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/rounds",
+    "status": 201,
+    "phase": "content-start",
+    "body": {
+      "request_id": "1793089068416381-201b8357",
+      "order": "sequential",
+      "scope": {
+        "tag_ids": []
+      },
+      "anchor_video_id": "7e81ce2a-d7ba-4b2f-acd4-789f2416b85c",
+      "membership": "fixed",
+      "source": "library",
+      "sort": "name",
+      "name_locale": "zh-CN"
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/rounds/1f4a4210-24c0-4207-9b0a-86845b4919a5/opened",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/rounds/1f4a4210-24c0-4207-9b0a-86845b4919a5/position",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/rounds/1f4a4210-24c0-4207-9b0a-86845b4919a5/opened",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "content-start",
+    "query": [
+      [
+        "source",
+        "recent"
+      ],
+      [
+        "sort",
+        "recent"
+      ],
+      [
+        "limit",
+        "200"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/recent",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/stream",
+    "status": 200,
+    "phase": "content-start"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "status": 200,
+    "phase": "content-stop-ready"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": "content-stop-ready"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": "content-stop-ready"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "content-stop-ready",
+    "query": [
+      [
+        "status",
+        "missing"
+      ],
+      [
+        "limit",
+        "1"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "content-stop-ready"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 200,
+    "phase": "content-stop-ready"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "content-stop-ready"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "content-stop-ready",
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "24"
+      ],
+      [
+        "source",
+        "library"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7e81ce2a-d7ba-4b2f-acd4-789f2416b85c/thumbnail",
+    "status": 200,
+    "phase": "content-stop-ready"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/be8c819f-e46e-4bc6-a32e-2d0b57347aca/thumbnail",
+    "status": 200,
+    "phase": "content-stop-ready"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 200,
+    "phase": "content-stop-ready"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/recent",
+    "status": 200,
+    "phase": "content-stop-ready"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "content-cold-library",
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "24"
+      ],
+      [
+        "source",
+        "recent"
+      ],
+      [
+        "sort",
+        "recent"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/recent",
+    "status": 200,
+    "phase": "content-cold-library"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "content-cold-recent",
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "24"
+      ],
+      [
+        "anchor_ids",
+        "7e81ce2a-d7ba-4b2f-acd4-789f2416b85c"
+      ],
+      [
+        "anchor_ids",
+        "be8c819f-e46e-4bc6-a32e-2d0b57347aca"
+      ],
+      [
+        "source",
+        "library"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  }
+]

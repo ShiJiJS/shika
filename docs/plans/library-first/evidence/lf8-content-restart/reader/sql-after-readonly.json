@@ -1,0 +1,72 @@
+{
+  "playback_rounds": [],
+  "round_entries": [],
+  "recent_entries": [
+    {
+      "id": "c1537557-cfe0-4623-aa9c-4d0197704f5c",
+      "kind": "pack",
+      "video_id": null,
+      "pack_id": "474df263-44ab-4ead-998e-3907512e8332",
+      "opened_at": 1793088885.7004533
+    }
+  ],
+  "pack_sessions": [
+    {
+      "id": "cbae12bd-c330-4d70-af91-b8fc03f62d32",
+      "request_id": "1793088884695005-1157294952-0",
+      "request_hash": "165733a5bd21ab101c7ee3bfe1711c07e18ccc474caac91452c6f62418b2ca55",
+      "scope": "{\"directory_id\": null, \"search\": \"\", \"tag_ids\": [], \"read_state\": \"all\"}",
+      "source": "{\"kind\": \"library\", \"sort\": \"title\"}",
+      "order": "sequential",
+      "cursor": 2,
+      "revision": 0,
+      "finished": 0,
+      "candidate_count": 4,
+      "created_at": 1793088884.8585117
+    }
+  ],
+  "pack_session_entries": [
+    {
+      "session_id": "cbae12bd-c330-4d70-af91-b8fc03f62d32",
+      "ordinal": 0,
+      "pack_id": "b1a411ec-f12d-458b-9a2c-6255e6d1ad02"
+    },
+    {
+      "session_id": "cbae12bd-c330-4d70-af91-b8fc03f62d32",
+      "ordinal": 1,
+      "pack_id": "f678e7a5-6420-4fee-a3d9-17ae3b5da211"
+    },
+    {
+      "session_id": "cbae12bd-c330-4d70-af91-b8fc03f62d32",
+      "ordinal": 2,
+      "pack_id": "474df263-44ab-4ead-998e-3907512e8332"
+    },
+    {
+      "session_id": "cbae12bd-c330-4d70-af91-b8fc03f62d32",
+      "ordinal": 3,
+      "pack_id": "e2dcfaa8-37a1-4b5d-a818-7fe3230d68c2"
+    }
+  ],
+  "pack_progress": [
+    {
+      "pack_id": "474df263-44ab-4ead-998e-3907512e8332",
+      "page_id": "1056d4a6-b6a0-46ab-945f-b2efd12dba0b",
+      "offset_ratio": 0.1541025641025641,
+      "completed": 0,
+      "revision": 3,
+      "updated_at": 1793088888.4017217,
+      "content_version": 1,
+      "recovery_reason": null
+    }
+  ],
+  "pack_preferences": [
+    {
+      "pack_id": "474df263-44ab-4ead-998e-3907512e8332",
+      "mode": "vertical",
+      "direction": "ltr",
+      "gap": 0,
+      "fit": "contain",
+      "revision": 1
+    }
+  ]
+}

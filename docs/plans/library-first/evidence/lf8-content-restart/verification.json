@@ -1,0 +1,23 @@
+{
+  "evidence_verified": true,
+  "stage_acceptance": "partial; fullscreen pending",
+  "source": "395bf7c4378e6e5a8c6dbd3150d6718a5c7ceae1",
+  "cases": {
+    "reader": {
+      "checkpoints": 7,
+      "new_pid": "4392",
+      "readonly_requests": 23,
+      "tables_equal": 7
+    },
+    "video": {
+      "checkpoints": 7,
+      "new_pid": "4870",
+      "readonly_requests": 15,
+      "tables_equal": 7
+    }
+  },
+  "accepted_checkpoints": 14,
+  "component_tests": 18,
+  "manifest_inputs": 188,
+  "scope": "reader/video each one two-process run; fullscreen diagnostics excluded; no release or target-device claim"
+}
