@@ -19,6 +19,7 @@ p=Path(os.environ['VV_TEST_STATE']);scenario=os.environ['VV_TEST_SCENARIO']
 name=Path(sys.argv[0]).name;args=sys.argv[1:]
 if name=='emulator':
  if args==['-list-avds']:print('video_viewer_api_36');raise SystemExit(0)
+ p.with_suffix('.session.json').write_text(json.dumps({'isolated':os.getsid(0)==os.getpid()}))
  p.write_text(json.dumps(args));raise SystemExit(0)
 if name=='ps':
  if p.exists() or scenario in {'existing','other','profile','decoder'}:
@@ -80,6 +81,12 @@ class LauncherContract(unittest.TestCase):
                 check=False,
             )
             marker = directory / "started.json"
+            session = marker.with_suffix(".session.json")
+            result.session_isolated = (
+                json.loads(session.read_text())["isolated"]
+                if session.exists()
+                else None
+            )
             return result, json.loads(marker.read_text()) if marker.exists() else None
 
     def test_offline_transport_without_process_starts_once(self):
@@ -89,6 +96,10 @@ class LauncherContract(unittest.TestCase):
         self.assertIn("-GLDMA", args)
         self.assertIn("HardwareDecoder", args)
         self.assertIn("-no-window", args)
+        self.assertTrue(
+            result.session_isolated,
+            "Emulator must outlive the IDE startup command session",
+        )
         self.assertIn("GLDMA=off", result.stdout)
 
     def test_matching_live_profile_is_reused(self):

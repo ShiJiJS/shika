@@ -28,7 +28,23 @@ if [[ -z "$port_command" ]]; then
   # A previous emulator crash must not block unattended startup on a consent dialog.
   options=(-avd "$avd_name" -port "$port" -no-boot-anim -gpu "$gpu_mode" -feature -Vulkan -feature "$dma_feature" -feature "$codec_feature" -no-snapshot -no-metrics -crash-report-mode never)
   [[ "${VV_EMULATOR_HEADLESS:-0}" == 1 ]] && options+=(-no-window)
-  nohup "$emulator" "${options[@]}" > "$VV_DEV_HOME/logs/emulator-$port.log" 2>&1 < /dev/null &
+  # Keep the emulator independent of the short-lived VS Code/prelaunch shell.
+  python3 - "$emulator" "$VV_DEV_HOME/logs/emulator-$port.log" "${options[@]}" <<'PYTHON'
+import pathlib
+import subprocess
+import sys
+
+log_path = pathlib.Path(sys.argv[2])
+with log_path.open("wb") as log:
+    process = subprocess.Popen(
+        [sys.argv[1], *sys.argv[3:]],
+        stdin=subprocess.DEVNULL,
+        stdout=log,
+        stderr=subprocess.STDOUT,
+        start_new_session=True,
+    )
+log_path.with_suffix(".pid").write_text(str(process.pid) + "\n")
+PYTHON
 fi
 deadline=$((SECONDS + timeout_seconds))
 while (( SECONDS < deadline )); do
