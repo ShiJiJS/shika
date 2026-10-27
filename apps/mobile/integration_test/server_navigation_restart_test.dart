@@ -202,7 +202,7 @@ void main() {
             'search': e.search,
             'sort': e.sort.name,
             if (e.sort == VideoSort.name) 'name_locale': 'zh-CN',
-            'tag_ids': e.query.tags.join(','),
+            if (e.query.tags.isNotEmpty) 'tag_ids': e.query.tags.join(','),
             if (e.query.orientation.isNotEmpty)
               'orientation': e.query.orientation,
             if (e.query.duration.isNotEmpty) 'duration': e.query.duration,
@@ -222,7 +222,7 @@ void main() {
             'source': q.source.name,
             'search': q.search,
             'sort': q.sort == PackSort.name ? 'title' : q.sort.name,
-            'tag_ids': q.tags.join(','),
+            if (q.tags.isNotEmpty) 'tag_ids': q.tags.join(','),
             'read_state': q.readState.name,
             'limit': '200',
           },
