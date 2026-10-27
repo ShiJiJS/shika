@@ -1,6 +1,6 @@
 总任务：#24
 
-最新阶段：[总览容量与跨页 PR #85](https://github.com/ShiJiJS/video_viewer/pull/85)，24项相关检查、同生产／跨页驱动三轮33点及六图回归8点通过，[207输入只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-overview-pagination/docs/plans/library-first/evidence/lf8-overview-pagination/README.md)。#83已补24→6→24、排队／在途／清单取消及明确第30页写入边界，保留草稿合并／终验状态；#24/#33继续内容页强停恢复及其余验收。
+最新阶段：[内容页强停与暂停 PR #86](https://github.com/ShiJiJS/video_viewer/pull/86)。普通视频／纵向图包各一次，共14认可点、18相关组件与188输入只读复核通过；全屏准备中目标已变化，身份断言失败，仍待验证，不计成功。按用户要求暂停，不开启下一项；[整体进度](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/PROGRESS-2026-10-27.md)区分已有实现和未终验／发布事项。#24/#33保持开放。
 
 ## 目标
 
@@ -364,3 +364,11 @@ flutter analyze/Ruff、正常release构建、manifest/DEX诊断与integration_te
 随后只调整未被跨页路径使用的六图驱动pending预期，56b2a74再过8点：六图503自动／恰3次上限／手动恢复、3在途＋3排队取消及重开；26源SHA不变。两提交生产／跨页驱动／夹具相同，非docs差异仅六图驱动，复核脚本明确审计，共41原生点，不称同一完整源码提交。没有SQL快照／全集／release／大字／横屏／目标手机结论。
 
 一次footer滚动驱动失误和一次QEMU图形／主循环挂起退出均另存，不计成功；原配置重启恢复显示后完成三轮，最终AVD已恢复并关闭。原型树1cbf605继续独立可移除，未发布APK。#83跨页开发证据已补齐，issue保留草稿合并／终验状态；#24/#33继续其余验收，下一步内容页强停恢复与其它组合。
+
+## 2026-10-27：内容页强停部分验证与暂停（PR #86）
+
+[草稿 PR #86](https://github.com/ShiJiJS/video_viewer/pull/86)基于 #85，当前按用户“做完手头内容先停一下”要求收尾暂停。434278a 的普通视频／纵向图包各一次真实双进程，各7点共14个认可点；专用安全凭据新PID免口令、默认媒体库且不自动打开内容。到媒体库／最近的只读边界七表逐行一致，无写请求／视频流／阅读原图；明确点开后才新建范围。图包第4张、纵向模式、约15.41%偏移及相对几何恢复。18项相关组件、analyze／格式／Ruff与188输入只读复核通过；不是全集或每例三轮。
+
+全屏仍未验收：5秒样本在准备期间已换到下一条，第一份原始runner成功被独立身份核查拒绝；395bf7c加同一视频断言并调整暂停／旋转准备后明确失败，尚未强停。两提交仅驱动不同，生产App／服务／runner相同，证据保留两份诊断与审计；不将其直接定性为产品恢复缺陷。后续先隔离自然结束与准备时序，再补全屏目标身份验证。现有视频协议未保存秒数，不声称按秒续播。
+
+[整体进度](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/PROGRESS-2026-10-27.md)／[阶段边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/LF8-CONTENT-RESTART.md)／[原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/evidence/lf8-content-restart/README.md)。LF0–LF7已有阶段实现，LF8及目标手机／真实NAS、原签名覆盖／回滚和正式发布仍未终验；backup_v2生产仍关闭、#78保留开放。专用AVD已恢复显示并关闭，原型1cbf605独立可移除，未发布APK。#24/#33保持开放，暂停不等于完成，不再启动下一阶段。

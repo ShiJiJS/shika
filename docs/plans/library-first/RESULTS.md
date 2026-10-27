@@ -2,7 +2,7 @@
 
 更新：2026-10-27。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
-最新阶段：[总览容量与跨页 PR #85](https://github.com/ShiJiJS/video_viewer/pull/85)，24项相关检查、同生产／跨页驱动三轮33点及六图回归8点通过，[207输入只读复核](evidence/lf8-overview-pagination/README.md)。#83已补24→6→24、排队／在途／清单取消及明确第30页写入边界，保留草稿合并／终验状态；#24/#33继续内容页强停恢复及其余验收。
+最新阶段：[内容页强停部分验证 PR #86](https://github.com/ShiJiJS/video_viewer/pull/86)已收尾并按用户要求暂停。普通视频／纵向图包各一次、共14认可点，18项相关组件及[188输入只读复核](evidence/lf8-content-restart/README.md)通过；全屏因短样本准备中目标已变化，同一视频断言失败，仍待验证，不计成功。#24/#33保持开放，不开启下一项；[整体进度](PROGRESS-2026-10-27.md)区分实现、验证和发布剩余工作。前段[PR #85](https://github.com/ShiJiJS/video_viewer/pull/85)的总览容量／跨页证据继续保留，不将历史结果视为当前整版全集通过。
 
 共享布局阶段基线为a9da395；最新图包续读阶段源码为c4aaf3b，见[真实续读约定](LF8-PACK-CONTINUATION.md)与[原生证据](evidence/lf8-pack-continuation/README.md)。后续分类总数阶段源码910cfb2，见[库存约定](LF8-CATALOG-COUNTS.md)与[库存/横屏及续读回归证据](evidence/lf8-catalog-counts/README.md)。该段补同快照总数、未知重试和标签缩高布局；续读段新增真实续读、独立摘要读取与菜单收键盘；共享布局的设置开关、标签确认区和主题稳定证据继续作为历史基线。图包呈现/排序阶段为4e391a2，见[约定](LF8-PACK-PRESENTATION.md)与[69点同版证据](evidence/lf8-pack-presentation/README.md)；主标题/作者和完整范围排序已补，新增大字长操作行可达性修正。原型树1cbf605未改。各阶段链接中的实现提交、真实服务/Demo区分、操作步骤与原始证据继续有效，但未来修改后须按受影响路径复核，不能把历史全集视为当前HEAD所有组合已通过。
 
@@ -22,7 +22,7 @@
 
 | 验收ID | 当前证据状态 | 证据入口（含该阶段实现提交/步骤） | 尚需完成 |
 | --- | --- | --- | --- |
-| NAV-01 | 新增三来源真实冷启动 / 设置页强停路径通过 | [LF4契约](LF4.md)、[当前三轮84点](evidence/lf8-navigation-restart/README.md) | 当前整合分支library／tags／recent三种保存来源均默认进入媒体库，仅恢复所属条件；专属安全键新PID免口令、无新范围／opened／stream。内容播放／阅读中强停、断线和目标安装组合继续。 |
+| NAV-01 | 新增普通视频／图包内容页强停 / 全屏待验证 | [LF4契约](LF4.md)、[三来源84点](evidence/lf8-navigation-restart/README.md)、[内容页14点](evidence/lf8-content-restart/README.md) | 普通视频／纵向图包各一次真实强停、新PID免口令、媒体库与最近只读七表相同、明确点击后重开通过。全屏准备中目标身份断言失败仍待验证；断线／其它来源／目标安装继续。原入口三来源与设置页强停证据保留，未把共享启动配置等同正式main升级验证。 |
 | NAV-02 | 新增六来源与系统返回 / 明确组合通过 | [当前导航与位置](evidence/lf8-navigation-restart/README.md)、[全屏返回](evidence/lf8-preview-lifecycle/README.md) | 两类型×媒体库／标签／最近均实际进入返回；两类前两来源跨24分页、完整27成员与同卡片位置，系统返回先关队列／总览。其它目录／属性筛选、失效／空来源及目标终验继续，不将少量最近当长列表。 |
 | NAV-03 | 新增双类型与三来源隔离 / 明确组合通过 | [LF4契约](LF4.md)、[当前导航／冷启](evidence/lf8-navigation-restart/README.md) | 搜索、同名独立标签、不同排序、各1项选择切换以及最近不继承媒体库条件已实测；三种最后来源的冷启动恢复分属对应入口。其它连接／异常组合与整体目标终验仍按相应条目推进。 |
 | LIB-01 | 新增视频中文顺序证据 / 未收口 | [LF4阶段记录](LF4.md)、[权威总数](evidence/lf8-catalog-counts/README.md)、[中文顺序](evidence/lf8-video-name-order/README.md) | 分类总数及视频列表/锚点/全选/固定范围的中文顺序已补证；最近段补显示标题/时长和24项/120项窗口、页尾锚点；长列表其它来源/失败组合继续。 |
@@ -342,3 +342,11 @@ flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX�
 随后只调整未被跨页路径使用的六图驱动pending预期，56b2a74再过8点：六图503自动／恰3次上限／手动恢复、3在途＋3排队取消及重开；26源SHA不变。两提交生产／跨页驱动／夹具相同，非docs差异仅六图驱动，复核脚本明确审计，共41原生点，不称同一完整源码提交。没有SQL快照／全集／release／大字／横屏／目标手机结论。
 
 一次footer滚动驱动失误和一次QEMU图形／主循环挂起退出均另存，不计成功；原配置重启恢复显示后完成三轮，最终AVD已恢复并关闭。原型树1cbf605继续独立可移除，未发布APK。#83跨页开发证据已补齐，issue保留草稿合并／终验状态；#24/#33继续其余验收，下一步内容页强停恢复与其它组合。
+
+## 2026-10-27：内容页强停部分验证与暂停（PR #86）
+
+[草稿 PR #86](https://github.com/ShiJiJS/video_viewer/pull/86)基于 #85，当前按用户“做完手头内容先停一下”要求收尾暂停。434278a 的普通视频／纵向图包各一次真实双进程，各7点共14个认可点；专用安全凭据新PID免口令、默认媒体库且不自动打开内容。到媒体库／最近的只读边界七表逐行一致，无写请求／视频流／阅读原图；明确点开后才新建范围。图包第4张、纵向模式、约15.41%偏移及相对几何恢复。18项相关组件、analyze／格式／Ruff与188输入只读复核通过；不是全集或每例三轮。
+
+全屏仍未验收：5秒样本在准备期间已换到下一条，第一份原始runner成功被独立身份核查拒绝；395bf7c加同一视频断言并调整暂停／旋转准备后明确失败，尚未强停。两提交仅驱动不同，生产App／服务／runner相同，证据保留两份诊断与审计；不将其直接定性为产品恢复缺陷。后续先隔离自然结束与准备时序，再补全屏目标身份验证。现有视频协议未保存秒数，不声称按秒续播。
+
+[整体进度](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/PROGRESS-2026-10-27.md)／[阶段边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/LF8-CONTENT-RESTART.md)／[原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-content-restart/docs/plans/library-first/evidence/lf8-content-restart/README.md)。LF0–LF7已有阶段实现，LF8及目标手机／真实NAS、原签名覆盖／回滚和正式发布仍未终验；backup_v2生产仍关闭、#78保留开放。专用AVD已恢复显示并关闭，原型1cbf605独立可移除，未发布APK。#24/#33保持开放，暂停不等于完成，不再启动下一阶段。
