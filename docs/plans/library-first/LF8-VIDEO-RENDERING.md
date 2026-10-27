@@ -9,3 +9,5 @@ Native Activity仅位于android/app/src/debug，固定公开asset、显式夹具
 比较默认Impeller与受支持的Skia测试启动参数，必要时比较SDK文档支持的GLDMA启动覆盖。只操作同一个专用AVD，保留userdata；所有启动条件明确记录，不能用新的环境结果抹去旧失败。选择画面正确且能完成关键链路三轮的本地开发配置后再落实启动脚本/VS Code入口，依受影响范围复核当前预览及相邻阅读/设置；若实际需要App变更，再按证据实现受支持的修正，不修改SDK或遮盖画面。
 
 当前为隔离准备阶段，尚未声称问题已解决。目标手机/NAS、其它格式/迟到回执及整体验收继续；原型1cbf605独立未改且可移除，不改正式8760/NAS、生产backup_v2开关或发布APK。
+
+最小对照已完成：同源960×540视频在默认Impeller与Skia的textureView都出现129物理像素绿条，platformView及两种原生MediaPlayer入口均无该条；原生buffer模式显示逻辑960×540、row stride1024、crop至960×540。该数据支持继续查纹理呈现链路，不据buffer格式推定Surface根因。仅关Impeller无效。当前软件GPU+宿主解码开启+GLDMA关闭的候选配置，最小两入口画面均无绿条，待当前完整App三轮后再作本地配置结论。SDK内有明确的本地debug GL producer开关，但本段暂不采用，先验证可保留原App渲染/播放器实现的启动配置。

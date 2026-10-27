@@ -190,9 +190,12 @@ errors, screens = [], []
 actions, recordings = [], []
 record_process = record_path = record_shape = None
 paths = run(
-    "git", "ls-files", "apps/mobile/lib", "services/server/video_viewer"
+    "git", "ls-files", "apps/mobile/lib", "apps/mobile/android", "apps/mobile/assets", "services/server/video_viewer"
 ).splitlines()
 paths += [
+    "apps/mobile/pubspec.yaml",
+    "apps/mobile/pubspec.lock",
+    "scripts/start-android-emulator.sh",
     "apps/mobile/integration_test/prototype_fidelity_test.dart",
     "apps/mobile/integration_test/server_pack_continuation_test.dart",
     "apps/mobile/integration_test/server_catalog_counts_test.dart",
