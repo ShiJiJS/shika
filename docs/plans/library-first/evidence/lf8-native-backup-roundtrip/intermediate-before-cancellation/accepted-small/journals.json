@@ -1,0 +1,119 @@
+[
+  {
+    "stage": "before-system-save",
+    "state": {
+      "version": 2,
+      "scopes": {
+        "[\"http://10.0.2.2:8769\",\"c505ba3d29ea9ad9ca5bc2a24ca9d168\",\"571020995c10fdf29ee55b1eb82c11ac\"]": {
+          "scope": "[\"http://10.0.2.2:8769\",\"c505ba3d29ea9ad9ca5bc2a24ca9d168\",\"571020995c10fdf29ee55b1eb82c11ac\"]",
+          "export": {
+            "key": "1793118291073250-2626074091",
+            "version": 2,
+            "task": "670ef698-3dcb-4fc2-809e-68783b090317",
+            "file": {
+              "owner": "[\"http://10.0.2.2:8769\",\"c505ba3d29ea9ad9ca5bc2a24ca9d168\",\"571020995c10fdf29ee55b1eb82c11ac\"]",
+              "id": "653c438b915720e8d0a8329afbaeb801",
+              "bytes": 19206,
+              "sha256": "83b156ae4c1214bb1a6ed00f9ec73fe8b8c4a64dbdfd2a945e9713fce5a75254"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "stage": "before-restore-confirmation",
+    "state": {
+      "version": 2,
+      "scopes": {
+        "[\"http://10.0.2.2:8769\",\"c505ba3d29ea9ad9ca5bc2a24ca9d168\",\"571020995c10fdf29ee55b1eb82c11ac\"]": {
+          "scope": "[\"http://10.0.2.2:8769\",\"c505ba3d29ea9ad9ca5bc2a24ca9d168\",\"571020995c10fdf29ee55b1eb82c11ac\"]",
+          "inspect": {
+            "key": "1793118307129275-1583334526",
+            "version": 2,
+            "digest": "83b156ae4c1214bb1a6ed00f9ec73fe8b8c4a64dbdfd2a945e9713fce5a75254",
+            "file": {
+              "owner": "[\"http://10.0.2.2:8769\",\"c505ba3d29ea9ad9ca5bc2a24ca9d168\",\"571020995c10fdf29ee55b1eb82c11ac\"]",
+              "id": "65beec89b1ed4324964a45723f5a53e2",
+              "bytes": 19206,
+              "sha256": "83b156ae4c1214bb1a6ed00f9ec73fe8b8c4a64dbdfd2a945e9713fce5a75254"
+            },
+            "task": "2d2bf112-1ebc-41f9-8a0f-a02ffa1818b3"
+          }
+        }
+      }
+    }
+  },
+  {
+    "stage": "after-restore-and-snapshot",
+    "state": {
+      "version": 2,
+      "scopes": {
+        "[\"http://10.0.2.2:8769\",\"c505ba3d29ea9ad9ca5bc2a24ca9d168\",\"571020995c10fdf29ee55b1eb82c11ac\"]": {
+          "scope": "[\"http://10.0.2.2:8769\",\"c505ba3d29ea9ad9ca5bc2a24ca9d168\",\"571020995c10fdf29ee55b1eb82c11ac\"]",
+          "inspect": {
+            "key": "1793118307129275-1583334526",
+            "version": 2,
+            "digest": "83b156ae4c1214bb1a6ed00f9ec73fe8b8c4a64dbdfd2a945e9713fce5a75254",
+            "file": {
+              "owner": "[\"http://10.0.2.2:8769\",\"c505ba3d29ea9ad9ca5bc2a24ca9d168\",\"571020995c10fdf29ee55b1eb82c11ac\"]",
+              "id": "65beec89b1ed4324964a45723f5a53e2",
+              "bytes": 19206,
+              "sha256": "83b156ae4c1214bb1a6ed00f9ec73fe8b8c4a64dbdfd2a945e9713fce5a75254"
+            },
+            "task": "2d2bf112-1ebc-41f9-8a0f-a02ffa1818b3"
+          },
+          "restore": {
+            "key": "1793118327799506-1281234009",
+            "version": 2,
+            "body": {
+              "preview_id": "2d2bf112-1ebc-41f9-8a0f-a02ffa1818b3",
+              "confirmed": true,
+              "root_mapping": {
+                "049c1dc7-635f-4c1e-8115-0f0951919c94": "/media/videos/目录14",
+                "08ba2dc5-9042-43cd-a30f-8cd692a04417": "/media/videos/目录12",
+                "0b790ec6-0c13-4280-9598-5517c6478371": "/media/videos/目录22",
+                "0e7c32fa-8dd9-4005-a04b-ea647b406094": "/media/videos/目录15",
+                "258d5ff3-7aee-4bbe-a305-74f22ee6a4e1": "/media/videos/目录01",
+                "29a2a23a-4b87-4dd8-8207-f4ce3bcf254e": "/media/videos/目录20",
+                "30be679e-b265-4898-b389-cb94633c2f00": "/media/videos/目录06",
+                "32d6df7f-2da2-47c0-bae3-8bc396d35afe": "/media/videos/目录05",
+                "39c124a1-cf3a-4653-b54d-c6c429792753": "/media/videos/目录00",
+                "44b5c556-a314-4c3d-875b-e5400d5bffbd": "/media/videos/目录09",
+                "455ac749-0c2c-425e-83da-63bedbc923b6": "/media/videos/目录07",
+                "4980d8fd-ddf3-4381-b90e-e62f6c4e7fc8": "/media/videos/目录13",
+                "49e6c6c3-027f-4c05-9dc4-41291c26d21d": "/media/videos/目录19",
+                "726603d8-369b-4330-a43e-ac31f8e549d3": "/media/videos/目录21",
+                "8c50301c-f8d3-43f0-8c6d-1f0193df778e": "/media/videos/目录24",
+                "8cda462d-cd2f-407f-9ffc-3da449b3cf84": "/media/videos/目录08",
+                "aed58d2c-806b-4a87-94e0-f94bf9a8c433": "/media/videos/目录04",
+                "b2d32f24-c17d-4523-8c50-c798e5f472ba": "/media/videos/目录02",
+                "c1e42526-272a-4bf0-801d-0afde6d6f77d": "/media/videos/目录17",
+                "c8a8ad64-b55e-49eb-812d-918cda3e93b7": "/media/videos/目录18",
+                "cfc150e0-e7d7-495d-81c5-665de60f425b": "/media/videos/目录10",
+                "db9d6e5a-5314-400f-92e8-228d6161591d": "/media/videos/目录11",
+                "e4dd69e1-e019-40be-9f79-69d00a6184f2": "/media/videos/目录16",
+                "e91c3042-c55e-46f4-b4b9-85d5b286e306": "/media/videos/目录03",
+                "ebd28844-b036-4463-81bd-88800641ea3a": "/media/videos/目录23",
+                "packs": "/media/packs",
+                "videos": "/media/videos"
+              }
+            },
+            "task": "b4bb4fd6-cbd0-4712-b54e-752627dd8d1c",
+            "settled": true
+          }
+        },
+        "[\"http://10.0.2.2:8769\",\"c505ba3d29ea9ad9ca5bc2a24ca9d168\",\"e2f8daa2e5025e4a4b3efbd09bf4de4d\"]": {
+          "scope": "[\"http://10.0.2.2:8769\",\"c505ba3d29ea9ad9ca5bc2a24ca9d168\",\"e2f8daa2e5025e4a4b3efbd09bf4de4d\"]",
+          "inspect": {
+            "key": "1793118333515928-1316275554",
+            "version": 2,
+            "digest": "301102e3828c3752554095f56f604b50203b21cc5664965378ab6cc6975e5df9",
+            "source_snapshot": "e4fcf2b6-8a79-4bdd-b3ba-850c9537f908",
+            "task": "cfb65e2b-6879-48d1-932b-e085f20ebaf4"
+          }
+        }
+      }
+    }
+  }
+]

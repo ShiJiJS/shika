@@ -1,0 +1,20 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_management_test.dart
+Running Gradle task 'assembleDebug'...                             15.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          435ms
+00:00 +0: LF8 real App v2 export, keyboard mapping, replacement and snapshot
+ARCHIVE_UI_METRICS:{"state":"archive-ui-backup-start","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-backup-dark","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":true}
+ARCHIVE_SYSTEM_STAGE:{"stage":"save","bytes":19205,"sha256":"62b73024df214f8364dbdee23c25b5b73111117f9394d28b4bec2f8b0be84f0b"}
+ARCHIVE_SYSTEM_DONE:{"stage":"save","saved":true}
+ARCHIVE_SYSTEM_STAGE:{"stage":"pick","maximum_bytes":67108864}
+ARCHIVE_SYSTEM_DONE:{"stage":"pick","bytes":19205,"sha256":"62b73024df214f8364dbdee23c25b5b73111117f9394d28b4bec2f8b0be84f0b"}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-restore-first-page","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-restore-keyboard","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":303.0,"dark":false}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-restore-confirm-off","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-backup-restore-point","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-snapshot-preview","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-snapshot-confirm-off","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+ARCHIVE_UI_VERIFIED:{"roots":27,"epoch_changed":true,"snapshot":"59ad8982-b096-4683-94d3-18c878be6aed","restore_task":"9f3b3c8d-bf1f-409b-bd66-3d5b59d9ada5","kind":"backup_restore_v2","state":"completed","replacement_removed_late_tags":true,"snapshot_not_confirmed":true,"native_documents":true,"document_bytes":19205,"document_sha256":"62b73024df214f8364dbdee23c25b5b73111117f9394d28b4bec2f8b0be84f0b"}
+01:04 +1: (tearDownAll)
+01:04 +1: All tests passed!
