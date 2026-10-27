@@ -171,6 +171,16 @@ def media():
 
 original = {name: shell("wm", name) for name in ("size", "density")}
 font = shell("settings", "get", "system", "font_scale")
+if args.scenario == "preview-lifecycle":
+    assert shell("getprop", "ro.boot.qemu.avd_name") == "video_viewer_api_36"
+    assert shell("getprop", "sys.boot_completed") == "1"
+    save("environment.json", {
+        "avd": shell("getprop", "ro.boot.qemu.avd_name"),
+        "api": shell("getprop", "ro.build.version.sdk"),
+        "abi": shell("getprop", "ro.product.cpu.abi"),
+        "emulator_process": [line for line in run("ps", "-axo", "command").splitlines() if "qemu-system-aarch64" in line and "-avd video_viewer_api_36" in line],
+        "renderer_override": False,
+    })
 container = None
 stop = threading.Event()
 errors, screens = [], []
@@ -197,6 +207,7 @@ paths += [
     "services/server/tests/prototype_fidelity_fixture.py",
     "scripts/run-prototype-fidelity-test.py",
 ]
+prototype = run("git", "ls-tree", "HEAD", "design/reference/library-first").split()
 save(
     "source.json",
     {
@@ -205,9 +216,7 @@ save(
             path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
             for path in paths
         },
-        "prototype_tree": run(
-            "git", "rev-parse", "HEAD:design/reference/library-first"
-        ),
+        "prototype_tree": prototype[2] if prototype else None,
     },
 )
 

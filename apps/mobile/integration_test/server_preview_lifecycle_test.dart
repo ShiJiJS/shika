@@ -140,6 +140,7 @@ void main() {
             'levels': await device.levels(),
             'players': players.map((p) => {
               'source': p.dataSource,
+              'controller_identity': identityHashCode(p),
               'initialized': p.value.isInitialized,
               'size': [p.value.size.width, p.value.size.height],
               'playing': p.value.isPlaying,
@@ -416,6 +417,16 @@ void main() {
           );
         }
         swipes++;
+        debugPrint(
+          'PREVIEW_NATIVE_SWIPE:${jsonEncode({
+            'step': swipes,
+            'round': repo.playbackIdentity,
+            'current': repo.current!.id,
+            'position': repo.playbackPosition,
+            'visible_source': player().dataSource,
+            'players': session!.debugPlayers.map((p) => {'source': p.dataSource, 'controller_identity': identityHashCode(p), 'initialized': p.value.isInitialized, 'playing': p.value.isPlaying, 'volume': p.value.volume}).toList(),
+          })}',
+        );
         expect(repo.playbackIdentity, identity);
       }
       expect(repo.current!.id, first);
