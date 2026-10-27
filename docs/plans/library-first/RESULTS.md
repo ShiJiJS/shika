@@ -2,7 +2,7 @@
 
 更新：2026-10-27。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
-最新阶段：[总览缩略图恢复与取消 PR #84](https://github.com/ShiJiJS/video_viewer/pull/84)，固定7dbf3fd；22项组件、原生8点及[104输入只读复核](evidence/lf8-thumbnail-recovery/README.md)通过。真实Android返回取消6个未完成响应，总览无新增写请求，当前页／模式／固定范围与API详情不变。#83继续超过24页原生分页，整项终验仍开放。
+最新阶段：[总览容量与跨页 PR #85](https://github.com/ShiJiJS/video_viewer/pull/85)，24项相关检查、同生产／跨页驱动三轮33点及六图回归8点通过，[207输入只读复核](evidence/lf8-overview-pagination/README.md)。#83已补24→6→24、排队／在途／清单取消及明确第30页写入边界，保留草稿合并／终验状态；#24/#33继续内容页强停恢复及其余验收。
 
 共享布局阶段基线为a9da395；最新图包续读阶段源码为c4aaf3b，见[真实续读约定](LF8-PACK-CONTINUATION.md)与[原生证据](evidence/lf8-pack-continuation/README.md)。后续分类总数阶段源码910cfb2，见[库存约定](LF8-CATALOG-COUNTS.md)与[库存/横屏及续读回归证据](evidence/lf8-catalog-counts/README.md)。该段补同快照总数、未知重试和标签缩高布局；续读段新增真实续读、独立摘要读取与菜单收键盘；共享布局的设置开关、标签确认区和主题稳定证据继续作为历史基线。图包呈现/排序阶段为4e391a2，见[约定](LF8-PACK-PRESENTATION.md)与[69点同版证据](evidence/lf8-pack-presentation/README.md)；主标题/作者和完整范围排序已补，新增大字长操作行可达性修正。原型树1cbf605未改。各阶段链接中的实现提交、真实服务/Demo区分、操作步骤与原始证据继续有效，但未来修改后须按受影响路径复核，不能把历史全集视为当前HEAD所有组合已通过。
 
@@ -37,7 +37,7 @@
 | PRE-05 | 新增当前预览全屏/后台行为三轮 / 未收口 | [LF3](LF3.md)、[当前链路](evidence/lf8-preview-lifecycle/README.md)、[绿边#78](https://github.com/ShiJiJS/video_viewer/issues/78) | 真实Home六次释放全部网络播放器、返回暂停/基础速度；当前及前后共3项、关闭准备后1项和离页释放已补三轮。其它迟到回执/重叠初始化、故障/强停及目标设备继续。 |
 | PKG-01 | 已有阶段证据 / 未收口 | [LF2](LF2.md) | 最终同版重扫/离线/缺失/失败读取组合；真实NAS可丢弃样本复核。 |
 | PKG-02 | 已有阶段证据 / 未收口 | [LF2](LF2.md) | 最终同版重扫/离线/缺失/失败读取组合；真实NAS可丢弃样本复核。 |
-| PKG-03 | 新增总览有界恢复／在途取消 / 未收口 | [LF2](LF2.md)、[传输重试与长包](evidence/lf8-reader-long-pack/README.md)、[缩略图专项](evidence/lf8-thumbnail-recovery/README.md) | 22项组件、普通原生8点验证503后六张真实解码、恰3次上限、手动恢复与真实返回取消6个未结束响应；总览无写入、范围／页码／模式与详情相同。旧版已有退避，已修正初判；分页加载即取消旧单元格已有接线与组件检查，超过24页实际跨页仍由#83继续。最终同版重扫／离线／缺失／其它失败及NAS样本复核继续。 |
+| PKG-03 | 新增容量／跨24页取消证据 / 未收口 | [LF2](LF2.md)、[传输重试与长包](evidence/lf8-reader-long-pack/README.md)、[缩略图恢复](evidence/lf8-thumbnail-recovery/README.md)、[容量与跨页](evidence/lf8-overview-pagination/README.md) | 本段24相关检查、普通三轮跨页33点＋六图故障回归8点：共享3下载、21排队取消，实际24→6→24解码、真实返回取消清单、重开保留第3页，明确点第30页才写一次进度。#83开发证据已补齐，草稿合并／终验继续；同版重扫／离线／缺失／其它失败及NAS复核仍开放。 |
 | READ-01 | 新增长包/大图链路证据 / 未收口 | [LF5](LF5.md)、[阅读器82点](evidence/lf8-reader-chrome/README.md)、[500页三轮](evidence/lf8-reader-long-pack/README.md) | 新增真实总览跳页和普通/大字/短横屏画布证据；完整左右方向/缩放/手势及目标手机组合继续。 本段补实际500页单调滚动、末页横纵同页、固定范围/大图往返及重开末页和纵向偏好；未新增比例相等或其它组合证明。 |
 | READ-02 | 新增长包/大图链路证据 / 未收口 | [LF5](LF5.md)、[阅读器82点](evidence/lf8-reader-chrome/README.md)、[500页三轮](evidence/lf8-reader-long-pack/README.md) | 新增真实纵向拖动及同页比例保持；组件保留惰性布局/双向旋转回归。长包间距/末尾与性能同版收口继续。 本段补实际500页单调滚动、末页横纵同页、固定范围/大图往返及重开末页和纵向偏好；未新增比例相等或其它组合证明。 |
 | READ-03 | 新增长包/大图链路证据 / 未收口 | [LF5](LF5.md)、[阅读器82点](evidence/lf8-reader-chrome/README.md)、[500页三轮](evidence/lf8-reader-long-pack/README.md) | 新增模式设置初始完整主动作、同图切纵向及每包偏好重开恢复；全局默认/已设置包隔离与其它方向/适配组合继续。 本段补实际500页单调滚动、末页横纵同页、固定范围/大图往返及重开末页和纵向偏好；未新增比例相等或其它组合证明。 |
@@ -332,3 +332,13 @@ flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX�
 22项组件检查、分析／格式／Ruff通过；普通390×844原生8点：六张503后各2–3次内真实解码，持续失败恰3次后停止并实际手动恢复；真实Android返回取消6个未完成响应，3秒无额外请求，重开6张再次解码。固定范围、当前第3页、横向模式和API图包详情相同，总览无新增写请求，26公开源文件SHA不变；5张面板矩形一致。没有SQL七表快照，不把这项读回称SQL逐行验证。
 
 三轮原生开发失败及组件诊断单独保留，不计最终8点；原型树1cbf605仍独立可移除。AVD显示恢复并关闭，未发布APK。本段未重跑全集／release／大字／横屏／目标手机，超过24页分页目前为组件取消信号与接线检查，仍待实际原生跨页。#83及#24/#33保持开放，下一步继续该跨页与其余LF8终验。
+
+## 2026-10-27：总览容量与跨24页实际取消（PR #85）
+
+[草稿 PR #85](https://github.com/ShiJiJS/video_viewer/pull/85)基于#84，增加共享3许可的缩略图下载队列，等待时不创建socket，分页／关闭取消排队项、在途连接，完成／错误释放许可，保留原两次退避和三列比例。两个新增真实HTTP组件旧版基线失败（峰值24、63次仍未全解码），修正后24项相关检查通过；分析／格式／Ruff通过。
+
+[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-overview-pagination/docs/plans/library-first/LF8-OVERVIEW-PAGINATION.md)／[207输入只读证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-overview-pagination/docs/plans/library-first/evidence/lf8-overview-pagination/README.md)。固定26aceab普通390×844同版连续三轮，各11点共33点：30页目标包实际24→6→24，清单等待阶段3下载取消、21排队无GET；真实Android返回取消未完成清单，重开仍第3页／横向／原范围，API详情及写请求相同。明确点第30页才新增一次正确进度写入，主图实际显示30/30。每轮50公开源文件SHA相同。
+
+随后只调整未被跨页路径使用的六图驱动pending预期，56b2a74再过8点：六图503自动／恰3次上限／手动恢复、3在途＋3排队取消及重开；26源SHA不变。两提交生产／跨页驱动／夹具相同，非docs差异仅六图驱动，复核脚本明确审计，共41原生点，不称同一完整源码提交。没有SQL快照／全集／release／大字／横屏／目标手机结论。
+
+一次footer滚动驱动失误和一次QEMU图形／主循环挂起退出均另存，不计成功；原配置重启恢复显示后完成三轮，最终AVD已恢复并关闭。原型树1cbf605继续独立可移除，未发布APK。#83跨页开发证据已补齐，issue保留草稿合并／终验状态；#24/#33继续其余验收，下一步内容页强停恢复与其它组合。
