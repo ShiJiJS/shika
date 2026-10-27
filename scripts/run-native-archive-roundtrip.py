@@ -143,6 +143,7 @@ def main():
     events, errors, system_events = [], [], []
     before_trace = before_media = None
     created_name = None
+    unique_name = "video-viewer-backup-" + str(time.time_ns()) + ".vvbackup"
     before_downloads = download_names()
     save_descriptor = None
 
@@ -186,6 +187,7 @@ def main():
         (name,) = names
         assert name.startswith("video-viewer-backup") and name.endswith(".vvbackup")
         assert all(c.isalnum() or c in " .()-_" for c in name), name
+        assert name == unique_name, name
         return name
 
     def watch():
@@ -364,6 +366,27 @@ def main():
                     nodes = capture_system(stage)
                     if stage == "save":
                         save_descriptor = event
+                        (field,) = [
+                            n
+                            for n in nodes
+                            if n.get("class") == "android.widget.EditText"
+                            and n.get("resource-id") == "android:id/title"
+                        ]
+                        tap(field)
+                        shell("input", "keycombination", "113", "29")
+                        shell("input", "text", unique_name)
+                        nodes = capture_system("save-named")
+                        assert (
+                            len(
+                                [
+                                    n
+                                    for n in nodes
+                                    if n.get("class") == "android.widget.EditText"
+                                    and n.get("text") == unique_name
+                                ]
+                            )
+                            == 1
+                        )
                         (button,) = [
                             n
                             for n in nodes
@@ -463,11 +486,10 @@ def main():
         assert "All tests passed!" in text
         save("media-after.json", media())
         assert before_media == media()
-        shell("rm", "--", shlex.quote("/sdcard/Download/" + created_name))
-        assert download_names() == before_downloads
+        assert download_names() == before_downloads | {created_name}
         save(
             "document-cleanup.json",
-            {"removed_owned_document": created_name, "other_names_unchanged": True},
+            {"retained_owned_document": created_name, "other_names_unchanged": True},
         )
         save(
             "result.json",
