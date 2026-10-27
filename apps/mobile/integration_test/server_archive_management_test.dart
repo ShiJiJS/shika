@@ -18,8 +18,8 @@ import 'package:video_viewer/ui/preferences.dart';
 
 import '../test/support/reveal_action.dart';
 
-/// Real HTTP/repository/filesystem and Paper page; document-provider behavior is
-/// independently exercised by backup_native_files_test on the same Android AVD.
+/// Default private-file boundary preserves the existing UI checks; opt-in
+/// ARCHIVE_NATIVE_DOCUMENTS drives the same pages with real Android DocumentsUI.
 class _PrivateFiles implements BackupArchiveFiles {
   BackupDocument? selected;
   @override
@@ -42,6 +42,56 @@ class _PrivateFiles implements BackupArchiveFiles {
   }
 }
 
+/// Observes the production Android bridge without replacing its file provider.
+class _SystemFiles implements BackupArchiveFiles {
+  final native = const NativeBackupArchiveFiles();
+  int? exportedBytes;
+  String? exportedSha256;
+  BackupDocument? selected;
+
+  @override
+  Future<bool> save(BackupDocument document, {RequestScope? scope}) async {
+    exportedBytes = document.bytes;
+    exportedSha256 = document.sha256;
+    debugPrint(
+      'ARCHIVE_SYSTEM_STAGE:${jsonEncode({'stage': 'save', 'bytes': document.bytes, 'sha256': document.sha256})}',
+    );
+    final saved = await native.save(document, scope: scope);
+    debugPrint(
+      'ARCHIVE_SYSTEM_DONE:${jsonEncode({'stage': 'save', 'saved': saved})}',
+    );
+    return saved;
+  }
+
+  @override
+  Future<BackupDocument?> pick(
+    BackupFileStore store, {
+    required int maximumBytes,
+    RequestScope? scope,
+  }) async {
+    debugPrint(
+      'ARCHIVE_SYSTEM_STAGE:${jsonEncode({'stage': 'pick', 'maximum_bytes': maximumBytes})}',
+    );
+    selected = await native.pick(
+      store,
+      maximumBytes: maximumBytes,
+      scope: scope,
+    );
+    expect(selected, isNotNull);
+    expect(selected!.bytes, exportedBytes);
+    expect(selected!.sha256, exportedSha256);
+    debugPrint(
+      'ARCHIVE_SYSTEM_DONE:${jsonEncode({'stage': 'pick', 'bytes': selected!.bytes, 'sha256': selected!.sha256})}',
+    );
+    return selected;
+  }
+}
+
+const archivePort = int.fromEnvironment(
+  'ARCHIVE_SERVER_PORT',
+  defaultValue: 8762,
+);
+
 Future<Map<String, dynamic>> control(
   String path, {
   String method = 'GET',
@@ -50,7 +100,7 @@ Future<Map<String, dynamic>> control(
   try {
     final request = await client.openUrl(
       method,
-      Uri.parse('http://10.0.2.2:8762/__archive_fixture$path'),
+      Uri.parse('http://10.0.2.2:$archivePort/__archive_fixture$path'),
     );
     request.headers.set('X-Fixture-Key', 'archive-app-isolated-control');
     final response = await request.close();
@@ -66,38 +116,43 @@ Future<Map<String, dynamic>> control(
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  const nativeDocuments = bool.fromEnvironment('ARCHIVE_NATIVE_DOCUMENTS');
+  const ownedPrefix = nativeDocuments
+      ? 'video_viewer.archive_native_app'
+      : 'video_viewer.archive_app';
   testWidgets(
     'LF8 real App v2 export, keyboard mapping, replacement and snapshot',
     (t) async {
-      final credentials = SecureCredentialStore(
-        key: 'video_viewer.archive_app.connection',
-      );
-      final work = SecureBackupWorkStore(
-        key: 'video_viewer.archive_app.backups',
-      );
+      final credentials = SecureCredentialStore(key: '$ownedPrefix.connection');
+      final work = SecureBackupWorkStore(key: '$ownedPrefix.backups');
       await credentials.clear();
       await work.write('{"version":2,"scopes":{}}');
       final repo = ServerLibraryRepository(
         credentials,
         backupWork: work,
-        fileCommands: SecureFileCommandStore(
-          key: 'video_viewer.archive_app.videos',
-        ),
-        packCommands: SecureFileCommandStore(
-          key: 'video_viewer.archive_app.packs',
-        ),
-        port: 8762,
+        fileCommands: SecureFileCommandStore(key: '$ownedPrefix.videos'),
+        packCommands: SecureFileCommandStore(key: '$ownedPrefix.packs'),
+        port: archivePort,
       );
-      final files = _PrivateFiles();
+      final privateFiles = _PrivateFiles();
+      final systemFiles = _SystemFiles();
+      final BackupArchiveFiles files = nativeDocuments
+          ? systemFiles
+          : privateFiles;
       final preferences = UiPreferences(preloadAdjacent: false);
-      await repo.connect('http://10.0.2.2', 8762, 'archive-app-isolated-only');
+      await repo.connect(
+        'http://10.0.2.2',
+        archivePort,
+        'archive-app-isolated-only',
+      );
       final originalEpoch = repo.api.managementEpoch;
       expect(repo.archiveBackupsAvailable, isTrue);
       expect(repo.archiveMaximumBytes, 64 * 1024 * 1024);
       addTearDown(() async {
         await t.pumpWidget(const SizedBox());
         await t.pump();
-        await files.selected?.delete();
+        await privateFiles.selected?.delete();
+        await systemFiles.selected?.delete();
         repo.dispose();
         preferences.dispose();
       });
@@ -169,7 +224,12 @@ void main() {
       await t.pumpAndSettle();
       await t.tap(find.byKey(const Key('archive-export')));
       await until(() => find.text('已导出管理数据备份').evaluate().isNotEmpty);
-      await files.selected!.verify();
+      if (nativeDocuments) {
+        expect(systemFiles.exportedBytes, greaterThan(0));
+        expect(systemFiles.exportedSha256, matches(RegExp(r'^[a-f0-9]{64}$')));
+      } else {
+        await privateFiles.selected!.verify();
+      }
       final stamp = DateTime.now().microsecondsSinceEpoch;
       await repo.api.json(
         'POST',
@@ -287,7 +347,7 @@ void main() {
       catalog.dispose();
       expect(t.takeException(), isNull);
       debugPrint(
-        'ARCHIVE_UI_VERIFIED:${jsonEncode({'roots': 27, 'epoch_changed': true, 'snapshot': snapshot, 'restore_task': restored.id, 'kind': restored.kind, 'state': restored.state, 'replacement_removed_late_tags': true, 'snapshot_not_confirmed': true})}',
+        'ARCHIVE_UI_VERIFIED:${jsonEncode({'roots': 27, 'epoch_changed': true, 'snapshot': snapshot, 'restore_task': restored.id, 'kind': restored.kind, 'state': restored.state, 'replacement_removed_late_tags': true, 'snapshot_not_confirmed': true, 'native_documents': nativeDocuments, 'document_bytes': systemFiles.exportedBytes, 'document_sha256': systemFiles.exportedSha256})}',
       );
     },
     timeout: const Timeout(Duration(minutes: 5)),
