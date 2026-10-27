@@ -12,6 +12,7 @@ import 'media_workspace_widget_test.dart' show WorkspaceLibrary;
 
 class AssetReadingLibrary extends WorkspaceLibrary {
   MediaSource Function(String packId, int index)? pageImage;
+  MediaSource Function(String packId, int index)? pageThumbnail;
   final prefs = <String, ReaderPreferences>{};
   final marks = <String, ReaderMark>{};
   final revisions = <String, int>{};
@@ -48,10 +49,9 @@ class _AssetReader implements PackReader {
     image:
         repo.pageImage?.call(selected, index) ??
         const MediaSource('assets/media/flower-portrait.jpg', asset: true),
-    thumbnail: const MediaSource(
-      'assets/media/flower-portrait.jpg',
-      asset: true,
-    ),
+    thumbnail:
+        repo.pageThumbnail?.call(selected, index) ??
+        const MediaSource('assets/media/flower-portrait.jpg', asset: true),
   );
   ReaderState get state {
     final mark = repo.marks[selected] ?? ReaderMark('$selected-0');

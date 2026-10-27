@@ -1,0 +1,167 @@
+
+┌─────────────────────────────────────────────────────────┐
+│ A new version of Flutter is available!                  │
+│                                                         │
+│ To update to the latest version, run "flutter upgrade". │
+└─────────────────────────────────────────────────────────┘
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart
+00:00 +0: overview thumbnail recover preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53786/thumb
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53786/thumb
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <3>
+  Actual: <2>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart:106:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart line 106
+The test description was:
+  overview thumbnail recover preserves reader and cancels work
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -1: overview thumbnail recover preserves reader and cancels work [E]
+  Test failed. See exception logs above.
+  The test description was: overview thumbnail recover preserves reader and cancels work
+  
+00:01 +0 -1: overview thumbnail bounded preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53790/thumb
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53790/thumb
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53790/thumb
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <3>
+  Actual: <2>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart:106:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart line 106
+The test description was:
+  overview thumbnail bounded preserves reader and cancels work
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +0 -2: overview thumbnail bounded preserves reader and cancels work [E]
+  Test failed. See exception logs above.
+  The test description was: overview thumbnail bounded preserves reader and cancels work
+  
+00:02 +0 -2: overview thumbnail close-timer preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53795/thumb
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a painting debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllPaintingVarsUnset.<anonymous closure> (package:flutter/src/painting/debug.dart:203:7)
+#1      debugAssertAllPaintingVarsUnset (package:flutter/src/painting/debug.dart:206:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2007:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2525:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1974:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  overview thumbnail close-timer preserves reader and cancels work
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +0 -3: overview thumbnail close-timer preserves reader and cancels work [E]
+  Test failed. See exception logs above.
+  The test description was: overview thumbnail close-timer preserves reader and cancels work
+  
+00:02 +0 -3: overview thumbnail close-request preserves reader and cancels work
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+in-flight thumbnail socket cancelled while body pending; requests=[/thumb]
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart:62:9)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart:77:11)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  overview thumbnail close-request preserves reader and cancels work
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +0 -4: overview thumbnail close-request preserves reader and cancels work [E]
+  Test failed. See exception logs above.
+  The test description was: overview thumbnail close-request preserves reader and cancels work
+  
+00:04 +0 -4: overview thumbnail manual preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:53802/thumb
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <3>
+  Actual: <2>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart:106:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart line 106
+The test description was:
+  overview thumbnail manual preserves reader and cancels work
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +0 -5: overview thumbnail manual preserves reader and cancels work [E]
+  Test failed. See exception logs above.
+  The test description was: overview thumbnail manual preserves reader and cancels work
+  
+00:04 +0 -5: overview thumbnail unauthorized preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 401, http://127.0.0.1:53806/thumb
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+The value of a painting debug variable was changed by the test.
+
+When the exception was thrown, this was the stack:
+#0      debugAssertAllPaintingVarsUnset.<anonymous closure> (package:flutter/src/painting/debug.dart:203:7)
+#1      debugAssertAllPaintingVarsUnset (package:flutter/src/painting/debug.dart:206:4)
+#2      TestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2007:7)
+#3      AutomatedTestWidgetsFlutterBinding._verifyInvariants (package:flutter_test/src/binding.dart:2525:11)
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1974:7)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  overview thumbnail unauthorized preserves reader and cancels work
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +0 -6: overview thumbnail unauthorized preserves reader and cancels work [E]
+  Test failed. See exception logs above.
+  The test description was: overview thumbnail unauthorized preserves reader and cancels work
+  
+00:04 +0 -6: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail bounded preserves reader and cancels work
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail close-request preserves reader and cancels work
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail close-timer preserves reader and cancels work
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail manual preserves reader and cancels work
+  ... and 2 more

@@ -1981,6 +1981,7 @@ class _ReaderOverviewState extends State<_ReaderOverview> {
                         images: widget.images,
                         viewport: const Size(110, 150),
                         thumbnail: true,
+                        active: !busy,
                         onUnauthorized: () {
                           if (widget.session.live && reader.isCurrent) {
                             unawaited(

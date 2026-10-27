@@ -1,6 +1,6 @@
 # 媒体库与图包改造实施方案
 
-最新阶段：[六来源导航与真实冷启动 PR #82](https://github.com/ShiJiJS/video_viewer/pull/82)，[84点与三次新PID、七表只读复核](evidence/lf8-navigation-restart/README.md)。25项相关检查通过，生产树未改；总览缩略图503后需手动重试由[#83](https://github.com/ShiJiJS/video_viewer/issues/83)继续，整体验收及#78仍开放。
+最新阶段：[总览缩略图恢复与取消 PR #84](https://github.com/ShiJiJS/video_viewer/pull/84)，固定7dbf3fd；22项组件、原生8点及[104输入只读复核](evidence/lf8-thumbnail-recovery/README.md)通过。真实Android返回取消6个未完成响应，总览无新增写请求，当前页／模式／固定范围与API详情不变。#83继续超过24页原生分页，整项终验仍开放。
 
 ## 2026-10-26：缺失内容管理与待核对结果（PR #69）
 
@@ -517,3 +517,11 @@ flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX�
 原图另发现两张总览缩略图503后停在“重试”，已新建[#83](https://github.com/ShiJiJS/video_viewer/issues/83)补有界自动恢复、关闭后取消、持续失败与手动读回；本轮只通过面板返回，不把这些缩略图算成功解码。当前RESULTS.md已替换NAV旧待办并记录PKG-03这个具体缺口。
 
 [实施范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-navigation-restart/docs/plans/library-first/LF8-NAVIGATION-RESTART.md)／[固定源码、原图、PID、接口／SQL与复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-navigation-restart/docs/plans/library-first/evidence/lf8-navigation-restart/README.md)。原型1cbf605独立可移除未改；正式8760／NAS、默认凭据键、SDK和签名／版本未改。#24/#33/#78及整体验收保持开放，下一步先处理#83这个实际图片加载缺口，再继续其它明确余项；需用户配合部分按授权暂跳过。
+
+## 2026-10-27：总览缩略图有界恢复与在途取消（PR #84）
+
+[草稿 PR #84](https://github.com/ShiJiJS/video_viewer/pull/84)基于#82，固定源码／驱动7dbf3fd，[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-overview-thumbnail-recovery/docs/plans/library-first/LF8-THUMBNAIL-RECOVERY.md)及[104输入只读证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-overview-thumbnail-recovery/docs/plans/library-first/evidence/lf8-thumbnail-recovery/README.md)。复查#82原始请求，旧代码已有两次退避，503后200发生于关闭阶段；修正此前“没有自动恢复”的初步判断。本段让缩略图单元格独立拥有可取消HTTP客户端，关闭动画、分页读取或地址／凭据／版本／图包变化时取消旧请求和计时器，手动重试重置预算，保留三列比例与重试入口。
+
+22项组件检查、分析／格式／Ruff通过；普通390×844原生8点：六张503后各2–3次内真实解码，持续失败恰3次后停止并实际手动恢复；真实Android返回取消6个未完成响应，3秒无额外请求，重开6张再次解码。固定范围、当前第3页、横向模式和API图包详情相同，总览无新增写请求，26公开源文件SHA不变；5张面板矩形一致。没有SQL七表快照，不把这项读回称SQL逐行验证。
+
+三轮原生开发失败及组件诊断单独保留，不计最终8点；原型树1cbf605仍独立可移除。AVD显示恢复并关闭，未发布APK。本段未重跑全集／release／大字／横屏／目标手机，超过24页分页目前为组件取消信号与接线检查，仍待实际原生跨页。#83及#24/#33保持开放，下一步继续该跨页与其余LF8终验。
