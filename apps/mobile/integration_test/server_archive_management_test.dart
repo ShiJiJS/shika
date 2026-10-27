@@ -44,8 +44,11 @@ class _PrivateFiles implements BackupArchiveFiles {
 
 /// Observes the production Android bridge without replacing its file provider.
 class _SystemFiles implements BackupArchiveFiles {
-  _SystemFiles(this.journal);
+  _SystemFiles(this.journal, {this.cancelFirst = false});
   final BackupWorkStore journal;
+  final bool cancelFirst;
+  var saves = 0, picks = 0, cancelledPicks = 0;
+  Map<String, dynamic>? firstSaveJournal;
   final native = const NativeBackupArchiveFiles();
   int? exportedBytes;
   String? exportedSha256;
@@ -53,20 +56,25 @@ class _SystemFiles implements BackupArchiveFiles {
 
   @override
   Future<bool> save(BackupDocument document, {RequestScope? scope}) async {
+    saves++;
+    final operation = cancelFirst && saves == 1 ? 'cancel-save' : 'save';
     exportedBytes = document.bytes;
     exportedSha256 = document.sha256;
     final persisted = await journal.read();
     expect(persisted, isNotNull);
     expect(persisted!.length, lessThan(64 * 1024));
+    firstSaveJournal ??= Map<String, dynamic>.from(
+      jsonDecode(persisted) as Map,
+    );
     debugPrint(
       'ARCHIVE_JOURNAL:${jsonEncode({'stage': 'before-system-save', 'state': jsonDecode(persisted)})}',
     );
     debugPrint(
-      'ARCHIVE_SYSTEM_STAGE:${jsonEncode({'stage': 'save', 'bytes': document.bytes, 'sha256': document.sha256})}',
+      'ARCHIVE_SYSTEM_STAGE:${jsonEncode({'stage': operation, 'bytes': document.bytes, 'sha256': document.sha256})}',
     );
     final saved = await native.save(document, scope: scope);
     debugPrint(
-      'ARCHIVE_SYSTEM_DONE:${jsonEncode({'stage': 'save', 'saved': saved})}',
+      'ARCHIVE_SYSTEM_DONE:${jsonEncode({'stage': operation, 'saved': saved})}',
     );
     return saved;
   }
@@ -77,14 +85,24 @@ class _SystemFiles implements BackupArchiveFiles {
     required int maximumBytes,
     RequestScope? scope,
   }) async {
+    picks++;
+    final operation = cancelFirst && picks == 1 ? 'cancel-pick' : 'pick';
     debugPrint(
-      'ARCHIVE_SYSTEM_STAGE:${jsonEncode({'stage': 'pick', 'maximum_bytes': maximumBytes})}',
+      'ARCHIVE_SYSTEM_STAGE:${jsonEncode({'stage': operation, 'maximum_bytes': maximumBytes})}',
     );
     selected = await native.pick(
       store,
       maximumBytes: maximumBytes,
       scope: scope,
     );
+    if (operation == 'cancel-pick') {
+      expect(selected, isNull);
+      cancelledPicks++;
+      debugPrint(
+        'ARCHIVE_SYSTEM_DONE:${jsonEncode({'stage': operation, 'cancelled': true})}',
+      );
+      return null;
+    }
     expect(selected, isNotNull);
     expect(selected!.bytes, exportedBytes);
     expect(selected!.sha256, exportedSha256);
@@ -126,6 +144,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   const nativeDocuments = bool.fromEnvironment('ARCHIVE_NATIVE_DOCUMENTS');
   const largeDocument = bool.fromEnvironment('ARCHIVE_LARGE_DOCUMENT');
+  const cancelInputs = bool.fromEnvironment('ARCHIVE_CANCEL_INPUTS');
   const ownedPrefix = nativeDocuments
       ? 'video_viewer.archive_native_app'
       : 'video_viewer.archive_app';
@@ -144,7 +163,7 @@ void main() {
       port: archivePort,
     );
     final privateFiles = _PrivateFiles();
-    final systemFiles = _SystemFiles(work);
+    final systemFiles = _SystemFiles(work, cancelFirst: cancelInputs);
     final BackupArchiveFiles files = nativeDocuments
         ? systemFiles
         : privateFiles;
@@ -244,6 +263,14 @@ void main() {
     await shot('backup-dark');
     await preferences.setDark(false);
     await t.pumpAndSettle();
+    if (cancelInputs) {
+      expect(nativeDocuments, isTrue);
+      await t.tap(find.byKey(const Key('archive-export')));
+      await until(() => find.text('保存已取消，原导出任务已保留').evaluate().isNotEmpty);
+      expect(jsonDecode((await work.read())!), systemFiles.firstSaveJournal);
+      await shot('save-cancelled');
+      await journal('after-system-save-cancelled');
+    }
     await t.tap(find.byKey(const Key('archive-export')));
     await until(() => find.text('已导出管理数据备份').evaluate().isNotEmpty);
     if (nativeDocuments) {
@@ -267,6 +294,15 @@ void main() {
       body: {'name': '恢复前图包标签$stamp', 'request_id': 'late-pack-$stamp'},
     );
     await visible(find.byKey(const Key('archive-pick')));
+    if (cancelInputs) {
+      final originalJournal = jsonDecode((await work.read())!);
+      await t.tap(find.byKey(const Key('archive-pick')));
+      await until(() => systemFiles.cancelledPicks == 1);
+      expect(find.byKey(const Key('archive-counts')), findsNothing);
+      expect(jsonDecode((await work.read())!), originalJournal);
+      await shot('pick-cancelled');
+      await journal('after-system-pick-cancelled');
+    }
     await t.tap(find.byKey(const Key('archive-pick')));
     await until(
       () => find.byKey(const Key('archive-counts')).evaluate().isNotEmpty,

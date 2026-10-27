@@ -35,7 +35,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--large", action="store_true")
+    parser.add_argument("--cancel-first", action="store_true")
     args = parser.parse_args()
+    scenes = list(SCENES)
+    if args.cancel_first:
+        scenes[2:2] = ["save-cancelled", "pick-cancelled"]
+    system_stages = (
+        ["cancel-save", "save", "cancel-pick", "pick"]
+        if args.cancel_first
+        else ["save", "pick"]
+    )
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     base = ROOT / ".dev/archive-native-roundtrip" / out.name
@@ -234,7 +243,7 @@ def main():
                 name = state["display"]
                 if not name or state["display_ack"]:
                     continue
-                assert name == "archive-ui-" + SCENES[len(events)], name
+                assert name == "archive-ui-" + scenes[len(events)], name
                 current = focus()
                 assert any(
                     "mCurrentFocus=" in r and PACKAGE in r for r in current.splitlines()
@@ -417,6 +426,8 @@ def main():
         ]
         if args.large:
             command.append("--dart-define=ARCHIVE_LARGE_DOCUMENT=true")
+        if args.cancel_first:
+            command.append("--dart-define=ARCHIVE_CANCEL_INPUTS=true")
         process = subprocess.Popen(
             command,
             cwd=ROOT / "apps/mobile",
@@ -433,9 +444,11 @@ def main():
                 if "ARCHIVE_SYSTEM_STAGE:" in line:
                     event = json.loads(line.split("ARCHIVE_SYSTEM_STAGE:", 1)[1])
                     stage = event["stage"]
-                    assert stage == ["save", "pick"][len(system_events)], stage
+                    assert stage == system_stages[len(system_events)], stage
                     nodes = capture_system(stage)
-                    if stage == "save":
+                    if stage in {"cancel-save", "cancel-pick"}:
+                        shell("input", "keyevent", "4")
+                    elif stage == "save":
                         save_descriptor = event
                         (field,) = [
                             n
@@ -478,6 +491,12 @@ def main():
                     save("system-events.json", system_events)
                 if "ARCHIVE_SYSTEM_DONE:" in line:
                     event = json.loads(line.split("ARCHIVE_SYSTEM_DONE:", 1)[1])
+                    if event["stage"] == "cancel-save":
+                        assert event["saved"] is False
+                        assert download_names() == before_downloads
+                    if event["stage"] == "cancel-pick":
+                        assert event["cancelled"] is True
+                        assert download_names() == before_downloads | {created_name}
                     if event["stage"] == "save":
                         assert event["saved"]
                         created_name = new_document()
@@ -517,7 +536,7 @@ def main():
         code = process.wait(timeout=20)
         save("exit.json", {"code": code})
         assert code == 0 and not errors, errors
-        assert len(system_events) == 2 and len(events) == 8
+        assert len(system_events) == len(system_stages) and len(events) == len(scenes)
         final_trace = control("/trace")["items"]
         assert final_trace[: len(before_trace)] == before_trace
         requests = final_trace[len(before_trace) :]
@@ -563,11 +582,18 @@ def main():
             for r in text.splitlines()
             if "ARCHIVE_JOURNAL:" in r
         ]
-        assert [r["stage"] for r in journals] == [
+        journal_stages = [
             "before-system-save",
             "before-restore-confirmation",
             "after-restore-and-snapshot",
         ]
+        if args.cancel_first:
+            journal_stages[1:1] = [
+                "after-system-save-cancelled",
+                "before-system-save",
+                "after-system-pick-cancelled",
+            ]
+        assert [r["stage"] for r in journals] == journal_stages
         save("journals.json", journals)
         save("notes-after.json", notes_snapshot())
         assert notes_snapshot() == before_notes
@@ -582,17 +608,24 @@ def main():
             "result.json",
             {
                 "passed": True,
-                "native_points": 8,
-                "system_points": 2,
+                "native_points": len(scenes),
+                "system_points": len(system_stages),
                 "window": [390, 844],
                 "document": read_saved(out),
                 "restore_posts": 1,
                 "snapshot_preview_only": True,
                 "large_document": args.large,
+                "cancel_inputs": args.cancel_first,
             },
         )
         print(
-            json.dumps({"passed": True, "native_points": 8, "system_points": 2}),
+            json.dumps(
+                {
+                    "passed": True,
+                    "native_points": len(scenes),
+                    "system_points": len(system_stages),
+                }
+            ),
             flush=True,
         )
     finally:
