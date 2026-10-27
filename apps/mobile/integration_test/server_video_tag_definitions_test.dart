@@ -9,6 +9,7 @@ import 'package:video_viewer/features/library/tag_catalog_page.dart';
 import 'package:video_viewer/features/library/video_catalog_page.dart';
 import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/server_repository.dart';
+import 'package:video_viewer/library/server_api.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/preferences.dart';
 import 'package:video_viewer/ui/paper.dart';
@@ -38,6 +39,10 @@ void main() {
     final videoId = initialVideo.items.singleWhere((v) => v.name == '户外').id;
     final packId = initialPack.items.singleWhere((v) => v.name == '户外').id;
     expect(videoId, isNot(packId));
+    final packKimonoId = initialPack.items
+        .singleWhere((v) => v.name == '和服')
+        .id;
+    expect(initialVideo.items.every((v) => v.name != '和服'), isTrue);
     final linkedVideos =
         (await repo.api.json(
               'GET',
@@ -54,11 +59,21 @@ void main() {
             as List;
     expect(linkedVideos.length, 2);
     expect(linkedPacks, isNotEmpty);
-    final playbackBefore = await repo.api.json(
-      'GET',
-      '/api/v1/playback',
-      query: {'create': 'false'},
-    );
+    Future<Map<String, dynamic>> playback() async {
+      try {
+        return await repo.api.json(
+          'GET',
+          '/api/v1/playback',
+          query: {'create': 'false'},
+        );
+      } on ApiFailure catch (error) {
+        expect(error.status, 404);
+        expect(error.code, 'round_not_started');
+        return {'status': error.status, 'code': error.code};
+      }
+    }
+
+    final playbackBefore = await playback();
     await t.pumpWidget(
       VideoViewerApp(
         repository: repo,
@@ -223,18 +238,18 @@ void main() {
     await tap(find.byTooltip('关闭面板'));
     expect((await repo.loadVideoTags()).total, 3);
     await tap(find.byTooltip('新建视频标签'));
-    await enter('视频独立标签');
+    await enter('和服');
     await save();
     await until(
-      () =>
-          field.evaluate().isEmpty &&
-          state().tags.any((v) => v.name == '视频独立标签'),
+      () => field.evaluate().isEmpty && state().tags.any((v) => v.name == '和服'),
       'created video-only definition',
     );
-    final created = (await repo.loadVideoTags(search: '视频独立标签'))
-        .items
-        .single
-        .id;
+    final created = (await repo.loadVideoTags(search: '和服')).items.single.id;
+    expect(created, isNot(packKimonoId));
+    expect(
+      (await repo.loadPackTags(search: '和服')).items.single.id,
+      packKimonoId,
+    );
     await capture('tagdef-created');
 
     await tap(find.byTooltip('管理视频标签 户外'));
@@ -338,11 +353,7 @@ void main() {
       'video library returned',
     );
     await capture('tagdef-library');
-    final playbackAfter = await repo.api.json(
-      'GET',
-      '/api/v1/playback',
-      query: {'create': 'false'},
-    );
+    final playbackAfter = await playback();
     expect(playbackAfter, playbackBefore);
     expect((await repo.api.json('GET', '/api/v1/recent'))['total'], 0);
     final packsAfter =
@@ -357,7 +368,7 @@ void main() {
       linkedPacks.map((v) => v['id']).toSet(),
     );
     debugPrint(
-      'VIDEO_TAG_DEFINITIONS_VERIFIED:${jsonEncode({'video_tag': videoId, 'pack_tag': packId, 'created_tag': created, 'linked_videos': linkedVideos.map((v) => v['id']).toList(), 'linked_packs': linkedPacks.map((v) => v['id']).toList(), 'playback_before': playbackBefore, 'playback_after': playbackAfter})}',
+      'VIDEO_TAG_DEFINITIONS_VERIFIED:${jsonEncode({'video_tag': videoId, 'pack_tag': packId, 'created_tag': created, 'pack_kimono_tag': packKimonoId, 'linked_videos': linkedVideos.map((v) => v['id']).toList(), 'linked_packs': linkedPacks.map((v) => v['id']).toList(), 'playback_before': playbackBefore, 'playback_after': playbackAfter})}',
     );
     debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
   });
