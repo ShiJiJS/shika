@@ -26,11 +26,12 @@ p.add_argument("--scale", choices=("1", "2"), default="1")
 p.add_argument("--expected-columns", choices=(2, 4), type=int, default=2)
 p.add_argument(
     "--scenario",
-    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings", "preview-lifecycle"),
+    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings", "preview-lifecycle", "preview-stability"),
     default="fidelity",
 )
 args = p.parse_args()
 scenes = {
+    "preview-stability": ["stability-library", "stability-filter", "stability-preview", "stability-editor", "stability-saved", "stability-readback", "stability-added", "stability-frozen-queue", "stability-return", "stability-second-preview", "stability-tag-deleted", "stability-second-queue", "stability-empty", "stability-cleared"],
     "preview-lifecycle": ["lifecycle-library", "lifecycle-playing", "lifecycle-paused", "lifecycle-fullscreen-paused", "lifecycle-fullscreen-playing", "lifecycle-device-levels", "lifecycle-boost", "lifecycle-fullscreen-recovered", "lifecycle-inline-restored", "lifecycle-inline-recovered", "lifecycle-swipes", "lifecycle-preload-off", "lifecycle-single-decoder", "lifecycle-single-swiped", "lifecycle-return"],
     "settings": ["settings-home", "settings-connection", "settings-connection-keyboard", "settings-connection-invalid", "settings-roots", "settings-scan-details", "settings-root-add", "settings-root-keyboard", "settings-root-invalid", "settings-root-edit", "settings-root-conflict", "settings-playback", "settings-playback-draft", "settings-reader", "settings-reader-draft", "settings-reader-saved", "settings-reader-restored", "settings-dark", "settings-dark-roots", "settings-dark-reader", "settings-return"],
     "preview": ["preview-library", "preview-filter", "preview-preview", "preview-filter-return", "preview-paused", "preview-seek", "preview-speed-menu", "preview-boost", "preview-quick", "preview-tags", "preview-more", "preview-details", "preview-dark", "preview-light", "preview-queue", "preview-queue-bottom", "preview-last", "preview-end", "preview-return", "preview-recent"],
@@ -102,6 +103,7 @@ scenes = {
     ],
 }[args.scenario]
 integration_file = {
+    "preview-stability": "server_preview_state_stability_test.dart",
     "preview-lifecycle": "server_preview_lifecycle_test.dart",
     "settings": "server_settings_panels_test.dart",
     "preview": "server_preview_panels_test.dart",
@@ -212,6 +214,7 @@ paths += [
     "apps/mobile/integration_test/server_reader_chrome_test.dart",
     "apps/mobile/integration_test/server_preview_panels_test.dart",
     "apps/mobile/integration_test/server_preview_lifecycle_test.dart",
+    "apps/mobile/integration_test/server_preview_state_stability_test.dart",
     "apps/mobile/integration_test/server_settings_panels_test.dart",
     "apps/mobile/integration_test/server_connection_test.dart",
     "apps/mobile/integration_test/server_defaults_test.dart",
@@ -349,6 +352,8 @@ try:
         "-e",
         "VV_FIDELITY_PREVIEW_LIFECYCLE=" + ("enabled" if args.scenario == "preview-lifecycle" else "disabled"),
         "-e",
+        "VV_FIDELITY_PREVIEW_MUTATION=" + ("enabled" if args.scenario == "preview-stability" else "disabled"),
+        "-e",
         "VV_PASSPHRASE_FILE=/fixture/passphrase",
         "-e",
         "VV_MOUNTS_FILE=/fixture/mounts.json",
@@ -426,7 +431,15 @@ try:
         assert set(video_frames) == landscape_video_states
     after = media()
     save("media-after.json", after)
-    assert before == after
+    if args.scenario == "preview-stability":
+        (addition,) = state()["public_additions"]
+        expected = {**before, addition["file"]: addition["sha256"]}
+        assert addition["file"] == "videos/外部新增/晨光新视频.mp4"
+        assert addition["file"] not in before
+        assert addition["sha256"] == hashlib.sha256((ROOT / "apps/mobile/assets/media/flower-landscape.mp4").read_bytes()).hexdigest()
+        assert after == expected
+    else:
+        assert before == after
     save(
         "result.json",
         {

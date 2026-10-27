@@ -1,5 +1,6 @@
 """Disposable public media for native/reference comparison; never production."""
 
+import hashlib
 import json
 import os
 import shutil
@@ -47,6 +48,7 @@ def create_fidelity_app():
             source = Path("/fixture/raster") / Path(page).with_suffix(".png").name
             shutil.copyfile(source, target / f"{index + 1:04d}.png")
     lifecycle = os.environ.get("VV_FIDELITY_PREVIEW_LIFECYCLE") == "enabled"
+    preview_mutation = os.environ.get("VV_FIDELITY_PREVIEW_MUTATION") == "enabled"
     video_samples = [
         ("landscape", "横屏", "风里的花园"),
         ("portrait", "竖屏", "水边的花"),
@@ -62,6 +64,7 @@ def create_fidelity_app():
         "display": None, "ack": False, "prepared": False,
         "continuation_failure": False, "catalog_counts_failure": False,
         "recent_video_failure": False, "recent_pack_failure": False,
+        "public_additions": [],
     }
     trace = deque(maxlen=5000)
 
@@ -73,7 +76,9 @@ def create_fidelity_app():
     async def record(request, call_next):
         body = (
             await request.json()
-            if request.url.path in ("/api/v1/pack-sessions", "/api/v1/rounds") and request.method == "POST"
+            if (request.url.path in ("/api/v1/pack-sessions", "/api/v1/rounds") and request.method == "POST")
+            or (preview_mutation and request.method in {"POST", "PATCH", "DELETE"}
+                and (request.url.path == "/api/v1/video-tags" or request.url.path.startswith("/api/v1/tags/")))
             else None
         )
         counts_failure = (
@@ -219,6 +224,36 @@ def create_fidelity_app():
             raise HTTPException(422)
         state[f"recent_{kind}_failure"] = mode == "on"
         return {"failure": state[f"recent_{kind}_failure"]}
+
+    @app.post("/__fidelity/add-public-video")
+    def add_public_video(x_fixture_key: str = Header()):
+        guard(x_fixture_key)
+        if not preview_mutation:
+            raise HTTPException(404)
+        source = Path("/public/flower-landscape.mp4")
+        digest = hashlib.sha256(source.read_bytes()).hexdigest()
+        if digest != "d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001":
+            raise RuntimeError("Unexpected public video bytes")
+        target = Path("/media/videos/外部新增/晨光新视频.mp4")
+        if target.exists() or state["public_additions"]:
+            raise HTTPException(409)
+        target.parent.mkdir(exist_ok=False)
+        with source.open("rb") as incoming, target.open("xb") as outgoing:
+            shutil.copyfileobj(incoming, outgoing)
+        found = None
+        for _ in range(3):
+            app.state.scanner.submit()
+            app.state.scanner.future.result(timeout=90)
+            with app.state.db.read() as db:
+                video = db.scalar(select(Video).where(Video.path == str(target)))
+                if video is not None and video.status == "available":
+                    found = video.id
+                    break
+        if found is None:
+            raise RuntimeError("Public addition was not discovered by the scanner")
+        receipt = {"id": found, "file": "videos/外部新增/晨光新视频.mp4", "sha256": digest}
+        state["public_additions"].append(receipt)
+        return receipt
 
     @app.post("/__fidelity/checkpoint/{name}")
     def checkpoint(name: str, x_fixture_key: str = Header()):
