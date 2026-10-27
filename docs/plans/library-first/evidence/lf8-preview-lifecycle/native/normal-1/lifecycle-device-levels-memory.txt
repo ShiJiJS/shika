@@ -1,0 +1,62 @@
+Applications Memory Usage (in Kilobytes):
+Uptime: 934692 Realtime: 934692
+
+** MEMINFO in pid 6290 [io.github.shijijs.video_viewer] **
+                   Pss  Private  Private  SwapPss      Rss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty    Total     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------   ------
+  Native Heap   111251   111184       56       34   112184   141732    73721    64208
+  Dalvik Heap    39021    33668     5312       22    39900    61506    36994    24512
+ Dalvik Other     8371     3040       52        0    14012                           
+        Stack     3596     3596        0        0     3600                           
+       Ashmem      568      312        0        0     1124                           
+    Other dev       29        0       20        0      360                           
+     .so mmap     9902      424     3532        7    39044                           
+    .jar mmap     5673        0     2832        0    45972                           
+    .apk mmap    18925      612    18188        0    19864                           
+    .ttf mmap     7133        0     7072        0     7336                           
+    .dex mmap       27        0       16        0      808                           
+    .oat mmap       70        0       20        0     1832                           
+    .art mmap    12536     8824     3332       63    27680                           
+   Other mmap    86333        4    83660        0    89820                           
+      Unknown   190403   190280      120        1   190880                           
+        TOTAL   493965   351944   124212      127   594416   203238   110715    88720
+ 
+ App Summary
+                       Pss(KB)                        Rss(KB)
+                        ------                         ------
+           Java Heap:    45824                          67580
+         Native Heap:   111184                         112184
+                Code:    32748                         125464
+               Stack:     3596                           3600
+            Graphics:        0                              0
+       Private Other:   282804
+              System:    17809
+             Unknown:                                  285588
+ 
+           TOTAL PSS:   493965            TOTAL RSS:   594416       TOTAL SWAP PSS:      127
+ 
+ Objects
+               Views:        6         ViewRootImpl:        1
+         AppContexts:        5           Activities:        1
+              Assets:       27        AssetManagers:        0
+       Local Binders:       33        Proxy Binders:       74
+       Parcel memory:       14         Parcel count:       58
+    Death Recipients:        2             WebViews:        0
+ 
+ Native Allocations
+                         Count                       Total(kB)
+                        ------                         ------
+    Other (malloced):      330                             30
+ Other (nonmalloced):      110                             76
+ 
+ SQL
+         MEMORY_USED:        0
+  PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
+ 
+ 
+ Asset Allocations
+    : 1607K
+    : 292K
+    : 17K
+    : 21K

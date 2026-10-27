@@ -1,0 +1,40 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_preview_lifecycle_test.dart
+Running Gradle task 'assembleDebug'...                             24.1s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,057ms
+00:00 +0: current preview owns native fullscreen, gestures and background resources
+FIDELITY_METRICS:{"state":"lifecycle-library","physical":[1170.0,2532.0],"dpr":3.0,"round":"","current":null,"position":0,"total":0,"preload":true,"lifecycle":"resumed","events":[],"levels":{"volume":0.3333333333333333,"brightness":0.4,"windowBrightness":-1.0},"players":[]}
+FIDELITY_METRICS:{"state":"lifecycle-playing","physical":[1170.0,2532.0],"dpr":3.0,"round":"4e2900d0-ea61-4e33-a117-0392fc6b747f","current":"9b1d61d2-8948-4de9-8812-cdd3798239aa","position":0,"total":3,"preload":true,"lifecycle":"resumed","events":[],"levels":{"volume":0.3333333333333333,"brightness":0.4,"windowBrightness":-1.0},"players":[{"source":"http://10.0.2.2:8768/api/v1/videos/41d9ccf8-b9a3-4abc-a9f2-a760603142bd/stream","controller_identity":832615287,"initialized":true,"size":[960.0,540.0],"playing":false,"volume":0.0,"speed":1.0,"position_ms":0},{"source":"http://10.0.2.2:8768/api/v1/videos/9b1d61d2-8948-4de9-8812-cdd3798239aa/stream","controller_identity":384229337,"initialized":true,"size":[960.0,540.0],"playing":true,"volume":1.0,"speed":1.0,"position_ms":1022}]}
+PREVIEW_LIFECYCLE_TIMEOUT:{"reason":"tap Found 0 widgets with type \"TextButton\" that are ancestors of widgets with text \"暂停\": []","current":"9b1d61d2-8948-4de9-8812-cdd3798239aa","players":[{"source":"http://10.0.2.2:8768/api/v1/videos/41d9ccf8-b9a3-4abc-a9f2-a760603142bd/stream","initialized":true,"playing":false,"error":null},{"source":"http://10.0.2.2:8768/api/v1/videos/9b1d61d2-8948-4de9-8812-cdd3798239aa/stream","initialized":true,"playing":true,"error":null}],"texts":["视频预览","媒体库 · 全部视频","1 / 3","横向全屏","播放","00:03 / 00:05","1×","顺序预览","视频标签","快速整理","上一条","上下滑动切换","下一条"]}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+tap Found 0 widgets with type "TextButton" that are ancestors of widgets with text "暂停": []
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_preview_lifecycle_test.dart:71:13)
+<asynchronous suspension>
+#2      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_preview_lifecycle_test.dart:81:9)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_preview_lifecycle_test.dart:318:7)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  current preview owns native fullscreen, gestures and background resources
+════════════════════════════════════════════════════════════════════════════════════════════════════
+01:11 +0 -1: current preview owns native fullscreen, gestures and background resources [E]
+  Test failed. See exception logs above.
+  The test description was: current preview owns native fullscreen, gestures and background resources
+  
+PREVIEW_DEVICE_RESTORED:{"volume":0.3333333333333333,"brightness":0.4,"windowBrightness":-1.0}
+01:12 +0 -1: (tearDownAll)
+01:12 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_preview_lifecycle_test.dart: current preview owns native fullscreen, gestures and background resources

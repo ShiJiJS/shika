@@ -1,0 +1,11 @@
+{
+  "inspection": "Actual PNG review; temporal samples are not pixel-identical frames",
+  "source_asset": "apps/mobile/assets/media/flower-landscape.mp4",
+  "source_sha256": "d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001",
+  "source_frame_seconds": 3,
+  "source_frame": "checks/source-video-3s.png",
+  "green_edge_seen": "native/normal-1/lifecycle-fullscreen-playing.png",
+  "host_decoder_comparison": "diagnostics/before-identity-metrics-success/lifecycle-fullscreen-playing.png",
+  "root_cause_proven": false,
+  "picture_integrity_passed": false
+}

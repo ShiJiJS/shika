@@ -1,0 +1,39 @@
+{
+  "verified": true,
+  "source": "98507ea75825f3e28353a1636db2e6dc435ebe24",
+  "manifest_inputs": 267,
+  "rounds": [
+    {
+      "round": 1,
+      "screens": 15,
+      "native_swipes": 7,
+      "actual_home_cycles": 2,
+      "native_controller_peak": 3,
+      "recordings": 4,
+      "requested_play_without_playing_snapshot": []
+    },
+    {
+      "round": 2,
+      "screens": 15,
+      "native_swipes": 7,
+      "actual_home_cycles": 2,
+      "native_controller_peak": 3,
+      "recordings": 4,
+      "requested_play_without_playing_snapshot": []
+    },
+    {
+      "round": 3,
+      "screens": 15,
+      "native_swipes": 7,
+      "actual_home_cycles": 2,
+      "native_controller_peak": 3,
+      "recordings": 4,
+      "requested_play_without_playing_snapshot": [
+        "lifecycle-playing"
+      ]
+    }
+  ],
+  "target_phone_nas_verified": false,
+  "picture_integrity_passed": false,
+  "open_render_issue": "https://github.com/ShiJiJS/video_viewer/issues/78"
+}
