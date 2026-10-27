@@ -1,0 +1,34 @@
+{
+  "verified": true,
+  "source": "76a2f95134898e9512310995114e234e19970098",
+  "manifest_inputs": 429,
+  "baseline_preview_points": 20,
+  "rounds": [
+    {
+      "round": 1,
+      "screens": 14,
+      "fixed_ranges": 2,
+      "old_source_files_unchanged": 26,
+      "intentional_public_additions": 1
+    },
+    {
+      "round": 2,
+      "screens": 14,
+      "fixed_ranges": 2,
+      "old_source_files_unchanged": 26,
+      "intentional_public_additions": 1
+    },
+    {
+      "round": 3,
+      "screens": 14,
+      "fixed_ranges": 2,
+      "old_source_files_unchanged": 26,
+      "intentional_public_additions": 1
+    }
+  ],
+  "production_changed_files": [
+    "apps/mobile/lib/features/library/pack_catalog_page.dart",
+    "apps/mobile/lib/features/library/video_catalog_page.dart"
+  ],
+  "target_phone_nas_verified": false
+}

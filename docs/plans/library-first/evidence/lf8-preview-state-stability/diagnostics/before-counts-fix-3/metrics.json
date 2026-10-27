@@ -1,0 +1,655 @@
+[
+  {
+    "state": "stability-library",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "video-grid": [
+        0.0,
+        194.66666666666666,
+        390.0,
+        575.3333333333334
+      ]
+    },
+    "round": "",
+    "current": null,
+    "cursor": 0,
+    "total": 0,
+    "current_tags": null,
+    "entry_tags": [],
+    "catalog_ids": [
+      "f35f98d3-4393-4266-81f4-be1a32d7c977",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": null,
+    "players": null
+  },
+  {
+    "state": "stability-filter",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "video-grid": [
+        0.0,
+        194.66666666666666,
+        390.0,
+        575.3333333333334
+      ]
+    },
+    "round": "",
+    "current": null,
+    "cursor": 0,
+    "total": 0,
+    "current_tags": null,
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [
+      "f35f98d3-4393-4266-81f4-be1a32d7c977",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": null,
+    "players": null
+  },
+  {
+    "state": "stability-preview",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "preview-scope": [
+        0.0,
+        99.66666666666666,
+        390.0,
+        46.0
+      ],
+      "preview-position": [
+        314.0301208496094,
+        112.66666666666666,
+        28.969879150390625,
+        20.0
+      ]
+    },
+    "round": "51c12d2b-e326-4dfc-bbef-7f130b4cf9c4",
+    "current": "f35f98d3-4393-4266-81f4-be1a32d7c977",
+    "cursor": 1,
+    "total": 2,
+    "current_tags": [
+      "15d3b7db-be17-45ac-9cb2-cba3ece8f85e",
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [
+      "f35f98d3-4393-4266-81f4-be1a32d7c977",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+        "initialized": true,
+        "playing": true,
+        "volume": 1.0
+      }
+    ]
+  },
+  {
+    "state": "stability-editor",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "preview-scope": [
+        0.0,
+        99.66666666666666,
+        390.0,
+        46.0
+      ],
+      "preview-position": [
+        314.0301208496094,
+        112.66666666666666,
+        28.969879150390625,
+        20.0
+      ],
+      "tag-assignment-save": [
+        237.4003677368164,
+        756.0,
+        132.5996322631836,
+        48.0
+      ]
+    },
+    "round": "51c12d2b-e326-4dfc-bbef-7f130b4cf9c4",
+    "current": "f35f98d3-4393-4266-81f4-be1a32d7c977",
+    "cursor": 1,
+    "total": 2,
+    "current_tags": [
+      "15d3b7db-be17-45ac-9cb2-cba3ece8f85e",
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [
+      "f35f98d3-4393-4266-81f4-be1a32d7c977",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      }
+    ]
+  },
+  {
+    "state": "stability-saved",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "preview-scope": [
+        0.0,
+        99.66666666666666,
+        390.0,
+        46.0
+      ],
+      "preview-position": [
+        314.0301208496094,
+        112.66666666666666,
+        28.969879150390625,
+        20.0
+      ]
+    },
+    "round": "51c12d2b-e326-4dfc-bbef-7f130b4cf9c4",
+    "current": "f35f98d3-4393-4266-81f4-be1a32d7c977",
+    "cursor": 1,
+    "total": 2,
+    "current_tags": [
+      "15d3b7db-be17-45ac-9cb2-cba3ece8f85e"
+    ],
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [
+      "f35f98d3-4393-4266-81f4-be1a32d7c977",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+        "initialized": true,
+        "playing": true,
+        "volume": 1.0
+      }
+    ]
+  },
+  {
+    "state": "stability-readback",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "preview-scope": [
+        0.0,
+        99.66666666666666,
+        390.0,
+        46.0
+      ],
+      "preview-position": [
+        314.0301208496094,
+        112.66666666666666,
+        28.969879150390625,
+        20.0
+      ],
+      "tag-assignment-save": [
+        237.4003677368164,
+        756.0,
+        132.5996322631836,
+        48.0
+      ]
+    },
+    "round": "51c12d2b-e326-4dfc-bbef-7f130b4cf9c4",
+    "current": "f35f98d3-4393-4266-81f4-be1a32d7c977",
+    "cursor": 1,
+    "total": 2,
+    "current_tags": [
+      "15d3b7db-be17-45ac-9cb2-cba3ece8f85e"
+    ],
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [
+      "f35f98d3-4393-4266-81f4-be1a32d7c977",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      }
+    ]
+  },
+  {
+    "state": "stability-added",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "preview-scope": [
+        0.0,
+        99.66666666666666,
+        390.0,
+        46.0
+      ],
+      "preview-position": [
+        314.0301208496094,
+        112.66666666666666,
+        28.969879150390625,
+        20.0
+      ]
+    },
+    "round": "51c12d2b-e326-4dfc-bbef-7f130b4cf9c4",
+    "current": "f35f98d3-4393-4266-81f4-be1a32d7c977",
+    "cursor": 1,
+    "total": 2,
+    "current_tags": [
+      "15d3b7db-be17-45ac-9cb2-cba3ece8f85e"
+    ],
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [
+      "f35f98d3-4393-4266-81f4-be1a32d7c977",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+        "initialized": true,
+        "playing": true,
+        "volume": 1.0
+      }
+    ]
+  },
+  {
+    "state": "stability-frozen-queue",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "preview-scope": [
+        0.0,
+        99.66666666666666,
+        390.0,
+        46.0
+      ],
+      "preview-position": [
+        314.0301208496094,
+        112.66666666666666,
+        28.969879150390625,
+        20.0
+      ],
+      "preview-queue-frame": [
+        0.0,
+        409.00000000000006,
+        390.0,
+        434.99999999999994
+      ]
+    },
+    "round": "51c12d2b-e326-4dfc-bbef-7f130b4cf9c4",
+    "current": "f35f98d3-4393-4266-81f4-be1a32d7c977",
+    "cursor": 1,
+    "total": 2,
+    "current_tags": [
+      "15d3b7db-be17-45ac-9cb2-cba3ece8f85e"
+    ],
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [
+      "f35f98d3-4393-4266-81f4-be1a32d7c977",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/f35f98d3-4393-4266-81f4-be1a32d7c977/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      }
+    ]
+  },
+  {
+    "state": "stability-return",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "video-grid": [
+        0.0,
+        194.66666666666666,
+        390.0,
+        575.3333333333334
+      ]
+    },
+    "round": "51c12d2b-e326-4dfc-bbef-7f130b4cf9c4",
+    "current": "f35f98d3-4393-4266-81f4-be1a32d7c977",
+    "cursor": 1,
+    "total": 2,
+    "current_tags": [
+      "15d3b7db-be17-45ac-9cb2-cba3ece8f85e"
+    ],
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [
+      "f05e5f73-46b7-4252-bd47-255ea589c4ad",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": null,
+    "players": null
+  },
+  {
+    "state": "stability-second-preview",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "preview-scope": [
+        0.0,
+        99.66666666666666,
+        390.0,
+        46.0
+      ],
+      "preview-position": [
+        315.24810791015625,
+        112.66666666666666,
+        27.75189208984375,
+        20.0
+      ]
+    },
+    "round": "e25c871e-31da-4086-9062-d1f9ad4186be",
+    "current": "c69bed70-4b4c-4a0f-8ab9-89578a9287d7",
+    "cursor": 0,
+    "total": 2,
+    "current_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8",
+      "eb5536de-5197-4c13-9639-f37b18aa2918"
+    ],
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [
+      "f05e5f73-46b7-4252-bd47-255ea589c4ad",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+        "initialized": true,
+        "playing": true,
+        "volume": 1.0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/f05e5f73-46b7-4252-bd47-255ea589c4ad/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      }
+    ]
+  },
+  {
+    "state": "stability-tag-deleted",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "preview-scope": [
+        0.0,
+        99.66666666666666,
+        390.0,
+        46.0
+      ],
+      "preview-position": [
+        315.24810791015625,
+        112.66666666666666,
+        27.75189208984375,
+        20.0
+      ]
+    },
+    "round": "e25c871e-31da-4086-9062-d1f9ad4186be",
+    "current": "c69bed70-4b4c-4a0f-8ab9-89578a9287d7",
+    "cursor": 0,
+    "total": 2,
+    "current_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8",
+      "eb5536de-5197-4c13-9639-f37b18aa2918"
+    ],
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [
+      "f05e5f73-46b7-4252-bd47-255ea589c4ad",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+        "initialized": true,
+        "playing": true,
+        "volume": 1.0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/f05e5f73-46b7-4252-bd47-255ea589c4ad/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      }
+    ]
+  },
+  {
+    "state": "stability-second-queue",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "preview-scope": [
+        0.0,
+        99.66666666666666,
+        390.0,
+        46.0
+      ],
+      "preview-position": [
+        315.24810791015625,
+        112.66666666666666,
+        27.75189208984375,
+        20.0
+      ],
+      "preview-queue-frame": [
+        0.0,
+        409.00000000000006,
+        390.0,
+        434.99999999999994
+      ]
+    },
+    "round": "e25c871e-31da-4086-9062-d1f9ad4186be",
+    "current": "c69bed70-4b4c-4a0f-8ab9-89578a9287d7",
+    "cursor": 0,
+    "total": 2,
+    "current_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8",
+      "eb5536de-5197-4c13-9639-f37b18aa2918"
+    ],
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [
+      "f05e5f73-46b7-4252-bd47-255ea589c4ad",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 2,
+    "visible_video": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/c69bed70-4b4c-4a0f-8ab9-89578a9287d7/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/f05e5f73-46b7-4252-bd47-255ea589c4ad/stream",
+        "initialized": true,
+        "playing": false,
+        "volume": 0.0
+      }
+    ]
+  },
+  {
+    "state": "stability-empty",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "video-grid": [
+        0.0,
+        194.66666666666666,
+        390.0,
+        575.3333333333334
+      ]
+    },
+    "round": "e25c871e-31da-4086-9062-d1f9ad4186be",
+    "current": "c69bed70-4b4c-4a0f-8ab9-89578a9287d7",
+    "cursor": 0,
+    "total": 2,
+    "current_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8",
+      "eb5536de-5197-4c13-9639-f37b18aa2918"
+    ],
+    "entry_tags": [
+      "2085d376-2b8c-447f-a413-2e091a8192d8"
+    ],
+    "catalog_ids": [],
+    "catalog_total": 0,
+    "visible_video": null,
+    "players": null
+  },
+  {
+    "state": "stability-cleared",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "keys": {
+      "video-grid": [
+        0.0,
+        194.66666666666666,
+        390.0,
+        575.3333333333334
+      ]
+    },
+    "round": "e25c871e-31da-4086-9062-d1f9ad4186be",
+    "current": "c69bed70-4b4c-4a0f-8ab9-89578a9287d7",
+    "cursor": 0,
+    "total": 2,
+    "current_tags": [
+      "eb5536de-5197-4c13-9639-f37b18aa2918"
+    ],
+    "entry_tags": [],
+    "catalog_ids": [
+      "f05e5f73-46b7-4252-bd47-255ea589c4ad",
+      "f35f98d3-4393-4266-81f4-be1a32d7c977",
+      "c69bed70-4b4c-4a0f-8ab9-89578a9287d7"
+    ],
+    "catalog_total": 3,
+    "visible_video": null,
+    "players": null
+  }
+]
