@@ -62,8 +62,10 @@ void main() {
       }
 
       Future<void> tap(Finder f) async {
-        await until(() => f.hitTestable().evaluate().length == 1, 'hit $f');
+        await until(() => f.evaluate().length == 1, 'one $f');
         await t.ensureVisible(f);
+        await t.pump(const Duration(milliseconds: 100));
+        await until(() => f.hitTestable().evaluate().length == 1, 'hit $f');
         await t.tap(f);
         await t.pump(const Duration(milliseconds: 100));
       }
