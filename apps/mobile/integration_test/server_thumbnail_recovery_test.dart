@@ -217,6 +217,10 @@ void main() {
         () => decoded() == 6 && retry.evaluate().isEmpty,
         'six auto-decoded thumbnails',
       );
+      final recoveredAttempts =
+          (await control('/state'))['thumbnail_attempts'] as Map;
+      expect(recoveredAttempts.length, 6);
+      expect(recoveredAttempts.values.every((n) => n >= 2 && n <= 3), isTrue);
       await capture('thumb-auto-recovered');
       await close();
       await open('bounded');

@@ -151,7 +151,7 @@ def create_fidelity_app():
 
                 response = StreamingResponse(held_body(), media_type="image/png",
                                              headers={"Content-Length": str(len(data))})
-            elif mode == "bounded" or (mode == "recover" and n <= 2):
+            elif mode == "bounded" or (mode == "recover" and n == 1):
                 response = JSONResponse({"error": {"code": "fixture_thumbnail_busy"}}, status_code=503)
             else:
                 response = await call_next(request)
