@@ -5,7 +5,7 @@ import argparse
 import hashlib
 import json
 import re
-import shlex
+import sqlite3
 import subprocess
 import threading
 import time
@@ -34,6 +34,7 @@ SCENES = [
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--large", action="store_true")
     args = parser.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -63,6 +64,15 @@ def main():
 
     def shell(*command):
         return device("shell", *command).decode().strip()
+
+    def app_pid():
+        return subprocess.run(
+            [str(ADB), "-s", "emulator-5554", "shell", "pidof", PACKAGE],
+            capture_output=True,
+            text=True,
+            timeout=20,
+            check=False,
+        ).stdout.strip()
 
     def viewport():
         return {
@@ -146,6 +156,33 @@ def main():
     unique_name = "video-viewer-backup-" + str(time.time_ns()) + ".vvbackup"
     before_downloads = download_names()
     save_descriptor = None
+
+    def notes_snapshot():
+        digest = hashlib.sha256()
+        count = 0
+        minimum = maximum = None
+        with sqlite3.connect(
+            "file:" + str(base / "data/library.sqlite3") + "?mode=ro", uri=True
+        ) as connection:
+            for identity, kind, status, phase, raw in connection.execute(
+                "SELECT id,kind,status,phase,result FROM tasks WHERE json_type(result,'$.note')='text' ORDER BY id"
+            ):
+                note = json.loads(raw)["note"]
+                count += 1
+                minimum = len(note) if minimum is None else min(minimum, len(note))
+                maximum = len(note) if maximum is None else max(maximum, len(note))
+                digest.update(
+                    json.dumps(
+                        [identity, kind, status, phase, note], separators=(",", ":")
+                    ).encode()
+                )
+                digest.update(b"\n")
+        return {
+            "count": count,
+            "min_note": minimum,
+            "max_note": maximum,
+            "sha256": digest.hexdigest(),
+        }
 
     def focus():
         return "\n".join(
@@ -243,6 +280,8 @@ def main():
             "-e",
             "VV_ARCHIVE_APP_FIXTURE=enabled",
             "-e",
+            "VV_ARCHIVE_NATIVE_LARGE=" + ("enabled" if args.large else "disabled"),
+            "-e",
             "VV_PASSPHRASE_FILE=/fixture/passphrase",
             "-e",
             "VV_MOUNTS_FILE=/fixture/mounts.json",
@@ -325,11 +364,41 @@ def main():
         }
         assert prepared == {"roots": 27, "packs": 1, "max_bytes": 67108864}
         save("prepared.json", prepared)
+        if args.large:
+            rejected = urllib.request.Request(
+                BASE + "/__archive_fixture/seed-large",
+                method="POST",
+                headers={"X-Fixture-Key": "not-the-owned-key"},
+            )
+            try:
+                urllib.request.urlopen(rejected, timeout=10)
+                raise AssertionError("Large fixture accepted an invalid key")
+            except urllib.error.HTTPError as error:
+                assert error.code == 403
+                save("control-guard.json", {"invalid_key_status": error.code})
+            save("large-seed.json", control("/seed-large", "POST"))
+        before_notes = notes_snapshot()
+        save("notes-before.json", before_notes)
+        assert before_notes["count"] == (18000 if args.large else 0)
         before_media, before_trace = media(), control("/trace")["items"]
         save("media-before.json", before_media)
         shell("wm", "size", "1170x2532")
         shell("wm", "density", "480")
         shell("settings", "put", "system", "font_scale", "1")
+        old_focus = focus()
+        old_pid = app_pid()
+        shell("am", "force-stop", PACKAGE)
+        if "com.google.android.documentsui" in focus():
+            shell("input", "keyevent", "4")
+        save(
+            "launch-preparation.json",
+            {
+                "old_focus": old_focus,
+                "old_pid": old_pid,
+                "after_focus": focus(),
+                "app_pid_after_stop": app_pid(),
+            },
+        )
         watcher = threading.Thread(target=watch, daemon=True)
         watcher.start()
         command = [
@@ -346,6 +415,8 @@ def main():
             "--dart-define=ARCHIVE_NATIVE_DOCUMENTS=true",
             "--dart-define=ARCHIVE_SERVER_PORT=8769",
         ]
+        if args.large:
+            command.append("--dart-define=ARCHIVE_LARGE_DOCUMENT=true")
         process = subprocess.Popen(
             command,
             cwd=ROOT / "apps/mobile",
@@ -353,7 +424,7 @@ def main():
             stderr=subprocess.STDOUT,
             text=True,
         )
-        timer = threading.Timer(480, process.kill)
+        timer = threading.Timer(900 if args.large else 480, process.kill)
         timer.start()
         with (out / "android-test.log").open("w") as log:
             for line in process.stdout:
@@ -429,16 +500,17 @@ def main():
                             "document-pull.json",
                             {"stdout": pulled.stdout, "stderr": pulled.stderr},
                         )
-                        raw = target.read_bytes()
-                        assert len(raw) == save_descriptor["bytes"]
-                        assert (
-                            hashlib.sha256(raw).hexdigest() == save_descriptor["sha256"]
-                        )
+                        actual_hash = hashlib.sha256()
+                        with target.open("rb") as incoming:
+                            for chunk in iter(lambda: incoming.read(65536), b""):
+                                actual_hash.update(chunk)
+                        assert target.stat().st_size == save_descriptor["bytes"]
+                        assert actual_hash.hexdigest() == save_descriptor["sha256"]
                         save(
                             "saved-document.json",
                             {
                                 "name": created_name,
-                                "bytes": len(raw),
+                                "bytes": target.stat().st_size,
                                 "sha256": save_descriptor["sha256"],
                             },
                         )
@@ -484,6 +556,21 @@ def main():
             and row["document_bytes"] == save_descriptor["bytes"]
         )
         assert "All tests passed!" in text
+        assert row["state"] == "completed" and row["kind"] == "backup_restore_v2"
+        assert (save_descriptor["bytes"] > 32 * 1024 * 1024) == args.large
+        journals = [
+            json.loads(r.split("ARCHIVE_JOURNAL:", 1)[1])
+            for r in text.splitlines()
+            if "ARCHIVE_JOURNAL:" in r
+        ]
+        assert [r["stage"] for r in journals] == [
+            "before-system-save",
+            "before-restore-confirmation",
+            "after-restore-and-snapshot",
+        ]
+        save("journals.json", journals)
+        save("notes-after.json", notes_snapshot())
+        assert notes_snapshot() == before_notes
         save("media-after.json", media())
         assert before_media == media()
         assert download_names() == before_downloads | {created_name}
@@ -501,6 +588,7 @@ def main():
                 "document": read_saved(out),
                 "restore_posts": 1,
                 "snapshot_preview_only": True,
+                "large_document": args.large,
             },
         )
         print(
@@ -516,6 +604,16 @@ def main():
             process.wait(timeout=20)
         if watcher:
             watcher.join(timeout=20)
+        try:
+            shell("am", "force-stop", PACKAGE)
+            if "com.google.android.documentsui" in focus():
+                shell("input", "keyevent", "4")
+            save(
+                "app-cleanup.json",
+                {"app_pid": app_pid(), "focus": focus()},
+            )
+        except Exception as error:  # noqa: BLE001 - preserve cleanup alongside original failure
+            save("app-cleanup-error.json", {"error": repr(error)})
         save("host-events.json", {"events": events, "errors": errors})
         try:
             for kind in ("size", "density"):

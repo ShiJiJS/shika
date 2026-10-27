@@ -4,6 +4,7 @@ import asyncio
 import json
 import os
 import threading
+import uuid
 from collections import deque
 from pathlib import Path
 
@@ -44,6 +45,7 @@ def create_archive_app():
         "response_held": False,
         "display": None,
         "display_ack": False,
+        "large_seeded": False,
     }
 
     def backup_fault(phase, task_id):
@@ -63,15 +65,26 @@ def create_archive_app():
 
     @app.middleware("http")
     async def fixture_only(request, call_next):
+        trace_entry = None
         if request.url.path.startswith("/api/"):
-            trace.append(
-                {
-                    "method": request.method,
-                    "path": request.url.path,
-                    "query": dict(request.query_params),
-                    "epoch": request.headers.get("X-Management-Epoch"),
-                }
-            )
+            trace_entry = {
+                "method": request.method,
+                "path": request.url.path,
+                "query": dict(request.query_params),
+                "epoch": request.headers.get("X-Management-Epoch"),
+            }
+            if request.method == "POST" and request.url.path.startswith(
+                "/api/v1/management-backups"
+            ):
+                if request.url.path.endswith("/imports"):
+                    trace_entry["idempotency_key"] = request.headers.get("Idempotency-Key")
+                elif (
+                    request.url.path
+                    in {"/api/v1/management-backups", "/api/v1/management-backups/restores"}
+                    or "/from-snapshot/" in request.url.path
+                ):
+                    trace_entry["body"] = await request.json()
+            trace.append(trace_entry)
         restoring = (
             request.method == "POST" and request.url.path == "/api/v1/management-backups/restores"
         )
@@ -100,6 +113,34 @@ def create_archive_app():
     def events(x_fixture_key: str = Header()):
         guard(x_fixture_key)
         return {"items": list(trace)}
+
+    @app.post("/__archive_fixture/seed-large")
+    def seed_large(x_fixture_key: str = Header()):
+        guard(x_fixture_key)
+        if os.environ.get("VV_ARCHIVE_NATIVE_LARGE") != "enabled" or settings.data_dir != Path(
+            "/data"
+        ):
+            raise HTTPException(404)
+        with lock:
+            if controls["large_seeded"]:
+                raise HTTPException(409)
+            with app.state.db.write() as session:
+                for start in range(0, 18000, 100):
+                    session.execute(
+                        Task.__table__.insert(),
+                        [
+                            {
+                                "id": str(uuid.uuid4()),
+                                "kind": "scan",
+                                "status": "completed",
+                                "phase": "completed",
+                                "result": {"note": "x" * 2048},
+                            }
+                            for _ in range(start, start + 100)
+                        ],
+                    )
+            controls["large_seeded"] = True
+        return {"task_rows": 18000, "note_bytes_each": 2048}
 
     @app.post("/__archive_fixture/arm/{phase}")
     def arm(phase: str, x_fixture_key: str = Header()):
