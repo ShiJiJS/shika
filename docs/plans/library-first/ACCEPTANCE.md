@@ -354,3 +354,16 @@
 **实际画面仍有未解决问题：**关闭宿主解码后的横屏右侧绿边已与源帧和相同生产树的宿主解码原图对照，登记[渲染/稳定性 #78](https://github.com/ShiJiJS/video_viewer/issues/78)。根因尚未证明，不能以行为通过或录屏可解码判定UI-02画面完整性通过；保留原图继续定位，不裁边或换素材掩盖。
 
 [实施范围](LF8-PREVIEW-LIFECYCLE.md) / [原始证据与只读复核](evidence/lf8-preview-lifecycle/README.md)。本段补PRE-04/05、NAV-02及UI-02的明确行为组合；实际三个小视频不证明重叠初始化/迟到回执、全部格式/来源/主题/字体或目标手机/NAS性能。MemoryCredentialStore/内存偏好与Home不新增强停/凭据/落盘证明。原型1cbf605独立未改且可移除，backup_v2生产仍关闭，未改正式8760/NAS或发布APK。#24/#33/#78保持开放，需用户配合项按授权暂跳过。
+
+
+## 2026-10-27：本地视频画面与开发启动配置
+
+对应#78/#33/#24，基于#77，当前完整App采集固定7740f4d。最小同源比较确认：关闭宿主解码时，Flutter textureView在Impeller/Skia均复现129列绿条；platformView与原生MediaPlayer两入口无该条。byte-buffer codec逻辑/裁切960×540、stride1024仅为独立路径数据，不证明Surface根因。选择software GPU、Vulkan关闭、GLDMA关闭、宿主解码开启的本地配置，保留产品播放器实现；实际AVC属性2、日志c2.goldfish.h264.decoder。
+
+同源当前App连续三轮通过，共45前台点、21次fling、6次真实Home往返、12段录屏全帧解码。新增15个横屏原图的已知绿条/非黑帧检查，实际抽查每轮截图正常。阅读相邻13点通过。设置相邻两次IME超时经实际宿主截图/Window/IME确认：键盘和表单正常，旧驱动取了弹层下刻意归零的来源页insets；eb5cc46仅改integration_test从真实FlutterView读取，保留键盘/焦点/遮挡断言，最终21点通过。失败与修后源分别留存，不把两个源码说成同一采集。
+
+启动器修复离线ADB残留阻止启动和短暂前置shell生命周期问题：真实进程判断、现有配置核对、其它AVD保留、独立session；6项CLI契约有旧失败/修后通过记录，真实启动命令结束后持续运行并成功复用。原有VS Code前置任务调用此脚本；本段实际验证脚本入口，未冒称再次点击F5。显示/字号/原生音量恢复后，专用AVD正常退出，未清userdata。
+
+flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX诊断Activity与integration_test排除、原型页面资产排除及原证书核对通过；仍0.1.4+5，只在本地构建。Flutter应用/引擎为ARM64，依赖另携带其它ABI的libdartjni.so辅助库，不当作完整跨ABI应用。相关15项组件与646/447全集沿用既有固定业务树证明，本段未重跑全集。
+
+[方案](LF8-VIDEO-RENDERING.md) / [原始证据与只读复核](evidence/lf8-video-rendering/README.md)。本地固定样本的画面通过不关闭完整UI-02/05、目标手机/NAS、其它格式/异常/迟到回执、完整主题字号与来源组合。下一步继续已登记的短队列留白、横屏面板比例等原型差异。原型树1cbf605独立未改可移除，backup_v2生产仍关闭；未改正式8760/NAS、SDK或发布APK。#24/#33/#78保持开放，需配合项按授权暂跳过。

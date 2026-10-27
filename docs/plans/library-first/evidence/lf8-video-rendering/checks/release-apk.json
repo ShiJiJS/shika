@@ -1,0 +1,25 @@
+{
+  "source_commit": "eb5cc46db4b25eb39fe270f7fbcdd92c4918e1af",
+  "build_exit_code": 0,
+  "apk_sha256": "466c572b039379f49246591579b53471de7ff577dad84c5f93877a5ec3c05741",
+  "bytes": 23242842,
+  "version": "0.1.4",
+  "version_code": 5,
+  "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+  "diagnostic_activity_in_manifest": false,
+  "diagnostic_activity_in_dex": false,
+  "integration_test_plugin_in_dex": false,
+  "prototype_entries": [],
+  "native_library_abis": [
+    "arm64-v8a",
+    "armeabi-v7a",
+    "x86_64"
+  ],
+  "flutter_application_abis": [
+    "arm64-v8a"
+  ],
+  "auxiliary_non_arm64_libraries": [
+    "lib/armeabi-v7a/libdartjni.so",
+    "lib/x86_64/libdartjni.so"
+  ]
+}

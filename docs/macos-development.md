@@ -112,7 +112,7 @@ python3 scripts/configure-vscode.py
 
 ### LF1 模拟器渲染回归
 
-2026-10-24 的原生 I1 回归中，software / SwiftShader 渲染出现 QEMU 图形线程卡死并离线；使用 `-gpu host -feature -Vulkan -no-snapshot` 后两个阶段均通过。因此 Mac 的启动脚本默认使用 host，Linux 仍为 software；可用 `VV_EMULATOR_GPU` 覆盖。脚本复用已运行设备时不会重启或切换其后端，需要退出原模拟器后重新启动才生效。此设置不改变正式 APK 的解码策略，也不宣称所有设备后端都已验证。
+2026-10-24 的原生 I1 回归中，software / SwiftShader 渲染出现 QEMU 图形线程卡死并离线；使用 `-gpu host -feature -Vulkan -no-snapshot` 后两个阶段均通过。当时据此将 Mac 默认设为 host、Linux 设为 software；这是历史结果，当前默认见下方 LF8 验证，可用 `VV_EMULATOR_GPU` 显式覆盖。脚本复用已运行设备时不会重启或切换其后端，需要退出原模拟器后重新启动才生效。此设置不改变正式 APK 的解码策略，也不宣称所有设备后端都已验证。
 
 ### LF3 模拟器崩溃后的恢复
 
@@ -129,3 +129,19 @@ bash scripts/dev.sh emulator -avd video_viewer_api_36 -port 5554 \
 仅在 `adb devices -l` 及进程状态确认设备已退出后重启；测试日志暂时没有输出不能当作模拟器已停止。无需删除 AVD 或清空用户数据。
 
 冷启动首次横屏可能出现 Android 自己的“全屏查看”指引，覆盖 Flutter 的触控。联调 runner 会先核对专用 AVD 名称，再设置并读回 `immersive_mode_confirmations=confirmed`。播放后台测试使用实际 ADB Home 和 `am start --activity-single-top` 返回，宿主记录 `android-backgrounded` / `android-foregrounded`；不能用直接注入不完整的 Flutter 生命周期来冒充真实后台验证。此准备仅用于可丢弃模拟器。
+
+
+### LF8 视频画面与启动器（2026-10-27）
+
+当前启动器默认 `VV_EMULATOR_GPU=software`、`VV_EMULATOR_GLDMA=off`、`VV_EMULATOR_HOST_VIDEO=on`，显式关闭 Vulkan；对应专用 API36 ARM64 AVD。最小同源播放器对照表明，仅切换 Skia 不能消除关闭宿主解码时的纹理绿条；保留宿主解码并关闭 GLDMA 的候选配置画面正常。完整 App 复核进度及限制见 [LF8 渲染方案](plans/library-first/LF8-VIDEO-RENDERING.md)。不据此推定实际手机解码器表现。
+
+VS Code 的 **Start Android emulator** 任务在 macOS/Linux 调用此脚本；两个 Android F5 配置通过原有前置任务使用同一入口。`configure-vscode.py` 只生成本机路径/设置，不重写共享 launch/tasks。当前调整实际验证了脚本命令入口，未重新声称完成一次 VS Code F5 点击流程。
+
+启动器按真实同端口进程判断设备是否存在，ADB 离线残留且没有进程时会启动；已有设备必须通过 GPU、GLDMA 与宿主 AVC 属性核对，配置不符会保留设备并返回错误。切换配置前正常退出原专用模拟器，不删 userdata。独立 session 启动使模拟器不依赖短暂的前置任务 shell；PID 文件仅用于记录，真实进程和 ADB 引导状态才是就绪依据。可用 `VV_EMULATOR_HEADLESS=1` 启动无窗口验证。
+
+```bash
+VV_EMULATOR_HEADLESS=1 bash scripts/start-android-emulator.sh
+python3 scripts/tests/test_android_emulator_launcher.py
+```
+
+后一个命令以隔离的假 SDK 检查离线残留、复用、配置拒绝、其它 AVD 保留和独立 session，不替代实际启动及视频播放验证。默认配置不修改 Flutter SDK、产品播放器实现或 release 签名。
