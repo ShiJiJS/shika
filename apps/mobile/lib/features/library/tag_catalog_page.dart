@@ -145,6 +145,7 @@ class TagCatalogPageState extends State<TagCatalogPage> {
   }
 
   Future<void> count() async {
+    if (!mounted || !widget.active) return;
     final current = ++countGeneration;
     setState(() => matching = null);
     try {

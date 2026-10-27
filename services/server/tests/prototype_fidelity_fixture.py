@@ -49,6 +49,7 @@ def create_fidelity_app():
             shutil.copyfile(source, target / f"{index + 1:04d}.png")
     lifecycle = os.environ.get("VV_FIDELITY_PREVIEW_LIFECYCLE") == "enabled"
     preview_mutation = os.environ.get("VV_FIDELITY_PREVIEW_MUTATION") == "enabled"
+    tag_definitions = os.environ.get("VV_FIDELITY_TAG_DEFINITIONS") == "enabled"
     video_samples = [
         ("landscape", "横屏", "风里的花园"),
         ("portrait", "竖屏", "水边的花"),
@@ -65,6 +66,7 @@ def create_fidelity_app():
         "continuation_failure": False, "catalog_counts_failure": False,
         "recent_video_failure": False, "recent_pack_failure": False,
         "public_additions": [],
+        "tag_definition_failure": "off", "tag_definition_failures": [],
     }
     trace = deque(maxlen=5000)
 
@@ -77,8 +79,8 @@ def create_fidelity_app():
         body = (
             await request.json()
             if (request.url.path in ("/api/v1/pack-sessions", "/api/v1/rounds") and request.method == "POST")
-            or (preview_mutation and request.method in {"POST", "PATCH", "DELETE"}
-                and (request.url.path == "/api/v1/video-tags" or request.url.path.startswith("/api/v1/tags/")))
+            or ((preview_mutation or tag_definitions) and request.method in {"POST", "PATCH", "DELETE"}
+                and (request.url.path in {"/api/v1/video-tags", "/api/v1/tags"} or request.url.path.startswith("/api/v1/tags/")))
             else None
         )
         counts_failure = (
@@ -97,7 +99,20 @@ def create_fidelity_app():
                 or (state["recent_pack_failure"] and request.url.path == "/api/v1/packs")
             )
         )
-        if counts_failure or recent_failure or (
+        tag_write_failure = (
+            tag_definitions and request.headers.get("Authorization")
+            and request.url.path.startswith("/api/v1/tags/")
+            and request.method == {"rename": "PATCH", "remove": "DELETE"}.get(state["tag_definition_failure"])
+        )
+        if tag_write_failure:
+            state["tag_definition_failures"].append({"method": request.method, "path": request.url.path, "body": body})
+            with app.state.db.read() as db:
+                epoch = Authority.current(db)
+            response = JSONResponse(
+                {"error": {"code": "fixture_tag_write", "message": "视频标签操作暂时失败，请保留输入后重试。"}},
+                status_code=503, headers={"X-Management-Epoch": epoch},
+            )
+        elif counts_failure or recent_failure or (
             state["continuation_failure"]
             and request.method == "GET"
             and request.url.path == "/api/v1/packs"
@@ -224,6 +239,16 @@ def create_fidelity_app():
             raise HTTPException(422)
         state[f"recent_{kind}_failure"] = mode == "on"
         return {"failure": state[f"recent_{kind}_failure"]}
+
+    @app.post("/__fidelity/tag-definition-failure/{mode}")
+    def tag_definition_failure(mode: str, x_fixture_key: str = Header()):
+        guard(x_fixture_key)
+        if not tag_definitions:
+            raise HTTPException(404)
+        if mode not in {"off", "rename", "remove"}:
+            raise HTTPException(422)
+        state["tag_definition_failure"] = mode
+        return {"mode": mode}
 
     @app.post("/__fidelity/add-public-video")
     def add_public_video(x_fixture_key: str = Header()):

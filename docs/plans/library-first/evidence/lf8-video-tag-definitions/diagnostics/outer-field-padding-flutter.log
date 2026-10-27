@@ -1,0 +1,38 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart
+Running Gradle task 'assembleDebug'...                             15.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          710ms
+00:00 +0: video tag definitions retain edits and isolate pack names
+FIDELITY_METRICS:{"state":"tagdef-video","physical":[2532.0,1170.0],"dpr":3.0,"text_scale":1.0,"keyboard":0.0,"boxes":{},"draft":null,"kind":"video","tags":[{"id":"5480d843-f403-433a-b4d2-368d3d35766c","name":"喜欢","count":1},{"id":"7159e2bb-c413-4d07-9b17-8f907d9e23e3","name":"户外","count":2},{"id":"4c9be537-7433-473a-a7ed-c179f3304114","name":"自然","count":1}],"selected":["7159e2bb-c413-4d07-9b17-8f907d9e23e3"],"matching":2,"saving":false}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: a value less than or equal to <142.0>
+  Actual: <144.0>
+   Which: is not a value less than or equal to <142.0>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.enter (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart:153:9)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart:259:5)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart line 153
+The test description was:
+  video tag definitions retain edits and isolate pack names
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:08 +0 -1: video tag definitions retain edits and isolate pack names [E]
+  Test failed. See exception logs above.
+  The test description was: video tag definitions retain edits and isolate pack names
+  
+00:08 +0 -1: (tearDownAll)
+00:09 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart: video tag definitions retain edits and isolate pack names

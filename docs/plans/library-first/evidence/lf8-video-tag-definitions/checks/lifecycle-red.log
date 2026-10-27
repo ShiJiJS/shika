@@ -1,0 +1,38 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart
+test/tag_definition_lifecycle_test.dart:21:10: Error: Type 'CatalogPage' not found.
+  Future<CatalogPage<VideoTag>> loadVideoTags({
+         ^^^^^^^^^^^
+test/tag_definition_lifecycle_test.dart:31:22: Error: Type 'PackTag' not found.
+  Future<CatalogPage<PackTag>> loadPackTags({
+                     ^^^^^^^
+test/tag_definition_lifecycle_test.dart:31:10: Error: Type 'CatalogPage' not found.
+  Future<CatalogPage<PackTag>> loadPackTags({
+         ^^^^^^^^^^^
+test/tag_definition_lifecycle_test.dart:51:22: Error: Type 'LibraryPack' not found.
+  Future<CatalogPage<LibraryPack>> loadPacks(
+                     ^^^^^^^^^^^
+test/tag_definition_lifecycle_test.dart:51:10: Error: Type 'CatalogPage' not found.
+  Future<CatalogPage<LibraryPack>> loadPacks(
+         ^^^^^^^^^^^
+00:00 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart [E]
+  Failed to load "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart":
+  Compilation failed for testPath=/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart: test/tag_definition_lifecycle_test.dart:21:10: Error: Type 'CatalogPage' not found.
+    Future<CatalogPage<VideoTag>> loadVideoTags({
+           ^^^^^^^^^^^
+  test/tag_definition_lifecycle_test.dart:31:22: Error: Type 'PackTag' not found.
+    Future<CatalogPage<PackTag>> loadPackTags({
+                       ^^^^^^^
+  test/tag_definition_lifecycle_test.dart:31:10: Error: Type 'CatalogPage' not found.
+    Future<CatalogPage<PackTag>> loadPackTags({
+           ^^^^^^^^^^^
+  test/tag_definition_lifecycle_test.dart:51:22: Error: Type 'LibraryPack' not found.
+    Future<CatalogPage<LibraryPack>> loadPacks(
+                       ^^^^^^^^^^^
+  test/tag_definition_lifecycle_test.dart:51:10: Error: Type 'CatalogPage' not found.
+    Future<CatalogPage<LibraryPack>> loadPacks(
+           ^^^^^^^^^^^
+  .
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart

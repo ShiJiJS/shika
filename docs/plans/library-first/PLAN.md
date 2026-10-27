@@ -1,6 +1,6 @@
 # 媒体库与图包改造实施方案
 
-最新阶段：[当前预览全屏/后台 PR #77](https://github.com/ShiJiJS/video_viewer/pull/77)，[行为三轮与证据](evidence/lf8-preview-lifecycle/README.md)；新发现的画面绿边由[#78](https://github.com/ShiJiJS/video_viewer/issues/78)继续定位，整体验收保持开放。
+最新阶段：[视频标签定义与离页保护 PR #81](https://github.com/ShiJiJS/video_viewer/pull/81)，[75点原生及只读复核](evidence/lf8-video-tag-definitions/README.md)。51项相关检查通过，真实视频定义CRUD、重名隔离与失败重试已补证；整体验收及#78保留的软解路径问题仍开放。
 
 ## 2026-10-26：缺失内容管理与待核对结果（PR #69）
 
@@ -495,3 +495,13 @@ flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX�
 原先26个源文件SHA不变，唯一新增文件为固定路径公开flower-landscape副本，SHA和scanner真实ID单列；不是伪称前后文件完全相同。三轮各两个固定范围的成员/序号/游标、精确标签写入／定义删除、返回结果与历史由API/SQL分别核对。源控制入口错误键403且只在专用场景标志下启用，生产服务无此测试入口。早期采集上下文／嵌套滚动错误、先行未核对库存的三轮与组件中间失败均保留，不计修后成功。
 
 [实施边界](LF8-PREVIEW-STATE-STABILITY.md) / [原图、请求、SQL、源码与只读复核](evidence/lf8-preview-state-stability/README.md)。本段补PRE-03及LIB-03/NAV-02/REC-01明确组合；阅读器返回同类修正有组件和相邻原生证明，不冒称新增图包的NAS场景。没有新视觉方向或布局变更，旧#67视觉评审保留源码边界，本段未重做独立视觉评审。未重复全集或release构建、未发布APK；其它格式/异常与目标手机/NAS及原签名升级继续。原型树1cbf605独立可移除未改，正式8760/NAS/SDK未改，#24/#33/#78仍开放。下一步继续视频标签定义真实改名／删除及失败读回等明确余项。
+
+## 2026-10-27：视频标签定义与失败恢复（PR #81）
+
+[Draft PR #81](https://github.com/ShiJiJS/video_viewer/pull/81)基于#80，补视频标签目录真实创建／改名／移除及失败读回。生产6f7ce97增加计数入口mounted／active检查：关闭面板后列表迟到，已离开或销毁页面不继续计数。两类型×离开／销毁四项在旧码真实四败，修后与定义／分页／分配组件合计51项通过，analyze／格式／Ruff通过。
+
+普通同驱动三轮45点；大字68ce0fb、短横屏a40dc0f各完整15点，共75点，生产和组件树相同。真实409保草稿、视频“和服”201与图包同名独立、改名503原请求重试保原ID／2关联、移除确认取消回原草稿／关闭零写、移除503重试200、重开目录／返回媒体库均补证。每轮7次UI写请求、3条成功命令，图包完整5定义／8关联和种子进度保留，26源文件SHA不变，无播放轮次／会话／最近写入。
+
+旁路取消域、惰性定位、未稳定IME图及外层字段留白检查失败均单列诊断，不计最终点；最终横屏亲看输入文字露出，不称键盘下所有动作同时可见。292项输入清单与只读复核通过，首批和追加AVD均恢复并关闭。未重跑全集或release、未发布APK。
+
+[实施范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/LF8-VIDEO-TAG-DEFINITIONS.md)／[固定源码、原图、API／SQL与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/evidence/lf8-video-tag-definitions/README.md)。本段补TAG-01及相关UI组合；历史记录保留各自版本边界，当前验收表不再列视频定义真实CRUD为未做。原型1cbf605独立可移除未改；正式8760／NAS／SDK和签名／版本未改，#24/#33/#78及整体验收仍开放。后续继续合并后的完整来源／冷启组合、更多异常与目标手机／NAS及原签名升级；需用户配合部分按授权暂跳过。

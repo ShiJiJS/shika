@@ -1,0 +1,166 @@
+{
+  "tags": [
+    {
+      "id": "068e8f70-4910-43ef-9b88-4790db2c424c",
+      "name": "自然",
+      "created_at": 1793078543.339491
+    },
+    {
+      "id": "75d87bc8-a248-416f-96fc-886ce13a8fa1",
+      "name": "喜欢",
+      "created_at": 1793078543.3394923
+    },
+    {
+      "id": "e2377dad-e424-448f-8b70-aa6bf2a63f16",
+      "name": "和服",
+      "created_at": 1793078583.2126853
+    }
+  ],
+  "video_tags": [
+    {
+      "video_id": "6d1f22c5-8ffd-476e-bb8c-ee2561aa8b08",
+      "tag_id": "068e8f70-4910-43ef-9b88-4790db2c424c"
+    },
+    {
+      "video_id": "82231127-91ba-4d0b-adb0-302d1121eef7",
+      "tag_id": "75d87bc8-a248-416f-96fc-886ce13a8fa1"
+    }
+  ],
+  "pack_tag_definitions": [
+    {
+      "id": "e7dec0e8-0d88-4831-98fb-062b64c13f76",
+      "name": "和服",
+      "created_at": 1793078543.3391829
+    },
+    {
+      "id": "ef1bb2d5-1d72-4d6a-8346-ba63dacddee5",
+      "name": "户外",
+      "created_at": 1793078543.3391857
+    },
+    {
+      "id": "097709ba-7ba7-45ec-82fa-b61902ebee8b",
+      "name": "白裙",
+      "created_at": 1793078543.3391879
+    },
+    {
+      "id": "16e0ee26-867a-4a81-8b2f-48c6f19f48d0",
+      "name": "角色",
+      "created_at": 1793078543.3391898
+    },
+    {
+      "id": "e505a628-4c40-4d9a-a9ba-9cf13f3172e3",
+      "name": "喜欢",
+      "created_at": 1793078543.3391912
+    }
+  ],
+  "pack_tag_links": [
+    {
+      "pack_id": "1fdfa5cb-669d-4bab-a31e-38c4e18ee037",
+      "tag_id": "16e0ee26-867a-4a81-8b2f-48c6f19f48d0"
+    },
+    {
+      "pack_id": "1fdfa5cb-669d-4bab-a31e-38c4e18ee037",
+      "tag_id": "e7dec0e8-0d88-4831-98fb-062b64c13f76"
+    },
+    {
+      "pack_id": "268f0a10-310a-4281-828c-b32027715c17",
+      "tag_id": "16e0ee26-867a-4a81-8b2f-48c6f19f48d0"
+    },
+    {
+      "pack_id": "268f0a10-310a-4281-828c-b32027715c17",
+      "tag_id": "e7dec0e8-0d88-4831-98fb-062b64c13f76"
+    },
+    {
+      "pack_id": "3f68fba4-f174-4032-98b6-e7b3a574aff4",
+      "tag_id": "e7dec0e8-0d88-4831-98fb-062b64c13f76"
+    },
+    {
+      "pack_id": "3f68fba4-f174-4032-98b6-e7b3a574aff4",
+      "tag_id": "ef1bb2d5-1d72-4d6a-8346-ba63dacddee5"
+    },
+    {
+      "pack_id": "9f2dabac-49ed-4e55-b017-d81d12339e99",
+      "tag_id": "097709ba-7ba7-45ec-82fa-b61902ebee8b"
+    },
+    {
+      "pack_id": "9f2dabac-49ed-4e55-b017-d81d12339e99",
+      "tag_id": "ef1bb2d5-1d72-4d6a-8346-ba63dacddee5"
+    }
+  ],
+  "pack_progress": [
+    {
+      "pack_id": "3f68fba4-f174-4032-98b6-e7b3a574aff4",
+      "page_id": "be085944-279c-4e33-9b36-78fc387a348c",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1000.0,
+      "content_version": 1,
+      "recovery_reason": null
+    }
+  ],
+  "playback_rounds": [],
+  "round_entries": [],
+  "recent_entries": [],
+  "request_records": [
+    {
+      "id": "tag.create:1793078583220644-58b3ee33",
+      "fingerprint": "13b393031e7b8d9a65f103ad1502b4133146a52a00d77e1131c7486e5606c467",
+      "result": "{\"id\": \"e2377dad-e424-448f-8b70-aa6bf2a63f16\", \"name\": \"\\u548c\\u670d\"}",
+      "created_at": 1793078583.21448
+    },
+    {
+      "id": "tag.rename:1793078588608263-ca69fb69",
+      "fingerprint": "8792c0d78f1d0eb2b2e4324e4d57f55e9076e12fc9e249e05144707d0af80492",
+      "result": "{\"id\": \"807a59c9-53ca-41c8-ab27-6b62e7adf688\", \"name\": \"\\u6237\\u5916\\u89c6\\u9891\\u6539\\u540d\"}",
+      "created_at": 1793078590.6137521
+    },
+    {
+      "id": "tag.delete:1793078600167035-20ea9547",
+      "fingerprint": "487cc95b944ef010a9e639d5f0beb0706e86a7d2c9657d46cb667113c5d7a548",
+      "result": "{\"id\": \"807a59c9-53ca-41c8-ab27-6b62e7adf688\", \"deleted\": true, \"replacement_round_id\": null}",
+      "created_at": 1793078603.0571895
+    }
+  ],
+  "pack_sessions": [],
+  "packs": [
+    {
+      "id": "1fdfa5cb-669d-4bab-a31e-38c4e18ee037",
+      "name": "示例作者 NO.019 - 灵梦 · 新年快乐",
+      "path": "/media/packs/示例作者 NO.019 - 灵梦 · 新年快乐",
+      "status": "available"
+    },
+    {
+      "id": "268f0a10-310a-4281-828c-b32027715c17",
+      "name": "示例作者 NO.051 - 加藤惠 · 和服",
+      "path": "/media/packs/示例作者 NO.051 - 加藤惠 · 和服",
+      "status": "available"
+    },
+    {
+      "id": "3f68fba4-f174-4032-98b6-e7b3a574aff4",
+      "name": "示例作者 NO.034 - 夏日祭",
+      "path": "/media/packs/示例作者 NO.034 - 夏日祭",
+      "status": "available"
+    },
+    {
+      "id": "9f2dabac-49ed-4e55-b017-d81d12339e99",
+      "name": "示例作者 NO.057 - 原野上的浪漫",
+      "path": "/media/packs/示例作者 NO.057 - 原野上的浪漫",
+      "status": "available"
+    }
+  ],
+  "videos": [
+    {
+      "id": "6d1f22c5-8ffd-476e-bb8c-ee2561aa8b08",
+      "name": "水边的花",
+      "path": "/media/videos/竖屏/水边的花.mp4",
+      "status": "available"
+    },
+    {
+      "id": "82231127-91ba-4d0b-adb0-302d1121eef7",
+      "name": "风里的花园",
+      "path": "/media/videos/横屏/风里的花园.mp4",
+      "status": "available"
+    }
+  ]
+}

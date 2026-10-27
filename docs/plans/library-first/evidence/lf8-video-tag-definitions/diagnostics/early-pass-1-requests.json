@@ -1,0 +1,876 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "status",
+        "missing"
+      ],
+      [
+        "limit",
+        "1"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "tag_ids",
+        "4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "tag_ids",
+        "12d27a18-9b09-4477-bc4a-6be293e87acd"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "24"
+      ],
+      [
+        "source",
+        "library"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "source",
+        "tags"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": null,
+    "query": [
+      [
+        "tag_ids",
+        "4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb"
+      ],
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "source",
+        "tags"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/tags",
+    "status": 409,
+    "phase": "tagdef-create-keyboard",
+    "body": {
+      "request_id": "1793077270475879-57f0e237",
+      "name": "户外"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "tagdef-create-conflict"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-create-conflict"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-create-conflict"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "tagdef-create-conflict",
+    "query": [
+      [
+        "tag_ids",
+        "4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb"
+      ],
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "source",
+        "tags"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/tags",
+    "status": 201,
+    "phase": "tagdef-create-conflict",
+    "body": {
+      "request_id": "1793077274458660-5f1f2f02",
+      "name": "和服"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": "tagdef-create-conflict"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": "tagdef-create-conflict"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "tagdef-create-conflict",
+    "query": [
+      [
+        "status",
+        "missing"
+      ],
+      [
+        "limit",
+        "1"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": "tagdef-create-conflict"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "tagdef-create-conflict"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-create-conflict"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-create-conflict"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "tagdef-create-conflict",
+    "query": [
+      [
+        "tag_ids",
+        "4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb"
+      ],
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "source",
+        "tags"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-create-conflict"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "status": 200,
+    "phase": "tagdef-create-conflict"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/tags/4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb",
+    "status": 409,
+    "phase": "tagdef-created",
+    "body": {
+      "request_id": "1793077276776003-3297ab0a",
+      "name": "自然"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/tags/4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb",
+    "status": 503,
+    "phase": "tagdef-rename-conflict",
+    "body": {
+      "request_id": "1793077279233282-ed9a6ef3",
+      "name": "户外视频改名"
+    }
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/tags/4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb",
+    "status": 200,
+    "phase": "tagdef-rename-failure",
+    "body": {
+      "request_id": "1793077279233282-ed9a6ef3",
+      "name": "户外视频改名"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": "tagdef-rename-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": "tagdef-rename-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": "tagdef-rename-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "tagdef-rename-failure",
+    "query": [
+      [
+        "status",
+        "missing"
+      ],
+      [
+        "limit",
+        "1"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "tagdef-rename-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-rename-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-rename-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "tagdef-rename-failure",
+    "query": [
+      [
+        "tag_ids",
+        "4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb"
+      ],
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "source",
+        "tags"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-rename-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "status": 200,
+    "phase": "tagdef-renamed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "tagdef-renamed",
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "search",
+        ""
+      ],
+      [
+        "read_state",
+        "all"
+      ],
+      [
+        "source",
+        "library"
+      ],
+      [
+        "sort",
+        "title"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "tagdef-renamed",
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "search",
+        ""
+      ],
+      [
+        "read_state",
+        "all"
+      ],
+      [
+        "source",
+        "library"
+      ],
+      [
+        "sort",
+        "title"
+      ],
+      [
+        "tag_ids",
+        "12d27a18-9b09-4477-bc4a-6be293e87acd"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-pack"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "tagdef-pack",
+    "query": [
+      [
+        "tag_ids",
+        "4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb"
+      ],
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "source",
+        "tags"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-remove-cancel"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "tagdef-remove-cancel",
+    "query": [
+      [
+        "tag_ids",
+        "4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb"
+      ],
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "source",
+        "tags"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/tags/4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb",
+    "status": 503,
+    "phase": "tagdef-remove-cancel",
+    "body": {
+      "request_id": "1793077288901296-2fd12212"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "tagdef-remove-failure"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/tags/4d2c5b9f-3cf7-43e0-a6d2-0c546bf6bfcb",
+    "status": 200,
+    "phase": "tagdef-remove-failure",
+    "body": {
+      "request_id": "1793077288901296-2fd12212"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "status": 200,
+    "phase": "tagdef-remove-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "tagdef-remove-failure",
+    "query": [
+      [
+        "status",
+        "missing"
+      ],
+      [
+        "limit",
+        "1"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": "tagdef-remove-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "status": 200,
+    "phase": "tagdef-remove-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "status": 200,
+    "phase": "tagdef-remove-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-remove-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-remove-failure"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "tagdef-remove-failure",
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "source",
+        "tags"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "tagdef-removed",
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "source",
+        "tags"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "status": 200,
+    "phase": "tagdef-removed"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "status": 200,
+    "phase": "tagdef-reopened"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "tagdef-reopened",
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "1"
+      ],
+      [
+        "search",
+        ""
+      ],
+      [
+        "read_state",
+        "all"
+      ],
+      [
+        "source",
+        "library"
+      ],
+      [
+        "sort",
+        "title"
+      ],
+      [
+        "tag_ids",
+        "12d27a18-9b09-4477-bc4a-6be293e87acd"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "status": 200,
+    "phase": "tagdef-pack-final",
+    "query": [
+      [
+        "offset",
+        "0"
+      ],
+      [
+        "limit",
+        "24"
+      ],
+      [
+        "source",
+        "library"
+      ],
+      [
+        "sort",
+        "name"
+      ],
+      [
+        "name_locale",
+        "zh-CN"
+      ]
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/d32f3e5f-20af-45ef-9030-36cba1b1944d/thumbnail",
+    "status": 200,
+    "phase": "tagdef-pack-final"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos/7412d711-f723-406e-8aa1-08af056cfa69/thumbnail",
+    "status": 200,
+    "phase": "tagdef-pack-final"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "status": 404,
+    "phase": "tagdef-library"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/recent",
+    "status": 200,
+    "phase": "tagdef-library"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/packs",
+    "status": 200,
+    "phase": "tagdef-library",
+    "query": [
+      [
+        "tag_ids",
+        "12d27a18-9b09-4477-bc4a-6be293e87acd"
+      ]
+    ]
+  }
+]
