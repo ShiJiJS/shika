@@ -581,6 +581,14 @@ finally:
         raise
     finally:
         if container:
+            try:
+                final_state = state()
+                save("fixture-final.json", final_state)
+                save("requests.json", final_state["requests"])
+                if (out / "flutter.log").exists() and not (out / "metrics.json").exists():
+                    save("metrics.json", [json.loads(row.split("FIDELITY_METRICS:", 1)[1]) for row in (out / "flutter.log").read_text().splitlines() if "FIDELITY_METRICS:" in row])
+            except Exception as error:  # noqa: BLE001 - preserve the original test failure
+                save("final-state-error.json", {"error": repr(error)})
             (out / "server.log").write_text(
                 subprocess.run(
                     ["docker", "logs", container],

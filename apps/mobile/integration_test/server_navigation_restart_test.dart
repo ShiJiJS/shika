@@ -184,11 +184,12 @@ void main() {
             'source': e.source.name,
             'search': e.search,
             'sort': e.sort.name,
-            'folder': e.query.folder,
+            if (e.sort == VideoSort.name) 'name_locale': 'zh-CN',
             'tag_ids': e.query.tags.join(','),
-            'orientation': e.query.orientation,
-            'duration': e.query.duration,
-            'type': e.query.type,
+            if (e.query.orientation.isNotEmpty)
+              'orientation': e.query.orientation,
+            if (e.query.duration.isNotEmpty) 'duration': e.query.duration,
+            if (e.query.type.isNotEmpty) 'file_type': e.query.type,
             'limit': '200',
           },
         );
@@ -203,8 +204,7 @@ void main() {
           query: {
             'source': q.source.name,
             'search': q.search,
-            'sort': q.sort.name,
-            'folder': q.folder,
+            'sort': q.sort == PackSort.name ? 'title' : q.sort.name,
             'tag_ids': q.tags.join(','),
             'read_state': q.readState.name,
             'limit': '200',
