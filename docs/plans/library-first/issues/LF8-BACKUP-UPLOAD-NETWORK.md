@@ -4,6 +4,10 @@
 
 同版另有桌面nexuslauncher无响应挡住首帧的独立失败，已保存XML／PNG并关闭该桌面提示；不与上传错误合并归因。临时只增加IOException诊断输出的一轮完整流程通过，未复现网络错误；该日志改动已撤销，不能把一次通过当作问题已修复。另一次host准备目录时遇启动扫描409，现测试runner先只读等待初扫结束，未放宽服务保护或自动重发写命令。
 
-证据将随codex/lf8-public-backups提交到docs/plans/library-first/evidence/lf8-public-backups/，失败、诊断、中间与最终成功材料分列；不混算检查点。
+证据已随codex/lf8-public-backups提交到docs/plans/library-first/evidence/lf8-public-backups/，失败、诊断、中间与最终成功材料分列；不混算检查点。
 
 完成要求：定位并记录底层传输失败及发生阶段；验证原请求日志保留和重开后只查询原请求，不能为了通过而自动重复POST；修复有明确复现前后对照，补序列执行与相关取消／失败恢复回归。完整备份入口代码与模拟器单次成功不等于此项关闭或正式发布；原型及正式8760／NAS不动。
+
+## PR #90 后续记录
+
+[公开入口草稿PR #90](https://github.com/ShiJiJS/video_viewer/pull/90)正式样本6287cc4未带临时诊断，一轮14点通过；客户端670项、服务端447项功能回归通过。该次通过不能定位此前失败，本问题保持开放，继续验证原请求保留与只读恢复，不允许以自动重发POST掩盖问题。
