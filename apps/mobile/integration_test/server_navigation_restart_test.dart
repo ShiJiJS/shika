@@ -119,8 +119,10 @@ void main() {
       Future<void> packReady(int total) => until(
         () =>
             find.byType(PackCatalogPage).evaluate().length == 1 &&
+            find.byType(PackReaderPage).evaluate().isEmpty &&
             packs().initialized &&
             !packs().data.loading &&
+            !packs().continuationLoading &&
             !packs().busy &&
             packs().pendingReturn == null &&
             packs().data.total == total &&
@@ -240,6 +242,16 @@ void main() {
           260,
           scrollable: body.first,
           maxScrolls: 100,
+        );
+        await until(
+          () =>
+              !t
+                  .state<ScrollableState>(body.first)
+                  .position
+                  .isScrollingNotifier
+                  .value &&
+              !(pack ? packs().data.loading : video().data.loading),
+          'catalog scroll and page read idle',
         );
         await t.pump(const Duration(milliseconds: 200));
       }
@@ -385,6 +397,8 @@ void main() {
                   .any((e) => (e.widget as RawImage).image != null);
         }, 'actual decoded and opened pack $id');
         final page = t.state<PackReaderPageState>(find.byType(PackReaderPage));
+        final returnContext = page.widget.returnContext!;
+        expect(returnContext.scrollOffset, closeTo(scroll, 2));
         final range = page.session.range!;
         expect(range.source, origin.entry.source);
         expect(range.cursor, at);
@@ -407,6 +421,12 @@ void main() {
           'scroll': scroll,
           'top': top,
           'query_key': query,
+          'return_context': {
+            'scroll': returnContext.scrollOffset,
+            'index': returnContext.scrollIndex,
+            'inset': returnContext.scrollInset,
+            'anchor': returnContext.scrollAnchor,
+          },
         };
         visits.add(record);
         await capture('$label-reader', extra: record);
@@ -438,10 +458,14 @@ void main() {
           await tap(find.byTooltip('返回来源'));
         }
         await packReady(expected.length);
+        await t.pumpAndSettle();
         expect(packs().entry.queryKey, query);
         await until(
           () => tile.hitTestable().evaluate().length == 1,
           'restored pack tile',
+        );
+        debugPrint(
+          'NAVIGATION_RETURN_GEOMETRY:${jsonEncode({'record': record, 'returned_top': t.getRect(tile).top, 'returned_scroll': packs().scroll.offset, 'header': packs().listHeader, 'stride': packs().stride, 'offset': packs().data.offset})}',
         );
         expect(t.getRect(tile).top, closeTo(top, 2));
         expect(packs().scroll.offset, closeTo(scroll, 2));
