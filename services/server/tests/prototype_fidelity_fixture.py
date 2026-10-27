@@ -99,7 +99,7 @@ def create_fidelity_app():
             or ((preview_mutation or tag_definitions) and request.method in {"POST", "PATCH", "DELETE"}
                 and (request.url.path in {"/api/v1/video-tags", "/api/v1/tags"} or request.url.path.startswith("/api/v1/tags/")))
             or (navigation and request.method in {"POST", "PATCH"}
-                and (request.url.path.startswith("/api/v1/pack-sessions/") or request.url.path.endswith("/progress")))
+                and (request.url.path == "/api/v1/playback-defaults" or request.url.path.startswith("/api/v1/pack-sessions/") or request.url.path.endswith("/progress")))
             else None
         )
         counts_failure = (

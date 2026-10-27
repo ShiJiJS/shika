@@ -13,6 +13,7 @@ import 'package:video_viewer/features/library/video_catalog_page.dart';
 import 'package:video_viewer/features/packs/pack_reader_page.dart';
 import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/models.dart';
+import 'package:video_viewer/library/playback_defaults.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/paper.dart';
@@ -60,6 +61,18 @@ void main() {
           8768,
           'prototype-fidelity-owned-only',
         );
+        final defaults = repo.createPlaybackDefaults();
+        try {
+          final current = await defaults.read();
+          await defaults.submit(
+            WritePlaybackDefaults(
+              'navigation-owned-sequential-$coldSource',
+              PlaybackDefaults(PlayOrder.sequential, current.revision),
+            ),
+          );
+        } finally {
+          defaults.dispose();
+        }
       }
       await t.pumpWidget(
         VideoViewerApp(
