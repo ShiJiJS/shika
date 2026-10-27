@@ -1,0 +1,9 @@
+{
+  "avd": "video_viewer_api_36",
+  "api": "36",
+  "abi": "arm64-v8a",
+  "host_avc_decoder": "2",
+  "emulator_process": [
+    "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64 -avd video_viewer_api_36 -port 5554 -no-boot-anim -gpu software -feature -Vulkan -feature -GLDMA -feature HardwareDecoder -no-snapshot -no-metrics -crash-report-mode never"
+  ]
+}

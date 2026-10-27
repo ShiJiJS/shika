@@ -1,0 +1,69 @@
+{
+  "task": {
+    "id": "494a1b68-e2e0-4707-950d-5023fa09676a",
+    "kind": "backup_inspect_v2",
+    "status": "completed",
+    "error": null,
+    "result": {
+      "bytes": 19197,
+      "checksum": "a70a8b5cf04e26a4d3ac6e1790422e18f12f79917a98634ded38446a6995e2f5",
+      "created_at": 1793123276.61386,
+      "file_sha256": "a50ced7ab44e83c1d04448f7170047d940c820bf115e64d074a66065c48e9431",
+      "graphs": 1,
+      "schema": "0013",
+      "version": 2,
+      "archive_version": 2,
+      "format": "video-viewer-management",
+      "counts": {
+        "directories": 28,
+        "file_operations": 0,
+        "file_steps": 0,
+        "pack_file_operations": 0,
+        "pack_file_steps": 0,
+        "pack_missing_cleanups": 0,
+        "pack_missing_members": 0,
+        "pack_pages": 1,
+        "pack_preferences": 0,
+        "pack_progress": 0,
+        "pack_purge_entries": 0,
+        "pack_purge_executions": 0,
+        "pack_purge_plans": 0,
+        "pack_purge_steps": 0,
+        "pack_restore_batches": 0,
+        "pack_restore_members": 0,
+        "pack_restore_plans": 0,
+        "pack_session_entries": 0,
+        "pack_sessions": 0,
+        "pack_tag_definitions": 1,
+        "pack_tag_links": 0,
+        "pack_trash_items": 0,
+        "packs": 1,
+        "playback_rounds": 0,
+        "recent_entries": 0,
+        "request_records": 3,
+        "roots": 27,
+        "round_entries": 0,
+        "tags": 1,
+        "tasks": 3,
+        "trash_items": 0,
+        "video_tags": 0,
+        "videos": 0
+      },
+      "roots_count": 27
+    }
+  },
+  "receipt": {
+    "id": "management.backup_inspect_v2:1793123307181108-2395443047",
+    "result": {
+      "id": "494a1b68-e2e0-4707-950d-5023fa09676a"
+    }
+  },
+  "counts": {
+    "roots": 27,
+    "tags": 2,
+    "pack_tag_definitions": 2,
+    "packs": 1,
+    "pack_pages": 1
+  },
+  "epoch": "34f78af7ca20066d34ee785b12d9ab53"
+}

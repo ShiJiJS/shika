@@ -102,7 +102,14 @@ void main() {
     await expectLater(
       api.uploadFile('/imports', document),
       throwsA(
-        isA<ApiFailure>().having((e) => e.code, 'code', 'network_unavailable'),
+        isA<ApiFailure>()
+            .having((e) => e.code, 'code', 'network_unavailable')
+            .having((e) => e.transportCause, 'cause', isA<IOException>())
+            .having(
+              (e) => e.transportPhase,
+              'phase',
+              ApiTransportPhase.waitingForHeaders,
+            ),
       ),
     );
     expect(calls, 1);

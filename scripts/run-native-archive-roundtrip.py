@@ -7,6 +7,7 @@ import json
 import re
 import sqlite3
 import subprocess
+import sys
 import threading
 import time
 import urllib.error
@@ -36,7 +37,11 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--large", action="store_true")
     parser.add_argument("--cancel-first", action="store_true")
+    parser.add_argument("--diagnose", action="store_true")
+    parser.add_argument("--truncate-upload-response", action="store_true")
     args = parser.parse_args()
+    if args.truncate_upload_response and not args.diagnose:
+        parser.error("--truncate-upload-response requires --diagnose")
     scenes = list(SCENES)
     if args.cancel_first:
         scenes[2:2] = ["save-cancelled", "pick-cancelled"]
@@ -159,6 +164,7 @@ def main():
     )
     container = process = watcher = timer = None
     stop = threading.Event()
+    fault_stopped = threading.Event()
     events, errors, system_events = [], [], []
     before_trace = before_media = None
     created_name = None
@@ -261,7 +267,9 @@ def main():
                 name = state["display"]
                 if not name or state["display_ack"]:
                     continue
-                assert name == "archive-ui-" + scenes[len(events)], name
+                failure = args.diagnose and name == "archive-ui-unexpected-failure"
+                if not failure:
+                    assert name == "archive-ui-" + scenes[len(events)], name
                 current = focus()
                 assert any(
                     "mCurrentFocus=" in r and PACKAGE in r for r in current.splitlines()
@@ -274,7 +282,21 @@ def main():
                     name + "-requests.json",
                     control("/trace")["items"][len(before_trace) :],
                 )
-                events.append({"state": name, "epoch": state["epoch"]})
+                if failure:
+                    save("upload-failure-capture.json", {"state": name, "epoch": state["epoch"]})
+                    if args.truncate_upload_response:
+                        old_pid = app_pid()
+                        assert old_pid, "Failure frame must belong to the live App"
+                        shell("am", "force-stop", PACKAGE)
+                        assert not app_pid()
+                        control("/ack/" + name, "POST")
+                        save("failure-force-stop.json", {"old_pid": old_pid, "after_pid": ""})
+                        fault_stopped.set()
+                        continue
+                else:
+                    events.append({"state": name, "epoch": state["epoch"]})
+                    if name == "archive-ui-resume-start":
+                        save("resumed-app-pid.json", {"pid": app_pid()})
                 control("/ack/" + name, "POST")
         except Exception as failure:  # noqa: BLE001 - preserve capture failure
             errors.append(repr(failure))
@@ -308,6 +330,8 @@ def main():
             "VV_ARCHIVE_APP_FIXTURE=enabled",
             "-e",
             "VV_ARCHIVE_NATIVE_LARGE=" + ("enabled" if args.large else "disabled"),
+            "-e",
+            "VV_ARCHIVE_UPLOAD_TRUNCATION=" + ("enabled" if args.truncate_upload_response else "disabled"),
             "-e",
             "VV_PASSPHRASE_FILE=/fixture/passphrase",
             "-e",
@@ -455,6 +479,8 @@ def main():
             command.append("--dart-define=ARCHIVE_LARGE_DOCUMENT=true")
         if args.cancel_first:
             command.append("--dart-define=ARCHIVE_CANCEL_INPUTS=true")
+        if args.diagnose:
+            command.append("--dart-define=ARCHIVE_CAPTURE_FAILURES=true")
         process = subprocess.Popen(
             command,
             cwd=ROOT / "apps/mobile",
@@ -562,6 +588,75 @@ def main():
                         )
         code = process.wait(timeout=20)
         save("exit.json", {"code": code})
+        if args.truncate_upload_response:
+            assert code != 0 and not errors and fault_stopped.wait(30), errors
+            timer.cancel()
+            text = (out / "android-test.log").read_text()
+            failures = [json.loads(line.split("ARCHIVE_TRANSPORT_FAILURE:", 1)[1]) for line in text.splitlines() if "ARCHIVE_TRANSPORT_FAILURE:" in line]
+            (failure,) = failures
+            assert failure["phase"] == "readingResponse" and failure["cause_type"] == "HttpException", failure
+            save("transport-failure.json", failure)
+            books = [json.loads(line.split("ARCHIVE_FAILURE_JOURNAL:", 1)[1]) for line in text.splitlines() if "ARCHIVE_FAILURE_JOURNAL:" in line]
+            (book,) = books
+            save("failure-journal.json", book)
+            (scope,) = list(book["scopes"].values())
+            original_command = scope["inspect"]
+            assert original_command.get("task") is None and original_command["digest"] == save_descriptor["sha256"]
+            state = control("/status")
+            assert state["upload_truncated"] and state["upload_task"]
+            first_trace = control("/trace")["items"]
+            first_requests = first_trace[len(before_trace):]
+            imports = [r for r in first_requests if r["method"] == "POST" and r["path"] == "/api/v1/management-backups/imports"]
+            assert len(imports) == 1 and imports[0]["idempotency_key"] == original_command["key"]
+            assert not any(r["method"] == "POST" and "/restores" in r["path"] for r in first_requests)
+            save("first-requests.json", first_requests)
+            save("first-host-events.json", events.copy())
+            file_id = original_command["file"]["id"]
+            assert re.fullmatch(r"[a-f0-9]{32}", file_id)
+            candidates = shell("run-as", PACKAGE, "find", "files/management-archives", "-name", file_id + ".vvbackup").splitlines()
+            (owned_input,) = candidates
+            assert re.fullmatch(r"files/management-archives/[a-f0-9]{64}/" + file_id + r"\.vvbackup", owned_input)
+            assert int(shell("run-as", PACKAGE, "stat", "-c", "%s", owned_input)) == original_command["file"]["bytes"]
+            shell("run-as", PACKAGE, "rm", owned_input)
+            assert not shell("run-as", PACKAGE, "find", "files/management-archives", "-name", file_id + ".vvbackup")
+            save("removed-owned-input.json", {"path": owned_input, "id": file_id, "removed": True})
+            first_points = len(events)
+            events.clear()
+            scenes[:] = ["resume-start", "resume-preview", "resume-confirm-off"]
+            command = command + ["--dart-define=ARCHIVE_RESUME_FAILURE=true"]
+            process = subprocess.Popen(command, cwd=ROOT / "apps/mobile", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            timer = threading.Timer(480, process.kill)
+            timer.start()
+            with (out / "resume-test.log").open("w") as log:
+                for line in process.stdout:
+                    log.write(line)
+                    log.flush()
+            resumed_code = process.wait(timeout=20)
+            save("resume-exit.json", {"code": resumed_code})
+            assert resumed_code == 0 and not errors and len(events) == 3, errors
+            resumed_text = (out / "resume-test.log").read_text()
+            verified = [json.loads(line.split("ARCHIVE_RESUME_VERIFIED:", 1)[1]) for line in resumed_text.splitlines() if "ARCHIVE_RESUME_VERIFIED:" in line]
+            (verified,) = verified
+            assert verified["original_key"] == original_command["key"] and verified["task"] == state["upload_task"]
+            assert verified["epoch"] == info["management_epoch"] and verified["confirmation_off"]
+            assert verified["sha256"] == save_descriptor["sha256"] and verified["roots"] == 27
+            save("resume-verified.json", verified)
+            resumed_pid = json.loads((out / "resumed-app-pid.json").read_text())["pid"]
+            killed_pid = json.loads((out / "failure-force-stop.json").read_text())["old_pid"]
+            assert resumed_pid and resumed_pid != killed_pid
+            resumed_requests = control("/trace")["items"][len(first_trace):]
+            assert resumed_requests and all(r["method"] == "GET" for r in resumed_requests)
+            assert any(r["path"] == "/api/v1/management-backups/requests/inspect/" + original_command["key"] for r in resumed_requests)
+            save("resumed-requests.json", resumed_requests)
+            assert api("tasks/" + state["upload_task"])["status"] == "completed"
+            assert api("info")["management_epoch"] == info["management_epoch"]
+            for route in ("tags", "pack-tags"):
+                assert len(api(route)["items"]) == 2
+            assert before_media == media()
+            save("media-after.json", media())
+            save("result.json", {"passed": True, "injected_response_truncation": True, "original_issue_reproduced": False, "native_points": first_points + 1 + len(events), "system_points": len(system_events), "restore_posts": 0, "resume_posts": 0, "local_input_removed": True})
+            print(json.dumps({"passed": True, "controlled_failure_and_restart": True, "native_points": first_points + 1 + len(events), "system_points": len(system_events)}), flush=True)
+            return
         assert code == 0 and not errors, errors
         assert len(system_events) == len(system_stages) and len(events) == len(scenes)
         final_trace = control("/trace")["items"]
@@ -661,6 +756,7 @@ def main():
             flush=True,
         )
     finally:
+        cleanup_errors = []
         stop.set()
         if timer:
             timer.cancel()
@@ -679,6 +775,7 @@ def main():
             )
         except Exception as error:  # noqa: BLE001 - preserve cleanup alongside original failure
             save("app-cleanup-error.json", {"error": repr(error)})
+            cleanup_errors.append("App cleanup: " + repr(error))
         save("host-events.json", {"events": events, "errors": errors})
         try:
             for kind in ("size", "density"):
@@ -696,9 +793,12 @@ def main():
                 shell("settings", "delete", "system", "font_scale")
             else:
                 shell("settings", "put", "system", "font_scale", original["font_scale"])
-            save("restored-viewport.json", {"before": original, "after": viewport()})
+            restored = viewport()
+            save("restored-viewport.json", {"before": original, "after": restored})
+            assert restored == original, "Display configuration was not restored"
         except Exception as error:  # noqa: BLE001 - preserve cleanup alongside original failure
             save("restore-error.json", {"original": original, "error": repr(error)})
+            cleanup_errors.append("Display cleanup: " + repr(error))
         finally:
             if container:
                 try:
@@ -706,6 +806,7 @@ def main():
                     save("requests-final.json", control("/trace")["items"])
                 except Exception as error:  # noqa: BLE001 - service may already have failed
                     save("fixture-error.json", {"error": repr(error)})
+                    cleanup_errors.append("Fixture evidence: " + repr(error))
                 result = subprocess.run(
                     ["docker", "logs", container],
                     capture_output=True,
@@ -719,6 +820,10 @@ def main():
                     capture_output=True,
                     timeout=30,
                 )
+        if cleanup_errors:
+            save("cleanup-errors.json", cleanup_errors)
+            if sys.exc_info()[0] is None:
+                raise AssertionError("; ".join(cleanup_errors))
 
 
 def read_saved(out):

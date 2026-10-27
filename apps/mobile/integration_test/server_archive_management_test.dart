@@ -11,12 +11,52 @@ import 'package:video_viewer/library/backup_work_store.dart';
 import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/file_command_store.dart';
 import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/request_scope.dart';
 import 'package:video_viewer/library/server_repository.dart';
+import 'package:video_viewer/library/server_api.dart';
+import 'package:video_viewer/library/management_archives.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/preferences.dart';
 
 import '../test/support/reveal_action.dart';
+
+class _ObservedArchiveRepository extends ServerLibraryRepository {
+  _ObservedArchiveRepository(
+    super.credentials, {
+    super.backupWork,
+    super.fileCommands,
+    super.packCommands,
+    super.port,
+    required this.captureFailures,
+  });
+  final bool captureFailures;
+  ApiFailure? lastUploadFailure;
+
+  @override
+  Future<ArchivePreview> inspectArchive(BackupDocument document) {
+    final result = super.inspectArchive(document);
+    if (!captureFailures) return result;
+    return result.onError<ApiFailure>((error, stack) {
+      lastUploadFailure = error;
+      final cause = error.transportCause;
+      final detail = switch (cause) {
+        SocketException e => {
+          'message': e.message,
+          'errno': e.osError?.errorCode,
+        },
+        FileSystemException e => {
+          'message': e.message,
+          'errno': e.osError?.errorCode,
+        },
+        HttpException e => {'message': e.message},
+        _ => <String, Object?>{},
+      };
+      debugPrint(
+        'ARCHIVE_TRANSPORT_FAILURE:${jsonEncode({'phase': error.transportPhase?.name, 'cause_type': cause.runtimeType.toString(), 'code': error.code, 'bytes': document.bytes, 'sha256': document.sha256, ...detail})}',
+      );
+      Error.throwWithStackTrace(error, stack);
+    });
+  }
+}
 
 /// Default private-file boundary preserves the existing UI checks; opt-in
 /// ARCHIVE_NATIVE_DOCUMENTS drives the same pages with real Android DocumentsUI.
@@ -145,6 +185,8 @@ void main() {
   const nativeDocuments = bool.fromEnvironment('ARCHIVE_NATIVE_DOCUMENTS');
   const largeDocument = bool.fromEnvironment('ARCHIVE_LARGE_DOCUMENT');
   const cancelInputs = bool.fromEnvironment('ARCHIVE_CANCEL_INPUTS');
+  const captureFailures = bool.fromEnvironment('ARCHIVE_CAPTURE_FAILURES');
+  const resumeFailure = bool.fromEnvironment('ARCHIVE_RESUME_FAILURE');
   const ownedPrefix = nativeDocuments
       ? 'video_viewer.archive_native_app'
       : 'video_viewer.archive_app';
@@ -153,10 +195,13 @@ void main() {
   ) async {
     final credentials = SecureCredentialStore(key: '$ownedPrefix.connection');
     final work = SecureBackupWorkStore(key: '$ownedPrefix.backups');
-    await credentials.clear();
-    await work.write('{"version":2,"scopes":{}}');
-    final repo = ServerLibraryRepository(
+    if (!resumeFailure) {
+      await credentials.clear();
+      await work.write('{"version":2,"scopes":{}}');
+    }
+    final repo = _ObservedArchiveRepository(
       credentials,
+      captureFailures: captureFailures,
       backupWork: work,
       fileCommands: SecureFileCommandStore(key: '$ownedPrefix.videos'),
       packCommands: SecureFileCommandStore(key: '$ownedPrefix.packs'),
@@ -168,11 +213,16 @@ void main() {
         ? systemFiles
         : privateFiles;
     final preferences = UiPreferences(preloadAdjacent: false);
-    await repo.connect(
-      'http://10.0.2.2',
-      archivePort,
-      'archive-app-isolated-only',
-    );
+    if (resumeFailure) {
+      await repo.initialize();
+      expect(repo.snapshot.connected, isTrue);
+    } else {
+      await repo.connect(
+        'http://10.0.2.2',
+        archivePort,
+        'archive-app-isolated-only',
+      );
+    }
     final originalEpoch = repo.api.managementEpoch;
     expect(repo.archiveBackupsAvailable, isTrue);
     expect(repo.archiveMaximumBytes, 64 * 1024 * 1024);
@@ -184,6 +234,17 @@ void main() {
       repo.dispose();
       preferences.dispose();
     });
+    Future<void> checkpoint(String name) async {
+      await control('/checkpoint/archive-ui-$name', method: 'POST');
+      final deadline = DateTime.now().add(const Duration(seconds: 25));
+      while (!(await control('/status'))['display_ack']) {
+        if (DateTime.now().isAfter(deadline)) {
+          fail('Host did not capture $name');
+        }
+        await t.pump(const Duration(milliseconds: 100));
+      }
+    }
+
     Future<void> until(bool Function() ready) async {
       final end = DateTime.now().add(
         largeDocument
@@ -191,6 +252,13 @@ void main() {
             : const Duration(seconds: 40),
       );
       while (!ready()) {
+        if (captureFailures &&
+            repo.lastUploadFailure != null &&
+            find.byKey(const Key('archive-error')).evaluate().isNotEmpty) {
+          debugPrint('ARCHIVE_FAILURE_JOURNAL:${await work.read()}');
+          await checkpoint('unexpected-failure');
+          fail('Archive upload failed: ${repo.backupStatus.value}');
+        }
         if (DateTime.now().isAfter(end)) {
           fail('Archive UI timeout: ${repo.backupStatus.value}');
         }
@@ -227,14 +295,7 @@ void main() {
           'dark': preferences.dark,
         })}',
       );
-      await control('/checkpoint/archive-ui-$name', method: 'POST');
-      final deadline = DateTime.now().add(const Duration(seconds: 25));
-      while (!(await control('/status'))['display_ack']) {
-        if (DateTime.now().isAfter(deadline)) {
-          fail('Host did not capture $name');
-        }
-        await t.pump(const Duration(milliseconds: 100));
-      }
+      await checkpoint(name);
     }
 
     Future<void> show() async {
@@ -258,6 +319,51 @@ void main() {
     }
 
     await show();
+    if (resumeFailure) {
+      final persisted = jsonDecode((await work.read())!) as Map;
+      final scopes = (persisted['scopes'] as Map).values.cast<Map>();
+      final original = Map<String, dynamic>.from(
+        scopes.single['inspect'] as Map,
+      );
+      await shot('resume-start');
+      final resume = find.byKey(const Key('archive-resume-preview'));
+      await visible(resume);
+      await t.tap(resume);
+      await until(
+        () => find.byKey(const Key('archive-counts')).evaluate().isNotEmpty,
+      );
+      await shot('resume-preview');
+      await visible(find.text('下一页'));
+      await t.tap(find.text('下一页'));
+      await until(() => find.text('媒体目录 · 已载入 27/27').evaluate().isNotEmpty);
+      await visible(find.byKey(const Key('archive-confirm')));
+      expect(
+        t
+            .widget<CheckboxListTile>(find.byKey(const Key('archive-confirm')))
+            .value,
+        isFalse,
+      );
+      expect(
+        t
+            .widget<FilledButton>(
+              find.byKey(const Key('archive-restore-submit')),
+            )
+            .onPressed,
+        isNull,
+      );
+      await shot('resume-confirm-off');
+      final after = jsonDecode((await work.read())!) as Map;
+      final restored =
+          (after['scopes'] as Map).values.cast<Map>().single['inspect'] as Map;
+      expect(restored['key'], original['key']);
+      expect(restored['digest'], original['digest']);
+      expect(restored['file'], original['file']);
+      expect(restored['task'], isNotNull);
+      debugPrint(
+        'ARCHIVE_RESUME_VERIFIED:${jsonEncode({'original_key': original['key'], 'task': restored['task'], 'sha256': original['digest'], 'roots': 27, 'epoch': repo.api.managementEpoch, 'confirmation_off': true})}',
+      );
+      return;
+    }
     await shot('backup-start');
     await preferences.setDark(true);
     await shot('backup-dark');

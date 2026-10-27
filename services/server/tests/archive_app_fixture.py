@@ -1,6 +1,7 @@
 """Opt-in isolated Android archive fixture; never used by production startup."""
 
 import asyncio
+import json
 import os
 import threading
 import uuid
@@ -8,6 +9,7 @@ from collections import deque
 from pathlib import Path
 
 from fastapi import Header, HTTPException
+from fastapi.responses import Response
 from PIL import Image
 
 from video_viewer.app import create_app
@@ -44,6 +46,8 @@ def create_archive_app():
         "display": None,
         "display_ack": False,
         "large_seeded": False,
+        "upload_truncated": False,
+        "upload_task": None,
     }
 
     def backup_fault(phase, task_id):
@@ -92,6 +96,24 @@ def create_archive_app():
                 if controls["armed"]:
                     controls["request_id"] = payload.get("request_id")
         response = await call_next(request)
+        if (
+            os.environ.get("VV_ARCHIVE_UPLOAD_TRUNCATION") == "enabled"
+            and request.method == "POST"
+            and request.url.path == "/api/v1/management-backups/imports"
+            and response.status_code == 202
+        ):
+            with lock:
+                truncate = not controls["upload_truncated"]
+                controls["upload_truncated"] = True
+            if truncate:
+                body = b"".join([part async for part in response.body_iterator])
+                with lock:
+                    controls["upload_task"] = json.loads(body)["id"]
+                headers = dict(response.headers)
+                # Deliberately close a real HTTP response one byte short. The
+                # opt-in fixture never changes admission or submits a new job.
+                headers["content-length"] = str(len(body) + 1)
+                return Response(body, status_code=202, headers=headers)
         if restoring and response.status_code == 202:
             with lock:
                 held = controls["armed"] is not None
