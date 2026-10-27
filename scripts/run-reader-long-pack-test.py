@@ -84,12 +84,13 @@ source_paths += [
     "apps/mobile/integration_test/server_reader_long_pack_test.dart",
 ]
 source_files = {name: sha(ROOT / name) for name in source_paths}
+prototype_entry = run("git", "ls-tree", "HEAD", "design/reference/library-first").split()
 save(
     "source.json",
     {
         "commit": run("git", "rev-parse", "HEAD"),
         "files": source_files,
-        "prototype_tree": run("git", "rev-parse", "HEAD:design/reference/library-first"),
+        "prototype_tree": prototype_entry[2] if prototype_entry else None,
     },
 )
 run(
@@ -202,12 +203,17 @@ def watch():
             now = time.monotonic()
             if now - last_sample >= 3 and name:
                 last_sample = now
-                sample = {
-                    "elapsed_seconds": round(now - started, 3),
-                    "phase": name,
-                    "pid": shell("pidof", APP),
-                    "raw": shell("dumpsys", "meminfo", "-s", APP),
-                }
+                try:
+                    sample = {
+                        "elapsed_seconds": round(now - started, 3),
+                        "phase": name,
+                        "pid": shell("pidof", APP),
+                        "raw": shell("dumpsys", "meminfo", "-s", APP),
+                    }
+                except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+                    if state()["display"] == "verified":
+                        return
+                    raise
                 with (out / "memory-samples.jsonl").open("a") as stream:
                     stream.write(json.dumps(sample) + "\n")
     except Exception as error:

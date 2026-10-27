@@ -122,12 +122,16 @@ void main() {
         expect(t.takeException(), isNull);
       }
 
+      bool readerSettled() =>
+          find.byType(PackReaderPage).evaluate().isEmpty ||
+          (!reader().session.inputBlocked && !reader().session.unsaved);
       Future<void> tap(Finder target) async {
+        await until(readerSettled, 'reader save acknowledged before tap');
         await until(() => target.evaluate().length == 1, 'target $target');
         await t.ensureVisible(target);
         await t.pump(const Duration(milliseconds: 250));
         await until(
-          () => target.hitTestable().evaluate().length == 1,
+          () => target.hitTestable().evaluate().length == 1 && readerSettled(),
           'hit $target',
         );
         await t.tap(target);
@@ -140,11 +144,19 @@ void main() {
         final page = find.byWidgetPredicate(
           (w) => w is ReaderImage && !w.thumbnail && w.page.id == id,
         );
-        return t
-            .widgetList<RawImage>(
-              find.descendant(of: page, matching: find.byType(RawImage)),
-            )
-            .where((w) => w.image != null)
+        final canvas = t.getRect(find.byKey(const Key('reader-canvas')));
+        return find
+            .descendant(of: page, matching: find.byType(RawImage))
+            .evaluate()
+            .where((element) {
+              final box = element.renderObject;
+              return (element.widget as RawImage).image != null &&
+                  box is RenderBox &&
+                  box.hasSize &&
+                  box.attached &&
+                  (box.localToGlobal(Offset.zero) & box.size).overlaps(canvas);
+            })
+            .map((element) => element.widget as RawImage)
             .toList();
       }
 
@@ -155,6 +167,26 @@ void main() {
             decodedCurrent().isNotEmpty,
         'current image frame',
       );
+      Future<void> step(String tooltip, int expected) async {
+        await until(readerSettled, 'page navigation save acknowledged');
+        final button = find.byWidgetPredicate(
+          (widget) => widget is IconButton && widget.tooltip == tooltip,
+        );
+        await t.ensureVisible(button);
+        await until(
+          () =>
+              readerSettled() && t.widget<IconButton>(button).onPressed != null,
+          'enabled $tooltip',
+        );
+        await t.tap(button);
+        await until(
+          () => reader().session.index == expected,
+          'page $expected after $tooltip',
+        );
+        await t.pump(const Duration(milliseconds: 200));
+        await frame();
+      }
+
       final samples = <Map<String, dynamic>>[];
       var peakProviders = 0,
           peakEstimated = 0,
@@ -328,7 +360,7 @@ void main() {
         await mode(ReaderMode.horizontal);
         // Each large pack starts at its persisted page. Move through actual controls.
         for (var i = reader().session.index; i > 0; i--) {
-          await tap(find.byTooltip('上一张'));
+          await step('上一张', i - 1);
         }
         for (var index = 0; index < 3; index++) {
           await frame();
@@ -336,7 +368,7 @@ void main() {
           sample('large-$cycle-$index');
           largeFrames.add(samples.last);
           if (cycle == 0) await capture('large-page-${index + 1}');
-          if (index < 2) await tap(find.byTooltip('下一张'));
+          if (index < 2) await step('下一张', index + 1);
         }
         await mode(ReaderMode.vertical);
         await frame();
