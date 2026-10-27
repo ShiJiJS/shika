@@ -411,8 +411,7 @@ void main() {
         visits.add(record);
         await capture('$label-reader', extra: record);
         if (panels) {
-          await tap(find.byTooltip('图包更多'));
-          await tap(find.text('页码总览'));
+          await tap(find.text('总览'));
           await until(
             () => find
                 .byKey(const Key('reader-overview-sheet'))
