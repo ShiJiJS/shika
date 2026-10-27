@@ -26,11 +26,12 @@ p.add_argument("--scale", choices=("1", "2"), default="1")
 p.add_argument("--expected-columns", choices=(2, 4), type=int, default=2)
 p.add_argument(
     "--scenario",
-    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings", "preview-lifecycle", "preview-stability"),
+    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings", "preview-lifecycle", "preview-stability", "video-tag-definitions"),
     default="fidelity",
 )
 args = p.parse_args()
 scenes = {
+    "video-tag-definitions": ["tagdef-video", "tagdef-create-keyboard", "tagdef-create-conflict", "tagdef-created", "tagdef-rename-conflict", "tagdef-rename-failure", "tagdef-renamed", "tagdef-pack", "tagdef-remove-confirm", "tagdef-remove-cancel", "tagdef-remove-failure", "tagdef-removed", "tagdef-reopened", "tagdef-pack-final", "tagdef-library"],
     "preview-stability": ["stability-library", "stability-filter", "stability-preview", "stability-editor", "stability-saved", "stability-readback", "stability-added", "stability-frozen-queue", "stability-return", "stability-second-preview", "stability-tag-deleted", "stability-second-queue", "stability-empty", "stability-cleared"],
     "preview-lifecycle": ["lifecycle-library", "lifecycle-playing", "lifecycle-paused", "lifecycle-fullscreen-paused", "lifecycle-fullscreen-playing", "lifecycle-device-levels", "lifecycle-boost", "lifecycle-fullscreen-recovered", "lifecycle-inline-restored", "lifecycle-inline-recovered", "lifecycle-swipes", "lifecycle-preload-off", "lifecycle-single-decoder", "lifecycle-single-swiped", "lifecycle-return"],
     "settings": ["settings-home", "settings-connection", "settings-connection-keyboard", "settings-connection-invalid", "settings-roots", "settings-scan-details", "settings-root-add", "settings-root-keyboard", "settings-root-invalid", "settings-root-edit", "settings-root-conflict", "settings-playback", "settings-playback-draft", "settings-reader", "settings-reader-draft", "settings-reader-saved", "settings-reader-restored", "settings-dark", "settings-dark-roots", "settings-dark-reader", "settings-return"],
@@ -103,6 +104,7 @@ scenes = {
     ],
 }[args.scenario]
 integration_file = {
+    "video-tag-definitions": "server_video_tag_definitions_test.dart",
     "preview-stability": "server_preview_state_stability_test.dart",
     "preview-lifecycle": "server_preview_lifecycle_test.dart",
     "settings": "server_settings_panels_test.dart",
@@ -176,7 +178,7 @@ def media():
 original = {name: shell("wm", name) for name in ("size", "density")}
 font = shell("settings", "get", "system", "font_scale")
 save("original-viewport.json", {"display":original, "font":font})
-if args.scenario == "preview-lifecycle":
+if args.scenario in {"preview-lifecycle", "video-tag-definitions"}:
     assert shell("getprop", "ro.boot.qemu.avd_name") == "video_viewer_api_36"
     assert shell("getprop", "sys.boot_completed") == "1"
     save("environment.json", {
@@ -215,6 +217,7 @@ paths += [
     "apps/mobile/integration_test/server_preview_panels_test.dart",
     "apps/mobile/integration_test/server_preview_lifecycle_test.dart",
     "apps/mobile/integration_test/server_preview_state_stability_test.dart",
+    "apps/mobile/integration_test/server_video_tag_definitions_test.dart",
     "apps/mobile/test/viewer_return_counts_test.dart",
     "apps/mobile/integration_test/server_settings_panels_test.dart",
     "apps/mobile/integration_test/server_connection_test.dart",
@@ -355,6 +358,8 @@ try:
         "-e",
         "VV_FIDELITY_PREVIEW_MUTATION=" + ("enabled" if args.scenario == "preview-stability" else "disabled"),
         "-e",
+        "VV_FIDELITY_TAG_DEFINITIONS=" + ("enabled" if args.scenario == "video-tag-definitions" else "disabled"),
+        "-e",
         "VV_PASSPHRASE_FILE=/fixture/passphrase",
         "-e",
         "VV_MOUNTS_FILE=/fixture/mounts.json",
@@ -396,6 +401,17 @@ try:
         except urllib.error.HTTPError as error:
             assert error.code == 403
             save("control-guard.json", {"invalid_key_status": error.code, "files_before_authorized_addition": len(media())})
+    if args.scenario == "video-tag-definitions":
+        rejected = urllib.request.Request(
+            "http://127.0.0.1:8768/__fidelity/tag-definition-failure/rename",
+            method="POST", headers={"X-Fixture-Key": "not-the-owned-fixture-key"},
+        )
+        try:
+            urllib.request.urlopen(rejected, timeout=20)
+            raise AssertionError("Tag failure control accepted an invalid fixture key")
+        except urllib.error.HTTPError as error:
+            assert error.code == 403
+            save("control-guard.json", {"invalid_key_status": error.code, "mode_after": state()["tag_definition_failure"]})
     before = media()
     assert len(before) == (27 if args.scenario == "preview-lifecycle" else 26)
     save("media-before.json", before)
