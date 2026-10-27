@@ -1,0 +1,43 @@
+{
+  "server_id": "12be58222523458fb75416e65f1e0c96",
+  "api_version": 1,
+  "sqlite_version": "3.40.1",
+  "schema_version": "0014",
+  "management_epoch": "9e404f6ea98dddad4352d37249dd4717",
+  "management_history_available": true,
+  "management_backups": {
+    "versions": [
+      1,
+      2
+    ],
+    "max_bytes": 67108864,
+    "max_roots": 256
+  },
+  "capabilities": [
+    "typed_roots",
+    "media_catalog_counts",
+    "pack_presentation",
+    "video_name_order",
+    "pack_tags",
+    "image_packs",
+    "fixed_video_sessions",
+    "versioned_video_queue",
+    "video_entry_anchors",
+    "catalog_selection",
+    "pack_tag_names",
+    "pack_entry_anchors",
+    "pack_reading_sessions",
+    "pack_logical_trash",
+    "pack_reader_cleanup",
+    "pack_purge_preview",
+    "pack_permanent_delete",
+    "maintenance_tasks",
+    "pack_restore_plans",
+    "managed_playback_defaults",
+    "pack_missing_cleanup",
+    "management_authority",
+    "management_history",
+    "management_purge_history",
+    "backup_v2"
+  ]
+}

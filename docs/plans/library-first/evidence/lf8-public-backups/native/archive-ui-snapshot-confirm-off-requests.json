@@ -1,0 +1,445 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name",
+      "name_locale": "zh-CN"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef",
+    "body": {
+      "request_id": "1793121939442169-2635203310"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/ab8d057e-460b-4cc3-ba9b-d035bd95dde4",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/ab8d057e-460b-4cc3-ba9b-d035bd95dde4/download",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/ab8d057e-460b-4cc3-ba9b-d035bd95dde4",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/tags",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/imports",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef",
+    "idempotency_key": "1793121968081768-3177006607"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/f88c7b04-8bb5-447c-bf33-76024c9af623",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/f88c7b04-8bb5-447c-bf33-76024c9af623",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/f88c7b04-8bb5-447c-bf33-76024c9af623/roots",
+    "query": {
+      "offset": "0",
+      "limit": "24"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/f88c7b04-8bb5-447c-bf33-76024c9af623/roots",
+    "query": {
+      "offset": "24",
+      "limit": "24"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/restores",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef",
+    "body": {
+      "request_id": "1793121989295643-426531984",
+      "preview_id": "f88c7b04-8bb5-447c-bf33-76024c9af623",
+      "confirmed": true,
+      "root_mapping": {
+        "0eb66afd-abe3-42d2-9845-8e7e0daaa467": "/media/videos/目录04",
+        "0f7654d4-3307-44a2-9310-3fa8c91a5ab0": "/media/videos/目录19",
+        "1559ba57-955e-4678-aa76-e1706d5dbb7d": "/media/videos/目录18",
+        "1815e7be-729c-44cf-95b0-46c8ca3965d7": "/media/videos/目录03",
+        "18dbda12-6bf5-4f0b-828a-f226fded723a": "/media/videos/目录10",
+        "2224e636-319c-43c8-9cae-a2c696303545": "/media/videos/目录23",
+        "23df7dd6-4244-4e23-a104-5e122a6b28bd": "/media/videos/目录11",
+        "4419baae-8ba7-4491-9ac8-bf0496161905": "/media/videos/目录21",
+        "46d5aa2e-db8b-490f-ba22-010cb2e8b353": "/media/videos/目录24",
+        "4a4b7a17-b65d-46b1-8cd8-f1d78329c7b4": "/media/videos/目录09",
+        "6553a20a-60f7-4e29-8ea9-f80bd4b25841": "/media/videos/目录22",
+        "706391d7-4df9-49d6-91a8-b5c9e4c4525e": "/media/videos/目录00",
+        "82fe4622-1506-4b92-82b6-1abc246d435b": "/media/videos/目录01",
+        "9cd87bce-2a20-4c44-af85-afc38074f4d3": "/media/videos/目录20",
+        "9d08e9cc-6180-4905-98ec-a6ac31238f1f": "/media/videos/目录07",
+        "a351e83d-c87d-4cdb-9d0f-a62362614d50": "/media/videos/目录05",
+        "a978431e-18a8-42e3-bd69-61115037d9a1": "/media/videos/目录12",
+        "b086db88-e43e-4800-9658-0804c6e86471": "/media/videos/目录06",
+        "c3626441-fa18-49aa-97b3-4df02e9767d4": "/media/videos/目录17",
+        "c4b3dd6e-34ef-48c3-abf8-d7a35c110b7c": "/media/videos/目录14",
+        "d7599ccd-e00f-436c-bd0c-80d6f2e633a1": "/media/videos/目录08",
+        "da8d8073-9981-4912-b0c2-31b69a5a07b9": "/media/videos/目录02",
+        "e0a0d676-9153-4af6-9a36-2266eb7f06ac": "/media/videos/目录15",
+        "e91f21b9-7161-4f98-9a51-c28d5410d391": "/media/videos/目录13",
+        "f4b5da4b-0f24-485b-8ca7-38e33d5671db": "/media/videos/目录16",
+        "packs": "/media/packs",
+        "videos": "/media/videos"
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/9e7cd2a5-df23-4b41-be23-dd39d8c8b692",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/9e7cd2a5-df23-4b41-be23-dd39d8c8b692",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name",
+      "name_locale": "zh-CN"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name",
+      "name_locale": "zh-CN"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/scans",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups/from-snapshot/e160e672-bb65-4080-a08b-0c71f966bddb",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336",
+    "body": {
+      "request_id": "1793121994306244-655934296"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/c7ac870c-bc8b-4f14-83c5-3f34ba50ab14",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/c7ac870c-bc8b-4f14-83c5-3f34ba50ab14",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/c7ac870c-bc8b-4f14-83c5-3f34ba50ab14/roots",
+    "query": {
+      "offset": "0",
+      "limit": "24"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/c7ac870c-bc8b-4f14-83c5-3f34ba50ab14/roots",
+    "query": {
+      "offset": "24",
+      "limit": "24"
+    },
+    "epoch": "23a9d68d37b279c0e76cde4aab26c336"
+  }
+]

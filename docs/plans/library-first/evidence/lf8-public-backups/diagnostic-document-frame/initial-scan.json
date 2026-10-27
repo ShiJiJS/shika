@@ -1,0 +1,99 @@
+{
+  "ready": true,
+  "media": {
+    "video": {
+      "ready": true,
+      "scanning": false,
+      "indexed": 0
+    },
+    "pack": {
+      "ready": false,
+      "scanning": false,
+      "counts": {
+        "imported": 0,
+        "updated": 0,
+        "failed_pages": 0,
+        "failed_packs": 0,
+        "protected_packs": 0,
+        "unchanged": 0,
+        "deferred": 0,
+        "failed": 0,
+        "missing": 0,
+        "identity_matched": 0,
+        "identity_ambiguous": 0,
+        "thumbnail_failed": 0,
+        "unsupported_files": 0,
+        "loose_images": 0,
+        "symlinks_skipped": 0,
+        "failure_reasons": {},
+        "issues": [],
+        "progress": {
+          "discovered": 0,
+          "processed": 0,
+          "packs_discovered": 0,
+          "packs_processed": 0,
+          "peak_decoder_kib": 0
+        }
+      },
+      "indexed": 0
+    }
+  },
+  "scanning": false,
+  "task_id": "c776f2e8-83d5-4c33-bd17-6385fc038640",
+  "status": "completed",
+  "phase": "completed",
+  "updated_at": 1793121667.1091423,
+  "progress": {
+    "discovered": 0,
+    "processed": 0,
+    "bytes_total": 0,
+    "bytes_processed": 0,
+    "updated_at": 1793121667.1091423
+  },
+  "counts": {
+    "imported": 0,
+    "unchanged": 0,
+    "deferred": 0,
+    "failed": 0,
+    "thumbnail_failed": 0
+  },
+  "failure_reasons": {},
+  "warning_reasons": {},
+  "indexed": 0,
+  "roots": [
+    {
+      "id": "packs",
+      "ready": true,
+      "kind": "video",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1793121667.1052196,
+      "error": null,
+      "scan": {
+        "id": "packs",
+        "status": "completed",
+        "discovered": 0,
+        "processed": 0,
+        "bytes_total": 0,
+        "bytes_processed": 0
+      }
+    },
+    {
+      "id": "videos",
+      "ready": true,
+      "kind": "video",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1793121667.105831,
+      "error": null,
+      "scan": {
+        "id": "videos",
+        "status": "completed",
+        "discovered": 0,
+        "processed": 0,
+        "bytes_total": 0,
+        "bytes_processed": 0
+      }
+    }
+  ]
+}

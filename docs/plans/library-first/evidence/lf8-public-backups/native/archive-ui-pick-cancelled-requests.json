@@ -1,0 +1,129 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/info",
+    "query": {},
+    "epoch": null
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/roots",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/playback",
+    "query": {
+      "create": "false"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "status": "missing",
+      "limit": "1"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/trash",
+    "query": {
+      "limit": "1"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tags",
+    "query": {
+      "offset": "0",
+      "limit": "200"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/videos",
+    "query": {
+      "offset": "0",
+      "limit": "24",
+      "source": "library",
+      "sort": "name",
+      "name_locale": "zh-CN"
+    },
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/latest-restore",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/management-backups",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef",
+    "body": {
+      "request_id": "1793121939442169-2635203310"
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/ab8d057e-460b-4cc3-ba9b-d035bd95dde4",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/management-backups/ab8d057e-460b-4cc3-ba9b-d035bd95dde4/download",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/tasks/ab8d057e-460b-4cc3-ba9b-d035bd95dde4",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/library-state",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/tags",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/pack-tags",
+    "query": {},
+    "epoch": "c12e3d2aac5a36b2268609a9f84a8cef"
+  }
+]

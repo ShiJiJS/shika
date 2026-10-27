@@ -97,6 +97,14 @@ NAS 部署时从 `.env.example` 设置 NAS 本地数据路径、视频挂载路�
 | `POST /api/v1/backup-imports` | 上传原始 JSON 文件，Idempotency-Key 请求头可重试；202 返回校验任务 |
 | `POST /api/v1/backup-restores` | request_id、preview_id、root_mapping、confirmed=true 接受完整恢复 |
 | `GET /api/v1/backup-requests/{kind}/{request_id}` | 按 export/inspect/restore 与客户端请求 ID 只读查询备份任务 |
+| `POST /api/v1/management-backups` | request_id 导出视频和图包的完整v2管理备份，202返回任务 |
+| `GET /api/v1/management-backups/{id}/download` | 授权下载已完成的NDJSON备份／快照文件 |
+| `POST /api/v1/management-backups/imports` | 上传v2或旧v1文件，Idempotency-Key标识原校验任务，202返回任务 |
+| `GET /api/v1/management-backups/{id}/roots` | 校验成功后的根目录映射清单，默认24条、最多100条 |
+| `POST /api/v1/management-backups/restores` | request_id、preview_id、root_mapping、confirmed=true 明确完整替换，202返回任务 |
+| `GET /api/v1/management-backups/latest-restore` | 只读取得当前服务最近一次成功恢复及对应快照信息 |
+| `POST /api/v1/management-backups/from-snapshot/{id}` | request_id 校验指定恢复前快照，仅生成预览，不发起恢复 |
+| `GET /api/v1/management-backups/requests/{kind}/{request_id}` | 按export/inspect/restore原请求只读查询，不补执行 |
 
 分页为 offset/limit，默认 50、最多 200；返回 items/total/offset/limit。目录范围包含子树，名称按字面查找，排序为路径与稳定 ID。视频摘要包含实际视频/音频编码、容器、时长、旋转后的尺寸、媒体入口与 tag_ids；标签列表返回稳定 ID 和名称。完整参数可在 `/docs` 和 `/openapi.json` 查看。
 
