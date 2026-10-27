@@ -1,0 +1,123 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart
+Running Gradle task 'assembleDebug'...                             17.5s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          744ms
+00:00 +0: video tag definitions retain edits and isolate pack names
+FIDELITY_METRICS:{"state":"tagdef-video","physical":[1170.0,2532.0],"dpr":3.0,"text_scale":1.0,"keyboard":0.0,"boxes":{},"draft":null,"kind":"video","tags":[{"id":"f60cfcaa-7f02-4ac9-b6ea-5bb2f995b5e2","name":"喜欢","count":1},{"id":"15041174-cffb-4485-ba83-4cd222d0661d","name":"户外","count":2},{"id":"aacc15c0-c3a0-41c9-8c07-7b4b42309112","name":"自然","count":1}],"selected":["15041174-cffb-4485-ba83-4cd222d0661d"],"matching":2,"saving":false}
+FIDELITY_METRICS:{"state":"tagdef-create-keyboard","physical":[1170.0,2532.0],"dpr":3.0,"text_scale":1.0,"keyboard":303.0,"boxes":{"tag-name":[20.0,401.00000000000006,350.0,64.0],"tag-definition-save":[20.0,477.00000000000006,350.0,47.99999999999994]},"draft":"户外","kind":"video","tags":[{"id":"f60cfcaa-7f02-4ac9-b6ea-5bb2f995b5e2","name":"喜欢","count":1},{"id":"15041174-cffb-4485-ba83-4cd222d0661d","name":"户外","count":2},{"id":"aacc15c0-c3a0-41c9-8c07-7b4b42309112","name":"自然","count":1}],"selected":["15041174-cffb-4485-ba83-4cd222d0661d"],"matching":2,"saving":false}
+FIDELITY_METRICS:{"state":"tagdef-create-conflict","physical":[1170.0,2532.0],"dpr":3.0,"text_scale":1.0,"keyboard":0.0,"boxes":{"tag-name":[20.0,650.0,350.0,64.0],"tag-definition-save":[20.0,756.0,350.0,48.0],"tag-definition-error":[20.0,722.0,350.0,22.0]},"draft":"户外","kind":"video","tags":[{"id":"f60cfcaa-7f02-4ac9-b6ea-5bb2f995b5e2","name":"喜欢","count":1},{"id":"15041174-cffb-4485-ba83-4cd222d0661d","name":"户外","count":2},{"id":"aacc15c0-c3a0-41c9-8c07-7b4b42309112","name":"自然","count":1}],"selected":["15041174-cffb-4485-ba83-4cd222d0661d"],"matching":2,"saving":false}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following RequestCancelled was thrown running a test:
+请求已取消
+
+When the exception was thrown, this was the stack:
+#4      _HttpClientRequest.abort (dart:_http/http_impl.dart:1706:26)
+#5      ServerApi._requestOnce.interrupt (package:video_viewer/library/server_api.dart:292:16)
+#6      ServerApi._requestOnce.cancel (package:video_viewer/library/server_api.dart:299:22)
+#7      RequestScope.cancel (package:video_viewer/library/request_scope.dart:19:15)
+#8      ServerLibraryRepository.cancelVideoTagRead (package:video_viewer/library/server_repository.dart:962:46)
+#9      ServerLibraryRepository.loadVideoTags (package:video_viewer/library/server_repository.dart:970:5)
+#10     TagCatalogPageState.load (package:video_viewer/features/library/tag_catalog_page.dart:109:33)
+#11     TagCatalogPageState.edit (package:video_viewer/features/library/tag_catalog_page.dart:410:13)
+#13     TagCatalogPageState.edit (package:video_viewer/features/library/tag_catalog_page.dart:181:21)
+#14     TagCatalogPageState.form (package:video_viewer/features/library/tag_catalog_page.dart:171:26)
+#15     _MediaWorkspaceState.build.<anonymous closure> (package:video_viewer/app/media_workspace.dart:246:37)
+#16     _InkResponseState.handleTap (package:flutter/src/material/ink_well.dart:1224:21)
+#17     GestureRecognizer.invokeCallback (package:flutter/src/gestures/recognizer.dart:362:24)
+#18     TapGestureRecognizer.handleTapUp (package:flutter/src/gestures/tap.dart:758:11)
+#19     BaseTapGestureRecognizer._checkUp (package:flutter/src/gestures/tap.dart:383:5)
+#20     BaseTapGestureRecognizer.acceptGesture (package:flutter/src/gestures/tap.dart:353:7)
+#21     GestureArenaManager.sweep (package:flutter/src/gestures/arena.dart:173:27)
+#22     GestureBinding.handleEvent (package:flutter/src/gestures/binding.dart:542:20)
+#23     GestureBinding.dispatchEvent (package:flutter/src/gestures/binding.dart:508:22)
+#24     RendererBinding.dispatchEvent (package:flutter/src/rendering/binding.dart:473:11)
+#25     LiveTestWidgetsFlutterBinding.dispatchEvent (package:flutter_test/src/binding.dart:2980:15)
+#26     GestureBinding._handlePointerEventImmediately (package:flutter/src/gestures/binding.dart:447:7)
+#27     GestureBinding.handlePointerEvent (package:flutter/src/gestures/binding.dart:404:5)
+#28     LiveTestWidgetsFlutterBinding.handlePointerEvent (package:flutter_test/src/binding.dart:2952:15)
+#29     TestWidgetsFlutterBinding.handlePointerEventForSource.<anonymous closure> (package:flutter_test/src/binding.dart:1571:42)
+#30     TestWidgetsFlutterBinding.withPointerEventSource (package:flutter_test/src/binding.dart:1581:11)
+#31     TestWidgetsFlutterBinding.handlePointerEventForSource (package:flutter_test/src/binding.dart:1571:5)
+#32     WidgetTester.sendEventToBinding.<anonymous closure> (package:flutter_test/src/widget_tester.dart:869:15)
+#35     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#36     WidgetTester.sendEventToBinding (package:flutter_test/src/widget_tester.dart:868:27)
+#37     TestGesture.up.<anonymous closure> (package:flutter_test/src/test_pointer.dart:587:26)
+#40     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#41     TestGesture.up (package:flutter_test/src/test_pointer.dart:580:27)
+#42     WidgetController.tapAt.<anonymous closure> (package:flutter_test/src/controller.dart:1155:21)
+#44     WidgetController.tapAt.<anonymous closure> (package:flutter_test/src/controller.dart:1148:35)
+#47     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#48     WidgetController.tapAt (package:flutter_test/src/controller.dart:1147:27)
+#49     WidgetController.tap (package:flutter_test/src/controller.dart:1079:12)
+#50     main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart:104:15)
+#52     main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart:96:7)
+#53     main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart:231:11)
+#55     main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart:32:5)
+#56     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:29)
+#58     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:189:25)
+#59     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:19)
+#61     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1942:5)
+#64     TestWidgetsFlutterBinding._runTest (package:flutter_test/src/binding.dart:1927:10)
+#65     LiveTestWidgetsFlutterBinding.runTest (package:flutter_test/src/binding.dart:3060:12)
+#66     IntegrationTestWidgetsFlutterBinding.runTest (package:integration_test/integration_test.dart:237:17)
+#67     testWidgets.<anonymous closure> (package:flutter_test/src/widget_tester.dart:184:24)
+#68     Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:253:25)
+#70     Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:252:15)
+#75     Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:250:17)
+#76     Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:318:17)
+#81     Invoker._waitForOutstandingCallbacks (package:test_api/src/backend/invoker.dart:314:5)
+#82     Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:457:21)
+#84     Invoker._onRun.<anonymous closure>.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:455:15)
+#89     Invoker._onRun.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/invoker.dart:445:11)
+#90     Invoker._guardIfGuarded (package:test_api/src/backend/invoker.dart:500:15)
+#91     Invoker._onRun.<anonymous closure> (package:test_api/src/backend/invoker.dart:444:9)
+#98     Invoker._onRun (package:test_api/src/backend/invoker.dart:442:11)
+#99     LiveTestController.run (package:test_api/src/backend/live_test_controller.dart:161:11)
+#100    RemoteListener._runLiveTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:320:16)
+#105    RemoteListener._runLiveTest (package:test_api/src/backend/remote_listener.dart:319:5)
+#106    RemoteListener._serializeTest.<anonymous closure> (package:test_api/src/backend/remote_listener.dart:261:7)
+#124    _GuaranteeSink.add (package:stream_channel/src/guarantee_channel.dart:125:12)
+#125    new _MultiChannel.<anonymous closure> (package:stream_channel/src/multi_channel.dart:159:31)
+#127    CastStreamSubscription._onData (dart:_internal/async_cast.dart:95:11)
+#141    _GuaranteeSink.add (package:stream_channel/src/guarantee_channel.dart:125:12)
+#142    main.<anonymous closure> (file:///var/folders/pt/953rhgfj5g1gm_pjr862pnhr0000gn/T/flutter_tools.0BZlja/flutter_test_listener.3oJlNE/listener.dart:56:22)
+#145    _runExtension (dart:developer-patch/developer.dart:113:23)
+(elided 74 frames from dart:async and package:stack_trace)
+
+The test description was:
+  video tag definitions retain edits and isolate pack names
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:20 +0 -1: video tag definitions retain edits and isolate pack names [E]
+  Test failed. See exception logs above.
+  The test description was: video tag definitions retain edits and isolate pack names
+  
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test (but after the test had completed):
+setState() called after dispose(): TagCatalogPageState#4cd52(lifecycle state: defunct, not mounted)
+This error happens if you call setState() on a State object for a widget that no longer appears in
+the widget tree (e.g., whose parent widget no longer includes the widget in its build). This error
+can occur when code calls setState() from a timer, from an animation callback, or after an
+asynchronous operation (such as an awaited network request or other Future) completes after the
+widget has been removed from the tree.
+The preferred solution is to cancel the timer or stop listening to the animation in the dispose()
+callback. Another solution is to check the "mounted" property of this object before calling
+setState() to ensure the object is still in the tree.
+This error might indicate a memory leak if setState() is being called because another object is
+retaining a reference to this State object after it has been removed from the tree. To avoid memory
+leaks, consider breaking the reference to this object during dispose().
+
+When the exception was thrown, this was the stack:
+#0      State.setState.<anonymous closure> (package:flutter/src/widgets/framework.dart:1163:9)
+#1      State.setState (package:flutter/src/widgets/framework.dart:1200:6)
+#2      TagCatalogPageState.count (package:video_viewer/features/library/tag_catalog_page.dart:149:5)
+#3      TagCatalogPageState.edit (package:video_viewer/features/library/tag_catalog_page.dart:411:13)
+<asynchronous suspension>
+════════════════════════════════════════════════════════════════════════════════════════════════════
+  Test failed. See exception logs above.
+  The test description was: video tag definitions retain edits and isolate pack names
+  
+00:20 +0 -1: (tearDownAll)
+00:21 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart: video tag definitions retain edits and isolate pack names

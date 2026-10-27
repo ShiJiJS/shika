@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 125, in <module>
+    base.mkdir(parents=True, exist_ok=False)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1313, in mkdir
+    self._accessor.mkdir(self, mode)
+FileExistsError: [Errno 17] File exists: '/Users/jiangxinyi/Documents/Project/video-viewer/.dev/prototype-fidelity/development-1'

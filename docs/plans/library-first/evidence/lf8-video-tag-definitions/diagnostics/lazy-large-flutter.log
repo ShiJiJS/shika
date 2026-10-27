@@ -1,0 +1,37 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart
+Running Gradle task 'assembleDebug'...                             19.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          851ms
+00:00 +0: video tag definitions retain edits and isolate pack names
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Video tag definition timeout: unique Found 0 widgets with key
+[<'video-tag-6b3a305b-f769-411d-b1a3-7a7b998132a2'>]: []
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart:88:11)
+<asynchronous suspension>
+#2      main.<anonymous closure>.tap (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart:96:7)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart:225:5)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  video tag definitions retain edits and isolate pack names
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:43 +0 -1: video tag definitions retain edits and isolate pack names [E]
+  Test failed. See exception logs above.
+  The test description was: video tag definitions retain edits and isolate pack names
+  
+00:43 +0 -1: (tearDownAll)
+00:44 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_video_tag_definitions_test.dart: video tag definitions retain edits and isolate pack names

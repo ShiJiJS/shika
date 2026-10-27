@@ -1,0 +1,112 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart
+00:00 +0: video definition reload cannot recount after leaving tags
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+pumpAndSettle timed out
+
+When the exception was thrown, this was the stack:
+#0      WidgetTester.pumpAndSettle.<anonymous closure> (package:flutter_test/src/widget_tester.dart:717:11)
+<asynchronous suspension>
+#1      TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart:105:11)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  video definition reload cannot recount after leaving tags
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +0 -1: video definition reload cannot recount after leaving tags [E]
+  Test failed. See exception logs above.
+  The test description was: video definition reload cannot recount after leaving tags
+  
+00:02 +0 -1: video definition reload cannot recount after disposal
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+pumpAndSettle timed out
+
+When the exception was thrown, this was the stack:
+#0      WidgetTester.pumpAndSettle.<anonymous closure> (package:flutter_test/src/widget_tester.dart:717:11)
+<asynchronous suspension>
+#1      TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart:105:11)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  video definition reload cannot recount after disposal
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +0 -2: video definition reload cannot recount after disposal [E]
+  Test failed. See exception logs above.
+  The test description was: video definition reload cannot recount after disposal
+  
+00:03 +0 -2: pack definition reload cannot recount after leaving tags
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+pumpAndSettle timed out
+
+When the exception was thrown, this was the stack:
+#0      WidgetTester.pumpAndSettle.<anonymous closure> (package:flutter_test/src/widget_tester.dart:717:11)
+<asynchronous suspension>
+#1      TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart:105:11)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  pack definition reload cannot recount after leaving tags
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:05 +0 -3: pack definition reload cannot recount after leaving tags [E]
+  Test failed. See exception logs above.
+  The test description was: pack definition reload cannot recount after leaving tags
+  
+00:05 +0 -3: pack definition reload cannot recount after disposal
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+pumpAndSettle timed out
+
+When the exception was thrown, this was the stack:
+#0      WidgetTester.pumpAndSettle.<anonymous closure> (package:flutter_test/src/widget_tester.dart:717:11)
+<asynchronous suspension>
+#1      TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart:105:11)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  pack definition reload cannot recount after disposal
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +0 -4: pack definition reload cannot recount after disposal [E]
+  Test failed. See exception logs above.
+  The test description was: pack definition reload cannot recount after disposal
+  
+00:06 +0 -4: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart: pack definition reload cannot recount after disposal
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart: pack definition reload cannot recount after leaving tags
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart: video definition reload cannot recount after disposal
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart: video definition reload cannot recount after leaving tags
