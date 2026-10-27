@@ -1,5 +1,7 @@
 # LF8 总览缩略图恢复与取消（#83）
 
+当前[草稿 PR #84](https://github.com/ShiJiJS/video_viewer/pull/84)，完整证据已随分支提交。
+
 基于 PR #82 的整合分支，原型仍独立放在 design/reference/library-first，未改变总览尺寸、布局和“重试”按钮。
 
 复查旧请求，两个503之后确实各有200，但发生于 nav-device-back 阶段；不能由截图断言旧版完全没有自动重试。旧实现已有400／800ms两次退避。本段要证明成功解码与取消的边界，并修复缩略图共享网络客户端不能取消在途响应的问题。组件旧版基线 recover/bounded/close-timer/manual/unauthorized 5项通过，close-request 因关闭后socket仍未断开失败。其它开发命令／驱动诊断另存，不计通过数。
