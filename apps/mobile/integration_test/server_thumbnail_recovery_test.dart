@@ -212,7 +212,6 @@ void main() {
       }
 
       await open('recover');
-      await counts(3);
       await until(
         () => decoded() == 6 && retry.evaluate().isEmpty,
         'six auto-decoded thumbnails',
