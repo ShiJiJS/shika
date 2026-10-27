@@ -339,6 +339,13 @@ def main():
         assert "backup_v2" in info["capabilities"]
         save("public-info-before.json", info)
         headers["X-Management-Epoch"] = info["management_epoch"]
+        deadline = time.monotonic() + 90
+        preparation = api("library-state")
+        while preparation["scanning"]:
+            assert time.monotonic() < deadline, "Initial fixture scan did not finish"
+            time.sleep(0.1)
+            preparation = api("library-state")
+        save("initial-scan.json", preparation)
         api(
             "roots/packs",
             "PUT",
