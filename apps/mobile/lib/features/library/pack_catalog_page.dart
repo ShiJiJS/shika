@@ -974,7 +974,10 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       );
     } finally {
       _detailsOpen = false;
-      if (mounted && widget.active) await load(restore: initialized);
+      if (mounted && widget.active) {
+        unawaited(repo.refreshCatalogCounts());
+        await load(restore: initialized);
+      }
     }
     if (outcome != null && mounted && outcome.files.isCurrent()) {
       showPackUndo(context, repo, outcome, onRestored: resumeRestored);

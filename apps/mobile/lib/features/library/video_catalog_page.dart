@@ -409,6 +409,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
           busy = false;
         });
         if (widget.active) {
+          if (pushed) unawaited(repo.refreshCatalogCounts());
           if (pushed || dirty || pendingReturn != null) {
             unawaited(load(restore: true));
           } else {

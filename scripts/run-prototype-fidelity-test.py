@@ -215,6 +215,7 @@ paths += [
     "apps/mobile/integration_test/server_preview_panels_test.dart",
     "apps/mobile/integration_test/server_preview_lifecycle_test.dart",
     "apps/mobile/integration_test/server_preview_state_stability_test.dart",
+    "apps/mobile/test/viewer_return_counts_test.dart",
     "apps/mobile/integration_test/server_settings_panels_test.dart",
     "apps/mobile/integration_test/server_connection_test.dart",
     "apps/mobile/integration_test/server_defaults_test.dart",

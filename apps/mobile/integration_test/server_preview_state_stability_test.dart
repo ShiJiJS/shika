@@ -155,6 +155,7 @@ void main() {
           'entry_tags': catalog().entry.query.tags.toList(),
           'catalog_ids': catalog().data.items.map((v) => v.id).toList(),
           'catalog_total': catalog().data.total,
+          'inventory': [repo.catalogCounts.value?.videos, repo.catalogCounts.value?.packs],
           'visible_video': find.byType(VideoPlayer).evaluate().length == 1 ? player().dataSource : null,
           'players': players?.map((p) => {'source': p.dataSource, 'initialized': p.value.isInitialized, 'playing': p.value.isPlaying, 'volume': p.value.volume}).toList(),
         })}',
@@ -301,6 +302,20 @@ void main() {
       'new source results',
     );
     expect(catalog().entry.query.tags, {outdoor});
+    await until(
+      () => repo.catalogCounts.value?.videos == 3,
+      'authoritative inventory refreshed on return',
+    );
+    await until(
+      () =>
+          find
+              .byType(RawImage)
+              .evaluate()
+              .where((e) => (e.widget as RawImage).image != null)
+              .length >=
+          2,
+      'returned source thumbnails decoded',
+    );
     final refreshed = catalog().data.items.map((v) => v.id).toList();
     expect(refreshed.toSet(), {original.last, newId});
     await capture('stability-return');
