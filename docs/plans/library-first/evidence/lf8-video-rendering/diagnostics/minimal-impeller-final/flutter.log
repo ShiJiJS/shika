@@ -1,0 +1,10 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/video_render_probe_test.dart
+Running Gradle task 'assembleDebug'...                             13.6s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          485ms
+00:00 +0: same public asset through minimal video_player views
+RENDER_PROBE:{"view":"textureView","source":"assets/media/flower-landscape.mp4","initialized":true,"position_ms":3248,"playing":false,"size":[960.0,540.0],"physical":[2532.0,1170.0]}
+RENDER_PROBE:{"view":"platformView","source":"assets/media/flower-landscape.mp4","initialized":true,"position_ms":3257,"playing":false,"size":[960.0,540.0],"physical":[2532.0,1170.0]}
+RENDER_PROBE_VERIFIED
+00:08 +1: (tearDownAll)
+00:08 +1: All tests passed!

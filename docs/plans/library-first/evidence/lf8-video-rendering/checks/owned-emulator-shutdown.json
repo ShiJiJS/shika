@@ -1,0 +1,10 @@
+{
+  "owned_pid": 81770,
+  "before_command": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64-headless -avd video_viewer_api_36 -port 5554 -no-boot-anim -gpu software -feature -Vulkan -feature -GLDMA -feature HardwareDecoder -no-snapshot -no-metrics -crash-report-mode never -no-window",
+  "shutdown_command_exit_code": 0,
+  "shutdown_output": "OK: killing emulator, bye bye\nOK\n",
+  "shutdown_errors": "",
+  "process_absent": true,
+  "devices_after": "List of devices attached\nemulator-5554          offline product:sdk_gphone64_arm64 model:sdk_gphone64_arm64 device:emu64a transport_id:34\n\n",
+  "qemu_exit_code_observed": false
+}

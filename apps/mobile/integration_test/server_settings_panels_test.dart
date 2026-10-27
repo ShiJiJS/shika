@@ -91,14 +91,17 @@ void main() {
       await t.pump(const Duration(milliseconds: 260));
     }
 
+    // The covered library intentionally zeroes its own insets while a modal
+    // sheet owns the IME. Observe the actual FlutterView for native keyboard
+    // readiness and the screen bounds used by the active form.
+    MediaQueryData deviceMedia() => MediaQueryData.fromView(
+      View.of(t.element(find.byKey(const Key('app-shell')).first)),
+    );
+
     Future<void> hideKeyboard() async {
       FocusManager.instance.primaryFocus?.unfocus();
       await until(
-        () =>
-            MediaQuery.of(t.element(find.byKey(const Key('app-shell')).first))
-                .viewInsets
-                .bottom ==
-            0,
+        () => deviceMedia().viewInsets.bottom == 0,
         'system keyboard closed',
       );
     }
@@ -107,9 +110,7 @@ void main() {
       await t.pumpAndSettle(const Duration(milliseconds: 100));
       await until(() {
         if (field.evaluate().isEmpty) return false;
-        final media = MediaQuery.of(
-          t.element(find.byKey(const Key('app-shell')).first),
-        );
+        final media = deviceMedia();
         final rect = t.getRect(field);
         return rect.top >= media.viewPadding.top &&
             rect.bottom <= media.size.height - media.viewInsets.bottom;
@@ -127,9 +128,7 @@ void main() {
 
     Future<void> capture(String state) async {
       await t.pumpAndSettle(const Duration(milliseconds: 100));
-      final media = MediaQuery.of(
-        t.element(find.byKey(const Key('app-shell')).first),
-      );
+      final media = deviceMedia();
       List<double> rect(Rect r) => [r.left, r.top, r.width, r.height];
       final keys = <String, List<double>>{};
       for (final key in [
@@ -267,11 +266,7 @@ void main() {
     await tap(port);
     await t.enterText(port, '0');
     await until(
-      () =>
-          MediaQuery.of(t.element(find.byKey(const Key('app-shell')).first))
-              .viewInsets
-              .bottom >
-          0,
+      () => deviceMedia().viewInsets.bottom > 0,
       'real connection IME',
     );
     await focusedFieldVisible(port);
@@ -296,14 +291,7 @@ void main() {
     await capture('settings-root-add');
     await tap(find.byKey(const Key('root-name')));
     await t.enterText(find.byKey(const Key('root-name')), '保留目录草稿');
-    await until(
-      () =>
-          MediaQuery.of(t.element(find.byKey(const Key('app-shell')).first))
-              .viewInsets
-              .bottom >
-          0,
-      'real root IME',
-    );
+    await until(() => deviceMedia().viewInsets.bottom > 0, 'real root IME');
     await focusedFieldVisible(find.byKey(const Key('root-name')));
     await capture('settings-root-keyboard');
     await hideKeyboard();

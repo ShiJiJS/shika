@@ -1,0 +1,34 @@
+{
+  "run_id": "codec-1793067379780455000",
+  "mode": "codec",
+  "status": "ready",
+  "source_sha256": "d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001",
+  "details": {
+    "decoder": "c2.android.avc.decoder",
+    "input_format": "{max-bitrate=1795148, sar-width=1, track-id=1, level=512, mime=video/avc, frame-count=150, profile=65536, bitrate=1795148, language=und, color-standard=4, display-width=960, csd-1=java.nio.HeapByteBuffer[pos=0 lim=9 cap=9], color-transfer=3, sar-height=1, durationUs=5005000, display-height=540, width=960, color-range=2, max-input-size=41818, frame-rate=30, height=540, csd-0=java.nio.HeapByteBuffer[pos=0 lim=30 cap=30]}",
+    "output_request": "YUV420Flexible; byte-buffer mode, separate from surface playback",
+    "output_format": "{crop-right=959, max-height=540, sar-width=1, color-format=2135033992, slice-height=675, image-data=java.nio.HeapByteBuffer[pos=0 lim=104 cap=104], mime=video/raw, stride=1024, color-standard=4, color-transfer=3, sar-height=1, crop-bottom=539, max-width=960, crop-left=0, width=960, color-range=2, crop-top=0, rotation-degrees=0, height=540}",
+    "output_bytes": 829440,
+    "pts_us": 0,
+    "image_width": 960,
+    "image_height": 540,
+    "crop": "[0,0][960,540]",
+    "planes": [
+      {
+        "row_stride": 1024,
+        "pixel_stride": 1,
+        "remaining": 552896
+      },
+      {
+        "row_stride": 512,
+        "pixel_stride": 1,
+        "remaining": 138208
+      },
+      {
+        "row_stride": 512,
+        "pixel_stride": 1,
+        "remaining": 138208
+      }
+    ]
+  }
+}

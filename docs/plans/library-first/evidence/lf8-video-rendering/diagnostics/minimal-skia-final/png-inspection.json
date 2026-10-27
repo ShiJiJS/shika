@@ -1,0 +1,44 @@
+{
+  "expectation": "texture-green",
+  "expectation_matched": true,
+  "picture_integrity_passed": false,
+  "inspector_sha256": "8ed669795713a0fe7df68dd26f290b81748fb5f0298f5f8ab086618e9d59f636",
+  "images": [
+    {
+      "file": "flutter-textureView.png",
+      "sha256": "703ce412e1167641bea99f0ff4964ea1e7cd330b9a74cc158ef430c23cfc6dc4",
+      "width": 2532,
+      "height": 1170,
+      "green_columns": 129,
+      "longest_green_run": 129,
+      "sampled_distinct_colors": 9395
+    },
+    {
+      "file": "flutter-platformView.png",
+      "sha256": "057c3a3c28ad8dfa948521fdba8f6a5de5b856bed123ac2ee7b2a849f69624b4",
+      "width": 2532,
+      "height": 1170,
+      "green_columns": 0,
+      "longest_green_run": 0,
+      "sampled_distinct_colors": 9999
+    },
+    {
+      "file": "native-surface.png",
+      "sha256": "b19692e98002a563195618728b4ac3c693fd591270d44957487af72a1003f3dc",
+      "width": 2532,
+      "height": 1170,
+      "green_columns": 0,
+      "longest_green_run": 0,
+      "sampled_distinct_colors": 10005
+    },
+    {
+      "file": "native-texture.png",
+      "sha256": "708259b32408d2a23d4f9b2906da685d8fa5971ddbfd360d6ccf856b6ec8cc3c",
+      "width": 2532,
+      "height": 1170,
+      "green_columns": 0,
+      "longest_green_run": 0,
+      "sampled_distinct_colors": 9829
+    }
+  ]
+}

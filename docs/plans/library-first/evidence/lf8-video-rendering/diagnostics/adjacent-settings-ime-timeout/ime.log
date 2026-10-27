@@ -1,0 +1,65 @@
+10-27 11:13:57.488   671   805 I ImeTracker: com.google.android.apps.nexuslauncher:286e53fa: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+10-27 11:13:57.490  1069  1069 I ImeTracker: com.google.android.apps.nexuslauncher:286e53fa: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-27 11:13:57.583   671  1749 I ImeTracker: system_server:7279ac87: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+10-27 11:13:57.586   671   716 I ImeTracker: system_server:7279ac87: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-27 11:14:22.957   671   805 I ImeTracker: io.github.shijijs.video_viewer:f313fa67: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+10-27 11:14:23.119   671  1026 I ImeTracker: system_server:7cbf26ad: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+10-27 11:14:23.209   671   716 I ImeTracker: system_server:7cbf26ad: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-27 11:14:23.212 13024 13024 I ImeTracker: io.github.shijijs.video_viewer:f313fa67: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-27 11:15:11.592   671  1747 I ImeTracker: io.github.shijijs.video_viewer:cea0c15c: onRequestHide at ORIGIN_SERVER reason HIDE_REMOVE_CLIENT fromUser false
+10-27 11:15:11.592   671  1747 I ImeTracker: io.github.shijijs.video_viewer:cea0c15c: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-27 11:15:11.927   671   805 I ImeTracker: com.google.android.apps.nexuslauncher:1bcbb017: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+10-27 11:15:12.070   671   986 I ImeTracker: system_server:57f7f00: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+10-27 11:15:12.071   671   716 I ImeTracker: system_server:57f7f00: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-27 11:15:12.314  1069  1069 I ImeTracker: com.google.android.apps.nexuslauncher:1bcbb017: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-27 11:15:15.779   671   805 I ImeTracker: com.google.android.apps.nexuslauncher:cda91d07: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+10-27 11:15:15.800   671  1918 I ImeTracker: system_server:4c3b2a20: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+10-27 11:15:15.801   671   716 I ImeTracker: system_server:4c3b2a20: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-27 11:15:15.932  1069  1069 I ImeTracker: com.google.android.apps.nexuslauncher:cda91d07: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-27 11:15:36.416   671   805 I ImeTracker: com.google.android.apps.nexuslauncher:e98daa5b: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+10-27 11:15:36.435   671  1782 I ImeTracker: system_server:eee2f60c: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+10-27 11:15:36.452   671   716 I ImeTracker: system_server:eee2f60c: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-27 11:15:36.712  1069  1069 I ImeTracker: com.google.android.apps.nexuslauncher:e98daa5b: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-27 11:16:21.406   671   805 I ImeTracker: io.github.shijijs.video_viewer:240c26d9: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+10-27 11:16:21.703 13378 13378 I ImeTracker: io.github.shijijs.video_viewer:240c26d9: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-27 11:16:21.722   671   906 I ImeTracker: system_server:902dc22b: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+10-27 11:16:21.737   671   716 I ImeTracker: system_server:902dc22b: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-27 11:16:30.724 13378 13378 I ImeTracker: io.github.shijijs.video_viewer:90c4135e: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+10-27 11:16:31.270 13378 13378 I ImeTracker: io.github.shijijs.video_viewer:10b28807: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+10-27 11:16:31.272 13378 13378 I ImeTracker: io.github.shijijs.video_viewer:10b28807: onCancelled at PHASE_CLIENT_REPORT_REQUESTED_VISIBLE_TYPES
+10-27 11:16:31.559  1520  1520 E InputConnectionWrapper: 	at android.inputmethodservice.InputMethodService$InputMethodImpl.showSoftInput(InputMethodService.java:1069)
+10-27 11:16:31.559  1520  1520 E InputConnectionWrapper: 	at kgm.showSoftInput(PG:43)
+10-27 11:16:31.559  1520  1520 E InputConnectionWrapper: 	at android.inputmethodservice.InputMethodService$InputMethodImpl.showSoftInputWithToken(InputMethodService.java:1029)
+10-27 11:16:34.916 13378 13378 I ImeTracker: io.github.shijijs.video_viewer:90c4135e: onShown
+10-27 11:16:36.054   671   905 I ImeTracker: system_server:cdc0f424: onRequestShow at ORIGIN_SERVER reason CONTROLS_CHANGED fromUser false
+10-27 11:16:37.431 13378 13378 I ImeTracker: io.github.shijijs.video_viewer:5efbbd53: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT fromUser false
+10-27 11:16:38.148   671   906 I ImeTracker: system_server:847f3567: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+10-27 11:16:38.195   671   717 I ImeTracker: system_server:4d464b1b: onRequestShow at ORIGIN_SERVER reason CONTROLS_CHANGED fromUser false
+10-27 11:16:38.521  1520  1520 I ImeTracker: system_server:847f3567: onHidden
+10-27 11:16:38.712 13378 13378 I ImeTracker: system_server:4d464b1b: onCancelled at PHASE_CLIENT_ON_CONTROLS_CHANGED
+10-27 11:16:39.111   671   986 I ImeTracker: system_server:61c48891: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+10-27 11:16:39.190   671   716 I ImeTracker: system_server:61c48891: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-27 11:16:46.058   671   805 I ImeTracker: system_server:cdc0f424: setFinished at PHASE_WM_GET_CONTROL_WITH_LEASH with STATUS_TIMEOUT
+10-27 11:16:47.433   671   805 I ImeTracker: io.github.shijijs.video_viewer:5efbbd53: setFinished at PHASE_CLIENT_ANIMATION_CANCEL with STATUS_TIMEOUT
+10-27 11:16:49.380 13378 13378 I ImeTracker: io.github.shijijs.video_viewer:362909f6: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+10-27 11:16:49.664 13378 13378 I ImeTracker: io.github.shijijs.video_viewer:f530b566: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+10-27 11:16:49.664 13378 13378 I ImeTracker: io.github.shijijs.video_viewer:f530b566: onCancelled at PHASE_CLIENT_REPORT_REQUESTED_VISIBLE_TYPES
+10-27 11:16:53.295 13378 13378 I ImeTracker: io.github.shijijs.video_viewer:362909f6: onShown
+10-27 11:17:31.667 13378 13378 I ImeTracker: io.github.shijijs.video_viewer:753c479e: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT fromUser false
+10-27 11:17:32.441   671  1918 I ImeTracker: io.github.shijijs.video_viewer:7bdab142: onRequestHide at ORIGIN_SERVER reason HIDE_REMOVE_CLIENT fromUser false
+10-27 11:17:32.681  1520  1520 I ImeTracker: io.github.shijijs.video_viewer:7bdab142: onHidden
+10-27 11:17:32.894   671  1749 W system_server: Long monitor contention with owner binder:671_17 (1918) at void com.android.server.inputmethod.ClientController.lambda$addClient$0(com.android.server.inputmethod.IInputMethodClientInvoker)(ClientController.java:67) waiters=0 in void com.android.server.inputmethod.InputMethodManagerService$InputMethodPrivilegedOperationsImpl.setImeWindowStatusAsync(int, int) for 443ms
+10-27 11:17:32.920   671   717 I ImeTracker: system_server:e75eaf99: onRequestShow at ORIGIN_SERVER reason CONTROLS_CHANGED fromUser false
+10-27 11:17:33.540   671  1749 I ImeTracker: system_server:2fffc2d8: onRequestShow at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+10-27 11:17:34.560   671   805 I ImeTracker: com.google.android.apps.nexuslauncher:3d079c47: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+10-27 11:17:35.014   671   716 W system_server: Long monitor contention with owner android.imms (805) at com.android.internal.inputmethod.InputBindResult com.android.server.inputmethod.InputMethodManagerService.startInputOrWindowGainedFocus(int, com.android.internal.inputmethod.IInputMethodClient, android.os.IBinder, int, int, int, android.view.inputmethod.EditorInfo, com.android.internal.inputmethod.IRemoteInputConnection, com.android.internal.inputmethod.IRemoteAccessibilityInputConnection, int, int, android.window.ImeOnBackInvokedDispatcher, boolean)(InputMethodManagerService.java:3878) waiters=0 in void com.android.server.inputmethod.InputMethodManagerService$LocalServiceImpl.reportImeControl(android.os.IBinder) for 483ms
+10-27 11:17:35.368   671  1918 I ImeTracker: system_server:2acc8d87: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+10-27 11:17:35.377   671   716 I ImeTracker: system_server:2acc8d87: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-27 11:17:35.385   671   716 I ImeTracker: system_server:2fffc2d8: onCancelled at PHASE_SERVER_WAIT_IME
+10-27 11:17:35.632  1069  1069 I ImeTracker: com.google.android.apps.nexuslauncher:3d079c47: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-27 11:17:38.637   671   805 I ImeTracker: com.google.android.apps.nexuslauncher:97ad79fc: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+10-27 11:17:38.658   671   986 I ImeTracker: system_server:d393b7ad: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false
+10-27 11:17:38.669   671   716 I ImeTracker: system_server:d393b7ad: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-27 11:17:38.679  1069  1069 I ImeTracker: com.google.android.apps.nexuslauncher:97ad79fc: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-27 11:17:41.720   671   805 I ImeTracker: io.github.shijijs.video_viewer:753c479e: setFinished at PHASE_CLIENT_ANIMATION_RUNNING with STATUS_TIMEOUT
+10-27 11:17:42.926   671   805 I ImeTracker: system_server:e75eaf99: setFinished at PHASE_WM_GET_CONTROL_WITH_LEASH with STATUS_TIMEOUT
