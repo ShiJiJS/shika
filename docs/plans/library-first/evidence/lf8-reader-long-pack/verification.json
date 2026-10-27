@@ -1,0 +1,145 @@
+{
+  "verified": true,
+  "source": "df9d80ce8ceff54e1d8ce4e5182541f05fa8e487",
+  "manifest_inputs": 307,
+  "rounds": [
+    {
+      "round": 1,
+      "gestures": 730,
+      "first_frame_ms": 1348,
+      "scroll_ms": 172041,
+      "observed_peaks": {
+        "metadata": 120,
+        "providers": 6,
+        "estimated_bytes": 25541328,
+        "pending": 4,
+        "live": 6,
+        "cache_bytes": 28150992,
+        "decoded_pixels": 1877682
+      },
+      "sampled_pss_kib": {
+        "first": 381944,
+        "max": 492293,
+        "last": 419406
+      },
+      "sampled_rss_kib_max": 586640,
+      "all_observed_pss_kib_max": 492293,
+      "all_observed_rss_kib_max": 586640,
+      "checkpoint_pss_kib": {
+        "long-page-101": 406552,
+        "large-page-2": 415633,
+        "long-return": 417137,
+        "long-horizontal-end": 474092,
+        "large-page-3": 414709,
+        "large-page-1": 416891,
+        "long-horizontal": 383708,
+        "long-vertical-start": 397604,
+        "long-page-301": 408180,
+        "long-reopened": 480286,
+        "long-page-401": 422004,
+        "long-page-201": 403112,
+        "long-vertical-end": 420015
+      },
+      "scan_wait_continuations": 0,
+      "memory_samples": 79,
+      "observed_image_requests_peak": 3,
+      "handled_image_warnings": [
+        [
+          "eae4ff86-a177-4f4e-84f5-ca107a6594ed",
+          "HttpException: Connection closed before full header was received, uri = http://10.0.2.2:8769/api/v1/pages/eae4ff86-a177-4f4e-84f5-ca107a6594ed/image?v=1&session=1793060954254954-4b409ef0&reader=1"
+        ]
+      ],
+      "screens": 13,
+      "recordings": 2
+    },
+    {
+      "round": 2,
+      "gestures": 730,
+      "first_frame_ms": 3009,
+      "scroll_ms": 222103,
+      "observed_peaks": {
+        "metadata": 120,
+        "providers": 6,
+        "estimated_bytes": 25541328,
+        "pending": 4,
+        "live": 5,
+        "cache_bytes": 28150992,
+        "decoded_pixels": 1877682
+      },
+      "sampled_pss_kib": {
+        "first": 367950,
+        "max": 646597,
+        "last": 401454
+      },
+      "sampled_rss_kib_max": 740584,
+      "all_observed_pss_kib_max": 646597,
+      "all_observed_rss_kib_max": 740584,
+      "checkpoint_pss_kib": {
+        "long-page-101": 397331,
+        "large-page-2": 395772,
+        "long-return": 403781,
+        "long-horizontal-end": 396100,
+        "large-page-3": 397817,
+        "large-page-1": 397728,
+        "long-horizontal": 369631,
+        "long-vertical-start": 432795,
+        "long-page-301": 398518,
+        "long-reopened": 407582,
+        "long-page-401": 395741,
+        "long-page-201": 395674,
+        "long-vertical-end": 418796
+      },
+      "scan_wait_continuations": 1,
+      "memory_samples": 98,
+      "observed_image_requests_peak": 3,
+      "handled_image_warnings": [],
+      "screens": 13,
+      "recordings": 2
+    },
+    {
+      "round": 3,
+      "gestures": 730,
+      "first_frame_ms": 2842,
+      "scroll_ms": 174164,
+      "observed_peaks": {
+        "metadata": 120,
+        "providers": 6,
+        "estimated_bytes": 25541328,
+        "pending": 4,
+        "live": 6,
+        "cache_bytes": 28150992,
+        "decoded_pixels": 1877682
+      },
+      "sampled_pss_kib": {
+        "first": 379026,
+        "max": 448198,
+        "last": 415183
+      },
+      "sampled_rss_kib_max": 541360,
+      "all_observed_pss_kib_max": 474046,
+      "all_observed_rss_kib_max": 567236,
+      "checkpoint_pss_kib": {
+        "long-page-101": 402953,
+        "large-page-2": 416598,
+        "long-return": 418922,
+        "long-horizontal-end": 474046,
+        "large-page-3": 412543,
+        "large-page-1": 416302,
+        "long-horizontal": 379819,
+        "long-vertical-start": 397830,
+        "long-page-301": 416828,
+        "long-reopened": 415327,
+        "long-page-401": 419908,
+        "long-page-201": 411944,
+        "long-vertical-end": 423394
+      },
+      "scan_wait_continuations": 0,
+      "memory_samples": 77,
+      "observed_image_requests_peak": 3,
+      "handled_image_warnings": [],
+      "screens": 13,
+      "recordings": 2
+    }
+  ],
+  "target_phone_nas_performance_verified": false
+}

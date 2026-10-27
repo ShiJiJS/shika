@@ -1,0 +1,15 @@
+{
+  "pid": 8334,
+  "command": [
+    "bash",
+    "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+    "flutter",
+    "test",
+    "integration_test/server_reader_long_pack_test.dart",
+    "--no-uninstall",
+    "-d",
+    "emulator-5554",
+    "--reporter",
+    "expanded"
+  ]
+}

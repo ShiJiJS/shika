@@ -1,0 +1,26 @@
+{
+  "status": "failed",
+  "error": "AssertionError({'code': 0, 'watcher_errors': [\"CalledProcessError(1, ['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'pidof', 'io.github.shijijs.video_viewer'])\"]})",
+  "watcher_errors": [
+    "CalledProcessError(1, ['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'pidof', 'io.github.shijijs.video_viewer'])"
+  ],
+  "screens": [
+    "long-horizontal",
+    "long-vertical-start",
+    "long-page-101",
+    "long-page-201",
+    "long-page-301",
+    "long-page-401",
+    "long-vertical-end",
+    "long-horizontal-end",
+    "large-page-1",
+    "large-page-2",
+    "large-page-3",
+    "long-return",
+    "long-reopened"
+  ],
+  "elapsed_seconds": 327.61,
+  "cleanup_or_watcher_errors": [
+    "CalledProcessError(1, ['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'pidof', 'io.github.shijijs.video_viewer'])"
+  ]
+}

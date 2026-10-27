@@ -1,0 +1,20 @@
+{
+  "emulator_process_command": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64-headless -avd video_viewer_api_36 -port 5554 -no-boot-anim -gpu software -feature -Vulkan -no-snapshot -no-metrics -crash-report-mode never -no-window",
+  "graphics_boot_lines": [
+    "INFO         | Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)",
+    "INFO         | Graphics backend: gfxstream",
+    "INFO         | Graphics Adapter Vendor Google (Google Inc. (Google))",
+    "INFO         | Graphics Adapter Android Emulator OpenGL ES Translator (ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver-5.0.0))",
+    "INFO         | Graphics API Version OpenGL ES 3.0 (OpenGL ES 3.1.0 (ANGLE 2.1.1 git hash: fbf66f49c7cc))"
+  ],
+  "emulator_version": "Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)",
+  "flutter_revision": "abaf9c523780a608bd46686fd5e53740a07077f8",
+  "dart_version": "3.13.5",
+  "renderer_override_skia": false,
+  "viewport": [
+    "390x844",
+    3,
+    1
+  ],
+  "build": "flutter test / debug"
+}

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show HttpException, SocketException;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -189,8 +190,12 @@ class _ReaderImageState extends State<ReaderImage> {
           debugPrint('READER_IMAGE_FAILURE ${widget.page.id}: $error');
           return true;
         }());
-        if (error is NetworkImageLoadException &&
-            [429, 503].contains(error.statusCode) &&
+        final transient =
+            error is SocketException ||
+            error is HttpException ||
+            (error is NetworkImageLoadException &&
+                [429, 503].contains(error.statusCode));
+        if (transient &&
             attempt < 2 &&
             retry == null &&
             ModalRoute.of(context)?.isCurrent == true) {

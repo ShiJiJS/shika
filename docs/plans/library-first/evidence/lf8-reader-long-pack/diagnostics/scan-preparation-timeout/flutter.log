@@ -1,0 +1,54 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart
+Running Gradle task 'assembleDebug'...                             28.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          635ms
+00:00 +0: 500-page real scrolling, large decode, bounded windows and return
+LONG_READER_FLUTTER_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following LibraryFailure was thrown running a test:
+扫描仍在服务端进行，可稍后刷新查询进度
+
+When the exception was thrown, this was the stack:
+#0      ServerLibraryRepository.scan (package:video_viewer/library/server_repository.dart:2540:11)
+<asynchronous suspension>
+#1      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart:84:7)
+<asynchronous suspension>
+#2      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  500-page real scrolling, large decode, bounded windows and
+  return
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following LibraryFailure was thrown running a test:
+扫描仍在服务端进行，可稍后刷新查询进度
+
+When the exception was thrown, this was the stack:
+#0      ServerLibraryRepository.scan (package:video_viewer/library/server_repository.dart:2540:11)
+<asynchronous suspension>
+#1      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart:84:7)
+<asynchronous suspension>
+#2      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  500-page real scrolling, large decode, bounded windows and return
+════════════════════════════════════════════════════════════════════════════════════════════════════
+02:01 +0 -1: 500-page real scrolling, large decode, bounded windows and return [E]
+  Test failed. See exception logs above.
+  The test description was: 500-page real scrolling, large decode, bounded windows and return
+  
+02:01 +0 -1: (tearDownAll)
+02:02 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart: 500-page real scrolling, large decode, bounded windows and return

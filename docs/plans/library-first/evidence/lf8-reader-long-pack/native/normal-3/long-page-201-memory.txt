@@ -1,0 +1,43 @@
+Applications Memory Usage (in Kilobytes):
+Uptime: 5190545 Realtime: 5190545
+
+** MEMINFO in pid 3530 [io.github.shijijs.video_viewer] **
+ 
+ App Summary
+                       Pss(KB)                        Rss(KB)
+                        ------                         ------
+           Java Heap:    13152                          34660
+         Native Heap:    60268                          61208
+                Code:    34468                         115908
+               Stack:      912                            920
+            Graphics:        0                              0
+       Private Other:   290660
+              System:    12484
+             Unknown:                                  292428
+ 
+           TOTAL PSS:   411944            TOTAL RSS:   505124       TOTAL SWAP PSS:      137
+ 
+ Objects
+               Views:        6         ViewRootImpl:        1
+         AppContexts:        5           Activities:        1
+              Assets:       24        AssetManagers:        0
+       Local Binders:       19        Proxy Binders:       61
+       Parcel memory:        6         Parcel count:       26
+    Death Recipients:        0             WebViews:        0
+ 
+ Native Allocations
+                         Count                       Total(kB)
+                        ------                         ------
+    Other (malloced):      317                             28
+ Other (nonmalloced):       89                             64
+ 
+ SQL
+         MEMORY_USED:        0
+  PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
+ 
+ 
+ Asset Allocations
+    : 1607K
+    : 292K
+    : 17K
+    : 21K

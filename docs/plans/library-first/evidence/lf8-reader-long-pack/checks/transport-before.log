@@ -1,0 +1,60 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart
+00:00 +0: reader transport retry recover keeps the actual page
+READER_IMAGE_FAILURE p0-0: SocketException: Synthetic temporary connection reset
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Transport retry did not reach expected state; calls=1
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart:99:11)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart:127:9)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  reader transport retry recover keeps the actual page
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -1: reader transport retry recover keeps the actual page [E]
+  Test failed. See exception logs above.
+  The test description was: reader transport retry recover keeps the actual page
+  
+00:01 +0 -1: reader transport retry bounded keeps the actual page
+READER_IMAGE_FAILURE p0-0: SocketException: Synthetic temporary connection reset
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Transport retry did not reach expected state; calls=1
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart:99:11)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart:115:11)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  reader transport retry bounded keeps the actual page
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +0 -2: reader transport retry bounded keeps the actual page [E]
+  Test failed. See exception logs above.
+  The test description was: reader transport retry bounded keeps the actual page
+  
+00:03 +0 -2: reader transport retry dispose keeps the actual page
+READER_IMAGE_FAILURE p0-0: SocketException: Synthetic temporary connection reset
+00:03 +1 -2: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart: reader transport retry bounded keeps the actual page
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart: reader transport retry recover keeps the actual page
