@@ -1,0 +1,72 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart
+Running Gradle task 'assembleDebug'...                             14.9s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          589ms
+00:00 +0: 500-page real scrolling, large decode, bounded windows and return
+LONG_READER_PROGRESS:index=79 window=0-119
+LONG_READER_PROGRESS:index=119 window=40-159
+LONG_READER_PROGRESS:index=159 window=80-199
+LONG_READER_PROGRESS:index=199 window=120-239
+LONG_READER_PROGRESS:index=199 window=120-239
+LONG_READER_PROGRESS:index=239 window=160-279
+LONG_READER_PROGRESS:index=279 window=200-319
+LONG_READER_PROGRESS:index=279 window=200-319
+LONG_READER_PROGRESS:index=319 window=240-359
+LONG_READER_PROGRESS:index=359 window=280-399
+LONG_READER_PROGRESS:index=359 window=280-399
+LONG_READER_PROGRESS:index=399 window=320-439
+LONG_READER_PROGRESS:index=439 window=360-479
+LONG_READER_PROGRESS:index=439 window=360-479
+LONG_READER_PROGRESS:index=479 window=380-499
+READER_IMAGE_FAILURE 3877f39a-aa50-4981-b999-ee20416e4891: HttpException: Connection closed before full header was received, uri = http://10.0.2.2:8769/api/v1/pages/3877f39a-aa50-4981-b999-ee20416e4891/image?v=1&session=1793056889756504-2d749896&reader=1
+LONG_READER_FLUTTER_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Long reader timed out: current image frame
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart:118:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart:334:11)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  500-page real scrolling, large decode, bounded windows and
+  return
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Long reader timed out: current image frame
+
+When the exception was thrown, this was the stack:
+#0      fail (package:matcher/src/expect/expect.dart:187:31)
+#1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart:118:13)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart:334:11)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  500-page real scrolling, large decode, bounded windows and return
+════════════════════════════════════════════════════════════════════════════════════════════════════
+05:54 +0 -1: 500-page real scrolling, large decode, bounded windows and return [E]
+  Test failed. See exception logs above.
+  The test description was: 500-page real scrolling, large decode, bounded windows and return
+  
+05:54 +0 -1: (tearDownAll)
+05:54 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart: 500-page real scrolling, large decode, bounded windows and return

@@ -1,0 +1,22 @@
+{
+  "status": "failed",
+  "error": "AssertionError({'code': 79, 'watcher_errors': [\"TimeoutExpired(['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'dumpsys', 'meminfo', '-s', 'io.github.shijijs.video_viewer'], 25)\"]})",
+  "watcher_errors": [
+    "TimeoutExpired(['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'dumpsys', 'meminfo', '-s', 'io.github.shijijs.video_viewer'], 25)"
+  ],
+  "screens": [
+    "long-horizontal",
+    "long-vertical-start",
+    "long-page-101",
+    "long-page-201",
+    "long-page-301",
+    "long-page-401",
+    "long-vertical-end"
+  ],
+  "elapsed_seconds": 268.13,
+  "cleanup_or_watcher_errors": [
+    "TimeoutExpired(['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'dumpsys', 'meminfo', '-s', 'io.github.shijijs.video_viewer'], 25)",
+    "recording cleanup: CalledProcessError(1, ['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'pull', '/sdcard/long-reader-1793056509489141000.mp4', '/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-reader-long-pack/run-5/gesture-01.mp4'])",
+    "device restore: TimeoutExpired(['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'logcat', '-d', '-t', '6000'], 25)"
+  ]
+}

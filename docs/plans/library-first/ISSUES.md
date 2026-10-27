@@ -1,5 +1,7 @@
 # GitHub 实施任务
 
+最新阅读链路：[图包瞬断重试与500页/大图 PR #76](https://github.com/ShiJiJS/video_viewer/pull/76)，三轮原生、646项客户端与开发签名release构建的范围见[逐项台账](RESULTS.md)。#24/#33继续开放。
+
 阅读器继续补证：[可见末张跳过 PR #57](https://github.com/ShiJiJS/video_viewer/pull/57)，原生三轮及兼容回归见 [LF5 记录](LF5.md)。整体原型对照继续。
 
 阅读器最新补证：[失败末张与横屏操作 PR #56](https://github.com/ShiJiJS/video_viewer/pull/56)，固定源码/原始证据见 [LF5 记录](LF5.md)。LF5、LF8及总任务仍开放。

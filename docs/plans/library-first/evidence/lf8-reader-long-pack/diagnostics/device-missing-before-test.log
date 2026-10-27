@@ -1,0 +1,13 @@
+adb: device 'emulator-5554' not found
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-reader-long-pack-test.py", line 73, in <module>
+    assert shell("getprop", "sys.boot_completed") == "1"
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-reader-long-pack-test.py", line 44, in shell
+    return device("shell", *command).decode().strip()
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-reader-long-pack-test.py", line 40, in device
+    return subprocess.check_output([str(ADB), "-s", "emulator-5554", *command], timeout=timeout)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'getprop', 'sys.boot_completed']' returned non-zero exit status 1.

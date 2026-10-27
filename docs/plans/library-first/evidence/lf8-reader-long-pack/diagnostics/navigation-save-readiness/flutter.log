@@ -1,0 +1,72 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart
+Running Gradle task 'assembleDebug'...                             16.5s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          563ms
+00:00 +0: 500-page real scrolling, large decode, bounded windows and return
+LONG_READER_PROGRESS:index=79 window=0-119
+LONG_READER_PROGRESS:index=119 window=40-159
+LONG_READER_PROGRESS:index=119 window=40-159
+LONG_READER_PROGRESS:index=159 window=80-199
+LONG_READER_PROGRESS:index=199 window=120-239
+LONG_READER_PROGRESS:index=199 window=120-239
+LONG_READER_PROGRESS:index=239 window=160-279
+LONG_READER_PROGRESS:index=279 window=200-319
+LONG_READER_PROGRESS:index=279 window=200-319
+LONG_READER_PROGRESS:index=319 window=240-359
+LONG_READER_PROGRESS:index=359 window=280-399
+LONG_READER_PROGRESS:index=359 window=280-399
+LONG_READER_PROGRESS:index=399 window=320-439
+LONG_READER_PROGRESS:index=439 window=360-479
+LONG_READER_PROGRESS:index=439 window=360-479
+LONG_READER_PROGRESS:index=479 window=380-499
+LONG_READER_FLUTTER_ERROR:══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞═════════════════
+The following TestFailure was thrown running a test:
+Expected: <2>
+  Actual: <1>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart:335:11)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart line 335
+The test description was:
+  500-page real scrolling, large decode, bounded windows and
+  return
+═════════════════════════════════════════════════════════════════
+
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <2>
+  Actual: <1>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart:335:11)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart line 335
+The test description was:
+  500-page real scrolling, large decode, bounded windows and return
+════════════════════════════════════════════════════════════════════════════════════════════════════
+04:48 +0 -1: 500-page real scrolling, large decode, bounded windows and return [E]
+  Test failed. See exception logs above.
+  The test description was: 500-page real scrolling, large decode, bounded windows and return
+  
+04:48 +0 -1: (tearDownAll)
+04:48 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_long_pack_test.dart: 500-page real scrolling, large decode, bounded windows and return
