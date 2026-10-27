@@ -224,7 +224,7 @@ void main() {
 }
 
 void identityTests() {
-  for (final change in ['url', 'headers', 'version', 'pack']) {
+  for (final change in ['url', 'headers', 'version', 'pack', 'active']) {
     testWidgets(
       'overview replaces in-flight $change identity without stale pixels',
       (t) async {
@@ -324,6 +324,7 @@ void identityTests() {
                         images: images,
                         viewport: const Size(110, 150),
                         thumbnail: true,
+                        active: change != 'active' || !next,
                       ),
                     ),
                   );
@@ -333,6 +334,15 @@ void identityTests() {
           );
           await until(() => requests.length == 1, 'first pending response');
           update(() => next = true);
+          if (change == 'active') {
+            await until(
+              () => disconnected,
+              'loading next overview page cancels old cell',
+            );
+            await t.pump(const Duration(seconds: 3));
+            expect(requests.length, 1);
+            update(() => next = false);
+          }
           await until(
             () =>
                 disconnected &&

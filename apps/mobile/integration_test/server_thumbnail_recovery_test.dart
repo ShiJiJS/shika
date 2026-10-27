@@ -76,7 +76,13 @@ void main() {
       }
 
       Future<void> capture(String name) async {
-        await t.pumpAndSettle(const Duration(milliseconds: 100));
+        if (name == 'thumb-hold') {
+          // A deliberately pending image animates its spinner. Settling would
+          // wait for the transport deadline and test a retry instead of close.
+          await t.pump(const Duration(milliseconds: 100));
+        } else {
+          await t.pumpAndSettle(const Duration(milliseconds: 100));
+        }
         final inReader = find.byType(PackReaderPage).evaluate().isNotEmpty;
         final media = MediaQuery.of(
           t.element(
@@ -253,6 +259,7 @@ void main() {
       await counts(1);
       await until(() => decoded() == 0, 'pending bodies');
       await capture('thumb-hold');
+      await counts(1);
       await control('/checkpoint/thumb-device-back', post: true);
       await poll(
         () async => (await control('/state'))['ack'] == true,

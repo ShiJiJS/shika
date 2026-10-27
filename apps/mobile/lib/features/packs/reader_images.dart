@@ -86,6 +86,7 @@ class ReaderImage extends StatefulWidget {
     required this.images,
     required this.viewport,
     this.thumbnail = false,
+    this.active = true,
     this.widthFit = false,
     this.onFrame,
     this.onSkip,
@@ -94,7 +95,7 @@ class ReaderImage extends StatefulWidget {
   final ReaderPage page;
   final ReaderImages images;
   final Size viewport;
-  final bool thumbnail, widthFit;
+  final bool thumbnail, widthFit, active;
   final VoidCallback? onFrame, onSkip, onUnauthorized;
   @override
   State<ReaderImage> createState() => _ReaderImageState();
@@ -143,6 +144,7 @@ class _ReaderImageState extends State<ReaderImage> {
         old.page.packId != widget.page.packId ||
         old.page.version != widget.page.version ||
         old.thumbnail != widget.thumbnail ||
+        old.active != widget.active ||
         before?.location != after?.location ||
         before?.asset != after?.asset ||
         !mapEquals(before?.headers, after?.headers) ||
@@ -168,7 +170,10 @@ class _ReaderImageState extends State<ReaderImage> {
   Widget build(BuildContext context) {
     final currentGeneration = generation;
     bool current() =>
-        mounted && generation == currentGeneration && route?.isCurrent == true;
+        mounted &&
+        widget.active &&
+        generation == currentGeneration &&
+        route?.isCurrent == true;
     void reload({bool manual = false}) {
       if (!current()) return;
       cancelWork();
@@ -215,6 +220,15 @@ class _ReaderImageState extends State<ReaderImage> {
         ),
       ),
     );
+    if (!widget.active) {
+      return const Center(
+        child: SizedBox(
+          width: 22,
+          height: 22,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      );
+    }
     if (widget.thumbnail && widget.page.thumbnail == null) {
       return const Center(child: Icon(Icons.image_not_supported_outlined));
     }
