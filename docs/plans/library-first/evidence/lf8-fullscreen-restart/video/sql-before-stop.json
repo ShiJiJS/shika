@@ -1,0 +1,58 @@
+{
+  "playback_rounds": [
+    {
+      "id": "3225b3c8-f3eb-4999-b6e4-470d1c646582",
+      "request_id": "1793116193464247-ac25d0ba",
+      "request_hash": "4591d093a35b50f8c922b077036f2d2d4a08e9921bbe9c7f9491388c6684661b",
+      "order": "sequential",
+      "scope": "{\"tag_ids\": []}",
+      "cursor": 1,
+      "revision": 0,
+      "finished": 0,
+      "candidate_count": 2,
+      "created_at": 1793116193.9423904,
+      "membership": "fixed",
+      "source": "library",
+      "sort": "name_zh",
+      "sequence_revision": 0
+    }
+  ],
+  "round_entries": [
+    {
+      "round_id": "3225b3c8-f3eb-4999-b6e4-470d1c646582",
+      "ordinal": 0,
+      "video_id": "1f26b615-05ae-4cfd-8d71-49e696982313",
+      "source_ordinal": 0
+    },
+    {
+      "round_id": "3225b3c8-f3eb-4999-b6e4-470d1c646582",
+      "ordinal": 1,
+      "video_id": "3b119b3d-52b1-4ae5-93ad-5512bed71ff9",
+      "source_ordinal": 1
+    }
+  ],
+  "recent_entries": [
+    {
+      "id": "579bb86f-1e0c-4401-ad43-e9b57adc4f39",
+      "kind": "video",
+      "video_id": "3b119b3d-52b1-4ae5-93ad-5512bed71ff9",
+      "pack_id": null,
+      "opened_at": 1793116194.742259
+    }
+  ],
+  "pack_sessions": [],
+  "pack_session_entries": [],
+  "pack_progress": [
+    {
+      "pack_id": "2950e4e8-f648-4483-99f7-44908c32b4e4",
+      "page_id": "33772e4f-690a-467c-986f-f18e6cb8a27a",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1000.0,
+      "content_version": 1,
+      "recovery_reason": null
+    }
+  ],
+  "pack_preferences": []
+}

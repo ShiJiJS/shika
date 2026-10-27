@@ -1,0 +1,139 @@
+{
+  "case": "fullscreen",
+  "credential_available": true,
+  "playback": {
+    "id": "578ba772-4cb6-4b17-bb61-a630fee10496",
+    "library_locked": false,
+    "active": true,
+    "order": "sequential",
+    "scope": {
+      "tag_ids": []
+    },
+    "membership": "fixed",
+    "source": "library",
+    "sort": "name",
+    "name_locale": "zh-CN",
+    "sequence_revision": 0,
+    "position": 0,
+    "total": 2,
+    "candidate_count": 2,
+    "revision": 0,
+    "finished": false,
+    "current": {
+      "id": "dd450bb2-6035-4630-98fd-4cb0a8f78ca5",
+      "root_id": "videos",
+      "path": "/media/videos/横屏/风里的花园.mp4",
+      "name": "风里的花园",
+      "status": "available",
+      "error": null,
+      "size": 1290627,
+      "created_at": 1793115833.7450967,
+      "duration": 5.055,
+      "width": 960,
+      "height": 540,
+      "rotation": 0,
+      "type": "MP4",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "thumbnail_url": "/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/thumbnail",
+      "media_url": "/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream",
+      "tag_ids": [
+        "259011bc-849c-49f7-ba63-4a451585ed17",
+        "77a7bc17-c4c3-4c17-a680-140435a49a99"
+      ]
+    },
+    "window": [
+      {
+        "position": 0,
+        "video": {
+          "id": "dd450bb2-6035-4630-98fd-4cb0a8f78ca5",
+          "root_id": "videos",
+          "path": "/media/videos/横屏/风里的花园.mp4",
+          "name": "风里的花园",
+          "status": "available",
+          "error": null,
+          "size": 1290627,
+          "created_at": 1793115833.7450967,
+          "duration": 5.055,
+          "width": 960,
+          "height": 540,
+          "rotation": 0,
+          "type": "MP4",
+          "video_codec": "h264",
+          "audio_codec": "aac",
+          "container": "mov,mp4,m4a,3gp,3g2,mj2",
+          "thumbnail_url": "/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/thumbnail",
+          "media_url": "/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream",
+          "tag_ids": [
+            "259011bc-849c-49f7-ba63-4a451585ed17",
+            "77a7bc17-c4c3-4c17-a680-140435a49a99"
+          ]
+        }
+      },
+      {
+        "position": 1,
+        "video": {
+          "id": "608a3a59-08c4-4548-a56b-274972ae3407",
+          "root_id": "videos",
+          "path": "/media/videos/竖屏/水边的花.mp4",
+          "name": "水边的花",
+          "status": "available",
+          "error": null,
+          "size": 172775,
+          "created_at": 1793115833.57269,
+          "duration": 5.005,
+          "width": 360,
+          "height": 640,
+          "rotation": 0,
+          "type": "MP4",
+          "video_codec": "h264",
+          "audio_codec": null,
+          "container": "mov,mp4,m4a,3gp,3g2,mj2",
+          "thumbnail_url": "/api/v1/videos/608a3a59-08c4-4548-a56b-274972ae3407/thumbnail",
+          "media_url": "/api/v1/videos/608a3a59-08c4-4548-a56b-274972ae3407/stream",
+          "tag_ids": [
+            "77a7bc17-c4c3-4c17-a680-140435a49a99",
+            "b1a61287-4682-49bf-94f4-981d82b3de22"
+          ]
+        }
+      }
+    ]
+  },
+  "recent": {
+    "items": [
+      {
+        "id": "dd450bb2-6035-4630-98fd-4cb0a8f78ca5",
+        "root_id": "videos",
+        "path": "/media/videos/横屏/风里的花园.mp4",
+        "name": "风里的花园",
+        "status": "available",
+        "error": null,
+        "size": 1290627,
+        "created_at": 1793115833.7450967,
+        "duration": 5.055,
+        "width": 960,
+        "height": 540,
+        "rotation": 0,
+        "type": "MP4",
+        "video_codec": "h264",
+        "audio_codec": "aac",
+        "container": "mov,mp4,m4a,3gp,3g2,mj2",
+        "thumbnail_url": "/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/thumbnail",
+        "media_url": "/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream",
+        "tag_ids": [
+          "259011bc-849c-49f7-ba63-4a451585ed17",
+          "77a7bc17-c4c3-4c17-a680-140435a49a99"
+        ],
+        "opened_at": 1793115877.1285424
+      }
+    ],
+    "total": 1,
+    "offset": 0,
+    "limit": 24
+  },
+  "range": "578ba772-4cb6-4b17-bb61-a630fee10496",
+  "video_id": "dd450bb2-6035-4630-98fd-4cb0a8f78ca5",
+  "pack_id": null,
+  "preload": false
+}

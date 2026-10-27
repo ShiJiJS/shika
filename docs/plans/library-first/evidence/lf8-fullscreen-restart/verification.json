@@ -1,0 +1,25 @@
+{
+  "evidence_verified": true,
+  "source": "f6a565ed3bc84e2483d50a907fb2d83c4cae3e69",
+  "checkpoints": 21,
+  "cases": {
+    "fullscreen": {
+      "checkpoints": 7,
+      "new_pid": "4851",
+      "readonly_requests": 15
+    },
+    "video": {
+      "checkpoints": 7,
+      "new_pid": "3778",
+      "readonly_requests": 15
+    },
+    "reader": {
+      "checkpoints": 7,
+      "new_pid": "4345",
+      "readonly_requests": 23
+    }
+  },
+  "manifest_inputs": 177,
+  "production_changes": false,
+  "scope": "one run per case; full app/release/NAS acceptance still open"
+}

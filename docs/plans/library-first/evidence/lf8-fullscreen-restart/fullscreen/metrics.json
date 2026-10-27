@@ -1,0 +1,158 @@
+[
+  {
+    "state": "content-start",
+    "case": "fullscreen",
+    "size": [
+      390.0,
+      844.0
+    ],
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "fullscreen": false,
+    "movie_visible": 0,
+    "players": [],
+    "range": "",
+    "current_video": null,
+    "reading": null,
+    "preload": false
+  },
+  {
+    "state": "content-stop-ready",
+    "case": "fullscreen",
+    "size": [
+      844.0,
+      390.0
+    ],
+    "physical": [
+      2532.0,
+      1170.0
+    ],
+    "dpr": 3.0,
+    "fullscreen": true,
+    "movie_visible": 0,
+    "players": [
+      {
+        "initialized": true,
+        "playing": true,
+        "position_ms": 1351,
+        "looping": true,
+        "source": "http://10.0.2.2:8768/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream"
+      }
+    ],
+    "range": "578ba772-4cb6-4b17-bb61-a630fee10496",
+    "current_video": "dd450bb2-6035-4630-98fd-4cb0a8f78ca5",
+    "reading": null,
+    "preload": false
+  },
+  {
+    "state": "content-cold-library",
+    "case": "fullscreen",
+    "size": [
+      390.0,
+      844.0
+    ],
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "fullscreen": false,
+    "movie_visible": 0,
+    "players": [],
+    "range": "578ba772-4cb6-4b17-bb61-a630fee10496",
+    "current_video": "dd450bb2-6035-4630-98fd-4cb0a8f78ca5",
+    "reading": null,
+    "preload": false
+  },
+  {
+    "state": "content-cold-recent",
+    "case": "fullscreen",
+    "size": [
+      390.0,
+      844.0
+    ],
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "fullscreen": false,
+    "movie_visible": 0,
+    "players": [],
+    "range": "578ba772-4cb6-4b17-bb61-a630fee10496",
+    "current_video": "dd450bb2-6035-4630-98fd-4cb0a8f78ca5",
+    "reading": null,
+    "preload": false
+  },
+  {
+    "state": "content-readonly-complete",
+    "case": "fullscreen",
+    "size": [
+      390.0,
+      844.0
+    ],
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "fullscreen": false,
+    "movie_visible": 0,
+    "players": [],
+    "range": "578ba772-4cb6-4b17-bb61-a630fee10496",
+    "current_video": "dd450bb2-6035-4630-98fd-4cb0a8f78ca5",
+    "reading": null,
+    "preload": false
+  },
+  {
+    "state": "content-reopened",
+    "case": "fullscreen",
+    "size": [
+      390.0,
+      844.0
+    ],
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "fullscreen": false,
+    "movie_visible": 1,
+    "players": [
+      {
+        "initialized": true,
+        "playing": true,
+        "position_ms": 397,
+        "looping": true,
+        "source": "http://10.0.2.2:8768/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream"
+      }
+    ],
+    "range": "e9fe1fd8-c71f-4957-878c-f2bd61609084",
+    "current_video": "dd450bb2-6035-4630-98fd-4cb0a8f78ca5",
+    "reading": null,
+    "preload": false
+  },
+  {
+    "state": "content-return",
+    "case": "fullscreen",
+    "size": [
+      390.0,
+      844.0
+    ],
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "fullscreen": false,
+    "movie_visible": 0,
+    "players": [],
+    "range": "e9fe1fd8-c71f-4957-878c-f2bd61609084",
+    "current_video": "dd450bb2-6035-4630-98fd-4cb0a8f78ca5",
+    "reading": null,
+    "preload": false
+  }
+]

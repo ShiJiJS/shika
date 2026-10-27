@@ -1,0 +1,42 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart
+Running Gradle task 'assembleDebug'...                             36.7s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          665ms
+00:00 +0: active fullscreen real process restart is read-only until explicit reopen
+FIDELITY_METRICS:{"state":"content-start","case":"fullscreen","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with key [<'tile-982041ec-d0ff-4698-a202-79857339f13e'>]: [\n  InkWell-[<'tile-982041ec-d0ff-4698-a202-79857339f13e'>],\n]","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with key [<'tile-982041ec-d0ff-4698-a202-79857339f13e'>]: [\n  InkWell-[<'tile-982041ec-d0ff-4698-a202-79857339f13e'>](dependencies: [_ScrollableScope]),\n]","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with key [<'tile-982041ec-d0ff-4698-a202-79857339f13e'>]: [\n  InkWell-[<'tile-982041ec-d0ff-4698-a202-79857339f13e'>](dependencies: [_ScrollableScope]),\n]","hittable":0,"video":"982041ec-d0ff-4698-a202-79857339f13e","page":0.0}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with type \"TextButton\" that are ancestors of widget with text \"暂停\": [\n  TextButton(style: ButtonStyle#f30cf(textStyle: WidgetStatePropertyAll(TextStyle(inherit: true, size: 12.0)), foregroundColor: WidgetStateMapper<Color?>({WidgetState.disabled: null, WidgetState.any: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB)}), overlayColor: WidgetStateMapper<Color?>({WidgetState.pressed: Color(alpha: 0.1020, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), WidgetState.hovered: Color(alpha: 0.0784, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), WidgetState.focused: Color(alpha: 0.1020, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB)}), padding: WidgetStatePropertyAll(EdgeInsets(6.0, 0.0, 6.0, 0.0)), minimumSize: WidgetStatePropertyAll(Size(40.0, 44.0)), mouseCursor: WidgetStateMapper<MouseCursor?>({WidgetState.disabled: null, WidgetState.any: null})), dependencies: [IconTheme, InheritedCupertinoTheme, MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#73f51]], state: _ButtonStyleState#c9626),\n]","hittable":1,"video":"982041ec-d0ff-4698-a202-79857339f13e","page":0.0}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with type \"TextButton\" that are ancestors of widget with text \"暂停\": [\n  TextButton(style: ButtonStyle#f30cf(textStyle: WidgetStatePropertyAll(TextStyle(inherit: true, size: 12.0)), foregroundColor: WidgetStateMapper<Color?>({WidgetState.disabled: null, WidgetState.any: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB)}), overlayColor: WidgetStateMapper<Color?>({WidgetState.pressed: Color(alpha: 0.1020, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), WidgetState.hovered: Color(alpha: 0.0784, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), WidgetState.focused: Color(alpha: 0.1020, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB)}), padding: WidgetStatePropertyAll(EdgeInsets(6.0, 0.0, 6.0, 0.0)), minimumSize: WidgetStatePropertyAll(Size(40.0, 44.0)), mouseCursor: WidgetStateMapper<MouseCursor?>({WidgetState.disabled: null, WidgetState.any: null})), dependencies: [IconTheme, InheritedCupertinoTheme, MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#73f51], _ScrollableScope], state: _ButtonStyleState#c9626),\n]","hittable":1,"video":"982041ec-d0ff-4698-a202-79857339f13e","page":0.891566265060241}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with type \"TextButton\" that are ancestors of widget with text \"暂停\": [\n  TextButton(style: ButtonStyle#f30cf(textStyle: WidgetStatePropertyAll(TextStyle(inherit: true, size: 12.0)), foregroundColor: WidgetStateMapper<Color?>({WidgetState.disabled: null, WidgetState.any: Color(alpha: 1.0000, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB)}), overlayColor: WidgetStateMapper<Color?>({WidgetState.pressed: Color(alpha: 0.1020, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), WidgetState.hovered: Color(alpha: 0.0784, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB), WidgetState.focused: Color(alpha: 0.1020, red: 1.0000, green: 1.0000, blue: 1.0000, colorSpace: ColorSpace.sRGB)}), padding: WidgetStatePropertyAll(EdgeInsets(6.0, 0.0, 6.0, 0.0)), minimumSize: WidgetStatePropertyAll(Size(40.0, 44.0)), mouseCursor: WidgetStateMapper<MouseCursor?>({WidgetState.disabled: null, WidgetState.any: null})), dependencies: [IconTheme, InheritedCupertinoTheme, MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#73f51], _ScrollableScope], state: _ButtonStyleState#c9626),\n]","hittable":0,"video":"982041ec-d0ff-4698-a202-79857339f13e","page":0.9709083111379906}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with text \"横向全屏\": [\n  Text(\"横向全屏\", dependencies: [DefaultSelectionStyle, DefaultTextStyle, MediaQuery]),\n]","hittable":0,"video":"982041ec-d0ff-4698-a202-79857339f13e","page":0.9709083111379906}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with text \"横向全屏\": [\n  Text(\"横向全屏\", dependencies: [DefaultSelectionStyle, DefaultTextStyle, MediaQuery, _ScrollableScope]),\n]","hittable":1,"video":"982041ec-d0ff-4698-a202-79857339f13e","page":0.8192771084337349}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with text \"横向全屏\": [\n  Text(\"横向全屏\", dependencies: [DefaultSelectionStyle, DefaultTextStyle, MediaQuery, _ScrollableScope]),\n]","hittable":0,"video":"982041ec-d0ff-4698-a202-79857339f13e","page":0.9515138518966513}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following StateError was thrown running a test:
+Bad state: No element
+
+When the exception was thrown, this was the stack:
+#0      _Array.single (dart:core-patch/array.dart:62:22)
+#1      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart:409:40)
+<asynchronous suspension>
+#2      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#3      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  active fullscreen real process restart is read-only until explicit reopen
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:09 +0 -1: active fullscreen real process restart is read-only until explicit reopen [E]
+  Test failed. See exception logs above.
+  The test description was: active fullscreen real process restart is read-only until explicit reopen
+  
+00:09 +0 -1: (tearDownAll)
+00:10 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart: active fullscreen real process restart is read-only until explicit reopen

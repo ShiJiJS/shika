@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 194, in <module>
+    assert shell("getprop", "sys.boot_completed") == "1"
+AssertionError

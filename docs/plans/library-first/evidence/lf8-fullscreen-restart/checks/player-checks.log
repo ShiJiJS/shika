@@ -1,0 +1,6 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/player_lifecycle_test.dart
+00:00 +0: queue selection starts a new video after suspension, preserving current pause; preload=false
+00:02 +1: queue selection starts a new video after suspension, preserving current pause; preload=true
+00:02 +2: fullscreen keeps play intent=true across rotation focus changes; real background still pauses
+00:03 +3: fullscreen keeps play intent=false across rotation focus changes; real background still pauses
+00:04 +4: All tests passed!
