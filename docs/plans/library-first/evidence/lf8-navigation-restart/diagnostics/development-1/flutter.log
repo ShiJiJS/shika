@@ -1,0 +1,44 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_navigation_restart_test.dart
+Running Gradle task 'assembleDebug'...                             23.1s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          859ms
+00:00 +0: all content sources return independently and survive a real process restart
+FIDELITY_METRICS:{"state":"nav-start","cold_source":"library","physical":[1170.0,2532.0],"dpr":3.0,"text_scale":1.0,"dark":false,"preload":false,"video":{"entry":{"query":{"folder":"","tags":[],"orientation":"","duration":"","type":""},"search":"","source":"library","sort":"name"},"total":27,"offset":0,"scroll":0.0,"selected":[],"selecting":false},"pack":null,"reading":null,"round":"","current":null}
+FIDELITY_METRICS:{"state":"nav-video-draft","cold_source":"library","physical":[1170.0,2532.0],"dpr":3.0,"text_scale":1.0,"dark":false,"preload":false,"video":{"entry":{"query":{"folder":"","tags":["1221bab3-dbf0-4925-81ca-1d20e37b7dfa"],"orientation":"","duration":"","type":""},"search":"导航视频","source":"library","sort":"newest"},"total":27,"offset":0,"scroll":0.0,"selected":["f7752de1-4b9e-4cd1-8948-5a7854cf726b"],"selecting":true},"pack":null,"reading":null,"round":"","current":null}
+FIDELITY_METRICS:{"state":"nav-pack-draft","cold_source":"library","physical":[1170.0,2532.0],"dpr":3.0,"text_scale":1.0,"dark":false,"preload":false,"video":null,"pack":{"query":{"folder":"","tag_ids":["fa059529-a942-40ac-aac7-e7ecf5dab955"],"search":"导航图包","read_state":"all","source":"library","sort":"name"},"total":27,"offset":0,"scroll":0.0,"selected":["5d9f8a4a-ab2a-41dc-84e9-d3035e4723f1"],"selecting":true},"reading":null,"round":"","current":null}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following ApiFailure was thrown running a test:
+请求参数格式不正确
+
+When the exception was thrown, this was the stack:
+#0      ServerApi._requestOnce (package:video_viewer/library/server_api.dart:405:28)
+<asynchronous suspension>
+#1      ServerApi._request (package:video_viewer/library/server_api.dart:246:14)
+<asynchronous suspension>
+#2      ServerApi.json (package:video_viewer/library/server_api.dart:93:22)
+<asynchronous suspension>
+#3      main.<anonymous closure>.videoIds (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_navigation_restart_test.dart:180:22)
+<asynchronous suspension>
+#4      main.<anonymous closure>.openVideo (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_navigation_restart_test.dart:240:26)
+<asynchronous suspension>
+#5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_navigation_restart_test.dart:595:7)
+<asynchronous suspension>
+#6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  all content sources return independently and survive a real process restart
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:31 +0 -1: all content sources return independently and survive a real process restart [E]
+  Test failed. See exception logs above.
+  The test description was: all content sources return independently and survive a real process restart
+  
+00:31 +0 -1: (tearDownAll)
+00:32 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_navigation_restart_test.dart: all content sources return independently and survive a real process restart

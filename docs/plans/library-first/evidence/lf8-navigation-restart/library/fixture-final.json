@@ -1,0 +1,3632 @@
+{
+  "fixture": "prototype-fidelity-owned-8768",
+  "display": "nav-cold-final-library",
+  "ack": true,
+  "prepared": true,
+  "continuation_failure": false,
+  "catalog_counts_failure": false,
+  "recent_video_failure": false,
+  "recent_pack_failure": false,
+  "public_additions": [],
+  "tag_definition_failure": "off",
+  "tag_definition_failures": [],
+  "requests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/info",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "status": 404,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": null,
+      "query": [
+        [
+          "status",
+          "missing"
+        ],
+        [
+          "limit",
+          "1"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback-defaults",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/playback-defaults",
+      "status": 200,
+      "phase": null,
+      "body": {
+        "request_id": "navigation-owned-sequential-library",
+        "expected_revision": 0,
+        "order": "sequential"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": null,
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/7a23d21d-59fb-44f8-bcce-e4a2f5a313e9/thumbnail",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/52dc93f4-35f0-4b20-93c8-990de1260ee1/thumbnail",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/cb0233aa-0c1b-4fa3-9ac6-ec600f973838/thumbnail",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/8ecb363c-d0f4-462d-923e-1fb8fc4b2d63/thumbnail",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/b5f2b435-d3bd-4ae9-8116-24242862b954/thumbnail",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/18ba7cb6-d8ad-462d-9629-d321e86399a6/thumbnail",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags",
+      "status": 200,
+      "phase": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-start",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航视频"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-start",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航视频"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-sort-menu",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航视频"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "newest"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/976498f6-59d6-41f0-9235-2df525a5d749/thumbnail",
+      "status": 200,
+      "phase": "nav-sort-menu"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/fa850132-a5c6-4531-b754-78715a53cb8d/thumbnail",
+      "status": 200,
+      "phase": "nav-sort-menu"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-sort-selected"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-video-draft",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "1"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-video-draft",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/6a998a78-939a-4a36-a775-08b4ec2b5729/cover",
+      "status": 200,
+      "phase": "nav-video-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/e2f224e1-83e0-4719-b086-a873594aa044/cover",
+      "status": 200,
+      "phase": "nav-video-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/7c52dce0-a058-41b7-ac75-f25e1fef4692/cover",
+      "status": 200,
+      "phase": "nav-video-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/13d0d784-8bf4-416b-92ea-c4566bfb1702/cover",
+      "status": 200,
+      "phase": "nav-video-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/2b3452cf-e66c-4420-809d-1fee55ecb7db/cover",
+      "status": 200,
+      "phase": "nav-video-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/76a5c712-a292-4c3f-b6c2-396084f0f2d1/cover",
+      "status": 200,
+      "phase": "nav-video-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-video-draft",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航图包"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags",
+      "status": 200,
+      "phase": "nav-video-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-video-draft",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航图包"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-pack-draft",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "anchor_ids",
+          "8ecb363c-d0f4-462d-923e-1fb8fc4b2d63"
+        ],
+        [
+          "anchor_ids",
+          "52dc93f4-35f0-4b20-93c8-990de1260ee1"
+        ],
+        [
+          "anchor_ids",
+          "b5f2b435-d3bd-4ae9-8116-24242862b954"
+        ],
+        [
+          "anchor_ids",
+          "cb0233aa-0c1b-4fa3-9ac6-ec600f973838"
+        ],
+        [
+          "anchor_ids",
+          "976498f6-59d6-41f0-9235-2df525a5d749"
+        ],
+        [
+          "anchor_ids",
+          "fa850132-a5c6-4531-b754-78715a53cb8d"
+        ],
+        [
+          "anchor_ids",
+          "ed66fd65-60c7-4eee-8e88-5998692a8ca8"
+        ],
+        [
+          "anchor_ids",
+          "3659fd57-2c0a-4df6-9424-fc1500daf9ac"
+        ],
+        [
+          "anchor_ids",
+          "72e5baff-2eea-4d29-ac96-ded8473e2b51"
+        ],
+        [
+          "anchor_ids",
+          "7afa7439-8219-4847-b4a8-bcf555350025"
+        ],
+        [
+          "anchor_ids",
+          "6556f0e8-bba3-49e1-9426-aa8723efbb84"
+        ],
+        [
+          "anchor_ids",
+          "eb960be6-d463-4147-bb31-a831a6a26c1a"
+        ],
+        [
+          "anchor_ids",
+          "b2c2e7f2-4a52-4211-9b7f-5a4bc3bcf2aa"
+        ],
+        [
+          "anchor_ids",
+          "08e49d4b-ed9f-456e-88f8-fb8631d58fc0"
+        ],
+        [
+          "anchor_ids",
+          "1304f3d6-9cea-4fbf-a335-5f7ea4d3b6b6"
+        ],
+        [
+          "anchor_ids",
+          "07eb89ed-9218-4fe4-85cb-8cdc20209814"
+        ],
+        [
+          "search",
+          "导航视频"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "newest"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-pack-draft",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航图包"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ],
+        [
+          "anchor_ids",
+          "6a998a78-939a-4a36-a775-08b4ec2b5729"
+        ],
+        [
+          "anchor_ids",
+          "e2f224e1-83e0-4719-b086-a873594aa044"
+        ],
+        [
+          "anchor_ids",
+          "76a5c712-a292-4c3f-b6c2-396084f0f2d1"
+        ],
+        [
+          "anchor_ids",
+          "13d0d784-8bf4-416b-92ea-c4566bfb1702"
+        ],
+        [
+          "anchor_ids",
+          "7c52dce0-a058-41b7-ac75-f25e1fef4692"
+        ],
+        [
+          "anchor_ids",
+          "2b3452cf-e66c-4420-809d-1fee55ecb7db"
+        ],
+        [
+          "anchor_ids",
+          "d6ae142d-4bb0-41f1-aa93-aa3fbe77907a"
+        ],
+        [
+          "anchor_ids",
+          "21359b46-20d9-495c-922e-629d843d1d04"
+        ],
+        [
+          "anchor_ids",
+          "274beb6f-3c55-4676-a048-188f560befbc"
+        ],
+        [
+          "anchor_ids",
+          "896c1099-8c50-48f8-bbd2-4ed43ee89d23"
+        ],
+        [
+          "anchor_ids",
+          "8b361928-c6fe-4fee-9ced-993c02511534"
+        ],
+        [
+          "anchor_ids",
+          "7a117cba-3d4e-411f-8cd7-131b7996e81d"
+        ],
+        [
+          "anchor_ids",
+          "f1bfec65-2766-40ad-ad1e-3c126defc217"
+        ],
+        [
+          "anchor_ids",
+          "73828409-bea3-46d2-8944-ef91b071f1c4"
+        ],
+        [
+          "anchor_ids",
+          "5a2b7782-2875-426d-a0c9-d6affabc520b"
+        ],
+        [
+          "anchor_ids",
+          "053a6dd5-5a44-4170-8a84-9ccd95d624e6"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-pack-draft",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航图包"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ],
+        [
+          "anchor_ids",
+          "6a998a78-939a-4a36-a775-08b4ec2b5729"
+        ],
+        [
+          "anchor_ids",
+          "e2f224e1-83e0-4719-b086-a873594aa044"
+        ],
+        [
+          "anchor_ids",
+          "76a5c712-a292-4c3f-b6c2-396084f0f2d1"
+        ],
+        [
+          "anchor_ids",
+          "13d0d784-8bf4-416b-92ea-c4566bfb1702"
+        ],
+        [
+          "anchor_ids",
+          "7c52dce0-a058-41b7-ac75-f25e1fef4692"
+        ],
+        [
+          "anchor_ids",
+          "2b3452cf-e66c-4420-809d-1fee55ecb7db"
+        ],
+        [
+          "anchor_ids",
+          "d6ae142d-4bb0-41f1-aa93-aa3fbe77907a"
+        ],
+        [
+          "anchor_ids",
+          "21359b46-20d9-495c-922e-629d843d1d04"
+        ],
+        [
+          "anchor_ids",
+          "274beb6f-3c55-4676-a048-188f560befbc"
+        ],
+        [
+          "anchor_ids",
+          "896c1099-8c50-48f8-bbd2-4ed43ee89d23"
+        ],
+        [
+          "anchor_ids",
+          "8b361928-c6fe-4fee-9ced-993c02511534"
+        ],
+        [
+          "anchor_ids",
+          "7a117cba-3d4e-411f-8cd7-131b7996e81d"
+        ],
+        [
+          "anchor_ids",
+          "f1bfec65-2766-40ad-ad1e-3c126defc217"
+        ],
+        [
+          "anchor_ids",
+          "73828409-bea3-46d2-8944-ef91b071f1c4"
+        ],
+        [
+          "anchor_ids",
+          "5a2b7782-2875-426d-a0c9-d6affabc520b"
+        ],
+        [
+          "anchor_ids",
+          "053a6dd5-5a44-4170-8a84-9ccd95d624e6"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-pack-draft",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "anchor_ids",
+          "8ecb363c-d0f4-462d-923e-1fb8fc4b2d63"
+        ],
+        [
+          "anchor_ids",
+          "52dc93f4-35f0-4b20-93c8-990de1260ee1"
+        ],
+        [
+          "anchor_ids",
+          "b5f2b435-d3bd-4ae9-8116-24242862b954"
+        ],
+        [
+          "anchor_ids",
+          "cb0233aa-0c1b-4fa3-9ac6-ec600f973838"
+        ],
+        [
+          "anchor_ids",
+          "976498f6-59d6-41f0-9235-2df525a5d749"
+        ],
+        [
+          "anchor_ids",
+          "fa850132-a5c6-4531-b754-78715a53cb8d"
+        ],
+        [
+          "anchor_ids",
+          "ed66fd65-60c7-4eee-8e88-5998692a8ca8"
+        ],
+        [
+          "anchor_ids",
+          "3659fd57-2c0a-4df6-9424-fc1500daf9ac"
+        ],
+        [
+          "anchor_ids",
+          "72e5baff-2eea-4d29-ac96-ded8473e2b51"
+        ],
+        [
+          "anchor_ids",
+          "7afa7439-8219-4847-b4a8-bcf555350025"
+        ],
+        [
+          "anchor_ids",
+          "6556f0e8-bba3-49e1-9426-aa8723efbb84"
+        ],
+        [
+          "anchor_ids",
+          "eb960be6-d463-4147-bb31-a831a6a26c1a"
+        ],
+        [
+          "anchor_ids",
+          "b2c2e7f2-4a52-4211-9b7f-5a4bc3bcf2aa"
+        ],
+        [
+          "anchor_ids",
+          "08e49d4b-ed9f-456e-88f8-fb8631d58fc0"
+        ],
+        [
+          "anchor_ids",
+          "1304f3d6-9cea-4fbf-a335-5f7ea4d3b6b6"
+        ],
+        [
+          "anchor_ids",
+          "07eb89ed-9218-4fe4-85cb-8cdc20209814"
+        ],
+        [
+          "search",
+          "导航视频"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "newest"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-pack-draft",
+      "query": [
+        [
+          "source",
+          "library"
+        ],
+        [
+          "search",
+          "导航视频"
+        ],
+        [
+          "sort",
+          "newest"
+        ],
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/3659fd57-2c0a-4df6-9424-fc1500daf9ac/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/ed66fd65-60c7-4eee-8e88-5998692a8ca8/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/72e5baff-2eea-4d29-ac96-ded8473e2b51/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/7afa7439-8219-4847-b4a8-bcf555350025/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/6556f0e8-bba3-49e1-9426-aa8723efbb84/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/eb960be6-d463-4147-bb31-a831a6a26c1a/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/b2c2e7f2-4a52-4211-9b7f-5a4bc3bcf2aa/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/07eb89ed-9218-4fe4-85cb-8cdc20209814/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/1304f3d6-9cea-4fbf-a335-5f7ea4d3b6b6/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/7028f668-34de-4d48-b716-b6aafccef5ad/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/79115cd8-f142-4eb9-899a-d554d4ee71da/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/f88cf3c7-eb15-4b54-a85f-a3684b4109be/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/fb8bc0c0-3776-446d-a78b-b843f7083a1a/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-pack-draft",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "24"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航视频"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "newest"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/ef0e660b-1b3f-4e69-8086-1898e246115d/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/a58aef8b-1e1e-4a5a-92ed-c0686bb603f0/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/46f54286-9a38-42ad-8415-ecd58dffa301/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/9010764f-713d-4277-b085-4d2d309a06ca/thumbnail",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback-defaults",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/rounds",
+      "status": 201,
+      "phase": "nav-pack-draft",
+      "body": {
+        "request_id": "1793082067722126-20a76a55",
+        "order": "sequential",
+        "scope": {
+          "tag_ids": [
+            "35df5263-0688-4afa-a098-4b1eaf7191a5"
+          ],
+          "search": "导航视频"
+        },
+        "anchor_video_id": "53249ba8-5fca-48dc-adcb-f56fec76c90d",
+        "membership": "fixed",
+        "source": "library",
+        "sort": "newest"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/rounds/e418898f-8776-453a-9d70-9c72aa08993d/entries",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/rounds/e418898f-8776-453a-9d70-9c72aa08993d/entries",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/rounds/e418898f-8776-453a-9d70-9c72aa08993d/opened",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/stream",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/stream",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/stream",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/stream",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/stream",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/rounds/e418898f-8776-453a-9d70-9c72aa08993d/entries",
+      "status": 200,
+      "phase": "nav-pack-draft"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/stream",
+      "status": 200,
+      "phase": "nav-library-video-preview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/rounds/e418898f-8776-453a-9d70-9c72aa08993d/entries",
+      "status": 200,
+      "phase": "nav-library-video-preview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/stream",
+      "status": 200,
+      "phase": "nav-library-video-preview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/stream",
+      "status": 200,
+      "phase": "nav-library-video-panel"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/stream",
+      "status": 200,
+      "phase": "nav-library-video-panel-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/stream",
+      "status": 200,
+      "phase": "nav-library-video-panel-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-device-back"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-device-back",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "24"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "anchor_ids",
+          "46f54286-9a38-42ad-8415-ecd58dffa301"
+        ],
+        [
+          "anchor_ids",
+          "53249ba8-5fca-48dc-adcb-f56fec76c90d"
+        ],
+        [
+          "anchor_ids",
+          "9010764f-713d-4277-b085-4d2d309a06ca"
+        ],
+        [
+          "search",
+          "导航视频"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "newest"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-device-back",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航视频"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "newest"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-library-video-return",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航图包"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ],
+        [
+          "anchor_ids",
+          "6a998a78-939a-4a36-a775-08b4ec2b5729"
+        ],
+        [
+          "anchor_ids",
+          "e2f224e1-83e0-4719-b086-a873594aa044"
+        ],
+        [
+          "anchor_ids",
+          "76a5c712-a292-4c3f-b6c2-396084f0f2d1"
+        ],
+        [
+          "anchor_ids",
+          "13d0d784-8bf4-416b-92ea-c4566bfb1702"
+        ],
+        [
+          "anchor_ids",
+          "7c52dce0-a058-41b7-ac75-f25e1fef4692"
+        ],
+        [
+          "anchor_ids",
+          "2b3452cf-e66c-4420-809d-1fee55ecb7db"
+        ],
+        [
+          "anchor_ids",
+          "d6ae142d-4bb0-41f1-aa93-aa3fbe77907a"
+        ],
+        [
+          "anchor_ids",
+          "21359b46-20d9-495c-922e-629d843d1d04"
+        ],
+        [
+          "anchor_ids",
+          "274beb6f-3c55-4676-a048-188f560befbc"
+        ],
+        [
+          "anchor_ids",
+          "896c1099-8c50-48f8-bbd2-4ed43ee89d23"
+        ],
+        [
+          "anchor_ids",
+          "8b361928-c6fe-4fee-9ced-993c02511534"
+        ],
+        [
+          "anchor_ids",
+          "7a117cba-3d4e-411f-8cd7-131b7996e81d"
+        ],
+        [
+          "anchor_ids",
+          "f1bfec65-2766-40ad-ad1e-3c126defc217"
+        ],
+        [
+          "anchor_ids",
+          "73828409-bea3-46d2-8944-ef91b071f1c4"
+        ],
+        [
+          "anchor_ids",
+          "5a2b7782-2875-426d-a0c9-d6affabc520b"
+        ],
+        [
+          "anchor_ids",
+          "053a6dd5-5a44-4170-8a84-9ccd95d624e6"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-library-video-return",
+      "query": [
+        [
+          "source",
+          "library"
+        ],
+        [
+          "search",
+          "导航图包"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/d6ae142d-4bb0-41f1-aa93-aa3fbe77907a/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/21359b46-20d9-495c-922e-629d843d1d04/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/896c1099-8c50-48f8-bbd2-4ed43ee89d23/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/274beb6f-3c55-4676-a048-188f560befbc/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/7a117cba-3d4e-411f-8cd7-131b7996e81d/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/8b361928-c6fe-4fee-9ced-993c02511534/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/73828409-bea3-46d2-8944-ef91b071f1c4/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/f1bfec65-2766-40ad-ad1e-3c126defc217/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/053a6dd5-5a44-4170-8a84-9ccd95d624e6/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/5a2b7782-2875-426d-a0c9-d6affabc520b/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/bde28335-db7c-4758-b7c4-af2619eef8ae/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/173fb4d9-27b3-422d-afc2-dd137eae6eb7/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/6332b2e0-6df9-4eda-ae79-fbdae7b6da4d/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/854c4adc-2303-4418-85d5-c4e8d2747908/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/c0a8cf8d-1638-4c4f-a7b0-9a0ae66ccec6/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/5dda92ac-7a2f-4916-92d3-e737ad534335/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-library-video-return",
+      "query": [
+        [
+          "offset",
+          "24"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航图包"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/d02e66e0-fe97-485f-8b3d-0850d9dffa25/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/ba1fb50f-2588-4a0b-a997-888a237c1272/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/984ee8ac-e53b-4fda-a2dc-8045e8995b64/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/117f89f4-d9f4-4968-bfec-41df18f522c8/cover",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-sessions",
+      "status": 201,
+      "phase": "nav-library-video-return",
+      "body": {
+        "request_id": "1793082078780563-2516708429-0",
+        "scope": {
+          "directory_id": null,
+          "search": "导航图包",
+          "tag_ids": [
+            "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+          ],
+          "read_state": "all"
+        },
+        "source": "library",
+        "sort": "title",
+        "order": "sequential",
+        "anchor_pack_id": "cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f/pages",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/d872db1e-047e-4191-8e72-d4bb69f1e258/image",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-sessions/4e0fdf36-2921-42b5-b6aa-6dc93313af4f/opened",
+      "status": 200,
+      "phase": "nav-library-video-return",
+      "body": {
+        "request_id": "1793082079510605-987952751-1",
+        "expected_session_revision": 0,
+        "expected_revision": 0,
+        "content_version": 1,
+        "pack_id": "cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f",
+        "page_id": "d872db1e-047e-4191-8e72-d4bb69f1e258"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-sessions/4e0fdf36-2921-42b5-b6aa-6dc93313af4f/entries",
+      "status": 200,
+      "phase": "nav-library-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f/pages",
+      "status": 200,
+      "phase": "nav-library-pack-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/bc29b640-0e32-49b4-b6c0-03c360cfe962/thumbnail",
+      "status": 503,
+      "phase": "nav-library-pack-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a3514c67-6c01-416f-8436-c93482d79191/thumbnail",
+      "status": 503,
+      "phase": "nav-library-pack-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/d872db1e-047e-4191-8e72-d4bb69f1e258/thumbnail",
+      "status": 200,
+      "phase": "nav-library-pack-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a212d9c7-4be2-41c5-a10b-5d0e23c3327d/thumbnail",
+      "status": 200,
+      "phase": "nav-library-pack-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a1e97656-d424-4ea1-bbc2-3125f3909572/thumbnail",
+      "status": 200,
+      "phase": "nav-library-pack-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/ee3711b7-c4af-4e05-bd56-3d48132b5164/thumbnail",
+      "status": 200,
+      "phase": "nav-library-pack-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/a3514c67-6c01-416f-8436-c93482d79191/thumbnail",
+      "status": 200,
+      "phase": "nav-device-back"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/bc29b640-0e32-49b4-b6c0-03c360cfe962/thumbnail",
+      "status": 200,
+      "phase": "nav-device-back"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-device-back"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-device-back",
+      "query": [
+        [
+          "offset",
+          "24"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航图包"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ],
+        [
+          "anchor_ids",
+          "984ee8ac-e53b-4fda-a2dc-8045e8995b64"
+        ],
+        [
+          "anchor_ids",
+          "cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f"
+        ],
+        [
+          "anchor_ids",
+          "ba1fb50f-2588-4a0b-a997-888a237c1272"
+        ],
+        [
+          "anchor_ids",
+          "117f89f4-d9f4-4968-bfec-41df18f522c8"
+        ],
+        [
+          "anchor_ids",
+          "d02e66e0-fe97-485f-8b3d-0850d9dffa25"
+        ],
+        [
+          "anchor_ids",
+          "5dda92ac-7a2f-4916-92d3-e737ad534335"
+        ],
+        [
+          "anchor_ids",
+          "c0a8cf8d-1638-4c4f-a7b0-9a0ae66ccec6"
+        ],
+        [
+          "anchor_ids",
+          "854c4adc-2303-4418-85d5-c4e8d2747908"
+        ],
+        [
+          "anchor_ids",
+          "6332b2e0-6df9-4eda-ae79-fbdae7b6da4d"
+        ],
+        [
+          "anchor_ids",
+          "bde28335-db7c-4758-b7c4-af2619eef8ae"
+        ],
+        [
+          "anchor_ids",
+          "173fb4d9-27b3-422d-afc2-dd137eae6eb7"
+        ],
+        [
+          "anchor_ids",
+          "053a6dd5-5a44-4170-8a84-9ccd95d624e6"
+        ],
+        [
+          "anchor_ids",
+          "5a2b7782-2875-426d-a0c9-d6affabc520b"
+        ],
+        [
+          "anchor_ids",
+          "73828409-bea3-46d2-8944-ef91b071f1c4"
+        ],
+        [
+          "anchor_ids",
+          "f1bfec65-2766-40ad-ad1e-3c126defc217"
+        ],
+        [
+          "anchor_ids",
+          "7a117cba-3d4e-411f-8cd7-131b7996e81d"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-device-back",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航图包"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-library-pack-return",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "1"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-library-pack-return",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "1"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-library-pack-return",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-library-pack-return",
+      "query": [
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ],
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-library-pack-return",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "24"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback-defaults",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/rounds",
+      "status": 201,
+      "phase": "nav-library-pack-return",
+      "body": {
+        "request_id": "1793082088358833-4672021f",
+        "order": "sequential",
+        "scope": {
+          "tag_ids": [
+            "35df5263-0688-4afa-a098-4b1eaf7191a5"
+          ]
+        },
+        "anchor_video_id": "08e49d4b-ed9f-456e-88f8-fb8631d58fc0",
+        "membership": "fixed",
+        "source": "tags",
+        "sort": "name",
+        "name_locale": "zh-CN"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/rounds/7c70c50e-82fc-49aa-a26b-91fecfea5afa/entries",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/rounds/7c70c50e-82fc-49aa-a26b-91fecfea5afa/entries",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/rounds/7c70c50e-82fc-49aa-a26b-91fecfea5afa/opened",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/rounds/7c70c50e-82fc-49aa-a26b-91fecfea5afa/entries",
+      "status": 200,
+      "phase": "nav-library-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-tag-video-preview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-tag-video-preview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-tag-video-preview",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "24"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "anchor_ids",
+          "53249ba8-5fca-48dc-adcb-f56fec76c90d"
+        ],
+        [
+          "anchor_ids",
+          "08e49d4b-ed9f-456e-88f8-fb8631d58fc0"
+        ],
+        [
+          "anchor_ids",
+          "fa850132-a5c6-4531-b754-78715a53cb8d"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-tag-video-preview",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-tag-video-return",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "1"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "status": 200,
+      "phase": "nav-tag-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-tags",
+      "status": 200,
+      "phase": "nav-tag-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-tag-video-return",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "1"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-tag-video-return",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "1"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-tag-video-return",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-tag-video-return",
+      "query": [
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-tag-video-return",
+      "query": [
+        [
+          "offset",
+          "24"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ]
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-sessions",
+      "status": 201,
+      "phase": "nav-tag-video-return",
+      "body": {
+        "request_id": "1793082096511781-1008637866-2",
+        "scope": {
+          "directory_id": null,
+          "search": "",
+          "tag_ids": [
+            "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+          ],
+          "read_state": "all"
+        },
+        "source": "tags",
+        "sort": "title",
+        "order": "sequential",
+        "anchor_pack_id": "cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f/pages",
+      "status": 200,
+      "phase": "nav-tag-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-tag-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/d872db1e-047e-4191-8e72-d4bb69f1e258/image",
+      "status": 200,
+      "phase": "nav-tag-video-return"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-sessions/a5cf45df-1314-417d-91ce-da966afb475d/opened",
+      "status": 200,
+      "phase": "nav-tag-video-return",
+      "body": {
+        "request_id": "1793082097410951-2063346489-3",
+        "expected_session_revision": 0,
+        "expected_revision": 1,
+        "content_version": 1,
+        "pack_id": "cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f",
+        "page_id": "d872db1e-047e-4191-8e72-d4bb69f1e258"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-sessions/a5cf45df-1314-417d-91ce-da966afb475d/entries",
+      "status": 200,
+      "phase": "nav-tag-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-tag-pack-reader"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-tag-pack-reader",
+      "query": [
+        [
+          "offset",
+          "24"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ],
+        [
+          "anchor_ids",
+          "984ee8ac-e53b-4fda-a2dc-8045e8995b64"
+        ],
+        [
+          "anchor_ids",
+          "cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f"
+        ],
+        [
+          "anchor_ids",
+          "ba1fb50f-2588-4a0b-a997-888a237c1272"
+        ],
+        [
+          "anchor_ids",
+          "117f89f4-d9f4-4968-bfec-41df18f522c8"
+        ],
+        [
+          "anchor_ids",
+          "d02e66e0-fe97-485f-8b3d-0850d9dffa25"
+        ],
+        [
+          "anchor_ids",
+          "5dda92ac-7a2f-4916-92d3-e737ad534335"
+        ],
+        [
+          "anchor_ids",
+          "c0a8cf8d-1638-4c4f-a7b0-9a0ae66ccec6"
+        ],
+        [
+          "anchor_ids",
+          "854c4adc-2303-4418-85d5-c4e8d2747908"
+        ],
+        [
+          "anchor_ids",
+          "6332b2e0-6df9-4eda-ae79-fbdae7b6da4d"
+        ],
+        [
+          "anchor_ids",
+          "bde28335-db7c-4758-b7c4-af2619eef8ae"
+        ],
+        [
+          "anchor_ids",
+          "173fb4d9-27b3-422d-afc2-dd137eae6eb7"
+        ],
+        [
+          "anchor_ids",
+          "053a6dd5-5a44-4170-8a84-9ccd95d624e6"
+        ],
+        [
+          "anchor_ids",
+          "5a2b7782-2875-426d-a0c9-d6affabc520b"
+        ],
+        [
+          "anchor_ids",
+          "73828409-bea3-46d2-8944-ef91b071f1c4"
+        ],
+        [
+          "anchor_ids",
+          "f1bfec65-2766-40ad-ad1e-3c126defc217"
+        ],
+        [
+          "anchor_ids",
+          "7a117cba-3d4e-411f-8cd7-131b7996e81d"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-tag-pack-reader",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-tag-pack-return",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-tag-pack-return",
+      "query": [
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-tag-pack-return",
+      "query": [
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-tag-pack-return",
+      "query": [
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "sort",
+          "recent"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback-defaults",
+      "status": 200,
+      "phase": "nav-tag-pack-return"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/rounds",
+      "status": 201,
+      "phase": "nav-tag-pack-return",
+      "body": {
+        "request_id": "1793082101744686-21ff23e0",
+        "order": "sequential",
+        "scope": {
+          "tag_ids": []
+        },
+        "anchor_video_id": "08e49d4b-ed9f-456e-88f8-fb8631d58fc0",
+        "membership": "fixed",
+        "source": "recent",
+        "sort": "recent"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/rounds/dd032a76-be47-45d8-a857-1e6296db0b7e/opened",
+      "status": 200,
+      "phase": "nav-tag-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-tag-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-tag-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-tag-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-tag-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-tag-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "status": 200,
+      "phase": "nav-tag-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/rounds/dd032a76-be47-45d8-a857-1e6296db0b7e/entries",
+      "status": 200,
+      "phase": "nav-tag-pack-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-recent-video-preview"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/stream",
+      "status": 200,
+      "phase": "nav-device-back"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-device-back"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-device-back",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "anchor_ids",
+          "08e49d4b-ed9f-456e-88f8-fb8631d58fc0"
+        ],
+        [
+          "anchor_ids",
+          "53249ba8-5fca-48dc-adcb-f56fec76c90d"
+        ],
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-recent-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-recent-video-return",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-recent-video-return",
+      "query": [
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "sort",
+          "recent"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-sessions",
+      "status": 201,
+      "phase": "nav-recent-video-return",
+      "body": {
+        "request_id": "1793082108728380-1979431771-4",
+        "scope": {
+          "directory_id": null,
+          "search": "",
+          "tag_ids": [],
+          "read_state": "all"
+        },
+        "source": "recent",
+        "sort": "recent",
+        "order": "sequential",
+        "anchor_pack_id": "cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f/pages",
+      "status": 200,
+      "phase": "nav-recent-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pages/d872db1e-047e-4191-8e72-d4bb69f1e258/image",
+      "status": 200,
+      "phase": "nav-recent-video-return"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/pack-sessions/f2241080-0d6f-4d87-87d3-5a8e870456af/opened",
+      "status": 200,
+      "phase": "nav-recent-video-return",
+      "body": {
+        "request_id": "1793082109611727-3439471849-5",
+        "expected_session_revision": 0,
+        "expected_revision": 2,
+        "content_version": 1,
+        "pack_id": "cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f",
+        "page_id": "d872db1e-047e-4191-8e72-d4bb69f1e258"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/pack-sessions/f2241080-0d6f-4d87-87d3-5a8e870456af/entries",
+      "status": 200,
+      "phase": "nav-recent-video-return"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-device-back"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-device-back",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ],
+        [
+          "anchor_ids",
+          "cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-recent-pack-return",
+      "query": [
+        [
+          "offset",
+          "24"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航图包"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ],
+        [
+          "anchor_ids",
+          "984ee8ac-e53b-4fda-a2dc-8045e8995b64"
+        ],
+        [
+          "anchor_ids",
+          "cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f"
+        ],
+        [
+          "anchor_ids",
+          "ba1fb50f-2588-4a0b-a997-888a237c1272"
+        ],
+        [
+          "anchor_ids",
+          "117f89f4-d9f4-4968-bfec-41df18f522c8"
+        ],
+        [
+          "anchor_ids",
+          "d02e66e0-fe97-485f-8b3d-0850d9dffa25"
+        ],
+        [
+          "anchor_ids",
+          "5dda92ac-7a2f-4916-92d3-e737ad534335"
+        ],
+        [
+          "anchor_ids",
+          "c0a8cf8d-1638-4c4f-a7b0-9a0ae66ccec6"
+        ],
+        [
+          "anchor_ids",
+          "854c4adc-2303-4418-85d5-c4e8d2747908"
+        ],
+        [
+          "anchor_ids",
+          "6332b2e0-6df9-4eda-ae79-fbdae7b6da4d"
+        ],
+        [
+          "anchor_ids",
+          "bde28335-db7c-4758-b7c4-af2619eef8ae"
+        ],
+        [
+          "anchor_ids",
+          "173fb4d9-27b3-422d-afc2-dd137eae6eb7"
+        ],
+        [
+          "anchor_ids",
+          "053a6dd5-5a44-4170-8a84-9ccd95d624e6"
+        ],
+        [
+          "anchor_ids",
+          "5a2b7782-2875-426d-a0c9-d6affabc520b"
+        ],
+        [
+          "anchor_ids",
+          "73828409-bea3-46d2-8944-ef91b071f1c4"
+        ],
+        [
+          "anchor_ids",
+          "f1bfec65-2766-40ad-ad1e-3c126defc217"
+        ],
+        [
+          "anchor_ids",
+          "7a117cba-3d4e-411f-8cd7-131b7996e81d"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-recent-pack-return",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航图包"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "title"
+        ],
+        [
+          "tag_ids",
+          "ffb9b66a-ceb6-4b02-afd9-12fadfe78ecd"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-recent-pack-return",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "24"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "anchor_ids",
+          "46f54286-9a38-42ad-8415-ecd58dffa301"
+        ],
+        [
+          "anchor_ids",
+          "53249ba8-5fca-48dc-adcb-f56fec76c90d"
+        ],
+        [
+          "anchor_ids",
+          "9010764f-713d-4277-b085-4d2d309a06ca"
+        ],
+        [
+          "search",
+          "导航视频"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "newest"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-recent-pack-return",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航视频"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "newest"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-library-isolation",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航视频 01"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "newest"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-library-isolation",
+      "query": [
+        [
+          "source",
+          "library"
+        ],
+        [
+          "search",
+          "导航视频 01"
+        ],
+        [
+          "sort",
+          "newest"
+        ],
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback-defaults",
+      "status": 200,
+      "phase": "nav-library-isolation"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/rounds",
+      "status": 201,
+      "phase": "nav-library-isolation",
+      "body": {
+        "request_id": "1793082116787472-55c13d2c",
+        "order": "sequential",
+        "scope": {
+          "tag_ids": [
+            "35df5263-0688-4afa-a098-4b1eaf7191a5"
+          ],
+          "search": "导航视频 01"
+        },
+        "anchor_video_id": "18ba7cb6-d8ad-462d-9629-d321e86399a6",
+        "membership": "fixed",
+        "source": "library",
+        "sort": "newest"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/18ba7cb6-d8ad-462d-9629-d321e86399a6/stream",
+      "status": 200,
+      "phase": "nav-library-isolation"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/rounds/a64c4765-6669-4592-b3f1-19f3c03c4e00/opened",
+      "status": 200,
+      "phase": "nav-library-isolation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-library-isolation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/18ba7cb6-d8ad-462d-9629-d321e86399a6/stream",
+      "status": 200,
+      "phase": "nav-library-isolation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-library-isolation",
+      "query": [
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/18ba7cb6-d8ad-462d-9629-d321e86399a6/stream",
+      "status": 200,
+      "phase": "nav-library-isolation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-library-isolation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "status": 200,
+      "phase": "nav-library-isolation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/recent",
+      "status": 200,
+      "phase": "nav-library-isolation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-library-isolation",
+      "query": [
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-library-isolation",
+      "query": [
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/info",
+      "status": 200,
+      "phase": "nav-stop-ready"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "status": 200,
+      "phase": "nav-stop-ready"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-stop-ready",
+      "query": [
+        [
+          "status",
+          "missing"
+        ],
+        [
+          "limit",
+          "1"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "status": 200,
+      "phase": "nav-stop-ready"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200,
+      "phase": "nav-stop-ready"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "status": 200,
+      "phase": "nav-stop-ready"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "status": 200,
+      "phase": "nav-stop-ready"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-stop-ready",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          "导航视频 01"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "newest"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/18ba7cb6-d8ad-462d-9629-d321e86399a6/thumbnail",
+      "status": 200,
+      "phase": "nav-stop-ready"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "status": 200,
+      "phase": "nav-stop-ready"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/recent",
+      "status": 200,
+      "phase": "nav-stop-ready"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-cold-library",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "1"
+        ],
+        [
+          "source",
+          "tags"
+        ],
+        [
+          "sort",
+          "name"
+        ],
+        [
+          "name_locale",
+          "zh-CN"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "status": 200,
+      "phase": "nav-cold-library"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-cold-tags",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/08e49d4b-ed9f-456e-88f8-fb8631d58fc0/thumbnail",
+      "status": 200,
+      "phase": "nav-cold-tags"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos/53249ba8-5fca-48dc-adcb-f56fec76c90d/thumbnail",
+      "status": 200,
+      "phase": "nav-cold-tags"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-cold-tags",
+      "query": [
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "sort",
+          "recent"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-cold-recent-video",
+      "query": [
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "sort",
+          "recent"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs/cd2f28df-7e1c-4e4e-b7ea-cd4fe0414e5f/cover",
+      "status": 200,
+      "phase": "nav-cold-recent-video"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/packs",
+      "status": 200,
+      "phase": "nav-cold-recent-video",
+      "query": [
+        [
+          "source",
+          "recent"
+        ],
+        [
+          "search",
+          ""
+        ],
+        [
+          "sort",
+          "recent"
+        ],
+        [
+          "read_state",
+          "all"
+        ],
+        [
+          "limit",
+          "200"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200,
+      "phase": "nav-device-back",
+      "query": [
+        [
+          "tag_ids",
+          "35df5263-0688-4afa-a098-4b1eaf7191a5"
+        ],
+        [
+          "offset",
+          "0"
+        ],
+        [
+          "limit",
+          "24"
+        ],
+        [
+          "anchor_ids",
+          "18ba7cb6-d8ad-462d-9629-d321e86399a6"
+        ],
+        [
+          "search",
+          "导航视频 01"
+        ],
+        [
+          "source",
+          "library"
+        ],
+        [
+          "sort",
+          "newest"
+        ]
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/recent",
+      "status": 200,
+      "phase": "nav-device-back"
+    }
+  ]
+}

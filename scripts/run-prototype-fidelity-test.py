@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import shutil
+import sqlite3
 import struct
 import subprocess
 import threading
@@ -24,13 +25,15 @@ p.add_argument("--height", type=int, default=905)
 p.add_argument("--width", type=int, default=390)
 p.add_argument("--scale", choices=("1", "2"), default="1")
 p.add_argument("--expected-columns", choices=(2, 4), type=int, default=2)
+p.add_argument("--cold-source", choices=("library", "tags", "recent"), default="library")
 p.add_argument(
     "--scenario",
-    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings", "preview-lifecycle", "preview-stability", "video-tag-definitions"),
+    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings", "preview-lifecycle", "preview-stability", "video-tag-definitions", "navigation-restart"),
     default="fidelity",
 )
 args = p.parse_args()
 scenes = {
+    "navigation-restart": ["nav-start", "nav-sort-menu", "nav-sort-selected", "nav-video-draft", "nav-pack-draft", "nav-library-video-preview", "nav-library-video-panel", "nav-library-video-panel-return", "nav-library-video-return", "nav-library-pack-reader", "nav-library-pack-panel", "nav-library-pack-panel-return", "nav-library-pack-return", "nav-tag-video-preview", "nav-tag-video-return", "nav-tag-pack-reader", "nav-tag-pack-return", "nav-recent-video-preview", "nav-recent-video-return", "nav-recent-pack-reader", "nav-recent-pack-return", "nav-library-isolation", "nav-stop-ready", "nav-cold-library", "nav-cold-tags", "nav-cold-recent-video", "nav-cold-recent-pack", "nav-cold-final-library"],
     "video-tag-definitions": ["tagdef-video", "tagdef-create-keyboard", "tagdef-create-conflict", "tagdef-created", "tagdef-rename-conflict", "tagdef-rename-failure", "tagdef-renamed", "tagdef-pack", "tagdef-remove-confirm", "tagdef-remove-cancel", "tagdef-remove-failure", "tagdef-removed", "tagdef-reopened", "tagdef-pack-final", "tagdef-library"],
     "preview-stability": ["stability-library", "stability-filter", "stability-preview", "stability-editor", "stability-saved", "stability-readback", "stability-added", "stability-frozen-queue", "stability-return", "stability-second-preview", "stability-tag-deleted", "stability-second-queue", "stability-empty", "stability-cleared"],
     "preview-lifecycle": ["lifecycle-library", "lifecycle-playing", "lifecycle-paused", "lifecycle-fullscreen-paused", "lifecycle-fullscreen-playing", "lifecycle-device-levels", "lifecycle-boost", "lifecycle-fullscreen-recovered", "lifecycle-inline-restored", "lifecycle-inline-recovered", "lifecycle-swipes", "lifecycle-preload-off", "lifecycle-single-decoder", "lifecycle-single-swiped", "lifecycle-return"],
@@ -104,6 +107,7 @@ scenes = {
     ],
 }[args.scenario]
 integration_file = {
+    "navigation-restart": "server_navigation_restart_test.dart",
     "video-tag-definitions": "server_video_tag_definitions_test.dart",
     "preview-stability": "server_preview_state_stability_test.dart",
     "preview-lifecycle": "server_preview_lifecycle_test.dart",
@@ -178,7 +182,7 @@ def media():
 original = {name: shell("wm", name) for name in ("size", "density")}
 font = shell("settings", "get", "system", "font_scale")
 save("original-viewport.json", {"display":original, "font":font})
-if args.scenario in {"preview-lifecycle", "video-tag-definitions"}:
+if args.scenario in {"preview-lifecycle", "video-tag-definitions", "navigation-restart"}:
     assert shell("getprop", "ro.boot.qemu.avd_name") == "video_viewer_api_36"
     assert shell("getprop", "sys.boot_completed") == "1"
     save("environment.json", {
@@ -218,6 +222,7 @@ paths += [
     "apps/mobile/integration_test/server_preview_lifecycle_test.dart",
     "apps/mobile/integration_test/server_preview_state_stability_test.dart",
     "apps/mobile/integration_test/server_video_tag_definitions_test.dart",
+    "apps/mobile/integration_test/server_navigation_restart_test.dart",
     "apps/mobile/test/viewer_return_counts_test.dart",
     "apps/mobile/integration_test/server_settings_panels_test.dart",
     "apps/mobile/integration_test/server_connection_test.dart",
@@ -276,6 +281,12 @@ def watch():
             name = current["display"]
             if not name or current["ack"]:
                 continue
+            if args.scenario == "navigation-restart" and name == "nav-device-back":
+                response = shell("input", "keyevent", "4")
+                actions.append({"name": name, "command": ["input", "keyevent", "4"], "response": response, "pid": shell("pidof", "io.github.shijijs.video_viewer")})
+                save("device-actions.json", actions)
+                state("/ack/" + name, post=True)
+                continue
             if args.scenario == "preview-lifecycle" and name.startswith("lifecycle-device-") and name != "lifecycle-device-levels":
                 if name == "lifecycle-device-home":
                     command = ["input", "keyevent", "3"]
@@ -324,6 +335,76 @@ def watch():
         errors.append(repr(error))
 
 
+def navigation_run(command, log):
+    package = "io.github.shijijs.video_viewer"
+    old_pid = None
+    events = []
+
+    def snapshot(name):
+        connection = sqlite3.connect("file:" + str(base / "data/library.sqlite3") + "?mode=ro", uri=True)
+        connection.row_factory = sqlite3.Row
+        try:
+            connection.execute("BEGIN")
+            result = {table: sorted([dict(row) for row in connection.execute("SELECT * FROM " + table)], key=lambda row: json.dumps(row, sort_keys=True)) for table in ["playback_rounds", "round_entries", "recent_entries", "pack_sessions", "pack_session_entries", "pack_progress", "pack_preferences"]}
+            save(name, result)
+            return result
+        finally:
+            connection.close()
+
+    def pid():
+        return subprocess.run([str(ADB), "-s", "emulator-5554", "shell", "pidof", package], capture_output=True, text=True, timeout=10, check=False).stdout.strip()
+
+    for phase in (0, 1):
+        if phase:
+            before_resume = state()["requests"]
+            save("requests-before-resume.json", before_resume)
+        invocation = [*command, "--dart-define=NAV_COLD_SOURCE=" + args.cold_source]
+        if phase:
+            invocation.append("--dart-define=NAV_RESTART_RESUME=true")
+        process = subprocess.Popen(invocation, cwd=ROOT / "apps/mobile", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        timer = threading.Timer(480, process.kill)
+        timer.start()
+        reopened = False
+        try:
+            with (out / f"phase-{phase}.log").open("w") as phase_log:
+                for line in process.stdout:
+                    log.write(line)
+                    log.flush()
+                    phase_log.write(line)
+                    phase_log.flush()
+                    if "NAVIGATION_STOP_READY:" in line:
+                        assert phase == 0 and old_pid is None
+                        save("before-stop.json", json.loads(line.split("NAVIGATION_STOP_READY:", 1)[1]))
+                        old_pid = pid()
+                        assert old_pid
+                        before_stop = snapshot("sql-before-stop.json")
+                        shell("am", "force-stop", package)
+                        assert not pid()
+                        events.append({"event": "force-stop", "old_pid": old_pid, "absent": True})
+                        save("restart-events.json", events)
+                    if "NAVIGATION_NEW_PROCESS" in line:
+                        current = pid()
+                        assert phase == 1 and current and current != old_pid
+                        reopened = True
+                        events.append({"event": "new-process", "old_pid": old_pid, "new_pid": current})
+                        save("restart-events.json", events)
+                code = process.wait(timeout=20)
+            if phase == 0:
+                assert old_pid and not pid(), "No verified force-stop"
+            else:
+                assert code == 0 and reopened
+                assert snapshot("sql-after-resume.json") == before_stop
+                after_resume = state()["requests"]
+                assert after_resume[:len(before_resume)] == before_resume
+                save("resumed-requests.json", after_resume[len(before_resume):])
+        finally:
+            timer.cancel()
+            if process.poll() is None:
+                process.kill()
+                process.wait(timeout=20)
+    return subprocess.CompletedProcess(command, 0)
+
+
 try:
     container = run(
         "docker",
@@ -359,6 +440,8 @@ try:
         "VV_FIDELITY_PREVIEW_MUTATION=" + ("enabled" if args.scenario == "preview-stability" else "disabled"),
         "-e",
         "VV_FIDELITY_TAG_DEFINITIONS=" + ("enabled" if args.scenario == "video-tag-definitions" else "disabled"),
+        "-e",
+        "VV_FIDELITY_NAVIGATION_RESTART=" + ("enabled" if args.scenario == "navigation-restart" else "disabled"),
         "-e",
         "VV_PASSPHRASE_FILE=/fixture/passphrase",
         "-e",
@@ -413,7 +496,7 @@ try:
             assert error.code == 403
             save("control-guard.json", {"invalid_key_status": error.code, "mode_after": state()["tag_definition_failure"]})
     before = media()
-    assert len(before) == (27 if args.scenario == "preview-lifecycle" else 26)
+    assert len(before) == (189 if args.scenario == "navigation-restart" else 27 if args.scenario == "preview-lifecycle" else 26)
     save("media-before.json", before)
     shell("wm", "size", f"{args.width * 3}x{args.height * 3}")
     shell("wm", "density", "480")
@@ -421,8 +504,7 @@ try:
     watcher = threading.Thread(target=watch, daemon=True)
     watcher.start()
     with (out / "flutter.log").open("w") as log:
-        result = subprocess.run(
-            [
+        command = [
                 "bash",
                 str(ROOT / "scripts/dev.sh"),
                 "flutter",
@@ -434,13 +516,8 @@ try:
                 "emulator-5554",
                 "--reporter",
                 "expanded",
-            ],
-            cwd=ROOT / "apps/mobile",
-            stdout=log,
-            stderr=subprocess.STDOUT,
-            timeout=480,
-            check=False,
-        )
+            ]
+        result = navigation_run(command, log) if args.scenario == "navigation-restart" else subprocess.run(command, cwd=ROOT / "apps/mobile", stdout=log, stderr=subprocess.STDOUT, timeout=480, check=False)
     end_recording()
     save("recordings.json", recordings)
     save("fixture-final.json", state())
@@ -478,6 +555,7 @@ try:
             "scale": args.scale,
             "scenario": args.scenario,
             "known_video_frame_checks": len(video_frames),
+            **({"cold_source": args.cold_source} if args.scenario == "navigation-restart" else {}),
         },
     )
     print(json.dumps({"passed": True, "screens": screens, "output": str(out)}))
@@ -517,6 +595,14 @@ finally:
         raise
     finally:
         if container:
+            try:
+                final_state = state()
+                save("fixture-final.json", final_state)
+                save("requests.json", final_state["requests"])
+                if (out / "flutter.log").exists() and not (out / "metrics.json").exists():
+                    save("metrics.json", [json.loads(row.split("FIDELITY_METRICS:", 1)[1]) for row in (out / "flutter.log").read_text().splitlines() if "FIDELITY_METRICS:" in row])
+            except Exception as error:  # noqa: BLE001 - preserve the original test failure
+                save("final-state-error.json", {"error": repr(error)})
             (out / "server.log").write_text(
                 subprocess.run(
                     ["docker", "logs", container],

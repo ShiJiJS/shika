@@ -2,7 +2,7 @@
 
 更新：2026-10-27。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
-当前整合阶段：[PR #81](https://github.com/ShiJiJS/video_viewer/pull/81)，生产6f7ce97修复标签目录离页／销毁后的异步计数。51项相关检查、普通三轮45点与大字／横屏各15点通过；视频定义真实CRUD、同名隔离、失败重试和取消／重开读回已补证。下方各历史段落保留固定源码及驱动归属，完整终验仍开放。
+当前整合阶段：[PR #82](https://github.com/ShiJiJS/video_viewer/pull/82)，固定c994273，生产／组件树与#81相同。25项导航／返回检查、六来源完整路径与三种最后来源的真实强停冷启84点通过；新PID只读恢复、无自动播放、189源SHA及七表快照相同。总览缩略图503恢复另由[#83](https://github.com/ShiJiJS/video_viewer/issues/83)继续；下方历史记录保留各自固定版本边界，完整终验仍开放。
 
 共享布局阶段基线为a9da395；最新图包续读阶段源码为c4aaf3b，见[真实续读约定](LF8-PACK-CONTINUATION.md)与[原生证据](evidence/lf8-pack-continuation/README.md)。后续分类总数阶段源码910cfb2，见[库存约定](LF8-CATALOG-COUNTS.md)与[库存/横屏及续读回归证据](evidence/lf8-catalog-counts/README.md)。该段补同快照总数、未知重试和标签缩高布局；续读段新增真实续读、独立摘要读取与菜单收键盘；共享布局的设置开关、标签确认区和主题稳定证据继续作为历史基线。图包呈现/排序阶段为4e391a2，见[约定](LF8-PACK-PRESENTATION.md)与[69点同版证据](evidence/lf8-pack-presentation/README.md)；主标题/作者和完整范围排序已补，新增大字长操作行可达性修正。原型树1cbf605未改。各阶段链接中的实现提交、真实服务/Demo区分、操作步骤与原始证据继续有效，但未来修改后须按受影响路径复核，不能把历史全集视为当前HEAD所有组合已通过。
 
@@ -22,9 +22,9 @@
 
 | 验收ID | 当前证据状态 | 证据入口（含该阶段实现提交/步骤） | 尚需完成 |
 | --- | --- | --- | --- |
-| NAV-01 | 已有阶段证据 / 未收口 | [LF4设计与阶段记录](LF4.md) | 合并当前分支后复跑完整来源/筛选/冷启组合，并记录实际系统返回路径。 |
-| NAV-02 | 已有阶段证据 / 未收口 | [LF4设计与阶段记录](LF4.md)、[当前预览系统返回](evidence/lf8-preview-lifecycle/README.md) | 新增实际系统返回先退全屏、保留预览和原固定范围及显式返回媒体库；合并当前分支后复跑完整来源/筛选/冷启组合，并记录实际系统返回路径。 |
-| NAV-03 | 已有阶段证据 / 未收口 | [LF4设计与阶段记录](LF4.md) | 合并当前分支后复跑完整来源/筛选/冷启组合，并记录实际系统返回路径。 |
+| NAV-01 | 新增三来源真实冷启动 / 设置页强停路径通过 | [LF4契约](LF4.md)、[当前三轮84点](evidence/lf8-navigation-restart/README.md) | 当前整合分支library／tags／recent三种保存来源均默认进入媒体库，仅恢复所属条件；专属安全键新PID免口令、无新范围／opened／stream。内容播放／阅读中强停、断线和目标安装组合继续。 |
+| NAV-02 | 新增六来源与系统返回 / 明确组合通过 | [当前导航与位置](evidence/lf8-navigation-restart/README.md)、[全屏返回](evidence/lf8-preview-lifecycle/README.md) | 两类型×媒体库／标签／最近均实际进入返回；两类前两来源跨24分页、完整27成员与同卡片位置，系统返回先关队列／总览。其它目录／属性筛选、失效／空来源及目标终验继续，不将少量最近当长列表。 |
+| NAV-03 | 新增双类型与三来源隔离 / 明确组合通过 | [LF4契约](LF4.md)、[当前导航／冷启](evidence/lf8-navigation-restart/README.md) | 搜索、同名独立标签、不同排序、各1项选择切换以及最近不继承媒体库条件已实测；三种最后来源的冷启动恢复分属对应入口。其它连接／异常组合与整体目标终验仍按相应条目推进。 |
 | LIB-01 | 新增视频中文顺序证据 / 未收口 | [LF4阶段记录](LF4.md)、[权威总数](evidence/lf8-catalog-counts/README.md)、[中文顺序](evidence/lf8-video-name-order/README.md) | 分类总数及视频列表/锚点/全选/固定范围的中文顺序已补证；最近段补显示标题/时长和24项/120项窗口、页尾锚点；长列表其它来源/失败组合继续。 |
 | LIB-02 | 新增卡片/网格证据 / 未收口 | [LF4阶段记录](LF4.md)、[续读](evidence/lf8-pack-continuation/README.md)、[总数](evidence/lf8-catalog-counts/README.md)、[呈现/排序](evidence/lf8-pack-presentation/README.md)、[卡片/网格](evidence/lf8-card-layout/README.md) | 标题/作者、完整范围中文排序、共享标签12/1.6与4dp间距及短横屏四列已补证；长列表完整来源/失败组合继续。 |
 | LIB-03 | 新增视频跨页顺序证据 / 未收口 | [LF4阶段记录](LF4.md)、[摘要独立于分页](LF8-PACK-CONTINUATION.md)、[视频排序约定](LF8-VIDEO-NAME-ORDER.md) | 图包28项和视频27项分别补完整排序/锚点/全选/固定范围一致，新增/改名后不重排；补来源标签删除后的0结果不扩库、显式清除后3项与返回权威总数刷新；其它完整来源/跨页失败组合继续。 |
@@ -37,7 +37,7 @@
 | PRE-05 | 新增当前预览全屏/后台行为三轮 / 未收口 | [LF3](LF3.md)、[当前链路](evidence/lf8-preview-lifecycle/README.md)、[绿边#78](https://github.com/ShiJiJS/video_viewer/issues/78) | 真实Home六次释放全部网络播放器、返回暂停/基础速度；当前及前后共3项、关闭准备后1项和离页释放已补三轮。其它迟到回执/重叠初始化、故障/强停及目标设备继续。 |
 | PKG-01 | 已有阶段证据 / 未收口 | [LF2](LF2.md) | 最终同版重扫/离线/缺失/失败读取组合；真实NAS可丢弃样本复核。 |
 | PKG-02 | 已有阶段证据 / 未收口 | [LF2](LF2.md) | 最终同版重扫/离线/缺失/失败读取组合；真实NAS可丢弃样本复核。 |
-| PKG-03 | 新增瞬断重试检查 / 未收口 | [LF2](LF2.md)、[传输重试与长包](evidence/lf8-reader-long-pack/README.md) | 新增Socket/HttpException有界自动重试、手动恢复及离页取消组件检查；最终同版重扫/离线/缺失/失败读取组合；真实NAS可丢弃样本复核。 |
+| PKG-03 | 新增瞬断重试检查 / 总览503恢复待修 | [LF2](LF2.md)、[传输重试与长包](evidence/lf8-reader-long-pack/README.md)、[总览问题#83](https://github.com/ShiJiJS/video_viewer/issues/83) | 已有Socket/HttpException有界自动重试、手动恢复及离页取消组件检查；当前原图出现两张总览缩略图503后停在手动重试，需补有界自动恢复与读回，不计成功加载。最终同版重扫／离线／缺失／其它失败及NAS样本复核继续。 |
 | READ-01 | 新增长包/大图链路证据 / 未收口 | [LF5](LF5.md)、[阅读器82点](evidence/lf8-reader-chrome/README.md)、[500页三轮](evidence/lf8-reader-long-pack/README.md) | 新增真实总览跳页和普通/大字/短横屏画布证据；完整左右方向/缩放/手势及目标手机组合继续。 本段补实际500页单调滚动、末页横纵同页、固定范围/大图往返及重开末页和纵向偏好；未新增比例相等或其它组合证明。 |
 | READ-02 | 新增长包/大图链路证据 / 未收口 | [LF5](LF5.md)、[阅读器82点](evidence/lf8-reader-chrome/README.md)、[500页三轮](evidence/lf8-reader-long-pack/README.md) | 新增真实纵向拖动及同页比例保持；组件保留惰性布局/双向旋转回归。长包间距/末尾与性能同版收口继续。 本段补实际500页单调滚动、末页横纵同页、固定范围/大图往返及重开末页和纵向偏好；未新增比例相等或其它组合证明。 |
 | READ-03 | 新增长包/大图链路证据 / 未收口 | [LF5](LF5.md)、[阅读器82点](evidence/lf8-reader-chrome/README.md)、[500页三轮](evidence/lf8-reader-long-pack/README.md) | 新增模式设置初始完整主动作、同图切纵向及每包偏好重开恢复；全局默认/已设置包隔离与其它方向/适配组合继续。 本段补实际500页单调滚动、末页横纵同页、固定范围/大图往返及重开末页和纵向偏好；未新增比例相等或其它组合证明。 |
@@ -312,3 +312,15 @@ flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX�
 旁路取消域、惰性定位、未稳定IME图及外层字段留白检查失败均单列诊断，不计最终点；最终横屏亲看输入文字露出，不称键盘下所有动作同时可见。292项输入清单与只读复核通过，首批和追加AVD均恢复并关闭。未重跑全集或release、未发布APK。
 
 [实施范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/LF8-VIDEO-TAG-DEFINITIONS.md)／[固定源码、原图、API／SQL与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/evidence/lf8-video-tag-definitions/README.md)。本段补TAG-01及相关UI组合；历史记录保留各自版本边界，当前验收表不再列视频定义真实CRUD为未做。原型1cbf605独立可移除未改；正式8760／NAS／SDK和签名／版本未改，#24/#33/#78及整体验收仍开放。后续继续合并后的完整来源／冷启组合、更多异常与目标手机／NAS及原签名升级；需用户配合部分按授权暂跳过。
+
+## 2026-10-27：六来源导航与三种真实冷启动（PR #82）
+
+[Draft PR #82](https://github.com/ShiJiJS/video_viewer/pull/82)基于#81，固定生产／驱动c994273，生产和组件树未改。当前整合分支两类型×媒体库／标签／最近六条路径均实际进入内容并返回；两类前两来源跨24分页点击index25、完整27成员／序号和原卡片位置，队列／总览第一次系统返回只关面板。搜索、同名独立标签、排序、手动选择及最近条件隔离均核对。
+
+三轮最后保存来源分别library／tags／recent，均停在设置页后真实强停活PID、确认消失，新PID通过专属生产安全凭据键免口令初始化；媒体库只恢复所属范围，标签条件留在标签，最近不污染媒体库，不自动播放。普通390×844每轮28点共84点；25项相关组件、analyze／格式／Ruff通过。每轮189源SHA保持，重启只GET且无新登录／stream，播放／最近／阅读七表前后逐行相同；301项输入只读复核通过，显示配置恢复、专属AVD已关闭。
+
+首段有意强停导致工具失联／临时目录清理错误，不作普通绿灯；第二段完整通过。8次开发尝试的旁路参数／权威默认顺序／弱就绪／错误入口和过渡坐标均单列，不计最终点。没有重跑全集／release、大字／横屏，未发布APK。此段不是正式main发布包升级或正在播放／阅读中强停证明，其他目录／属性／故障组合及目标终验继续。
+
+原图另发现两张总览缩略图503后停在“重试”，已新建[#83](https://github.com/ShiJiJS/video_viewer/issues/83)补有界自动恢复、关闭后取消、持续失败与手动读回；本轮只通过面板返回，不把这些缩略图算成功解码。当前RESULTS.md已替换NAV旧待办并记录PKG-03这个具体缺口。
+
+[实施范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-navigation-restart/docs/plans/library-first/LF8-NAVIGATION-RESTART.md)／[固定源码、原图、PID、接口／SQL与复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-navigation-restart/docs/plans/library-first/evidence/lf8-navigation-restart/README.md)。原型1cbf605独立可移除未改；正式8760／NAS、默认凭据键、SDK和签名／版本未改。#24/#33/#78及整体验收保持开放，下一步先处理#83这个实际图片加载缺口，再继续其它明确余项；需用户配合部分按授权暂跳过。

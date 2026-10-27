@@ -40,6 +40,18 @@ def create_fidelity_app():
     ):
         raise RuntimeError("Requires dedicated prototype-fidelity fixture")
     descriptions = json.loads(Path("/fixture/packs.json").read_text())
+    navigation = os.environ.get("VV_FIDELITY_NAVIGATION_RESTART") == "enabled"
+    if navigation:
+        originals = descriptions
+        descriptions = [
+            {
+                **originals[index % len(originals)],
+                "id": "summer" if index == 0 else f"navigation-{index + 1:02d}",
+                "folder": f"导航图包 {index + 1:02d}",
+                "tags": list(dict.fromkeys([*originals[index % len(originals)]["tags"], "户外"])),
+            }
+            for index in range(27)
+        ]
     for pack in descriptions:
         target = Path("/media/packs") / pack["folder"]
         target.mkdir(parents=True, exist_ok=False)
@@ -56,6 +68,11 @@ def create_fidelity_app():
     ]
     if lifecycle:
         video_samples.append(("landscape", "补充横屏", "晨光里的花"))
+    if navigation:
+        video_samples = [
+            ("landscape" if index % 2 == 0 else "portrait", f"导航目录 {index + 1:02d}", f"导航视频 {index + 1:02d}")
+            for index in range(27)
+        ]
     for orientation, folder, title in video_samples:
         target = Path("/media/videos") / folder
         target.mkdir(parents=True, exist_ok=False)
@@ -81,6 +98,8 @@ def create_fidelity_app():
             if (request.url.path in ("/api/v1/pack-sessions", "/api/v1/rounds") and request.method == "POST")
             or ((preview_mutation or tag_definitions) and request.method in {"POST", "PATCH", "DELETE"}
                 and (request.url.path in {"/api/v1/video-tags", "/api/v1/tags"} or request.url.path.startswith("/api/v1/tags/")))
+            or (navigation and request.method in {"POST", "PATCH"}
+                and (request.url.path == "/api/v1/playback-defaults" or request.url.path.startswith("/api/v1/pack-sessions/") or request.url.path.endswith("/progress")))
             else None
         )
         counts_failure = (
@@ -165,12 +184,12 @@ def create_fidelity_app():
             app.state.scanner.submit()
             app.state.scanner.future.result(timeout=90)
             with app.state.db.read() as db:
-                if len(db.scalars(select(ImagePack)).all()) == 4:
+                if len(db.scalars(select(ImagePack)).all()) == len(descriptions):
                     break
         with app.state.db.write() as db:
             videos = db.scalars(select(Video)).all()
             packs = db.scalars(select(ImagePack)).all()
-            assert len(videos) == len(video_samples) and len(packs) == 4
+            assert len(videos) == len(video_samples) and len(packs) == len(descriptions)
             video_tags = {name: Tag(name=name) for name in ("户外", "自然", "喜欢")}
             pack_tags = {
                 name: PackTag(name=name) for name in ("和服", "户外", "白裙", "角色", "喜欢")
@@ -179,7 +198,7 @@ def create_fidelity_app():
             db.flush()
             for video in videos:
                 video.name = Path(video.name).stem
-                landscape = "风里" in video.name or "晨光" in video.name
+                landscape = video.width > video.height if navigation else "风里" in video.name or "晨光" in video.name
                 orientation = "landscape" if landscape else "portrait"
                 poster = f"fidelity-{orientation}.jpg"
                 shutil.copyfile(
@@ -209,7 +228,7 @@ def create_fidelity_app():
                         )
                     )
         state["prepared"] = True
-        return {"videos": len(video_samples), "packs": 4, "pages": sum(len(p["pages"]) for p in descriptions)}
+        return {"videos": len(video_samples), "packs": len(descriptions), "pages": sum(len(p["pages"]) for p in descriptions)}
 
     @app.get("/__fidelity/state")
     def status(x_fixture_key: str = Header()):

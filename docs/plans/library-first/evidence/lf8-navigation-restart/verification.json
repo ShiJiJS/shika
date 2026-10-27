@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "source": "c994273645da2cd12fb877d3e6851598dc75312c",
+  "production_changed": false,
+  "component_tests": 25,
+  "manifest_files": 301,
+  "points": 84,
+  "runs": {
+    "library": {
+      "points": 28,
+      "old_pid": "7190",
+      "new_pid": "7674",
+      "media": 189,
+      "sql_unchanged_after_restart": true
+    },
+    "tags": {
+      "points": 28,
+      "old_pid": "7978",
+      "new_pid": "8431",
+      "media": 189,
+      "sql_unchanged_after_restart": true
+    },
+    "recent": {
+      "points": 28,
+      "old_pid": "8758",
+      "new_pid": "9200",
+      "media": 189,
+      "sql_unchanged_after_restart": true
+    }
+  }
+}
