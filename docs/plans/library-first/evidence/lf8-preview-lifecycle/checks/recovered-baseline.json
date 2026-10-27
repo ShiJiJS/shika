@@ -1,0 +1,31 @@
+{
+  "before": {
+    "size": "Physical size: 1080x2400\nOverride size: 1170x2532",
+    "density": "Physical density: 420\nOverride density: 480",
+    "font": "1",
+    "volume": "[V] will control stream=3 (STREAM_MUSIC)\n[V] will get volume\n[V] Connecting to AudioService\n[V] volume is 6 in range [0..15]"
+  },
+  "after": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420",
+    "font": "1.0",
+    "volume": "[V] will control stream=3 (STREAM_MUSIC)\n[V] will get volume\n[V] Connecting to AudioService\n[V] volume is 6 in range [0..15]"
+  },
+  "baseline_source": "preview-lifecycle-02/restored-viewport.json and round3 initial native levels; original music=5/15",
+  "avd": "video_viewer_api_36",
+  "host_avc_decoder": "",
+  "userdata_preserved": true,
+  "native_audio_restoration": {
+    "before": {
+      "volume": 0.4,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "after": {
+      "volume": 0.3333333333333333,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    }
+  },
+  "native_audio_restored": true
+}

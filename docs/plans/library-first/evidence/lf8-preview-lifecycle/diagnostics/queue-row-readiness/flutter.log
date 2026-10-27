@@ -1,0 +1,38 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_preview_lifecycle_test.dart
+Running Gradle task 'assembleDebug'...                             23.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,400ms
+00:00 +0: current preview owns native fullscreen, gestures and background resources
+FIDELITY_METRICS:{"state":"lifecycle-library","physical":[1170.0,2532.0],"dpr":3.0,"round":"","current":null,"position":0,"total":0,"preload":true,"lifecycle":"resumed","events":[],"levels":{"volume":0.3333333333333333,"brightness":0.4,"windowBrightness":-1.0},"players":[]}
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following StateError was thrown running a test:
+Bad state: No element
+
+When the exception was thrown, this was the stack:
+#0      Iterable.single (dart:core/iterable.dart:694:25)
+#1      WidgetController.element (package:flutter_test/src/controller.dart:888:30)
+#2      WidgetController.ensureVisible (package:flutter_test/src/controller.dart:2389:32)
+#3      main.<anonymous closure>.enter (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_preview_lifecycle_test.dart:225:19)
+<asynchronous suspension>
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_preview_lifecycle_test.dart:299:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  current preview owns native fullscreen, gestures and background resources
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:34 +0 -1: current preview owns native fullscreen, gestures and background resources [E]
+  Test failed. See exception logs above.
+  The test description was: current preview owns native fullscreen, gestures and background resources
+  
+PREVIEW_DEVICE_RESTORED:{"volume":0.3333333333333333,"brightness":0.4,"windowBrightness":-1.0}
+00:35 +0 -1: (tearDownAll)
+00:36 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_preview_lifecycle_test.dart: current preview owns native fullscreen, gestures and background resources

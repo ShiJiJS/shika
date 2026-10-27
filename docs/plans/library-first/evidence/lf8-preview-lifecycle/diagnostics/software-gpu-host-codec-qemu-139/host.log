@@ -1,0 +1,34 @@
+/sdcard/preview-lifecycle-1793063893404680000.mp4: 1 file pulled, 0 skipped. 11.0 MB/s (511528 bytes in 0.044s)
+Warning: Activity not started, its current task has been brought to the front
+/sdcard/preview-lifecycle-1793063916039580000.mp4: 1 file pulled, 0 skipped. 47.3 MB/s (536705 bytes in 0.011s)
+/sdcard/preview-lifecycle-1793063944647842000.mp4: 1 file pulled, 0 skipped. 12.8 MB/s (172067 bytes in 0.013s)
+Warning: Activity not started, its current task has been brought to the front
+adb: error: failed to get feature set: device 'emulator-5554' not found
+adb: error: failed to get feature set: device 'emulator-5554' not found
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 393, in <module>
+    end_recording()
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 235, in end_recording
+    device("pull", record_path, str(out / filename))
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 142, in device
+    return subprocess.check_output([str(ADB), "-s", "emulator-5554", *cmd], timeout=20)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'pull', '/sdcard/preview-lifecycle-1793063952676570000.mp4', '/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview-lifecycle/preview-lifecycle-03/gesture-04.mp4']' returned non-zero exit status 1.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 426, in <module>
+    end_recording()
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 235, in end_recording
+    device("pull", record_path, str(out / filename))
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 142, in device
+    return subprocess.check_output([str(ADB), "-s", "emulator-5554", *cmd], timeout=20)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'pull', '/sdcard/preview-lifecycle-1793063952676570000.mp4', '/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview-lifecycle/preview-lifecycle-03/gesture-04.mp4']' returned non-zero exit status 1.

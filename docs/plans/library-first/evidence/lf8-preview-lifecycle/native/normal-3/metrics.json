@@ -1,0 +1,736 @@
+[
+  {
+    "state": "lifecycle-library",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "round": "",
+    "current": null,
+    "position": 0,
+    "total": 0,
+    "preload": true,
+    "play_requested": null,
+    "lifecycle": "resumed",
+    "events": [],
+    "levels": {
+      "volume": 0.3333333333333333,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": []
+  },
+  {
+    "state": "lifecycle-playing",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "round": "db46f1f0-47b3-438d-9200-eedc9b855ccb",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": true,
+    "play_requested": true,
+    "lifecycle": "resumed",
+    "events": [],
+    "levels": {
+      "volume": 0.3333333333333333,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/ce90d2d5-d9e8-4139-b32c-b8538c7d17b9/stream",
+        "controller_identity": 34506311,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 0.0,
+        "speed": 1.0,
+        "position_ms": 0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/8cf80e62-1db8-41bd-97c7-0241f35db66e/stream",
+        "controller_identity": 298232750,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 1.0,
+        "speed": 1.0,
+        "position_ms": 938
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-paused",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "round": "db46f1f0-47b3-438d-9200-eedc9b855ccb",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": true,
+    "play_requested": false,
+    "lifecycle": "resumed",
+    "events": [],
+    "levels": {
+      "volume": 0.3333333333333333,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/ce90d2d5-d9e8-4139-b32c-b8538c7d17b9/stream",
+        "controller_identity": 34506311,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 0.0,
+        "speed": 1.0,
+        "position_ms": 0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/8cf80e62-1db8-41bd-97c7-0241f35db66e/stream",
+        "controller_identity": 298232750,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 1.0,
+        "speed": 1.5,
+        "position_ms": 3483
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-fullscreen-paused",
+    "physical": [
+      2532.0,
+      1170.0
+    ],
+    "dpr": 3.0,
+    "round": "db46f1f0-47b3-438d-9200-eedc9b855ccb",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": true,
+    "play_requested": false,
+    "lifecycle": "resumed",
+    "events": [],
+    "levels": {
+      "volume": 0.3333333333333333,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/ce90d2d5-d9e8-4139-b32c-b8538c7d17b9/stream",
+        "controller_identity": 34506311,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 0.0,
+        "speed": 1.0,
+        "position_ms": 0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/8cf80e62-1db8-41bd-97c7-0241f35db66e/stream",
+        "controller_identity": 298232750,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 1.0,
+        "speed": 1.5,
+        "position_ms": 3483
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-fullscreen-playing",
+    "physical": [
+      2532.0,
+      1170.0
+    ],
+    "dpr": 3.0,
+    "round": "db46f1f0-47b3-438d-9200-eedc9b855ccb",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": true,
+    "play_requested": true,
+    "lifecycle": "resumed",
+    "events": [],
+    "levels": {
+      "volume": 0.3333333333333333,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/ce90d2d5-d9e8-4139-b32c-b8538c7d17b9/stream",
+        "controller_identity": 34506311,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 0.0,
+        "speed": 1.0,
+        "position_ms": 0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/8cf80e62-1db8-41bd-97c7-0241f35db66e/stream",
+        "controller_identity": 298232750,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": true,
+        "volume": 1.0,
+        "speed": 1.5,
+        "position_ms": 3483
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-device-levels",
+    "physical": [
+      2532.0,
+      1170.0
+    ],
+    "dpr": 3.0,
+    "round": "db46f1f0-47b3-438d-9200-eedc9b855ccb",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": true,
+    "play_requested": true,
+    "lifecycle": "resumed",
+    "events": [],
+    "levels": {
+      "volume": 0.4,
+      "brightness": 0.5831502079963684,
+      "windowBrightness": 0.5831502079963684
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/ce90d2d5-d9e8-4139-b32c-b8538c7d17b9/stream",
+        "controller_identity": 34506311,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 0.0,
+        "speed": 1.0,
+        "position_ms": 0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/8cf80e62-1db8-41bd-97c7-0241f35db66e/stream",
+        "controller_identity": 298232750,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": true,
+        "volume": 1.0,
+        "speed": 1.5,
+        "position_ms": 1396
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-boost",
+    "physical": [
+      2532.0,
+      1170.0
+    ],
+    "dpr": 3.0,
+    "round": "db46f1f0-47b3-438d-9200-eedc9b855ccb",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": true,
+    "play_requested": true,
+    "lifecycle": "resumed",
+    "events": [],
+    "levels": {
+      "volume": 0.4,
+      "brightness": 0.5831502079963684,
+      "windowBrightness": 0.5831502079963684
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/ce90d2d5-d9e8-4139-b32c-b8538c7d17b9/stream",
+        "controller_identity": 34506311,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 0.0,
+        "speed": 1.0,
+        "position_ms": 0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/8cf80e62-1db8-41bd-97c7-0241f35db66e/stream",
+        "controller_identity": 298232750,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": true,
+        "volume": 1.0,
+        "speed": 2.0,
+        "position_ms": 2266
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-fullscreen-recovered",
+    "physical": [
+      2532.0,
+      1170.0
+    ],
+    "dpr": 3.0,
+    "round": "db46f1f0-47b3-438d-9200-eedc9b855ccb",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": true,
+    "play_requested": false,
+    "lifecycle": "resumed",
+    "events": [
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed"
+    ],
+    "levels": {
+      "volume": 0.4,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/ce90d2d5-d9e8-4139-b32c-b8538c7d17b9/stream",
+        "controller_identity": 1021479294,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 0.0,
+        "speed": 1.0,
+        "position_ms": 0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/8cf80e62-1db8-41bd-97c7-0241f35db66e/stream",
+        "controller_identity": 255105089,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 1.0,
+        "speed": 1.5,
+        "position_ms": 0
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-inline-restored",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "round": "db46f1f0-47b3-438d-9200-eedc9b855ccb",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": true,
+    "play_requested": false,
+    "lifecycle": "resumed",
+    "events": [
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed",
+      "inactive",
+      "resumed"
+    ],
+    "levels": {
+      "volume": 0.4,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/8cf80e62-1db8-41bd-97c7-0241f35db66e/stream",
+        "controller_identity": 255105089,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 1.0,
+        "speed": 1.5,
+        "position_ms": 0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/ce90d2d5-d9e8-4139-b32c-b8538c7d17b9/stream",
+        "controller_identity": 397344832,
+        "initialized": false,
+        "size": [
+          0.0,
+          0.0
+        ],
+        "playing": false,
+        "volume": 1.0,
+        "speed": 1.0,
+        "position_ms": 0
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-inline-recovered",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "round": "db46f1f0-47b3-438d-9200-eedc9b855ccb",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": true,
+    "play_requested": false,
+    "lifecycle": "resumed",
+    "events": [
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed",
+      "inactive",
+      "resumed",
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed"
+    ],
+    "levels": {
+      "volume": 0.4,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/ce90d2d5-d9e8-4139-b32c-b8538c7d17b9/stream",
+        "controller_identity": 482342588,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 0.0,
+        "speed": 1.0,
+        "position_ms": 0
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/8cf80e62-1db8-41bd-97c7-0241f35db66e/stream",
+        "controller_identity": 842182320,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 1.0,
+        "speed": 1.5,
+        "position_ms": 0
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-swipes",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "round": "db46f1f0-47b3-438d-9200-eedc9b855ccb",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": true,
+    "play_requested": true,
+    "lifecycle": "resumed",
+    "events": [
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed",
+      "inactive",
+      "resumed",
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed"
+    ],
+    "levels": {
+      "volume": 0.4,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/ce90d2d5-d9e8-4139-b32c-b8538c7d17b9/stream",
+        "controller_identity": 482342588,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": false,
+        "volume": 0.0,
+        "speed": 1.0,
+        "position_ms": 2843
+      },
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/8cf80e62-1db8-41bd-97c7-0241f35db66e/stream",
+        "controller_identity": 335395557,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": true,
+        "volume": 1.0,
+        "speed": 1.0,
+        "position_ms": 0
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-preload-off",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "round": "db46f1f0-47b3-438d-9200-eedc9b855ccb",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": false,
+    "play_requested": null,
+    "lifecycle": "resumed",
+    "events": [
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed",
+      "inactive",
+      "resumed",
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed"
+    ],
+    "levels": {
+      "volume": 0.4,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": []
+  },
+  {
+    "state": "lifecycle-single-decoder",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "round": "77f2760c-0433-4062-98c7-77bc04939ddf",
+    "current": "8cf80e62-1db8-41bd-97c7-0241f35db66e",
+    "position": 0,
+    "total": 3,
+    "preload": false,
+    "play_requested": true,
+    "lifecycle": "resumed",
+    "events": [
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed",
+      "inactive",
+      "resumed",
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed"
+    ],
+    "levels": {
+      "volume": 0.4,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/8cf80e62-1db8-41bd-97c7-0241f35db66e/stream",
+        "controller_identity": 222020523,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": true,
+        "volume": 1.0,
+        "speed": 1.0,
+        "position_ms": 213
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-single-swiped",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "round": "77f2760c-0433-4062-98c7-77bc04939ddf",
+    "current": "ce90d2d5-d9e8-4139-b32c-b8538c7d17b9",
+    "position": 1,
+    "total": 3,
+    "preload": false,
+    "play_requested": true,
+    "lifecycle": "resumed",
+    "events": [
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed",
+      "inactive",
+      "resumed",
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed"
+    ],
+    "levels": {
+      "volume": 0.4,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": [
+      {
+        "source": "http://10.0.2.2:8768/api/v1/videos/ce90d2d5-d9e8-4139-b32c-b8538c7d17b9/stream",
+        "controller_identity": 468960677,
+        "initialized": true,
+        "size": [
+          960.0,
+          540.0
+        ],
+        "playing": true,
+        "volume": 1.0,
+        "speed": 1.0,
+        "position_ms": 0
+      }
+    ]
+  },
+  {
+    "state": "lifecycle-return",
+    "physical": [
+      1170.0,
+      2532.0
+    ],
+    "dpr": 3.0,
+    "round": "77f2760c-0433-4062-98c7-77bc04939ddf",
+    "current": "ce90d2d5-d9e8-4139-b32c-b8538c7d17b9",
+    "position": 1,
+    "total": 3,
+    "preload": false,
+    "play_requested": null,
+    "lifecycle": "resumed",
+    "events": [
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed",
+      "inactive",
+      "resumed",
+      "inactive",
+      "hidden",
+      "paused",
+      "hidden",
+      "inactive",
+      "resumed"
+    ],
+    "levels": {
+      "volume": 0.4,
+      "brightness": 0.4,
+      "windowBrightness": -1.0
+    },
+    "players": []
+  }
+]

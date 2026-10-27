@@ -1,0 +1,18 @@
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:video_viewer/ui/device_controls.dart';
+void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  testWidgets('restore owned emulator music level after QEMU crash', (t) async {
+    final d=PlaybackDeviceControls();
+    final before=await d.levels();
+    await d.setVolume(5/15);
+    await d.restoreBrightness();
+    final after=await d.levels();
+    expect(after['volume'],5/15);
+    expect(after['windowBrightness'],-1.0);
+    debugPrint('CRASH_DEVICE_RESTORED:${jsonEncode({'before':before,'after':after})}');
+  });
+}

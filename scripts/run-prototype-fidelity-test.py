@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import shutil
+import struct
 import subprocess
 import threading
 import time
@@ -23,11 +24,12 @@ p.add_argument("--scale", choices=("1", "2"), default="1")
 p.add_argument("--expected-columns", choices=(2, 4), type=int, default=2)
 p.add_argument(
     "--scenario",
-    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings"),
+    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings", "preview-lifecycle"),
     default="fidelity",
 )
 args = p.parse_args()
 scenes = {
+    "preview-lifecycle": ["lifecycle-library", "lifecycle-playing", "lifecycle-paused", "lifecycle-fullscreen-paused", "lifecycle-fullscreen-playing", "lifecycle-device-levels", "lifecycle-boost", "lifecycle-fullscreen-recovered", "lifecycle-inline-restored", "lifecycle-inline-recovered", "lifecycle-swipes", "lifecycle-preload-off", "lifecycle-single-decoder", "lifecycle-single-swiped", "lifecycle-return"],
     "settings": ["settings-home", "settings-connection", "settings-connection-keyboard", "settings-connection-invalid", "settings-roots", "settings-scan-details", "settings-root-add", "settings-root-keyboard", "settings-root-invalid", "settings-root-edit", "settings-root-conflict", "settings-playback", "settings-playback-draft", "settings-reader", "settings-reader-draft", "settings-reader-saved", "settings-reader-restored", "settings-dark", "settings-dark-roots", "settings-dark-reader", "settings-return"],
     "preview": ["preview-library", "preview-filter", "preview-preview", "preview-filter-return", "preview-paused", "preview-seek", "preview-speed-menu", "preview-boost", "preview-quick", "preview-tags", "preview-more", "preview-details", "preview-dark", "preview-light", "preview-queue", "preview-queue-bottom", "preview-last", "preview-end", "preview-return", "preview-recent"],
     "reader": ["reader-paged", "reader-overview", "reader-jump", "reader-settings", "reader-vertical", "reader-strip-scroll", "reader-immersive", "reader-restored", "reader-range", "reader-quick", "reader-quick-exit", "reader-return", "reader-reopen"],
@@ -98,6 +100,7 @@ scenes = {
     ],
 }[args.scenario]
 integration_file = {
+    "preview-lifecycle": "server_preview_lifecycle_test.dart",
     "settings": "server_settings_panels_test.dart",
     "preview": "server_preview_panels_test.dart",
     "reader": "server_reader_chrome_test.dart",
@@ -168,9 +171,24 @@ def media():
 
 original = {name: shell("wm", name) for name in ("size", "density")}
 font = shell("settings", "get", "system", "font_scale")
+save("original-viewport.json", {"display":original, "font":font})
+if args.scenario == "preview-lifecycle":
+    assert shell("getprop", "ro.boot.qemu.avd_name") == "video_viewer_api_36"
+    assert shell("getprop", "sys.boot_completed") == "1"
+    save("environment.json", {
+        "avd": shell("getprop", "ro.boot.qemu.avd_name"),
+        "api": shell("getprop", "ro.build.version.sdk"),
+        "abi": shell("getprop", "ro.product.cpu.abi"),
+        "emulator_process": [line for line in run("ps", "-axo", "command").splitlines() if "qemu-system-aarch64" in line and "-avd video_viewer_api_36" in line],
+        "renderer_override": False,
+        "host_avc_decoder": shell("getprop", "ro.boot.qemu.hwcodec.avcdec"),
+        "host_vpx_decoder": shell("getprop", "ro.boot.qemu.hwcodec.vpxdec"),
+    })
 container = None
 stop = threading.Event()
 errors, screens = [], []
+actions, recordings = [], []
+record_process = record_path = record_shape = None
 paths = run(
     "git", "ls-files", "apps/mobile/lib", "services/server/video_viewer"
 ).splitlines()
@@ -184,6 +202,7 @@ paths += [
     "apps/mobile/integration_test/server_recent_history_test.dart",
     "apps/mobile/integration_test/server_reader_chrome_test.dart",
     "apps/mobile/integration_test/server_preview_panels_test.dart",
+    "apps/mobile/integration_test/server_preview_lifecycle_test.dart",
     "apps/mobile/integration_test/server_settings_panels_test.dart",
     "apps/mobile/integration_test/server_connection_test.dart",
     "apps/mobile/integration_test/server_defaults_test.dart",
@@ -191,6 +210,7 @@ paths += [
     "services/server/tests/prototype_fidelity_fixture.py",
     "scripts/run-prototype-fidelity-test.py",
 ]
+prototype = run("git", "ls-tree", "HEAD", "design/reference/library-first").split()
 save(
     "source.json",
     {
@@ -199,11 +219,38 @@ save(
             path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
             for path in paths
         },
-        "prototype_tree": run(
-            "git", "rev-parse", "HEAD:design/reference/library-first"
-        ),
+        "prototype_tree": prototype[2] if prototype else None,
     },
 )
+
+
+def end_recording():
+    global record_process, record_path, record_shape
+    if record_process is None:
+        return
+    if record_process.poll() is None:
+        pid = shell("pidof", "screenrecord").split()
+        if len(pid) != 1:
+            raise RuntimeError("Expected exactly our screenrecord process")
+        shell("kill", "-2", pid[0])
+    record_process.wait(timeout=15)
+    filename = f"gesture-{len(recordings)+1:02d}.mp4"
+    device("pull", record_path, str(out / filename))
+    path = out / filename
+    assert path.stat().st_size > 1000
+    recordings.append({"file": filename, "bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "shape": record_shape})
+    shell("rm", record_path)
+    record_process = record_path = record_shape = None
+
+
+def begin_recording(shape):
+    global record_process, record_path, record_shape
+    existing = subprocess.run([str(ADB), "-s", "emulator-5554", "shell", "pidof", "screenrecord"], capture_output=True, text=True, check=False)
+    if existing.stdout.strip():
+        raise RuntimeError("Preserve an existing screenrecord")
+    record_shape = shape
+    record_path = f"/sdcard/preview-lifecycle-{time.time_ns()}.mp4"
+    record_process = subprocess.Popen([str(ADB), "-s", "emulator-5554", "shell", "screenrecord", "--size", shape, "--bit-rate", "1000000", "--time-limit", "180", record_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
 def watch():
@@ -211,7 +258,23 @@ def watch():
         while not stop.wait(0.15):
             current = state()
             name = current["display"]
-            if not name or current["ack"] or name in screens:
+            if not name or current["ack"]:
+                continue
+            if args.scenario == "preview-lifecycle" and name.startswith("lifecycle-device-") and name != "lifecycle-device-levels":
+                if name == "lifecycle-device-home":
+                    command = ["input", "keyevent", "3"]
+                elif name == "lifecycle-device-foreground":
+                    command = ["am", "start", "-n", "io.github.shijijs.video_viewer/.MainActivity"]
+                elif name == "lifecycle-device-back":
+                    command = ["input", "keyevent", "4"]
+                else:
+                    raise RuntimeError("Unknown device action " + name)
+                response = shell(*command)
+                actions.append({"name": name, "command": command, "response": response, "time": time.time(), "window": shell("dumpsys", "window")})
+                save("device-actions.json", actions)
+                state("/ack/" + name, post=True)
+                continue
+            if name in screens:
                 continue
             assert name in scenes
             window = "\n".join(
@@ -224,7 +287,16 @@ def watch():
                 for line in window.splitlines()
             )
             (out / (name + "-window.txt")).write_text(window + "\n")
-            (out / (name + ".png")).write_bytes(device("exec-out", "screencap", "-p"))
+            png = device("exec-out", "screencap", "-p")
+            (out / (name + ".png")).write_bytes(png)
+            if args.scenario == "preview-lifecycle":
+                width, height = struct.unpack(">II", png[16:24])
+                shape = "844x390" if width > height else "390x844"
+                if record_process is not None and (record_shape != shape or record_process.poll() is not None or name == "lifecycle-fullscreen-recovered"):
+                    end_recording()
+                if record_process is None and name != "lifecycle-return":
+                    begin_recording(shape)
+                (out / (name + "-memory.txt")).write_text(shell("dumpsys", "meminfo", "io.github.shijijs.video_viewer"))
             screens.append(name)
             state("/ack/" + name, post=True)
     except Exception as error:  # noqa: BLE001 - persisted as evidence
@@ -237,6 +309,7 @@ try:
         "run",
         "-d",
         "--read-only",
+        "--shm-size=256m",
         "--tmpfs",
         "/tmp:mode=1777",
         "--name",
@@ -259,6 +332,8 @@ try:
         "/source",
         "-e",
         "VV_FIDELITY_FIXTURE=enabled",
+        "-e",
+        "VV_FIDELITY_PREVIEW_LIFECYCLE=" + ("enabled" if args.scenario == "preview-lifecycle" else "disabled"),
         "-e",
         "VV_PASSPHRASE_FILE=/fixture/passphrase",
         "-e",
@@ -290,7 +365,7 @@ try:
             time.sleep(0.2)
     save("prepared.json", state("/prepare", post=True))
     before = media()
-    assert len(before) == 26
+    assert len(before) == (27 if args.scenario == "preview-lifecycle" else 26)
     save("media-before.json", before)
     shell("wm", "size", f"{args.width * 3}x{args.height * 3}")
     shell("wm", "density", "480")
@@ -318,6 +393,9 @@ try:
             timeout=480,
             check=False,
         )
+    end_recording()
+    save("recordings.json", recordings)
+    save("fixture-final.json", state())
     save("requests.json", state()["requests"])
     log = (out / "flutter.log").read_text()
     metrics = [
@@ -348,6 +426,12 @@ finally:
     stop.set()
     if "watcher" in globals():
         watcher.join(timeout=12)
+    try:
+        end_recording()
+    except Exception as error:  # noqa: BLE001 - continue device/container cleanup
+        errors.append("recording cleanup: " + repr(error))
+        save("recording-cleanup-error.json", {"error":repr(error)})
+    save("recordings.json", recordings)
     try:
         for name in ("size", "density"):
             value = original[name]

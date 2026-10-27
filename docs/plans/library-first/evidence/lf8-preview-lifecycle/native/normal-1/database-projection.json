@@ -1,0 +1,238 @@
+{
+  "playback_rounds": [
+    {
+      "id": "71845413-6c15-4900-96b4-ea01a697aa51",
+      "request_id": "1793065100758312-e3779ad8",
+      "request_hash": "36b6ed1e29f404bea2a1e0cb684953acd86b0b9bbff7075a80d8f580b5fd2321",
+      "order": "sequential",
+      "scope": "{\"tag_ids\": []}",
+      "cursor": 0,
+      "revision": 7,
+      "finished": 0,
+      "candidate_count": 3,
+      "created_at": 1793065101.2373698,
+      "membership": "fixed",
+      "source": "library",
+      "sort": "name_zh",
+      "sequence_revision": 1
+    },
+    {
+      "id": "8e4b5fdf-22ec-44ae-80c7-f23bd19672ba",
+      "request_id": "1793065165555233-43db4be3",
+      "request_hash": "36b6ed1e29f404bea2a1e0cb684953acd86b0b9bbff7075a80d8f580b5fd2321",
+      "order": "sequential",
+      "scope": "{\"tag_ids\": []}",
+      "cursor": 1,
+      "revision": 2,
+      "finished": 0,
+      "candidate_count": 3,
+      "created_at": 1793065166.0071084,
+      "membership": "fixed",
+      "source": "library",
+      "sort": "name_zh",
+      "sequence_revision": 1
+    }
+  ],
+  "round_entries": [
+    {
+      "round_id": "71845413-6c15-4900-96b4-ea01a697aa51",
+      "ordinal": 0,
+      "video_id": "70ec9526-ec9a-440c-b511-cd070a2ecefc",
+      "source_ordinal": 0
+    },
+    {
+      "round_id": "71845413-6c15-4900-96b4-ea01a697aa51",
+      "ordinal": 1,
+      "video_id": "07da80cf-eb99-4c35-b284-b14966e87af6",
+      "source_ordinal": 1
+    },
+    {
+      "round_id": "71845413-6c15-4900-96b4-ea01a697aa51",
+      "ordinal": 2,
+      "video_id": "abb9d9fa-f2f3-4eb2-8bf8-6de3e4ccbacb",
+      "source_ordinal": 2
+    },
+    {
+      "round_id": "8e4b5fdf-22ec-44ae-80c7-f23bd19672ba",
+      "ordinal": 0,
+      "video_id": "70ec9526-ec9a-440c-b511-cd070a2ecefc",
+      "source_ordinal": 0
+    },
+    {
+      "round_id": "8e4b5fdf-22ec-44ae-80c7-f23bd19672ba",
+      "ordinal": 1,
+      "video_id": "07da80cf-eb99-4c35-b284-b14966e87af6",
+      "source_ordinal": 1
+    },
+    {
+      "round_id": "8e4b5fdf-22ec-44ae-80c7-f23bd19672ba",
+      "ordinal": 2,
+      "video_id": "abb9d9fa-f2f3-4eb2-8bf8-6de3e4ccbacb",
+      "source_ordinal": 2
+    }
+  ],
+  "recent_entries": [
+    {
+      "id": "40b200e9-d30d-47d1-aeee-6f705a8320fc",
+      "kind": "video",
+      "video_id": "70ec9526-ec9a-440c-b511-cd070a2ecefc",
+      "pack_id": null,
+      "opened_at": 1793065166.180858
+    },
+    {
+      "id": "4c233695-25f9-4415-a425-8cbe7e7f0f62",
+      "kind": "video",
+      "video_id": "07da80cf-eb99-4c35-b284-b14966e87af6",
+      "pack_id": null,
+      "opened_at": 1793065172.9432275
+    },
+    {
+      "id": "84a32f09-5dc0-4fa0-8cda-ebf8bb50910c",
+      "kind": "video",
+      "video_id": "abb9d9fa-f2f3-4eb2-8bf8-6de3e4ccbacb",
+      "pack_id": null,
+      "opened_at": 1793065146.3472466
+    }
+  ],
+  "videos": [
+    {
+      "id": "70ec9526-ec9a-440c-b511-cd070a2ecefc",
+      "root_id": "videos",
+      "path": "/media/videos/补充横屏/晨光里的花.mp4",
+      "location_key": "/media/videos/补充横屏/晨光里的花.mp4",
+      "name": "晨光里的花",
+      "status": "available",
+      "error": null,
+      "size": 1290627,
+      "device": "37",
+      "inode": "273870",
+      "mtime_ns": "1793065071072509885",
+      "ctime_ns": "1793065071072509885",
+      "sha256": "d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001",
+      "quick_hash": "1e787e6266db1edc2a3fcb64cc99c7fa285a3d29927f125676139fae11eb3022",
+      "duration": 5.055,
+      "width": 960,
+      "height": 540,
+      "rotation": 0,
+      "type": "MP4",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "thumbnail": "fidelity-landscape.jpg",
+      "seen_scan": "3efa05cb-e3d3-4065-bd6e-473746997d83",
+      "created_at": 1793065072.588253,
+      "generation": 0
+    },
+    {
+      "id": "abb9d9fa-f2f3-4eb2-8bf8-6de3e4ccbacb",
+      "root_id": "videos",
+      "path": "/media/videos/竖屏/水边的花.mp4",
+      "location_key": "/media/videos/竖屏/水边的花.mp4",
+      "name": "水边的花",
+      "status": "available",
+      "error": null,
+      "size": 172775,
+      "device": "37",
+      "inode": "273868",
+      "mtime_ns": "1793065071071028666",
+      "ctime_ns": "1793065071071028666",
+      "sha256": "de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd",
+      "quick_hash": "03db1476153c1bd2ea3e318abc15661c94984c61d7927c11a63ce98d917cd3f6",
+      "duration": 5.005,
+      "width": 360,
+      "height": 640,
+      "rotation": 0,
+      "type": "MP4",
+      "video_codec": "h264",
+      "audio_codec": null,
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "thumbnail": "fidelity-portrait.jpg",
+      "seen_scan": "3efa05cb-e3d3-4065-bd6e-473746997d83",
+      "created_at": 1793065072.6769898,
+      "generation": 0
+    },
+    {
+      "id": "07da80cf-eb99-4c35-b284-b14966e87af6",
+      "root_id": "videos",
+      "path": "/media/videos/横屏/风里的花园.mp4",
+      "location_key": "/media/videos/横屏/风里的花园.mp4",
+      "name": "风里的花园",
+      "status": "available",
+      "error": null,
+      "size": 1290627,
+      "device": "37",
+      "inode": "273866",
+      "mtime_ns": "1793065071069473446",
+      "ctime_ns": "1793065071069473446",
+      "sha256": "d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001",
+      "quick_hash": "1e787e6266db1edc2a3fcb64cc99c7fa285a3d29927f125676139fae11eb3022",
+      "duration": 5.055,
+      "width": 960,
+      "height": 540,
+      "rotation": 0,
+      "type": "MP4",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "thumbnail": "fidelity-landscape.jpg",
+      "seen_scan": "3efa05cb-e3d3-4065-bd6e-473746997d83",
+      "created_at": 1793065072.7761838,
+      "generation": 0
+    }
+  ],
+  "tags": [
+    {
+      "id": "7d68a3eb-cb7f-42f4-8540-451188df7be5",
+      "name": "户外",
+      "created_at": 1793065076.2683294
+    },
+    {
+      "id": "ea5948ab-75d0-49d6-8e4c-91a7b8b2789b",
+      "name": "自然",
+      "created_at": 1793065076.2683318
+    },
+    {
+      "id": "019a56f8-5193-4e2d-a373-99eaa4c90c42",
+      "name": "喜欢",
+      "created_at": 1793065076.268334
+    }
+  ],
+  "video_tags": [
+    {
+      "video_id": "70ec9526-ec9a-440c-b511-cd070a2ecefc",
+      "tag_id": "7d68a3eb-cb7f-42f4-8540-451188df7be5"
+    },
+    {
+      "video_id": "70ec9526-ec9a-440c-b511-cd070a2ecefc",
+      "tag_id": "019a56f8-5193-4e2d-a373-99eaa4c90c42"
+    },
+    {
+      "video_id": "abb9d9fa-f2f3-4eb2-8bf8-6de3e4ccbacb",
+      "tag_id": "7d68a3eb-cb7f-42f4-8540-451188df7be5"
+    },
+    {
+      "video_id": "abb9d9fa-f2f3-4eb2-8bf8-6de3e4ccbacb",
+      "tag_id": "ea5948ab-75d0-49d6-8e4c-91a7b8b2789b"
+    },
+    {
+      "video_id": "07da80cf-eb99-4c35-b284-b14966e87af6",
+      "tag_id": "7d68a3eb-cb7f-42f4-8540-451188df7be5"
+    },
+    {
+      "video_id": "07da80cf-eb99-4c35-b284-b14966e87af6",
+      "tag_id": "019a56f8-5193-4e2d-a373-99eaa4c90c42"
+    }
+  ],
+  "pack_progress": [
+    {
+      "pack_id": "70f14fb2-cedb-4024-98b3-e21ba27b6375",
+      "page_id": "a53329e5-5e66-4b7b-a719-5fe3689df847",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1000.0,
+      "content_version": 1,
+      "recovery_reason": null
+    }
+  ]
+}

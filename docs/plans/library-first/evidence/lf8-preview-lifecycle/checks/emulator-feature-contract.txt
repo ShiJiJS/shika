@@ -1,0 +1,4 @@
+# HardwareDecoder--------------------------------------------------------------
+# if enabled, emulator will add qemu.hwcodec.avcdec=2 and qemu.hwcodec.vpxdec=2
+# to the kernel command line to tell guest the two decoders can be enabled
+HardwareDecoder = on
