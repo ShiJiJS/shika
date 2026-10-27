@@ -44,6 +44,7 @@ def create_fidelity_app():
     pagination = os.environ.get("VV_FIDELITY_THUMBNAIL_PAGINATION") == "enabled"
     if pagination:
         descriptions = [{**p, "pages": [p["pages"][i % len(p["pages"])] for i in range(30)]} if p["id"] == "summer" else p for p in descriptions]
+    content_restart = os.environ.get("VV_FIDELITY_CONTENT_RESTART") == "enabled"
     navigation = os.environ.get("VV_FIDELITY_NAVIGATION_RESTART") == "enabled"
     if navigation:
         originals = descriptions
@@ -105,8 +106,8 @@ def create_fidelity_app():
             if (request.url.path in ("/api/v1/pack-sessions", "/api/v1/rounds") and request.method == "POST")
             or ((preview_mutation or tag_definitions) and request.method in {"POST", "PATCH", "DELETE"}
                 and (request.url.path in {"/api/v1/video-tags", "/api/v1/tags"} or request.url.path.startswith("/api/v1/tags/")))
-            or ((navigation or thumbnails) and request.method in {"POST", "PATCH"}
-                and (request.url.path == "/api/v1/playback-defaults" or request.url.path.startswith("/api/v1/pack-sessions/") or request.url.path.endswith("/progress")))
+            or ((navigation or thumbnails or content_restart) and request.method in {"POST", "PATCH"}
+                and (request.url.path == "/api/v1/playback-defaults" or request.url.path.startswith("/api/v1/pack-sessions/") or request.url.path.endswith("/progress") or (content_restart and request.url.path.endswith("/preferences"))))
             else None
         )
         counts_failure = (
