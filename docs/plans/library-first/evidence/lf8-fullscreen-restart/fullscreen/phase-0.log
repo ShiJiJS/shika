@@ -1,0 +1,46 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart
+Running Gradle task 'assembleDebug'...                             20.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          785ms
+00:00 +0: active fullscreen real process restart is read-only until explicit reopen
+FIDELITY_METRICS:{"state":"content-start","case":"fullscreen","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with key [<'tile-dd450bb2-6035-4630-98fd-4cb0a8f78ca5'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with key [<'tile-dd450bb2-6035-4630-98fd-4cb0a8f78ca5'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with key [<'tile-dd450bb2-6035-4630-98fd-4cb0a8f78ca5'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_VIDEO_IDENTITY:{"step":"initial-playing","video_id":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","current_video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","source":"http://10.0.2.2:8768/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream","looping":true}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with type \"TextButton\" that are ancestors of widget with text \"暂停\": [","hittable":1,"video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","page":0.0}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with type \"TextButton\" that are ancestors of widget with text \"暂停\": [","hittable":1,"video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","page":0.0}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with type \"TextButton\" that are ancestors of widget with text \"暂停\": [","hittable":0,"video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","page":0.0}
+CONTENT_VIDEO_IDENTITY:{"step":"paused-before-rotation","video_id":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","current_video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","source":"http://10.0.2.2:8768/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream","looping":true}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with text \"横向全屏\": [","hittable":1,"video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","page":0.0}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with text \"横向全屏\": [","hittable":1,"video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","page":0.0}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with text \"横向全屏\": [","hittable":1,"video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","page":0.0}
+CONTENT_VIDEO_IDENTITY:{"step":"fullscreen-paused","video_id":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","current_video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","source":"http://10.0.2.2:8768/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream","looping":true}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with type \"TextButton\" that are ancestors of widget with text \"播放\": [","hittable":1,"video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with type \"TextButton\" that are ancestors of widget with text \"播放\": [","hittable":1,"video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with type \"TextButton\" that are ancestors of widget with text \"播放\": [","hittable":0,"video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","page":null}
+FIDELITY_METRICS:{"state":"content-stop-ready","case":"fullscreen","size":[844.0,390.0],"physical":[2532.0,1170.0],"dpr":3.0,"fullscreen":true,"movie_visible":0,"players":[{"initialized":true,"playing":true,"position_ms":1351,"looping":true,"source":"http://10.0.2.2:8768/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream"}],"range":"578ba772-4cb6-4b17-bb61-a630fee10496","current_video":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","reading":null,"preload":false}
+CONTENT_STOP_READY:{"case":"fullscreen","credential_available":true,"playback":{"id":"578ba772-4cb6-4b17-bb61-a630fee10496","library_locked":false,"active":true,"order":"sequential","scope":{"tag_ids":[]},"membership":"fixed","source":"library","sort":"name","name_locale":"zh-CN","sequence_revision":0,"position":0,"total":2,"candidate_count":2,"revision":0,"finished":false,"current":{"id":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","root_id":"videos","path":"/media/videos/横屏/风里的花园.mp4","name":"风里的花园","status":"available","error":null,"size":1290627,"created_at":1793115833.7450967,"duration":5.055,"width":960,"height":540,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":"aac","container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/thumbnail","media_url":"/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream","tag_ids":["259011bc-849c-49f7-ba63-4a451585ed17","77a7bc17-c4c3-4c17-a680-140435a49a99"]},"window":[{"position":0,"video":{"id":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","root_id":"videos","path":"/media/videos/横屏/风里的花园.mp4","name":"风里的花园","status":"available","error":null,"size":1290627,"created_at":1793115833.7450967,"duration":5.055,"width":960,"height":540,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":"aac","container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/thumbnail","media_url":"/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream","tag_ids":["259011bc-849c-49f7-ba63-4a451585ed17","77a7bc17-c4c3-4c17-a680-140435a49a99"]}},{"position":1,"video":{"id":"608a3a59-08c4-4548-a56b-274972ae3407","root_id":"videos","path":"/media/videos/竖屏/水边的花.mp4","name":"水边的花","status":"available","error":null,"size":172775,"created_at":1793115833.57269,"duration":5.005,"width":360,"height":640,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":null,"container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/608a3a59-08c4-4548-a56b-274972ae3407/thumbnail","media_url":"/api/v1/videos/608a3a59-08c4-4548-a56b-274972ae3407/stream","tag_ids":["77a7bc17-c4c3-4c17-a680-140435a49a99","b1a61287-4682-49bf-94f4-981d82b3de22"]}}]},"recent":{"items":[{"id":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","root_id":"videos","path":"/media/videos/横屏/风里的花园.mp4","name":"风里的花园","status":"available","error":null,"size":1290627,"created_at":1793115833.7450967,"duration":5.055,"width":960,"height":540,"rotation":0,"type":"MP4","video_codec":"h264","audio_codec":"aac","container":"mov,mp4,m4a,3gp,3g2,mj2","thumbnail_url":"/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/thumbnail","media_url":"/api/v1/videos/dd450bb2-6035-4630-98fd-4cb0a8f78ca5/stream","tag_ids":["259011bc-849c-49f7-ba63-4a451585ed17","77a7bc17-c4c3-4c17-a680-140435a49a99"],"opened_at":1793115877.1285424}],"total":1,"offset":0,"limit":24},"range":"578ba772-4cb6-4b17-bb61-a630fee10496","video_id":"dd450bb2-6035-4630-98fd-4cb0a8f78ca5","pack_id":null,"preload":false}
+00:17 +0: active fullscreen real process restart is read-only until explicit reopen - did not complete [E]
+00:17 +0: (tearDownAll) - did not complete [E]
+00:17 +0: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart: (tearDownAll) (did not complete)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart: active fullscreen real process restart is read-only until explicit reopen (did not complete)
+No tests were found.
+unhandled error during finalization of test:
+/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart
+PathNotFoundException: Deletion failed, path = '/var/folders/pt/953rhgfj5g1gm_pjr862pnhr0000gn/T/flutter_tools.vcM0U8/flutter_test_listener.nKl6i6' (OS Error: No such file or directory, errno = 2)
+#0      _Directory._deleteSync (dart:io/directory_impl.dart:216:7)
+#1      FileSystemEntity.deleteSync (dart:io/file_system_entity.dart:425:7)
+#2      ForwardingFileSystemEntity.deleteSync (package:file/src/forwarding/forwarding_file_system_entity.dart:70:16)
+#3      ErrorHandlingDirectory.deleteSync.<anonymous closure> (package:flutter_tools/src/base/error_handling_io.dart:717:22)
+#4      _runSync (package:flutter_tools/src/base/error_handling_io.dart:1118:16)
+#5      ErrorHandlingDirectory.deleteSync (package:flutter_tools/src/base/error_handling_io.dart:716:12)
+#6      FlutterPlatform._createListenerDart.<anonymous closure> (package:flutter_tools/src/test/flutter_platform.dart:786:15)
+#7      FlutterPlatform._startTest.finalize (package:flutter_tools/src/test/flutter_platform.dart:591:26)
+<asynchronous suspension>
+#8      FlutterPlatform._startTest (package:flutter_tools/src/test/flutter_platform.dart:762:7)
+<asynchronous suspension>
+

@@ -1,0 +1,80 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart
+Running Gradle task 'assembleDebug'...                             16.7s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          664ms
+00:00 +0: active reader real process restart is read-only until explicit reopen
+FIDELITY_METRICS:{"state":"content-start","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with key [<'kind-pack'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with key [<'kind-pack'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with key [<'kind-pack'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with key [<'pack-tile-d55f5c4f-9952-45cb-a5eb-63f2eab11ef5'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with key [<'pack-tile-d55f5c4f-9952-45cb-a5eb-63f2eab11ef5'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with key [<'pack-tile-d55f5c4f-9952-45cb-a5eb-63f2eab11ef5'>]: [","hittable":0,"video":null,"page":null}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with widget matching predicate: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with widget matching predicate: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with widget matching predicate: [","hittable":0,"video":null,"page":null}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with type \"ChoiceChip\" that are ancestors of widget with text \"纵向拼接\": [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with type \"ChoiceChip\" that are ancestors of widget with text \"纵向拼接\": [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with type \"ChoiceChip\" that are ancestors of widget with text \"纵向拼接\": [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with key [<'reader-settings-done'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with key [<'reader-settings-done'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with key [<'reader-settings-done'>]: [","hittable":0,"video":null,"page":null}
+FIDELITY_METRICS:{"state":"content-stop-ready","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":{"range":"87693c28-9979-4f7f-ab29-dba8d878b1d5","page":"f1a53073-5515-4cb9-bc10-9abf2282de58","index":3,"ratio":0.1541025641025641,"mode":"vertical","geometry":[0.0,-90.0,390.0,584.0266222961731],"decoded":1},"preload":false}
+CONTENT_STOP_READY:{"case":"reader","credential_available":true,"playback":null,"recent":{"items":[],"total":0,"offset":0,"limit":24},"range":"","video_id":null,"pack_id":"d55f5c4f-9952-45cb-a5eb-63f2eab11ef5","preload":false,"index":3,"page":"f1a53073-5515-4cb9-bc10-9abf2282de58","ratio":0.1541025641025641,"mode":"vertical","geometry":[0.0,-90.0,390.0,584.0266222961731],"reading_range":"87693c28-9979-4f7f-ab29-dba8d878b1d5","pack_detail":{"id":"d55f5c4f-9952-45cb-a5eb-63f2eab11ef5","root_id":"packs","path":"/media/packs/示例作者 NO.034 - 夏日祭","name":"示例作者 NO.034 - 夏日祭","title":"夏日祭","author":"示例作者","number":"034","status":"available","error":null,"page_count":6,"readable_count":6,"content_version":1,"tag_ids":["c583f0b6-750e-4e4b-a912-2c4872653b74","f22995a3-83db-4460-aa9d-b0e1ef41c37f"],"tag_names":{"c583f0b6-750e-4e4b-a912-2c4872653b74":"和服","f22995a3-83db-4460-aa9d-b0e1ef41c37f":"户外"},"created_at":1793116268.53217,"cover_url":"/api/v1/packs/d55f5c4f-9952-45cb-a5eb-63f2eab11ef5/cover?v=1","progress":{"page_id":"f1a53073-5515-4cb9-bc10-9abf2282de58","page_index":3,"offset_ratio":0.1541025641025641,"completed":false,"revision":3,"updated_at":1793116304.625955}}}
+00:10 +0: active reader real process restart is read-only until explicit reopen - did not complete [E]
+00:10 +0: (tearDownAll) - did not complete [E]
+00:10 +0: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart: (tearDownAll) (did not complete)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart: active reader real process restart is read-only until explicit reopen (did not complete)
+No tests were found.
+unhandled error during finalization of test:
+/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart
+PathNotFoundException: Deletion failed, path = '/var/folders/pt/953rhgfj5g1gm_pjr862pnhr0000gn/T/flutter_tools.4JklCJ/flutter_test_listener.ctxClf' (OS Error: No such file or directory, errno = 2)
+#0      _Directory._deleteSync (dart:io/directory_impl.dart:216:7)
+#1      FileSystemEntity.deleteSync (dart:io/file_system_entity.dart:425:7)
+#2      ForwardingFileSystemEntity.deleteSync (package:file/src/forwarding/forwarding_file_system_entity.dart:70:16)
+#3      ErrorHandlingDirectory.deleteSync.<anonymous closure> (package:flutter_tools/src/base/error_handling_io.dart:717:22)
+#4      _runSync (package:flutter_tools/src/base/error_handling_io.dart:1118:16)
+#5      ErrorHandlingDirectory.deleteSync (package:flutter_tools/src/base/error_handling_io.dart:716:12)
+#6      FlutterPlatform._createListenerDart.<anonymous closure> (package:flutter_tools/src/test/flutter_platform.dart:786:15)
+#7      FlutterPlatform._startTest.finalize (package:flutter_tools/src/test/flutter_platform.dart:591:26)
+<asynchronous suspension>
+#8      FlutterPlatform._startTest (package:flutter_tools/src/test/flutter_platform.dart:762:7)
+<asynchronous suspension>
+
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_content_restart_test.dart
+Running Gradle task 'assembleDebug'...                             13.9s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          424ms
+00:00 +0: active reader real process restart is read-only until explicit reopen
+CONTENT_NEW_PROCESS
+FIDELITY_METRICS:{"state":"content-cold-library","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with key [<'nav-recent'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with key [<'nav-recent'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with key [<'nav-recent'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with key [<'kind-pack'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with key [<'kind-pack'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with key [<'kind-pack'>]: [","hittable":1,"video":null,"page":null}
+FIDELITY_METRICS:{"state":"content-cold-recent","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with key [<'nav-library'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with key [<'nav-library'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with key [<'nav-library'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with key [<'kind-pack'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with key [<'kind-pack'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with key [<'kind-pack'>]: [","hittable":1,"video":null,"page":null}
+FIDELITY_METRICS:{"state":"content-readonly-complete","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+CONTENT_READONLY_READY
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with key [<'pack-tile-d55f5c4f-9952-45cb-a5eb-63f2eab11ef5'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with key [<'pack-tile-d55f5c4f-9952-45cb-a5eb-63f2eab11ef5'>]: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with key [<'pack-tile-d55f5c4f-9952-45cb-a5eb-63f2eab11ef5'>]: [","hittable":0,"video":null,"page":null}
+FIDELITY_METRICS:{"state":"content-reopened","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":{"range":"9479d944-627a-486d-8024-eac03eccd52f","page":"f1a53073-5515-4cb9-bc10-9abf2282de58","index":3,"ratio":0.1541025641025641,"mode":"vertical","geometry":[0.0,-90.0,390.0,584.0266222961731],"decoded":1},"preload":false}
+CONTENT_TAP_BEFORE:{"target":"Found 1 widget with widget matching predicate: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_REVEALED:{"target":"Found 1 widget with widget matching predicate: [","hittable":1,"video":null,"page":null}
+CONTENT_TAP_AFTER:{"target":"Found 1 widget with widget matching predicate: [","hittable":0,"video":null,"page":null}
+FIDELITY_METRICS:{"state":"content-return","case":"reader","size":[390.0,844.0],"physical":[1170.0,2532.0],"dpr":3.0,"fullscreen":false,"movie_visible":0,"players":[],"range":"","current_video":null,"reading":null,"preload":false}
+CONTENT_RESTART_VERIFIED:{"case":"reader","original":{"case":"reader","credential_available":true,"playback":null,"recent":{"items":[],"total":0,"offset":0,"limit":24},"range":"","video_id":null,"pack_id":"d55f5c4f-9952-45cb-a5eb-63f2eab11ef5","preload":false,"index":3,"page":"f1a53073-5515-4cb9-bc10-9abf2282de58","ratio":0.1541025641025641,"mode":"vertical","geometry":[0.0,-90.0,390.0,584.0266222961731],"reading_range":"87693c28-9979-4f7f-ab29-dba8d878b1d5","pack_detail":{"id":"d55f5c4f-9952-45cb-a5eb-63f2eab11ef5","root_id":"packs","path":"/media/packs/示例作者 NO.034 - 夏日祭","name":"示例作者 NO.034 - 夏日祭","title":"夏日祭","author":"示例作者","number":"034","status":"available","error":null,"page_count":6,"readable_count":6,"content_version":1,"tag_ids":["c583f0b6-750e-4e4b-a912-2c4872653b74","f22995a3-83db-4460-aa9d-b0e1ef41c37f"],"tag_names":{"c583f0b6-750e-4e4b-a912-2c4872653b74":"和服","f22995a3-83db-4460-aa9d-b0e1ef41c37f":"户外"},"created_at":1793116268.53217,"cover_url":"/api/v1/packs/d55f5c4f-9952-45cb-a5eb-63f2eab11ef5/cover?v=1","progress":{"page_id":"f1a53073-5515-4cb9-bc10-9abf2282de58","page_index":3,"offset_ratio":0.1541025641025641,"completed":false,"revision":3,"updated_at":1793116304.625955}}},"auto_opened":false,"explicit_reopened":true}
+PROTOTYPE_FIDELITY_VERIFIED
+00:12 +1: (tearDownAll)
+00:12 +1: All tests passed!

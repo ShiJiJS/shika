@@ -1,0 +1,26 @@
+{
+  "original": {
+    "display": {
+      "size": "Physical size: 1080x2400",
+      "density": "Physical density: 420"
+    },
+    "font": "1.0"
+  },
+  "commands": [
+    [
+      "wm",
+      "size",
+      "reset"
+    ],
+    [
+      "wm",
+      "density",
+      "reset"
+    ]
+  ],
+  "after": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420"
+  },
+  "font_after": "1.0"
+}

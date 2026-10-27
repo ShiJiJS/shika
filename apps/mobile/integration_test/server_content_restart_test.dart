@@ -100,11 +100,39 @@ void main() {
 
       Future<void> tap(Finder f) async {
         await until(() => f.evaluate().length == 1, 'unique $f');
-        await t.ensureVisible(f);
-        await t.pump(const Duration(milliseconds: 150));
+        Map<String, dynamic> trace() {
+          final stages = find.byKey(const Key('video-stage'));
+          final controller = stages.evaluate().isEmpty
+              ? null
+              : t.widget<PageView>(stages).controller;
+          return {
+            'target': f.toString().split('\n').first,
+            'hittable': f.hitTestable().evaluate().length,
+            'video': repo.current?.id,
+            'page': controller?.hasClients == true ? controller!.page : null,
+          };
+        }
+
+        debugPrint('CONTENT_TAP_BEFORE:${jsonEncode(trace())}');
+        if (f.hitTestable().evaluate().isEmpty) {
+          // Revealing a child of the video pager scrolls the video itself.
+          // Its controls must be explicitly shown, then tapped in place.
+          expect(
+            find.ancestor(
+              of: f,
+              matching: find.byKey(const Key('video-stage')),
+            ),
+            findsNothing,
+            reason: 'Do not scroll a video page to reveal its controls',
+          );
+          await t.ensureVisible(f);
+          await t.pump(const Duration(milliseconds: 150));
+        }
+        debugPrint('CONTENT_TAP_REVEALED:${jsonEncode(trace())}');
         await until(() => f.hitTestable().evaluate().length == 1, 'hit $f');
         await t.tap(f);
         await t.pump(const Duration(milliseconds: 200));
+        debugPrint('CONTENT_TAP_AFTER:${jsonEncode(trace())}');
       }
 
       VideoCatalogPageState video() => t.state(find.byType(VideoCatalogPage));
@@ -211,7 +239,7 @@ void main() {
             'dpr': media.devicePixelRatio,
             'fullscreen': find.byKey(const Key('fullscreen-exit')).evaluate().isNotEmpty,
             'movie_visible': find.byType(MovieStage).evaluate().length,
-            'players': playing?.debugPlayers.map((p) => {'initialized': p.value.isInitialized, 'playing': p.value.isPlaying, 'position_ms': p.value.position.inMilliseconds}).toList() ?? [],
+            'players': playing?.debugPlayers.map((p) => {'initialized': p.value.isInitialized, 'playing': p.value.isPlaying, 'position_ms': p.value.position.inMilliseconds, 'looping': p.value.isLooping, 'source': p.dataSource}).toList() ?? [],
             'range': repo.playbackIdentity,
             'current_video': repo.current?.id,
             'reading': reading == null ? null : {'range': reading.range!.id, 'page': reading.currentPage?.id, 'index': reading.index, 'ratio': reading.offsetRatio, 'mode': reading.preferences.mode.name, 'geometry': pageGeometry(), 'decoded': decoded().length},
@@ -377,12 +405,27 @@ void main() {
         );
         playing = t.widget<MovieStage>(find.byType(MovieStage)).session;
         await playerReady();
+        void selectedVideo(String step) {
+          final player = playing!.debugPlayers.single;
+          expect(repo.current!.id, videoId, reason: step);
+          expect(
+            player.dataSource,
+            repo.current!.source.location,
+            reason: 'Native player must belong to selected video: $step',
+          );
+          debugPrint(
+            'CONTENT_VIDEO_IDENTITY:${jsonEncode({'step': step, 'video_id': videoId, 'current_video': repo.current!.id, 'source': player.dataSource, 'looping': player.value.isLooping})}',
+          );
+        }
+
+        selectedVideo('initial-playing');
         if (contentCase == 'fullscreen') {
           await tap(find.widgetWithText(TextButton, '暂停'));
           await until(
             () => !playing!.debugPlayers.single.value.isPlaying,
             'paused before rotating short public clip',
           );
+          selectedVideo('paused-before-rotation');
           await tap(find.text('横向全屏'));
           await until(
             () =>
@@ -391,6 +434,7 @@ void main() {
             'actual landscape fullscreen',
           );
           expect(playing!.debugPlayers.single.value.isPlaying, isFalse);
+          selectedVideo('fullscreen-paused');
         }
       }
       if (contentCase != 'reader') {
@@ -441,6 +485,7 @@ void main() {
       }
       if (contentCase != 'reader') {
         expect(repo.current!.id, videoId);
+        expect((original['playback'] as Map)['current']['id'], videoId);
       }
       await book.writeAsString(jsonEncode(original), flush: true);
       if (contentCase == 'fullscreen') {
