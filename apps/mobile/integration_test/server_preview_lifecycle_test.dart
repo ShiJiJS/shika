@@ -102,16 +102,12 @@ void main() {
               )
               .opacity ==
           1;
-      Future<void> reveal() async {
-        if (!controls()) {
-          final wasPlaying = player().value.isPlaying;
-          await tap(surface());
-          if (wasPlaying && !player().value.isPlaying) {
-            await tap(find.widgetWithText(TextButton, '播放'));
-          }
-        }
-        await until(controls, 'controls revealed');
-      }
+      bool requested() =>
+          t
+              .widget<PlayerSurface>(find.byType(PlayerSurface).last)
+              .isPlayRequested
+              ?.call() ??
+          player().value.isPlaying;
 
       Future<void> ready({bool playing = true}) => until(() {
         if (find.byType(VideoPlayer).evaluate().isEmpty) return false;
@@ -119,6 +115,7 @@ void main() {
         return p.value.isInitialized &&
             !p.value.size.isEmpty &&
             p.value.isPlaying == playing &&
+            requested() == playing &&
             p.dataSource == repo.current?.source.location;
       }, 'visible native player, playing=$playing');
       Future<void> capture(String name) async {
@@ -135,6 +132,7 @@ void main() {
             'position': repo.playbackPosition,
             'total': repo.playbackTotal,
             'preload': preferences.preloadAdjacent,
+            'play_requested': players.isEmpty ? null : requested(),
             'lifecycle': WidgetsBinding.instance.lifecycleState?.name,
             'events': lifecycle.events,
             'levels': await device.levels(),
@@ -314,8 +312,12 @@ void main() {
         'current and adjacent native controllers',
       );
       await capture('lifecycle-playing');
-      await reveal();
-      await tap(find.widgetWithText(TextButton, '暂停'));
+      if (controls()) {
+        await tap(find.widgetWithText(TextButton, '暂停'));
+      } else {
+        // An inline canvas tap already pauses; do not resume merely to reveal HUD.
+        await tap(surface());
+      }
       await ready(playing: false);
       final progress = t.getRect(find.byKey(const Key('video-progress-touch')));
       await t.dragFrom(
@@ -402,14 +404,14 @@ void main() {
       expect(repo.playbackIdentity, identity);
       expect(find.byType(MovieStage), findsOneWidget);
       await capture('lifecycle-inline-restored');
-      await reveal();
+      await until(controls, 'paused controls stay visible');
       await tap(find.widgetWithText(TextButton, '播放'));
       await ready();
       await background();
       expect(repo.current!.id, first);
       expect(repo.playbackIdentity, identity);
       await capture('lifecycle-inline-recovered');
-      await reveal();
+      await until(controls, 'paused controls stay visible');
       await tap(find.widgetWithText(TextButton, '播放'));
       await ready();
       for (var i = 0; i < 6; i++) {
