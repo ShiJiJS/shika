@@ -1,6 +1,6 @@
 # LF8：上传失败原因与原请求找回
 
-基于[公开入口PR #90](https://github.com/ShiJiJS/video_viewer/pull/90)，继续[问题#89](https://github.com/ShiJiJS/video_viewer/issues/89)和#24／#33／#32。原失败只有“暂时无法连接服务”，底层IOException被归一化后丢失，服务trace没有导入POST；不能凭此认定完全没发出数据，或认定空闲连接就是原因。
+[Draft PR #91](https://github.com/ShiJiJS/video_viewer/pull/91)基于[公开入口PR #90](https://github.com/ShiJiJS/video_viewer/pull/90)，继续[问题#89](https://github.com/ShiJiJS/video_viewer/issues/89)和#24／#33／#32。原失败只有“暂时无法连接服务”，底层IOException被归一化后丢失，服务trace没有导入POST；不能凭此认定完全没发出数据，或认定空闲连接就是原因。
 
 本段保留失败时的Dart操作阶段和原始IOException，仅在内存中的ApiFailure持有；用户提示、请求次数、写命令重试策略、协议与连接参数不变。阶段表示异常出现在哪个await操作，不证明服务已经／尚未接受请求。程序不自动输出或上传这些信息，头部／口令／文件内容不写诊断日志。
 
