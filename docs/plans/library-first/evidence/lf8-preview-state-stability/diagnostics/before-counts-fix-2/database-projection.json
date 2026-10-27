@@ -1,0 +1,329 @@
+{
+  "playback_rounds": [
+    {
+      "id": "ac255a7f-8edc-4869-93cd-a78fe7d0d89e",
+      "request_id": "1793073491879813-f77c88a2",
+      "request_hash": "fa26151392f51694abd0b75be591762fbc143b28734448dc6f843d1449a61a89",
+      "order": "random",
+      "scope": "{\"tag_ids\": [\"7f535c9a-aeca-4791-b61f-985065ece140\"]}",
+      "cursor": 0,
+      "revision": 0,
+      "finished": 0,
+      "candidate_count": 2,
+      "created_at": 1793073492.3931448,
+      "membership": "fixed",
+      "source": "library",
+      "sort": "name_zh",
+      "sequence_revision": 0
+    },
+    {
+      "id": "9cb80603-5115-485b-8ebb-f480d25379f2",
+      "request_id": "1793073506003402-d50476ab",
+      "request_hash": "4bfb4dd27dd33e1010a0589c3ccc84a7f62f40cf760180afb51e4705aa51ff73",
+      "order": "random",
+      "scope": "{\"tag_ids\": [\"7f535c9a-aeca-4791-b61f-985065ece140\"]}",
+      "cursor": 0,
+      "revision": 0,
+      "finished": 0,
+      "candidate_count": 2,
+      "created_at": 1793073506.4374254,
+      "membership": "fixed",
+      "source": "library",
+      "sort": "name_zh",
+      "sequence_revision": 0
+    }
+  ],
+  "round_entries": [
+    {
+      "round_id": "ac255a7f-8edc-4869-93cd-a78fe7d0d89e",
+      "ordinal": 0,
+      "video_id": "cee7b036-c268-4b9c-9e83-5f4d5df110a4",
+      "source_ordinal": 0
+    },
+    {
+      "round_id": "ac255a7f-8edc-4869-93cd-a78fe7d0d89e",
+      "ordinal": 1,
+      "video_id": "072dc425-33dd-4a90-8c89-38000c763f8a",
+      "source_ordinal": 1
+    },
+    {
+      "round_id": "9cb80603-5115-485b-8ebb-f480d25379f2",
+      "ordinal": 0,
+      "video_id": "072dc425-33dd-4a90-8c89-38000c763f8a",
+      "source_ordinal": 1
+    },
+    {
+      "round_id": "9cb80603-5115-485b-8ebb-f480d25379f2",
+      "ordinal": 1,
+      "video_id": "8185e18e-06d1-4d70-a31e-93ff35bbce99",
+      "source_ordinal": 0
+    }
+  ],
+  "videos": [
+    {
+      "id": "072dc425-33dd-4a90-8c89-38000c763f8a",
+      "root_id": "videos",
+      "path": "/media/videos/竖屏/水边的花.mp4",
+      "location_key": "/media/videos/竖屏/水边的花.mp4",
+      "name": "水边的花",
+      "status": "available",
+      "error": null,
+      "size": 172775,
+      "device": "37",
+      "inode": "275364",
+      "mtime_ns": "1793073462282557572",
+      "ctime_ns": "1793073462282557572",
+      "sha256": "de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd",
+      "quick_hash": "03db1476153c1bd2ea3e318abc15661c94984c61d7927c11a63ce98d917cd3f6",
+      "duration": 5.005,
+      "width": 360,
+      "height": 640,
+      "rotation": 0,
+      "type": "MP4",
+      "video_codec": "h264",
+      "audio_codec": null,
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "thumbnail": "fidelity-portrait.jpg",
+      "seen_scan": "f44b48d9-1f4a-425e-a3d1-2b60c09cb4f1",
+      "created_at": 1793073462.886474,
+      "generation": 0
+    },
+    {
+      "id": "cee7b036-c268-4b9c-9e83-5f4d5df110a4",
+      "root_id": "videos",
+      "path": "/media/videos/横屏/风里的花园.mp4",
+      "location_key": "/media/videos/横屏/风里的花园.mp4",
+      "name": "风里的花园",
+      "status": "available",
+      "error": null,
+      "size": 1290627,
+      "device": "37",
+      "inode": "275362",
+      "mtime_ns": "1793073462282070651",
+      "ctime_ns": "1793073462282070651",
+      "sha256": "d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001",
+      "quick_hash": "1e787e6266db1edc2a3fcb64cc99c7fa285a3d29927f125676139fae11eb3022",
+      "duration": 5.055,
+      "width": 960,
+      "height": 540,
+      "rotation": 0,
+      "type": "MP4",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "thumbnail": "fidelity-landscape.jpg",
+      "seen_scan": "f44b48d9-1f4a-425e-a3d1-2b60c09cb4f1",
+      "created_at": 1793073462.981453,
+      "generation": 0
+    },
+    {
+      "id": "8185e18e-06d1-4d70-a31e-93ff35bbce99",
+      "root_id": "videos",
+      "path": "/media/videos/外部新增/晨光新视频.mp4",
+      "location_key": "/media/videos/外部新增/晨光新视频.mp4",
+      "name": "晨光新视频.mp4",
+      "status": "available",
+      "error": null,
+      "size": 1290627,
+      "device": "37",
+      "inode": "275402",
+      "mtime_ns": "1793073501156278425",
+      "ctime_ns": "1793073501156278425",
+      "sha256": "d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001",
+      "quick_hash": "1e787e6266db1edc2a3fcb64cc99c7fa285a3d29927f125676139fae11eb3022",
+      "duration": 5.055,
+      "width": 960,
+      "height": 540,
+      "rotation": 0,
+      "type": "MP4",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "thumbnail": "5ac68efa-0a89-4873-a1ea-18348f9faa34.jpg",
+      "seen_scan": "f44b48d9-1f4a-425e-a3d1-2b60c09cb4f1",
+      "created_at": 1793073501.321329,
+      "generation": 0
+    }
+  ],
+  "tags": [
+    {
+      "id": "43e8bed1-8adb-41ba-b46a-ae213c8b62a4",
+      "name": "自然",
+      "created_at": 1793073466.383862
+    },
+    {
+      "id": "9f325cab-1361-4f31-90b5-d20e8693b0b5",
+      "name": "喜欢",
+      "created_at": 1793073466.383864
+    }
+  ],
+  "video_tags": [
+    {
+      "video_id": "072dc425-33dd-4a90-8c89-38000c763f8a",
+      "tag_id": "43e8bed1-8adb-41ba-b46a-ae213c8b62a4"
+    },
+    {
+      "video_id": "cee7b036-c268-4b9c-9e83-5f4d5df110a4",
+      "tag_id": "9f325cab-1361-4f31-90b5-d20e8693b0b5"
+    }
+  ],
+  "recent_entries": [
+    {
+      "id": "e965d6b3-3a85-4ced-a480-be55cb92436e",
+      "kind": "video",
+      "video_id": "cee7b036-c268-4b9c-9e83-5f4d5df110a4",
+      "pack_id": null,
+      "opened_at": 1793073492.6580577
+    },
+    {
+      "id": "709754a7-8b5b-422d-ae63-226e73147826",
+      "kind": "video",
+      "video_id": "072dc425-33dd-4a90-8c89-38000c763f8a",
+      "pack_id": null,
+      "opened_at": 1793073506.7440484
+    }
+  ],
+  "packs": [
+    {
+      "id": "b5df6aa8-d66b-4332-8f63-b87456861e73",
+      "root_id": "packs",
+      "path": "/media/packs/示例作者 NO.019 - 灵梦 · 新年快乐",
+      "location_key": "/media/packs/示例作者 NO.019 - 灵梦 · 新年快乐",
+      "name": "示例作者 NO.019 - 灵梦 · 新年快乐",
+      "status": "available",
+      "error": null,
+      "device": "37",
+      "inode": "275347",
+      "content_version": 1,
+      "page_count": 6,
+      "generation": 1,
+      "seen_scan": "f44b48d9-1f4a-425e-a3d1-2b60c09cb4f1",
+      "created_at": 1793073463.8547735,
+      "directory_signature": "[\"37\", \"275347\", 256, \"1793073462273927633\", \"1793073474650705082\", null]"
+    },
+    {
+      "id": "c4da25f5-7163-4820-a9b5-0efa05b8b4d2",
+      "root_id": "packs",
+      "path": "/media/packs/示例作者 NO.034 - 夏日祭",
+      "location_key": "/media/packs/示例作者 NO.034 - 夏日祭",
+      "name": "示例作者 NO.034 - 夏日祭",
+      "status": "available",
+      "error": null,
+      "device": "37",
+      "inode": "275333",
+      "content_version": 1,
+      "page_count": 6,
+      "generation": 1,
+      "seen_scan": "f44b48d9-1f4a-425e-a3d1-2b60c09cb4f1",
+      "created_at": 1793073464.6834579,
+      "directory_signature": "[\"37\", \"275333\", 256, \"1793073462264929525\", \"1793073474650661456\", null]"
+    },
+    {
+      "id": "4e2fb9ef-95be-444e-8d09-727316e2fe1a",
+      "root_id": "packs",
+      "path": "/media/packs/示例作者 NO.051 - 加藤惠 · 和服",
+      "location_key": "/media/packs/示例作者 NO.051 - 加藤惠 · 和服",
+      "name": "示例作者 NO.051 - 加藤惠 · 和服",
+      "status": "available",
+      "error": null,
+      "device": "37",
+      "inode": "275354",
+      "content_version": 1,
+      "page_count": 6,
+      "generation": 1,
+      "seen_scan": "f44b48d9-1f4a-425e-a3d1-2b60c09cb4f1",
+      "created_at": 1793073465.5429513,
+      "directory_signature": "[\"37\", \"275354\", 256, \"1793073462278299040\", \"1793073474650715415\", null]"
+    },
+    {
+      "id": "8b021689-bda7-40ef-bb58-01d801caea9d",
+      "root_id": "packs",
+      "path": "/media/packs/示例作者 NO.057 - 原野上的浪漫",
+      "location_key": "/media/packs/示例作者 NO.057 - 原野上的浪漫",
+      "name": "示例作者 NO.057 - 原野上的浪漫",
+      "status": "available",
+      "error": null,
+      "device": "37",
+      "inode": "275340",
+      "content_version": 1,
+      "page_count": 6,
+      "generation": 1,
+      "seen_scan": "f44b48d9-1f4a-425e-a3d1-2b60c09cb4f1",
+      "created_at": 1793073466.3657615,
+      "directory_signature": "[\"37\", \"275340\", 256, \"1793073462267918255\", \"1793073474650685123\", null]"
+    }
+  ],
+  "pack_tag_definitions": [
+    {
+      "id": "4cb1fb9c-f577-467e-9500-742ebf8f0af3",
+      "name": "和服",
+      "created_at": 1793073466.3835318
+    },
+    {
+      "id": "da509a0c-ec5e-49f1-a5b7-220e7e860903",
+      "name": "户外",
+      "created_at": 1793073466.383535
+    },
+    {
+      "id": "758c025b-2cbb-4ff4-94cd-54addd1b193d",
+      "name": "白裙",
+      "created_at": 1793073466.3835366
+    },
+    {
+      "id": "dc8e4c2d-2e5c-4413-a17a-3beaf1821d23",
+      "name": "角色",
+      "created_at": 1793073466.3835385
+    },
+    {
+      "id": "449f9881-0036-40b4-aca1-3c67d887708e",
+      "name": "喜欢",
+      "created_at": 1793073466.38354
+    }
+  ],
+  "pack_tag_links": [
+    {
+      "pack_id": "b5df6aa8-d66b-4332-8f63-b87456861e73",
+      "tag_id": "dc8e4c2d-2e5c-4413-a17a-3beaf1821d23"
+    },
+    {
+      "pack_id": "b5df6aa8-d66b-4332-8f63-b87456861e73",
+      "tag_id": "4cb1fb9c-f577-467e-9500-742ebf8f0af3"
+    },
+    {
+      "pack_id": "c4da25f5-7163-4820-a9b5-0efa05b8b4d2",
+      "tag_id": "4cb1fb9c-f577-467e-9500-742ebf8f0af3"
+    },
+    {
+      "pack_id": "c4da25f5-7163-4820-a9b5-0efa05b8b4d2",
+      "tag_id": "da509a0c-ec5e-49f1-a5b7-220e7e860903"
+    },
+    {
+      "pack_id": "4e2fb9ef-95be-444e-8d09-727316e2fe1a",
+      "tag_id": "dc8e4c2d-2e5c-4413-a17a-3beaf1821d23"
+    },
+    {
+      "pack_id": "4e2fb9ef-95be-444e-8d09-727316e2fe1a",
+      "tag_id": "4cb1fb9c-f577-467e-9500-742ebf8f0af3"
+    },
+    {
+      "pack_id": "8b021689-bda7-40ef-bb58-01d801caea9d",
+      "tag_id": "da509a0c-ec5e-49f1-a5b7-220e7e860903"
+    },
+    {
+      "pack_id": "8b021689-bda7-40ef-bb58-01d801caea9d",
+      "tag_id": "758c025b-2cbb-4ff4-94cd-54addd1b193d"
+    }
+  ],
+  "pack_progress": [
+    {
+      "pack_id": "c4da25f5-7163-4820-a9b5-0efa05b8b4d2",
+      "page_id": "de3ab8bf-de62-4f46-8e05-fe4cf0c74144",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1000.0,
+      "content_version": 1,
+      "recovery_reason": null
+    }
+  ]
+}

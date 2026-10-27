@@ -1,6 +1,6 @@
 ## 目标
 
-将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8原型一致性收口进行中；最新[Draft PR #79](https://github.com/ShiJiJS/video_viewer/pull/79)验证本地视频画面配置并修复模拟器启动器，当前预览连续三轮行为及固定样本画面通过，阅读/设置相邻与release诊断排除检查通过。#77的旧绿边与崩溃证据保留，具体软解路径根因及完整UI-02等余项继续由[#78](https://github.com/ShiJiJS/video_viewer/issues/78)与LF8跟踪；#76/#75的历史固定树证据继续保留。原型仍独立且可移除，当前结果与余项见[验收台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-rendering/docs/plans/library-first/RESULTS.md)。仍需依赖PR合并、完整同版验收、目标手机/NAS及原签名升级验证，尚未发布新版。
+将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8原型一致性收口进行中；最新[Draft PR #80](https://github.com/ShiJiJS/video_viewer/pull/80)修复视频/图包返回后的库存刷新，并补标签写入、外部新增/定义删除与固定范围/来源返回三轮原生验证。25项相关检查、42点及阅读相邻13点通过；#79本地画面配置与#78软解路径记录继续保留，整体验收尚未关闭。原型仍独立且可移除，当前状态见[验收台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-state-stability/docs/plans/library-first/RESULTS.md)。PR合并、目标手机/NAS、原签名升级及其它明确余项继续，尚未发布新版。
 
 ## 历史阶段记录（各自固定版本）
 
@@ -492,6 +492,16 @@ App流式文件网关、真实系统选择器/取消、两类统计/分页根映
 
 7740f4d当前App连续三轮通过：45前台点、21次fling、6次Home往返、15个横屏原图已知绿条/非黑帧检查、12段录屏全帧解码。阅读13点通过；设置旧驱动两次取了弹层下被刻意归零的来源页insets，宿主实际键盘原图/Window/IME保留，eb5cc46仅改驱动读真实FlutterView，保留IME/焦点/遮挡断言后21点通过。启动器的离线残留与短暂shell生命周期问题有6项CLI旧失败/修后检查及真实启动、复用证据。
 
-flutter analyze/Ruff、正常release构建、manifest/DEX诊断与integration_test排除、原型页面资产排除及原证书核对通过；仍0.1.4+5，只本地构建。原型1cbf605独立未改可移除，未改正式8760/NAS、SDK或发布APK；全集沿用既有固定业务树证明。本地固定样本通过不关闭完整UI-02/05、其它格式/异常/迟到回执及目标手机/NAS；#24/#33/#78继续开放，接续短队列留白与横屏面板比例等已登记原型差异。
+flutter analyze/Ruff、正常release构建、manifest/DEX诊断与integration_test排除、原型页面资产排除及原证书核对通过；仍0.1.4+5，只本地构建。原型1cbf605独立未改可移除，未改正式8760/NAS、SDK或发布APK；全集沿用既有固定业务树证明。本地固定样本通过不关闭完整UI-02/05、其它格式/异常/迟到回执及目标手机/NAS；#24/#33/#78继续开放，短队列/横屏范围与工具形态已由#67完成，后续预览状态验证见#80。
 
 [方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-rendering/docs/plans/library-first/LF8-VIDEO-RENDERING.md) / [444项原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-rendering/docs/plans/library-first/evidence/lf8-video-rendering/README.md)。
+
+## 2026-10-27：预览标签／范围与返回库存（PR #80）
+
+[Draft PR #80](https://github.com/ShiJiJS/video_viewer/pull/80)基于#79，生产/驱动76a2f95。原生预览内真实保存并重开读回标签，当前项、轮次与成员序号不变；专用夹具真实新增/扫描公开视频并为其添加同一标签，旧范围不吸收，返回才更新匹配列表。再删除来源标签定义，原固定范围仍保留；返回原筛选0项，明确清除才显示全库3项。新增视频已相邻解码但未播放，最近API／SQL仍仅两项实际打开的旧视频。同名图包标签与原进度未改。
+
+实际先行原图发现返回列表已新、顶部库存仍旧。修复两个来源页返回时独立刷新权威库存，不阻塞列表/锚点，不把匹配数当库存。四项新增组件旧版全失败，修后与21项相关共25项、analyze/Ruff通过；修后同源码三轮42点、阅读相邻13点通过，返回点确认权威3及封面解码。429项原始证据只读复核通过；先行三轮及早期采集错误单列。
+
+当前20点基线及源码核对确认#67已完成短队列收高/横屏范围/工具形态，纠正#79末段误列的旧待办。原型1cbf605独立可移除未改；本段未重跑全集或release、未改正式8760/NAS/SDK或发布APK。#24/#33/#78保持开放，继续视频标签定义真实改名/删除与失败读回、目标手机/NAS及原签名升级等明确余项。
+
+[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-state-stability/docs/plans/library-first/LF8-PREVIEW-STATE-STABILITY.md) / [原图、请求、SQL与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-state-stability/docs/plans/library-first/evidence/lf8-preview-state-stability/README.md)。

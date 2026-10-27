@@ -1,0 +1,11 @@
+{
+  "observed_at_utc": "2026-10-27T04:18:17.565638+00:00",
+  "process": [
+    "14072 /Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64-headless -avd video_viewer_api_36 -port 5554 -no-boot-anim -gpu software -feature -Vulkan -feature -GLDMA -feature HardwareDecoder -no-snapshot -no-metrics -crash-report-mode never -no-window"
+  ],
+  "avd": "video_viewer_api_36",
+  "size": "Physical size: 1080x2400",
+  "density": "Physical density: 420",
+  "font": "1.0",
+  "music": "[V] will control stream=3 (STREAM_MUSIC)\n[V] will get volume\n[V] Connecting to AudioService\n[V] volume is 5 in range [0..15]"
+}

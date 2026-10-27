@@ -1,6 +1,6 @@
 总任务：#24
 
-最新阶段：[本地视频画面与启动环境 PR #79](https://github.com/ShiJiJS/video_viewer/pull/79)，当前预览连续三轮、固定样本15个横屏画面检查及阅读/设置相邻通过；诊断入口已核对不进入release。旧软解绿边复现与具体根因由[#78](https://github.com/ShiJiJS/video_viewer/issues/78)继续保留，UI-02及整体验收保持开放，详见文末。
+最新阶段：[预览状态／返回库存 PR #80](https://github.com/ShiJiJS/video_viewer/pull/80)，修复视频/阅读器返回媒体库后的权威总数刷新；25项相关、同源码三轮42点及阅读相邻13点通过。标签保存/外部新增/来源标签删除后的固定范围与返回结果已补证。#79的本地画面配置与#78的软解复现记录继续保留，完整UI及目标终验仍开放，详见文末。
 
 ## 目标
 
@@ -311,6 +311,16 @@ LF0 (#25), LF1 (#26), LF2 (#27), LF3 (#28), LF4 (#29), LF5 (#30), LF6 (#31), LF7
 
 7740f4d当前App连续三轮通过：45前台点、21次fling、6次Home往返、15个横屏原图已知绿条/非黑帧检查、12段录屏全帧解码。阅读13点通过；设置旧驱动两次取了弹层下被刻意归零的来源页insets，宿主实际键盘原图/Window/IME保留，eb5cc46仅改驱动读真实FlutterView，保留IME/焦点/遮挡断言后21点通过。启动器的离线残留与短暂shell生命周期问题有6项CLI旧失败/修后检查及真实启动、复用证据。
 
-flutter analyze/Ruff、正常release构建、manifest/DEX诊断与integration_test排除、原型页面资产排除及原证书核对通过；仍0.1.4+5，只本地构建。原型1cbf605独立未改可移除，未改正式8760/NAS、SDK或发布APK；全集沿用既有固定业务树证明。本地固定样本通过不关闭完整UI-02/05、其它格式/异常/迟到回执及目标手机/NAS；#24/#33/#78继续开放，接续短队列留白与横屏面板比例等已登记原型差异。
+flutter analyze/Ruff、正常release构建、manifest/DEX诊断与integration_test排除、原型页面资产排除及原证书核对通过；仍0.1.4+5，只本地构建。原型1cbf605独立未改可移除，未改正式8760/NAS、SDK或发布APK；全集沿用既有固定业务树证明。本地固定样本通过不关闭完整UI-02/05、其它格式/异常/迟到回执及目标手机/NAS；#24/#33/#78继续开放，短队列/横屏范围与工具形态已由#67完成，后续预览状态验证见#80。
 
 [方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-rendering/docs/plans/library-first/LF8-VIDEO-RENDERING.md) / [444项原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-rendering/docs/plans/library-first/evidence/lf8-video-rendering/README.md)。
+
+## 2026-10-27：预览标签／范围与返回库存（PR #80）
+
+[Draft PR #80](https://github.com/ShiJiJS/video_viewer/pull/80)基于#79，生产/驱动76a2f95。原生预览内真实保存并重开读回标签，当前项、轮次与成员序号不变；专用夹具真实新增/扫描公开视频并为其添加同一标签，旧范围不吸收，返回才更新匹配列表。再删除来源标签定义，原固定范围仍保留；返回原筛选0项，明确清除才显示全库3项。新增视频已相邻解码但未播放，最近API／SQL仍仅两项实际打开的旧视频。同名图包标签与原进度未改。
+
+实际先行原图发现返回列表已新、顶部库存仍旧。修复两个来源页返回时独立刷新权威库存，不阻塞列表/锚点，不把匹配数当库存。四项新增组件旧版全失败，修后与21项相关共25项、analyze/Ruff通过；修后同源码三轮42点、阅读相邻13点通过，返回点确认权威3及封面解码。429项原始证据只读复核通过；先行三轮及早期采集错误单列。
+
+当前20点基线及源码核对确认#67已完成短队列收高/横屏范围/工具形态，纠正#79末段误列的旧待办。原型1cbf605独立可移除未改；本段未重跑全集或release、未改正式8760/NAS/SDK或发布APK。#24/#33/#78保持开放，继续视频标签定义真实改名/删除与失败读回、目标手机/NAS及原签名升级等明确余项。
+
+[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-state-stability/docs/plans/library-first/LF8-PREVIEW-STATE-STABILITY.md) / [原图、请求、SQL与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-preview-state-stability/docs/plans/library-first/evidence/lf8-preview-state-stability/README.md)。

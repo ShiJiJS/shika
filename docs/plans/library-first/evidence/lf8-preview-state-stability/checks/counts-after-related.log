@@ -1,0 +1,89 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_catalog_counts_test.dart: initial totals are unfiltered, not visited pages; retry is GET-only
+00:00 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_entry_recovery_test.dart: failed preview entry releases an overlapping return lookup and pagination; cancelled=false
+00:00 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_entry_recovery_test.dart: failed preview entry releases an overlapping return lookup and pagination; cancelled=false
+00:00 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_entry_recovery_test.dart: failed preview entry releases an overlapping return lookup and pagination; cancelled=false
+00:00 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_entry_recovery_test.dart: failed preview entry releases an overlapping return lookup and pagination; cancelled=false
+00:00 +5: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_entry_recovery_test.dart: failed preview entry releases an overlapping return lookup and pagination; cancelled=false
+00:00 +6: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_entry_recovery_test.dart: failed preview entry releases an overlapping return lookup and pagination; cancelled=false
+00:02 +7: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_counts_widget_test.dart: both library totals survive searches, filters and type switching
+00:02 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from preview refreshes inventory; delayed=false
+00:02 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from preview refreshes inventory; delayed=false
+00:02 +10: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:03 +11: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:03 +12: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:03 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:03 +14: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:04 +15: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from reader refreshes inventory; delayed=false
+00:04 +16: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from reader refreshes inventory; delayed=false
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: '271'
+  Actual: '270'
+   Which: is different.
+          Expected: 271
+            Actual: 270
+                      ^
+           Differ at offset 2
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart:79:11)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart line 79
+The test description was:
+  return from reader refreshes inventory; delayed=false
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:05 +16 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:05 +16 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from reader refreshes inventory; delayed=false [E]
+  Test failed. See exception logs above.
+  The test description was: return from reader refreshes inventory; delayed=false
+  
+00:05 +17 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:05 +18 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:06 +19 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from reader refreshes inventory; delayed=true
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: '271'
+  Actual: '270'
+   Which: is different.
+          Expected: 271
+            Actual: 270
+                      ^
+           Differ at offset 2
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart:79:11)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart line 79
+The test description was:
+  return from reader refreshes inventory; delayed=true
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +19 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: when the current and following packs leave the query, the previous neighbour is preferred
+00:06 +19 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from reader refreshes inventory; delayed=true [E]
+  Test failed. See exception logs above.
+  The test description was: return from reader refreshes inventory; delayed=true
+  
+00:06 +20 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: an interrupted location keeps its old pixels and pending IDs until an explicit retry
+00:07 +21 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: a late relocation cannot move the new search back to its previous window
+00:07 +22 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: discarding an old page on append keeps the visible pack in place
+00:07 +23 -2: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from reader refreshes inventory; delayed=false
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from reader refreshes inventory; delayed=true
