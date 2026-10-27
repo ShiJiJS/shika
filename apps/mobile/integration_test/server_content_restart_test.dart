@@ -100,11 +100,27 @@ void main() {
 
       Future<void> tap(Finder f) async {
         await until(() => f.evaluate().length == 1, 'unique $f');
+        Map<String, dynamic> trace() {
+          final stages = find.byKey(const Key('video-stage'));
+          final controller = stages.evaluate().isEmpty
+              ? null
+              : t.widget<PageView>(stages).controller;
+          return {
+            'target': f.toString(),
+            'hittable': f.hitTestable().evaluate().length,
+            'video': repo.current?.id,
+            'page': controller?.hasClients == true ? controller!.page : null,
+          };
+        }
+
+        debugPrint('CONTENT_TAP_BEFORE:${jsonEncode(trace())}');
         await t.ensureVisible(f);
         await t.pump(const Duration(milliseconds: 150));
+        debugPrint('CONTENT_TAP_REVEALED:${jsonEncode(trace())}');
         await until(() => f.hitTestable().evaluate().length == 1, 'hit $f');
         await t.tap(f);
         await t.pump(const Duration(milliseconds: 200));
+        debugPrint('CONTENT_TAP_AFTER:${jsonEncode(trace())}');
       }
 
       VideoCatalogPageState video() => t.state(find.byType(VideoCatalogPage));
