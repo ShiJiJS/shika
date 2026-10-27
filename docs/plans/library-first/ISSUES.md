@@ -1,6 +1,6 @@
 # GitHub 实施任务
 
-当前恢复推进：[全屏强停复核PR #87](https://github.com/ShiJiJS/video_viewer/pull/87)，三类内容各一次同版21点；旧全屏失败来自测试误滚动，详见[阶段边界](LF8-FULLSCREEN-RESTART.md)。后续继续真实系统保存／选择与HTTP备份／完整恢复联验。以下保留历史阶段说明，最新总状态见[逐项台账](RESULTS.md)。
+最新阶段：[系统文件备份往返与取消 PR #88](https://github.com/ShiJiJS/video_viewer/pull/88)。固定5373baa，小文件19,207字节与大文件40,964,503字节各一次真实系统保存／选取、HTTP上传、27目录确认及完整恢复，共24点、26张PNG；取消保存保留原任务与日志，取消选取没有导入或恢复。18,000条记录摘要、恢复后SQL投影及媒体SHA核对，271输入只读复核通过。生产代码未改、backup_v2仍关闭；下一步审计并开放正式完整备份能力、保留旧服务／v1兼容，再做发布前整版回归。不是三轮稳定性、客户端／服务端全集或目标手机验收，未发布APK；#24/#33/#32保持开放。
 
 当前视频预览：[全屏/后台行为 PR #77](https://github.com/ShiJiJS/video_viewer/pull/77)，45点/12段录屏与15项相关检查；实际绿边登记[#78](https://github.com/ShiJiJS/video_viewer/issues/78)，保留UI-02未通过状态。[台账](RESULTS.md)。
 
@@ -34,3 +34,9 @@
 ## 2026-10-26：LF8共享比例与收口入口
 
 [Draft PR #58](https://github.com/ShiJiJS/video_viewer/pull/58)补齐两类库共享几何、设置与标签确认密度及独立复核证据；[RESULTS.md](RESULTS.md)现逐项登记45个验收ID。#33/#24保持开放，下一段优先真实续读区、权威类型总数、保守标题/作者与全范围排序一致性，详见[差异审计](LF8-SHARED-GEOMETRY.md)。本轮只有共享区域局部证据，不能替代完整管理/阅读/动作或目标设备验收。
+
+## PR #88：系统文件、完整恢复与大文件取消
+
+[系统文件备份往返与取消 PR #88](https://github.com/ShiJiJS/video_viewer/pull/88)。固定5373baa，小文件19,207字节与大文件40,964,503字节各一次真实系统保存／选取、HTTP上传、27目录确认及完整恢复，共24点、26张PNG；取消保存保留原任务与日志，取消选取没有导入或恢复。18,000条记录摘要、恢复后SQL投影及媒体SHA核对，271输入只读复核通过。生产代码未改、backup_v2仍关闭；下一步审计并开放正式完整备份能力、保留旧服务／v1兼容，再做发布前整版回归。不是三轮稳定性、客户端／服务端全集或目标手机验收，未发布APK；#24/#33/#32保持开放。
+
+[实现边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-native-backup-roundtrip/docs/plans/library-first/LF8-NATIVE-BACKUP-ROUNDTRIP.md)／[固定源码与原始证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-native-backup-roundtrip/docs/plans/library-first/evidence/lf8-native-backup-roundtrip/README.md)。保留host文件读取引号、同名文档拒绝和遗留选择器启动诊断，中间流程不计最终24点；最终两例无需手动启动。图包版本按既有恢复规则＋1，SQL只比较明确投影，不称整库字节相同；Android实际处理未压缩文件，Git仅gzip保存同字节证据。独立原型与原四个服务未改，临时容器／显示／AVD已归还。

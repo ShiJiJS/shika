@@ -1,8 +1,8 @@
 # LF0–LF8 逐项收口台账（进行中）
 
-更新：2026-10-27。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
+更新：2026-10-28。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
-最新阶段：[全屏强停复核 PR #87](https://github.com/ShiJiJS/video_viewer/pull/87)。用户已恢复推进；修正测试对已可见按钮强制ensureVisible、误滚动视频分页的问题，撤回“短片自然换片”的解释。f6a565e同版普通视频／全屏／图包各一次共21点、4项相关组件与177输入只读复核通过，生产代码未改；QEMU一次挂起退出另存，原配置重启后完成余下两例，不称连续稳定性通过。下一步现有系统文件选择＋HTTP导出／导入／完整恢复同次联验；独立40MiB文件处理已实现并有证据，生产backup_v2仍关闭。#24/#33保持开放。
+最新阶段：[系统文件备份往返与取消 PR #88](https://github.com/ShiJiJS/video_viewer/pull/88)。固定5373baa，小文件19,207字节与大文件40,964,503字节各一次真实系统保存／选取、HTTP上传、27目录确认及完整恢复，共24点、26张PNG；取消保存保留原任务与日志，取消选取没有导入或恢复。18,000条记录摘要、恢复后SQL投影及媒体SHA核对，271输入只读复核通过。生产代码未改、backup_v2仍关闭；下一步审计并开放正式完整备份能力、保留旧服务／v1兼容，再做发布前整版回归。不是三轮稳定性、客户端／服务端全集或目标手机验收，未发布APK；#24/#33/#32保持开放。
 
 共享布局阶段基线为a9da395；最新图包续读阶段源码为c4aaf3b，见[真实续读约定](LF8-PACK-CONTINUATION.md)与[原生证据](evidence/lf8-pack-continuation/README.md)。后续分类总数阶段源码910cfb2，见[库存约定](LF8-CATALOG-COUNTS.md)与[库存/横屏及续读回归证据](evidence/lf8-catalog-counts/README.md)。该段补同快照总数、未知重试和标签缩高布局；续读段新增真实续读、独立摘要读取与菜单收键盘；共享布局的设置开关、标签确认区和主题稳定证据继续作为历史基线。图包呈现/排序阶段为4e391a2，见[约定](LF8-PACK-PRESENTATION.md)与[69点同版证据](evidence/lf8-pack-presentation/README.md)；主标题/作者和完整范围排序已补，新增大字长操作行可达性修正。原型树1cbf605未改。各阶段链接中的实现提交、真实服务/Demo区分、操作步骤与原始证据继续有效，但未来修改后须按受影响路径复核，不能把历史全集视为当前HEAD所有组合已通过。
 
@@ -56,9 +56,9 @@
 | SET-03 | 已有阶段证据 / 未收口 | [LF7](LF7.md) | 设置入口已有阶段证据；长管理页、键盘/错误/旧服务组合和完整视觉继续。 |
 | SET-04 | 新增目录与缺失管理证据 / 未收口 | [LF7](LF7.md)、[设置155点](evidence/lf8-settings-forms/README.md)、[缺失39+4点](evidence/lf8-missing-management/README.md) | 类型冲突、目录表单、实际根状态、停用保留25/清理24保留返回1及确认已补；旧服务/扫描异常与其它完整组合继续。 |
 | SET-05 | 已有阶段证据 / 未收口 | [LF7](LF7.md) | 设置入口已有阶段证据；长管理页、键盘/错误/旧服务组合和完整视觉继续。 |
-| BAK-01 | 新增备份与恢复预览证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 设置真实入口、27目录明确恢复／快照仅预览、取消／格式错误和原任务已补；独立真实系统40MiB文件保存／选入早有证据。backup_v2生产仍关闭，尚需系统选择器＋HTTP导出／导入／完整恢复同次联验、大文件整路及更多故障，不能将独立结果拼成整路通过。 |
-| BAK-02 | 新增备份与恢复预览证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 设置真实入口、27目录明确恢复／快照仅预览、取消／格式错误和原任务已补；独立真实系统40MiB文件保存／选入早有证据。backup_v2生产仍关闭，尚需系统选择器＋HTTP导出／导入／完整恢复同次联验、大文件整路及更多故障，不能将独立结果拼成整路通过。 |
-| BAK-03 | 新增备份与恢复预览证据 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 设置真实入口、27目录明确恢复／快照仅预览、取消／格式错误和原任务已补；独立真实系统40MiB文件保存／选入早有证据。backup_v2生产仍关闭，尚需系统选择器＋HTTP导出／导入／完整恢复同次联验、大文件整路及更多故障，不能将独立结果拼成整路通过。 |
+| BAK-01 | 新增真实系统文件整路及大文件取消 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md)、[备份与任务管理](evidence/lf8-backup-task-management/README.md)、[系统文件整路24点](evidence/lf8-native-backup-roundtrip/README.md) | 小文件及40,964,503字节大文件各一次真实系统保存／选入、HTTP导入、27目录明确恢复及快照只预览；取消保存复用原任务，取消选取无导入／恢复。18,000条记录及恢复SQL明确投影核对，图包版本按规则＋1。生产backup_v2仍关闭；继续正式能力开放、旧服务／v1兼容及发布前整版回归。两例不冒充各三轮、全集、目标手机或云文档提供器验收。 |
+| BAK-02 | 新增真实系统文件整路及大文件取消 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md)、[备份与任务管理](evidence/lf8-backup-task-management/README.md)、[系统文件整路24点](evidence/lf8-native-backup-roundtrip/README.md) | 小文件及40,964,503字节大文件各一次真实系统保存／选入、HTTP导入、27目录明确恢复及快照只预览；取消保存复用原任务，取消选取无导入／恢复。18,000条记录及恢复SQL明确投影核对，图包版本按规则＋1。生产backup_v2仍关闭；继续正式能力开放、旧服务／v1兼容及发布前整版回归。两例不冒充各三轮、全集、目标手机或云文档提供器验收。 |
+| BAK-03 | 新增真实系统文件整路及大文件取消 / 未收口 | [LF7](LF7.md)、[原生完整恢复](evidence/lf7-archive-restart/README.md)、[备份与任务管理](evidence/lf8-backup-task-management/README.md)、[系统文件整路24点](evidence/lf8-native-backup-roundtrip/README.md) | 小文件及40,964,503字节大文件各一次真实系统保存／选入、HTTP导入、27目录明确恢复及快照只预览；取消保存复用原任务，取消选取无导入／恢复。18,000条记录及恢复SQL明确投影核对，图包版本按规则＋1。生产backup_v2仍关闭；继续正式能力开放、旧服务／v1兼容及发布前整版回归。两例不冒充各三轮、全集、目标手机或云文档提供器验收。 |
 | UP-01 | 已有阶段证据 / 未收口 | [LF1](LF1.md)、[本机开发配置](../../macos-development.md) | 目标手机原签名覆盖安装、同版旧服务/客户端组合和发布回退演练继续。 |
 | UP-02 | 待发布演练 | [LF1](LF1.md)、[本机开发配置](../../macos-development.md) | 迁移原签名的授权与准备不等于已覆盖安装；未发布本轮APK。 |
 | UI-01 | 新增标签分配与真实IME证据 / 未收口 | [共享差异审计](LF8-SHARED-GEOMETRY.md)、[最近最终证据](evidence/lf8-recent-history-final/README.md) | 最近两类111dp行、空态、显示标题/时长已补同状态原型对照，保留真实总数兼容差异；标签顺序/图标和其它完整页面继续。  标签段补20dp锚线/描边选择、外置字段、单层确认、失败草稿、浅暗编辑和三视口45点；[证据与边界](evidence/lf8-tag-management/README.md)。 标签分配段补三尺寸42点、真实IME、单项来源读回与批量追加；低高度操作及体量固定清单闭合，[证据](evidence/lf8-tag-assignment/README.md)。 |
@@ -360,3 +360,9 @@ f6a565e同版普通视频、横向全屏、纵向图包各一次双进程，共2
 全屏完整通过后首个普通视频轮遭QEMU图形／主循环挂起退出，ADB消失与显示恢复失败原样保存；确认旧launcher和QEMU PID消失后按原配置重启，先恢复原显示，再完成普通视频／图包。不是App通过或已证明的App恢复缺陷，也不是连续无中断稳定性结果。最终设备已关闭。#78仍保留其它渲染／环境稳定性问题。
 
 [阶段边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-fullscreen-restart/docs/plans/library-first/LF8-FULLSCREEN-RESTART.md)。用户已明确恢复推进，#24/#33继续开放。下一步把现有真实系统保存／选择与HTTP备份／完整恢复串成同一次流程，随后补大文件／故障组合；独立系统40MiB文件处理早已实现并测试，不再笼统标为未编写或把分段结果拼成整路通过。生产backup_v2仍关闭，原型1cbf605独立可移除，正式8760／NAS／签名／SDK／APK未操作。
+
+## PR #88：系统文件、完整恢复与大文件取消
+
+[系统文件备份往返与取消 PR #88](https://github.com/ShiJiJS/video_viewer/pull/88)。固定5373baa，小文件19,207字节与大文件40,964,503字节各一次真实系统保存／选取、HTTP上传、27目录确认及完整恢复，共24点、26张PNG；取消保存保留原任务与日志，取消选取没有导入或恢复。18,000条记录摘要、恢复后SQL投影及媒体SHA核对，271输入只读复核通过。生产代码未改、backup_v2仍关闭；下一步审计并开放正式完整备份能力、保留旧服务／v1兼容，再做发布前整版回归。不是三轮稳定性、客户端／服务端全集或目标手机验收，未发布APK；#24/#33/#32保持开放。
+
+[实现边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-native-backup-roundtrip/docs/plans/library-first/LF8-NATIVE-BACKUP-ROUNDTRIP.md)／[固定源码与原始证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-native-backup-roundtrip/docs/plans/library-first/evidence/lf8-native-backup-roundtrip/README.md)。保留host文件读取引号、同名文档拒绝和遗留选择器启动诊断，中间流程不计最终24点；最终两例无需手动启动。图包版本按既有恢复规则＋1，SQL只比较明确投影，不称整库字节相同；Android实际处理未压缩文件，Git仅gzip保存同字节证据。独立原型与原四个服务未改，临时容器／显示／AVD已归还。
