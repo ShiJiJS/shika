@@ -1,0 +1,11 @@
+# LF8：视频画面绿边与本地模拟器稳定性
+
+对应#78/#33/#24，基于PR #77。上一段在软件GPU、关闭宿主HardwareDecoder下行为三轮通过，但实际横屏有绿边；开启宿主视频解码的中间轮无绿边，却曾QEMU挂起并实际139退出。当前不预设SDK、插件、App或素材的责任。
+
+先做同源隔离：最小Flutter VideoPlayer分别使用textureView/platformView；debug-only Android Activity以MediaPlayer分别显示SurfaceView/TextureView；另用MediaExtractor/MediaCodec在字节缓冲区模式读实际解码器、output format、Image crop及plane stride。都使用APK内原有公开flower-landscape.mp4，保留SHA、原始输出和实际截图，不裁边或改素材尺寸。字节缓冲区格式与Surface输出不同，不把其单独认作Surface根因证明。
+
+Native Activity仅位于android/app/src/debug，固定公开asset、显式夹具键与模拟器硬件检查，不接受任意URI/路径；release必须证明不含该Activity。Flutter诊断只在integration_test。video_player_android安装版本README目前对Android platformView有已知问题提示，诊断比较不等于采用它作为产品默认。
+
+比较默认Impeller与受支持的Skia测试启动参数，必要时比较SDK文档支持的GLDMA启动覆盖。只操作同一个专用AVD，保留userdata；所有启动条件明确记录，不能用新的环境结果抹去旧失败。选择画面正确且能完成关键链路三轮的本地开发配置后再落实启动脚本/VS Code入口，依受影响范围复核当前预览及相邻阅读/设置；若实际需要App变更，再按证据实现受支持的修正，不修改SDK或遮盖画面。
+
+当前为隔离准备阶段，尚未声称问题已解决。目标手机/NAS、其它格式/迟到回执及整体验收继续；原型1cbf605独立未改且可移除，不改正式8760/NAS、生产backup_v2开关或发布APK。
