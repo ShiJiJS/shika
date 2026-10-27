@@ -13,6 +13,8 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from video_probe_pixels import inspect as inspect_video_frame
+
 ROOT = Path(__file__).resolve().parents[1]
 ADB = ROOT / ".dev/android-sdk/platform-tools/adb"
 p = argparse.ArgumentParser()
@@ -188,6 +190,8 @@ container = None
 stop = threading.Event()
 errors, screens = [], []
 actions, recordings = [], []
+video_frames = {}
+landscape_video_states = {"lifecycle-fullscreen-paused", "lifecycle-fullscreen-playing", "lifecycle-device-levels", "lifecycle-boost", "lifecycle-fullscreen-recovered"}
 record_process = record_path = record_shape = None
 paths = run(
     "git", "ls-files", "apps/mobile/lib", "apps/mobile/android", "apps/mobile/assets", "services/server/video_viewer"
@@ -196,6 +200,8 @@ paths += [
     "apps/mobile/pubspec.yaml",
     "apps/mobile/pubspec.lock",
     "scripts/start-android-emulator.sh",
+    "scripts/video_probe_pixels.py",
+    "apps/mobile/integration_test/video_render_probe_test.dart",
     "apps/mobile/integration_test/prototype_fidelity_test.dart",
     "apps/mobile/integration_test/server_pack_continuation_test.dart",
     "apps/mobile/integration_test/server_catalog_counts_test.dart",
@@ -292,6 +298,11 @@ def watch():
             (out / (name + "-window.txt")).write_text(window + "\n")
             png = device("exec-out", "screencap", "-p")
             (out / (name + ".png")).write_bytes(png)
+            if args.scenario == "preview-lifecycle" and name in landscape_video_states:
+                frame = inspect_video_frame(out / (name + ".png"))
+                video_frames[name] = frame
+                save("video-frames.json", video_frames)
+                assert frame["longest_green_run"] == 0 and frame["sampled_distinct_colors"] > 1000, frame
             if args.scenario == "preview-lifecycle":
                 width, height = struct.unpack(">II", png[16:24])
                 shape = "844x390" if width > height else "390x844"
@@ -411,6 +422,8 @@ try:
         result.returncode == 0 and "PROTOTYPE_FIDELITY_VERIFIED" in log and not errors
     )
     assert screens == scenes and len(metrics) == len(scenes)
+    if args.scenario == "preview-lifecycle":
+        assert set(video_frames) == landscape_video_states
     after = media()
     save("media-after.json", after)
     assert before == after
@@ -422,6 +435,7 @@ try:
             "window": [args.width, args.height],
             "scale": args.scale,
             "scenario": args.scenario,
+            "known_video_frame_checks": len(video_frames),
         },
     )
     print(json.dumps({"passed": True, "screens": screens, "output": str(out)}))

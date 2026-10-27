@@ -16,7 +16,14 @@ emulator="$ANDROID_HOME/emulator/emulator"
 [[ -x "$adb" && -x "$emulator" ]] || { echo 'Install Android platform-tools and emulator first.' >&2; exit 1; }
 "$emulator" -list-avds | grep -Fxq "$avd_name" || { echo "Missing AVD: $avd_name" >&2; exit 1; }
 "$adb" start-server
-if ! "$adb" devices | awk '{print $1}' | grep -Fxq "$device"; then
+# An offline transport may outlive a stopped QEMU. Process ownership, rather
+# than an ADB serial line, determines whether an emulator is already starting.
+port_command="$(ps -ax -o command= | awk -v port="$port" '(index($0, "qemu-system") || index($0, "/emulator/emulator")) && index($0, " -port " port " ") { print }')"
+if [[ -n "$port_command" && "$port_command" != *" -avd $avd_name "* ]]; then
+  echo "Port $port belongs to another local emulator; preserve it." >&2
+  exit 1
+fi
+if [[ -z "$port_command" ]]; then
   mkdir -p "$VV_DEV_HOME/logs"
   # A previous emulator crash must not block unattended startup on a consent dialog.
   options=(-avd "$avd_name" -port "$port" -no-boot-anim -gpu "$gpu_mode" -feature -Vulkan -feature "$dma_feature" -feature "$codec_feature" -no-snapshot -no-metrics -crash-report-mode never)
