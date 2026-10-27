@@ -406,14 +406,15 @@ void main() {
         playing = t.widget<MovieStage>(find.byType(MovieStage)).session;
         await playerReady();
         void selectedVideo(String step) {
+          final player = playing!.debugPlayers.single;
           expect(repo.current!.id, videoId, reason: step);
           expect(
-            playing!.debugPlayers.single.dataSource,
+            player.dataSource,
             repo.current!.source.location,
             reason: 'Native player must belong to selected video: $step',
           );
           debugPrint(
-            'CONTENT_VIDEO_IDENTITY:${jsonEncode({'step': step, 'video_id': videoId, 'current_video': repo.current!.id, 'source': playing!.debugPlayers.single.dataSource, 'looping': playing!.debugPlayers.single.value.isLooping})}',
+            'CONTENT_VIDEO_IDENTITY:${jsonEncode({'step': step, 'video_id': videoId, 'current_video': repo.current!.id, 'source': player.dataSource, 'looping': player.value.isLooping})}',
           );
         }
 
