@@ -64,7 +64,15 @@ void main() {
       await t.pump(const Duration(milliseconds: 250));
     }
 
-    VideoCatalogPageState catalog() => t.state(find.byType(VideoCatalogPage));
+    // The source route remains mounted but is offstage during preview.
+    VideoCatalogPageState? retainedCatalog;
+    VideoCatalogPageState catalog() {
+      if (retainedCatalog?.mounted != true) {
+        retainedCatalog = t.state(find.byType(VideoCatalogPage));
+      }
+      return retainedCatalog!;
+    }
+
     VideoPlayerController player() =>
         t.widget<VideoPlayer>(find.byType(VideoPlayer)).controller;
     Future<void> decoded(String id) => until(() {
@@ -110,9 +118,11 @@ void main() {
 
     Future<void> capture(String state) async {
       await t.pump(const Duration(milliseconds: 200));
-      final media = MediaQueryData.fromView(
-        View.of(t.element(find.byKey(const Key('app-shell')).first)),
-      );
+      final root =
+          find.byKey(const Key('video-preview-route')).evaluate().isEmpty
+          ? find.byKey(const Key('app-shell'))
+          : find.byKey(const Key('video-preview-route'));
+      final media = MediaQueryData.fromView(View.of(t.element(root)));
       final keys = <String, List<double>>{};
       for (final key in [
         'video-grid',
