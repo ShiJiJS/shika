@@ -151,7 +151,11 @@ void main() {
         await t.pumpAndSettle();
         final view = MediaQueryData.fromView(t.view);
         expect(
-          t.getRect(field).bottom,
+          t
+              .getRect(
+                find.descendant(of: field, matching: find.byType(EditableText)),
+              )
+              .bottom,
           lessThanOrEqualTo(view.size.height - view.viewInsets.bottom),
         );
       } else {
@@ -204,6 +208,12 @@ void main() {
           final r = t.getRect(f);
           boxes[key] = [r.left, r.top, r.width, r.height];
         }
+      }
+      if (field.evaluate().length == 1) {
+        final r = t.getRect(
+          find.descendant(of: field, matching: find.byType(EditableText)),
+        );
+        boxes['tag-editable'] = [r.left, r.top, r.width, r.height];
       }
       final page = find.byType(TagCatalogPage).evaluate().length == 1
           ? state()
