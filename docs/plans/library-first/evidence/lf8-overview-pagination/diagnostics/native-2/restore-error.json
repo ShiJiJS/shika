@@ -1,0 +1,11 @@
+{
+  "before": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420"
+  },
+  "font_before": "1.0",
+  "error": "Command '['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'wm', 'size', 'reset']' returned non-zero exit status 1.",
+  "errors": [
+    "TimeoutExpired(['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'input', 'keyevent', '4'], 20)"
+  ]
+}

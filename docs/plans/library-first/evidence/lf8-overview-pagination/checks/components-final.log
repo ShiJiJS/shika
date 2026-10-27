@@ -1,0 +1,77 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:00 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:00 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart: reader transport retry recover keeps the actual page
+READER_IMAGE_FAILURE p0-0: SocketException: Synthetic temporary connection reset
+00:00 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:00 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60713/p0/2
+00:00 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart: reader transport retry recover keeps the actual page
+READER_IMAGE_FAILURE p0-0: HttpException: Connection closed before full header was received
+00:00 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:00 +5: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60713/p0/2
+00:01 +6: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:01 +7: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60713/p0/2
+00:01 +7: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart: reader transport retry bounded keeps the actual page
+READER_IMAGE_FAILURE p0-0: SocketException: Synthetic temporary connection reset
+READER_IMAGE_FAILURE p0-0: HttpException: Connection closed before full header was received
+00:01 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart: 24 overview cells decode within capacity
+00:01 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart: reader transport retry bounded keeps the actual page
+READER_IMAGE_FAILURE p0-0: SocketException: Synthetic still offline
+00:01 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail recover preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:60741/thumb
+00:01 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart: 24 overview cells decode within capacity
+00:01 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:01 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart: reader transport retry dispose keeps the actual page
+READER_IMAGE_FAILURE p0-0: SocketException: Synthetic temporary connection reset
+00:01 +10: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart: 24 overview cells decode within capacity
+00:01 +10: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail recover preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:60741/thumb
+00:01 +10: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:02 +11: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail recover preserves reader and cancels work
+00:02 +12: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail recover preserves reader and cancels work
+00:02 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60775/p0/2
+00:02 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail bounded preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:60779/thumb
+00:02 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60775/p0/2
+00:02 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail bounded preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:60779/thumb
+00:02 +14: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail bounded preserves reader and cancels work
+00:02 +14: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:02 +14: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail bounded preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:60779/thumb
+00:03 +15: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:03 +16: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:03 +16: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(844.0, 390.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60792/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60792/p0/2
+00:03 +16: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail close-timer preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:60791/thumb
+00:03 +16: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(844.0, 390.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60792/p0/2
+00:03 +17: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:03 +17: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(844.0, 390.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60792/p0/2
+00:03 +17: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail close-request preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HttpException: Connection closed while receiving data, uri = http://127.0.0.1:60795/thumb
+00:03 +18: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:03 +19: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:03 +19: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail manual preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:60800/thumb
+00:04 +20: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:04 +20: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail unauthorized preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 401, http://127.0.0.1:60803/thumb
+00:04 +21: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:04 +22: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(360.0, 740.0) / 2.0
+00:05 +23: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(844.0, 390.0) / 1.0
+00:06 +24: All tests passed!

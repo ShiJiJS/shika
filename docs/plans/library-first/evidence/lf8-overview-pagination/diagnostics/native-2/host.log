@@ -1,0 +1,20 @@
+adb: device 'emulator-5554' not found
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 542, in <module>
+    assert (
+AssertionError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 585, in <module>
+    shell(
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 160, in shell
+    return device("shell", *cmd).decode().strip()
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-prototype-fidelity-test.py", line 156, in device
+    return subprocess.check_output([str(ADB), "-s", "emulator-5554", *cmd], timeout=20)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'wm', 'size', 'reset']' returned non-zero exit status 1.

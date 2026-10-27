@@ -28,11 +28,12 @@ p.add_argument("--expected-columns", choices=(2, 4), type=int, default=2)
 p.add_argument("--cold-source", choices=("library", "tags", "recent"), default="library")
 p.add_argument(
     "--scenario",
-    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings", "preview-lifecycle", "preview-stability", "video-tag-definitions", "navigation-restart", "thumbnail-recovery"),
+    choices=("fidelity", "continuation", "counts", "presentation", "cards", "video-order", "recent", "reader", "preview", "settings", "preview-lifecycle", "preview-stability", "video-tag-definitions", "navigation-restart", "thumbnail-recovery", "thumbnail-pagination"),
     default="fidelity",
 )
 args = p.parse_args()
 scenes = {
+    "thumbnail-pagination": ["pages-reader", "pages-held", "pages-next-pending", "pages-second", "pages-first-return", "pages-close-pending", "pages-cancelled", "pages-reopened", "pages-jump-list", "pages-jump", "pages-return"],
     "thumbnail-recovery": ["thumb-reader", "thumb-auto-recovered", "thumb-bounded", "thumb-manual-recovered", "thumb-hold", "thumb-cancelled", "thumb-reopened", "thumb-return"],
     "navigation-restart": ["nav-start", "nav-sort-menu", "nav-sort-selected", "nav-video-draft", "nav-pack-draft", "nav-library-video-preview", "nav-library-video-panel", "nav-library-video-panel-return", "nav-library-video-return", "nav-library-pack-reader", "nav-library-pack-panel", "nav-library-pack-panel-return", "nav-library-pack-return", "nav-tag-video-preview", "nav-tag-video-return", "nav-tag-pack-reader", "nav-tag-pack-return", "nav-recent-video-preview", "nav-recent-video-return", "nav-recent-pack-reader", "nav-recent-pack-return", "nav-library-isolation", "nav-stop-ready", "nav-cold-library", "nav-cold-tags", "nav-cold-recent-video", "nav-cold-recent-pack", "nav-cold-final-library"],
     "video-tag-definitions": ["tagdef-video", "tagdef-create-keyboard", "tagdef-create-conflict", "tagdef-created", "tagdef-rename-conflict", "tagdef-rename-failure", "tagdef-renamed", "tagdef-pack", "tagdef-remove-confirm", "tagdef-remove-cancel", "tagdef-remove-failure", "tagdef-removed", "tagdef-reopened", "tagdef-pack-final", "tagdef-library"],
@@ -108,6 +109,7 @@ scenes = {
     ],
 }[args.scenario]
 integration_file = {
+    "thumbnail-pagination": "server_thumbnail_pagination_test.dart",
     "thumbnail-recovery": "server_thumbnail_recovery_test.dart",
     "navigation-restart": "server_navigation_restart_test.dart",
     "video-tag-definitions": "server_video_tag_definitions_test.dart",
@@ -184,7 +186,7 @@ def media():
 original = {name: shell("wm", name) for name in ("size", "density")}
 font = shell("settings", "get", "system", "font_scale")
 save("original-viewport.json", {"display":original, "font":font})
-if args.scenario in {"preview-lifecycle", "video-tag-definitions", "navigation-restart", "thumbnail-recovery"}:
+if args.scenario in {"preview-lifecycle", "video-tag-definitions", "navigation-restart", "thumbnail-recovery", "thumbnail-pagination"}:
     assert shell("getprop", "ro.boot.qemu.avd_name") == "video_viewer_api_36"
     assert shell("getprop", "sys.boot_completed") == "1"
     save("environment.json", {
@@ -226,6 +228,7 @@ paths += [
     "apps/mobile/integration_test/server_video_tag_definitions_test.dart",
     "apps/mobile/integration_test/server_navigation_restart_test.dart",
     "apps/mobile/integration_test/server_thumbnail_recovery_test.dart",
+    "apps/mobile/integration_test/server_thumbnail_pagination_test.dart",
     "apps/mobile/test/viewer_return_counts_test.dart",
     "apps/mobile/integration_test/server_settings_panels_test.dart",
     "apps/mobile/integration_test/server_connection_test.dart",
@@ -284,7 +287,7 @@ def watch():
             name = current["display"]
             if not name or current["ack"]:
                 continue
-            if (args.scenario == "navigation-restart" and name == "nav-device-back") or (args.scenario == "thumbnail-recovery" and name == "thumb-device-back"):
+            if (args.scenario == "navigation-restart" and name == "nav-device-back") or (args.scenario in {"thumbnail-recovery", "thumbnail-pagination"} and name in {"thumb-device-back", "pages-device-back"}):
                 response = shell("input", "keyevent", "4")
                 actions.append({"name": name, "command": ["input", "keyevent", "4"], "response": response, "pid": shell("pidof", "io.github.shijijs.video_viewer")})
                 save("device-actions.json", actions)
@@ -444,6 +447,8 @@ try:
         "-e",
         "VV_FIDELITY_TAG_DEFINITIONS=" + ("enabled" if args.scenario == "video-tag-definitions" else "disabled"),
         "-e",
+        "VV_FIDELITY_THUMBNAIL_PAGINATION=" + ("enabled" if args.scenario == "thumbnail-pagination" else "disabled"),
+        "-e",
         "VV_FIDELITY_THUMBNAILS=" + ("enabled" if args.scenario == "thumbnail-recovery" else "disabled"),
         "-e",
         "VV_FIDELITY_NAVIGATION_RESTART=" + ("enabled" if args.scenario == "navigation-restart" else "disabled"),
@@ -501,7 +506,7 @@ try:
             assert error.code == 403
             save("control-guard.json", {"invalid_key_status": error.code, "mode_after": state()["tag_definition_failure"]})
     before = media()
-    assert len(before) == (189 if args.scenario == "navigation-restart" else 27 if args.scenario == "preview-lifecycle" else 26)
+    assert len(before) == (189 if args.scenario == "navigation-restart" else 50 if args.scenario == "thumbnail-pagination" else 27 if args.scenario == "preview-lifecycle" else 26)
     save("media-before.json", before)
     shell("wm", "size", f"{args.width * 3}x{args.height * 3}")
     shell("wm", "density", "480")

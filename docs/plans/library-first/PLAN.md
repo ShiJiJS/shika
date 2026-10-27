@@ -1,6 +1,6 @@
 # 媒体库与图包改造实施方案
 
-最新阶段：[总览缩略图恢复与取消 PR #84](https://github.com/ShiJiJS/video_viewer/pull/84)，固定7dbf3fd；22项组件、原生8点及[104输入只读复核](evidence/lf8-thumbnail-recovery/README.md)通过。真实Android返回取消6个未完成响应，总览无新增写请求，当前页／模式／固定范围与API详情不变。#83继续超过24页原生分页，整项终验仍开放。
+最新阶段：[总览容量与跨页 PR #85](https://github.com/ShiJiJS/video_viewer/pull/85)，24项相关检查、同生产／跨页驱动三轮33点及六图回归8点通过，[207输入只读复核](evidence/lf8-overview-pagination/README.md)。#83已补24→6→24、排队／在途／清单取消及明确第30页写入边界，保留草稿合并／终验状态；#24/#33继续内容页强停恢复及其余验收。
 
 ## 2026-10-26：缺失内容管理与待核对结果（PR #69）
 
@@ -525,3 +525,13 @@ flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX�
 22项组件检查、分析／格式／Ruff通过；普通390×844原生8点：六张503后各2–3次内真实解码，持续失败恰3次后停止并实际手动恢复；真实Android返回取消6个未完成响应，3秒无额外请求，重开6张再次解码。固定范围、当前第3页、横向模式和API图包详情相同，总览无新增写请求，26公开源文件SHA不变；5张面板矩形一致。没有SQL七表快照，不把这项读回称SQL逐行验证。
 
 三轮原生开发失败及组件诊断单独保留，不计最终8点；原型树1cbf605仍独立可移除。AVD显示恢复并关闭，未发布APK。本段未重跑全集／release／大字／横屏／目标手机，超过24页分页目前为组件取消信号与接线检查，仍待实际原生跨页。#83及#24/#33保持开放，下一步继续该跨页与其余LF8终验。
+
+## 2026-10-27：总览容量与跨24页实际取消（PR #85）
+
+[草稿 PR #85](https://github.com/ShiJiJS/video_viewer/pull/85)基于#84，增加共享3许可的缩略图下载队列，等待时不创建socket，分页／关闭取消排队项、在途连接，完成／错误释放许可，保留原两次退避和三列比例。两个新增真实HTTP组件旧版基线失败（峰值24、63次仍未全解码），修正后24项相关检查通过；分析／格式／Ruff通过。
+
+[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-overview-pagination/docs/plans/library-first/LF8-OVERVIEW-PAGINATION.md)／[207输入只读证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-overview-pagination/docs/plans/library-first/evidence/lf8-overview-pagination/README.md)。固定26aceab普通390×844同版连续三轮，各11点共33点：30页目标包实际24→6→24，清单等待阶段3下载取消、21排队无GET；真实Android返回取消未完成清单，重开仍第3页／横向／原范围，API详情及写请求相同。明确点第30页才新增一次正确进度写入，主图实际显示30/30。每轮50公开源文件SHA相同。
+
+随后只调整未被跨页路径使用的六图驱动pending预期，56b2a74再过8点：六图503自动／恰3次上限／手动恢复、3在途＋3排队取消及重开；26源SHA不变。两提交生产／跨页驱动／夹具相同，非docs差异仅六图驱动，复核脚本明确审计，共41原生点，不称同一完整源码提交。没有SQL快照／全集／release／大字／横屏／目标手机结论。
+
+一次footer滚动驱动失误和一次QEMU图形／主循环挂起退出均另存，不计成功；原配置重启恢复显示后完成三轮，最终AVD已恢复并关闭。原型树1cbf605继续独立可移除，未发布APK。#83跨页开发证据已补齐，issue保留草稿合并／终验状态；#24/#33继续其余验收，下一步内容页强停恢复与其它组合。

@@ -208,13 +208,13 @@ void main() {
         await t.pumpAndSettle();
       }
 
-      Future<void> counts(int expected) async {
+      Future<void> counts(int expected, {int cells = 6}) async {
         await poll(() async {
           final attempts =
               (await control('/state'))['thumbnail_attempts'] as Map;
-          return attempts.length == 6 &&
+          return attempts.length == cells &&
               attempts.values.every((n) => n == expected);
-        }, 'six thumbnail counts $expected');
+        }, '$cells active thumbnail counts $expected');
       }
 
       await open('recover');
@@ -256,10 +256,10 @@ void main() {
       await capture('thumb-manual-recovered');
       await close();
       await open('hold');
-      await counts(1);
+      await counts(1, cells: 3);
       await until(() => decoded() == 0, 'pending bodies');
       await capture('thumb-hold');
-      await counts(1);
+      await counts(1, cells: 3);
       await control('/checkpoint/thumb-device-back', post: true);
       await poll(
         () async => (await control('/state'))['ack'] == true,
@@ -268,11 +268,11 @@ void main() {
       await until(() => sheet.evaluate().isEmpty, 'back closes sheet only');
       await poll(() async {
         final streams = (await control('/state'))['thumbnail_streams'] as List;
-        return streams.length == 6 &&
+        return streams.length == 3 &&
             streams.every((s) => s['cancelled'] == true);
-      }, 'six actual stream cancellations');
+      }, 'three actual stream cancellations; three queued cells cancelled');
       await waitReal(const Duration(seconds: 3));
-      await counts(1);
+      await counts(1, cells: 3);
       await capture('thumb-cancelled');
       await open('off');
       await until(
