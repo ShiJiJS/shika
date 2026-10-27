@@ -387,16 +387,30 @@ def main():
                     if event["stage"] == "save":
                         assert event["saved"]
                         created_name = new_document()
-                        raw = device(
-                            "exec-out",
-                            "cat",
-                            shlex.quote("/sdcard/Download/" + created_name),
+                        target = out / "exported-document.vvbackup"
+                        pulled = subprocess.run(
+                            [
+                                str(ADB),
+                                "-s",
+                                "emulator-5554",
+                                "pull",
+                                "/sdcard/Download/" + created_name,
+                                str(target),
+                            ],
+                            capture_output=True,
+                            text=True,
+                            timeout=25,
+                            check=True,
                         )
+                        save(
+                            "document-pull.json",
+                            {"stdout": pulled.stdout, "stderr": pulled.stderr},
+                        )
+                        raw = target.read_bytes()
                         assert len(raw) == save_descriptor["bytes"]
                         assert (
                             hashlib.sha256(raw).hexdigest() == save_descriptor["sha256"]
                         )
-                        (out / "exported-document.vvbackup").write_bytes(raw)
                         save(
                             "saved-document.json",
                             {
