@@ -7,6 +7,7 @@ import json
 import re
 import sqlite3
 import subprocess
+import sys
 import threading
 import time
 import urllib.error
@@ -599,23 +600,23 @@ def main():
             (book,) = books
             save("failure-journal.json", book)
             (scope,) = list(book["scopes"].values())
-            original = scope["inspect"]
-            assert original.get("task") is None and original["digest"] == save_descriptor["sha256"]
+            original_command = scope["inspect"]
+            assert original_command.get("task") is None and original_command["digest"] == save_descriptor["sha256"]
             state = control("/status")
             assert state["upload_truncated"] and state["upload_task"]
             first_trace = control("/trace")["items"]
             first_requests = first_trace[len(before_trace):]
             imports = [r for r in first_requests if r["method"] == "POST" and r["path"] == "/api/v1/management-backups/imports"]
-            assert len(imports) == 1 and imports[0]["idempotency_key"] == original["key"]
+            assert len(imports) == 1 and imports[0]["idempotency_key"] == original_command["key"]
             assert not any(r["method"] == "POST" and "/restores" in r["path"] for r in first_requests)
             save("first-requests.json", first_requests)
             save("first-host-events.json", events.copy())
-            file_id = original["file"]["id"]
+            file_id = original_command["file"]["id"]
             assert re.fullmatch(r"[a-f0-9]{32}", file_id)
             candidates = shell("run-as", PACKAGE, "find", "files/management-archives", "-name", file_id + ".vvbackup").splitlines()
             (owned_input,) = candidates
             assert re.fullmatch(r"files/management-archives/[a-f0-9]{64}/" + file_id + r"\.vvbackup", owned_input)
-            assert int(shell("run-as", PACKAGE, "stat", "-c", "%s", owned_input)) == original["file"]["bytes"]
+            assert int(shell("run-as", PACKAGE, "stat", "-c", "%s", owned_input)) == original_command["file"]["bytes"]
             shell("run-as", PACKAGE, "rm", owned_input)
             assert not shell("run-as", PACKAGE, "find", "files/management-archives", "-name", file_id + ".vvbackup")
             save("removed-owned-input.json", {"path": owned_input, "id": file_id, "removed": True})
@@ -636,7 +637,7 @@ def main():
             resumed_text = (out / "resume-test.log").read_text()
             verified = [json.loads(line.split("ARCHIVE_RESUME_VERIFIED:", 1)[1]) for line in resumed_text.splitlines() if "ARCHIVE_RESUME_VERIFIED:" in line]
             (verified,) = verified
-            assert verified["original_key"] == original["key"] and verified["task"] == state["upload_task"]
+            assert verified["original_key"] == original_command["key"] and verified["task"] == state["upload_task"]
             assert verified["epoch"] == info["management_epoch"] and verified["confirmation_off"]
             assert verified["sha256"] == save_descriptor["sha256"] and verified["roots"] == 27
             save("resume-verified.json", verified)
@@ -645,7 +646,7 @@ def main():
             assert resumed_pid and resumed_pid != killed_pid
             resumed_requests = control("/trace")["items"][len(first_trace):]
             assert resumed_requests and all(r["method"] == "GET" for r in resumed_requests)
-            assert any(r["path"] == "/api/v1/management-backups/requests/inspect/" + original["key"] for r in resumed_requests)
+            assert any(r["path"] == "/api/v1/management-backups/requests/inspect/" + original_command["key"] for r in resumed_requests)
             save("resumed-requests.json", resumed_requests)
             assert api("tasks/" + state["upload_task"])["status"] == "completed"
             assert api("info")["management_epoch"] == info["management_epoch"]
@@ -755,6 +756,7 @@ def main():
             flush=True,
         )
     finally:
+        cleanup_errors = []
         stop.set()
         if timer:
             timer.cancel()
@@ -773,6 +775,7 @@ def main():
             )
         except Exception as error:  # noqa: BLE001 - preserve cleanup alongside original failure
             save("app-cleanup-error.json", {"error": repr(error)})
+            cleanup_errors.append("App cleanup: " + repr(error))
         save("host-events.json", {"events": events, "errors": errors})
         try:
             for kind in ("size", "density"):
@@ -790,9 +793,12 @@ def main():
                 shell("settings", "delete", "system", "font_scale")
             else:
                 shell("settings", "put", "system", "font_scale", original["font_scale"])
-            save("restored-viewport.json", {"before": original, "after": viewport()})
+            restored = viewport()
+            save("restored-viewport.json", {"before": original, "after": restored})
+            assert restored == original, "Display configuration was not restored"
         except Exception as error:  # noqa: BLE001 - preserve cleanup alongside original failure
             save("restore-error.json", {"original": original, "error": repr(error)})
+            cleanup_errors.append("Display cleanup: " + repr(error))
         finally:
             if container:
                 try:
@@ -800,6 +806,7 @@ def main():
                     save("requests-final.json", control("/trace")["items"])
                 except Exception as error:  # noqa: BLE001 - service may already have failed
                     save("fixture-error.json", {"error": repr(error)})
+                    cleanup_errors.append("Fixture evidence: " + repr(error))
                 result = subprocess.run(
                     ["docker", "logs", container],
                     capture_output=True,
@@ -813,6 +820,10 @@ def main():
                     capture_output=True,
                     timeout=30,
                 )
+        if cleanup_errors:
+            save("cleanup-errors.json", cleanup_errors)
+            if sys.exc_info()[0] is None:
+                raise AssertionError("; ".join(cleanup_errors))
 
 
 def read_saved(out):
