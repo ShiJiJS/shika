@@ -220,8 +220,9 @@ void main() {
           'explicit sequential order',
         );
         final target = find.byKey(Key('queue-video-${catalogIds.first}'));
-        if (target.hitTestable().evaluate().isEmpty)
+        if (target.hitTestable().evaluate().isEmpty) {
           await t.ensureVisible(target);
+        }
         await tap(target);
         await until(
           () => find.byKey(const Key('preview-queue')).evaluate().isEmpty,
