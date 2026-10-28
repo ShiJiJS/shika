@@ -1,0 +1,53 @@
+{
+  "Id": "99a4ec11ba1088930779913e87aaf55dca904dea6cd7ccd4d014a1a84beb9764",
+  "Name": "/video-viewer-legacy-upgrade-1793149702214968000",
+  "Image": "sha256:980c9a01bca1f826521da2f0f5660be863dc28fc7592c888bc800efe4d02d67e",
+  "Path": "uvicorn",
+  "Args": [
+    "video_viewer.app:create_app",
+    "--factory",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8760",
+    "--workers",
+    "1",
+    "--log-config",
+    "/observe/logging.json"
+  ],
+  "mounts": [
+    {
+      "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview-package/upgrade/videos",
+      "Destination": "/media/videos",
+      "RW": false
+    },
+    {
+      "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview-package/legacy-upgrade/config",
+      "Destination": "/fixture",
+      "RW": false
+    },
+    {
+      "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview-package/upgrade/observe",
+      "Destination": "/observe",
+      "RW": false
+    },
+    {
+      "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview-package/legacy-upgrade/trace",
+      "Destination": "/trace",
+      "RW": true
+    },
+    {
+      "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview-package/legacy-upgrade/data",
+      "Destination": "/data",
+      "RW": true
+    }
+  ],
+  "port_bindings": {
+    "8760/tcp": [
+      {
+        "HostIp": "127.0.0.1",
+        "HostPort": "8772"
+      }
+    ]
+  }
+}

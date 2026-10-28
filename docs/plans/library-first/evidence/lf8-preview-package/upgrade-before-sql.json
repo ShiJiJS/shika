@@ -1,0 +1,111 @@
+{
+  "roots": [
+    {
+      "id": "packs",
+      "path": "/media/packs",
+      "name": "Upgrade packs",
+      "kind": "pack",
+      "enabled": 1
+    },
+    {
+      "id": "videos",
+      "path": "/media/videos",
+      "name": "Upgrade videos",
+      "kind": "video",
+      "enabled": 1
+    }
+  ],
+  "videos": [
+    {
+      "id": "85e7ab15-2c41-4d38-88db-fc5625b6d04d",
+      "root_id": "videos",
+      "path": "/media/videos/flower-portrait.mp4",
+      "name": "flower-portrait.mp4",
+      "status": "available",
+      "sha256": "de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd",
+      "duration": 5.005,
+      "width": 360,
+      "height": 640
+    },
+    {
+      "id": "1a5d95f2-6b1e-4f37-be55-da4528daaa20",
+      "root_id": "videos",
+      "path": "/media/videos/flower-landscape.mp4",
+      "name": "flower-landscape.mp4",
+      "status": "available",
+      "sha256": "d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001",
+      "duration": 5.055,
+      "width": 960,
+      "height": 540
+    }
+  ],
+  "tags": [
+    {
+      "id": "b49202f7-a2c0-4f9d-a105-7b44c2ff96d6",
+      "name": "UPGRADE_KEEP",
+      "created_at": 1793149477.62331
+    }
+  ],
+  "video_tags": [
+    {
+      "video_id": "1a5d95f2-6b1e-4f37-be55-da4528daaa20",
+      "tag_id": "b49202f7-a2c0-4f9d-a105-7b44c2ff96d6"
+    }
+  ],
+  "playback_rounds": [
+    {
+      "id": "de1a6099-05e6-475d-98a2-f1d949cd5802",
+      "request_id": "691630e8-159f-407d-aa21-f3d6fdb6a20e",
+      "request_hash": "59d710b38698eb77a1bb0b6df5ef0cb638a6a4e86b43b0ccbd9a29dc4049b9dd",
+      "order": "random",
+      "scope": "{}",
+      "cursor": 0,
+      "revision": 0,
+      "finished": 0,
+      "candidate_count": 2,
+      "created_at": 1793150442.3193827,
+      "membership": "legacy",
+      "source": "library",
+      "sort": "path",
+      "sequence_revision": 0
+    }
+  ],
+  "round_entries": [
+    {
+      "round_id": "de1a6099-05e6-475d-98a2-f1d949cd5802",
+      "ordinal": 0,
+      "video_id": "1a5d95f2-6b1e-4f37-be55-da4528daaa20",
+      "source_ordinal": null
+    },
+    {
+      "round_id": "de1a6099-05e6-475d-98a2-f1d949cd5802",
+      "ordinal": 1,
+      "video_id": "85e7ab15-2c41-4d38-88db-fc5625b6d04d",
+      "source_ordinal": null
+    }
+  ],
+  "request_records": [
+    {
+      "id": "tag.create:upgrade-video-tag",
+      "fingerprint": "7aed24b92844556ed82de9484b56f58e24728947aea05582b7cf8846477e4436",
+      "result": "{\"id\": \"b49202f7-a2c0-4f9d-a105-7b44c2ff96d6\", \"name\": \"UPGRADE_KEEP\"}",
+      "created_at": 1793149477.624287
+    },
+    {
+      "id": "tags.assign:upgrade-video-tag-link",
+      "fingerprint": "5c8c842c0689d16c7c847e0e6d69edbdbf402b785acc823b60b83536b8bf8596",
+      "result": "{\"video_ids\": [\"1a5d95f2-6b1e-4f37-be55-da4528daaa20\"], \"changed\": 1, \"added\": 1, \"removed\": 0}",
+      "created_at": 1793149477.6327636
+    },
+    {
+      "id": "pack_tag.create:upgrade-pack-tag",
+      "fingerprint": "e016ec91dbd20093464564ef636500760cf882fdce445186833e1fc5264c88e0",
+      "result": "{\"id\": \"c414bf14-9d43-45af-af8c-786dbe2ceea2\", \"name\": \"PACK_ONLY\", \"kind\": \"pack\"}",
+      "created_at": 1793149477.6424036
+    }
+  ],
+  "access_tokens": {
+    "count": 1,
+    "rows_sha256": "4bf5b5931999837d3d1cc6f0ac732183cd4a94eb498701f5070e05e265a34ecf"
+  }
+}
