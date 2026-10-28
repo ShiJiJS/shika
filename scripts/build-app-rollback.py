@@ -159,8 +159,8 @@ def main():
     )
     patch_once(
         old / "lib/main.dart",
-        "  final LibraryRepository repository",
-        "  final credentials = SecureCredentialStore();\n  final LibraryRepository repository",
+        "  final LibraryRepository repository = demo",
+        "  final credentials = SecureCredentialStore();\n  final LibraryRepository repository = demo",
     )
     patch_once(
         old / "lib/main.dart", "          SecureCredentialStore(),", "          credentials,"
