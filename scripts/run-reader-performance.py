@@ -116,7 +116,7 @@ def main():
         },
     )
     stop = threading.Event()
-    records, errors = [], []
+    records, errors, memory_notes = [], [], []
     started = time.monotonic()
 
     class Control(BaseHTTPRequestHandler):
@@ -179,20 +179,29 @@ def main():
     def sample():
         with gzip.open(out / "memory-samples.jsonl.gz", "wt") as stream:
             while not stop.wait(1):
+                if (out / "profile-result.json").exists():
+                    memory_notes.append(
+                        {
+                            "event": "terminal_test_report",
+                            "elapsed_seconds": time.monotonic() - started,
+                        }
+                    )
+                    save("memory-observation-notes.json", memory_notes)
+                    return
                 begin = time.monotonic()
-                pid = (
-                    subprocess.run(
+                try:
+                    query = subprocess.run(
                         [str(ADB), "-s", SERIAL, "shell", "pidof", PACKAGE],
                         capture_output=True,
                         timeout=10,
                     )
-                    .stdout.decode()
-                    .strip()
-                )
-                if not pid:
-                    continue
-                try:
-                    assert pid.isdigit()
+                    if query.returncode and query.stderr:
+                        raise subprocess.CalledProcessError(query.returncode, query.args)
+                    pid = query.stdout.decode().strip()
+                    if not pid:
+                        continue
+                    if not pid.isdigit():
+                        raise ValueError("Expected one App process, got " + repr(pid))
                     raw = device(
                         "shell", "cat", f"/proc/{pid}/smaps_rollup", f"/proc/{pid}/status"
                     ).decode()
@@ -204,7 +213,17 @@ def main():
                     }
                     stream.write(json.dumps(record) + "\n")
                     stream.flush()
-                except (subprocess.SubprocessError, OSError) as error:
+                except (subprocess.SubprocessError, OSError, ValueError) as error:
+                    if (out / "profile-result.json").exists():
+                        memory_notes.append(
+                            {
+                                "event": "process_read_after_terminal_report",
+                                "elapsed_seconds": time.monotonic() - started,
+                                "detail": repr(error),
+                            }
+                        )
+                        save("memory-observation-notes.json", memory_notes)
+                        return
                     errors.append("memory sample: " + repr(error))
                     save("observer-errors.json", errors)
                     return
@@ -244,6 +263,10 @@ def main():
                     process.kill()
                     process.wait(timeout=10)
                 raise
+        stop.set()
+        sampler.join(timeout=35)
+        if sampler.is_alive():
+            errors.append("Memory sampler did not stop")
         save(
             "result.json",
             {
@@ -251,6 +274,8 @@ def main():
                 "final_matrix": not args.long_diagnostic,
                 "exit_code": code,
                 "observer_errors": errors,
+                "memory_observation_notes": memory_notes,
+                "memory_scope": "App process samples through atomic terminal test report; driver closes afterward",
                 "elapsed_seconds": time.monotonic() - started,
                 "checkpoints": len(records),
             },
