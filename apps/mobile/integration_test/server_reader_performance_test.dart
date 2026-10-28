@@ -122,7 +122,29 @@ void main() {
       }) async {
         final deadline = DateTime.now().add(Duration(seconds: seconds));
         while (!done()) {
-          if (DateTime.now().isAfter(deadline)) fail('$phase timeout: $why');
+          if (DateTime.now().isAfter(deadline)) {
+            final state = present() ? reader().session : null;
+            final diagnostic = <String, dynamic>{
+              'phase': phase,
+              'waiting_for': why,
+              'present': present(),
+              'index': state?.index,
+              'opened': state?.opened,
+              'busy': state?.busy,
+              'pending': state?.pendingKind,
+              'needs_reload': state?.needsReload,
+              'unsaved': state?.unsaved,
+              'live': state?.live,
+              'error': state?.error,
+              'page_error': state?.pageError,
+              'page_id': state?.currentPage?.id,
+              'offset_ratio': state?.offsetRatio,
+            };
+            result['failure'] = diagnostic;
+            debugPrint('READER_BENCH_FAILURE:${jsonEncode(diagnostic)}');
+            await checkpoint('failure', diagnostic);
+            fail('$phase timeout: $why');
+          }
           await t.pump(const Duration(milliseconds: 8));
         }
         expect(t.takeException(), isNull);
@@ -236,6 +258,7 @@ void main() {
         String? kind,
         int? trial,
       }) async {
+        phase = '${kind ?? 'setup'}-step-$expected-trial-${trial ?? -1}';
         final tooltip = expected > reader().session.index ? '下一张' : '上一张';
         final button = find.byWidgetPredicate(
           (widget) => widget is IconButton && widget.tooltip == tooltip,
