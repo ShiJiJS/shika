@@ -1,0 +1,158 @@
+Resolving dependencies...
+Downloading packages...
+  android_file_picker 2.1.1 (2.1.2 available)
+  cross_file 0.3.5+5 (0.4.0 available)
+  crypto 3.0.7 (3.0.8 available)
+  cupertino_icons 1.0.9 (2.0.0 available)
+  file_picker 13.1.0 (13.3.0 available)
+  file_picker_darwin 2.3.2 (2.4.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.3 (2.4.4 available)
+  video_player_avfoundation 2.12.1 (2.12.3 available)
+  web 1.1.1 (1.1.2 available)
+Got dependencies!
+11 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleProfile'...                           60.6s
+✓ Built build/app/outputs/flutter-apk/app-profile.apk (37.3MB)
+Installing build/app/outputs/flutter-apk/app-profile.apk...        566ms
+I/js.video_viewer( 5354): Explicit concurrent mark compact GC freed 120KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 2298KB/4597KB, paused 2.037ms,1.873ms total 26.473ms
+I/js.video_viewer( 5354): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 5354): Skipped 54 frames!  The application may be doing too much work on its main thread.
+D/WindowLayoutComponentImpl( 5354): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@efe0593, of which baseContext=android.app.ContextImpl@43642fc
+I/js.video_viewer( 5354): Explicit concurrent mark compact GC freed 188KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2334KB/4669KB, paused 41us,1.114ms total 9.576ms
+VMServiceFlutterDriver: Connecting to Flutter application at [local VM service address omitted]
+VMServiceFlutterDriver: Isolate found with number: 3157077536711683
+I/js.video_viewer( 5354): Explicit concurrent mark compact GC freed 160KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2334KB/4669KB, paused 38us,851us total 7.319ms
+VMServiceFlutterDriver: Isolate 3157077536711683 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 5354): 00:00 +0: profile complex-photo cold opens, adjacent flips and 500 pages
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController( 5354): hide(ime(), fromIme=false)
+I/ImeTracker( 5354): io.github.shijijs.video_viewer:136b698d: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+I/js.video_viewer( 5354): Explicit concurrent mark compact GC freed 344KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2342KB/4685KB, paused 78us,2.135ms total 22.316ms
+I/js.video_viewer( 5354): AssetManager2(0xb400007753e66ef8) locale list changing from [] to [en-US]
+D/ProfileInstaller( 5354): Installing profile for io.github.shijijs.video_viewer
+I/js.video_viewer( 5354): Explicit concurrent mark compact GC freed 341KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2386KB/4773KB, paused 881us,3.414ms total 23.972ms
+I/js.video_viewer( 5354): Explicit concurrent mark compact GC freed 196KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2382KB/4765KB, paused 53us,2.197ms total 83.506ms
+I/flutter ( 5354): Guarded function conflict.
+I/flutter ( 5354): You must use "await" with all Future-returning test APIs.
+I/flutter ( 5354): The guarded method "pump" from class WidgetTester was called from file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart on line 116.
+I/flutter ( 5354): Then, the "state" method from class WidgetController was called from file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart on line 71.
+I/flutter ( 5354): The first method (WidgetTester.pump) had not yet finished executing at the time that the second method (WidgetController.state) was called. Since both are guarded, and the second was not a nested call inside the first, the first must complete its execution before the second can be called. Typically, this is achieved by putting an "await" statement in front of the call to the first.
+I/flutter ( 5354): 
+I/flutter ( 5354): When the first method (WidgetTester.pump) was called, this was the stack:
+I/flutter ( 5354): #0      TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:72)
+I/flutter ( 5354): #1      WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652)
+I/flutter ( 5354): #2      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:116)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #3      main.<anonymous closure>.imageReady (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:144)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:290)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #0      TestAsyncUtils.guardSync (package:flutter_test/src/test_async_utils.dart:312)
+I/flutter ( 5354): #1      WidgetController.state (package:flutter_test/src/controller.dart:931)
+I/flutter ( 5354): #2      main.<anonymous closure>.reader (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:71)
+I/flutter ( 5354): #3      main.<anonymous closure>.observe (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:90)
+I/flutter ( 5354): #4      SchedulerBinding._executeTimingsCallbacks (package:flutter/src/scheduler/binding.dart:345)
+I/flutter ( 5354): #5      _invoke1 (dart:ui/hooks.dart:457)
+I/flutter ( 5354): #6      PlatformDispatcher._reportTimings (dart:ui/platform_dispatcher.dart:648)
+I/flutter ( 5354): #7      _reportTimings (dart:ui/hooks.dart:408)
+I/flutter ( 5354): Guarded function conflict.
+I/flutter ( 5354): You must use "await" with all Future-returning test APIs.
+I/flutter ( 5354): The guarded method "pump" from class WidgetTester was called from file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart on line 116.
+I/flutter ( 5354): Then, the "state" method from class WidgetController was called from file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart on line 71.
+I/flutter ( 5354): The first method (WidgetTester.pump) had not yet finished executing at the time that the second method (WidgetController.state) was called. Since both are guarded, and the second was not a nested call inside the first, the first must complete its execution before the second can be called. Typically, this is achieved by putting an "await" statement in front of the call to the first.
+I/flutter ( 5354): 
+I/flutter ( 5354): When the first method (WidgetTester.pump) was called, this was the stack:
+I/flutter ( 5354): #0      TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:72)
+I/flutter ( 5354): #1      WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652)
+I/flutter ( 5354): #2      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:116)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #3      main.<anonymous closure>.imageReady (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:144)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:290)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #0      TestAsyncUtils.guardSync (package:flutter_test/src/test_async_utils.dart:312)
+I/flutter ( 5354): #1      WidgetController.state (package:flutter_test/src/controller.dart:931)
+I/flutter ( 5354): #2      main.<anonymous closure>.reader (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:71)
+I/flutter ( 5354): #3      main.<anonymous closure>.observe (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:90)
+I/flutter ( 5354): #4      SchedulerBinding._executeTimingsCallbacks (package:flutter/src/scheduler/binding.dart:345)
+I/flutter ( 5354): #5      _invoke1 (dart:ui/hooks.dart:457)
+I/flutter ( 5354): #6      PlatformDispatcher._reportTimings (dart:ui/platform_dispatcher.dart:648)
+I/flutter ( 5354): #7      _reportTimings (dart:ui/hooks.dart:408)
+I/flutter ( 5354): Guarded function conflict.
+I/flutter ( 5354): You must use "await" with all Future-returning test APIs.
+I/flutter ( 5354): The guarded method "pump" from class WidgetTester was called from file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart on line 116.
+I/flutter ( 5354): Then, the "state" method from class WidgetController was called from file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart on line 71.
+I/flutter ( 5354): The first method (WidgetTester.pump) had not yet finished executing at the time that the second method (WidgetController.state) was called. Since both are guarded, and the second was not a nested call inside the first, the first must complete its execution before the second can be called. Typically, this is achieved by putting an "await" statement in front of the call to the first.
+I/flutter ( 5354): 
+I/flutter ( 5354): When the first method (WidgetTester.pump) was called, this was the stack:
+I/flutter ( 5354): #0      TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:72)
+I/flutter ( 5354): #1      WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652)
+I/flutter ( 5354): #2      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:116)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #3      main.<anonymous closure>.imageReady (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:144)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:290)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #0      TestAsyncUtils.guardSync (package:flutter_test/src/test_async_utils.dart:312)
+I/flutter ( 5354): #1      WidgetController.state (package:flutter_test/src/controller.dart:931)
+I/flutter ( 5354): #2      main.<anonymous closure>.reader (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:71)
+I/flutter ( 5354): #3      main.<anonymous closure>.observe (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:90)
+I/flutter ( 5354): #4      SchedulerBinding._executeTimingsCallbacks (package:flutter/src/scheduler/binding.dart:345)
+I/flutter ( 5354): #5      _invoke1 (dart:ui/hooks.dart:457)
+I/flutter ( 5354): #6      PlatformDispatcher._reportTimings (dart:ui/platform_dispatcher.dart:648)
+I/flutter ( 5354): #7      _reportTimings (dart:ui/hooks.dart:408)
+I/flutter ( 5354): Expected: null
+I/flutter ( 5354):   Actual: 'Multiple exceptions (3) were detected during the running of the current test, and at least one was unexpected.'
+I/flutter ( 5354): 
+I/flutter ( 5354): #0      fail (package:matcher/src/expect/expect.dart:187)
+I/flutter ( 5354): #1      _expect (package:matcher/src/expect/expect.dart:182)
+I/flutter ( 5354): #2      expect (package:matcher/src/expect/expect.dart:65)
+I/flutter ( 5354): #3      expect (package:flutter_test/src/widget_tester.dart:473)
+I/flutter ( 5354): #4      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:118)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #5      main.<anonymous closure>.imageReady (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:144)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #6      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:290)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): #9      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 5354): <asynchronous suspension>
+I/flutter ( 5354): 00:04 +0: profile complex-photo cold opens, adjacent flips and 500 pages [E]
+I/flutter ( 5354):   Test failed. See exception logs above.
+I/flutter ( 5354):   The test description was: profile complex-photo cold opens, adjacent flips and 500 pages
+I/flutter ( 5354):   
+I/flutter ( 5354): 00:04 +0 -1: (tearDownAll)
+I/flutter ( 5354): 00:04 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: profile complex-photo cold opens, adjacent flips and 500 pages
+Instance of 'FlutterErrorDetails'
+end of failure 1
+
+
+

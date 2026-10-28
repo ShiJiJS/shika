@@ -1,0 +1,12 @@
+{
+  "checks_passed": false,
+  "final_matrix": true,
+  "exit_code": 1,
+  "observer_errors": [
+    "memory sample: TimeoutExpired(['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5558', 'shell', 'pidof', 'io.github.shijijs.video_viewer'], 10)"
+  ],
+  "memory_observation_notes": [],
+  "memory_scope": "App process samples through atomic terminal test report; driver closes afterward",
+  "elapsed_seconds": 311.753723125,
+  "checkpoints": 3
+}

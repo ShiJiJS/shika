@@ -1,0 +1,7 @@
+{
+  "before_id": "ceb73d55ff2977b72b75c7d25cd09a607854e613001d9087cb168f701fbc1b02",
+  "before_running": true,
+  "reason": "Terminal failed App run; multiple business requests reached service but stalled before response, health and file header read still work, guest SQL probe hung; investigate storage/locking with host SQL probes and failed SMB bind as confounders",
+  "action": "Stop/start ONLY the owned lab runtime, same image/data/readonly fixture; no production service restart",
+  "created_at": 1793189462.258207
+}

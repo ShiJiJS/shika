@@ -1,0 +1,31 @@
+{
+  "source": "d6f784579f528eb65bec3061470b93bed4a6e9f3",
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "qemu": "90728 /Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64-headless -avd video_viewer_reader_perf_36 -port 5558 -no-boot-anim -gpu swiftshader -feature -Vulkan -feature -GLDMA -feature HardwareDecoder -no-snapshot -no-metrics -crash-report-mode never -no-window",
+  "runtime": "sha256:886b79b72ecb9116087d892f230471943121f24ccef093113cc3197b4607fef4",
+  "runtime_command": [
+    "diagnostic_app:create_app",
+    "--factory",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8760",
+    "--workers",
+    "1",
+    "--log-config",
+    "/observe/logging.json"
+  ],
+  "runtime_entrypoint": [
+    "uvicorn"
+  ],
+  "profile_entrypoint": true,
+  "normal_release_apk": false,
+  "final_matrix": false,
+  "trial_count": 1,
+  "sampling_interval_seconds": 1,
+  "memory_definition": "kernel smaps_rollup PSS/RSS and status VmHWM; no meminfo/forced GC",
+  "original_display": {
+    "size": "Physical size: 1080x2400\nOverride size: 1170x2532\n",
+    "density": "Physical density: 420\nOverride density: 480\n"
+  }
+}

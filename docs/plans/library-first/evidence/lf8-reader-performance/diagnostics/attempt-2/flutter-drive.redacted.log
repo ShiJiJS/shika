@@ -1,0 +1,58 @@
+Resolving dependencies...
+Downloading packages...
+  android_file_picker 2.1.1 (2.1.2 available)
+  cross_file 0.3.5+5 (0.4.0 available)
+  crypto 3.0.7 (3.0.8 available)
+  cupertino_icons 1.0.9 (2.0.0 available)
+  file_picker 13.1.0 (13.3.0 available)
+  file_picker_darwin 2.3.2 (2.4.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.3 (2.4.4 available)
+  video_player_avfoundation 2.12.1 (2.12.3 available)
+  web 1.1.1 (1.1.2 available)
+Got dependencies!
+11 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleProfile'...                           29.7s
+✓ Built build/app/outputs/flutter-apk/app-profile.apk (49.1MB)
+Installing build/app/outputs/flutter-apk/app-profile.apk...        326ms
+I/js.video_viewer( 5742): Explicit concurrent mark compact GC freed 168KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 2298KB/4597KB, paused 72us,1.553ms total 20.138ms
+I/js.video_viewer( 5742): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 5742): Skipped 49 frames!  The application may be doing too much work on its main thread.
+D/WindowLayoutComponentImpl( 5742): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@a8d59d0, of which baseContext=android.app.ContextImpl@e6b7d85
+I/js.video_viewer( 5742): Explicit concurrent mark compact GC freed 220KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2334KB/4669KB, paused 134us,805us total 8.462ms
+VMServiceFlutterDriver: Connecting to Flutter application at [local VM service address omitted]
+VMServiceFlutterDriver: Isolate found with number: 8576556713007895
+VMServiceFlutterDriver: Isolate 8576556713007895 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 5742): 00:00 +0: profile complex-photo cold opens, adjacent flips and 500 pages
+VMServiceFlutterDriver: Connected to Flutter application.
+I/js.video_viewer( 5742): Explicit concurrent mark compact GC freed 348KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2338KB/4677KB, paused 111us,2.066ms total 12.027ms
+D/InsetsController( 5742): hide(ime(), fromIme=false)
+I/ImeTracker( 5742): io.github.shijijs.video_viewer:4385849: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+I/js.video_viewer( 5742): AssetManager2(0xb400007753e69ab8) locale list changing from [] to [en-US]
+I/js.video_viewer( 5742): Explicit concurrent mark compact GC freed 349KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2374KB/4749KB, paused 110us,3.510ms total 13.265ms
+D/ProfileInstaller( 5742): Installing profile for io.github.shijijs.video_viewer
+I/js.video_viewer( 5742): Explicit concurrent mark compact GC freed 248KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2382KB/4765KB, paused 60us,1.003ms total 10.947ms
+I/js.video_viewer( 5742): Explicit concurrent mark compact GC freed 160KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2382KB/4765KB, paused 134us,1.373ms total 60.663ms
+W/WindowOnBackDispatcher( 5742): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@a9967a8
+I/js.video_viewer( 5742): Explicit concurrent mark compact GC freed 288KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2382KB/4765KB, paused 65us,16.206ms total 165.023ms
+W/js.video_viewer( 5742): Suspending all threads took: 9.016ms
+I/js.video_viewer( 5742): Explicit concurrent mark compact GC freed 160KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 2414KB/4829KB, paused 9.461ms,4.261ms total 67.944ms
+I/flutter ( 5742): HttpException: Connection reset by peer, uri = http://10.0.2.2:8774/checkpoint
+I/flutter ( 5742): 
+I/flutter ( 5742): 00:07 +0: profile complex-photo cold opens, adjacent flips and 500 pages [E]
+I/flutter ( 5742):   Test failed. See exception logs above.
+I/flutter ( 5742):   The test description was: profile complex-photo cold opens, adjacent flips and 500 pages
+I/flutter ( 5742):   
+I/flutter ( 5742): 00:07 +0 -1: (tearDownAll)
+I/flutter ( 5742): 00:07 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: profile complex-photo cold opens, adjacent flips and 500 pages
+Instance of 'FlutterErrorDetails'
+end of failure 1
+
+
+

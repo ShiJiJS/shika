@@ -1,6 +1,6 @@
 ## 目标
 
-将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8尚未终验。最新阶段：[原签名App回退与反复覆盖安装 PR #95](https://github.com/ShiJiJS/video_viewer/pull/95)。固定a3c7659a，配套新媒体库0.2.0-preview.2和旧界面0.1.4-rollback.2均code8、原Windows签名。旧界面窄适配保留新版偏好/多范围日志及凭据代次，未知v2备份任务保留并要求回新版核对；85旧版/兼容+14新版相关检查、双方analyze及正常release通过。独立Android36同一QEMU实际6→新8→旧8→新8→旧8→新8，五次install -r、首次安装时间/身份/数据目录保持、六次免口令冷启，新版零自动播放。旧UI主题/相邻准备修改后新版顺序/迁移标记保留；旧视频回收/菜单撤销完成，升回任务可核对；图包第2页纵向/两套标签保留。148输入及两包只读复核通过，22组原生截图；一容器/自有AVD已归还，原四服务及前阶段数据/媒体未动。配套服务仍b79da7b9 preview.2，原型1cbf605独立未改；未正式发布/部署，目标手机/NAS、500页高分辨率和其余终验继续，#78/#89与#24/#33保持开放。
+将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8尚未终验。最新阶段：[复杂图包三轮测量 PR #96](https://github.com/ShiJiJS/video_viewer/pull/96)。冻结81a11a98的正式三轮均完整通过：每轮四组各30次、全部500页、横纵同页及返回来源，内存和环境采集均正常收尾。三轮PSS采样峰值255.491/254.464/255.510MiB，图片/页信息窗口保持有界；506页/3,423,051,928字节全部SHA与生成清单相同。完整慢样本、帧时序和失败诊断保留，本机软件GPU延迟偏高，不能当作手机速度，也未证明#78/#89已修复。生产App/服务/原型未改，正常安装包仍为PR #95配套版本。下一步整合PR #98、构建同code9的新预览和回退包并验证正常入口。真实手机/NAS仍待验；当前指定SMB路径不在挂载目录中，按授权暂跳过，#24/#33保持开放。
 
 ## 历史阶段记录
 
@@ -77,3 +77,26 @@
 最新阶段：[原签名App回退与反复覆盖安装 PR #95](https://github.com/ShiJiJS/video_viewer/pull/95)。固定a3c7659a，配套新媒体库0.2.0-preview.2和旧界面0.1.4-rollback.2均code8、原Windows签名。旧界面窄适配保留新版偏好/多范围日志及凭据代次，未知v2备份任务保留并要求回新版核对；85旧版/兼容+14新版相关检查、双方analyze及正常release通过。独立Android36同一QEMU实际6→新8→旧8→新8→旧8→新8，五次install -r、首次安装时间/身份/数据目录保持、六次免口令冷启，新版零自动播放。旧UI主题/相邻准备修改后新版顺序/迁移标记保留；旧视频回收/菜单撤销完成，升回任务可核对；图包第2页纵向/两套标签保留。148输入及两包只读复核通过，22组原生截图；一容器/自有AVD已归还，原四服务及前阶段数据/媒体未动。配套服务仍b79da7b9 preview.2，原型1cbf605独立未改；未正式发布/部署，目标手机/NAS、500页高分辨率和其余终验继续，#78/#89与#24/#33保持开放。
 
 [方案和边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-app-rollback/docs/plans/library-first/LF8-APP-ROLLBACK.md)／[固定构建、两轮实际安装与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-app-rollback/docs/plans/library-first/evidence/lf8-app-rollback/README.md)／[安装说明](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-app-rollback/docs/library-first-preview.md)。本段只补UP-02的本机App回退组合。内部code相同可反复替换已在该AVD实测；不能覆盖code>8，后续版本需同步生成回退包。切换前先完成/核对管理任务，进行中或未知v2任务不交旧版接管。偏好扩展字段使用明确公开文件样本，再经真实UI写当前迁移标记；不把文件样本称为全由UI生成。原旧界面、播放器和API业务保留，属于附兼容存储的回退包，不是原Windows APK字节复刻。当前新服务配旧客户端只核对列明组合，完整旧功能/禁用根其它组合、目标手机/NAS和其它终验继续。
+
+## 2026-10-28：复杂图包性能测量（PR #96，进行中）
+
+两份公开NASA/JSC摄影图以原像素裁切拼接为506页/3,423,051,928字节：500页长包中400页4000×6000、100页8000×8000，另两类各3页。是摄影像素压力样本，不是506张独立照片，不代替真实图包/SMB。正常runtime preview.2完整扫描无失败，解码子进程峰值152624KiB；生产App/服务及原型未改，普通安装包仍按PR #95。
+
+新增独立profile入口，计划每类30次Flutter缓存冷首图、正常相邻翻页、连续拖过500页、内核PSS/RSS/VmHWM和帧时序；静态检查通过，原型独立。前三次采集错误（异步tester保护、控制消息分块协议、Tooltip类型）分别修正/留档，不算产品故障。随后SWANGLE/GLES在8次4K重复后bad color buffer/GL context异常、QEMU81429挂起并离开进程表；内核PSS采样最大196416KiB、RSS高水位297432KiB，不能据此诊断App OOM。只在确认进程消失后换官方CLI支持的SwiftShader复测；另一次进度确认等待超时，正在加完整状态诊断，尚未归因。所有失败均不算成功轮次，不用8次样本冒充30次分位数。
+
+[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-performance/docs/plans/library-first/LF8-READER-PERFORMANCE.md)／[当前诊断记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-performance/docs/plans/library-first/evidence/lf8-reader-performance/README.md)。完整30次、三轮500页、普通release入口与目标手机/NAS仍待完成；#78/#89与#24/#33保持开放。指定SMB目录在Mac可读，目前只确认路径可达；未把它当成真实图包已验收，未扫描/修改真实收藏或NAS服务。
+
+## 2026-10-28：计时样本与播放器减少动画补充
+
+PR #96 的attempt-6已保留4K/8K各30次首图及相邻翻页原始样本，但500页在第157页采样失败，整轮不通过。已修正跨帧采样和Slider外侧空白点击的驱动问题；attempt-8长包诊断到第124页后连接超时，模拟器存活，尚未归因。新增专用服务请求阶段观察，继续定位，不增加产品超时或改真实图包。最终三轮30次+500页、普通release与目标手机/NAS仍待完成，所有失败独立留档。
+
+另登记#97并提交[PR #98](https://github.com/ShiJiJS/video_viewer/pull/98)：视频控件四处固定160ms动画改为遵循系统“减少动画”；相同四行为用例旧模块2失败/2通过、修正后4通过，加13项相关检查共17项和analyze通过。当前正常预览APK尚未纳入此修复，完整UI-06及父任务继续开放。原型1cbf605独立可移除，未改正式服务或用户媒体。
+
+
+## 2026-10-28：长包第286张失败与运行环境恢复
+
+PR #96的58b071bf已保留285张无缺页实际解码、后续第286张失败现场：服务收到进度正文后不返回，图片/媒体库查询一并挂起；健康检查正常但guest SQL和容器停止挂起。原因仍待隔离，不定性App缺陷，不计500页通过。Mac跨系统查询活跃SQLite与失败SMB只读挂载尝试列为干扰；正常重启OrbStack后原四服务ID/镜像相同并恢复运行，专用库完整性ok，失败临时容器已移除。原资源观察器指向旧容器，后两轮27/185份统计不可用；改为每轮实际ID并在失败时拒绝通过。新一轮58b071bf诊断已启动，停用host SQL观察和SMB挂载，当前资源ID匹配。完整三轮/普通release/手机及NAS继续，正常APK和原型未改。
+
+## 2026-10-28：完整500页摄影诊断通过，正式矩阵继续
+
+311d2c86的attempt-12实际1205次拖动覆盖全部500页，同范围末尾未自动换包，横纵切换保留第500页；普通服务重建后HTTP读回同页、已读及horizontal。单App PID、6 provider/120元数据有界，采样PSS峰值约259MiB；10图和211份环境采集核对。每类只有一次准备，明确不是最终30次分位数。正式冻结81a11a98，每轮4K/8K各30次首图/相邻翻页再走500页；首轮在4K30次及8K第0次后模拟器90728退出，完整现场和选择性宿主退出栈保留，未计成功。确认进程消失后同配置/数据重启87970，SDK仍37.2.12，当前第一轮重试中。原型及普通APK未改，三轮、正常release、手机/NAS及#78/#89继续；[证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-performance/docs/plans/library-first/evidence/lf8-reader-performance/README.md)。

@@ -1,0 +1,177 @@
+{
+  "info": {
+    "server_id": "de2361fd7f4d68c261f81f090e9787d3",
+    "api_version": 1,
+    "sqlite_version": "3.40.1",
+    "schema_version": "0014",
+    "management_epoch": "b22139ef916c043056ed47e186f86240",
+    "management_history_available": false,
+    "management_backups": {
+      "versions": [
+        1,
+        2
+      ],
+      "max_bytes": 33554432,
+      "max_roots": 256
+    },
+    "capabilities": [
+      "typed_roots",
+      "media_catalog_counts",
+      "pack_presentation",
+      "video_name_order",
+      "pack_tags",
+      "image_packs",
+      "fixed_video_sessions",
+      "versioned_video_queue",
+      "video_entry_anchors",
+      "catalog_selection",
+      "pack_tag_names",
+      "pack_entry_anchors",
+      "pack_reading_sessions",
+      "pack_logical_trash",
+      "pack_reader_cleanup",
+      "pack_purge_preview",
+      "pack_permanent_delete",
+      "maintenance_tasks",
+      "pack_restore_plans",
+      "managed_playback_defaults",
+      "pack_missing_cleanup",
+      "management_authority",
+      "management_history",
+      "management_purge_history",
+      "backup_v2"
+    ]
+  },
+  "task": {
+    "id": "f7032bc3-0a78-4b91-a992-5d6915138b12",
+    "kind": "scan",
+    "status": "completed",
+    "phase": "completed",
+    "created_at": 1793183897.0256226,
+    "finished_at": 1793184059.6376216,
+    "result": {
+      "imported": 0,
+      "unchanged": 0,
+      "deferred": 0,
+      "failed": 0,
+      "thumbnail_failed": 0,
+      "failure_reasons": {},
+      "warning_reasons": {},
+      "warnings": [],
+      "missing": 0,
+      "identity_matched": 0,
+      "identity_ambiguous": 0,
+      "roots": [
+        {
+          "id": "packs",
+          "kind": "pack",
+          "status": "completed",
+          "discovered": 3,
+          "processed": 3
+        }
+      ],
+      "issues": [],
+      "progress": {
+        "discovered": 0,
+        "processed": 0,
+        "bytes_total": 0,
+        "bytes_processed": 0,
+        "updated_at": 1793184059.636746
+      },
+      "packs": {
+        "imported": 3,
+        "updated": 0,
+        "failed_pages": 0,
+        "failed_packs": 0,
+        "protected_packs": 0,
+        "unchanged": 0,
+        "deferred": 0,
+        "failed": 0,
+        "missing": 0,
+        "identity_matched": 0,
+        "identity_ambiguous": 0,
+        "thumbnail_failed": 0,
+        "unsupported_files": 1,
+        "loose_images": 0,
+        "symlinks_skipped": 0,
+        "failure_reasons": {},
+        "issues": [],
+        "progress": {
+          "discovered": 506,
+          "processed": 506,
+          "packs_discovered": 3,
+          "packs_processed": 3,
+          "peak_decoder_kib": 152624,
+          "updated_at": 1793184059.6356258
+        }
+      }
+    },
+    "error": null
+  },
+  "packs": {
+    "items": [
+      {
+        "id": "ee3fcb9f-e4a8-4248-a947-9395f72d5195",
+        "root_id": "packs",
+        "path": "/media/packs/01-photo-long",
+        "name": "01-photo-long",
+        "title": "01-photo-long",
+        "author": null,
+        "number": null,
+        "status": "available",
+        "error": null,
+        "page_count": 500,
+        "readable_count": 500,
+        "content_version": 1,
+        "tag_ids": [],
+        "tag_names": {},
+        "created_at": 1793184057.9855263,
+        "cover_url": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/cover?v=1",
+        "progress": null
+      },
+      {
+        "id": "853a0467-4496-4fb9-a4e8-b1b6915fc2be",
+        "root_id": "packs",
+        "path": "/media/packs/02-photo-4k",
+        "name": "02-photo-4k",
+        "title": "02-photo-4k",
+        "author": null,
+        "number": null,
+        "status": "available",
+        "error": null,
+        "page_count": 3,
+        "readable_count": 3,
+        "content_version": 1,
+        "tag_ids": [],
+        "tag_names": {},
+        "created_at": 1793184058.7573402,
+        "cover_url": "/api/v1/packs/853a0467-4496-4fb9-a4e8-b1b6915fc2be/cover?v=1",
+        "progress": null
+      },
+      {
+        "id": "09a52d5c-70d6-4a28-a7e1-e47ef9f23a3d",
+        "root_id": "packs",
+        "path": "/media/packs/03-photo-8k",
+        "name": "03-photo-8k",
+        "title": "03-photo-8k",
+        "author": null,
+        "number": null,
+        "status": "available",
+        "error": null,
+        "page_count": 3,
+        "readable_count": 3,
+        "content_version": 1,
+        "tag_ids": [],
+        "tag_names": {},
+        "created_at": 1793184059.6213007,
+        "cover_url": "/api/v1/packs/09a52d5c-70d6-4a28-a7e1-e47ef9f23a3d/cover?v=1",
+        "progress": null
+      }
+    ],
+    "total": 3,
+    "offset": 0,
+    "limit": 24,
+    "anchor_index": null
+  },
+  "prep_token_revoked": true
+}

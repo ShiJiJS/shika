@@ -1,0 +1,56 @@
+{
+  "captured_at": 1793189565.663934,
+  "containers": [
+    {
+      "name": "video-viewer-server-1",
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "running": true,
+      "image": "sha256:980c9a01bca1f826521da2f0f5660be863dc28fc7592c888bc800efe4d02d67e",
+      "restart_policy": {
+        "Name": "unless-stopped",
+        "MaximumRetryCount": 0
+      }
+    },
+    {
+      "name": "video-viewer-client-e2e-server-1",
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "running": true,
+      "image": "sha256:4ed2b8b1ed3218b237ddd5a4a9bc934420011690a42fcfa79df58dce84aa70d0",
+      "restart_policy": {
+        "Name": "no",
+        "MaximumRetryCount": 0
+      }
+    },
+    {
+      "name": "video-viewer-archive-app-lf7",
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "running": true,
+      "image": "sha256:dd110541995e296e44e21c4c94269f4b1269e084d5d8dbd2958ba1cdaffc7059",
+      "restart_policy": {
+        "Name": "no",
+        "MaximumRetryCount": 0
+      }
+    },
+    {
+      "name": "video-viewer-history-purge-app-lf7",
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "running": true,
+      "image": "sha256:dd110541995e296e44e21c4c94269f4b1269e084d5d8dbd2958ba1cdaffc7059",
+      "restart_policy": {
+        "Name": "no",
+        "MaximumRetryCount": 0
+      }
+    },
+    {
+      "name": "video-viewer-reader-performance",
+      "id": "ceb73d55ff2977b72b75c7d25cd09a607854e613001d9087cb168f701fbc1b02",
+      "running": true,
+      "image": "sha256:886b79b72ecb9116087d892f230471943121f24ccef093113cc3197b4607fef4",
+      "restart_policy": {
+        "Name": "no",
+        "MaximumRetryCount": 0
+      }
+    }
+  ],
+  "owned_stalled_created_container": "8d6f109af966b0ba8cc1c1e092d90c0e22509b86058d1b92cd34753f16731ae2"
+}

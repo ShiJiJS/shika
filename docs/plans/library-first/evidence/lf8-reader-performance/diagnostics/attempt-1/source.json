@@ -1,0 +1,13 @@
+{
+  "source": "b52a5f632f6a7760cee0e78f0d2c3587c84a7ba6",
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "qemu": "81429 /Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64-headless -avd video_viewer_reader_perf_36 -port 5558 -no-boot-anim -gpu software -feature -Vulkan -feature -GLDMA -feature HardwareDecoder -no-snapshot -no-metrics -crash-report-mode never -no-window",
+  "runtime": "sha256:886b79b72ecb9116087d892f230471943121f24ccef093113cc3197b4607fef4",
+  "profile_entrypoint": true,
+  "normal_release_apk": false,
+  "sampling_interval_seconds": 1,
+  "original_display": {
+    "size": "Physical size: 1080x2400\nOverride size: 1170x2532\n",
+    "density": "Physical density: 420\nOverride density: 480\n"
+  }
+}

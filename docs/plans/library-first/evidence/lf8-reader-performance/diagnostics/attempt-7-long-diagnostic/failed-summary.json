@@ -1,0 +1,44 @@
+{
+  "completed": false,
+  "final_matrix_accepted": false,
+  "last_sample": {
+    "phase": "8k-adjacent",
+    "trial": 0,
+    "latency_us": 2398748,
+    "pack_id": "09a52d5c-70d6-4a28-a7e1-e47ef9f23a3d",
+    "page_id": "84dbb904-ce04-4575-b856-8c031897c8a6",
+    "index": 1,
+    "source_dimensions": [
+      7680,
+      4320
+    ],
+    "decoded": [
+      [
+        1170,
+        658
+      ]
+    ],
+    "providers": 2,
+    "estimated_bytes": 8555040,
+    "metadata": 3,
+    "window": [
+      0,
+      2
+    ],
+    "cache_bytes": 12749344,
+    "pending": 0,
+    "live": 1
+  },
+  "sample_count": 4,
+  "peaks": {
+    "providers": 4,
+    "estimated_bytes": 32853600,
+    "metadata": 40,
+    "cache_bytes": 37047904,
+    "pending": 4,
+    "live": 7,
+    "decoded_pixels": 1877682
+  },
+  "sampled_pss_max_kib": 217688,
+  "rss_high_water_kib": 322648
+}

@@ -1,0 +1,31 @@
+{
+  "launcher_pid": 87970,
+  "command": [
+    "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/emulator",
+    "-avd",
+    "video_viewer_reader_perf_36",
+    "-port",
+    "5558",
+    "-no-boot-anim",
+    "-gpu",
+    "swiftshader",
+    "-feature",
+    "-Vulkan",
+    "-feature",
+    "-GLDMA",
+    "-feature",
+    "HardwareDecoder",
+    "-no-snapshot",
+    "-no-metrics",
+    "-crash-report-mode",
+    "never",
+    "-no-window"
+  ],
+  "created_at": 1793193919.6520371,
+  "same_avd_data": true,
+  "wipe_data": false,
+  "previous_qemu_pid": 90728,
+  "previous_process_verified_absent": true,
+  "sdk_properties": "Pkg.UserSrc=false\nPkg.Revision=37.2.12\nPkg.Path=emulator\nPkg.Desc=Android Emulator\nPkg.BuildId=16428233",
+  "avd_config_sha256": "056dc9fb0296a3b5a85c637ed4790ced94c9d7b65be7ee2c52f841d881caa6ae"
+}

@@ -32,3 +32,16 @@ flutter analyze/Ruff、正常release构建、manifest/DEX诊断与integration_te
 [PR #87](https://github.com/ShiJiJS/video_viewer/pull/87)中，全屏完整双进程验证后，后续普通视频准备期间QEMU报告bad color buffer handle、QEMU2 main loop及CPU线程无响应并退出；ADB消失，原显示恢复失败。软件GPU、GLDMA off、host AVC2，未改SDK或renderer。旧launcher及QEMU日志PID均确认消失；按原配置重启、先恢复原显示，普通视频与图包后续完成，不把中断轮计成功或将重新运行称无中断稳定性通过。
 
 [原始模拟器／App／恢复失败与进程证据](https://github.com/ShiJiJS/video_viewer/tree/codex/lf8-fullscreen-restart/docs/plans/library-first/evidence/lf8-fullscreen-restart/diagnostics/emulator-exit)。根因尚未证明，不将其直接定性为App错误。本段公开视频画面检查无绿边，不关闭已有其它解码路径绿边问题。另已证明旧全屏“换片”来自测试ensureVisible误滚动，并非短片自然结束，详见本PR证据。
+
+
+## 2026-10-28：复杂图片场景的模拟器退出补证（PR #96）
+
+新增独立profile入口，计划每类30次Flutter缓存冷首图、正常相邻翻页、连续拖过500页、内核PSS/RSS/VmHWM和帧时序；静态检查通过，原型独立。前三次采集错误（异步tester保护、控制消息分块协议、Tooltip类型）分别修正/留档，不算产品故障。随后SWANGLE/GLES在8次4K重复后bad color buffer/GL context异常、QEMU81429挂起并离开进程表；内核PSS采样最大196416KiB、RSS高水位297432KiB，不能据此诊断App OOM。只在确认进程消失后换官方CLI支持的SwiftShader复测；另一次进度确认等待超时，正在加完整状态诊断，尚未归因。所有失败均不算成功轮次，不用8次样本冒充30次分位数。
+
+[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-performance/docs/plans/library-first/LF8-READER-PERFORMANCE.md)／[当前诊断记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-performance/docs/plans/library-first/evidence/lf8-reader-performance/README.md)。完整30次、三轮500页、普通release入口与目标手机/NAS仍待完成；#78/#89与#24/#33保持开放。指定SMB目录在Mac可读，目前只确认路径可达；未把它当成真实图包已验收，未扫描/修改真实收藏或NAS服务。
+
+## 2026-10-28：完整摄影长包后，正式轮再次退出
+
+311d2c86已实际完整走过500页并保留第500页横纵切换，但不据此关闭环境稳定性。81a11a98正式轮在4K30次与8K第0次后QEMU90728消失；同PID宿主报告的触发栈位于CrashReporter.GenerateDumpAndDie/HangDetector，SIGSEGV记录不是App OOM的证明。ADB与清理均失败，缺少终态原始报告，不拼凑正式分位数。退出前可采PSS220.118MiB、VmHWM317.117MiB，仅是已有观察值。
+
+选择性退出字段/符号栈、原系统报告SHA、原采样和同配置重启记录见[正式轮失败证据](https://github.com/ShiJiJS/video_viewer/tree/codex/lf8-reader-performance/docs/plans/library-first/evidence/lf8-reader-performance/diagnostics/final-1-qemu-exit)。确认旧进程消失后才复用原AVD数据启动87970，未升级SDK或wipe data；启动日志实际GLES仍为SWANGLE/ANGLE→SwiftShader。当前SDK37.2.12列于[官方稳定版说明](https://developer.android.com/studio/releases/emulator)，不是一次SDK修复验证。相同完整矩阵继续，#78的原视频画面与其它环境问题均未关闭。

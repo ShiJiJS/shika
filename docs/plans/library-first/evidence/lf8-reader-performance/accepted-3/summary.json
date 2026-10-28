@@ -1,0 +1,114 @@
+[
+  {
+    "run": ".dev/lf8-reader-performance/accepted-3",
+    "source": "81a11a98fdc98d682e548f6a1dfc6b04508c7ba0",
+    "latency_ms": {
+      "4k-open": {
+        "n": 30,
+        "p50": 3288.073,
+        "p95": 4753.124,
+        "max": 4844.062,
+        "method": "nearest-rank; no filtering"
+      },
+      "4k-adjacent": {
+        "n": 30,
+        "p50": 2942.317,
+        "p95": 3760.177,
+        "max": 4159.368,
+        "method": "nearest-rank; no filtering"
+      },
+      "8k-open": {
+        "n": 30,
+        "p50": 6222.59,
+        "p95": 6986.575,
+        "max": 7249.085,
+        "method": "nearest-rank; no filtering"
+      },
+      "8k-adjacent": {
+        "n": 30,
+        "p50": 3741.494,
+        "p95": 4261.45,
+        "max": 4704.375,
+        "method": "nearest-rank; no filtering"
+      }
+    },
+    "memory": {
+      "sample_count": 1489,
+      "pids": [
+        "18643"
+      ],
+      "definition": "kernel smaps_rollup; excludes added memtrack estimates",
+      "maximum_query_seconds": 4.907437332999962,
+      "sampled_pss_mib": 255.509765625,
+      "sampled_rss_mib": 357.0390625,
+      "kernel_rss_high_water_mib": 363.44140625
+    },
+    "environment": {
+      "sample_count": 300,
+      "runtime_id": "1b87c4f9d47ff14614ca7516ea1bd2dc99b02ef395207e894f5559e381005a55",
+      "source_runtime_id_recorded": true,
+      "qemu_pid": "87970",
+      "scope": "Build/startup through terminal report; owned local runtime and host simulator, not NAS/phone",
+      "server_max_cpu_percent": 117.15,
+      "server_max_docker_memory_mib": 102.1,
+      "qemu_max_host_rss_mib": 2802.453125,
+      "qemu_max_reported_cpu_percent": 551.7,
+      "counter_definition": "Docker CLI rounded cumulative traffic/block counters; approximate sampled delta, not physical NAS IO",
+      "network_received": {
+        "initial_bytes": 15300000.0,
+        "final_bytes": 22500000.0,
+        "sampled_delta_bytes": 7200000.0
+      },
+      "network_sent": {
+        "initial_bytes": 9670000000.0,
+        "final_bytes": 14300000000.0,
+        "sampled_delta_bytes": 4630000000.0
+      },
+      "block_read": {
+        "initial_bytes": 272000000.0,
+        "final_bytes": 345000000.0,
+        "sampled_delta_bytes": 73000000.0
+      },
+      "block_written": {
+        "initial_bytes": 0.0,
+        "final_bytes": 0.0,
+        "sampled_delta_bytes": 0.0
+      }
+    },
+    "peaks": {
+      "providers": 6,
+      "estimated_bytes": 49280400,
+      "metadata": 120,
+      "cache_bytes": 53474704,
+      "pending": 6,
+      "live": 6,
+      "decoded_pixels": 2053350
+    },
+    "frames_us": {
+      "build": {
+        "n": 22977,
+        "p50": 1712.0,
+        "p95": 20628.0,
+        "max": 743148.0,
+        "method": "nearest-rank; no filtering"
+      },
+      "raster": {
+        "n": 22977,
+        "p50": 68517.0,
+        "p95": 136061.0,
+        "max": 7500772.0,
+        "method": "nearest-rank; no filtering"
+      },
+      "total": {
+        "n": 22977,
+        "p50": 139839.0,
+        "p95": 249925.0,
+        "max": 8330595.0,
+        "method": "nearest-rank; no filtering"
+      }
+    },
+    "long_pages": 500,
+    "gestures": 1205,
+    "long_scroll_seconds": 1151.01141
+  }
+]

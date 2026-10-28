@@ -1,0 +1,13 @@
+{
+  "source": "81a11a98fdc98d682e548f6a1dfc6b04508c7ba0",
+  "formal_run_started": false,
+  "samples": 0,
+  "failure": "OSError Errno48 binding local control port8774 before source capture/App launch",
+  "directory_empty_at_inspection": true,
+  "later_no_listener_or_time_wait_observed": true,
+  "same_guard_bind_now_succeeded": true,
+  "root_cause": "Port readiness race suspected; no at-failure socket ownership capture, not proven",
+  "emulator_or_runtime_restarted": false,
+  "log_sha256": "35d0edbce3282e8584e5d24b38f0dcd03c33efe24882fcc283312113fc72ce52",
+  "recorded_at": 1793198362.254312
+}

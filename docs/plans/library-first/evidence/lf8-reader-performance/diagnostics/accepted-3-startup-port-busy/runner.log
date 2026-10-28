@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-reader-performance.py", line 386, in <module>
+    main()
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/run-reader-performance.py", line 77, in main
+    guard.bind(("127.0.0.1", port))
+OSError: [Errno 48] Address already in use

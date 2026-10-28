@@ -1,0 +1,848 @@
+{
+  "original_report_sha256": "d08b192ce787b6f74e0f124cc3d353baef5d2db50f43f15da186b2f1eb05880b",
+  "original_report_name": "qemu-system-aarch64-headless-2026-10-28-210752.ips",
+  "pid": 90728,
+  "capture_time": "2026-10-28 21:07:51.1542 +0800",
+  "exception": {
+    "codes": "0x0000000000000001, 0x0000000000000000",
+    "rawCodes": [
+      1,
+      0
+    ],
+    "type": "EXC_BAD_ACCESS",
+    "signal": "SIGSEGV",
+    "subtype": "KERN_INVALID_ADDRESS at 0x0000000000000000"
+  },
+  "termination": {
+    "flags": 0,
+    "code": 11,
+    "namespace": "SIGNAL",
+    "indicator": "Segmentation fault: 11",
+    "byProc": "exc handler",
+    "byPid": 90728
+  },
+  "faulting_thread": 3,
+  "selected_threads": [
+    {
+      "index": 0,
+      "name": null,
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__sigsuspend",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "skin_winsys_enter_main_loop",
+          "symbolLocation": 72,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "main",
+          "symbolLocation": 23344,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "start",
+          "symbolLocation": 6688,
+          "imageIndex": 17
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "name": null,
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 980,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "qemu_event_wait",
+          "symbolLocation": 120,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "call_rcu_thread",
+          "symbolLocation": 220,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "qemu_thread_trampoline",
+          "symbolLocation": 80,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "name": null,
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "mach_msg2_trap",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "mach_msg2_internal",
+          "symbolLocation": 76,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "mach_msg_overwrite",
+          "symbolLocation": 480,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "mach_msg",
+          "symbolLocation": 24,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "crashpad::MachMessageWithDeadline(mach_msg_header_t*, int, unsigned int, unsigned int, unsigned long long, unsigned int, bool)",
+          "symbolLocation": 836,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "crashpad::MachMessageServer::Run(crashpad::MachMessageServer::Interface*, unsigned int, int, crashpad::MachMessageServer::Persistent, crashpad::MachMessageServer::ReceiveLarge, unsigned int)",
+          "symbolLocation": 424,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "crashpad::(anonymous namespace)::HandlerStarter::RestartThreadMain(void*)",
+          "symbolLocation": 64,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "name": null,
+      "triggered": true,
+      "frames": [
+        {
+          "symbol": "android::crashreport::CrashReporter::GenerateDumpAndDie(char const*)",
+          "symbolLocation": 52,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "_ZZN7android11crashreport13CrashReporter12hangDetectorEvENK3$_0clINSt3__117basic_string_viewIcNS4_11char_traitsIcEEEEEEDaT_",
+          "symbolLocation": 68,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "std::__1::__function::__func<android::crashreport::CrashReporter::hangDetector()::$_0, std::__1::allocator<android::crashreport::CrashReporter::hangDetector()::$_0>, void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>&&)",
+          "symbolLocation": 16,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>) const",
+          "symbolLocation": 40,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "android::crashreport::HangDetector::LooperWatcher::process(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)> const&)",
+          "symbolLocation": 824,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "android::crashreport::HangDetector::workerThread()",
+          "symbolLocation": 520,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "std::__1::__function::__func<android::base::FunctorThread::FunctorThread<android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0, void*>(android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0&&, android::base::ThreadFlags)::'lambda'(), std::__1::allocator<android::base::FunctorThread::FunctorThread<android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0, void*>(android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0&&, android::base::ThreadFlags)::'lambda'()>, long ()>::operator()()",
+          "symbolLocation": 16,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "android::base::Thread::thread_main(void*)",
+          "symbolLocation": 156,
+          "imageIndex": 3
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "name": null,
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 980,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "std::__1::condition_variable::wait(std::__1::unique_lock<std::__1::mutex>&)",
+          "symbolLocation": 32,
+          "imageIndex": 20
+        },
+        {
+          "symbol": "gfxstream::base::WorkerThread<std::__1::variant<gfxstream::host::RendererImpl::ProcessCleanupThread::CleanProcessResources, gfxstream::host::RendererImpl::ProcessCleanupThread::Exit>>::ThreadLoop()",
+          "symbolLocation": 140,
+          "imageIndex": 12
+        },
+        {
+          "symbol": "void* std::__1::__thread_proxy[abi:v15006]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, gfxstream::base::WorkerThread<std::__1::variant<gfxstream::host::RendererImpl::ProcessCleanupThread::CleanProcessResources, gfxstream::host::RendererImpl::ProcessCleanupThread::Exit>>::start()::'lambda'()>>(void*)",
+          "symbolLocation": 44,
+          "imageIndex": 12
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "name": "Thread<00>",
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 980,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "std::__Cr::condition_variable::wait(std::__Cr::unique_lock<std::__Cr::mutex>&)",
+          "symbolLocation": 24,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::waitForWork()",
+          "symbolLocation": 268,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::runUntilShutdown()",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::run()",
+          "symbolLocation": 172,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void std::__Cr::__function::__policy_invoker<void ()>::__call_impl<std::__Cr::__function::__default_alloc_func<marl::Scheduler::Worker::start()::$_0, void ()>>(std::__Cr::__function::__policy_storage const*)",
+          "symbolLocation": 200,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void* std::__Cr::__thread_proxy<std::__Cr::tuple<std::__Cr::unique_ptr<std::__Cr::__thread_struct, std::__Cr::default_delete<std::__Cr::__thread_struct>>, marl::Thread::Impl::Impl(marl::Thread::Affinity&&, std::__Cr::function<void ()>&&)::'lambda'()>>(void*)",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "name": "Thread<01>",
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 980,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "std::__Cr::condition_variable::wait(std::__Cr::unique_lock<std::__Cr::mutex>&)",
+          "symbolLocation": 24,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::waitForWork()",
+          "symbolLocation": 268,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::runUntilShutdown()",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::run()",
+          "symbolLocation": 172,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void std::__Cr::__function::__policy_invoker<void ()>::__call_impl<std::__Cr::__function::__default_alloc_func<marl::Scheduler::Worker::start()::$_0, void ()>>(std::__Cr::__function::__policy_storage const*)",
+          "symbolLocation": 200,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void* std::__Cr::__thread_proxy<std::__Cr::tuple<std::__Cr::unique_ptr<std::__Cr::__thread_struct, std::__Cr::default_delete<std::__Cr::__thread_struct>>, marl::Thread::Impl::Impl(marl::Thread::Affinity&&, std::__Cr::function<void ()>&&)::'lambda'()>>(void*)",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "name": "Thread<02>",
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 980,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "std::__Cr::condition_variable::wait(std::__Cr::unique_lock<std::__Cr::mutex>&)",
+          "symbolLocation": 24,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::waitForWork()",
+          "symbolLocation": 268,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::runUntilShutdown()",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::run()",
+          "symbolLocation": 172,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void std::__Cr::__function::__policy_invoker<void ()>::__call_impl<std::__Cr::__function::__default_alloc_func<marl::Scheduler::Worker::start()::$_0, void ()>>(std::__Cr::__function::__policy_storage const*)",
+          "symbolLocation": 200,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void* std::__Cr::__thread_proxy<std::__Cr::tuple<std::__Cr::unique_ptr<std::__Cr::__thread_struct, std::__Cr::default_delete<std::__Cr::__thread_struct>>, marl::Thread::Impl::Impl(marl::Thread::Affinity&&, std::__Cr::function<void ()>&&)::'lambda'()>>(void*)",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 16,
+      "name": "Thread<03>",
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 980,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "std::__Cr::condition_variable::wait(std::__Cr::unique_lock<std::__Cr::mutex>&)",
+          "symbolLocation": 24,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::waitForWork()",
+          "symbolLocation": 268,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::runUntilShutdown()",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::run()",
+          "symbolLocation": 172,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void std::__Cr::__function::__policy_invoker<void ()>::__call_impl<std::__Cr::__function::__default_alloc_func<marl::Scheduler::Worker::start()::$_0, void ()>>(std::__Cr::__function::__policy_storage const*)",
+          "symbolLocation": 200,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void* std::__Cr::__thread_proxy<std::__Cr::tuple<std::__Cr::unique_ptr<std::__Cr::__thread_struct, std::__Cr::default_delete<std::__Cr::__thread_struct>>, marl::Thread::Impl::Impl(marl::Thread::Affinity&&, std::__Cr::function<void ()>&&)::'lambda'()>>(void*)",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "name": "Thread<04>",
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 980,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "std::__Cr::condition_variable::wait(std::__Cr::unique_lock<std::__Cr::mutex>&)",
+          "symbolLocation": 24,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::waitForWork()",
+          "symbolLocation": 268,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::runUntilShutdown()",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::run()",
+          "symbolLocation": 172,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void std::__Cr::__function::__policy_invoker<void ()>::__call_impl<std::__Cr::__function::__default_alloc_func<marl::Scheduler::Worker::start()::$_0, void ()>>(std::__Cr::__function::__policy_storage const*)",
+          "symbolLocation": 200,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void* std::__Cr::__thread_proxy<std::__Cr::tuple<std::__Cr::unique_ptr<std::__Cr::__thread_struct, std::__Cr::default_delete<std::__Cr::__thread_struct>>, marl::Thread::Impl::Impl(marl::Thread::Affinity&&, std::__Cr::function<void ()>&&)::'lambda'()>>(void*)",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 18,
+      "name": "Thread<05>",
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 980,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "std::__Cr::condition_variable::wait(std::__Cr::unique_lock<std::__Cr::mutex>&)",
+          "symbolLocation": 24,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::waitForWork()",
+          "symbolLocation": 268,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::runUntilShutdown()",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::run()",
+          "symbolLocation": 172,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void std::__Cr::__function::__policy_invoker<void ()>::__call_impl<std::__Cr::__function::__default_alloc_func<marl::Scheduler::Worker::start()::$_0, void ()>>(std::__Cr::__function::__policy_storage const*)",
+          "symbolLocation": 200,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void* std::__Cr::__thread_proxy<std::__Cr::tuple<std::__Cr::unique_ptr<std::__Cr::__thread_struct, std::__Cr::default_delete<std::__Cr::__thread_struct>>, marl::Thread::Impl::Impl(marl::Thread::Affinity&&, std::__Cr::function<void ()>&&)::'lambda'()>>(void*)",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "name": "Thread<06>",
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 980,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "std::__Cr::condition_variable::wait(std::__Cr::unique_lock<std::__Cr::mutex>&)",
+          "symbolLocation": 24,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::waitForWork()",
+          "symbolLocation": 268,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::runUntilShutdown()",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::run()",
+          "symbolLocation": 172,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void std::__Cr::__function::__policy_invoker<void ()>::__call_impl<std::__Cr::__function::__default_alloc_func<marl::Scheduler::Worker::start()::$_0, void ()>>(std::__Cr::__function::__policy_storage const*)",
+          "symbolLocation": 200,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void* std::__Cr::__thread_proxy<std::__Cr::tuple<std::__Cr::unique_ptr<std::__Cr::__thread_struct, std::__Cr::default_delete<std::__Cr::__thread_struct>>, marl::Thread::Impl::Impl(marl::Thread::Affinity&&, std::__Cr::function<void ()>&&)::'lambda'()>>(void*)",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 20,
+      "name": "Thread<07>",
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 980,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "std::__Cr::condition_variable::wait(std::__Cr::unique_lock<std::__Cr::mutex>&)",
+          "symbolLocation": 24,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::waitForWork()",
+          "symbolLocation": 268,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::runUntilShutdown()",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "marl::Scheduler::Worker::run()",
+          "symbolLocation": 172,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void std::__Cr::__function::__policy_invoker<void ()>::__call_impl<std::__Cr::__function::__default_alloc_func<marl::Scheduler::Worker::start()::$_0, void ()>>(std::__Cr::__function::__policy_storage const*)",
+          "symbolLocation": 200,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void* std::__Cr::__thread_proxy<std::__Cr::tuple<std::__Cr::unique_ptr<std::__Cr::__thread_struct, std::__Cr::default_delete<std::__Cr::__thread_struct>>, marl::Thread::Impl::Impl(marl::Thread::Affinity&&, std::__Cr::function<void ()>&&)::'lambda'()>>(void*)",
+          "symbolLocation": 52,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 21,
+      "name": "Queue<0x7c80e48010>",
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 980,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "std::__Cr::condition_variable::wait(std::__Cr::unique_lock<std::__Cr::mutex>&)",
+          "symbolLocation": 24,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "sw::Chan<vk::Queue::Task>::take()",
+          "symbolLocation": 72,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "vk::Queue::taskLoop(marl::Scheduler*)",
+          "symbolLocation": 116,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "void* std::__Cr::__thread_proxy<std::__Cr::tuple<std::__Cr::unique_ptr<std::__Cr::__thread_struct, std::__Cr::default_delete<std::__Cr::__thread_struct>>, void (vk::Queue::*)(marl::Scheduler*), vk::Queue*, marl::Scheduler*>>(void*)",
+          "symbolLocation": 68,
+          "imageIndex": 15
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 30,
+      "name": "com.apple.virtualization.thread.virtual-clock",
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_cvwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_cond_wait",
+          "symbolLocation": 1024,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "HvCore::VirtualClock::thread_body()",
+          "symbolLocation": 312,
+          "imageIndex": 22
+        },
+        {
+          "symbol": "void* std::__1::__thread_proxy[abi:fqe220106]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (HvCore::VirtualClock::*)(), HvCore::VirtualClock*>>(void*)",
+          "symbolLocation": 92,
+          "imageIndex": 22
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    },
+    {
+      "index": 77,
+      "name": "com.apple.audio.IOThread.client",
+      "triggered": false,
+      "frames": [
+        {
+          "symbol": "__psynch_mutexwait",
+          "symbolLocation": 8,
+          "imageIndex": 16
+        },
+        {
+          "symbol": "_pthread_mutex_firstfit_lock_wait",
+          "symbolLocation": 84,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "_pthread_mutex_firstfit_lock_slow",
+          "symbolLocation": 216,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "ca_out_device_wconv_ioproc",
+          "symbolLocation": 56,
+          "imageIndex": 0
+        },
+        {
+          "symbol": "HALC_ProxyIOContext::IOWorkLoop()",
+          "symbolLocation": 10376,
+          "imageIndex": 23
+        },
+        {
+          "symbol": "invocation function for block in HALC_ProxyIOContext::HALC_ProxyIOContext(unsigned int, unsigned int)",
+          "symbolLocation": 172,
+          "imageIndex": 23
+        },
+        {
+          "symbol": "HALC_IOThread::Entry(void*)",
+          "symbolLocation": 92,
+          "imageIndex": 23
+        },
+        {
+          "symbol": "_pthread_start",
+          "symbolLocation": 136,
+          "imageIndex": 19
+        },
+        {
+          "symbol": "thread_start",
+          "symbolLocation": 8,
+          "imageIndex": 19
+        }
+      ]
+    }
+  ],
+  "redaction": "Selected diagnostic fields/symbols only; private original report not committed; no device UUID or environment",
+  "host": {
+    "cpu": "Apple M3",
+    "physical_memory_bytes": 25769803776,
+    "logical_cpus": 8
+  },
+  "verified_exit_at": 1793193543.562925,
+  "qemu_process_present": false,
+  "adb_devices": "List of devices attached\n\n"
+}

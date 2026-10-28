@@ -2,7 +2,7 @@
 
 更新：2026-10-28。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
-最新阶段：[原签名App回退与反复覆盖安装 PR #95](https://github.com/ShiJiJS/video_viewer/pull/95)。固定a3c7659a，配套新媒体库0.2.0-preview.2和旧界面0.1.4-rollback.2均code8、原Windows签名。旧界面窄适配保留新版偏好/多范围日志及凭据代次，未知v2备份任务保留并要求回新版核对；85旧版/兼容+14新版相关检查、双方analyze及正常release通过。独立Android36同一QEMU实际6→新8→旧8→新8→旧8→新8，五次install -r、首次安装时间/身份/数据目录保持、六次免口令冷启，新版零自动播放。旧UI主题/相邻准备修改后新版顺序/迁移标记保留；旧视频回收/菜单撤销完成，升回任务可核对；图包第2页纵向/两套标签保留。148输入及两包只读复核通过，22组原生截图；一容器/自有AVD已归还，原四服务及前阶段数据/媒体未动。配套服务仍b79da7b9 preview.2，原型1cbf605独立未改；未正式发布/部署，目标手机/NAS、500页高分辨率和其余终验继续，#78/#89与#24/#33保持开放。
+最新阶段：[复杂图包三轮测量 PR #96](https://github.com/ShiJiJS/video_viewer/pull/96)。冻结81a11a98的正式三轮均完整通过：每轮四组各30次、全部500页、横纵同页及返回来源，内存和环境采集均正常收尾。三轮PSS采样峰值255.491/254.464/255.510MiB，图片/页信息窗口保持有界；506页/3,423,051,928字节全部SHA与生成清单相同。完整慢样本、帧时序和失败诊断保留，本机软件GPU延迟偏高，不能当作手机速度，也未证明#78/#89已修复。生产App/服务/原型未改，正常安装包仍为PR #95配套版本。下一步整合PR #98、构建同code9的新预览和回退包并验证正常入口。真实手机/NAS仍待验；当前指定SMB路径不在挂载目录中，按授权暂跳过，#24/#33保持开放。
 
 共享布局阶段基线为a9da395；最新图包续读阶段源码为c4aaf3b，见[真实续读约定](LF8-PACK-CONTINUATION.md)与[原生证据](evidence/lf8-pack-continuation/README.md)。后续分类总数阶段源码910cfb2，见[库存约定](LF8-CATALOG-COUNTS.md)与[库存/横屏及续读回归证据](evidence/lf8-catalog-counts/README.md)。该段补同快照总数、未知重试和标签缩高布局；续读段新增真实续读、独立摘要读取与菜单收键盘；共享布局的设置开关、标签确认区和主题稳定证据继续作为历史基线。图包呈现/排序阶段为4e391a2，见[约定](LF8-PACK-PRESENTATION.md)与[69点同版证据](evidence/lf8-pack-presentation/README.md)；主标题/作者和完整范围排序已补，新增大字长操作行可达性修正。原型树1cbf605未改。各阶段链接中的实现提交、真实服务/Demo区分、操作步骤与原始证据继续有效，但未来修改后须按受影响路径复核，不能把历史全集视为当前HEAD所有组合已通过。
 
@@ -43,7 +43,7 @@
 | READ-03 | 新增长包/大图链路证据 / 未收口 | [LF5](LF5.md)、[阅读器82点](evidence/lf8-reader-chrome/README.md)、[500页三轮](evidence/lf8-reader-long-pack/README.md) | 新增模式设置初始完整主动作、同图切纵向及每包偏好重开恢复；全局默认/已设置包隔离与其它方向/适配组合继续。 本段补实际500页单调滚动、末页横纵同页、固定范围/大图往返及重开末页和纵向偏好；未新增比例相等或其它组合证明。 |
 | READ-04 | 新增长包/大图链路证据 / 未收口 | [LF5](LF5.md)、[阅读器82点](evidence/lf8-reader-chrome/README.md)、[500页三轮](evidence/lf8-reader-long-pack/README.md) | 新增真实沉浸/恢复、快速整理显隐、同页比例与重开续读，工具/面板完整进度只读；删页回退、其它异常与完整手势继续。 本段补实际500页单调滚动、末页横纵同页、固定范围/大图往返及重开末页和纵向偏好；未新增比例相等或其它组合证明。 |
 | READ-05 | 新增长包/大图链路证据 / 未收口 | [LF5](LF5.md)、[阅读器82点](evidence/lf8-reader-chrome/README.md)、[500页三轮](evidence/lf8-reader-long-pack/README.md) | 新增两次完整4包固定成员/序号、范围分页收尾及返回稳定锚点/偏移；缺失/停用/空范围和前后包完整组合继续。 本段补实际500页单调滚动、末页横纵同页、固定范围/大图往返及重开末页和纵向偏好；未新增比例相等或其它组合证明。 |
-| READ-06 | 新增长包/大图本地链路证据 / 目标性能待实测 | [LF5](LF5.md)、[500页三轮与指标](evidence/lf8-reader-long-pack/README.md) | 软件GPU三轮500页及4K/6K/8K实际解码通过，provider/缓存与进程PSS分别记录；纯色合成图、debug墙钟及3秒采样不代表真实照片/SMB、目标机峰值、30次p50/p95或NAS CPU/IO。 |
+| READ-06 | 复杂摄影像素正式三轮通过 / 正常包与目标机待验 | [LF5](LF5.md)、[纯色500页三轮](evidence/lf8-reader-long-pack/README.md)、[复杂图片完整三轮](evidence/lf8-reader-performance/README.md) | 81a11a98同版/同素材/同QEMU87970及普通服务，三轮各四组30次、1206/1206/1205拖动覆盖全部500页，同页切换/来源返回、各单PID与采集均通过。PSS峰值255.491/254.464/255.510MiB，6 provider/120元数据有界；506页全SHA复核一致。完整慢样本、帧/环境原始值及逐轮汇总保留，失败诊断不混入成功统计。SDK仍37.2.12；本机软件GPU时延/卡顿不算产品速度或#78修复。正常release入口、真实手机/SMB及NAS物理CPU/IO仍待验证；当前指定SMB挂载不可用，未读取真实图包。 |
 | REC-01 | 新增修后99点中的85个最近点 / 未收口 | [最近约定](LF8-RECENT-HISTORY.md)、[最终证据](evidence/lf8-recent-history-final/README.md) | 两类真实最近、固定范围、返回、503保留/重试与媒体库草稿已补同源五轮；回收/恢复和三来源其它组合继续。 本段补新视频实际相邻解码但未被打开，最近API／SQL仍只含两个实际打开的旧视频。 |
 | DEL-01 | 已有阶段证据 / 未收口 | [LF6](LF6.md)、[LF7](LF7.md) | 各类原操作与连接/重开组合继续；截图不替代源文件/回执的已有精确证据。 |
 | DEL-02 | 已有阶段证据 / 未收口 | [LF6](LF6.md)、[LF7](LF7.md) | 各类原操作与连接/重开组合继续；截图不替代源文件/回执的已有精确证据。 |
@@ -66,14 +66,20 @@
 | UI-03 | 新增永久删除管理证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[设置155点](evidence/lf8-settings-forms/README.md)、[回收站45点](evidence/lf8-trash-management/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 连接、媒体目录、默认偏好与缺失页指定浅暗状态已复核；缺失另补39+4点同生产源码，1问题/1提升关闭；回收站指定流程另补45点；更多管理状态组合继续。  本段补备份开放行、短／长恢复、任务同一正文滚动与详情，真实IME／三视口／失败保页，静态证据边界见本段说明。 本段补永久删除短复核与完整清单／结果、三视口36点、翻页失败保页和稳定浅暗动作；[原始证据与边界](evidence/lf8-purge-management/README.md)。 |
 | UI-04 | 新增标签分配与真实IME证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[设置155点](evidence/lf8-settings-forms/README.md)、[回收站45点](evidence/lf8-trash-management/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 共享16项针对检查含设置开关语义；新增续读错误/重试、多选收键盘与大字/短横屏证据；库存段补未知重试与标签61dp缩高/恢复。最近段补两类503保留/重试及真实键盘，错误提示问题复核关闭；完整表单与其它恢复组合继续。 阅读段补设置/范围固定底部动作和长正文滚动检查、四视口设置语义及HTTP图片错误回归。 预览段补长来源滚动/当前定位、偏好文件保存读回与失败保留、面板覆盖禁用播放/速度。 设置段补真实IME与可见焦点、错误滚入、默认值保存读回及三种视口同清单复核，完整其它状态继续。  缺失段补四视口组件、同源39+4点与完整确认末尾，长列表错误/原请求显露和成功翻页起点已修正。  本段补备份开放行、短／长恢复、任务同一正文滚动与详情，真实IME／三视口／失败保页，静态证据边界见本段说明。 本段补永久删除短复核与完整清单／结果、三视口36点、翻页失败保页和稳定浅暗动作；[原始证据与边界](evidence/lf8-purge-management/README.md)。  标签段补20dp锚线/描边选择、外置字段、单层确认、失败草稿、浅暗编辑和三视口45点；[证据与边界](evidence/lf8-tag-management/README.md)。 标签分配段补三尺寸42点、真实IME、单项来源读回与批量追加；低高度操作及体量固定清单闭合，[证据](evidence/lf8-tag-assignment/README.md)。 |
 | UI-05 | 新增标签分配与真实IME证据 / 未收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[卡片/网格](evidence/lf8-card-layout/README.md)、[设置155点](evidence/lf8-settings-forms/README.md)、[回收站45点](evidence/lf8-trash-management/README.md) 、[备份与任务管理](evidence/lf8-backup-task-management/README.md) | 最近段同源普通三轮/大字/短横屏及真实键盘已补，双倍字号完整按钮裁切修正复核关闭；120项两类组件验证旋转/字号变更锚点及不重查，原生固定视口不冒充深列表旋转。完整状态与目标设备继续。 阅读段另补同源码普通三轮/大字/短横屏，组件双向旋转保持同页比例；固定视口原生不冒充实际旋转。 预览段补同源普通三轮/大字/短横屏、控制条避让与结束返回；几何段100点补短队列高度、横屏全宽、Paper轮廓及紧凑整理条，大字孤字/动作权重复核关闭；完整动作/其它状态继续。 设置段补真实IME与可见焦点、错误滚入、默认值保存读回及三种视口同清单复核，完整其它状态继续。  缺失段补四视口组件、同源39+4点与完整确认末尾，长列表错误/原请求显露和成功翻页起点已修正。  本段补备份开放行、短／长恢复、任务同一正文滚动与详情，真实IME／三视口／失败保页，静态证据边界见本段说明。 本段补永久删除短复核与完整清单／结果、三视口36点、翻页失败保页和稳定浅暗动作；[原始证据与边界](evidence/lf8-purge-management/README.md)。  标签段补20dp锚线/描边选择、外置字段、单层确认、失败草稿、浅暗编辑和三视口45点；[证据与边界](evidence/lf8-tag-management/README.md)。 标签分配段补三尺寸42点、真实IME、单项来源读回与批量追加；低高度操作及体量固定清单闭合，[证据](evidence/lf8-tag-assignment/README.md)。 |
-| UI-06 | 待完整动作收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md) | 沿用已有路由/加载与减少动态效果；新增续读有逐步点击/回读，但尚无完整动作时长/手势录屏。 |
+| UI-06 | 视频减少动画修复已提交 / 待完整动作收口 | [本轮差异审计](LF8-SHARED-GEOMETRY.md)、[共享布局证据](evidence/lf8-shared-geometry/README.md)、[独立PR #98检查证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reduced-motion/docs/plans/library-first/evidence/lf8-reduced-motion/README.md) | #97 / PR #98修正四处视频控件固定160ms动画，开启系统偏好后首帧直接到位，关闭时保持原动画。相同四断言旧模块2失败/2通过，修后4通过，加13相关检查共17项及analyze通过。现有正常APK尚不含此修复；组件证据不代替原生完整动作时长/手势录屏或目标手机验收。 |
 
 ## 下一段推进顺序
 
-1. 最近记录、阅读画布与预览控件本段证据分别保留99/82/125点边界；视频范围几何及整理条差异已补100点；设置表单与目录另补155点；缺失及回收站指定流程分别补39+4/45点；下一段继续永久删除复核、备份及任务管理和完整预览其它异常/方向/手势，不重复把局部图标收口当成整页一致。
-2. 按验收ID复核视频/阅读/管理页面的同状态视觉、键盘和动作，修复影响内容理解或操作的偏差。
-3. 自动化继续覆盖可独立完成的性能样本和升级前置；需要真实手机/NAS配合的部分保留待验证，按用户授权暂时跳过。
-4. 只有全部必要项目逐项通过才关闭#24与LF8，之后交付原签名、递增versionCode的配套版本和回退说明。
+1. 81a11a98正式三轮已完整保存；沿用全部计时、500页覆盖、采集收尾和失败边界，不把诊断轮或一次准备结果混入。后续修改按影响路径复核，不将此冻结源码等同未来整合版全部已验。
+2. 整合PR #98的视频减少动画修复；生成递增versionCode、原签名的新预览包和同code旧界面回退包，保留现有code8产物。正常入口实际阅读、设置保留和覆盖切换另行验证，不能用profile测试入口代替。
+3. 按验收ID核对剩余明确功能/视觉差异，继续可独立完成的检查；真实手机/NAS的速度与内存、云文档提供器等需配合部分保持待验，按用户授权暂时跳过。
+4. 配套版本、安装说明和开放问题持续同步GitHub；全部必要项目逐项通过后才关闭#24与LF8。原型继续放在独立可移除目录，未完成目标设备验收前不称正式发布。
+
+### 2026-10-28：复杂长包的服务端挂起与观察方式修正
+
+PR #96的attempt-10连续覆盖了285张实际解码图片（索引0–284，无缺页），在第286张失败。请求阶段显示progress正文已收完，进度/图片/library-state随后不返回；健康检查和数据库文件头可读，容器内SQL及容器停止挂起。不能据此定性App故障或宣称READ-06通过。失败后正常重启本机OrbStack（未使用force），原四服务ID/镜像保留并恢复运行，专用数据库完整性ok；本机曾短暂中断，NAS服务未动。
+
+Mac直接读取活跃绑定SQLite、后半段失败SMB只读挂载均列为干扰，后续取消。失败挂载容器已清理，未实际开始真实图包检查。旧资源观察器在服务重建后仍指向旧ID，attempt-9/10分别27/185份统计全部失败，明确不可用；新runner绑定每轮实际容器ID并将环境采集错误纳入失败。完整原始帧、请求阶段、恢复及观察缺口见[诊断证据](evidence/lf8-reader-performance/README.md)，新报告收尾顺序和资源采集还需下一轮运行验证。现有预览APK及独立原型未改，父任务保持开放。
 
 
 ## 2026-10-26：媒体库权威分类总数（PR #60）
@@ -400,3 +406,11 @@ f6a565e同版普通视频、横向全屏、纵向图包各一次双进程，共2
 最新阶段：[原签名App回退与反复覆盖安装 PR #95](https://github.com/ShiJiJS/video_viewer/pull/95)。固定a3c7659a，配套新媒体库0.2.0-preview.2和旧界面0.1.4-rollback.2均code8、原Windows签名。旧界面窄适配保留新版偏好/多范围日志及凭据代次，未知v2备份任务保留并要求回新版核对；85旧版/兼容+14新版相关检查、双方analyze及正常release通过。独立Android36同一QEMU实际6→新8→旧8→新8→旧8→新8，五次install -r、首次安装时间/身份/数据目录保持、六次免口令冷启，新版零自动播放。旧UI主题/相邻准备修改后新版顺序/迁移标记保留；旧视频回收/菜单撤销完成，升回任务可核对；图包第2页纵向/两套标签保留。148输入及两包只读复核通过，22组原生截图；一容器/自有AVD已归还，原四服务及前阶段数据/媒体未动。配套服务仍b79da7b9 preview.2，原型1cbf605独立未改；未正式发布/部署，目标手机/NAS、500页高分辨率和其余终验继续，#78/#89与#24/#33保持开放。
 
 [方案和边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-app-rollback/docs/plans/library-first/LF8-APP-ROLLBACK.md)／[固定构建、两轮实际安装与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-app-rollback/docs/plans/library-first/evidence/lf8-app-rollback/README.md)／[安装说明](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-app-rollback/docs/library-first-preview.md)。本段只补UP-02的本机App回退组合。内部code相同可反复替换已在该AVD实测；不能覆盖code>8，后续版本需同步生成回退包。切换前先完成/核对管理任务，进行中或未知v2任务不交旧版接管。偏好扩展字段使用明确公开文件样本，再经真实UI写当前迁移标记；不把文件样本称为全由UI生成。原旧界面、播放器和API业务保留，属于附兼容存储的回退包，不是原Windows APK字节复刻。当前新服务配旧客户端只核对列明组合，完整旧功能/禁用根其它组合、目标手机/NAS和其它终验继续。
+
+## 2026-10-28：复杂图包性能测量（PR #96，进行中）
+
+两份公开NASA/JSC摄影图以原像素裁切拼接为506页/3,423,051,928字节：500页长包中400页4000×6000、100页8000×8000，另两类各3页。是摄影像素压力样本，不是506张独立照片，不代替真实图包/SMB。正常runtime preview.2完整扫描无失败，解码子进程峰值152624KiB；生产App/服务及原型未改，普通安装包仍按PR #95。
+
+新增独立profile入口，计划每类30次Flutter缓存冷首图、正常相邻翻页、连续拖过500页、内核PSS/RSS/VmHWM和帧时序；静态检查通过，原型独立。前三次采集错误（异步tester保护、控制消息分块协议、Tooltip类型）分别修正/留档，不算产品故障。随后SWANGLE/GLES在8次4K重复后bad color buffer/GL context异常、QEMU81429挂起并离开进程表；内核PSS采样最大196416KiB、RSS高水位297432KiB，不能据此诊断App OOM。只在确认进程消失后换官方CLI支持的SwiftShader复测；另一次进度确认等待超时，正在加完整状态诊断，尚未归因。所有失败均不算成功轮次，不用8次样本冒充30次分位数。
+
+[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-performance/docs/plans/library-first/LF8-READER-PERFORMANCE.md)／[当前诊断记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-performance/docs/plans/library-first/evidence/lf8-reader-performance/README.md)。完整30次、三轮500页、普通release入口与目标手机/NAS仍待完成；#78/#89与#24/#33保持开放。指定SMB目录在Mac可读，目前只确认路径可达；未把它当成真实图包已验收，未扫描/修改真实收藏或NAS服务。

@@ -1,0 +1,10 @@
+{
+  "checks_passed": false,
+  "final_matrix": false,
+  "exit_code": 1,
+  "observer_errors": [
+    "memory sample: CalledProcessError(1, ['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5558', 'shell', 'cat', '/proc/11245/smaps_rollup', '/proc/11245/status'])"
+  ],
+  "elapsed_seconds": 144.91080295900002,
+  "checkpoints": 3
+}

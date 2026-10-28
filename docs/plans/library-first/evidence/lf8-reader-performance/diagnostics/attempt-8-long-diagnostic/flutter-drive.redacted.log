@@ -1,0 +1,70 @@
+Resolving dependencies...
+Downloading packages...
+  android_file_picker 2.1.1 (2.1.2 available)
+  cross_file 0.3.5+5 (0.4.0 available)
+  crypto 3.0.7 (3.0.8 available)
+  cupertino_icons 1.0.9 (2.0.0 available)
+  file_picker 13.1.0 (13.3.0 available)
+  file_picker_darwin 2.3.2 (2.4.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.3 (2.4.4 available)
+  video_player_avfoundation 2.12.1 (2.12.3 available)
+  web 1.1.1 (1.1.2 available)
+Got dependencies!
+11 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleProfile'...                           24.8s
+✓ Built build/app/outputs/flutter-apk/app-profile.apk (49.1MB)
+Installing build/app/outputs/flutter-apk/app-profile.apk...        271ms
+I/js.video_viewer( 9652): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 9652): Skipped 34 frames!  The application may be doing too much work on its main thread.
+D/WindowLayoutComponentImpl( 9652): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@c57e37e, of which baseContext=android.app.ContextImpl@2d53bfb
+VMServiceFlutterDriver: Connecting to Flutter application at <redacted-local-vm-service>
+VMServiceFlutterDriver: Isolate found with number: 3672101556907939
+VMServiceFlutterDriver: Isolate 3672101556907939 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 9652): 00:00 +0: profile complex-photo cold opens, adjacent flips and 500 pages
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController( 9652): hide(ime(), fromIme=false)
+I/ImeTracker( 9652): io.github.shijijs.video_viewer:47fbc6db: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+I/js.video_viewer( 9652): AssetManager2(0xb4000070b4d1b078) locale list changing from [] to [en-US]
+W/WindowOnBackDispatcher( 9652): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@84d1ef9
+D/ProfileInstaller( 9652): Installing profile for io.github.shijijs.video_viewer
+W/WindowOnBackDispatcher( 9652): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@84d1ef9
+I/flutter ( 9652): READER_BENCH_TRIAL:4k:0:1758748
+W/WindowOnBackDispatcher( 9652): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@84d1ef9
+I/js.video_viewer( 9652): Background concurrent mark compact GC freed 2717KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 2366KB/4733KB, paused 62us,998us total 114.714ms
+W/WindowOnBackDispatcher( 9652): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@84d1ef9
+I/flutter ( 9652): READER_BENCH_TRIAL:8k:0:3620903
+I/flutter ( 9652): Expected: empty
+I/flutter ( 9652):   Actual: '连接超时，请检查服务后重试'
+I/flutter ( 9652): 
+I/flutter ( 9652): #0      fail (package:matcher/src/expect/expect.dart:187)
+I/flutter ( 9652): #1      _expect (package:matcher/src/expect/expect.dart:182)
+I/flutter ( 9652): #2      expect (package:matcher/src/expect/expect.dart:65)
+I/flutter ( 9652): #3      expect (package:flutter_test/src/widget_tester.dart:473)
+I/flutter ( 9652): #4      main.<anonymous closure>.sample (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:266)
+I/flutter ( 9652): <asynchronous suspension>
+I/flutter ( 9652): #5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_reader_performance_test.dart:409)
+I/flutter ( 9652): <asynchronous suspension>
+I/flutter ( 9652): #6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 9652): <asynchronous suspension>
+I/flutter ( 9652): #7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 9652): <asynchronous suspension>
+I/flutter ( 9652): #8      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 9652): <asynchronous suspension>
+I/flutter ( 9652): 05:48 +0: profile complex-photo cold opens, adjacent flips and 500 pages [E]
+I/flutter ( 9652):   Test failed. See exception logs above.
+I/flutter ( 9652):   The test description was: profile complex-photo cold opens, adjacent flips and 500 pages
+I/flutter ( 9652):   
+I/flutter ( 9652): 05:48 +0 -1: (tearDownAll)
+I/flutter ( 9652): 05:49 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: profile complex-photo cold opens, adjacent flips and 500 pages
+Instance of 'FlutterErrorDetails'
+end of failure 1
+
+
+

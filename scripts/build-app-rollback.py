@@ -9,6 +9,7 @@ import hashlib
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import tarfile
@@ -35,6 +36,29 @@ def patch_once(path, old, new):
     path.write_text(text.replace(old, new))
 
 
+def dependency_resolutions(lockfile):
+    """Compare pinned packages while allowing direct/transitive role changes.
+
+    SDK test tooling may become a direct dev dependency. Versions, source,
+    descriptions and checksums must still match the historical lock exactly.
+    """
+    return re.sub(rb"^    dependency: [^\r\n]+$", b"    dependency: <role>", lockfile, flags=re.M)
+
+
+def preview_versions(pubspec):
+    """Keep forward/rollback names and Android codes paired for this preview series."""
+    declarations = re.findall(rb"^version:[ \t]*([^\r\n]+)", pubspec, flags=re.M)
+    if len(declarations) != 1:
+        raise ValueError("Expected exactly one pubspec version declaration")
+    match = re.fullmatch(
+        rb"(0\.2\.0-preview\.([1-9][0-9]*))\+([1-9][0-9]*)", declarations[0].strip()
+    )
+    if not match:
+        raise ValueError("Expected version 0.2.0-preview.N+CODE in the frozen source")
+    forward, preview, code = (part.decode("ascii") for part in match.groups())
+    return forward, "0.1.4-rollback." + preview, int(code)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--ref", default="HEAD")
@@ -58,7 +82,12 @@ def main():
     )
     if changed.strip():
         parser.error("Commit app/build/rollback template changes before exporting")
-    assert b"version: 0.2.0-preview.2+8" in git("show", source + ":apps/mobile/pubspec.yaml")
+    try:
+        forward_version, rollback_version, version_code = preview_versions(
+            git("show", source + ":apps/mobile/pubspec.yaml")
+        )
+    except ValueError as error:
+        parser.error(str(error))
     output.mkdir(parents=True)
     exports = output / "exports"
     exports.mkdir()
@@ -117,15 +146,17 @@ def main():
     artifacts = ROOT / "tmp/releases"
     artifacts.mkdir(parents=True, exist_ok=True)
     targets = {
-        "rollback": artifacts / "video-viewer-0.1.4-rollback.2-arm64.apk",
-        "forward": artifacts / "video-viewer-0.2.0-preview.2-arm64.apk",
+        "rollback": artifacts / ("video-viewer-" + rollback_version + "-arm64.apk"),
+        "forward": artifacts / ("video-viewer-" + forward_version + "-arm64.apk"),
     }
     assert all(not path.exists() for path in targets.values()), "Preview target already exists"
     save()
     run("flutter-version", [*dev, "flutter", "--version", "--machine"], ROOT)
     old, old_hashes = export("rollback", LEGACY)
     current, current_hashes = export("forward", source)
-    assert (old / "pubspec.lock").read_bytes() == (current / "pubspec.lock").read_bytes()
+    assert dependency_resolutions((old / "pubspec.lock").read_bytes()) == dependency_resolutions(
+        (current / "pubspec.lock").read_bytes()
+    ), "Legacy and current dependency versions/sources/checksums differ"
     overlays = {}
     for name in [
         "lib/ui/preferences.dart",
@@ -188,12 +219,16 @@ def main():
         }
     result["rollback_overlays"] = overlays
     result["lockfile_sha256"] = sha(current / "pubspec.lock")
+    result["lockfile_sha256_by_package"] = {
+        "rollback": sha(old / "pubspec.lock"),
+        "forward": sha(current / "pubspec.lock"),
+    }
     save()
 
     built = {}
     for name, mobile, version, code in [
-        ("rollback", old, "0.1.4-rollback.2", 8),
-        ("forward", current, "0.2.0-preview.2", 8),
+        ("rollback", old, rollback_version, version_code),
+        ("forward", current, forward_version, version_code),
     ]:
         run(
             name + "-pub-get",
@@ -285,7 +320,7 @@ def main():
             if name == "rollback" and app_relative in overlays:
                 continue
             assert sha(mobile / app_relative) == expected, relative
-        assert sha(mobile / "pubspec.lock") == result["lockfile_sha256"]
+        assert sha(mobile / "pubspec.lock") == result["lockfile_sha256_by_package"][name]
         save()
     for name, apk in built.items():
         with apk.open("rb") as source_file, targets[name].open("xb") as target:
@@ -294,7 +329,14 @@ def main():
     result["complete"] = True
     save()
     print(
-        json.dumps({"complete": True, "rollback_code": 8, "forward_code": 8, "output": str(output)})
+        json.dumps(
+            {
+                "complete": True,
+                "rollback_code": version_code,
+                "forward_code": version_code,
+                "output": str(output),
+            }
+        )
     )
 
 
