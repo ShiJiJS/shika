@@ -20,6 +20,7 @@ Future<Map<String, dynamic>> host(
   String action, {
   String? name,
   bool? reduced,
+  Offset? point,
 }) async {
   final client = HttpClient();
   try {
@@ -29,7 +30,12 @@ Future<Map<String, dynamic>> host(
     request.headers.set('X-Fixture-Key', 'native-motion-owned-only');
     request.headers.contentType = ContentType.json;
     final bytes = utf8.encode(
-      jsonEncode({'action': action, 'name': name, 'reduced': reduced}),
+      jsonEncode({
+        'action': action,
+        'name': name,
+        'reduced': reduced,
+        if (point != null) 'point': [point.dx.round(), point.dy.round()],
+      }),
     );
     request.contentLength = bytes.length;
     request.add(bytes);
@@ -239,6 +245,12 @@ void main() {
       Future<void> tap(Finder finder) async {
         await until(() {
           if (finder.hitTestable().evaluate().length != 1) return false;
+          final route = ModalRoute.of(t.element(finder));
+          if (route != null &&
+              (!route.isCurrent ||
+                  route.animation?.status != AnimationStatus.completed)) {
+            return false;
+          }
           final widgets = [
             ...finder.evaluate().map((e) => e.widget),
             ...t.widgetList<Widget>(
@@ -259,7 +271,8 @@ void main() {
           );
         }, 'unique enabled actionable control');
         await t.pump();
-        await t.tap(finder.hitTestable());
+        final point = t.getCenter(finder.hitTestable());
+        await host('tap', point: point * t.view.devicePixelRatio);
         await t.pump();
       }
 
@@ -267,17 +280,24 @@ void main() {
           t.widget<PlayerSurface>(find.byType(PlayerSurface).last);
       Future<void> tapCanvas() async {
         final finder = find.byKey(const Key('video-gesture-surface')).last;
-        await until(
-          () => finder.evaluate().length == 1 && t.getSize(finder).width > 0,
-          'visible video gesture surface',
-        );
+        await until(() {
+          if (finder.evaluate().isEmpty || t.getSize(finder).width <= 0) {
+            return false;
+          }
+          final route = ModalRoute.of(t.element(finder));
+          return route == null ||
+              (route.isCurrent &&
+                  route.animation?.status == AnimationStatus.completed);
+        }, 'visible video gesture surface');
         // The centered inline-play overlay intercepts the center while paused,
         // and can remain until the next rendered frame after play completes.
         // Tap a real exposed part of the video, clear of all control overlays.
         final rect = t.getRect(finder);
-        await t.tapAt(
-          Offset(rect.left + rect.width * .25, rect.top + rect.height * .35),
+        final point = Offset(
+          rect.left + rect.width * .25,
+          rect.top + rect.height * .35,
         );
+        await host('tap', point: point * t.view.devicePixelRatio);
         await t.pump();
       }
 
@@ -468,7 +488,12 @@ void main() {
           await until(
             () =>
                 t.view.physicalSize.width > t.view.physicalSize.height &&
-                find.byKey(const Key('fullscreen-exit')).evaluate().isNotEmpty,
+                find.byType(PlayerSurface).evaluate().isNotEmpty &&
+                surface().fullscreen &&
+                ModalRoute.of(t.element(find.byType(PlayerSurface).last))!
+                        .animation!
+                        .status ==
+                    AnimationStatus.completed,
             'actual fullscreen orientation',
           );
           await playing(false);
