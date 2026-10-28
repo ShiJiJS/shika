@@ -554,9 +554,10 @@ def test_0005_pack_management_data_survives_directory_evidence_upgrade(tmp_path)
                 == before[name]
             )
         assert connection.execute("SELECT directory_signature FROM packs").fetchone() == ("[]",)
-        assert connection.execute(
-            "SELECT content_version FROM pack_progress"
-        ).fetchone() == connection.execute("SELECT content_version FROM packs").fetchone()
+        assert (
+            connection.execute("SELECT content_version FROM pack_progress").fetchone()
+            == connection.execute("SELECT content_version FROM packs").fetchone()
+        )
         assert connection.execute("SELECT recovery_reason FROM pack_progress").fetchone() == (None,)
         assert connection.execute("SELECT revision FROM pack_preferences").fetchone() == (0,)
         assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0014",)

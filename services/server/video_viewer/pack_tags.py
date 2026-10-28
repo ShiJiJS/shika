@@ -19,7 +19,11 @@ class PackTags:
     def resolve(self, tag_ids):
         requested = set(tag_ids)
         with self.db.read() as session:
-            tags = list(session.scalars(select(PackTag).where(PackTag.id.in_(requested)).order_by(PackTag.id)))
+            tags = list(
+                session.scalars(
+                    select(PackTag).where(PackTag.id.in_(requested)).order_by(PackTag.id)
+                )
+            )
             return {
                 "kind": "pack",
                 "items": [self.json(tag) for tag in tags],

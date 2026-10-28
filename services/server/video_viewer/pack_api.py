@@ -110,8 +110,12 @@ def router(auth_required):
         source: Literal["library", "tags", "recent"] = "library",
     ):
         return request.app.state.packs.selection(
-            directory_id=directory_id, search=search, tag_ids=tag_ids or (),
-            read_state=read_state, sort=sort, source=source,
+            directory_id=directory_id,
+            search=search,
+            tag_ids=tag_ids or (),
+            read_state=read_state,
+            sort=sort,
+            source=source,
         )
 
     @api.get("/packs/{pack_id}", response_model=PackSummary)

@@ -130,17 +130,22 @@ def router(auth_required):
     @api.post("/pack-trash/permanent", status_code=202)
     def permanent(body: Permanent, request: Request):
         state = request.app.state
-        return state.pack_files.task(state.pack_purge.submit(body.plan_id, body.digest, body.request_id))
+        return state.pack_files.task(
+            state.pack_purge.submit(body.plan_id, body.digest, body.request_id)
+        )
 
     @api.get("/pack-operations/{identity}/pages")
     def purge_pages(
-        identity: str, request: Request,
+        identity: str,
+        request: Request,
         offset: Annotated[int, Query(ge=0)] = 0,
         limit: Annotated[int, Query(ge=1, le=200)] = 100,
         kind: Literal["all", "image", "directory"] = "all",
         outcome: Literal["all", "unfinished"] = "all",
     ):
-        return request.app.state.pack_purge.pages(identity, offset, limit, kind=kind, outcome=outcome)
+        return request.app.state.pack_purge.pages(
+            identity, offset, limit, kind=kind, outcome=outcome
+        )
 
     @api.post("/pack-operations/{identity}/undo", status_code=202)
     def undo(identity: str, body: Input, request: Request):
