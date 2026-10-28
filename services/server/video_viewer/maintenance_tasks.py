@@ -67,6 +67,45 @@ class MaintenanceTasks:
             .scalar_subquery()
         )
         total, processed, succeeded = (counter(key) for key in ("total", "processed", "succeeded"))
+
+        # Older video final receipts omitted total/processed, including receipts
+        # written before this reader existed. Recover only that recognizable
+        # terminal format, using the durable per-file rows; never rewrite the
+        # original result or trust missing/malformed counters on other tasks.
+        def step_count(*conditions):
+            return (
+                select(func.count())
+                .select_from(FileStep)
+                .where(FileStep.operation_id == Task.id, *conditions)
+                .correlate(Task)
+                .scalar_subquery()
+            )
+
+        legacy_total = step_count()
+        legacy_succeeded = step_count(FileStep.outcome == "succeeded")
+        legacy_failed = step_count(FileStep.outcome.in_(("failed", "conflict")))
+        legacy_complete = func.coalesce(
+            and_(
+                FileOperation.id.is_not(None),
+                Task.status.in_(("completed", "failed")),
+                Task.phase == "completed",
+                func.json_type(result, "$.total").is_(None),
+                func.json_type(result, "$.processed").is_(None),
+                func.json_type(result, "$.operation_id") == "text",
+                result["operation_id"].as_string() == Task.id,
+                func.json_type(result, "$.items") == "array",
+                func.json_array_length(result, "$.items") == legacy_total,
+                legacy_total > 0,
+                succeeded >= 0,
+                failed >= 0,
+                succeeded == legacy_succeeded,
+                failed == legacy_failed,
+                legacy_succeeded + legacy_failed == legacy_total,
+            ),
+            False,
+        )
+        total = case((legacy_complete, legacy_total), else_=total)
+        processed = case((legacy_complete, legacy_total), else_=processed)
         file_task = or_(
             FileOperation.id.is_not(None),
             Task.kind.in_(

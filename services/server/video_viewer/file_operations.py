@@ -547,6 +547,8 @@ class FileOperations:
             task.result = {
                 "operation_id": operation_id,
                 "items": items,
+                "total": len(steps),
+                "processed": sum(step.outcome != "pending" for step in steps),
                 "succeeded": successes,
                 "failed": len(steps) - successes,
                 "partial": 0 < successes < len(steps),

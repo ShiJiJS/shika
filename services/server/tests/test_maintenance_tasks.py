@@ -2,10 +2,11 @@
 
 import json
 
+import pytest
 from sqlalchemy import event, func, select
 from sqlalchemy.orm import Session
 
-from video_viewer.models import FileOperation, PackFileOperation, Task
+from video_viewer.models import FileOperation, FileStep, PackFileOperation, Task
 
 from .test_pack_operations import command, wait
 from .test_pack_purge_execution import execute, plan
@@ -238,3 +239,143 @@ def test_failed_logical_pack_items_are_paged_independently(library):
     ).json()
     assert page["total"] == 1 and page["items"][0]["outcome"] == "failed"
     assert client.get(f"/api/v1/maintenance-tasks/{repeated['id']}").json()["state"] == "failed"
+
+
+def test_real_video_operation_final_result_and_summary_keep_completed_counts(library, samples):
+    from .conftest import put, scan
+    from .test_file_operations import operation, trash
+
+    client, media = library
+    put(samples / "h264.mov", media / "kept.mov")
+    scan(client)
+    video = client.get("/api/v1/videos").json()["items"][0]
+    deleted, _ = trash(client, [video["id"]])
+    row = client.get("/api/v1/trash").json()["items"][0]
+    restored, _ = operation(client, "/api/v1/trash/restore", {"trash_ids": [row["id"]]})
+    for task in [deleted, restored]:
+        assert task["result"]["total"] == task["result"]["processed"] == 1
+        summary = client.get(f"/api/v1/maintenance-tasks/{task['id']}").json()
+        assert summary["state"] == "completed"
+        assert summary["total"] == summary["processed"] == summary["succeeded"] == 1
+        assert summary["failed"] == 0
+    attention = client.get(
+        "/api/v1/maintenance-tasks", params={"family": "video", "state": "attention"}
+    ).json()
+    assert attention["total"] == 0
+    partial, _ = trash(client, [video["id"], "missing-video"])
+    failed, _ = trash(client, ["missing-only"])
+    for task, state, total in [(partial, "partial", 2), (failed, "failed", 1)]:
+        assert task["result"]["total"] == task["result"]["processed"] == total
+        summary = client.get(f"/api/v1/maintenance-tasks/{task['id']}").json()
+        assert summary["state"] == state
+    attention = client.get(
+        "/api/v1/maintenance-tasks", params={"family": "video", "state": "attention"}
+    ).json()
+    assert {r["id"] for r in attention["items"]} == {partial["id"], failed["id"]}
+    assert (media / "kept.mov").exists()
+
+
+def test_legacy_video_final_result_uses_durable_members_without_rewriting_receipt(library):
+    client, _ = library
+    identity = "old-completed-video"
+    result = {
+        "operation_id": identity,
+        "items": [{"requested_id": "old-video", "outcome": "succeeded"}],
+        "succeeded": 1,
+        "failed": 0,
+        "partial": False,
+        "playback_restored": False,
+    }
+    seed(client, identity, "trash", result=result)
+    with client.app.state.db.write() as session:
+        session.get(Task, identity).phase = "completed"
+        session.add(
+            FileStep(
+                operation_id=identity,
+                requested_id="old-video",
+                original_path="/media/old-video.mp4",
+                phase="committed",
+                outcome="succeeded",
+            )
+        )
+    for path in [
+        "/api/v1/maintenance-tasks",
+        f"/api/v1/maintenance-tasks/{identity}",
+    ]:
+        raw = client.get(path).json()
+        summary = raw if "state" in raw else next(r for r in raw["items"] if r["id"] == identity)
+        assert summary["state"] == "completed"
+        assert summary["total"] == summary["processed"] == summary["succeeded"] == 1
+    assert (
+        client.get(
+            "/api/v1/maintenance-tasks", params={"family": "video", "state": "completed"}
+        ).json()["total"]
+        == 1
+    )
+    assert (
+        client.get(
+            "/api/v1/maintenance-tasks", params={"family": "video", "state": "attention"}
+        ).json()["total"]
+        == 0
+    )
+    with client.app.state.db.read() as session:
+        assert session.get(Task, identity).result == result
+        assert session.get(Task, identity).status == "completed"
+
+
+@pytest.mark.parametrize(
+    "outcomes,changes,status,expected",
+    [
+        (
+            ["succeeded", "failed"],
+            {"succeeded": 1, "failed": 1, "partial": True},
+            "completed",
+            "partial",
+        ),
+        (["failed"], {"succeeded": 0, "failed": 1}, "failed", "failed"),
+        (["conflict"], {"succeeded": 0, "failed": 1}, "failed", "failed"),
+        (["pending"], {}, "completed", "attention"),
+        (["unknown"], {"succeeded": 0, "failed": 1}, "failed", "attention"),
+        ([], {"succeeded": 0}, "completed", "attention"),
+        (["succeeded"], {"succeeded": True}, "completed", "attention"),
+        (["succeeded"], {"succeeded": 0, "failed": 1}, "completed", "attention"),
+        (["succeeded"], {"operation_id": "different"}, "completed", "attention"),
+        (["succeeded"], {"total": True, "processed": True}, "completed", "attention"),
+        (["succeeded"], {"total": 1}, "completed", "attention"),
+        (["succeeded"], {"needs_attention": True}, "completed", "attention"),
+        (["pending"], {}, "running", "processing"),
+    ],
+)
+def test_legacy_video_summary_only_accepts_coherent_terminal_evidence(
+    library, outcomes, changes, status, expected
+):
+    client, _ = library
+    identity = "legacy-guard"
+    result = {
+        "operation_id": identity,
+        "items": [{"outcome": value} for value in outcomes],
+        "succeeded": 1,
+        "failed": 0,
+        "partial": False,
+        **changes,
+    }
+    seed(client, identity, "trash", status, result=result)
+    with client.app.state.db.write() as session:
+        session.get(Task, identity).phase = (
+            "completed" if status != "running" else "processing_files"
+        )
+        for index, outcome in enumerate(outcomes):
+            session.add(
+                FileStep(
+                    operation_id=identity,
+                    requested_id=f"old-{index}",
+                    phase="committed" if outcome == "succeeded" else "prepared",
+                    outcome=outcome,
+                )
+            )
+    summary = client.get(f"/api/v1/maintenance-tasks/{identity}").json()
+    assert summary["state"] == expected
+    if expected in {"failed", "partial"}:
+        assert summary["total"] == summary["processed"] == len(outcomes)
+    with client.app.state.db.read() as session:
+        assert session.get(Task, identity).result == result
