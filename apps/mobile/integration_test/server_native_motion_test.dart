@@ -120,6 +120,14 @@ class MotionProbe {
   }
 }
 
+class NativeMotionLifecycle with WidgetsBindingObserver {
+  final events = <Map<String, dynamic>>[];
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    events.add({'time': DateTime.now().toIso8601String(), 'state': state.name});
+  }
+}
+
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized()
     ..framePolicy = LiveTestWidgetsFlutterBindingFramePolicy.benchmarkLive;
@@ -140,7 +148,29 @@ void main() {
         'audio_playback_acceptance': false,
         'cases': cases,
       };
+      final lifecycle = NativeMotionLifecycle();
+      WidgetsBinding.instance.addObserver(lifecycle);
+      result['lifecycle'] = lifecycle.events;
       binding.reportData = {'native_motion': result};
+      Map<String, dynamic> nativeState() => {
+        'lifecycle': WidgetsBinding.instance.lifecycleState?.name,
+        'surfaces': t
+            .widgetList<PlayerSurface>(find.byType(PlayerSurface))
+            .map(
+              (w) => {
+                'controller': identityHashCode(w.controller),
+                'initialized': w.controller.value.isInitialized,
+                'playing': w.controller.value.isPlaying,
+                'error': w.controller.value.errorDescription,
+                'fullscreen': w.fullscreen,
+              },
+            )
+            .toList(),
+        'texts': t
+            .widgetList<Text>(find.byType(Text))
+            .map((w) => w.data)
+            .toList(),
+      };
       MotionProbe? active;
       var observing = true;
       void frame(Duration _) {
@@ -152,6 +182,11 @@ void main() {
       WidgetsBinding.instance.addPostFrameCallback(frame);
       VideoPlayerController? isolated;
       addTearDown(() async {
+        if (result['complete'] != true) {
+          result['terminal_state'] = nativeState();
+          await host('failure', name: 'terminal');
+        }
+        WidgetsBinding.instance.removeObserver(lifecycle);
         observing = false;
         active = null;
         await t.pumpWidget(const SizedBox());
@@ -246,18 +281,22 @@ void main() {
         await t.pump();
       }
 
-      bool visible() =>
-          t
-              .widget<AnimatedOpacity>(
-                find
-                    .ancestor(
-                      of: find.byKey(const Key('playback-controls')).last,
-                      matching: find.byType(AnimatedOpacity),
-                    )
-                    .first,
-              )
-              .opacity ==
-          1;
+      bool visible() {
+        final controls = find.byKey(const Key('playback-controls'));
+        if (controls.evaluate().isEmpty) return false;
+        return t
+                .widget<AnimatedOpacity>(
+                  find
+                      .ancestor(
+                        of: controls.last,
+                        matching: find.byType(AnimatedOpacity),
+                      )
+                      .first,
+                )
+                .opacity ==
+            1;
+      }
+
       Future<void> playing(bool expected) => until(() {
         if (find.byType(PlayerSurface).evaluate().isEmpty) return false;
         final p = surface().controller.value;
@@ -322,6 +361,18 @@ void main() {
         expect(visible(), isTrue);
         final controller = surface().controller;
         await host('begin', name: name);
+        result['after_host_begin'] = {'name': name, ...nativeState()};
+        await until(
+          () =>
+              find.byKey(const Key('playback-controls')).evaluate().isNotEmpty,
+          'production controls mounted after native recording setup',
+        );
+        expect(
+          identical(controller, surface().controller),
+          isTrue,
+          reason:
+              'Native recording setup must not replace the video controller',
+        );
         if (!visible()) await tapCanvas();
         final resting = probe(exit: exit, footer: footer);
         await until(
