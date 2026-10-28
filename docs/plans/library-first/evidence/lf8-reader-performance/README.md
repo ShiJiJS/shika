@@ -13,4 +13,6 @@
 
 日志副本仅去掉临时localhost VM-service地址与ADB公开身份，原日志SHA另记；其它失败内容保留。前两次常规dumpsys meminfo可能触发进程GC，后续改为仅在自有AVD root读取/proc/PID/smaps_rollup与status，取得内核PSS/RSS和VmHWM；不将不同内存定义拼成一条峰值曲线。完整root目录flutter analyze还扫到了历史证据Dart，已改用实际apps/mobile；该包完整analyze及新增两文件检查通过。
 
-attempt-5以相同a7525495代码和同一数据继续，单独记录SwiftShader配置，不与SWANGLE失败混成稳定性成功。30次4K/8K各首图、相邻翻页、500页连续拖动、三轮同版与普通release入口仍待完成。目标手机/NAS、SMB实际时延/CPU/IO、#78/#89和整体终验保持开放。原型1cbf605独立未改。
+attempt-5以相同a7525495代码和数据改为SwiftShader。QEMU90728保持存活，但第3次4K试验返回前等待“已确认保存”超时，未获完整状态，尚未归因为产品或驱动。attempt-6使用5198643e补齐失败状态采集，以同一QEMU/同一数据继续；不重启存活模拟器，不把该轮拼成稳定性成功。30次4K/8K各首图、相邻翻页、500页连续拖动、三轮同版与普通release入口仍待完成。目标手机/NAS、SMB实际时延/CPU/IO、#78/#89和整体终验保持开放。原型1cbf605独立未改。
+
+当前完整重跑已完成4K的30次首图及相邻翻页，正继续8K与500页；尚未收齐全部结果，不发布分位数或通过结论。
