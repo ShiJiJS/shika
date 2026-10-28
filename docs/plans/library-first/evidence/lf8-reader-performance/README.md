@@ -36,6 +36,8 @@ attempt-11（58b071bf）实际资源采集ID匹配，终态报告先落盘、内
 
 构建兼容修复：显式声明既有SDK flutter_driver后，当前锁文件与旧回退源码只在direct dev/transitive角色上不同，原构建器的整文件相等断言会拒绝导出。build-app-rollback.py现在只允许该角色字段不同，版本/来源/说明/校验和仍须与旧版完全一致，并各自保留原锁文件SHA；真实旧/新锁差异获准，版本/来源/校验和三类篡改均被拒绝，记录见packaging-lock-check.json，Ruff通过。未运行新一轮APK构建，也未覆盖已有预览包。
 
+后续版本准备：同一打包器现在从冻结源码读取preview.N+CODE，自动配对rollback.N及同code，目标文件名也由版本决定；拒绝覆盖已有APK的检查保留。packaging-version-check.json记录现有preview.2/code8、下一版preview.3/code9及四类非法声明拒绝，Python3.9语法与git diff检查通过；这不是新APK构建/安装证明，未修改App版本或code8产物，Ruff/构建待测量结束后执行。
+
 attempt-12（311d2c86）诊断通过：1205次真实拖动覆盖索引0–499共500张，无漏页，同一范围、本包末尾未自动切换，横纵切换保留第500页，10个前台检查点已核对PNG SHA。单一App PID16437，实际解码像素峰值2053350、provider最多6、估算49280400字节、元数据最多120；内核采样PSS峰值259.03125MiB、RSS峰值358.21094MiB、VmHWM378.73047MiB，含profile/采集开销，未加memtrack。211份环境采集对应正确容器/QEMU，未观察到本轮崩溃。长包实际拖动1142.11秒，整轮1295.96秒；本机软件GPU数据不当作手机/NAS性能。
 
 该轮每类只做一次小包准备，final_matrix=false；正式汇总器已确认拒绝它作为最终30次结果，不给n=1计算p95。本轮取消host SQLite查询及SMB挂载，属于隔离因素后的成功，不宣称此前存储挂起根因已证实或#78/#89已修好。完整数据、内存/环境原始值、图像、请求阶段及明确诊断摘要均在diagnostics/attempt-12-long-diagnostic。

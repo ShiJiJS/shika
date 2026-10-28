@@ -1,0 +1,21 @@
+{
+  "script_sha256": "07581384f2928853d8ced3b641451f47db6a0ca8072503ebd78608f80436cb99",
+  "current": [
+    "0.2.0-preview.2",
+    "0.1.4-rollback.2",
+    8
+  ],
+  "next_preview": [
+    "0.2.0-preview.3",
+    "0.1.4-rollback.3",
+    9
+  ],
+  "invalid_declarations_rejected": 4,
+  "existing_apks": {
+    "tmp/releases/video-viewer-0.1.4-mac-arm64.apk": "15baad35244ea94cee9f6fff271df4f4469b0e02224032f3b1c1c8e1ef6bd820",
+    "tmp/releases/video-viewer-0.2.0-preview.2-arm64.apk": "2e3d7df81c52a79a3d216cff8c8a80d2df7de6994937eafbdc219818b18a171b",
+    "tmp/releases/video-viewer-0.1.4-rollback.2-arm64.apk": "ec884743b5aa0c8c71bf534940a0c4b107580ee38e9c1e2d3f97286115cfa5ee",
+    "tmp/releases/video-viewer-0.2.0-preview.1-arm64.apk": "d87e98c70d4999b50165ce854f2e4f7156d25cc378f0431ed885f061c1cb9f87"
+  },
+  "apk_build_run": false
+}
