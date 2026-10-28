@@ -136,6 +136,7 @@ class NativeMotionLifecycle with WidgetsBindingObserver {
 
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized()
+    ..shouldPropagateDevicePointerEvents = true
     ..framePolicy = LiveTestWidgetsFlutterBindingFramePolicy.benchmarkLive;
   testWidgets(
     'real Android reduce animations reaches video controls without injection',
