@@ -68,7 +68,13 @@ void main() {
         'frame_timings_us': frames,
       };
       binding.reportData = {'reader_benchmark': result};
-      PackReaderPageState reader() => t.state(find.byType(PackReaderPage));
+      PackReaderPageState? observedReader;
+      PackReaderPageState reader() {
+        final value = t.state<PackReaderPageState>(find.byType(PackReaderPage));
+        observedReader = value;
+        return value;
+      }
+
       bool present() => find.byType(PackReaderPage).evaluate().isNotEmpty;
       void observe(List<FrameTiming> values) {
         for (final v in values) {
@@ -86,8 +92,10 @@ void main() {
         }.entries) {
           peaks[e.key] = max(peaks[e.key]!, e.value);
         }
-        if (present()) {
-          final r = reader();
+        // Timings callbacks run outside the tester's guarded async scope.
+        // Use a state captured by the awaited driver, never t.state/find here.
+        final r = observedReader;
+        if (r != null && r.mounted) {
           peaks['providers'] = max(peaks['providers']!, r.images.length);
           peaks['estimated_bytes'] = max(
             peaks['estimated_bytes']!,
