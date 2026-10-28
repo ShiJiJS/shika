@@ -1,0 +1,116 @@
+import 'dart:convert';
+
+import 'backup_work_store.dart';
+import 'credentials.dart';
+import 'file_command_store.dart';
+import 'models.dart';
+import 'scoped_journal.dart';
+
+/// Adapts the old single-scope API without replacing newer journal books.
+class RollbackJournal {
+  RollbackJournal({
+    required this.credentials,
+    required Future<String?> Function() read,
+    required Future<void> Function(String) write,
+    required this.useCurrentGeneration,
+    required this.knownFields,
+  }) : book = ScopedJournal(readText: read, writeText: write);
+
+  final CredentialStore credentials;
+  final ScopedJournal book;
+  final bool useCurrentGeneration;
+  final Set<String> knownFields;
+  ConnectionCredentials? _bound;
+  String? _legacy, _stored;
+
+  Future<String?> read() async {
+    final session = await credentials.read();
+    if (session == null) {
+      _bound = null;
+      _legacy = _stored = null;
+      return null;
+    }
+    final base = [session.endpoint.toString(), session.serverId];
+    final generation = session.managementEpoch ?? session.localGeneration;
+    final legacy = jsonEncode(base);
+    final stored = jsonEncode([
+      ...base,
+      if (useCurrentGeneration && generation != null) generation,
+    ]);
+    final raw = await book.read(stored);
+    _bound = session;
+    _legacy = legacy;
+    _stored = stored;
+    if (raw == null) return null;
+    return jsonEncode({
+      ...jsonDecode(raw) as Map<String, dynamic>,
+      'scope': legacy,
+    });
+  }
+
+  Future<void> write(String text) async {
+    final bound = _bound, legacy = _legacy, stored = _stored;
+    final current = await credentials.read();
+    if (bound == null ||
+        current == null ||
+        legacy == null ||
+        stored == null ||
+        current.endpoint != bound.endpoint ||
+        current.serverId != bound.serverId ||
+        current.token != bound.token ||
+        current.managementEpoch != bound.managementEpoch ||
+        current.localGeneration != bound.localGeneration) {
+      throw const LibraryFailure('连接已变化，未覆盖原操作记录');
+    }
+    final raw = Map<String, dynamic>.from(jsonDecode(text) as Map);
+    if (raw['scope'] != legacy) {
+      throw const LibraryFailure('操作记录所属连接不一致，未覆盖原记录');
+    }
+    final previous = await book.read(stored);
+    final previousMap = previous == null
+        ? <String, dynamic>{}
+        : Map<String, dynamic>.from(jsonDecode(previous) as Map);
+    if (!useCurrentGeneration &&
+        knownFields.any((key) {
+          final value = previousMap[key];
+          return value is Map && value['version'] == 2;
+        })) {
+      throw const LibraryFailure('新版备份任务已保留，请升回新版核对后继续');
+    }
+    final opaque = previous == null ? <String, dynamic>{} : previousMap
+      ..removeWhere((key, _) => key == 'scope' || knownFields.contains(key));
+    await book.write(stored, jsonEncode({...raw, ...opaque, 'scope': stored}));
+  }
+}
+
+class RollbackFileCommands implements FileCommandStore {
+  RollbackFileCommands(FileCommandStore raw, CredentialStore credentials)
+    : journal = RollbackJournal(
+        credentials: credentials,
+        read: raw.read,
+        write: raw.write,
+        useCurrentGeneration: true,
+        knownFields: const {'pending', 'lastDelete'},
+      );
+  final RollbackJournal journal;
+  @override
+  Future<String?> read() => journal.read();
+  @override
+  Future<void> write(String value) => journal.write(value);
+}
+
+class RollbackBackupWork implements BackupWorkStore {
+  RollbackBackupWork(BackupWorkStore raw, CredentialStore credentials)
+    : journal = RollbackJournal(
+        credentials: credentials,
+        read: raw.read,
+        write: raw.write,
+        useCurrentGeneration: false,
+        knownFields: const {'export', 'inspect', 'restore'},
+      );
+  final RollbackJournal journal;
+  @override
+  Future<String?> read() => journal.read();
+  @override
+  Future<void> write(String value) => journal.write(value);
+}

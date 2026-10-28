@@ -1,0 +1,210 @@
+import 'dart:convert';
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:video_viewer/library/backup_work_store.dart';
+import 'package:video_viewer/library/credentials.dart';
+import 'package:video_viewer/library/file_command_store.dart';
+import 'package:video_viewer/library/models.dart';
+import 'package:video_viewer/library/rollback_storage.dart';
+
+ConnectionCredentials session({String token = 'kept-token', String? epoch}) =>
+    ConnectionCredentials(
+      endpoint: Uri.parse('http://example.test:8772'),
+      token: token,
+      serverId: 'same-server',
+      expiresAt: DateTime.utc(2040),
+      managementEpoch: epoch,
+    );
+
+void main() {
+  test('old video API shares the current generation and retains opaque and other books', () async {
+    final credentials = MemoryCredentialStore();
+    await credentials.save(session(epoch: 'a' * 32));
+    final legacy = jsonEncode(['http://example.test:8772', 'same-server']);
+    final active = jsonEncode([
+      'http://example.test:8772',
+      'same-server',
+      'a' * 32,
+    ]);
+    final other = jsonEncode([
+      'http://other.test:8772',
+      'other-server',
+      'b' * 32,
+    ]);
+    final raw = MemoryFileCommandStore();
+    final future = {
+      'new-format': [1, 2, 3],
+    };
+    raw.value = jsonEncode({
+      'version': 2,
+      'scopes': {
+        active: {
+          'scope': active,
+          'future': future,
+          'lastDelete': {'id': 'previous'},
+        },
+        other: {
+          'scope': other,
+          'pending': {'key': 'unrelated'},
+        },
+      },
+    });
+    final before = raw.value;
+    final store = RollbackFileCommands(raw, credentials);
+    final view = jsonDecode((await store.read())!) as Map;
+    expect(view['scope'], legacy);
+    expect(view['lastDelete'], {'id': 'previous'});
+    expect(raw.value, before);
+    await store.write(
+      jsonEncode({
+        'scope': legacy,
+        'future': 'old-client-cannot-replace',
+        'lastDelete': {'id': 'latest'},
+      }),
+    );
+    final scopes = (jsonDecode(raw.value!) as Map)['scopes'] as Map;
+    expect((scopes[active] as Map)['future'], future);
+    expect((scopes[active] as Map)['lastDelete'], {'id': 'latest'});
+    expect(scopes[other], {
+      'scope': other,
+      'pending': {'key': 'unrelated'},
+    });
+    expect(scopes.length, 2);
+  });
+
+  test('old v1 backup work cannot replace a modern v2 command', () async {
+    final credentials = MemoryCredentialStore();
+    await credentials.save(session(epoch: 'a' * 32));
+    final legacy = jsonEncode(['http://example.test:8772', 'same-server']);
+    final active = jsonEncode([
+      'http://example.test:8772',
+      'same-server',
+      'a' * 32,
+    ]);
+    final raw = MemoryBackupWorkStore();
+    final modern = {
+      'scope': active,
+      'inspect': {'version': 2, 'key': 'keep-v2', 'task': 'modern-task'},
+    };
+    raw.value = jsonEncode({
+      'version': 2,
+      'scopes': {active: modern},
+    });
+    final store = RollbackBackupWork(raw, credentials);
+    expect(await store.read(), isNull);
+    await store.write(
+      jsonEncode({
+        'scope': legacy,
+        'export': {'key': 'old-v1'},
+      }),
+    );
+    final scopes = (jsonDecode(raw.value!) as Map)['scopes'] as Map;
+    expect(scopes[active], modern);
+    expect(scopes[legacy], {
+      'scope': legacy,
+      'export': {'key': 'old-v1'},
+    });
+  });
+
+  test('changed credentials and mismatched payload cannot overwrite an existing book', () async {
+    final credentials = MemoryCredentialStore();
+    await credentials.save(session(epoch: 'a' * 32));
+    final legacy = jsonEncode(['http://example.test:8772', 'same-server']);
+    final raw = MemoryFileCommandStore();
+    final store = RollbackFileCommands(raw, credentials);
+    await store.read();
+    await expectLater(
+      store.write(jsonEncode({'scope': 'wrong'})),
+      throwsA(isA<LibraryFailure>()),
+    );
+    expect(raw.value, isNull);
+    await credentials.save(session(token: 'different-token', epoch: 'a' * 32));
+    await expectLater(
+      store.write(jsonEncode({'scope': legacy})),
+      throwsA(isA<LibraryFailure>()),
+    );
+    expect(raw.value, isNull);
+    await store.read();
+    await credentials.save(session(token: 'different-token', epoch: 'b' * 32));
+    await expectLater(
+      store.write(jsonEncode({'scope': legacy})),
+      throwsA(isA<LibraryFailure>()),
+    );
+    expect(raw.value, isNull);
+  });
+
+  test(
+    'invalid newer journal remains unchanged instead of being replaced',
+    () async {
+      final credentials = MemoryCredentialStore();
+      await credentials.save(session(epoch: 'a' * 32));
+      final raw = MemoryFileCommandStore()
+        ..value = '{"version":2,"scopes":{"bad":{"scope":"different"}}}';
+      final before = raw.value;
+      final store = RollbackFileCommands(raw, credentials);
+      await expectLater(store.read(), throwsA(isA<LibraryFailure>()));
+      expect(raw.value, before);
+    },
+  );
+
+  test(
+    'v2 work found in a legacy slot is preserved and blocks old writes',
+    () async {
+      final credentials = MemoryCredentialStore();
+      await credentials.save(session());
+      final legacy = jsonEncode(['http://example.test:8772', 'same-server']);
+      final raw = MemoryBackupWorkStore()
+        ..value = jsonEncode({
+          'scope': legacy,
+          'restore': {'version': 2, 'key': 'keep-original'},
+        });
+      final before = raw.value;
+      final store = RollbackBackupWork(raw, credentials);
+      await store.read();
+      await expectLater(
+        store.write(jsonEncode({'scope': legacy})),
+        throwsA(isA<LibraryFailure>()),
+      );
+      expect(raw.value, before);
+    },
+  );
+
+  test('local generations survive the same adapter and legacy credentials remain v1 compatible', () async {
+    final credentials = MemoryCredentialStore();
+    await credentials.save(
+      ConnectionCredentials(
+        endpoint: Uri.parse('http://example.test:8772'),
+        token: 'kept-token',
+        serverId: 'same-server',
+        expiresAt: DateTime.utc(2040),
+        localGeneration: 'c' * 32,
+      ),
+    );
+    final legacy = jsonEncode(['http://example.test:8772', 'same-server']);
+    final local = jsonEncode([
+      'http://example.test:8772',
+      'same-server',
+      'c' * 32,
+    ]);
+    final raw = MemoryFileCommandStore();
+    final store = RollbackFileCommands(raw, credentials);
+    await store.read();
+    await store.write(
+      jsonEncode({
+        'scope': legacy,
+        'lastDelete': {'id': 'local-result'},
+      }),
+    );
+    expect(((jsonDecode(raw.value!) as Map)['scopes'] as Map)[local], {
+      'scope': local,
+      'lastDelete': {'id': 'local-result'},
+    });
+    await credentials.save(session());
+    await store.read();
+    await store.write(jsonEncode({'scope': legacy}));
+    expect(((jsonDecode(raw.value!) as Map)['scopes'] as Map)[local], {
+      'scope': local,
+      'lastDelete': {'id': 'local-result'},
+    });
+  });
+}
