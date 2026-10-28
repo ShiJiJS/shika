@@ -1,0 +1,16 @@
+{
+  "explicit_test_fixture": true,
+  "reason": "Exercise nonempty newer preference fields while old UI saves theme and preload; no credentials or app code changed",
+  "before": {
+    "dark": true,
+    "preloadAdjacent": false
+  },
+  "after": {
+    "dark": true,
+    "preloadAdjacent": false,
+    "videoOrder": "sequential",
+    "defaultMigrations": [
+      "unrelated-server-public-fixture"
+    ]
+  }
+}

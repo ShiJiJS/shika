@@ -1,0 +1,494 @@
+{
+  "baseline6": {
+    "trace_offset": 23,
+    "pid": "2465",
+    "kind": "new",
+    "end_capture_mtime": 1793182330.1865366,
+    "requests": [
+      {
+        "time": 1793182324.0164177,
+        "method": "GET",
+        "path": "/api/v1/info",
+        "status": 200
+      },
+      {
+        "time": 1793182324.23196,
+        "method": "GET",
+        "path": "/api/v1/roots",
+        "status": 200
+      },
+      {
+        "time": 1793182324.3911517,
+        "method": "GET",
+        "path": "/api/v1/library-state",
+        "status": 200
+      },
+      {
+        "time": 1793182324.4339037,
+        "method": "GET",
+        "path": "/api/v1/trash",
+        "status": 200
+      },
+      {
+        "time": 1793182324.4484499,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "status": 200
+      },
+      {
+        "time": 1793182324.4583826,
+        "method": "GET",
+        "path": "/api/v1/playback",
+        "status": 200
+      },
+      {
+        "time": 1793182324.4995542,
+        "method": "GET",
+        "path": "/api/v1/tags",
+        "status": 200
+      },
+      {
+        "time": 1793182324.9433708,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "status": 200
+      },
+      {
+        "time": 1793182325.004195,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/thumbnail",
+        "status": 200
+      }
+    ]
+  },
+  "forward8-first": {
+    "trace_offset": 107,
+    "pid": "4542",
+    "kind": "new",
+    "end_capture_mtime": 1793182548.5403314,
+    "requests": [
+      {
+        "time": 1793182545.6002686,
+        "method": "GET",
+        "path": "/api/v1/info",
+        "status": 200
+      },
+      {
+        "time": 1793182546.164767,
+        "method": "GET",
+        "path": "/api/v1/roots",
+        "status": 200
+      },
+      {
+        "time": 1793182546.1746628,
+        "method": "GET",
+        "path": "/health",
+        "status": 200
+      },
+      {
+        "time": 1793182546.216092,
+        "method": "GET",
+        "path": "/api/v1/playback",
+        "status": 200
+      },
+      {
+        "time": 1793182546.223364,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "status": 200
+      },
+      {
+        "time": 1793182546.2253025,
+        "method": "GET",
+        "path": "/api/v1/library-state",
+        "status": 200
+      },
+      {
+        "time": 1793182546.2280629,
+        "method": "GET",
+        "path": "/api/v1/trash",
+        "status": 200
+      },
+      {
+        "time": 1793182546.2467475,
+        "method": "GET",
+        "path": "/api/v1/tags",
+        "status": 200
+      },
+      {
+        "time": 1793182546.3942423,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "status": 200
+      }
+    ]
+  },
+  "rollback8-first": {
+    "trace_offset": 148,
+    "pid": "5126",
+    "kind": "legacy",
+    "end_capture_mtime": 1793182614.261989,
+    "requests": [
+      {
+        "time": 1793182607.3862398,
+        "method": "GET",
+        "path": "/health",
+        "status": 200
+      },
+      {
+        "time": 1793182608.7589517,
+        "method": "GET",
+        "path": "/api/v1/info",
+        "status": 200
+      },
+      {
+        "time": 1793182609.2586625,
+        "method": "GET",
+        "path": "/api/v1/roots",
+        "status": 200
+      },
+      {
+        "time": 1793182609.33308,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "status": 200
+      },
+      {
+        "time": 1793182609.333595,
+        "method": "GET",
+        "path": "/api/v1/trash",
+        "status": 200
+      },
+      {
+        "time": 1793182609.3374064,
+        "method": "GET",
+        "path": "/api/v1/library-state",
+        "status": 200
+      },
+      {
+        "time": 1793182609.3391335,
+        "method": "GET",
+        "path": "/api/v1/playback",
+        "status": 200
+      },
+      {
+        "time": 1793182609.3996818,
+        "method": "GET",
+        "path": "/api/v1/tags",
+        "status": 200
+      },
+      {
+        "time": 1793182609.5052912,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/thumbnail",
+        "status": 200
+      },
+      {
+        "time": 1793182609.64501,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182610.8625,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182611.154753,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182611.358937,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182611.778824,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182612.2721689,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182612.9558873,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182613.5759506,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182614.0962262,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      }
+    ]
+  },
+  "forward8-return": {
+    "trace_offset": 235,
+    "pid": "5929",
+    "kind": "new",
+    "end_capture_mtime": 1793182729.1470296,
+    "requests": [
+      {
+        "time": 1793182726.037609,
+        "method": "GET",
+        "path": "/api/v1/info",
+        "status": 200
+      },
+      {
+        "time": 1793182726.57569,
+        "method": "GET",
+        "path": "/api/v1/roots",
+        "status": 200
+      },
+      {
+        "time": 1793182726.627515,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "status": 200
+      },
+      {
+        "time": 1793182726.6286738,
+        "method": "GET",
+        "path": "/api/v1/trash",
+        "status": 200
+      },
+      {
+        "time": 1793182726.6469145,
+        "method": "GET",
+        "path": "/api/v1/library-state",
+        "status": 200
+      },
+      {
+        "time": 1793182726.6520212,
+        "method": "GET",
+        "path": "/api/v1/playback",
+        "status": 200
+      },
+      {
+        "time": 1793182726.6681147,
+        "method": "GET",
+        "path": "/api/v1/tags",
+        "status": 200
+      },
+      {
+        "time": 1793182726.8594673,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "status": 200
+      },
+      {
+        "time": 1793182726.8952897,
+        "method": "GET",
+        "path": "/api/v1/videos/ed3f78f4-6b2f-4cae-8f5b-d396a57e9e55/thumbnail",
+        "status": 200
+      },
+      {
+        "time": 1793182726.905287,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/thumbnail",
+        "status": 200
+      }
+    ]
+  },
+  "rollback8-repeat": {
+    "trace_offset": 269,
+    "pid": "6336",
+    "kind": "legacy",
+    "end_capture_mtime": 1793182793.2943456,
+    "requests": [
+      {
+        "time": 1793182787.995025,
+        "method": "GET",
+        "path": "/api/v1/info",
+        "status": 200
+      },
+      {
+        "time": 1793182788.4855914,
+        "method": "GET",
+        "path": "/api/v1/roots",
+        "status": 200
+      },
+      {
+        "time": 1793182788.535295,
+        "method": "GET",
+        "path": "/api/v1/library-state",
+        "status": 200
+      },
+      {
+        "time": 1793182788.5370867,
+        "method": "GET",
+        "path": "/api/v1/trash",
+        "status": 200
+      },
+      {
+        "time": 1793182788.53851,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "status": 200
+      },
+      {
+        "time": 1793182788.541283,
+        "method": "GET",
+        "path": "/api/v1/playback",
+        "status": 200
+      },
+      {
+        "time": 1793182788.575418,
+        "method": "GET",
+        "path": "/api/v1/tags",
+        "status": 200
+      },
+      {
+        "time": 1793182788.6923358,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/thumbnail",
+        "status": 200
+      },
+      {
+        "time": 1793182788.7400472,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182790.080668,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182790.4265785,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182790.9430878,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182791.5970004,
+        "method": "GET",
+        "path": "/health",
+        "status": 200
+      },
+      {
+        "time": 1793182791.6150334,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182792.299011,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182792.7023752,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      },
+      {
+        "time": 1793182793.1437378,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/stream",
+        "status": 200
+      }
+    ]
+  },
+  "forward8-repeat": {
+    "trace_offset": 291,
+    "pid": "6536",
+    "kind": "new",
+    "end_capture_mtime": 1793182806.654388,
+    "requests": [
+      {
+        "time": 1793182802.9832587,
+        "method": "GET",
+        "path": "/api/v1/info",
+        "status": 200
+      },
+      {
+        "time": 1793182803.5276587,
+        "method": "GET",
+        "path": "/api/v1/roots",
+        "status": 200
+      },
+      {
+        "time": 1793182803.5307133,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "status": 200
+      },
+      {
+        "time": 1793182803.533505,
+        "method": "GET",
+        "path": "/api/v1/trash",
+        "status": 200
+      },
+      {
+        "time": 1793182803.541094,
+        "method": "GET",
+        "path": "/api/v1/playback",
+        "status": 200
+      },
+      {
+        "time": 1793182803.5542848,
+        "method": "GET",
+        "path": "/api/v1/library-state",
+        "status": 200
+      },
+      {
+        "time": 1793182803.5692954,
+        "method": "GET",
+        "path": "/api/v1/tags",
+        "status": 200
+      },
+      {
+        "time": 1793182803.744394,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "status": 200
+      },
+      {
+        "time": 1793182803.7660904,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "status": 200
+      },
+      {
+        "time": 1793182803.829722,
+        "method": "GET",
+        "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/thumbnail",
+        "status": 200
+      },
+      {
+        "time": 1793182803.838629,
+        "method": "GET",
+        "path": "/api/v1/videos/ed3f78f4-6b2f-4cae-8f5b-d396a57e9e55/thumbnail",
+        "status": 200
+      }
+    ]
+  }
+}
