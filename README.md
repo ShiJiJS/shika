@@ -6,7 +6,7 @@ P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已�
 
 服务端技术栈：Python / FastAPI / Uvicorn、SQLite / SQLAlchemy / Alembic、FFmpeg / ffprobe；通过 Docker Compose 单服务、单端口部署。NAS 资源与预加载的评估范围见 [服务端方案](docs/server-plan.md)。
 
-当前开发从 LF0 开始：隔离设计参考、建立可运行模块骨架，后续按 [LF issues](docs/plans/library-first/ISSUES.md) 逐项实现媒体库与图包。下列第一版范围保留为历史发布记录。
+当前媒体库与图包改造处于 LF8 验收，LF0–LF7 已有分阶段实现，按 [LF issues](docs/plans/library-first/ISSUES.md) 继续推进。已生成 [0.2.0-preview.1 本机预览包与安装说明](docs/library-first-preview.md)，原签名覆盖安装已在独立模拟器验证；真实手机、NAS 和完整回退仍待验收。下列第一版范围保留为历史发布记录。
 
 ## 第一版范围
 
@@ -23,7 +23,8 @@ P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已�
 ## 项目文档
 
 - [可移除设计参考原型](design/reference/README.md)（不随 App 发布）
-- [媒体库与图包升级规划：框架、实施任务与原型一致性验收](docs/plans/library-first/PLAN.md)（LF0 骨架阶段，后续按 issue 实施）
+- [媒体库与图包升级规划：框架、实施任务与原型一致性验收](docs/plans/library-first/PLAN.md)（LF8 验收进行中）
+- [媒体库预览包：安装、旧服务兼容与回退边界](docs/library-first-preview.md)
 
 - [Mac 开发环境、VS Code F5、测试、打包与 NAS 维护](docs/macos-development.md)
 - [部署、安装、日常使用与恢复手册](docs/deployment.md)
@@ -34,7 +35,7 @@ P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已�
 - [Flutter 与真实服务联调、隔离测试实例](docs/integration-validation.md)
 
 - [P2 HTML 原型：启动、试用路径与验证记录](prototypes/p2/README.md)
-- [当前 UI 设计基线](prototypes/p2/DESIGN.md)
+- [第一版 UI 设计基线](prototypes/p2/DESIGN.md)
 - [Android 开发环境、模拟器和 VS Code 使用](docs/android-development.md)
 - [服务端开发环境：WSL2、Docker 与模拟器连接](docs/server-development.md)
 - [服务端技术方案、联调计划与 NAS 资源约束](docs/server-plan.md)
