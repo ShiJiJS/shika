@@ -41,3 +41,7 @@ attempt-12（311d2c86）诊断通过：1205次真实拖动覆盖索引0–499共
 该轮每类只做一次小包准备，final_matrix=false；正式汇总器已确认拒绝它作为最终30次结果，不给n=1计算p95。本轮取消host SQLite查询及SMB挂载，属于隔离因素后的成功，不宣称此前存储挂起根因已证实或#78/#89已修好。完整数据、内存/环境原始值、图像、请求阶段及明确诊断摘要均在diagnostics/attempt-12-long-diagnostic。
 
 随后将专用8773实例恢复普通video_viewer.app:create_app入口（同镜像/数据/只读夹具，不再ASGI封装）；通过普通HTTP读取同一范围，确认第500页、horizontal、completed=true、仍在3包范围第1包。控制探针登录后已注销，不直接打开活跃数据库。正式矩阵runner支持--ref冻结同版，核对整份App、开发启动脚本、runner/汇总器和原型均一致，文档可另外更新。60/65/70分钟为整轮测试/驱动/runner的收尾预算，依据本次完整长包约22分钟加每类30次准备留余量；单次请求超时和60秒状态等待不变，也不删慢样本。环境汇总核对身份、单一App PID、计数重置及单位，Docker计数只是近似采样差值，不充当NAS物理IO；相关正反检查见environment-summary-check.json。下一步为相同冻结版本三轮正式运行及普通release入口，目标手机/NAS保持待验。
+
+正式final-1（81a11a98）失败：日志完成4K的30次完整试验和8K第0次，随后VM service消失、ADB offline，内存采集和App停止清理也失败。终态原始报告未生成，不从日志拼凑缺少的全部30次首图/相邻翻页分位数。宿主确认QEMU90728已不存在，ADB无设备；同PID的macOS退出报告显示SIGSEGV，触发栈位于CrashReporter.GenerateDumpAndDie/HangDetector。退出前可采到的App PSS最大220.118MiB、VmHWM317.117MiB，不作为排除全部内存或环境原因的证明。选择性退出字段、符号栈、日志、检查点和采样完整保留在diagnostics/final-1-qemu-exit，私有原始系统报告仅记录SHA，未提交设备UUID。
+
+已确认本机Emulator为37.2.12/build16428233，[官方版本说明](https://developer.android.com/studio/releases/emulator)将其列为Stable。没有更新SDK或改App；仅在确认旧QEMU退出后，以同AVD数据和同命令重新启动87970，恢复1170×2532/density480/font1.0及专用ADB root，未wipe data。启动日志实际显示GLES仍经SWANGLE/ANGLE使用SwiftShader，CLI名称变化不被当作已证明的独立GLES修复。三轮正式结果仍缺，#78/#89不关闭；accepted-1目录为81a11a98重试中的候选，只有完整30次和500页、采集无错后才计成功。
