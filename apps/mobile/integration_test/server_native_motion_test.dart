@@ -486,8 +486,11 @@ void main() {
           await tapCanvas();
           await playing(false);
           await tap(find.text('横向全屏'));
+          await host('fullscreen_ready');
           await until(
             () =>
+                WidgetsBinding.instance.lifecycleState ==
+                    AppLifecycleState.resumed &&
                 t.view.physicalSize.width > t.view.physicalSize.height &&
                 find.byType(PlayerSurface).evaluate().isNotEmpty &&
                 surface().fullscreen &&
