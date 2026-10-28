@@ -10,6 +10,7 @@ import '../../library/server_api.dart' show ApiFailure;
 
 abstract class _Pending {
   String get kind;
+  String get requestId;
   Future<Object?> resolve(bool send);
   void apply(Object result);
 }
@@ -22,10 +23,26 @@ class _PendingValue<T> implements _Pending {
   @override
   String get kind => command.kind;
   @override
+  String get requestId => command.requestId;
+  @override
   Future<Object?> resolve(bool send) async =>
       send ? await reader.submit<T>(command) : await reader.receipt<T>(command);
   @override
   void apply(Object result) => accept(result as T);
+}
+
+/// The most recent live command failure, retained in memory for diagnosis.
+/// It is not UI text, a persisted request log, or permission to replay a write.
+class ReaderCommandFailure {
+  const ReaderCommandFailure({
+    required this.kind,
+    required this.requestId,
+    required this.receiptLookup,
+    required this.failure,
+  });
+  final String kind, requestId;
+  final bool receiptLookup;
+  final ApiFailure failure;
 }
 
 /// One actual reading route. A displayed frame, not prefetch, owns progress.
@@ -81,6 +98,11 @@ class PackReadingSession extends ChangeNotifier {
       canResend = false,
       needsReload = false;
   String error = '', pageError = '', queueError = '';
+  ReaderCommandFailure? _lastCommandFailure;
+
+  /// Preserve the original transport phase/cause when a later receipt is 404
+  /// or succeeds. Only a later command exception replaces this bounded record.
+  ReaderCommandFailure? get lastCommandFailure => _lastCommandFailure;
   String? recoveryReason;
   PackReadingRange? range;
   ReaderCursor? cursor;
@@ -218,6 +240,14 @@ class PackReadingSession extends ChangeNotifier {
         return true;
       } catch (failure) {
         if (!live || generation != _generation) return false;
+        if (failure is ApiFailure) {
+          _lastCommandFailure = ReaderCommandFailure(
+            kind: command.kind,
+            requestId: command.requestId,
+            receiptLookup: !send,
+            failure: failure,
+          );
+        }
         error = failure.toString();
         if (failure is ApiFailure &&
             failure.status != null &&
@@ -752,6 +782,7 @@ class PackReadingSession extends ChangeNotifier {
   @override
   void dispose() {
     _disposed = true;
+    _lastCommandFailure = null;
     _generation++;
     _saveTimer?.cancel();
     repository.removeListener(_ownerChanged);

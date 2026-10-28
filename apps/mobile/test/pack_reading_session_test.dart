@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_viewer/features/packs/pack_reading_session.dart';
 import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/repository.dart';
+import 'package:video_viewer/library/server_api.dart';
 import 'package:video_viewer/library/server_repository.dart';
 
 import 'server_pack_reading_test.dart' show ReadingServer;
@@ -112,13 +114,20 @@ void main() {
     expect(await session.start(), isFalse);
     expect(session.hasPending, isTrue);
     final key = server.fixture.writes.single.body['request_id'];
+    final diagnostic = session.lastCommandFailure!;
+    expect(diagnostic.kind, 'session');
+    expect(diagnostic.requestId, key);
+    expect(diagnostic.receiptLookup, isFalse);
+    expect(diagnostic.failure.status, 503);
     server.receipts.remove('session:$key');
     final count = server.fixture.writes.length;
     expect(await session.checkPending(), isFalse);
     expect(session.canResend, isTrue);
+    expect(session.lastCommandFailure, same(diagnostic));
     expect(server.fixture.writes.length, count);
     expect(await session.resendPending(), isTrue);
     expect(server.fixture.writes.last.body['request_id'], key);
+    expect(session.lastCommandFailure, same(diagnostic));
     await until(() => !session.loadingPages);
     session.show(0, ratio: .3);
     server.loseReply = true;
@@ -128,6 +137,34 @@ void main() {
     expect(await session.checkPending(), isTrue);
     expect(session.opened, isTrue);
     expect(server.fixture.writes.length, before);
+  });
+  test('a closed connection retains its actual cause and failed lookup never permits resend', () async {
+    await server.fixture.server.close(force: true);
+    expect(await session.start(), isFalse);
+    final original = session.lastCommandFailure!;
+    expect(original.kind, 'session');
+    expect(original.requestId, 'reader-0');
+    expect(original.receiptLookup, isFalse);
+    expect(original.failure.code, 'network_unavailable');
+    // The API already has keep-alive sockets from connect(). A peer close may
+    // be noticed before openUrl or while awaiting headers on a reused socket.
+    expect(
+      original.failure.transportPhase,
+      isIn([ApiTransportPhase.opening, ApiTransportPhase.waitingForHeaders]),
+    );
+    expect(original.failure.transportCause, isA<IOException>());
+    expect(session.error, original.failure.message);
+    expect(session.error, isNot(contains('127.0.0.1')));
+    expect(session.hasPending, isTrue);
+    expect(session.canResend, isFalse);
+    expect(await session.checkPending(), isFalse);
+    final lookup = session.lastCommandFailure!;
+    expect(lookup.requestId, original.requestId);
+    expect(lookup.receiptLookup, isTrue);
+    expect(lookup.failure.transportPhase, isNotNull);
+    expect(lookup.failure.transportCause, isA<IOException>());
+    expect(await session.resendPending(), isFalse);
+    expect(server.fixture.writes, isEmpty);
   });
   test('manual pack changes flush first and late old-page frames cannot mark the next pack', () async {
     await start();
