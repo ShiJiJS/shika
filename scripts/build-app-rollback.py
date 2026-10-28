@@ -117,7 +117,7 @@ def main():
     artifacts = ROOT / "tmp/releases"
     artifacts.mkdir(parents=True, exist_ok=True)
     targets = {
-        "rollback": artifacts / "video-viewer-0.1.4-rollback.1-arm64.apk",
+        "rollback": artifacts / "video-viewer-0.1.4-rollback.2-arm64.apk",
         "forward": artifacts / "video-viewer-0.2.0-preview.2-arm64.apk",
     }
     assert all(not path.exists() for path in targets.values()), "Preview target already exists"
@@ -192,7 +192,7 @@ def main():
 
     built = {}
     for name, mobile, version, code in [
-        ("rollback", old, "0.1.4-rollback.1", 7),
+        ("rollback", old, "0.1.4-rollback.2", 8),
         ("forward", current, "0.2.0-preview.2", 8),
     ]:
         run(
@@ -294,7 +294,7 @@ def main():
     result["complete"] = True
     save()
     print(
-        json.dumps({"complete": True, "rollback_code": 7, "forward_code": 8, "output": str(output)})
+        json.dumps({"complete": True, "rollback_code": 8, "forward_code": 8, "output": str(output)})
     )
 
 
