@@ -1,0 +1,16 @@
+{
+  "attempt-9-long-diagnostic": {
+    "observations": 27,
+    "successful_stats": 0,
+    "failed_stats": 27,
+    "usable_as_server_resource_evidence": false,
+    "cause": "Separate resource observer retained setup container ID after diagnostic runtime was recreated"
+  },
+  "attempt-10-long-diagnostic": {
+    "observations": 185,
+    "successful_stats": 0,
+    "failed_stats": 185,
+    "usable_as_server_resource_evidence": false,
+    "cause": "Separate resource observer retained setup container ID after diagnostic runtime was recreated"
+  }
+}

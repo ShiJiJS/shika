@@ -75,6 +75,9 @@ def main():
     source = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     relevant = [
         "apps/mobile/lib",
+        "apps/mobile/android",
+        "apps/mobile/pubspec.yaml",
+        "apps/mobile/pubspec.lock",
         "apps/mobile/integration_test/server_reader_performance_test.dart",
         "apps/mobile/test_driver/reader_performance.dart",
         "scripts/run-reader-performance.py",
@@ -228,8 +231,51 @@ def main():
                     save("observer-errors.json", errors)
                     return
 
+    def sample_environment():
+        # Capture the verified current runtime, never an earlier lab container
+        # ID from a setup file. Recreated diagnostic runtimes have new IDs.
+        with gzip.open(out / "environment-samples.jsonl.gz", "wt") as stream:
+            while not stop.wait(5):
+                try:
+                    server_stats = subprocess.run(
+                        ["docker", "stats", "--no-stream", "--format", "{{json .}}", runtime["Id"]],
+                        capture_output=True,
+                        text=True,
+                        timeout=10,
+                        check=True,
+                    )
+                    value = json.loads(server_stats.stdout)
+                    if not value.get("ID") or not runtime["Id"].startswith(value["ID"]):
+                        raise ValueError("Resource sample belongs to another container")
+                    qemu_stats = subprocess.run(
+                        ["ps", "-p", qemu[0].split()[0], "-o", "pid=,rss=,%cpu=,vsz="],
+                        capture_output=True,
+                        text=True,
+                        timeout=5,
+                        check=True,
+                    )
+                    stream.write(
+                        json.dumps(
+                            {
+                                "elapsed_seconds": time.monotonic() - started,
+                                "runtime_id": runtime["Id"],
+                                "server": value,
+                                "qemu_fields": ["pid", "rss_kib", "cpu_percent", "vsz_kib"],
+                                "qemu": qemu_stats.stdout.strip(),
+                            }
+                        )
+                        + "\n"
+                    )
+                    stream.flush()
+                except (subprocess.SubprocessError, OSError, ValueError) as error:
+                    errors.append("environment sample: " + repr(error))
+                    save("observer-errors.json", errors)
+                    return
+
     sampler = threading.Thread(target=sample, daemon=True)
+    environment_sampler = threading.Thread(target=sample_environment, daemon=True)
     sampler.start()
+    environment_sampler.start()
     env = os.environ.copy()
     env["VV_READER_BENCH_OUTPUT"] = str(out)
     command = [
@@ -265,8 +311,11 @@ def main():
                 raise
         stop.set()
         sampler.join(timeout=35)
+        environment_sampler.join(timeout=20)
         if sampler.is_alive():
             errors.append("Memory sampler did not stop")
+        if environment_sampler.is_alive():
+            errors.append("Environment sampler did not stop")
         save(
             "result.json",
             {
@@ -303,6 +352,7 @@ def main():
     finally:
         stop.set()
         sampler.join(timeout=35)
+        environment_sampler.join(timeout=20)
         server.shutdown()
         server.server_close()
         thread.join(timeout=5)
@@ -313,6 +363,7 @@ def main():
             {
                 "control_closed": True,
                 "sampler_stopped": not sampler.is_alive(),
+                "environment_sampler_stopped": not environment_sampler.is_alive(),
                 "app_stopped": True,
                 "runtime_emulator_retained_for_next_round": True,
             },

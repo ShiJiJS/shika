@@ -24,3 +24,9 @@ attempt-7-long-diagnostic（eac02a9a）重置旧位置时点击Slider外侧空�
 两次long-diagnostic只有每类一次准备，明确final_matrix=false，汇总器拒绝把它们当30次最终矩阵。全部500页、同版三轮、普通release和目标手机/NAS仍未完成。独立播放器减少动画修复另见#97 / PR #98；尚未纳入现有正常预览APK。
 
 attempt-9 (d6f78457): diagnostic observer active. Reset remained at index 117; failure state had no pending operation or error. No unresolved request reached the service. 1d3fb301 now waits for the rendered Slider to be enabled and starts at its current thumb, rather than the center. An observer /proc read also raced application shutdown; it is preserved in observer-errors.json, not counted as a successful observation. attempt-10 uses the same observer/runtime/QEMU and remains diagnostic-only.
+
+attempt-10（1d3fb301）实际连续取得索引0–284的可见解码帧，随后索引285等待图片时超时；有待确认progress，服务记录显示正文已收完，但未返回响应，另有图片与library-state查询一并挂起。宿主健康检查仍200、数据库文件头可读，但容器内SQL查询挂起，普通停止/进程强制终止也未拿到容器退出事件。不能直接归因为App、模拟器或服务逻辑错误；当前指向本机运行环境/存储锁路径，根因仍未证明。
+
+本轮后半段额外尝试将用户授权SMB目录只读挂到新容器，停在Created；正文检查尚未运行，也没有真实图包性能结论。该尝试与失败时段重叠，列作干扰，不隐去。此前也从Mac直接打开了活跃的绑定SQLite文件做只读位置查询，后续取消这种跨系统观察，改用App报告/检查点；是否相关仍待隔离证明。请求阶段记录与前后探针保留在本轮诊断目录。正常OrbStack停止已完成（没有force参数），原有四容器ID/镜像/运行状态已记录，恢复后须逐一启动/核对，再清理唯一自建的Created容器。现有用户媒体、原型和正常安装包未改，未进行NAS部署。第286页失败不计作500页成功；918ba7fd的终态报告顺序修正尚待下一轮运行验证。
+
+恢复结果：正常stop/start完成，失败Created容器已移除，原四服务按原ID/镜像恢复运行；本机曾短暂中断，不声称全程未中断。专用数据库在容器内 `PRAGMA integrity_check` 返回ok、3包仍在；同一QEMU90728保持存活，不因本次观察重启。另发现旧独立资源脚本在观察服务重建后仍指向setup阶段旧容器ID，attempt-9/10的该服务统计不可用，resource-observer-gap.json保留计数；不拿它计算CPU/IO。现将环境采集纳入每轮runner，绑定本轮已核验实际容器ID和QEMU PID，失败计入observer_errors，不能静默放行正式结果。下一轮保持相同夹具，取消host SQLite查询与SMB挂载干扰，验证修正后的报告/采集收尾。

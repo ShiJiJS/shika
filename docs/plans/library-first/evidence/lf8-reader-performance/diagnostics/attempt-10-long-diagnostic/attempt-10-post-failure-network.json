@@ -1,0 +1,219 @@
+{
+  "captured_at": 1793189191.638568,
+  "unfinished": [
+    [
+      {
+        "time": 1793188993.2686574,
+        "id": 1138,
+        "method": "GET",
+        "path": "/api/v1/library-state",
+        "event": "start"
+      }
+    ],
+    [
+      {
+        "time": 1793188993.6279538,
+        "id": 1139,
+        "method": "GET",
+        "path": "/api/v1/pages/92866994-e2aa-43b6-bd78-0aee8c57ecd6/image",
+        "event": "start"
+      }
+    ],
+    [
+      {
+        "time": 1793188994.366673,
+        "id": 1140,
+        "method": "PATCH",
+        "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+        "event": "start"
+      },
+      {
+        "time": 1793188994.3876681,
+        "id": 1140,
+        "method": "PATCH",
+        "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+        "event": "request_complete",
+        "bytes": 275
+      }
+    ],
+    [
+      {
+        "time": 1793188995.6743321,
+        "id": 1141,
+        "method": "GET",
+        "path": "/api/v1/pages/e9032a0e-0a1f-45a0-b6ea-3818533d19af/image",
+        "event": "start"
+      }
+    ],
+    [
+      {
+        "time": 1793189015.2563787,
+        "id": 1143,
+        "method": "GET",
+        "path": "/api/v1/library-state",
+        "event": "start"
+      }
+    ],
+    [
+      {
+        "time": 1793189037.275136,
+        "id": 1146,
+        "method": "GET",
+        "path": "/api/v1/library-state",
+        "event": "start"
+      }
+    ]
+  ],
+  "failure_page_requests": [
+    {
+      "time": 1793188993.6279538,
+      "id": 1139,
+      "method": "GET",
+      "path": "/api/v1/pages/92866994-e2aa-43b6-bd78-0aee8c57ecd6/image",
+      "event": "start"
+    }
+  ],
+  "last_progress_requests": [
+    {
+      "time": 1793188976.2251794,
+      "id": 1119,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "response_headers",
+      "status": 200
+    },
+    {
+      "time": 1793188976.2258732,
+      "id": 1119,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "end",
+      "received_bytes": 275,
+      "sent_bytes": 744,
+      "received_complete": true,
+      "sent_complete": true
+    },
+    {
+      "time": 1793188983.9678762,
+      "id": 1126,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "start"
+    },
+    {
+      "time": 1793188984.0217593,
+      "id": 1126,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "request_complete",
+      "bytes": 275
+    },
+    {
+      "time": 1793188984.1704876,
+      "id": 1126,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "response_headers",
+      "status": 200
+    },
+    {
+      "time": 1793188984.1743145,
+      "id": 1126,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "end",
+      "received_bytes": 275,
+      "sent_bytes": 744,
+      "received_complete": true,
+      "sent_complete": true
+    },
+    {
+      "time": 1793188989.2573693,
+      "id": 1133,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "start"
+    },
+    {
+      "time": 1793188989.261097,
+      "id": 1133,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "request_complete",
+      "bytes": 275
+    },
+    {
+      "time": 1793188989.2887058,
+      "id": 1133,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "response_headers",
+      "status": 200
+    },
+    {
+      "time": 1793188989.2894006,
+      "id": 1133,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "end",
+      "received_bytes": 275,
+      "sent_bytes": 744,
+      "received_complete": true,
+      "sent_complete": true
+    },
+    {
+      "time": 1793188991.6701386,
+      "id": 1137,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "start"
+    },
+    {
+      "time": 1793188991.6717765,
+      "id": 1137,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "request_complete",
+      "bytes": 275
+    },
+    {
+      "time": 1793188991.6986868,
+      "id": 1137,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "response_headers",
+      "status": 200
+    },
+    {
+      "time": 1793188991.6997552,
+      "id": 1137,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "end",
+      "received_bytes": 275,
+      "sent_bytes": 744,
+      "received_complete": true,
+      "sent_complete": true
+    },
+    {
+      "time": 1793188994.366673,
+      "id": 1140,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "start"
+    },
+    {
+      "time": 1793188994.3876681,
+      "id": 1140,
+      "method": "PATCH",
+      "path": "/api/v1/packs/ee3fcb9f-e4a8-4248-a947-9395f72d5195/progress",
+      "event": "request_complete",
+      "bytes": 275
+    }
+  ],
+  "host_health_after_failure": {
+    "8773": 200,
+    "8760": 200
+  },
+  "overlap": "Read-only NAS Docker bind attempt overlapped late section; preserve as diagnostic interference, no acceptance claim"
+}
