@@ -1,0 +1,721 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_capabilities_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_capabilities_test.dart: old services and limits alone keep the legacy backup path
+00:00 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_capabilities_test.dart: public complete backup accepts negotiated limits and empty history
+00:00 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_capabilities_test.dart: incomplete public backup protocol is rejected before opening restore
+00:01 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_widget_test.dart: (setUpAll)
+00:01 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_widget_test.dart: review, cancel, exact images and explicit deletion 390.0/1.0
+00:01 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_widget_test.dart: review, cancel, exact images and explicit deletion 390.0/1.0
+00:01 +5: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_widget_test.dart: review, cancel, exact images and explicit deletion 390.0/1.0
+00:01 +6: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_widget_test.dart: review, cancel, exact images and explicit deletion 390.0/1.0
+00:01 +7: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_widget_test.dart: review, cancel, exact images and explicit deletion 390.0/1.0
+00:01 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_widget_test.dart: review, cancel, exact images and explicit deletion 390.0/1.0
+00:01 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_widget_test.dart: review, cancel, exact images and explicit deletion 390.0/1.0
+00:01 +10: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_widget_test.dart: review, cancel, exact images and explicit deletion 390.0/1.0
+00:02 +11: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_selection_widget_test.dart: 1027 choice survives leaving; only explicit 1000 delete and next 27 need fresh review 390.0/1.0
+00:03 +12: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_selection_widget_test.dart: 1027 choice survives leaving; only explicit 1000 delete and next 27 need fresh review 390.0/1.0
+00:04 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_widget_test.dart: lost accepted deletion reopens read-only; original request executes once
+00:04 +14: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_selection_widget_test.dart: 1027 choice survives leaving; only explicit 1000 delete and next 27 need fresh review 360.0/2.0
+00:04 +15: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_selection_widget_test.dart: 1027 choice survives leaving; only explicit 1000 delete and next 27 need fresh review 360.0/2.0
+00:04 +16: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_selection_widget_test.dart: 1027 choice survives leaving; only explicit 1000 delete and next 27 need fresh review 360.0/2.0
+00:05 +17: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_selection_widget_test.dart: task entry opens unsubmitted choice without querying or deleting; historical only shows in historical filter
+00:05 +18: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: latest summary is outside first page, read-only, hidden in scopes and selection
+00:05 +19: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: latest summary is outside first page, read-only, hidden in scopes and selection
+00:05 +20: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: latest summary is outside first page, read-only, hidden in scopes and selection
+00:06 +20: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart: reader transport retry recover keeps the actual page
+READER_IMAGE_FAILURE p0-0: SocketException: Synthetic temporary connection reset
+READER_IMAGE_FAILURE p0-0: HttpException: Connection closed before full header was received
+00:07 +21: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: latest summary is outside first page, read-only, hidden in scopes and selection
+00:07 +21: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart: reader transport retry bounded keeps the actual page
+READER_IMAGE_FAILURE p0-0: SocketException: Synthetic temporary connection reset
+00:07 +22: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart: reader transport retry bounded keeps the actual page
+READER_IMAGE_FAILURE p0-0: HttpException: Connection closed before full header was received
+READER_IMAGE_FAILURE p0-0: SocketException: Synthetic still offline
+00:07 +23: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: opening catalog actions releases search focus before selecting contents
+00:07 +23: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_transport_retry_test.dart: reader transport retry dispose keeps the actual page
+READER_IMAGE_FAILURE p0-0: SocketException: Synthetic temporary connection reset
+00:07 +24: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: opening catalog actions releases search focus before selecting contents
+00:08 +25: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: summary failure retains catalog, retry is read-only, unknown page is not guessed
+00:08 +26: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: summary failure retains catalog, retry is read-only, unknown page is not guessed
+00:08 +27: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: summary failure retains catalog, retry is read-only, unknown page is not guessed
+00:08 +28: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: summary failure retains catalog, retry is read-only, unknown page is not guessed
+00:08 +29: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: summary failure retains catalog, retry is read-only, unknown page is not guessed
+00:08 +30: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_cleanup_session_test.dart: undo flushes next pack and restores original page, ratio and preferences within the fixed range
+00:08 +31: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: late unfiltered summary cannot replace a newer search or connection
+00:08 +32: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: late unfiltered summary cannot replace a newer search or connection
+00:08 +33: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: late unfiltered summary cannot replace a newer search or connection
+00:08 +34: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: late unfiltered summary cannot replace a newer search or connection
+00:08 +35: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_continuation_widget_test.dart: late unfiltered summary cannot replace a newer search or connection
+00:09 +36: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(390.0, 844.0)/1.0
+00:09 +37: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(390.0, 844.0)/1.0
+00:10 +38: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(390.0, 844.0)/1.0
+00:10 +39: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(390.0, 844.0)/1.0
+00:11 +40: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(390.0, 844.0)/1.0
+00:11 +41: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(390.0, 844.0)/1.0
+00:11 +42: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(390.0, 844.0)/1.0
+00:11 +43: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(390.0, 844.0)/1.0
+00:11 +44: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(390.0, 844.0)/1.0
+00:11 +45: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(390.0, 844.0)/1.0
+00:11 +46: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(360.0, 740.0)/2.0
+00:11 +47: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(360.0, 740.0)/2.0
+00:11 +48: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(360.0, 740.0)/2.0
+00:11 +49: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(360.0, 740.0)/2.0
+00:12 +50: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_recent_widget_test.dart: video history pages, restores a boundary anchor and keeps independent library Size(360.0, 740.0)/2.0
+00:12 +51: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_entry_recovery_test.dart: failed preview entry releases an overlapping return lookup and pagination; cancelled=false
+00:13 +52: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_entry_recovery_test.dart: failed preview entry releases an overlapping return lookup and pagination; cancelled=false
+00:13 +53: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:14 +54: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:15 +55: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:15 +56: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:15 +57: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:15 +58: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:15 +59: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:15 +60: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(390.0, 844.0) / 1.0
+00:16 +61: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +62: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +63: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +64: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +65: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +66: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +67: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +68: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +69: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +70: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +71: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +72: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +73: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:16 +74: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: deep tag edit retains failed location and returns to the matching neighbour at the same row inset Size(360.0, 740.0) / 2.0
+00:17 +75: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/trash_management_layout_test.dart: original restore receipt releases only its selection and preserves later choices
+00:18 +76: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/trash_management_layout_test.dart: original restore receipt releases only its selection and preserves later choices
+00:18 +77: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/trash_management_layout_test.dart: original restore receipt releases only its selection and preserves later choices
+00:18 +78: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_return_widget_test.dart: a late relocation cannot move the new search back to its previous window
+00:18 +79: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/trash_management_layout_test.dart: video row restoration retains the other selected video and all packs
+00:19 +80: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/trash_management_layout_test.dart: video row restoration retains the other selected video and all packs
+00:20 +81: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/trash_management_layout_test.dart: video row restoration retains the other selected video and all packs
+00:21 +82: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/trash_management_layout_test.dart: video row restoration retains the other selected video and all packs
+00:21 +83: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/trash_management_layout_test.dart: video row restoration retains the other selected video and all packs
+00:21 +84: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/maintenance_management_layout_test.dart: task body scrolls, page errors retain results and history stays read only (844.0, 390.0, 2.0)
+00:21 +85: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/maintenance_management_layout_test.dart: task body scrolls, page errors retain results and history stays read only (844.0, 390.0, 2.0)
+00:21 +86: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/trash_management_layout_test.dart: row restoration preserves unrelated selection, plan=true
+00:21 +87: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/trash_management_layout_test.dart: short keyboard window retains search and reachable selection actions 1.0
+00:22 +88: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/trash_management_layout_test.dart: short keyboard window retains search and reachable selection actions 2.0
+00:22 +89: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected label outside first page resolves after retry and remains selected through search and save
+00:22 +90: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected label outside first page resolves after retry and remains selected through search and save
+00:22 +91: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected label outside first page resolves after retry and remains selected through search and save
+00:22 +92: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected label outside first page resolves after retry and remains selected through search and save
+00:23 +93: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected label outside first page resolves after retry and remains selected through search and save
+00:23 +94: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected label outside first page resolves after retry and remains selected through search and save
+00:24 +95: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected label outside first page resolves after retry and remains selected through search and save
+00:24 +96: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected label outside first page resolves after retry and remains selected through search and save
+00:24 +97: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected label outside first page resolves after retry and remains selected through search and save
+00:24 +98: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected label outside first page resolves after retry and remains selected through search and save
+00:24 +99: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected label outside first page resolves after retry and remains selected through search and save
+00:24 +100: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: a late name response cannot overwrite a newer search result name
+00:24 +101: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: a late name response cannot overwrite a newer search result name
+00:24 +102: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: a late name response cannot overwrite a newer search result name
+00:24 +103: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: a late name response cannot overwrite a newer search result name
+00:24 +104: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: a late name response cannot overwrite a newer search result name
+00:25 +105: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_toolbar_widget_test.dart: long catalog actions remain reachable at scale 1.0
+00:25 +106: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: a deleted selected label is explicit and saving requires removing that choice
+00:25 +107: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: a deleted selected label is explicit and saving requires removing that choice
+00:26 +108: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: connection replacement clears old names, rejects late resolution and disables saving
+00:26 +109: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: video card uses reference tag type and 4dp gap
+00:27 +110: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: selected long Chinese names fit a narrow sheet with large system text
+00:27 +111: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: video rotation preserves the anchored member without a new query
+00:27 +112: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: filter-only selection resolves initial IDs beyond the first label page
+00:28 +113: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: video font reflow retains row inset and member
+00:28 +114: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: editor paging failure retries original offset and retains selected label names
+00:28 +115: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_tag_names_widget_test.dart: editor paging failure retries original offset and retains selected label names
+00:28 +116: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack rotation preserves the anchored member without a new query
+00:29 +117: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack font reflow retains row inset and member
+00:29 +118: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack font reflow retains row inset and member
+00:29 +119: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack font reflow retains row inset and member
+00:29 +120: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack font reflow retains row inset and member
+00:29 +121: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack font reflow retains row inset and member
+00:29 +122: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack font reflow retains row inset and member
+00:29 +123: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack font reflow retains row inset and member
+00:29 +124: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack font reflow retains row inset and member
+00:29 +125: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack font reflow retains row inset and member
+00:29 +126: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack font reflow retains row inset and member
+00:29 +127: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_pack_catalog_test.dart: old services reject pack requests explicitly without affecting legacy videos
+00:29 +128: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: keyboard height does not change portrait columns
+00:29 +129: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_pack_catalog_test.dart: a pending tag retry belongs to its service and is not sent to another connection
+00:30 +130: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:30 +131: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:31 +132: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:31 +133: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:31 +134: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:31 +135: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:32 +136: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:32 +137: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:32 +138: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:32 +139: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:32 +140: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:32 +141: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reading_session_test.dart: mode preferences retain the displayed page and ratio without widening the range
+00:32 +142: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(360.0, 740.0) / 2.0
+00:33 +143: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical task opens paged original plan/files with no execution affordance at large text
+00:34 +144: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(844.0, 390.0) / 1.0
+00:34 +145: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: historical result error, all pages and directory filter stay read-only
+00:34 +146: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_history_widget_test.dart: failed next page retains original members and position for explicit retry
+00:35 +147: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:35 +148: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:35 +149: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +150: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +151: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +152: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +153: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +154: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +155: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +156: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +157: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +158: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +159: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +160: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +161: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +162: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +163: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: large unknown-result notices leave a real scrollable trash viewport
+00:36 +164: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: entering whole plan immediately after acceptance dismisses the root snackbar before the secondary route
+00:37 +165: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: entering whole plan immediately after acceptance dismisses the root snackbar before the secondary route
+00:37 +166: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: entering whole plan immediately after acceptance dismisses the root snackbar before the secondary route
+00:37 +167: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: entering whole plan immediately after acceptance dismisses the root snackbar before the secondary route
+00:37 +168: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: entering whole plan immediately after acceptance dismisses the root snackbar before the secondary route
+00:37 +169: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: entering whole plan immediately after acceptance dismisses the root snackbar before the secondary route
+00:37 +170: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: entering whole plan immediately after acceptance dismisses the root snackbar before the secondary route
+00:37 +171: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: entering whole plan immediately after acceptance dismisses the root snackbar before the secondary route
+00:37 +172: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_files_test.dart: explicit resend keeps nonce and payload; differing payload is rejected
+00:37 +173: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:37 +174: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:37 +175: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:37 +176: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:37 +177: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:37 +178: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:37 +179: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:37 +180: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:37 +181: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:38 +182: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:38 +183: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:38 +184: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:38 +185: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:38 +186: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:38 +187: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(390.0, 844.0)/1.0
+00:38 +188: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/restore_plan_widgets_test.dart: whole restore confirmation, lost stop receipt and paged stopped results Size(360.0, 740.0)/2.0
+00:38 +189: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60605/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60605/p0/2
+00:39 +190: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:39 +191: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:39 +192: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:39 +193: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:39 +194: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60605/p0/2
+00:39 +195: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:39 +196: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:39 +197: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:40 +198: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:40 +199: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+00:40 +200: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+00:40 +201: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+00:40 +202: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+00:40 +203: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+00:40 +204: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+00:40 +205: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+00:40 +206: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+00:40 +207: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+00:40 +208: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+00:40 +209: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_pack_trash_test.dart: unsupported service fails before a new trash read
+00:40 +210: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60722/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60722/p0/2
+00:40 +211: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_upload_connection_recovery_test.dart: a real refused upload survives reopening and missing-original reads without any replay
+ARCHIVE_REFUSED_UPLOAD_VERIFIED:{"original_key":"1793200575096716-1987494379","file_sha256":"61563c6f1c99f38ccdc784e3d6744f3f52eab08755506a9efac5366df6505160","phase":"opening","cause":"SocketException","original_reads":2,"posts_after_reopening":0,"journal_unchanged":true,"local_file_removed":true}
+00:40 +212: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:41 +213: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(844.0, 390.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60735/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60735/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60735/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:60735/p0/2
+00:41 +214: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: video tag dock stays reachable through a short resize
+00:41 +215: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +216: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +217: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +218: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +219: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +220: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +221: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +222: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +223: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +224: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +225: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +226: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +227: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:41 +228: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: pack tag dock stays reachable through a short resize
+00:42 +229: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:42 +230: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:42 +231: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:42 +232: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:42 +233: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:42 +234: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:42 +235: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:42 +236: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:42 +237: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:42 +238: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:43 +239: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:43 +240: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:43 +241: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:43 +242: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:43 +243: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:43 +244: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:43 +245: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:43 +246: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: labels beyond the legacy snapshot page, retain selection and retry page 50 from a visible error
+00:43 +247: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_catalog_paging_widget_test.dart: catalog changes between pages require a fresh read and retain selected tags
+00:44 +248: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (390.0, 844.0, 1.0)
+00:44 +249: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (390.0, 844.0, 1.0)
+00:45 +250: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/sheet_frame_footer_test.dart: sheet action stays visible while long content scrolls (Size(844.0, 390.0), 1.0)
+00:45 +251: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/sheet_frame_footer_test.dart: sheet action stays visible while long content scrolls (Size(844.0, 390.0), 1.0)
+00:45 +252: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0)
+00:45 +253: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0)
+00:46 +254: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0)
+00:46 +255: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0)
+00:46 +256: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0)
+00:46 +257: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0)
+00:46 +258: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0)
+00:46 +259: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (360.0, 740.0, 2.0)
+00:46 +260: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: partial result pages scroll together, retain old page after error and expose original retry (360.0, 740.0, 2.0)
+00:46 +261: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart: 24 overview cells cancel queued and active
+00:47 +262: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (844.0, 390.0, 1.0)
+00:47 +263: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart: 24 overview cells decode within capacity
+00:47 +264: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_capacity_test.dart: 24 overview cells decode within capacity
+00:48 +265: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: exact images use one full page, retain page on failure and preserve unconfirmed review (844.0, 390.0, 2.0)
+00:48 +266: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/purge_management_layout_test.dart: partial result pages scroll together, retain old page after error and expose original retry (844.0, 390.0, 2.0)
+00:48 +267: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/paper_empty_view_test.dart: short library status keeps its complete message and action reachable
+00:48 +268: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/paper_empty_view_test.dart: short library status keeps its complete message and action reachable
+00:49 +269: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_client_authority_test.dart: external restore preserves every old intent and invalidates all gateways without another login
+00:49 +270: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_client_authority_test.dart: an unversioned old video and restore journal become read-only on first upgraded connection
+00:49 +271: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_client_authority_test.dart: a late page from the old transport cannot publish after recovery
+00:49 +272: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_client_authority_test.dart: historical successful receipt stays historical on detail refresh and does not acknowledge a current journal
+00:49 +273: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_client_authority_test.dart: manual connection supersedes a paused automatic recovery
+00:49 +274: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_client_authority_test.dart: ambiguous disk acknowledgement blocks mutations and reopens the original video request without POST
+00:49 +275: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_client_authority_test.dart: legacy fallback after authority keeps old scopes historical; reopening=false
+00:49 +276: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_client_authority_test.dart: legacy fallback after authority keeps old scopes historical; reopening=true
+00:49 +277: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/connection_widget_test.dart: automatic reconnection leaves the connection form without another password
+00:50 +278: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/connection_widget_test.dart: automatic reconnection leaves the connection form without another password
+00:50 +279: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/maintenance_tasks_widget_test.dart: task pagination and historical read-only detail 390.0/1.0
+00:50 +280: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/maintenance_tasks_widget_test.dart: task pagination and historical read-only detail 390.0/1.0
+00:50 +281: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/maintenance_tasks_widget_test.dart: unknown pending request and independent metadata error 390.0/1.0
+00:50 +282: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/maintenance_tasks_widget_test.dart: original backup download cancel/save and stale connection 390.0/1.0
+00:51 +283: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/maintenance_tasks_widget_test.dart: task pagination and historical read-only detail 360.0/2.0
+00:51 +284: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:51 +285: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:51 +286: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:51 +287: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:52 +288: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:52 +289: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:52 +290: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:53 +291: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:53 +292: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:53 +293: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:53 +294: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: the default order only affects new previews and session order never overwrites it
+00:53 +295: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: an expired connection closes the secondary preview and reveals login
+00:53 +296: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: an expired connection closes the secondary preview and reveals login
+00:53 +297: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: an expired connection closes the secondary preview and reveals login
+00:53 +298: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: an expired connection closes the secondary preview and reveals login
+00:53 +299: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: an expired connection closes the secondary preview and reveals login
+00:54 +300: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: an expired connection closes the secondary preview and reveals login
+00:54 +301: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: an expired connection closes the secondary preview and reveals login
+00:54 +302: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: an expired connection closes the secondary preview and reveals login
+00:54 +303: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: an expired connection closes the secondary preview and reveals login
+00:54 +304: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: reopening retains the saved tag scope without applying it to the independent library or autoplay
+00:54 +305: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_file_action_test.dart: (setUpAll)
+00:54 +305: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: library entry opens a secondary preview; end/restart/return retain the source search
+00:55 +306: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: library entry opens a secondary preview; end/restart/return retain the source search
+00:55 +307: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_file_action_test.dart: whole-pack confirmation at 360.0 / 2.0 is explicit and fits
+00:55 +308: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:55 +309: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:55 +310: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:55 +311: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:55 +312: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:55 +313: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:55 +314: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +315: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +316: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +317: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +318: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +319: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +320: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +321: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +322: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +323: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +324: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +325: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +326: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +327: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/fixed_preview_widget_test.dart: tag edits keep the fixed preview current; return updates source matches
+00:56 +328: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_task_history_test.dart: retired receipt, parent and members use the original epoch and graph
+00:56 +329: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_task_history_test.dart: missing original epoch returns no receipt without a current fallback
+00:56 +330: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_task_history_test.dart: a summary from a different graph cannot complete the original receipt
+00:57 +331: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview replaces in-flight url identity without stale pixels
+00:57 +332: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview replaces in-flight url identity without stale pixels
+00:57 +333: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview replaces in-flight url identity without stale pixels
+00:57 +334: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview replaces in-flight url identity without stale pixels
+00:57 +335: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_catalog_selection_test.dart: more than 1000 pack assignments retain idempotency across a lost second receipt
+00:57 +336: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview replaces in-flight headers identity without stale pixels
+00:57 +337: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview replaces in-flight headers identity without stale pixels
+00:57 +338: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_catalog_selection_test.dart: more than 1000 video assignments use bounded stable chunks
+00:57 +339: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview replaces in-flight version identity without stale pixels
+00:57 +340: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview replaces in-flight pack identity without stale pixels
+00:57 +341: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview replaces in-flight active identity without stale pixels
+00:57 +342: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail recover preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:61097/thumb
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:61097/thumb
+00:58 +343: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (390.0, 844.0, 1.0)
+00:58 +343: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail bounded preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:61102/thumb
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:61102/thumb
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:61102/thumb
+00:59 +344: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (390.0, 844.0, 1.0)
+00:59 +344: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail close-timer preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:61107/thumb
+00:59 +345: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (390.0, 844.0, 1.0)
+00:59 +345: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail close-request preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HttpException: Connection closed while receiving data, uri = http://127.0.0.1:61110/thumb
+00:59 +346: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail close-request preserves reader and cancels work
+00:59 +347: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (360.0, 740.0, 2.0)
+01:00 +347: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail manual preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 503, http://127.0.0.1:61114/thumb
+01:00 +348: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (360.0, 740.0, 2.0)
+01:00 +348: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/reader_thumbnail_recovery_test.dart: overview thumbnail unauthorized preserves reader and cancels work
+READER_IMAGE_FAILURE p0-0: HTTP request failed, statusCode: 401, http://127.0.0.1:61117/thumb
+01:00 +349: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (360.0, 740.0, 2.0)
+01:00 +350: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (360.0, 740.0, 2.0)
+01:00 +351: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (360.0, 740.0, 2.0)
+01:00 +352: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (360.0, 740.0, 2.0)
+01:00 +353: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (360.0, 740.0, 2.0)
+01:00 +354: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (360.0, 740.0, 2.0)
+01:01 +355: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (844.0, 390.0, 1.0)
+01:01 +356: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (844.0, 390.0, 1.0)
+01:01 +357: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (844.0, 390.0, 1.0)
+01:01 +358: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (844.0, 390.0, 1.0)
+01:02 +359: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/nonblocking_widgets_test.dart: querying a pending file result leaves navigation enabled
+01:03 +360: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (844.0, 390.0, 2.0)
+01:03 +361: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: video purge requires a fresh checkbox and dispatches only the captured choice (844.0, 390.0, 2.0)
+01:03 +362: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/nonblocking_widgets_test.dart: uninitialized video and blocked position save never capture vertical swipes
+01:03 +363: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: management identity change clears approval and prevents the old video deletion
+01:03 +364: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_purge_confirmation_test.dart: management identity change clears approval and prevents the old video deletion
+01:04 +365: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_management_layout_test.dart: legacy preview inspects once, preserves keyboard draft and cancels without restore (390.0, 844.0, 1.0)
+01:05 +366: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_management_layout_test.dart: legacy preview inspects once, preserves keyboard draft and cancels without restore (390.0, 844.0, 1.0)
+01:06 +367: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(390.0, 844.0) / 1.0
+01:06 +368: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_management_layout_test.dart: legacy preview inspects once, preserves keyboard draft and cancels without restore (360.0, 740.0, 2.0)
+01:07 +369: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_management_layout_test.dart: legacy preview inspects once, preserves keyboard draft and cancels without restore (360.0, 740.0, 2.0)
+01:07 +370: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(390.0, 844.0) / 1.0
+01:07 +371: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_management_layout_test.dart: legacy preview inspects once, preserves keyboard draft and cancels without restore (844.0, 390.0, 1.0)
+01:08 +372: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_management_layout_test.dart: legacy preview inspects once, preserves keyboard draft and cancels without restore (844.0, 390.0, 1.0)
+01:08 +373: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(360.0, 740.0) / 2.0
+01:08 +374: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_management_layout_test.dart: legacy preview inspects once, preserves keyboard draft and cancels without restore (844.0, 390.0, 2.0)
+01:09 +375: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(360.0, 740.0) / 2.0
+01:09 +376: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(360.0, 740.0) / 2.0
+01:09 +377: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:10 +378: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:10 +379: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:10 +380: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:10 +381: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:10 +382: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:10 +383: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_pack_reading_test.dart: unavailable directories never create an expanded session and 401 expires the shared owner
+01:10 +384: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:10 +385: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:10 +386: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:10 +387: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:10 +388: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +389: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +390: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_restore_plans_test.dart: lost accepted response reopens via original GET; explicitly sending same intent never posts twice
+01:11 +391: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +392: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +393: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +394: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +395: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +396: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +397: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +398: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +399: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +400: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 1.0
+01:11 +401: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:11 +402: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +403: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +404: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +405: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +406: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +407: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +408: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +409: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +410: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +411: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +412: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: normal cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +413: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +414: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +415: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +416: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +417: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +418: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: unknown cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +419: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: tail cleanup preserves reader and source Size(844.0, 390.0) / 2.0
+01:12 +420: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_test.dart: earlier result acknowledgement cannot forget a subsequently accepted retry
+01:13 +421: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_test.dart: trash acceptance retains uncertain permanent command and selected failures
+01:13 +422: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_test.dart: preparation lost reply recovers same key with GET; authorization sends nothing
+01:13 +423: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_test.dart: expired review and renewed plan reset checkbox; invalid owner blocks authorization
+01:13 +424: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_test.dart: closing during preparation cannot publish or authorize its late result
+01:13 +425: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_test.dart: 1000-pack review leaves 27 selected until a separate confirmation
+01:13 +426: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_test.dart: physical intent persists before POST and survives lost reply plus fresh journal
+01:13 +427: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_test.dart: uncertain purge keeps original record and locks resources; bound retry clears both only after settlement
+01:13 +428: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_test.dart: permanent command rejects tampered local scope and result counts
+01:13 +429: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_purge_test.dart: ready plan binds membership, aggregates, fingerprint and image path
+01:13 +430: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from preview refreshes inventory; delayed=false
+01:15 +431: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_counts_widget_test.dart: both library totals survive searches, filters and type switching
+01:15 +432: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from preview refreshes inventory; delayed=true
+01:16 +433: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from preview refreshes inventory; delayed=true
+01:16 +434: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_counts_widget_test.dart: only library shows totals; returning sees a fresh pair and preserves search
+01:17 +435: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from reader refreshes inventory; delayed=false
+01:17 +436: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_counts_widget_test.dart: zero-result scope can be cleared after leaving and returning
+01:18 +437: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/viewer_return_counts_test.dart: return from reader refreshes inventory; delayed=true
+01:18 +438: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_counts_widget_test.dart: older servers hide unknown badges and keep type actions
+01:18 +439: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_counts_widget_test.dart: large exact totals remain reachable at double text scale without overflow
+01:19 +440: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_recent_widget_test.dart: recent list paging, library isolation and empty state fit Size(390.0, 844.0) / 1.0
+01:20 +441: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_recent_widget_test.dart: recent list paging, library isolation and empty state fit Size(390.0, 844.0) / 1.0
+01:20 +442: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_recent_widget_test.dart: recent list paging, library isolation and empty state fit Size(390.0, 844.0) / 1.0
+01:20 +443: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_recent_widget_test.dart: recent list paging, library isolation and empty state fit Size(390.0, 844.0) / 1.0
+01:20 +444: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_recent_widget_test.dart: recent list paging, library isolation and empty state fit Size(390.0, 844.0) / 1.0
+01:20 +445: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_recent_widget_test.dart: recent list paging, library isolation and empty state fit Size(390.0, 844.0) / 1.0
+01:20 +446: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_recent_widget_test.dart: recent list paging, library isolation and empty state fit Size(390.0, 844.0) / 1.0
+01:23 +447: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_cleanup_widget_test.dart: ordinary card menu confirms whole pack, removes it and undo restores the same library query
+01:25 +448: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_cleanup_widget_test.dart: ordinary card menu confirms whole pack, removes it and undo restores the same library query
+01:26 +449: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_cleanup_widget_test.dart: ordinary card menu confirms whole pack, removes it and undo restores the same library query
+01:26 +450: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_cleanup_widget_test.dart: lost reply remains queryable from library after the removed card disappears
+01:26 +451: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_cleanup_widget_test.dart: lost reply remains queryable from library after the removed card disappears
+01:27 +452: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_cleanup_widget_test.dart: lost reply remains queryable from library after the removed card disappears
+01:27 +453: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_cleanup_widget_test.dart: lost reply remains queryable from library after the removed card disappears
+01:27 +454: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_cleanup_widget_test.dart: lost reply remains queryable from library after the removed card disappears
+01:27 +455: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_cleanup_widget_test.dart: lost reply remains queryable from library after the removed card disappears
+01:27 +456: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_visible_skip_test.dart: visible failed last image skips while viewport remains on previous page
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:61352/last
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:61352/last
+01:29 +457: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (390.0, 844.0, 1.0)
+01:29 +458: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (390.0, 844.0, 1.0)
+01:29 +459: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (390.0, 844.0, 1.0)
+01:29 +460: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (390.0, 844.0, 1.0)
+01:29 +461: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (390.0, 844.0, 1.0)
+01:29 +462: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_test.dart: deadline ends a stalled real response
+01:29 +463: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (360.0, 740.0, 2.0)
+01:29 +464: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (360.0, 740.0, 2.0)
+01:29 +465: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (360.0, 740.0, 2.0)
+01:29 +466: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (360.0, 740.0, 2.0)
+01:29 +467: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (360.0, 740.0, 2.0)
+01:29 +468: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (360.0, 740.0, 2.0)
+01:29 +469: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (844.0, 390.0, 1.0)
+01:30 +470: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (844.0, 390.0, 2.0)
+01:30 +471: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (844.0, 390.0, 2.0)
+01:30 +472: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (844.0, 390.0, 2.0)
+01:30 +473: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: short archive preview keeps its focused draft and cancels without restore (844.0, 390.0, 2.0)
+01:30 +474: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: root page failure keeps the previous page and edited mapping
+01:31 +475: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_recovery_widget_test.dart: uncertain restore permits navigation, reconnection and query while writes remain locked
+01:31 +476: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_recovery_widget_test.dart: uncertain restore permits navigation, reconnection and query while writes remain locked
+01:31 +477: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_recovery_widget_test.dart: uncertain restore permits navigation, reconnection and query while writes remain locked
+01:32 +478: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/backup_recovery_widget_test.dart: uncertain restore permits navigation, reconnection and query while writes remain locked
+01:33 +479: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: root pagination keeps drafts and confirmation starts off 360.0/2.0
+01:33 +480: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: mapping error keeps entered paths and checked confirmation on its original page
+01:33 +481: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_backup_widget_test.dart: mapping error keeps entered paths and checked confirmation on its original page
+01:33 +482: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_recent_query_test.dart: recent list, location, complete selection and reading send the identical source/order/filters
+01:33 +483: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_recent_query_test.dart: recent list, location, complete selection and reading send the identical source/order/filters
+01:33 +484: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_recent_query_test.dart: old pack service rejects recent reads and selections before issuing any whole-library request
+01:33 +485: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_recent_query_test.dart: catalog resume index is optional for old payloads but malformed positions cannot be shown
+01:34 +486: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_flow_test.dart: directory/tag intersection, batch tags and round survive reopening
+01:34 +487: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_flow_test.dart: delete is idempotent; undo restores exact item, tags, path and round
+01:34 +488: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_preparation_widget_test.dart: thumbnail warnings are displayed separately from source failures
+01:34 +489: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_preparation_widget_test.dart: thumbnail warnings are displayed separately from source failures
+01:34 +490: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_preparation_widget_test.dart: thumbnail warnings are displayed separately from source failures
+01:34 +491: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_preparation_widget_test.dart: thumbnail warnings are displayed separately from source failures
+01:34 +492: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_preparation_widget_test.dart: thumbnail warnings are displayed separately from source failures
+01:34 +493: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_preparation_widget_test.dart: thumbnail warnings are displayed separately from source failures
+01:35 +494: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: four destinations keep library, tag results and actual recent video scopes independent
+01:35 +495: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: four destinations keep library, tag results and actual recent video scopes independent
+01:35 +496: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: four destinations keep library, tag results and actual recent video scopes independent
+01:38 +497: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: four destinations keep library, tag results and actual recent video scopes independent
+01:38 +498: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_exit_lifecycle_test.dart: initialized native view detaches before decoder disposal, system back=true
+01:38 +499: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+01:39 +500: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+01:39 +501: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+01:39 +502: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+01:39 +503: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+01:39 +504: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+01:39 +505: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+01:39 +506: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+01:39 +507: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+01:39 +508: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+01:39 +509: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+01:39 +510: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: new media root submits a creation and scan progress does not duplicate jobs
+01:40 +511: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: tag dock opens the complete intersection directly and returns to its own results
+01:40 +512: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: unavailable root and failed scan publish authoritative status without fake success
+01:41 +513: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: unavailable root and failed scan publish authoritative status without fake success
+01:41 +514: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack label search remains usable with a narrow keyboard and large system text
+01:42 +515: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: scan clears cached directory paths that disappeared outside the app
+01:42 +516: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_repository_test.dart: scan clears cached directory paths that disappeared outside the app
+01:42 +517: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: video search keeps keyboard actions reachable and restores navigation Size(360.0, 740.0)/2.0
+01:42 +518: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack search keeps keyboard actions reachable and restores navigation Size(844.0, 390.0)/1.0
+01:43 +519: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/video_display_test.dart: display caption hides only a known final video extension without changing identity
+01:43 +520: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack search keeps keyboard actions reachable and restores navigation Size(360.0, 740.0)/2.0
+01:43 +521: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack search keeps keyboard actions reachable and restores navigation Size(360.0, 740.0)/2.0
+01:43 +522: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+01:43 +523: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+01:43 +524: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+01:43 +525: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+01:43 +526: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+01:43 +527: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+01:43 +528: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+01:43 +529: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+01:43 +530: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+01:43 +531: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(360.0, 740.0) at text scale 2.0
+01:44 +532: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(844.0, 390.0) at text scale 1.6
+01:44 +533: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_selection_widget_test.dart: a single remaining batch choice appends and retains its original pack tags
+01:46 +534: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_selection_widget_test.dart: a single remaining batch choice appends and retains its original pack tags
+01:47 +535: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_root_sheet_test.dart: create typed disabled root remains accessible at Size(360.0, 740.0)/2.0/false
+01:47 +536: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_root_sheet_test.dart: create typed disabled root remains accessible at Size(844.0, 390.0)/1.6/true
+01:47 +537: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_root_sheet_test.dart: landscape keyboard keeps the focused input and save reachable without overflow
+01:47 +538: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart: video definition reload cannot recount after leaving tags
+01:48 +539: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart: video definition reload cannot recount after leaving tags
+01:48 +540: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart: video definition reload cannot recount after leaving tags
+01:49 +541: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart: video definition reload cannot recount after disposal
+01:49 +542: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_lifecycle_test.dart: pack definition reload cannot recount after leaving tags
+01:49 +543: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/player_reduced_motion_test.dart: player motion preserves playback and follows system reduction; (fullscreen: false, reduced: false)
+01:49 +544: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/player_reduced_motion_test.dart: player motion preserves playback and follows system reduction; (fullscreen: false, reduced: false)
+01:50 +545: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/player_reduced_motion_test.dart: player motion preserves playback and follows system reduction; (fullscreen: true, reduced: false)
+01:50 +546: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/player_reduced_motion_test.dart: player motion preserves playback and follows system reduction; (fullscreen: true, reduced: false)
+01:50 +547: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: snapshot lost response and reopening query one original without reinspection or restore
+01:50 +548: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/player_reduced_motion_test.dart: player motion preserves playback and follows system reduction; (fullscreen: false, reduced: true)
+01:50 +549: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: export/save cancellation and reopening preserve the same original job and file
+01:50 +550: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/player_reduced_motion_test.dart: player motion preserves playback and follows system reduction; (fullscreen: true, reduced: true)
+01:50 +551: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/player_reduced_motion_test.dart: player motion preserves playback and follows system reduction; (fullscreen: true, reduced: true)
+01:50 +552: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: lost import response resumes without needing the local input or repeating POST
+01:50 +553: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: lost restore response retains complete mapping and queries the v2 original on reopening
+01:50 +554: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: unknown journal write and missing original remain query-only after reopening
+01:50 +555: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: incomplete root pages, spoofed previews and another owner cannot authorize a restore
+01:50 +556: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: an existing v1 export is read with its own protocol before starting a v2 export
+01:50 +557: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_files_repository_test.dart: trash fetches unvisited rows and maps video selection to trash identity
+01:51 +558: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: video definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+01:51 +559: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: video definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+01:51 +560: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: video definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+01:51 +561: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: video definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+01:51 +562: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: video definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+01:51 +563: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: video definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+01:51 +564: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: video definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+01:51 +565: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: video definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+01:51 +566: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: video definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+01:51 +567: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: video definition keeps failed draft and has no directory error (390.0, 844.0, 1.0)
+01:52 +568: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 390.0/1.0
+01:52 +569: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 390.0/1.0
+01:53 +570: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 390.0/1.0
+01:53 +571: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 390.0/1.0
+01:53 +572: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 390.0/1.0
+01:53 +573: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: pack definition keeps failed draft and has no directory error (844.0, 390.0, 1.0)
+01:53 +574: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 360.0/2.0
+01:54 +575: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 360.0/2.0
+01:54 +576: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: pack definition keeps failed draft and has no directory error (844.0, 390.0, 2.0)
+01:54 +577: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 844.0/1.0
+01:54 +578: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 844.0/1.0
+01:54 +579: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_definition_form_test.dart: pack removal requires separate confirmation and returns the exact selected id
+01:54 +580: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 844.0/2.0
+01:54 +581: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 844.0/2.0
+01:55 +582: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 844.0/2.0
+01:55 +583: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: typed missing pagination, cancel and original cleanup lookup 844.0/2.0
+01:55 +584: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: unknown cleanup from the bottom of 24 rows reveals its status without another submit
+01:55 +585: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/missing_media_page_test.dart: failed page reload retains members and offset; retry never submits cleanup
+01:56 +586: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview controls and range remain usable at (Size(390.0, 844.0), 1.0)
+01:56 +587: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview controls and range remain usable at (Size(390.0, 844.0), 1.0)
+01:56 +588: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview controls and range remain usable at (Size(390.0, 844.0), 1.0)
+01:58 +589: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview controls and range remain usable at (Size(390.0, 844.0), 1.0)
+02:00 +590: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash restore from settings Size(390.0, 844.0) / 1.0
+02:00 +591: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash restore from settings Size(390.0, 844.0) / 1.0
+02:02 +592: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash restore from settings Size(390.0, 844.0) / 1.0
+02:02 +593: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash restore from settings Size(390.0, 844.0) / 1.0
+02:02 +594: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview controls and range remain usable at (Size(844.0, 390.0), 1.0)
+02:03 +595: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash unknown from settings Size(390.0, 844.0) / 1.0
+02:03 +596: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash unknown from settings Size(390.0, 844.0) / 1.0
+02:03 +597: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview controls and range remain usable at (Size(844.0, 390.0), 2.0)
+02:05 +598: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(390.0, 844.0) / 1.0
+02:05 +599: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(390.0, 844.0) / 1.0
+02:05 +600: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(390.0, 844.0) / 1.0
+02:05 +601: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(390.0, 844.0) / 1.0
+02:05 +602: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: range fits 2 entries without eager metadata at Size(844.0, 390.0)
+02:05 +603: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(390.0, 844.0) / 1.0
+02:05 +604: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(390.0, 844.0) / 1.0
+02:06 +605: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview theme persists or preserves previous preference on failure=false
+02:07 +606: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash keyboard from settings Size(390.0, 844.0) / 1.0
+02:07 +607: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview theme persists or preserves previous preference on failure=true
+02:08 +608: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preview_viewport_test.dart: preview theme persists or preserves previous preference on failure=true
+02:08 +609: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash unknown from settings Size(360.0, 740.0) / 2.0
+02:09 +610: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(360.0, 740.0) / 2.0
+02:10 +611: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/player_lifecycle_test.dart: queue selection starts a new video after suspension, preserving current pause; preload=false
+02:10 +612: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(360.0, 740.0) / 2.0
+02:11 +613: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/player_lifecycle_test.dart: queue selection starts a new video after suspension, preserving current pause; preload=true
+02:11 +614: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash keyboard from settings Size(360.0, 740.0) / 2.0
+02:11 +615: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash keyboard from settings Size(360.0, 740.0) / 2.0
+02:11 +616: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash keyboard from settings Size(360.0, 740.0) / 2.0
+02:13 +617: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/playback_intent_test.dart: a transient device hint disappearing does not discard an open speed menu
+02:13 +618: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash restore from settings Size(844.0, 390.0) / 1.0
+02:13 +619: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash restore from settings Size(844.0, 390.0) / 1.0
+02:13 +620: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/playback_intent_test.dart: a buffering play request can boost, but an explicit pause cannot
+02:13 +621: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash unknown from settings Size(844.0, 390.0) / 1.0
+02:13 +622: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash unknown from settings Size(844.0, 390.0) / 1.0
+02:14 +623: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(844.0, 390.0) / 1.0
+02:15 +624: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_assignment_widget_test.dart: modal keyboard keeps a failed source library at its original viewport
+02:15 +625: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_assignment_widget_test.dart: modal keyboard keeps a failed source library at its original viewport
+02:16 +626: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash keyboard from settings Size(844.0, 390.0) / 1.0
+02:17 +627: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash keyboard from settings Size(844.0, 390.0) / 1.0
+02:17 +628: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_assignment_widget_test.dart: long directory opens with a complete first candidate row
+02:17 +629: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash restore from settings Size(844.0, 390.0) / 2.0
+02:18 +630: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash restore from settings Size(844.0, 390.0) / 2.0
+02:18 +631: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash restore from settings Size(844.0, 390.0) / 2.0
+02:18 +632: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash restore from settings Size(844.0, 390.0) / 2.0
+02:19 +633: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash restore from settings Size(844.0, 390.0) / 2.0
+02:19 +634: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_assignment_widget_test.dart: create and assignment failures retain draft, selected IDs and namespace pack=false
+02:19 +635: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash unknown from settings Size(844.0, 390.0) / 2.0
+02:19 +636: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash unknown from settings Size(844.0, 390.0) / 2.0
+02:19 +637: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash unknown from settings Size(844.0, 390.0) / 2.0
+02:20 +638: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_assignment_widget_test.dart: new assignment row remains visible after keyboard metrics pack=true
+02:20 +639: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(844.0, 390.0) / 2.0
+02:20 +640: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(844.0, 390.0) / 2.0
+02:20 +641: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(844.0, 390.0) / 2.0
+02:20 +642: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(844.0, 390.0) / 2.0
+02:20 +643: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(844.0, 390.0) / 2.0
+02:21 +644: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(844.0, 390.0) / 2.0
+02:21 +645: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(844.0, 390.0) / 2.0
+02:21 +646: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(844.0, 390.0) / 2.0
+02:21 +647: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(844.0, 390.0) / 2.0
+02:21 +648: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash gate from settings Size(844.0, 390.0) / 2.0
+02:21 +649: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/tag_assignment_widget_test.dart: assignment surface (390.0, 844.0, 1.0) pack=true batch=true
+02:21 +650: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(844.0, 390.0) / 2.0
+02:21 +651: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(844.0, 390.0) / 2.0
+02:21 +652: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(844.0, 390.0) / 2.0
+02:22 +653: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(844.0, 390.0) / 2.0
+02:22 +654: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(844.0, 390.0) / 2.0
+02:22 +655: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(844.0, 390.0) / 2.0
+02:22 +656: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(844.0, 390.0) / 2.0
+02:22 +657: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(844.0, 390.0) / 2.0
+02:22 +658: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash page-error from settings Size(844.0, 390.0) / 2.0
+02:23 +659: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_trash_widget_test.dart: typed trash keyboard from settings Size(844.0, 390.0) / 2.0
+02:25 +660: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_presentation_widget_test.dart: card title and author preserve reference rows at scale 1.0
+02:25 +661: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preference_switch_test.dart: whole-row pointer, switch and keyboard each toggle once
+02:27 +662: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_presentation_widget_test.dart: card title and author preserve reference rows at scale 2.0
+02:27 +663: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_presentation_widget_test.dart: card title and author preserve reference rows at scale 2.0
+02:28 +664: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+02:28 +665: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+02:28 +666: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+02:28 +667: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+02:28 +668: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+02:28 +669: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+02:28 +670: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+02:28 +671: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+02:28 +672: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(390.0, 844.0)/1.0
+02:30 +673: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(360.0, 740.0)/2.0
+02:31 +674: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(844.0, 390.0)/1.0
+02:31 +675: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_settings_semantics_test.dart: reader settings keep accessible mode sections stable Size(844.0, 390.0)/2.0
+02:32 +676: All tests passed!
