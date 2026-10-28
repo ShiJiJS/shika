@@ -85,3 +85,9 @@
 新增独立profile入口，计划每类30次Flutter缓存冷首图、正常相邻翻页、连续拖过500页、内核PSS/RSS/VmHWM和帧时序；静态检查通过，原型独立。前三次采集错误（异步tester保护、控制消息分块协议、Tooltip类型）分别修正/留档，不算产品故障。随后SWANGLE/GLES在8次4K重复后bad color buffer/GL context异常、QEMU81429挂起并离开进程表；内核PSS采样最大196416KiB、RSS高水位297432KiB，不能据此诊断App OOM。只在确认进程消失后换官方CLI支持的SwiftShader复测；另一次进度确认等待超时，正在加完整状态诊断，尚未归因。所有失败均不算成功轮次，不用8次样本冒充30次分位数。
 
 [方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-performance/docs/plans/library-first/LF8-READER-PERFORMANCE.md)／[当前诊断记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-performance/docs/plans/library-first/evidence/lf8-reader-performance/README.md)。完整30次、三轮500页、普通release入口与目标手机/NAS仍待完成；#78/#89与#24/#33保持开放。指定SMB目录在Mac可读，目前只确认路径可达；未把它当成真实图包已验收，未扫描/修改真实收藏或NAS服务。
+
+## 2026-10-28：计时样本与播放器减少动画补充
+
+PR #96 的attempt-6已保留4K/8K各30次首图及相邻翻页原始样本，但500页在第157页采样失败，整轮不通过。已修正跨帧采样和Slider外侧空白点击的驱动问题；attempt-8长包诊断到第124页后连接超时，模拟器存活，尚未归因。新增专用服务请求阶段观察，继续定位，不增加产品超时或改真实图包。最终三轮30次+500页、普通release与目标手机/NAS仍待完成，所有失败独立留档。
+
+另登记#97并提交[PR #98](https://github.com/ShiJiJS/video_viewer/pull/98)：视频控件四处固定160ms动画改为遵循系统“减少动画”；相同四行为用例旧模块2失败/2通过、修正后4通过，加13项相关检查共17项和analyze通过。当前正常预览APK尚未纳入此修复，完整UI-06及父任务继续开放。原型1cbf605独立可移除，未改正式服务或用户媒体。

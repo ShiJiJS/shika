@@ -1,0 +1,44 @@
+{
+  "completed": false,
+  "final_matrix_accepted": false,
+  "last_sample": {
+    "phase": "long-scroll",
+    "trial": null,
+    "latency_us": null,
+    "pack_id": "ee3fcb9f-e4a8-4248-a947-9395f72d5195",
+    "page_id": "87e6ecad-532a-4af3-b17f-0f32dedc9b92",
+    "index": 156,
+    "source_dimensions": [
+      4000,
+      6000
+    ],
+    "decoded": [
+      [
+        1170,
+        1755
+      ]
+    ],
+    "providers": 6,
+    "estimated_bytes": 46542600,
+    "metadata": 120,
+    "window": [
+      40,
+      159
+    ],
+    "cache_bytes": 42523504,
+    "pending": 1,
+    "live": 3
+  },
+  "sample_count": 500,
+  "peaks": {
+    "providers": 6,
+    "estimated_bytes": 49280400,
+    "metadata": 120,
+    "cache_bytes": 50736904,
+    "pending": 6,
+    "live": 6,
+    "decoded_pixels": 2053350
+  },
+  "sampled_pss_max_kib": 251135,
+  "rss_high_water_kib": 363600
+}
