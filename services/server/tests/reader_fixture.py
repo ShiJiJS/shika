@@ -58,18 +58,26 @@ def install(app, key):
 
     @app.post("/__fixture/reader/{action}")
     def reader_action(
-        action: str, pack_id: str | None = None, page_id: str | None = None,
+        action: str,
+        pack_id: str | None = None,
+        page_id: str | None = None,
         x_fixture_key: str | None = Header(default=None),
     ):
         if x_fixture_key != key:
             raise HTTPException(status_code=403)
         if action == "stats":
-            return {"images": list(images), "progress": list(progress), "remaining": state["remaining"]}
+            return {
+                "images": list(images),
+                "progress": list(progress),
+                "remaining": state["remaining"],
+            }
         with app.state.db.read() as session:
             pack = session.get(ImagePack, pack_id)
             root = session.get(Root, pack.root_id) if pack else None
             if (
-                root is None or root.kind != "pack" or root.path != "/media/shorts/图包"
+                root is None
+                or root.kind != "pack"
+                or root.path != "/media/shorts/图包"
                 or Path(pack.path).parent != Path(root.path)
             ):
                 raise HTTPException(status_code=409, detail="Expected isolated flower pack")
@@ -80,8 +88,15 @@ def install(app, key):
                 state.update({"page_id": page_id, "remaining": 3})
             elif action in {"drop-progress", "lose-progress"}:
                 if state["progress"]:
-                    raise HTTPException(status_code=409, detail="An isolated fault is already armed")
-                state.update({"pack_id": pack_id, "progress": "before" if action == "drop-progress" else "after"})
+                    raise HTTPException(
+                        status_code=409, detail="An isolated fault is already armed"
+                    )
+                state.update(
+                    {
+                        "pack_id": pack_id,
+                        "progress": "before" if action == "drop-progress" else "after",
+                    }
+                )
             else:
                 raise HTTPException(status_code=404)
         return {"status": "ok"}

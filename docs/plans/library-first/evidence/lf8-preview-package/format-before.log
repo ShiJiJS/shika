@@ -1,0 +1,2316 @@
+unformatted: File would be reformatted
+    --> services/server/tests/e2e_server.py:65:17
+     |
+64   |         marker.write_text("dedicated generated emulator fixture")
+     -     controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False, "lose_default_response": False,
+     -                 "fail_restore": False, "slow_restore": False, "slow_page": False,
+     -                 "fail_streams": 0, "busy_covers": 0, "fail_tag_page": False, "fail_tag_results": False, "fail_pack_names": False, "fail_pack_anchor": False, "fail_pack_trash": False, "lose_missing_response": False}
+65   +     controls = {
+66   +         "slow": False,
+67   +         "lose_tag_response": False,
+68   +         "lose_file_response": False,
+69   +         "lose_default_response": False,
+70   +         "fail_restore": False,
+71   +         "slow_restore": False,
+72   +         "slow_page": False,
+73   +         "fail_streams": 0,
+74   +         "busy_covers": 0,
+75   +         "fail_tag_page": False,
+76   +         "fail_tag_results": False,
+77   +         "fail_pack_names": False,
+78   +         "fail_pack_anchor": False,
+79   +         "fail_pack_trash": False,
+80   +         "lose_missing_response": False,
+81   +     }
+82   |
+--------------------------------------------------------------------------------
+112  |             }
+     -             if (request.method == "PATCH" and request.url.path in {"/api/v1/video-tags", "/api/v1/pack-tag-links", "/api/v1/playback-defaults", "/api/v1/reading-defaults"}) or (
+     -                 request.method == "POST" and request.url.path in {
+     -                     "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans", "/api/v1/packs/forget-missing", "/api/v1/pack-restore-plans"
+113  +             if (
+114  +                 request.method == "PATCH"
+115  +                 and request.url.path
+116  +                 in {
+117  +                     "/api/v1/video-tags",
+118  +                     "/api/v1/pack-tag-links",
+119  +                     "/api/v1/playback-defaults",
+120  +                     "/api/v1/reading-defaults",
+121  +                 }
+122  +             ) or (
+123  +                 request.method == "POST"
+124  +                 and request.url.path
+125  +                 in {
+126  +                     "/api/v1/videos/trash",
+127  +                     "/api/v1/trash/restore",
+128  +                     "/api/v1/trash/permanent",
+129  +                     "/api/v1/packs/trash",
+130  +                     "/api/v1/pack-trash/restore",
+131  +                     "/api/v1/pack-trash/permanent",
+132  +                     "/api/v1/pack-purge-plans",
+133  +                     "/api/v1/packs/forget-missing",
+134  +                     "/api/v1/pack-restore-plans",
+135  |                 }
+--------------------------------------------------------------------------------
+141  |                 if request.url.path in {"/api/v1/video-tags", "/api/v1/pack-tag-links"}:
+     -                     entry["assignment"] = {key: body.get(key) for key in ("video_ids", "pack_ids", "tag_ids", "mode")}
+142  +                     entry["assignment"] = {
+143  +                         key: body.get(key) for key in ("video_ids", "pack_ids", "tag_ids", "mode")
+144  +                     }
+145  |                 if request.url.path == "/api/v1/pack-purge-plans":
+146  |                     entry["purge_members"] = sorted(body.get("trash_ids", []))
+147  |                 if request.url.path == "/api/v1/pack-trash/permanent":
+     -                     entry["purge_input"] = {key: body.get(key) for key in ("plan_id", "digest", "confirmed")}
+148  +                     entry["purge_input"] = {
+149  +                         key: body.get(key) for key in ("plan_id", "digest", "confirmed")
+150  +                     }
+151  |                 if request.url.path == "/api/v1/pack-restore-plans":
+152  |                     entry["restore_members"] = sorted(body.get("trash_ids", []))
+     -             if request.method in {"POST", "PATCH", "DELETE"} and any(request.url.path == path or request.url.path.startswith(path + "/") for path in ("/api/v1/tags", "/api/v1/pack-tags")):
+153  +             if request.method in {"POST", "PATCH", "DELETE"} and any(
+154  +                 request.url.path == path or request.url.path.startswith(path + "/")
+155  +                 for path in ("/api/v1/tags", "/api/v1/pack-tags")
+156  +             ):
+157  |                 body = await request.json()
+158  |                 entry["tag_input"] = {"name": body.get("name")}
+     -                 entry["command_hash"] = hashlib.sha256(str(body.get("request_id")).encode()).hexdigest()
+159  +                 entry["command_hash"] = hashlib.sha256(
+160  +                     str(body.get("request_id")).encode()
+161  +                 ).hexdigest()
+162  |             if (request.method == "POST" and request.url.path == "/api/v1/roots") or (
+163  |                 request.method == "PUT" and request.url.path.startswith("/api/v1/roots/")
+164  |             ):
+165  |                 body = await request.json()
+     -                 entry["root_input"] = {k: body[k] for k in ("name", "path", "kind", "enabled") if k in body}
+166  +                 entry["root_input"] = {
+167  +                     k: body[k] for k in ("name", "path", "kind", "enabled") if k in body
+168  +                 }
+169  |             entry["query_lists"] = {
+170  |                 key: request.query_params.getlist(key)
+     -                 for key in ("tag_ids", "anchor_ids") if key in request.query_params
+171  +                 for key in ("tag_ids", "anchor_ids")
+172  +                 if key in request.query_params
+173  |             }
+--------------------------------------------------------------------------------
+177  |                 entry["status"] = 503
+     -                 return JSONResponse({"error": {"code": "image_busy", "message": "Isolated transient cover failure"}}, status_code=503)
+     -             if controls["fail_pack_trash"] and request.method == "GET" and request.url.path == "/api/v1/pack-trash":
+178  +                 return JSONResponse(
+179  +                     {
+180  +                         "error": {
+181  +                             "code": "image_busy",
+182  +                             "message": "Isolated transient cover failure",
+183  +                         }
+184  +                     },
+185  +                     status_code=503,
+186  +                 )
+187  +             if (
+188  +                 controls["fail_pack_trash"]
+189  +                 and request.method == "GET"
+190  +                 and request.url.path == "/api/v1/pack-trash"
+191  +             ):
+192  |                 controls["fail_pack_trash"] = False
+193  |                 entry["status"] = 503
+     -                 return JSONResponse({"error": {"code": "fixture_trash_read", "message": "图包回收站暂时无法读取，请重试"}}, status_code=503)
+     -             if controls["fail_pack_anchor"] and request.method == "GET" and request.url.path == "/api/v1/packs" and request.query_params.get("anchor_ids"):
+194  +                 return JSONResponse(
+195  +                     {
+196  +                         "error": {
+197  +                             "code": "fixture_trash_read",
+198  +                             "message": "图包回收站暂时无法读取，请重试",
+199  +                         }
+200  +                     },
+201  +                     status_code=503,
+202  +                 )
+203  +             if (
+204  +                 controls["fail_pack_anchor"]
+205  +                 and request.method == "GET"
+206  +                 and request.url.path == "/api/v1/packs"
+207  +                 and request.query_params.get("anchor_ids")
+208  +             ):
+209  |                 controls["fail_pack_anchor"] = False
+210  |                 entry["status"] = 503
+     -                 return JSONResponse({"error": {"code": "fixture_pack_anchor", "message": "Isolated pack location failure"}}, status_code=503)
+     -             if controls["fail_pack_names"] and request.method == "GET" and request.url.path == "/api/v1/pack-tags/resolve":
+211  +                 return JSONResponse(
+212  +                     {
+213  +                         "error": {
+214  +                             "code": "fixture_pack_anchor",
+215  +                             "message": "Isolated pack location failure",
+216  +                         }
+217  +                     },
+218  +                     status_code=503,
+219  +                 )
+220  +             if (
+221  +                 controls["fail_pack_names"]
+222  +                 and request.method == "GET"
+223  +                 and request.url.path == "/api/v1/pack-tags/resolve"
+224  +             ):
+225  |                 controls["fail_pack_names"] = False
+226  |                 entry["status"] = 503
+     -                 return JSONResponse({"error": {"code": "fixture_names", "message": "Isolated selected label lookup failure"}}, status_code=503)
+     -             if controls["fail_tag_page"] and request.method == "GET" and request.url.path == "/api/v1/tags" and request.query_params.get("offset") == "50":
+227  +                 return JSONResponse(
+228  +                     {
+229  +                         "error": {
+230  +                             "code": "fixture_names",
+231  +                             "message": "Isolated selected label lookup failure",
+232  +                         }
+233  +                     },
+234  +                     status_code=503,
+235  +                 )
+236  +             if (
+237  +                 controls["fail_tag_page"]
+238  +                 and request.method == "GET"
+239  +                 and request.url.path == "/api/v1/tags"
+240  +                 and request.query_params.get("offset") == "50"
+241  +             ):
+242  |                 controls["fail_tag_page"] = False
+243  |                 entry["status"] = 503
+     -                 return JSONResponse({"error": {"code": "fixture_tag_page", "message": "Isolated tag page failure"}}, status_code=503)
+     -             if controls["fail_tag_results"] and request.method == "GET" and request.url.path == "/api/v1/videos" and request.query_params.get("source") == "tags" and request.query_params.get("limit") == "24":
+244  +                 return JSONResponse(
+245  +                     {"error": {"code": "fixture_tag_page", "message": "Isolated tag page failure"}},
+246  +                     status_code=503,
+247  +                 )
+248  +             if (
+249  +                 controls["fail_tag_results"]
+250  +                 and request.method == "GET"
+251  +                 and request.url.path == "/api/v1/videos"
+252  +                 and request.query_params.get("source") == "tags"
+253  +                 and request.query_params.get("limit") == "24"
+254  +             ):
+255  |                 controls["fail_tag_results"] = False
+256  |                 entry["status"] = 503
+257  +
+258  |                 def current_epoch():
+259  |                     with app.state.db.read() as session:
+260  |                         return Authority.current(session)
+261  +
+262  |                 return JSONResponse(
+     -                     {"error": {"code": "fixture_tag_results", "message": "标签结果暂时无法读取，请重试"}},
+263  +                     {
+264  +                         "error": {
+265  +                             "code": "fixture_tag_results",
+266  +                             "message": "标签结果暂时无法读取，请重试",
+267  +                         }
+268  +                     },
+269  |                     status_code=503,
+270  |                     headers={EPOCH_HEADER: await run_in_threadpool(current_epoch)},
+271  |                 )
+     -             if controls["slow_page"] and request.url.path == "/api/v1/videos" and int(request.query_params.get("offset", "0")) > 0:
+272  +             if (
+273  +                 controls["slow_page"]
+274  +                 and request.url.path == "/api/v1/videos"
+275  +                 and int(request.query_params.get("offset", "0")) > 0
+276  +             ):
+277  |                 await asyncio.sleep(3)
+278  |             if controls["fail_streams"] and request.url.path.endswith("/stream"):
+279  |                 controls["fail_streams"] -= 1
+280  |                 entry["status"] = 503
+     -                 return JSONResponse({"error": {"code": "media_busy", "message": "Isolated transient stream failure"}}, status_code=503)
+281  +                 return JSONResponse(
+282  +                     {
+283  +                         "error": {
+284  +                             "code": "media_busy",
+285  +                             "message": "Isolated transient stream failure",
+286  +                         }
+287  +                     },
+288  +                     status_code=503,
+289  +                 )
+290  |             if request.query_params.get("search") == "片":
+291  |                 await asyncio.sleep(0.75)
+292  |         response = await call_next(request)
+     -         if (controls["lose_missing_response"] and request.method == "POST"
+     -             and request.url.path == "/api/v1/packs/forget-missing" and response.status_code == 202):
+293  +         if (
+294  +             controls["lose_missing_response"]
+295  +             and request.method == "POST"
+296  +             and request.url.path == "/api/v1/packs/forget-missing"
+297  +             and response.status_code == 202
+298  +         ):
+299  |             controls["lose_missing_response"] = False
+     -             response = JSONResponse({"error": {"code": "fixture_response_lost", "message": "清理结果待核对，请查询原请求"}}, status_code=503)
+     -         if (controls["lose_default_response"] and request.method == "PATCH"
+300  +             response = JSONResponse(
+301  +                 {
+302  +                     "error": {
+303  +                         "code": "fixture_response_lost",
+304  +                         "message": "清理结果待核对，请查询原请求",
+305  +                     }
+306  +                 },
+307  +                 status_code=503,
+308  +             )
+309  +         if (
+310  +             controls["lose_default_response"]
+311  +             and request.method == "PATCH"
+312  |             and request.url.path in {"/api/v1/playback-defaults", "/api/v1/reading-defaults"}
+     -             and response.status_code == 200):
+313  +             and response.status_code == 200
+314  +         ):
+315  |             controls["lose_default_response"] = False
+316  |             response = JSONResponse(
+     -                 {"error": {"code": "fixture_response_lost", "message": "默认设置结果待核对"}}, status_code=503,
+317  +                 {"error": {"code": "fixture_response_lost", "message": "默认设置结果待核对"}},
+318  +                 status_code=503,
+319  |             )
+--------------------------------------------------------------------------------
+335  |             and request.method == "POST"
+     -             and (request.url.path in {"/api/v1/videos/trash", "/api/v1/packs/trash", "/api/v1/pack-trash/restore", "/api/v1/pack-trash/permanent", "/api/v1/pack-purge-plans", "/api/v1/pack-restore-plans"} or request.url.path.startswith("/api/v1/pack-restore-plans/") and request.url.path.endswith("/stop"))
+336  +             and (
+337  +                 request.url.path
+338  +                 in {
+339  +                     "/api/v1/videos/trash",
+340  +                     "/api/v1/packs/trash",
+341  +                     "/api/v1/pack-trash/restore",
+342  +                     "/api/v1/pack-trash/permanent",
+343  +                     "/api/v1/pack-purge-plans",
+344  +                     "/api/v1/pack-restore-plans",
+345  +                 }
+346  +                 or request.url.path.startswith("/api/v1/pack-restore-plans/")
+347  +                 and request.url.path.endswith("/stop")
+348  +             )
+349  |             and response.status_code == 202
+350  |         ):
+351  |             controls["lose_file_response"] = False
+352  |             response = JSONResponse(
+     -                 {"error": {"code": "fixture_response_lost", "message": "恢复或停止结果待确认，请查询原请求" if "pack-restore-plans" in request.url.path else "恢复结果待确认，请查询原结果" if request.url.path == "/api/v1/pack-trash/restore" else "删除结果待确认，请查询结果"}},
+353  +                 {
+354  +                     "error": {
+355  +                         "code": "fixture_response_lost",
+356  +                         "message": "恢复或停止结果待确认，请查询原请求"
+357  +                         if "pack-restore-plans" in request.url.path
+358  +                         else "恢复结果待确认，请查询原结果"
+359  +                         if request.url.path == "/api/v1/pack-trash/restore"
+360  +                         else "删除结果待确认，请查询结果",
+361  +                     }
+362  +                 },
+363  |                 status_code=503,
+--------------------------------------------------------------------------------
+381  |             raise HTTPException(status_code=403)
+     -
+382  |
+--------------------------------------------------------------------------------
+404  |             "ready",
+     -             "authority-before", "authority-history", "authority-selection", "authority-current",
+405  +             "authority-before",
+406  +             "authority-history",
+407  +             "authority-selection",
+408  +             "authority-current",
+409  |             "library",
+--------------------------------------------------------------------------------
+422  |             "prepared",
+     -             "workspace-video", "workspace-packs", "workspace-video-tags",
+     -             "workspace-pack-tags", "workspace-settings", "workspace-dark",
+     -             "tag-ui-assign-video-single", "tag-ui-assign-video-dark", "tag-ui-assign-video-error", "tag-ui-assign-video-keyboard", "tag-ui-assign-video-saved", "tag-ui-assign-pack-single", "tag-ui-assign-pack-error", "tag-ui-assign-pack-keyboard", "tag-ui-assign-pack-saved", "tag-ui-assign-videos", "tag-ui-assign-video-batch", "tag-ui-assign-packs", "tag-ui-assign-pack-batch", "tag-ui-assign-verified",
+     -             "tag-ui-video", "tag-ui-pack", "tag-ui-dark", "tag-ui-create-keyboard", "tag-ui-create-error", "tag-ui-created", "tag-ui-rename-editor", "tag-ui-rename-editor-dark", "tag-ui-renamed", "tag-ui-remove-confirm", "tag-ui-removed", "tag-ui-page-error", "tag-ui-paged", "tag-ui-results-error", "tag-ui-results",
+     -             "tag-catalog-retry", "tag-catalog-paged", "tag-catalog-renamed",
+     -             "selection-videos", "selection-packs",
+     -             "pack-names-card", "pack-names-retry", "pack-names-saved", "pack-names-renamed",
+     -             "pack-anchor-before", "pack-anchor-error", "pack-anchor-return", "pack-anchor-prepend", "pack-anchor-inserted",
+     -             "reader-horizontal", "reader-vertical", "reader-reopen", "reader-overview", "reader-next", "reader-return",
+     -             "recent-initial", "recent-tail", "recent-reading", "recent-return", "recent-library",
+     -             "controls-rtl", "controls-zoom", "controls-immersive", "controls-width", "controls-reopen", "controls-vertical", "controls-next", "controls-return",
+     -             "trash-read-error", "trash-reader", "trash-selected", "trash-unknown", "trash-restored", "trash-recent",
+     -             "trash-video", "trash-packs", "trash-empty", "trash-paged", "trash-confirm", "trash-receipt", "trash-single-confirm", "trash-single-restored", "trash-dark", "trash-keyboard",
+     -             "purge-ui-video-confirm", "purge-ui-selected", "purge-ui-review", "purge-ui-members", "purge-ui-files", "purge-ui-saved", "purge-ui-saved-dark", "purge-ui-saved-reopened", "purge-ui-unknown", "purge-ui-result", "purge-ui-retry-confirm", "purge-ui-finished",
+     -             "purge-selected", "purge-review", "purge-files", "purge-saved", "purge-saved-reopened", "purge-unknown", "purge-result", "purge-finished",
+     -             "bulk-selected", "bulk-review", "bulk-unknown", "bulk-receipt", "bulk-paged", "bulk-selection", "bulk-next-review",
+     -             "defaults-video", "defaults-reader", "defaults-unknown", "defaults-reopened", "defaults-migration",
+     -             "roots-created", "roots-disabled", "roots-conflict", "missing-empty-video", "missing-first", "missing-confirm-cancel", "missing-dark", "missing-paged", "missing-preserved", "missing-unknown", "missing-reopened", "missing-result", "missing-task-paged",
+     -             "management-backup", "management-backup-cancel", "management-backup-saved", "management-restore-preview", "management-restore-keyboard", "management-backup-error", "management-pending", "management-detail", "management-list", "management-paged", "management-dark", "management-historical", "management-task-backup-saved",
+     -             "tasks-list", "tasks-pending", "tasks-detail", "tasks-paged", "tasks-historical", "tasks-backup-saved",
+     -             "restore-selected", "restore-unknown", "restore-reopened", "restore-paged", "restore-stop-unknown", "restore-stopped",
+     -                 "cleanup-ready", "cleanup-unknown", "cleanup-next", "cleanup-undo", "cleanup-normal", "cleanup-resumed", "cleanup-tail", "cleanup-return",
+     -                 "recovery-image-error", "recovery-image-ready", "recovery-unknown", "recovery-receipt", "recovery-background", "recovery-tags", "recovery-queue", "recovery-return",
+423  +             "workspace-video",
+424  +             "workspace-packs",
+425  +             "workspace-video-tags",
+426  +             "workspace-pack-tags",
+427  +             "workspace-settings",
+428  +             "workspace-dark",
+429  +             "tag-ui-assign-video-single",
+430  +             "tag-ui-assign-video-dark",
+431  +             "tag-ui-assign-video-error",
+432  +             "tag-ui-assign-video-keyboard",
+433  +             "tag-ui-assign-video-saved",
+434  +             "tag-ui-assign-pack-single",
+435  +             "tag-ui-assign-pack-error",
+436  +             "tag-ui-assign-pack-keyboard",
+437  +             "tag-ui-assign-pack-saved",
+438  +             "tag-ui-assign-videos",
+439  +             "tag-ui-assign-video-batch",
+440  +             "tag-ui-assign-packs",
+441  +             "tag-ui-assign-pack-batch",
+442  +             "tag-ui-assign-verified",
+443  +             "tag-ui-video",
+444  +             "tag-ui-pack",
+445  +             "tag-ui-dark",
+446  +             "tag-ui-create-keyboard",
+447  +             "tag-ui-create-error",
+448  +             "tag-ui-created",
+449  +             "tag-ui-rename-editor",
+450  +             "tag-ui-rename-editor-dark",
+451  +             "tag-ui-renamed",
+452  +             "tag-ui-remove-confirm",
+453  +             "tag-ui-removed",
+454  +             "tag-ui-page-error",
+455  +             "tag-ui-paged",
+456  +             "tag-ui-results-error",
+457  +             "tag-ui-results",
+458  +             "tag-catalog-retry",
+459  +             "tag-catalog-paged",
+460  +             "tag-catalog-renamed",
+461  +             "selection-videos",
+462  +             "selection-packs",
+463  +             "pack-names-card",
+464  +             "pack-names-retry",
+465  +             "pack-names-saved",
+466  +             "pack-names-renamed",
+467  +             "pack-anchor-before",
+468  +             "pack-anchor-error",
+469  +             "pack-anchor-return",
+470  +             "pack-anchor-prepend",
+471  +             "pack-anchor-inserted",
+472  +             "reader-horizontal",
+473  +             "reader-vertical",
+474  +             "reader-reopen",
+475  +             "reader-overview",
+476  +             "reader-next",
+477  +             "reader-return",
+478  +             "recent-initial",
+479  +             "recent-tail",
+480  +             "recent-reading",
+481  +             "recent-return",
+482  +             "recent-library",
+483  +             "controls-rtl",
+484  +             "controls-zoom",
+485  +             "controls-immersive",
+486  +             "controls-width",
+487  +             "controls-reopen",
+488  +             "controls-vertical",
+489  +             "controls-next",
+490  +             "controls-return",
+491  +             "trash-read-error",
+492  +             "trash-reader",
+493  +             "trash-selected",
+494  +             "trash-unknown",
+495  +             "trash-restored",
+496  +             "trash-recent",
+497  +             "trash-video",
+498  +             "trash-packs",
+499  +             "trash-empty",
+500  +             "trash-paged",
+501  +             "trash-confirm",
+502  +             "trash-receipt",
+503  +             "trash-single-confirm",
+504  +             "trash-single-restored",
+505  +             "trash-dark",
+506  +             "trash-keyboard",
+507  +             "purge-ui-video-confirm",
+508  +             "purge-ui-selected",
+509  +             "purge-ui-review",
+510  +             "purge-ui-members",
+511  +             "purge-ui-files",
+512  +             "purge-ui-saved",
+513  +             "purge-ui-saved-dark",
+514  +             "purge-ui-saved-reopened",
+515  +             "purge-ui-unknown",
+516  +             "purge-ui-result",
+517  +             "purge-ui-retry-confirm",
+518  +             "purge-ui-finished",
+519  +             "purge-selected",
+520  +             "purge-review",
+521  +             "purge-files",
+522  +             "purge-saved",
+523  +             "purge-saved-reopened",
+524  +             "purge-unknown",
+525  +             "purge-result",
+526  +             "purge-finished",
+527  +             "bulk-selected",
+528  +             "bulk-review",
+529  +             "bulk-unknown",
+530  +             "bulk-receipt",
+531  +             "bulk-paged",
+532  +             "bulk-selection",
+533  +             "bulk-next-review",
+534  +             "defaults-video",
+535  +             "defaults-reader",
+536  +             "defaults-unknown",
+537  +             "defaults-reopened",
+538  +             "defaults-migration",
+539  +             "roots-created",
+540  +             "roots-disabled",
+541  +             "roots-conflict",
+542  +             "missing-empty-video",
+543  +             "missing-first",
+544  +             "missing-confirm-cancel",
+545  +             "missing-dark",
+546  +             "missing-paged",
+547  +             "missing-preserved",
+548  +             "missing-unknown",
+549  +             "missing-reopened",
+550  +             "missing-result",
+551  +             "missing-task-paged",
+552  +             "management-backup",
+553  +             "management-backup-cancel",
+554  +             "management-backup-saved",
+555  +             "management-restore-preview",
+556  +             "management-restore-keyboard",
+557  +             "management-backup-error",
+558  +             "management-pending",
+559  +             "management-detail",
+560  +             "management-list",
+561  +             "management-paged",
+562  +             "management-dark",
+563  +             "management-historical",
+564  +             "management-task-backup-saved",
+565  +             "tasks-list",
+566  +             "tasks-pending",
+567  +             "tasks-detail",
+568  +             "tasks-paged",
+569  +             "tasks-historical",
+570  +             "tasks-backup-saved",
+571  +             "restore-selected",
+572  +             "restore-unknown",
+573  +             "restore-reopened",
+574  +             "restore-paged",
+575  +             "restore-stop-unknown",
+576  +             "restore-stopped",
+577  +             "cleanup-ready",
+578  +             "cleanup-unknown",
+579  +             "cleanup-next",
+580  +             "cleanup-undo",
+581  +             "cleanup-normal",
+582  +             "cleanup-resumed",
+583  +             "cleanup-tail",
+584  +             "cleanup-return",
+585  +             "recovery-image-error",
+586  +             "recovery-image-ready",
+587  +             "recovery-unknown",
+588  +             "recovery-receipt",
+589  +             "recovery-background",
+590  +             "recovery-tags",
+591  +             "recovery-queue",
+592  +             "recovery-return",
+593  |         }:
+--------------------------------------------------------------------------------
+617  |             from video_viewer.models import PackTag, PackTagLink, Tag, VideoTag
+618  +
+619  |             with app.state.db.read() as session:
+620  |                 return {
+     -                     "video_tags": [{"id":r.id,"name":r.name} for r in session.scalars(select(Tag).order_by(Tag.name,Tag.id).limit(200))],
+     -                     "pack_tags": [{"id":r.id,"name":r.name} for r in session.scalars(select(PackTag).order_by(PackTag.name,PackTag.id).limit(200))],
+     -                     "video_links": [{"video_id":r.video_id,"tag_id":r.tag_id} for r in session.scalars(select(VideoTag).order_by(VideoTag.video_id,VideoTag.tag_id).limit(200))],
+     -                     "pack_links": [{"pack_id":r.pack_id,"tag_id":r.tag_id} for r in session.scalars(select(PackTagLink).order_by(PackTagLink.pack_id,PackTagLink.tag_id).limit(200))],
+621  +                     "video_tags": [
+622  +                         {"id": r.id, "name": r.name}
+623  +                         for r in session.scalars(select(Tag).order_by(Tag.name, Tag.id).limit(200))
+624  +                     ],
+625  +                     "pack_tags": [
+626  +                         {"id": r.id, "name": r.name}
+627  +                         for r in session.scalars(
+628  +                             select(PackTag).order_by(PackTag.name, PackTag.id).limit(200)
+629  +                         )
+630  +                     ],
+631  +                     "video_links": [
+632  +                         {"video_id": r.video_id, "tag_id": r.tag_id}
+633  +                         for r in session.scalars(
+634  +                             select(VideoTag).order_by(VideoTag.video_id, VideoTag.tag_id).limit(200)
+635  +                         )
+636  +                     ],
+637  +                     "pack_links": [
+638  +                         {"pack_id": r.pack_id, "tag_id": r.tag_id}
+639  +                         for r in session.scalars(
+640  +                             select(PackTagLink)
+641  +                             .order_by(PackTagLink.pack_id, PackTagLink.tag_id)
+642  +                             .limit(200)
+643  +                         )
+644  +                     ],
+645  |                 }
+646  |         elif action == "hold-restore-plan":
+647  |             restore_gate.clear()
+648  |             app.state.pack_restore_plans.batch_size = 2
+649  +
+650  |             def hold_restore(phase, identity):
+651  |                 if phase == "restore_child_accepted":
+     -                     while not restore_gate.wait(.1):
+652  +                     while not restore_gate.wait(0.1):
+653  |                         if app.state.pack_restore_plans.stop.is_set():
+654  |                             return
+655  +
+656  |             app.state.pack_restore_plans.fault_hook = hold_restore
+--------------------------------------------------------------------------------
+668  |             )
+669  +
+670  |             with app.state.db.write_lock, app.state.db.read() as session:
+     -                 identity = session.scalar(select(PackRestorePlan.id).join(Task).order_by(Task.created_at.desc(), Task.id.desc()).limit(1))
+671  +                 identity = session.scalar(
+672  +                     select(PackRestorePlan.id)
+673  +                     .join(Task)
+674  +                     .order_by(Task.created_at.desc(), Task.id.desc())
+675  +                     .limit(1)
+676  +                 )
+677  |                 if not identity:
+678  |                     return {"plan": None}
+679  |                 plan = app.state.pack_restore_plans.view(identity)
+     -                 batches = list(session.scalars(select(PackRestoreBatch.operation_id).where(PackRestoreBatch.plan_id == identity)))
+     -                 counts = dict(session.execute(select(PackRestoreMember.outcome,func.count()).where(PackRestoreMember.plan_id == identity).group_by(PackRestoreMember.outcome)).all())
+     -                 packs = [{"id":p.id,"status":p.status,"generation":p.generation} for p in session.scalars(select(ImagePack).order_by(ImagePack.id))]
+     -             return {"plan":plan,"batches":batches,"member_counts":counts,"packs":packs}
+680  +                 batches = list(
+681  +                     session.scalars(
+682  +                         select(PackRestoreBatch.operation_id).where(
+683  +                             PackRestoreBatch.plan_id == identity
+684  +                         )
+685  +                     )
+686  +                 )
+687  +                 counts = dict(
+688  +                     session.execute(
+689  +                         select(PackRestoreMember.outcome, func.count())
+690  +                         .where(PackRestoreMember.plan_id == identity)
+691  +                         .group_by(PackRestoreMember.outcome)
+692  +                     ).all()
+693  +                 )
+694  +                 packs = [
+695  +                     {"id": p.id, "status": p.status, "generation": p.generation}
+696  +                     for p in session.scalars(select(ImagePack).order_by(ImagePack.id))
+697  +                 ]
+698  +             return {"plan": plan, "batches": batches, "member_counts": counts, "packs": packs}
+699  |         elif action == "pack-anchor":
+--------------------------------------------------------------------------------
+729  |             from .pack_missing_fixture import missing_snapshot
+730  +
+731  |             details = missing_snapshot(app.state.db)
+--------------------------------------------------------------------------------
+735  |             purge_gate.clear()
+736  +
+737  |             def hold_purge(phase, identity):
+738  |                 if phase == "purge_claiming":
+     -                     while not purge_gate.wait(.1):
+739  +                     while not purge_gate.wait(0.1):
+740  |                         if app.state.pack_purge.stop.is_set():
+741  |                             return
+742  +
+743  |             app.state.pack_purge.fault_hook = hold_purge
+--------------------------------------------------------------------------------
+751  |             with app.state.db.read() as session:
+     -                 task = session.scalar(select(Task).where(Task.kind == "pack_permanent").order_by(Task.created_at.desc()).limit(1))
+     -                 original_ids = list(session.scalars(select(PackTrashItem.id).order_by(PackTrashItem.id)))
+752  +                 task = session.scalar(
+753  +                     select(Task)
+754  +                     .where(Task.kind == "pack_permanent")
+755  +                     .order_by(Task.created_at.desc())
+756  +                     .limit(1)
+757  +                 )
+758  +                 original_ids = list(
+759  +                     session.scalars(select(PackTrashItem.id).order_by(PackTrashItem.id))
+760  +                 )
+761  |                 if task is None:
+762  |                     return {"task": None, "all_trash_ids": original_ids}
+     -                 counts = dict(session.execute(select(PackFileStep.outcome, func.count()).where(PackFileStep.operation_id == task.id).group_by(PackFileStep.outcome)).all())
+     -                 active = session.scalar(select(func.count()).select_from(PackTrashItem).where(PackTrashItem.status == "active"))
+     -                 remaining = list(session.scalars(select(PackTrashItem.id).where(PackTrashItem.status == "active").order_by(PackTrashItem.id)))
+     -                 submitted = list(session.execute(select(PackFileStep.requested_id, PackFileStep.original_path).where(PackFileStep.operation_id == task.id).order_by(PackFileStep.requested_id)))
+     -                 return {"task": {"id": task.id, "status": task.status, "phase": task.phase}, "members": counts, "active_trash": active, "remaining_ids": remaining, "all_trash_ids": original_ids, "submitted_ids": [row.requested_id for row in submitted], "submitted_paths": [row.original_path for row in submitted]}
+763  +                 counts = dict(
+764  +                     session.execute(
+765  +                         select(PackFileStep.outcome, func.count())
+766  +                         .where(PackFileStep.operation_id == task.id)
+767  +                         .group_by(PackFileStep.outcome)
+768  +                     ).all()
+769  +                 )
+770  +                 active = session.scalar(
+771  +                     select(func.count())
+772  +                     .select_from(PackTrashItem)
+773  +                     .where(PackTrashItem.status == "active")
+774  +                 )
+775  +                 remaining = list(
+776  +                     session.scalars(
+777  +                         select(PackTrashItem.id)
+778  +                         .where(PackTrashItem.status == "active")
+779  +                         .order_by(PackTrashItem.id)
+780  +                     )
+781  +                 )
+782  +                 submitted = list(
+783  +                     session.execute(
+784  +                         select(PackFileStep.requested_id, PackFileStep.original_path)
+785  +                         .where(PackFileStep.operation_id == task.id)
+786  +                         .order_by(PackFileStep.requested_id)
+787  +                     )
+788  +                 )
+789  +                 return {
+790  +                     "task": {"id": task.id, "status": task.status, "phase": task.phase},
+791  +                     "members": counts,
+792  +                     "active_trash": active,
+793  +                     "remaining_ids": remaining,
+794  +                     "all_trash_ids": original_ids,
+795  +                     "submitted_ids": [row.requested_id for row in submitted],
+796  +                     "submitted_paths": [row.original_path for row in submitted],
+797  +                 }
+798  |         elif action == "purge-management-stats":
+--------------------------------------------------------------------------------
+808  |             with app.state.db.read() as session:
+     -                 preview = session.scalar(select(Task).where(Task.kind == "pack_purge_preview").order_by(Task.created_at.desc()).limit(1))
+     -                 task = session.scalar(select(Task).where(Task.kind == "pack_permanent").order_by(Task.created_at.desc()).limit(1))
+809  +                 preview = session.scalar(
+810  +                     select(Task)
+811  +                     .where(Task.kind == "pack_purge_preview")
+812  +                     .order_by(Task.created_at.desc())
+813  +                     .limit(1)
+814  +                 )
+815  +                 task = session.scalar(
+816  +                     select(Task)
+817  +                     .where(Task.kind == "pack_permanent")
+818  +                     .order_by(Task.created_at.desc())
+819  +                     .limit(1)
+820  +                 )
+821  |                 plan = session.get(PackPurgePlan, preview.id) if preview else None
+     -                 members = list(session.scalars(select(PackPurgeEntry).where(PackPurgeEntry.plan_id == preview.id))) if preview else []
+822  +                 members = (
+823  +                     list(
+824  +                         session.scalars(
+825  +                             select(PackPurgeEntry).where(PackPurgeEntry.plan_id == preview.id)
+826  +                         )
+827  +                     )
+828  +                     if preview
+829  +                     else []
+830  +                 )
+831  |                 execution = session.get(PackPurgeExecution, task.id) if task else None
+     -                 steps = list(session.execute(select(PackPurgeStep, PackFileStep.original_path).join(PackFileStep, PackPurgeStep.parent_id == PackFileStep.id).where(PackFileStep.operation_id == task.id))) if task else []
+832  +                 steps = (
+833  +                     list(
+834  +                         session.execute(
+835  +                             select(PackPurgeStep, PackFileStep.original_path)
+836  +                             .join(PackFileStep, PackPurgeStep.parent_id == PackFileStep.id)
+837  +                             .where(PackFileStep.operation_id == task.id)
+838  +                         )
+839  +                     )
+840  +                     if task
+841  +                     else []
+842  +                 )
+843  |                 return {
+     -                     "preview": {"id": preview.id, "status": preview.status, "digest": plan.digest} if preview else None,
+     -                     "members": [{"trash_id": row.trash_id, "path": row.path, "digest": row.digest, "images": row.image_count, "retained": row.retained_entries, "manifest": row.manifest} for row in members],
+     -                     "task": {"id": task.id, "status": task.status, "phase": task.phase, "result": task.result, "plan_id": execution.plan_id} if task else None,
+     -                     "steps": [{"id": row.id, "path": path, "relative_path": row.relative_path, "kind": row.kind, "sha256": row.expected_hash, "phase": row.phase, "outcome": row.outcome} for row, path in steps],
+844  +                     "preview": {"id": preview.id, "status": preview.status, "digest": plan.digest}
+845  +                     if preview
+846  +                     else None,
+847  +                     "members": [
+848  +                         {
+849  +                             "trash_id": row.trash_id,
+850  +                             "path": row.path,
+851  +                             "digest": row.digest,
+852  +                             "images": row.image_count,
+853  +                             "retained": row.retained_entries,
+854  +                             "manifest": row.manifest,
+855  +                         }
+856  +                         for row in members
+857  +                     ],
+858  +                     "task": {
+859  +                         "id": task.id,
+860  +                         "status": task.status,
+861  +                         "phase": task.phase,
+862  +                         "result": task.result,
+863  +                         "plan_id": execution.plan_id,
+864  +                     }
+865  +                     if task
+866  +                     else None,
+867  +                     "steps": [
+868  +                         {
+869  +                             "id": row.id,
+870  +                             "path": path,
+871  +                             "relative_path": row.relative_path,
+872  +                             "kind": row.kind,
+873  +                             "sha256": row.expected_hash,
+874  +                             "phase": row.phase,
+875  +                             "outcome": row.outcome,
+876  +                         }
+877  +                         for row, path in steps
+878  +                     ],
+879  |                 }
+880  |         elif action == "purge-pack-attachments":
+881  |             folder = BASE / "shorts" / "图包"
+     -             if str(folder) != "/media/shorts/图包" or folder.is_symlink() or folder.resolve() != folder:
+882  +             if (
+883  +                 str(folder) != "/media/shorts/图包"
+884  +                 or folder.is_symlink()
+885  +                 or folder.resolve() != folder
+886  +             ):
+887  |                 raise HTTPException(status_code=409, detail="Expected isolated flower directory")
+--------------------------------------------------------------------------------
+893  |         elif action == "fail-pack-purge":
+894  +
+895  |             def fail_purge(phase, identity):
+--------------------------------------------------------------------------------
+902  |                             raise PermissionError("Isolated fixture page failure")
+903  +
+904  |             app.state.pack_purge.fault_hook = fail_purge
+--------------------------------------------------------------------------------
+910  |             folder = BASE / "shorts" / "图包"
+     -             if str(folder) != "/media/shorts/图包" or folder.is_symlink() or folder.resolve() != folder:
+911  +             if (
+912  +                 str(folder) != "/media/shorts/图包"
+913  +                 or folder.is_symlink()
+914  +                 or folder.resolve() != folder
+915  +             ):
+916  |                 raise HTTPException(status_code=409, detail="Expected isolated flower directory")
+--------------------------------------------------------------------------------
+921  |                 if item.is_file():
+     -                     hashes[str(item.relative_to(folder))] = hashlib.sha256(item.read_bytes()).hexdigest()
+922  +                     hashes[str(item.relative_to(folder))] = hashlib.sha256(
+923  +                         item.read_bytes()
+924  +                     ).hexdigest()
+925  |             return {"hashes": hashes}
+--------------------------------------------------------------------------------
+952  |             sources = sorted(
+     -                 p for root in [BASE / "shorts", BASE / "camera"]
+     -                 for p in root.rglob("*") if p.is_file() and p.suffix.lower() in {".mp4", ".mov"}
+953  +                 p
+954  +                 for root in [BASE / "shorts", BASE / "camera"]
+955  +                 for p in root.rglob("*")
+956  +                 if p.is_file() and p.suffix.lower() in {".mp4", ".mov"}
+957  |             )[:25]
+--------------------------------------------------------------------------------
+970  |                     root.last_scan = None
+     -                 video = session.scalar(select(Video).where(Video.status == 'available').order_by(Video.path).limit(1))
+971  +                 video = session.scalar(
+972  +                     select(Video).where(Video.status == "available").order_by(Video.path).limit(1)
+973  +                 )
+974  |                 if video:
+975  |                     if video.thumbnail:
+     -                         (settings.data_dir / 'thumbnails' / video.thumbnail).unlink(missing_ok=True)
+976  +                         (settings.data_dir / "thumbnails" / video.thumbnail).unlink(missing_ok=True)
+977  |                     video.thumbnail = None
+     -                     details['warning_video_id'] = video.id
+978  +                     details["warning_video_id"] = video.id
+979  |             original_thumbnail = scan_module.make_thumbnail
+980  +
+981  |             def optional_poster_failure(*args):
+982  |                 scan_module.make_thumbnail = original_thumbnail
+     -                 raise MediaInspectionError('thumbnail_timeout')
+983  +                 raise MediaInspectionError("thumbnail_timeout")
+984  +
+985  |             scan_module.make_thumbnail = optional_poster_failure
+986  |             scanner = app.state.scanner
+987  |             original = scanner.check_stop
+988  |             deadline = time.monotonic() + 15
+989  +
+990  |             def preparation_check():
+--------------------------------------------------------------------------------
+995  |                 original()
+996  +
+997  |             scanner.check_stop = preparation_check
+--------------------------------------------------------------------------------
+1051 |         elif action in {"lock-flower", "unlock-flower"}:
+     -             (BASE / "shorts" / "自然" / "花卉").chmod(
+     -                 0o555 if action == "lock-flower" else 0o755
+     -             )
+1052 +             (BASE / "shorts" / "自然" / "花卉").chmod(0o555 if action == "lock-flower" else 0o755)
+1053 |         elif action == "conflict-first":
+     |
+
+unformatted: File would be reformatted
+   --> services/server/tests/prototype_fidelity_fixture.py:46:25
+    |
+45  |     if pagination:
+    -         descriptions = [{**p, "pages": [p["pages"][i % len(p["pages"])] for i in range(30)]} if p["id"] == "summer" else p for p in descriptions]
+46  +         descriptions = [
+47  +             {**p, "pages": [p["pages"][i % len(p["pages"])] for i in range(30)]}
+48  +             if p["id"] == "summer"
+49  +             else p
+50  +             for p in descriptions
+51  +         ]
+52  |     content_restart = os.environ.get("VV_FIDELITY_CONTENT_RESTART") == "enabled"
+--------------------------------------------------------------------------------
+83  |         video_samples = [
+    -             ("landscape" if index % 2 == 0 else "portrait", f"导航目录 {index + 1:02d}", f"导航视频 {index + 1:02d}")
+84  +             (
+85  +                 "landscape" if index % 2 == 0 else "portrait",
+86  +                 f"导航目录 {index + 1:02d}",
+87  +                 f"导航视频 {index + 1:02d}",
+88  +             )
+89  |             for index in range(27)
+--------------------------------------------------------------------------------
+96  |     state = {
+    -         "display": None, "ack": False, "prepared": False,
+    -         "continuation_failure": False, "catalog_counts_failure": False,
+    -         "recent_video_failure": False, "recent_pack_failure": False,
+97  +         "display": None,
+98  +         "ack": False,
+99  +         "prepared": False,
+100 +         "continuation_failure": False,
+101 +         "catalog_counts_failure": False,
+102 +         "recent_video_failure": False,
+103 +         "recent_pack_failure": False,
+104 |         "public_additions": [],
+    -         "tag_definition_failure": "off", "tag_definition_failures": [],
+    -         "thumbnail_manifest": "off", "manifest_events": [],
+    -         "thumbnail_mode": "off", "thumbnail_attempts": {}, "thumbnail_streams": [],
+105 +         "tag_definition_failure": "off",
+106 +         "tag_definition_failures": [],
+107 +         "thumbnail_manifest": "off",
+108 +         "manifest_events": [],
+109 +         "thumbnail_mode": "off",
+110 +         "thumbnail_attempts": {},
+111 +         "thumbnail_streams": [],
+112 |     }
+--------------------------------------------------------------------------------
+122 |             await request.json()
+    -             if (request.url.path in ("/api/v1/pack-sessions", "/api/v1/rounds") and request.method == "POST")
+    -             or ((preview_mutation or tag_definitions) and request.method in {"POST", "PATCH", "DELETE"}
+    -                 and (request.url.path in {"/api/v1/video-tags", "/api/v1/tags"} or request.url.path.startswith("/api/v1/tags/")))
+    -             or ((navigation or thumbnails or content_restart) and request.method in {"POST", "PATCH"}
+    -                 and (request.url.path == "/api/v1/playback-defaults" or request.url.path.startswith("/api/v1/pack-sessions/") or request.url.path.endswith("/progress") or (content_restart and request.url.path.endswith("/preferences"))))
+123 +             if (
+124 +                 request.url.path in ("/api/v1/pack-sessions", "/api/v1/rounds")
+125 +                 and request.method == "POST"
+126 +             )
+127 +             or (
+128 +                 (preview_mutation or tag_definitions)
+129 +                 and request.method in {"POST", "PATCH", "DELETE"}
+130 +                 and (
+131 +                     request.url.path in {"/api/v1/video-tags", "/api/v1/tags"}
+132 +                     or request.url.path.startswith("/api/v1/tags/")
+133 +                 )
+134 +             )
+135 +             or (
+136 +                 (navigation or thumbnails or content_restart)
+137 +                 and request.method in {"POST", "PATCH"}
+138 +                 and (
+139 +                     request.url.path == "/api/v1/playback-defaults"
+140 +                     or request.url.path.startswith("/api/v1/pack-sessions/")
+141 +                     or request.url.path.endswith("/progress")
+142 +                     or (content_restart and request.url.path.endswith("/preferences"))
+143 +                 )
+144 +             )
+145 |             else None
+--------------------------------------------------------------------------------
+163 |         tag_write_failure = (
+    -             tag_definitions and request.headers.get("Authorization")
+164 +             tag_definitions
+165 +             and request.headers.get("Authorization")
+166 |             and request.url.path.startswith("/api/v1/tags/")
+    -             and request.method == {"rename": "PATCH", "remove": "DELETE"}.get(state["tag_definition_failure"])
+167 +             and request.method
+168 +             == {"rename": "PATCH", "remove": "DELETE"}.get(state["tag_definition_failure"])
+169 |         )
+    -         thumbnail = (thumbnails and request.method == "GET"
+    -                      and request.url.path.startswith("/api/v1/pages/")
+    -                      and request.url.path.endswith("/thumbnail")
+    -                      and request.headers.get("Authorization"))
+170 +         thumbnail = (
+171 +             thumbnails
+172 +             and request.method == "GET"
+173 +             and request.url.path.startswith("/api/v1/pages/")
+174 +             and request.url.path.endswith("/thumbnail")
+175 +             and request.headers.get("Authorization")
+176 +         )
+177 |         mode = state["thumbnail_mode"]
+178 |         manifest_mode = state["thumbnail_manifest"]
+    -         if (pagination and request.method == "GET" and request.url.path.startswith("/api/v1/packs/")
+    -                 and request.url.path.endswith("/pages") and request.query_params.get("offset") == manifest_mode.split("-")[-1]):
+    -             event = {"path": request.url.path, "offset": request.query_params["offset"], "cancelled": False, "released": False}
+179 +         if (
+180 +             pagination
+181 +             and request.method == "GET"
+182 +             and request.url.path.startswith("/api/v1/packs/")
+183 +             and request.url.path.endswith("/pages")
+184 +             and request.query_params.get("offset") == manifest_mode.split("-")[-1]
+185 +         ):
+186 +             event = {
+187 +                 "path": request.url.path,
+188 +                 "offset": request.query_params["offset"],
+189 +                 "cancelled": False,
+190 +                 "released": False,
+191 +             }
+192 |             state["manifest_events"].append(event)
+--------------------------------------------------------------------------------
+197 |                         return JSONResponse({}, status_code=499)
+    -                     await asyncio.sleep(.05)
+198 +                     await asyncio.sleep(0.05)
+199 |                 event["released"] = True
+--------------------------------------------------------------------------------
+221 |
+    -                 response = StreamingResponse(held_body(), media_type="image/png",
+    -                                              headers={"Content-Length": str(len(data))})
+222 +                 response = StreamingResponse(
+223 +                     held_body(), media_type="image/png", headers={"Content-Length": str(len(data))}
+224 +                 )
+225 |             elif mode == "bounded" or (mode == "recover" and n == 1):
+    -                 response = JSONResponse({"error": {"code": "fixture_thumbnail_busy"}}, status_code=503)
+226 +                 response = JSONResponse(
+227 +                     {"error": {"code": "fixture_thumbnail_busy"}}, status_code=503
+228 +                 )
+229 |             else:
+230 |                 response = await call_next(request)
+231 |         elif tag_write_failure:
+    -             state["tag_definition_failures"].append({"method": request.method, "path": request.url.path, "body": body})
+232 +             state["tag_definition_failures"].append(
+233 +                 {"method": request.method, "path": request.url.path, "body": body}
+234 +             )
+235 |             with app.state.db.read() as db:
+236 |                 epoch = Authority.current(db)
+237 |             response = JSONResponse(
+    -                 {"error": {"code": "fixture_tag_write", "message": "视频标签操作暂时失败，请保留输入后重试。"}},
+    -                 status_code=503, headers={"X-Management-Epoch": epoch},
+238 +                 {
+239 +                     "error": {
+240 +                         "code": "fixture_tag_write",
+241 +                         "message": "视频标签操作暂时失败，请保留输入后重试。",
+242 +                     }
+243 +                 },
+244 +                 status_code=503,
+245 +                 headers={"X-Management-Epoch": epoch},
+246 |             )
+    -         elif counts_failure or recent_failure or (
+    -             state["continuation_failure"]
+    -             and request.method == "GET"
+    -             and request.url.path == "/api/v1/packs"
+    -             and request.query_params.get("source") == "recent"
+    -             and request.query_params.get("limit") == "1"
+    -             and request.headers.get("Authorization")
+247 +         elif (
+248 +             counts_failure
+249 +             or recent_failure
+250 +             or (
+251 +                 state["continuation_failure"]
+252 +                 and request.method == "GET"
+253 +                 and request.url.path == "/api/v1/packs"
+254 +                 and request.query_params.get("source") == "recent"
+255 +                 and request.query_params.get("limit") == "1"
+256 +                 and request.headers.get("Authorization")
+257 +             )
+258 |         ):
+--------------------------------------------------------------------------------
+264 |                         "code": "fixture_unavailable",
+    -                         "message": "最近记录暂不可用，请重试" if recent_failure else "库存状态暂不可用" if counts_failure else (
+    -                             "连接暂时中断，请检查服务器与网络连接后重试。图包列表仍可正常浏览。"
+    -                         ),
+265 +                         "message": "最近记录暂不可用，请重试"
+266 +                         if recent_failure
+267 +                         else "库存状态暂不可用"
+268 +                         if counts_failure
+269 +                         else ("连接暂时中断，请检查服务器与网络连接后重试。图包列表仍可正常浏览。"),
+270 |                     }
+--------------------------------------------------------------------------------
+284 |                     **({"body": body} if body is not None else {}),
+    -                     **({"query": list(request.query_params.multi_items())}
+    -                        if request.method == "GET" and request.url.path in
+    -                        ("/api/v1/videos", "/api/v1/videos/selection", "/api/v1/packs") or (request.method == "GET" and request.url.path.endswith("/pages")) else {}),
+285 +                     **(
+286 +                         {"query": list(request.query_params.multi_items())}
+287 +                         if request.method == "GET"
+288 +                         and request.url.path
+289 +                         in ("/api/v1/videos", "/api/v1/videos/selection", "/api/v1/packs")
+290 +                         or (request.method == "GET" and request.url.path.endswith("/pages"))
+291 +                         else {}
+292 +                     ),
+293 |                 }
+--------------------------------------------------------------------------------
+324 |                 video.name = Path(video.name).stem
+    -                 landscape = video.width > video.height if navigation else "风里" in video.name or "晨光" in video.name
+325 +                 landscape = (
+326 +                     video.width > video.height
+327 +                     if navigation
+328 +                     else "风里" in video.name or "晨光" in video.name
+329 +                 )
+330 |                 orientation = "landscape" if landscape else "portrait"
+--------------------------------------------------------------------------------
+358 |         state["prepared"] = True
+    -         return {"videos": len(video_samples), "packs": len(descriptions), "pages": sum(len(p["pages"]) for p in descriptions)}
+359 +         return {
+360 +             "videos": len(video_samples),
+361 +             "packs": len(descriptions),
+362 +             "pages": sum(len(p["pages"]) for p in descriptions),
+363 +         }
+364 |
+    |
+
+unformatted: File would be reformatted
+   --> services/server/tests/reader_fixture.py:61:21
+    |
+60  |     def reader_action(
+    -         action: str, pack_id: str | None = None, page_id: str | None = None,
+61  +         action: str,
+62  +         pack_id: str | None = None,
+63  +         page_id: str | None = None,
+64  |         x_fixture_key: str | None = Header(default=None),
+--------------------------------------------------------------------------------
+68  |         if action == "stats":
+    -             return {"images": list(images), "progress": list(progress), "remaining": state["remaining"]}
+69  +             return {
+70  +                 "images": list(images),
+71  +                 "progress": list(progress),
+72  +                 "remaining": state["remaining"],
+73  +             }
+74  |         with app.state.db.read() as session:
+75  |             pack = session.get(ImagePack, pack_id)
+76  |             root = session.get(Root, pack.root_id) if pack else None
+77  |             if (
+    -                 root is None or root.kind != "pack" or root.path != "/media/shorts/图包"
+78  +                 root is None
+79  +                 or root.kind != "pack"
+80  +                 or root.path != "/media/shorts/图包"
+81  |                 or Path(pack.path).parent != Path(root.path)
+--------------------------------------------------------------------------------
+90  |                 if state["progress"]:
+    -                     raise HTTPException(status_code=409, detail="An isolated fault is already armed")
+    -                 state.update({"pack_id": pack_id, "progress": "before" if action == "drop-progress" else "after"})
+91  +                     raise HTTPException(
+92  +                         status_code=409, detail="An isolated fault is already armed"
+93  +                     )
+94  +                 state.update(
+95  +                     {
+96  +                         "pack_id": pack_id,
+97  +                         "progress": "before" if action == "drop-progress" else "after",
+98  +                     }
+99  +                 )
+100 |             else:
+    |
+
+unformatted: File would be reformatted
+   --> services/server/tests/test_catalog_selection.py:23:71
+    |
+22  |
+    - def test_video_selection_full_scope_recent_auth_and_no_viewing_writes(library, samples, monkeypatch):
+23  + def test_video_selection_full_scope_recent_auth_and_no_viewing_writes(
+24  +     library, samples, monkeypatch
+25  + ):
+26  |     client, media = library
+--------------------------------------------------------------------------------
+30  |     scan(client)
+    -     videos = client.get("/api/v1/videos", params={"limit": 200, "search": "selected"}).json()["items"]
+31  +     videos = client.get("/api/v1/videos", params={"limit": 200, "search": "selected"}).json()[
+32  +         "items"
+33  +     ]
+34  |     ids = [v["id"] for v in videos]
+35  |     first, second = tag(client, "first"), tag(client, "second")
+36  |     assign(client, ids, [first["id"]])
+37  |     assign(client, ids[:27], [second["id"]])
+    -     params = {"search": "selected", "tag_ids": [first["id"], second["id"]],
+    -               "orientation": "portrait", "duration": "short", "file_type": "mp4", "sort": "name", "source": "tags"}
+38  +     params = {
+39  +         "search": "selected",
+40  +         "tag_ids": [first["id"], second["id"]],
+41  +         "orientation": "portrait",
+42  +         "duration": "short",
+43  +         "file_type": "mp4",
+44  +         "sort": "name",
+45  +         "source": "tags",
+46  +     }
+47  |     assert selected(client, "video", params) == ids[:27]
+--------------------------------------------------------------------------------
+52  |     assert client.get("/api/v1/videos/selection", headers={"Authorization": ""}).status_code == 401
+    -     assert client.get("/api/v1/videos/selection", params={"directory_id": "gone"}).status_code == 404
+53  +     assert (
+54  +         client.get("/api/v1/videos/selection", params={"directory_id": "gone"}).status_code == 404
+55  +     )
+56  |     with client.app.state.db.read() as session:
+    -         assert session.connection().exec_driver_sql("SELECT count(*) FROM playback_rounds").scalar() == 0
+    -         assert session.connection().exec_driver_sql("SELECT count(*) FROM recent_entries").scalar() == 1
+57  +         assert (
+58  +             session.connection().exec_driver_sql("SELECT count(*) FROM playback_rounds").scalar()
+59  +             == 0
+60  +         )
+61  +         assert (
+62  +             session.connection().exec_driver_sql("SELECT count(*) FROM recent_entries").scalar()
+63  +             == 1
+64  +         )
+65  |     monkeypatch.setattr(catalog_selection, "MAX_SELECTION_ITEMS", 2)
+--------------------------------------------------------------------------------
+79  |     from pathlib import Path
+80  +
+81  |     for i in range(27):
+--------------------------------------------------------------------------------
+86  |     label = pack_tag(client)
+    -     response = client.patch("/api/v1/pack-tag-links", json={"pack_ids": ids[:25], "tag_ids": [label["id"]], "request_id": "select-pack-links"})
+87  +     response = client.patch(
+88  +         "/api/v1/pack-tag-links",
+89  +         json={"pack_ids": ids[:25], "tag_ids": [label["id"]], "request_id": "select-pack-links"},
+90  +     )
+91  |     assert response.status_code == 200
+92  |     with client.app.state.db.write() as session:
+93  |         session.add(PackProgress(pack_id=ids[2], completed=True))
+    -     assert selected(client, "pack", {"search": "pack-", "tag_ids": [label["id"]], "read_state": "unread"}) == [i for i in ids[:25] if i != ids[2]]
+94  +     assert selected(
+95  +         client, "pack", {"search": "pack-", "tag_ids": [label["id"]], "read_state": "unread"}
+96  +     ) == [i for i in ids[:25] if i != ids[2]]
+97  |     assert selected(client, "pack", {"read_state": "completed"}) == [ids[2]]
+--------------------------------------------------------------------------------
+101 |     with client.app.state.db.read() as session:
+    -         assert session.connection().exec_driver_sql("SELECT count(*) FROM pack_sessions").scalar() == 0
+    -         assert session.connection().exec_driver_sql("SELECT count(*) FROM recent_entries").scalar() == 0
+102 +         assert (
+103 +             session.connection().exec_driver_sql("SELECT count(*) FROM pack_sessions").scalar() == 0
+104 +         )
+105 +         assert (
+106 +             session.connection().exec_driver_sql("SELECT count(*) FROM recent_entries").scalar()
+107 +             == 0
+108 +         )
+109 |     with client.app.state.db.write() as session:
+    |
+
+unformatted: File would be reformatted
+   --> services/server/tests/test_cleanup_and_fast_purge.py:23:27
+    |
+22  |     rows = client.get("/api/v1/trash").json()["items"]
+    -     result, _ = operation(client, "/api/v1/trash/permanent", {
+    -         "trash_ids": [row["id"] for row in rows], "confirmed": True
+    -     })
+23  +     result, _ = operation(
+24  +         client,
+25  +         "/api/v1/trash/permanent",
+26  +         {"trash_ids": [row["id"] for row in rows], "confirmed": True},
+27  +     )
+28  |     assert result["result"]["succeeded"] == 8, result
+--------------------------------------------------------------------------------
+44  |     row = client.get("/api/v1/trash").json()["items"][0]
+    -     result, _ = operation(client, "/api/v1/trash/permanent", {
+    -         "trash_ids": [row["id"]], "confirmed": True
+    -     })
+45  +     result, _ = operation(
+46  +         client, "/api/v1/trash/permanent", {"trash_ids": [row["id"]], "confirmed": True}
+47  +     )
+48  |     assert result["result"]["succeeded"] == 0
+--------------------------------------------------------------------------------
+71  |     assert not path.exists()
+    -     assert next(t for t in client.get("/api/v1/tags").json()["items"] if t["id"] == marked["id"])["video_count"] == 0
+72  +     assert (
+73  +         next(t for t in client.get("/api/v1/tags").json()["items"] if t["id"] == marked["id"])[
+74  +             "video_count"
+75  +         ]
+76  +         == 0
+77  +     )
+78  |     put(samples / "h264.mov", path)
+--------------------------------------------------------------------------------
+94  |     scan(client)
+    -     response = client.post("/api/v1/videos/forget-missing", json={"request_id": "offline", "confirmed": True})
+95  +     response = client.post(
+96  +         "/api/v1/videos/forget-missing", json={"request_id": "offline", "confirmed": True}
+97  +     )
+98  |     assert response.json()["removed"] == 0
+--------------------------------------------------------------------------------
+102 |     put(samples / "h264.mov", path)
+    -     response = client.post("/api/v1/videos/forget-missing", json={"request_id": "returned", "confirmed": True})
+103 +     response = client.post(
+104 +         "/api/v1/videos/forget-missing", json={"request_id": "returned", "confirmed": True}
+105 +     )
+106 |     assert response.json() == {"removed": 0, "skipped": 1}
+    |
+
+unformatted: File would be reformatted
+  --> services/server/tests/test_file_operations.py:31:31
+   |
+30 |             return
+   -         step = session.scalar(select(FileStep).where(
+   -             FileStep.operation_id == operation.id, FileStep.requested_id == requested_id
+   -         ))
+31 +         step = session.scalar(
+32 +             select(FileStep).where(
+33 +                 FileStep.operation_id == operation.id, FileStep.requested_id == requested_id
+34 +             )
+35 +         )
+36 |         if step and step.outcome == "pending":
+   -             step.destination = str((self.settings.trash_dir or Path(step.root_path) / ".video-viewer-trash")
+   -                                    / step.trash_id / Path(step.source).name)
+   -             step.copy_path = str(Path(step.destination).parent / ".video-viewer-tmp" / (step.id + ".part"))
+37 +             step.destination = str(
+38 +                 (self.settings.trash_dir or Path(step.root_path) / ".video-viewer-trash")
+39 +                 / step.trash_id
+40 +                 / Path(step.source).name
+41 +             )
+42 +             step.copy_path = str(
+43 +                 Path(step.destination).parent / ".video-viewer-tmp" / (step.id + ".part")
+44 +             )
+45 |
+   |
+
+unformatted: File would be reformatted
+   --> services/server/tests/test_initial_import.py:59:28
+    |
+58  |         assert stream.status_code == 409
+    -         state = client.get('/api/v1/library-state').json()
+    -         assert not state['ready'] and state['scanning']
+    -         assert state['progress']['discovered'] == 2
+    -         assert state['progress']['processed'] == 1
+    -         assert state['progress']['bytes_processed'] > 0
+    -         assert state['counts']['imported'] == 1
+    -         assert state['roots'][0]['last_scan'] is None
+    -         partial_round = client.get('/api/v1/playback').json()
+    -         assert partial_round['library_locked'] and partial_round['current'] is None
+    -         assert partial_round['total'] == 0
+59  +         state = client.get("/api/v1/library-state").json()
+60  +         assert not state["ready"] and state["scanning"]
+61  +         assert state["progress"]["discovered"] == 2
+62  +         assert state["progress"]["processed"] == 1
+63  +         assert state["progress"]["bytes_processed"] > 0
+64  +         assert state["counts"]["imported"] == 1
+65  +         assert state["roots"][0]["last_scan"] is None
+66  +         partial_round = client.get("/api/v1/playback").json()
+67  +         assert partial_round["library_locked"] and partial_round["current"] is None
+68  +         assert partial_round["total"] == 0
+69  |         tag = client.post(
+--------------------------------------------------------------------------------
+89  |     try:
+    -         assert not reopened.get('/api/v1/library-state').json()['ready']
+90  +         assert not reopened.get("/api/v1/library-state").json()["ready"]
+91  |         scan(reopened)
+    -         assert reopened.get('/api/v1/library-state').json()['ready']
+    -         full_round = reopened.get('/api/v1/playback').json()
+    -         assert full_round['total'] == 2 and full_round['id'] != partial_round['id']
+92  +         assert reopened.get("/api/v1/library-state").json()["ready"]
+93  +         full_round = reopened.get("/api/v1/playback").json()
+94  +         assert full_round["total"] == 2 and full_round["id"] != partial_round["id"]
+95  |         videos = reopened.get("/api/v1/videos").json()
+--------------------------------------------------------------------------------
+100 |         assert other["tag_ids"] == []
+    -         assert reopened.get(saved['media_url'], headers={'Range': 'bytes=0-31'}).status_code == 206
+101 +         assert reopened.get(saved["media_url"], headers={"Range": "bytes=0-31"}).status_code == 206
+102 |     finally:
+--------------------------------------------------------------------------------
+116 |         assert blocked.wait(10)
+    -         assert client.get('/api/v1/library-state').json()['ready']
+117 +         assert client.get("/api/v1/library-state").json()["ready"]
+118 |         current = client.get("/api/v1/videos").json()["items"]
+--------------------------------------------------------------------------------
+134 |     settings, media = environment
+    -     put(samples / 'portrait.mp4', media / 'keep.mp4')
+    -     put(samples / 'h264.mov', media / 'discard.mov')
+135 +     put(samples / "portrait.mp4", media / "keep.mp4")
+136 +     put(samples / "h264.mov", media / "discard.mov")
+137 |     client, token = connect(settings)
+138 |     try:
+139 |         scan(client)
+    -         videos = client.get('/api/v1/videos').json()['items']
+    -         marked = tag(client, '保留的标记')['id']
+    -         assign(client, [video['id'] for video in videos], [marked])
+    -         trash(client, [videos[0]['id']])
+    -         before = client.get('/api/v1/trash').json()['items']
+    -         remaining = client.get('/api/v1/videos').json()['items']
+    -         roots = client.get('/api/v1/roots').json()
+140 +         videos = client.get("/api/v1/videos").json()["items"]
+141 +         marked = tag(client, "保留的标记")["id"]
+142 +         assign(client, [video["id"] for video in videos], [marked])
+143 +         trash(client, [videos[0]["id"]])
+144 +         before = client.get("/api/v1/trash").json()["items"]
+145 +         remaining = client.get("/api/v1/videos").json()["items"]
+146 +         roots = client.get("/api/v1/roots").json()
+147 |     finally:
+148 |         client.__exit__(None, None, None)
+149 |     reopened, _ = connect(settings, token=token)
+150 |     try:
+    -         assert reopened.get('/api/v1/library-state').json()['ready']
+    -         assert reopened.get('/api/v1/roots').json() == roots
+    -         assert reopened.get('/api/v1/videos').json()['items'] == remaining
+    -         assert reopened.get('/api/v1/trash').json()['items'] == before
+    -         assert remaining[0]['tag_ids'] == [marked]
+151 +         assert reopened.get("/api/v1/library-state").json()["ready"]
+152 +         assert reopened.get("/api/v1/roots").json() == roots
+153 +         assert reopened.get("/api/v1/videos").json()["items"] == remaining
+154 +         assert reopened.get("/api/v1/trash").json()["items"] == before
+155 +         assert remaining[0]["tag_ids"] == [marked]
+156 |     finally:
+--------------------------------------------------------------------------------
+164 |     for number in range(3):
+    -         put(samples / 'portrait.mp4', media / f'{number}.mp4')
+165 +         put(samples / "portrait.mp4", media / f"{number}.mp4")
+166 |     scan(client)
+    -     active, _ = create_round(client, 'sequential')
+    -     trash(client, [active['current']['id']])
+    -     active = client.get('/api/v1/playback').json()
+167 +     active, _ = create_round(client, "sequential")
+168 +     trash(client, [active["current"]["id"]])
+169 +     active = client.get("/api/v1/playback").json()
+170 |     raw, _ = export(client)
+    -     restored, _ = restore(client, raw, {'main': str(media)})
+    -     assert restored['status'] == 'completed'
+    -     assert not client.get('/api/v1/library-state').json()['ready']
+171 +     restored, _ = restore(client, raw, {"main": str(media)})
+172 +     assert restored["status"] == "completed"
+173 +     assert not client.get("/api/v1/library-state").json()["ready"]
+174 |     scan(client)
+    -     current = client.get('/api/v1/playback').json()
+    -     assert current['id'] == active['id']
+    -     assert current['position'] == active['position']
+    -     assert current['current']['id'] == active['current']['id']
+175 +     current = client.get("/api/v1/playback").json()
+176 +     assert current["id"] == active["id"]
+177 +     assert current["position"] == active["position"]
+178 +     assert current["current"]["id"] == active["current"]["id"]
+    |
+
+unformatted: File would be reformatted
+  --> services/server/tests/test_logical_trash.py:34:29
+   |
+33 |         assert (current.st_ino, current.st_size, current.st_mtime_ns, current.st_ctime_ns) == (
+   -             previous.st_ino, previous.st_size, previous.st_mtime_ns, previous.st_ctime_ns
+34 +             previous.st_ino,
+35 +             previous.st_size,
+36 +             previous.st_mtime_ns,
+37 +             previous.st_ctime_ns,
+38 |         )
+--------------------------------------------------------------------------------
+42 |     rows = client.get("/api/v1/trash").json()["items"]
+   -     restored, _ = operation(client, "/api/v1/trash/restore", {"trash_ids": [row["id"] for row in rows]})
+43 +     restored, _ = operation(
+44 +         client, "/api/v1/trash/restore", {"trash_ids": [row["id"] for row in rows]}
+45 +     )
+46 |     assert restored["result"]["succeeded"] == 4, restored
+47 |     assert {video["id"] for video in client.get("/api/v1/videos").json()["items"]} == set(ids)
+   -     assert all(video["tag_ids"] == [label["id"]] for video in client.get("/api/v1/videos").json()["items"])
+48 +     assert all(
+49 +         video["tag_ids"] == [label["id"]] for video in client.get("/api/v1/videos").json()["items"]
+50 +     )
+51 |     assert client.get("/api/v1/trash").json()["total"] == 0
+--------------------------------------------------------------------------------
+62 |     row = client.get("/api/v1/trash").json()["items"][0]
+   -     assert client.post("/api/v1/trash/permanent", json={"request_id": str(uuid.uuid4()), "trash_ids": [row["id"]]}).status_code == 422
+   -     done, _ = operation(client, "/api/v1/trash/permanent", {"trash_ids": [row["id"]], "confirmed": True})
+63 +     assert (
+64 +         client.post(
+65 +             "/api/v1/trash/permanent",
+66 +             json={"request_id": str(uuid.uuid4()), "trash_ids": [row["id"]]},
+67 +         ).status_code
+68 +         == 422
+69 +     )
+70 +     done, _ = operation(
+71 +         client, "/api/v1/trash/permanent", {"trash_ids": [row["id"]], "confirmed": True}
+72 +     )
+73 |     assert done["result"]["succeeded"] == 1, done
+--------------------------------------------------------------------------------
+86 |     row = client.get("/api/v1/trash").json()["items"][0]
+   -     done, _ = operation(client, "/api/v1/trash/permanent", {"trash_ids": [row["id"]], "confirmed": True})
+87 +     done, _ = operation(
+88 +         client, "/api/v1/trash/permanent", {"trash_ids": [row["id"]], "confirmed": True}
+89 +     )
+90 |     assert done["result"]["succeeded"] == 0
+   |
+
+unformatted: File would be reformatted
+   --> services/server/tests/test_media_types.py:557:16
+    |
+556 |         assert connection.execute("SELECT directory_signature FROM packs").fetchone() == ("[]",)
+    -         assert connection.execute(
+    -             "SELECT content_version FROM pack_progress"
+    -         ).fetchone() == connection.execute("SELECT content_version FROM packs").fetchone()
+557 +         assert (
+558 +             connection.execute("SELECT content_version FROM pack_progress").fetchone()
+559 +             == connection.execute("SELECT content_version FROM packs").fetchone()
+560 +         )
+561 |         assert connection.execute("SELECT recovery_reason FROM pack_progress").fetchone() == (None,)
+    |
+
+unformatted: File would be reformatted
+   --> services/server/tests/test_pack_entry_anchors.py:9:27
+    |
+8   | def locate(client, anchors, *, fallback=58, **scope):
+    -     response = client.get("/api/v1/packs", params={
+    -         "anchor_ids": anchors, "offset": fallback, "limit": 24, **scope,
+    -     })
+9   +     response = client.get(
+10  +         "/api/v1/packs",
+11  +         params={
+12  +             "anchor_ids": anchors,
+13  +             "offset": fallback,
+14  +             "limit": 24,
+15  +             **scope,
+16  +         },
+17  +     )
+18  |     assert response.status_code == 200, response.text
+--------------------------------------------------------------------------------
+26  |     a, b = pack_tag(client, "交集一", "anchor-a"), pack_tag(client, "交集二", "anchor-b")
+    -     assert client.patch("/api/v1/pack-tag-links", json={
+    -         "pack_ids": ids, "tag_ids": [a["id"], b["id"]], "request_id": "anchor-assign",
+    -     }).status_code == 200
+27  +     assert (
+28  +         client.patch(
+29  +             "/api/v1/pack-tag-links",
+30  +             json={
+31  +                 "pack_ids": ids,
+32  +                 "tag_ids": [a["id"], b["id"]],
+33  +                 "request_id": "anchor-assign",
+34  +             },
+35  +         ).status_code
+36  +         == 200
+37  +     )
+38  |     with client.app.state.db.write() as session:
+39  |         session.add(PackProgress(pack_id=ids[-1], completed=True))
+    -     scope = {"directory_id": root["directory_id"], "search": "包", "read_state": "unread",
+    -              "tag_ids": [a["id"], b["id"]], "sort": "name"}
+40  +     scope = {
+41  +         "directory_id": root["directory_id"],
+42  +         "search": "包",
+43  +         "read_state": "unread",
+44  +         "tag_ids": [a["id"], b["id"]],
+45  +         "sort": "name",
+46  +     }
+47  |     first = locate(client, [ids[58], ids[59], ids[57]], **scope)
+48  |     assert first["total"] == 72 and first["offset"] == 48 and first["anchor_index"] == 58
+49  |     assert first["items"][10]["id"] == ids[58] and len(first["items"]) == 24
+    -     assert client.patch("/api/v1/pack-tag-links", json={
+    -         "pack_ids": [ids[58]], "tag_ids": [b["id"]], "mode": "remove", "request_id": "anchor-remove",
+    -     }).status_code == 200
+50  +     assert (
+51  +         client.patch(
+52  +             "/api/v1/pack-tag-links",
+53  +             json={
+54  +                 "pack_ids": [ids[58]],
+55  +                 "tag_ids": [b["id"]],
+56  +                 "mode": "remove",
+57  +                 "request_id": "anchor-remove",
+58  +             },
+59  +         ).status_code
+60  +         == 200
+61  +     )
+62  |     neighbor = locate(client, [ids[58], ids[59], ids[57]], **scope)
+--------------------------------------------------------------------------------
+66  |     new = seed_pack(client, root, "包-early")
+    -     assert client.patch("/api/v1/pack-tag-links", json={
+    -         "pack_ids": [new], "tag_ids": [a["id"], b["id"]], "request_id": "anchor-new",
+    -     }).status_code == 200
+67  +     assert (
+68  +         client.patch(
+69  +             "/api/v1/pack-tag-links",
+70  +             json={
+71  +                 "pack_ids": [new],
+72  +                 "tag_ids": [a["id"], b["id"]],
+73  +                 "request_id": "anchor-new",
+74  +             },
+75  +         ).status_code
+76  +         == 200
+77  +     )
+78  |     inserted = locate(client, [ids[59]], **scope)
+--------------------------------------------------------------------------------
+86  |     with client.app.state.db.read() as session:
+    -         assert session.connection().exec_driver_sql("SELECT count(*) FROM pack_sessions").scalar() == 0
+    -         assert session.connection().exec_driver_sql("SELECT count(*) FROM recent_entries").scalar() == 0
+87  +         assert (
+88  +             session.connection().exec_driver_sql("SELECT count(*) FROM pack_sessions").scalar() == 0
+89  +         )
+90  +         assert (
+91  +             session.connection().exec_driver_sql("SELECT count(*) FROM recent_entries").scalar()
+92  +             == 0
+93  +         )
+94  |     with client.app.state.db.write() as session:
+--------------------------------------------------------------------------------
+113 |     assert previous["anchor_index"] == 0 and previous["items"][0]["id"] == ids[0]
+    -     assert client.get("/api/v1/packs", params={"anchor_ids": ids}, headers={"Authorization": ""}).status_code == 401
+    -     assert client.get("/api/v1/packs", params={"anchor_ids": ids, "directory_id": "gone"}).status_code == 404
+    -     assert client.get("/api/v1/packs", params={"anchor_ids": [str(i) for i in range(17)]}).status_code == 422
+114 +     assert (
+115 +         client.get(
+116 +             "/api/v1/packs", params={"anchor_ids": ids}, headers={"Authorization": ""}
+117 +         ).status_code
+118 +         == 401
+119 +     )
+120 +     assert (
+121 +         client.get("/api/v1/packs", params={"anchor_ids": ids, "directory_id": "gone"}).status_code
+122 +         == 404
+123 +     )
+124 +     assert (
+125 +         client.get("/api/v1/packs", params={"anchor_ids": [str(i) for i in range(17)]}).status_code
+126 +         == 422
+127 +     )
+    |
+
+unformatted: File would be reformatted
+   --> services/server/tests/test_pack_missing.py:203:75
+    |
+202 | @pytest.mark.parametrize("before_admission", [True, False])
+    - def test_same_path_replacement_preserves_metadata_until_successful_rescan(library, before_admission):
+203 + def test_same_path_replacement_preserves_metadata_until_successful_rescan(
+204 +     library, before_admission
+205 + ):
+206 |     client, media = library
+    |
+
+unformatted: File would be reformatted
+   --> services/server/tests/test_pack_presentation.py:15:26
+    |
+14  |
+    - @pytest.mark.parametrize("name,title,author,number", [
+    -     ("示例作者 NO.034 - 夏日祭", "夏日祭", "示例作者", "034"),
+    -     ("[作者 A] no.001 – 晚风 - 外景", "晚风 - 外景", "作者 A", "001"),
+    -     ("【作者】 NO．09 — 🌷 春日", "🌷 春日", "作者", "09"),
+    -     ("作者　NO.10 - 中文空格", "中文空格", "作者", "10"),
+    -     ("普通目录 - 海边", "普通目录 - 海边", None, None),
+    -     ("[4K] 风景", "[4K] 风景", None, None),
+    -     ("2026-01-01 写真", "2026-01-01 写真", None, None),
+    -     ("作者 NO.1 - ", "作者 NO.1 - ", None, None),
+    -     ("NO.01 - 无作者", "NO.01 - 无作者", None, None),
+    -     ("作者 NO.123456789 - 超长编号", "作者 NO.123456789 - 超长编号", None, None),
+    -     ("作者 NO.1 - 第一行\n第二行", "作者 NO.1 - 第一行\n第二行", None, None),
+    -     ("[] NO.1 - 空作者", "[] NO.1 - 空作者", None, None),
+    - ])
+15  + @pytest.mark.parametrize(
+16  +     "name,title,author,number",
+17  +     [
+18  +         ("示例作者 NO.034 - 夏日祭", "夏日祭", "示例作者", "034"),
+19  +         ("[作者 A] no.001 – 晚风 - 外景", "晚风 - 外景", "作者 A", "001"),
+20  +         ("【作者】 NO．09 — 🌷 春日", "🌷 春日", "作者", "09"),
+21  +         ("作者　NO.10 - 中文空格", "中文空格", "作者", "10"),
+22  +         ("普通目录 - 海边", "普通目录 - 海边", None, None),
+23  +         ("[4K] 风景", "[4K] 风景", None, None),
+24  +         ("2026-01-01 写真", "2026-01-01 写真", None, None),
+25  +         ("作者 NO.1 - ", "作者 NO.1 - ", None, None),
+26  +         ("NO.01 - 无作者", "NO.01 - 无作者", None, None),
+27  +         ("作者 NO.123456789 - 超长编号", "作者 NO.123456789 - 超长编号", None, None),
+28  +         ("作者 NO.1 - 第一行\n第二行", "作者 NO.1 - 第一行\n第二行", None, None),
+29  +         ("[] NO.1 - 空作者", "[] NO.1 - 空作者", None, None),
+30  +     ],
+31  + )
+32  | def test_conservative_presentation(name, title, author, number):
+--------------------------------------------------------------------------------
+97  |     # Raw author/volume order is deliberately opposite to display order.
+    -     names = [f"作者 {28-i:02d} NO.{28-i:03d} - 晚风 {i:02d}" for i in range(28)]
+98  +     names = [f"作者 {28 - i:02d} NO.{28 - i:03d} - 晚风 {i:02d}" for i in range(28)]
+99  |     ids = [seed_pack(client, root, name) for name in names]
+--------------------------------------------------------------------------------
+107 |     assert [p["id"] for p in listing(client, sort="name", limit=100)["items"]] == ids[::-1]
+    -     assert [p["id"] for p in client.get("/api/v1/packs", params={"limit": 100}).json()["items"]] == ids[::-1]
+108 +     assert [
+109 +         p["id"] for p in client.get("/api/v1/packs", params={"limit": 100}).json()["items"]
+110 +     ] == ids[::-1]
+111 |     anchor = listing(client, anchor_ids=[ids[25]], limit=7)
+--------------------------------------------------------------------------------
+120 |     seed_pack(client, root, "作者 NO.000 - 最先")
+    -     entries = client.get(f"/api/v1/pack-sessions/{value['id']}/entries", params={"limit": 100}).json()
+121 +     entries = client.get(
+122 +         f"/api/v1/pack-sessions/{value['id']}/entries", params={"limit": 100}
+123 +     ).json()
+124 |     assert [e["pack"]["id"] for e in entries["items"]] == ids
+--------------------------------------------------------------------------------
+131 |     root = pack_root(client, media)
+    -     names = ["作者 NO.004 - 原野上的浪漫", "作者 NO.003 - 新年快乐",
+    -              "作者 NO.002 - 夏日祭", "作者 NO.001 - 加藤惠 - 和服"]
+132 +     names = [
+133 +         "作者 NO.004 - 原野上的浪漫",
+134 +         "作者 NO.003 - 新年快乐",
+135 +         "作者 NO.002 - 夏日祭",
+136 +         "作者 NO.001 - 加藤惠 - 和服",
+137 +     ]
+138 |     ids = [seed_pack(client, root, name) for name in names]
+    |
+
+unformatted: File would be reformatted
+   --> services/server/tests/test_pack_restore_history_migration.py:90:20
+    |
+89  |         before = {t: connection.execute(f'SELECT * FROM "{t}"').fetchall() for t in tables}
+    -         columns = {t: [row[1] for row in connection.execute(f'PRAGMA table_info("{t}")')] for t in tables}
+90  +         columns = {
+91  +             t: [row[1] for row in connection.execute(f'PRAGMA table_info("{t}")')] for t in tables
+92  +         }
+93  |         assert connection.execute("SELECT version_num FROM alembic_version").fetchone() == ("0011",)
+--------------------------------------------------------------------------------
+97  |             assert all(
+    -                 connection.execute('SELECT '+','.join('"'+column+'"' for column in columns[t])+f' FROM "{t}"').fetchall() == rows
+98  +                 connection.execute(
+99  +                     "SELECT "
+100 +                     + ",".join('"' + column + '"' for column in columns[t])
+101 +                     + f' FROM "{t}"'
+102 +                 ).fetchall()
+103 +                 == rows
+104 |                 for t, rows in before.items()
+--------------------------------------------------------------------------------
+108 |             )
+    -             for table in ("pack_restore_plans", "pack_restore_members", "pack_restore_batches", "pack_missing_cleanups", "pack_missing_members"):
+109 +             for table in (
+110 +                 "pack_restore_plans",
+111 +                 "pack_restore_members",
+112 +                 "pack_restore_batches",
+113 +                 "pack_missing_cleanups",
+114 +                 "pack_missing_members",
+115 +             ):
+116 |                 assert connection.execute(f'SELECT COUNT(*) FROM "{table}"').fetchone() == (0,)
+    |
+
+unformatted: File would be reformatted
+  --> services/server/tests/test_pack_tag_names.py:15:13
+   |
+14 |     assert labels[-1]["id"] not in {row["id"] for row in first["items"]}
+   -     body = {"pack_ids": [identity], "tag_ids": [labels[5]["id"], labels[-1]["id"]], "request_id": "names-assign"}
+15 +     body = {
+16 +         "pack_ids": [identity],
+17 +         "tag_ids": [labels[5]["id"], labels[-1]["id"]],
+18 +         "request_id": "names-assign",
+19 +     }
+20 |     assert client.patch("/api/v1/pack-tag-links", json=body).status_code == 200
+--------------------------------------------------------------------------------
+30 |     assert client.get("/api/v1/packs").json()["items"][0]["tag_names"] == expected
+   -     assert client.patch(f"/api/v1/pack-tags/{labels[-1]['id']}", json={"name": "新名称", "request_id": "names-rename"}).status_code == 200
+31 +     assert (
+32 +         client.patch(
+33 +             f"/api/v1/pack-tags/{labels[-1]['id']}",
+34 +             json={"name": "新名称", "request_id": "names-rename"},
+35 +         ).status_code
+36 +         == 200
+37 +     )
+38 |     renamed = client.get("/api/v1/pack-tags/resolve", params=params).json()
+39 |     assert renamed["items"][0]["name"] == "新名称"
+40 |     assert client.get(f"/api/v1/packs/{identity}").json()["tag_names"][labels[-1]["id"]] == "新名称"
+   -     assert client.request("DELETE", f"/api/v1/pack-tags/{labels[-1]['id']}", json={"request_id": "names-delete"}).status_code == 200
+   -     assert labels[-1]["id"] in client.get("/api/v1/pack-tags/resolve", params=params).json()["missing_ids"]
+   -     assert client.get(f"/api/v1/packs/{identity}").json()["tag_names"] == {labels[5]["id"]: "标签05"}
+41 +     assert (
+42 +         client.request(
+43 +             "DELETE", f"/api/v1/pack-tags/{labels[-1]['id']}", json={"request_id": "names-delete"}
+44 +         ).status_code
+45 +         == 200
+46 +     )
+47 +     assert (
+48 +         labels[-1]["id"]
+49 +         in client.get("/api/v1/pack-tags/resolve", params=params).json()["missing_ids"]
+50 +     )
+51 +     assert client.get(f"/api/v1/packs/{identity}").json()["tag_names"] == {
+52 +         labels[5]["id"]: "标签05"
+53 +     }
+54 |     assert client.get("/api/v1/tags").json()["items"][0]["name"] == "标签60"
+--------------------------------------------------------------------------------
+58 |     client, _ = library
+   -     assert client.get("/api/v1/pack-tags/resolve", headers={"Authorization": ""}, params={"tag_ids": ["a"]}).status_code == 401
+59 +     assert (
+60 +         client.get(
+61 +             "/api/v1/pack-tags/resolve", headers={"Authorization": ""}, params={"tag_ids": ["a"]}
+62 +         ).status_code
+63 +         == 401
+64 +     )
+65 |     assert client.get("/api/v1/pack-tags/resolve").status_code == 422
+   -     assert client.get("/api/v1/pack-tags/resolve", params={"tag_ids": [str(i) for i in range(257)]}).status_code == 422
+66 +     assert (
+67 +         client.get(
+68 +             "/api/v1/pack-tags/resolve", params={"tag_ids": [str(i) for i in range(257)]}
+69 +         ).status_code
+70 +         == 422
+71 +     )
+72 |     response = client.get("/api/v1/pack-tags/resolve", params={"tag_ids": ["a", "a", "b"]})
+   |
+
+unformatted: File would be reformatted
+   --> services/server/tests/test_reading.py:478:30
+    |
+477 |     with client.app.state.db.write() as db:
+    -         ordered = db.scalars(select(PackPage).where(PackPage.pack_id == ids[0]).order_by(PackPage.ordinal)).all()
+478 +         ordered = db.scalars(
+479 +             select(PackPage).where(PackPage.pack_id == ids[0]).order_by(PackPage.ordinal)
+480 +         ).all()
+481 |         for i, page in enumerate(ordered):
+--------------------------------------------------------------------------------
+489 |     last_id = manifest["items"][2]["id"]
+    -     saved = client.patch(f"/api/v1/packs/{ids[0]}/progress", json=progress_body(value, state, page_id=last_id))
+490 +     saved = client.patch(
+491 +         f"/api/v1/packs/{ids[0]}/progress", json=progress_body(value, state, page_id=last_id)
+492 +     )
+493 |     assert saved.status_code == 200, saved.text
+    |
+
+unformatted: File would be reformatted
+   --> services/server/tests/test_thumbnail_recovery.py:13:26
+    |
+12  |
+    - @pytest.mark.parametrize('fault,code', [
+    -     ('timeout', 'thumbnail_timeout'),
+    -     ('decode', 'thumbnail_decode_failed'),
+    -     ('cache', 'thumbnail_cache_unavailable'),
+    - ])
+13  + @pytest.mark.parametrize(
+14  +     "fault,code",
+15  +     [
+16  +         ("timeout", "thumbnail_timeout"),
+17  +         ("decode", "thumbnail_decode_failed"),
+18  +         ("cache", "thumbnail_cache_unavailable"),
+19  +     ],
+20  + )
+21  | def test_optional_thumbnail_failure_keeps_original_and_retries_without_rehash(
+22  |     library, samples, monkeypatch, fault, code
+23  | ):
+24  |     client, directory = library
+    -     path = directory / 'valid.mp4'
+    -     digest = put(samples / 'portrait.mp4', path)
+25  +     path = directory / "valid.mp4"
+26  +     digest = put(samples / "portrait.mp4", path)
+27  |     original_run = tools.subprocess.run
+28  |     original_thumbnail = tools.make_thumbnail
+29  |
+30  |     def unavailable(command, **kwargs):
+    -         if command[0] == 'ffmpeg':
+    -             if fault == 'timeout':
+    -                 raise subprocess.TimeoutExpired(command, 20, stderr=b'private subprocess detail')
+    -             if fault == 'decode':
+    -                 raise subprocess.CalledProcessError(1, command, stderr=b'private subprocess detail')
+    -             raise PermissionError('private subprocess detail')
+31  +         if command[0] == "ffmpeg":
+32  +             if fault == "timeout":
+33  +                 raise subprocess.TimeoutExpired(command, 20, stderr=b"private subprocess detail")
+34  +             if fault == "decode":
+35  +                 raise subprocess.CalledProcessError(1, command, stderr=b"private subprocess detail")
+36  +             raise PermissionError("private subprocess detail")
+37  |         return original_run(command, **kwargs)
+38  |
+    -     monkeypatch.setattr(tools.subprocess, 'run', unavailable)
+39  +     monkeypatch.setattr(tools.subprocess, "run", unavailable)
+40  |     job = scan(client)
+    -     assert job['result']['imported'] == 1
+    -     assert job['result']['failed'] == 0
+    -     assert job['result']['thumbnail_failed'] == 1
+    -     assert job['result']['warning_reasons'] == {code: 1}
+    -     state = client.get('/api/v1/library-state').json()
+    -     assert state['ready'] and state['counts']['thumbnail_failed'] == 1
+    -     first = client.get('/api/v1/videos').json()['items'][0]
+    -     assert first['thumbnail_url'] is None and first['error'] is None
+    -     assert client.get(first['media_url']).content == path.read_bytes()
+    -     marked = tag(client, '元数据保留')['id']
+    -     assign(client, [first['id']], [marked])
+41  +     assert job["result"]["imported"] == 1
+42  +     assert job["result"]["failed"] == 0
+43  +     assert job["result"]["thumbnail_failed"] == 1
+44  +     assert job["result"]["warning_reasons"] == {code: 1}
+45  +     state = client.get("/api/v1/library-state").json()
+46  +     assert state["ready"] and state["counts"]["thumbnail_failed"] == 1
+47  +     first = client.get("/api/v1/videos").json()["items"][0]
+48  +     assert first["thumbnail_url"] is None and first["error"] is None
+49  +     assert client.get(first["media_url"]).content == path.read_bytes()
+50  +     marked = tag(client, "元数据保留")["id"]
+51  +     assign(client, [first["id"]], [marked])
+52  |
+53  |     def no_full_read(*args):
+    -         raise AssertionError('Unchanged originals must not be rehashed or probed for an optional poster')
+54  +         raise AssertionError(
+55  +             "Unchanged originals must not be rehashed or probed for an optional poster"
+56  +         )
+57  |
+    -     monkeypatch.setattr(scanner, 'fingerprint', no_full_read)
+    -     monkeypatch.setattr(scanner, 'inspect_media', no_full_read)
+58  +     monkeypatch.setattr(scanner, "fingerprint", no_full_read)
+59  +     monkeypatch.setattr(scanner, "inspect_media", no_full_read)
+60  |     second_job = scan(client)
+    -     assert second_job['result']['unchanged'] == 1
+    -     assert second_job['result']['failed'] == 0
+    -     assert second_job['result']['warning_reasons'] == {code: 1}
+61  +     assert second_job["result"]["unchanged"] == 1
+62  +     assert second_job["result"]["failed"] == 0
+63  +     assert second_job["result"]["warning_reasons"] == {code: 1}
+64  |
+    -     monkeypatch.setattr(tools.subprocess, 'run', original_run)
+    -     monkeypatch.setattr(scanner, 'make_thumbnail', original_thumbnail)
+65  +     monkeypatch.setattr(tools.subprocess, "run", original_run)
+66  +     monkeypatch.setattr(scanner, "make_thumbnail", original_thumbnail)
+67  |     recovered = scan(client)
+    -     assert recovered['result']['unchanged'] == 1
+    -     assert recovered['result']['thumbnail_failed'] == 0
+    -     video = client.get('/api/v1/videos').json()['items'][0]
+    -     assert video['id'] == first['id'] and video['tag_ids'] == [marked]
+    -     assert client.get(video['thumbnail_url']).content.startswith(b'\xff\xd8')
+68  +     assert recovered["result"]["unchanged"] == 1
+69  +     assert recovered["result"]["thumbnail_failed"] == 0
+70  +     video = client.get("/api/v1/videos").json()["items"][0]
+71  +     assert video["id"] == first["id"] and video["tag_ids"] == [marked]
+72  +     assert client.get(video["thumbnail_url"]).content.startswith(b"\xff\xd8")
+73  |     assert hashlib.sha256(path.read_bytes()).hexdigest() == digest
+    -     assert not list((client.app.state.settings.data_dir / 'thumbnails').glob('*.tmp.jpg'))
+    -     assert 'private subprocess detail' not in str(job)
+74  +     assert not list((client.app.state.settings.data_dir / "thumbnails").glob("*.tmp.jpg"))
+75  +     assert "private subprocess detail" not in str(job)
+76  |
+77  |
+78  | def test_probe_failure_is_distinct_from_optional_thumbnail_warning(library):
+79  |     client, directory = library
+    -     (directory / 'broken.mp4').write_bytes(b'not a video')
+80  +     (directory / "broken.mp4").write_bytes(b"not a video")
+81  |     job = scan(client)
+    -     assert job['result']['failed'] == 1
+    -     assert job['result']['thumbnail_failed'] == 0
+    -     assert job['result']['failure_reasons'] == {'probe_failed': 1}
+    -     assert job['result']['issues'][0]['code'] == 'probe_failed'
+    -     assert client.get('/api/v1/library-state').json()['failure_reasons'] == {'probe_failed': 1}
+    -     assert client.get('/api/v1/videos').json()['total'] == 0
+82  +     assert job["result"]["failed"] == 1
+83  +     assert job["result"]["thumbnail_failed"] == 0
+84  +     assert job["result"]["failure_reasons"] == {"probe_failed": 1}
+85  +     assert job["result"]["issues"][0]["code"] == "probe_failed"
+86  +     assert client.get("/api/v1/library-state").json()["failure_reasons"] == {"probe_failed": 1}
+87  +     assert client.get("/api/v1/videos").json()["total"] == 0
+88  |
+89  |
+    - def test_probe_timeout_keeps_precise_reason_without_subprocess_details(library, samples, monkeypatch):
+90  + def test_probe_timeout_keeps_precise_reason_without_subprocess_details(
+91  +     library, samples, monkeypatch
+92  + ):
+93  |     client, directory = library
+    -     put(samples / 'portrait.mp4', directory / 'valid.mp4')
+94  +     put(samples / "portrait.mp4", directory / "valid.mp4")
+95  |
+96  |     def timeout(command, **kwargs):
+    -         raise subprocess.TimeoutExpired(command, 20, stderr=b'private detail')
+97  +         raise subprocess.TimeoutExpired(command, 20, stderr=b"private detail")
+98  |
+    -     monkeypatch.setattr(tools.subprocess, 'run', timeout)
+99  +     monkeypatch.setattr(tools.subprocess, "run", timeout)
+100 |     job = scan(client)
+    -     assert job['result']['failure_reasons'] == {'probe_timeout': 1}
+    -     assert job['result']['thumbnail_failed'] == 0
+    -     assert 'private detail' not in str(job)
+101 +     assert job["result"]["failure_reasons"] == {"probe_timeout": 1}
+102 +     assert job["result"]["thumbnail_failed"] == 0
+103 +     assert "private detail" not in str(job)
+104 |
+105 |
+    - def test_thumbnail_failure_does_not_hide_a_file_changed_during_inspection(library, samples, monkeypatch):
+106 + def test_thumbnail_failure_does_not_hide_a_file_changed_during_inspection(
+107 +     library, samples, monkeypatch
+108 + ):
+109 |     client, directory = library
+    -     path = directory / 'changing.mp4'
+    -     put(samples / 'portrait.mp4', path)
+110 +     path = directory / "changing.mp4"
+111 +     put(samples / "portrait.mp4", path)
+112 |
+113 |     def changed(*args):
+    -         with path.open('ab') as output:
+    -             output.write(b'new bytes while inspecting')
+    -         raise tools.MediaInspectionError('thumbnail_timeout')
+114 +         with path.open("ab") as output:
+115 +             output.write(b"new bytes while inspecting")
+116 +         raise tools.MediaInspectionError("thumbnail_timeout")
+117 |
+    -     monkeypatch.setattr(tools, 'make_thumbnail', changed)
+118 +     monkeypatch.setattr(tools, "make_thumbnail", changed)
+119 |     job = scan(client)
+    -     assert job['result']['deferred'] == 1
+    -     assert job['result']['failed'] == job['result']['thumbnail_failed'] == 0
+    -     assert client.get('/api/v1/videos').json()['total'] == 0
+120 +     assert job["result"]["deferred"] == 1
+121 +     assert job["result"]["failed"] == job["result"]["thumbnail_failed"] == 0
+122 +     assert client.get("/api/v1/videos").json()["total"] == 0
+    |
+
+unformatted: File would be reformatted
+   --> services/server/tests/test_video_name_order.py:24:90
+    |
+23  |             item.sha256 = put(sample, path)
+    -             item.device, item.inode, item.size, item.mtime_ns, item.ctime_ns = signature(path.stat())
+24  +             item.device, item.inode, item.size, item.mtime_ns, item.ctime_ns = signature(
+25  +                 path.stat()
+26  +             )
+27  |     return ids
+28  |
+29  |
+30  | def listing(client, **params):
+    -     response = client.get("/api/v1/videos", params={"sort": "name", "name_locale": "zh-CN", **params})
+31  +     response = client.get(
+32  +         "/api/v1/videos", params={"sort": "name", "name_locale": "zh-CN", **params}
+33  +     )
+34  |     assert response.status_code == 200, response.text
+--------------------------------------------------------------------------------
+38  | def test_literal_names_use_chinese_collation_without_pack_presentation():
+    -     assert sorted(["水边的花.mp4", "风里的花园.mp4"], key=name_sort_key) == ["风里的花园.mp4", "水边的花.mp4"]
+39  +     assert sorted(["水边的花.mp4", "风里的花园.mp4"], key=name_sort_key) == [
+40  +         "风里的花园.mp4",
+41  +         "水边的花.mp4",
+42  +     ]
+43  |     assert name_sort_key("作者 NO.001 - 夏日祭.mp4") != name_sort_key("夏日祭.mp4")
+--------------------------------------------------------------------------------
+54  |     client, media = library
+    -     names = [f"水边 {i:02d}" for i in range(12, -1, -1)] + [f"风里 {i:02d}" for i in range(13, -1, -1)]
+55  +     names = [f"水边 {i:02d}" for i in range(12, -1, -1)] + [
+56  +         f"风里 {i:02d}" for i in range(13, -1, -1)
+57  +     ]
+58  |     ids = seed(client, media, names, samples / "portrait.mp4")
+--------------------------------------------------------------------------------
+68  |     assert anchor["items"][4]["id"] == expected[25]
+    -     selected = client.get("/api/v1/videos/selection", params={"sort": "name", "name_locale": "zh-CN"}).json()
+69  +     selected = client.get(
+70  +         "/api/v1/videos/selection", params={"sort": "name", "name_locale": "zh-CN"}
+71  +     ).json()
+72  |     assert selected == {"kind": "video", "ids": expected, "total": 27}
+73  |     assert client.get("/api/v1/playback", params={"create": "false"}).status_code == 404
+74  |     assert client.get("/api/v1/recent").json()["total"] == 0
+75  |     value, request = begin(client, sort="name", name_locale="zh-CN", anchor_video_id=expected[25])
+    -     assert value["sort"] == "name" and value["name_locale"] == "zh-CN" and value["candidate_count"] == 27 and value["position"] == 25
+76  +     assert (
+77  +         value["sort"] == "name"
+78  +         and value["name_locale"] == "zh-CN"
+79  +         and value["candidate_count"] == 27
+80  +         and value["position"] == 25
+81  +     )
+82  |     assert client.post("/api/v1/rounds", json=request).json()["id"] == value["id"]
+    -     changed = client.post("/api/v1/rounds", json={k: v for k, v in request.items() if k != "name_locale"})
+83  +     changed = client.post(
+84  +         "/api/v1/rounds", json={k: v for k, v in request.items() if k != "name_locale"}
+85  +     )
+86  |     assert changed.status_code == 409
+--------------------------------------------------------------------------------
+107 |             db.get(Video, identity).created_at = i + 10
+    -         db.add_all([RecentEntry(kind="video", video_id=ids[0], opened_at=200),
+    -                     RecentEntry(kind="video", video_id=ids[1], opened_at=100)])
+108 +         db.add_all(
+109 +             [
+110 +                 RecentEntry(kind="video", video_id=ids[0], opened_at=200),
+111 +                 RecentEntry(kind="video", video_id=ids[1], opened_at=100),
+112 +             ]
+113 +         )
+114 +
+115 |     def listed(**params):
+116 |         return [v["id"] for v in client.get("/api/v1/videos", params=params).json()["items"]]
+117 +
+118 |     assert listed(sort="name") == [ids[3], ids[2], ids[0], ids[1]]
+--------------------------------------------------------------------------------
+125 |     legacy, _ = begin(client, sort="name")
+    -     assert legacy["sort"] == "name" and [r["video"]["id"] for r in entries(client, legacy)] == [ids[3], ids[2], ids[0], ids[1]]
+126 +     assert legacy["sort"] == "name" and [r["video"]["id"] for r in entries(client, legacy)] == [
+127 +         ids[3],
+128 +         ids[2],
+129 +         ids[0],
+130 +         ids[1],
+131 +     ]
+132 |
+--------------------------------------------------------------------------------
+144 |             for route in ["videos", "videos/selection"]:
+    -                 response = client.get(f"/api/v1/{route}", params={"sort": "name", "name_locale": "zh-CN"})
+    -                 assert response.status_code == 503 and response.json()["error"]["code"] == "video_name_order_unavailable"
+    -             response = client.post("/api/v1/rounds", json={"request_id": "missing-icu", "membership": "fixed", "sort": "name", "name_locale": "zh-CN"})
+145 +                 response = client.get(
+146 +                     f"/api/v1/{route}", params={"sort": "name", "name_locale": "zh-CN"}
+147 +                 )
+148 +                 assert (
+149 +                     response.status_code == 503
+150 +                     and response.json()["error"]["code"] == "video_name_order_unavailable"
+151 +                 )
+152 +             response = client.post(
+153 +                 "/api/v1/rounds",
+154 +                 json={
+155 +                     "request_id": "missing-icu",
+156 +                     "membership": "fixed",
+157 +                     "sort": "name",
+158 +                     "name_locale": "zh-CN",
+159 +                 },
+160 +             )
+161 |             assert response.status_code == 503
+--------------------------------------------------------------------------------
+172 |     for route in ["videos", "videos/selection"]:
+    -         for params in [{"sort": "name_zh"}, {"sort": "name", "name_locale": "not-supported"},
+    -                        {"sort": "newest", "name_locale": "zh-CN"}]:
+173 +         for params in [
+174 +             {"sort": "name_zh"},
+175 +             {"sort": "name", "name_locale": "not-supported"},
+176 +             {"sort": "newest", "name_locale": "zh-CN"},
+177 +         ]:
+178 |             assert client.get(f"/api/v1/{route}", params=params).status_code == 422
+    -     for body in [{"sort": "name_zh"}, {"sort": "newest", "name_locale": "zh-CN"},
+    -                  {"sort": "name", "name_locale": "zh-CN", "membership": "legacy"}]:
+    -         assert client.post("/api/v1/rounds", json={"request_id": "invalid", "membership": "fixed", **body}).status_code == 422
+179 +     for body in [
+180 +         {"sort": "name_zh"},
+181 +         {"sort": "newest", "name_locale": "zh-CN"},
+182 +         {"sort": "name", "name_locale": "zh-CN", "membership": "legacy"},
+183 +     ]:
+184 +         assert (
+185 +             client.post(
+186 +                 "/api/v1/rounds", json={"request_id": "invalid", "membership": "fixed", **body}
+187 +             ).status_code
+188 +             == 422
+189 +         )
+    |
+
+unformatted: File would be reformatted
+  --> services/server/tests/workspace_fixture.py:22:47
+   |
+21 |         if count == 1003:
+   -             (folder / "notes.txt").write_text(f"retain fixture attachment {index}", encoding="utf-8")
+   -         for page in ((1,) if count == 1003 else (1, 2, 10)):
+22 +             (folder / "notes.txt").write_text(
+23 +                 f"retain fixture attachment {index}", encoding="utf-8"
+24 +             )
+25 +         for page in (1,) if count == 1003 else (1, 2, 10):
+26 |             target = folder / f"{page}.jpg"
+--------------------------------------------------------------------------------
+49 |     with db.write() as session:
+   -         root = session.scalar(select(Root).where(Root.kind == "pack", Root.path == "/media/shorts/图包"))
+   -         if root is None or session.scalar(select(func.count()).select_from(RecentEntry).where(RecentEntry.kind == "pack")):
+50 +         root = session.scalar(
+51 +             select(Root).where(Root.kind == "pack", Root.path == "/media/shorts/图包")
+52 +         )
+53 +         if root is None or session.scalar(
+54 +             select(func.count()).select_from(RecentEntry).where(RecentEntry.kind == "pack")
+55 +         ):
+56 |             raise RuntimeError("Expected freshly scanned isolated pack root without history")
+   -         packs = session.scalars(select(ImagePack).where(ImagePack.root_id == root.id).order_by(ImagePack.name)).all()
+57 +         packs = session.scalars(
+58 +             select(ImagePack).where(ImagePack.root_id == root.id).order_by(ImagePack.name)
+59 +         ).all()
+60 |         if len(packs) != 73:
+61 |             raise RuntimeError("Expected 73 disposable fixture packs")
+62 |         selected = packs[:27]
+63 |         for index, pack in enumerate(selected):
+   -             pages = session.scalars(select(PackPage).where(PackPage.pack_id == pack.id).order_by(PackPage.ordinal, PackPage.id)).all()
+64 +             pages = session.scalars(
+65 +                 select(PackPage)
+66 +                 .where(PackPage.pack_id == pack.id)
+67 +                 .order_by(PackPage.ordinal, PackPage.id)
+68 +             ).all()
+69 |             if len(pages) != 3:
+70 |                 raise RuntimeError("Expected three public sample pages")
+71 |             session.add(RecentEntry(kind="pack", pack_id=pack.id, opened_at=1000 + index))
+   -             session.add(PackProgress(pack_id=pack.id, page_id=pages[1].id, content_version=pack.content_version, offset_ratio=.25, revision=1, updated_at=1000 + index))
+72 +             session.add(
+73 +                 PackProgress(
+74 +                     pack_id=pack.id,
+75 +                     page_id=pages[1].id,
+76 +                     content_version=pack.content_version,
+77 +                     offset_ratio=0.25,
+78 +                     revision=1,
+79 +                     updated_at=1000 + index,
+80 +                 )
+81 +             )
+82 |         return {"historical_ids": [pack.id for pack in selected], "total": 27}
+   |
+
+unformatted: File would be reformatted
+   --> services/server/video_viewer/backup_reconcile.py:158:34
+    |
+157 |             item["root_path"] = root["path"]
+    -             item["trash_path"] = item["original_path"] if logical else str(
+    -                 (settings.trash_dir or Path(root["path"]) / ".video-viewer-trash")
+    -                 / item["id"]
+    -                 / Path(item["original_path"]).name
+158 +             item["trash_path"] = (
+159 +                 item["original_path"]
+160 +                 if logical
+161 +                 else str(
+162 +                     (settings.trash_dir or Path(root["path"]) / ".video-viewer-trash")
+163 +                     / item["id"]
+164 +                     / Path(item["original_path"]).name
+165 +                 )
+166 |             )
+--------------------------------------------------------------------------------
+192 |         if marked is None and (not known or known["status"] != "available"):
+    -             marked = next((item for item in trash_by_video[video["id"]]
+    -                            if item["status"] == "active"), None)
+193 +             marked = next(
+194 +                 (item for item in trash_by_video[video["id"]] if item["status"] == "active"), None
+195 +             )
+196 |         if marked and marked["trash_path"] == marked["original_path"]:
+--------------------------------------------------------------------------------
+202 |             video["status"], video["path"], video["location_key"] = (
+    -                 "trash", marked["original_path"], marked["original_path"]
+203 +                 "trash",
+204 +                 marked["original_path"],
+205 +                 marked["original_path"],
+206 |             )
+207 |             video["error"] = None if result else "trash_missing"
+208 |             if result:
+    -                 video["device"], video["inode"], video["size"], video["mtime_ns"], video["ctime_ns"] = result
+209 +                 (
+210 +                     video["device"],
+211 +                     video["inode"],
+212 +                     video["size"],
+213 +                     video["mtime_ns"],
+214 +                     video["ctime_ns"],
+215 +                 ) = result
+216 |             continue
+    |
+
+unformatted: File would be reformatted
+   --> services/server/video_viewer/catalog.py:300:36
+    |
+299 |             if not title_order_available():
+    -                 raise LibraryError("video_name_order_unavailable", "服务尚不支持中文名称排序，请更新服务环境", 503)
+300 +                 raise LibraryError(
+301 +                     "video_name_order_unavailable", "服务尚不支持中文名称排序，请更新服务环境", 503
+302 +                 )
+303 |             ordering = (func.vv_video_name_key(Video.name), Video.path, Video.id)
+    |
+
+unformatted: File would be reformatted
+  --> services/server/video_viewer/catalog_selection.py:11:16
+   |
+10 | def membership(session, statement, identity, kind):
+   -     ids = list(session.scalars(statement.with_only_columns(identity).limit(MAX_SELECTION_ITEMS + 1)))
+11 +     ids = list(
+12 +         session.scalars(statement.with_only_columns(identity).limit(MAX_SELECTION_ITEMS + 1))
+13 +     )
+14 |     if len(ids) > MAX_SELECTION_ITEMS:
+   |
+
+unformatted: File would be reformatted
+   --> services/server/video_viewer/models.py:424:45
+    |
+423 |     __tablename__ = "pack_missing_members"
+    -     cleanup_id: Mapped[str] = mapped_column(ForeignKey("pack_missing_cleanups.id"), primary_key=True)
+424 +     cleanup_id: Mapped[str] = mapped_column(
+425 +         ForeignKey("pack_missing_cleanups.id"), primary_key=True
+426 +     )
+427 |     pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id"), primary_key=True)
+    |
+
+unformatted: File would be reformatted
+   --> services/server/video_viewer/pack_api.py:113:39
+    |
+112 |         return request.app.state.packs.selection(
+    -             directory_id=directory_id, search=search, tag_ids=tag_ids or (),
+    -             read_state=read_state, sort=sort, source=source,
+113 +             directory_id=directory_id,
+114 +             search=search,
+115 +             tag_ids=tag_ids or (),
+116 +             read_state=read_state,
+117 +             sort=sort,
+118 +             source=source,
+119 |         )
+    |
+
+unformatted: File would be reformatted
+   --> services/server/video_viewer/pack_operations_api.py:133:38
+    |
+132 |         state = request.app.state
+    -         return state.pack_files.task(state.pack_purge.submit(body.plan_id, body.digest, body.request_id))
+133 +         return state.pack_files.task(
+134 +             state.pack_purge.submit(body.plan_id, body.digest, body.request_id)
+135 +         )
+136 |
+137 |     @api.get("/pack-operations/{identity}/pages")
+138 |     def purge_pages(
+    -         identity: str, request: Request,
+139 +         identity: str,
+140 +         request: Request,
+141 |         offset: Annotated[int, Query(ge=0)] = 0,
+--------------------------------------------------------------------------------
+145 |     ):
+    -         return request.app.state.pack_purge.pages(identity, offset, limit, kind=kind, outcome=outcome)
+146 +         return request.app.state.pack_purge.pages(
+147 +             identity, offset, limit, kind=kind, outcome=outcome
+148 +         )
+149 |
+    |
+
+unformatted: File would be reformatted
+   --> services/server/video_viewer/pack_scanner.py:82:16
+    |
+81  |         .join(PackFileOperation)
+    -         .where(PackFileOperation.historical.is_(False), or_(
+    -             PackFileStep.outcome == "pending",
+    -             and_(PackFileStep.phase == "needs_attention", PackFileStep.outcome != "succeeded"),
+    -         ))
+82  +         .where(
+83  +             PackFileOperation.historical.is_(False),
+84  +             or_(
+85  +                 PackFileStep.outcome == "pending",
+86  +                 and_(PackFileStep.phase == "needs_attention", PackFileStep.outcome != "succeeded"),
+87  +             ),
+88  +         )
+89  |     )
+--------------------------------------------------------------------------------
+244 |                         or initial_generations.get(located.id) != located.generation
+    -                         or session.scalar(
+    -                             reserved_packs(pack_id=located.id).limit(1)
+    -                         )
+245 +                         or session.scalar(reserved_packs(pack_id=located.id).limit(1))
+246 |                     ):
+--------------------------------------------------------------------------------
+290 |                                 or initial_generations.get(candidate.id) != candidate.generation
+    -                                 or session.scalar(
+    -                                     reserved_packs(pack_id=candidate.id)
+    -                                     .limit(1)
+    -                                 )
+291 +                                 or session.scalar(reserved_packs(pack_id=candidate.id).limit(1))
+292 |                             )
+--------------------------------------------------------------------------------
+345 |                                 and failed.status not in ("trash", "deleted")
+    -                                 and not session.scalar(
+    -                                     reserved_packs(pack_id=failed.id)
+    -                                     .limit(1)
+    -                                 )
+346 +                                 and not session.scalar(reserved_packs(pack_id=failed.id).limit(1))
+347 |                             ):
+--------------------------------------------------------------------------------
+677 |             # declared missing; newly restored identities await the next scan.
+    -             unseen = [pack for pack in unseen if initial_generations.get(pack.id) == pack.generation]
+678 +             unseen = [
+679 +                 pack for pack in unseen if initial_generations.get(pack.id) == pack.generation
+680 +             ]
+681 |             unseen_ids = {pack.id for pack in unseen}
+--------------------------------------------------------------------------------
+711 |             ):
+    -                 if pack.id in initial_generations and pack.generation == initial_generations[pack.id] + int(pack.id in unseen_ids):
+712 +                 if pack.id in initial_generations and pack.generation == initial_generations[
+713 +                     pack.id
+714 +                 ] + int(pack.id in unseen_ids):
+715 |                     missing[digest_pages(session, pack.id)].append(pack)
+    |
+
+unformatted: File would be reformatted
+  --> services/server/video_viewer/pack_tags.py:22:25
+   |
+21 |         with self.db.read() as session:
+   -             tags = list(session.scalars(select(PackTag).where(PackTag.id.in_(requested)).order_by(PackTag.id)))
+22 +             tags = list(
+23 +                 session.scalars(
+24 +                     select(PackTag).where(PackTag.id.in_(requested)).order_by(PackTag.id)
+25 +                 )
+26 +             )
+27 |             return {
+   |
+
+unformatted: File would be reformatted
+   --> services/server/video_viewer/packs.py:24:45
+    |
+23  |             .where(
+    -                 PackPage.pack_id == pack_id, owned_path(session, PackPage.path, ImagePack.root_id),
+24  +                 PackPage.pack_id == pack_id,
+25  +                 owned_path(session, PackPage.path, ImagePack.root_id),
+26  |                 PackPage.error.is_distinct_from("permanently_deleted"),
+--------------------------------------------------------------------------------
+42  |         if sort == "title" and not title_order_available():
+    -             raise LibraryError("pack_title_order_unavailable", "服务尚不支持中文标题排序，请更新服务环境", 503)
+43  +             raise LibraryError(
+44  +                 "pack_title_order_unavailable", "服务尚不支持中文标题排序，请更新服务环境", 503
+45  +             )
+46  |         statement = select(ImagePack).join(Root).outerjoin(PackProgress)
+47  |         if source == "recent":
+    -             statement = statement.join(
+    -                 RecentEntry, RecentEntry.pack_id == ImagePack.id
+    -             ).where(RecentEntry.kind == "pack")
+48  +             statement = statement.join(RecentEntry, RecentEntry.pack_id == ImagePack.id).where(
+49  +                 RecentEntry.kind == "pack"
+50  +             )
+51  |         if sort == "recent" and source != "recent":
+--------------------------------------------------------------------------------
+126 |                 PackPage.id,
+    -                 (func.row_number().over(order_by=(PackPage.ordinal, PackPage.id)) - 1).label("position"),
+127 +                 (func.row_number().over(order_by=(PackPage.ordinal, PackPage.id)) - 1).label(
+128 +                     "position"
+129 +                 ),
+130 |             ).subquery()
+--------------------------------------------------------------------------------
+174 |             if anchor_ids:
+    -                 ranked = statement.order_by(None).with_only_columns(
+    -                     ImagePack.id.label("pack_id"),
+    -                     (func.row_number().over(order_by=self.ordering(query.get("sort", "name"))) - 1).label("position"),
+    -                 ).subquery()
+    -                 positions = dict(session.execute(
+    -                     select(ranked.c.pack_id, ranked.c.position).where(ranked.c.pack_id.in_(anchor_ids))
+    -                 ).all())
+175 +                 ranked = (
+176 +                     statement.order_by(None)
+177 +                     .with_only_columns(
+178 +                         ImagePack.id.label("pack_id"),
+179 +                         (
+180 +                             func.row_number().over(
+181 +                                 order_by=self.ordering(query.get("sort", "name"))
+182 +                             )
+183 +                             - 1
+184 +                         ).label("position"),
+185 +                     )
+186 +                     .subquery()
+187 +                 )
+188 +                 positions = dict(
+189 +                     session.execute(
+190 +                         select(ranked.c.pack_id, ranked.c.position).where(
+191 +                             ranked.c.pack_id.in_(anchor_ids)
+192 +                         )
+193 +                     ).all()
+194 +                 )
+195 |                 anchor_index = next(
+    |
+
+27 files would be reformatted, 114 files already formatted

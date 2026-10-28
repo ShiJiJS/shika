@@ -43,7 +43,12 @@ def create_fidelity_app():
     descriptions = json.loads(Path("/fixture/packs.json").read_text())
     pagination = os.environ.get("VV_FIDELITY_THUMBNAIL_PAGINATION") == "enabled"
     if pagination:
-        descriptions = [{**p, "pages": [p["pages"][i % len(p["pages"])] for i in range(30)]} if p["id"] == "summer" else p for p in descriptions]
+        descriptions = [
+            {**p, "pages": [p["pages"][i % len(p["pages"])] for i in range(30)]}
+            if p["id"] == "summer"
+            else p
+            for p in descriptions
+        ]
     content_restart = os.environ.get("VV_FIDELITY_CONTENT_RESTART") == "enabled"
     navigation = os.environ.get("VV_FIDELITY_NAVIGATION_RESTART") == "enabled"
     if navigation:
@@ -76,7 +81,11 @@ def create_fidelity_app():
         video_samples.append(("landscape", "补充横屏", "晨光里的花"))
     if navigation:
         video_samples = [
-            ("landscape" if index % 2 == 0 else "portrait", f"导航目录 {index + 1:02d}", f"导航视频 {index + 1:02d}")
+            (
+                "landscape" if index % 2 == 0 else "portrait",
+                f"导航目录 {index + 1:02d}",
+                f"导航视频 {index + 1:02d}",
+            )
             for index in range(27)
         ]
     for orientation, folder, title in video_samples:
@@ -85,13 +94,21 @@ def create_fidelity_app():
         shutil.copyfile(Path("/public") / f"flower-{orientation}.mp4", target / f"{title}.mp4")
     app = create_app(settings)
     state = {
-        "display": None, "ack": False, "prepared": False,
-        "continuation_failure": False, "catalog_counts_failure": False,
-        "recent_video_failure": False, "recent_pack_failure": False,
+        "display": None,
+        "ack": False,
+        "prepared": False,
+        "continuation_failure": False,
+        "catalog_counts_failure": False,
+        "recent_video_failure": False,
+        "recent_pack_failure": False,
         "public_additions": [],
-        "tag_definition_failure": "off", "tag_definition_failures": [],
-        "thumbnail_manifest": "off", "manifest_events": [],
-        "thumbnail_mode": "off", "thumbnail_attempts": {}, "thumbnail_streams": [],
+        "tag_definition_failure": "off",
+        "tag_definition_failures": [],
+        "thumbnail_manifest": "off",
+        "manifest_events": [],
+        "thumbnail_mode": "off",
+        "thumbnail_attempts": {},
+        "thumbnail_streams": [],
     }
     trace = deque(maxlen=5000)
 
@@ -103,11 +120,28 @@ def create_fidelity_app():
     async def record(request, call_next):
         body = (
             await request.json()
-            if (request.url.path in ("/api/v1/pack-sessions", "/api/v1/rounds") and request.method == "POST")
-            or ((preview_mutation or tag_definitions) and request.method in {"POST", "PATCH", "DELETE"}
-                and (request.url.path in {"/api/v1/video-tags", "/api/v1/tags"} or request.url.path.startswith("/api/v1/tags/")))
-            or ((navigation or thumbnails or content_restart) and request.method in {"POST", "PATCH"}
-                and (request.url.path == "/api/v1/playback-defaults" or request.url.path.startswith("/api/v1/pack-sessions/") or request.url.path.endswith("/progress") or (content_restart and request.url.path.endswith("/preferences"))))
+            if (
+                request.url.path in ("/api/v1/pack-sessions", "/api/v1/rounds")
+                and request.method == "POST"
+            )
+            or (
+                (preview_mutation or tag_definitions)
+                and request.method in {"POST", "PATCH", "DELETE"}
+                and (
+                    request.url.path in {"/api/v1/video-tags", "/api/v1/tags"}
+                    or request.url.path.startswith("/api/v1/tags/")
+                )
+            )
+            or (
+                (navigation or thumbnails or content_restart)
+                and request.method in {"POST", "PATCH"}
+                and (
+                    request.url.path == "/api/v1/playback-defaults"
+                    or request.url.path.startswith("/api/v1/pack-sessions/")
+                    or request.url.path.endswith("/progress")
+                    or (content_restart and request.url.path.endswith("/preferences"))
+                )
+            )
             else None
         )
         counts_failure = (
@@ -127,26 +161,41 @@ def create_fidelity_app():
             )
         )
         tag_write_failure = (
-            tag_definitions and request.headers.get("Authorization")
+            tag_definitions
+            and request.headers.get("Authorization")
             and request.url.path.startswith("/api/v1/tags/")
-            and request.method == {"rename": "PATCH", "remove": "DELETE"}.get(state["tag_definition_failure"])
+            and request.method
+            == {"rename": "PATCH", "remove": "DELETE"}.get(state["tag_definition_failure"])
         )
-        thumbnail = (thumbnails and request.method == "GET"
-                     and request.url.path.startswith("/api/v1/pages/")
-                     and request.url.path.endswith("/thumbnail")
-                     and request.headers.get("Authorization"))
+        thumbnail = (
+            thumbnails
+            and request.method == "GET"
+            and request.url.path.startswith("/api/v1/pages/")
+            and request.url.path.endswith("/thumbnail")
+            and request.headers.get("Authorization")
+        )
         mode = state["thumbnail_mode"]
         manifest_mode = state["thumbnail_manifest"]
-        if (pagination and request.method == "GET" and request.url.path.startswith("/api/v1/packs/")
-                and request.url.path.endswith("/pages") and request.query_params.get("offset") == manifest_mode.split("-")[-1]):
-            event = {"path": request.url.path, "offset": request.query_params["offset"], "cancelled": False, "released": False}
+        if (
+            pagination
+            and request.method == "GET"
+            and request.url.path.startswith("/api/v1/packs/")
+            and request.url.path.endswith("/pages")
+            and request.query_params.get("offset") == manifest_mode.split("-")[-1]
+        ):
+            event = {
+                "path": request.url.path,
+                "offset": request.query_params["offset"],
+                "cancelled": False,
+                "released": False,
+            }
             state["manifest_events"].append(event)
             try:
                 while state["thumbnail_manifest"] == manifest_mode:
                     if await request.is_disconnected():
                         event["cancelled"] = True
                         return JSONResponse({}, status_code=499)
-                    await asyncio.sleep(.05)
+                    await asyncio.sleep(0.05)
                 event["released"] = True
                 response = await call_next(request)
             except asyncio.CancelledError:
@@ -170,27 +219,42 @@ def create_fidelity_app():
                         event["cancelled"] = True
                         raise
 
-                response = StreamingResponse(held_body(), media_type="image/png",
-                                             headers={"Content-Length": str(len(data))})
+                response = StreamingResponse(
+                    held_body(), media_type="image/png", headers={"Content-Length": str(len(data))}
+                )
             elif mode == "bounded" or (mode == "recover" and n == 1):
-                response = JSONResponse({"error": {"code": "fixture_thumbnail_busy"}}, status_code=503)
+                response = JSONResponse(
+                    {"error": {"code": "fixture_thumbnail_busy"}}, status_code=503
+                )
             else:
                 response = await call_next(request)
         elif tag_write_failure:
-            state["tag_definition_failures"].append({"method": request.method, "path": request.url.path, "body": body})
+            state["tag_definition_failures"].append(
+                {"method": request.method, "path": request.url.path, "body": body}
+            )
             with app.state.db.read() as db:
                 epoch = Authority.current(db)
             response = JSONResponse(
-                {"error": {"code": "fixture_tag_write", "message": "视频标签操作暂时失败，请保留输入后重试。"}},
-                status_code=503, headers={"X-Management-Epoch": epoch},
+                {
+                    "error": {
+                        "code": "fixture_tag_write",
+                        "message": "视频标签操作暂时失败，请保留输入后重试。",
+                    }
+                },
+                status_code=503,
+                headers={"X-Management-Epoch": epoch},
             )
-        elif counts_failure or recent_failure or (
-            state["continuation_failure"]
-            and request.method == "GET"
-            and request.url.path == "/api/v1/packs"
-            and request.query_params.get("source") == "recent"
-            and request.query_params.get("limit") == "1"
-            and request.headers.get("Authorization")
+        elif (
+            counts_failure
+            or recent_failure
+            or (
+                state["continuation_failure"]
+                and request.method == "GET"
+                and request.url.path == "/api/v1/packs"
+                and request.query_params.get("source") == "recent"
+                and request.query_params.get("limit") == "1"
+                and request.headers.get("Authorization")
+            )
         ):
             with app.state.db.read() as db:
                 epoch = Authority.current(db)
@@ -198,9 +262,11 @@ def create_fidelity_app():
                 {
                     "error": {
                         "code": "fixture_unavailable",
-                        "message": "最近记录暂不可用，请重试" if recent_failure else "库存状态暂不可用" if counts_failure else (
-                            "连接暂时中断，请检查服务器与网络连接后重试。图包列表仍可正常浏览。"
-                        ),
+                        "message": "最近记录暂不可用，请重试"
+                        if recent_failure
+                        else "库存状态暂不可用"
+                        if counts_failure
+                        else ("连接暂时中断，请检查服务器与网络连接后重试。图包列表仍可正常浏览。"),
                     }
                 },
                 status_code=503,
@@ -216,9 +282,14 @@ def create_fidelity_app():
                     "status": response.status_code,
                     "phase": state["display"],
                     **({"body": body} if body is not None else {}),
-                    **({"query": list(request.query_params.multi_items())}
-                       if request.method == "GET" and request.url.path in
-                       ("/api/v1/videos", "/api/v1/videos/selection", "/api/v1/packs") or (request.method == "GET" and request.url.path.endswith("/pages")) else {}),
+                    **(
+                        {"query": list(request.query_params.multi_items())}
+                        if request.method == "GET"
+                        and request.url.path
+                        in ("/api/v1/videos", "/api/v1/videos/selection", "/api/v1/packs")
+                        or (request.method == "GET" and request.url.path.endswith("/pages"))
+                        else {}
+                    ),
                 }
             )
         return response
@@ -251,7 +322,11 @@ def create_fidelity_app():
             db.flush()
             for video in videos:
                 video.name = Path(video.name).stem
-                landscape = video.width > video.height if navigation else "风里" in video.name or "晨光" in video.name
+                landscape = (
+                    video.width > video.height
+                    if navigation
+                    else "风里" in video.name or "晨光" in video.name
+                )
                 orientation = "landscape" if landscape else "portrait"
                 poster = f"fidelity-{orientation}.jpg"
                 shutil.copyfile(
@@ -281,7 +356,11 @@ def create_fidelity_app():
                         )
                     )
         state["prepared"] = True
-        return {"videos": len(video_samples), "packs": len(descriptions), "pages": sum(len(p["pages"]) for p in descriptions)}
+        return {
+            "videos": len(video_samples),
+            "packs": len(descriptions),
+            "pages": sum(len(p["pages"]) for p in descriptions),
+        }
 
     @app.get("/__fidelity/state")
     def status(x_fixture_key: str = Header()):

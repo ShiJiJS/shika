@@ -421,7 +421,9 @@ class PackMissingCleanup(Base):
 
 class PackMissingMember(Base):
     __tablename__ = "pack_missing_members"
-    cleanup_id: Mapped[str] = mapped_column(ForeignKey("pack_missing_cleanups.id"), primary_key=True)
+    cleanup_id: Mapped[str] = mapped_column(
+        ForeignKey("pack_missing_cleanups.id"), primary_key=True
+    )
     pack_id: Mapped[str] = mapped_column(ForeignKey("packs.id"), primary_key=True)
     root_id: Mapped[str] = mapped_column(ForeignKey("roots.id"))
     generation: Mapped[int] = mapped_column(Integer)

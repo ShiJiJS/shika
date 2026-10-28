@@ -1,0 +1,21 @@
+{
+  "owned_emulator_pid": 36573,
+  "owned_emulator_absent": true,
+  "original_avd_untouched": true,
+  "owned_containers": [
+    {
+      "id": "debb28367a1a3f836c53c557760134acb2fbcf31039dcbd03b0fa4e69d1d981b",
+      "name": "/video-viewer-preview-runtime-1793150194788474000",
+      "removed": true
+    },
+    {
+      "id": "99a4ec11ba1088930779913e87aaf55dca904dea6cd7ccd4d014a1a84beb9764",
+      "name": "/video-viewer-legacy-upgrade-1793149702214968000",
+      "removed": true
+    }
+  ],
+  "original_four_services_unchanged": true,
+  "display_overrides_changed": false,
+  "cleanup_complete": true,
+  "initial_cleanup_guard_failure": "After emulator and new runtime removal, legacy container name differed from new runtime prefix. Guard stopped cleanup; exact metadata identity and owned data mount verified before removing remaining legacy container."
+}

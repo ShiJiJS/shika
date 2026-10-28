@@ -200,7 +200,9 @@ def test_fixed_scope_large_members_paging_and_new_missing_not_in_original_task(l
 
 
 @pytest.mark.parametrize("before_admission", [True, False])
-def test_same_path_replacement_preserves_metadata_until_successful_rescan(library, before_admission):
+def test_same_path_replacement_preserves_metadata_until_successful_rescan(
+    library, before_admission
+):
     client, media = library
     root, pack, _ = missing(client, media)
     base = Path(root["path"])

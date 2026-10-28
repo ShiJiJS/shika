@@ -79,10 +79,13 @@ def reserved_packs(*, pack_id=None, exclude_operation=None, exclude_plan=None):
     steps = (
         select(PackFileStep.pack_id)
         .join(PackFileOperation)
-        .where(PackFileOperation.historical.is_(False), or_(
-            PackFileStep.outcome == "pending",
-            and_(PackFileStep.phase == "needs_attention", PackFileStep.outcome != "succeeded"),
-        ))
+        .where(
+            PackFileOperation.historical.is_(False),
+            or_(
+                PackFileStep.outcome == "pending",
+                and_(PackFileStep.phase == "needs_attention", PackFileStep.outcome != "succeeded"),
+            ),
+        )
     )
     members = (
         select(PackRestoreMember.pack_id)
@@ -239,9 +242,7 @@ class PackScanner:
                     if located and (
                         located.status in ("trash", "deleted")
                         or initial_generations.get(located.id) != located.generation
-                        or session.scalar(
-                            reserved_packs(pack_id=located.id).limit(1)
-                        )
+                        or session.scalar(reserved_packs(pack_id=located.id).limit(1))
                     ):
                         summary["protected_packs"] += 1
                         summary["progress"]["packs_processed"] += 1
@@ -287,10 +288,7 @@ class PackScanner:
                             and (
                                 candidate.status in ("trash", "deleted")
                                 or initial_generations.get(candidate.id) != candidate.generation
-                                or session.scalar(
-                                    reserved_packs(pack_id=candidate.id)
-                                    .limit(1)
-                                )
+                                or session.scalar(reserved_packs(pack_id=candidate.id).limit(1))
                             )
                             for candidate in (pack, occupied)
                         ):
@@ -345,10 +343,7 @@ class PackScanner:
                             if (
                                 failed
                                 and failed.status not in ("trash", "deleted")
-                                and not session.scalar(
-                                    reserved_packs(pack_id=failed.id)
-                                    .limit(1)
-                                )
+                                and not session.scalar(reserved_packs(pack_id=failed.id).limit(1))
                             ):
                                 failed.error = "pack_directory_unavailable"
                 self.tick(task_id, result)
@@ -680,7 +675,9 @@ class PackScanner:
             # A restore can release its reservation after this scan skipped the
             # directory. Only this scan's unchanged original candidates can be
             # declared missing; newly restored identities await the next scan.
-            unseen = [pack for pack in unseen if initial_generations.get(pack.id) == pack.generation]
+            unseen = [
+                pack for pack in unseen if initial_generations.get(pack.id) == pack.generation
+            ]
             unseen_ids = {pack.id for pack in unseen}
             for pack in unseen:
                 pack.status, pack.location_key = "missing", None
@@ -712,7 +709,9 @@ class PackScanner:
                     owned_path(session, ImagePack.path, ImagePack.root_id),
                 )
             ):
-                if pack.id in initial_generations and pack.generation == initial_generations[pack.id] + int(pack.id in unseen_ids):
+                if pack.id in initial_generations and pack.generation == initial_generations[
+                    pack.id
+                ] + int(pack.id in unseen_ids):
                     missing[digest_pages(session, pack.id)].append(pack)
             for fresh in current:
                 if fresh.status != "discovered":

@@ -21,7 +21,8 @@ class Packs:
             select(PackPage)
             .join(ImagePack)
             .where(
-                PackPage.pack_id == pack_id, owned_path(session, PackPage.path, ImagePack.root_id),
+                PackPage.pack_id == pack_id,
+                owned_path(session, PackPage.path, ImagePack.root_id),
                 PackPage.error.is_distinct_from("permanently_deleted"),
             )
         )
@@ -39,12 +40,14 @@ class Packs:
         source="library",
     ):
         if sort == "title" and not title_order_available():
-            raise LibraryError("pack_title_order_unavailable", "服务尚不支持中文标题排序，请更新服务环境", 503)
+            raise LibraryError(
+                "pack_title_order_unavailable", "服务尚不支持中文标题排序，请更新服务环境", 503
+            )
         statement = select(ImagePack).join(Root).outerjoin(PackProgress)
         if source == "recent":
-            statement = statement.join(
-                RecentEntry, RecentEntry.pack_id == ImagePack.id
-            ).where(RecentEntry.kind == "pack")
+            statement = statement.join(RecentEntry, RecentEntry.pack_id == ImagePack.id).where(
+                RecentEntry.kind == "pack"
+            )
         if sort == "recent" and source != "recent":
             raise LibraryError("invalid_pack_sort", "最近排序只用于最近图包", 422)
         if status in ("available", "unreadable"):
@@ -121,7 +124,9 @@ class Packs:
         if progress and progress.page_id:
             positions = pages.with_only_columns(
                 PackPage.id,
-                (func.row_number().over(order_by=(PackPage.ordinal, PackPage.id)) - 1).label("position"),
+                (func.row_number().over(order_by=(PackPage.ordinal, PackPage.id)) - 1).label(
+                    "position"
+                ),
             ).subquery()
             page_index = session.scalar(
                 select(positions.c.position).where(positions.c.id == progress.page_id)
@@ -167,13 +172,26 @@ class Packs:
             )
             anchor_index = None
             if anchor_ids:
-                ranked = statement.order_by(None).with_only_columns(
-                    ImagePack.id.label("pack_id"),
-                    (func.row_number().over(order_by=self.ordering(query.get("sort", "name"))) - 1).label("position"),
-                ).subquery()
-                positions = dict(session.execute(
-                    select(ranked.c.pack_id, ranked.c.position).where(ranked.c.pack_id.in_(anchor_ids))
-                ).all())
+                ranked = (
+                    statement.order_by(None)
+                    .with_only_columns(
+                        ImagePack.id.label("pack_id"),
+                        (
+                            func.row_number().over(
+                                order_by=self.ordering(query.get("sort", "name"))
+                            )
+                            - 1
+                        ).label("position"),
+                    )
+                    .subquery()
+                )
+                positions = dict(
+                    session.execute(
+                        select(ranked.c.pack_id, ranked.c.position).where(
+                            ranked.c.pack_id.in_(anchor_ids)
+                        )
+                    ).all()
+                )
                 anchor_index = next(
                     (positions[identity] for identity in anchor_ids if identity in positions),
                     min(offset, max(0, total - 1)),

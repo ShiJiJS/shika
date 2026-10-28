@@ -301,7 +301,6 @@ def main():
             run(
                 "server-format",
                 [*docker, "ruff", "format", "--check", "."],
-                required=False,
             )
             run("server-pytest", docker)
         mutated = [
@@ -327,6 +326,7 @@ def main():
             "android-release",
             "server-image",
             "server-ruff",
+            "server-format",
             "server-pytest",
         }
         result["complete"] = expected.issubset(names) and all(

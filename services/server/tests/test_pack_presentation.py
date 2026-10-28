@@ -12,20 +12,23 @@ from .test_media_types import pack_root, seed_pack
 from .test_reading import create
 
 
-@pytest.mark.parametrize("name,title,author,number", [
-    ("示例作者 NO.034 - 夏日祭", "夏日祭", "示例作者", "034"),
-    ("[作者 A] no.001 – 晚风 - 外景", "晚风 - 外景", "作者 A", "001"),
-    ("【作者】 NO．09 — 🌷 春日", "🌷 春日", "作者", "09"),
-    ("作者　NO.10 - 中文空格", "中文空格", "作者", "10"),
-    ("普通目录 - 海边", "普通目录 - 海边", None, None),
-    ("[4K] 风景", "[4K] 风景", None, None),
-    ("2026-01-01 写真", "2026-01-01 写真", None, None),
-    ("作者 NO.1 - ", "作者 NO.1 - ", None, None),
-    ("NO.01 - 无作者", "NO.01 - 无作者", None, None),
-    ("作者 NO.123456789 - 超长编号", "作者 NO.123456789 - 超长编号", None, None),
-    ("作者 NO.1 - 第一行\n第二行", "作者 NO.1 - 第一行\n第二行", None, None),
-    ("[] NO.1 - 空作者", "[] NO.1 - 空作者", None, None),
-])
+@pytest.mark.parametrize(
+    "name,title,author,number",
+    [
+        ("示例作者 NO.034 - 夏日祭", "夏日祭", "示例作者", "034"),
+        ("[作者 A] no.001 – 晚风 - 外景", "晚风 - 外景", "作者 A", "001"),
+        ("【作者】 NO．09 — 🌷 春日", "🌷 春日", "作者", "09"),
+        ("作者　NO.10 - 中文空格", "中文空格", "作者", "10"),
+        ("普通目录 - 海边", "普通目录 - 海边", None, None),
+        ("[4K] 风景", "[4K] 风景", None, None),
+        ("2026-01-01 写真", "2026-01-01 写真", None, None),
+        ("作者 NO.1 - ", "作者 NO.1 - ", None, None),
+        ("NO.01 - 无作者", "NO.01 - 无作者", None, None),
+        ("作者 NO.123456789 - 超长编号", "作者 NO.123456789 - 超长编号", None, None),
+        ("作者 NO.1 - 第一行\n第二行", "作者 NO.1 - 第一行\n第二行", None, None),
+        ("[] NO.1 - 空作者", "[] NO.1 - 空作者", None, None),
+    ],
+)
 def test_conservative_presentation(name, title, author, number):
     value = presentation(name)
     assert (value.title, value.author, value.number) == (title, author, number)
@@ -92,7 +95,7 @@ def test_title_order_across_pages_anchor_selection_and_fixed_reading(library):
     client, media = library
     root = pack_root(client, media)
     # Raw author/volume order is deliberately opposite to display order.
-    names = [f"作者 {28-i:02d} NO.{28-i:03d} - 晚风 {i:02d}" for i in range(28)]
+    names = [f"作者 {28 - i:02d} NO.{28 - i:03d} - 晚风 {i:02d}" for i in range(28)]
     ids = [seed_pack(client, root, name) for name in names]
     title_ids = []
     for offset in (0, 7, 14, 21):
@@ -102,7 +105,9 @@ def test_title_order_across_pages_anchor_selection_and_fixed_reading(library):
     assert title_ids == ids and len(set(title_ids)) == 28
     # Legacy/default name requests retain the original folder-name ordering.
     assert [p["id"] for p in listing(client, sort="name", limit=100)["items"]] == ids[::-1]
-    assert [p["id"] for p in client.get("/api/v1/packs", params={"limit": 100}).json()["items"]] == ids[::-1]
+    assert [
+        p["id"] for p in client.get("/api/v1/packs", params={"limit": 100}).json()["items"]
+    ] == ids[::-1]
     anchor = listing(client, anchor_ids=[ids[25]], limit=7)
     assert anchor["anchor_index"] == 25 and anchor["offset"] == 21
     assert anchor["items"][4]["id"] == ids[25]
@@ -113,7 +118,9 @@ def test_title_order_across_pages_anchor_selection_and_fixed_reading(library):
     with client.app.state.db.write() as db:
         db.get(ImagePack, ids[0]).name = "作者 NO.999 - 最后"
     seed_pack(client, root, "作者 NO.000 - 最先")
-    entries = client.get(f"/api/v1/pack-sessions/{value['id']}/entries", params={"limit": 100}).json()
+    entries = client.get(
+        f"/api/v1/pack-sessions/{value['id']}/entries", params={"limit": 100}
+    ).json()
     assert [e["pack"]["id"] for e in entries["items"]] == ids
     assert entries["total"] == 28
     assert listing(client)["total"] == 29
@@ -122,8 +129,12 @@ def test_title_order_across_pages_anchor_selection_and_fixed_reading(library):
 def test_chinese_ties_and_newest_recent_remain_independent(library):
     client, media = library
     root = pack_root(client, media)
-    names = ["作者 NO.004 - 原野上的浪漫", "作者 NO.003 - 新年快乐",
-             "作者 NO.002 - 夏日祭", "作者 NO.001 - 加藤惠 - 和服"]
+    names = [
+        "作者 NO.004 - 原野上的浪漫",
+        "作者 NO.003 - 新年快乐",
+        "作者 NO.002 - 夏日祭",
+        "作者 NO.001 - 加藤惠 - 和服",
+    ]
     ids = [seed_pack(client, root, name) for name in names]
     other = seed_pack(client, root, "另一作者 NO.010 - 夏日祭")
     order = [p["id"] for p in listing(client)["items"]]
