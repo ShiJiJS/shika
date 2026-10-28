@@ -28,7 +28,13 @@ IMAGE = "sha256:886b79b72ecb9116087d892f230471943121f24ccef093113cc3197b4607fef4
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument(
+        "--long-diagnostic",
+        action="store_true",
+        help="One trial per size while debugging the full 500-page path; never final acceptance",
+    )
     args = p.parse_args()
+    trials = 1 if args.long_diagnostic else 30
     out = args.output.resolve()
     if out.exists() or not out.is_relative_to((ROOT / ".dev").resolve()):
         p.error("Use a new directory below this project .dev")
@@ -94,6 +100,8 @@ def main():
             "runtime": IMAGE,
             "profile_entrypoint": True,
             "normal_release_apk": False,
+            "final_matrix": not args.long_diagnostic,
+            "trial_count": trials,
             "sampling_interval_seconds": 1,
             "memory_definition": "kernel smaps_rollup PSS/RSS and status VmHWM; no meminfo/forced GC",
             "original_display": {
@@ -210,6 +218,8 @@ def main():
         "--driver=test_driver/reader_performance.dart",
         "--target=integration_test/server_reader_performance_test.dart",
     ]
+    if args.long_diagnostic:
+        command.append("--dart-define=READER_BENCH_TRIALS=1")
     save("command.json", {"command": command, "cwd": str(ROOT / "apps/mobile")})
     process = None
     try:
@@ -232,6 +242,7 @@ def main():
             "result.json",
             {
                 "checks_passed": False,
+                "final_matrix": not args.long_diagnostic,
                 "exit_code": code,
                 "observer_errors": errors,
                 "elapsed_seconds": time.monotonic() - started,
@@ -241,14 +252,23 @@ def main():
         if code or errors:
             raise RuntimeError("Profile run failed; preserve output and inspect flutter-drive.log")
         result = json.loads((out / "profile-result.json").read_text())["reader_benchmark"]
+        assert result["trial_count"] == trials
+        assert result["final_matrix"] == (not args.long_diagnostic)
         assert result["completed"] and result["reached"] == list(range(500))
         for phase in ["4k-open", "8k-open", "4k-adjacent", "8k-adjacent"]:
             values = [v for v in result["samples"] if v["phase"] == phase]
-            assert len(values) == 30 and sorted(v["trial"] for v in values) == list(range(30))
+            assert len(values) == trials and sorted(v["trial"] for v in values) == list(
+                range(trials)
+            )
         final = json.loads((out / "result.json").read_text())
         final["checks_passed"] = True
         save("result.json", final)
-        print(json.dumps({"completed": True, "output": str(out)}), flush=True)
+        print(
+            json.dumps(
+                {"completed": True, "final_matrix": not args.long_diagnostic, "output": str(out)}
+            ),
+            flush=True,
+        )
     finally:
         stop.set()
         sampler.join(timeout=35)

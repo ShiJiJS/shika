@@ -28,7 +28,12 @@ def stats(values, divisor=1):
 
 def summarize(folder):
     completed = json.loads((folder / "result.json").read_text())
-    if completed["exit_code"] or not completed["checks_passed"] or completed["observer_errors"]:
+    if (
+        completed["exit_code"]
+        or not completed["checks_passed"]
+        or completed["observer_errors"]
+        or completed.get("final_matrix") is not True
+    ):
         raise ValueError("Incomplete or observer-failed run: " + str(folder))
     raw = json.loads((folder / "profile-result.json").read_text())["reader_benchmark"]
     if not raw["completed"] or raw["reached"] != list(range(500)) or raw["mode"] != "profile":

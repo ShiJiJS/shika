@@ -11,3 +11,5 @@
 从库打开500页，真实纵向拖动覆盖全部页、横纵切换保留页、全程固定范围不自动换包；记录元数据120、ReaderImages最多6项/48MiB估算、实际图片缓存/帧时序、独立进程内核PSS/RSS和VmHWM。只在自有AVD启用adb root以只读采集/proc，避免dumpsys meminfo向App触发GC；内核PSS不含额外memtrack估算，采样PSS峰值不是瞬时峰值，VmHWM为该进程RSS高水位，provider估算不是进程内存。普通release安装包还需独立复核入口/阅读；profile指标不冒充release或目标机门槛。
 
 输出原始profile结果、宿主内存/服务资源/网络路径、截图、源文件前后SHA与只读复核。原型保持独立不改，不正式发布/部署。目标手机/NAS的首帧、翻页p50/p95、内存及CPU/IO/网络仍待实测；本地无OOM不关闭完整READ-06。
+
+调试测量器可显式使用run-reader-performance.py的--long-diagnostic：仅各一次小包准备，仍实际走完500页；输出final_matrix=false，正式汇总器拒绝把它当最终验收。用于定位跨元数据窗口的采集时序，默认/最终三轮仍为每类30次，不缩减最终矩阵。
