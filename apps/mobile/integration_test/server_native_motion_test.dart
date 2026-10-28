@@ -222,7 +222,7 @@ void main() {
                 ? w.onPressed != null
                 : true,
           );
-        }, 'unique enabled hit $finder');
+        }, 'unique enabled actionable control');
         await t.pump();
         await t.tap(finder.hitTestable());
         await t.pump();
@@ -230,8 +230,22 @@ void main() {
 
       PlayerSurface surface() =>
           t.widget<PlayerSurface>(find.byType(PlayerSurface).last);
-      Finder canvas() =>
-          find.byKey(const Key('video-gesture-surface')).hitTestable().last;
+      Future<void> tapCanvas() async {
+        final finder = find.byKey(const Key('video-gesture-surface')).last;
+        await until(
+          () => finder.evaluate().length == 1 && t.getSize(finder).width > 0,
+          'visible video gesture surface',
+        );
+        // The centered inline-play overlay intercepts the center while paused,
+        // and can remain until the next rendered frame after play completes.
+        // Tap a real exposed part of the video, clear of all control overlays.
+        final rect = t.getRect(finder);
+        await t.tapAt(
+          Offset(rect.left + rect.width * .25, rect.top + rect.height * .35),
+        );
+        await t.pump();
+      }
+
       bool visible() =>
           t
               .widget<AnimatedOpacity>(
@@ -308,7 +322,7 @@ void main() {
         expect(visible(), isTrue);
         final controller = surface().controller;
         await host('begin', name: name);
-        if (!visible()) await tap(canvas());
+        if (!visible()) await tapCanvas();
         final resting = probe(exit: exit, footer: footer);
         await until(
           () => resting.targets.values.every(
@@ -325,7 +339,7 @@ void main() {
           await playing(true);
         }
         if (!automatic) {
-          await tap(canvas());
+          await tapCanvas();
         }
         await until(
           () => active!.done,
@@ -391,13 +405,13 @@ void main() {
           // Inline tap pauses while showing controls. A paused baseline cancels
           // the auto-hide timer before the host starts its recording.
           if (!visible()) {
-            await tap(canvas());
+            await tapCanvas();
           } else if (surface().controller.value.isPlaying) {
             await tap(find.widgetWithText(TextButton, '暂停'));
           }
           await playing(false);
           await measure('$prefix-app-inline', reduced, automatic: true);
-          await tap(canvas());
+          await tapCanvas();
           await playing(false);
           await tap(find.text('横向全屏'));
           await until(
@@ -475,7 +489,7 @@ void main() {
           await configure(reduced);
           await controller.play();
           await playing(true);
-          if (!visible()) await tap(canvas());
+          if (!visible()) await tapCanvas();
           await measure(
             'round-$round-${reduced ? 'reduced' : 'normal'}-legacy-component',
             reduced,
