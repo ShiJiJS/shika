@@ -169,17 +169,61 @@ void main() {
       }) async {
         final end = DateTime.now().add(Duration(seconds: seconds));
         while (!ready()) {
-          if (DateTime.now().isAfter(end)) fail('Native motion timeout: $why');
+          if (DateTime.now().isAfter(end)) {
+            result['failure'] = {
+              'waiting_for': why,
+              'texts': t
+                  .widgetList<Text>(find.byType(Text))
+                  .map((w) => w.data)
+                  .toList(),
+              'video_surfaces': t
+                  .widgetList<PlayerSurface>(find.byType(PlayerSurface))
+                  .map(
+                    (w) => {
+                      'initialized': w.controller.value.isInitialized,
+                      'playing': w.controller.value.isPlaying,
+                      'requested': w.isPlayRequested?.call(),
+                      'error': w.controller.value.errorDescription,
+                    },
+                  )
+                  .toList(),
+              'active_baseline': active?.baseline,
+              'active_frames': active?.samples,
+            };
+            debugPrint(
+              'NATIVE_MOTION_FAILURE:${jsonEncode(result['failure'])}',
+            );
+            await host('failure', name: 'timeout');
+            fail('Native motion timeout: $why');
+          }
           await t.pump(const Duration(milliseconds: 16));
         }
         expect(t.takeException(), isNull);
       }
 
       Future<void> tap(Finder finder) async {
-        await until(
-          () => finder.hitTestable().evaluate().length == 1,
-          'unique hit $finder',
-        );
+        await until(() {
+          if (finder.hitTestable().evaluate().length != 1) return false;
+          final widgets = [
+            ...finder.evaluate().map((e) => e.widget),
+            ...t.widgetList<Widget>(
+              find.ancestor(
+                of: finder,
+                matching: find.byWidgetPredicate(
+                  (w) => w is ButtonStyleButton || w is IconButton,
+                ),
+              ),
+            ),
+          ];
+          return widgets.every(
+            (w) => w is ButtonStyleButton
+                ? w.onPressed != null
+                : w is IconButton
+                ? w.onPressed != null
+                : true,
+          );
+        }, 'unique enabled hit $finder');
+        await t.pump();
         await t.tap(finder.hitTestable());
         await t.pump();
       }
@@ -288,6 +332,12 @@ void main() {
           'first hidden frame and transition $name',
           seconds: 7,
         );
+        result['active_case'] = {
+          'name': name,
+          'reduced': reduced,
+          'baseline': active!.baseline,
+          'frames': active!.samples,
+        };
         final trace = active!.verify(reduced);
         active = null;
         expect(controller.value.isPlaying, isTrue);
@@ -311,6 +361,7 @@ void main() {
           'position_after_ms': controller.value.position.inMilliseconds,
           ...trace,
         });
+        result.remove('active_case');
         await host('end', name: name);
         debugPrint('NATIVE_MOTION_CASE:$name');
       }
