@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 
 import '../library/models.dart';
 import 'paper.dart';
+import 'media_layout.dart';
 import 'paper_icons.dart';
 import 'device_controls.dart';
 import 'media_poster.dart';
@@ -1155,7 +1156,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
         ignoring: !_controls,
         child: AnimatedOpacity(
           opacity: _controls ? 1 : 0,
-          duration: const Duration(milliseconds: 160),
+          duration: MediaLayout.motion(context, 160),
           child: Container(
             key: const Key('playback-controls'),
             padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -1348,7 +1349,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                   ),
                 if (widget.footer != null)
                   AnimatedPositioned(
-                    duration: const Duration(milliseconds: 160),
+                    duration: MediaLayout.motion(context, 160),
                     left: 16,
                     right: widget.onFullscreen == null ? 16 : 82,
                     bottom: _controls ? 62 : 28,
@@ -1428,7 +1429,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                         ignoring: !_controls,
                         child: AnimatedOpacity(
                           opacity: _controls ? 1 : 0,
-                          duration: const Duration(milliseconds: 160),
+                          duration: MediaLayout.motion(context, 160),
                           child: Row(
                             children: [
                               IconButton(
@@ -1478,7 +1479,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                             ignoring: !_controls,
                             child: AnimatedOpacity(
                               opacity: _controls ? 1 : 0,
-                              duration: const Duration(milliseconds: 160),
+                              duration: MediaLayout.motion(context, 160),
                               child: Container(
                                 key: const Key('playback-controls'),
                                 decoration: const BoxDecoration(

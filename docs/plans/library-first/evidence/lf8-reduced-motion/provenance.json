@@ -1,0 +1,29 @@
+{
+  "reference": {
+    "original_ref": "d5c865e7bf2b919e002d00aff85b9729ae0871e9",
+    "original_file": "apps/mobile/lib/ui/player.dart",
+    "original_sha256": "4eb78902502420f33b9d6e0b6c0808315d6f1575c95e57c3832f5c57f5be2a3c",
+    "test_source_sha256": "10014fd9313bc15e2dbfc47542145bd4a38be521ec9d815829a42acc0fca39f9",
+    "adaptation": "Only relative imports canonicalized for isolated old module; same four behavioral assertions"
+  },
+  "logs": [
+    {
+      "file": "old-module-tests.txt",
+      "source_sha256": "60b0b1dff40c8063796cc3c48e3980feba666f07ba4806b9524b84f5d39d8fe8",
+      "sha256": "60b0b1dff40c8063796cc3c48e3980feba666f07ba4806b9524b84f5d39d8fe8",
+      "transformation": "ANSI control sequences removed; CR converted to LF only"
+    },
+    {
+      "file": "production-tests.txt",
+      "source_sha256": "018d34b6ab0bb633073aed8d644e4e0f4e9f9e584278c5c8e25e5deb87eb0da1",
+      "sha256": "018d34b6ab0bb633073aed8d644e4e0f4e9f9e584278c5c8e25e5deb87eb0da1",
+      "transformation": "ANSI control sequences removed; CR converted to LF only"
+    },
+    {
+      "file": "analyze.txt",
+      "source_sha256": "22114e94cf6893057cad76b3d3564189355888ad1837754366adb5d932c38023",
+      "sha256": "22114e94cf6893057cad76b3d3564189355888ad1837754366adb5d932c38023",
+      "transformation": "ANSI control sequences removed; CR converted to LF only"
+    }
+  ]
+}
