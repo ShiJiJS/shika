@@ -9,6 +9,7 @@ import hashlib
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import tarfile
@@ -33,6 +34,15 @@ def patch_once(path, old, new):
     text = path.read_text()
     assert text.count(old) == 1, str(path)
     path.write_text(text.replace(old, new))
+
+
+def dependency_resolutions(lockfile):
+    """Compare pinned packages while allowing direct/transitive role changes.
+
+    SDK test tooling may become a direct dev dependency. Versions, source,
+    descriptions and checksums must still match the historical lock exactly.
+    """
+    return re.sub(rb"^    dependency: [^\r\n]+$", b"    dependency: <role>", lockfile, flags=re.M)
 
 
 def main():
@@ -125,7 +135,9 @@ def main():
     run("flutter-version", [*dev, "flutter", "--version", "--machine"], ROOT)
     old, old_hashes = export("rollback", LEGACY)
     current, current_hashes = export("forward", source)
-    assert (old / "pubspec.lock").read_bytes() == (current / "pubspec.lock").read_bytes()
+    assert dependency_resolutions((old / "pubspec.lock").read_bytes()) == dependency_resolutions(
+        (current / "pubspec.lock").read_bytes()
+    ), "Legacy and current dependency versions/sources/checksums differ"
     overlays = {}
     for name in [
         "lib/ui/preferences.dart",
@@ -188,6 +200,10 @@ def main():
         }
     result["rollback_overlays"] = overlays
     result["lockfile_sha256"] = sha(current / "pubspec.lock")
+    result["lockfile_sha256_by_package"] = {
+        "rollback": sha(old / "pubspec.lock"),
+        "forward": sha(current / "pubspec.lock"),
+    }
     save()
 
     built = {}
@@ -285,7 +301,7 @@ def main():
             if name == "rollback" and app_relative in overlays:
                 continue
             assert sha(mobile / app_relative) == expected, relative
-        assert sha(mobile / "pubspec.lock") == result["lockfile_sha256"]
+        assert sha(mobile / "pubspec.lock") == result["lockfile_sha256_by_package"][name]
         save()
     for name, apk in built.items():
         with apk.open("rb") as source_file, targets[name].open("xb") as target:

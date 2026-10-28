@@ -32,3 +32,6 @@ attempt-10（1d3fb301）实际连续取得索引0–284的可见解码帧，随�
 恢复结果：正常stop/start完成，失败Created容器已移除，原四服务按原ID/镜像恢复运行；本机曾短暂中断，不声称全程未中断。专用数据库在容器内 `PRAGMA integrity_check` 返回ok、3包仍在；同一QEMU90728保持存活，不因本次观察重启。另发现旧独立资源脚本在观察服务重建后仍指向setup阶段旧容器ID，attempt-9/10的该服务统计不可用，resource-observer-gap.json保留计数；不拿它计算CPU/IO。现将环境采集纳入每轮runner，绑定本轮已核验实际容器ID和QEMU PID，失败计入observer_errors，不能静默放行正式结果。下一轮保持相同夹具，取消host SQLite查询与SMB挂载干扰，验证修正后的报告/采集收尾。
 
 attempt-11（58b071bf）实际资源采集ID匹配，终态报告先落盘、内存采集再停止，observer_errors为空；该修正已在失败路径运行验证。首页重置成功、会话无pending/错误，但点击阅读设置后未出现纵向模式选项，脚本提前失败，未开始连续500页。补充控件实际渲染帧与IconButton祖先onPressed可用判断，避免只凭会话保存完成和命中范围就点击；不改生产阅读器。此轮只有每类一次准备，不计算30次分位数，也不作为存储挂起已消失的证明。
+
+
+构建兼容修复：显式声明既有SDK flutter_driver后，当前锁文件与旧回退源码只在direct dev/transitive角色上不同，原构建器的整文件相等断言会拒绝导出。build-app-rollback.py现在只允许该角色字段不同，版本/来源/说明/校验和仍须与旧版完全一致，并各自保留原锁文件SHA；真实旧/新锁差异获准，版本/来源/校验和三类篡改均被拒绝，记录见packaging-lock-check.json，Ruff通过。未运行新一轮APK构建，也未覆盖已有预览包。
