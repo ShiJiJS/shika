@@ -1,0 +1,166 @@
+Resolving dependencies...
+Downloading packages...
+  android_file_picker 2.1.1 (2.1.2 available)
+  cross_file 0.3.5+5 (0.4.0 available)
+  crypto 3.0.7 (3.0.8 available)
+  cupertino_icons 1.0.9 (2.0.0 available)
+  file_picker 13.1.0 (13.3.0 available)
+  file_picker_darwin 2.3.2 (2.4.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.3 (2.4.4 available)
+  video_player_avfoundation 2.12.1 (2.12.3 available)
+  web 1.1.1 (1.1.2 available)
+Got dependencies!
+11 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleProfile'...                         2,235ms
+✓ Built build/app/outputs/flutter-apk/app-profile.apk (49.1MB)
+Installing build/app/outputs/flutter-apk/app-profile.apk...        222ms
+I/js.video_viewer(18643): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer(18643): Skipped 44 frames!  The application may be doing too much work on its main thread.
+D/WindowLayoutComponentImpl(18643): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@f6cfbc0, of which baseContext=android.app.ContextImpl@53093b5
+VMServiceFlutterDriver: Connecting to Flutter application at <redacted-local-vm-service>
+VMServiceFlutterDriver: Isolate found with number: 6078064506215219
+VMServiceFlutterDriver: Isolate 6078064506215219 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter (18643): 00:00 +0: profile complex-photo cold opens, adjacent flips and 500 pages
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController(18643): hide(ime(), fromIme=false)
+I/ImeTracker(18643): io.github.shijijs.video_viewer:62ea2109: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+I/js.video_viewer(18643): AssetManager2(0xb40000751d35c658) locale list changing from [] to [en-US]
+I/Choreographer(18643): Skipped 33 frames!  The application may be doing too much work on its main thread.
+D/ProfileInstaller(18643): Installing profile for io.github.shijijs.video_viewer
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:0:2066815
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:1:2104645
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:2:2244765
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:3:2536361
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:4:2273746
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:5:2863671
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:6:2220090
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:7:3565124
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:8:3202009
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:9:3665900
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:10:3795527
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:11:4753146
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/js.video_viewer(18643): Background concurrent mark compact GC freed 2241KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 2370KB/4740KB, paused 52us,14.012ms total 48.783ms
+I/flutter (18643): READER_BENCH_TRIAL:4k:12:3757071
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:13:4055589
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:14:4195977
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:15:4844081
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:16:3474624
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:17:3915316
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:18:3669361
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:19:3230817
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:20:3047897
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:21:3872711
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:22:3037505
+I/js.video_viewer(18643): Background concurrent mark compact GC freed 2245KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 2370KB/4740KB, paused 182us,1.672ms total 191.922ms
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:23:3287692
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:24:3510952
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:25:3496140
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:26:3559557
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:27:3288094
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:28:3018051
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:4k:29:2703829
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:0:6204506
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:1:6796189
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:2:6652220
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:3:6761948
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:4:6586992
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:5:5849156
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:6:6298914
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:7:7249098
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:8:5785673
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:9:5757680
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:10:6174959
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:11:6827428
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:12:6598750
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:13:6518185
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:14:5898766
+I/js.video_viewer(18643): Background concurrent mark compact GC freed 2285KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 2406KB/4812KB, paused 90us,12.946ms total 92.801ms
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:15:6434337
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:16:6685371
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:17:6256084
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:18:5992256
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:19:6399216
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:20:6222619
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:21:5852440
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:22:6986590
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:23:5786007
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:24:6181959
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:25:6114972
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:26:6258999
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:27:5954276
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:28:6132557
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): READER_BENCH_TRIAL:8k:29:6100861
+I/js.video_viewer(18643): Background concurrent mark compact GC freed 2272KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 2370KB/4740KB, paused 55us,1.405ms total 159.056ms
+I/js.video_viewer(18643): Background concurrent mark compact GC freed 2272KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 2370KB/4740KB, paused 57us,5.135ms total 67.610ms
+I/js.video_viewer(18643): Background concurrent mark compact GC freed 2272KB AllocSpace bytes, 0(0B) LOS objects, 49% free, 2370KB/4740KB, paused 44us,19.150ms total 66.529ms
+W/WindowOnBackDispatcher(18643): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@e026103
+I/flutter (18643): 30:34 +1: (tearDownAll)
+I/flutter (18643): 30:34 +2: All tests passed!
+All tests passed.

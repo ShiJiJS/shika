@@ -1,0 +1,77 @@
+02000000-7fd5484000 ---p 00000000 00:00 0                                [rollup]
+Rss:              304448 kB
+Pss:              200481 kB
+Pss_Dirty:        154100 kB
+Pss_Anon:         148490 kB
+Pss_File:          46127 kB
+Pss_Shmem:          5863 kB
+Shared_Clean:      79168 kB
+Shared_Dirty:      36144 kB
+Private_Clean:     41152 kB
+Private_Dirty:    147984 kB
+Referenced:       285624 kB
+Anonymous:        171996 kB
+KSM:                   0 kB
+LazyFree:             64 kB
+AnonHugePages:         0 kB
+ShmemPmdMapped:        0 kB
+FilePmdMapped:         0 kB
+Shared_Hugetlb:        0 kB
+Private_Hugetlb:       0 kB
+Swap:              17988 kB
+SwapPss:             286 kB
+Locked:                0 kB
+Name:	js.video_viewer
+Umask:	0077
+State:	S (sleeping)
+Tgid:	18643
+Ngid:	0
+Pid:	18643
+PPid:	465
+TracerPid:	0
+Uid:	10226	10226	10226	10226
+Gid:	10226	10226	10226	10226
+FDSize:	256
+Groups:	3003 9997 20226 50226 
+Kthread:	0
+VmPeak:	29659044 kB
+VmSize:	25276076 kB
+VmLck:	       0 kB
+VmPin:	       0 kB
+VmHWM:	  366508 kB
+VmRSS:	  304080 kB
+RssAnon:	  171876 kB
+RssFile:	  119916 kB
+RssShmem:	   12288 kB
+VmData:	 2976956 kB
+VmStk:	    8192 kB
+VmExe:	       4 kB
+VmLib:	  166660 kB
+VmPTE:	    1740 kB
+VmSwap:	   18204 kB
+CoreDumping:	0
+THP_enabled:	1
+untag_mask:	0xffffffffffffff
+Threads:	35
+SigQ:	0/9801
+SigPnd:	0000000000000000
+ShdPnd:	0000000000000000
+SigBlk:	0000000080201204
+SigIgn:	0000000000001001
+SigCgt:	0000006e440084f8
+CapInh:	0000000000000000
+CapPrm:	0000000000000000
+CapEff:	0000000000000000
+CapBnd:	0000000000000000
+CapAmb:	0000000000000000
+NoNewPrivs:	0
+Seccomp:	2
+Seccomp_filters:	1
+Speculation_Store_Bypass:	thread vulnerable
+SpeculationIndirectBranch:	unknown
+Cpus_allowed:	f
+Cpus_allowed_list:	0-3
+Mems_allowed:	1
+Mems_allowed_list:	0
+voluntary_ctxt_switches:	71840
+nonvoluntary_ctxt_switches:	190499

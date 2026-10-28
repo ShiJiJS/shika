@@ -17,5 +17,16 @@
     "tmp/releases/video-viewer-0.1.4-rollback.2-arm64.apk": "ec884743b5aa0c8c71bf534940a0c4b107580ee38e9c1e2d3f97286115cfa5ee",
     "tmp/releases/video-viewer-0.2.0-preview.1-arm64.apk": "d87e98c70d4999b50165ce854f2e4f7156d25cc378f0431ed885f061c1cb9f87"
   },
-  "apk_build_run": false
+  "apk_build_run": false,
+  "post_matrix_ruff": {
+    "check_exit_code": 0,
+    "check_stdout": "All checks passed!",
+    "format_exit_code": 0,
+    "format_stdout": "1 file already formatted",
+    "target": "py39",
+    "line_length": 100,
+    "image": "video-viewer-upgrade-check:b79da7b9",
+    "source_sha256": "07581384f2928853d8ced3b641451f47db6a0ca8072503ebd78608f80436cb99",
+    "scope": "Captured successful tool results after formal third run completed; no APK build"
+  }
 }
