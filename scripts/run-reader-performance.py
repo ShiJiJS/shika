@@ -98,6 +98,8 @@ def main():
             "prototype_tree": prototype,
             "qemu": qemu[0],
             "runtime": IMAGE,
+            "runtime_command": runtime["Config"]["Cmd"],
+            "runtime_entrypoint": runtime["Config"]["Entrypoint"],
             "profile_entrypoint": True,
             "normal_release_apk": False,
             "final_matrix": not args.long_diagnostic,

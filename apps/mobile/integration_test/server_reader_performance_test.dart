@@ -263,6 +263,27 @@ void main() {
         s.pages.length,
         lessThanOrEqualTo(PackReadingSession.maximumPages),
       );
+      if (s.error.isNotEmpty || s.pageError.isNotEmpty) {
+        final diagnostic = <String, dynamic>{
+          'phase': phase,
+          'sample_kind': kind,
+          'index': s.index,
+          'opened': s.opened,
+          'busy': s.busy,
+          'pending': s.pendingKind,
+          'needs_reload': s.needsReload,
+          'unsaved': s.unsaved,
+          'live': s.live,
+          'error': s.error,
+          'page_error': s.pageError,
+          'page_id': s.currentPage?.id,
+          'offset_ratio': s.offsetRatio,
+          'window': [s.windowStart, s.windowEnd],
+        };
+        result['failure'] = diagnostic;
+        debugPrint('READER_BENCH_FAILURE:${jsonEncode(diagnostic)}');
+        await checkpoint('failure', diagnostic);
+      }
       expect(s.error, isEmpty);
       expect(s.pageError, isEmpty);
       final v = <String, dynamic>{
