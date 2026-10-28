@@ -403,8 +403,10 @@ void main() {
           'fully visible baseline',
         );
         active = probe(exit: exit, footer: footer);
-        // Sample a baseline in an actual frame before the action.
-        await t.pump();
+        // benchmarkLive deliberately ignores tester.pump. Request one actual
+        // engine frame and wait for its post-frame observation before acting.
+        SchedulerBinding.instance.scheduleFrame();
+        await until(() => active!.baseline != null, 'actual visible baseline');
         final before = controller.value.position.inMilliseconds;
         if (automatic || resume) {
           await tap(find.widgetWithText(TextButton, '播放'));
