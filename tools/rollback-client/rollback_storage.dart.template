@@ -14,12 +14,14 @@ class RollbackJournal {
     required Future<void> Function(String) write,
     required this.useCurrentGeneration,
     required this.knownFields,
+    this.v1BackupOnly = false,
   }) : book = ScopedJournal(readText: read, writeText: write);
 
   final CredentialStore credentials;
   final ScopedJournal book;
   final bool useCurrentGeneration;
   final Set<String> knownFields;
+  final bool v1BackupOnly;
   ConnectionCredentials? _bound;
   String? _legacy, _stored;
 
@@ -42,11 +44,23 @@ class RollbackJournal {
     _legacy = legacy;
     _stored = stored;
     if (raw == null) return null;
+    if (_newerBackup(Map<String, dynamic>.from(jsonDecode(raw) as Map))) {
+      return null;
+    }
     return jsonEncode({
       ...jsonDecode(raw) as Map<String, dynamic>,
       'scope': legacy,
     });
   }
+
+  bool _newerBackup(Map<String, dynamic> value) =>
+      v1BackupOnly &&
+      {...knownFields, 'snapshot'}.any((key) {
+        final command = value[key];
+        return command is Map &&
+            command['version'] != null &&
+            command['version'] != 1;
+      });
 
   Future<void> write(String text) async {
     final bound = _bound, legacy = _legacy, stored = _stored;
@@ -70,11 +84,7 @@ class RollbackJournal {
     final previousMap = previous == null
         ? <String, dynamic>{}
         : Map<String, dynamic>.from(jsonDecode(previous) as Map);
-    if (!useCurrentGeneration &&
-        knownFields.any((key) {
-          final value = previousMap[key];
-          return value is Map && value['version'] == 2;
-        })) {
+    if (_newerBackup(previousMap)) {
       throw const LibraryFailure('新版备份任务已保留，请升回新版核对后继续');
     }
     final opaque = previous == null ? <String, dynamic>{} : previousMap
@@ -105,8 +115,9 @@ class RollbackBackupWork implements BackupWorkStore {
         credentials: credentials,
         read: raw.read,
         write: raw.write,
-        useCurrentGeneration: false,
+        useCurrentGeneration: true,
         knownFields: const {'export', 'inspect', 'restore'},
+        v1BackupOnly: true,
       );
   final RollbackJournal journal;
   @override

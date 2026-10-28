@@ -90,19 +90,57 @@ void main() {
       'version': 2,
       'scopes': {active: modern},
     });
+    final before = raw.value;
+    final store = RollbackBackupWork(raw, credentials);
+    expect(await store.read(), isNull);
+    await expectLater(
+      store.write(
+        jsonEncode({
+          'scope': legacy,
+          'export': {'key': 'old-v1'},
+        }),
+      ),
+      throwsA(isA<LibraryFailure>()),
+    );
+    expect(raw.value, before);
+  });
+
+  test('old v1 backup writes stay in the issuing generation and retain other v2 work', () async {
+    final credentials = MemoryCredentialStore();
+    await credentials.save(session(epoch: 'a' * 32));
+    final legacy = jsonEncode(['http://example.test:8772', 'same-server']);
+    final active = jsonEncode([
+      'http://example.test:8772',
+      'same-server',
+      'a' * 32,
+    ]);
+    final previous = jsonEncode([
+      'http://example.test:8772',
+      'same-server',
+      'b' * 32,
+    ]);
+    final other = {
+      'scope': previous,
+      'restore': {'version': 2, 'key': 'keep-older-generation'},
+    };
+    final raw = MemoryBackupWorkStore()
+      ..value = jsonEncode({
+        'version': 2,
+        'scopes': {previous: other},
+      });
     final store = RollbackBackupWork(raw, credentials);
     expect(await store.read(), isNull);
     await store.write(
       jsonEncode({
         'scope': legacy,
-        'export': {'key': 'old-v1'},
+        'export': {'key': 'new-v1'},
       }),
     );
     final scopes = (jsonDecode(raw.value!) as Map)['scopes'] as Map;
-    expect(scopes[active], modern);
-    expect(scopes[legacy], {
-      'scope': legacy,
-      'export': {'key': 'old-v1'},
+    expect(scopes[previous], other);
+    expect(scopes[active], {
+      'scope': active,
+      'export': {'key': 'new-v1'},
     });
   });
 
