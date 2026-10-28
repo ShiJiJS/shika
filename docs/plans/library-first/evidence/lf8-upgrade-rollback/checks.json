@@ -1,0 +1,27 @@
+{
+  "source": "b79da7b9c4d2ab099c055b8eb855904e32abb0a5",
+  "test_image": "sha256:6bf117cf3c220be15c57f6ca939a8f1e3a5b76b6de1d17bab7ad5b98bff8835c",
+  "default_command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q"
+  ],
+  "server_tests": 462,
+  "server_test_exit": 0,
+  "ruff_exit": 0,
+  "format_exit": 0,
+  "client_production_source_unchanged": true,
+  "client_full_suite_rerun": false,
+  "client_prior_suite": {
+    "source": "cf9920257f7bc88af534ea6fb3177cef69c0a161",
+    "count": 672
+  },
+  "logs": {
+    "server-full.log": "f3b66447a88c13ecd598bb1d1f21d7f1e5e66c4d4961e318b5c4ece875ef8688",
+    "ruff.log": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "format.log": "75c1d579c8ce8874c2719098e668d185f5d45cadff85bea7d52474f910819eea",
+    "task-summary-green.log": "e4d6fdea9903d9193fa0623b7ae21500c8dc24e762c48d880411f01c22e58be9",
+    "diagnostics/task-summary-final-tests-red.log": "909182a57b840057da6d4485be7b92530256aba9fb88fe38cdcbd35c54ab7dcd"
+  }
+}

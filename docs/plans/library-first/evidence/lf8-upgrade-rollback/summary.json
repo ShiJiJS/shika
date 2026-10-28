@@ -1,0 +1,17 @@
+{
+  "server_source": "b79da7b9c4d2ab099c055b8eb855904e32abb0a5",
+  "new_image": "sha256:886b79b72ecb9116087d892f230471943121f24ccef093113cc3197b4607fef4",
+  "old_image": "sha256:980c9a01bca1f826521da2f0f5660be863dc28fc7592c888bc800efe4d02d67e",
+  "native_cycles": 3,
+  "normal_app_processes": 6,
+  "same_public_sample": true,
+  "server_tests": 462,
+  "client_code_unchanged": true,
+  "client_full_suite_rerun": false,
+  "cleanup_complete": true,
+  "diagnostics_not_counted": [
+    "round-1-new task-state defect",
+    "final-1-new QEMU exit",
+    "verified-1-old first startup read mismatch"
+  ]
+}

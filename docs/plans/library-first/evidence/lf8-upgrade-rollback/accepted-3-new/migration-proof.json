@@ -1,0 +1,22 @@
+{
+  "schema": "0014",
+  "old_token_columns_equal": true,
+  "original_token_bound_once": true,
+  "stable_tables": [
+    "tags",
+    "video_tags",
+    "playback_rounds",
+    "round_entries",
+    "request_records",
+    "file_operations",
+    "file_steps",
+    "trash_items"
+  ],
+  "old_settings_and_tasks_retained": true,
+  "root_video_enabled": true,
+  "scanner_changes_only": [
+    "roots.last_scan",
+    "videos.seen_scan",
+    "directories.seen_scan"
+  ]
+}

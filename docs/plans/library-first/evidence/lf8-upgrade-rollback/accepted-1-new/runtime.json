@@ -1,0 +1,60 @@
+{
+  "Id": "595c0152f8db57a5fe126324cb6f9b79e3d210c9d45536ae6d446c31d72ce596",
+  "Name": "/video-viewer-upgrade-rollback-accepted-1-new",
+  "Image": "sha256:886b79b72ecb9116087d892f230471943121f24ccef093113cc3197b4607fef4",
+  "Path": "uvicorn",
+  "Args": [
+    "video_viewer.app:create_app",
+    "--factory",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8760",
+    "--workers",
+    "1",
+    "--log-config",
+    "/observe/logging.json"
+  ],
+  "Mounts": [
+    {
+      "Type": "bind",
+      "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview-package/upgrade/videos",
+      "Destination": "/media/videos",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/config",
+      "Destination": "/fixture",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/observe",
+      "Destination": "/observe",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/trace/accepted-1-new",
+      "Destination": "/trace",
+      "Mode": "rw",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/data",
+      "Destination": "/data",
+      "Mode": "rw",
+      "RW": true,
+      "Propagation": "rprivate"
+    }
+  ]
+}

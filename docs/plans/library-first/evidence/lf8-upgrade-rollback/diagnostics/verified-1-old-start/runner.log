@@ -1,0 +1,36 @@
+{"phase": "verified-1-new", "ui": "passed", "old_task": "completed"}
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/lab.py", line 81, in start
+    try:api('/health');break
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/lab.py", line 24, in api
+    with urllib.request.urlopen(request,timeout=30) as r:
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 517, in open
+    response = self._open(req, data)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 534, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 494, in _call_chain
+    result = func(*args)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 1375, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 1350, in do_open
+    r = h.getresponse()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/http/client.py", line 1349, in getresponse
+    response.begin()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/http/client.py", line 316, in begin
+    version, status, reason = self._read_status()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/http/client.py", line 285, in _read_status
+    raise RemoteDisconnected("Remote end closed connection without"
+http.client.RemoteDisconnected: Remote end closed connection without response
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/final_protocol.py", line 283, in <module>
+    cycle(number, resume=(number == first and '--resume-new' in sys.argv))
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/final_protocol.py", line 263, in cycle
+    start(old_phase, 'old')
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/lab.py", line 85, in start
+    (LAB/phase/'startup-error.log').write_bytes(subprocess.check_output(['docker','logs',cid],stderr=subprocess.STDOUT));raise RuntimeError('Owned runtime exited; inspect startup-error.log')
+RuntimeError: Owned runtime exited; inspect startup-error.log

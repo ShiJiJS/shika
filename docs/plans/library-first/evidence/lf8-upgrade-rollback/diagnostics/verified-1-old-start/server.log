@@ -1,0 +1,97 @@
+INFO Started server process [1]
+INFO Waiting for application startup.
+ERROR Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/alembic/script/base.py", line 207, in _catch_revision_errors
+    yield
+  File "/usr/local/lib/python3.13/site-packages/alembic/script/base.py", line 426, in _upgrade_revs
+    for script in reversed(list(revs))
+                           ~~~~^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/alembic/script/revision.py", line 807, in iterate_revisions
+    revisions, heads = fn(
+                       ~~^
+        upper,
+        ^^^^^^
+    ...<3 lines>...
+        assert_relative_length=assert_relative_length,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/alembic/script/revision.py", line 1468, in _collect_upgrade_revisions
+    current_revisions = self.get_revisions(lower)
+  File "/usr/local/lib/python3.13/site-packages/alembic/script/revision.py", line 535, in get_revisions
+    return sum([self.get_revisions(id_elem) for id_elem in id_], ())
+                ~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/alembic/script/revision.py", line 558, in get_revisions
+    return tuple(
+        self._revision_for_ident(rev_id, branch_label)
+        for rev_id in resolved_id
+    )
+  File "/usr/local/lib/python3.13/site-packages/alembic/script/revision.py", line 559, in <genexpr>
+    self._revision_for_ident(rev_id, branch_label)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/alembic/script/revision.py", line 630, in _revision_for_ident
+    raise ResolutionError(
+    ...<11 lines>...
+    )
+alembic.script.revision.ResolutionError: No such revision or branch '0014'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 654, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/usr/local/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/video_viewer/app.py", line 121, in lifespan
+    db.migrate()
+    ~~~~~~~~~~^^
+  File "/app/video_viewer/db.py", line 43, in migrate
+    command.upgrade(config, "head")
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/alembic/command.py", line 487, in upgrade
+    script.run_env()
+    ~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/site-packages/alembic/script/base.py", line 550, in run_env
+    util.load_python_file(self.dir, "env.py")
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/alembic/util/pyfiles.py", line 114, in load_python_file
+    module = load_module_py(module_id, path)
+  File "/usr/local/lib/python3.13/site-packages/alembic/util/pyfiles.py", line 132, in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1027, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/app/migrations/env.py", line 8, in <module>
+    context.run_migrations()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "<string>", line 8, in run_migrations
+  File "/usr/local/lib/python3.13/site-packages/alembic/runtime/environment.py", line 970, in run_migrations
+    self.get_context().run_migrations(**kw)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/alembic/runtime/migration.py", line 604, in run_migrations
+    for step in self._migrations_fn(heads, self):
+                ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/alembic/command.py", line 476, in upgrade
+    return script._upgrade_revs(revision, rev)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/alembic/script/base.py", line 414, in _upgrade_revs
+    with self._catch_revision_errors(
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        ancestor="Destination %(end)s is not a valid upgrade "
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "target from current head(s)",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        end=destination,
+        ^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "/usr/local/lib/python3.13/contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/alembic/script/base.py", line 239, in _catch_revision_errors
+    raise util.CommandError(resolution) from re
+alembic.util.exc.CommandError: Can't locate revision identified by '0014'
+
+ERROR Application startup failed. Exiting.
