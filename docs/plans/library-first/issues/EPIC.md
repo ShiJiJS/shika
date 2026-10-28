@@ -1,6 +1,6 @@
 ## 目标
 
-将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8尚未终验。最新阶段：[视频任务状态与三轮旧数据升级回退 PR #94](https://github.com/ShiJiJS/video_viewer/pull/94)。b79da7b9修复[#93](https://github.com/ShiJiJS/video_viewer/issues/93)：新视频任务保留总数/已处理数，旧回执结合持久成员只读补足，未知/不一致仍待核对，不改原结果或重放。完整服务462项、任务相关21项、Ruff/格式通过。正常runtime preview.2配原APK6，三轮同一公开非空样本0004→0014→完整旧数据恢复均通过：六次App免口令冷启，原视频/标签/播放范围/回收站/回执保留，显式新增标签在回退后消失；51张成功图、336输入复核通过。QEMU退出与首次旧容器版本读取不一致单列诊断，原因未全定位；最终恢复固定绑定目录/数据库内容并在容器内核对后重新跑三轮。原型独立未改，自有AVD/11容器归还，原四服务及上一阶段数据/媒体未改。未正式发布或部署NAS；App回退包、目标手机/NAS及其余终验继续，#78/#89保持开放，#24/#33不关闭。
+将现有 0.1.4+5 Android App 升级为已确认的「媒体库为中心、视频与图包分别管理」完整产品。用户于2026-10-23确认独立的 `design/reference/library-first/` 原型方向。LF0–LF7已有分阶段实现与证据，LF8尚未终验。最新阶段：[原签名App回退与反复覆盖安装 PR #95](https://github.com/ShiJiJS/video_viewer/pull/95)。固定a3c7659a，配套新媒体库0.2.0-preview.2和旧界面0.1.4-rollback.2均code8、原Windows签名。旧界面窄适配保留新版偏好/多范围日志及凭据代次，未知v2备份任务保留并要求回新版核对；85旧版/兼容+14新版相关检查、双方analyze及正常release通过。独立Android36同一QEMU实际6→新8→旧8→新8→旧8→新8，五次install -r、首次安装时间/身份/数据目录保持、六次免口令冷启，新版零自动播放。旧UI主题/相邻准备修改后新版顺序/迁移标记保留；旧视频回收/菜单撤销完成，升回任务可核对；图包第2页纵向/两套标签保留。148输入及两包只读复核通过，22组原生截图；一容器/自有AVD已归还，原四服务及前阶段数据/媒体未动。配套服务仍b79da7b9 preview.2，原型1cbf605独立未改；未正式发布/部署，目标手机/NAS、500页高分辨率和其余终验继续，#78/#89与#24/#33保持开放。
 
 ## 历史阶段记录
 
@@ -71,3 +71,9 @@
 首次cf任务问题、一次QEMU退出与一次旧容器首启报告0014而宿主恢复为0004的失败均保留，未计入最终三轮；后者原因未确定。最终驱动关闭SQLite连接，在原绑定目录和数据库文件内恢复内容，并先做容器侧核验。当前三轮通过不等于#78已修复。最终自有AVD关闭、11容器移除，原四服务ID/状态、上一阶段数据与媒体SHA未变。
 
 [方案和边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-upgrade-rollback/docs/plans/library-first/LF8-UPGRADE-ROLLBACK.md)／[固定源码、原始记录与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-upgrade-rollback/docs/plans/library-first/evidence/lf8-upgrade-rollback/README.md)／[配套安装说明](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-upgrade-rollback/docs/library-first-preview.md)。本段补UP-01/02和SET-05明确组合；App回退包、真实手机/NAS、当前新服务配旧客户端完整终验、禁用根其它组合及其余原型验收继续。#89原始上传故障未复现，#78仍开放；原型1cbf605保持独立可移除，未正式发布或部署NAS，#24/#33/#32保持开放。
+
+## 2026-10-28：App回退包与反复覆盖安装（PR #95）
+
+最新阶段：[原签名App回退与反复覆盖安装 PR #95](https://github.com/ShiJiJS/video_viewer/pull/95)。固定a3c7659a，配套新媒体库0.2.0-preview.2和旧界面0.1.4-rollback.2均code8、原Windows签名。旧界面窄适配保留新版偏好/多范围日志及凭据代次，未知v2备份任务保留并要求回新版核对；85旧版/兼容+14新版相关检查、双方analyze及正常release通过。独立Android36同一QEMU实际6→新8→旧8→新8→旧8→新8，五次install -r、首次安装时间/身份/数据目录保持、六次免口令冷启，新版零自动播放。旧UI主题/相邻准备修改后新版顺序/迁移标记保留；旧视频回收/菜单撤销完成，升回任务可核对；图包第2页纵向/两套标签保留。148输入及两包只读复核通过，22组原生截图；一容器/自有AVD已归还，原四服务及前阶段数据/媒体未动。配套服务仍b79da7b9 preview.2，原型1cbf605独立未改；未正式发布/部署，目标手机/NAS、500页高分辨率和其余终验继续，#78/#89与#24/#33保持开放。
+
+[方案和边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-app-rollback/docs/plans/library-first/LF8-APP-ROLLBACK.md)／[固定构建、两轮实际安装与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-app-rollback/docs/plans/library-first/evidence/lf8-app-rollback/README.md)／[安装说明](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-app-rollback/docs/library-first-preview.md)。本段只补UP-02的本机App回退组合。内部code相同可反复替换已在该AVD实测；不能覆盖code>8，后续版本需同步生成回退包。切换前先完成/核对管理任务，进行中或未知v2任务不交旧版接管。偏好扩展字段使用明确公开文件样本，再经真实UI写当前迁移标记；不把文件样本称为全由UI生成。原旧界面、播放器和API业务保留，属于附兼容存储的回退包，不是原Windows APK字节复刻。当前新服务配旧客户端只核对列明组合，完整旧功能/禁用根其它组合、目标手机/NAS和其它终验继续。
