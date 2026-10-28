@@ -1,0 +1,86 @@
+{
+  "original_log_sha256": "91f6dd0084a46d1c8f7ab637177fff07e39386935592f57be4614263f6bc7da5",
+  "redacted_log_sha256": "e9d0a62035a18e89d5fbe3bc96e598ef145fbd0cf2e2b00fe05207df38687bad",
+  "failed_observation": "Tool session85216: uiautomator dump timed out after30s at forward9-settings-before-dark; dark toggle and rollback not reached",
+  "owned_qemu_pid": 41697,
+  "pid_absent": true,
+  "adb_devices": "List of devices attached\n\n",
+  "package_installed_before_exit": "0.2.0-preview.3/code9",
+  "app_data_wiped": false,
+  "app_oom_proven": false,
+  "recorded_at": 1793203659.696812,
+  "selected_crash_reports": [
+    {
+      "file": "qemu-system-aarch64-headless-2026-10-29-000043.ips",
+      "original_sha256": "5790f80bddbd4c8eb403c86861abbff1160ebe5e14f5694478f8e34c55637bfd",
+      "pid": 41697,
+      "procName": "qemu-system-aarch64-headless",
+      "captureTime": "2026-10-29 00:00:39.8000 +0800",
+      "exception": {
+        "codes": "0x0000000000000001, 0x0000000000000000",
+        "rawCodes": [
+          1,
+          0
+        ],
+        "type": "EXC_BAD_ACCESS",
+        "signal": "SIGSEGV",
+        "subtype": "KERN_INVALID_ADDRESS at 0x0000000000000000"
+      },
+      "termination": {
+        "flags": 0,
+        "code": 11,
+        "namespace": "SIGNAL",
+        "indicator": "Segmentation fault: 11",
+        "byProc": "exc handler",
+        "byPid": 41697
+      },
+      "triggered_threads": [
+        {
+          "id": 23093956,
+          "frames": [
+            {
+              "symbol": "android::crashreport::CrashReporter::GenerateDumpAndDie(char const*)",
+              "symbolLocation": 52
+            },
+            {
+              "symbol": "_ZZN7android11crashreport13CrashReporter12hangDetectorEvENK3$_0clINSt3__117basic_string_viewIcNS4_11char_traitsIcEEEEEEDaT_",
+              "symbolLocation": 68
+            },
+            {
+              "symbol": "std::__1::__function::__func<android::crashreport::CrashReporter::hangDetector()::$_0, std::__1::allocator<android::crashreport::CrashReporter::hangDetector()::$_0>, void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>&&)",
+              "symbolLocation": 16
+            },
+            {
+              "symbol": "std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>) const",
+              "symbolLocation": 40
+            },
+            {
+              "symbol": "android::crashreport::HangDetector::LooperWatcher::process(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)> const&)",
+              "symbolLocation": 824
+            },
+            {
+              "symbol": "android::crashreport::HangDetector::workerThread()",
+              "symbolLocation": 520
+            },
+            {
+              "symbol": "std::__1::__function::__func<android::base::FunctorThread::FunctorThread<android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0, void*>(android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0&&, android::base::ThreadFlags)::'lambda'(), std::__1::allocator<android::base::FunctorThread::FunctorThread<android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0, void*>(android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0&&, android::base::ThreadFlags)::'lambda'()>, long ()>::operator()()",
+              "symbolLocation": 16
+            },
+            {
+              "symbol": "android::base::Thread::thread_main(void*)",
+              "symbolLocation": 156
+            },
+            {
+              "symbol": "_pthread_start",
+              "symbolLocation": 136
+            },
+            {
+              "symbol": "thread_start",
+              "symbolLocation": 8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

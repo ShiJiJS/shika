@@ -1,6 +1,6 @@
-# 媒体库预览版：App preview.2、配套回退包与服务 preview.2
+# 媒体库预览版：App preview.3、配套回退包与服务 preview.2
 
-本机可安装的阶段预览包。App 构建源码固定 `a3c7659a738619842f9923078363135299210826`，新界面和旧界面回退包均为内部版本号8，沿用原Windows签名。配套服务为 `b79da7b9c4d2ab099c055b8eb855904e32abb0a5`，包含已完成的视频回收任务显示修正。尚未作为正式 GitHub 版本发布，也没有升级你的手机或 NAS。完整验收进度见[逐项记录](plans/library-first/RESULTS.md)。
+本机可安装的阶段预览包。App 构建源码固定 `4dd88cac0cd137e2ecc7486408d9b912081ff7e8`，新界面和旧界面回退包均为内部版本号9，沿用原Windows签名。配套服务为 `b79da7b9c4d2ab099c055b8eb855904e32abb0a5`，包含已完成的视频回收任务显示修正。尚未作为正式 GitHub 版本发布，也没有升级你的手机或 NAS。完整验收进度见[逐项记录](plans/library-first/RESULTS.md)。
 
 ## 安装包
 
@@ -8,11 +8,11 @@
 
 | 文件 | 用途 | 字节数 | SHA256 |
 | --- | --- | ---: | --- |
-| `video-viewer-0.2.0-preview.2-arm64.apk` | Android ARM64 新媒体库预览包 | 23308394 | `2e3d7df81c52a79a3d216cff8c8a80d2df7de6994937eafbdc219818b18a171b` |
-| `video-viewer-0.1.4-rollback.2-arm64.apk` | Android ARM64 旧视频界面配套回退包 | 21734386 | `ec884743b5aa0c8c71bf534940a0c4b107580ee38e9c1e2d3f97286115cfa5ee` |
+| `video-viewer-0.2.0-preview.3-arm64.apk` | Android ARM64 新媒体库预览包 | 23308398 | `7b4d911e88b999c8e3e5b913e0cad90f01cdd1a1812b3bd87866e8060de7b690` |
+| `video-viewer-0.1.4-rollback.3-arm64.apk` | Android ARM64 旧视频界面配套回退包 | 21734390 | `4b52bda8b8399978d31ab2268d60e41af79852771d78f53b05580916fd55d051` |
 | `video-viewer-server-0.2.0-preview.2-linux-arm64.tar.gz` | 本机 Linux ARM64 配套服务镜像，含任务显示修正 | 222497149 | `461af96196d4905c374fa86e82100be85d48efc2ab9221dcde745e275a7a79ff` |
 
-App 包名 `io.github.shijijs.video_viewer`，本次两份包的内部版本号均为8，新版名称 `0.2.0-preview.2`，回退版名称 `0.1.4-rollback.2`。沿用 Windows 0.1.4 的签名，公开证书 SHA256 为 `f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161`。两份 APK 均由正常 `lib/main.dart` 构建，不含集成测试插件。旧界面取原0.1.4源码，附偏好/日志兼容适配；并非原Windows APK的字节复刻。
+App 包名 `io.github.shijijs.video_viewer`，本次两份包的内部版本号均为9，新版名称 `0.2.0-preview.3`，回退版名称 `0.1.4-rollback.3`。沿用 Windows 0.1.4 的签名，公开证书 SHA256 为 `f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161`。两份 APK 均由正常 `lib/main.dart` 构建，不含集成测试插件。旧界面取原0.1.4源码，附偏好/日志兼容适配；并非原Windows APK的字节复刻。
 
 安装时直接覆盖原 App，保留原 App 的本机数据。不要先卸载或清除数据。独立模拟器上已用原 Windows APK 安装后，再执行 `adb install -r` 覆盖安装新版；目标手机尚待验证。
 
@@ -44,14 +44,16 @@ App 包名 `io.github.shijijs.video_viewer`，本次两份包的内部版本号�
 
 本机曾在替换整个宿主数据目录后出现“宿主已恢复为0004、旧容器首次启动却报告0014”的不一致，首次启动明确失败；原因尚未完全确定。最终流程在原绑定目录和数据库文件内恢复内容，并增加容器内核验后连续三轮通过。失败现场单独保留，见[诊断与最终流程](plans/library-first/evidence/lf8-upgrade-rollback/README.md)。
 
-三轮服务回退使用前阶段同一个新版App6。随后本次已在同一自有AVD实际完成 `6→新8→旧界面8→新8→旧界面8→新8`，五次 `adb install -r` 成功，未卸载、清数据或使用降级标志，首次安装时间/应用身份/数据目录保持、六次免口令冷启。旧界面修改主题和相邻准备后，新版顺序及迁移记录保留；图包第2页纵向、视频/图包独立标签保留，旧视频回收及菜单撤销在新版任务页可核对。详见[原始记录及只读复核](plans/library-first/evidence/lf8-app-rollback/README.md)。
+三轮服务回退使用前阶段同一个新版App6。随后前阶段在同一自有AVD实际完成 `6→新8→旧界面8→新8→旧界面8→新8`，五次 `adb install -r` 成功，未卸载、清数据或使用降级标志，首次安装时间/应用身份/数据目录保持、六次免口令冷启。旧界面修改主题和相邻准备后，新版顺序及迁移记录保留；图包第2页纵向、视频/图包独立标签保留，旧视频回收及菜单撤销在新版任务页可核对。详见[原始记录及只读复核](plans/library-first/evidence/lf8-app-rollback/README.md)。
 
-需要退回旧界面时直接覆盖安装配套 `0.1.4-rollback.2`，升回时再覆盖 `0.2.0-preview.2`。两份内部版本号都是8，本次已验证相同版本号反复替换；**不能覆盖内部版本号大于8的App**，后续提升版本号时必须重新生成配套回退包。原Windows旧APK（内部5）仍不能直接覆盖新版。真实手机的系统安装器行为尚待验证。
+本次普通包已实际完成 `新8→新9→旧界面9→新9`，三个覆盖安装成功，首次安装时间/身份/数据目录、免口令与明确比较的21表/完整偏好保留；第2张纵向、独立标签和11个任务读回。两次模拟器退出与一次连接失败单列保留，不能当成整条链无中断；连接失败经查询原请求404后，明确重试一次恢复，由[#100](https://github.com/ShiJiJS/video_viewer/issues/100)继续跟进。详见[当前普通APK记录](plans/library-first/evidence/lf8-preview3/native/README.md)。
+
+需要退回旧界面时直接覆盖安装配套 `0.1.4-rollback.3`，升回时再覆盖 `0.2.0-preview.3`。两份内部版本号都是9，已验证相同版本号反复替换；**不能覆盖内部版本号大于9的App**，后续提升版本号时必须重新生成配套回退包。原Windows旧APK（内部5）仍不能直接覆盖新版。真实手机的系统安装器行为尚待验证。
 
 切换版本前，先在支持的新版里完成或核对管理任务。旧界面不能接管进行中或结果未知的新版v2备份任务；回退适配会保留原记录并要求回新版核对。回退界面本身不提供图包入口，升回新版后再继续阅读。回退App不等于回退服务数据库，两者按各自流程执行。
 
 ## 仍在继续的工作
 
-真实手机和 NAS 的升级回退、500 页高分辨率图包及其它未验收组合继续按 issue 推进。原始偶发备份上传失败 [#89](https://github.com/ShiJiJS/video_viewer/issues/89) 尚未复现并定位，模拟器视频渲染问题 [#78](https://github.com/ShiJiJS/video_viewer/issues/78) 也保持开放。
+真实手机和 NAS 的升级回退、持续稳定性及其它未验收组合继续按 issue 推进。冻结81a11a98的复杂摄影像素已完成三轮完整500页测量，见[性能记录](plans/library-first/evidence/lf8-reader-performance/README.md)。当前普通preview.3另补[大图选页检查](plans/library-first/evidence/lf8-preview3/normal-large-pack/README.md)：500页包首/中/末、4K/8K相邻页、同页模式切换与返回，共10个图片状态；它不等于普通APK完整500页遍历或目标手机性能通过。原始偶发备份上传失败 [#89](https://github.com/ShiJiJS/video_viewer/issues/89)、模拟器视频渲染/稳定性 [#78](https://github.com/ShiJiJS/video_viewer/issues/78) 和本次图包连接失败 [#100](https://github.com/ShiJiJS/video_viewer/issues/100) 保持开放。
 
-原型单独保留在 `design/reference/`，有参考用途标记。App 的 cf992025 版本已在移除这部分的副本里构建，并通过 672 项客户端检查，见[正常安装包证据](plans/library-first/evidence/lf8-preview-package/README.md)。配套服务 b79da7b9 通过完整 462 项服务检查，runtime 中73份 Python 源码与固定 Git 版本逐份匹配，不含测试或原型文件；本次现代客户端lib/Android仍与cf992025相同，仅版本号变化；旧回退导出新增兼容存储，85项旧版/兼容检查与14项现代相关检查、双方analyze通过。完整客户端672项/服务462项属于前阶段，本次没有重跑全集。原始原型保持不变，后续可单独移除。
+原型单独保留在 `design/reference/`，有参考用途标记。App 的 cf992025 版本已在移除这部分的副本里构建，并通过 672 项客户端检查，见[正常安装包证据](plans/library-first/evidence/lf8-preview-package/README.md)。配套服务 b79da7b9 通过完整462项服务检查，runtime中73份Python源码与固定Git版本逐份匹配，不含测试或原型文件。本次现代客户端整合视频控件减少动画修复，并重跑完整客户端676项；旧回退导出保留兼容存储，85项旧版/兼容检查与14项现代相关检查、双方analyze通过，14项不与全集重复累加。服务462项属于前阶段，服务生产树未改且本段未重跑无关服务全集。原始原型保持不变，后续可单独移除。

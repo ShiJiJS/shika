@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "original_run_passed": false,
+  "prior_original_query_returned_not_found": true,
+  "explicit_retry_clicked_once": true,
+  "new_session_count": 1,
+  "new_request_records": [
+    {
+      "id": "pack.opened:1793206125761702-3076897084-5",
+      "fingerprint": "68555f07dcdb0c673089c282617f445ec513ddd1326be9e1c74db1357ad93418",
+      "result": "{\"page\": {\"id\": \"effba9f4-7d90-4599-bf4e-b127dbf2ddf1\", \"pack_id\": \"f38cd364-006e-4e7f-a875-fcff16929a87\", \"name\": \"002.png\", \"relative_path\": \"002.png\", \"ordinal\": 1, \"width\": 800, \"height\": 1200, \"size\": 14183, \"format\": \"PNG\", \"sha256\": \"add364e40e0bb49f608218384da1cc19143220247ec9114971ae743b409fa8c2\", \"error\": null, \"content_version\": 2, \"image_url\": \"/api/v1/pages/effba9f4-7d90-4599-bf4e-b127dbf2ddf1/image?v=2\", \"thumbnail_url\": \"/api/v1/pages/effba9f4-7d90-4599-bf4e-b127dbf2ddf1/thumbnail?v=2\"}, \"page_index\": 1, \"offset_ratio\": 0.0, \"completed\": false, \"revision\": 10, \"content_version\": 2, \"recovery_reason\": null, \"preferences\": {\"mode\": \"vertical\", \"direction\": \"ltr\", \"gap\": false, \"fit\": \"contain\", \"revision\": 1, \"overridden\": true}, \"session_revision\": 0}",
+      "created_at": 1793206126.085757
+    }
+  ],
+  "request_offset": 700,
+  "request_end_offset": 707,
+  "requests": [
+    {
+      "time": 1793206125.54117,
+      "method": "POST",
+      "path": "/api/v1/pack-sessions",
+      "status": 201
+    },
+    {
+      "time": 1793206126.0152204,
+      "method": "GET",
+      "path": "/api/v1/packs/f38cd364-006e-4e7f-a875-fcff16929a87/pages",
+      "status": 200
+    },
+    {
+      "time": 1793206126.0443797,
+      "method": "GET",
+      "path": "/api/v1/pages/effba9f4-7d90-4599-bf4e-b127dbf2ddf1/image",
+      "status": 200
+    },
+    {
+      "time": 1793206126.0482345,
+      "method": "GET",
+      "path": "/api/v1/pages/4f9cb531-3ae4-4829-b8ed-e672ac5b8c57/image",
+      "status": 200
+    },
+    {
+      "time": 1793206126.0526814,
+      "method": "GET",
+      "path": "/api/v1/pages/dc7e7e17-f3c6-440c-9bca-80d0271d407b/image",
+      "status": 200
+    },
+    {
+      "time": 1793206126.0879517,
+      "method": "POST",
+      "path": "/api/v1/pack-sessions/68a4fc44-02b3-4ceb-b329-3956d2e8f85c/opened",
+      "status": 200
+    },
+    {
+      "time": 1793206127.8670247,
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200
+    }
+  ],
+  "qemu_pid": 61904
+}

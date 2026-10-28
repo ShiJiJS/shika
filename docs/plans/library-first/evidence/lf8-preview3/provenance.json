@@ -1,0 +1,23 @@
+{
+  "source": "4dd88cac0cd137e2ecc7486408d9b912081ff7e8",
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "app_tree": "05de2c18b55d814799846a50258ecdf5faa0b0cc",
+  "client_test_count": 676,
+  "client_test_exit_code": 0,
+  "client_test_log_sha256": "d4ab79a2c4d039dfbb708f3362577c59e7debbcc1c93e47647ec025bc71b35f2",
+  "build_complete": true,
+  "normal_apk_install_validation_complete": true,
+  "old_code8_artifacts_unchanged": true,
+  "copied_at": 1793201219.292641,
+  "scope": "Build/component checks and bounded actual normal APK install/persistence checks; no uninterrupted stability, phone/NAS or release approval claim",
+  "install_validation_scope": "Only explicitly compared normal APK8->new9->old9->new9 cases; interrupted twice by QEMU exits; stability not passed",
+  "uninterrupted_install_ui_chain": false,
+  "host_gpu_three_cycle_passed": false,
+  "reader_network_issue": 100,
+  "normal_large_pack_smoke_complete": true,
+  "phone_or_nas_validation_complete": false,
+  "normal_large_pack_smoke_scope": "10 selected decoded picture states; not full normal-APK500 traversal or benchmark",
+  "all_large_pack_requests_succeeded": false,
+  "large_pack_read_503_then_200_count": 2,
+  "resources_returned": true
+}

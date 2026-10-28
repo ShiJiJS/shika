@@ -1,0 +1,32 @@
+{
+  "command": [
+    "bash",
+    "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+    "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/emulator",
+    "-avd",
+    "video_viewer_upgrade_36",
+    "-port",
+    "5556",
+    "-no-boot-anim",
+    "-gpu",
+    "host",
+    "-feature",
+    "-Vulkan",
+    "-feature",
+    "-GLDMA",
+    "-feature",
+    "HardwareDecoder",
+    "-no-snapshot",
+    "-no-metrics",
+    "-crash-report-mode",
+    "never",
+    "-no-window"
+  ],
+  "launch_pid": 61904,
+  "previous_pid": 53619,
+  "previous_pid_confirmed_absent": true,
+  "same_avd_data_no_wipe": true,
+  "sdk_or_app_updated": false,
+  "started_at": 1793205103.086828,
+  "scope": "Host GPU comparison after two confirmed emulator exits; no stability-fix claim"
+}

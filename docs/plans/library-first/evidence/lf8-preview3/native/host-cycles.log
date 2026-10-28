@@ -1,0 +1,8 @@
+{"completed_ui_cycle": 1}
+{"completed_ui_cycle": 2}
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview3/native/exercise-host.py", line 27, in <module>
+    require(name + "-reader", "2 / 3", "纵向拼接")
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview3/native/exercise-host.py", line 18, in require
+    assert label in value, (name, label, value)
+AssertionError: ('host-cycle-3-reader', '2 / 3', '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n返回来源\n\n0 张\n\n图包阅读\n\n阅读设置\n\n图包更多\n\n暂时无法连接服务，请检查地址和网络后重试\n\n查询操作结果\n\n正在准备阅读范围')
