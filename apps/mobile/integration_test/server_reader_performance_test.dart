@@ -237,7 +237,9 @@ void main() {
         int? trial,
       }) async {
         final tooltip = expected > reader().session.index ? '下一张' : '上一张';
-        final button = find.byTooltip(tooltip);
+        final button = find.byWidgetPredicate(
+          (widget) => widget is IconButton && widget.tooltip == tooltip,
+        );
         await ready(button);
         await until(
           () => t.widget<IconButton>(button).onPressed != null,
