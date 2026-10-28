@@ -1,0 +1,468 @@
+{
+  "access_tokens": {
+    "count": 1,
+    "columns": [
+      "digest",
+      "expires_at",
+      "issued_epoch"
+    ]
+  },
+  "alembic_version": {
+    "count": 1,
+    "columns": [
+      "version_num"
+    ]
+  },
+  "directories": {
+    "count": 3,
+    "columns": [
+      "id",
+      "root_id",
+      "path",
+      "name",
+      "seen_scan"
+    ]
+  },
+  "file_operations": {
+    "count": 6,
+    "columns": [
+      "id",
+      "request_key",
+      "request_hash",
+      "kind",
+      "undo_of",
+      "round_snapshot",
+      "historical"
+    ]
+  },
+  "file_steps": {
+    "count": 6,
+    "columns": [
+      "id",
+      "operation_id",
+      "requested_id",
+      "video_id",
+      "trash_id",
+      "original_status",
+      "root_path",
+      "original_path",
+      "source",
+      "destination",
+      "staging",
+      "copy_path",
+      "expected_hash",
+      "expected_size",
+      "source_signature",
+      "claimed_identity",
+      "published_identity",
+      "copy_identity",
+      "phase",
+      "outcome",
+      "error"
+    ]
+  },
+  "observations": {
+    "count": 5,
+    "columns": [
+      "path",
+      "signature",
+      "stable_since"
+    ]
+  },
+  "pack_file_operations": {
+    "count": 0,
+    "columns": [
+      "id",
+      "request_key",
+      "request_hash",
+      "kind",
+      "undo_of",
+      "session_snapshot",
+      "historical"
+    ]
+  },
+  "pack_file_steps": {
+    "count": 0,
+    "columns": [
+      "id",
+      "operation_id",
+      "pack_id",
+      "page_id",
+      "requested_id",
+      "root_path",
+      "original_path",
+      "source_signature",
+      "expected_hash",
+      "expected_size",
+      "phase",
+      "outcome",
+      "error"
+    ]
+  },
+  "pack_missing_cleanups": {
+    "count": 0,
+    "columns": [
+      "id",
+      "request_id",
+      "historical"
+    ]
+  },
+  "pack_missing_members": {
+    "count": 0,
+    "columns": [
+      "cleanup_id",
+      "pack_id",
+      "root_id",
+      "generation",
+      "name",
+      "path",
+      "outcome",
+      "error"
+    ]
+  },
+  "pack_pages": {
+    "count": 3,
+    "columns": [
+      "id",
+      "pack_id",
+      "path",
+      "relative_path",
+      "ordinal",
+      "width",
+      "height",
+      "size",
+      "format",
+      "signature",
+      "sha256",
+      "error",
+      "thumbnail",
+      "seen_scan"
+    ]
+  },
+  "pack_preferences": {
+    "count": 1,
+    "columns": [
+      "pack_id",
+      "mode",
+      "direction",
+      "gap",
+      "fit",
+      "revision"
+    ]
+  },
+  "pack_progress": {
+    "count": 1,
+    "columns": [
+      "pack_id",
+      "page_id",
+      "offset_ratio",
+      "completed",
+      "revision",
+      "updated_at",
+      "content_version",
+      "recovery_reason"
+    ]
+  },
+  "pack_purge_entries": {
+    "count": 0,
+    "columns": [
+      "name",
+      "path",
+      "image_count",
+      "image_bytes",
+      "retained_entries",
+      "id",
+      "plan_id",
+      "pack_id",
+      "trash_id",
+      "source",
+      "manifest",
+      "digest",
+      "error"
+    ]
+  },
+  "pack_purge_executions": {
+    "count": 0,
+    "columns": [
+      "id",
+      "plan_id"
+    ]
+  },
+  "pack_purge_plans": {
+    "count": 0,
+    "columns": [
+      "historical",
+      "id",
+      "request_key",
+      "request_hash",
+      "expires_at",
+      "digest"
+    ]
+  },
+  "pack_purge_steps": {
+    "count": 0,
+    "columns": [
+      "id",
+      "parent_id",
+      "kind",
+      "page_id",
+      "relative_path",
+      "source_signature",
+      "expected_hash",
+      "expected_size",
+      "state",
+      "phase",
+      "outcome",
+      "error"
+    ]
+  },
+  "pack_restore_batches": {
+    "count": 0,
+    "columns": [
+      "plan_id",
+      "ordinal",
+      "operation_id"
+    ]
+  },
+  "pack_restore_members": {
+    "count": 0,
+    "columns": [
+      "plan_id",
+      "ordinal",
+      "pack_id",
+      "trash_id",
+      "name",
+      "path",
+      "source",
+      "phase",
+      "outcome",
+      "error"
+    ]
+  },
+  "pack_restore_plans": {
+    "count": 0,
+    "columns": [
+      "id",
+      "request_key",
+      "request_hash",
+      "historical",
+      "stop_requested",
+      "batch_size"
+    ]
+  },
+  "pack_session_entries": {
+    "count": 3,
+    "columns": [
+      "session_id",
+      "ordinal",
+      "pack_id"
+    ]
+  },
+  "pack_sessions": {
+    "count": 3,
+    "columns": [
+      "id",
+      "request_id",
+      "request_hash",
+      "scope",
+      "source",
+      "order",
+      "cursor",
+      "revision",
+      "finished",
+      "candidate_count",
+      "created_at"
+    ]
+  },
+  "pack_tag_definitions": {
+    "count": 1,
+    "columns": [
+      "id",
+      "name",
+      "created_at"
+    ]
+  },
+  "pack_tag_links": {
+    "count": 1,
+    "columns": [
+      "pack_id",
+      "tag_id"
+    ]
+  },
+  "pack_trash_items": {
+    "count": 0,
+    "columns": [
+      "id",
+      "pack_id",
+      "operation_id",
+      "root_path",
+      "original_path",
+      "manifest",
+      "status",
+      "deleted_at",
+      "purged_pages"
+    ]
+  },
+  "packs": {
+    "count": 1,
+    "columns": [
+      "id",
+      "root_id",
+      "path",
+      "location_key",
+      "name",
+      "status",
+      "error",
+      "device",
+      "inode",
+      "content_version",
+      "page_count",
+      "generation",
+      "seen_scan",
+      "created_at",
+      "directory_signature"
+    ]
+  },
+  "playback_rounds": {
+    "count": 2,
+    "columns": [
+      "id",
+      "request_id",
+      "request_hash",
+      "order",
+      "scope",
+      "cursor",
+      "revision",
+      "finished",
+      "candidate_count",
+      "created_at",
+      "membership",
+      "source",
+      "sort",
+      "sequence_revision"
+    ]
+  },
+  "recent_entries": {
+    "count": 2,
+    "columns": [
+      "id",
+      "kind",
+      "video_id",
+      "pack_id",
+      "opened_at"
+    ]
+  },
+  "request_records": {
+    "count": 12,
+    "columns": [
+      "id",
+      "fingerprint",
+      "result",
+      "created_at"
+    ]
+  },
+  "roots": {
+    "count": 2,
+    "columns": [
+      "id",
+      "name",
+      "path",
+      "mount_id",
+      "available",
+      "error",
+      "last_scan",
+      "kind",
+      "enabled"
+    ]
+  },
+  "round_entries": {
+    "count": 3,
+    "columns": [
+      "round_id",
+      "ordinal",
+      "video_id",
+      "source_ordinal"
+    ]
+  },
+  "settings": {
+    "count": 9,
+    "columns": [
+      "key",
+      "value"
+    ]
+  },
+  "tags": {
+    "count": 1,
+    "columns": [
+      "id",
+      "name",
+      "created_at"
+    ]
+  },
+  "tasks": {
+    "count": 11,
+    "columns": [
+      "id",
+      "kind",
+      "status",
+      "phase",
+      "created_at",
+      "finished_at",
+      "result",
+      "error"
+    ]
+  },
+  "trash_items": {
+    "count": 3,
+    "columns": [
+      "id",
+      "video_id",
+      "operation_id",
+      "root_path",
+      "original_path",
+      "trash_path",
+      "sha256",
+      "size",
+      "status",
+      "deleted_at"
+    ]
+  },
+  "video_tags": {
+    "count": 2,
+    "columns": [
+      "video_id",
+      "tag_id"
+    ]
+  },
+  "videos": {
+    "count": 2,
+    "columns": [
+      "id",
+      "root_id",
+      "path",
+      "location_key",
+      "name",
+      "status",
+      "error",
+      "size",
+      "device",
+      "inode",
+      "mtime_ns",
+      "ctime_ns",
+      "sha256",
+      "quick_hash",
+      "duration",
+      "width",
+      "height",
+      "rotation",
+      "type",
+      "video_codec",
+      "audio_codec",
+      "container",
+      "thumbnail",
+      "seen_scan",
+      "created_at",
+      "generation"
+    ]
+  }
+}

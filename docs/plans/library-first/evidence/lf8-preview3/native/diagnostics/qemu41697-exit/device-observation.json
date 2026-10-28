@@ -1,0 +1,20 @@
+{
+  "observed_at": 1793203385.449499,
+  "failure": "UI dump timeout before dark toggle and rollback; installed package expected forward9",
+  "app_pid": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "adb: device 'emulator-5556' not found\n"
+  },
+  "ui_processes": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "adb: device 'emulator-5556' not found\n"
+  },
+  "window": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "adb: device 'emulator-5556' not found\n"
+  },
+  "screenshot_saved": false
+}

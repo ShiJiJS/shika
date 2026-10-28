@@ -1,0 +1,77 @@
+{
+  "passed": true,
+  "catalog_tables_equal": 21,
+  "opaque_digests_equal": true,
+  "preferences_equal": true,
+  "old_ui_preload_change_preserved": true,
+  "startup_requests": [
+    {
+      "time": 1793204321.3758588,
+      "method": "GET",
+      "path": "/api/v1/info",
+      "status": 200
+    },
+    {
+      "time": 1793204321.8311398,
+      "method": "GET",
+      "path": "/api/v1/roots",
+      "status": 200
+    },
+    {
+      "time": 1793204321.9355686,
+      "method": "GET",
+      "path": "/api/v1/trash",
+      "status": 200
+    },
+    {
+      "time": 1793204321.9427326,
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200
+    },
+    {
+      "time": 1793204321.9516351,
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "status": 200
+    },
+    {
+      "time": 1793204321.9562745,
+      "method": "GET",
+      "path": "/api/v1/playback",
+      "status": 200
+    },
+    {
+      "time": 1793204321.9964595,
+      "method": "GET",
+      "path": "/api/v1/tags",
+      "status": 200
+    },
+    {
+      "time": 1793204322.3880165,
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "status": 200
+    },
+    {
+      "time": 1793204322.6577277,
+      "method": "GET",
+      "path": "/api/v1/videos/ed3f78f4-6b2f-4cae-8f5b-d396a57e9e55/thumbnail",
+      "status": 200
+    },
+    {
+      "time": 1793204322.658041,
+      "method": "GET",
+      "path": "/api/v1/videos/00af1a5e-1a8b-497a-9673-12a9236c5012/thumbnail",
+      "status": 200
+    },
+    {
+      "time": 1793204323.2468967,
+      "method": "GET",
+      "path": "/health",
+      "status": 200
+    }
+  ],
+  "new_pid": "4440",
+  "normal_apk": true
+}

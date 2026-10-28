@@ -1,0 +1,42 @@
+{
+  "source": "4dd88cac0cd137e2ecc7486408d9b912081ff7e8",
+  "normal_release_apks": true,
+  "install_sequence": [
+    "preview.2/code8",
+    "preview.3/code9",
+    "rollback.3/code9",
+    "preview.3/code9"
+  ],
+  "successful_install_r_count": 3,
+  "identity_and_first_install_time_preserved": true,
+  "cold_catalog_comparisons": "All 21 business tables and opaque settings/access-token digests equal in the explicitly named before/after pairs",
+  "legacy_cold_start_autoplays_existing_video": true,
+  "new_cold_start_no_login_or_stream": true,
+  "appearance": "New dark mode retained by old UI; old preloadAdjacent=false retained by new UI; sequential order and unrelated migration marker preserved",
+  "page_and_tags": "Page 2/3 vertical rendered; separate LEGACY_ONLY video and PACK_ONLY pack tag views; 11 tasks retained and read-only task view compared",
+  "uninterrupted_install_and_ui_chain": false,
+  "confirmed_qemu_exits": [
+    41697,
+    53619
+  ],
+  "host_gpu_comparison_pid": 61904,
+  "host_gpu_three_cycle_run_passed": false,
+  "host_gpu_completed_cycles_before_network_failure": 2,
+  "manual_recovery": {
+    "original_session_request_id": "1793205432692561-2536143785-4",
+    "new_session_id": "68a4fc44-02b3-4ceb-b329-3956d2e8f85c",
+    "query_status": 404,
+    "no_automatic_write_replay_after_query": true,
+    "explicit_same_request_retry_count": 1,
+    "created_sessions": 1,
+    "readable_page_after_recovery": "2/3 vertical"
+  },
+  "trace_prefix": {
+    "lines": 817,
+    "bytes": 74738,
+    "sha256": "7e04895b9a608a93da25843d42bfe26b34f46218f75bb5f4c07d48de20f799d6"
+  },
+  "phone_or_nas_test": false,
+  "large_pack_smoke": "Separate phase; not part of this three-page-pack result",
+  "issue78_or_issue89_resolved": false
+}

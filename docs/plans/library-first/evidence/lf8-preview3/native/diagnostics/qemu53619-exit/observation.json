@@ -1,0 +1,51 @@
+{
+  "pid": 53619,
+  "pid_absent": true,
+  "adb_devices": "List of devices attached\n\n",
+  "original_log_sha256": "13309ddc234331b272ff772a00c2f5b87e8751a6eb55c8ff64ff87a875359100",
+  "redacted_log_sha256": "6922a17f2fb6d38bc525e27162b8e6be53eeaa18fad37b242c3d9d448c98b9e7",
+  "interruption": "After successful return-to-forward9 cold checks and same-page reader display; UI dump after Android back timed out. Later task-view attempt found device absent. No task-view action executed.",
+  "native_upgrade_summary_not_completed": true,
+  "app_oom_proven": false,
+  "observed_at": 1793205103.0633101,
+  "selected_reports": [
+    {
+      "file": "qemu-system-aarch64-headless-2026-10-29-002433.ips",
+      "original_sha256": "a7e8e0da91ddb33e1c9b6530009ad3cb40de98218fff1cea2a46cbc7cf25a585",
+      "pid": 53619,
+      "captureTime": "2026-10-29 00:24:32.0008 +0800",
+      "exception": {
+        "codes": "0x0000000000000001, 0x0000000000000000",
+        "rawCodes": [
+          1,
+          0
+        ],
+        "type": "EXC_BAD_ACCESS",
+        "signal": "SIGSEGV",
+        "subtype": "KERN_INVALID_ADDRESS at 0x0000000000000000"
+      },
+      "termination": {
+        "flags": 0,
+        "code": 11,
+        "namespace": "SIGNAL",
+        "indicator": "Segmentation fault: 11",
+        "byProc": "exc handler",
+        "byPid": 53619
+      },
+      "triggered_frames": [
+        [
+          "android::crashreport::CrashReporter::GenerateDumpAndDie(char const*)",
+          "_ZZN7android11crashreport13CrashReporter12hangDetectorEvENK3$_0clINSt3__117basic_string_viewIcNS4_11char_traitsIcEEEEEEDaT_",
+          "std::__1::__function::__func<android::crashreport::CrashReporter::hangDetector()::$_0, std::__1::allocator<android::crashreport::CrashReporter::hangDetector()::$_0>, void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>&&)",
+          "std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>) const",
+          "android::crashreport::HangDetector::LooperWatcher::process(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)> const&)",
+          "android::crashreport::HangDetector::workerThread()",
+          "std::__1::__function::__func<android::base::FunctorThread::FunctorThread<android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0, void*>(android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0&&, android::base::ThreadFlags)::'lambda'(), std::__1::allocator<android::base::FunctorThread::FunctorThread<android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0, void*>(android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0&&, android::base::ThreadFlags)::'lambda'()>, long ()>::operator()()",
+          "android::base::Thread::thread_main(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "started_at": 1793207453.7896209,
+  "owned_emulator_pid": 61904,
+  "display_restored": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420",
+    "font_scale": "1.0",
+    "user_rotation": "0",
+    "accelerometer_rotation": "1",
+    "animation_scales": {
+      "window_animation_scale": "1.0",
+      "transition_animation_scale": "1.0",
+      "animator_duration_scale": "null"
+    }
+  },
+  "emulator_shutdown": "OK: killing emulator, bye bye\nOK",
+  "owned_qemu_absent": true,
+  "adb_devices_after": "List of devices attached",
+  "containers_removed": [
+    {
+      "name": "video-viewer-preview3-native",
+      "id": "2f28315ab38e9f2134cff4ed6c0b059cb6b6276cb87479df79225407cb1a44f2"
+    },
+    {
+      "name": "video-viewer-reader-performance",
+      "id": "1b87c4f9d47ff14614ca7516ea1bd2dc99b02ef395207e894f5559e381005a55"
+    }
+  ],
+  "original_containers_preserved": [
+    {
+      "name": "/video-viewer-client-e2e-server-1",
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "running": true,
+      "healthy": true
+    },
+    {
+      "name": "/video-viewer-history-purge-app-lf7",
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "running": true,
+      "healthy": true
+    },
+    {
+      "name": "/video-viewer-archive-app-lf7",
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "running": true,
+      "healthy": true
+    },
+    {
+      "name": "/video-viewer-server-1",
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "running": true,
+      "healthy": true
+    }
+  ],
+  "data_directories_preserved": true,
+  "completed_at": 1793207464.366754
+}
