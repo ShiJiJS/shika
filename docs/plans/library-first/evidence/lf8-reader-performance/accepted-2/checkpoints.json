@@ -1,0 +1,383 @@
+[
+  {
+    "name": "4k-open-0",
+    "sample": {
+      "phase": "4k-open",
+      "trial": 0,
+      "latency_us": 1729500,
+      "pack_id": "853a0467-4496-4fb9-a4e8-b1b6915fc2be",
+      "page_id": "081a9014-4779-4cf4-8fad-3591e6c4e1a0",
+      "index": 0,
+      "source_dimensions": [
+        4000,
+        6000
+      ],
+      "decoded": [
+        [
+          1119,
+          1678
+        ]
+      ],
+      "providers": 1,
+      "estimated_bytes": 7510728,
+      "metadata": 3,
+      "window": [
+        0,
+        2
+      ],
+      "cache_bytes": 11705032,
+      "pending": 0,
+      "live": 1
+    },
+    "elapsed_seconds": 17.072533125,
+    "png_sha256": "170a9a9445f4ddab01e1fed23f6a757c1c4336de94168280e7fc8193c1717f10"
+  },
+  {
+    "name": "4k-open-29",
+    "sample": {
+      "phase": "4k-open",
+      "trial": 29,
+      "latency_us": 2707266,
+      "pack_id": "853a0467-4496-4fb9-a4e8-b1b6915fc2be",
+      "page_id": "081a9014-4779-4cf4-8fad-3591e6c4e1a0",
+      "index": 0,
+      "source_dimensions": [
+        4000,
+        6000
+      ],
+      "decoded": [
+        [
+          1119,
+          1678
+        ]
+      ],
+      "providers": 1,
+      "estimated_bytes": 7510728,
+      "metadata": 3,
+      "window": [
+        0,
+        2
+      ],
+      "cache_bytes": 11705032,
+      "pending": 0,
+      "live": 1
+    },
+    "elapsed_seconds": 265.97628325,
+    "png_sha256": "d1f295211d2bcdb0587509984c08c23f6d897f09d9a534a944a71dd736812791"
+  },
+  {
+    "name": "8k-open-0",
+    "sample": {
+      "phase": "8k-open",
+      "trial": 0,
+      "latency_us": 11848153,
+      "pack_id": "09a52d5c-70d6-4a28-a7e1-e47ef9f23a3d",
+      "page_id": "3029c538-97c5-43b0-b1b1-5acb6bfeed52",
+      "index": 0,
+      "source_dimensions": [
+        8000,
+        8000
+      ],
+      "decoded": [
+        [
+          1170,
+          1170
+        ]
+      ],
+      "providers": 1,
+      "estimated_bytes": 5475600,
+      "metadata": 3,
+      "window": [
+        0,
+        2
+      ],
+      "cache_bytes": 9669904,
+      "pending": 0,
+      "live": 1
+    },
+    "elapsed_seconds": 304.312121042,
+    "png_sha256": "c55311877f73c5e605c2ec0990f85c3c270909528da60feb8616ebb4aeb02a8e"
+  },
+  {
+    "name": "8k-open-29",
+    "sample": {
+      "phase": "8k-open",
+      "trial": 29,
+      "latency_us": 6613818,
+      "pack_id": "09a52d5c-70d6-4a28-a7e1-e47ef9f23a3d",
+      "page_id": "3029c538-97c5-43b0-b1b1-5acb6bfeed52",
+      "index": 0,
+      "source_dimensions": [
+        8000,
+        8000
+      ],
+      "decoded": [
+        [
+          1170,
+          1170
+        ]
+      ],
+      "providers": 1,
+      "estimated_bytes": 5475600,
+      "metadata": 3,
+      "window": [
+        0,
+        2
+      ],
+      "cache_bytes": 9669904,
+      "pending": 0,
+      "live": 1
+    },
+    "elapsed_seconds": 680.327273,
+    "png_sha256": "905b21e9fd97e40e445d1bf0e1f7ecf5ce9d170fb1fad3df3abcdbb7c9d75253"
+  },
+  {
+    "name": "long-start",
+    "sample": {
+      "phase": "long-start",
+      "trial": null,
+      "latency_us": null,
+      "pack_id": "ee3fcb9f-e4a8-4248-a947-9395f72d5195",
+      "page_id": "a2ae95f1-34a0-46f1-82c1-c58c8c78bb3a",
+      "index": 0,
+      "source_dimensions": [
+        4000,
+        6000
+      ],
+      "decoded": [
+        [
+          1170,
+          1755
+        ]
+      ],
+      "providers": 4,
+      "estimated_bytes": 29413128,
+      "metadata": 40,
+      "window": [
+        0,
+        39
+      ],
+      "cache_bytes": 33607432,
+      "pending": 0,
+      "live": 2
+    },
+    "elapsed_seconds": 705.892142292,
+    "png_sha256": "889f199f154cc311340bae0751dff87512b8b57f58699af6d241430c05a46a9f"
+  },
+  {
+    "name": "long-page-100",
+    "sample": {
+      "phase": "long-page-100",
+      "trial": null,
+      "latency_us": null,
+      "pack_id": "ee3fcb9f-e4a8-4248-a947-9395f72d5195",
+      "page_id": "045f6b24-ac1b-498f-a9c9-215249ca0b43",
+      "index": 100,
+      "source_dimensions": [
+        4000,
+        6000
+      ],
+      "decoded": [
+        [
+          1170,
+          1755
+        ]
+      ],
+      "providers": 6,
+      "estimated_bytes": 46542600,
+      "metadata": 120,
+      "window": [
+        0,
+        119
+      ],
+      "cache_bytes": 42523504,
+      "pending": 1,
+      "live": 3
+    },
+    "elapsed_seconds": 921.5635952920001,
+    "png_sha256": "b86f0aca8cc99f8e5ad48efc3eeb705cecf48070eacd644dac2c8f8ef5cc9b8f"
+  },
+  {
+    "name": "long-page-200",
+    "sample": {
+      "phase": "long-page-200",
+      "trial": null,
+      "latency_us": null,
+      "pack_id": "ee3fcb9f-e4a8-4248-a947-9395f72d5195",
+      "page_id": "1f01f766-4df5-4aa2-9b58-435bb878e683",
+      "index": 200,
+      "source_dimensions": [
+        4000,
+        6000
+      ],
+      "decoded": [
+        [
+          1170,
+          1755
+        ]
+      ],
+      "providers": 6,
+      "estimated_bytes": 46542600,
+      "metadata": 120,
+      "window": [
+        120,
+        239
+      ],
+      "cache_bytes": 42523504,
+      "pending": 1,
+      "live": 3
+    },
+    "elapsed_seconds": 1163.2939065839998,
+    "png_sha256": "083a9ef07c1f8db92aea071d23acf3a18062ee684950f190f4d294924fa63803"
+  },
+  {
+    "name": "long-page-300",
+    "sample": {
+      "phase": "long-page-300",
+      "trial": null,
+      "latency_us": null,
+      "pack_id": "ee3fcb9f-e4a8-4248-a947-9395f72d5195",
+      "page_id": "9d3da674-9ffd-40f9-969c-a3ee6df21192",
+      "index": 300,
+      "source_dimensions": [
+        4000,
+        6000
+      ],
+      "decoded": [
+        [
+          1170,
+          1755
+        ]
+      ],
+      "providers": 6,
+      "estimated_bytes": 46542600,
+      "metadata": 120,
+      "window": [
+        200,
+        319
+      ],
+      "cache_bytes": 42523504,
+      "pending": 1,
+      "live": 2
+    },
+    "elapsed_seconds": 1399.427063792,
+    "png_sha256": "db5394fefe1575d373ad31168ad433e75f05a554062ba4e477b5cef12ef17e2b"
+  },
+  {
+    "name": "long-page-400",
+    "sample": {
+      "phase": "long-page-400",
+      "trial": null,
+      "latency_us": null,
+      "pack_id": "ee3fcb9f-e4a8-4248-a947-9395f72d5195",
+      "page_id": "40ccd66f-8eb7-4fec-9688-0e3ac6425ef4",
+      "index": 400,
+      "source_dimensions": [
+        4000,
+        6000
+      ],
+      "decoded": [
+        [
+          1170,
+          1755
+        ]
+      ],
+      "providers": 6,
+      "estimated_bytes": 46542600,
+      "metadata": 120,
+      "window": [
+        320,
+        439
+      ],
+      "cache_bytes": 42523504,
+      "pending": 1,
+      "live": 3
+    },
+    "elapsed_seconds": 1647.5755199999999,
+    "png_sha256": "42abaa0c6bee360aa66a9c7ec0605fafa61bde22440ec3d54c33c1f57747d4ab"
+  },
+  {
+    "name": "long-end",
+    "sample": {
+      "phase": "long-end",
+      "trial": null,
+      "latency_us": null,
+      "pack_id": "ee3fcb9f-e4a8-4248-a947-9395f72d5195",
+      "page_id": "0135ced0-f391-4fb5-9941-24d94fcef822",
+      "index": 499,
+      "source_dimensions": [
+        8000,
+        8000
+      ],
+      "decoded": [
+        [
+          1170,
+          1170
+        ]
+      ],
+      "providers": 6,
+      "estimated_bytes": 43804800,
+      "metadata": 120,
+      "window": [
+        380,
+        499
+      ],
+      "cache_bytes": 47999104,
+      "pending": 0,
+      "live": 2
+    },
+    "elapsed_seconds": 1882.3396324999999,
+    "png_sha256": "8dde052a4440c3c7aa6cbc47c9c13d9d02d4e8ea5c234b9b4636cc8d32a0c478"
+  },
+  {
+    "name": "long-horizontal-end",
+    "sample": {
+      "phase": "long-horizontal-end",
+      "trial": null,
+      "latency_us": null,
+      "pack_id": "ee3fcb9f-e4a8-4248-a947-9395f72d5195",
+      "page_id": "0135ced0-f391-4fb5-9941-24d94fcef822",
+      "index": 499,
+      "source_dimensions": [
+        8000,
+        8000
+      ],
+      "decoded": [
+        [
+          1170,
+          1170
+        ]
+      ],
+      "providers": 6,
+      "estimated_bytes": 43804800,
+      "metadata": 120,
+      "window": [
+        380,
+        499
+      ],
+      "cache_bytes": 47999104,
+      "pending": 0,
+      "live": 1
+    },
+    "elapsed_seconds": 1887.453957209,
+    "png_sha256": "fc2e10756cde0c14833b7f66e9e80f46e83fe855941ec41718650670516e6dec"
+  },
+  {
+    "name": "verified",
+    "sample": {
+      "completed": true,
+      "samples": 1333,
+      "peaks": {
+        "providers": 6,
+        "estimated_bytes": 49280400,
+        "metadata": 120,
+        "cache_bytes": 53474704,
+        "pending": 6,
+        "live": 6,
+        "decoded_pixels": 2053350
+      }
+    },
+    "elapsed_seconds": 1891.4595643339999,
+    "png_sha256": "27357cf8877603121ade8d420443cfa9dd87c5561372a7c1bc58928c7cc3201e"
+  }
+]
