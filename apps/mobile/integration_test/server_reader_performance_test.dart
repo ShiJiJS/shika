@@ -211,12 +211,20 @@ void main() {
     );
     Future<void> ready(Finder target) async {
       await settled();
+      // Session acknowledgement may precede the frame that enables controls.
+      await t.pump();
       await until(() => target.evaluate().length == 1, 'unique $target');
       await t.ensureVisible(target);
-      await until(
-        () => target.hitTestable().evaluate().length == 1,
-        'hit $target',
-      );
+      await until(() {
+        if (target.hitTestable().evaluate().length != 1) return false;
+        final buttons = find.ancestor(
+          of: target,
+          matching: find.byType(IconButton),
+        );
+        return buttons.evaluate().every(
+          (element) => (element.widget as IconButton).onPressed != null,
+        );
+      }, 'rendered enabled hit $target');
     }
 
     Future<void> tap(Finder target) async {
@@ -359,7 +367,10 @@ void main() {
         final rtl = Directionality.of(element) == TextDirection.rtl;
         final fraction = (value.value - value.min) / (value.max - value.min);
         final thumb = box.localToGlobal(
-          Offset(track.left + track.width * (rtl ? 1 - fraction : fraction), track.center.dy),
+          Offset(
+            track.left + track.width * (rtl ? 1 - fraction : fraction),
+            track.center.dy,
+          ),
         );
         // Start on the real thumb. A center drag can miss it with slideThumb
         // interaction, and a session acknowledgement can precede its UI rebuild.
