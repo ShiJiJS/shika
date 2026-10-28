@@ -343,10 +343,27 @@ void main() {
       if (reader().session.index != 0) {
         final slider = find.byType(Slider);
         await ready(slider);
-        final rect = t.getRect(slider);
-        // The Slider has non-interactive outer padding. Drag its actual track
-        // past the minimum instead of tapping that padding.
-        await t.drag(slider, Offset(-rect.width, 0));
+        await until(
+          () => t.widget<Slider>(slider).onChanged != null,
+          'rendered enabled slider',
+        );
+        final element = t.element(slider), value = t.widget<Slider>(slider);
+        final theme = SliderTheme.of(element);
+        final box = element.findRenderObject()! as RenderBox;
+        final track = (theme.trackShape ?? const RoundedRectSliderTrackShape())
+            .getPreferredRect(
+              parentBox: box,
+              sliderTheme: theme,
+              isEnabled: true,
+            );
+        final rtl = Directionality.of(element) == TextDirection.rtl;
+        final fraction = (value.value - value.min) / (value.max - value.min);
+        final thumb = box.localToGlobal(
+          Offset(track.left + track.width * (rtl ? 1 - fraction : fraction), track.center.dy),
+        );
+        // Start on the real thumb. A center drag can miss it with slideThumb
+        // interaction, and a session acknowledgement can precede its UI rebuild.
+        await t.dragFrom(thumb, Offset((rtl ? 1 : -1) * track.width, 0));
         await until(
           () => reader().session.index == 0,
           'reset fixture page via slider',
