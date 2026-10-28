@@ -45,6 +45,9 @@ def main():
 
     assert "video_viewer_reader_perf_36" in device("emu", "avd", "name").decode()
     assert device("shell", "getprop", "sys.boot_completed").decode().strip() == "1"
+    assert "uid=0(root)" in device("shell", "id").decode(), (
+        "Root only this disposable AVD for passive /proc sampling"
+    )
     runtime = json.loads(
         subprocess.check_output(["docker", "inspect", "video-viewer-reader-performance"], text=True)
     )[0]
@@ -92,6 +95,7 @@ def main():
             "profile_entrypoint": True,
             "normal_release_apk": False,
             "sampling_interval_seconds": 1,
+            "memory_definition": "kernel smaps_rollup PSS/RSS and status VmHWM; no meminfo/forced GC",
             "original_display": {
                 key: device("shell", "wm", key).decode() for key in ["size", "density"]
             },
@@ -131,8 +135,10 @@ def main():
                 assert PACKAGE in focus
                 (out / (name + "-window.txt")).write_text(focus + "\n")
                 (out / (name + ".png")).write_bytes(device("exec-out", "screencap", "-p"))
+                pid = device("shell", "pidof", PACKAGE).decode().strip()
+                assert pid.isdigit()
                 (out / (name + "-memory.txt")).write_bytes(
-                    device("shell", "dumpsys", "meminfo", "-s", PACKAGE)
+                    device("shell", "cat", f"/proc/{pid}/smaps_rollup", f"/proc/{pid}/status")
                 )
                 value.update(
                     elapsed_seconds=time.monotonic() - started,
@@ -172,7 +178,10 @@ def main():
                 if not pid:
                     continue
                 try:
-                    raw = device("shell", "dumpsys", "meminfo", "-s", PACKAGE).decode()
+                    assert pid.isdigit()
+                    raw = device(
+                        "shell", "cat", f"/proc/{pid}/smaps_rollup", f"/proc/{pid}/status"
+                    ).decode()
                     record = {
                         "elapsed_seconds": begin - started,
                         "pid": pid,

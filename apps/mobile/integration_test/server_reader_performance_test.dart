@@ -24,7 +24,9 @@ Future<void> checkpoint(String name, Map<String, dynamic> sample) async {
     );
     request.headers.set('X-Fixture-Key', 'reader-performance-owned-only');
     request.headers.contentType = ContentType.json;
-    request.write(jsonEncode({'name': name, 'sample': sample}));
+    final payload = utf8.encode(jsonEncode({'name': name, 'sample': sample}));
+    request.contentLength = payload.length;
+    request.add(payload);
     final response = await request.close().timeout(const Duration(seconds: 30));
     expect(response.statusCode, 200);
     await response.drain<void>();
