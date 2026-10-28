@@ -1,0 +1,36 @@
+{
+  "display_restored_exactly": {
+    "size": "Physical size: 1080x2400\nOverride size: 1170x2532",
+    "density": "Physical density: 420\nOverride density: 480"
+  },
+  "shutdown": "OK: killing emulator, bye bye\nOK",
+  "owned_emulator_absent": true,
+  "adb_devices_after": "List of devices attached",
+  "owned_container_removed": "5c44f109b9181b665dd4f9ac1f3194548b86c94abcfd443e7cb44970cdd754c4",
+  "original_services_preserved": [
+    {
+      "name": "video-viewer-client-e2e-server-1",
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "healthy": true
+    },
+    {
+      "name": "video-viewer-history-purge-app-lf7",
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "healthy": true
+    },
+    {
+      "name": "video-viewer-archive-app-lf7",
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "healthy": true
+    },
+    {
+      "name": "video-viewer-server-1",
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "healthy": true
+    }
+  ],
+  "donor_data_unchanged": true,
+  "lab_data_preserved": true,
+  "audio_flag_was_process_only": true,
+  "completed_at": 1793209595.87904
+}

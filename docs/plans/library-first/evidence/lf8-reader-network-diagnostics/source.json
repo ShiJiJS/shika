@@ -1,0 +1,29 @@
+{
+  "app_source": "edb4a235a33fd35357289ce8f64fc8e4e00f32f0",
+  "launcher_source": "5b84b9b7c4572657f3281b2ef75f3dc6166824f3",
+  "app_tree": "d2c497a687be505ff6cfb3cb104d4229f5a9926c",
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "client_test_count": 677,
+  "related_test_count": 17,
+  "launcher_test_count": 10,
+  "normal_code9_artifacts_unchanged": {
+    "forward": {
+      "filename": "video-viewer-0.2.0-preview.3-arm64.apk",
+      "sha256": "7b4d911e88b999c8e3e5b913e0cad90f01cdd1a1812b3bd87866e8060de7b690"
+    },
+    "rollback": {
+      "filename": "video-viewer-0.1.4-rollback.3-arm64.apk",
+      "sha256": "4b52bda8b8399978d31ab2268d60e41af79852771d78f53b05580916fd55d051"
+    }
+  },
+  "sdk_manager_emulator_rows": [
+    "emulator                                       | 37.2.12       | Android Emulator                    | emulator",
+    "emulator                                                                        | 37.2.12           | Android Emulator"
+  ],
+  "normal_release_acceptance": false,
+  "original_issue100_cause_identified": false,
+  "audio_enabled_run_passed": false,
+  "no_audio_comparison_completed_cycles": 12,
+  "phone_or_nas_acceptance": false,
+  "audio_playback_accepted": false
+}

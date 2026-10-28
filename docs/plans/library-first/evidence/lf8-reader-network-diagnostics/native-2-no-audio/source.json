@@ -1,0 +1,24 @@
+{
+  "source": "edb4a235a33fd35357289ce8f64fc8e4e00f32f0",
+  "normal_release_apk": false,
+  "profile_diagnostic_only": true,
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "runtime_id": "5c44f109b9181b665dd4f9ac1f3194548b86c94abcfd443e7cb44970cdd754c4",
+  "runtime_entrypoint": [
+    "uvicorn"
+  ],
+  "runtime_command": [
+    "video_viewer.app:create_app",
+    "--factory",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8760",
+    "--workers",
+    "1",
+    "--log-config",
+    "/observe/logging.json"
+  ],
+  "emulator_pid": 94046,
+  "started_at": 1793209199.346714
+}
