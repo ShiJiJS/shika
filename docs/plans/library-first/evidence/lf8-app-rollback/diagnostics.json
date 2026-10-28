@@ -1,0 +1,7 @@
+{
+  "build-1": "Export patch assertion failed before build; exact main target fixed in 3441fa76.",
+  "build-2": "First successful pair used legacy backup scope; tightened to issuing generation in e9e20802 before any install.",
+  "build-3": "7/8 pair cannot roll back from 8; moved to private diagnostics, never installed; corrected to 8/8 in a3c7659a.",
+  "setup": "First /health check was early and connection closed; same container continued normally. Host preparation resumed without restarting.",
+  "ui_driver": "Early driver assumed restore/delete confirmation dialogs that these controls do not show; observed state then used actual UI. Two setup videos were restored; accepted comparison baseline is before-rollback-projection.json (2 available videos). Temporary undo snackbar expired; persistent old menu undo succeeded. Regex userId changed to actual Android appId before first install; Ego relative output path corrected to absolute. No diagnostic attempt is counted as a completed validation."
+}

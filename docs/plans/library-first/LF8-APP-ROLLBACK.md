@@ -11,3 +11,5 @@
 本轮不触碰真实手机/NAS；回退仅更换App，服务数据仍使用新版或已演练恢复的旧服务。保留原始截图、请求窗口、包版本/首次安装时间/数据目录、存储兼容检查及清理记录，按issue更新后再说明支持范围。目标手机、真实NAS、#78/#89、500页高分辨率与其余终验继续。
 
 版本比较依据：[AOSP PackageManagerServiceUtils.checkDowngrade](https://android.googlesource.com/platform/frameworks/base/+/ce8e50cfcea0756066a739a6390907770949b1b0/services/core/java/com/android/server/pm/PackageManagerServiceUtils.java)。build-2/3的7→8临时包仅保留于私有诊断目录，未安装/交付。
+
+已完成本机组合：[PR #95](https://github.com/ShiJiJS/video_viewer/pull/95)，[两轮实际覆盖、99项检查及只读复核](evidence/lf8-app-rollback/README.md)。两份包实际code8、原签名；五次install -r覆盖、六次免口令冷启、偏好/标签/第2页纵向保留及旧回收撤销已核对。目标手机等边界继续按台账推进。
