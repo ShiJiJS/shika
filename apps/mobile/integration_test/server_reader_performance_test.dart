@@ -323,7 +323,9 @@ void main() {
         final slider = find.byType(Slider);
         await ready(slider);
         final rect = t.getRect(slider);
-        await t.tapAt(rect.centerLeft + const Offset(1, 0));
+        // The Slider has non-interactive outer padding. Drag its actual track
+        // past the minimum instead of tapping that padding.
+        await t.drag(slider, Offset(-rect.width, 0));
         await until(
           () => reader().session.index == 0,
           'reset fixture page via slider',
