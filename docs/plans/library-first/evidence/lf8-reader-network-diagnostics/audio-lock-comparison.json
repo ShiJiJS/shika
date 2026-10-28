@@ -1,0 +1,535 @@
+[
+  {
+    "file": "qemu-system-aarch64-headless-2026-10-29-013436.ips",
+    "pid": 87639,
+    "source_sha256": "9b18ea595c38ed573f186573dec235ec56eb10d1525da26865008481340c02ba",
+    "coreaudio_blocked": true,
+    "selected": [
+      {
+        "thread": 19,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "main_loop_wait",
+          "main_loop",
+          "main_impl",
+          "run_qemu_main",
+          "enter_qemu_main_loop(int, char**)",
+          "threadWrapper(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 23,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "virtio_vsock_host_to_guest_ping(unsigned long long)",
+          "android::emulation::AdbVsockPipe::Service::pollGuestAdbdThreadLoop()",
+          "void* std::__1::__thread_proxy[abi:v15006]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (android::emulation::AdbVsockPipe::Service::*)(), android::emulation::AdbVsockPipe::Service*>>(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 25,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 26,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "_pthread_cond_wait",
+          "HALB_Guard::WaitFor(unsigned long long)",
+          "HALB_IOThread::_WaitForState(unsigned int)",
+          "HALB_IOThread::StartAndWaitForState(unsigned int)",
+          "HALC_ProxyIOContext::_StartIO(HALC_ProxyIOContext::StartIO_RetryMethod)",
+          "HALC_ProxyIOContext::StartIOProc(int (*)(unsigned int, AudioTimeStamp const*, AudioBufferList const*, AudioTimeStamp const*, AudioBufferList*, AudioTimeStamp const*, void*))",
+          "HAL_HardwarePlugIn_DeviceStart(AudioHardwarePlugInInterface**, unsigned int, int (*)(unsigned int, AudioTimeStamp const*, AudioBufferList const*, AudioTimeStamp const*, AudioBufferList*, AudioTimeStamp const*, void*))",
+          "AudioDeviceStart_mac_imp",
+          "ca_update_voice_running_state_locked",
+          "coreaudio_enable_impl",
+          "coreaudio_ctl_out",
+          "AUD_set_active_out",
+          "virtio_snd_stream_prepare0_locked",
+          "virtio_snd_handle_ctl",
+          "memory_region_dispatch_write",
+          "flatview_write",
+          "address_space_rw",
+          "hvf_handle_guest_abort",
+          "hvf_handle_exception",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 27,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 28,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 40,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "(anonymous namespace)::virtio_wifi_on_frame_available(unsigned char const*, unsigned long)",
+          "android::qemu2::NetsimWifiTransport::readThread()",
+          "void* std::__1::__thread_proxy[abi:v15006]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (android::qemu2::NetsimWifiTransport::*)(), android::qemu2::NetsimWifiTransport*>>(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "qemu-system-aarch64-headless-2026-10-29-002433.ips",
+    "pid": 53619,
+    "source_sha256": "a7e8e0da91ddb33e1c9b6530009ad3cb40de98218fff1cea2a46cbc7cf25a585",
+    "coreaudio_blocked": true,
+    "selected": [
+      {
+        "thread": 28,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "main_loop_wait",
+          "main_loop",
+          "main_impl",
+          "run_qemu_main",
+          "enter_qemu_main_loop(int, char**)",
+          "threadWrapper(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 32,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "virtio_vsock_host_to_guest_ping(unsigned long long)",
+          "android::emulation::AdbVsockPipe::Service::pollGuestAdbdThreadLoop()",
+          "void* std::__1::__thread_proxy[abi:v15006]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (android::emulation::AdbVsockPipe::Service::*)(), android::emulation::AdbVsockPipe::Service*>>(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 34,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 35,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "_pthread_cond_wait",
+          "HALB_Guard::WaitFor(unsigned long long)",
+          "HALB_IOThread::_WaitForState(unsigned int)",
+          "HALB_IOThread::StartAndWaitForState(unsigned int)",
+          "HALC_ProxyIOContext::_StartIO(HALC_ProxyIOContext::StartIO_RetryMethod)",
+          "HALC_ProxyIOContext::StartIOProc(int (*)(unsigned int, AudioTimeStamp const*, AudioBufferList const*, AudioTimeStamp const*, AudioBufferList*, AudioTimeStamp const*, void*))",
+          "HAL_HardwarePlugIn_DeviceStart(AudioHardwarePlugInInterface**, unsigned int, int (*)(unsigned int, AudioTimeStamp const*, AudioBufferList const*, AudioTimeStamp const*, AudioBufferList*, AudioTimeStamp const*, void*))",
+          "AudioDeviceStart_mac_imp",
+          "ca_update_voice_running_state_locked",
+          "coreaudio_enable_impl",
+          "coreaudio_ctl_out",
+          "AUD_set_active_out",
+          "virtio_snd_stream_prepare0_locked",
+          "virtio_snd_handle_ctl",
+          "memory_region_dispatch_write",
+          "flatview_write",
+          "address_space_rw",
+          "hvf_handle_guest_abort",
+          "hvf_handle_exception",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 36,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_handle_exception",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 37,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 49,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "(anonymous namespace)::virtio_wifi_on_frame_available(unsigned char const*, unsigned long)",
+          "android::qemu2::NetsimWifiTransport::readThread()",
+          "void* std::__1::__thread_proxy[abi:v15006]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (android::qemu2::NetsimWifiTransport::*)(), android::qemu2::NetsimWifiTransport*>>(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "qemu-system-aarch64-headless-2026-10-29-000043.ips",
+    "pid": 41697,
+    "source_sha256": "5790f80bddbd4c8eb403c86861abbff1160ebe5e14f5694478f8e34c55637bfd",
+    "coreaudio_blocked": true,
+    "selected": [
+      {
+        "thread": 28,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "main_loop_wait",
+          "main_loop",
+          "main_impl",
+          "run_qemu_main",
+          "enter_qemu_main_loop(int, char**)",
+          "threadWrapper(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 32,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "virtio_vsock_host_to_guest_ping(unsigned long long)",
+          "android::emulation::AdbVsockPipe::Service::pollGuestAdbdThreadLoop()",
+          "void* std::__1::__thread_proxy[abi:v15006]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (android::emulation::AdbVsockPipe::Service::*)(), android::emulation::AdbVsockPipe::Service*>>(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 34,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 35,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 36,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "_pthread_cond_wait",
+          "HALB_Guard::WaitFor(unsigned long long)",
+          "HALB_IOThread::_WaitForState(unsigned int)",
+          "HALB_IOThread::StartAndWaitForState(unsigned int)",
+          "HALC_ProxyIOContext::_StartIO(HALC_ProxyIOContext::StartIO_RetryMethod)",
+          "HALC_ProxyIOContext::StartIOProc(int (*)(unsigned int, AudioTimeStamp const*, AudioBufferList const*, AudioTimeStamp const*, AudioBufferList*, AudioTimeStamp const*, void*))",
+          "HAL_HardwarePlugIn_DeviceStart(AudioHardwarePlugInInterface**, unsigned int, int (*)(unsigned int, AudioTimeStamp const*, AudioBufferList const*, AudioTimeStamp const*, AudioBufferList*, AudioTimeStamp const*, void*))",
+          "AudioDeviceStart_mac_imp",
+          "ca_update_voice_running_state_locked",
+          "coreaudio_enable_impl",
+          "coreaudio_ctl_out",
+          "AUD_set_active_out",
+          "virtio_snd_stream_prepare0_locked",
+          "virtio_snd_handle_ctl",
+          "memory_region_dispatch_write",
+          "flatview_write",
+          "address_space_rw",
+          "hvf_handle_guest_abort",
+          "hvf_handle_exception",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 37,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 49,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "(anonymous namespace)::virtio_wifi_on_frame_available(unsigned char const*, unsigned long)",
+          "android::qemu2::NetsimWifiTransport::readThread()",
+          "void* std::__1::__thread_proxy[abi:v15006]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (android::qemu2::NetsimWifiTransport::*)(), android::qemu2::NetsimWifiTransport*>>(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "qemu-system-aarch64-headless-2026-10-28-210752.ips",
+    "pid": 90728,
+    "source_sha256": "d08b192ce787b6f74e0f124cc3d353baef5d2db50f43f15da186b2f1eb05880b",
+    "coreaudio_blocked": true,
+    "selected": [
+      {
+        "thread": 28,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "main_loop_wait",
+          "main_loop",
+          "main_impl",
+          "run_qemu_main",
+          "enter_qemu_main_loop(int, char**)",
+          "threadWrapper(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 32,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "virtio_vsock_host_to_guest_ping(unsigned long long)",
+          "android::emulation::AdbVsockPipe::Service::pollGuestAdbdThreadLoop()",
+          "void* std::__1::__thread_proxy[abi:v15006]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (android::emulation::AdbVsockPipe::Service::*)(), android::emulation::AdbVsockPipe::Service*>>(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 34,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 35,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "_pthread_cond_wait",
+          "HALB_Guard::WaitFor(unsigned long long)",
+          "HALB_IOThread::_WaitForState(unsigned int)",
+          "HALB_IOThread::StartAndWaitForState(unsigned int)",
+          "HALC_ProxyIOContext::_StartIO(HALC_ProxyIOContext::StartIO_RetryMethod)",
+          "HALC_ProxyIOContext::StartIOProc(int (*)(unsigned int, AudioTimeStamp const*, AudioBufferList const*, AudioTimeStamp const*, AudioBufferList*, AudioTimeStamp const*, void*))",
+          "HAL_HardwarePlugIn_DeviceStart(AudioHardwarePlugInInterface**, unsigned int, int (*)(unsigned int, AudioTimeStamp const*, AudioBufferList const*, AudioTimeStamp const*, AudioBufferList*, AudioTimeStamp const*, void*))",
+          "AudioDeviceStart_mac_imp",
+          "ca_update_voice_running_state_locked",
+          "coreaudio_enable_impl",
+          "coreaudio_ctl_out",
+          "AUD_set_active_out",
+          "virtio_snd_stream_prepare0_locked",
+          "virtio_snd_handle_ctl",
+          "memory_region_dispatch_write",
+          "flatview_write",
+          "address_space_rw",
+          "hvf_handle_guest_abort",
+          "hvf_handle_exception",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 36,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 37,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "hvf_vcpu_exec",
+          "qemu_hvf_cpu_thread_fn",
+          "qemu_thread_trampoline",
+          "_pthread_start",
+          "thread_start"
+        ]
+      },
+      {
+        "thread": 49,
+        "frames": [
+          "__psynch_mutexwait",
+          "_pthread_mutex_firstfit_lock_wait",
+          "_pthread_mutex_firstfit_lock_slow",
+          "qemu_mutex_lock_impl",
+          "qemu_mutex_lock_iothread",
+          "(anonymous namespace)::virtio_wifi_on_frame_available(unsigned char const*, unsigned long)",
+          "android::qemu2::NetsimWifiTransport::readThread()",
+          "void* std::__1::__thread_proxy[abi:v15006]<std::__1::tuple<std::__1::unique_ptr<std::__1::__thread_struct, std::__1::default_delete<std::__1::__thread_struct>>, void (android::qemu2::NetsimWifiTransport::*)(), android::qemu2::NetsimWifiTransport*>>(void*)",
+          "_pthread_start",
+          "thread_start"
+        ]
+      }
+    ]
+  }
+]

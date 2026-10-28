@@ -9,8 +9,10 @@ timeout_seconds="${VV_EMULATOR_TIMEOUT:-240}"
 gpu_mode="${VV_EMULATOR_GPU:-software}"
 gldma="${VV_EMULATOR_GLDMA:-off}"
 host_video="${VV_EMULATOR_HOST_VIDEO:-on}"
+audio_mode="${VV_EMULATOR_AUDIO:-on}"
 case "$gldma" in on) dma_feature=GLDMA ;; off) dma_feature=-GLDMA ;; *) echo 'VV_EMULATOR_GLDMA must be on or off.' >&2; exit 2 ;; esac
 case "$host_video" in on) codec_feature=HardwareDecoder ;; off) codec_feature=-HardwareDecoder ;; *) echo 'VV_EMULATOR_HOST_VIDEO must be on or off.' >&2; exit 2 ;; esac
+case "$audio_mode" in on|off) ;; *) echo 'VV_EMULATOR_AUDIO must be on or off.' >&2; exit 2 ;; esac
 adb="$ANDROID_HOME/platform-tools/adb"
 emulator="$ANDROID_HOME/emulator/emulator"
 [[ -x "$adb" && -x "$emulator" ]] || { echo 'Install Android platform-tools and emulator first.' >&2; exit 1; }
@@ -27,6 +29,7 @@ if [[ -z "$port_command" ]]; then
   mkdir -p "$VV_DEV_HOME/logs"
   # A previous emulator crash must not block unattended startup on a consent dialog.
   options=(-avd "$avd_name" -port "$port" -no-boot-anim -gpu "$gpu_mode" -feature -Vulkan -feature "$dma_feature" -feature "$codec_feature" -no-snapshot -no-metrics -crash-report-mode never)
+  [[ "$audio_mode" == off ]] && options+=(-no-audio)
   [[ "${VV_EMULATOR_HEADLESS:-0}" == 1 ]] && options+=(-no-window)
   # Keep the emulator independent of the short-lived VS Code/prelaunch shell.
   python3 - "$emulator" "$VV_DEV_HOME/logs/emulator-$port.log" "${options[@]}" <<'PYTHON'
@@ -63,7 +66,13 @@ while (( SECONDS < deadline )); do
         echo "The owned AVD has another video decoder profile. Stop it before starting host-video=$host_video; userdata is preserved." >&2
         exit 3
       fi
-      echo "$avd_name is ready on $device (GPU=$gpu_mode, GLDMA=$gldma, host-video=$host_video)."
+      audio_disabled=0
+      [[ " $running_command " == *" -no-audio "* || " $running_command " == *" -noaudio "* ]] && audio_disabled=1
+      if [[ ( "$audio_mode" == off && "$audio_disabled" == 0 ) || ( "$audio_mode" == on && "$audio_disabled" == 1 ) ]]; then
+        echo "The owned AVD has another audio profile. Stop it before starting audio=$audio_mode; userdata is preserved." >&2
+        exit 3
+      fi
+      echo "$avd_name is ready on $device (GPU=$gpu_mode, GLDMA=$gldma, host-video=$host_video, audio=$audio_mode)."
       exit 0
     fi
   fi

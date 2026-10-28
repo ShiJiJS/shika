@@ -145,3 +145,17 @@ python3 scripts/tests/test_android_emulator_launcher.py
 ```
 
 后一个命令以隔离的假 SDK 检查离线残留、复用、配置拒绝、其它 AVD 保留和独立 session，不替代实际启动及视频播放验证。默认配置不修改 Flutter SDK、产品播放器实现或 release 签名。
+
+### 阅读诊断的可选音频开关（2026-10-29）
+
+四份已退出的自有QEMU宿主报告都出现CoreAudio启动等待，同时主循环及其它vCPU等待QEMU锁；这是比“图形线程卡死”更具体的线索，尚未证明所有退出或视频绿边有相同根因。SDK仓库当前emulator仍为37.2.12，本段没有升级SDK。完整比较记录见[阅读连接诊断](plans/library-first/LF8-READER-CONNECTION-DIAGNOSTICS.md)。
+
+macOS/Linux启动器增加显式 `VV_EMULATOR_AUDIO=off`，向该模拟器传 `-no-audio`，默认仍为on。已有设备的音频参数不符时保留原进程并返回3，正常退出原专用AVD后再切换，不清数据或自动重启。这个开关也适用于从VS Code终端调用同一脚本；本次没有改动F5默认任务或Windows启动器。
+
+```bash
+VV_AVD_NAME=video_viewer_reader_perf_36 VV_EMULATOR_PORT=5558 \
+  VV_EMULATOR_GPU=host VV_EMULATOR_AUDIO=off \
+  bash scripts/start-android-emulator.sh
+```
+
+该命令要求已经创建此专用AVD；图包/标签等不需要声音的诊断可用此配置。[Android官方说明](https://developer.android.com/studio/run/emulator-commandline)明确该参数禁用模拟器音频，因此这里的阅读结果不能证明有声视频播放通过；产品播放器和手机音量不受此项目启动参数修改。持续稳定和真实设备继续按#78/#100验收。

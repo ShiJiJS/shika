@@ -1,0 +1,14 @@
+{
+  "emulator.log": {
+    "original_sha256": "d3639dab4b7ce77a62331245632b11d310089b6174edd7ed334103744ad5e555",
+    "redacted_sha256": "659e59af4f58138b63508f1740fc15cac0ae09d88bf168df296d9784ba3fe757",
+    "redaction_count": 2,
+    "scope": "ADB public-key identity lines or ephemeral localhost VM-service URLs only"
+  },
+  "flutter-drive.log": {
+    "original_sha256": "bf56458ebf3335971cfd5959d51e3eabd04663a78f5e790e4c265f682afea197",
+    "redacted_sha256": "f405935d71008651496cf61552f34ee1bec508d2d793a9b3ac0515acedd478f4",
+    "redaction_count": 1,
+    "scope": "ADB public-key identity lines or ephemeral localhost VM-service URLs only"
+  }
+}

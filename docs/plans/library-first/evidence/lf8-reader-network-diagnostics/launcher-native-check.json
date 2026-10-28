@@ -1,0 +1,19 @@
+{
+  "cases": [
+    {
+      "requested_audio": "off",
+      "exit_code": 0,
+      "stdout": "video_viewer_reader_perf_36 is ready on emulator-5558 (GPU=host, GLDMA=off, host-video=on, audio=off).\n",
+      "stderr": ""
+    },
+    {
+      "requested_audio": "on",
+      "exit_code": 3,
+      "stdout": "",
+      "stderr": "The owned AVD has another audio profile. Stop it before starting audio=on; userdata is preserved.\n"
+    }
+  ],
+  "same_owned_pid_preserved": 94046,
+  "no_restart": true,
+  "observed_at": 1793209481.3532422
+}

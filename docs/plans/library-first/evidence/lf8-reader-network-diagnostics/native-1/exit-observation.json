@@ -1,0 +1,54 @@
+{
+  "pid": 87639,
+  "pid_confirmed_absent": true,
+  "adb_devices": "List of devices attached\n\n",
+  "original_log_sha256": "d3639dab4b7ce77a62331245632b11d310089b6174edd7ed334103744ad5e555",
+  "redacted_log_sha256": "659e59af4f58138b63508f1740fc15cac0ae09d88bf168df296d9784ba3fe757",
+  "redaction": "Removed only ADB public-key identity lines",
+  "report": {
+    "name": "qemu-system-aarch64-headless-2026-10-29-013436.ips",
+    "sha256": "9b18ea595c38ed573f186573dec235ec56eb10d1525da26865008481340c02ba",
+    "pid": 87639,
+    "capture_time": "2026-10-29 01:34:34.2476 +0800",
+    "exception": {
+      "codes": "0x0000000000000001, 0x0000000000000000",
+      "rawCodes": [
+        1,
+        0
+      ],
+      "type": "EXC_BAD_ACCESS",
+      "signal": "SIGSEGV",
+      "subtype": "KERN_INVALID_ADDRESS at 0x0000000000000000"
+    },
+    "termination": {
+      "flags": 0,
+      "code": 11,
+      "namespace": "SIGNAL",
+      "indicator": "Segmentation fault: 11",
+      "byProc": "exc handler",
+      "byPid": 87639
+    },
+    "triggered_symbols": [
+      [
+        "android::crashreport::CrashReporter::GenerateDumpAndDie(char const*)",
+        "_ZZN7android11crashreport13CrashReporter12hangDetectorEvENK3$_0clINSt3__117basic_string_viewIcNS4_11char_traitsIcEEEEEEDaT_",
+        "std::__1::__function::__func<android::crashreport::CrashReporter::hangDetector()::$_0, std::__1::allocator<android::crashreport::CrashReporter::hangDetector()::$_0>, void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>&&)",
+        "std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>) const",
+        "android::crashreport::HangDetector::LooperWatcher::process(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)> const&)",
+        "android::crashreport::HangDetector::workerThread()",
+        "std::__1::__function::__func<android::base::FunctorThread::FunctorThread<android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0, void*>(android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0&&, android::base::ThreadFlags)::'lambda'(), std::__1::allocator<android::base::FunctorThread::FunctorThread<android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0, void*>(android::crashreport::HangDetector::HangDetector(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>&&, android::crashreport::HangDetector::Timing)::$_0&&, android::base::ThreadFlags)::'lambda'()>, long ()>::operator()()",
+        "android::base::Thread::thread_main(void*)",
+        "_pthread_start",
+        "thread_start"
+      ]
+    ]
+  },
+  "completed_ui_cycles": 11,
+  "intended_cycles": 12,
+  "complete_run_passed": false,
+  "profile_terminal_report_received": false,
+  "reader_command_failure_report_received": false,
+  "app_oom_proven": false,
+  "host_gpu_fix_proven": false,
+  "observed_at": 1793208922.234926
+}

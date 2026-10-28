@@ -22,14 +22,15 @@ if name=='emulator':
  p.with_suffix('.session.json').write_text(json.dumps({'isolated':os.getsid(0)==os.getpid()}))
  p.write_text(json.dumps(args));raise SystemExit(0)
 if name=='ps':
- if p.exists() or scenario in {'existing','other','profile','decoder'}:
+ if p.exists() or scenario in {'existing','other','profile','decoder','audio-off'}:
   flags=json.loads(p.read_text()) if p.exists() else ['-avd','other' if scenario=='other' else 'video_viewer_api_36','-port','5554','-gpu','host' if scenario=='profile' else 'software','-feature','-GLDMA','-feature','HardwareDecoder','-no-snapshot']
+  if scenario=='audio-off':flags+=['-no-audio']
   print('stub/qemu-system-aarch64 '+' '.join(flags))
  raise SystemExit(0)
 if args==['start-server']:raise SystemExit(0)
 if args==['devices']:print('List of devices attached\\nemulator-5554\\toffline');raise SystemExit(0)
 args=args[2:]
-live=p.exists() or scenario in {'existing','other','profile','decoder'}
+live=p.exists() or scenario in {'existing','other','profile','decoder','audio-off'}
 if args==['get-state']:
  if live:print('device');raise SystemExit(0)
  raise SystemExit(1)
@@ -42,9 +43,7 @@ raise SystemExit('Unexpected synthetic SDK invocation: '+repr(args))
 
 class LauncherContract(unittest.TestCase):
     def run_launcher(self, scenario, **overrides):
-        with tempfile.TemporaryDirectory(
-            prefix="launcher-contract-", dir=ROOT / ".dev"
-        ) as raw:
+        with tempfile.TemporaryDirectory(prefix="launcher-contract-", dir=ROOT / ".dev") as raw:
             directory = Path(raw)
             sdk = directory / "android-sdk"
             binpath = directory / "bin"
@@ -66,6 +65,7 @@ class LauncherContract(unittest.TestCase):
                 "VV_EMULATOR_GPU": "software",
                 "VV_EMULATOR_GLDMA": "off",
                 "VV_EMULATOR_HOST_VIDEO": "on",
+                "VV_EMULATOR_AUDIO": "on",
                 "VV_TEST_STATE": str(directory / "started.json"),
                 "VV_TEST_SCENARIO": scenario,
                 "PATH": str(binpath) + os.pathsep + os.environ["PATH"],
@@ -83,9 +83,7 @@ class LauncherContract(unittest.TestCase):
             marker = directory / "started.json"
             session = marker.with_suffix(".session.json")
             result.session_isolated = (
-                json.loads(session.read_text())["isolated"]
-                if session.exists()
-                else None
+                json.loads(session.read_text())["isolated"] if session.exists() else None
             )
             return result, json.loads(marker.read_text()) if marker.exists() else None
 
@@ -124,6 +122,29 @@ class LauncherContract(unittest.TestCase):
 
     def test_invalid_profile_is_rejected_before_launch(self):
         result, args = self.run_launcher("stale", VV_EMULATOR_GLDMA="invalid")
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIsNone(args)
+
+    def test_audio_disabled_launch_is_explicit(self):
+        result, args = self.run_launcher("stale", VV_EMULATOR_AUDIO="off")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("-no-audio", args)
+        self.assertIn("audio=off", result.stdout)
+
+    def test_matching_audio_disabled_process_is_reused(self):
+        result, args = self.run_launcher("audio-off", VV_EMULATOR_AUDIO="off")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIsNone(args)
+
+    def test_audio_mismatch_never_restarts_the_live_process(self):
+        for scenario, requested in [("existing", "off"), ("audio-off", "on")]:
+            with self.subTest(scenario=scenario):
+                result, args = self.run_launcher(scenario, VV_EMULATOR_AUDIO=requested)
+                self.assertEqual(result.returncode, 3, result.stderr)
+                self.assertIsNone(args)
+
+    def test_invalid_audio_mode_is_rejected_before_launch(self):
+        result, args = self.run_launcher("stale", VV_EMULATOR_AUDIO="invalid")
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertIsNone(args)
 
