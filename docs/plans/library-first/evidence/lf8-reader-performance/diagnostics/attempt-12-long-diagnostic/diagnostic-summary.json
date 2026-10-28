@@ -1,0 +1,55 @@
+{
+  "completed": true,
+  "final_matrix": false,
+  "source": "311d2c864625aac0726fd1427611f93bf5e58e4c",
+  "reached_pages": 500,
+  "gestures": 1205,
+  "scroll_seconds": 1142.110924,
+  "peaks": {
+    "providers": 6,
+    "estimated_bytes": 49280400,
+    "metadata": 120,
+    "cache_bytes": 50736904,
+    "pending": 6,
+    "live": 6,
+    "decoded_pixels": 2053350
+  },
+  "app_pids": [
+    "16437"
+  ],
+  "Pss_max_mib": 259.03125,
+  "Rss_max_mib": 358.2109375,
+  "VmHWM_max_mib": 378.73046875,
+  "environment": {
+    "sample_count": 211,
+    "runtime_id": "ceb73d55ff2977b72b75c7d25cd09a607854e613001d9087cb168f701fbc1b02",
+    "source_runtime_id_recorded": false,
+    "qemu_pid": "90728",
+    "scope": "Build/startup through terminal report; owned local runtime and host simulator, not NAS/phone",
+    "server_max_cpu_percent": 122.36,
+    "server_max_docker_memory_mib": 105.4,
+    "qemu_max_host_rss_mib": 2663.5,
+    "qemu_max_reported_cpu_percent": 524.3,
+    "counter_definition": "Docker-reported cumulative traffic/block counters; sampled delta, not physical NAS IO",
+    "network_received": {
+      "initial_bytes": 273000.0,
+      "final_bytes": 5510000.0,
+      "sampled_delta_bytes": 5237000.0
+    },
+    "network_sent": {
+      "initial_bytes": 130000000.0,
+      "final_bytes": 3850000000.0,
+      "sampled_delta_bytes": 3720000000.0
+    },
+    "block_read": {
+      "initial_bytes": 82100000.0,
+      "final_bytes": 168000000.0,
+      "sampled_delta_bytes": 85900000.0
+    },
+    "block_written": {
+      "initial_bytes": 0.0,
+      "final_bytes": 0.0,
+      "sampled_delta_bytes": 0.0
+    }
+  }
+}

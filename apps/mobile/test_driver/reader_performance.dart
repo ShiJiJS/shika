@@ -13,7 +13,7 @@ Future<void> main() async {
   late Response response;
   try {
     response = Response.fromJson(
-      await driver.requestData(null, timeout: const Duration(minutes: 45)),
+      await driver.requestData(null, timeout: const Duration(minutes: 65)),
     );
     // Publish the terminal report before closing the driver. flutter drive may
     // stop the App on close; the passive /proc observer needs this boundary.

@@ -1,0 +1,42 @@
+{
+  "captured_at": 1793192300.346049,
+  "via": "normal runtime HTTP API after diagnostic runtime replacement; no direct SQLite query",
+  "same_normal_image_and_data": true,
+  "reading_range": "b9db4e7b-5f72-45b1-a44c-b3e7381f95f6",
+  "candidate_count": 3,
+  "cursor": 0,
+  "pack_id": "ee3fcb9f-e4a8-4248-a947-9395f72d5195",
+  "resume": {
+    "page": {
+      "id": "0135ced0-f391-4fb5-9941-24d94fcef822",
+      "pack_id": "ee3fcb9f-e4a8-4248-a947-9395f72d5195",
+      "name": "500.jpg",
+      "relative_path": "500.jpg",
+      "ordinal": 499,
+      "width": 8000,
+      "height": 8000,
+      "size": 13880216,
+      "format": "JPEG",
+      "sha256": "3dca79818adc4fbd8900f821c1c016477edc4e8741357857124924ebe9582122",
+      "error": null,
+      "content_version": 2,
+      "image_url": "/api/v1/pages/0135ced0-f391-4fb5-9941-24d94fcef822/image?v=2",
+      "thumbnail_url": "/api/v1/pages/0135ced0-f391-4fb5-9941-24d94fcef822/thumbnail?v=2"
+    },
+    "page_index": 499,
+    "offset_ratio": 0.027350427350421133,
+    "completed": true,
+    "revision": 647,
+    "content_version": 2,
+    "recovery_reason": null,
+    "preferences": {
+      "mode": "horizontal",
+      "direction": "ltr",
+      "gap": false,
+      "fit": "contain",
+      "revision": 5,
+      "overridden": true
+    }
+  },
+  "control_auth_session_revoked_after_read": true
+}

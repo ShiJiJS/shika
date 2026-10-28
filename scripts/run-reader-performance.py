@@ -29,6 +29,9 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--output", type=Path, required=True)
     p.add_argument(
+        "--ref", default="HEAD", help="Frozen source ref; current App and harness must match"
+    )
+    p.add_argument(
         "--long-diagnostic",
         action="store_true",
         help="One trial per size while debugging the full 500-page path; never final acceptance",
@@ -72,15 +75,19 @@ def main():
     for port in [8774]:
         with socket.socket() as guard:
             guard.bind(("127.0.0.1", port))
-    source = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    source = subprocess.check_output(
+        ["git", "rev-parse", args.ref + "^{commit}"], cwd=ROOT, text=True
+    ).strip()
+    checkout_head = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+    ).strip()
     relevant = [
-        "apps/mobile/lib",
-        "apps/mobile/android",
-        "apps/mobile/pubspec.yaml",
-        "apps/mobile/pubspec.lock",
-        "apps/mobile/integration_test/server_reader_performance_test.dart",
-        "apps/mobile/test_driver/reader_performance.dart",
+        "apps/mobile",
+        "scripts/dev.sh",
+        "scripts/dev-env.sh",
         "scripts/run-reader-performance.py",
+        "scripts/summarize-reader-performance.py",
+        "design/reference/library-first",
     ]
     assert not subprocess.check_output(
         ["git", "diff", "--name-only", source, "--", *relevant], cwd=ROOT
@@ -102,9 +109,14 @@ def main():
         "source.json",
         {
             "source": source,
+            "checkout_head": checkout_head,
+            "app_tree": subprocess.check_output(
+                ["git", "rev-parse", source + ":apps/mobile"], cwd=ROOT, text=True
+            ).strip(),
             "prototype_tree": prototype,
             "qemu": qemu[0],
             "runtime": IMAGE,
+            "runtime_id": runtime["Id"],
             "runtime_command": runtime["Config"]["Cmd"],
             "runtime_entrypoint": runtime["Config"]["Entrypoint"],
             "profile_entrypoint": True,
@@ -300,7 +312,7 @@ def main():
             )
             save("live-process.json", {"pid": process.pid, "command": command})
             try:
-                code = process.wait(timeout=3000)
+                code = process.wait(timeout=4200)
             except subprocess.TimeoutExpired:
                 process.terminate()
                 try:

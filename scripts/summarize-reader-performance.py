@@ -26,6 +26,78 @@ def stats(values, divisor=1):
     }
 
 
+def byte_count(value):
+    match = re.fullmatch(r"(\d+(?:\.\d+)?)\s*(B|kB|KB|MB|GB|TB|KiB|MiB|GiB|TiB)", value.strip())
+    if not match:
+        raise ValueError("Unknown Docker byte unit: " + value)
+    number, unit = match.groups()
+    power = {
+        "B": 0,
+        "kB": 1,
+        "KB": 1,
+        "MB": 2,
+        "GB": 3,
+        "TB": 4,
+        "KiB": 1,
+        "MiB": 2,
+        "GiB": 3,
+        "TiB": 4,
+    }[unit]
+    return float(number) * (1024 if "i" in unit else 1000) ** power
+
+
+def environment_summary(folder):
+    source = json.loads((folder / "source.json").read_text())
+    with gzip.open(folder / "environment-samples.jsonl.gz", "rt") as stream:
+        rows = [json.loads(line) for line in stream]
+    if not rows:
+        raise ValueError("No environment observations")
+    identity = source.get("runtime_id", rows[0]["runtime_id"])
+    qemu_pid = source["qemu"].split()[0]
+    for row in rows:
+        if (
+            row["runtime_id"] != identity
+            or not row["server"]["ID"]
+            or not identity.startswith(row["server"]["ID"])
+            or row["qemu"].split()[0] != qemu_pid
+        ):
+            raise ValueError("Environment observation identity changed")
+    result = {
+        "sample_count": len(rows),
+        "runtime_id": identity,
+        "source_runtime_id_recorded": "runtime_id" in source,
+        "qemu_pid": qemu_pid,
+        "scope": "Build/startup through terminal report; owned local runtime and host simulator, not NAS/phone",
+        "server_max_cpu_percent": max(
+            float(r["server"]["CPUPerc"].removesuffix("%")) for r in rows
+        ),
+        "server_max_docker_memory_mib": max(
+            byte_count(r["server"]["MemUsage"].split("/")[0]) for r in rows
+        )
+        / 1024**2,
+        "qemu_max_host_rss_mib": max(float(r["qemu"].split()[1]) for r in rows) / 1024,
+        "qemu_max_reported_cpu_percent": max(float(r["qemu"].split()[2]) for r in rows),
+        "counter_definition": "Docker CLI rounded cumulative traffic/block counters; approximate sampled delta, not physical NAS IO",
+    }
+    for field, names in [
+        ("NetIO", ["network_received", "network_sent"]),
+        ("BlockIO", ["block_read", "block_written"]),
+    ]:
+        values = [[byte_count(part) for part in r["server"][field].split("/")] for r in rows]
+        if any(len(value) != 2 for value in values):
+            raise ValueError("Expected two Docker counters")
+        for index, name in enumerate(names):
+            counters = [value[index] for value in values]
+            if any(b < a for a, b in zip(counters, counters[1:])):
+                raise ValueError("Docker counter reset during observation: " + name)
+            result[name] = {
+                "initial_bytes": counters[0],
+                "final_bytes": counters[-1],
+                "sampled_delta_bytes": counters[-1] - counters[0],
+            }
+    return result
+
+
 def summarize(folder):
     completed = json.loads((folder / "result.json").read_text())
     if (
@@ -61,11 +133,15 @@ def summarize(folder):
             int(re.search(r"^" + key + r":\s+(\d+)\s+kB", s["raw"], re.M).group(1)) for s in samples
         ]
         memory[name + "_mib"] = max(values) / 1024
+    environment = environment_summary(folder)
+    if not environment["source_runtime_id_recorded"] or len(memory["pids"]) != 1:
+        raise ValueError("Final measurement requires one App PID and recorded runtime identity")
     return {
         "run": str(folder),
         "source": json.loads((folder / "source.json").read_text())["source"],
         "latency_ms": latency,
         "memory": memory,
+        "environment": environment,
         "peaks": raw["peaks"],
         "frames_us": {
             name: stats([r[index] for r in raw["frame_timings_us"]])

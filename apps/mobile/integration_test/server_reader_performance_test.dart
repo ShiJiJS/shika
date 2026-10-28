@@ -497,5 +497,5 @@ void main() {
       'samples': samples.length,
       'peaks': peaks,
     });
-  }, timeout: const Timeout(Duration(minutes: 40)));
+  }, timeout: const Timeout(Duration(minutes: 60)));
 }
