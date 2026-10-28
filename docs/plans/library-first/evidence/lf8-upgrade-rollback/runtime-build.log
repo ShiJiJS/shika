@@ -1,0 +1,46 @@
+#0 building with "orbstack" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.44kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#2 DONE 2.7s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 101B done
+#3 DONE 0.1s
+
+#4 [runtime 1/9] FROM docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641
+#4 resolve docker.io/library/python:3.13-slim-bookworm@sha256:a1165e272e578941b84abc79e4ab38a0305cd12803a5c4247979ac7655f4d641 0.0s done
+#4 DONE 0.1s
+
+#5 [internal] load build context
+#5 transferring context: 1.30MB 0.0s done
+#5 DONE 0.1s
+
+#6 [runtime 5/9] RUN pip install --no-cache-dir --require-hashes -r requirements.lock
+#6 CACHED
+
+#7 [runtime 6/9] COPY video_viewer ./video_viewer
+#7 DONE 0.1s
+
+#8 [runtime 7/9] COPY migrations ./migrations
+#8 DONE 0.2s
+
+#9 [runtime 8/9] COPY alembic.ini ./
+#9 DONE 0.0s
+
+#10 [runtime 9/9] RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
+#10 DONE 0.2s
+
+#11 exporting to image
+#11 exporting layers
+#11 exporting layers 0.2s done
+#11 exporting manifest sha256:338b4b56424faa24dd29ccd08899adf7afe359c3c271212f0198a581c07b26e4 0.0s done
+#11 exporting config sha256:ed6097199cf852dc8b3eeeee41fee55da9f3f24d280ea88e59844d814103b1ea done
+#11 exporting attestation manifest sha256:881a3a8f1d2681d4d3a156fc8b718794bd0227e9591f1a9e6d301a2478567b5c 0.0s done
+#11 exporting manifest list sha256:886b79b72ecb9116087d892f230471943121f24ccef093113cc3197b4607fef4 done
+#11 naming to docker.io/library/video-viewer-server:0.2.0-preview.2 done
+#11 unpacking to docker.io/library/video-viewer-server:0.2.0-preview.2 0.0s done
+#11 DONE 0.3s

@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/final_protocol.py", line 271, in <module>
+    cycle(number, resume=(number == first and '--resume-new' in sys.argv))
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/final_protocol.py", line 249, in cycle
+    new_ui(number, resume)
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/final_protocol.py", line 114, in new_ui
+    observed(phase + '-before-videos', label='视频\n1')
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/final_protocol.py", line 18, in observed
+    nodes = capture(name)
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/ui_driver.py", line 8, in capture
+    device('shell','uiautomator','dump','/sdcard/lf8-upgrade-ui.xml');raw=device('exec-out','cat','/sdcard/lf8-upgrade-ui.xml');(OUT/'screens'/f'{name}.xml').write_bytes(raw);(OUT/'screens'/f'{name}.png').write_bytes(device('exec-out','screencap','-p'));focus=device('shell','dumpsys','window').decode();(OUT/'screens'/f'{name}-window.txt').write_text('\n'.join(s.strip() for s in focus.splitlines() if 'mCurrentFocus=' in s or 'mFocusedApp=' in s)+'\n');return list(ET.fromstring(raw).iter('node'))
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-upgrade-rollback/ui_driver.py", line 4, in device
+    def device(*args):return subprocess.check_output([ADB,'-s',SERIAL,*args],timeout=30)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 507, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1134, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1980, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1178, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5556', 'shell', 'uiautomator', 'dump', '/sdcard/lf8-upgrade-ui.xml']' timed out after 30 seconds

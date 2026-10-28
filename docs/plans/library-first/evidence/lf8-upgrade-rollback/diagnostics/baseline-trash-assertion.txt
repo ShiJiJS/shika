@@ -1,0 +1,1 @@
+Initial driver expected LEGACY_ONLY on old trash screen. Actual legacy trash UI displays name/path, not tags. Assertion failed before force-stop. Kept actual UI capture; adjusted expectation to name/count and independently checked existing association in SQLite. No production change.

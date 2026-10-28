@@ -1,0 +1,11 @@
+{
+  "source": "cf9920257f7bc88af534ea6fb3177cef69c0a161",
+  "image": "sha256:8a1c5320fab247c7c61fc65842e8e20c1e2e6a690e2c6ae373953920feb8af20",
+  "expected_summary_state": "completed",
+  "observed_list_label": "结果待核对",
+  "detail_unfinished_count": 0,
+  "detail_all_count": 1,
+  "detail_member_label": "已完成",
+  "root_cause": "FileOperations.finish drops total/processed from final result; MaintenanceTasks requires both fields. Existing legacy and current completed video operations are affected.",
+  "not_final_acceptance_round": true
+}

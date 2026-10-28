@@ -1,0 +1,70 @@
+{
+  "complete": true,
+  "owned_qemu_pid": "28038",
+  "owned_qemu_command": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64 -avd video_viewer_upgrade_36 -port 5556 -no-boot-anim -gpu software -feature -Vulkan -feature -GLDMA -feature HardwareDecoder -no-snapshot -no-metrics -crash-report-mode never",
+  "owned_qemu_absent": true,
+  "owned_containers": [
+    {
+      "phase": "accepted-1-new",
+      "container": "595c0152f8db57a5fe126324cb6f9b79e3d210c9d45536ae6d446c31d72ce596",
+      "absent": true
+    },
+    {
+      "phase": "accepted-1-old",
+      "container": "227e9bafa9b6fcd7be3268c2ad96b29953f6469a0db3a3016f7ac05e75e967dd",
+      "absent": true
+    },
+    {
+      "phase": "accepted-2-new",
+      "container": "bbf8969afa28a2e1495205e8c533f50696843352bc2e9281e0d7e2db95edc6c9",
+      "absent": true
+    },
+    {
+      "phase": "accepted-2-old",
+      "container": "2dfa5f3a6141e470866a3226c162acf54b1a511b8928f5e176889dd1e50649f0",
+      "absent": true
+    },
+    {
+      "phase": "accepted-3-new",
+      "container": "268b7a0cc011d382ec0c6daecb95bc155c6d526587265230610590cc0367fb5d",
+      "absent": true
+    },
+    {
+      "phase": "accepted-3-old",
+      "container": "6ae0eb5c92651fbab1ccad2bf20d152db2c03f754f22600c704c3cf2713bd848",
+      "absent": true
+    },
+    {
+      "phase": "baseline-old",
+      "container": "23d2fe3e937457e8551e17e97a47f154928c5fd4edb7035f505f87f8b02c65e3",
+      "absent": true
+    },
+    {
+      "phase": "final-1-new",
+      "container": "f35f5b869dac7d9158442fb26a8ce48b99eedbb229d71e0b8fda84ca17c38970",
+      "absent": true
+    },
+    {
+      "phase": "round-1-new",
+      "container": "63297631a47a2df4eeb26ebb7ab15715226a0d778bd9a6edea780eda5cf92f08",
+      "absent": true
+    },
+    {
+      "phase": "verified-1-new",
+      "container": "7492d48001b97628362e3b9bb12075528c0e08cfeab8d817429ba1cb43a43a2f",
+      "absent": true
+    },
+    {
+      "phase": "verified-1-old",
+      "container": "02f16383c6411edacd19b629aa4da519cfa32070107e655aa246faaf24aa8f94",
+      "absent": true
+    }
+  ],
+  "original_services_unchanged": true,
+  "donor_data_unchanged": true,
+  "media_unchanged": true,
+  "final_three_cycles_same_qemu": true,
+  "final_qemu_log_no_hang": true,
+  "original_developer_avd_untouched": true,
+  "display_overrides_changed": false
+}

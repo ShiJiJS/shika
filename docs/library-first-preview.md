@@ -1,6 +1,6 @@
-# 媒体库预览版 0.2.0-preview.1
+# 媒体库预览版：App preview.1 与配套服务 preview.2
 
-本机可安装的阶段预览包，源码固定 `cf9920257f7bc88af534ea6fb3177cef69c0a161`。尚未作为正式 GitHub 版本发布，也没有升级你的手机或 NAS。完整验收进度见[逐项记录](plans/library-first/RESULTS.md)。
+本机可安装的阶段预览包。App 源码固定 `cf9920257f7bc88af534ea6fb3177cef69c0a161`，配套服务修正为 `b79da7b9c4d2ab099c055b8eb855904e32abb0a5`，修复已完成的视频回收任务误显示“结果待核对”。App 安装包及签名保持原版本。尚未作为正式 GitHub 版本发布，也没有升级你的手机或 NAS。完整验收进度见[逐项记录](plans/library-first/RESULTS.md)。
 
 ## 安装包
 
@@ -9,13 +9,13 @@
 | 文件 | 用途 | 字节数 | SHA256 |
 | --- | --- | ---: | --- |
 | `video-viewer-0.2.0-preview.1-arm64.apk` | Android ARM64 普通入口预览包 | 23308394 | `d87e98c70d4999b50165ce854f2e4f7156d25cc378f0431ed885f061c1cb9f87` |
-| `video-viewer-server-0.2.0-preview.1-linux-arm64.tar.gz` | 本机 Linux ARM64 配套服务镜像 | 222273366 | `c594301e6a46c1755dcccbc7059a811a52dcfbb124bc11007acb29cdaeaf0e59` |
+| `video-viewer-server-0.2.0-preview.2-linux-arm64.tar.gz` | 本机 Linux ARM64 配套服务镜像，含任务显示修正 | 222497149 | `461af96196d4905c374fa86e82100be85d48efc2ab9221dcde745e275a7a79ff` |
 
 App 包名 `io.github.shijijs.video_viewer`，版本号从旧版的 5 升到 6，版本名称为 `0.2.0-preview.1`。沿用 Windows 0.1.4 的签名，公开证书 SHA256 为 `f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161`。这份 APK 由正常 `lib/main.dart` 构建，不含集成测试插件；不是开发测试 APK。
 
 安装时直接覆盖原 App，保留原 App 的本机数据。不要先卸载或清除数据。独立模拟器上已用原 Windows APK 安装后，再执行 `adb install -r` 覆盖安装新版；目标手机尚待验证。
 
-服务镜像的标签是 `video-viewer-server:0.2.0-preview.1`，镜像 ID 为 `sha256:8a1c5320fab247c7c61fc65842e8e20c1e2e6a690e2c6ae373953920feb8af20`。它用于本机 ARM64 验证；NAS 的架构尚未核对，不能直接把它当作通用 NAS 部署包。部署流程仍按[开发环境说明](macos-development.md)及当前实际配置推进。
+当前服务镜像的标签是 `video-viewer-server:0.2.0-preview.2`，镜像 ID 为 `sha256:886b79b72ecb9116087d892f230471943121f24ccef093113cc3197b4607fef4`。它用于本机 ARM64 验证；NAS 当前架构和运行配置还需实际核对，不能直接把它当作通用 NAS 部署包。部署流程仍按[开发环境说明](macos-development.md)及当前实际配置推进。先前 preview.1 服务归档作为历史产物保留，本轮配套服务使用 preview.2。
 
 ## 装好后会看到什么
 
@@ -31,18 +31,22 @@ App 包名 `io.github.shijijs.video_viewer`，版本号从旧版的 5 升到 6�
 - 两套标签分别显示；从图包库进入三张合成图片的图包，翻到第 2 张、切换纵向拼接后仍是第 2 张，返回原图包库。
 - 新 App 连接实际旧服务镜像（数据库版本 0004）后，两个视频和旧标签可读；没有向旧服务调用图包接口。
 
-这些结果来自独立 Android 模拟器及独立本机服务，素材为公开演示视频与合成图片。不是你的真实图包或手机上的完整验收。
+后续还在同一新版 App 上完成了三轮旧服务数据升级和回退：每轮从一个可用视频、一个回收站视频、一个标签及两条关联、原播放范围和三个请求记录开始，免口令读取新旧服务；新增测试标签后，停机恢复完整旧数据，旧记录保留且新增标签消失。旧回收任务在新服务中显示“已完成”，其原操作结果保持不变。详见[三轮原始记录](plans/library-first/evidence/lf8-upgrade-rollback/README.md)。
+
+这些结果来自独立 Android 模拟器及独立本机服务，素材为公开演示视频与合成图片。真实图包、目标手机及 NAS 继续验收。
 
 ## 升级与回退
 
 正式升级服务前，记录旧镜像版本，停止服务，再完整备份原 `data` 目录。不能在服务运行时仅复制 `library.sqlite3` 而漏掉 WAL 文件。管理逻辑备份不包含媒体原文件。
 
-新服务迁移数据库后，回退需要停止新服务、恢复升级前完整 `data` 快照，再启动原镜像；不能直接让旧程序打开新数据库。恢复旧快照会舍弃升级后的管理修改。本轮尚未完成这套实际迁移和回退演练。
+新服务迁移数据库后，回退需要停止 App 和新服务、保留升级后的诊断副本，在固定的数据绑定目录内恢复升级前完整 `data` 快照。启动旧镜像前，核对容器内实际读取的数据库版本、完整性和文件 SHA 与恢复副本一致，再启动原镜像；旧程序不能直接打开新数据库。恢复旧快照会舍弃升级后的管理修改。独立副本已完成这套流程三轮，真实 NAS 仍待验证。
 
-App 版本号 6 不能直接覆盖降回旧版本号 5。当前没有经过演练的 App 回退包，不采用卸载、清数据来强行回退；正式发布前还要完成回退方案。
+本机曾在替换整个宿主数据目录后出现“宿主已恢复为0004、旧容器首次启动却报告0014”的不一致，首次启动明确失败；原因尚未完全确定。最终流程在原绑定目录和数据库文件内恢复内容，并增加容器内核验后连续三轮通过。失败现场单独保留，见[诊断与最终流程](plans/library-first/evidence/lf8-upgrade-rollback/README.md)。
+
+三轮服务回退使用同一个新版 App 6。App 版本号 6 不能直接覆盖降回旧版本号 5；App 回退包仍待提供和演练，不采用卸载、清数据来强行回退。
 
 ## 仍在继续的工作
 
 真实手机和 NAS、完整升级回退、500 页高分辨率图包及其它未验收组合继续按 issue 推进。原始偶发备份上传失败 [#89](https://github.com/ShiJiJS/video_viewer/issues/89) 尚未复现并定位，模拟器视频渲染问题 [#78](https://github.com/ShiJiJS/video_viewer/issues/78) 也保持开放。
 
-原型单独保留在 `design/reference/`，有参考用途标记。当前版本已在移除这部分的副本里重新完成构建、672 项客户端检查和 447 项服务端检查；原始原型保持不变，后续可单独移除。详见[本轮证据](plans/library-first/evidence/lf8-preview-package/README.md)。
+原型单独保留在 `design/reference/`，有参考用途标记。App 的 cf992025 版本已在移除这部分的副本里构建，并通过 672 项客户端检查，见[正常安装包证据](plans/library-first/evidence/lf8-preview-package/README.md)。配套服务 b79da7b9 通过完整 462 项服务检查，runtime 中73份 Python 源码与固定 Git 版本逐份匹配，不含测试或原型文件；本轮客户端代码未改、未重复运行客户端全集。原始原型保持不变，后续可单独移除。

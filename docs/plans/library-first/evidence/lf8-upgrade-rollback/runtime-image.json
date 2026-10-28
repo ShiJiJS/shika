@@ -1,0 +1,28 @@
+{
+  "Id": "sha256:886b79b72ecb9116087d892f230471943121f24ccef093113cc3197b4607fef4",
+  "RepoTags": [
+    "video-viewer-server:0.2.0-preview.2"
+  ],
+  "Architecture": "arm64",
+  "Os": "linux",
+  "Config": {
+    "User": "1000:1000",
+    "Cmd": [
+      "uvicorn",
+      "video_viewer.app:create_app",
+      "--factory",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8760",
+      "--workers",
+      "1",
+      "--no-access-log"
+    ],
+    "WorkingDir": "/app",
+    "Labels": {
+      "org.opencontainers.image.revision": "b79da7b9c4d2ab099c055b8eb855904e32abb0a5",
+      "org.opencontainers.image.version": "0.2.0-preview.2"
+    }
+  }
+}
