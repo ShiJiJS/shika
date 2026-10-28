@@ -395,6 +395,17 @@ void main() {
               'Native recording setup must not replace the video controller',
         );
         if (!visible()) await tapCanvas();
+        final before = controller.value.position.inMilliseconds;
+        if (automatic || resume) {
+          await tap(find.widgetWithText(TextButton, '播放'));
+          await playing(true);
+          await until(
+            () => find.byKey(const Key('inline-play')).evaluate().isEmpty,
+            'paused overlay removed before binding animation elements',
+          );
+        }
+        // Resuming removes an unkeyed paused overlay and can replace adjacent
+        // exit elements. Observe the current rendered subtree after that change.
         final resting = probe(exit: exit, footer: footer);
         await until(
           () => resting.targets.values.every(
@@ -407,11 +418,6 @@ void main() {
         // engine frame and wait for its post-frame observation before acting.
         SchedulerBinding.instance.scheduleFrame();
         await until(() => active!.baseline != null, 'actual visible baseline');
-        final before = controller.value.position.inMilliseconds;
-        if (automatic || resume) {
-          await tap(find.widgetWithText(TextButton, '播放'));
-          await playing(true);
-        }
         if (!automatic) {
           await tapCanvas();
         }
