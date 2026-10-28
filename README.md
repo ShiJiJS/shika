@@ -6,7 +6,7 @@ P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已�
 
 服务端技术栈：Python / FastAPI / Uvicorn、SQLite / SQLAlchemy / Alembic、FFmpeg / ffprobe；通过 Docker Compose 单服务、单端口部署。NAS 资源与预加载的评估范围见 [服务端方案](docs/server-plan.md)。
 
-当前媒体库与图包改造处于 LF8 验收，LF0–LF7 已有分阶段实现，按 [LF issues](docs/plans/library-first/ISSUES.md) 继续推进。已生成 [0.2.0-preview.1 本机预览包与安装说明](docs/library-first-preview.md)，原签名覆盖安装已在独立模拟器验证；真实手机、NAS 和完整回退仍待验收。下列第一版范围保留为历史发布记录。
+当前媒体库与图包改造处于 LF8 验收，LF0–LF7 已有分阶段实现，按 [LF issues](docs/plans/library-first/ISSUES.md) 继续推进。已生成 [App preview.1 和配套服务 preview.2](docs/library-first-preview.md)，原签名覆盖安装及三轮独立服务数据升级/回退已有模拟器证据；真实手机、NAS、App回退及其余终验继续。下列第一版范围保留为历史发布记录。
 
 ## 第一版范围
 
