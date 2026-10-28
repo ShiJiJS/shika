@@ -22,3 +22,5 @@ attempt-7-long-diagnostic（eac02a9a）重置旧位置时点击Slider外侧空�
 当前d6f78457补采sample错误时完整状态及实际服务命令，再跑长包诊断。仅在专用8773实例增加透明ASGI请求阶段/字节计数记录，不保存头部、查询或正文，不改变请求/响应；同一正常runtime镜像、数据库和只读夹具。diagnostics/request-observer保留源码/启动命令，作为诊断观察开销，正式性能三轮前须恢复正常入口。此次服务只重建了自有lab容器，未重启仍存活的AVD或其它四个服务。
 
 两次long-diagnostic只有每类一次准备，明确final_matrix=false，汇总器拒绝把它们当30次最终矩阵。全部500页、同版三轮、普通release和目标手机/NAS仍未完成。独立播放器减少动画修复另见#97 / PR #98；尚未纳入现有正常预览APK。
+
+attempt-9 (d6f78457): diagnostic observer active. Reset remained at index 117; failure state had no pending operation or error. No unresolved request reached the service. 1d3fb301 now waits for the rendered Slider to be enabled and starts at its current thumb, rather than the center. An observer /proc read also raced application shutdown; it is preserved in observer-errors.json, not counted as a successful observation. attempt-10 uses the same observer/runtime/QEMU and remains diagnostic-only.

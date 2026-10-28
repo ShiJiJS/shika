@@ -1,0 +1,89 @@
+[
+  {
+    "name": "4k-open-0",
+    "sample": {
+      "phase": "4k-open",
+      "trial": 0,
+      "latency_us": 1892582,
+      "pack_id": "853a0467-4496-4fb9-a4e8-b1b6915fc2be",
+      "page_id": "081a9014-4779-4cf4-8fad-3591e6c4e1a0",
+      "index": 0,
+      "source_dimensions": [
+        4000,
+        6000
+      ],
+      "decoded": [
+        [
+          1119,
+          1678
+        ]
+      ],
+      "providers": 1,
+      "estimated_bytes": 7510728,
+      "metadata": 3,
+      "window": [
+        0,
+        2
+      ],
+      "cache_bytes": 11705032,
+      "pending": 0,
+      "live": 1
+    },
+    "elapsed_seconds": 41.379379209,
+    "png_sha256": "e2d9e6b5f6bfa407293eb432f797e5bc619c4acc0ad2a0eb5c59abdf4f55a0ff"
+  },
+  {
+    "name": "8k-open-0",
+    "sample": {
+      "phase": "8k-open",
+      "trial": 0,
+      "latency_us": 4167276,
+      "pack_id": "09a52d5c-70d6-4a28-a7e1-e47ef9f23a3d",
+      "page_id": "3029c538-97c5-43b0-b1b1-5acb6bfeed52",
+      "index": 0,
+      "source_dimensions": [
+        8000,
+        8000
+      ],
+      "decoded": [
+        [
+          1170,
+          1170
+        ]
+      ],
+      "providers": 1,
+      "estimated_bytes": 5475600,
+      "metadata": 3,
+      "window": [
+        0,
+        2
+      ],
+      "cache_bytes": 9669904,
+      "pending": 0,
+      "live": 1
+    },
+    "elapsed_seconds": 59.040418417000005,
+    "png_sha256": "9b05ed6fcd23fdbeb840fa167a3443b21ac40862e48623a5545b04be60f674e5"
+  },
+  {
+    "name": "failure",
+    "sample": {
+      "phase": "long-open",
+      "waiting_for": "reset fixture page via slider",
+      "present": true,
+      "index": 117,
+      "opened": true,
+      "busy": false,
+      "pending": null,
+      "needs_reload": false,
+      "unsaved": false,
+      "live": true,
+      "error": "",
+      "page_error": "",
+      "page_id": "13629e66-715d-4bcd-a7c2-954debba10f5",
+      "offset_ratio": 0.30769230769232014
+    },
+    "elapsed_seconds": 140.082434667,
+    "png_sha256": "b0510c6a56d392342733f80b89b63d3614ae5c9be391028d38b3d224eec5c68f"
+  }
+]
