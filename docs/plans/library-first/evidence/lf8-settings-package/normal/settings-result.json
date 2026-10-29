@@ -1,0 +1,111 @@
+{
+  "complete": true,
+  "ordinary_version_code": 15,
+  "actual_persisted_fields": [
+    "dark",
+    "preloadAdjacent"
+  ],
+  "normal_and_reduced_setting_saves": 4,
+  "cold_reopens": 2,
+  "final_preferences_equal_original": true,
+  "all21_tables_auth_and_settings_equal": true,
+  "real_tag_draft_preserved_on_live_reduced_then_cancelled": true,
+  "no_server_write_requests": true,
+  "trace_start": 99,
+  "trace_end": 130,
+  "events": [
+    {
+      "action": "actual-system-preference",
+      "reduced": false,
+      "scales": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      }
+    },
+    {
+      "action": "actual-setting-save",
+      "field": "dark",
+      "value": false,
+      "readback": {
+        "dark": false,
+        "preloadAdjacent": false,
+        "videoOrder": "sequential",
+        "defaultMigrations": [
+          "[\"http://10.0.2.2:8772\",\"51a3376cf260ae17b6c0b56e184340d1\",\"61b6719bdf9533f77cff41d292ac06f2\"]",
+          "unrelated-server-public-fixture"
+        ]
+      }
+    },
+    {
+      "action": "actual-setting-save",
+      "field": "preloadAdjacent",
+      "value": true,
+      "readback": {
+        "dark": false,
+        "preloadAdjacent": true,
+        "videoOrder": "sequential",
+        "defaultMigrations": [
+          "[\"http://10.0.2.2:8772\",\"51a3376cf260ae17b6c0b56e184340d1\",\"61b6719bdf9533f77cff41d292ac06f2\"]",
+          "unrelated-server-public-fixture"
+        ]
+      }
+    },
+    {
+      "action": "actual-system-preference",
+      "reduced": true,
+      "scales": {
+        "window_animation_scale": "0",
+        "transition_animation_scale": "0",
+        "animator_duration_scale": "0"
+      }
+    },
+    {
+      "action": "actual-setting-save",
+      "field": "dark",
+      "value": true,
+      "readback": {
+        "dark": true,
+        "preloadAdjacent": true,
+        "videoOrder": "sequential",
+        "defaultMigrations": [
+          "[\"http://10.0.2.2:8772\",\"51a3376cf260ae17b6c0b56e184340d1\",\"61b6719bdf9533f77cff41d292ac06f2\"]",
+          "unrelated-server-public-fixture"
+        ]
+      }
+    },
+    {
+      "action": "actual-setting-save",
+      "field": "preloadAdjacent",
+      "value": false,
+      "readback": {
+        "dark": true,
+        "preloadAdjacent": false,
+        "videoOrder": "sequential",
+        "defaultMigrations": [
+          "[\"http://10.0.2.2:8772\",\"51a3376cf260ae17b6c0b56e184340d1\",\"61b6719bdf9533f77cff41d292ac06f2\"]",
+          "unrelated-server-public-fixture"
+        ]
+      }
+    },
+    {
+      "action": "actual-system-preference",
+      "reduced": false,
+      "scales": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      }
+    },
+    {
+      "action": "actual-system-preference",
+      "reduced": true,
+      "scales": {
+        "window_animation_scale": "0",
+        "transition_animation_scale": "0",
+        "animator_duration_scale": "0"
+      }
+    }
+  ],
+  "ordinary_screens_not_timing_evidence": true
+}

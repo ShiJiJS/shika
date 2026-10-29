@@ -1,0 +1,18 @@
+{
+  "inactive_donor_task_count": 18,
+  "before_any_install_task_count": 19,
+  "new_preinstall_tasks": [
+    {
+      "id": "08a705c6-a437-49fb-9694-2767f5ac5382",
+      "kind": "scan",
+      "status": "completed",
+      "phase": "completed",
+      "created_at": 1793293973.8805077,
+      "finished_at": 1793293973.9636922,
+      "result": "{\"imported\": 0, \"unchanged\": 2, \"deferred\": 0, \"failed\": 0, \"thumbnail_failed\": 0, \"failure_reasons\": {}, \"warning_reasons\": {}, \"warnings\": [], \"missing\": 0, \"identity_matched\": 0, \"identity_ambiguous\": 0, \"roots\": [{\"id\": \"legacy\", \"status\": \"completed\", \"discovered\": 2, \"processed\": 2, \"bytes_total\": 1463402, \"bytes_processed\": 1463402}, {\"id\": \"packs\", \"kind\": \"pack\", \"status\": \"completed\", \"discovered\": 1, \"processed\": 1}], \"issues\": [], \"progress\": {\"discovered\": 2, \"processed\": 2, \"bytes_total\": 1463402, \"bytes_processed\": 1463402, \"updated_at\": 1793293973.9626794}, \"packs\": {\"imported\": 0, \"updated\": 0, \"failed_pages\": 0, \"failed_packs\": 0, \"protected_packs\": 0, \"unchanged\": 1, \"deferred\": 0, \"failed\": 0, \"missing\": 0, \"identity_matched\": 0, \"identity_ambiguous\": 0, \"thumbnail_failed\": 0, \"unsupported_files\": 1, \"loose_images\": 0, \"symlinks_skipped\": 0, \"failure_reasons\": {}, \"issues\": [], \"progress\": {\"discovered\": 3, \"processed\": 3, \"packs_discovered\": 1, \"packs_processed\": 1, \"peak_decoder_kib\": 0, \"updated_at\": 1793293973.9616077}}}",
+      "error": null
+    }
+  ],
+  "owning_container_projection_for_live_base": true,
+  "donor_read_mode": "ro&immutable; no active mount or nonempty WAL; Python3.14"
+}
