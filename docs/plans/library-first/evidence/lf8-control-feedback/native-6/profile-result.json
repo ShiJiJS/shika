@@ -1,0 +1,2020 @@
+{
+  "quick_press_feedback": {
+    "production_component_only": true,
+    "no_repository_or_file_commands": true,
+    "normal_release_acceptance": false,
+    "system_accessibility_injected": false,
+    "cases": [
+      {
+        "name": "round-1-quick-normal",
+        "reduced": false,
+        "callbacks_before": 0,
+        "callbacks_after": 1,
+        "nominal_exit_ms": 100,
+        "frames": [
+          {
+            "frame_us": 324393971,
+            "paint_value": 0.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 0
+          },
+          {
+            "frame_us": 324410638,
+            "paint_value": 1.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324427305,
+            "paint_value": 0.83333,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324460638,
+            "paint_value": 0.5,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324477305,
+            "paint_value": 0.33333,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324527305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324560638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324577305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324610638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324627305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324677305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324727305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          }
+        ],
+        "old_all_frames_zero": false
+      },
+      {
+        "name": "round-1-quick-reduced",
+        "reduced": true,
+        "callbacks_before": 1,
+        "callbacks_after": 2,
+        "nominal_exit_ms": 0,
+        "frames": [
+          {
+            "frame_us": 327127305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327143971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327160638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327177305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327193971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327210638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327227305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327243971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327260638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327277305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327293971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327310638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327327305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327343971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327360638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327393971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327410638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327427305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327477305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327493971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327510638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327527305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327543971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327560638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327577305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          }
+        ],
+        "old_all_frames_zero": true
+      },
+      {
+        "name": "round-2-quick-normal",
+        "reduced": false,
+        "callbacks_before": 2,
+        "callbacks_after": 3,
+        "nominal_exit_ms": 100,
+        "frames": [
+          {
+            "frame_us": 330010638,
+            "paint_value": 1.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330027305,
+            "paint_value": 0.83333,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330043971,
+            "paint_value": 0.66667,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330077305,
+            "paint_value": 0.33333,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330093971,
+            "paint_value": 0.16666999999999998,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330143971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330160638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330193971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330243971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330260638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330277304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330293971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330310638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330327304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330343971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330393971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          }
+        ],
+        "old_all_frames_zero": false
+      },
+      {
+        "name": "round-2-quick-reduced",
+        "reduced": true,
+        "callbacks_before": 3,
+        "callbacks_after": 4,
+        "nominal_exit_ms": 0,
+        "frames": [
+          {
+            "frame_us": 332627304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332643971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332660638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332677304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332693971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332710638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332727304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332743971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332777304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332793971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332827304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332843971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332877304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332893971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332910638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332927304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332943971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332960638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332977304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332993971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 333010638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 333027304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 333043971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 333077304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          }
+        ],
+        "old_all_frames_zero": true
+      },
+      {
+        "name": "round-3-quick-normal",
+        "reduced": false,
+        "callbacks_before": 4,
+        "callbacks_after": 5,
+        "nominal_exit_ms": 100,
+        "frames": [
+          {
+            "frame_us": 335260638,
+            "paint_value": 1.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335277304,
+            "paint_value": 0.83334,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335310638,
+            "paint_value": 0.5,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335327304,
+            "paint_value": 0.33333999999999997,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335343971,
+            "paint_value": 0.16666999999999998,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335360638,
+            "paint_value": 0.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335377304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335393971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335427304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335443971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335460638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335477304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335493971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335510638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335527304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335560638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335577304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335593971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335610638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          }
+        ],
+        "old_all_frames_zero": false
+      },
+      {
+        "name": "round-3-quick-reduced",
+        "reduced": true,
+        "callbacks_before": 5,
+        "callbacks_after": 6,
+        "nominal_exit_ms": 0,
+        "frames": [
+          {
+            "frame_us": 337793971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337810638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337827304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337860638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337877304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337893971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337910638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337927304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337943971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337960638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337977304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337993971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338010638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338060638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338077304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338110638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338143971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338160638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338177304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338193971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338210638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338227304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338243971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          }
+        ],
+        "old_all_frames_zero": true
+      }
+    ],
+    "observations": [
+      {
+        "name": "round-1-quick-normal",
+        "reduced": false,
+        "callbacks_before": 0,
+        "frames": [
+          {
+            "frame_us": 324393971,
+            "paint_value": 0.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 0
+          },
+          {
+            "frame_us": 324410638,
+            "paint_value": 1.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324427305,
+            "paint_value": 0.83333,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324460638,
+            "paint_value": 0.5,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324477305,
+            "paint_value": 0.33333,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324527305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324560638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324577305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324610638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324627305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324677305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 324727305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          }
+        ]
+      },
+      {
+        "name": "round-1-quick-reduced",
+        "reduced": true,
+        "callbacks_before": 1,
+        "frames": [
+          {
+            "frame_us": 327127305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327143971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327160638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327177305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327193971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327210638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327227305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327243971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327260638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327277305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327293971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327310638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327327305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327343971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327360638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327393971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327410638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327427305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327477305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327493971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327510638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327527305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327543971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327560638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          },
+          {
+            "frame_us": 327577305,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 2
+          }
+        ]
+      },
+      {
+        "name": "round-2-quick-normal",
+        "reduced": false,
+        "callbacks_before": 2,
+        "frames": [
+          {
+            "frame_us": 330010638,
+            "paint_value": 1.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330027305,
+            "paint_value": 0.83333,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330043971,
+            "paint_value": 0.66667,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330077305,
+            "paint_value": 0.33333,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330093971,
+            "paint_value": 0.16666999999999998,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330143971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330160638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330193971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330243971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330260638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330277304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330293971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330310638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330327304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330343971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          },
+          {
+            "frame_us": 330393971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 3
+          }
+        ]
+      },
+      {
+        "name": "round-2-quick-reduced",
+        "reduced": true,
+        "callbacks_before": 3,
+        "frames": [
+          {
+            "frame_us": 332627304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332643971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332660638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332677304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332693971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332710638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332727304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332743971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332777304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332793971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332827304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332843971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332877304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332893971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332910638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332927304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332943971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332960638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332977304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 332993971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 333010638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 333027304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 333043971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          },
+          {
+            "frame_us": 333077304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 4
+          }
+        ]
+      },
+      {
+        "name": "round-3-quick-normal",
+        "reduced": false,
+        "callbacks_before": 4,
+        "frames": [
+          {
+            "frame_us": 335260638,
+            "paint_value": 1.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335277304,
+            "paint_value": 0.83334,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335310638,
+            "paint_value": 0.5,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335327304,
+            "paint_value": 0.33333999999999997,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335343971,
+            "paint_value": 0.16666999999999998,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335360638,
+            "paint_value": 0.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335377304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335393971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335427304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335443971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335460638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335477304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335493971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335510638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335527304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335560638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335577304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335593971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          },
+          {
+            "frame_us": 335610638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 5
+          }
+        ]
+      },
+      {
+        "name": "round-3-quick-reduced",
+        "reduced": true,
+        "callbacks_before": 5,
+        "frames": [
+          {
+            "frame_us": 337793971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337810638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337827304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337860638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337877304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337893971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337910638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337927304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337943971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337960638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337977304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 337993971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338010638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338060638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338077304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338110638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338143971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338160638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338177304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338193971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338210638,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338227304,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          },
+          {
+            "frame_us": 338243971,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": true,
+            "media_query_flag": true,
+            "callbacks": 6
+          }
+        ]
+      }
+    ],
+    "callbacks": 6,
+    "complete": true
+  }
+}

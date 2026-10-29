@@ -1,0 +1,18 @@
+{"time": 1793287332.0638459, "action": "configure", "name": null, "reduced": false, "actual": {"window_animation_scale": "1", "transition_animation_scale": "1", "animator_duration_scale": "1"}}
+{"time": 1793287333.649347, "action": "begin", "name": "round-1-press-normal", "reduced": null}
+{"time": 1793287333.709493, "action": "hold_start", "name": null, "reduced": null, "point": [199, 383], "owned_gesture_pid": 59054}
+{"time": 1793287338.8444831, "action": "capture", "name": "round-1-press-normal-entry", "reduced": null}
+{"time": 1793287340.4978392, "action": "configure", "name": null, "reduced": true, "actual": {"window_animation_scale": "0", "transition_animation_scale": "0", "animator_duration_scale": "0"}}
+{"time": 1793287340.622848, "action": "hold_end", "name": null, "reduced": null, "owned_gesture_pid": 59054, "exit_code": 0}
+{"time": 1793287343.1489909, "action": "capture", "name": "round-1-press-normal-return", "reduced": null}
+/sdcard/lf8-control-feedback-round-1-press-normal.mp4: 1 file pulled, 0 skipped. 6.0 MB/s (66971 bytes in 0.011s)
+{"time": 1793287347.732037, "action": "end", "name": "round-1-press-normal", "reduced": null}
+{"time": 1793287348.5713449, "action": "configure", "name": null, "reduced": true, "actual": {"window_animation_scale": "0", "transition_animation_scale": "0", "animator_duration_scale": "0"}}
+{"time": 1793287351.625618, "action": "begin", "name": "round-1-press-reduced", "reduced": null}
+{"time": 1793287351.847688, "action": "hold_start", "name": null, "reduced": null, "point": [199, 383], "owned_gesture_pid": 59471}
+{"time": 1793287356.8235788, "action": "capture", "name": "round-1-press-reduced-entry", "reduced": null}
+{"time": 1793287359.019653, "action": "configure", "name": null, "reduced": false, "actual": {"window_animation_scale": "1", "transition_animation_scale": "1", "animator_duration_scale": "1"}}
+{"time": 1793287359.038501, "action": "hold_end", "name": null, "reduced": null, "owned_gesture_pid": 59471, "exit_code": 0}
+{"time": 1793287361.640898, "action": "failure", "name": "terminal", "reduced": null}
+{"exit_code": 1, "recordings": 1, "observer_errors": []}
+/sdcard/lf8-control-feedback-round-1-press-reduced.mp4: 1 file pulled, 0 skipped. 27.6 MB/s (95035 bytes in 0.003s)

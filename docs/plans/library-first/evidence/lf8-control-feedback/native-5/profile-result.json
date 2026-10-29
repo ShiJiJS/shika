@@ -1,0 +1,68 @@
+{
+  "quick_press_feedback": {
+    "production_component_only": true,
+    "no_repository_or_file_commands": true,
+    "normal_release_acceptance": false,
+    "system_accessibility_injected": false,
+    "cases": [
+      {
+        "name": "round-1-quick-normal",
+        "reduced": false,
+        "callbacks_before": 0,
+        "callbacks_after": 1,
+        "nominal_exit_ms": 100,
+        "frames": [
+          {
+            "frame_us": 100510647,
+            "paint_value": 0.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 0
+          },
+          {
+            "frame_us": 100593980,
+            "paint_value": 1.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 100660647,
+            "paint_value": 0.33333,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 100677314,
+            "paint_value": 0.16666000000000003,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 100693980,
+            "paint_value": 0.0,
+            "removed": false,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          },
+          {
+            "frame_us": 100710647,
+            "paint_value": 0.0,
+            "removed": true,
+            "native_flag": false,
+            "media_query_flag": false,
+            "callbacks": 1
+          }
+        ]
+      }
+    ],
+    "active_failure": null
+  }
+}

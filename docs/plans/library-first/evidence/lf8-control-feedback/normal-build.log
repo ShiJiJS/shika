@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/build-app-rollback.py", line 344, in <module>
+    main()
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/build-app-rollback.py", line 96, in main
+    sdk = Path(env["ANDROID_HOME"])
+KeyError: 'ANDROID_HOME'

@@ -1,0 +1,33 @@
+{"time": 1793287175.350123, "action": "configure", "name": null, "reduced": false, "actual": {"window_animation_scale": "1", "transition_animation_scale": "1", "animator_duration_scale": "1"}}
+{"time": 1793287176.872349, "action": "begin", "name": "round-1-press-normal", "reduced": null}
+{"time": 1793287176.885005, "action": "hold_start", "name": null, "reduced": null, "point": [199, 383], "owned_gesture_pid": 55629}
+{"time": 1793287177.422292, "action": "capture", "name": "round-1-press-normal-entry", "reduced": null}
+{"time": 1793287177.763841, "action": "configure", "name": null, "reduced": true, "actual": {"window_animation_scale": "0", "transition_animation_scale": "0", "animator_duration_scale": "0"}}
+{"time": 1793287179.46148, "action": "hold_end", "name": null, "reduced": null, "owned_gesture_pid": 55629, "exit_code": 0}
+{"time": 1793287180.604776, "action": "capture", "name": "round-1-press-normal-return", "reduced": null}
+/sdcard/lf8-control-feedback-round-1-press-normal.mp4: 1 file pulled, 0 skipped. 16.4 MB/s (118908 bytes in 0.007s)
+{"time": 1793287182.192085, "action": "end", "name": "round-1-press-normal", "reduced": null}
+{"time": 1793287182.485379, "action": "configure", "name": null, "reduced": true, "actual": {"window_animation_scale": "0", "transition_animation_scale": "0", "animator_duration_scale": "0"}}
+{"time": 1793287183.4668102, "action": "begin", "name": "round-1-press-reduced", "reduced": null}
+{"time": 1793287183.483426, "action": "hold_start", "name": null, "reduced": null, "point": [199, 383], "owned_gesture_pid": 55741}
+{"time": 1793287184.4017541, "action": "capture", "name": "round-1-press-reduced-entry", "reduced": null}
+{"time": 1793287184.78763, "action": "configure", "name": null, "reduced": false, "actual": {"window_animation_scale": "1", "transition_animation_scale": "1", "animator_duration_scale": "1"}}
+{"time": 1793287186.038232, "action": "hold_end", "name": null, "reduced": null, "owned_gesture_pid": 55741, "exit_code": 0}
+{"time": 1793287186.430133, "action": "capture", "name": "round-1-press-reduced-return", "reduced": null}
+/sdcard/lf8-control-feedback-round-1-press-reduced.mp4: 1 file pulled, 0 skipped. 71.0 MB/s (133328 bytes in 0.002s)
+{"time": 1793287187.2574332, "action": "end", "name": "round-1-press-reduced", "reduced": null}
+{"time": 1793287187.494389, "action": "configure", "name": null, "reduced": false, "actual": {"window_animation_scale": "1", "transition_animation_scale": "1", "animator_duration_scale": "1"}}
+{"time": 1793287188.191307, "action": "begin", "name": "round-1-choice-normal", "reduced": null}
+{"time": 1793287188.336163, "action": "tap", "name": null, "reduced": null, "point": [199, 527]}
+{"time": 1793287189.173389, "action": "capture", "name": "round-1-choice-normal-entry", "reduced": null}
+{"time": 1793287189.563942, "action": "configure", "name": null, "reduced": true, "actual": {"window_animation_scale": "0", "transition_animation_scale": "0", "animator_duration_scale": "0"}}
+{"time": 1793287189.8610072, "action": "tap", "name": null, "reduced": null, "point": [199, 527]}
+{"time": 1793287190.588305, "action": "capture", "name": "round-1-choice-normal-return", "reduced": null}
+/sdcard/lf8-control-feedback-round-1-choice-normal.mp4: 1 file pulled, 0 skipped. 91.6 MB/s (172973 bytes in 0.002s)
+{"time": 1793287191.5396118, "action": "end", "name": "round-1-choice-normal", "reduced": null}
+{"time": 1793287191.712329, "action": "configure", "name": null, "reduced": true, "actual": {"window_animation_scale": "0", "transition_animation_scale": "0", "animator_duration_scale": "0"}}
+{"time": 1793287192.6425679, "action": "begin", "name": "round-1-choice-reduced", "reduced": null}
+{"time": 1793287192.71255, "action": "tap", "name": null, "reduced": null, "point": [199, 527]}
+{"time": 1793287193.594552, "action": "failure", "name": "terminal", "reduced": null}
+{"exit_code": 1, "recordings": 3, "observer_errors": []}
+/sdcard/lf8-control-feedback-round-1-choice-reduced.mp4: 1 file pulled, 0 skipped. 79.5 MB/s (374939 bytes in 0.004s)

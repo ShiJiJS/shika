@@ -1,0 +1,17 @@
+Installing ../../.dev/lf8-control-feedback/quick-profile-2.apk...        726ms
+I/js.video_viewer( 4633): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 4633): Skipped 51 frames!  The application may be doing too much work on its main thread.
+D/WindowLayoutComponentImpl( 4633): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@f0848fa, of which baseContext=android.app.ContextImpl@a644a87
+VMServiceFlutterDriver: Connecting to Flutter application at <redacted-local-vm-service>
+VMServiceFlutterDriver: Isolate found with number: 5717679436469307
+VMServiceFlutterDriver: Isolate 5717679436469307 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 4633): 00:00 +0: quick native tap acknowledges once with live system motion preference
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController( 4633): hide(ime(), fromIme=false)
+I/ImeTracker( 4633): io.github.shijijs.video_viewer:2cddb960: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller( 4633): Installing profile for io.github.shijijs.video_viewer
+I/flutter ( 4633): 00:16 +1: (tearDownAll)
+I/flutter ( 4633): 00:16 +2: All tests passed!
+All tests passed.

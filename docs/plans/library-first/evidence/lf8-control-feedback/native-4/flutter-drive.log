@@ -1,0 +1,16 @@
+Installing ../../.dev/lf8-control-feedback/control-profile-4.apk...        321ms
+I/js.video_viewer(14991): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+D/WindowLayoutComponentImpl(14991): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@873c9ce, of which baseContext=android.app.ContextImpl@6919d0b
+VMServiceFlutterDriver: Connecting to Flutter application at <redacted-local-vm-service>
+VMServiceFlutterDriver: Isolate found with number: 4440266300203859
+VMServiceFlutterDriver: Isolate 4440266300203859 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter (14991): 00:00 +0: production control components follow actual Android preference without commands
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController(14991): hide(ime(), fromIme=false)
+I/ImeTracker(14991): io.github.shijijs.video_viewer:7f06481e: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller(14991): Installing profile for io.github.shijijs.video_viewer
+I/flutter (14991): 01:11 +1: (tearDownAll)
+I/flutter (14991): 01:11 +2: All tests passed!
+All tests passed.

@@ -1,0 +1,44 @@
+Installing ../../.dev/lf8-control-feedback/control-profile.apk...        830ms
+I/WindowExtensionsImpl( 3530): Initializing Window Extensions, vendor API level=9, activity embedding enabled=true
+I/js.video_viewer( 3530): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 3530): Skipped 119 frames!  The application may be doing too much work on its main thread.
+D/WindowLayoutComponentImpl( 3530): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@41de0ef, of which baseContext=android.app.ContextImpl@b5b67e8
+VMServiceFlutterDriver: Connecting to Flutter application at <redacted-local-vm-service>
+VMServiceFlutterDriver: Isolate found with number: 3569420946347611
+VMServiceFlutterDriver: Isolate 3569420946347611 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 3530): 00:00 +0: production control components follow actual Android preference without commands
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController( 3530): hide(ime(), fromIme=false)
+I/ImeTracker( 3530): io.github.shijijs.video_viewer:3970c67: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller( 3530): Installing profile for io.github.shijijs.video_viewer
+I/flutter ( 3530): Expected: true
+I/flutter ( 3530):   Actual: <false>
+I/flutter ( 3530): 
+I/flutter ( 3530): #0      fail (package:matcher/src/expect/expect.dart:187)
+I/flutter ( 3530): #1      _expect (package:matcher/src/expect/expect.dart:182)
+I/flutter ( 3530): #2      expect (package:matcher/src/expect/expect.dart:65)
+I/flutter ( 3530): #3      expect (package:flutter_test/src/widget_tester.dart:473)
+I/flutter ( 3530): #4      ControlProbe.verify (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/control_feedback_test.dart:51)
+I/flutter ( 3530): #5      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/control_feedback_test.dart:272)
+I/flutter ( 3530): <asynchronous suspension>
+I/flutter ( 3530): #6      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 3530): <asynchronous suspension>
+I/flutter ( 3530): #7      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 3530): <asynchronous suspension>
+I/flutter ( 3530): #8      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 3530): <asynchronous suspension>
+I/flutter ( 3530): 00:18 +0: production control components follow actual Android preference without commands [E]
+I/flutter ( 3530):   Test failed. See exception logs above.
+I/flutter ( 3530):   The test description was: production control components follow actual Android preference without commands
+I/flutter ( 3530):   
+I/flutter ( 3530): 00:18 +0 -1: (tearDownAll)
+I/flutter ( 3530): 00:18 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: production control components follow actual Android preference without commands
+Instance of 'FlutterErrorDetails'
+end of failure 1
+
+
+
