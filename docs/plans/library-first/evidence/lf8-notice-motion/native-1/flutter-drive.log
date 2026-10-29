@@ -1,0 +1,15 @@
+Installing ../../.dev/lf8-notice-motion/notice-profile.apk...        340ms
+D/WindowLayoutComponentImpl( 3619): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@d72cc83, of which baseContext=android.app.ContextImpl@aed2a2c
+VMServiceFlutterDriver: Connecting to Flutter application at <redacted-local-vm-service>
+VMServiceFlutterDriver: Isolate found with number: 739765104459719
+VMServiceFlutterDriver: Isolate 739765104459719 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 3619): 00:00 +0: production notice component uses actual Android preferences
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController( 3619): hide(ime(), fromIme=false)
+I/ImeTracker( 3619): io.github.shijijs.video_viewer:47c8144e: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller( 3619): Installing profile for io.github.shijijs.video_viewer
+I/flutter ( 3619): 00:50 +1: (tearDownAll)
+I/flutter ( 3619): 00:50 +2: All tests passed!
+All tests passed.

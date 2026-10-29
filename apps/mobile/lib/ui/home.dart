@@ -584,7 +584,13 @@ class _LibraryHomeState extends State<LibraryHome> {
     if (!mounted) return;
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(margin: snackMargin, content: Text(text)));
+      ..showSnackBar(
+        PaperSnackBar(
+          context: context,
+          margin: snackMargin,
+          content: Text(text),
+        ),
+      );
   }
 
   Future<bool> perform(

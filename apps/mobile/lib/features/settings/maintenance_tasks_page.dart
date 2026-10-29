@@ -122,8 +122,9 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
     if (task != null) {
       await detail(task);
     } else if (s.message.isNotEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(s.message)));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(PaperSnackBar(context: context, content: Text(s.message)));
       await s.load();
     }
   }

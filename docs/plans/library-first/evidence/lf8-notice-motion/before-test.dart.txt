@@ -1,0 +1,94 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+SnackBar notice(BuildContext context, String label, VoidCallback undo) =>
+    SnackBar(
+      content: Text(label),
+      duration: const Duration(seconds: 8),
+      margin: const EdgeInsets.all(12),
+      action: SnackBarAction(label: 'undo', onPressed: undo),
+    );
+
+void main() {
+  for (final entryReduced in [false, true]) {
+    for (final exitReduced in [false, true]) {
+      for (final action in [false, true]) {
+        testWidgets(
+          'notice entry=$entryReduced exit=$exitReduced action=$action preserves undo and close reason',
+          (t) async {
+            t.platformDispatcher.accessibilityFeaturesTestValue =
+                FakeAccessibilityFeatures(disableAnimations: entryReduced);
+            addTearDown(
+              t.platformDispatcher.clearAccessibilityFeaturesTestValue,
+            );
+            late BuildContext context;
+            var undoCount = 0;
+            await t.pumpWidget(
+              MaterialApp(
+                home: Builder(
+                  builder: (value) {
+                    context = value;
+                    return const Scaffold(body: Text('source'));
+                  },
+                ),
+              ),
+            );
+            SnackBarClosedReason? closed;
+            final messenger = ScaffoldMessenger.of(context);
+            final feature = messenger.showSnackBar(
+              notice(context, 'kept message', () => undoCount++),
+            );
+            unawaited(feature.closed.then((value) => closed = value));
+            await t.pump();
+            final bar = t.widget<SnackBar>(find.byType(SnackBar));
+            final controller = bar.animation! as AnimationController;
+            expect(
+              controller.duration,
+              Duration(milliseconds: entryReduced ? 0 : 160),
+            );
+            expect(controller.value, entryReduced ? 1 : 0);
+            expect(bar.duration, const Duration(seconds: 8));
+            expect(bar.margin, const EdgeInsets.all(12));
+            if (!entryReduced) {
+              await t.pump(const Duration(milliseconds: 80));
+              expect(controller.value, inExclusiveRange(0, 1));
+              await t.pump(const Duration(milliseconds: 96));
+            }
+            t.platformDispatcher.accessibilityFeaturesTestValue =
+                FakeAccessibilityFeatures(disableAnimations: exitReduced);
+            await t.pump();
+            expect(
+              controller.reverseDuration,
+              Duration(milliseconds: exitReduced ? 0 : 160),
+            );
+            if (action) {
+              await t.tap(find.text('undo'));
+              expect(undoCount, 1);
+            } else {
+              messenger.hideCurrentSnackBar();
+              expect(undoCount, 0);
+            }
+            expect(controller.value, exitReduced ? 0 : 1);
+            await t.pump();
+            if (!exitReduced) {
+              await t.pump(const Duration(milliseconds: 80));
+              expect(controller.value, inExclusiveRange(0, 1));
+              await t.pump(const Duration(milliseconds: 96));
+            }
+            await t.pump();
+            expect(
+              closed,
+              action ? SnackBarClosedReason.action : SnackBarClosedReason.hide,
+            );
+            expect(find.text('kept message'), findsNothing);
+            expect(find.text('source'), findsOneWidget);
+            expect(t.takeException(), isNull);
+            await t.pumpWidget(const SizedBox());
+          },
+        );
+      }
+    }
+  }
+}

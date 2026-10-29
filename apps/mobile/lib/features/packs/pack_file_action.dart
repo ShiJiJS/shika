@@ -224,8 +224,10 @@ void showPackUndo(
   messenger
     ..removeCurrentSnackBar()
     ..showSnackBar(
-      SnackBar(
+      PaperSnackBar(
+        context: context,
         content: const Text('整包已移入回收站，源文件保留'),
+        persist: false,
         duration: remaining > Duration.zero
             ? remaining
             : const Duration(seconds: 3),
@@ -255,7 +257,8 @@ void showPackUndo(
                       repository.packFilesChanged();
                       if (context.mounted) {
                         messenger.showSnackBar(
-                          SnackBar(
+                          PaperSnackBar(
+                            context: context,
                             content: Text(
                               undone.task.result!.succeeded > 0
                                   ? '已恢复图包'
@@ -268,7 +271,8 @@ void showPackUndo(
                     }().catchError((Object failure) {
                       if (context.mounted) {
                         messenger.showSnackBar(
-                          SnackBar(
+                          PaperSnackBar(
+                            context: context,
                             content: Text(packFileFailureMessage(failure)),
                           ),
                         );

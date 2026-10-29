@@ -1,0 +1,1217 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart
+00:00 +0: notice entry=false exit=false action=false preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following assertion was thrown building SnackBar-[#adbd5](dirty, dependencies:
+[InheritedCupertinoTheme, MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#2a1e0]],
+state: _SnackBarState#796be):
+Margin can only be used with floating behavior. SnackBarBehavior.fixed was set by default.
+'package:flutter/src/material/snack_bar.dart':
+Failed assertion: line 677 pos 16: 'widget.margin == null'
+
+Either the assertion indicates an error in the framework itself, or we should provide substantially
+more information in this error message to help you determine and fix the underlying cause.
+In either case, please report this assertion by filing a bug on GitHub:
+  https://github.com/flutter/flutter/issues/new?template=02_bug.yml
+
+The relevant error-causing widget was:
+  Scaffold
+  Scaffold:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:34:34
+
+When the exception was thrown, this was the stack:
+#2      _SnackBarState.build.<anonymous closure> (package:flutter/src/material/snack_bar.dart:677:16)
+#3      _SnackBarState.build (package:flutter/src/material/snack_bar.dart:681:6)
+#4      StatefulElement.build (package:flutter/src/widgets/framework.dart:5944:27)
+#5      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5830:15)
+#6      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5812:5)
+#9      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5986:11)
+#10     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5806:5)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4600:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7277:36)
+#25     Element.updateChild (package:flutter/src/widgets/framework.dart:4072:18)
+#26     Element.updateChildren (package:flutter/src/widgets/framework.dart:4268:32)
+#27     MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7308:17)
+#28     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#29     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#30     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#31     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#32     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#33     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#34     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#35     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#36     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#37     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#38     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#39     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#40     StatelessElement.update (package:flutter/src/widgets/framework.dart:5908:5)
+#41     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#42     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#43     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#44     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#45     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#46     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#47     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#48     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#49     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#50     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#51     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#52     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#53     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#54     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#55     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#56     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#57     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#58     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#59     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#60     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#61     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#62     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#64     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#65     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#66     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#67     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#68     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#69     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#70     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#71     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#72     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#73     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#74     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#75     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#76     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#77     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#78     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#79     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#80     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#81     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#82     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#83     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#84     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#85     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#86     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#87     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#88     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#89     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#90     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#91     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#92     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#93     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2763:15)
+#94     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2820:11)
+#95     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3124:18)
+#96     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2432:19)
+#97     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#98     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#99     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1345:9)
+#100    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2261:9)
+#103    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#104    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#105    WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#108    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#109    WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#110    main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:45:21)
+<asynchronous suspension>
+#111    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#112    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 7 frames from class _AssertionError, dart:async, and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.160000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:48:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart line 48
+The test description was:
+  notice entry=false exit=false action=false preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: notice entry=false exit=false action=false preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=false exit=false action=false preserves undo and close reason
+  
+00:00 +0 -1: notice entry=false exit=false action=true preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following assertion was thrown building SnackBar-[#38c6a](dirty, dependencies:
+[InheritedCupertinoTheme, MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#a9499]],
+state: _SnackBarState#78c08):
+Margin can only be used with floating behavior. SnackBarBehavior.fixed was set by default.
+'package:flutter/src/material/snack_bar.dart':
+Failed assertion: line 677 pos 16: 'widget.margin == null'
+
+Either the assertion indicates an error in the framework itself, or we should provide substantially
+more information in this error message to help you determine and fix the underlying cause.
+In either case, please report this assertion by filing a bug on GitHub:
+  https://github.com/flutter/flutter/issues/new?template=02_bug.yml
+
+The relevant error-causing widget was:
+  Scaffold
+  Scaffold:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:34:34
+
+When the exception was thrown, this was the stack:
+#2      _SnackBarState.build.<anonymous closure> (package:flutter/src/material/snack_bar.dart:677:16)
+#3      _SnackBarState.build (package:flutter/src/material/snack_bar.dart:681:6)
+#4      StatefulElement.build (package:flutter/src/widgets/framework.dart:5944:27)
+#5      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5830:15)
+#6      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5812:5)
+#9      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5986:11)
+#10     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5806:5)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4600:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7277:36)
+#25     Element.updateChild (package:flutter/src/widgets/framework.dart:4072:18)
+#26     Element.updateChildren (package:flutter/src/widgets/framework.dart:4268:32)
+#27     MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7308:17)
+#28     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#29     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#30     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#31     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#32     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#33     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#34     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#35     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#36     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#37     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#38     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#39     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#40     StatelessElement.update (package:flutter/src/widgets/framework.dart:5908:5)
+#41     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#42     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#43     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#44     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#45     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#46     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#47     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#48     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#49     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#50     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#51     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#52     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#53     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#54     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#55     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#56     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#57     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#58     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#59     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#60     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#61     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#62     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#64     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#65     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#66     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#67     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#68     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#69     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#70     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#71     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#72     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#73     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#74     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#75     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#76     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#77     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#78     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#79     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#80     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#81     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#82     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#83     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#84     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#85     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#86     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#87     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#88     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#89     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#90     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#91     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#92     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#93     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2763:15)
+#94     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2820:11)
+#95     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3124:18)
+#96     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2432:19)
+#97     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#98     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#99     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1345:9)
+#100    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2261:9)
+#103    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#104    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#105    WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#108    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#109    WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#110    main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:45:21)
+<asynchronous suspension>
+#111    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#112    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 7 frames from class _AssertionError, dart:async, and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.160000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:48:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart line 48
+The test description was:
+  notice entry=false exit=false action=true preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -2: notice entry=false exit=false action=true preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=false exit=false action=true preserves undo and close reason
+  
+00:00 +0 -2: notice entry=false exit=true action=false preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following assertion was thrown building SnackBar-[#1261d](dirty, dependencies:
+[InheritedCupertinoTheme, MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#3cced]],
+state: _SnackBarState#ca2a7):
+Margin can only be used with floating behavior. SnackBarBehavior.fixed was set by default.
+'package:flutter/src/material/snack_bar.dart':
+Failed assertion: line 677 pos 16: 'widget.margin == null'
+
+Either the assertion indicates an error in the framework itself, or we should provide substantially
+more information in this error message to help you determine and fix the underlying cause.
+In either case, please report this assertion by filing a bug on GitHub:
+  https://github.com/flutter/flutter/issues/new?template=02_bug.yml
+
+The relevant error-causing widget was:
+  Scaffold
+  Scaffold:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:34:34
+
+When the exception was thrown, this was the stack:
+#2      _SnackBarState.build.<anonymous closure> (package:flutter/src/material/snack_bar.dart:677:16)
+#3      _SnackBarState.build (package:flutter/src/material/snack_bar.dart:681:6)
+#4      StatefulElement.build (package:flutter/src/widgets/framework.dart:5944:27)
+#5      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5830:15)
+#6      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5812:5)
+#9      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5986:11)
+#10     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5806:5)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4600:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7277:36)
+#25     Element.updateChild (package:flutter/src/widgets/framework.dart:4072:18)
+#26     Element.updateChildren (package:flutter/src/widgets/framework.dart:4268:32)
+#27     MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7308:17)
+#28     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#29     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#30     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#31     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#32     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#33     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#34     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#35     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#36     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#37     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#38     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#39     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#40     StatelessElement.update (package:flutter/src/widgets/framework.dart:5908:5)
+#41     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#42     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#43     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#44     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#45     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#46     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#47     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#48     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#49     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#50     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#51     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#52     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#53     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#54     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#55     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#56     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#57     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#58     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#59     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#60     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#61     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#62     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#64     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#65     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#66     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#67     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#68     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#69     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#70     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#71     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#72     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#73     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#74     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#75     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#76     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#77     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#78     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#79     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#80     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#81     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#82     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#83     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#84     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#85     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#86     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#87     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#88     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#89     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#90     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#91     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#92     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#93     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2763:15)
+#94     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2820:11)
+#95     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3124:18)
+#96     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2432:19)
+#97     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#98     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#99     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1345:9)
+#100    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2261:9)
+#103    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#104    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#105    WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#108    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#109    WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#110    main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:45:21)
+<asynchronous suspension>
+#111    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#112    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 7 frames from class _AssertionError, dart:async, and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.160000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:48:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart line 48
+The test description was:
+  notice entry=false exit=true action=false preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -3: notice entry=false exit=true action=false preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=false exit=true action=false preserves undo and close reason
+  
+00:00 +0 -3: notice entry=false exit=true action=true preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following assertion was thrown building SnackBar-[#867e2](dirty, dependencies:
+[InheritedCupertinoTheme, MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#c9a48]],
+state: _SnackBarState#f36ad):
+Margin can only be used with floating behavior. SnackBarBehavior.fixed was set by default.
+'package:flutter/src/material/snack_bar.dart':
+Failed assertion: line 677 pos 16: 'widget.margin == null'
+
+Either the assertion indicates an error in the framework itself, or we should provide substantially
+more information in this error message to help you determine and fix the underlying cause.
+In either case, please report this assertion by filing a bug on GitHub:
+  https://github.com/flutter/flutter/issues/new?template=02_bug.yml
+
+The relevant error-causing widget was:
+  Scaffold
+  Scaffold:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:34:34
+
+When the exception was thrown, this was the stack:
+#2      _SnackBarState.build.<anonymous closure> (package:flutter/src/material/snack_bar.dart:677:16)
+#3      _SnackBarState.build (package:flutter/src/material/snack_bar.dart:681:6)
+#4      StatefulElement.build (package:flutter/src/widgets/framework.dart:5944:27)
+#5      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5830:15)
+#6      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5812:5)
+#9      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5986:11)
+#10     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5806:5)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4600:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7277:36)
+#25     Element.updateChild (package:flutter/src/widgets/framework.dart:4072:18)
+#26     Element.updateChildren (package:flutter/src/widgets/framework.dart:4268:32)
+#27     MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7308:17)
+#28     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#29     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#30     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#31     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#32     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#33     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#34     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#35     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#36     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#37     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#38     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#39     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#40     StatelessElement.update (package:flutter/src/widgets/framework.dart:5908:5)
+#41     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#42     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#43     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#44     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#45     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#46     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#47     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#48     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#49     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#50     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#51     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#52     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#53     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#54     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#55     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#56     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#57     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#58     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#59     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#60     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#61     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#62     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#64     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#65     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#66     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#67     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#68     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#69     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#70     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#71     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#72     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#73     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#74     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#75     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#76     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#77     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#78     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#79     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#80     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#81     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#82     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#83     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#84     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#85     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#86     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#87     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#88     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#89     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#90     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#91     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#92     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#93     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2763:15)
+#94     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2820:11)
+#95     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3124:18)
+#96     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2432:19)
+#97     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#98     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#99     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1345:9)
+#100    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2261:9)
+#103    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#104    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#105    WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#108    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#109    WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#110    main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:45:21)
+<asynchronous suspension>
+#111    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#112    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 7 frames from class _AssertionError, dart:async, and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.160000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:48:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart line 48
+The test description was:
+  notice entry=false exit=true action=true preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -4: notice entry=false exit=true action=true preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=false exit=true action=true preserves undo and close reason
+  
+00:00 +0 -4: notice entry=true exit=false action=false preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following assertion was thrown building SnackBar-[#e55f8](dirty, dependencies:
+[InheritedCupertinoTheme, MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#72bbb]],
+state: _SnackBarState#98094):
+Margin can only be used with floating behavior. SnackBarBehavior.fixed was set by default.
+'package:flutter/src/material/snack_bar.dart':
+Failed assertion: line 677 pos 16: 'widget.margin == null'
+
+Either the assertion indicates an error in the framework itself, or we should provide substantially
+more information in this error message to help you determine and fix the underlying cause.
+In either case, please report this assertion by filing a bug on GitHub:
+  https://github.com/flutter/flutter/issues/new?template=02_bug.yml
+
+The relevant error-causing widget was:
+  Scaffold
+  Scaffold:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:34:34
+
+When the exception was thrown, this was the stack:
+#2      _SnackBarState.build.<anonymous closure> (package:flutter/src/material/snack_bar.dart:677:16)
+#3      _SnackBarState.build (package:flutter/src/material/snack_bar.dart:681:6)
+#4      StatefulElement.build (package:flutter/src/widgets/framework.dart:5944:27)
+#5      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5830:15)
+#6      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5812:5)
+#9      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5986:11)
+#10     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5806:5)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4600:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7277:36)
+#25     Element.updateChild (package:flutter/src/widgets/framework.dart:4072:18)
+#26     Element.updateChildren (package:flutter/src/widgets/framework.dart:4268:32)
+#27     MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7308:17)
+#28     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#29     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#30     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#31     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#32     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#33     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#34     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#35     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#36     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#37     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#38     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#39     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#40     StatelessElement.update (package:flutter/src/widgets/framework.dart:5908:5)
+#41     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#42     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#43     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#44     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#45     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#46     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#47     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#48     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#49     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#50     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#51     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#52     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#53     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#54     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#55     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#56     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#57     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#58     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#59     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#60     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#61     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#62     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#64     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#65     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#66     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#67     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#68     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#69     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#70     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#71     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#72     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#73     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#74     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#75     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#76     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#77     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#78     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#79     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#80     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#81     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#82     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#83     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#84     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#85     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#86     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#87     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#88     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#89     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#90     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#91     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#92     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#93     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2763:15)
+#94     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2820:11)
+#95     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3124:18)
+#96     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2432:19)
+#97     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#98     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#99     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1345:9)
+#100    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2261:9)
+#103    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#104    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#105    WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#108    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#109    WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#110    main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:45:21)
+<asynchronous suspension>
+#111    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#112    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 7 frames from class _AssertionError, dart:async, and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.000000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:48:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart line 48
+The test description was:
+  notice entry=true exit=false action=false preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -5: notice entry=true exit=false action=false preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=true exit=false action=false preserves undo and close reason
+  
+00:00 +0 -5: notice entry=true exit=false action=true preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following assertion was thrown building SnackBar-[#bccb9](dirty, dependencies:
+[InheritedCupertinoTheme, MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#e455d]],
+state: _SnackBarState#c53e3):
+Margin can only be used with floating behavior. SnackBarBehavior.fixed was set by default.
+'package:flutter/src/material/snack_bar.dart':
+Failed assertion: line 677 pos 16: 'widget.margin == null'
+
+Either the assertion indicates an error in the framework itself, or we should provide substantially
+more information in this error message to help you determine and fix the underlying cause.
+In either case, please report this assertion by filing a bug on GitHub:
+  https://github.com/flutter/flutter/issues/new?template=02_bug.yml
+
+The relevant error-causing widget was:
+  Scaffold
+  Scaffold:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:34:34
+
+When the exception was thrown, this was the stack:
+#2      _SnackBarState.build.<anonymous closure> (package:flutter/src/material/snack_bar.dart:677:16)
+#3      _SnackBarState.build (package:flutter/src/material/snack_bar.dart:681:6)
+#4      StatefulElement.build (package:flutter/src/widgets/framework.dart:5944:27)
+#5      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5830:15)
+#6      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5812:5)
+#9      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5986:11)
+#10     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5806:5)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4600:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7277:36)
+#25     Element.updateChild (package:flutter/src/widgets/framework.dart:4072:18)
+#26     Element.updateChildren (package:flutter/src/widgets/framework.dart:4268:32)
+#27     MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7308:17)
+#28     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#29     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#30     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#31     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#32     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#33     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#34     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#35     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#36     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#37     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#38     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#39     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#40     StatelessElement.update (package:flutter/src/widgets/framework.dart:5908:5)
+#41     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#42     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#43     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#44     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#45     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#46     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#47     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#48     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#49     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#50     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#51     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#52     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#53     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#54     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#55     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#56     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#57     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#58     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#59     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#60     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#61     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#62     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#64     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#65     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#66     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#67     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#68     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#69     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#70     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#71     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#72     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#73     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#74     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#75     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#76     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#77     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#78     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#79     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#80     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#81     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#82     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#83     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#84     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#85     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#86     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#87     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#88     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#89     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#90     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#91     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#92     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#93     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2763:15)
+#94     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2820:11)
+#95     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3124:18)
+#96     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2432:19)
+#97     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#98     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#99     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1345:9)
+#100    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2261:9)
+#103    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#104    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#105    WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#108    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#109    WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#110    main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:45:21)
+<asynchronous suspension>
+#111    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#112    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 7 frames from class _AssertionError, dart:async, and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.000000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:48:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart line 48
+The test description was:
+  notice entry=true exit=false action=true preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -6: notice entry=true exit=false action=true preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=true exit=false action=true preserves undo and close reason
+  
+00:00 +0 -6: notice entry=true exit=true action=false preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following assertion was thrown building SnackBar-[#b872f](dirty, dependencies:
+[InheritedCupertinoTheme, MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#8e7fc]],
+state: _SnackBarState#d659d):
+Margin can only be used with floating behavior. SnackBarBehavior.fixed was set by default.
+'package:flutter/src/material/snack_bar.dart':
+Failed assertion: line 677 pos 16: 'widget.margin == null'
+
+Either the assertion indicates an error in the framework itself, or we should provide substantially
+more information in this error message to help you determine and fix the underlying cause.
+In either case, please report this assertion by filing a bug on GitHub:
+  https://github.com/flutter/flutter/issues/new?template=02_bug.yml
+
+The relevant error-causing widget was:
+  Scaffold
+  Scaffold:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:34:34
+
+When the exception was thrown, this was the stack:
+#2      _SnackBarState.build.<anonymous closure> (package:flutter/src/material/snack_bar.dart:677:16)
+#3      _SnackBarState.build (package:flutter/src/material/snack_bar.dart:681:6)
+#4      StatefulElement.build (package:flutter/src/widgets/framework.dart:5944:27)
+#5      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5830:15)
+#6      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5812:5)
+#9      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5986:11)
+#10     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5806:5)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4600:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7277:36)
+#25     Element.updateChild (package:flutter/src/widgets/framework.dart:4072:18)
+#26     Element.updateChildren (package:flutter/src/widgets/framework.dart:4268:32)
+#27     MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7308:17)
+#28     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#29     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#30     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#31     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#32     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#33     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#34     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#35     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#36     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#37     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#38     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#39     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#40     StatelessElement.update (package:flutter/src/widgets/framework.dart:5908:5)
+#41     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#42     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#43     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#44     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#45     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#46     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#47     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#48     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#49     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#50     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#51     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#52     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#53     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#54     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#55     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#56     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#57     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#58     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#59     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#60     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#61     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#62     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#64     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#65     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#66     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#67     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#68     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#69     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#70     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#71     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#72     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#73     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#74     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#75     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#76     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#77     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#78     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#79     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#80     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#81     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#82     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#83     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#84     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#85     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#86     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#87     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#88     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#89     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#90     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#91     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#92     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#93     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2763:15)
+#94     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2820:11)
+#95     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3124:18)
+#96     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2432:19)
+#97     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#98     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#99     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1345:9)
+#100    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2261:9)
+#103    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#104    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#105    WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#108    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#109    WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#110    main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:45:21)
+<asynchronous suspension>
+#111    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#112    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 7 frames from class _AssertionError, dart:async, and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.000000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:48:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart line 48
+The test description was:
+  notice entry=true exit=true action=false preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -7: notice entry=true exit=true action=false preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=true exit=true action=false preserves undo and close reason
+  
+00:00 +0 -7: notice entry=true exit=true action=true preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY WIDGETS LIBRARY ╞═══════════════════════════════════════════════════════════
+The following assertion was thrown building SnackBar-[#09ac2](dirty, dependencies:
+[InheritedCupertinoTheme, MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#f3e8a]],
+state: _SnackBarState#7b35f):
+Margin can only be used with floating behavior. SnackBarBehavior.fixed was set by default.
+'package:flutter/src/material/snack_bar.dart':
+Failed assertion: line 677 pos 16: 'widget.margin == null'
+
+Either the assertion indicates an error in the framework itself, or we should provide substantially
+more information in this error message to help you determine and fix the underlying cause.
+In either case, please report this assertion by filing a bug on GitHub:
+  https://github.com/flutter/flutter/issues/new?template=02_bug.yml
+
+The relevant error-causing widget was:
+  Scaffold
+  Scaffold:file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:34:34
+
+When the exception was thrown, this was the stack:
+#2      _SnackBarState.build.<anonymous closure> (package:flutter/src/material/snack_bar.dart:677:16)
+#3      _SnackBarState.build (package:flutter/src/material/snack_bar.dart:681:6)
+#4      StatefulElement.build (package:flutter/src/widgets/framework.dart:5944:27)
+#5      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5830:15)
+#6      StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#7      Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#8      ComponentElement._firstBuild (package:flutter/src/widgets/framework.dart:5812:5)
+#9      StatefulElement._firstBuild (package:flutter/src/widgets/framework.dart:5986:11)
+#10     ComponentElement.mount (package:flutter/src/widgets/framework.dart:5806:5)
+...     Normal element mounting (13 frames)
+#23     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4600:20)
+#24     MultiChildRenderObjectElement.inflateWidget (package:flutter/src/widgets/framework.dart:7277:36)
+#25     Element.updateChild (package:flutter/src/widgets/framework.dart:4072:18)
+#26     Element.updateChildren (package:flutter/src/widgets/framework.dart:4268:32)
+#27     MultiChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7308:17)
+#28     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#29     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#30     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#31     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#32     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#33     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#34     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#35     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#36     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#37     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#38     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#39     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#40     StatelessElement.update (package:flutter/src/widgets/framework.dart:5908:5)
+#41     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#42     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#43     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#44     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#45     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#46     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#47     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#48     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#49     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#50     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#51     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#52     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#53     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#54     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#55     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#56     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#57     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#58     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#59     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#60     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#61     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#62     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#63     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#64     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#65     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#66     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#67     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#68     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#69     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#70     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#71     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#72     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#73     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#74     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#75     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#76     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#77     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#78     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#79     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#80     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#81     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#82     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#83     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#84     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#85     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#86     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#87     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#88     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#89     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#90     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#91     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#92     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#93     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2763:15)
+#94     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2820:11)
+#95     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3124:18)
+#96     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2432:19)
+#97     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#98     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#99     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1345:9)
+#100    AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2261:9)
+#103    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#104    AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#105    WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#108    TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#109    WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#110    main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:45:21)
+<asynchronous suspension>
+#111    testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#112    TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 7 frames from class _AssertionError, dart:async, and package:stack_trace)
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.000000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart:48:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart line 48
+The test description was:
+  notice entry=true exit=true action=true preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following message was thrown:
+Multiple exceptions (2) were detected during the running of the current test, and at least one was
+unexpected.
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -8: notice entry=true exit=true action=true preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=true exit=true action=true preserves undo and close reason
+  
+00:00 +0 -8: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart: notice entry=false exit=false action=false preserves undo and close reason
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart: notice entry=false exit=false action=true preserves undo and close reason
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart: notice entry=false exit=true action=false preserves undo and close reason
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_test.dart: notice entry=false exit=true action=true preserves undo and close reason
+  ... and 4 more

@@ -1,0 +1,1332 @@
+{
+  "notice_motion": {
+    "production_component_only": true,
+    "normal_release_acceptance": false,
+    "no_repository_or_file_commands": true,
+    "system_accessibility_injected": false,
+    "cases": [
+      {
+        "name": "round-1-normal-hide-entry",
+        "reduced": false,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 232918536,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 232935203,
+            "value": 0.10416875,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 232951869,
+            "value": 0.20833125,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 232968536,
+            "value": 0.3125,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 232985203,
+            "value": 0.41666875000000003,
+            "visible_opacity": 0.007317752838134766,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 233001869,
+            "value": 0.52083125,
+            "visible_opacity": 0.17653220415115356,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 233018536,
+            "value": 0.625,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 233035203,
+            "value": 0.72916875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 233051869,
+            "value": 0.8333312500000001,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 233068536,
+            "value": 0.9375,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 233085203,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-hide-return",
+        "reduced": true,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 234418536,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-undo-entry",
+        "reduced": false,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 237251869,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237268536,
+            "value": 0.10416875,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237285202,
+            "value": 0.20833125,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237301869,
+            "value": 0.3125,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237318536,
+            "value": 0.41666875000000003,
+            "visible_opacity": 0.007317752838134766,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237335202,
+            "value": 0.52083125,
+            "visible_opacity": 0.17653220415115356,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237351869,
+            "value": 0.625,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237368536,
+            "value": 0.72916875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237385202,
+            "value": 0.8333312500000001,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237401869,
+            "value": 0.9375,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237418536,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-undo-return",
+        "reduced": true,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 238751869,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-hide-entry",
+        "reduced": true,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 241418536,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-hide-return",
+        "reduced": false,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 242918536,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 242935202,
+            "value": 0.8958375,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 242951869,
+            "value": 0.79166875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 242968536,
+            "value": 0.6875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 242985202,
+            "value": 0.5833375000000001,
+            "visible_opacity": 0.5631345108151435,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 243001869,
+            "value": 0.47916875000000003,
+            "visible_opacity": 0.07556703805923462,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 243018536,
+            "value": 0.375,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 243035202,
+            "value": 0.27083749999999995,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 243051869,
+            "value": 0.16666874999999992,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 243068536,
+            "value": 0.0625,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 243085202,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-undo-entry",
+        "reduced": true,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 245701869,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-undo-return",
+        "reduced": false,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 247201869,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 247218535,
+            "value": 0.8958375,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 247235202,
+            "value": 0.79166875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 247251869,
+            "value": 0.6875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 247268535,
+            "value": 0.5833375000000001,
+            "visible_opacity": 0.5631345108151435,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 247285202,
+            "value": 0.47916875000000003,
+            "visible_opacity": 0.07556703805923462,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 247301869,
+            "value": 0.375,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 247318535,
+            "value": 0.27083749999999995,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 247335202,
+            "value": 0.16666874999999992,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 247351869,
+            "value": 0.0625,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 247368535,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-hide-entry",
+        "reduced": false,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 249868535,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 249885202,
+            "value": 0.10416875,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 249901869,
+            "value": 0.2083375,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 249918535,
+            "value": 0.3125,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 249935202,
+            "value": 0.41666875000000003,
+            "visible_opacity": 0.007317752838134766,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 249951869,
+            "value": 0.5208375000000001,
+            "visible_opacity": 0.17653220415115356,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 249968535,
+            "value": 0.625,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 249985202,
+            "value": 0.72916875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 250001869,
+            "value": 0.8333375000000001,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 250018535,
+            "value": 0.9375,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 250035202,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-hide-return",
+        "reduced": true,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 251368535,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-undo-entry",
+        "reduced": false,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 254051868,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 254068535,
+            "value": 0.10416875,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 254085202,
+            "value": 0.2083375,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 254101868,
+            "value": 0.3125,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 254118535,
+            "value": 0.41666875000000003,
+            "visible_opacity": 0.007317752838134766,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 254135202,
+            "value": 0.5208375000000001,
+            "visible_opacity": 0.17653220415115356,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 254151868,
+            "value": 0.625,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 254168535,
+            "value": 0.72916875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 254185202,
+            "value": 0.8333375000000001,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 254201868,
+            "value": 0.9375,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 254218535,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-undo-return",
+        "reduced": true,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 255568535,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-hide-entry",
+        "reduced": true,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 258268535,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-hide-return",
+        "reduced": false,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 259785201,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 259801868,
+            "value": 0.89583125,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 259818535,
+            "value": 0.7916624999999999,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 259835201,
+            "value": 0.6875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 259851868,
+            "value": 0.58333125,
+            "visible_opacity": 0.5631345108151435,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 259868535,
+            "value": 0.47916249999999994,
+            "visible_opacity": 0.07556703805923462,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 259885201,
+            "value": 0.375,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 259901868,
+            "value": 0.27083124999999997,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 259918535,
+            "value": 0.16666249999999994,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 259935201,
+            "value": 0.0625,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 259951868,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-undo-entry",
+        "reduced": true,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 262418535,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-undo-return",
+        "reduced": false,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 263935201,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 263951868,
+            "value": 0.89583125,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 263968535,
+            "value": 0.7916624999999999,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 263985201,
+            "value": 0.6875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 264001868,
+            "value": 0.58333125,
+            "visible_opacity": 0.5631345108151435,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 264018535,
+            "value": 0.47916249999999994,
+            "visible_opacity": 0.07556703805923462,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 264035201,
+            "value": 0.375,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 264051868,
+            "value": 0.27083124999999997,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 264068535,
+            "value": 0.16666249999999994,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 264085201,
+            "value": 0.0625,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 264101868,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-hide-entry",
+        "reduced": false,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 266585201,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 266601868,
+            "value": 0.10416875,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 266618535,
+            "value": 0.2083375,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 266635201,
+            "value": 0.3125,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 266651868,
+            "value": 0.41666875000000003,
+            "visible_opacity": 0.007317752838134766,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 266668535,
+            "value": 0.5208375000000001,
+            "visible_opacity": 0.17653220415115356,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 266685201,
+            "value": 0.625,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 266701868,
+            "value": 0.72916875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 266718535,
+            "value": 0.8333375000000001,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 266735201,
+            "value": 0.9375,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 266751868,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-hide-return",
+        "reduced": true,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 268101868,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-undo-entry",
+        "reduced": false,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 270768534,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 270785201,
+            "value": 0.10416875,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 270801868,
+            "value": 0.2083375,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 270818534,
+            "value": 0.3125,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 270835201,
+            "value": 0.41666875000000003,
+            "visible_opacity": 0.007317752838134766,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 270851868,
+            "value": 0.5208375000000001,
+            "visible_opacity": 0.17653220415115356,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 270868534,
+            "value": 0.625,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 270885201,
+            "value": 0.72916875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 270901868,
+            "value": 0.8333375000000001,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 270918534,
+            "value": 0.9375,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 270935201,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-undo-return",
+        "reduced": true,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 272268534,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-hide-entry",
+        "reduced": true,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 274968534,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-hide-return",
+        "reduced": false,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 276451867,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 276468534,
+            "value": 0.89583125,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 276485201,
+            "value": 0.7916624999999999,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 276501867,
+            "value": 0.6875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 276518534,
+            "value": 0.58333125,
+            "visible_opacity": 0.5631345108151435,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 276535201,
+            "value": 0.47916249999999994,
+            "visible_opacity": 0.07556703805923462,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 276551867,
+            "value": 0.375,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 276568534,
+            "value": 0.27083124999999997,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 276585201,
+            "value": 0.16666249999999994,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 276601867,
+            "value": 0.0625,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 276618534,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-undo-entry",
+        "reduced": true,
+        "closing": false,
+        "frames": [
+          {
+            "frame_us": 279118534,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-undo-return",
+        "reduced": false,
+        "closing": true,
+        "frames": [
+          {
+            "frame_us": 280635201,
+            "value": 1.0,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 280651867,
+            "value": 0.8958375,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 280668534,
+            "value": 0.79166875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 280685201,
+            "value": 0.6875,
+            "visible_opacity": 1.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 280701867,
+            "value": 0.5833375000000001,
+            "visible_opacity": 0.5631345108151435,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 280718534,
+            "value": 0.47916875000000003,
+            "visible_opacity": 0.07556703805923462,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 280735201,
+            "value": 0.375,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 280751867,
+            "value": 0.27083749999999995,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 280768534,
+            "value": 0.16666874999999992,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 280785201,
+            "value": 0.0625,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 280801867,
+            "value": 0.0,
+            "visible_opacity": 0.0,
+            "duration_us": 160000,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      }
+    ],
+    "undo_callbacks": 6,
+    "complete": true
+  }
+}

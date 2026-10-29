@@ -1,0 +1,209 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart
+00:00 +0: notice entry=false exit=false action=false preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.160000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart:49:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart line 49
+The test description was:
+  notice entry=false exit=false action=false preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: notice entry=false exit=false action=false preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=false exit=false action=false preserves undo and close reason
+  
+00:00 +0 -1: notice entry=false exit=false action=true preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.160000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart:49:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart line 49
+The test description was:
+  notice entry=false exit=false action=true preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -2: notice entry=false exit=false action=true preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=false exit=false action=true preserves undo and close reason
+  
+00:00 +0 -2: notice entry=false exit=true action=false preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.160000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart:49:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart line 49
+The test description was:
+  notice entry=false exit=true action=false preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -3: notice entry=false exit=true action=false preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=false exit=true action=false preserves undo and close reason
+  
+00:00 +0 -3: notice entry=false exit=true action=true preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.160000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart:49:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart line 49
+The test description was:
+  notice entry=false exit=true action=true preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -4: notice entry=false exit=true action=true preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=false exit=true action=true preserves undo and close reason
+  
+00:00 +0 -4: notice entry=true exit=false action=false preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.000000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart:49:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart line 49
+The test description was:
+  notice entry=true exit=false action=false preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -5: notice entry=true exit=false action=false preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=true exit=false action=false preserves undo and close reason
+  
+00:00 +0 -5: notice entry=true exit=false action=true preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.000000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart:49:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart line 49
+The test description was:
+  notice entry=true exit=false action=true preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -6: notice entry=true exit=false action=true preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=true exit=false action=true preserves undo and close reason
+  
+00:00 +0 -6: notice entry=true exit=true action=false preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.000000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart:49:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart line 49
+The test description was:
+  notice entry=true exit=true action=false preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -7: notice entry=true exit=true action=false preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=true exit=true action=false preserves undo and close reason
+  
+00:00 +0 -7: notice entry=true exit=true action=true preserves undo and close reason
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Duration:<0:00:00.000000>
+  Actual: Duration:<0:00:00.250000>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart:49:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart line 49
+The test description was:
+  notice entry=true exit=true action=true preserves undo and close reason
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -8: notice entry=true exit=true action=true preserves undo and close reason [E]
+  Test failed. See exception logs above.
+  The test description was: notice entry=true exit=true action=true preserves undo and close reason
+  
+00:00 +0 -8: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart: notice entry=false exit=false action=false preserves undo and close reason
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart: notice entry=false exit=false action=true preserves undo and close reason
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart: notice entry=false exit=true action=false preserves undo and close reason
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/notice_motion_before_probe_test.dart: notice entry=false exit=true action=true preserves undo and close reason
+  ... and 4 more

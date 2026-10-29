@@ -173,7 +173,8 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
       await load(0);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          PaperSnackBar(
+            context: context,
             content: Text(
               result.stopRequested ? '已受理停止后续批次，请查询实际结果' : '计划已结束，没有后续批次',
             ),
@@ -320,8 +321,9 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
             if (!mounted || !current) return;
             await widget.catalog.backupSaved(task.id);
             if (mounted) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(content: Text('原备份已保存')));
+              ScaffoldMessenger.of(context).showSnackBar(
+                PaperSnackBar(context: context, content: Text('原备份已保存')),
+              );
             }
           }
         } finally {
@@ -334,8 +336,9 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
           if (!mounted || !current) return;
           await widget.catalog.backupSaved(task.id);
           if (mounted) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(content: Text('原备份已保存')));
+            ScaffoldMessenger.of(context).showSnackBar(
+              PaperSnackBar(context: context, content: Text('原备份已保存')),
+            );
           }
         }
       }
@@ -365,8 +368,9 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
           scope: fileScope,
         );
         if (saved && mounted && current) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('恢复前快照已保存')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            PaperSnackBar(context: context, content: Text('恢复前快照已保存')),
+          );
         }
       } finally {
         await exported.document.delete();

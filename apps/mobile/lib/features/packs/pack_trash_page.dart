@@ -129,7 +129,10 @@ class _PackTrashPageState extends State<PackTrashPage> {
     } catch (failure) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(packFileFailureMessage(failure))),
+          PaperSnackBar(
+            context: context,
+            content: Text(packFileFailureMessage(failure)),
+          ),
         );
       }
     } finally {
@@ -263,7 +266,10 @@ class _PackTrashPageState extends State<PackTrashPage> {
     } catch (failure) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(packFileFailureMessage(failure))),
+          PaperSnackBar(
+            context: context,
+            content: Text(packFileFailureMessage(failure)),
+          ),
         );
       }
     } finally {
@@ -305,7 +311,10 @@ class _PackTrashPageState extends State<PackTrashPage> {
     } catch (failure) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(packFileFailureMessage(failure))),
+          PaperSnackBar(
+            context: context,
+            content: Text(packFileFailureMessage(failure)),
+          ),
         );
       }
     } finally {
@@ -391,8 +400,9 @@ class _PackTrashPageState extends State<PackTrashPage> {
     }
     await session.restoreSelected(only: ids);
     if (mounted && session.message.isNotEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(session.message)));
+      ScaffoldMessenger.of(context).showSnackBar(
+        PaperSnackBar(context: context, content: Text(session.message)),
+      );
     }
   }
 
@@ -456,7 +466,10 @@ class _PackTrashPageState extends State<PackTrashPage> {
     } catch (failure) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(packFileFailureMessage(failure))),
+          PaperSnackBar(
+            context: context,
+            content: Text(packFileFailureMessage(failure)),
+          ),
         );
       }
     } finally {
