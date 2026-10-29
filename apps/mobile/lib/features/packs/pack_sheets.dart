@@ -179,7 +179,7 @@ class _PackFilterSheetState extends State<PackFilterSheet> {
           }
         },
       ),
-      DropdownButtonFormField<PackReadState>(
+      PaperDropdownButtonFormField<PackReadState>(
         initialValue: draft.readState,
         key: ValueKey(draft.readState),
         decoration: const InputDecoration(labelText: '阅读状态'),

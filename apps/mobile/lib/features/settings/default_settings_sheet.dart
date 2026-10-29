@@ -202,7 +202,7 @@ class _DefaultSettingsSheetState extends State<DefaultSettingsSheet> {
             SizedBox(height: MediaLayout.largeText(context) ? 16 : 0),
             PaperSettingRow(
               label: '默认翻页方向',
-              child: DropdownButtonFormField<ReaderDirection>(
+              child: PaperDropdownButtonFormField<ReaderDirection>(
                 key: const Key('default-reader-direction'),
                 initialValue: session.preferences.direction,
                 isExpanded: true,
@@ -243,7 +243,7 @@ class _DefaultSettingsSheetState extends State<DefaultSettingsSheet> {
             SizedBox(height: MediaLayout.largeText(context) ? 16 : 0),
             PaperSettingRow(
               label: '图片适配',
-              child: DropdownButtonFormField<ReaderFit>(
+              child: PaperDropdownButtonFormField<ReaderFit>(
                 key: const Key('default-reader-fit'),
                 initialValue: session.preferences.fit,
                 isExpanded: true,

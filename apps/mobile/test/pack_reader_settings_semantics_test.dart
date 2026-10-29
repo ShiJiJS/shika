@@ -86,7 +86,7 @@ void main() {
                   !state().session.busy,
             );
             expect(
-              find.byType(DropdownButtonFormField<ReaderDirection>),
+              find.byType(PaperDropdownButtonFormField<ReaderDirection>),
               findsNothing,
             );
             expect(
@@ -110,11 +110,11 @@ void main() {
             );
             expect(find.byType(SwitchListTile), findsNothing);
             expect(
-              find.byType(DropdownButtonFormField<ReaderDirection>),
+              find.byType(PaperDropdownButtonFormField<ReaderDirection>),
               findsOneWidget,
             );
             expect(
-              find.byType(DropdownButtonFormField<ReaderFit>),
+              find.byType(PaperDropdownButtonFormField<ReaderFit>),
               findsOneWidget,
             );
           }

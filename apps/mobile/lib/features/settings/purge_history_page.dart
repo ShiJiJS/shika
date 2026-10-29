@@ -184,7 +184,7 @@ class _PurgeHistoryPageState extends State<PurgeHistoryPage> {
                             unawaited(load(0));
                           },
                   ),
-                DropdownButton<String>(
+                PaperDropdownButton<String>(
                   key: const Key('purge-history-kind'),
                   value: kind,
                   items: const [

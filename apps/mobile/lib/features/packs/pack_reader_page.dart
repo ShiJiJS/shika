@@ -329,7 +329,7 @@ class PackReaderPageState extends State<PackReaderPage>
             ),
             SizedBox(height: MediaLayout.largeText(context) ? 24 : 16),
             if (session.preferences.mode == ReaderMode.horizontal) ...[
-              DropdownButtonFormField<ReaderDirection>(
+              PaperDropdownButtonFormField<ReaderDirection>(
                 decoration: const InputDecoration(labelText: '翻页方向'),
                 initialValue: session.preferences.direction,
                 items: const [
@@ -355,7 +355,7 @@ class PackReaderPageState extends State<PackReaderPage>
                       },
               ),
               SizedBox(height: MediaLayout.largeText(context) ? 24 : 16),
-              DropdownButtonFormField<ReaderFit>(
+              PaperDropdownButtonFormField<ReaderFit>(
                 decoration: const InputDecoration(labelText: '图片适配'),
                 initialValue: session.preferences.fit,
                 items: const [
