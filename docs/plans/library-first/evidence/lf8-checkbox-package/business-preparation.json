@@ -1,0 +1,170 @@
+{
+  "capabilities": [
+    "typed_roots",
+    "media_catalog_counts",
+    "pack_presentation",
+    "video_name_order",
+    "pack_tags",
+    "image_packs",
+    "fixed_video_sessions",
+    "versioned_video_queue",
+    "video_entry_anchors",
+    "catalog_selection",
+    "pack_tag_names",
+    "pack_entry_anchors",
+    "pack_reading_sessions",
+    "pack_logical_trash",
+    "pack_reader_cleanup",
+    "pack_purge_preview",
+    "pack_permanent_delete",
+    "maintenance_tasks",
+    "pack_restore_plans",
+    "managed_playback_defaults",
+    "pack_missing_cleanup",
+    "management_authority",
+    "management_history",
+    "management_purge_history",
+    "backup_v2"
+  ],
+  "logical_marks": [
+    {
+      "id": "c5aa71f0-9426-45f1-8640-f03c4a3e2f3d",
+      "kind": "trash",
+      "status": "completed",
+      "phase": "completed",
+      "created_at": 1793315069.969357,
+      "finished_at": 1793315069.9882565,
+      "result": {
+        "operation_id": "c5aa71f0-9426-45f1-8640-f03c4a3e2f3d",
+        "items": [
+          {
+            "requested_id": "00af1a5e-1a8b-497a-9673-12a9236c5012",
+            "video_id": "00af1a5e-1a8b-497a-9673-12a9236c5012",
+            "trash_id": "23cf4189-d3e6-4429-badd-93cbd11f4ec3",
+            "outcome": "succeeded",
+            "phase": "committed",
+            "error": null
+          }
+        ],
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "failed": 0,
+        "partial": false,
+        "playback_restored": false
+      },
+      "error": null
+    },
+    {
+      "server_time": 1793315070.231215,
+      "id": "5fb5801c-24e7-4c1c-adc5-ff205073e396",
+      "kind": "pack_trash",
+      "status": "completed",
+      "phase": "completed",
+      "created_at": 1793315070.1005335,
+      "finished_at": 1793315070.1158154,
+      "result": {
+        "operation_id": "5fb5801c-24e7-4c1c-adc5-ff205073e396",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "failed": 0,
+        "partial": false,
+        "items": [
+          {
+            "requested_id": "f38cd364-006e-4e7f-a875-fcff16929a87",
+            "pack_id": "f38cd364-006e-4e7f-a875-fcff16929a87",
+            "trash_id": "50b1c258-a227-4636-970b-7b4280f6cfb1",
+            "outcome": "succeeded",
+            "phase": "committed",
+            "error": null
+          }
+        ],
+        "reading_transition": null,
+        "reading_restored": false,
+        "undo_expires_at": 1793315078.1158154
+      },
+      "error": null
+    }
+  ],
+  "document": {
+    "name": "checkbox-preview17.vvbackup",
+    "sha256": "aeddabf53c5c9c86084b4060b500dfee9dc78b282acf6be66b9437b4befeb11e",
+    "bytes": 84376,
+    "export_task": "4ceb887a-1252-4e62-9db2-496a61d99618"
+  },
+  "preparation_requests": [
+    {
+      "method": "POST",
+      "path": "/auth/login",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/info",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/videos",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/packs",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/videos/trash",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/operations/c5aa71f0-9426-45f1-8640-f03c4a3e2f3d",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/operations/c5aa71f0-9426-45f1-8640-f03c4a3e2f3d",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/packs/trash",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/pack-operations/5fb5801c-24e7-4c1c-adc5-ff205073e396",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/pack-operations/5fb5801c-24e7-4c1c-adc5-ff205073e396",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/management-backups",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/4ceb887a-1252-4e62-9db2-496a61d99618",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/4ceb887a-1252-4e62-9db2-496a61d99618",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/management-backups/4ceb887a-1252-4e62-9db2-496a61d99618/download",
+      "status": 200
+    }
+  ],
+  "media_read_only": true,
+  "not_actual_restore_or_permanent_delete": true
+}

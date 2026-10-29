@@ -1,0 +1,41 @@
+{
+  "container": "b30198918647d318a667eaec893c6b22cf05e6ccc793509d0c69aeb6e1a53fb9",
+  "document": {
+    "name": "checkbox-code17-legacy.json",
+    "bytes": 5421,
+    "sha256": "d01d37ec2670d00c4e2074a9ef6e63fba1efd4ce63263486ea9c999e47a5aa42"
+  },
+  "requests": [
+    {
+      "method": "POST",
+      "path": "/auth/login",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/info",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/backups",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/49d67b0c-ff23-4f2c-a480-793df19c1125",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/tasks/49d67b0c-ff23-4f2c-a480-793df19c1125",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/backups/49d67b0c-ff23-4f2c-a480-793df19c1125/download",
+      "status": 200
+    }
+  ],
+  "no_backup_v2_capability": true
+}

@@ -1,0 +1,107 @@
+{
+  "sequence": 132,
+  "checks": [
+    {
+      "name": "trash-row-box-and-text-single-toggle",
+      "trace_end": 123,
+      "last_capture_sequence": 10,
+      "selected_count": 1,
+      "no_file_command": true
+    },
+    {
+      "name": "video-confirm-normal",
+      "trace_end": 135,
+      "last_capture_sequence": 19,
+      "text_select_box_clear_and_select": true,
+      "submit_enabled_only_checked": true,
+      "closed_while_checked_without_submit": true
+    },
+    {
+      "name": "video-confirm-normal-draft-reset",
+      "trace_end": 137,
+      "last_capture_sequence": 24,
+      "reopened_unchecked": true,
+      "submit_disabled": true
+    },
+    {
+      "name": "pack-trash-box-single-toggle",
+      "trace_end": 141,
+      "last_capture_sequence": 28,
+      "selected_count": 1
+    },
+    {
+      "name": "pack-confirm-normal",
+      "trace_end": 149,
+      "last_capture_sequence": 37,
+      "text_select_box_clear_and_select": true,
+      "submit_enabled_only_checked": true,
+      "closed_while_checked_without_submit": true
+    },
+    {
+      "name": "pack-confirm-normal-draft-reset",
+      "trace_end": 152,
+      "last_capture_sequence": 42,
+      "reopened_unchecked": true,
+      "submit_disabled": true
+    },
+    {
+      "name": "archive-v2-confirm-normal",
+      "trace_end": 171,
+      "last_capture_sequence": 61,
+      "text_select_box_clear_and_select": true,
+      "submit_enabled_only_checked": true,
+      "closed_while_checked_without_submit": true
+    },
+    {
+      "name": "archive-v2-confirm-normal-draft-reset",
+      "trace_end": 176,
+      "last_capture_sequence": 67,
+      "reopened_unchecked": true,
+      "submit_disabled": true
+    },
+    {
+      "name": "archive-v1-confirm-normal",
+      "trace_end": 194,
+      "last_capture_sequence": 89,
+      "text_select_box_clear_and_select": true,
+      "submit_enabled_only_checked": true,
+      "closed_while_checked_without_submit": true
+    },
+    {
+      "name": "archive-v1-confirm-normal-draft-reset",
+      "trace_end": 195,
+      "last_capture_sequence": 96,
+      "reopened_unchecked": true,
+      "submit_disabled": true
+    },
+    {
+      "name": "return-modern-workspace",
+      "trace_end": 206,
+      "last_capture_sequence": 102,
+      "normal_main_code": 17,
+      "library_entry": true
+    },
+    {
+      "name": "video-confirm-ordinary-system",
+      "trace_end": 232,
+      "last_capture_sequence": 121,
+      "text_select_box_clear_and_select": true,
+      "submit_enabled_only_checked": true,
+      "closed_while_checked_without_submit": true
+    },
+    {
+      "name": "video-confirm-ordinary-system-draft-reset",
+      "trace_end": 234,
+      "last_capture_sequence": 126,
+      "reopened_unchecked": true,
+      "submit_disabled": true
+    },
+    {
+      "name": "final-library-return",
+      "trace_end": 237,
+      "last_capture_sequence": 132,
+      "normal_code": 17,
+      "normal_library_entry": true
+    }
+  ]
+}

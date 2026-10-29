@@ -1,6 +1,6 @@
 # LF8：复选框真实Android补证
 
-[草稿PR #118](https://github.com/ShiJiJS/video_viewer/pull/118)承接源码PR #117，真实Android项已完成，正常包项仍开放。
+[草稿PR #118](https://github.com/ShiJiJS/video_viewer/pull/118)承接源码PR #117，真实Android项已完成，正常包本机项已由[code17配套段](LF8-CHECKBOX-PACKAGE.md)补齐。
 
 承接[#116 / PR #117](https://github.com/ShiJiJS/video_viewer/pull/117)的固定2a4e9cd7生产复选模块，源码组件已通过777检查，本段不改生产lib。独立profile入口使用实际TrashEntryRow和PaperCheckboxListTile，fixture只控制选值/禁用与计数，不启动服务或文件操作；不注入accessibility替身。
 
@@ -16,4 +16,4 @@
 
 [161份原始输入与离线只读复核](evidence/lf8-checkbox-native/README.md)已冻结。前四次命令参数、换行转义、中途触发过早和tester采样冲突分别保留；未混入成功计数。最终公开Element遍历不使用tester守护查询，未改生产模块。设置恢复进入时原值，缺失比例恢复缺失；自有QEMU20034关闭、原四服务完整ID健康保持，未操作真实媒体/服务/SDK/原型或原code16两包。
 
-本段完成#116真实Android项。普通main中的四确认页面及回收行真实业务、新原签名配套包仍待完成；此profile组件证明不替代手机/NAS/有声/云文档和完整UI-05/06或45项终验。
+本段完成#116真实Android项。普通main中的四确认页面及回收行真实业务、新原签名配套包现由[code17配套段](LF8-CHECKBOX-PACKAGE.md)补齐本机检查；此profile组件证明不替代手机/NAS/有声/云文档和完整UI-05/06或45项终验。

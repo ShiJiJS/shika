@@ -1,0 +1,34 @@
+{
+  "complete": true,
+  "source": "c21fd7ab738efc4837d81d06221fff18efde4067",
+  "three_upgrade_installs_35_tables_preserved": true,
+  "ui_checks": 14,
+  "confirmation_state_observations": 25,
+  "five_confirmation_cycles_including_ordinary_system_followup": [
+    "video-confirm-normal",
+    "pack-confirm-normal",
+    "archive-v2-confirm-normal",
+    "archive-v1-confirm-normal",
+    "video-confirm-ordinary-system"
+  ],
+  "four_distinct_confirmation_pages": true,
+  "normal_and_legacy_restore_cancel_tables_unchanged": true,
+  "normal_post_counts": {
+    "/api/v1/auth/login": 2,
+    "/api/v1/videos/trash": 1,
+    "/api/v1/packs/trash": 1,
+    "/api/v1/management-backups": 1,
+    "/api/v1/pack-purge-plans": 2,
+    "/api/v1/management-backups/imports": 1
+  },
+  "legacy_post_counts": {
+    "/api/v1/auth/login": 2,
+    "/api/v1/backups": 1,
+    "/api/v1/backup-imports": 1
+  },
+  "no_permanent_delete_or_restore_post": true,
+  "media_sha256_unchanged": true,
+  "both_donors_data_and_config_sha256_unchanged": true,
+  "preferences_unchanged": true,
+  "normal_main_only_not_timing_or_target_phone_acceptance": true
+}

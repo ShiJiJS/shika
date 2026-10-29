@@ -1,0 +1,177 @@
+[
+  {
+    "case": "video-confirm-normal",
+    "step": "initial",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0013-video-confirm-normal-initial.xml"
+  },
+  {
+    "case": "video-confirm-normal",
+    "step": "text-select-after",
+    "checked": true,
+    "submit_enabled": true,
+    "xml": "normal/screens/biz-0015-video-confirm-normal-text-select-after.xml"
+  },
+  {
+    "case": "video-confirm-normal",
+    "step": "box-clear-after-box",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0016-video-confirm-normal-box-clear-after-box.xml"
+  },
+  {
+    "case": "video-confirm-normal",
+    "step": "box-select-after-box",
+    "checked": true,
+    "submit_enabled": true,
+    "xml": "normal/screens/biz-0017-video-confirm-normal-box-select-after-box.xml"
+  },
+  {
+    "case": "video-confirm-normal",
+    "step": "reopen",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0022-video-confirm-normal-reopen.xml"
+  },
+  {
+    "case": "pack-confirm-normal",
+    "step": "initial",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0031-pack-confirm-normal-initial.xml"
+  },
+  {
+    "case": "pack-confirm-normal",
+    "step": "text-select-after",
+    "checked": true,
+    "submit_enabled": true,
+    "xml": "normal/screens/biz-0033-pack-confirm-normal-text-select-after.xml"
+  },
+  {
+    "case": "pack-confirm-normal",
+    "step": "box-clear-after-box",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0034-pack-confirm-normal-box-clear-after-box.xml"
+  },
+  {
+    "case": "pack-confirm-normal",
+    "step": "box-select-after-box",
+    "checked": true,
+    "submit_enabled": true,
+    "xml": "normal/screens/biz-0035-pack-confirm-normal-box-select-after-box.xml"
+  },
+  {
+    "case": "pack-confirm-normal",
+    "step": "reopen",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0040-pack-confirm-normal-reopen.xml"
+  },
+  {
+    "case": "archive-v2-confirm-normal",
+    "step": "initial",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0055-archive-v2-confirm-normal-initial.xml"
+  },
+  {
+    "case": "archive-v2-confirm-normal",
+    "step": "text-select-after",
+    "checked": true,
+    "submit_enabled": true,
+    "xml": "normal/screens/biz-0057-archive-v2-confirm-normal-text-select-after.xml"
+  },
+  {
+    "case": "archive-v2-confirm-normal",
+    "step": "box-clear-after-box",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0058-archive-v2-confirm-normal-box-clear-after-box.xml"
+  },
+  {
+    "case": "archive-v2-confirm-normal",
+    "step": "box-select-after-box",
+    "checked": true,
+    "submit_enabled": true,
+    "xml": "normal/screens/biz-0059-archive-v2-confirm-normal-box-select-after-box.xml"
+  },
+  {
+    "case": "archive-v2-confirm-normal",
+    "step": "reopen",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0065-archive-v2-confirm-normal-reopen.xml"
+  },
+  {
+    "case": "archive-v1-confirm-normal",
+    "step": "initial",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0083-archive-v1-confirm-normal-initial.xml"
+  },
+  {
+    "case": "archive-v1-confirm-normal",
+    "step": "text-select-after",
+    "checked": true,
+    "submit_enabled": true,
+    "xml": "normal/screens/biz-0085-archive-v1-confirm-normal-text-select-after.xml"
+  },
+  {
+    "case": "archive-v1-confirm-normal",
+    "step": "box-clear-after-box",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0086-archive-v1-confirm-normal-box-clear-after-box.xml"
+  },
+  {
+    "case": "archive-v1-confirm-normal",
+    "step": "box-select-after-box",
+    "checked": true,
+    "submit_enabled": true,
+    "xml": "normal/screens/biz-0087-archive-v1-confirm-normal-box-select-after-box.xml"
+  },
+  {
+    "case": "archive-v1-confirm-normal",
+    "step": "reopen",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0094-archive-v1-confirm-normal-reopen.xml"
+  },
+  {
+    "case": "video-confirm-ordinary-system",
+    "step": "initial",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0115-video-confirm-ordinary-system-initial.xml"
+  },
+  {
+    "case": "video-confirm-ordinary-system",
+    "step": "text-select-after",
+    "checked": true,
+    "submit_enabled": true,
+    "xml": "normal/screens/biz-0117-video-confirm-ordinary-system-text-select-after.xml"
+  },
+  {
+    "case": "video-confirm-ordinary-system",
+    "step": "box-clear-after-box",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0118-video-confirm-ordinary-system-box-clear-after-box.xml"
+  },
+  {
+    "case": "video-confirm-ordinary-system",
+    "step": "box-select-after-box",
+    "checked": true,
+    "submit_enabled": true,
+    "xml": "normal/screens/biz-0119-video-confirm-ordinary-system-box-select-after-box.xml"
+  },
+  {
+    "case": "video-confirm-ordinary-system",
+    "step": "reopen",
+    "checked": false,
+    "submit_enabled": false,
+    "xml": "normal/screens/biz-0124-video-confirm-ordinary-system-reopen.xml"
+  }
+]
