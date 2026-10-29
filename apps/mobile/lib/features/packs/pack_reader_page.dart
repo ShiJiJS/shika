@@ -130,7 +130,7 @@ class PackReaderPageState extends State<PackReaderPage>
         return true;
       }
       if (!mounted) return false;
-      return await showDialog<bool>(
+      return await paperDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
               title: const Text('阅读状态尚未确认保存'),
