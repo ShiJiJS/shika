@@ -94,6 +94,7 @@ void main() {
         'no_repository_or_file_commands': true,
         'system_accessibility_injected': false,
         'cases': cases,
+        'pre_action_frames': <Map<String, dynamic>>[],
       };
       binding.reportData = {'control_feedback': result};
       late BuildContext source;
@@ -125,6 +126,19 @@ void main() {
               matching: find.byType(RawChip),
             );
             if (raw.evaluate().length == 1) {
+              final selected = t.widget<RawChip>(raw).selected;
+              if (selected != !probe.closing) {
+                (result['pre_action_frames'] as List).add({
+                  'name': probe.name,
+                  'frame_us': SchedulerBinding
+                      .instance
+                      .currentSystemFrameTimeStamp
+                      .inMicroseconds,
+                  'semantic_selected': selected,
+                });
+                WidgetsBinding.instance.addPostFrameCallback(frame);
+                return;
+              }
               final ink = find.descendant(of: raw, matching: find.byType(Ink));
               final color =
                   (t.widget<Ink>(ink).decoration as ShapeDecoration).color!;
@@ -152,7 +166,13 @@ void main() {
 
       WidgetsBinding.instance.addPostFrameCallback(frame);
       addTearDown(() async {
-        if (result['complete'] != true) await host('failure', name: 'terminal');
+        if (result['complete'] != true) {
+          result['active_failure'] = {
+            'name': active?.name,
+            'frames': active?.frames,
+          };
+          await host('failure', name: 'terminal');
+        }
         observing = false;
         active = null;
         await t.pumpWidget(const SizedBox());
