@@ -139,21 +139,25 @@ void main() {
       binding.reportData = {'checkbox_motion': result};
       Finder checkbox() => find.byWidgetPredicate((w) => w is PaperCheckbox);
       Map<String, dynamic> read() {
-        final state = t.state(checkbox()) as ToggleableStateMixin;
-        final painter =
-            t
-                    .widget<CustomPaint>(
-                      find.descendant(
-                        of: checkbox(),
-                        matching: find.byWidgetPredicate(
-                          (w) =>
-                              w is CustomPaint &&
-                              w.painter is ToggleablePainter,
-                        ),
-                      ),
-                    )
-                    .painter!
-                as ToggleablePainter;
+        ToggleableStateMixin? state;
+        ToggleablePainter? painter;
+        PaperCheckbox? widget;
+        void visit(Element element) {
+          if (element is StatefulElement && element.widget is PaperCheckbox) {
+            state = element.state as ToggleableStateMixin;
+            widget = element.widget as PaperCheckbox;
+          }
+          if (element.widget case final CustomPaint painted) {
+            if (painted.painter is ToggleablePainter) {
+              painter = painted.painter! as ToggleablePainter;
+            }
+          }
+          element.visitChildren(visit);
+        }
+
+        (source as Element).visitChildren(visit);
+        final current = state!;
+        final painted = painter!;
         return {
           'frame_us': SchedulerBinding
               .instance
@@ -167,15 +171,15 @@ void main() {
           'media_query_flag': MediaQuery.disableAnimationsOf(source),
           'kind': kind,
           'calls': calls[kind],
-          'checkbox_value': t.widget<PaperCheckbox>(checkbox()).value,
-          'enabled': state.isInteractive,
-          'down': state.downPosition != null,
-          'position': state.positionController.value,
-          'paint_position': painter.position.value,
-          'reaction': state.reactionController.value,
-          'paint_reaction': painter.reaction.value,
-          'position_ms': state.positionController.duration!.inMilliseconds,
-          'reaction_ms': state.reactionController.duration!.inMilliseconds,
+          'checkbox_value': widget!.value,
+          'enabled': current.isInteractive,
+          'down': current.downPosition != null,
+          'position': current.positionController.value,
+          'paint_position': painted.position.value,
+          'reaction': current.reactionController.value,
+          'paint_reaction': painted.reaction.value,
+          'position_ms': current.positionController.duration!.inMilliseconds,
+          'reaction_ms': current.reactionController.duration!.inMilliseconds,
         };
       }
 
