@@ -1,0 +1,88 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_motion_diagnostic_test.dart
+00:00 +0: actual trash checkbox motion contract ordinary
+ACTUAL trash ordinary duration=0:00:00.200000 progress=0.7000000000000001 paint=0.5555618554353714 calls=1
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <1>
+  Actual: <0.5555618554353714>
+Selection must finish at 140ms
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_motion_diagnostic_test.dart:53:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_motion_diagnostic_test.dart line 53
+The test description was:
+  actual trash checkbox motion contract ordinary
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: actual trash checkbox motion contract ordinary [E]
+  Test failed. See exception logs above.
+  The test description was: actual trash checkbox motion contract ordinary
+  
+00:00 +0 -1: actual trash checkbox motion contract reduced
+ACTUAL trash reduced duration=0:00:00.200000 progress=0.0 paint=0.0 calls=1
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <1>
+  Actual: <0.0>
+Reduced motion must paint the endpoint on the first new frame
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_motion_diagnostic_test.dart:53:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_motion_diagnostic_test.dart line 53
+The test description was:
+  actual trash checkbox motion contract reduced
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -2: actual trash checkbox motion contract reduced [E]
+  Test failed. See exception logs above.
+  The test description was: actual trash checkbox motion contract reduced
+  
+00:00 +0 -2: actual trash checkbox motion contract live
+ACTUAL trash live duration=0:00:00.200000 progress=0.19999999999999998 paint=0.06255447864532471 calls=1
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <1>
+  Actual: <0.06255447864532471>
+Reduced motion must paint the endpoint on the first new frame
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_motion_diagnostic_test.dart:53:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_motion_diagnostic_test.dart line 53
+The test description was:
+  actual trash checkbox motion contract live
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -3: actual trash checkbox motion contract live [E]
+  Test failed. See exception logs above.
+  The test description was: actual trash checkbox motion contract live
+  
+00:00 +0 -3: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_motion_diagnostic_test.dart: actual trash checkbox motion contract live
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_motion_diagnostic_test.dart: actual trash checkbox motion contract ordinary
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_motion_diagnostic_test.dart: actual trash checkbox motion contract reduced
