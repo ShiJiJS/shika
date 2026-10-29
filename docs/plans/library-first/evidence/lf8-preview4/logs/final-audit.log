@@ -1,0 +1,5 @@
+{"snapshot": "final", "counts": {"videos": 2, "tags": 1, "video_tags": 2, "directories": 3, "roots": 2, "packs": 1, "pack_pages": 3, "pack_tag_definitions": 1, "pack_tag_links": 1, "pack_progress": 1, "pack_preferences": 1, "tasks": 12, "file_operations": 6, "file_steps": 6, "request_records": 26, "trash_items": 3, "pack_sessions": 11, "pack_session_entries": 11, "playback_rounds": 4, "round_entries": 7, "recent_entries": 2}}
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview4/native/final-audit.py", line 21, in <module>
+    assert set(changed_settings)<=set(['active_pack_opened','active_pack_session','active_round']),changed_settings
+AssertionError: ['active_round', 'pack_root_scan_v1:packs', 'active_pack_session', 'active_pack_opened']
