@@ -1,5 +1,7 @@
 # LF8：复选框正常安装包与业务检查
 
+[草稿PR #119](https://github.com/ShiJiJS/video_viewer/pull/119)已提交，本机候选检查与证据归还完成。
+
 承接[#116](https://github.com/ShiJiJS/video_viewer/issues/116)、源码PR #117与真实Android PR #118。生产lib继续固定4052a2cc，与777客户端/11针对/96组RGBA及三轮原生90方向相同。本段只升级候选版本、构建正常入口并检查实际业务；不以独立profile取代正常安装包。
 
 候选为preview.11与配套rollback.11，同内部号17、原Windows签名/包名、ARM64正常release。固定提交后由既有构建器导出两套源码，执行双方分析、旧界面兼容全集及新偏好/连接相关检查，核对签名/ABI/版本/正常main和不含原型资产/集成插件。旧code16及更早APK保持，所有输出使用全新目录。
