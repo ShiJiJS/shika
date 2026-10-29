@@ -1,0 +1,25 @@
+{"snapshot": "before-real-undo", "counts": {"videos": 2, "tags": 1, "video_tags": 2, "directories": 3, "roots": 2, "packs": 1, "pack_pages": 3, "pack_tag_definitions": 1, "pack_tag_links": 1, "pack_progress": 1, "pack_preferences": 1, "tasks": 14, "file_operations": 6, "file_steps": 6, "request_records": 28, "trash_items": 3, "pack_sessions": 12, "pack_session_entries": 12, "playback_rounds": 5, "round_entries": 9, "recent_entries": 2}}
+媒体库 [53,158][796,248]
+选择文件夹 [796,140][922,266]
+更多 [922,140][1049,266]
+视频
+2 [53,276][169,374]
+图包
+0 [227,276][344,374]
+筛选图包 [32,391][147,501]
+0 个图包 [42,559][523,611]
+阅读状态 [523,527][724,643]
+名称 ↓ [724,559][837,611]
+快速整理 [837,527][1038,643]
+没有符合条件的图包 [372,1482][708,1534]
+整包已移入回收站，源文件保留 [0,2040][1080,2206]
+撤销 [852,2054][1020,2180]
+媒体库 [146,2208][343,2337]
+标签 [343,2208][540,2337]
+最近 [540,2208][737,2337]
+设置 [737,2208][934,2337]
+{"snapshot": "after-real-undo", "counts": {"videos": 2, "tags": 1, "video_tags": 2, "directories": 3, "roots": 2, "packs": 1, "pack_pages": 3, "pack_tag_definitions": 1, "pack_tag_links": 1, "pack_progress": 1, "pack_preferences": 1, "tasks": 16, "file_operations": 6, "file_steps": 6, "request_records": 28, "trash_items": 3, "pack_sessions": 12, "pack_session_entries": 12, "playback_rounds": 5, "round_entries": 9, "recent_entries": 2}}
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-notice-motion/normal/check-undo.py", line 23, in <module>
+    assert before['tables']['packs']==after['tables']['packs']
+AssertionError

@@ -1,0 +1,100 @@
+{
+  "complete": true,
+  "ordinary_release_code": 12,
+  "disposable_pack": "Upgrade Pack",
+  "successful_tasks": [
+    {
+      "id": "c54afaeb-0272-45c7-a738-f0c03e6ef7de",
+      "kind": "pack_trash",
+      "status": "completed",
+      "phase": "completed",
+      "created_at": 1793285405.547948,
+      "finished_at": 1793285405.5745134,
+      "result": {
+        "operation_id": "c54afaeb-0272-45c7-a738-f0c03e6ef7de",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "failed": 0,
+        "partial": false,
+        "items": [
+          {
+            "requested_id": "f38cd364-006e-4e7f-a875-fcff16929a87",
+            "pack_id": "f38cd364-006e-4e7f-a875-fcff16929a87",
+            "trash_id": "bcb46c22-aec0-4020-94bb-a10f07a69218",
+            "outcome": "succeeded",
+            "phase": "committed",
+            "error": null
+          }
+        ],
+        "reading_transition": null,
+        "reading_restored": false,
+        "undo_expires_at": 1793285413.5745134
+      },
+      "error": null
+    },
+    {
+      "id": "0edac419-20a9-47b9-bf29-a54517f4fc0a",
+      "kind": "pack_undo",
+      "status": "completed",
+      "phase": "completed",
+      "created_at": 1793285408.8627796,
+      "finished_at": 1793285408.8822734,
+      "result": {
+        "operation_id": "0edac419-20a9-47b9-bf29-a54517f4fc0a",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "failed": 0,
+        "partial": false,
+        "items": [
+          {
+            "requested_id": "bcb46c22-aec0-4020-94bb-a10f07a69218",
+            "pack_id": "f38cd364-006e-4e7f-a875-fcff16929a87",
+            "trash_id": "bcb46c22-aec0-4020-94bb-a10f07a69218",
+            "outcome": "succeeded",
+            "phase": "committed",
+            "error": null
+          }
+        ],
+        "reading_transition": null,
+        "reading_restored": false,
+        "undo_expires_at": null
+      },
+      "error": null
+    }
+  ],
+  "actual_post_requests": [
+    {
+      "time": 1793285405.5621374,
+      "method": "POST",
+      "path": "/api/v1/packs/trash",
+      "status": 202
+    },
+    {
+      "time": 1793285408.8794465,
+      "method": "POST",
+      "path": "/api/v1/pack-operations/c54afaeb-0272-45c7-a738-f0c03e6ef7de/undo",
+      "status": 202
+    }
+  ],
+  "undo_tap_seconds_after_confirm": 3.303164005279541,
+  "undo_completed_before_server_deadline": true,
+  "pack_change_only": {
+    "generation": [
+      3,
+      5
+    ]
+  },
+  "all_other_pack_fields_and_19_tables_equal": true,
+  "opaque_auth_equal": true,
+  "operation_settings_changes_explained_by_exact_before_hash": true,
+  "source_mount_readonly": true,
+  "source_hashes_observed_after_only": {
+    "Upgrade Pack/002.png": "add364e40e0bb49f608218384da1cc19143220247ec9114971ae743b409fa8c2",
+    "Upgrade Pack/001.png": "6ffd2652004736d519135ca1f8a2a490b6b02594c534bfe7fe94064d01260d8a",
+    "Upgrade Pack/010.png": "9ae1a54e3b6b233ad6881cdddb44156eac4e5a6db04ca0bc5742d45ec08de409",
+    "Upgrade Pack/keep.txt": "3324b813be99b0010172db343d8314309cb52208fdf336ab776dcd08bdac46af"
+  },
+  "initial_audit_assertion_failure": "Incorrectly required generation unchanged and expected logical-trash tasks in file_operations. The intermediate audit also incorrectly required settings unchanged; its failed assertion is retained. Exact hash reconstruction accounts for active-opened and last-delete markers. Original script/log retained; audited existing observations without replaying commands."
+}
