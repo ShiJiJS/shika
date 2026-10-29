@@ -1,0 +1,94 @@
+{
+  "donor": {
+    "scan": {
+      "path": "/media/packs",
+      "last_scan": 1793201772.9354036,
+      "identity": [
+        "36",
+        "2001",
+        null
+      ]
+    },
+    "roots": [
+      {
+        "id": "legacy",
+        "name": "Legacy videos",
+        "path": "/media/videos",
+        "mount_id": "legacy",
+        "available": 1,
+        "error": null,
+        "last_scan": 1793201772.4629066,
+        "kind": "video",
+        "enabled": 1
+      },
+      {
+        "id": "packs",
+        "name": "Upgrade packs",
+        "path": "/media/packs",
+        "mount_id": "packs",
+        "available": 1,
+        "error": null,
+        "last_scan": 1793201772.9354036,
+        "kind": "pack",
+        "enabled": 1
+      }
+    ],
+    "setting_digests": {
+      "passphrase_hash": "0073962ab05f2d94028ac4f35560e19044732d24da36a3e2f49bbabc42f11a02",
+      "server_id": "0428631a832535b5515fa02f7558f7adfd8cd89754d7b1702b7d0edc33440bcb",
+      "active_round": "0c14c66a224ae9cd90b019861aa570dcb72c26dd1ea59475e6a7064b20726c0b",
+      "last_delete_operation": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "management_epoch": "4750bac29920bfd1f9d1ce753cc5c89b92df94c3cb1ae63064894aab9137eb7f",
+      "playback_defaults": "539e158f1c3a381ef6d2a7805cf799d64e620db17c87ac2984ca9f460f8ef8e3",
+      "pack_root_scan_v1:packs": "2031193eff9eea941a2a59270f2bbbe22319121639e74b4e5ce229eaa18fcc29",
+      "active_pack_session": "62641a9b027ec7bb211401299681f6c1082352e3ce70b4df3e27c6b44ce06b73",
+      "active_pack_opened": "aaf405a53df86d2296261f85b08e256955792fba4ecad3021a0898ffe661262d"
+    }
+  },
+  "candidate": {
+    "scan": {
+      "path": "/media/packs",
+      "last_scan": 1793267683.4599905,
+      "identity": [
+        "36",
+        "2001",
+        null
+      ]
+    },
+    "roots": [
+      {
+        "id": "legacy",
+        "name": "Legacy videos",
+        "path": "/media/videos",
+        "mount_id": "legacy",
+        "available": 1,
+        "error": null,
+        "last_scan": 1793267683.4052784,
+        "kind": "video",
+        "enabled": 1
+      },
+      {
+        "id": "packs",
+        "name": "Upgrade packs",
+        "path": "/media/packs",
+        "mount_id": "packs",
+        "available": 1,
+        "error": null,
+        "last_scan": 1793267683.4599905,
+        "kind": "pack",
+        "enabled": 1
+      }
+    ],
+    "setting_digests": {
+      "passphrase_hash": "0073962ab05f2d94028ac4f35560e19044732d24da36a3e2f49bbabc42f11a02",
+      "server_id": "0428631a832535b5515fa02f7558f7adfd8cd89754d7b1702b7d0edc33440bcb",
+      "active_round": "53bdf82c6f4208bae736453fcc11f614c0c82ee8a3ba215f935a88aeda0b2f95",
+      "last_delete_operation": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "management_epoch": "4750bac29920bfd1f9d1ce753cc5c89b92df94c3cb1ae63064894aab9137eb7f",
+      "playback_defaults": "539e158f1c3a381ef6d2a7805cf799d64e620db17c87ac2984ca9f460f8ef8e3",
+      "pack_root_scan_v1:packs": "4775eb107f1cfb04e538764556a4eb2eef81fc52880c4ad26ddc47cec04d1efe",
+      "active_pack_session": "33a4c210b6f639ceac3da3191325facd09ba37336e6bf6119b69ac48cd4fe44c",
+      "active_pack_opened": "beb262b82c8f845bb0a6692fcbc617f428c90e1345d40594a1b33deaee3bdb96"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "command": [
+    "adb",
+    "-s",
+    "emulator-5556",
+    "install",
+    "-r",
+    "video-viewer-0.1.4-rollback.4-arm64.apk"
+  ],
+  "output": "Performing Streamed Install\nSuccess\n",
+  "before": {
+    "versionCode": "10 minSdk=24 targetSdk=36",
+    "versionName": "0.2.0-preview.4",
+    "firstInstallTime": "2026-10-28 09:16:36",
+    "lastUpdateTime": "2026-10-29 18:00:08",
+    "dataDir": "/data/user/0/io.github.shijijs.video_viewer",
+    "appId": "10213"
+  },
+  "after": {
+    "versionCode": "10 minSdk=24 targetSdk=36",
+    "versionName": "0.1.4-rollback.4",
+    "firstInstallTime": "2026-10-28 09:16:36",
+    "lastUpdateTime": "2026-10-29 18:00:13",
+    "dataDir": "/data/user/0/io.github.shijijs.video_viewer",
+    "appId": "10213"
+  },
+  "sha256": "19127346f88071abcc33ddf4156734a68be67539d4452609101429169e71778c",
+  "trace_offset": 66,
+  "no_uninstall_or_clear": true
+}

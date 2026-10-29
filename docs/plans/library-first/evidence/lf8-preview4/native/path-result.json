@@ -1,0 +1,155 @@
+{
+  "checks": [
+    {
+      "state": "candidate-library",
+      "required": [
+        "媒体库",
+        "flower-landscape",
+        "视频"
+      ]
+    },
+    {
+      "state": "candidate-packs",
+      "required": [
+        "继续阅读",
+        "Upgrade Pack"
+      ]
+    },
+    {
+      "state": "candidate-reader-vertical",
+      "required": [
+        "2 / 3",
+        "纵向拼接"
+      ]
+    },
+    {
+      "state": "candidate-reader-horizontal",
+      "required": [
+        "2 / 3",
+        "横向翻页"
+      ]
+    },
+    {
+      "state": "candidate-reader-page3",
+      "required": [
+        "3 / 3"
+      ]
+    },
+    {
+      "state": "candidate-reader-page2",
+      "required": [
+        "2 / 3"
+      ]
+    },
+    {
+      "state": "candidate-reader-vertical-again",
+      "required": [
+        "2 / 3",
+        "纵向拼接"
+      ]
+    },
+    {
+      "state": "candidate-reader-return",
+      "required": [
+        "继续阅读",
+        "Upgrade Pack",
+        "媒体库"
+      ]
+    },
+    {
+      "state": "candidate-reader-resumed",
+      "required": [
+        "2 / 3",
+        "纵向拼接"
+      ]
+    },
+    {
+      "state": "candidate-reader-return2",
+      "required": [
+        "媒体库",
+        "继续阅读"
+      ]
+    },
+    {
+      "state": "candidate-video-tags-shown",
+      "required": [
+        "LEGACY_ONLY"
+      ]
+    },
+    {
+      "state": "candidate-pack-tags-shown",
+      "required": [
+        "PACK_ONLY"
+      ]
+    },
+    {
+      "state": "candidate-settings-shown",
+      "required": [
+        "服务连接",
+        "操作任务"
+      ]
+    },
+    {
+      "state": "candidate-videos",
+      "required": [
+        "flower-landscape",
+        "预览此范围"
+      ]
+    },
+    {
+      "state": "candidate-video-inline-ready",
+      "required": [
+        "横向全屏"
+      ]
+    },
+    {
+      "state": "candidate-video-paused",
+      "required": [
+        "播放",
+        "横向全屏"
+      ]
+    },
+    {
+      "state": "candidate-fullscreen-stable",
+      "required": [
+        "退出全屏"
+      ]
+    },
+    {
+      "state": "candidate-fullscreen-playing",
+      "required": [
+        "退出全屏"
+      ]
+    },
+    {
+      "state": "candidate-fullscreen-return",
+      "required": [
+        "视频预览",
+        "横向全屏"
+      ]
+    },
+    {
+      "state": "candidate-video-return",
+      "required": [
+        "媒体库",
+        "flower-landscape"
+      ]
+    },
+    {
+      "state": "candidate-final-settings-shown",
+      "required": [
+        "服务连接",
+        "操作任务"
+      ]
+    }
+  ],
+  "passed": true,
+  "normal_release_apk": true,
+  "qemu_pid": 45511,
+  "audio_off": true,
+  "video_fixture_seconds": 5,
+  "no_physical_phone_or_nas_claim": true,
+  "fullscreen_active_playback_verified": true,
+  "earlier_playing_capture_name_not_a_playback_assertion": true,
+  "extra_play_helper_failed_because_already_playing_controls_hidden": true
+}

@@ -1,0 +1,16 @@
+返回设置 [42,141][168,267]
+连接 [179,161][922,248]
+更多 [922,141][1049,267]
+暂时无法连接服务，请检查地址和网络后重试 [42,318][954,363]
+关闭错误提示 [954,278][1080,404]
+连接你的视频库 [53,456][1028,543]
+视频和图包共用同一媒体服务。 [53,543][1028,658]
+http://10.0.2.2 [53,690][1028,876]
+8773 [53,929][1028,1115]
+口令不进入管理数据备份。 [53,1354][1028,1470]
+连接 [53,1491][1028,1617]
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview4/native/driver.py", line 16, in tap_label
+    assert len(matches)==1,(label,prefix,[v.get('content-desc') for v in matches]);tap(matches[0],label or prefix)
+AssertionError: ('连接', None, ['连接', '连接'])

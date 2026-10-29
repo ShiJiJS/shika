@@ -1,0 +1,245 @@
+{
+  "passed": true,
+  "scope": "Frozen normal code10 upgrade/main-path records; offline stopped databases only",
+  "startup_scan": {
+    "old": {
+      "path": "/media/packs",
+      "last_scan": 1793201772.9354036,
+      "identity": [
+        "36",
+        "2001",
+        null
+      ]
+    },
+    "new": {
+      "path": "/media/packs",
+      "last_scan": 1793267683.4599905,
+      "identity": [
+        "36",
+        "2001",
+        null
+      ]
+    },
+    "early_observed_at": 1793267762.3478773,
+    "before_first_candidate_observed_at": 1793268007.4494565,
+    "reconstructed_pre_candidate_settings_digest_matches": true,
+    "path_and_directory_identity_unchanged": true,
+    "difference_already_present_before_old9_start": true
+  },
+  "post_action_changed_settings": [
+    "active_round",
+    "active_pack_session",
+    "active_pack_opened"
+  ],
+  "post_action_unchanged13_tables": [
+    "videos",
+    "tags",
+    "video_tags",
+    "directories",
+    "roots",
+    "packs",
+    "pack_pages",
+    "pack_tag_definitions",
+    "pack_tag_links",
+    "tasks",
+    "file_operations",
+    "file_steps",
+    "trash_items"
+  ],
+  "post_action_changed8_tables": [
+    "pack_progress",
+    "pack_preferences",
+    "request_records",
+    "pack_sessions",
+    "pack_session_entries",
+    "playback_rounds",
+    "round_entries",
+    "recent_entries"
+  ],
+  "auth_and_appearance_preserved": true,
+  "startup_windows": [
+    {
+      "step": "forward10-first",
+      "read_only_startup_requests": 10,
+      "all21_tables_and_auth_settings_equal": true
+    },
+    {
+      "step": "rollback10",
+      "read_only_startup_requests": 19,
+      "all21_tables_and_auth_settings_equal": true
+    },
+    {
+      "step": "forward10-return",
+      "read_only_startup_requests": 10,
+      "all21_tables_and_auth_settings_equal": true
+    }
+  ],
+  "main_paths": {
+    "checks": [
+      {
+        "state": "candidate-library",
+        "required": [
+          "\u5a92\u4f53\u5e93",
+          "flower-landscape",
+          "\u89c6\u9891"
+        ]
+      },
+      {
+        "state": "candidate-packs",
+        "required": [
+          "\u7ee7\u7eed\u9605\u8bfb",
+          "Upgrade Pack"
+        ]
+      },
+      {
+        "state": "candidate-reader-vertical",
+        "required": [
+          "2 / 3",
+          "\u7eb5\u5411\u62fc\u63a5"
+        ]
+      },
+      {
+        "state": "candidate-reader-horizontal",
+        "required": [
+          "2 / 3",
+          "\u6a2a\u5411\u7ffb\u9875"
+        ]
+      },
+      {
+        "state": "candidate-reader-page3",
+        "required": [
+          "3 / 3"
+        ]
+      },
+      {
+        "state": "candidate-reader-page2",
+        "required": [
+          "2 / 3"
+        ]
+      },
+      {
+        "state": "candidate-reader-vertical-again",
+        "required": [
+          "2 / 3",
+          "\u7eb5\u5411\u62fc\u63a5"
+        ]
+      },
+      {
+        "state": "candidate-reader-return",
+        "required": [
+          "\u7ee7\u7eed\u9605\u8bfb",
+          "Upgrade Pack",
+          "\u5a92\u4f53\u5e93"
+        ]
+      },
+      {
+        "state": "candidate-reader-resumed",
+        "required": [
+          "2 / 3",
+          "\u7eb5\u5411\u62fc\u63a5"
+        ]
+      },
+      {
+        "state": "candidate-reader-return2",
+        "required": [
+          "\u5a92\u4f53\u5e93",
+          "\u7ee7\u7eed\u9605\u8bfb"
+        ]
+      },
+      {
+        "state": "candidate-video-tags-shown",
+        "required": [
+          "LEGACY_ONLY"
+        ]
+      },
+      {
+        "state": "candidate-pack-tags-shown",
+        "required": [
+          "PACK_ONLY"
+        ]
+      },
+      {
+        "state": "candidate-settings-shown",
+        "required": [
+          "\u670d\u52a1\u8fde\u63a5",
+          "\u64cd\u4f5c\u4efb\u52a1"
+        ]
+      },
+      {
+        "state": "candidate-videos",
+        "required": [
+          "flower-landscape",
+          "\u9884\u89c8\u6b64\u8303\u56f4"
+        ]
+      },
+      {
+        "state": "candidate-video-inline-ready",
+        "required": [
+          "\u6a2a\u5411\u5168\u5c4f"
+        ]
+      },
+      {
+        "state": "candidate-video-paused",
+        "required": [
+          "\u64ad\u653e",
+          "\u6a2a\u5411\u5168\u5c4f"
+        ]
+      },
+      {
+        "state": "candidate-fullscreen-stable",
+        "required": [
+          "\u9000\u51fa\u5168\u5c4f"
+        ]
+      },
+      {
+        "state": "candidate-fullscreen-playing",
+        "required": [
+          "\u9000\u51fa\u5168\u5c4f"
+        ]
+      },
+      {
+        "state": "candidate-fullscreen-return",
+        "required": [
+          "\u89c6\u9891\u9884\u89c8",
+          "\u6a2a\u5411\u5168\u5c4f"
+        ]
+      },
+      {
+        "state": "candidate-video-return",
+        "required": [
+          "\u5a92\u4f53\u5e93",
+          "flower-landscape"
+        ]
+      },
+      {
+        "state": "candidate-final-settings-shown",
+        "required": [
+          "\u670d\u52a1\u8fde\u63a5",
+          "\u64cd\u4f5c\u4efb\u52a1"
+        ]
+      }
+    ],
+    "passed": true,
+    "normal_release_apk": true,
+    "qemu_pid": 45511,
+    "audio_off": true,
+    "video_fixture_seconds": 5,
+    "no_physical_phone_or_nas_claim": true,
+    "fullscreen_active_playback_verified": true,
+    "earlier_playing_capture_name_not_a_playback_assertion": true,
+    "extra_play_helper_failed_because_already_playing_controls_hidden": true
+  },
+  "non_get_requests": {
+    "POST /api/v1/auth/login 200": 1,
+    "POST /api/v1/pack-sessions 201": 2,
+    "POST /api/v1/pack-sessions/a84a61c5-e39a-47f8-9754-e4555e0bbb46/opened 200": 1,
+    "PATCH /api/v1/packs/f38cd364-006e-4e7f-a875-fcff16929a87/preferences 200": 2,
+    "PATCH /api/v1/packs/f38cd364-006e-4e7f-a875-fcff16929a87/progress 200": 2,
+    "POST /api/v1/pack-sessions/e7e19d19-af99-4d74-bc21-1169cd086c28/opened 200": 1,
+    "POST /api/v1/rounds 201": 2,
+    "POST /api/v1/rounds/3dcf0672-c26c-4244-add5-c126dd493674/opened 200": 1,
+    "POST /api/v1/rounds/b05ec59d-58e9-47e7-ba7b-db0609e53ccf/opened 200": 1
+  },
+  "old_artifacts_unchanged": true,
+  "no_new_apk_build_or_native_run_on_resume": true
+}

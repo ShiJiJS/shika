@@ -1,0 +1,12 @@
+{'dark': True, 'preloadAdjacent': False, 'videoOrder': 'sequential', 'defaultMigrations': ['["http://10.0.2.2:8772","51a3376cf260ae17b6c0b56e184340d1","61b6719bdf9533f77cff41d292ac06f2"]', 'unrelated-server-public-fixture']}
+{'size': 'Physical size: 1080x2400', 'density': 'Physical density: 420', 'font': '1.0', 'rotation': '0', 'accel': '1', 'window': '1.0', 'transition': '1.0', 'animator': 'null', 'immersive': ''}
+{"snapshot": "baseline9-before-start", "counts": {"videos": 2, "tags": 1, "video_tags": 2, "directories": 3, "roots": 2, "packs": 1, "pack_pages": 3, "pack_tag_definitions": 1, "pack_tag_links": 1, "pack_progress": 1, "pack_preferences": 1, "tasks": 12, "file_operations": 6, "file_steps": 6, "request_records": 18, "trash_items": 3, "pack_sessions": 9, "pack_session_entries": 9, "playback_rounds": 2, "round_entries": 3, "recent_entries": 2}}
+ERROR: null root node returned by UiTestAutomationBridge.
+ERROR: null root node returned by UiTestAutomationBridge.
+Traceback (most recent call last):
+  File "<stdin>", line 8, in <module>
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview4/native/driver.py", line 21, in cold
+    n=capture(name+'-landing');v=text(n)
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview4/native/ui_driver.py", line 15, in capture
+    else:raise RuntimeError('No fresh UI XML: '+name)
+RuntimeError: No fresh UI XML: baseline9-landing

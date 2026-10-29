@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview4/native/fullscreen-play-check.py", line 9, in <module>
+    play=[v for v in n if v.get('content-desc')=='播放' and v.get('clickable')=='true'];assert len(play)==1;driver.tap(play[0],'explicit actual fullscreen play')
+AssertionError

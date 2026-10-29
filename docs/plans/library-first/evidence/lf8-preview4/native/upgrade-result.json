@@ -1,0 +1,31 @@
+{
+  "checks": [
+    {
+      "step": "forward10-first",
+      "all21_tables_equal": true,
+      "settings_and_auth_digests_equal": true,
+      "appearance_equal": true,
+      "version": "0.2.0-preview.4",
+      "sha256": "473f634c2b0dd0890671418d691978fbf201edc3214eac1015172923f717923b"
+    },
+    {
+      "step": "rollback10",
+      "all21_tables_equal": true,
+      "settings_and_auth_digests_equal": true,
+      "appearance_equal": true,
+      "version": "0.1.4-rollback.4",
+      "sha256": "19127346f88071abcc33ddf4156734a68be67539d4452609101429169e71778c"
+    },
+    {
+      "step": "forward10-return",
+      "all21_tables_equal": true,
+      "settings_and_auth_digests_equal": true,
+      "appearance_equal": true,
+      "version": "0.2.0-preview.4",
+      "sha256": "473f634c2b0dd0890671418d691978fbf201edc3214eac1015172923f717923b"
+    }
+  ],
+  "complete": true,
+  "no_uninstall_or_clear": true,
+  "time": 1793268023.513776
+}
