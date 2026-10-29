@@ -1,5 +1,7 @@
 # LF8：复选框真实Android补证
 
+[草稿PR #118](https://github.com/ShiJiJS/video_viewer/pull/118)承接源码PR #117，真实Android项已完成，正常包项仍开放。
+
 承接[#116 / PR #117](https://github.com/ShiJiJS/video_viewer/pull/117)的固定2a4e9cd7生产复选模块，源码组件已通过777检查，本段不改生产lib。独立profile入口使用实际TrashEntryRow和PaperCheckboxListTile，fixture只控制选值/禁用与计数，不启动服务或文件操作；不注入accessibility替身。
 
 三轮、两种形式，每组正常/减少下选择与反向、按住与取消；选择/反向及按压/取消进行中开启真实系统减少动画；另原生按住后由fixture模拟异步变更禁用，再抬起，核对无额外回调或异常。计划每组15个方向，共90个方向；其中24次实际运行中切换；6份按组完整录屏，不借用其它控件的72次计数。
