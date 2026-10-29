@@ -1147,7 +1147,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                         _busy ? null : () => go('settings'),
                       ),
                     if (page != 'trash')
-                      PopupMenuButton<String>(
+                      PaperMenuButton<String>(
                         tooltip: '更多',
                         enabled: !busy,
                         onOpened: () => setState(() => obscured = true),

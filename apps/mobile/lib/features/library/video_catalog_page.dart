@@ -559,7 +559,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                 style: TextStyle(fontSize: 13, color: p.muted),
                               ),
                               if (!recent)
-                                PopupMenuButton<VideoSort>(
+                                PaperMenuButton<VideoSort>(
                                   tooltip: '视频排序',
                                   initialValue: entry.sort,
                                   onSelected: (value) =>
