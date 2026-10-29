@@ -1,0 +1,15 @@
+{
+  "command": [
+    "bash",
+    "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+    "flutter",
+    "drive",
+    "--profile",
+    "--no-pub",
+    "-d",
+    "emulator-5558",
+    "--driver=test_driver/reader_performance.dart",
+    "--target=integration_test/server_native_motion_test.dart"
+  ],
+  "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile"
+}

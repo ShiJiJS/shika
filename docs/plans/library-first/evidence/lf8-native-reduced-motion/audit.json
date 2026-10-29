@@ -1,0 +1,193 @@
+{
+  "intended_cases": 18,
+  "passed_cases": 18,
+  "actual_app_cases": 12,
+  "native_component_cases": 6,
+  "recordings": 18,
+  "all_recordings_independently_decoded": true,
+  "all_settings_restored": true,
+  "physical_presentation_latency_accepted": false,
+  "audio_playback_accepted": false,
+  "cases": [
+    {
+      "name": "round-1-normal-app-inline",
+      "reduced": false,
+      "observed_frames": 18,
+      "last_elapsed_us": 366667,
+      "largest_observation_gap_us": 33334,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-1-normal-app-fullscreen",
+      "reduced": false,
+      "observed_frames": 17,
+      "last_elapsed_us": 350000,
+      "largest_observation_gap_us": 50000,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-1-reduced-app-inline",
+      "reduced": true,
+      "observed_frames": 9,
+      "last_elapsed_us": 350000,
+      "largest_observation_gap_us": 200000,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-1-reduced-app-fullscreen",
+      "reduced": true,
+      "observed_frames": 11,
+      "last_elapsed_us": 350000,
+      "largest_observation_gap_us": 66667,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-2-normal-app-inline",
+      "reduced": false,
+      "observed_frames": 15,
+      "last_elapsed_us": 350000,
+      "largest_observation_gap_us": 33334,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-2-normal-app-fullscreen",
+      "reduced": false,
+      "observed_frames": 10,
+      "last_elapsed_us": 350000,
+      "largest_observation_gap_us": 66666,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-2-reduced-app-inline",
+      "reduced": true,
+      "observed_frames": 19,
+      "last_elapsed_us": 366667,
+      "largest_observation_gap_us": 33334,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-2-reduced-app-fullscreen",
+      "reduced": true,
+      "observed_frames": 16,
+      "last_elapsed_us": 350000,
+      "largest_observation_gap_us": 50000,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-3-normal-app-inline",
+      "reduced": false,
+      "observed_frames": 9,
+      "last_elapsed_us": 450000,
+      "largest_observation_gap_us": 150000,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-3-normal-app-fullscreen",
+      "reduced": false,
+      "observed_frames": 17,
+      "last_elapsed_us": 350000,
+      "largest_observation_gap_us": 50000,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-3-reduced-app-inline",
+      "reduced": true,
+      "observed_frames": 18,
+      "last_elapsed_us": 350000,
+      "largest_observation_gap_us": 33334,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-3-reduced-app-fullscreen",
+      "reduced": true,
+      "observed_frames": 19,
+      "last_elapsed_us": 366666,
+      "largest_observation_gap_us": 33333,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-1-normal-legacy-component",
+      "reduced": false,
+      "observed_frames": 7,
+      "last_elapsed_us": 483333,
+      "largest_observation_gap_us": 166666,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-1-reduced-legacy-component",
+      "reduced": true,
+      "observed_frames": 5,
+      "last_elapsed_us": 383333,
+      "largest_observation_gap_us": 200000,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-2-normal-legacy-component",
+      "reduced": false,
+      "observed_frames": 16,
+      "last_elapsed_us": 350000,
+      "largest_observation_gap_us": 33334,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-2-reduced-legacy-component",
+      "reduced": true,
+      "observed_frames": 19,
+      "last_elapsed_us": 350000,
+      "largest_observation_gap_us": 50000,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-3-normal-legacy-component",
+      "reduced": false,
+      "observed_frames": 12,
+      "last_elapsed_us": 350000,
+      "largest_observation_gap_us": 50000,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    },
+    {
+      "name": "round-3-reduced-legacy-component",
+      "reduced": true,
+      "observed_frames": 7,
+      "last_elapsed_us": 366667,
+      "largest_observation_gap_us": 166666,
+      "full_decode_exit": 0,
+      "focus_in_app": true,
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "native_motion": {
+    "profile_entry": true,
+    "normal_release_acceptance": false,
+    "system_accessibility_injected": false,
+    "audio_playback_acceptance": false,
+    "cases": [],
+    "last_platform_settings": {
+      "action": "configure",
+      "name": null,
+      "reduced": false,
+      "actual": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      }
+    },
+    "active_case": {
+      "name": "round-1-normal-app-inline",
+      "reduced": false,
+      "baseline": {
+        "frame_us": 856565601,
+        "values": {
+          "controls": {
+            "target": 1.0,
+            "duration_us": 160000,
+            "opacity": 1.0
+          }
+        }
+      },
+      "frames": [
+        {
+          "frame_us": 856748934,
+          "values": {
+            "controls": {
+              "target": 0.0,
+              "duration_us": 160000,
+              "opacity": 1.0
+            }
+          },
+          "elapsed_us": 0
+        },
+        {
+          "frame_us": 856948934,
+          "values": {
+            "controls": {
+              "target": 0.0,
+              "duration_us": 160000,
+              "opacity": 0.0
+            }
+          },
+          "elapsed_us": 200000
+        },
+        {
+          "frame_us": 856965601,
+          "values": {
+            "controls": {
+              "target": 0.0,
+              "duration_us": 160000,
+              "opacity": 0.0
+            }
+          },
+          "elapsed_us": 216667
+        },
+        {
+          "frame_us": 857348934,
+          "values": {
+            "controls": {
+              "target": 0.0,
+              "duration_us": 160000,
+              "opacity": 0.0
+            }
+          },
+          "elapsed_us": 600000
+        }
+      ]
+    }
+  }
+}

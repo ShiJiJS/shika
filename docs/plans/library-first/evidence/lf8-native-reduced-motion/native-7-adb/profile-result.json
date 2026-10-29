@@ -1,0 +1,200 @@
+{
+  "native_motion": {
+    "profile_entry": true,
+    "normal_release_acceptance": false,
+    "system_accessibility_injected": false,
+    "audio_playback_acceptance": false,
+    "cases": [
+      {
+        "name": "round-1-normal-app-inline",
+        "reduced": false,
+        "automatic_hide": true,
+        "native_flag": false,
+        "media_query_flag": false,
+        "physical": [
+          1170.0,
+          2532.0
+        ],
+        "controller": 945738152,
+        "playing_after": true,
+        "position_before_ms": 590,
+        "position_after_ms": 3707,
+        "baseline": {
+          "frame_us": 1188612020,
+          "values": {
+            "controls": {
+              "target": 1.0,
+              "duration_us": 160000,
+              "opacity": 1.0
+            }
+          }
+        },
+        "frames": [
+          {
+            "frame_us": 1188662020,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 1.0
+              }
+            },
+            "elapsed_us": 0
+          },
+          {
+            "frame_us": 1188695353,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.79166875
+              }
+            },
+            "elapsed_us": 33333
+          },
+          {
+            "frame_us": 1188728687,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.58333125
+              }
+            },
+            "elapsed_us": 66667
+          },
+          {
+            "frame_us": 1188795353,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.16666874999999992
+              }
+            },
+            "elapsed_us": 133333
+          },
+          {
+            "frame_us": 1188812020,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.0625
+              }
+            },
+            "elapsed_us": 150000
+          },
+          {
+            "frame_us": 1188862020,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.0
+              }
+            },
+            "elapsed_us": 200000
+          },
+          {
+            "frame_us": 1188895353,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.0
+              }
+            },
+            "elapsed_us": 233333
+          },
+          {
+            "frame_us": 1188912020,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.0
+              }
+            },
+            "elapsed_us": 250000
+          },
+          {
+            "frame_us": 1188962020,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.0
+              }
+            },
+            "elapsed_us": 300000
+          },
+          {
+            "frame_us": 1188995353,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.0
+              }
+            },
+            "elapsed_us": 333333
+          },
+          {
+            "frame_us": 1189012020,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.0
+              }
+            },
+            "elapsed_us": 350000
+          }
+        ]
+      }
+    ],
+    "lifecycle": [
+      {
+        "time": "2026-10-29T02:42:46.476402",
+        "state": "inactive"
+      },
+      {
+        "time": "2026-10-29T02:42:46.578368",
+        "state": "resumed"
+      },
+      {
+        "time": "2026-10-29T02:42:47.388612",
+        "state": "inactive"
+      }
+    ],
+    "last_platform_settings": {
+      "action": "configure",
+      "name": null,
+      "reduced": false,
+      "actual": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      }
+    },
+    "after_host_begin": {
+      "name": "round-1-normal-app-fullscreen",
+      "lifecycle": "inactive",
+      "surfaces": [],
+      "texts": []
+    },
+    "failure": {
+      "waiting_for": "production controls mounted after native recording setup",
+      "texts": [],
+      "video_surfaces": [],
+      "active_baseline": null,
+      "active_frames": null
+    },
+    "terminal_state": {
+      "lifecycle": "inactive",
+      "surfaces": [],
+      "texts": []
+    }
+  }
+}
