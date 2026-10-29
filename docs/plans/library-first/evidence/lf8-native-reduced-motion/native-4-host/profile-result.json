@@ -1,0 +1,102 @@
+{
+  "native_motion": {
+    "profile_entry": true,
+    "normal_release_acceptance": false,
+    "system_accessibility_injected": false,
+    "audio_playback_acceptance": false,
+    "cases": [
+      {
+        "name": "round-1-normal-app-inline",
+        "reduced": false,
+        "automatic_hide": true,
+        "native_flag": false,
+        "media_query_flag": false,
+        "physical": [
+          1170.0,
+          2532.0
+        ],
+        "controller": 883077943,
+        "playing_after": true,
+        "position_before_ms": 657,
+        "position_after_ms": 2823,
+        "baseline": {
+          "frame_us": 125762063,
+          "values": {
+            "controls": {
+              "target": 1.0,
+              "duration_us": 160000,
+              "opacity": 1.0
+            }
+          }
+        },
+        "frames": [
+          {
+            "frame_us": 125812063,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 1.0
+              }
+            },
+            "elapsed_us": 0
+          },
+          {
+            "frame_us": 125962063,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.0625
+              }
+            },
+            "elapsed_us": 150000
+          },
+          {
+            "frame_us": 125978729,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.0
+              }
+            },
+            "elapsed_us": 166666
+          },
+          {
+            "frame_us": 126045396,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.0
+              }
+            },
+            "elapsed_us": 233333
+          },
+          {
+            "frame_us": 126312063,
+            "values": {
+              "controls": {
+                "target": 0.0,
+                "duration_us": 160000,
+                "opacity": 0.0
+              }
+            },
+            "elapsed_us": 500000
+          }
+        ]
+      }
+    ],
+    "last_platform_settings": {
+      "action": "configure",
+      "name": null,
+      "reduced": false,
+      "actual": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      }
+    }
+  }
+}

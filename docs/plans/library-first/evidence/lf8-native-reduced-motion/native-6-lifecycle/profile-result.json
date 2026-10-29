@@ -1,0 +1,75 @@
+{
+  "native_motion": {
+    "profile_entry": true,
+    "normal_release_acceptance": false,
+    "system_accessibility_injected": false,
+    "audio_playback_acceptance": false,
+    "cases": [],
+    "lifecycle": [],
+    "last_platform_settings": {
+      "action": "configure",
+      "name": null,
+      "reduced": false,
+      "actual": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      }
+    },
+    "failure": {
+      "waiting_for": "native playing=false",
+      "texts": [
+        "视频预览",
+        "媒体库 · 全部视频",
+        "2 / 2",
+        "横向全屏",
+        "暂停",
+        "00:04 / 00:05",
+        "1×",
+        "随机预览",
+        "视频标签",
+        "快速整理",
+        "上一条",
+        "本次范围最后一条",
+        "结束"
+      ],
+      "video_surfaces": [
+        {
+          "initialized": true,
+          "playing": true,
+          "requested": true,
+          "error": null
+        }
+      ],
+      "active_baseline": null,
+      "active_frames": null
+    },
+    "terminal_state": {
+      "lifecycle": "resumed",
+      "surfaces": [
+        {
+          "controller": 655395345,
+          "initialized": true,
+          "playing": true,
+          "error": null,
+          "fullscreen": false
+        }
+      ],
+      "texts": [
+        "视频预览",
+        "媒体库 · 全部视频",
+        "2 / 2",
+        "横向全屏",
+        "暂停",
+        "00:04 / 00:05",
+        "1×",
+        "随机预览",
+        "视频标签",
+        "快速整理",
+        "上一条",
+        "本次范围最后一条",
+        "结束"
+      ]
+    }
+  }
+}
