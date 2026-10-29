@@ -1,6 +1,6 @@
 # 媒体库与图包改造实施方案
 
-> 当前进度（2026-10-30）：正常preview.9/rollback.9同code15已交付；菜单源码/Android组件检查已补齐，普通新包待整合。正按[#112](https://github.com/ShiJiJS/video_viewer/issues/112)修复下拉选择，完整765客户端及16组静态对照通过，真实Android与普通业务待验。各项状态以[RESULTS.md](RESULTS.md)为当前入口。下文旧“最新阶段”保留当时记录，原规划范围与验收条件继续适用。
+> 当前进度（2026-10-30）：正常preview.9/rollback.9同code15已交付；菜单源码/Android组件检查已补齐，普通新包待整合。正按[#112](https://github.com/ShiJiJS/video_viewer/issues/112)修复下拉选择，完整765客户端及16组静态对照、Android模块三轮72次过渡/12次实时切换通过，普通新包与实际业务待验。各项状态以[RESULTS.md](RESULTS.md)为当前入口。下文旧“最新阶段”保留当时记录，原规划范围与验收条件继续适用。
 
 最新阶段：[复杂图包性能测量与诊断 PR #96（进行中）](https://github.com/ShiJiJS/video_viewer/pull/96)。新增两份公开摄影原图衍生的506页/约3.4GB夹具（500页长包含400页4K/100页8K），正常服务扫描无失败；profile重复计时、被动内核PSS/RSS/VmHWM与汇总工具已提交，生产App/服务/原型未改，正常安装包仍为PR #95配套版本。三处采集错误已修正并分开保留；SWANGLE/GLES出现bad color buffer/GL context异常，QEMU81429挂起并确认退出，该轮失败，不诊断为App OOM。现以同数据SwiftShader复测，另一次进度确认等待超时正补状态诊断；尚无完整30次分位数/三轮500页结论。真实手机/NAS与READ-06完整验收继续，#24/#33/#78/#89均不关闭。
 
