@@ -27,7 +27,7 @@ class PageMotionProbe {
       matches = null {
     animation = route!.animation!;
     duration = route!.reverseTransitionDuration;
-    mediaQueryFlag = MediaQuery.disableAnimationsOf(element!);
+    mediaQueryFlag = MediaQuery.disableAnimationsOf(route!.subtreeContext!);
   }
   final String name;
   final bool reduced, closing;
