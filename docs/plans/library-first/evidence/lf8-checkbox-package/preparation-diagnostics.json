@@ -1,0 +1,23 @@
+{
+  "initial_device_preparation": {
+    "result": "failed before settings capture or root change",
+    "reason": "boot launcher was still live; device was offline",
+    "owned_pid": 34563,
+    "recovery": "waited same launcher handle67940 to ready, reran preparation on same PID; no restart"
+  },
+  "build_steps": 13,
+  "rollback_tests": 85,
+  "forward_related_tests": 14,
+  "legacy_surface_selector": {
+    "result": "test stopped before tap",
+    "reason": "legacy video surface has clickable=false in actual XML; helper filters clickable=true",
+    "recovery": "use settings navigation directly for backup check; no product change or restart",
+    "raw_log": "business-legacy-backup-open.log"
+  },
+  "ordinary_trash_tab_selector": {
+    "result": "test stopped before checkbox tap",
+    "reason": "trash correctly restored its previously visited pack tab; script assumed video tab",
+    "recovery": "explicitly choose actual visible video tab on same PID; no product change",
+    "raw_log": "business-ordinary-video.log"
+  }
+}

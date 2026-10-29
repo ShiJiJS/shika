@@ -1,0 +1,44 @@
+{
+  "source": "c21fd7ab738efc4837d81d06221fff18efde4067",
+  "production_lib_tree": "4052a2cc98a224fccac85d96ea9da7e05e4d130f",
+  "same_as_component_and_native": true,
+  "normal_code17_pair": {
+    "forward": {
+      "path": "/Users/jiangxinyi/Documents/Project/video-viewer/tmp/releases/video-viewer-0.2.0-preview.11-arm64.apk",
+      "version": "0.2.0-preview.11",
+      "version_code": 17,
+      "sha256": "21a149b0ab8dea8bed2d2534ad718df83677cf148dd44ad23e3efbc280f1396c",
+      "bytes": 23242854,
+      "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+      "flutter_engine_abis": [
+        "arm64-v8a"
+      ],
+      "normal_entrypoint": true,
+      "integration_test_plugin": false
+    },
+    "rollback": {
+      "path": "/Users/jiangxinyi/Documents/Project/video-viewer/tmp/releases/video-viewer-0.1.4-rollback.11-arm64.apk",
+      "version": "0.1.4-rollback.11",
+      "version_code": 17,
+      "sha256": "40ceee1373330ab1931ba1e544f8ac18eac883868289b1b1edfc4d12500748dd",
+      "bytes": 21734394,
+      "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+      "flutter_engine_abis": [
+        "arm64-v8a"
+      ],
+      "normal_entrypoint": true,
+      "integration_test_plugin": false
+    }
+  },
+  "code16_sha256_unchanged": {
+    "video-viewer-0.2.0-preview.10-arm64.apk": {
+      "bytes": 23308390,
+      "sha256": "d05d83d792c14de2ff66b919fd9f987c84ddd9245633f0acc40399c18221bea8"
+    },
+    "video-viewer-0.1.4-rollback.10-arm64.apk": {
+      "bytes": 21734394,
+      "sha256": "19728ec7b114bc788f1609c75d7bd618f76eb66989086b5c1308278e3d94d8ef"
+    }
+  },
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca"
+}
