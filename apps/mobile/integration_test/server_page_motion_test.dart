@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -215,7 +216,15 @@ void main() {
     }
 
     Future<void> tap(Finder finder) async {
-      await t.ensureVisible(finder);
+      if (finder.hitTestable().evaluate().isEmpty) {
+        await t.ensureVisible(finder);
+        // benchmarkLive ignores pump: wait for the actual layout after scroll
+        // before converting the rendered control center to Android coordinates.
+        final laidOut = Completer<void>();
+        WidgetsBinding.instance.addPostFrameCallback((_) => laidOut.complete());
+        SchedulerBinding.instance.scheduleFrame();
+        await laidOut.future;
+      }
       await until(() {
         if (finder.hitTestable().evaluate().length != 1) return false;
         final route = ModalRoute.of(t.element(finder));
