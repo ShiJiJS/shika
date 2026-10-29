@@ -769,7 +769,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
           return;
         }
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          PaperSnackBar(
+            context: context,
             content: Text(
               outcome.task.result!.succeeded > 0
                   ? '图包操作已完成'
@@ -862,13 +863,15 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       if (outcome.task.result!.succeeded > 0) {
         showPackUndo(context, repo, outcome, onRestored: resumeRestored);
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('图包未移除，请重新读取后再试')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          PaperSnackBar(context: context, content: Text('图包未移除，请重新读取后再试')),
+        );
       }
     } catch (failure) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(failure.toString())));
+        ScaffoldMessenger.of(context).showSnackBar(
+          PaperSnackBar(context: context, content: Text(failure.toString())),
+        );
       }
     } finally {
       _detailsOpen = false;

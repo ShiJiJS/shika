@@ -181,7 +181,8 @@ class PackReaderPageState extends State<PackReaderPage>
     final remaining = task.remainingUndo();
     if (task.kind != 'pack_trash' || remaining <= Duration.zero) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      PaperSnackBar(
+        context: context,
         content: const Text('整包已移入回收站'),
         duration: remaining,
         action: SnackBarAction(

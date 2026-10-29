@@ -153,7 +153,8 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        PaperSnackBar(
+          context: context,
           content: Text(
             task.result == null
                 ? '请在原操作查询结果'
