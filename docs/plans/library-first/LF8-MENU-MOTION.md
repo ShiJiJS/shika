@@ -1,6 +1,6 @@
 # LF8：弹出菜单过渡
 
-按[问题#110](https://github.com/ShiJiJS/video_viewer/issues/110)继续#24/#33的UI-06，基于已交付code15源码10f7c13b。原型保持独立可移除，当前preview.9两包不重建。本段统一现有菜单，不新增选项或改变业务动作。
+[草稿PR #111](https://github.com/ShiJiJS/video_viewer/pull/111)按[问题#110](https://github.com/ShiJiJS/video_viewer/issues/110)继续#24/#33的UI-06，基于已交付code15源码10f7c13b。原型保持独立可移除，当前preview.9两包不重建。本段统一现有菜单，不新增选项或改变业务动作。
 
 实际Workspace“更多”在普通和减少动画下均报告300/300ms，运行中开启减少动画后仍停在0.2；专用公开SDK夹具设置AnimationStyle的240/160后，实际路由仍为240/240。3项实际App组件和1项SDK检查均失败，原日志与完整执行夹具保留。当前固定SDK的私有菜单路由没有读取reverseDuration，不能仅靠调用处配置完成退出与实时偏好要求，也不修改本机SDK。
 

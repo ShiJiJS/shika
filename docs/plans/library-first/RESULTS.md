@@ -2,7 +2,7 @@
 
 更新：2026-10-30。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
-当前开发段（2026-10-30）：[菜单修复](LF8-MENU-MOTION.md)按[#110](https://github.com/ShiJiJS/video_viewer/issues/110)推进，7处入口已接自有240/160ms与实时减少动画，完整750客户端、10针对/16组静态像素及analyze通过。真实Android与普通包尚待核对，现有code15不包含本段；原型/SDK/服务和现有两包未改。
+当前开发段（2026-10-30）：[菜单修复](LF8-MENU-MOTION.md)按[#110](https://github.com/ShiJiJS/video_viewer/issues/110)/[草稿PR #111](https://github.com/ShiJiJS/video_viewer/pull/111)推进，7处入口已接自有240/160ms与实时减少动画，完整750客户端、10针对/16组静态像素及analyze通过。真实Android与普通包尚待核对，现有code15不包含本段；原型/SDK/服务和现有两包未改。
 
 上一交付段（2026-10-30）：[设置开关与主题](LF8-SETTINGS-MOTION.md)已提交[草稿PR #109](https://github.com/ShiJiJS/video_viewer/pull/109)，源码和本机检查完成：140ms/减少动画即时完成、自定义颜色同步，完整740客户端、analyze、开关16组像素和真实Android三轮24次/12录屏通过；动画中途切换与拖动取消由组件证明，原生没有覆盖这些组合。preview.9/rollback.9同code15已完成正常构建、三次覆盖、21表/登录/偏好保留及实际设置保存/两次重开读回/草稿取消；[普通包证据](evidence/lf8-settings-package/README.md)。旧code14两包SHA不变，服务与原型不变，完整验收保持开放。
 
