@@ -88,7 +88,13 @@ class PaperPressInk extends InteractiveInkFeature {
   }
 
   @override
-  void confirm() => _close();
+  void confirm() {
+    // A tap or keyboard activation can finish before the first animation tick.
+    // Acknowledge it immediately, then fade; never delay InkWell's callback.
+    if (!_disposed && !_closing && !reduced.value) _animation.value = 1;
+    _close();
+  }
+
   @override
   void cancel() => _close();
 

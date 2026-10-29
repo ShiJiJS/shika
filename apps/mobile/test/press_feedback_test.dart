@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_viewer/ui/paper.dart';
 import 'package:video_viewer/ui/paper_press.dart';
@@ -208,5 +209,76 @@ void main() {
         expect(t.takeException(), isNull);
       },
     );
+  }
+  for (final reduced in [false, true]) {
+    for (final keyboard in [false, true]) {
+      testWidgets(
+        'quick activation remains visible without delaying callback reduced=$reduced keyboard=$keyboard',
+        (t) async {
+          t.platformDispatcher.accessibilityFeaturesTestValue =
+              FakeAccessibilityFeatures(disableAnimations: reduced);
+          addTearDown(t.platformDispatcher.clearAccessibilityFeaturesTestValue);
+          final focus = FocusNode();
+          addTearDown(focus.dispose);
+          CaptureFactory? captured;
+          var calls = 0;
+          await t.pumpWidget(
+            MaterialApp(
+              theme: Paper.theme,
+              home: PaperControlTheme(
+                child: Builder(
+                  builder: (context) {
+                    captured ??= CaptureFactory(
+                      Theme.of(context).splashFactory,
+                    );
+                    return Theme(
+                      data: Theme.of(context).copyWith(splashFactory: captured),
+                      child: Scaffold(
+                        body: Center(
+                          child: FilledButton(
+                            focusNode: focus,
+                            onPressed: () => calls++,
+                            child: const Text('quick'),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+          if (keyboard) {
+            focus.requestFocus();
+            await t.pump();
+            await t.sendKeyEvent(LogicalKeyboardKey.enter);
+          } else {
+            await t.tap(find.text('quick'));
+          }
+          expect(calls, 1);
+          expect(captured!.features, hasLength(1));
+          final ink = captured!.features.single;
+          if (reduced) {
+            expect(captured!.removals, 1);
+          } else {
+            expect(
+              ink.animation.value,
+              1,
+              reason: 'Quick tap/key activation must leave a visible 100ms acknowledgement',
+            );
+            expect(captured!.removals, 0);
+            await t.pump();
+            await t.pump(const Duration(milliseconds: 50));
+            expect(ink.animation.value, inExclusiveRange(0, 1));
+            await t.pump(const Duration(milliseconds: 50));
+            expect(ink.animation.value, 0);
+            await t.pump(const Duration(milliseconds: 16));
+            expect(captured!.removals, 1);
+          }
+          await t.pumpWidget(const SizedBox());
+          expect(t.takeException(), isNull);
+        },
+      );
+    }
   }
 }
