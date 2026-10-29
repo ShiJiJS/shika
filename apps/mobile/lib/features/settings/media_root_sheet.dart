@@ -111,7 +111,7 @@ class _MediaRootSheetState extends State<MediaRootSheet> {
       if (widget.repository.capabilities.typedRoots) ...[
         PaperSettingRow(
           label: '内容类型',
-          child: DropdownButtonFormField<MediaKind>(
+          child: PaperDropdownButtonFormField<MediaKind>(
             key: const Key('root-kind'),
             initialValue: kind,
             isExpanded: true,

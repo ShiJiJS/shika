@@ -155,7 +155,7 @@ void main() {
         await frames(t);
         expect(
           t
-              .widget<DropdownButtonFormField<ReaderDirection>>(direction)
+              .widget<PaperDropdownButtonFormField<ReaderDirection>>(direction)
               .initialValue,
           ReaderDirection.rtl,
         );

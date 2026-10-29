@@ -1,0 +1,51 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:video_viewer/features/settings/default_settings_sheet.dart';
+import 'package:video_viewer/ui/paper.dart';
+import 'package:video_viewer/ui/preferences.dart';
+import 'default_settings_widget_test.dart' show DefaultDraftLibrary;
+
+class ProbeObserver extends NavigatorObserver {
+  TransitionRoute<dynamic>? dropdown;
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    if (route is PopupRoute<dynamic>) dropdown = route;
+  }
+}
+
+void main() {
+  for (final reduced in [false, true, null]) {
+    testWidgets('actual reading preferences dropdown motion reduced=$reduced', (t) async {
+      t.platformDispatcher.accessibilityFeaturesTestValue = FakeAccessibilityFeatures(disableAnimations: reduced ?? false);
+      addTearDown(t.platformDispatcher.clearAccessibilityFeaturesTestValue);
+      final repo = DefaultDraftLibrary();
+      final local = UiPreferences();
+      final observer = ProbeObserver();
+      await repo.initialize();
+      addTearDown(() async {
+        await t.pumpWidget(const SizedBox());
+        repo.dispose();local.dispose();
+      });
+      await t.pumpWidget(MaterialApp(theme: Paper.theme,navigatorObservers:[observer],builder:(_,child)=>PaperControlTheme(child:child!),home:Scaffold(body:DefaultSettingsSheet(repository:repo,local:local,video:false))));
+      await t.pumpAndSettle();
+      final field = find.byKey(const Key('default-reader-direction'));
+      await Scrollable.ensureVisible(t.element(field),alignment:.5);
+      await t.pumpAndSettle();
+      await t.tap(field);
+      await t.pump();
+      final route=observer.dropdown!;
+      debugPrint('ACTUAL dropdown reduced=$reduced forward=${route.transitionDuration.inMilliseconds} reverse=${route.reverseTransitionDuration.inMilliseconds}');
+      if(reduced==null){
+        await t.pump(const Duration(milliseconds:60));
+        expect(route.animation!.value,inExclusiveRange(0,1));
+        t.platformDispatcher.accessibilityFeaturesTestValue=FakeAccessibilityFeatures(disableAnimations:true);
+        await t.pump();
+        debugPrint('ACTUAL live dropdown native=${t.platformDispatcher.accessibilityFeatures.disableAnimations} progress=${route.animation!.value}');
+        expect(route.animation!.value,1);
+      }else{
+        expect(route.transitionDuration,Duration(milliseconds:reduced?0:240));
+        expect(route.reverseTransitionDuration,Duration(milliseconds:reduced?0:160));
+      }
+    });
+  }
+}

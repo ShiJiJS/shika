@@ -311,7 +311,7 @@ void main() {
         );
         expect(await state().session.flush(), isTrue);
         await tap(find.byTooltip('阅读设置'));
-        await tap(find.byType(DropdownButtonFormField<ReaderDirection>));
+        await tap(find.byType(PaperDropdownButtonFormField<ReaderDirection>));
         await tap(find.text('从右向左').last);
         await until(
           () =>

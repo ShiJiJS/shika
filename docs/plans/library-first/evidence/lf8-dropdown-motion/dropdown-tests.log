@@ -1,0 +1,46 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/dropdown_motion_test.dart
+00:00 +0: actual reading preferences dropdown motion reduced=false
+ACTUAL dropdown reduced=false forward=240 reverse=160
+00:00 +1: actual reading preferences dropdown motion reduced=true
+ACTUAL dropdown reduced=true forward=0 reverse=0
+00:00 +2: actual reading preferences dropdown motion reduced=null
+ACTUAL dropdown reduced=null forward=240 reverse=160
+ACTUAL live dropdown native=true progress=1.0
+00:00 +3: selection updates once before a full exit reduced=false
+00:00 +4: selection updates once before a full exit reduced=true
+00:00 +5: live reduced motion completes the visible exit at its next frame
+00:00 +6: exit reads reduced motion enabled after the menu opened
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following _TypeError was thrown running a test:
+Null check operator used on a null value
+
+When the exception was thrown, this was the stack:
+#0      _DropdownRoute.reduced (package:video_viewer/ui/paper_dropdown.dart:558:63)
+#1      _DropdownRoute.reverseTransitionDuration (package:video_viewer/ui/paper_dropdown.dart:566:7)
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/dropdown_motion_test.dart:154:18)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  exit reads reduced motion enabled after the menu opened
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +6 -1: exit reads reduced motion enabled after the menu opened [E]
+  Test failed. See exception logs above.
+  The test description was: exit reads reduced motion enabled after the menu opened
+  
+00:00 +6 -1: real null selection differs from barrier and Escape cancellation
+00:01 +7 -1: long menu aligns its selection and keyboard skips disabled rows reduced=false
+00:01 +8 -1: long menu aligns its selection and keyboard skips disabled rows reduced=true
+00:01 +9 -1: form validation save reset and changed initial value retain their contract
+00:01 +10 -1: disabled empty and invalidated dropdowns do not invoke callbacks
+00:01 +11 -1: removing the anchor or rotating while open closes without a stale callback
+00:01 +12 -1: resting button and menu pixels match SDK in 16 form theme direction and anchor combinations
+00:04 +13 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/dropdown_motion_test.dart: exit reads reduced motion enabled after the menu opened

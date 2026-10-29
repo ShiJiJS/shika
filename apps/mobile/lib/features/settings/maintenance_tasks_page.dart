@@ -201,7 +201,7 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
                         runSpacing: 4,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          DropdownButton<String>(
+                          PaperDropdownButton<String>(
                             key: const Key('task-family'),
                             value: s.family,
                             style: TextStyle(fontSize: 13, color: p.ink),

@@ -174,7 +174,7 @@ class _ScopeSheetState extends State<ScopeSheet> {
     void Function(String) changed,
   ) => Padding(
     padding: const EdgeInsets.only(top: 16),
-    child: DropdownButtonFormField<String>(
+    child: PaperDropdownButtonFormField<String>(
       initialValue: value,
       key: ValueKey('$label-$value'),
       decoration: InputDecoration(labelText: label),
