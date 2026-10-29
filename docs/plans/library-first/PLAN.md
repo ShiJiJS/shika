@@ -1,6 +1,6 @@
 # 媒体库与图包改造实施方案
 
-> 后续复选框源码段：[#116](https://github.com/ShiJiJS/video_viewer/issues/116)已通过11针对/96组像素与777完整客户端及分析；[结果与边界](LF8-CHECKBOX-MOTION.md)。真实Android与正常新包继续，当前code16仍不含该段修复。
+> 复选框最新进度：[#116](https://github.com/ShiJiJS/video_viewer/issues/116)源码/组件及[真实Android三轮90方向](LF8-CHECKBOX-NATIVE.md)已完成；24次真正中途切换、6次按住后禁用和6录像通过，环境已归还。正常main与新配套包继续，当前code16仍不含该段修复。
 
 > 当前进度（2026-10-30）：正常preview.10/rollback.10同code16已完成本机候选交付，菜单/下拉源码、独立Android三轮和媒体库主业务已补齐；原版0.1.4服务首页菜单组合已由[补证](LF8-LEGACY-HOME-MENU.md)完成。完整766客户端/分析、覆盖保留登录/偏好/21表、主动业务差量和环境恢复通过，见[PR #114](https://github.com/ShiJiJS/video_viewer/pull/114)及[结果](LF8-MENU-DROPDOWN-PACKAGE.md)。真实手机/NAS、有声/云提供器、其余UI-06与完整45项终验继续；[RESULTS.md](RESULTS.md)为当前入口。下文旧“最新阶段”保留当时记录，原规划范围与验收条件继续适用。
 

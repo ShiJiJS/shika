@@ -1,0 +1,8 @@
+{
+  "exit_code": 1,
+  "observer_errors": [
+    "CalledProcessError(255, ['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5558', 'shell', 'sh', '-c', \"'input tap 108 608\\\\nsleep 0.025\\\\nsettings put global transition_animation_scale 0\\\\nsettings put global animator_duration_scale 0\\\\nsettings put global window_animation_scale 0'\"])"
+  ],
+  "recordings": 0,
+  "finished_at": 1793313274.294883
+}

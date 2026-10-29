@@ -67,7 +67,7 @@ flutter run -d emulator-5554
 
 `client_demo_test` 会构建、安装客户端到模拟器，验证真实播放/全屏、标签与目录组合、快速整理删除撤销、备份恢复及失败状态；使用隔离的演示数据目录。它已经替换最初的计数器环境冒烟测试，不能代替真实 NAS 服务验收。
 
-当前 Flutter 集成测试默认结束后卸载应用，会清空加密连接存储。保留安装及验证进程重开时使用 `--no-uninstall`；各测试使用独立存储命名空间。真实网络播放及格式测试通过仓库根目录 `python scripts/run-client-connection-test.py --playback` 运行，详细范围及结果见 [联调记录](integration-validation.md)。
+集成测试保留安装的参数取决于命令：`flutter test integration_test/... --no-uninstall`；`flutter drive` 不支持该参数，须使用 `--keep-app-running`，否则 drive 默认清理会停止并卸载应用、清空加密连接存储。后者还会保留运行进程，需由测试结束流程关闭自己拥有的资源。各测试使用独立存储命名空间。真实网络播放及格式测试通过仓库根目录 `python scripts/run-client-connection-test.py --playback` 运行，详细范围及结果见 [联调记录](integration-validation.md)。
 
 `flutter run` 中按 `r` 热重载、按 `R` 热重启，按 `q` 结束调试。也可以在 VS Code 中使用对应调试按钮。
 
