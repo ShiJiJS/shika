@@ -1,6 +1,6 @@
 # LF8：复选框的选择反馈与实时减少动画
 
-按[#116](https://github.com/ShiJiJS/video_viewer/issues/116)承接菜单/下拉与原版服务首页补证，继续UI-06。固定基线683306d5的真实TrashEntryRow组件三项诊断均失败：普通140ms实际绘制进度约0.556（控制器200ms），减少动画首帧仍0，进行40ms后开启减少动画仍约0.063。回调即时且只有一次；这是组件FakeAccessibilityFeatures输入，不是Android系统证明。原始日志和诊断源文件保留，不把首次编排模板转义错误（命令未执行）计作测试。
+[草稿PR #117](https://github.com/ShiJiJS/video_viewer/pull/117)按[#116](https://github.com/ShiJiJS/video_viewer/issues/116)承接菜单/下拉与原版服务首页补证，继续UI-06。固定基线683306d5的真实TrashEntryRow组件三项诊断均失败：普通140ms实际绘制进度约0.556（控制器200ms），减少动画首帧仍0，进行40ms后开启减少动画仍约0.063。回调即时且只有一次；这是组件FakeAccessibilityFeatures输入，不是Android系统证明。原始日志和诊断源文件保留，不把首次编排模板转义错误（命令未执行）计作测试。
 
 范围清单为四处CheckboxListTile（图包/视频永久删除确认、v2/旧格式恢复确认）与共享回收行内一处Checkbox。调用点数不是缺陷数；当前只有真实回收行有上述失败证据。展开项另按自身契约核对，不与复选框混成同一问题。
 

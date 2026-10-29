@@ -1,6 +1,6 @@
 # GitHub 实施任务
 
-当前源码段（2026-10-30）：[复选框 #116](https://github.com/ShiJiJS/video_viewer/issues/116)已修正实际回收行的200ms/减少动画未即时到位，并接入四个整行确认；固定2a4e9cd7，140ms选择/100ms按压与实时减少，公开原生输入/布局/颜色沿用。按住后禁用的原SDK异常另复现并提前取消修正。11针对、96组完整RGBA/尺寸、777完整客户端与分析通过，[13份原始输入](evidence/lf8-checkbox-motion/README.md)保留。Android系统/真实输入与普通新包尚待核对，当前code16不含本段；展开/自有过渡、完整45项和目标环境继续。
+当前源码段（2026-10-30）：[复选框 #116 / 草稿PR #117](https://github.com/ShiJiJS/video_viewer/pull/117)已修正实际回收行的200ms/减少动画未即时到位，并接入四个整行确认；固定2a4e9cd7，140ms选择/100ms按压与实时减少，公开原生输入/布局/颜色沿用。按住后禁用的原SDK异常另复现并提前取消修正。11针对、96组完整RGBA/尺寸、777完整客户端与分析通过，[13份原始输入](evidence/lf8-checkbox-motion/README.md)保留。Android系统/真实输入与普通新包尚待核对，当前code16不含本段；展开/自有过渡、完整45项和目标环境继续。
 
 当前补证（2026-10-30）：[原版服务首页菜单 / 草稿PR #115](https://github.com/ShiJiJS/video_viewer/pull/115)本机完成。正常preview.10/code16真实连接0.1.4镜像980c9a01（24个Python文件与f5fe32c9相同、无capabilities），普通/减少动画下取消、详情和快速整理进出均保持同一视频/位置；14张明细表及设置/令牌不变、19个成功GET/HEAD，无图包/管理误请求。切回新版35张明细表与设置保持，仅主动登录新增令牌。[109份输入、只读复核与恢复](evidence/lf8-legacy-home-menu/README.md)通过；原四服务/donor/媒体保持，App/服务/SDK/原型和两包未改。#110最后组合已补，初始模拟器安装路径异常/ART缓存差量单列，未定位原因；其它UI-06/45项与手机/NAS/有声等继续。
 
