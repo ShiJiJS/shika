@@ -1,0 +1,33 @@
+{
+  "source": "2a4e9cd780857ce543ccb63b926aeb23ecf96c3c",
+  "production_lib_tree": "4052a2cc98a224fccac85d96ea9da7e05e4d130f",
+  "baseline": "683306d5",
+  "targeted_tests": 11,
+  "static_rgba_configurations": 96,
+  "full_client_tests": 777,
+  "analyze_clean": true,
+  "original_trash_diagnostic_tests_failed": 3,
+  "original_sdk_held_disable_failure_preserved": true,
+  "sdk_sha256_unchanged": true,
+  "service_source_unchanged": true,
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "previous_code16_pairs_unchanged": {
+    "video-viewer-0.2.0-preview.10-arm64.apk": {
+      "bytes": 23308390,
+      "sha256": "d05d83d792c14de2ff66b919fd9f987c84ddd9245633f0acc40399c18221bea8"
+    },
+    "video-viewer-0.1.4-rollback.10-arm64.apk": {
+      "bytes": 21734394,
+      "sha256": "19728ec7b114bc788f1609c75d7bd618f76eb66989086b5c1308278e3d94d8ef"
+    }
+  },
+  "original4_services_preserved_healthy": {
+    "/video-viewer-client-e2e-server-1": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+    "/video-viewer-history-purge-app-lf7": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+    "/video-viewer-archive-app-lf7": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+    "/video-viewer-server-1": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b"
+  },
+  "no_android_resource_started": true,
+  "no_media_nas_phone_deployment_or_delete_operations": true,
+  "not_native_or_normal_app_business_acceptance": true
+}

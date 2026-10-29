@@ -2713,7 +2713,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                           ),
                         ),
                       ),
-                    CheckboxListTile(
+                    PaperCheckboxListTile(
                       key: const Key('video-purge-confirm'),
                       controlAffinity: ListTileControlAffinity.leading,
                       contentPadding: EdgeInsets.zero,
@@ -3219,7 +3219,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                     ],
                   ),
                 ),
-              CheckboxListTile(
+              PaperCheckboxListTile(
                 key: const Key('restore-confirm'),
                 controlAffinity: ListTileControlAffinity.leading,
                 contentPadding: EdgeInsets.zero,

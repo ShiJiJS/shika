@@ -176,7 +176,7 @@ class TrashEntryRow extends StatelessWidget {
               child: SizedBox(
                 width: 32,
                 height: 44,
-                child: Checkbox(
+                child: PaperCheckbox(
                   value: selected,
                   onChanged: onToggle == null ? null : (_) => onToggle!(),
                   side: BorderSide(color: p.olive),

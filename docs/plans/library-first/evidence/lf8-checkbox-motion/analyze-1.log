@@ -1,0 +1,8 @@
+Analyzing mobile...                                             
+
+   info • 'useMaterial3' is deprecated and shouldn't be used. Use a ThemeData constructor (.from, .light, or .dark) instead. These constructors all have a useMaterial3 argument, and they set appropriate default values based on its value. See the useMaterial3 API documentation for full details. This feature was deprecated after v3.13.0-0.2.pre. Try replacing the use of the deprecated member with the replacement • test/checkbox_geometry_test.dart:57:27 • deprecated_member_use
+   info • Use interpolation to compose strings and values. Try using string interpolation to build the composite string • test/checkbox_motion_diagnostic_test.dart:65:9 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values. Try using string interpolation to build the composite string • test/checkbox_motion_diagnostic_test.dart:67:13 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values. Try using string interpolation to build the composite string • test/checkbox_motion_diagnostic_test.dart:69:13 • prefer_interpolation_to_compose_strings
+
+4 issues found. (ran in 2.2s)

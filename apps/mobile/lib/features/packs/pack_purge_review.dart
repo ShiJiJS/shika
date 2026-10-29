@@ -256,7 +256,7 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
               style: TextStyle(fontSize: 13, height: 1.7, color: p.danger),
             ),
           ),
-        CheckboxListTile(
+        PaperCheckboxListTile(
           key: const Key('pack-purge-confirmation'),
           controlAffinity: ListTileControlAffinity.leading,
           contentPadding: EdgeInsets.zero,

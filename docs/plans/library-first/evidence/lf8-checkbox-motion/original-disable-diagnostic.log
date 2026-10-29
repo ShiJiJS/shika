@@ -1,0 +1,99 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_disable_diagnostic_test.dart
+00:00 +0: original SDK checkbox becomes disabled while pointer is held
+══╡ EXCEPTION CAUGHT BY GESTURE ╞═══════════════════════════════════════════════════════════════════
+The following assertion was thrown while handling a gesture:
+setState() or markNeedsBuild() called during build.
+This Checkbox widget cannot be marked as needing to build because the framework is already in the
+process of building widgets. A widget can be marked as needing to be built during the build phase
+only if one of its ancestors is currently building. This exception is allowed because the framework
+builds parent widgets before children, which means a dirty descendant will always be built.
+Otherwise, the framework might not visit this widget during this build phase.
+The widget on which setState() or markNeedsBuild() was called was:
+  StatefulElement#028ee(DEFUNCT)
+The widget which was currently being built when the offending call was made was:
+  StatelessElement#aabdf(DEFUNCT)
+
+When the exception was thrown, this was the stack:
+#0      Element.markNeedsBuild.<anonymous closure> (package:flutter/src/widgets/framework.dart:5386:9)
+#1      Element.markNeedsBuild (package:flutter/src/widgets/framework.dart:5398:6)
+#2      State.setState (package:flutter/src/widgets/framework.dart:1221:15)
+#3      ToggleableStateMixin._handleTapEnd (package:flutter/src/widgets/toggleable.dart:254:7)
+#4      GestureRecognizer.invokeCallback (package:flutter/src/gestures/recognizer.dart:362:24)
+#5      TapGestureRecognizer.handleTapCancel (package:flutter/src/gestures/tap.dart:800:11)
+#6      BaseTapGestureRecognizer._checkCancel (package:flutter/src/gestures/tap.dart:388:5)
+#7      BaseTapGestureRecognizer.resolve (package:flutter/src/gestures/tap.dart:336:7)
+#8      OneSequenceGestureRecognizer.dispose (package:flutter/src/gestures/recognizer.dart:486:5)
+#9      PrimaryPointerGestureRecognizer.dispose (package:flutter/src/gestures/recognizer.dart:797:11)
+#10     RawGestureDetectorState._syncAll (package:flutter/src/widgets/gesture_detector.dart:1552:31)
+#11     RawGestureDetectorState.didUpdateWidget (package:flutter/src/widgets/gesture_detector.dart:1452:5)
+#12     StatefulElement.update (package:flutter/src/widgets/framework.dart:6004:55)
+#13     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#14     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#15     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#16     StatelessElement.update (package:flutter/src/widgets/framework.dart:5908:5)
+#17     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#18     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#19     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#20     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#21     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#22     ProxyElement.update (package:flutter/src/widgets/framework.dart:6162:5)
+#23     _InheritedNotifierElement.update (package:flutter/src/widgets/inherited_notifier.dart:108:11)
+#24     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#25     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#26     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#27     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#28     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#29     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#30     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#31     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#32     Element.inflateWidget (package:flutter/src/widgets/framework.dart:4596:41)
+#33     Element.updateChild (package:flutter/src/widgets/framework.dart:4066:20)
+#34     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#35     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#36     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#37     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#38     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#39     SingleChildRenderObjectElement.update (package:flutter/src/widgets/framework.dart:7135:14)
+#40     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#41     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#42     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#43     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#44     StatefulElement.update (package:flutter/src/widgets/framework.dart:6020:5)
+#45     Element.updateChild (package:flutter/src/widgets/framework.dart:4050:15)
+#46     ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:5854:16)
+#47     StatefulElement.performRebuild (package:flutter/src/widgets/framework.dart:5995:11)
+#48     Element.rebuild (package:flutter/src/widgets/framework.dart:5542:7)
+#49     BuildScope._tryRebuild (package:flutter/src/widgets/framework.dart:2763:15)
+#50     BuildScope._flushDirtyElements (package:flutter/src/widgets/framework.dart:2820:11)
+#51     BuildOwner.buildScope (package:flutter/src/widgets/framework.dart:3124:18)
+#52     AutomatedTestWidgetsFlutterBinding.drawFrame (package:flutter_test/src/binding.dart:2432:19)
+#53     RendererBinding._handlePersistentFrameCallback (package:flutter/src/rendering/binding.dart:558:5)
+#54     SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430:15)
+#55     SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1345:9)
+#56     AutomatedTestWidgetsFlutterBinding.pump.<anonymous closure> (package:flutter_test/src/binding.dart:2261:9)
+#59     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#60     AutomatedTestWidgetsFlutterBinding.pump (package:flutter_test/src/binding.dart:2250:27)
+#61     WidgetTester.pump.<anonymous closure> (package:flutter_test/src/widget_tester.dart:652:53)
+#64     TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:74:41)
+#65     WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652:27)
+#66     main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_disable_diagnostic_test.dart:16:13)
+<asynchronous suspension>
+#67     testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#68     TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 5 frames from dart:async and package:stack_trace)
+
+Handler: "spontaneous onTapCancel"
+Recognizer:
+  TapGestureRecognizer#f665d
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: original SDK checkbox becomes disabled while pointer is held [E]
+  Test failed. See exception logs above.
+  The test description was: original SDK checkbox becomes disabled while pointer is held
+  
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/checkbox_disable_diagnostic_test.dart: original SDK checkbox becomes disabled while pointer is held
