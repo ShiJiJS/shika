@@ -1,0 +1,44 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/menu_motion_test.dart
+lib/ui/paper_menu.dart:177:7: Error: Applying the mixin 'WidgetsBindingObserver' to 'PopupRoute' introduces an erroneous override of 'handleStartBackGesture'.
+class _PaperMenuRoute<T> extends PopupRoute<T> with WidgetsBindingObserver {
+      ^^^^^^^^^^^^^^^
+../../.dev/flutter/packages/flutter/lib/src/widgets/binding.dart:124:8: Context: The method 'WidgetsBindingObserver.handleStartBackGesture' has more required arguments than those of overridden method 'TransitionRoute.handleStartBackGesture'.
+  bool handleStartBackGesture(PredictiveBackEvent backEvent) => false;
+       ^
+../../.dev/flutter/packages/flutter/lib/src/widgets/routes.dart:566:8: Context: This is the overridden method ('handleStartBackGesture').
+  void handleStartBackGesture({double progress = 0.0}) {
+       ^
+lib/ui/paper_menu.dart:177:7: Error: Applying the mixin 'WidgetsBindingObserver' to 'PopupRoute' introduces an erroneous override of 'handleUpdateBackGestureProgress'.
+class _PaperMenuRoute<T> extends PopupRoute<T> with WidgetsBindingObserver {
+      ^^^^^^^^^^^^^^^
+../../.dev/flutter/packages/flutter/lib/src/widgets/binding.dart:133:8: Context: The method 'WidgetsBindingObserver.handleUpdateBackGestureProgress' has more required arguments than those of overridden method 'TransitionRoute.handleUpdateBackGestureProgress'.
+  void handleUpdateBackGestureProgress(PredictiveBackEvent backEvent) {}
+       ^
+../../.dev/flutter/packages/flutter/lib/src/widgets/routes.dart:573:8: Context: This is the overridden method ('handleUpdateBackGestureProgress').
+  void handleUpdateBackGestureProgress({required double progress}) {
+       ^
+00:00 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/menu_motion_test.dart [E]
+  Failed to load "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/menu_motion_test.dart":
+  Compilation failed for testPath=/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/menu_motion_test.dart: lib/ui/paper_menu.dart:177:7: Error: Applying the mixin 'WidgetsBindingObserver' to 'PopupRoute' introduces an erroneous override of 'handleStartBackGesture'.
+  class _PaperMenuRoute<T> extends PopupRoute<T> with WidgetsBindingObserver {
+        ^^^^^^^^^^^^^^^
+  ../../.dev/flutter/packages/flutter/lib/src/widgets/binding.dart:124:8: Context: The method 'WidgetsBindingObserver.handleStartBackGesture' has more required arguments than those of overridden method 'TransitionRoute.handleStartBackGesture'.
+    bool handleStartBackGesture(PredictiveBackEvent backEvent) => false;
+         ^
+  ../../.dev/flutter/packages/flutter/lib/src/widgets/routes.dart:566:8: Context: This is the overridden method ('handleStartBackGesture').
+    void handleStartBackGesture({double progress = 0.0}) {
+         ^
+  lib/ui/paper_menu.dart:177:7: Error: Applying the mixin 'WidgetsBindingObserver' to 'PopupRoute' introduces an erroneous override of 'handleUpdateBackGestureProgress'.
+  class _PaperMenuRoute<T> extends PopupRoute<T> with WidgetsBindingObserver {
+        ^^^^^^^^^^^^^^^
+  ../../.dev/flutter/packages/flutter/lib/src/widgets/binding.dart:133:8: Context: The method 'WidgetsBindingObserver.handleUpdateBackGestureProgress' has more required arguments than those of overridden method 'TransitionRoute.handleUpdateBackGestureProgress'.
+    void handleUpdateBackGestureProgress(PredictiveBackEvent backEvent) {}
+         ^
+  ../../.dev/flutter/packages/flutter/lib/src/widgets/routes.dart:573:8: Context: This is the overridden method ('handleUpdateBackGestureProgress').
+    void handleUpdateBackGestureProgress({required double progress}) {
+         ^
+  .
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/menu_motion_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/menu_motion_test.dart

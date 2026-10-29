@@ -1113,7 +1113,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
       key: const Key('playback-time'),
       style: const TextStyle(color: Colors.white, fontSize: 12),
     );
-    final speed = PopupMenuButton<double>(
+    final speed = PaperMenuButton<double>(
       tooltip: '播放速度',
       enabled: widget.interactionsEnabled,
       initialValue: value.playbackSpeed,
@@ -1534,7 +1534,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                                               ),
                                             ),
                                           ),
-                                          PopupMenuButton<double>(
+                                          PaperMenuButton<double>(
                                             tooltip: '播放速度',
                                             initialValue: v.playbackSpeed,
                                             onOpened: () =>

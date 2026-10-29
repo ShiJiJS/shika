@@ -127,7 +127,7 @@ void main() {
             .widget<PopupMenuButton<double>>(
               find.descendant(
                 of: find.byKey(const Key('playback-controls')),
-                matching: find.byType(PopupMenuButton<double>),
+                matching: find.bySubtype<PopupMenuButton<double>>(),
               ),
             )
             .enabled,

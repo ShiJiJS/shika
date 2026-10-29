@@ -766,7 +766,7 @@ class PackReaderPageState extends State<PackReaderPage>
                               : () => setState(() => quick = false),
                           child: const Text('完成'),
                         ),
-                      PopupMenuButton<String>(
+                      PaperMenuButton<String>(
                         icon: const Icon(Icons.more_horiz, size: 20),
                         enabled: usable && !session.inputBlocked,
                         tooltip: '图包更多',

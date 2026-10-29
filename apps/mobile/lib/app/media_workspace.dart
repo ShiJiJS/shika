@@ -256,7 +256,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                             ? currentPack?.openFolder()
                             : currentVideo?.openFolder(),
                       ),
-                      PopupMenuButton<String>(
+                      PaperMenuButton<String>(
                         tooltip: '更多',
                         onOpened: () =>
                             FocusManager.instance.primaryFocus?.unfocus(),

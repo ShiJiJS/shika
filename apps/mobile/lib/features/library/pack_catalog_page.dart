@@ -1235,7 +1235,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                   PackReadState.completed => '已读',
                                 }, style: const TextStyle(fontSize: 13)),
                               ),
-                              PopupMenuButton<PackSort>(
+                              PaperMenuButton<PackSort>(
                                 tooltip: '图包排序',
                                 initialValue: entry.query.sort,
                                 onSelected: (value) =>
