@@ -35,7 +35,12 @@ class PageMotionProbe {
   PageMotionProbe.exit(this.name, this.reduced, this.route)
     : closing = true,
       excludedRoute = null {
-    animation = route!.animation!;
+    // ModalRoute.animation is a proxy, forced to 1 for offstage layout.
+    // Read the real controller for diagnostics only; never mutate it.
+    // ignore: invalid_use_of_protected_member
+    actualController = route!.controller!;
+    animation = actualController!.view;
+    displayedAnimation = route!.animation!;
     duration = route!.reverseTransitionDuration;
     mediaQueryFlag = MediaQuery.disableAnimationsOf(route!.subtreeContext!);
   }
@@ -43,7 +48,8 @@ class PageMotionProbe {
   final bool reduced, closing;
   final ModalRoute<dynamic>? excludedRoute;
   ModalRoute<dynamic>? route;
-  Animation<double>? animation;
+  Animation<double>? animation, displayedAnimation;
+  AnimationController? actualController;
   Duration? duration;
   bool? mediaQueryFlag;
   final frames = <Map<String, dynamic>>[];
@@ -52,7 +58,10 @@ class PageMotionProbe {
   void bind(ModalRoute<dynamic> value) {
     if (route != null || value == excludedRoute) return;
     route = value;
-    animation = value.animation!;
+    // ignore: invalid_use_of_protected_member
+    actualController = value.controller!;
+    animation = actualController!.view;
+    displayedAnimation = value.animation!;
     duration = value.transitionDuration;
     mediaQueryFlag = MediaQuery.disableAnimationsOf(value.navigator!.context);
   }
@@ -65,6 +74,13 @@ class PageMotionProbe {
     frames.add({
       'frame_us': stamp.inMicroseconds,
       'value': value.value,
+      'display_value': displayedAnimation!.value,
+      'offstage': route!.offstage,
+      'controller_duration_us':
+          (closing
+                  ? actualController!.reverseDuration
+                  : actualController!.duration)
+              ?.inMicroseconds,
       'status': value.status.name,
       'native_flag': ui
           .PlatformDispatcher
@@ -91,6 +107,12 @@ class PageMotionProbe {
             : 240,
       ),
     );
+    expect(
+      frames.every(
+        (v) => v['controller_duration_us'] == duration!.inMicroseconds,
+      ),
+      isTrue,
+    );
     expect(mediaQueryFlag, reduced);
     expect(frames.every((v) => v['native_flag'] == reduced), isTrue);
     final target = closing ? 0.0 : 1.0;
@@ -103,7 +125,19 @@ class PageMotionProbe {
           : 0.0,
     );
     expect(frames.last['value'], target);
+    if (reduced) {
+      expect(frames.every((v) => v['display_value'] == target), isTrue);
+    }
     if (!reduced) {
+      expect(
+        frames.any(
+          (v) =>
+              v['offstage'] == false &&
+              (v['display_value'] as double) > 0 &&
+              (v['display_value'] as double) < 1,
+        ),
+        isTrue,
+      );
       expect(
         frames.any(
           (v) => (v['value'] as double) > 0 && (v['value'] as double) < 1,
