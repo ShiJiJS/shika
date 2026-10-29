@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "normal_entrypoint": true,
+  "checks": [
+    {
+      "state": "release11-library",
+      "required": [
+        "媒体库"
+      ]
+    },
+    {
+      "state": "release11-reader",
+      "required": [
+        "2 / 3",
+        "纵向拼接"
+      ]
+    },
+    {
+      "state": "release11-reader-settings",
+      "required": [
+        "阅读设置",
+        "图片之间留间距"
+      ]
+    },
+    {
+      "state": "release11-reader-retained",
+      "required": [
+        "2 / 3",
+        "纵向拼接"
+      ]
+    },
+    {
+      "state": "release11-pack-return",
+      "required": [
+        "媒体库",
+        "继续阅读"
+      ]
+    },
+    {
+      "state": "release11-preview-ready",
+      "required": [
+        "视频预览"
+      ]
+    },
+    {
+      "state": "release11-video-range",
+      "required": [
+        "范围",
+        "关闭"
+      ]
+    },
+    {
+      "state": "release11-video-range-return",
+      "required": [
+        "视频预览"
+      ]
+    },
+    {
+      "state": "release11-video-library-return",
+      "required": [
+        "媒体库"
+      ]
+    }
+  ],
+  "timing_measurement_claim": false,
+  "profile36_is_separate": true
+}

@@ -1,0 +1,6 @@
+Analyzing mobile...                                             
+
+   info • The import of 'package:flutter/scheduler.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart'. Try removing the import directive • lib/ui/paper.dart:4:8 • unnecessary_import
+   info • Parameters ''context' and 'builder'' could be super parameters. Trying converting ''context' and 'builder'' to super parameters • lib/ui/paper.dart:272:3 • use_super_parameters
+
+2 issues found. (ran in 2.4s)

@@ -217,6 +217,84 @@ class PaperPageRoute<T> extends MaterialPageRoute<T> {
       : super.buildTransitions(context, animation, secondaryAnimation, child);
 }
 
+// Popup routes keep their own controller. Refresh it before either direction,
+// including when the system preference changed while the popup was open.
+mixin _PaperPopupMotion<T> on TransitionRoute<T> {
+  bool get _reduced => MediaQuery.disableAnimationsOf(navigator!.context);
+
+  @override
+  Duration get transitionDuration =>
+      _reduced ? Duration.zero : const Duration(milliseconds: 240);
+  @override
+  Duration get reverseTransitionDuration =>
+      _reduced ? Duration.zero : const Duration(milliseconds: 160);
+
+  void _updateTiming() {
+    controller!
+      ..duration = transitionDuration
+      ..reverseDuration = reverseTransitionDuration;
+  }
+
+  @override
+  TickerFuture didPush() {
+    _updateTiming();
+    return super.didPush();
+  }
+
+  @override
+  bool didPop(T? result) {
+    _updateTiming();
+    return super.didPop(result);
+  }
+}
+
+class _PaperSheetRoute<T> extends ModalBottomSheetRoute<T>
+    with _PaperPopupMotion<T> {
+  _PaperSheetRoute({
+    required super.builder,
+    super.capturedThemes,
+    super.barrierLabel,
+    super.constraints,
+    super.isDismissible,
+    super.enableDrag,
+  }) : super(
+         isScrollControlled: true,
+         useSafeArea: true,
+         sheetAnimationStyle: const AnimationStyle(
+           duration: Duration(milliseconds: 240),
+           reverseDuration: Duration(milliseconds: 160),
+         ),
+       );
+}
+
+class _PaperDialogRoute<T> extends DialogRoute<T> with _PaperPopupMotion<T> {
+  _PaperDialogRoute({
+    required super.context,
+    required super.builder,
+    required super.themes,
+  }) : super(
+         barrierColor:
+             DialogTheme.of(context).barrierColor ??
+             Theme.of(context).dialogTheme.barrierColor ??
+             Colors.black54,
+         traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop,
+       );
+}
+
+Future<T?> paperDialog<T>({
+  required BuildContext context,
+  required WidgetBuilder builder,
+}) {
+  final navigator = Navigator.of(context, rootNavigator: true);
+  return navigator.push(
+    _PaperDialogRoute<T>(
+      context: context,
+      builder: builder,
+      themes: InheritedTheme.capture(from: context, to: navigator.context),
+    ),
+  );
+}
+
 Future<T?> paperSheet<T>(
   BuildContext context,
   Widget child, {
@@ -224,20 +302,15 @@ Future<T?> paperSheet<T>(
   BoxConstraints? constraints,
 }) async {
   final navigator = Navigator.of(context);
-  final route = ModalBottomSheetRoute<T>(
+  final route = _PaperSheetRoute<T>(
     capturedThemes: InheritedTheme.capture(
       from: context,
       to: navigator.context,
     ),
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    isScrollControlled: true,
     constraints: constraints,
     isDismissible: dismissible,
     enableDrag: dismissible,
-    useSafeArea: true,
-    sheetAnimationStyle: MediaQuery.disableAnimationsOf(context)
-        ? AnimationStyle.noAnimation
-        : const AnimationStyle(duration: Duration(milliseconds: 240)),
     builder: (context) => Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: child,

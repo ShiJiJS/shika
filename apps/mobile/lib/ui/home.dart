@@ -809,7 +809,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   Future<bool> confirm(String heading, String text, String action) async {
     setState(() => obscured = true);
     try {
-      return await showDialog<bool>(
+      return await paperDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
               title: Text(
