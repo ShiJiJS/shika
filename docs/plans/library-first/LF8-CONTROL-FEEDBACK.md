@@ -1,6 +1,6 @@
 # LF8：按压与选择反馈
 
-> 本段交付preview.8/rollback.8、同code14。code13保留为预检记录；实现与所列检查完成，完整正式验收仍开放。
+> [草稿PR #108](https://github.com/ShiJiJS/video_viewer/pull/108)交付preview.8/rollback.8、同code14。code13保留为预检记录；实现与所列检查完成，完整正式验收仍开放。
 
 继续#24/#33既有UI-06，不新增产品功能。按钮、卡片和选择控件继续由原InkWell/Material处理点击、取消、焦点、键盘和语义；共用PaperControlTheme下的按压使用裁切在原轮廓内的静止色层，进入/退出100ms，不移动内容。减少动画时按下直接显示、松开/取消直接移除；已有色层也监听当前系统偏好，不等待动画执行业务。按钮原样式保留，Material状态过渡配置100ms/0；焦点/悬停保留平台行为，未据配置值宣称所有Material内部动画已经测过。
 
