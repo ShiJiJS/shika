@@ -70,9 +70,7 @@ class _PaperFieldState extends State<PaperField> with WidgetsBindingObserver {
               inputDecorationTheme: InputDecorationTheme(
                 isDense: true,
                 filled: true,
-                fillColor: palette.dark
-                    ? palette.background
-                    : Colors.white.withValues(alpha: .7),
+                fillColor: palette.inputSurface,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 12,
                   vertical: 10,

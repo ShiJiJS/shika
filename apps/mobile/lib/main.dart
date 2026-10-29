@@ -113,18 +113,26 @@ class _VideoViewerAppState extends State<VideoViewerApp> {
       theme: Paper.theme,
       darkTheme: Paper.darkTheme,
       themeMode: preferences.dark ? ThemeMode.dark : ThemeMode.light,
-      builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: preferences.dark
-              ? Brightness.light
-              : Brightness.dark,
-          systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
-          systemNavigationBarIconBrightness: preferences.dark
-              ? Brightness.light
-              : Brightness.dark,
+      themeAnimationDuration: Duration.zero,
+      builder: (context, child) => PaperAppearanceTheme(
+        data: Theme.of(context),
+        reduced: MediaQuery.disableAnimationsOf(context),
+        child: Builder(
+          builder: (context) => AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: preferences.dark
+                  ? Brightness.light
+                  : Brightness.dark,
+              systemNavigationBarColor: Theme.of(context)
+                  .scaffoldBackgroundColor,
+              systemNavigationBarIconBrightness: preferences.dark
+                  ? Brightness.light
+                  : Brightness.dark,
+            ),
+            child: PaperControlTheme(child: child!),
+          ),
         ),
-        child: PaperControlTheme(child: child!),
       ),
       home: LibraryHome(
         key: ObjectKey(widget.repository),

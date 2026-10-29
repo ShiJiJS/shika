@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 export 'paper_notice.dart';
 export 'paper_controls.dart';
+export 'paper_appearance.dart';
 
 /// Keep failures visible when a form's submit action is outside its scroll body.
 void revealFormError(GlobalKey anchor) {
@@ -22,24 +23,50 @@ void revealFormError(GlobalKey anchor) {
   });
 }
 
-class PaperPalette {
-  const PaperPalette(this.dark);
-  final bool dark;
-  Color get background => dark ? const Color(0xff141914) : Paper.background;
-  Color get ink => dark ? const Color(0xffe4e9df) : Paper.ink;
-  Color get olive => dark ? const Color(0xffb1c5a0) : Paper.olive;
-  Color get soft => dark ? const Color(0xff293329) : Paper.soft;
-  Color get line => dark ? const Color(0xff354135) : Paper.line;
-  Color get danger => dark ? const Color(0xffeda699) : Paper.danger;
-  Color get muted => dark ? const Color(0xff9aa494) : const Color(0xff7a8172);
-  Color get catalogMeta => dark ? muted : const Color(0xff626e59);
-  Color get videoSurface => dark ? Colors.black : const Color(0xffe6e4db);
+class PaperPalette extends ThemeExtension<PaperPalette> {
+  const PaperPalette(bool dark) : _blend = dark ? 1 : 0;
+  const PaperPalette._(this._blend);
+  final double _blend;
+  bool get dark => _blend >= .5;
+  Color _color(Color light, Color dark) => Color.lerp(light, dark, _blend)!;
+  Color get background => _color(Paper.background, const Color(0xff141914));
+  Color get ink => _color(Paper.ink, const Color(0xffe4e9df));
+  Color get olive => _color(Paper.olive, const Color(0xffb1c5a0));
+  Color get soft => _color(Paper.soft, const Color(0xff293329));
+  Color get line => _color(Paper.line, const Color(0xff354135));
+  Color get danger => _color(Paper.danger, const Color(0xffeda699));
+  Color get muted => _color(const Color(0xff7a8172), const Color(0xff9aa494));
+  Color get catalogMeta =>
+      _color(const Color(0xff626e59), const Color(0xff9aa494));
+  Color get videoSurface => _color(const Color(0xffe6e4db), Colors.black);
+  Color get inputSurface =>
+      _color(Colors.white.withValues(alpha: .7), const Color(0xff141914));
   TextStyle get title => Paper.title.copyWith(color: ink);
+
+  @override
+  PaperPalette copyWith({bool? dark}) =>
+      dark == null ? this : PaperPalette(dark);
+
+  @override
+  PaperPalette lerp(covariant PaperPalette? other, double t) => other == null
+      ? this
+      : PaperPalette._(_blend + (other._blend - _blend) * t);
+
+  @override
+  bool operator ==(Object other) =>
+      other is PaperPalette && other._blend == _blend;
+
+  @override
+  int get hashCode => _blend.hashCode;
 }
 
 abstract final class Paper {
-  static PaperPalette of(BuildContext context) =>
-      PaperPalette(Theme.of(context).brightness == Brightness.dark);
+  static PaperPalette of(BuildContext context) {
+    final theme = Theme.of(context);
+    return theme.extension<PaperPalette>() ??
+        PaperPalette(theme.brightness == Brightness.dark);
+  }
+
   static const background = Color(0xfffaf8f3),
       ink = Color(0xff29332a),
       olive = Color(0xff53664a),
@@ -58,6 +85,7 @@ abstract final class Paper {
     final p = PaperPalette(dark);
     return ThemeData(
       useMaterial3: true,
+      extensions: [p],
       brightness: dark ? Brightness.dark : Brightness.light,
       scaffoldBackgroundColor: p.background,
       colorScheme: ColorScheme.fromSeed(
