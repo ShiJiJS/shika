@@ -380,17 +380,13 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
       }
       setState(() => busy = false);
       pushed = true;
-      final route = PageRouteBuilder<void>(
-        transitionDuration: MediaLayout.motion(context, 240),
-        reverseTransitionDuration: MediaLayout.motion(context, 160),
-        pageBuilder: (context, animation, secondary) => VideoPreviewRoute(
+      final route = PaperPageRoute<void>.fade(
+        builder: (context) => VideoPreviewRoute(
           repository: repo,
           preferences: widget.preferences,
           origin: saved.context,
           quick: quick,
         ),
-        transitionsBuilder: (context, animation, secondary, child) =>
-            FadeTransition(opacity: animation, child: child),
       );
       await Navigator.of(context).push(route);
       await route.completed;

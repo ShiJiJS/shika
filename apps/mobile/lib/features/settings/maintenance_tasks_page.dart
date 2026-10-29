@@ -81,7 +81,7 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
         ? HistoricalTaskCatalog(s.catalog)
         : s.catalog;
     final result = await Navigator.of(context).push<String>(
-      MaterialPageRoute(
+      PaperPageRoute(
         builder: (_) => MaintenanceTaskDetail(
           repository: widget.repository,
           catalog: detailCatalog,
@@ -106,7 +106,7 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
       final s = session!;
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       await Navigator.of(context).push<void>(
-        MaterialPageRoute(
+        PaperPageRoute(
           builder: (_) => PackPurgeSelectionPage(
             repository: widget.repository,
             selectionId: receipt.purgeSelectionId!,

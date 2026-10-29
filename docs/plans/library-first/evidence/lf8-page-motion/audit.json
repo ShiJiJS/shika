@@ -1,0 +1,442 @@
+{
+  "passed_cases": 48,
+  "recordings": 18,
+  "all_recordings_independently_decoded": true,
+  "all_exact_settings_restored": true,
+  "physical_presentation_latency_accepted": false,
+  "audio_playback_accepted": false,
+  "cases": [
+    {
+      "name": "round-1-normal-reader-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 6,
+      "observed_span_us": 266666,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-1-normal-reader-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-1-normal-preview-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 9,
+      "observed_span_us": 250000,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-1-normal-fullscreen-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 4,
+      "observed_span_us": 383333,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-1-normal-fullscreen-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-1-normal-preview-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-1-normal-task-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 14,
+      "observed_span_us": 250000,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-1-normal-task-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-1-reduced-reader-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-1-reduced-reader-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 8,
+      "observed_span_us": 166667,
+      "configured_duration_us": 160000,
+      "passed": true
+    },
+    {
+      "name": "round-1-reduced-preview-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-1-reduced-fullscreen-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-1-reduced-fullscreen-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 7,
+      "observed_span_us": 183333,
+      "configured_duration_us": 160000,
+      "passed": true
+    },
+    {
+      "name": "round-1-reduced-preview-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 11,
+      "observed_span_us": 166667,
+      "configured_duration_us": 160000,
+      "passed": true
+    },
+    {
+      "name": "round-1-reduced-task-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-1-reduced-task-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 5,
+      "observed_span_us": 166667,
+      "configured_duration_us": 160000,
+      "passed": true
+    },
+    {
+      "name": "round-2-normal-reader-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 12,
+      "observed_span_us": 250000,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-2-normal-reader-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-2-normal-preview-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 14,
+      "observed_span_us": 250000,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-2-normal-fullscreen-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 4,
+      "observed_span_us": 250000,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-2-normal-fullscreen-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-2-normal-preview-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-2-normal-task-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 14,
+      "observed_span_us": 250000,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-2-normal-task-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-2-reduced-reader-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-2-reduced-reader-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 8,
+      "observed_span_us": 166666,
+      "configured_duration_us": 160000,
+      "passed": true
+    },
+    {
+      "name": "round-2-reduced-preview-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-2-reduced-fullscreen-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-2-reduced-fullscreen-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 5,
+      "observed_span_us": 166667,
+      "configured_duration_us": 160000,
+      "passed": true
+    },
+    {
+      "name": "round-2-reduced-preview-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 10,
+      "observed_span_us": 166666,
+      "configured_duration_us": 160000,
+      "passed": true
+    },
+    {
+      "name": "round-2-reduced-task-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-2-reduced-task-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 7,
+      "observed_span_us": 166667,
+      "configured_duration_us": 160000,
+      "passed": true
+    },
+    {
+      "name": "round-3-normal-reader-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 13,
+      "observed_span_us": 250000,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-3-normal-reader-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-3-normal-preview-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 15,
+      "observed_span_us": 250000,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-3-normal-fullscreen-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 4,
+      "observed_span_us": 333333,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-3-normal-fullscreen-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-3-normal-preview-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-3-normal-task-entry",
+      "reduced": false,
+      "closing": false,
+      "frames": 14,
+      "observed_span_us": 250000,
+      "configured_duration_us": 240000,
+      "passed": true
+    },
+    {
+      "name": "round-3-normal-task-return",
+      "reduced": true,
+      "closing": true,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-3-reduced-reader-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-3-reduced-reader-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 5,
+      "observed_span_us": 166666,
+      "configured_duration_us": 160000,
+      "passed": true
+    },
+    {
+      "name": "round-3-reduced-preview-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-3-reduced-fullscreen-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-3-reduced-fullscreen-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 3,
+      "observed_span_us": 166667,
+      "configured_duration_us": 160000,
+      "passed": true
+    },
+    {
+      "name": "round-3-reduced-preview-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 11,
+      "observed_span_us": 166667,
+      "configured_duration_us": 160000,
+      "passed": true
+    },
+    {
+      "name": "round-3-reduced-task-entry",
+      "reduced": true,
+      "closing": false,
+      "frames": 1,
+      "observed_span_us": 0,
+      "configured_duration_us": 0,
+      "passed": true
+    },
+    {
+      "name": "round-3-reduced-task-return",
+      "reduced": false,
+      "closing": true,
+      "frames": 8,
+      "observed_span_us": 166666,
+      "configured_duration_us": 160000,
+      "passed": true
+    }
+  ]
+}

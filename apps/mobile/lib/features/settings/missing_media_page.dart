@@ -278,7 +278,7 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
   Future<void> detail() async {
     if (blocked || task == null) return;
     await Navigator.of(context).push<void>(
-      MaterialPageRoute(
+      PaperPageRoute(
         builder: (_) => MaintenanceTaskDetail(
           repository: widget.repository,
           catalog: tasks,

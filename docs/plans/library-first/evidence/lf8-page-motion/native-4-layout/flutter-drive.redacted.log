@@ -1,0 +1,2268 @@
+Installing ../../.dev/lf8-page-motion/page-motion-profile-layout.apk...        608ms
+I/js.video_viewer( 6908): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 6908): Skipped 35 frames!  The application may be doing too much work on its main thread.
+D/WindowLayoutComponentImpl( 6908): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@479c0a7, of which baseContext=android.app.ContextImpl@2e376c0
+VMServiceFlutterDriver: Connecting to Flutter application at <redacted-local-vm-service>
+VMServiceFlutterDriver: Isolate found with number: 7416186505243727
+VMServiceFlutterDriver: Isolate 7416186505243727 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 6908): 00:00 +0: real system page entry and changed-preference return
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController( 6908): hide(ime(), fromIme=false)
+I/ImeTracker( 6908): io.github.shijijs.video_viewer:850b6763: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+I/js.video_viewer( 6908): AssetManager2(0xb400007475fca218) locale list changing from [] to [en-US]
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+D/ProfileInstaller( 6908): Installing profile for io.github.shijijs.video_viewer
+I/ExoPlayerImpl( 6908): Init 9bd83e7 [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36]
+D/AudioSystem( 6908): onNewServiceWithAdapter: media.audio_flinger service obtained 0xb4000074e604bf90
+D/AudioSystem( 6908): getService: checking for service media.audio_flinger: 0xb4000074d5fd6b00
+D/AudioSystem( 6908): onNewService: media.audio_policy service obtained 0xb4000074d5fcf530
+D/AudioSystem( 6908): getService: checking for service media.audio_policy: 0xb4000074d5fcf530
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type video
+D/CCodec  ( 6908): allocate(c2.goldfish.h264.decoder)
+I/ApexCodecsLazy( 6908): Failed to load libcom.android.media.swcodec.apexcodecs.so: dlopen failed: library "libcom.android.media.swcodec.apexcodecs.so" not found
+I/Codec2Client( 6908): Available Codec2 services: "default" "software"
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.goldfish.h264.decoder] for [c2.goldfish.h264.decoder]
+D/CCodecConfig( 6908): read media type: video/avc
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): ignored struct field coded.color-format.locations
+D/ReflectedParamUpdater( 6908): ignored struct field resources.needed.values
+D/CCodecConfig( 6908): ignoring local param raw.size (0xd2001800) as it is already supported
+D/CCodecConfig( 6908): ignoring local param default.color (0x5200180b) as it is already supported
+D/ReflectedParamUpdater( 6908): ignored struct field raw.hdr-static-info.mastering
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 20496
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 20481
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 6291456
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "video/avc"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 8
+D/CCodecConfig( 6908):   string output.media-type.value = "video/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 320
+D/CCodecConfig( 6908):   c2::u32 raw.pixel-format.value = 35
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.flip = 0
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.sar.height = 1
+D/CCodecConfig( 6908):   c2::u32 raw.sar.width = 1
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 320
+D/CCodecConfig( 6908):   c2:
+W/ColorUtils( 6908): expected specified color aspects (2:0:0:0)
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a604e630, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073793
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a604e630, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a604e620, reason connectToSurface(reconnect-with-listener)
+D/CCodec  ( 6908): [c2.goldfish.h264.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for color-standard
+D/CCodecConfig( 6908): no c2 equivalents for csd-1
+D/CCodecConfig( 6908): no c2 equivalents for native-window
+D/CCodecConfig( 6908): no c2 equivalents for native-window-generation
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 default.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 3
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 960
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 960
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 62800, which is smaller than what component recommended (6291456); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t level = 65536
+D/CCodec  ( 6908):   int32_t max-input-size = 6291456
+D/CCodec  ( 6908):   string mime = "video/avc"
+D/CCodec  ( 6908):   int32_t profile = 65536
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t android._color-format = 2135033992
+D/CCodec  ( 6908):   int32_t android._video-scaling = 1
+D/CCodec  ( 6908):   int32_t rotation-degrees = 0
+D/CCodec  ( 6908):   int32_t color-standard = 1
+D/CCodec  ( 6908):   int32_t color-range = 2
+D/CCodec  ( 6908):   int32_t color-transfer = 3
+D/CCodec  ( 6908):   int32_t sar-height = 1
+D/CCodec  ( 6908):   int32_t sar-width = 1
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t max-height = 540
+D/CCodec  ( 6908):   int32_t max-width = 960
+D/CCodec  ( 6908):   string mime = "video/raw"
+D/CCodec  ( 6908):   int32_t android._dataspace = 260
+D/CCodec  ( 6908):   int32_t color-format = 2130708361
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 3
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+W/Codec2Client( 6908): query -- param skipped: index = 2684356609.
+D/C2Store ( 6908): Using DMABUF Heaps
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#217] Created input block pool with allocatorID 16 => poolID 17 - OK (0)
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#217] Query output surface allocator returned 0 params => BAD_INDEX (6)
+I/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#217] Created output block pool with allocatorID 18 => poolID 19 - OK
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#217] Configured output block pool ids 19 => OK
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073793 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+I/DMABUFHEAPS( 6908): Using DMA-BUF heap named: system
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type audio
+D/CCodec  ( 6908): allocate(c2.android.aac.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.android.aac.decoder] for [c2.android.aac.decoder]
+D/CCodecConfig( 6908): read media type: audio/mp4a-latm
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.aac-packaging.value = 0
+D/CCodecConfig( 6908):   c2::u32 coded.bitrate.value = 64000
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 0
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 8192
+D/CCodecConfig( 6908):   c2::i32 coding.drc.album-mode.value = 0
+D/CCodecConfig( 6908):   c2::float coding.drc.attenuation-factor.value = 1
+D/CCodecConfig( 6908):   c2::float coding.drc.boost-factor.value = 1
+D/CCodecConfig( 6908):   c2::i32 coding.drc.compression-mode.value = 3
+D/CCodecConfig( 6908):   c2::i32 coding.drc.effect-type.value = 3
+D/CCodecConfig( 6908):   c2::float coding.drc.encoded-level.value = 0.25
+D/CCodecConfig( 6908):   c2::float coding.drc.reference-level.value = -16
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 8192
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "audio/mp4a-latm"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 2
+D/CCodecConfig( 6908):   c2::float output.drc.output-loudness.value = 0.25
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.max-size = 0
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.threshold-size = 0
+D/CCodecConfig( 6908):   string output.media-type.value = "audio/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.channel-count.value = 1
+D/CCodecConfig( 6908):   c2::u32 raw.channel-mask.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-channel-count.value = 8
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 44100
+D/CCodecConfig( 6908): }
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/CCodec  ( 6908): [c2.android.aac.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-count.value = 2
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 48000
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 713, which is smaller than what component recommended (8192); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t bitrate = 64000
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t level = 0
+D/CCodec  ( 6908):   int32_t max-input-size = 8192
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/mp4a-latm"
+D/CCodec  ( 6908):   int32_t profile = 2
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodec  ( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/raw"
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+E/js.video_viewer( 6908): Failed to query component interface for required system resources: 6
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#542] Created input block pool with allocatorID 16 => poolID 18 - OK (0)
+I/CCodecBufferChannel( 6908): [c2.android.aac.decoder#542] Created output block pool with allocatorID 16 => poolID 46 - OK
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#542] Configured output block pool ids 46 => OK
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-mask.value = 12
+D/CCodecBuffers( 6908): [c2.android.aac.decoder#542:Output[N]] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodecBuffers( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodecBuffers( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodecBuffers( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodecBuffers( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodecBuffers( 6908):   int32_t aac-target-ref-level = 64
+D/CCodecBuffers( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodecBuffers( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodecBuffers( 6908):   int32_t channel-count = 2
+D/CCodecBuffers( 6908):   int32_t channel-mask = 12
+D/CCodecBuffers( 6908):   int32_t max-output-channel-count = 8
+D/CCodecBuffers( 6908):   string mime = "audio/raw"
+D/CCodecBuffers( 6908):   int32_t sample-rate = 48000
+D/CCodecBuffers( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodecBuffers( 6908): }
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 raw.crop.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.crop.left = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.top = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.width = 960
+D/CCodecBuffers( 6908): [c2.goldfish.h264.decoder#217:2D-Output] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t android._color-format = 2135033992
+D/CCodecBuffers( 6908):   int32_t android._video-scaling = 1
+D/CCodecBuffers( 6908):   int32_t rotation-degrees = 0
+D/CCodecBuffers( 6908):   int32_t color-standard = 4
+D/CCodecBuffers( 6908):   int32_t color-range = 2
+D/CCodecBuffers( 6908):   int32_t color-transfer = 3
+D/CCodecBuffers( 6908):   int32_t sar-height = 1
+D/CCodecBuffers( 6908):   int32_t sar-width = 1
+D/CCodecBuffers( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodecBuffers( 6908):   int32_t width = 960
+D/CCodecBuffers( 6908):   int32_t height = 540
+D/CCodecBuffers( 6908):   int32_t max-height = 540
+D/CCodecBuffers( 6908):   int32_t max-width = 960
+D/CCodecBuffers( 6908):   string mime = "video/raw"
+D/CCodecBuffers( 6908):   int32_t android._dataspace = 259
+D/CCodecBuffers( 6908):   int32_t color-format = 2130708361
+D/CCodecBuffers( 6908): }
+I/js.video_viewer( 6908): hiddenapi: Accessing hidden method Landroid/media/AudioTrack;->getLatency()I (runtime_flags=0, domain=platform, api=unsupported) from Landroidx/media3/exoplayer/audio/AudioTrackPositionTracker; (domain=app) using reflection: allowed
+D/AudioTrack( 6908): getTimestamp_l(18): device stall time corrected using current time 1293634854532
+I/js.video_viewer( 6908): AssetManager2(0xb400007475fe76d8) locale list changing from [] to [en-US]
+D/InsetsController( 6908): Setting requestedVisibleTypes to -16 (was -9)
+I/js.video_viewer( 6908): Background concurrent mark compact GC freed 4423KB AllocSpace bytes, 10(280KB) LOS objects, 49% free, 11MB/22MB, paused 102us,3.905ms total 101.188ms
+D/InsetsController( 6908): hide(ime(), fromIme=false)
+I/ImeTracker( 6908): io.github.shijijs.video_viewer:a2aac163: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/AudioTrack( 6908): getTimestamp_l(18): device stall time corrected using current time 1294830487700
+W/InteractionJankMonitor( 6908): Initializing without READ_DEVICE_CONFIG permission. enabled=true, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=io.github.shijijs.video_viewer
+I/ExoPlayerImpl( 6908): Release 9bd83e7 [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36] [media3.common, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor]
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#217] flushed work; ignored.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#217] Discard frames from previous generation.
+D/MediaCodec( 6908): keep callback message for reclaim
+D/PipelineWatcher( 6908): onInputBufferReleased: frameIndex not found (90); ignored
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#217] Ignoring stale input buffer done callback: last flush index = 92, frameIndex = 90
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 coded.vui.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 3
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBuffers( 6908): [c2.android.aac.decoder#542:1D-Output.Impl[N]] Client returned a buffer it does not own according to our record: 0
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a605b430, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073794
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a605b430, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a605b420, reason connectToSurface(reconnect-with-listener)
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073794 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a604e630, reason disconnectFromSurface
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#217] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#217] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#217] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#217] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#542] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#542] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#542] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#542] MediaCodec discarded an unknown buffer
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a605b430, reason disconnectFromSurface
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+D/InsetsController( 6908): hide(ime(), fromIme=false)
+I/ImeTracker( 6908): io.github.shijijs.video_viewer:1c2e08dd: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+I/ExoPlayerImpl( 6908): Init 577527b [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36]
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type video
+D/CCodec  ( 6908): allocate(c2.goldfish.h264.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.goldfish.h264.decoder] for [c2.goldfish.h264.decoder]
+D/CCodecConfig( 6908): read media type: video/avc
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): ignored struct field coded.color-format.locations
+D/ReflectedParamUpdater( 6908): ignored struct field resources.needed.values
+D/CCodecConfig( 6908): ignoring local param raw.size (0xd2001800) as it is already supported
+D/CCodecConfig( 6908): ignoring local param default.color (0x5200180b) as it is already supported
+D/ReflectedParamUpdater( 6908): ignored struct field raw.hdr-static-info.mastering
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 20496
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 20481
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 6291456
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "video/avc"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 8
+D/CCodecConfig( 6908):   string output.media-type.value = "video/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 320
+D/CCodecConfig( 6908):   c2::u32 raw.pixel-format.value = 35
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.flip = 0
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.sar.height = 1
+D/CCodecConfig( 6908):   c2::u32 raw.sar.width = 1
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 320
+D/CCodecConfig( 6908):   c2:
+W/ColorUtils( 6908): expected specified color aspects (2:0:0:0)
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a6047f30, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073795
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a6047f30, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a6047f20, reason connectToSurface(reconnect-with-listener)
+D/CCodec  ( 6908): [c2.goldfish.h264.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for color-standard
+D/CCodecConfig( 6908): no c2 equivalents for csd-1
+D/CCodecConfig( 6908): no c2 equivalents for native-window
+D/CCodecConfig( 6908): no c2 equivalents for native-window-generation
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 default.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 3
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 960
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 960
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 62800, which is smaller than what component recommended (6291456); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t level = 65536
+D/CCodec  ( 6908):   int32_t max-input-size = 6291456
+D/CCodec  ( 6908):   string mime = "video/avc"
+D/CCodec  ( 6908):   int32_t profile = 65536
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t android._color-format = 2135033992
+D/CCodec  ( 6908):   int32_t android._video-scaling = 1
+D/CCodec  ( 6908):   int32_t rotation-degrees = 0
+D/CCodec  ( 6908):   int32_t color-standard = 1
+D/CCodec  ( 6908):   int32_t color-range = 2
+D/CCodec  ( 6908):   int32_t color-transfer = 3
+D/CCodec  ( 6908):   int32_t sar-height = 1
+D/CCodec  ( 6908):   int32_t sar-width = 1
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t max-height = 540
+D/CCodec  ( 6908):   int32_t max-width = 960
+D/CCodec  ( 6908):   string mime = "video/raw"
+D/CCodec  ( 6908):   int32_t android._dataspace = 260
+D/CCodec  ( 6908):   int32_t color-format = 2130708361
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 3
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+W/Codec2Client( 6908): query -- param skipped: index = 2684356609.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] Created input block pool with allocatorID 16 => poolID 19 - OK (0)
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] Query output surface allocator returned 0 params => BAD_INDEX (6)
+I/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] Created output block pool with allocatorID 18 => poolID 20 - OK
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] Configured output block pool ids 20 => OK
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073795 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type audio
+D/CCodec  ( 6908): allocate(c2.android.aac.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.android.aac.decoder] for [c2.android.aac.decoder]
+D/CCodecConfig( 6908): read media type: audio/mp4a-latm
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.aac-packaging.value = 0
+D/CCodecConfig( 6908):   c2::u32 coded.bitrate.value = 64000
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 0
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 8192
+D/CCodecConfig( 6908):   c2::i32 coding.drc.album-mode.value = 0
+D/CCodecConfig( 6908):   c2::float coding.drc.attenuation-factor.value = 1
+D/CCodecConfig( 6908):   c2::float coding.drc.boost-factor.value = 1
+D/CCodecConfig( 6908):   c2::i32 coding.drc.compression-mode.value = 3
+D/CCodecConfig( 6908):   c2::i32 coding.drc.effect-type.value = 3
+D/CCodecConfig( 6908):   c2::float coding.drc.encoded-level.value = 0.25
+D/CCodecConfig( 6908):   c2::float coding.drc.reference-level.value = -16
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 8192
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "audio/mp4a-latm"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 2
+D/CCodecConfig( 6908):   c2::float output.drc.output-loudness.value = 0.25
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.max-size = 0
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.threshold-size = 0
+D/CCodecConfig( 6908):   string output.media-type.value = "audio/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.channel-count.value = 1
+D/CCodecConfig( 6908):   c2::u32 raw.channel-mask.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-channel-count.value = 8
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 44100
+D/CCodecConfig( 6908): }
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/CCodec  ( 6908): [c2.android.aac.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-count.value = 2
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 48000
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 713, which is smaller than what component recommended (8192); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t bitrate = 64000
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t level = 0
+D/CCodec  ( 6908):   int32_t max-input-size = 8192
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/mp4a-latm"
+D/CCodec  ( 6908):   int32_t profile = 2
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodec  ( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/raw"
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+E/js.video_viewer( 6908): Failed to query component interface for required system resources: 6
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#854] Created input block pool with allocatorID 16 => poolID 20 - OK (0)
+I/CCodecBufferChannel( 6908): [c2.android.aac.decoder#854] Created output block pool with allocatorID 16 => poolID 48 - OK
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#854] Configured output block pool ids 48 => OK
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-mask.value = 12
+D/CCodecBuffers( 6908): [c2.android.aac.decoder#854:Output[N]] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodecBuffers( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodecBuffers( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodecBuffers( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodecBuffers( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodecBuffers( 6908):   int32_t aac-target-ref-level = 64
+D/CCodecBuffers( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodecBuffers( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodecBuffers( 6908):   int32_t channel-count = 2
+D/CCodecBuffers( 6908):   int32_t channel-mask = 12
+D/CCodecBuffers( 6908):   int32_t max-output-channel-count = 8
+D/CCodecBuffers( 6908):   string mime = "audio/raw"
+D/CCodecBuffers( 6908):   int32_t sample-rate = 48000
+D/CCodecBuffers( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodecBuffers( 6908): }
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 raw.crop.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.crop.left = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.top = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.width = 960
+D/CCodecBuffers( 6908): [c2.goldfish.h264.decoder#485:2D-Output] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t android._color-format = 2135033992
+D/CCodecBuffers( 6908):   int32_t android._video-scaling = 1
+D/CCodecBuffers( 6908):   int32_t rotation-degrees = 0
+D/CCodecBuffers( 6908):   int32_t color-standard = 4
+D/CCodecBuffers( 6908):   int32_t color-range = 2
+D/CCodecBuffers( 6908):   int32_t color-transfer = 3
+D/CCodecBuffers( 6908):   int32_t sar-height = 1
+D/CCodecBuffers( 6908):   int32_t sar-width = 1
+D/CCodecBuffers( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodecBuffers( 6908):   int32_t width = 960
+D/CCodecBuffers( 6908):   int32_t height = 540
+D/CCodecBuffers( 6908):   int32_t max-height = 540
+D/CCodecBuffers( 6908):   int32_t max-width = 960
+D/CCodecBuffers( 6908):   string mime = "video/raw"
+D/CCodecBuffers( 6908):   int32_t android._dataspace = 259
+D/CCodecBuffers( 6908):   int32_t color-format = 2130708361
+D/CCodecBuffers( 6908): }
+D/InsetsController( 6908): Setting requestedVisibleTypes to -9 (was -16)
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6043598 : 0(0 size) total buffers - 0(0 size) used buffers - 144/149 (recycle/alloc) - 5/144 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 1
+I/ExoPlayerImpl( 6908): Release 577527b [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36] [media3.common, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor]
+D/PipelineWatcher( 6908): onInputBufferReleased: frameIndex not found (16); ignored
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] Ignoring stale input buffer done callback: last flush index = 17, frameIndex = 16
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 coded.vui.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 3
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] Ignoring stale input buffer done callback: last flush index = 17, frameIndex = 15
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] flushed work; ignored.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] Discard frames from previous generation.
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a605c780, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073796
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a605c780, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a605c770, reason connectToSurface(reconnect-with-listener)
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073796 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a6047f30, reason disconnectFromSurface
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#485] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#854] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#854] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#854] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#854] MediaCodec discarded an unknown buffer
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a605c780, reason disconnectFromSurface
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6032df8 : 0(0 size) total buffers - 0(0 size) used buffers - 91/96 (recycle/alloc) - 5/95 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 1
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f6043598 cached: 0/0M, 0/0% in use; allocs: 149, 97% recycled; transfers: 144, 97% unfetched
+I/js.video_viewer( 6908): AssetManager2(0xb400007475fbc118) locale list changing from [] to [en-US]
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6042c58 : 0(0 size) total buffers - 0(0 size) used buffers - 23/28 (recycle/alloc) - 5/19 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f5fd5cb8 : 0(0 size) total buffers - 0(0 size) used buffers - 18/23 (recycle/alloc) - 5/18 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 2, evicted: 2
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f6042c58 cached: 0/0M, 0/0% in use; allocs: 28, 82% recycled; transfers: 19, 74% unfetched
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 0
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+I/ExoPlayerImpl( 6908): Init 48660c9 [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36]
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type video
+D/CCodec  ( 6908): allocate(c2.goldfish.h264.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.goldfish.h264.decoder] for [c2.goldfish.h264.decoder]
+D/CCodecConfig( 6908): read media type: video/avc
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): ignored struct field coded.color-format.locations
+D/ReflectedParamUpdater( 6908): ignored struct field resources.needed.values
+D/CCodecConfig( 6908): ignoring local param raw.size (0xd2001800) as it is already supported
+D/CCodecConfig( 6908): ignoring local param default.color (0x5200180b) as it is already supported
+D/ReflectedParamUpdater( 6908): ignored struct field raw.hdr-static-info.mastering
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 20496
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 20481
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 6291456
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "video/avc"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 8
+D/CCodecConfig( 6908):   string output.media-type.value = "video/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 320
+D/CCodecConfig( 6908):   c2::u32 raw.pixel-format.value = 35
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.flip = 0
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.sar.height = 1
+D/CCodecConfig( 6908):   c2::u32 raw.sar.width = 1
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 320
+D/CCodecConfig( 6908):   c2:
+W/ColorUtils( 6908): expected specified color aspects (2:0:0:0)
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a607d760, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073797
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a607d760, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a607d750, reason connectToSurface(reconnect-with-listener)
+D/CCodec  ( 6908): [c2.goldfish.h264.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for color-standard
+D/CCodecConfig( 6908): no c2 equivalents for csd-1
+D/CCodecConfig( 6908): no c2 equivalents for native-window
+D/CCodecConfig( 6908): no c2 equivalents for native-window-generation
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 default.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 3
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 960
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 960
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 62800, which is smaller than what component recommended (6291456); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t level = 65536
+D/CCodec  ( 6908):   int32_t max-input-size = 6291456
+D/CCodec  ( 6908):   string mime = "video/avc"
+D/CCodec  ( 6908):   int32_t profile = 65536
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t android._color-format = 2135033992
+D/CCodec  ( 6908):   int32_t android._video-scaling = 1
+D/CCodec  ( 6908):   int32_t rotation-degrees = 0
+D/CCodec  ( 6908):   int32_t color-standard = 1
+D/CCodec  ( 6908):   int32_t color-range = 2
+D/CCodec  ( 6908):   int32_t color-transfer = 3
+D/CCodec  ( 6908):   int32_t sar-height = 1
+D/CCodec  ( 6908):   int32_t sar-width = 1
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t max-height = 540
+D/CCodec  ( 6908):   int32_t max-width = 960
+D/CCodec  ( 6908):   string mime = "video/raw"
+D/CCodec  ( 6908):   int32_t android._dataspace = 260
+D/CCodec  ( 6908):   int32_t color-format = 2130708361
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 3
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+W/Codec2Client( 6908): query -- param skipped: index = 2684356609.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#964] Created input block pool with allocatorID 16 => poolID 21 - OK (0)
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#964] Query output surface allocator returned 0 params => BAD_INDEX (6)
+I/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#964] Created output block pool with allocatorID 18 => poolID 21 - OK
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#964] Configured output block pool ids 21 => OK
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073797 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6032df8 : 0(0 size) total buffers - 0(0 size) used buffers - 91/96 (recycle/alloc) - 5/95 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f6032df8 cached: 0/0M, 0/0% in use; allocs: 96, 95% recycled; transfers: 95, 95% unfetched
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f5fd5cb8 : 0(0 size) total buffers - 0(0 size) used buffers - 18/23 (recycle/alloc) - 5/18 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f5fd5cb8 cached: 0/0M, 0/0% in use; allocs: 23, 78% recycled; transfers: 18, 72% unfetched
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type audio
+D/CCodec  ( 6908): allocate(c2.android.aac.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.android.aac.decoder] for [c2.android.aac.decoder]
+D/CCodecConfig( 6908): read media type: audio/mp4a-latm
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.aac-packaging.value = 0
+D/CCodecConfig( 6908):   c2::u32 coded.bitrate.value = 64000
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 0
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 8192
+D/CCodecConfig( 6908):   c2::i32 coding.drc.album-mode.value = 0
+D/CCodecConfig( 6908):   c2::float coding.drc.attenuation-factor.value = 1
+D/CCodecConfig( 6908):   c2::float coding.drc.boost-factor.value = 1
+D/CCodecConfig( 6908):   c2::i32 coding.drc.compression-mode.value = 3
+D/CCodecConfig( 6908):   c2::i32 coding.drc.effect-type.value = 3
+D/CCodecConfig( 6908):   c2::float coding.drc.encoded-level.value = 0.25
+D/CCodecConfig( 6908):   c2::float coding.drc.reference-level.value = -16
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 8192
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "audio/mp4a-latm"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 2
+D/CCodecConfig( 6908):   c2::float output.drc.output-loudness.value = 0.25
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.max-size = 0
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.threshold-size = 0
+D/CCodecConfig( 6908):   string output.media-type.value = "audio/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.channel-count.value = 1
+D/CCodecConfig( 6908):   c2::u32 raw.channel-mask.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-channel-count.value = 8
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 44100
+D/CCodecConfig( 6908): }
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/CCodec  ( 6908): [c2.android.aac.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-count.value = 2
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 48000
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 713, which is smaller than what component recommended (8192); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t bitrate = 64000
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t level = 0
+D/CCodec  ( 6908):   int32_t max-input-size = 8192
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/mp4a-latm"
+D/CCodec  ( 6908):   int32_t profile = 2
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodec  ( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/raw"
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+E/js.video_viewer( 6908): Failed to query component interface for required system resources: 6
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#915] Created input block pool with allocatorID 16 => poolID 22 - OK (0)
+I/CCodecBufferChannel( 6908): [c2.android.aac.decoder#915] Created output block pool with allocatorID 16 => poolID 53 - OK
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#915] Configured output block pool ids 53 => OK
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-mask.value = 12
+D/CCodecBuffers( 6908): [c2.android.aac.decoder#915:Output[N]] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodecBuffers( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodecBuffers( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodecBuffers( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodecBuffers( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodecBuffers( 6908):   int32_t aac-target-ref-level = 64
+D/CCodecBuffers( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodecBuffers( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodecBuffers( 6908):   int32_t channel-count = 2
+D/CCodecBuffers( 6908):   int32_t channel-mask = 12
+D/CCodecBuffers( 6908):   int32_t max-output-channel-count = 8
+D/CCodecBuffers( 6908):   string mime = "audio/raw"
+D/CCodecBuffers( 6908):   int32_t sample-rate = 48000
+D/CCodecBuffers( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodecBuffers( 6908): }
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 raw.crop.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.crop.left = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.top = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.width = 960
+D/CCodecBuffers( 6908): [c2.goldfish.h264.decoder#964:2D-Output] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t android._color-format = 2135033992
+D/CCodecBuffers( 6908):   int32_t android._video-scaling = 1
+D/CCodecBuffers( 6908):   int32_t rotation-degrees = 0
+D/CCodecBuffers( 6908):   int32_t color-standard = 4
+D/CCodecBuffers( 6908):   int32_t color-range = 2
+D/CCodecBuffers( 6908):   int32_t color-transfer = 3
+D/CCodecBuffers( 6908):   int32_t sar-height = 1
+D/CCodecBuffers( 6908):   int32_t sar-width = 1
+D/CCodecBuffers( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodecBuffers( 6908):   int32_t width = 960
+D/CCodecBuffers( 6908):   int32_t height = 540
+D/CCodecBuffers( 6908):   int32_t max-height = 540
+D/CCodecBuffers( 6908):   int32_t max-width = 960
+D/CCodecBuffers( 6908):   string mime = "video/raw"
+D/CCodecBuffers( 6908):   int32_t android._dataspace = 259
+D/CCodecBuffers( 6908):   int32_t color-format = 2130708361
+D/CCodecBuffers( 6908): }
+I/js.video_viewer( 6908): AssetManager2(0xb400007475ff6db8) locale list changing from [] to [en-US]
+D/InsetsController( 6908): Setting requestedVisibleTypes to -16 (was -9)
+I/js.video_viewer( 6908): Background concurrent mark compact GC freed 2075KB AllocSpace bytes, 48(3104KB) LOS objects, 49% free, 6806KB/13MB, paused 74us,7.024ms total 24.082ms
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 0
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f602df58 : 5(31457280 size) total buffers - 4(25165824 size) used buffers - 159/164 (recycle/alloc) - 5/163 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6003e68 : 5(40960 size) total buffers - 1(8192 size) used buffers - 273/278 (recycle/alloc) - 5/272 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 2, evicted: 0
+D/InsetsController( 6908): Setting requestedVisibleTypes to -9 (was -16)
+D/InsetsController( 6908): hide(ime(), fromIme=false)
+I/ImeTracker( 6908): io.github.shijijs.video_viewer:f8c33f17: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/AudioTrack( 6908): getTimestamp_l(20): device stall time corrected using current time 1319722107961
+I/ExoPlayerImpl( 6908): Release 48660c9 [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36] [media3.common, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor]
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 coded.vui.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 3
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#964] Ignoring stale input buffer done callback: last flush index = 226, frameIndex = 222
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#964] flushed work; ignored.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#964] Discard frames from previous generation.
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a607c410, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073798
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a607c410, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a607c400, reason connectToSurface(reconnect-with-listener)
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073798 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a607d760, reason disconnectFromSurface
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#964] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#964] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#964] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#964] MediaCodec discarded an unknown buffer
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a607c410, reason disconnectFromSurface
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#915] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#915] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#915] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#915] MediaCodec discarded an unknown buffer
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+I/js.video_viewer( 6908): AssetManager2(0xb400007475ff89d8) locale list changing from [] to [en-US]
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6003e68 : 0(0 size) total buffers - 0(0 size) used buffers - 360/365 (recycle/alloc) - 5/355 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 1
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f602df58 : 0(0 size) total buffers - 0(0 size) used buffers - 225/230 (recycle/alloc) - 5/229 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 1
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f6003e68 cached: 0/0M, 0/0% in use; allocs: 365, 99% recycled; transfers: 355, 99% unfetched
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+I/ExoPlayerImpl( 6908): Init c2a24ce [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36]
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type video
+D/CCodec  ( 6908): allocate(c2.goldfish.h264.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.goldfish.h264.decoder] for [c2.goldfish.h264.decoder]
+D/CCodecConfig( 6908): read media type: video/avc
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): ignored struct field coded.color-format.locations
+D/ReflectedParamUpdater( 6908): ignored struct field resources.needed.values
+D/CCodecConfig( 6908): ignoring local param raw.size (0xd2001800) as it is already supported
+D/CCodecConfig( 6908): ignoring local param default.color (0x5200180b) as it is already supported
+D/ReflectedParamUpdater( 6908): ignored struct field raw.hdr-static-info.mastering
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 20496
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 20481
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 6291456
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "video/avc"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 8
+D/CCodecConfig( 6908):   string output.media-type.value = "video/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 320
+D/CCodecConfig( 6908):   c2::u32 raw.pixel-format.value = 35
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.flip = 0
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.sar.height = 1
+D/CCodecConfig( 6908):   c2::u32 raw.sar.width = 1
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 320
+D/CCodecConfig( 6908):   c2:
+W/ColorUtils( 6908): expected specified color aspects (2:0:0:0)
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a607a3e0, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073799
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a607a3e0, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a607a3d0, reason connectToSurface(reconnect-with-listener)
+D/CCodec  ( 6908): [c2.goldfish.h264.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for color-standard
+D/CCodecConfig( 6908): no c2 equivalents for csd-1
+D/CCodecConfig( 6908): no c2 equivalents for native-window
+D/CCodecConfig( 6908): no c2 equivalents for native-window-generation
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 default.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 3
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 960
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 960
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 62800, which is smaller than what component recommended (6291456); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t level = 65536
+D/CCodec  ( 6908):   int32_t max-input-size = 6291456
+D/CCodec  ( 6908):   string mime = "video/avc"
+D/CCodec  ( 6908):   int32_t profile = 65536
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t android._color-format = 2135033992
+D/CCodec  ( 6908):   int32_t android._video-scaling = 1
+D/CCodec  ( 6908):   int32_t rotation-degrees = 0
+D/CCodec  ( 6908):   int32_t color-standard = 1
+D/CCodec  ( 6908):   int32_t color-range = 2
+D/CCodec  ( 6908):   int32_t color-transfer = 3
+D/CCodec  ( 6908):   int32_t sar-height = 1
+D/CCodec  ( 6908):   int32_t sar-width = 1
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t max-height = 540
+D/CCodec  ( 6908):   int32_t max-width = 960
+D/CCodec  ( 6908):   string mime = "video/raw"
+D/CCodec  ( 6908):   int32_t android._dataspace = 260
+D/CCodec  ( 6908):   int32_t color-format = 2130708361
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 3
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+W/Codec2Client( 6908): query -- param skipped: index = 2684356609.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] Created input block pool with allocatorID 16 => poolID 23 - OK (0)
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] Query output surface allocator returned 0 params => BAD_INDEX (6)
+I/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] Created output block pool with allocatorID 18 => poolID 22 - OK
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] Configured output block pool ids 22 => OK
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073799 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f602df58 : 0(0 size) total buffers - 0(0 size) used buffers - 225/230 (recycle/alloc) - 5/229 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f602df58 cached: 0/0M, 0/0% in use; allocs: 230, 98% recycled; transfers: 229, 98% unfetched
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type audio
+D/CCodec  ( 6908): allocate(c2.android.aac.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.android.aac.decoder] for [c2.android.aac.decoder]
+D/CCodecConfig( 6908): read media type: audio/mp4a-latm
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.aac-packaging.value = 0
+D/CCodecConfig( 6908):   c2::u32 coded.bitrate.value = 64000
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 0
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 8192
+D/CCodecConfig( 6908):   c2::i32 coding.drc.album-mode.value = 0
+D/CCodecConfig( 6908):   c2::float coding.drc.attenuation-factor.value = 1
+D/CCodecConfig( 6908):   c2::float coding.drc.boost-factor.value = 1
+D/CCodecConfig( 6908):   c2::i32 coding.drc.compression-mode.value = 3
+D/CCodecConfig( 6908):   c2::i32 coding.drc.effect-type.value = 3
+D/CCodecConfig( 6908):   c2::float coding.drc.encoded-level.value = 0.25
+D/CCodecConfig( 6908):   c2::float coding.drc.reference-level.value = -16
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 8192
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "audio/mp4a-latm"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 2
+D/CCodecConfig( 6908):   c2::float output.drc.output-loudness.value = 0.25
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.max-size = 0
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.threshold-size = 0
+D/CCodecConfig( 6908):   string output.media-type.value = "audio/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.channel-count.value = 1
+D/CCodecConfig( 6908):   c2::u32 raw.channel-mask.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-channel-count.value = 8
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 44100
+D/CCodecConfig( 6908): }
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/CCodec  ( 6908): [c2.android.aac.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-count.value = 2
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 48000
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 713, which is smaller than what component recommended (8192); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t bitrate = 64000
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t level = 0
+D/CCodec  ( 6908):   int32_t max-input-size = 8192
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/mp4a-latm"
+D/CCodec  ( 6908):   int32_t profile = 2
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodec  ( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/raw"
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+E/js.video_viewer( 6908): Failed to query component interface for required system resources: 6
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#955] Created input block pool with allocatorID 16 => poolID 24 - OK (0)
+I/CCodecBufferChannel( 6908): [c2.android.aac.decoder#955] Created output block pool with allocatorID 16 => poolID 58 - OK
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#955] Configured output block pool ids 58 => OK
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-mask.value = 12
+D/CCodecBuffers( 6908): [c2.android.aac.decoder#955:Output[N]] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodecBuffers( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodecBuffers( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodecBuffers( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodecBuffers( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodecBuffers( 6908):   int32_t aac-target-ref-level = 64
+D/CCodecBuffers( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodecBuffers( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodecBuffers( 6908):   int32_t channel-count = 2
+D/CCodecBuffers( 6908):   int32_t channel-mask = 12
+D/CCodecBuffers( 6908):   int32_t max-output-channel-count = 8
+D/CCodecBuffers( 6908):   string mime = "audio/raw"
+D/CCodecBuffers( 6908):   int32_t sample-rate = 48000
+D/CCodecBuffers( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodecBuffers( 6908): }
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 raw.crop.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.crop.left = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.top = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.width = 960
+D/CCodecBuffers( 6908): [c2.goldfish.h264.decoder#213:2D-Output] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t android._color-format = 2135033992
+D/CCodecBuffers( 6908):   int32_t android._video-scaling = 1
+D/CCodecBuffers( 6908):   int32_t rotation-degrees = 0
+D/CCodecBuffers( 6908):   int32_t color-standard = 4
+D/CCodecBuffers( 6908):   int32_t color-range = 2
+D/CCodecBuffers( 6908):   int32_t color-transfer = 3
+D/CCodecBuffers( 6908):   int32_t sar-height = 1
+D/CCodecBuffers( 6908):   int32_t sar-width = 1
+D/CCodecBuffers( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodecBuffers( 6908):   int32_t width = 960
+D/CCodecBuffers( 6908):   int32_t height = 540
+D/CCodecBuffers( 6908):   int32_t max-height = 540
+D/CCodecBuffers( 6908):   int32_t max-width = 960
+D/CCodecBuffers( 6908):   string mime = "video/raw"
+D/CCodecBuffers( 6908):   int32_t android._dataspace = 259
+D/CCodecBuffers( 6908):   int32_t color-format = 2130708361
+D/CCodecBuffers( 6908): }
+D/AudioTrack( 6908): getTimestamp_l(21): device stall time corrected using current time 1332974012176
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 0
+I/js.video_viewer( 6908): Background concurrent mark compact GC freed 1117KB AllocSpace bytes, 6(168KB) LOS objects, 49% free, 7862KB/15MB, paused 58us,695us total 193.562ms
+I/js.video_viewer( 6908): AssetManager2(0xb400007475ff1c78) locale list changing from [] to [en-US]
+D/InsetsController( 6908): Setting requestedVisibleTypes to -16 (was -9)
+W/js.video_viewer( 6908): Suspending all threads took: 12.963ms
+I/js.video_viewer( 6908): Background concurrent mark compact GC freed 1135KB AllocSpace bytes, 8(224KB) LOS objects, 49% free, 14MB/29MB, paused 14.044ms,1.195ms total 146.236ms
+D/InsetsController( 6908): hide(ime(), fromIme=false)
+I/ImeTracker( 6908): io.github.shijijs.video_viewer:4aa00b02: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/AudioTrack( 6908): getTimestamp_l(21): device stall time corrected using current time 1334312418427
+D/PipelineWatcher( 6908): onInputBufferReleased: frameIndex not found (108); ignored
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6065e48 : 5(31457280 size) total buffers - 4(25165824 size) used buffers - 161/166 (recycle/alloc) - 5/165 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f604a248 : 5(40960 size) total buffers - 1(8192 size) used buffers - 264/269 (recycle/alloc) - 5/263 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 0
+D/InsetsController( 6908): Setting requestedVisibleTypes to -9 (was -16)
+I/ExoPlayerImpl( 6908): Release c2a24ce [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36] [media3.common, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor]
+D/PipelineWatcher( 6908): onInputBufferReleased: frameIndex not found (266); ignored
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] Ignoring stale input buffer done callback: last flush index = 268, frameIndex = 266
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 coded.vui.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 3
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] Ignoring stale input buffer done callback: last flush index = 268, frameIndex = 264
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] flushed work; ignored.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] Discard frames from previous generation.
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a60837f0, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073800
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a60837f0, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a60837e0, reason connectToSurface(reconnect-with-listener)
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073800 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a607a3e0, reason disconnectFromSurface
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#213] MediaCodec discarded an unknown buffer
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a60837f0, reason disconnectFromSurface
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#955] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#955] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#955] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#955] MediaCodec discarded an unknown buffer
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+I/js.video_viewer( 6908): AssetManager2(0xb400007475fcab78) locale list changing from [] to [en-US]
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6065e48 : 0(0 size) total buffers - 0(0 size) used buffers - 267/272 (recycle/alloc) - 5/271 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f604a248 : 0(0 size) total buffers - 0(0 size) used buffers - 429/434 (recycle/alloc) - 5/420 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 2, evicted: 2
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f604a248 cached: 0/0M, 0/0% in use; allocs: 434, 99% recycled; transfers: 420, 99% unfetched
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+I/ExoPlayerImpl( 6908): Init fbe38a8 [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36]
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type video
+D/CCodec  ( 6908): allocate(c2.goldfish.h264.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.goldfish.h264.decoder] for [c2.goldfish.h264.decoder]
+D/CCodecConfig( 6908): read media type: video/avc
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): ignored struct field coded.color-format.locations
+D/ReflectedParamUpdater( 6908): ignored struct field resources.needed.values
+D/CCodecConfig( 6908): ignoring local param raw.size (0xd2001800) as it is already supported
+D/CCodecConfig( 6908): ignoring local param default.color (0x5200180b) as it is already supported
+D/ReflectedParamUpdater( 6908): ignored struct field raw.hdr-static-info.mastering
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 20496
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 20481
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 6291456
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "video/avc"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 8
+D/CCodecConfig( 6908):   string output.media-type.value = "video/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 320
+D/CCodecConfig( 6908):   c2::u32 raw.pixel-format.value = 35
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.flip = 0
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.sar.height = 1
+D/CCodecConfig( 6908):   c2::u32 raw.sar.width = 1
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 320
+D/CCodecConfig( 6908):   c2:
+W/ColorUtils( 6908): expected specified color aspects (2:0:0:0)
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a60837f0, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073801
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a60837f0, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a60837e0, reason connectToSurface(reconnect-with-listener)
+D/CCodec  ( 6908): [c2.goldfish.h264.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for color-standard
+D/CCodecConfig( 6908): no c2 equivalents for csd-1
+D/CCodecConfig( 6908): no c2 equivalents for native-window
+D/CCodecConfig( 6908): no c2 equivalents for native-window-generation
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 default.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 3
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 960
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 960
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 62800, which is smaller than what component recommended (6291456); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t level = 65536
+D/CCodec  ( 6908):   int32_t max-input-size = 6291456
+D/CCodec  ( 6908):   string mime = "video/avc"
+D/CCodec  ( 6908):   int32_t profile = 65536
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t android._color-format = 2135033992
+D/CCodec  ( 6908):   int32_t android._video-scaling = 1
+D/CCodec  ( 6908):   int32_t rotation-degrees = 0
+D/CCodec  ( 6908):   int32_t color-standard = 1
+D/CCodec  ( 6908):   int32_t color-range = 2
+D/CCodec  ( 6908):   int32_t color-transfer = 3
+D/CCodec  ( 6908):   int32_t sar-height = 1
+D/CCodec  ( 6908):   int32_t sar-width = 1
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t max-height = 540
+D/CCodec  ( 6908):   int32_t max-width = 960
+D/CCodec  ( 6908):   string mime = "video/raw"
+D/CCodec  ( 6908):   int32_t android._dataspace = 260
+D/CCodec  ( 6908):   int32_t color-format = 2130708361
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 3
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+W/Codec2Client( 6908): query -- param skipped: index = 2684356609.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#181] Created input block pool with allocatorID 16 => poolID 25 - OK (0)
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#181] Query output surface allocator returned 0 params => BAD_INDEX (6)
+I/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#181] Created output block pool with allocatorID 18 => poolID 23 - OK
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#181] Configured output block pool ids 23 => OK
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073801 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6065e48 : 0(0 size) total buffers - 0(0 size) used buffers - 267/272 (recycle/alloc) - 5/271 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f6065e48 cached: 0/0M, 0/0% in use; allocs: 272, 98% recycled; transfers: 271, 98% unfetched
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type audio
+D/CCodec  ( 6908): allocate(c2.android.aac.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.android.aac.decoder] for [c2.android.aac.decoder]
+D/CCodecConfig( 6908): read media type: audio/mp4a-latm
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.aac-packaging.value = 0
+D/CCodecConfig( 6908):   c2::u32 coded.bitrate.value = 64000
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 0
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 8192
+D/CCodecConfig( 6908):   c2::i32 coding.drc.album-mode.value = 0
+D/CCodecConfig( 6908):   c2::float coding.drc.attenuation-factor.value = 1
+D/CCodecConfig( 6908):   c2::float coding.drc.boost-factor.value = 1
+D/CCodecConfig( 6908):   c2::i32 coding.drc.compression-mode.value = 3
+D/CCodecConfig( 6908):   c2::i32 coding.drc.effect-type.value = 3
+D/CCodecConfig( 6908):   c2::float coding.drc.encoded-level.value = 0.25
+D/CCodecConfig( 6908):   c2::float coding.drc.reference-level.value = -16
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 8192
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "audio/mp4a-latm"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 2
+D/CCodecConfig( 6908):   c2::float output.drc.output-loudness.value = 0.25
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.max-size = 0
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.threshold-size = 0
+D/CCodecConfig( 6908):   string output.media-type.value = "audio/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.channel-count.value = 1
+D/CCodecConfig( 6908):   c2::u32 raw.channel-mask.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-channel-count.value = 8
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 44100
+D/CCodecConfig( 6908): }
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/CCodec  ( 6908): [c2.android.aac.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-count.value = 2
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 48000
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 713, which is smaller than what component recommended (8192); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t bitrate = 64000
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t level = 0
+D/CCodec  ( 6908):   int32_t max-input-size = 8192
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/mp4a-latm"
+D/CCodec  ( 6908):   int32_t profile = 2
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodec  ( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/raw"
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+E/js.video_viewer( 6908): Failed to query component interface for required system resources: 6
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#972] Created input block pool with allocatorID 16 => poolID 26 - OK (0)
+I/CCodecBufferChannel( 6908): [c2.android.aac.decoder#972] Created output block pool with allocatorID 16 => poolID 63 - OK
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#972] Configured output block pool ids 63 => OK
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-mask.value = 12
+D/CCodecBuffers( 6908): [c2.android.aac.decoder#972:Output[N]] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodecBuffers( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodecBuffers( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodecBuffers( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodecBuffers( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodecBuffers( 6908):   int32_t aac-target-ref-level = 64
+D/CCodecBuffers( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodecBuffers( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodecBuffers( 6908):   int32_t channel-count = 2
+D/CCodecBuffers( 6908):   int32_t channel-mask = 12
+D/CCodecBuffers( 6908):   int32_t max-output-channel-count = 8
+D/CCodecBuffers( 6908):   string mime = "audio/raw"
+D/CCodecBuffers( 6908):   int32_t sample-rate = 48000
+D/CCodecBuffers( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodecBuffers( 6908): }
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 raw.crop.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.crop.left = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.top = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.width = 960
+D/CCodecBuffers( 6908): [c2.goldfish.h264.decoder#181:2D-Output] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t android._color-format = 2135033992
+D/CCodecBuffers( 6908):   int32_t android._video-scaling = 1
+D/CCodecBuffers( 6908):   int32_t rotation-degrees = 0
+D/CCodecBuffers( 6908):   int32_t color-standard = 4
+D/CCodecBuffers( 6908):   int32_t color-range = 2
+D/CCodecBuffers( 6908):   int32_t color-transfer = 3
+D/CCodecBuffers( 6908):   int32_t sar-height = 1
+D/CCodecBuffers( 6908):   int32_t sar-width = 1
+D/CCodecBuffers( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodecBuffers( 6908):   int32_t width = 960
+D/CCodecBuffers( 6908):   int32_t height = 540
+D/CCodecBuffers( 6908):   int32_t max-height = 540
+D/CCodecBuffers( 6908):   int32_t max-width = 960
+D/CCodecBuffers( 6908):   string mime = "video/raw"
+D/CCodecBuffers( 6908):   int32_t android._dataspace = 259
+D/CCodecBuffers( 6908):   int32_t color-format = 2130708361
+D/CCodecBuffers( 6908): }
+D/InsetsController( 6908): Setting requestedVisibleTypes to -16 (was -9)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 0
+I/js.video_viewer( 6908): Background concurrent mark compact GC freed 5365KB AllocSpace bytes, 251(15MB) LOS objects, 49% free, 8994KB/17MB, paused 220us,5.395ms total 108.156ms
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6000498 : 5(31457280 size) total buffers - 4(25165824 size) used buffers - 162/167 (recycle/alloc) - 5/167 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f604bbb8 : 5(40960 size) total buffers - 1(8192 size) used buffers - 277/282 (recycle/alloc) - 5/276 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 0
+D/InsetsController( 6908): Setting requestedVisibleTypes to -9 (was -16)
+D/InsetsController( 6908): hide(ime(), fromIme=false)
+I/ImeTracker( 6908): io.github.shijijs.video_viewer:fd46a3a8: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/AudioTrack( 6908): getTimestamp_l(22): device stall time corrected using current time 1359529364897
+I/ExoPlayerImpl( 6908): Release fbe38a8 [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36] [media3.common, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor]
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 coded.vui.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 3
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#181] Ignoring stale input buffer done callback: last flush index = 221, frameIndex = 218
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#181] flushed work; ignored.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#181] Discard frames from previous generation.
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a6083180, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073802
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a6083180, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a6083170, reason connectToSurface(reconnect-with-listener)
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073802 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a60837f0, reason disconnectFromSurface
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#181] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#181] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#181] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#181] MediaCodec discarded an unknown buffer
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a6083180, reason disconnectFromSurface
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#972] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#972] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#972] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#972] MediaCodec discarded an unknown buffer
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+I/js.video_viewer( 6908): AssetManager2(0xb400007475ff5198) locale list changing from [] to [en-US]
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f604bbb8 : 0(0 size) total buffers - 0(0 size) used buffers - 353/358 (recycle/alloc) - 5/348 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 1
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6000498 : 0(0 size) total buffers - 0(0 size) used buffers - 221/226 (recycle/alloc) - 5/223 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 1
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f604bbb8 cached: 0/0M, 0/0% in use; allocs: 358, 99% recycled; transfers: 348, 99% unfetched
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+I/ExoPlayerImpl( 6908): Init d592daf [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36]
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type video
+D/CCodec  ( 6908): allocate(c2.goldfish.h264.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.goldfish.h264.decoder] for [c2.goldfish.h264.decoder]
+D/CCodecConfig( 6908): read media type: video/avc
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): ignored struct field coded.color-format.locations
+D/ReflectedParamUpdater( 6908): ignored struct field resources.needed.values
+D/CCodecConfig( 6908): ignoring local param raw.size (0xd2001800) as it is already supported
+D/CCodecConfig( 6908): ignoring local param default.color (0x5200180b) as it is already supported
+D/ReflectedParamUpdater( 6908): ignored struct field raw.hdr-static-info.mastering
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 20496
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 20481
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 6291456
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "video/avc"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 8
+D/CCodecConfig( 6908):   string output.media-type.value = "video/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 320
+D/CCodecConfig( 6908):   c2::u32 raw.pixel-format.value = 35
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.flip = 0
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.sar.height = 1
+D/CCodecConfig( 6908):   c2::u32 raw.sar.width = 1
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 320
+D/CCodecConfig( 6908):   c2:
+W/ColorUtils( 6908): expected specified color aspects (2:0:0:0)
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a60837f0, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073803
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a60837f0, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a60837e0, reason connectToSurface(reconnect-with-listener)
+D/CCodec  ( 6908): [c2.goldfish.h264.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for color-standard
+D/CCodecConfig( 6908): no c2 equivalents for csd-1
+D/CCodecConfig( 6908): no c2 equivalents for native-window
+D/CCodecConfig( 6908): no c2 equivalents for native-window-generation
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 default.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 3
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 960
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 960
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 62800, which is smaller than what component recommended (6291456); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t level = 65536
+D/CCodec  ( 6908):   int32_t max-input-size = 6291456
+D/CCodec  ( 6908):   string mime = "video/avc"
+D/CCodec  ( 6908):   int32_t profile = 65536
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t android._color-format = 2135033992
+D/CCodec  ( 6908):   int32_t android._video-scaling = 1
+D/CCodec  ( 6908):   int32_t rotation-degrees = 0
+D/CCodec  ( 6908):   int32_t color-standard = 1
+D/CCodec  ( 6908):   int32_t color-range = 2
+D/CCodec  ( 6908):   int32_t color-transfer = 3
+D/CCodec  ( 6908):   int32_t sar-height = 1
+D/CCodec  ( 6908):   int32_t sar-width = 1
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t max-height = 540
+D/CCodec  ( 6908):   int32_t max-width = 960
+D/CCodec  ( 6908):   string mime = "video/raw"
+D/CCodec  ( 6908):   int32_t android._dataspace = 260
+D/CCodec  ( 6908):   int32_t color-format = 2130708361
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 3
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+W/Codec2Client( 6908): query -- param skipped: index = 2684356609.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#89] Created input block pool with allocatorID 16 => poolID 27 - OK (0)
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#89] Query output surface allocator returned 0 params => BAD_INDEX (6)
+I/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#89] Created output block pool with allocatorID 18 => poolID 24 - OK
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#89] Configured output block pool ids 24 => OK
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073803 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6000498 : 0(0 size) total buffers - 0(0 size) used buffers - 221/226 (recycle/alloc) - 5/223 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f6000498 cached: 0/0M, 0/0% in use; allocs: 226, 98% recycled; transfers: 223, 98% unfetched
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type audio
+D/CCodec  ( 6908): allocate(c2.android.aac.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#89] Ignoring stale input buffer done callback: last flush index = 0, frameIndex = 0
+I/CCodec  ( 6908): Created component [c2.android.aac.decoder] for [c2.android.aac.decoder]
+D/CCodecConfig( 6908): read media type: audio/mp4a-latm
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.aac-packaging.value = 0
+D/CCodecConfig( 6908):   c2::u32 coded.bitrate.value = 64000
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 0
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 8192
+D/CCodecConfig( 6908):   c2::i32 coding.drc.album-mode.value = 0
+D/CCodecConfig( 6908):   c2::float coding.drc.attenuation-factor.value = 1
+D/CCodecConfig( 6908):   c2::float coding.drc.boost-factor.value = 1
+D/CCodecConfig( 6908):   c2::i32 coding.drc.compression-mode.value = 3
+D/CCodecConfig( 6908):   c2::i32 coding.drc.effect-type.value = 3
+D/CCodecConfig( 6908):   c2::float coding.drc.encoded-level.value = 0.25
+D/CCodecConfig( 6908):   c2::float coding.drc.reference-level.value = -16
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 8192
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "audio/mp4a-latm"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 2
+D/CCodecConfig( 6908):   c2::float output.drc.output-loudness.value = 0.25
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.max-size = 0
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.threshold-size = 0
+D/CCodecConfig( 6908):   string output.media-type.value = "audio/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.channel-count.value = 1
+D/CCodecConfig( 6908):   c2::u32 raw.channel-mask.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-channel-count.value = 8
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 44100
+D/CCodecConfig( 6908): }
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/CCodec  ( 6908): [c2.android.aac.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-count.value = 2
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 48000
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 713, which is smaller than what component recommended (8192); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t bitrate = 64000
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t level = 0
+D/CCodec  ( 6908):   int32_t max-input-size = 8192
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/mp4a-latm"
+D/CCodec  ( 6908):   int32_t profile = 2
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodec  ( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/raw"
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+E/js.video_viewer( 6908): Failed to query component interface for required system resources: 6
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#213] Created input block pool with allocatorID 16 => poolID 28 - OK (0)
+I/CCodecBufferChannel( 6908): [c2.android.aac.decoder#213] Created output block pool with allocatorID 16 => poolID 68 - OK
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#213] Configured output block pool ids 68 => OK
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-mask.value = 12
+D/CCodecBuffers( 6908): [c2.android.aac.decoder#213:Output[N]] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodecBuffers( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodecBuffers( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodecBuffers( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodecBuffers( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodecBuffers( 6908):   int32_t aac-target-ref-level = 64
+D/CCodecBuffers( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodecBuffers( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodecBuffers( 6908):   int32_t channel-count = 2
+D/CCodecBuffers( 6908):   int32_t channel-mask = 12
+D/CCodecBuffers( 6908):   int32_t max-output-channel-count = 8
+D/CCodecBuffers( 6908):   string mime = "audio/raw"
+D/CCodecBuffers( 6908):   int32_t sample-rate = 48000
+D/CCodecBuffers( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodecBuffers( 6908): }
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 raw.crop.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.crop.left = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.top = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.width = 960
+D/CCodecBuffers( 6908): [c2.goldfish.h264.decoder#89:2D-Output] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t android._color-format = 2135033992
+D/CCodecBuffers( 6908):   int32_t android._video-scaling = 1
+D/CCodecBuffers( 6908):   int32_t rotation-degrees = 0
+D/CCodecBuffers( 6908):   int32_t color-standard = 4
+D/CCodecBuffers( 6908):   int32_t color-range = 2
+D/CCodecBuffers( 6908):   int32_t color-transfer = 3
+D/CCodecBuffers( 6908):   int32_t sar-height = 1
+D/CCodecBuffers( 6908):   int32_t sar-width = 1
+D/CCodecBuffers( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodecBuffers( 6908):   int32_t width = 960
+D/CCodecBuffers( 6908):   int32_t height = 540
+D/CCodecBuffers( 6908):   int32_t max-height = 540
+D/CCodecBuffers( 6908):   int32_t max-width = 960
+D/CCodecBuffers( 6908):   string mime = "video/raw"
+D/CCodecBuffers( 6908):   int32_t android._dataspace = 259
+D/CCodecBuffers( 6908):   int32_t color-format = 2130708361
+D/CCodecBuffers( 6908): }
+D/AudioTrack( 6908): getTimestamp_l(23): device stall time corrected using current time 1372285912695
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 0
+I/js.video_viewer( 6908): AssetManager2(0xb400007475ff5198) locale list changing from [] to [en-US]
+D/InsetsController( 6908): Setting requestedVisibleTypes to -16 (was -9)
+D/InsetsController( 6908): hide(ime(), fromIme=false)
+I/ImeTracker( 6908): io.github.shijijs.video_viewer:be2386e1: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f5fdf308 : 5(31457280 size) total buffers - 4(25165824 size) used buffers - 160/166 (recycle/alloc) - 6/165 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f60652b8 : 5(40960 size) total buffers - 4(32768 size) used buffers - 273/278 (recycle/alloc) - 5/271 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 0
+D/InsetsController( 6908): Setting requestedVisibleTypes to -9 (was -16)
+I/ExoPlayerImpl( 6908): Release d592daf [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36] [media3.common, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor]
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 coded.vui.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 3
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#89] flushed work; ignored.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#89] Discard frames from previous generation.
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a60776d0, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073804
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a60776d0, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a60776c0, reason connectToSurface(reconnect-with-listener)
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073804 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a60837f0, reason disconnectFromSurface
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#89] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#89] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#89] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#89] MediaCodec discarded an unknown buffer
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a60776d0, reason disconnectFromSurface
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#213] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#213] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#213] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#213] MediaCodec discarded an unknown buffer
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+I/js.video_viewer( 6908): AssetManager2(0xb400007475ff6a98) locale list changing from [] to [en-US]
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f60652b8 : 0(0 size) total buffers - 0(0 size) used buffers - 399/404 (recycle/alloc) - 5/391 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 1
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f5fdf308 : 0(0 size) total buffers - 0(0 size) used buffers - 248/254 (recycle/alloc) - 6/251 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 1
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f60652b8 cached: 0/0M, 0/0% in use; allocs: 404, 99% recycled; transfers: 391, 99% unfetched
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+I/ExoPlayerImpl( 6908): Init 4fcec6 [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36]
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type video
+D/CCodec  ( 6908): allocate(c2.goldfish.h264.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.goldfish.h264.decoder] for [c2.goldfish.h264.decoder]
+D/CCodecConfig( 6908): read media type: video/avc
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): ignored struct field coded.color-format.locations
+D/ReflectedParamUpdater( 6908): ignored struct field resources.needed.values
+D/CCodecConfig( 6908): ignoring local param raw.size (0xd2001800) as it is already supported
+D/CCodecConfig( 6908): ignoring local param default.color (0x5200180b) as it is already supported
+D/ReflectedParamUpdater( 6908): ignored struct field raw.hdr-static-info.mastering
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 20496
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 20481
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 0
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 6291456
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "video/avc"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 8
+D/CCodecConfig( 6908):   string output.media-type.value = "video/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.color.matrix = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 0
+D/CCodecConfig( 6908):   c2::u32 raw.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 320
+D/CCodecConfig( 6908):   c2::u32 raw.pixel-format.value = 35
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.flip = 0
+D/CCodecConfig( 6908):   c2::i32 raw.rotation.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.sar.height = 1
+D/CCodecConfig( 6908):   c2::u32 raw.sar.width = 1
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 240
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 320
+D/CCodecConfig( 6908):   c2:
+W/ColorUtils( 6908): expected specified color aspects (2:0:0:0)
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a607b0c0, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073805
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a607b0c0, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a607b0b0, reason connectToSurface(reconnect-with-listener)
+D/CCodec  ( 6908): [c2.goldfish.h264.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for color-standard
+D/CCodecConfig( 6908): no c2 equivalents for csd-1
+D/CCodecConfig( 6908): no c2 equivalents for native-window
+D/CCodecConfig( 6908): no c2 equivalents for native-window-generation
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 default.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 default.color.range = 2
+D/CCodecConfig( 6908):   c2::u32 default.color.transfer = 3
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.max-size.width = 960
+D/CCodecConfig( 6908):   c2::u32 raw.size.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.size.width = 960
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 62800, which is smaller than what component recommended (6291456); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t level = 65536
+D/CCodec  ( 6908):   int32_t max-input-size = 6291456
+D/CCodec  ( 6908):   string mime = "video/avc"
+D/CCodec  ( 6908):   int32_t profile = 65536
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t android._color-format = 2135033992
+D/CCodec  ( 6908):   int32_t android._video-scaling = 1
+D/CCodec  ( 6908):   int32_t rotation-degrees = 0
+D/CCodec  ( 6908):   int32_t color-standard = 1
+D/CCodec  ( 6908):   int32_t color-range = 2
+D/CCodec  ( 6908):   int32_t color-transfer = 3
+D/CCodec  ( 6908):   int32_t sar-height = 1
+D/CCodec  ( 6908):   int32_t sar-width = 1
+D/CCodec  ( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodec  ( 6908):   int32_t width = 960
+D/CCodec  ( 6908):   int32_t height = 540
+D/CCodec  ( 6908):   int32_t max-height = 540
+D/CCodec  ( 6908):   int32_t max-width = 960
+D/CCodec  ( 6908):   string mime = "video/raw"
+D/CCodec  ( 6908):   int32_t android._dataspace = 260
+D/CCodec  ( 6908):   int32_t color-format = 2130708361
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.primaries = 3
+D/CCodecConfig( 6908):   c2::u32 raw.color.transfer = 3
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+W/Codec2Client( 6908): query -- param skipped: index = 2684356609.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#340] Created input block pool with allocatorID 16 => poolID 29 - OK (0)
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#340] Query output surface allocator returned 0 params => BAD_INDEX (6)
+I/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#340] Created output block pool with allocatorID 18 => poolID 25 - OK
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#340] Configured output block pool ids 25 => OK
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073805 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f5fdf308 : 0(0 size) total buffers - 0(0 size) used buffers - 248/254 (recycle/alloc) - 6/251 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): Destruction - bufferpool2 0xb4000072f5fdf308 cached: 0/0M, 0/0% in use; allocs: 254, 98% recycled; transfers: 251, 98% unfetched
+I/DMCodecAdapterFactory( 6908): Creating an asynchronous MediaCodec adapter for track type audio
+D/CCodec  ( 6908): allocate(c2.android.aac.decoder)
+I/CCodec  ( 6908): setting up 'default' as default (vendor) store
+I/CCodec  ( 6908): Created component [c2.android.aac.decoder] for [c2.android.aac.decoder]
+D/CCodecConfig( 6908): read media type: audio/mp4a-latm
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.max-count.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.subscribed-indices.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: input.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.allocator-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: output.buffers.pool-ids.values
+D/ReflectedParamUpdater( 6908): extent() != 1 for single value type: algo.buffers.pool-ids.values
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is Dict {
+D/CCodecConfig( 6908):   c2::u32 coded.aac-packaging.value = 0
+D/CCodecConfig( 6908):   c2::u32 coded.bitrate.value = 64000
+D/CCodecConfig( 6908):   c2::u32 coded.pl.level = 0
+D/CCodecConfig( 6908):   c2::u32 coded.pl.profile = 8192
+D/CCodecConfig( 6908):   c2::i32 coding.drc.album-mode.value = 0
+D/CCodecConfig( 6908):   c2::float coding.drc.attenuation-factor.value = 1
+D/CCodecConfig( 6908):   c2::float coding.drc.boost-factor.value = 1
+D/CCodecConfig( 6908):   c2::i32 coding.drc.compression-mode.value = 3
+D/CCodecConfig( 6908):   c2::i32 coding.drc.effect-type.value = 3
+D/CCodecConfig( 6908):   c2::float coding.drc.encoded-level.value = 0.25
+D/CCodecConfig( 6908):   c2::float coding.drc.reference-level.value = -16
+D/CCodecConfig( 6908):   c2::u32 input.buffers.max-size.value = 8192
+D/CCodecConfig( 6908):   c2::u32 input.delay.value = 0
+D/CCodecConfig( 6908):   string input.media-type.value = "audio/mp4a-latm"
+D/CCodecConfig( 6908):   c2::u32 output.delay.value = 2
+D/CCodecConfig( 6908):   c2::float output.drc.output-loudness.value = 0.25
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.max-size = 0
+D/CCodecConfig( 6908):   c2::u32 output.large-frame.threshold-size = 0
+D/CCodecConfig( 6908):   string output.media-type.value = "audio/raw"
+D/CCodecConfig( 6908):   c2::u32 raw.channel-count.value = 1
+D/CCodecConfig( 6908):   c2::u32 raw.channel-mask.value = 0
+D/CCodecConfig( 6908):   c2::u32 raw.max-channel-count.value = 8
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 44100
+D/CCodecConfig( 6908): }
+I/MediaCodec( 6908): MediaCodec will operate in async mode
+E/MediaCodec( 6908): Media Quality Service not found.
+D/CCodec  ( 6908): [c2.android.aac.decoder] buffers are bound to CCodec for this session
+D/CCodecConfig( 6908): no c2 equivalents for log-session-id
+D/CCodecConfig( 6908): no c2 equivalents for importance
+D/CCodecConfig( 6908): no c2 equivalents for flags
+D/CCodecConfig( 6908): config failed => CORRUPTED
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-count.value = 2
+D/CCodecConfig( 6908):   c2::u32 raw.sample-rate.value = 48000
+W/Codec2Client( 6908): query -- param skipped: index = 1107298332.
+D/CCodec  ( 6908): client requested max input size 713, which is smaller than what component recommended (8192); overriding with component recommendation.
+W/CCodec  ( 6908): This behavior is subject to change. It is recommended that app developers double check whether the requested max input size is in reasonable range.
+D/CCodec  ( 6908): encoding statistics level = 0
+D/CCodec  ( 6908): setup formats input: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t bitrate = 64000
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t level = 0
+D/CCodec  ( 6908):   int32_t max-input-size = 8192
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/mp4a-latm"
+D/CCodec  ( 6908):   int32_t profile = 2
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908): }
+D/CCodec  ( 6908): setup formats output: AMessage(what = 0x00000000) = {
+D/CCodec  ( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodec  ( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodec  ( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodec  ( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodec  ( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodec  ( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodec  ( 6908):   int32_t aac-target-ref-level = 64
+D/CCodec  ( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodec  ( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodec  ( 6908):   int32_t channel-count = 2
+D/CCodec  ( 6908):   int32_t channel-mask = 0
+D/CCodec  ( 6908):   int32_t max-output-channel-count = 8
+D/CCodec  ( 6908):   string mime = "audio/raw"
+D/CCodec  ( 6908):   int32_t sample-rate = 48000
+D/CCodec  ( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodec  ( 6908): }
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+E/js.video_viewer( 6908): Failed to query component interface for required system resources: 6
+D/MediaCodec( 6908): keep callback message for reclaim
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#573] Created input block pool with allocatorID 16 => poolID 30 - OK (0)
+I/CCodecBufferChannel( 6908): [c2.android.aac.decoder#573] Created output block pool with allocatorID 16 => poolID 73 - OK
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#573] Configured output block pool ids 73 => OK
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.channel-mask.value = 12
+D/CCodecBuffers( 6908): [c2.android.aac.decoder#573:Output[N]] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t aac-drc-album-mode = 0
+D/CCodecBuffers( 6908):   int32_t aac-drc-boost-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-cut-level = 127
+D/CCodecBuffers( 6908):   int32_t aac-drc-effect-type = 3
+D/CCodecBuffers( 6908):   int32_t aac-drc-output-loudness = -1
+D/CCodecBuffers( 6908):   int32_t aac-encoded-target-level = -1
+D/CCodecBuffers( 6908):   int32_t aac-max-output-channel_count = 8
+D/CCodecBuffers( 6908):   int32_t aac-target-ref-level = 64
+D/CCodecBuffers( 6908):   int32_t buffer-batch-max-output-size = 0
+D/CCodecBuffers( 6908):   int32_t buffer-batch-threshold-output-size = 0
+D/CCodecBuffers( 6908):   int32_t channel-count = 2
+D/CCodecBuffers( 6908):   int32_t channel-mask = 12
+D/CCodecBuffers( 6908):   int32_t max-output-channel-count = 8
+D/CCodecBuffers( 6908):   string mime = "audio/raw"
+D/CCodecBuffers( 6908):   int32_t sample-rate = 48000
+D/CCodecBuffers( 6908):   int32_t android._config-pcm-encoding = 2
+D/CCodecBuffers( 6908): }
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 raw.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 raw.crop.height = 540
+D/CCodecConfig( 6908):   c2::u32 raw.crop.left = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.top = 0
+D/CCodecConfig( 6908):   c2::u32 raw.crop.width = 960
+D/CCodecBuffers( 6908): [c2.goldfish.h264.decoder#340:2D-Output] popFromStashAndRegister: at 1000000000000us, output format changed to AMessage(what = 0x00000000) = {
+D/CCodecBuffers( 6908):   int32_t android._color-format = 2135033992
+D/CCodecBuffers( 6908):   int32_t android._video-scaling = 1
+D/CCodecBuffers( 6908):   int32_t rotation-degrees = 0
+D/CCodecBuffers( 6908):   int32_t color-standard = 4
+D/CCodecBuffers( 6908):   int32_t color-range = 2
+D/CCodecBuffers( 6908):   int32_t color-transfer = 3
+D/CCodecBuffers( 6908):   int32_t sar-height = 1
+D/CCodecBuffers( 6908):   int32_t sar-width = 1
+D/CCodecBuffers( 6908):   Rect crop(0, 0, 959, 539)
+D/CCodecBuffers( 6908):   int32_t width = 960
+D/CCodecBuffers( 6908):   int32_t height = 540
+D/CCodecBuffers( 6908):   int32_t max-height = 540
+D/CCodecBuffers( 6908):   int32_t max-width = 960
+D/CCodecBuffers( 6908):   string mime = "video/raw"
+D/CCodecBuffers( 6908):   int32_t android._dataspace = 259
+D/CCodecBuffers( 6908):   int32_t color-format = 2130708361
+D/CCodecBuffers( 6908): }
+D/AudioTrack( 6908): getTimestamp_l(24): device stall time corrected using current time 1392606857913
+I/js.video_viewer( 6908): AssetManager2(0xb400007475ff8078) locale list changing from [] to [en-US]
+D/InsetsController( 6908): Setting requestedVisibleTypes to -16 (was -9)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 0
+D/PipelineWatcher( 6908): onInputBufferReleased: frameIndex not found (139); ignored
+D/PipelineWatcher( 6908): onInputBufferReleased: frameIndex not found (140); ignored
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f607f548 : 5(31457280 size) total buffers - 4(25165824 size) used buffers - 155/160 (recycle/alloc) - 5/159 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6032df8 : 5(40960 size) total buffers - 1(8192 size) used buffers - 270/275 (recycle/alloc) - 5/269 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 1, evicted: 0
+D/InsetsController( 6908): Setting requestedVisibleTypes to -9 (was -16)
+D/InsetsController( 6908): hide(ime(), fromIme=false)
+I/ImeTracker( 6908): io.github.shijijs.video_viewer:d8abeb3c: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/AudioTrack( 6908): getTimestamp_l(24): device stall time corrected using current time 1398787406166
+I/ExoPlayerImpl( 6908): Release 4fcec6 [AndroidXMedia3/1.9.2] [emu64a, sdk_gphone64_arm64, Google, 36] [media3.common, media3.exoplayer, media3.decoder, media3.datasource, media3.extractor]
+D/MediaCodec( 6908): keep callback message for reclaim
+I/CCodecConfig( 6908): query failed after returning 12 values (BAD_INDEX)
+D/CCodecConfig( 6908): c2 config diff is   c2::u32 coded.vui.color.matrix = 3
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.primaries = 4
+D/CCodecConfig( 6908):   c2::u32 coded.vui.color.transfer = 3
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/CCodecBuffers( 6908): [c2.android.aac.decoder#573:1D-Output.Impl[N]] Client returned a buffer it does not own according to our record: 0
+D/MediaCodec( 6908): keep callback message for reclaim
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#340] flushed work; ignored.
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#340] Discard frames from previous generation.
+I/CCodecConfig( 6908): query failed after returning 21 values (BAD_INDEX)
+W/Codec2Client( 6908): query -- param skipped: index = 1342179345.
+W/Codec2Client( 6908): query -- param skipped: index = 2415921170.
+W/Codec2Client( 6908): query -- param skipped: index = 1610614798.
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a607e440, reason connectToSurface
+I/MediaCodec( 6908): [c2.goldfish.h264.decoder] setting surface generation to 7073806
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a607e440, reason connectToSurface(reconnect)
+D/SurfaceUtils( 6908): connecting to surface 0xb4000073a607e430, reason connectToSurface(reconnect-with-listener)
+D/Codec2-OutputBufferQueue( 6908): remote graphic buffer migration 0/0
+D/Codec2Client( 6908): setOutputSurface -- failed to set consumer usage (6/BAD_INDEX)
+D/Codec2Client( 6908): setOutputSurface -- generation=7073806 consumer usage=0x900
+D/Codec2Client( 6908): Surface configure completed
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a607b0c0, reason disconnectFromSurface
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#340] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#340] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#340] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.goldfish.h264.decoder#340] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#573] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#573] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#573] MediaCodec discarded an unknown buffer
+D/CCodecBufferChannel( 6908): [c2.android.aac.decoder#573] MediaCodec discarded an unknown buffer
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+I/hw-BpHwBinder( 6908): onLastStrongRef automatically unlinking death recipients
+D/SurfaceUtils( 6908): disconnecting from surface 0xb4000073a607e440, reason disconnectFromSurface
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+I/js.video_viewer( 6908): AssetManager2(0xb400007475fc98b8) locale list changing from [] to [en-US]
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f6032df8 : 0(0 size) total buffers - 0(0 size) used buffers - 369/374 (recycle/alloc) - 5/364 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): bufferpool2 0xb4000072f607f548 : 0(0 size) total buffers - 0(0 size) used buffers - 231/236 (recycle/alloc) - 5/235 (fetch/transfer)
+D/BufferPoolAccessor2.0( 6908): evictor expired: 2, evicted: 2
+W/WindowOnBackDispatcher( 6908): sendCancelIfRunning: isInProgress=false callback=io.flutter.embedding.android.FlutterActivity$1@920f0b2
+I/flutter ( 6908): 01:59 +1: (tearDownAll)
+I/flutter ( 6908): 01:59 +2: All tests passed!
+All tests passed.

@@ -82,6 +82,7 @@ class VideoViewerApp extends StatefulWidget {
     this.backupArchiveFiles = const NativeBackupArchiveFiles(),
     this.preferences,
     this.initializeRepository = false,
+    this.navigatorObservers = const [],
   });
   final LibraryRepository repository;
   final String? initialError;
@@ -89,6 +90,7 @@ class VideoViewerApp extends StatefulWidget {
   final BackupArchiveFiles backupArchiveFiles;
   final UiPreferences? preferences;
   final bool initializeRepository;
+  final List<NavigatorObserver> navigatorObservers;
   @override
   State<VideoViewerApp> createState() => _VideoViewerAppState();
 }
@@ -107,6 +109,7 @@ class _VideoViewerAppState extends State<VideoViewerApp> {
     builder: (context, _) => MaterialApp(
       title: 'Video Viewer',
       debugShowCheckedModeBanner: false,
+      navigatorObservers: widget.navigatorObservers,
       theme: Paper.theme,
       darkTheme: Paper.darkTheme,
       themeMode: preferences.dark ? ThemeMode.dark : ThemeMode.light,

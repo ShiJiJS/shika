@@ -60,7 +60,7 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
   Future<void> members() async {
     final s = session!, plan = session!.plan!;
     await Navigator.of(context).push<void>(
-      MaterialPageRoute(
+      PaperPageRoute(
         builder: (context) => AnimatedBuilder(
           animation: widget.repository,
           builder: (context, _) => Scaffold(
@@ -123,7 +123,7 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
                           onTap: member.digest == null || !s.live
                               ? null
                               : () => Navigator.of(context).push<void>(
-                                  MaterialPageRoute(
+                                  PaperPageRoute(
                                     builder: (_) => _PurgeImages(
                                       gateway: s.gateway,
                                       repository: widget.repository,

@@ -342,7 +342,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
     }
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     await Navigator.of(context).push<void>(
-      MaterialPageRoute(
+      PaperPageRoute(
         builder: (_) => PackPurgeSelectionPage(
           repository: widget.repository,
           selectionId: value.id,
@@ -444,7 +444,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
       if (!mounted || !session.live) return;
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       await Navigator.of(context).push(
-        MaterialPageRoute(
+        PaperPageRoute(
           builder: (_) => MaintenanceTaskDetail(
             repository: widget.repository,
             catalog: catalog!,

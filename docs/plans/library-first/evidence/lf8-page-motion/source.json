@@ -1,0 +1,27 @@
+{
+  "source": "abbf2ca2c864c00de7eb54da164a4711ffee1182",
+  "page_implementation_source": "871a08b2e40e63976ff83d53511639796b0024f0",
+  "navigator_observer_source": "fa11bc1fb2794d15f16061b03f5415376f602ee5",
+  "base": "8dbb703f2e1f89786d928c9e709a9e4b5a0f59ab",
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "normal_code9_artifacts_unchanged": {
+    "forward": {
+      "filename": "video-viewer-0.2.0-preview.3-arm64.apk",
+      "sha256": "7b4d911e88b999c8e3e5b913e0cad90f01cdd1a1812b3bd87866e8060de7b690"
+    },
+    "rollback": {
+      "filename": "video-viewer-0.1.4-rollback.3-arm64.apk",
+      "sha256": "4b52bda8b8399978d31ab2268d60e41af79852771d78f53b05580916fd55d051"
+    }
+  },
+  "normal_code9_contains_this_fix": false,
+  "full_client_tests": 687,
+  "normal_release_acceptance": false,
+  "phone_or_nas_acceptance": false,
+  "all_attempts_preserved": [
+    "native-1",
+    "native-2-observer",
+    "native-3-controller",
+    "native-4-layout"
+  ]
+}

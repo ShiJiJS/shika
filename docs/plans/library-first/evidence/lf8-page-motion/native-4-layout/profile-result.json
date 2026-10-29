@@ -1,0 +1,2755 @@
+{
+  "page_motion": {
+    "profile_entry": true,
+    "normal_release_acceptance": false,
+    "system_accessibility_injected": false,
+    "audio_playback_acceptance": false,
+    "cases": [
+      {
+        "name": "round-1-normal-reader-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1288847420,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1288897420,
+            "value": 0.20833333333333334,
+            "display_value": 0.20833333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1288914086,
+            "value": 0.27777500000000005,
+            "display_value": 0.27777500000000005,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1289064086,
+            "value": 0.902775,
+            "display_value": 0.902775,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1289080753,
+            "value": 0.9722208333333334,
+            "display_value": 0.9722208333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1289114086,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-reader-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1290064086,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-preview-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1292664086,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1292697420,
+            "value": 0.1388916666666667,
+            "display_value": 0.1388916666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1292797420,
+            "value": 0.5555583333333334,
+            "display_value": 0.5555583333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1292814086,
+            "value": 0.625,
+            "display_value": 0.625,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1292830753,
+            "value": 0.6944458333333334,
+            "display_value": 0.6944458333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1292864086,
+            "value": 0.8333333333333334,
+            "display_value": 0.8333333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1292880753,
+            "value": 0.9027791666666667,
+            "display_value": 0.9027791666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1292897420,
+            "value": 0.9722250000000001,
+            "display_value": 0.9722250000000001,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1292914086,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-fullscreen-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1294347420,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1294514086,
+            "value": 0.6944416666666667,
+            "display_value": 0.6944416666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1294564086,
+            "value": 0.902775,
+            "display_value": 0.902775,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1294730753,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-fullscreen-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1300664086,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-preview-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1301780753,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-task-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1305314086,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305347419,
+            "value": 0.13888750000000002,
+            "display_value": 0.13888750000000002,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305364086,
+            "value": 0.20833333333333334,
+            "display_value": 0.20833333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305397419,
+            "value": 0.34722083333333337,
+            "display_value": 0.34722083333333337,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305414086,
+            "value": 0.4166666666666667,
+            "display_value": 0.4166666666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305430752,
+            "value": 0.48610833333333336,
+            "display_value": 0.48610833333333336,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305447419,
+            "value": 0.5555541666666667,
+            "display_value": 0.5555541666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305464086,
+            "value": 0.625,
+            "display_value": 0.625,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305480752,
+            "value": 0.6944416666666667,
+            "display_value": 0.6944416666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305497419,
+            "value": 0.7638875,
+            "display_value": 0.7638875,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305514086,
+            "value": 0.8333333333333334,
+            "display_value": 0.8333333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305530752,
+            "value": 0.902775,
+            "display_value": 0.902775,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305547419,
+            "value": 0.9722208333333334,
+            "display_value": 0.9722208333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1305564086,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-task-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1306580752,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-reader-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1309314086,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-reader-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1310280752,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1310314086,
+            "value": 0.7916624999999999,
+            "display_value": 0.7916624999999999,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1310330752,
+            "value": 0.6875,
+            "display_value": 0.6875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1310364086,
+            "value": 0.47916249999999994,
+            "display_value": 0.47916249999999994,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1310397419,
+            "value": 0.27083124999999997,
+            "display_value": 0.27083124999999997,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1310414086,
+            "value": 0.16666249999999994,
+            "display_value": 0.16666249999999994,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1310430752,
+            "value": 0.0625,
+            "display_value": 0.0625,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1310447419,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-preview-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1312847419,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-fullscreen-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1313930752,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-fullscreen-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1319380752,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1319430752,
+            "value": 0.6875,
+            "display_value": 0.6875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1319447419,
+            "value": 0.58333125,
+            "display_value": 0.58333125,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1319464085,
+            "value": 0.47916875000000003,
+            "display_value": 0.47916875000000003,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1319514085,
+            "value": 0.16666874999999992,
+            "display_value": 0.16666874999999992,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1319530752,
+            "value": 0.0625,
+            "display_value": 0.0625,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1319564085,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-preview-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1320897418,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1320914085,
+            "value": 0.89583125,
+            "display_value": 0.89583125,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1320930752,
+            "value": 0.7916624999999999,
+            "display_value": 0.7916624999999999,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1320947418,
+            "value": 0.6875,
+            "display_value": 0.6875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1320964085,
+            "value": 0.58333125,
+            "display_value": 0.58333125,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1320980752,
+            "value": 0.47916249999999994,
+            "display_value": 0.47916249999999994,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1320997418,
+            "value": 0.375,
+            "display_value": 0.375,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1321014085,
+            "value": 0.27083124999999997,
+            "display_value": 0.27083124999999997,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1321030752,
+            "value": 0.16666249999999994,
+            "display_value": 0.16666249999999994,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1321047418,
+            "value": 0.0625,
+            "display_value": 0.0625,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1321064085,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-task-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1324514085,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-reduced-task-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1325614085,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1325647418,
+            "value": 0.79166875,
+            "display_value": 0.79166875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1325664085,
+            "value": 0.6875,
+            "display_value": 0.6875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1325747418,
+            "value": 0.16666874999999992,
+            "display_value": 0.16666874999999992,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1325780752,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-reader-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1328414085,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1328447418,
+            "value": 0.13888750000000002,
+            "display_value": 0.13888750000000002,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1328464085,
+            "value": 0.20833333333333334,
+            "display_value": 0.20833333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1328497418,
+            "value": 0.34722083333333337,
+            "display_value": 0.34722083333333337,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1328530751,
+            "value": 0.48610833333333336,
+            "display_value": 0.48610833333333336,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1328547418,
+            "value": 0.5555541666666667,
+            "display_value": 0.5555541666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1328564085,
+            "value": 0.625,
+            "display_value": 0.625,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1328580751,
+            "value": 0.6944416666666667,
+            "display_value": 0.6944416666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1328597418,
+            "value": 0.7638875,
+            "display_value": 0.7638875,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1328630751,
+            "value": 0.902775,
+            "display_value": 0.902775,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1328647418,
+            "value": 0.9722208333333334,
+            "display_value": 0.9722208333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1328664085,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-reader-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1329747418,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-preview-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1332280751,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332314085,
+            "value": 0.1388916666666667,
+            "display_value": 0.1388916666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332330751,
+            "value": 0.20833333333333334,
+            "display_value": 0.20833333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332364085,
+            "value": 0.34722500000000006,
+            "display_value": 0.34722500000000006,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332380751,
+            "value": 0.4166666666666667,
+            "display_value": 0.4166666666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332397418,
+            "value": 0.48611250000000006,
+            "display_value": 0.48611250000000006,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332414085,
+            "value": 0.5555583333333334,
+            "display_value": 0.5555583333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332430751,
+            "value": 0.625,
+            "display_value": 0.625,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332447418,
+            "value": 0.6944458333333334,
+            "display_value": 0.6944458333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332464085,
+            "value": 0.7638916666666666,
+            "display_value": 0.7638916666666666,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332480751,
+            "value": 0.8333333333333334,
+            "display_value": 0.8333333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332497418,
+            "value": 0.9027791666666667,
+            "display_value": 0.9027791666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332514085,
+            "value": 0.9722250000000001,
+            "display_value": 0.9722250000000001,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1332530751,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-fullscreen-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1333964085,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1334080751,
+            "value": 0.48610833333333336,
+            "display_value": 0.48610833333333336,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1334114085,
+            "value": 0.625,
+            "display_value": 0.625,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1334214085,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-fullscreen-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1340097418,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-preview-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1341447418,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-task-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1345030751,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345064084,
+            "value": 0.13888750000000002,
+            "display_value": 0.13888750000000002,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345080751,
+            "value": 0.20833333333333334,
+            "display_value": 0.20833333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345097417,
+            "value": 0.27777500000000005,
+            "display_value": 0.27777500000000005,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345114084,
+            "value": 0.34722083333333337,
+            "display_value": 0.34722083333333337,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345130751,
+            "value": 0.4166666666666667,
+            "display_value": 0.4166666666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345164084,
+            "value": 0.5555541666666667,
+            "display_value": 0.5555541666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345180751,
+            "value": 0.625,
+            "display_value": 0.625,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345197417,
+            "value": 0.6944416666666667,
+            "display_value": 0.6944416666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345214084,
+            "value": 0.7638875,
+            "display_value": 0.7638875,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345230751,
+            "value": 0.8333333333333334,
+            "display_value": 0.8333333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345247417,
+            "value": 0.902775,
+            "display_value": 0.902775,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345264084,
+            "value": 0.9722208333333334,
+            "display_value": 0.9722208333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1345280751,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-normal-task-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1346347417,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-reader-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1349197417,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-reader-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1350030751,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1350080751,
+            "value": 0.6875,
+            "display_value": 0.6875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1350097417,
+            "value": 0.5833375000000001,
+            "display_value": 0.5833375000000001,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1350114084,
+            "value": 0.47916875000000003,
+            "display_value": 0.47916875000000003,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1350130751,
+            "value": 0.375,
+            "display_value": 0.375,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1350164084,
+            "value": 0.16666874999999992,
+            "display_value": 0.16666874999999992,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1350180751,
+            "value": 0.0625,
+            "display_value": 0.0625,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1350197417,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-preview-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1352530751,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-fullscreen-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1353747417,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-fullscreen-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1359180750,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1359247417,
+            "value": 0.58333125,
+            "display_value": 0.58333125,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1359264084,
+            "value": 0.47916249999999994,
+            "display_value": 0.47916249999999994,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1359330750,
+            "value": 0.0625,
+            "display_value": 0.0625,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1359347417,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-preview-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1360564084,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1360597417,
+            "value": 0.79166875,
+            "display_value": 0.79166875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1360614084,
+            "value": 0.6875,
+            "display_value": 0.6875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1360630750,
+            "value": 0.5833375000000001,
+            "display_value": 0.5833375000000001,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1360647417,
+            "value": 0.47916875000000003,
+            "display_value": 0.47916875000000003,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1360664084,
+            "value": 0.375,
+            "display_value": 0.375,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1360680750,
+            "value": 0.27083749999999995,
+            "display_value": 0.27083749999999995,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1360697417,
+            "value": 0.16666874999999992,
+            "display_value": 0.16666874999999992,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1360714084,
+            "value": 0.0625,
+            "display_value": 0.0625,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1360730750,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-task-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1363830750,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-reduced-task-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1364980750,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1365030750,
+            "value": 0.6875,
+            "display_value": 0.6875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1365047417,
+            "value": 0.58333125,
+            "display_value": 0.58333125,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1365064083,
+            "value": 0.47916875000000003,
+            "display_value": 0.47916875000000003,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1365097417,
+            "value": 0.27083124999999997,
+            "display_value": 0.27083124999999997,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1365130750,
+            "value": 0.0625,
+            "display_value": 0.0625,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1365147417,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-reader-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1368164083,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368197417,
+            "value": 0.1388916666666667,
+            "display_value": 0.1388916666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368214083,
+            "value": 0.20833333333333334,
+            "display_value": 0.20833333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368247417,
+            "value": 0.34722500000000006,
+            "display_value": 0.34722500000000006,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368264083,
+            "value": 0.4166666666666667,
+            "display_value": 0.4166666666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368280750,
+            "value": 0.48611250000000006,
+            "display_value": 0.48611250000000006,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368297417,
+            "value": 0.5555583333333334,
+            "display_value": 0.5555583333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368314083,
+            "value": 0.625,
+            "display_value": 0.625,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368330750,
+            "value": 0.6944458333333334,
+            "display_value": 0.6944458333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368364083,
+            "value": 0.8333333333333334,
+            "display_value": 0.8333333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368380750,
+            "value": 0.9027791666666667,
+            "display_value": 0.9027791666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368397417,
+            "value": 0.9722250000000001,
+            "display_value": 0.9722250000000001,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1368414083,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-reader-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1369230750,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-preview-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1371630750,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371647416,
+            "value": 0.06944166666666667,
+            "display_value": 0.06944166666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371664083,
+            "value": 0.13888750000000002,
+            "display_value": 0.13888750000000002,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371680750,
+            "value": 0.20833333333333334,
+            "display_value": 0.20833333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371714083,
+            "value": 0.34722083333333337,
+            "display_value": 0.34722083333333337,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371730750,
+            "value": 0.4166666666666667,
+            "display_value": 0.4166666666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371747416,
+            "value": 0.48610833333333336,
+            "display_value": 0.48610833333333336,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371764083,
+            "value": 0.5555541666666667,
+            "display_value": 0.5555541666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371780750,
+            "value": 0.625,
+            "display_value": 0.625,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371797416,
+            "value": 0.6944416666666667,
+            "display_value": 0.6944416666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371814083,
+            "value": 0.7638875,
+            "display_value": 0.7638875,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371830750,
+            "value": 0.8333333333333334,
+            "display_value": 0.8333333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371847416,
+            "value": 0.902775,
+            "display_value": 0.902775,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371864083,
+            "value": 0.9722208333333334,
+            "display_value": 0.9722208333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1371880750,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-fullscreen-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1373280750,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1373397416,
+            "value": 0.48610833333333336,
+            "display_value": 0.48610833333333336,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1373430750,
+            "value": 0.625,
+            "display_value": 0.625,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1373614083,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-fullscreen-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1378997416,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-preview-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1380147416,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-task-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 1383847416,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1383880749,
+            "value": 0.13888750000000002,
+            "display_value": 0.13888750000000002,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1383897416,
+            "value": 0.20833333333333334,
+            "display_value": 0.20833333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1383914083,
+            "value": 0.2777791666666667,
+            "display_value": 0.2777791666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1383947416,
+            "value": 0.4166666666666667,
+            "display_value": 0.4166666666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1383964083,
+            "value": 0.48611250000000006,
+            "display_value": 0.48611250000000006,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1383980749,
+            "value": 0.5555541666666667,
+            "display_value": 0.5555541666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1383997416,
+            "value": 0.625,
+            "display_value": 0.625,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1384014083,
+            "value": 0.6944458333333334,
+            "display_value": 0.6944458333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1384030749,
+            "value": 0.7638875,
+            "display_value": 0.7638875,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1384047416,
+            "value": 0.8333333333333334,
+            "display_value": 0.8333333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1384064083,
+            "value": 0.9027791666666667,
+            "display_value": 0.9027791666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1384080749,
+            "value": 0.9722208333333334,
+            "display_value": 0.9722208333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1384097416,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-normal-task-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1385180749,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-reader-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1388080749,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-reader-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1388997416,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1389030749,
+            "value": 0.79166875,
+            "display_value": 0.79166875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1389047416,
+            "value": 0.6875,
+            "display_value": 0.6875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1389130749,
+            "value": 0.16666874999999992,
+            "display_value": 0.16666874999999992,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1389164082,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-preview-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1391530749,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-fullscreen-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1392747416,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-fullscreen-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1398297415,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1398430749,
+            "value": 0.16666249999999994,
+            "display_value": 0.16666249999999994,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1398464082,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-preview-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1400014082,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1400030749,
+            "value": 0.89583125,
+            "display_value": 0.89583125,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1400047415,
+            "value": 0.79166875,
+            "display_value": 0.79166875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1400064082,
+            "value": 0.6875,
+            "display_value": 0.6875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1400080749,
+            "value": 0.58333125,
+            "display_value": 0.58333125,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1400097415,
+            "value": 0.47916875000000003,
+            "display_value": 0.47916875000000003,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1400114082,
+            "value": 0.375,
+            "display_value": 0.375,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1400130749,
+            "value": 0.27083124999999997,
+            "display_value": 0.27083124999999997,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1400147415,
+            "value": 0.16666874999999992,
+            "display_value": 0.16666874999999992,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1400164082,
+            "value": 0.0625,
+            "display_value": 0.0625,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1400180749,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-task-entry",
+        "reduced": true,
+        "closing": false,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1403464082,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "completed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-reduced-task-return",
+        "reduced": false,
+        "closing": true,
+        "configured_duration_us": 160000,
+        "frames": [
+          {
+            "frame_us": 1404564082,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1404597415,
+            "value": 0.79166875,
+            "display_value": 0.79166875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1404614082,
+            "value": 0.6875,
+            "display_value": 0.6875,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1404647415,
+            "value": 0.47916875000000003,
+            "display_value": 0.47916875000000003,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1404680748,
+            "value": 0.27083749999999995,
+            "display_value": 0.27083749999999995,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1404697415,
+            "value": 0.16666874999999992,
+            "display_value": 0.16666874999999992,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1404714082,
+            "value": 0.0625,
+            "display_value": 0.0625,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "reverse",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 1404730748,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 160000,
+            "status": "dismissed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      }
+    ],
+    "last_platform_settings": {
+      "action": "configure",
+      "name": null,
+      "reduced": false,
+      "actual": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      }
+    },
+    "complete": true
+  }
+}
