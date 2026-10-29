@@ -155,7 +155,15 @@ class _ChipFillState extends AnimatedWidgetBaseState<_ChipFill> {
   @override
   void didUpdateWidget(_ChipFill oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.duration == Duration.zero) controller.value = 1;
+    final inheritedColorChanged =
+        widget.fill != oldWidget.fill &&
+        widget.chip.selected == oldWidget.chip.selected &&
+        widget.chip.isEnabled == oldWidget.chip.isEnabled;
+    // Follow a parent's appearance transition without retargeting a second
+    // selection tween. An unrelated rebuild with the same fill keeps running.
+    if (widget.duration == Duration.zero || inheritedColorChanged) {
+      controller.value = 1;
+    }
   }
 
   @override

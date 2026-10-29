@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'paper.dart';
+import 'paper_toggle.dart';
 
 /// A compact visible switch with a full-row pointer/keyboard/semantic action.
 /// Text keeps the system scale and determines the row height.
@@ -69,16 +70,15 @@ class PaperPreferenceSwitch extends StatelessWidget {
                       child: Transform.scale(
                         scale: 10 / 13,
                         alignment: Alignment.centerRight,
-                        child: Switch(
+                        child: PaperToggle(
                           value: value,
                           onChanged: onChanged,
-                          thumbColor: WidgetStatePropertyAll(p.background),
-                          trackColor: WidgetStatePropertyAll(
-                            value ? p.olive : p.line,
-                          ),
-                          trackOutlineColor: WidgetStatePropertyAll(
-                            value ? p.olive : p.muted,
-                          ),
+                          thumb: p.background,
+                          track: p.olive,
+                          outline: p.olive,
+                          inactiveTrack: p.line,
+                          inactiveOutline: p.muted,
+                          reaction: p.olive,
                         ),
                       ),
                     ),

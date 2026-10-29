@@ -1,0 +1,132 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/paper_toggle_test.dart
+test/paper_toggle_test.dart:216:14: Error: Can't find ')' to match '('.
+  testWidgets(
+             ^
+test/paper_toggle_test.dart:311:5: Error: Expected a declaration, but got '}'.
+    }
+    ^
+test/paper_toggle_test.dart:312:19: Error: Expected an identifier, but got '16'.
+Try inserting an identifier before '16'.
+    expect(count, 16);
+                  ^^
+test/paper_toggle_test.dart:312:22: Error: Expected a function body or '=>'.
+Try adding {}.
+    expect(count, 16);
+                     ^
+test/paper_toggle_test.dart:313:29: Error: Expected an identifier, but got '('.
+Try inserting an identifier before '('.
+      expect(t.takeException(), isNull);
+                            ^
+test/paper_toggle_test.dart:313:40: Error: Expected a function body or '=>'.
+Try adding {}.
+      expect(t.takeException(), isNull);
+                                       ^
+test/paper_toggle_test.dart:314:5: Error: Expected a declaration, but got '}'.
+    },
+    ^
+test/paper_toggle_test.dart:314:6: Error: Expected a declaration, but got ','.
+    },
+     ^
+test/paper_toggle_test.dart:315:3: Error: Expected a declaration, but got ')'.
+  );
+  ^
+test/paper_toggle_test.dart:315:4: Error: Unexpected token ';'.
+  );
+   ^
+test/paper_toggle_test.dart:316:1: Error: Expected a declaration, but got '}'.
+}
+^
+test/paper_toggle_test.dart:313:7: Error: 'expect' is already declared in this scope.
+      expect(t.takeException(), isNull);
+      ^^^^^^
+test/paper_toggle_test.dart:312:5: Context: Previous declaration of 'expect'.
+    expect(count, 16);
+    ^^^^^^
+test/paper_toggle_test.dart:313:14: Error: 't.takeException' can't be used as a type because 't' doesn't refer to an import prefix.
+      expect(t.takeException(), isNull);
+             ^^^^^^^^^^^^^^^
+test/paper_toggle_test.dart:309:11: Error: Expected ';' after this.
+          }
+          ^
+00:00 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/paper_toggle_test.dart [E]
+  Failed to load "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/paper_toggle_test.dart":
+  Compilation failed for testPath=/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/paper_toggle_test.dart: test/paper_toggle_test.dart:216:14: Error: Can't find ')' to match '('.
+    testWidgets(
+               ^
+  test/paper_toggle_test.dart:311:5: Error: Expected a declaration, but got '}'.
+      }
+      ^
+  test/paper_toggle_test.dart:312:19: Error: Expected an identifier, but got '16'.
+  Try inserting an identifier before '16'.
+      expect(count, 16);
+                    ^^
+  test/paper_toggle_test.dart:312:22: Error: Expected a function body or '=>'.
+  Try adding {}.
+      expect(count, 16);
+                       ^
+  test/paper_toggle_test.dart:313:29: Error: Expected an identifier, but got '('.
+  Try inserting an identifier before '('.
+        expect(t.takeException(), isNull);
+                              ^
+  test/paper_toggle_test.dart:313:40: Error: Expected a function body or '=>'.
+  Try adding {}.
+        expect(t.takeException(), isNull);
+                                         ^
+  test/paper_toggle_test.dart:314:5: Error: Expected a declaration, but got '}'.
+      },
+      ^
+  test/paper_toggle_test.dart:314:6: Error: Expected a declaration, but got ','.
+      },
+       ^
+  test/paper_toggle_test.dart:315:3: Error: Expected a declaration, but got ')'.
+    );
+    ^
+  test/paper_toggle_test.dart:315:4: Error: Unexpected token ';'.
+    );
+     ^
+  test/paper_toggle_test.dart:316:1: Error: Expected a declaration, but got '}'.
+  }
+  ^
+  test/paper_toggle_test.dart:313:7: Error: 'expect' is already declared in this scope.
+        expect(t.takeException(), isNull);
+        ^^^^^^
+  test/paper_toggle_test.dart:312:5: Context: Previous declaration of 'expect'.
+      expect(count, 16);
+      ^^^^^^
+  test/paper_toggle_test.dart:313:14: Error: 't.takeException' can't be used as a type because 't' doesn't refer to an import prefix.
+        expect(t.takeException(), isNull);
+               ^^^^^^^^^^^^^^^
+  test/paper_toggle_test.dart:309:11: Error: Expected ';' after this.
+            }
+            ^
+  .
+  Error: The Dart compiler exited unexpectedly.
+  package:flutter_tools/src/base/common.dart 34:3  throwToolExit
+  package:flutter_tools/src/compile.dart 1024:11   DefaultResidentCompiler._compile.<fn>
+  dart:async/zone_root.dart 48:47                  _rootRunUnary
+  dart:async/zone.dart 816:35                      _CustomZone.runUnary
+  dart:async/future_impl.dart 948:45               Future._propagateToListeners.handleValueCallback
+  dart:async/future_impl.dart 977:13               Future._propagateToListeners
+  dart:async/future_impl.dart 862:9                Future._propagateToListeners
+  dart:async/future_impl.dart 720:5                Future._completeWithValue
+  dart:async/future_impl.dart 804:7                Future._asyncCompleteWithValue.<fn>
+  dart:async/zone_root.dart 35:13                  _rootRun
+  dart:async/zone.dart 810:35                      _CustomZone.run
+  dart:async/zone.dart 702:7                       _CustomZone.runGuarded
+  dart:async/zone.dart 743:23                      _CustomZone.bindCallbackGuarded.<fn>
+  dart:async/schedule_microtask.dart 40:35         _microtaskLoop
+  dart:async/schedule_microtask.dart 49:5          _startMicrotaskLoop
+  dart:isolate-patch/isolate_patch.dart 127:13     _runPendingImmediateCallback
+  dart:isolate-patch/isolate_patch.dart 193:5      _RawReceivePort._handleMessage
+  
+00:00 +0 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/preference_switch_test.dart: whole-row pointer, switch and keyboard each toggle once
+00:00 +1 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: actual app theme reaches target at 140ms while route draft focus and scroll survive
+00:00 +2 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: actual app theme reaches target at 140ms while route draft focus and scroll survive
+00:01 +3 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: actual app theme reaches target at 0ms while route draft focus and scroll survive
+00:01 +4 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: actual app reduced preference completes an already running theme transition before next paint
+00:01 +5 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: theme color reaches an unchanged chip without a second selection tween selected=false
+00:01 +6 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: theme color reaches an unchanged chip without a second selection tween selected=true
+00:01 +7 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/paper_toggle_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/paper_toggle_test.dart

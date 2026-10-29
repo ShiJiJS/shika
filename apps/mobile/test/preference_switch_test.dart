@@ -5,6 +5,7 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_viewer/ui/paper.dart';
+import 'package:video_viewer/ui/paper_toggle.dart';
 import 'package:video_viewer/ui/preference_switch.dart';
 
 void main() {
@@ -46,7 +47,7 @@ void main() {
         t.getSemantics(row).getSemanticsData().flagsCollection.isToggled,
         Tristate.isTrue,
       );
-      await t.tap(find.byType(Switch));
+      await t.tap(find.byType(PaperToggle));
       await t.pumpAndSettle();
       expect(value, isFalse);
       expect(changes, 2);
@@ -86,7 +87,7 @@ void main() {
         expect(data.hasAction(SemanticsAction.tap), isFalse);
         await t.tap(find.text('暗黑模式'));
         await t.pumpAndSettle();
-        expect(t.widget<Switch>(find.byType(Switch)).value, isFalse);
+        expect(t.widget<PaperToggle>(find.byType(PaperToggle)).value, isFalse);
       } finally {
         semantics.dispose();
       }

@@ -1,0 +1,7 @@
+Analyzing mobile...                                             
+
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • integration_test/settings_motion_test.dart:34:7 • curly_braces_in_flow_control_structures
+warning • The '!' will have no effect because the receiver can't be null. Try removing the '!' operator • integration_test/settings_motion_test.dart:180:35 • unnecessary_non_null_assertion
+warning • The '!' will have no effect because the receiver can't be null. Try removing the '!' operator • integration_test/settings_motion_test.dart:221:30 • unnecessary_non_null_assertion
+
+3 issues found. (ran in 3.4s)

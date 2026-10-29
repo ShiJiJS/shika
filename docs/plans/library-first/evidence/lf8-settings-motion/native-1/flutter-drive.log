@@ -1,0 +1,18 @@
+Installing ../../.dev/lf8-settings-motion/settings-profile.apk...      2,210ms
+I/Choreographer( 2771): Skipped 170 frames!  The application may be doing too much work on its main thread.
+D/WindowLayoutComponentImpl( 2771): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@2ff0d2f, of which baseContext=android.app.ContextImpl@fb4f328
+I/js.video_viewer( 2771): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+VMServiceFlutterDriver: Connecting to Flutter application at <redacted-local-vm-service>
+VMServiceFlutterDriver: Isolate found with number: 6251624499432995
+VMServiceFlutterDriver: Isolate 6251624499432995 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 2771): 00:00 +0: real settings rows follow actual Android reduced motion
+VMServiceFlutterDriver: Connected to Flutter application.
+I/js.video_viewer( 2771): AssetManager2(0xb4000071a5a93378) locale list changing from [] to [en-US]
+D/InsetsController( 2771): hide(ime(), fromIme=false)
+I/ImeTracker( 2771): io.github.shijijs.video_viewer:73bcb801: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller( 2771): Installing profile for io.github.shijijs.video_viewer
+I/flutter ( 2771): 00:46 +1: (tearDownAll)
+I/flutter ( 2771): 00:46 +2: All tests passed!
+All tests passed.
