@@ -1,0 +1,9 @@
+Analyzing mobile...                                             
+
+warning • A value for optional parameter 'key' isn't ever given. Try removing the unused parameter • lib/ui/paper_dropdown.dart:928:11 • unused_element_parameter
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • test/dropdown_motion_test.dart:24:7 • curly_braces_in_flow_control_structures
+   info • Statements in a for should be enclosed in a block. Try wrapping the statement in a block • test/dropdown_motion_test.dart:435:9 • curly_braces_in_flow_control_structures
+   info • Statements in a for should be enclosed in a block. Try wrapping the statement in a block • test/dropdown_motion_test.dart:436:11 • curly_braces_in_flow_control_structures
+   info • Statements in a for should be enclosed in a block. Try wrapping the statement in a block • test/dropdown_motion_test.dart:437:13 • curly_braces_in_flow_control_structures
+
+5 issues found. (ran in 1.4s)

@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "source": "2f9792a4d25e08524856d9c1c8b0a077571109af",
+  "production_lib": "3fa6e5011c2cfeaef29fc1b03a68411d5565e50c",
+  "full_client_passed": 765,
+  "targeted_passed": 15,
+  "full_rgba_pairs": 16,
+  "analyze_clean": true,
+  "before_expected_failures": 3,
+  "constructors": {
+    "apps/mobile/lib/ui/sheets.dart": 1,
+    "apps/mobile/lib/features/settings/media_root_sheet.dart": 1,
+    "apps/mobile/lib/features/settings/default_settings_sheet.dart": 2,
+    "apps/mobile/lib/features/settings/purge_history_page.dart": 1,
+    "apps/mobile/lib/features/settings/maintenance_tasks_page.dart": 1,
+    "apps/mobile/lib/features/packs/pack_sheets.dart": 1,
+    "apps/mobile/lib/features/packs/pack_reader_page.dart": 2
+  },
+  "sdk_unchanged": "636ffac59f7bb56782a8f6d1cc5feb35b33ac01caedaf5b5509179bcbf3d9a71",
+  "frozen_prototype_unchanged": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "ordinary_code15_pair_preserved": {
+    "forward": {
+      "sha256": "cdaf1870f8e5472843019d3cf78a921c3c96dd9135728256c561ae5e501eaf94",
+      "bytes": 23308398
+    },
+    "rollback": {
+      "sha256": "c662f906c35c51a55269e94b8456dd044cc7866d34f685aee5f542693a287b81",
+      "bytes": 21734394
+    }
+  },
+  "original4_services_preserved_healthy": {
+    "/video-viewer-client-e2e-server-1": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+    "/video-viewer-history-purge-app-lf7": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+    "/video-viewer-archive-app-lf7": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+    "/video-viewer-server-1": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b"
+  },
+  "no_new_android_or_app_service_started": true,
+  "native_and_normal_integration_pending": true,
+  "production_server_unchanged": true
+}

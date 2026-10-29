@@ -1,0 +1,21 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/dropdown_motion_test.dart
+00:00 +0: actual reading preferences dropdown motion reduced=false
+ACTUAL dropdown reduced=false forward=240 reverse=160
+00:00 +1: actual reading preferences dropdown motion reduced=true
+ACTUAL dropdown reduced=true forward=0 reverse=0
+00:00 +2: actual reading preferences dropdown motion reduced=null
+ACTUAL dropdown reduced=null forward=240 reverse=160
+ACTUAL live dropdown native=true progress=1.0
+00:00 +3: selection updates once before a full exit reduced=false
+00:00 +4: selection updates once before a full exit reduced=true
+00:00 +5: live reduced motion completes the visible exit at its next frame
+00:00 +6: exit reads reduced motion enabled after the menu opened
+00:00 +7: real null selection differs from barrier and Escape cancellation
+00:00 +8: long menu aligns its selection and keyboard skips disabled rows reduced=false
+00:01 +9: long menu aligns its selection and keyboard skips disabled rows reduced=true
+00:01 +10: live reduce completes requested focus scrolling without a later drift
+00:01 +11: form validation save reset and changed initial value retain their contract
+00:01 +12: disabled empty and invalidated dropdowns do not invoke callbacks
+00:01 +13: removing the anchor or rotating while open closes without a stale callback
+00:01 +14: resting button and menu pixels match SDK in 16 form theme direction and anchor combinations
+00:04 +15: All tests passed!
