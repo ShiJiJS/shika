@@ -121,12 +121,24 @@ void main() {
                   : probe.ink!.animation.value;
             }
           } else {
-            final raw = find.descendant(
-              of: find.byKey(Key('control-${probe.kind}')),
-              matching: find.byType(RawChip),
+            Element? first(Element root, bool Function(Widget) matches) {
+              if (matches(root.widget)) return root;
+              Element? found;
+              root.visitChildren((child) {
+                found ??= first(child, matches);
+              });
+              return found;
+            }
+
+            final target = first(
+              source as Element,
+              (w) => w.key == Key('control-${probe.kind}'),
             );
-            if (raw.evaluate().length == 1) {
-              final selected = t.widget<RawChip>(raw).selected;
+            final raw = target == null
+                ? null
+                : first(target, (w) => w is RawChip);
+            if (raw != null) {
+              final selected = (raw.widget as RawChip).selected;
               if (selected != !probe.closing) {
                 (result['pre_action_frames'] as List).add({
                   'name': probe.name,
@@ -139,13 +151,15 @@ void main() {
                 WidgetsBinding.instance.addPostFrameCallback(frame);
                 return;
               }
-              final ink = find.descendant(of: raw, matching: find.byType(Ink));
-              final color =
-                  (t.widget<Ink>(ink).decoration as ShapeDecoration).color!;
-              value = ((color.r - idle.r) / (selectedFill.r - idle.r)).clamp(
-                0.0,
-                1.0,
-              );
+              final ink = first(raw, (w) => w is Ink);
+              if (ink != null) {
+                final color =
+                    ((ink.widget as Ink).decoration as ShapeDecoration).color!;
+                value = ((color.r - idle.r) / (selectedFill.r - idle.r)).clamp(
+                  0.0,
+                  1.0,
+                );
+              }
             }
           }
           if (value != null) {
