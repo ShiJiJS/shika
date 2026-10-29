@@ -12,61 +12,53 @@ import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/paper_management.dart';
+import 'package:video_viewer/ui/paper.dart';
 import 'package:video_viewer/ui/player.dart';
 import 'package:video_viewer/ui/preferences.dart';
 
 import 'server_native_motion_test.dart' show host;
 
-/// Binds the actual route from its first rendered target element. Subsequent
-/// observations read that route's animation, including its final removal frame.
+class PageMotionObserver extends NavigatorObserver {
+  PageMotionObserver(this.pushed);
+  final void Function(ModalRoute<dynamic>) pushed;
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    if (route is PaperPageRoute<dynamic>) pushed(route);
+  }
+}
+
+/// Observe the route bound by Navigator before its first rendered frame,
+/// without depending on when snapshot transitions mount the target subtree.
 class PageMotionProbe {
-  PageMotionProbe.entry(
-    this.name,
-    this.reduced,
-    this.matches, {
-    this.excludedRoute,
-  }) : closing = false;
-  PageMotionProbe.exit(this.name, this.reduced, this.route, this.element)
+  PageMotionProbe.entry(this.name, this.reduced, {this.excludedRoute})
+    : closing = false;
+  PageMotionProbe.exit(this.name, this.reduced, this.route)
     : closing = true,
-      excludedRoute = null,
-      matches = null {
+      excludedRoute = null {
     animation = route!.animation!;
     duration = route!.reverseTransitionDuration;
     mediaQueryFlag = MediaQuery.disableAnimationsOf(route!.subtreeContext!);
   }
   final String name;
   final bool reduced, closing;
-  final bool Function(Widget)? matches;
   final ModalRoute<dynamic>? excludedRoute;
   ModalRoute<dynamic>? route;
-  Element? element;
   Animation<double>? animation;
   Duration? duration;
   bool? mediaQueryFlag;
   final frames = <Map<String, dynamic>>[];
   bool done = false;
 
-  void frame(Element? root, Duration stamp) {
-    if (done) return;
-    if (route == null) {
-      void visit(Element candidate) {
-        if (route != null) return;
-        if (matches!(candidate.widget)) {
-          final found = ModalRoute.of(candidate);
-          if (found?.isCurrent == true && found != excludedRoute) {
-            route = found;
-            element = candidate;
-            animation = found!.animation!;
-            duration = found.transitionDuration;
-            mediaQueryFlag = MediaQuery.disableAnimationsOf(candidate);
-            return;
-          }
-        }
-        candidate.visitChildren(visit);
-      }
+  void bind(ModalRoute<dynamic> value) {
+    if (route != null || value == excludedRoute) return;
+    route = value;
+    animation = value.animation!;
+    duration = value.transitionDuration;
+    mediaQueryFlag = MediaQuery.disableAnimationsOf(value.navigator!.context);
+  }
 
-      root?.visitChildren(visit);
-    }
+  void frame(Duration stamp) {
+    if (done) return;
     final value = animation;
     if (value == null) return;
     if (closing && value.status == AnimationStatus.completed) return;
@@ -152,10 +144,7 @@ void main() {
     var observing = true;
     void frame(Duration _) {
       if (!observing) return;
-      active?.frame(
-        binding.rootElement,
-        SchedulerBinding.instance.currentSystemFrameTimeStamp,
-      );
+      active?.frame(SchedulerBinding.instance.currentSystemFrameTimeStamp);
       WidgetsBinding.instance.addPostFrameCallback(frame);
     }
 
@@ -235,7 +224,6 @@ void main() {
       final probe = active = PageMotionProbe.entry(
         name,
         reduced,
-        matches,
         excludedRoute: excludedRoute,
       );
       result['active_case'] = {'name': name, 'frames': probe.frames};
@@ -244,6 +232,10 @@ void main() {
       cases.add(probe.verify());
       active = null;
       result.remove('active_case');
+      await until(
+        () => find.byWidgetPredicate(matches).evaluate().isNotEmpty,
+        'actual target page mounted',
+      );
       await host('capture', name: name);
       return probe;
     }
@@ -254,12 +246,7 @@ void main() {
       PageMotionProbe entry,
       Future<void> Function() action,
     ) async {
-      final probe = active = PageMotionProbe.exit(
-        name,
-        reduced,
-        entry.route,
-        entry.element,
-      );
+      final probe = active = PageMotionProbe.exit(name, reduced, entry.route);
       result['active_case'] = {'name': name, 'frames': probe.frames};
       await action();
       await until(() => probe.done, 'return frame trace $name');
@@ -281,7 +268,16 @@ void main() {
     await configureApplicationWindow();
     await repo.connect('http://10.0.2.2', 8777, 'native-motion-owned-only');
     await t.pumpWidget(
-      VideoViewerApp(repository: repo, preferences: preferences),
+      VideoViewerApp(
+        repository: repo,
+        preferences: preferences,
+        navigatorObservers: [
+          PageMotionObserver((route) {
+            final probe = active;
+            if (probe != null && !probe.closing) probe.bind(route);
+          }),
+        ],
+      ),
     );
     await until(
       () => repo.libraryPreparation.value.ready,
