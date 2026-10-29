@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -19,13 +18,14 @@ class NoticeProbe {
   final frames = <Map<String, dynamic>>[];
   bool done = false;
 
-  void frame(Duration stamp, bool mediaQueryFlag) {
+  void frame(Duration stamp, bool mediaQueryFlag, double opacity) {
     final value = controller;
     if (done || value == null) return;
     if (closing && value.status == AnimationStatus.completed) return;
     frames.add({
       'frame_us': stamp.inMicroseconds,
       'value': value.value,
+      'visible_opacity': opacity,
       'duration_us':
           (closing ? value.reverseDuration : value.duration)?.inMicroseconds,
       'native_flag': ui
@@ -61,11 +61,24 @@ class NoticeProbe {
       isTrue,
     );
     if (reduced) {
-      expect(frames.every((f) => f['value'] == target), isTrue);
+      expect(
+        frames.every(
+          (f) => f['value'] == target && f['visible_opacity'] == target,
+        ),
+        isTrue,
+      );
     } else {
       expect(
         frames.any(
           (f) => (f['value'] as double) > 0 && (f['value'] as double) < 1,
+        ),
+        isTrue,
+      );
+      expect(
+        frames.any(
+          (f) =>
+              (f['visible_opacity'] as double) > 0 &&
+              (f['visible_opacity'] as double) < 1,
         ),
         isTrue,
       );
@@ -108,9 +121,23 @@ void main() {
           probe.controller =
               t.widget<SnackBar>(bars.first).animation! as AnimationController;
         }
+        final fades = bars.evaluate().isEmpty
+            ? <FadeTransition>[]
+            : t
+                  .widgetList<FadeTransition>(
+                    find.descendant(
+                      of: bars.first,
+                      matching: find.byType(FadeTransition),
+                    ),
+                  )
+                  .toList();
+        final opacity = bars.evaluate().isEmpty
+            ? 0.0
+            : fades.fold<double>(1, (v, fade) => v * fade.opacity.value);
         probe.frame(
           SchedulerBinding.instance.currentSystemFrameTimeStamp,
           MediaQuery.disableAnimationsOf(source),
+          opacity,
         );
       }
       WidgetsBinding.instance.addPostFrameCallback(frame);
