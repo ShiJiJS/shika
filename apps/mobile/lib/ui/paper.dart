@@ -180,6 +180,43 @@ class EmptyView extends StatelessWidget {
   );
 }
 
+/// Shared page timing; read the current preference again when navigating back.
+class PaperPageRoute<T> extends MaterialPageRoute<T> {
+  PaperPageRoute({required super.builder, super.settings}) : _fade = false;
+  PaperPageRoute.fade({required super.builder, super.settings}) : _fade = true;
+
+  final bool _fade;
+  bool get _reduced => MediaQuery.disableAnimationsOf(navigator!.context);
+
+  @override
+  Duration get transitionDuration =>
+      _reduced ? Duration.zero : const Duration(milliseconds: 240);
+  @override
+  Duration get reverseTransitionDuration =>
+      _reduced ? Duration.zero : const Duration(milliseconds: 160);
+
+  // Video previews previously used a standalone fade. Keep that page from
+  // acquiring the platform's coordinated outgoing-page zoom/slide as well.
+  @override
+  bool canTransitionFrom(TransitionRoute<dynamic> previousRoute) =>
+      !_fade && super.canTransitionFrom(previousRoute);
+  @override
+  bool canTransitionTo(TransitionRoute<dynamic> nextRoute) =>
+      !_fade && super.canTransitionTo(nextRoute);
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) => MediaQuery.disableAnimationsOf(context)
+      ? child
+      : _fade
+      ? FadeTransition(opacity: animation, child: child)
+      : super.buildTransitions(context, animation, secondaryAnimation, child);
+}
+
 Future<T?> paperSheet<T>(
   BuildContext context,
   Widget child, {

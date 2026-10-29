@@ -957,7 +957,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     PackFileOutcome? outcome;
     try {
       outcome = await Navigator.of(context).push<PackFileOutcome>(
-        MaterialPageRoute<PackFileOutcome>(
+        PaperPageRoute<PackFileOutcome>(
           builder: (_) => PackReaderPage(
             repository: repo,
             entry: returnContext.entry,

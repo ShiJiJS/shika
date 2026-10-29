@@ -140,7 +140,7 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
         if (!mounted || !current) return;
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         await Navigator.of(context).push<void>(
-          MaterialPageRoute(
+          PaperPageRoute(
             builder: (_) => MaintenanceTaskDetail(
               repository: widget.repository,
               catalog: history ? HistoricalTaskCatalog(catalog) : catalog,

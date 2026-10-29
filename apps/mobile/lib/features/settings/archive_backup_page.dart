@@ -106,7 +106,7 @@ class _ArchiveBackupPageState extends State<ArchiveBackupPage> {
       await paperSheet<void>(context, page, dismissible: false);
     } else {
       await Navigator.of(context)
-          .push(MaterialPageRoute<void>(builder: (_) => page));
+          .push(PaperPageRoute<void>(builder: (_) => page));
     }
   }
 

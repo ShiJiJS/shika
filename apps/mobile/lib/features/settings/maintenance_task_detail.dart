@@ -278,7 +278,7 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
       final reader = details;
       details = null; // The history route owns and cancels its reader.
       await Navigator.of(context).push<void>(
-        MaterialPageRoute(
+        PaperPageRoute(
           builder: (_) => PurgeHistoryPage(
             repository: widget.repository,
             details: reader,

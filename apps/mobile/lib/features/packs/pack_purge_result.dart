@@ -13,7 +13,7 @@ Future<PackFileTask?> showPackPurgeResult(
   PackFiles files,
   PackFileTask task,
 ) => Navigator.of(context).push<PackFileTask>(
-  MaterialPageRoute(
+  PaperPageRoute(
     builder: (_) =>
         PackPurgeResult(repository: repository, files: files, initial: task),
   ),

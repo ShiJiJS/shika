@@ -268,7 +268,7 @@ class _PurgeHistoryPageState extends State<PurgeHistoryPage> {
       onTap: busy || !current || member.digest == null
           ? null
           : () => Navigator.of(context).push<void>(
-              MaterialPageRoute(
+              PaperPageRoute(
                 builder: (_) => PurgeHistoryPage._files(
                   repository: widget.repository,
                   details: widget.details,

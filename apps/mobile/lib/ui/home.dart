@@ -498,23 +498,13 @@ class _LibraryHomeState extends State<LibraryHome> {
           page != 'library') {
         return;
       }
-      final route = PageRouteBuilder<void>(
-        transitionDuration: MediaQuery.disableAnimationsOf(context)
-            ? Duration.zero
-            : const Duration(milliseconds: 240),
-        reverseTransitionDuration: MediaQuery.disableAnimationsOf(context)
-            ? Duration.zero
-            : const Duration(milliseconds: 160),
-        pageBuilder: (context, animation, secondary) => VideoPreviewRoute(
+      final route = PaperPageRoute<void>.fade(
+        builder: (context) => VideoPreviewRoute(
           repository: repo,
           preferences: widget.preferences,
           origin: origin,
           quick: quick,
         ),
-        transitionsBuilder: (context, animation, secondary, child) =>
-            MediaQuery.disableAnimationsOf(context)
-            ? child
-            : FadeTransition(opacity: animation, child: child),
       );
       pushed = true;
       await Navigator.of(context).push(route);
@@ -2562,7 +2552,7 @@ class _LibraryHomeState extends State<LibraryHome> {
           '视频与图包分别核对 · 离线和停用目录保留记录',
           () async {
             await Navigator.of(context).push<void>(
-              MaterialPageRoute(
+              PaperPageRoute(
                 builder: (_) => MissingMediaPage(repository: repo),
               ),
             );

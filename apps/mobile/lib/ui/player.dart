@@ -237,7 +237,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   bool? _orientationPlayIntent;
   double _baseSpeed = 1;
   final _screenRevision = ValueNotifier(0);
-  MaterialPageRoute<void>? _fullscreenRoute;
+  PaperPageRoute<void>? _fullscreenRoute;
   NavigatorState? _fullscreenNavigator;
   Completer<void>? _initializationCancelled;
 
@@ -596,7 +596,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       if (!mounted) return;
       final navigator = _fullscreenNavigator = Navigator.of(context);
-      final route = _fullscreenRoute = MaterialPageRoute<void>(
+      final route = _fullscreenRoute = PaperPageRoute<void>(
         builder: (context) => Scaffold(
           backgroundColor: widget.inlineControls
               ? const Color(0xff111612)
