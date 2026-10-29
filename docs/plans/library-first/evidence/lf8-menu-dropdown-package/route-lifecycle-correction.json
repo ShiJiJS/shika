@@ -1,0 +1,9 @@
+{
+  "source": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/packages/flutter/lib/src/widgets/navigator.dart",
+  "sha256": "80c0bead88a92c921691955922cc5f7d9bd3fa2bdc336d254110c63d1b54dea2",
+  "route_isActive": "RouteEntry.isPresent",
+  "isPresent_upper_bound": "_RouteLifecycle.remove",
+  "popping_is_after_remove": true,
+  "actual_reader_pending_test": "pending-reader-test-3.log",
+  "interpretation": "A popped route is inactive while its transition continues. The SDK result callback clears its reference but the guarded dismiss does not remove this already-popping route. Earlier immediate-removal causal claim was incorrect. No production fix or package rebuild is needed for the pending-write condition."
+}

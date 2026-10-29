@@ -1,0 +1,35 @@
+{
+  "sequence": 36,
+  "checks": [
+    {
+      "name": "history-fixture-connected",
+      "trace_end": 44,
+      "last_capture_sequence": 2,
+      "port": 8773,
+      "synthetic_readonly_media": true
+    },
+    {
+      "name": "purge-history-only-images",
+      "trace_end": 70,
+      "last_capture_sequence": 18,
+      "outcome": "all",
+      "visible_rows": "image",
+      "visible_field_touch": true
+    },
+    {
+      "name": "purge-history-only-directories",
+      "trace_end": 72,
+      "last_capture_sequence": 22,
+      "outcome": "all",
+      "visible_rows": "directory",
+      "visible_field_touch": true
+    },
+    {
+      "name": "purge-history-all-restore",
+      "trace_end": 74,
+      "last_capture_sequence": 26,
+      "outcome": "all",
+      "kind": "all"
+    }
+  ]
+}

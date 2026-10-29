@@ -1,0 +1,39 @@
+{
+  "complete": true,
+  "readonly_baseline_groups": 7,
+  "defaults_explicit_semantic_restore_revision": 2,
+  "reader_changed_tables": [
+    "pack_preferences",
+    "pack_progress",
+    "pack_session_entries",
+    "pack_sessions",
+    "recent_entries",
+    "request_records"
+  ],
+  "reader_progress_same_page_and_completion_revision_plus": 1,
+  "reader_preferences_semantic_restore_revision": 11,
+  "reader_new_session_members": 1,
+  "video_changed_tables": [
+    "playback_rounds",
+    "recent_entries",
+    "request_records",
+    "round_entries"
+  ],
+  "video_fixed_round_members": 2,
+  "video_round_and_order_unchanged_during_speed": true,
+  "legacy_shell_more_readonly": true,
+  "business_write_count": 12,
+  "business_writes_all_expected_successes": true,
+  "auth_token_digest_unchanged": true,
+  "settings_allowed_keys": [
+    "active_pack_opened",
+    "active_pack_session",
+    "active_round",
+    "pack_root_scan_v1:packs",
+    "reader_defaults"
+  ],
+  "startup_scan_marker_reconstructed_prebusiness": true,
+  "no_delete_restore_tag_or_root_writes": true,
+  "observer_query_strings_not_recorded": true,
+  "normal_app_business_not_animation_timing_evidence": true
+}
