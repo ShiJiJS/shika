@@ -1,6 +1,6 @@
 # LF8：下拉选择过渡
 
-按[问题 #112](https://github.com/ShiJiJS/video_viewer/issues/112)继续#24/#33的UI-06，承接菜单[草稿PR #111](https://github.com/ShiJiJS/video_viewer/pull/111)。本段保留现有下拉表单和列表布局；原型继续独立、可移除，不增加原型运行依赖，不重建现有code15两包。
+[草稿PR #113](https://github.com/ShiJiJS/video_viewer/pull/113)按[问题 #112](https://github.com/ShiJiJS/video_viewer/issues/112)继续#24/#33的UI-06，承接菜单[草稿PR #111](https://github.com/ShiJiJS/video_viewer/pull/111)。本段保留现有下拉表单和列表布局；原型继续独立、可移除，不增加原型运行依赖，不重建现有code15两包。
 
 实际阅读偏好的“默认翻页方向”使用固定Flutter3.47.7的DropdownButtonFormField，普通/减少动画都报告300/300ms，打开60ms再开启减少动画的第一帧仍为0.2。三项实际表单组件反例均失败；其中系统标记由组件测试提供，不当作真实Android证明。固定SDK的下拉路由只使用300ms，未提供可覆盖进退场与实时偏好的公开参数。
 

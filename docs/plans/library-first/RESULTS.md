@@ -2,7 +2,7 @@
 
 更新：2026-10-30。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
-当前开发段（2026-10-30）：[下拉选择](LF8-DROPDOWN-MOTION.md)按[#112](https://github.com/ShiJiJS/video_viewer/issues/112)推进，固定2f9792a4，9处入口接入自有240/160ms、实时减少动画与独立退出，保留表单/焦点/布局。完整765客户端、15针对/16组静态RGBA及analyze通过；[源码和原始诊断](evidence/lf8-dropdown-motion/README.md)。真实Android、普通新包与实际业务尚待核对，code15不含本段；原型/SDK/服务/两包未改。
+当前开发段（2026-10-30）：[下拉选择](LF8-DROPDOWN-MOTION.md)按[#112](https://github.com/ShiJiJS/video_viewer/issues/112)/[草稿PR #113](https://github.com/ShiJiJS/video_viewer/pull/113)推进，固定2f9792a4，9处入口接入自有240/160ms、实时减少动画与独立退出，保留表单/焦点/布局。完整765客户端、15针对/16组静态RGBA及analyze通过；[源码和原始诊断](evidence/lf8-dropdown-motion/README.md)。真实Android、普通新包与实际业务尚待核对，code15不含本段；原型/SDK/服务/两包未改。
 
 上一段（2026-10-30）：[菜单修复](LF8-MENU-MOTION.md)按[#110](https://github.com/ShiJiJS/video_viewer/issues/110)/[草稿PR #111](https://github.com/ShiJiJS/video_viewer/pull/111)推进，7处入口已接自有240/160ms与实时减少动画，完整750客户端、10针对/16组静态像素及analyze通过。[真实Android组件](evidence/lf8-menu-native/README.md)三轮72次过渡、12次过渡中开启系统减少动画、24段完整解码录屏及环境恢复通过；普通main新包和真实业务路径尚待核对，现有code15不包含本段；原型/SDK/服务和现有两包未改。
 
