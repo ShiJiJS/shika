@@ -1,0 +1,51 @@
+{
+  "owned_emulator_pid": 96027,
+  "owned_emulator_absent": true,
+  "shutdown_receipt": "OK: killing emulator, bye bye\nOK\n",
+  "owned_container_removed": "8cb6b73181c7faba7ff9f1af3a064b5b6bdadc185b0a69d9d821d66b7903941d",
+  "original_services": [
+    {
+      "name": "video-viewer-client-e2e-server-1",
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "health": "healthy"
+    },
+    {
+      "name": "video-viewer-history-purge-app-lf7",
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "health": "healthy"
+    },
+    {
+      "name": "video-viewer-archive-app-lf7",
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "health": "healthy"
+    },
+    {
+      "name": "video-viewer-server-1",
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "health": "healthy"
+    }
+  ],
+  "donor_data_unchanged": true,
+  "donor_files": 14,
+  "settings_restored": {
+    "display": {
+      "size": "Physical size: 1080x2400\nOverride size: 1170x2532",
+      "density": "Physical density: 420\nOverride density: 480"
+    },
+    "scales": {
+      "window_animation_scale": "1.0",
+      "transition_animation_scale": "1.0",
+      "animator_duration_scale": "null"
+    },
+    "secure": {
+      "immersive_mode_confirmations": ""
+    },
+    "system": {
+      "font_scale": "1.0",
+      "user_rotation": "0",
+      "accelerometer_rotation": "1"
+    }
+  },
+  "lab_data_retained": true,
+  "sdk_or_host_audio_settings_changed": false
+}
