@@ -1,0 +1,236 @@
+[
+  {
+    "time": 1793239540.845422,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "window_animation_scale": "1",
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1"
+    }
+  },
+  {
+    "time": 1793239540.905473,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      326,
+      359
+    ]
+  },
+  {
+    "time": 1793239541.72073,
+    "action": "begin",
+    "name": "round-1-normal-reader",
+    "reduced": null
+  },
+  {
+    "time": 1793239541.780004,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      308,
+      1339
+    ]
+  },
+  {
+    "time": 1793239542.396383,
+    "action": "capture",
+    "name": "round-1-normal-reader-entry",
+    "reduced": null
+  },
+  {
+    "time": 1793239542.855867,
+    "action": "configure",
+    "name": null,
+    "reduced": true,
+    "actual": {
+      "window_animation_scale": "0",
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0"
+    }
+  },
+  {
+    "time": 1793239543.203414,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      90,
+      215
+    ]
+  },
+  {
+    "time": 1793239543.663032,
+    "action": "capture",
+    "name": "round-1-normal-reader-return",
+    "reduced": null
+  },
+  {
+    "time": 1793239544.489033,
+    "action": "end",
+    "name": "round-1-normal-reader",
+    "reduced": null
+  },
+  {
+    "time": 1793239544.665066,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "window_animation_scale": "1",
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1"
+    }
+  },
+  {
+    "time": 1793239545.0265,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      127,
+      359
+    ]
+  },
+  {
+    "time": 1793239545.626316,
+    "action": "begin",
+    "name": "round-1-normal-video",
+    "reduced": null
+  },
+  {
+    "time": 1793239545.710583,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      988,
+      656
+    ]
+  },
+  {
+    "time": 1793239547.928776,
+    "action": "capture",
+    "name": "round-1-normal-preview-entry",
+    "reduced": null
+  },
+  {
+    "time": 1793239548.294983,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      1010,
+      1827
+    ]
+  },
+  {
+    "time": 1793239552.0449228,
+    "action": "capture",
+    "name": "round-1-normal-fullscreen-entry",
+    "reduced": null
+  },
+  {
+    "time": 1793239556.522527,
+    "action": "fullscreen_ready",
+    "name": null,
+    "reduced": null,
+    "education_observed": true,
+    "acknowledged_point": [
+      1839,
+      568
+    ]
+  },
+  {
+    "time": 1793239557.915329,
+    "action": "configure",
+    "name": null,
+    "reduced": true,
+    "actual": {
+      "window_animation_scale": "0",
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0"
+    }
+  },
+  {
+    "time": 1793239558.2265759,
+    "action": "back",
+    "name": null,
+    "reduced": null
+  },
+  {
+    "time": 1793239559.434724,
+    "action": "capture",
+    "name": "round-1-normal-fullscreen-return",
+    "reduced": null
+  },
+  {
+    "time": 1793239559.492712,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      219
+    ]
+  },
+  {
+    "time": 1793239560.120137,
+    "action": "capture",
+    "name": "round-1-normal-preview-return",
+    "reduced": null
+  },
+  {
+    "time": 1793239561.419332,
+    "action": "end",
+    "name": "round-1-normal-video",
+    "reduced": null
+  },
+  {
+    "time": 1793239561.5972931,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "window_animation_scale": "1",
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1"
+    }
+  },
+  {
+    "time": 1793239561.959243,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      923,
+      2387
+    ]
+  },
+  {
+    "time": 1793239562.461345,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      257,
+      1462
+    ]
+  },
+  {
+    "time": 1793239603.165813,
+    "action": "failure",
+    "name": "timeout",
+    "reduced": null
+  },
+  {
+    "time": 1793239603.672802,
+    "action": "failure",
+    "name": "terminal",
+    "reduced": null
+  }
+]

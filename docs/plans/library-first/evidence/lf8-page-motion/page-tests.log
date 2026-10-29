@@ -1,0 +1,173 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart
+00:00 +0: actual library reader entry follows reduced motion=false
+00:01 +1: actual library reader entry follows reduced motion=true
+00:01 +2: page retains source and result; fade=false, entry=false, return=false
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: AnimationStatus:<AnimationStatus.completed>
+  Actual: AnimationStatus:<AnimationStatus.forward>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart:130:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart line 130
+The test description was:
+  page retains source and result; fade=false, entry=false, return=false
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +2 -1: page retains source and result; fade=false, entry=false, return=false [E]
+  Test failed. See exception logs above.
+  The test description was: page retains source and result; fade=false, entry=false, return=false
+  
+00:01 +2 -1: page retains source and result; fade=false, entry=false, return=true
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: AnimationStatus:<AnimationStatus.completed>
+  Actual: AnimationStatus:<AnimationStatus.forward>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart:130:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart line 130
+The test description was:
+  page retains source and result; fade=false, entry=false, return=true
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +2 -2: page retains source and result; fade=false, entry=false, return=true [E]
+  Test failed. See exception logs above.
+  The test description was: page retains source and result; fade=false, entry=false, return=true
+  
+00:01 +2 -2: page retains source and result; fade=false, entry=true, return=false
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: no matching candidates
+  Actual: _KeyWidgetFinder:<Found 1 widget with key [<'close-page'>]: [
+            TextButton-[<'close-page'>](dependencies: [IconTheme, InheritedCupertinoTheme,
+MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#fe01c]], state:
+_ButtonStyleState#16979),
+          ]>
+   Which: means one was found but none were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart:148:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart line 148
+The test description was:
+  page retains source and result; fade=false, entry=true, return=false
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +2 -3: page retains source and result; fade=false, entry=true, return=false [E]
+  Test failed. See exception logs above.
+  The test description was: page retains source and result; fade=false, entry=true, return=false
+  
+00:01 +2 -3: page retains source and result; fade=false, entry=true, return=true
+00:01 +3 -3: page retains source and result; fade=true, entry=false, return=false
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: AnimationStatus:<AnimationStatus.completed>
+  Actual: AnimationStatus:<AnimationStatus.forward>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart:130:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart line 130
+The test description was:
+  page retains source and result; fade=true, entry=false, return=false
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +3 -4: page retains source and result; fade=true, entry=false, return=false [E]
+  Test failed. See exception logs above.
+  The test description was: page retains source and result; fade=true, entry=false, return=false
+  
+00:01 +3 -4: page retains source and result; fade=true, entry=false, return=true
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: AnimationStatus:<AnimationStatus.completed>
+  Actual: AnimationStatus:<AnimationStatus.forward>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart:130:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart line 130
+The test description was:
+  page retains source and result; fade=true, entry=false, return=true
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +3 -5: page retains source and result; fade=true, entry=false, return=true [E]
+  Test failed. See exception logs above.
+  The test description was: page retains source and result; fade=true, entry=false, return=true
+  
+00:01 +3 -5: page retains source and result; fade=true, entry=true, return=false
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: no matching candidates
+  Actual: _KeyWidgetFinder:<Found 1 widget with key [<'close-page'>]: [
+            TextButton-[<'close-page'>](dependencies: [IconTheme, InheritedCupertinoTheme,
+MediaQuery, _InheritedTheme, _LocalizationsScope-[GlobalKey#0af80]], state:
+_ButtonStyleState#250fd),
+          ]>
+   Which: means one was found but none were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart:148:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart line 148
+The test description was:
+  page retains source and result; fade=true, entry=true, return=false
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +3 -6: page retains source and result; fade=true, entry=true, return=false [E]
+  Test failed. See exception logs above.
+  The test description was: page retains source and result; fade=true, entry=true, return=false
+  
+00:02 +3 -6: page retains source and result; fade=true, entry=true, return=true
+00:02 +4 -6: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart: page retains source and result; fade=false, entry=false, return=false
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart: page retains source and result; fade=false, entry=false, return=true
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart: page retains source and result; fade=false, entry=true, return=false
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/page_motion_test.dart: page retains source and result; fade=true, entry=false, return=false
+  ... and 2 more

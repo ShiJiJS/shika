@@ -1,0 +1,309 @@
+{
+  "page_motion": {
+    "profile_entry": true,
+    "normal_release_acceptance": false,
+    "system_accessibility_injected": false,
+    "audio_playback_acceptance": false,
+    "cases": [
+      {
+        "name": "round-1-normal-reader-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 988447432,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 988480765,
+            "value": 0.13888750000000002,
+            "display_value": 0.13888750000000002,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 988514098,
+            "value": 0.27777500000000005,
+            "display_value": 0.27777500000000005,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 988614098,
+            "value": 0.6944416666666667,
+            "display_value": 0.6944416666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 988647432,
+            "value": 0.8333333333333334,
+            "display_value": 0.8333333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 988697432,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-reader-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 989897432,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-preview-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 992430765,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 992464098,
+            "value": 0.13888750000000002,
+            "display_value": 0.13888750000000002,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 992547432,
+            "value": 0.48611250000000006,
+            "display_value": 0.48611250000000006,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 992564098,
+            "value": 0.5555541666666667,
+            "display_value": 0.5555541666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 992614098,
+            "value": 0.7638875,
+            "display_value": 0.7638875,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 992630765,
+            "value": 0.8333333333333334,
+            "display_value": 0.8333333333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 992647432,
+            "value": 0.9027791666666667,
+            "display_value": 0.9027791666666667,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 992664098,
+            "value": 0.9722208333333334,
+            "display_value": 0.9722208333333334,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 992680765,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-fullscreen-entry",
+        "reduced": false,
+        "closing": false,
+        "configured_duration_us": 240000,
+        "frames": [
+          {
+            "frame_us": 995714098,
+            "value": 0.0,
+            "display_value": 1.0,
+            "offstage": true,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 995897431,
+            "value": 0.7638875,
+            "display_value": 0.7638875,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "forward",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          },
+          {
+            "frame_us": 996197431,
+            "value": 1.0,
+            "display_value": 1.0,
+            "offstage": false,
+            "controller_duration_us": 240000,
+            "status": "completed",
+            "native_flag": false,
+            "media_query_flag_at_action": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-fullscreen-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1004880764,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-normal-preview-return",
+        "reduced": true,
+        "closing": true,
+        "configured_duration_us": 0,
+        "frames": [
+          {
+            "frame_us": 1006214098,
+            "value": 0.0,
+            "display_value": 0.0,
+            "offstage": false,
+            "controller_duration_us": 0,
+            "status": "dismissed",
+            "native_flag": true,
+            "media_query_flag_at_action": true
+          }
+        ]
+      }
+    ],
+    "last_platform_settings": {
+      "action": "configure",
+      "name": null,
+      "reduced": false,
+      "actual": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      }
+    },
+    "failure": {
+      "waiting_for": "actual task rows",
+      "active_name": null,
+      "frames": null,
+      "texts": [
+        "设置",
+        "服务连接",
+        "http://10.0.2.2:8777",
+        "媒体目录",
+        "2 个目录 · 视频与图包分别接入",
+        "数据维护",
+        "回收站",
+        "视频与图包分别管理 · 不会自动清空",
+        "备份与恢复",
+        "标签、目录映射、回收站与阅读记录",
+        "操作任务",
+        "扫描、恢复与删除结果",
+        "偏好",
+        "暗黑模式",
+        "准备相邻视频",
+        "前后各一条；关闭可减少网络与解码占用",
+        "默认播放顺序",
+        "保存在服务端 · 只影响新预览范围",
+        "阅读偏好",
+        "默认阅读方式 · 每包单独记忆",
+        "媒体库",
+        "标签",
+        "最近",
+        "设置"
+      ]
+    }
+  }
+}

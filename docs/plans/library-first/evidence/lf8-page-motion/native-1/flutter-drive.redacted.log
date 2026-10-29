@@ -1,0 +1,45 @@
+Installing ../../.dev/lf8-page-motion/page-motion-profile.apk...        676ms
+I/js.video_viewer( 3588): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 3588): Skipped 32 frames!  The application may be doing too much work on its main thread.
+D/WindowLayoutComponentImpl( 3588): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@479c0a7, of which baseContext=android.app.ContextImpl@2e376c0
+VMServiceFlutterDriver: Connecting to Flutter application at <redacted-local-vm-service>
+VMServiceFlutterDriver: Isolate found with number: 1261022964308227
+VMServiceFlutterDriver: Isolate 1261022964308227 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 3588): 00:00 +0: real system page entry and changed-preference return
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController( 3588): hide(ime(), fromIme=false)
+I/ImeTracker( 3588): io.github.shijijs.video_viewer:f725cffc: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+I/js.video_viewer( 3588): AssetManager2(0xb400007475fc2838) locale list changing from [] to [en-US]
+I/flutter ( 3588): Expected: <0.0>
+I/flutter ( 3588):   Actual: <1.0>
+I/flutter ( 3588): 
+I/flutter ( 3588): #0      fail (package:matcher/src/expect/expect.dart:187)
+I/flutter ( 3588): #1      _expect (package:matcher/src/expect/expect.dart:182)
+I/flutter ( 3588): #2      expect (package:matcher/src/expect/expect.dart:65)
+I/flutter ( 3588): #3      expect (package:flutter_test/src/widget_tester.dart:473)
+I/flutter ( 3588): #4      PageMotionProbe.verify (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_page_motion_test.dart:105)
+I/flutter ( 3588): #5      main.<anonymous closure>.enter (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_page_motion_test.dart:244)
+I/flutter ( 3588): <asynchronous suspension>
+I/flutter ( 3588): #6      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_page_motion_test.dart:297)
+I/flutter ( 3588): <asynchronous suspension>
+I/flutter ( 3588): #7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 3588): <asynchronous suspension>
+I/flutter ( 3588): #8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 3588): <asynchronous suspension>
+I/flutter ( 3588): #9      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 3588): <asynchronous suspension>
+I/flutter ( 3588): 00:02 +0: real system page entry and changed-preference return [E]
+I/flutter ( 3588):   Test failed. See exception logs above.
+I/flutter ( 3588):   The test description was: real system page entry and changed-preference return
+I/flutter ( 3588):   
+I/flutter ( 3588): 00:03 +0 -1: (tearDownAll)
+I/flutter ( 3588): 00:03 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: real system page entry and changed-preference return
+Instance of 'FlutterErrorDetails'
+end of failure 1
+
+
+

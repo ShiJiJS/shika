@@ -1,0 +1,31 @@
+{
+  "page_motion": {
+    "profile_entry": true,
+    "normal_release_acceptance": false,
+    "system_accessibility_injected": false,
+    "audio_playback_acceptance": false,
+    "cases": [],
+    "last_platform_settings": {
+      "action": "configure",
+      "name": null,
+      "reduced": false,
+      "actual": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      }
+    },
+    "active_case": {
+      "name": "round-1-normal-reader-entry",
+      "frames": [
+        {
+          "frame_us": 642580779,
+          "value": 1.0,
+          "status": "completed",
+          "native_flag": false,
+          "media_query_flag_at_action": false
+        }
+      ]
+    }
+  }
+}
