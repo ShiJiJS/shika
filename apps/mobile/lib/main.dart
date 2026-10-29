@@ -124,7 +124,7 @@ class _VideoViewerAppState extends State<VideoViewerApp> {
               ? Brightness.light
               : Brightness.dark,
         ),
-        child: child!,
+        child: PaperControlTheme(child: child!),
       ),
       home: LibraryHome(
         key: ObjectKey(widget.repository),

@@ -456,7 +456,7 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
                 runSpacing: 4,
                 children: [
                   for (final flag in [true, false])
-                    ChoiceChip(
+                    PaperChoiceChip(
                       label: Text(flag ? '未完成' : '全部'),
                       labelStyle: TextStyle(fontSize: 13, color: p.ink),
                       selectedColor: p.soft,

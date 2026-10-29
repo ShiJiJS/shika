@@ -111,7 +111,7 @@ void main() {
                     .byKey(const Key('tag-assignment-save'))
                     .evaluate()
                     .isNotEmpty &&
-                find.byType(FilterChip).evaluate().isNotEmpty &&
+                find.bySubtype<FilterChip>().evaluate().isNotEmpty &&
                 find.byType(LinearProgressIndicator).evaluate().isEmpty,
             'assignment panel and real tag choices rendered before capture',
           );
@@ -300,14 +300,24 @@ void main() {
           await preferences.setDark(false);
           await t.pumpAndSettle();
         }
-        await tap(find.widgetWithText(FilterChip, '保留'));
+        await tap(
+          find.ancestor(
+            of: find.text('保留'),
+            matching: find.bySubtype<FilterChip>(),
+          ),
+        );
         final search = find.byKey(const Key('tag-assignment-search'));
         await tap(search);
         await t.enterText(search, '追加');
         await idle();
         await t.testTextInput.receiveAction(TextInputAction.search);
         await hideKeyboard();
-        await tap(find.widgetWithText(FilterChip, '追加'));
+        await tap(
+          find.ancestor(
+            of: find.text('追加'),
+            matching: find.bySubtype<FilterChip>(),
+          ),
+        );
         final input = find.byKey(const Key('tag-assignment-new'));
         await tap(input);
         await t.enterText(input, '追加');
@@ -389,7 +399,12 @@ void main() {
       await t.enterText(find.byKey(const Key('tag-assignment-search')), '追加');
       await idle();
       await hideKeyboard();
-      await tap(find.widgetWithText(FilterChip, '追加'));
+      await tap(
+        find.ancestor(
+          of: find.text('追加'),
+          matching: find.bySubtype<FilterChip>(),
+        ),
+      );
       await tap(find.byKey(const Key('tag-assignment-save')));
       await until(
         () => find.byKey(const Key('tag-assignment-save')).evaluate().isEmpty,
@@ -426,7 +441,12 @@ void main() {
       await t.enterText(find.byKey(const Key('tag-assignment-search')), '追加');
       await idle();
       await hideKeyboard();
-      await tap(find.widgetWithText(FilterChip, '追加'));
+      await tap(
+        find.ancestor(
+          of: find.text('追加'),
+          matching: find.bySubtype<FilterChip>(),
+        ),
+      );
       await tap(find.byKey(const Key('tag-assignment-save')));
       await until(
         () => find.byKey(const Key('tag-assignment-save')).evaluate().isEmpty,

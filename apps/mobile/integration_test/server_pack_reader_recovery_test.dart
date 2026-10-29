@@ -357,13 +357,21 @@ void main() {
       await tap(find.byIcon(Icons.sell_outlined));
       await until(
         () => find
-            .widgetWithText(FilterChip, '恢复范围二')
+            .ancestor(
+              of: find.text('恢复范围二'),
+              matching: find.bySubtype<FilterChip>(),
+            )
             .hitTestable()
             .evaluate()
             .isNotEmpty,
         'whole pack tag editor',
       );
-      await tap(find.widgetWithText(FilterChip, '恢复范围二'));
+      await tap(
+        find.ancestor(
+          of: find.text('恢复范围二'),
+          matching: find.bySubtype<FilterChip>(),
+        ),
+      );
       await tap(find.text('保存整包标签'));
       await until(
         () =>

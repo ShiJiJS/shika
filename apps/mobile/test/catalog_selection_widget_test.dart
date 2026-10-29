@@ -48,7 +48,12 @@ void main() {
         expect(state.selected, {'p1'});
         await tap(find.text('追加标签'));
         expect(find.byType(InputChip), findsNothing);
-        await tap(find.widgetWithText(FilterChip, '收藏'));
+        await tap(
+          find.ancestor(
+            of: find.text('收藏'),
+            matching: find.bySubtype<FilterChip>(),
+          ),
+        );
         await tap(find.text('追加所选标签'));
         expect(repo.packLinks['p1'], {'自然', '收藏'});
         expect(repo.packLinks['p2'], {'收藏'});

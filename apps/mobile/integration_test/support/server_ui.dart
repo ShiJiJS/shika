@@ -123,8 +123,11 @@ class ServerUi {
     );
   }
 
-  Future<void> tagChip(String name) =>
-      tap(find.widgetWithText(FilterChip, name).last);
+  Future<void> tagChip(String name) => tap(
+    find
+        .ancestor(of: find.text(name), matching: find.bySubtype<FilterChip>())
+        .last,
+  );
   Future<void> select(String current, String value) async {
     await text(current);
     await text(value);

@@ -242,7 +242,7 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
                             'completed': '已完成',
                             'historical': '历史',
                           }.entries)
-                            ChoiceChip(
+                            PaperChoiceChip(
                               key: Key('task-filter-${value.key}'),
                               label: Text(value.value),
                               labelStyle: TextStyle(fontSize: 13, color: p.ink),

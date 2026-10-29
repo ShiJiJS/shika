@@ -100,7 +100,12 @@ void main() {
       expect(videoState.selected, isNot(contains(excludedVideo)));
       await shot('videos');
       await tap(find.text('追加标签'));
-      await tap(find.widgetWithText(FilterChip, '追加'));
+      await tap(
+        find.ancestor(
+          of: find.text('追加'),
+          matching: find.bySubtype<FilterChip>(),
+        ),
+      );
       await tap(find.byKey(const Key('tag-assignment-save')));
       expect(repo.tagVideoCount(added), 26);
       final updated = await repo.loadVideos(limit: 200);
@@ -124,7 +129,12 @@ void main() {
       expect(packState.selected.length, 26);
       await shot('packs');
       await tap(find.text('追加标签'));
-      await tap(find.widgetWithText(FilterChip, '追加'));
+      await tap(
+        find.ancestor(
+          of: find.text('追加'),
+          matching: find.bySubtype<FilterChip>(),
+        ),
+      );
       await tap(find.text('追加所选标签'));
       final packPage = await repo.loadPacks(PackQuery(), limit: 200);
       for (final pack in packPage.items) {

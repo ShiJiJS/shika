@@ -179,7 +179,12 @@ void main() {
       }
       expect(t.widget<FilledButton>(save).onPressed, isNotNull);
       await text(editorInput(), '名称00');
-      await tap(find.widgetWithText(FilterChip, '名称00'));
+      await tap(
+        find.ancestor(
+          of: find.text('名称00'),
+          matching: find.bySubtype<FilterChip>(),
+        ),
+      );
       expect(chosen(ids.last), findsOneWidget);
       await tap(save);
       // Reopen from the same card's action menu and read back both saved choices.

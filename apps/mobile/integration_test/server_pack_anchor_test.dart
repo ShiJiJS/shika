@@ -128,7 +128,12 @@ void main() {
       await shot('before');
       await tap(tile(original));
       await tap(find.text('整包标签'));
-      await tap(find.widgetWithText(FilterChip, '范围二'));
+      await tap(
+        find.ancestor(
+          of: find.text('范围二'),
+          matching: find.bySubtype<FilterChip>(),
+        ),
+      );
       await fixture('/__fixture/actions/fail-pack-anchor');
       await tap(find.text('保存整包标签'));
       await tap(find.byTooltip('关闭面板'));
