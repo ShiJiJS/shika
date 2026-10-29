@@ -1,0 +1,58 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_style_diagnostic_test.dart
+00:00 +0: style-only live direction true
+STYLE ONLY expand=true firstReducedHeight=0.09407757222652435
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <1>
+  Actual: <0.09407757222652435>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_style_diagnostic_test.dart:50:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_style_diagnostic_test.dart line 50
+The test description was:
+  style-only live direction true
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: style-only live direction true [E]
+  Test failed. See exception logs above.
+  The test description was: style-only live direction true
+  
+00:00 +0 -1: style-only live direction false
+STYLE ONLY expand=false firstReducedHeight=0.6219428777694702
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <0>
+  Actual: <0.6219428777694702>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_style_diagnostic_test.dart:50:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_style_diagnostic_test.dart line 50
+The test description was:
+  style-only live direction false
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -2: style-only live direction false [E]
+  Test failed. See exception logs above.
+  The test description was: style-only live direction false
+  
+00:00 +0 -2: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_style_diagnostic_test.dart: style-only live direction false
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_style_diagnostic_test.dart: style-only live direction true

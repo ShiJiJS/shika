@@ -8,6 +8,8 @@
 
 此前preview.10/rollback.10（code16）及更早APK继续保留、SHA不变；code16包含菜单/下拉但不含复选框修复。原型独立可移除，服务未改/未部署、没有正式发布或安装手机。
 
+后续[扫描详情展开修复](plans/library-first/LF8-EXPANSION-MOTION.md)已通过源码/组件与789完整检查；真实Android和正常新包继续。**以下code17两包暂不包含该段展开修复**，原SHA保持。
+
 ## 安装包
 
 文件位于项目 `tmp/releases/`，不进入 Git：
