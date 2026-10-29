@@ -1,0 +1,21 @@
+{
+  "kind": "legacy",
+  "container": "aa94e1c6cc411928ee83ae71887dad92ed8327285f3d74b0d6bc3b88cfd49fb0",
+  "image": "sha256:980c9a01bca1f826521da2f0f5660be863dc28fc7592c888bc800efe4d02d67e",
+  "port": 8774,
+  "donor": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-preview-package/legacy-upgrade",
+  "original_containers": {
+    "/video-viewer-client-e2e-server-1": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+    "/video-viewer-history-purge-app-lf7": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+    "/video-viewer-archive-app-lf7": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+    "/video-viewer-server-1": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b"
+  },
+  "donor_data_sha256": {
+    "library.sqlite3": "e3b671eb844d7b5a4acee3dac9ee0514eb096602ede5b80080a03f0b74362474",
+    "thumbnails/2042b37f-595d-4bac-8cf2-2d4ed86f71cc.jpg": "f575e121be52456565b870f26488b94ed537bac0792b7b2cb54dcec4eacd4994",
+    "thumbnails/f9eda7cb-8e56-4fe2-9d20-866b1bb0e509.jpg": "07a2ab4ff28d1b3e288993d37602d6dcf0652101ced0046942f21a8ea578a367"
+  },
+  "fixture_media_readonly": true,
+  "no_response_adapters": true,
+  "source_schema": "0004"
+}

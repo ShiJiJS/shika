@@ -1,0 +1,193 @@
+{
+  "tables": {
+    "alembic_version": [
+      {
+        "version_num": "0004"
+      }
+    ],
+    "directories": [
+      {
+        "id": "ad34f1bf-998d-432b-b231-cd86495f571e",
+        "root_id": "legacy",
+        "path": "/media/videos",
+        "name": "videos",
+        "seen_scan": "6a6a413d-5c1d-4f2d-9e44-6090929d4b27"
+      }
+    ],
+    "file_operations": [],
+    "file_steps": [],
+    "observations": [
+      {
+        "path": "/media/videos/flower-landscape.mp4",
+        "signature": "[\"36\", \"2023\", 1290627, \"1792737008707194219\", \"1793149286468629367\"]",
+        "stable_since": 1793309739.7136748
+      },
+      {
+        "path": "/media/videos/flower-portrait.mp4",
+        "signature": "[\"36\", \"2024\", 172775, \"1792737008707682389\", \"1793149286470816176\"]",
+        "stable_since": 1793309739.7154353
+      }
+    ],
+    "playback_rounds": [
+      {
+        "id": "bcccb4f9-5085-4c63-b2e4-9392f436af7b",
+        "request_id": "b629e16f-e8c2-49f7-875a-8856858df29f",
+        "request_hash": "59d710b38698eb77a1bb0b6df5ef0cb638a6a4e86b43b0ccbd9a29dc4049b9dd",
+        "order": "random",
+        "scope": "{}",
+        "cursor": 0,
+        "revision": 0,
+        "finished": 0,
+        "candidate_count": 2,
+        "created_at": 1793151433.971837
+      }
+    ],
+    "request_records": [
+      {
+        "id": "tag.create:legacy-upgrade-tag",
+        "fingerprint": "d4f5d40f0d1e6c5c00cb9d94ec53b8530213416151effd75a457bca0524c5795",
+        "result": "{\"id\": \"7239b804-4bf9-4a2d-817c-6ff5687e7052\", \"name\": \"LEGACY_ONLY\"}",
+        "created_at": 1793149704.7047405
+      },
+      {
+        "id": "tags.assign:legacy-upgrade-tag-link",
+        "fingerprint": "9a78c8241820d4b06e146a4d3f3cd2d7e65bbb57763ac0ccb90f7f8edb921209",
+        "result": "{\"video_ids\": [\"00af1a5e-1a8b-497a-9673-12a9236c5012\"], \"changed\": 1, \"added\": 1, \"removed\": 0}",
+        "created_at": 1793149704.7134733
+      }
+    ],
+    "roots": [
+      {
+        "id": "legacy",
+        "name": "Legacy videos",
+        "path": "/media/videos",
+        "mount_id": "legacy",
+        "available": 1,
+        "error": null,
+        "last_scan": 1793309740.2017379
+      }
+    ],
+    "round_entries": [
+      {
+        "round_id": "bcccb4f9-5085-4c63-b2e4-9392f436af7b",
+        "ordinal": 0,
+        "video_id": "ed3f78f4-6b2f-4cae-8f5b-d396a57e9e55"
+      },
+      {
+        "round_id": "bcccb4f9-5085-4c63-b2e4-9392f436af7b",
+        "ordinal": 1,
+        "video_id": "00af1a5e-1a8b-497a-9673-12a9236c5012"
+      }
+    ],
+    "tags": [
+      {
+        "id": "7239b804-4bf9-4a2d-817c-6ff5687e7052",
+        "name": "LEGACY_ONLY",
+        "created_at": 1793149704.7040918
+      }
+    ],
+    "tasks": [
+      {
+        "id": "9bf82be2-49f4-46b6-932c-10275b08181a",
+        "kind": "scan",
+        "status": "completed",
+        "phase": "completed",
+        "created_at": 1793149703.8832824,
+        "finished_at": 1793149704.680613,
+        "result": "{\"imported\": 2, \"unchanged\": 0, \"deferred\": 0, \"failed\": 0, \"thumbnail_failed\": 0, \"failure_reasons\": {}, \"warning_reasons\": {}, \"warnings\": [], \"missing\": 0, \"identity_matched\": 0, \"identity_ambiguous\": 0, \"roots\": [{\"id\": \"legacy\", \"status\": \"completed\", \"discovered\": 2, \"processed\": 2, \"bytes_total\": 1463402, \"bytes_processed\": 1463402}], \"issues\": [], \"progress\": {\"discovered\": 2, \"processed\": 2, \"bytes_total\": 1463402, \"bytes_processed\": 1463402, \"updated_at\": 1793149704.679556}}",
+        "error": null
+      },
+      {
+        "id": "6a6a413d-5c1d-4f2d-9e44-6090929d4b27",
+        "kind": "scan",
+        "status": "completed",
+        "phase": "completed",
+        "created_at": 1793309739.7050612,
+        "finished_at": 1793309740.2039182,
+        "result": "{\"imported\": 2, \"unchanged\": 0, \"deferred\": 0, \"failed\": 0, \"thumbnail_failed\": 0, \"failure_reasons\": {}, \"warning_reasons\": {}, \"warnings\": [], \"missing\": 0, \"identity_matched\": 0, \"identity_ambiguous\": 0, \"roots\": [{\"id\": \"legacy\", \"status\": \"completed\", \"discovered\": 2, \"processed\": 2, \"bytes_total\": 1463402, \"bytes_processed\": 1463402}], \"issues\": [], \"progress\": {\"discovered\": 2, \"processed\": 2, \"bytes_total\": 1463402, \"bytes_processed\": 1463402, \"updated_at\": 1793309740.2028763}}",
+        "error": null
+      }
+    ],
+    "trash_items": [],
+    "video_tags": [
+      {
+        "video_id": "00af1a5e-1a8b-497a-9673-12a9236c5012",
+        "tag_id": "7239b804-4bf9-4a2d-817c-6ff5687e7052"
+      }
+    ],
+    "videos": [
+      {
+        "id": "00af1a5e-1a8b-497a-9673-12a9236c5012",
+        "root_id": "legacy",
+        "path": "/media/videos/flower-landscape.mp4",
+        "location_key": "/media/videos/flower-landscape.mp4",
+        "name": "flower-landscape.mp4",
+        "status": "available",
+        "error": null,
+        "size": 1290627,
+        "device": "36",
+        "inode": "2023",
+        "mtime_ns": "1792737008707194219",
+        "ctime_ns": "1793149286468629367",
+        "sha256": "d097d4403a6bad16f8243f341599d233d3c3c7c4bc4ece7afece0b4657e01001",
+        "quick_hash": "1e787e6266db1edc2a3fcb64cc99c7fa285a3d29927f125676139fae11eb3022",
+        "duration": 5.055,
+        "width": 960,
+        "height": 540,
+        "rotation": 0,
+        "type": "MP4",
+        "video_codec": "h264",
+        "audio_codec": "aac",
+        "container": "mov,mp4,m4a,3gp,3g2,mj2",
+        "thumbnail": "49ad65d7-841b-49f8-903a-cd2bdd976349.jpg",
+        "seen_scan": "6a6a413d-5c1d-4f2d-9e44-6090929d4b27",
+        "created_at": 1793149704.530098,
+        "generation": 0
+      },
+      {
+        "id": "ed3f78f4-6b2f-4cae-8f5b-d396a57e9e55",
+        "root_id": "legacy",
+        "path": "/media/videos/flower-portrait.mp4",
+        "location_key": "/media/videos/flower-portrait.mp4",
+        "name": "flower-portrait.mp4",
+        "status": "available",
+        "error": null,
+        "size": 172775,
+        "device": "36",
+        "inode": "2024",
+        "mtime_ns": "1792737008707682389",
+        "ctime_ns": "1793149286470816176",
+        "sha256": "de0736853aa24394b0449e6722a09fc4a4ee7d33cc191caf80888de5660dbdfd",
+        "quick_hash": "03db1476153c1bd2ea3e318abc15661c94984c61d7927c11a63ce98d917cd3f6",
+        "duration": 5.005,
+        "width": 360,
+        "height": 640,
+        "rotation": 0,
+        "type": "MP4",
+        "video_codec": "h264",
+        "audio_codec": null,
+        "container": "mov,mp4,m4a,3gp,3g2,mj2",
+        "thumbnail": "152a5c85-7a65-4cff-9214-6bd4aec04c17.jpg",
+        "seen_scan": "6a6a413d-5c1d-4f2d-9e44-6090929d4b27",
+        "created_at": 1793149704.6645849,
+        "generation": 0
+      }
+    ]
+  },
+  "opaque_table_digests": {
+    "access_tokens": {
+      "rows": 2,
+      "sha256": "083ee67edf6110402f053a2baf35f70cbc3492f78b8c22273c9e143057208edf"
+    },
+    "settings": {
+      "rows": 3,
+      "sha256": "58a80afe48aa39a6e584a6a5293864887688e262bacb7b6fd969147586431f74"
+    }
+  },
+  "setting_key_sha256": {
+    "active_round": "2fd6d640fec2da61dfdff3e5662f9758b4e45b595a74aecc09875c2c59bcbf7f",
+    "passphrase_hash": "0073962ab05f2d94028ac4f35560e19044732d24da36a3e2f49bbabc42f11a02",
+    "server_id": "0428631a832535b5515fa02f7558f7adfd8cd89754d7b1702b7d0edc33440bcb"
+  },
+  "observed_at": 1793310200.6109962
+}
