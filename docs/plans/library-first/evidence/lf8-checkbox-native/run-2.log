@@ -1,0 +1,29 @@
+{"time": 1793313266.2076669, "action": "fullscreen_ready", "name": null, "reduced": null, "education_observed": false}
+{"time": 1793313266.4699771, "action": "configure", "name": null, "reduced": false, "actual": {"transition_animation_scale": "1", "animator_duration_scale": "1", "window_animation_scale": "1"}}
+{"time": 1793313267.3673348, "action": "begin", "name": "round-1-trash", "reduced": null}
+{"time": 1793313267.5557592, "action": "configure", "name": null, "reduced": false, "actual": {"transition_animation_scale": "1", "animator_duration_scale": "1", "window_animation_scale": "1"}}
+{"time": 1793313267.907367, "action": "tap", "name": null, "reduced": null, "point": [108, 608]}
+{"time": 1793313268.4365609, "action": "tap", "name": null, "reduced": null, "point": [108, 608]}
+{"time": 1793313268.926694, "action": "hold_start", "name": null, "reduced": null, "point": [108, 608], "native_motion": "DOWN"}
+{"time": 1793313269.42648, "action": "hold_cancel", "name": null, "reduced": null, "point": [108, 608], "native_motion": "CANCEL"}
+{"time": 1793313270.065579, "action": "configure", "name": null, "reduced": true, "actual": {"transition_animation_scale": "0", "animator_duration_scale": "0", "window_animation_scale": "0"}}
+{"time": 1793313270.4392698, "action": "tap", "name": null, "reduced": null, "point": [108, 608]}
+{"time": 1793313270.939241, "action": "tap", "name": null, "reduced": null, "point": [108, 608]}
+{"time": 1793313271.45008, "action": "hold_start", "name": null, "reduced": null, "point": [108, 608], "native_motion": "DOWN"}
+{"time": 1793313271.9421692, "action": "hold_cancel", "name": null, "reduced": null, "point": [108, 608], "native_motion": "CANCEL"}
+{"time": 1793313272.597648, "action": "configure", "name": null, "reduced": false, "actual": {"transition_animation_scale": "1", "animator_duration_scale": "1", "window_animation_scale": "1"}}
+
+Exception occurred while executing 'tap':
+java.lang.IllegalArgumentException: Error: Invalid arguments for command: tap
+	at com.android.server.input.InputShellCommand.onCommand(InputShellCommand.java:313)
+	at com.android.modules.utils.BasicShellCommandHandler.exec(BasicShellCommandHandler.java:97)
+	at android.os.ShellCommand.exec(ShellCommand.java:38)
+	at com.android.server.input.InputManagerService.onShellCommand(InputManagerService.java:3887)
+	at android.os.Binder.shellCommand(Binder.java:1151)
+	at android.os.Binder.onTransact(Binder.java:953)
+	at android.hardware.input.IInputManager$Stub.onTransact(IInputManager.java:1576)
+	at android.os.Binder.execTransactInternal(Binder.java:1426)
+	at android.os.Binder.execTransact(Binder.java:1365)
+{"time": 1793313273.6236422, "action": "failure", "name": "terminal", "reduced": null}
+{"exit_code": 1, "recordings": 0, "observer_errors": ["CalledProcessError(255, ['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5558', 'shell', 'sh', '-c', \"'input tap 108 608\\\\nsleep 0.025\\\\nsettings put global transition_animation_scale 0\\\\nsettings put global animator_duration_scale 0\\\\nsettings put global window_animation_scale 0'\"])"]}
+/sdcard/lf8-checkbox-native-round-1-trash.mp4: 1 file pulled, 0 skipped. 106.3 MB/s (471289 bytes in 0.004s)

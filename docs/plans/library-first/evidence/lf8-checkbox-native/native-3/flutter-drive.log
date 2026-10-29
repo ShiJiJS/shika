@@ -1,0 +1,46 @@
+Installing ../../.dev/lf8-checkbox-native/checkbox-profile.apk...        736ms
+I/js.video_viewer( 5704): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+D/WindowLayoutComponentImpl( 5704): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@9cee89b, of which baseContext=android.app.ContextImpl@7de9be4
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:63034/ZnAg0Ey2uRY=/
+VMServiceFlutterDriver: Isolate found with number: 3671229663008307
+VMServiceFlutterDriver: Isolate 3671229663008307 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 5704): 00:00 +0: production checkbox controls with real Android input and settings
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController( 5704): hide(ime(), fromIme=false)
+I/ImeTracker( 5704): io.github.shijijs.video_viewer:cbba8ec6: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller( 5704): Installing profile for io.github.shijijs.video_viewer
+I/flutter ( 5704): Expected: be in range from 0 (exclusive) to 1 (exclusive)
+I/flutter ( 5704):   Actual: <1.0>
+I/flutter ( 5704): Native flag must arrive during the real running direction
+I/flutter ( 5704): 
+I/flutter ( 5704): #0      fail (package:matcher/src/expect/expect.dart:187)
+I/flutter ( 5704): #1      _expect (package:matcher/src/expect/expect.dart:182)
+I/flutter ( 5704): #2      expect (package:matcher/src/expect/expect.dart:65)
+I/flutter ( 5704): #3      expect (package:flutter_test/src/widget_tester.dart:473)
+I/flutter ( 5704): #4      CheckboxProbe.verify (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart:88)
+I/flutter ( 5704): #5      main.<anonymous closure>.probe (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart:254)
+I/flutter ( 5704): <asynchronous suspension>
+I/flutter ( 5704): #6      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart:418)
+I/flutter ( 5704): <asynchronous suspension>
+I/flutter ( 5704): #7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 5704): <asynchronous suspension>
+I/flutter ( 5704): #8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 5704): <asynchronous suspension>
+I/flutter ( 5704): #9      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 5704): <asynchronous suspension>
+I/flutter ( 5704): 00:41 +0: production checkbox controls with real Android input and settings [E]
+I/flutter ( 5704):   Test failed. See exception logs above.
+I/flutter ( 5704):   The test description was: production checkbox controls with real Android input and settings
+I/flutter ( 5704):   
+I/flutter ( 5704): 00:42 +0 -1: (tearDownAll)
+I/flutter ( 5704): 00:42 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: production checkbox controls with real Android input and settings
+Instance of 'FlutterErrorDetails'
+end of failure 1
+
+
+
+Leaving the application running.

@@ -1,0 +1,83 @@
+Installing ../../.dev/lf8-checkbox-native/checkbox-profile.apk...        632ms
+I/js.video_viewer(14008): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+D/WindowLayoutComponentImpl(14008): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@9cee89b, of which baseContext=android.app.ContextImpl@7de9be4
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:64168/Qjy_68vFcE8=/
+VMServiceFlutterDriver: Isolate found with number: 4210785958898319
+VMServiceFlutterDriver: Isolate 4210785958898319 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter (14008): 00:00 +0: production checkbox controls with real Android input and settings
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController(14008): hide(ime(), fromIme=false)
+I/ImeTracker(14008): io.github.shijijs.video_viewer:35a04311: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller(14008): Installing profile for io.github.shijijs.video_viewer
+I/flutter (14008): Guarded function conflict.
+I/flutter (14008): You must use "await" with all Future-returning test APIs.
+I/flutter (14008): The guarded method "pump" from class WidgetTester was called from file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart on line 212.
+I/flutter (14008): Then, the "state" method from class WidgetController was called from file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart on line 142.
+I/flutter (14008): The first method (WidgetTester.pump) had not yet finished executing at the time that the second method (WidgetController.state) was called. Since both are guarded, and the second was not a nested call inside the first, the first must complete its execution before the second can be called. Typically, this is achieved by putting an "await" statement in front of the call to the first.
+I/flutter (14008): 
+I/flutter (14008): When the first method (WidgetTester.pump) was called, this was the stack:
+I/flutter (14008): #0      TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:72)
+I/flutter (14008): #1      WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652)
+I/flutter (14008): #2      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart:212)
+I/flutter (14008): #3      main.<anonymous closure>.probe (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart:253)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): #4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart:371)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): #7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): #0      TestAsyncUtils.guardSync (package:flutter_test/src/test_async_utils.dart:312)
+I/flutter (14008): #1      WidgetController.state (package:flutter_test/src/controller.dart:931)
+I/flutter (14008): #2      main.<anonymous closure>.read (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart:142)
+I/flutter (14008): #3      main.<anonymous closure>.frame (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart:186)
+I/flutter (14008): #4      SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430)
+I/flutter (14008): #5      SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1357)
+I/flutter (14008): #6      LiveTestWidgetsFlutterBinding.handleDrawFrame (package:flutter_test/src/binding.dart:2812)
+I/flutter (14008): #7      SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1198)
+I/flutter (14008): #11     _invoke (dart:ui/hooks.dart:443)
+I/flutter (14008): #12     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:450)
+I/flutter (14008): #13     _drawFrame (dart:ui/hooks.dart:413)
+I/flutter (14008): (elided 3 frames from dart:async)
+I/flutter (14008): round-1-trash-reduced-press
+I/flutter (14008): #0      fail (package:matcher/src/expect/expect.dart:187)
+I/flutter (14008): #1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart:211)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): #2      main.<anonymous closure>.probe (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart:253)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): #3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/checkbox_motion_test.dart:371)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): #4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): #5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): #6      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): Multiple exceptions (2) were detected during the running of the current test, and at least one was unexpected.
+I/flutter (14008): #0      debugPrintStack (package:flutter/src/foundation/assertions.dart:1213)
+I/flutter (14008): #1      FlutterError.dumpErrorToConsole (package:flutter/src/foundation/assertions.dart:1033)
+I/flutter (14008): #2      _defaultTestExceptionReporter (package:flutter_test/src/test_exception_reporter.dart:29)
+I/flutter (14008): #3      new IntegrationTestWidgetsFlutterBinding.<anonymous closure> (package:integration_test/integration_test.dart:91)
+I/flutter (14008): #4      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1714)
+I/flutter (14008): #7      TestWidgetsFlutterBinding._runTest.handleUncaughtError (package:flutter_test/src/binding.dart:1915)
+I/flutter (14008): #8      TestWidgetsFlutterBinding._runTest.<anonymous closure> (package:flutter_test/src/binding.dart:1921)
+I/flutter (14008): <asynchronous suspension>
+I/flutter (14008): (elided 7 frames from dart:async)
+I/flutter (14008): 00:31 +0: production checkbox controls with real Android input and settings [E]
+I/flutter (14008):   Test failed. See exception logs above.
+I/flutter (14008):   The test description was: production checkbox controls with real Android input and settings
+I/flutter (14008):   
+I/flutter (14008): 00:31 +0 -1: (tearDownAll)
+I/flutter (14008): 00:31 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: production checkbox controls with real Android input and settings
+Instance of 'FlutterErrorDetails'
+end of failure 1
+
+
+
+Leaving the application running.

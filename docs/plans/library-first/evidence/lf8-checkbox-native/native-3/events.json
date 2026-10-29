@@ -1,0 +1,924 @@
+[
+  {
+    "time": 1793313347.482065,
+    "action": "fullscreen_ready",
+    "name": null,
+    "reduced": null,
+    "education_observed": false
+  },
+  {
+    "time": 1793313347.805977,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313348.479755,
+    "action": "begin",
+    "name": "round-1-trash",
+    "reduced": null
+  },
+  {
+    "time": 1793313348.765855,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313349.1357381,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313349.631916,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313350.135696,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313350.636488,
+    "action": "hold_cancel",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "CANCEL"
+  },
+  {
+    "time": 1793313351.309831,
+    "action": "configure",
+    "name": null,
+    "reduced": true,
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    }
+  },
+  {
+    "time": 1793313351.6430888,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313352.150456,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313352.6541498,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313353.1615849,
+    "action": "hold_cancel",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "CANCEL"
+  },
+  {
+    "time": 1793313353.8013282,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313354.315893,
+    "action": "tap_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.025s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313354.817344,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313355.317783,
+    "action": "tap_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.025s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313355.8262222,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313356.4256551,
+    "action": "hold_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.130s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313356.6809149,
+    "action": "hold_cancel",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "CANCEL"
+  },
+  {
+    "time": 1793313357.3390589,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313357.685107,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313358.327657,
+    "action": "cancel_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.015s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313358.841254,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313359.1916852,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313359.700938,
+    "action": "hold_end",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "UP"
+  },
+  {
+    "time": 1793313361.619853,
+    "action": "end",
+    "name": "round-1-trash",
+    "reduced": null
+  },
+  {
+    "time": 1793313361.885767,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313362.619413,
+    "action": "begin",
+    "name": "round-1-row",
+    "reduced": null
+  },
+  {
+    "time": 1793313362.93041,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313363.2622662,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ]
+  },
+  {
+    "time": 1793313363.7675478,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ]
+  },
+  {
+    "time": 1793313364.271476,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313364.772915,
+    "action": "hold_cancel",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "native_motion": "CANCEL"
+  },
+  {
+    "time": 1793313365.423846,
+    "action": "configure",
+    "name": null,
+    "reduced": true,
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    }
+  },
+  {
+    "time": 1793313365.77488,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ]
+  },
+  {
+    "time": 1793313366.278189,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ]
+  },
+  {
+    "time": 1793313366.7807271,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313367.281742,
+    "action": "hold_cancel",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "native_motion": "CANCEL"
+  },
+  {
+    "time": 1793313367.9260778,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313368.447853,
+    "action": "tap_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.025s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313368.935746,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313369.440793,
+    "action": "tap_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.025s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313369.957224,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313370.555038,
+    "action": "hold_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.130s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313370.801762,
+    "action": "hold_cancel",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "native_motion": "CANCEL"
+  },
+  {
+    "time": 1793313371.457504,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313371.81349,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313372.487272,
+    "action": "cancel_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.015s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313372.986284,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313373.323966,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313373.823189,
+    "action": "hold_end",
+    "name": null,
+    "reduced": null,
+    "point": [
+      120,
+      587
+    ],
+    "native_motion": "UP"
+  },
+  {
+    "time": 1793313376.0999339,
+    "action": "end",
+    "name": "round-1-row",
+    "reduced": null
+  },
+  {
+    "time": 1793313376.3644311,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313377.076441,
+    "action": "begin",
+    "name": "round-2-trash",
+    "reduced": null
+  },
+  {
+    "time": 1793313377.392225,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313377.751083,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313378.244093,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313378.7480042,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313379.2549582,
+    "action": "hold_cancel",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "CANCEL"
+  },
+  {
+    "time": 1793313379.93897,
+    "action": "configure",
+    "name": null,
+    "reduced": true,
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    }
+  },
+  {
+    "time": 1793313380.263028,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313380.7573419,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313381.268947,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313381.7684639,
+    "action": "hold_cancel",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "CANCEL"
+  },
+  {
+    "time": 1793313382.435082,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313382.934376,
+    "action": "tap_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.025s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313383.429783,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313383.944404,
+    "action": "tap_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.025s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313384.4304562,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313385.048917,
+    "action": "hold_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.130s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313385.289881,
+    "action": "hold_cancel",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "CANCEL"
+  },
+  {
+    "time": 1793313385.9463732,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313386.299296,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313386.943276,
+    "action": "cancel_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.015s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793313387.4768178,
+    "action": "failure",
+    "name": "terminal",
+    "reduced": null
+  }
+]

@@ -6,7 +6,7 @@
 
 此前preview.9/rollback.9（code15）继续保留，原SHA不变；它们不包含本轮菜单和下拉修改。本轮未重做未受影响的三轮组件时序，沿用[菜单](plans/library-first/LF8-MENU-MOTION.md)和[下拉](plans/library-first/LF8-DROPDOWN-MOTION.md)的独立Android记录；正常包另补实际选择/取消、读回、范围保持和数据核对。
 
-后续[复选框修复](plans/library-first/LF8-CHECKBOX-MOTION.md)已完成源码/组件核对，真实Android与整合包继续；以下code16两包暂不包含该段，原SHA保持。
+后续[复选框修复](plans/library-first/LF8-CHECKBOX-MOTION.md)已完成源码/组件及[真实Android三轮验证](plans/library-first/LF8-CHECKBOX-NATIVE.md)，正常入口业务与整合包继续；以下code16两包暂不包含该段，原SHA保持。
 
 ## 安装包
 

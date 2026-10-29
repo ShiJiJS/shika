@@ -1,0 +1,127 @@
+[
+  {
+    "time": 1793313450.710222,
+    "action": "fullscreen_ready",
+    "name": null,
+    "reduced": null,
+    "education_observed": false
+  },
+  {
+    "time": 1793313450.9828029,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313451.838599,
+    "action": "begin",
+    "name": "round-1-trash",
+    "reduced": null
+  },
+  {
+    "time": 1793313452.027245,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793313452.3864598,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313452.878966,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313453.380065,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313453.884788,
+    "action": "hold_cancel",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "CANCEL"
+  },
+  {
+    "time": 1793313454.392171,
+    "action": "configure",
+    "name": null,
+    "reduced": true,
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    }
+  },
+  {
+    "time": 1793313454.4341471,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313454.664429,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ]
+  },
+  {
+    "time": 1793313454.7742,
+    "action": "hold_start",
+    "name": null,
+    "reduced": null,
+    "point": [
+      108,
+      608
+    ],
+    "native_motion": "DOWN"
+  },
+  {
+    "time": 1793313479.990517,
+    "action": "failure",
+    "name": "terminal",
+    "reduced": null
+  }
+]
