@@ -20,10 +20,15 @@ import 'server_native_motion_test.dart' show host;
 /// Binds the actual route from its first rendered target element. Subsequent
 /// observations read that route's animation, including its final removal frame.
 class PageMotionProbe {
-  PageMotionProbe.entry(this.name, this.reduced, this.matches)
-    : closing = false;
+  PageMotionProbe.entry(
+    this.name,
+    this.reduced,
+    this.matches, {
+    this.excludedRoute,
+  }) : closing = false;
   PageMotionProbe.exit(this.name, this.reduced, this.route, this.element)
     : closing = true,
+      excludedRoute = null,
       matches = null {
     animation = route!.animation!;
     duration = route!.reverseTransitionDuration;
@@ -32,6 +37,7 @@ class PageMotionProbe {
   final String name;
   final bool reduced, closing;
   final bool Function(Widget)? matches;
+  final ModalRoute<dynamic>? excludedRoute;
   ModalRoute<dynamic>? route;
   Element? element;
   Animation<double>? animation;
@@ -47,7 +53,7 @@ class PageMotionProbe {
         if (route != null) return;
         if (matches!(candidate.widget)) {
           final found = ModalRoute.of(candidate);
-          if (found?.isCurrent == true) {
+          if (found?.isCurrent == true && found != excludedRoute) {
             route = found;
             element = candidate;
             animation = found!.animation!;
@@ -223,9 +229,15 @@ void main() {
       String name,
       bool reduced,
       bool Function(Widget) matches,
-      Future<void> Function() action,
-    ) async {
-      final probe = active = PageMotionProbe.entry(name, reduced, matches);
+      Future<void> Function() action, {
+      ModalRoute<dynamic>? excludedRoute,
+    }) async {
+      final probe = active = PageMotionProbe.entry(
+        name,
+        reduced,
+        matches,
+        excludedRoute: excludedRoute,
+      );
       result['active_case'] = {'name': name, 'frames': probe.frames};
       await action();
       await until(() => probe.done, 'entry frame trace $name');
@@ -337,15 +349,19 @@ void main() {
         final fullscreen = await enter(
           '$prefix-fullscreen-entry',
           reduced,
-          (w) => w is PlayerSurface && w.fullscreen,
+          (w) => w is Scaffold,
           () => tap(find.text('横向全屏')),
+          excludedRoute: preview.route,
         );
         await host('fullscreen_ready');
         await until(
           () =>
               WidgetsBinding.instance.lifecycleState ==
                   AppLifecycleState.resumed &&
-              t.view.physicalSize.width > t.view.physicalSize.height,
+              t.view.physicalSize.width > t.view.physicalSize.height &&
+              t
+                  .widgetList<PlayerSurface>(find.byType(PlayerSurface))
+                  .any((w) => w.fullscreen && w.controller.value.isInitialized),
           'actual landscape and foreground after system hint',
         );
         await configure(!reduced);
