@@ -546,7 +546,7 @@ class _ArchiveRestorePageState extends State<ArchiveRestorePage> {
           ),
         ),
       if (!complete && !loading) _archiveNote(context, '请查看剩余目录并核对映射，再确认恢复。'),
-      CheckboxListTile(
+      PaperCheckboxListTile(
         key: const Key('archive-confirm'),
         controlAffinity: ListTileControlAffinity.leading,
         contentPadding: EdgeInsets.zero,
