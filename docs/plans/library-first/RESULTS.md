@@ -2,7 +2,9 @@
 
 更新：2026-10-30。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
-当前交付段（2026-10-30）：[菜单/下拉正常包 PR #114](https://github.com/ShiJiJS/video_viewer/pull/114)本机完成。preview.10/rollback.10同code16、固定a154d783/原Windows签名，额外完整766客户端/分析通过；三次基线覆盖保留身份/登录/完整偏好/21表，之后实际媒体库筛选/取消、多选、阅读设置、更多菜单、内嵌/全屏倍速及历史筛选通过，主动写入差量单列，旧UI菜单再回新两次覆盖保留操作后数据。[219份输入与只读复核](evidence/lf8-menu-dropdown-package/README.md)、环境恢复完成；原四服务/donor保持、旧14/15包保留。新16连接旧协议后的首页菜单组合待补，#110最后一项仍开放。原型独立未改，服务未改/未部署，目标手机/NAS、有声/云提供器、其它UI-06、45项终验和#78/#89/#100仍开放。
+当前补证（2026-10-30）：[原版服务首页菜单](LF8-LEGACY-HOME-MENU.md)本机完成。正常preview.10/code16真实连接0.1.4镜像980c9a01（24个Python文件与f5fe32c9相同、无capabilities），普通/减少动画下取消、详情和快速整理进出均保持同一视频/位置；14张明细表及设置/令牌不变、19个成功GET/HEAD，无图包/管理误请求。切回新版35张明细表与设置保持，仅主动登录新增令牌。[109份输入、只读复核与恢复](evidence/lf8-legacy-home-menu/README.md)通过；原四服务/donor/媒体保持，App/服务/SDK/原型和两包未改。#110最后组合已补，初始模拟器安装路径异常/ART缓存差量单列，未定位原因；其它UI-06/45项与手机/NAS/有声等继续。
+
+当前交付段（2026-10-30）：[菜单/下拉正常包 PR #114](https://github.com/ShiJiJS/video_viewer/pull/114)本机完成。preview.10/rollback.10同code16、固定a154d783/原Windows签名，额外完整766客户端/分析通过；三次基线覆盖保留身份/登录/完整偏好/21表，之后实际媒体库筛选/取消、多选、阅读设置、更多菜单、内嵌/全屏倍速及历史筛选通过，主动写入差量单列，旧UI菜单再回新两次覆盖保留操作后数据。[219份输入与只读复核](evidence/lf8-menu-dropdown-package/README.md)、环境恢复完成；原四服务/donor保持、旧14/15包保留。该段当时未覆盖的原版服务首页组合已由[后续补证](LF8-LEGACY-HOME-MENU.md)完成。原型独立未改，服务未改/未部署，目标手机/NAS、有声/云提供器、其它UI-06、45项终验和#78/#89/#100仍开放。
 
 上一开发段（2026-10-30）：[下拉选择](LF8-DROPDOWN-MOTION.md)按[#112](https://github.com/ShiJiJS/video_viewer/issues/112)/[草稿PR #113](https://github.com/ShiJiJS/video_viewer/pull/113)推进，固定2f9792a4，9处入口接入自有240/160ms、实时减少动画与独立退出，保留表单/焦点/布局。完整765客户端、15针对/16组静态RGBA及analyze通过；[源码和原始诊断](evidence/lf8-dropdown-motion/README.md)。[真实Android模块](evidence/lf8-dropdown-native/README.md)三轮72次过渡、12次实际运行中切换、12选择更新/24取消结果及24完整解码录像通过，独立核对和恢复完成；后续普通main code16与实际业务已由[配套包](LF8-MENU-DROPDOWN-PACKAGE.md)补齐，code15不含本段；原型/SDK/服务/两包未改。
 

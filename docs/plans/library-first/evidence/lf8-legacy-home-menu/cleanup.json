@@ -1,0 +1,41 @@
+{
+  "complete": true,
+  "owned_qemu_pid": 529,
+  "owned_qemu_absent": true,
+  "entering_settings_restored": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420",
+    "window": "1",
+    "transition": "1",
+    "animator": "1",
+    "font": "1.0",
+    "rotation": "0",
+    "accel": "1",
+    "immersive": "confirmed"
+  },
+  "entering_shell_uid_restored": true,
+  "unroot_receipt": "restarting adbd as non root",
+  "emulator_receipt": "OK: killing emulator, bye bye\nOK",
+  "owned_containers_gracefully_stopped_and_removed": [
+    {
+      "id": "aa94e1c6cc411928ee83ae71887dad92ed8327285f3d74b0d6bc3b88cfd49fb0",
+      "stopped": "Flag --time has been deprecated, use --timeout instead\naa94e1c6cc411928ee83ae71887dad92ed8327285f3d74b0d6bc3b88cfd49fb0",
+      "removed": "aa94e1c6cc411928ee83ae71887dad92ed8327285f3d74b0d6bc3b88cfd49fb0"
+    },
+    {
+      "id": "bcb8aa736079f722d67e65f2025ae1cbe4cd08f6a768b4a0dec7ec3c8b15aee3",
+      "stopped": "Flag --time has been deprecated, use --timeout instead\nbcb8aa736079f722d67e65f2025ae1cbe4cd08f6a768b4a0dec7ec3c8b15aee3",
+      "removed": "bcb8aa736079f722d67e65f2025ae1cbe4cd08f6a768b4a0dec7ec3c8b15aee3"
+    }
+  ],
+  "original4_services_preserved_healthy": {
+    "/video-viewer-client-e2e-server-1": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+    "/video-viewer-history-purge-app-lf7": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+    "/video-viewer-archive-app-lf7": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+    "/video-viewer-server-1": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b"
+  },
+  "both_donor_data_and_config_sha256_unchanged": true,
+  "all_sample_media_sha256_unchanged": true,
+  "all_data_and_apks_preserved": true,
+  "no_nas_phone_or_real_media_operations": true
+}

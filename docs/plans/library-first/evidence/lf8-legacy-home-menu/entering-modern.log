@@ -1,0 +1,21 @@
+Error type 3
+Error: Activity class {io.github.shijijs.video_viewer/io.github.shijijs.video_viewer.MainActivity} does not exist.
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-legacy-home-menu/ui/driver.py", line 27, in <module>
+    if sys.argv[1]=='cold':cold(sys.argv[2],sys.argv[3])
+                           ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-legacy-home-menu/ui/driver.py", line 19, in cold
+    device('shell','am','force-stop',PACKAGE);offset=trace_count();device('shell','am','start','-n',PACKAGE+'/.MainActivity');deadline=time.monotonic()+50
+                                                                   ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-legacy-home-menu/ui/ui_driver.py", line 4, in device
+    def device(*args):return subprocess.check_output([ADB,'-s',SERIAL,*args],timeout=30)
+                             ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8_2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 473, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8_2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5556', 'shell', 'am', 'start', '-n', 'io.github.shijijs.video_viewer/.MainActivity']' returned non-zero exit status 1.

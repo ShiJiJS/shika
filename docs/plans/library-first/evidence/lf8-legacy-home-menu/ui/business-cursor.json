@@ -1,0 +1,73 @@
+{
+  "sequence": 47,
+  "checks": [
+    {
+      "name": "normal16-original-service-home",
+      "trace_end": {
+        "legacy": 62,
+        "modern": 41
+      },
+      "last_capture_sequence": 8,
+      "observed_running_label": "正在播放，1.0倍速, flower-portrait.mp4\nflower-portrait.mp4",
+      "pause_by_actual_video_area": true,
+      "original_service_no_capabilities": true,
+      "normal_system_animation": true
+    },
+    {
+      "name": "legacy-normal-menu-cancel",
+      "trace_end": {
+        "legacy": 69,
+        "modern": 44
+      },
+      "last_capture_sequence": 11,
+      "same_video": "flower-portrait.mp4",
+      "same_position": 1,
+      "full_catalog_equal": true
+    },
+    {
+      "name": "legacy-normal-details-review",
+      "trace_end": {
+        "legacy": 74,
+        "modern": 46
+      },
+      "last_capture_sequence": 24,
+      "same_video": "flower-portrait.mp4",
+      "same_position": 1,
+      "full_catalog_equal": true
+    },
+    {
+      "name": "legacy-reduced-menu-cancel",
+      "trace_end": {
+        "legacy": 76,
+        "modern": 47
+      },
+      "last_capture_sequence": 28,
+      "same_video": "flower-portrait.mp4",
+      "same_position": 1,
+      "full_catalog_equal": true
+    },
+    {
+      "name": "legacy-reduced-details-review",
+      "trace_end": {
+        "legacy": 82,
+        "modern": 49
+      },
+      "last_capture_sequence": 41,
+      "same_video": "flower-portrait.mp4",
+      "same_position": 1,
+      "full_catalog_equal": true
+    },
+    {
+      "name": "modern-workspace-return",
+      "trace_end": {
+        "legacy": 86,
+        "modern": 62
+      },
+      "last_capture_sequence": 47,
+      "videos": 2,
+      "packs": 1,
+      "normal_library_entry": true,
+      "no_automatic_preview": true
+    }
+  ]
+}
