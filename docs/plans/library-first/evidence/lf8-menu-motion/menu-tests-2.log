@@ -1,0 +1,15 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/menu_motion_test.dart
+00:00 +0: actual workspace menu uses 240/160 or zero reduced=false
+ACTUAL workspace reduced=false forward=240 reverse=160
+00:00 +1: actual workspace menu uses 240/160 or zero reduced=true
+ACTUAL workspace reduced=true forward=0 reverse=0
+00:00 +2: actual workspace open menu completes when reduced is enabled mid-flight
+ACTUAL live reduced menu animation=1.0
+00:01 +3: selection is immediate and exit finishes at 160 or zero reduced=false
+00:01 +4: selection is immediate and exit finishes at 160 or zero reduced=true
+00:01 +5: live reduced also completes an exiting menu without repeating its action
+00:01 +6: keyboard skips disabled entries, selects once and Escape only cancels
+00:01 +7: removing the anchor and resizing an open menu keeps close safe
+00:01 +8: disabled and empty buttons do not open or invoke a menu action
+00:01 +9: resting menu and button pixels match the original in 16 theme direction anchor and button combinations
+00:04 +10: All tests passed!

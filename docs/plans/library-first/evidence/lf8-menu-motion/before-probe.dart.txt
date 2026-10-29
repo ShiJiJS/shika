@@ -1,0 +1,46 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:video_viewer/main.dart';
+import 'package:video_viewer/ui/preferences.dart';
+import 'media_workspace_widget_test.dart' show WorkspaceLibrary;
+
+class MenuObserver extends NavigatorObserver {
+  TransitionRoute<dynamic>? menu;
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    if (route is PopupRoute<dynamic>) menu = route;
+  }
+}
+void main() {
+  for (final reduced in [false,true]) {
+    testWidgets('actual workspace menu uses 240/160 or zero reduced=$reduced', (t) async {
+      t.platformDispatcher.accessibilityFeaturesTestValue=FakeAccessibilityFeatures(disableAnimations: reduced);
+      addTearDown(t.platformDispatcher.clearAccessibilityFeaturesTestValue);
+      final repo=WorkspaceLibrary();await repo.initialize();final preferences=UiPreferences();final observer=MenuObserver();
+      addTearDown(() async {await t.pumpWidget(const SizedBox());repo.dispose();preferences.dispose();});
+      await t.pumpWidget(VideoViewerApp(repository:repo,preferences:preferences,navigatorObservers:[observer]));await t.pumpAndSettle();
+      await t.tap(find.byTooltip('更多'));await t.pump();
+      final route=observer.menu!;
+      debugPrint('ACTUAL workspace reduced=$reduced forward=${route.transitionDuration.inMilliseconds} reverse=${route.reverseTransitionDuration.inMilliseconds}');
+      expect(route.transitionDuration,Duration(milliseconds:reduced?0:240));
+      expect(route.reverseTransitionDuration,Duration(milliseconds:reduced?0:160));
+    });
+  }
+  testWidgets('actual workspace open menu completes when reduced is enabled mid-flight', (t) async {
+    t.platformDispatcher.accessibilityFeaturesTestValue=FakeAccessibilityFeatures();addTearDown(t.platformDispatcher.clearAccessibilityFeaturesTestValue);
+    final repo=WorkspaceLibrary();await repo.initialize();final preferences=UiPreferences();final observer=MenuObserver();
+    addTearDown(() async {await t.pumpWidget(const SizedBox());repo.dispose();preferences.dispose();});
+    await t.pumpWidget(VideoViewerApp(repository:repo,preferences:preferences,navigatorObservers:[observer]));await t.pumpAndSettle();
+    await t.tap(find.byTooltip('更多'));await t.pump();await t.pump(const Duration(milliseconds:60));final route=observer.menu!;expect(route.animation!.value,inExclusiveRange(0,1));
+    t.platformDispatcher.accessibilityFeaturesTestValue=FakeAccessibilityFeatures(disableAnimations:true);await t.pump();
+    debugPrint('ACTUAL live reduced menu animation=${route.animation!.value}');
+    expect(route.animation!.value,1);
+  });
+  testWidgets('public SDK animation style respects requested reverse duration', (t) async {
+    final observer=MenuObserver();
+    await t.pumpWidget(MaterialApp(navigatorObservers:[observer],home:Scaffold(body:PopupMenuButton<String>(tooltip:'probe',popUpAnimationStyle:const AnimationStyle(duration:Duration(milliseconds:240),reverseDuration:Duration(milliseconds:160)),itemBuilder:(_)=>[const PopupMenuItem(value:'one',child:Text('one'))]))));
+    await t.tap(find.byTooltip('probe'));await t.pumpAndSettle();
+    debugPrint('ACTUAL SDK style forward=${observer.menu!.transitionDuration.inMilliseconds} reverse=${observer.menu!.reverseTransitionDuration.inMilliseconds}');
+    expect(observer.menu!.reverseTransitionDuration,const Duration(milliseconds:160));
+  });
+}

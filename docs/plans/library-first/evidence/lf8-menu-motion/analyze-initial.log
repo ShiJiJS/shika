@@ -1,0 +1,12 @@
+Analyzing mobile...                                             
+
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • lib/ui/paper_menu.dart:71:11 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • lib/ui/paper_menu.dart:104:17 • curly_braces_in_flow_control_structures
+  error • 'WidgetsBindingObserver.handleStartBackGesture' ('bool Function(PredictiveBackEvent)') isn't a valid override of 'TransitionRoute.handleStartBackGesture' ('void Function({double progress})') • lib/ui/paper_menu.dart:177:53 • invalid_override
+  error • 'WidgetsBindingObserver.handleUpdateBackGestureProgress' ('void Function(PredictiveBackEvent)') isn't a valid override of 'TransitionRoute.handleUpdateBackGestureProgress' ('void Function({required double progress})') • lib/ui/paper_menu.dart:177:53 • invalid_override
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • lib/ui/paper_menu.dart:243:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • lib/ui/paper_menu.dart:246:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • lib/ui/paper_menu.dart:248:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • lib/ui/paper_menu.dart:314:9 • curly_braces_in_flow_control_structures
+
+8 issues found. (ran in 2.6s)
