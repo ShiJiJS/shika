@@ -1,5 +1,7 @@
 # GitHub 实施任务
 
+当前交付段（2026-10-30）：[菜单/下拉正常包 PR #114](https://github.com/ShiJiJS/video_viewer/pull/114)本机完成。preview.10/rollback.10同code16、固定a154d783/原Windows签名，额外完整766客户端/分析通过；三次基线覆盖保留身份/登录/完整偏好/21表，之后实际媒体库筛选/取消、多选、阅读设置、更多菜单、内嵌/全屏倍速及历史筛选通过，主动写入差量单列，旧UI菜单再回新两次覆盖保留操作后数据。[219份输入与只读复核](evidence/lf8-menu-dropdown-package/README.md)、环境恢复完成；原四服务/donor保持、旧14/15包保留。新16连接旧协议后的首页菜单组合待补，#110最后一项仍开放。原型独立未改，服务未改/未部署，目标手机/NAS、有声/云提供器、其它UI-06、45项终验和#78/#89/#100仍开放。
+
 最新阶段：[复杂图包性能测量与诊断 PR #96（进行中）](https://github.com/ShiJiJS/video_viewer/pull/96)。新增两份公开摄影原图衍生的506页/约3.4GB夹具（500页长包含400页4K/100页8K），正常服务扫描无失败；profile重复计时、被动内核PSS/RSS/VmHWM与汇总工具已提交，生产App/服务/原型未改，正常安装包仍为PR #95配套版本。三处采集错误已修正并分开保留；SWANGLE/GLES出现bad color buffer/GL context异常，QEMU81429挂起并确认退出，该轮失败，不诊断为App OOM。现以同数据SwiftShader复测，另一次进度确认等待超时正补状态诊断；尚无完整30次分位数/三轮500页结论。真实手机/NAS与READ-06完整验收继续，#24/#33/#78/#89均不关闭。
 
 当前视频预览：[全屏/后台行为 PR #77](https://github.com/ShiJiJS/video_viewer/pull/77)，45点/12段录屏与15项相关检查；实际绿边登记[#78](https://github.com/ShiJiJS/video_viewer/issues/78)，保留UI-02未通过状态。[台账](RESULTS.md)。

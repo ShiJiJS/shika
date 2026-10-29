@@ -1,0 +1,17 @@
+{
+  "complete": true,
+  "checks": [
+    {
+      "step": "forward16",
+      "all21_tables_auth_settings_and_appearance_equal": true
+    },
+    {
+      "step": "rollback16",
+      "all21_tables_auth_settings_and_appearance_equal": true
+    },
+    {
+      "step": "forward16-return",
+      "all21_tables_auth_settings_and_appearance_equal": true
+    }
+  ]
+}

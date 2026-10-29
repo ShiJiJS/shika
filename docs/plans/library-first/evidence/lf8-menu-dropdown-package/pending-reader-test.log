@@ -1,0 +1,32 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/dropdown_pending_reader_test.dart
+test/dropdown_pending_reader_test.dart:47:20: Error: Method not found: 'PackReadingEntry'.
+            entry: PackReadingEntry(PackQuery(), anchorId: 'p0'),
+                   ^^^^^^^^^^^^^^^^
+test/dropdown_pending_reader_test.dart:69:60: Error: 'ReaderDirection' isn't a type.
+      await t.tap(find.byType(PaperDropdownButtonFormField<ReaderDirection>));
+                                                           ^^^^^^^^^^^^^^^
+test/dropdown_pending_reader_test.dart:105:53: Error: Undefined name 'ReaderDirection'.
+      expect(state().session.preferences.direction, ReaderDirection.rtl);
+                                                    ^^^^^^^^^^^^^^^
+test/dropdown_pending_reader_test.dart:106:43: Error: Undefined name 'ReaderDirection'.
+      expect(repo.prefs['p0']!.direction, ReaderDirection.rtl);
+                                          ^^^^^^^^^^^^^^^
+00:00 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/dropdown_pending_reader_test.dart [E]
+  Failed to load "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/dropdown_pending_reader_test.dart":
+  Compilation failed for testPath=/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/dropdown_pending_reader_test.dart: test/dropdown_pending_reader_test.dart:47:20: Error: Method not found: 'PackReadingEntry'.
+              entry: PackReadingEntry(PackQuery(), anchorId: 'p0'),
+                     ^^^^^^^^^^^^^^^^
+  test/dropdown_pending_reader_test.dart:69:60: Error: 'ReaderDirection' isn't a type.
+        await t.tap(find.byType(PaperDropdownButtonFormField<ReaderDirection>));
+                                                             ^^^^^^^^^^^^^^^
+  test/dropdown_pending_reader_test.dart:105:53: Error: Undefined name 'ReaderDirection'.
+        expect(state().session.preferences.direction, ReaderDirection.rtl);
+                                                      ^^^^^^^^^^^^^^^
+  test/dropdown_pending_reader_test.dart:106:43: Error: Undefined name 'ReaderDirection'.
+        expect(repo.prefs['p0']!.direction, ReaderDirection.rtl);
+                                            ^^^^^^^^^^^^^^^
+  .
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/dropdown_pending_reader_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/dropdown_pending_reader_test.dart

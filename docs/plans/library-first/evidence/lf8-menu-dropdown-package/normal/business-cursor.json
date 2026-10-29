@@ -1,0 +1,216 @@
+{
+  "sequence": 241,
+  "checks": [
+    {
+      "name": "workspace-more-select-exit",
+      "trace_end": 132,
+      "selected_once": 1,
+      "business_tables_equal": true
+    },
+    {
+      "name": "video-sort-newest-name",
+      "trace_end": 137,
+      "restored": true,
+      "video_count": 2
+    },
+    {
+      "name": "video-filter-cancel-three-fields",
+      "trace_end": 154,
+      "video_count": 2,
+      "draft_discarded": true
+    },
+    {
+      "name": "video-filter-apply-three-fields",
+      "trace_end": 161,
+      "video_count": 1,
+      "orientation": "landscape",
+      "duration": "short",
+      "type": "MP4"
+    },
+    {
+      "name": "video-filter-clear-readonly",
+      "trace_end": 164,
+      "video_count": 2,
+      "business_tables_equal": true
+    },
+    {
+      "name": "root-kind-change-cancel",
+      "trace_end": 374,
+      "last_capture_sequence": 64,
+      "root_count": 2,
+      "business_tables_equal": true,
+      "normal_system_motion": true
+    },
+    {
+      "name": "task-family-pack-filter",
+      "trace_end": 428,
+      "last_capture_sequence": 72,
+      "family": "pack",
+      "visible_field_touch": true
+    },
+    {
+      "name": "task-family-all-restore",
+      "trace_end": 465,
+      "last_capture_sequence": 76,
+      "business_tables_equal": true
+    },
+    {
+      "name": "reader-defaults-draft-cancel",
+      "trace_end": 526,
+      "last_capture_sequence": 89,
+      "business_tables_equal": true
+    },
+    {
+      "name": "reader-defaults-save",
+      "trace_end": 532,
+      "last_capture_sequence": 101,
+      "values": {
+        "mode": "horizontal",
+        "direction": "rtl",
+        "gap": false,
+        "fit": "width",
+        "revision": 1
+      },
+      "per_pack_preferences_unchanged": true
+    },
+    {
+      "name": "reader-defaults-restore",
+      "trace_end": 539,
+      "last_capture_sequence": 113,
+      "values": {
+        "mode": "horizontal",
+        "direction": "ltr",
+        "gap": false,
+        "fit": "contain",
+        "revision": 2
+      },
+      "per_pack_preferences_unchanged": true
+    },
+    {
+      "name": "pack-sort-newest-name",
+      "trace_end": 652,
+      "last_capture_sequence": 128,
+      "pack_count": 1,
+      "restored": true
+    },
+    {
+      "name": "pack-state-quick-unread-empty",
+      "trace_end": 687,
+      "last_capture_sequence": 131,
+      "matches": 0,
+      "no_fallback_to_unfiltered_pack": true
+    },
+    {
+      "name": "pack-state-draft-cancel",
+      "trace_end": 690,
+      "last_capture_sequence": 138,
+      "prior_unread_filter_retained": true
+    },
+    {
+      "name": "pack-state-completed-apply",
+      "trace_end": 694,
+      "last_capture_sequence": 146,
+      "matches": 1
+    },
+    {
+      "name": "pack-state-all-restore",
+      "trace_end": 697,
+      "last_capture_sequence": 148,
+      "matches": 1,
+      "business_tables_equal_to_after_defaults": true
+    },
+    {
+      "name": "workspace-pack-select-exit",
+      "trace_end": 930,
+      "last_capture_sequence": 159,
+      "selected_once": 1,
+      "business_tables_equal_to_after_defaults": true,
+      "observation_correction": "selection mode has no read-status badge"
+    },
+    {
+      "name": "reader-more-queue-and-overview",
+      "trace_end": 949,
+      "last_capture_sequence": 169,
+      "range_packs": 1,
+      "page_overview_toolbar": true,
+      "menu_overview_absent_at_this_layout": true
+    },
+    {
+      "name": "reader-pack-direction-fit-save",
+      "trace_end": 958,
+      "last_capture_sequence": 181,
+      "values": {
+        "pack_id": "f38cd364-006e-4e7f-a875-fcff16929a87",
+        "mode": "horizontal",
+        "direction": "rtl",
+        "gap": 0,
+        "fit": "width",
+        "revision": 8
+      },
+      "global_defaults_unchanged": true
+    },
+    {
+      "name": "reader-pack-restore-and-source",
+      "trace_end": 969,
+      "last_capture_sequence": 198,
+      "values": {
+        "pack_id": "f38cd364-006e-4e7f-a875-fcff16929a87",
+        "mode": "vertical",
+        "direction": "ltr",
+        "gap": 0,
+        "fit": "contain",
+        "revision": 11
+      },
+      "global_defaults_unchanged": true,
+      "same_page": 2,
+      "source_packs": 1
+    },
+    {
+      "name": "video-preview-paused-identity",
+      "trace_end": 1000,
+      "last_capture_sequence": 206,
+      "observed_running": "正在播放，1.0倍速, flower-landscape.mp4",
+      "paused_by_gesture": true
+    },
+    {
+      "name": "video-inline-speed-select",
+      "trace_end": 1005,
+      "last_capture_sequence": 211,
+      "paused_title": "flower-landscape.mp4",
+      "speed": 1.5
+    },
+    {
+      "name": "video-fullscreen-speed-select",
+      "trace_end": 1010,
+      "last_capture_sequence": 217,
+      "paused_title": "flower-landscape.mp4",
+      "speed": 1.0,
+      "landscape": true
+    },
+    {
+      "name": "video-speed-return-source",
+      "trace_end": 1014,
+      "last_capture_sequence": 221,
+      "same_paused_video": true,
+      "same_position": 1,
+      "source_videos": 2,
+      "sort": "name"
+    },
+    {
+      "name": "modern-legacy-shell-more",
+      "trace_end": 1022,
+      "last_capture_sequence": 233,
+      "entry": "service connection header",
+      "selected": "media roots",
+      "all21_auth_settings_equal": true,
+      "not_an_old_server_protocol_test": true
+    },
+    {
+      "name": "paired-rollback-more-and-forward-return",
+      "trace_end": 1096,
+      "last_capture_sequence": 241,
+      "legacy_review_enter_exit": true,
+      "all21_auth_settings_and_preferences_equal": true
+    }
+  ]
+}
