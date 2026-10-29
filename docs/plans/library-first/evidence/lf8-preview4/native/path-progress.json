@@ -1,0 +1,101 @@
+{
+  "checks": [
+    {
+      "state": "candidate-library",
+      "required": [
+        "媒体库",
+        "flower-landscape",
+        "视频"
+      ]
+    },
+    {
+      "state": "candidate-packs",
+      "required": [
+        "继续阅读",
+        "Upgrade Pack"
+      ]
+    },
+    {
+      "state": "candidate-reader-vertical",
+      "required": [
+        "2 / 3",
+        "纵向拼接"
+      ]
+    },
+    {
+      "state": "candidate-reader-horizontal",
+      "required": [
+        "2 / 3",
+        "横向翻页"
+      ]
+    },
+    {
+      "state": "candidate-reader-page3",
+      "required": [
+        "3 / 3"
+      ]
+    },
+    {
+      "state": "candidate-reader-page2",
+      "required": [
+        "2 / 3"
+      ]
+    },
+    {
+      "state": "candidate-reader-vertical-again",
+      "required": [
+        "2 / 3",
+        "纵向拼接"
+      ]
+    },
+    {
+      "state": "candidate-reader-return",
+      "required": [
+        "继续阅读",
+        "Upgrade Pack",
+        "媒体库"
+      ]
+    },
+    {
+      "state": "candidate-reader-resumed",
+      "required": [
+        "2 / 3",
+        "纵向拼接"
+      ]
+    },
+    {
+      "state": "candidate-reader-return2",
+      "required": [
+        "媒体库",
+        "继续阅读"
+      ]
+    },
+    {
+      "state": "candidate-video-tags-shown",
+      "required": [
+        "LEGACY_ONLY"
+      ]
+    },
+    {
+      "state": "candidate-pack-tags-shown",
+      "required": [
+        "PACK_ONLY"
+      ]
+    },
+    {
+      "state": "candidate-settings-shown",
+      "required": [
+        "服务连接",
+        "操作任务"
+      ]
+    },
+    {
+      "state": "candidate-videos",
+      "required": [
+        "flower-landscape",
+        "预览此范围"
+      ]
+    }
+  ],
+  "stage": "inspect-preview"
+}
