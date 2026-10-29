@@ -10,7 +10,7 @@
 
 ## 本段结果
 
-冻结源码 `7299c6d2c396af111a683e3fe3778f9678856c3e`；[原始证据](evidence/lf8-notice-motion/README.md)区分生产组件 profile 与普通 release。
+[草稿PR #107](https://github.com/ShiJiJS/video_viewer/pull/107)；冻结源码 `7299c6d2c396af111a683e3fe3778f9678856c3e`；[原始证据](evidence/lf8-notice-motion/README.md)区分生产组件 profile 与普通 release。
 
 - 原生三轮共24次进退场、12段完整解码录屏通过。实际Android系统比例、PlatformDispatcher与MediaQuery一致；正常160ms有真实透明度中间值，减少动画首个观测帧到目标。通知完全打开后切换相反设置，再分别关闭或触发测试撤销；六次测试回调不冒充真实文件命令。
 - 普通preview.6/rollback.6均原Windows签名、正常main入口、ARM64 release、同内部号12。新11→新12→旧12→新12三次覆盖检查通过；21张业务表、登录摘要、设置摘要、完整外观偏好和安装身份逐次相同，无卸载/清数据。
