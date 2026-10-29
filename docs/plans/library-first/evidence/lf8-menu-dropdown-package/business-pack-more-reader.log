@@ -1,0 +1,89 @@
+biz-0149-pack-more-open-before
+媒体库 [53,158][796,248]
+选择文件夹 [796,140][922,266]
+更多 [922,140][1049,266]
+视频
+2 [53,276][169,374]
+图包
+1 [227,276][344,374]
+筛选图包 [32,391][147,501]
+继续阅读
+Upgrade Pack
+第 2 / 3 张 [42,522][1038,748]
+67 [186,714][951,719]
+1 个图包 [42,784][523,837]
+阅读状态 [523,753][724,868]
+名称 ↓ [724,784][837,837]
+快速整理 [837,753][1038,868]
+3 张
+已读
+Upgrade Pack
+3 张可读
+# PACK_ONLY [42,905][524,1680]
+图包操作 Upgrade Pack [398,1543][524,1617]
+媒体库 [146,2208][343,2337]
+标签 [343,2208][540,2337]
+最近 [540,2208][737,2337]
+设置 [737,2208][934,2337]
+biz-0150-pack-more-open-after
+多选内容 [754,178][1049,304]
+快速整理 [754,304][1049,430]
+Dismiss menu [0,0][1080,2400]
+biz-0151-pack-more-select-before
+多选内容 [754,178][1049,304]
+快速整理 [754,304][1049,430]
+Dismiss menu [0,0][1080,2400]
+biz-0152-pack-more-select-after
+媒体库 [53,158][796,248]
+选择文件夹 [796,140][922,266]
+更多 [922,140][1049,266]
+视频
+2 [53,276][169,374]
+图包
+1 [227,276][344,374]
+筛选图包 [32,391][147,501]
+1 个图包 [42,559][724,611]
+阅读状态 [724,527][925,643]
+名称 ↓ [925,559][1038,611]
+3 张
+Upgrade Pack
+3 张可读
+# PACK_ONLY [42,679][524,1454]
+图包操作 Upgrade Pack [398,1317][524,1391]
+全选匹配项 [0,2080][360,2206]
+已选 0 [360,2115][720,2170]
+追加标签 [720,2080][1080,2206]
+媒体库 [146,2208][343,2337]
+标签 [343,2208][540,2337]
+最近 [540,2208][737,2337]
+设置 [737,2208][934,2337]
+biz-0153-pack-select-card-before
+媒体库 [53,158][796,248]
+选择文件夹 [796,140][922,266]
+更多 [922,140][1049,266]
+视频
+2 [53,276][169,374]
+图包
+1 [227,276][344,374]
+筛选图包 [32,391][147,501]
+1 个图包 [42,559][724,611]
+阅读状态 [724,527][925,643]
+名称 ↓ [925,559][1038,611]
+3 张
+Upgrade Pack
+3 张可读
+# PACK_ONLY [42,679][524,1454]
+图包操作 Upgrade Pack [398,1317][524,1391]
+全选匹配项 [0,2080][360,2206]
+已选 0 [360,2115][720,2170]
+追加标签 [720,2080][1080,2206]
+媒体库 [146,2208][343,2337]
+标签 [343,2208][540,2337]
+最近 [540,2208][737,2337]
+设置 [737,2208][934,2337]
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-menu-dropdown-package/normal/check-pack-more-open-reader.py", line 2, in <module>
+    u.choose('更多',context='pack-more-open');u.choose('多选内容',context='pack-more-select');n=u.choose(prefix='3 张\n已读\nUpgrade Pack',context='pack-select-card');u.expect_text(n,'已选 1')
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-menu-dropdown-package/normal/business_ui.py", line 15, in choose
+    n=snap(context+'-before');items=matches(n,label,prefix);assert len(items)==1,(label,prefix,[x.get('content-desc') or x.get('text') for x in items]);tap(items[0],label or prefix);return snap(context+'-after')
+AssertionError: (None, '3 张\n已读\nUpgrade Pack', [])
