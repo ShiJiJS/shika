@@ -292,10 +292,24 @@ void main() {
             cases.add(entry.verify());
             active = null;
             await host('capture', name: '$name-entry');
+            if (kind == 'press') {
+              expect(
+                captured!.removals,
+                entry.removalBaseline,
+                reason: 'Native pointer must still be held before preference change',
+              );
+            }
             if (kind != 'press') {
               expect(buttonCalls + choiceCalls + filterCalls, before + 1);
             }
             await configure(!reduced);
+            if (kind == 'press') {
+              expect(
+                captured!.removals,
+                entry.removalBaseline,
+                reason: 'Native pointer must still be held until explicit UP',
+              );
+            }
             final exit = ControlProbe('$name-return', kind, !reduced, true)
               ..ink = entry.ink
               ..removalBaseline = entry.removalBaseline;
