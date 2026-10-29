@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:video_viewer/ui/paper.dart';
+import 'package:video_viewer/ui/preference_switch.dart';
+
+void main() {
+  for (final live in [false, true]) {
+    testWidgets(
+      'original preference switch live=$live uses140ms and completes reduced motion',
+      (t) async {
+        t.platformDispatcher.accessibilityFeaturesTestValue =
+            FakeAccessibilityFeatures();
+        addTearDown(t.platformDispatcher.clearAccessibilityFeaturesTestValue);
+        var value = false;
+        await t.pumpWidget(
+          MaterialApp(
+            theme: Paper.theme,
+            home: Scaffold(
+              body: StatefulBuilder(
+                builder: (c, change) => PaperPreferenceSwitch(
+                  icon: Icons.settings,
+                  title: 'switch',
+                  value: value,
+                  onChanged: (v) => change(() => value = v),
+                ),
+              ),
+            ),
+          ),
+        );
+        ToggleableStateMixin? native;
+        void walk(Element e) {
+          if (e is StatefulElement && e.state is ToggleableStateMixin)
+            native = e.state as ToggleableStateMixin;
+          e.visitChildren(walk);
+        }
+
+        walk(t.element(find.byType(Switch)));
+        expect(native, isNotNull);
+        await t.tap(find.byType(Switch));
+        await t.pump();
+        if (live) {
+          await t.pump(const Duration(milliseconds: 40));
+          t.platformDispatcher.accessibilityFeaturesTestValue =
+              FakeAccessibilityFeatures(disableAnimations: true);
+          await t.pump();
+          expect(native!.positionController.value, 1);
+        } else {
+          expect(
+            native!.positionController.duration,
+            const Duration(milliseconds: 140),
+          );
+        }
+      },
+    );
+  }
+}

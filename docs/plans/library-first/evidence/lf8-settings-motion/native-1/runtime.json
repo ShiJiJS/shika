@@ -1,0 +1,31 @@
+{
+  "emulator_pid": 5110,
+  "emulator_command": [
+    "bash",
+    "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+    "emulator",
+    "-avd",
+    "video_viewer_reader_perf_36",
+    "-port",
+    "5558",
+    "-no-boot-anim",
+    "-gpu",
+    "host",
+    "-feature",
+    "-Vulkan",
+    "-feature",
+    "-GLDMA",
+    "-feature",
+    "HardwareDecoder",
+    "-no-snapshot",
+    "-no-metrics",
+    "-crash-report-mode",
+    "never",
+    "-no-audio",
+    "-no-window"
+  ],
+  "original_containers": "cb37ed11d110 video-viewer-client-e2e-server-1\nd8f27aa78066 video-viewer-history-purge-app-lf7\nfcbe79e4a8d6 video-viewer-archive-app-lf7\n9544c5e6dee9 video-viewer-server-1\n",
+  "no_app_server_started": true,
+  "launcher_attempt_1": "wrong AVD environment; no device created; relaunched via project dev.sh",
+  "actual_emulator_command": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64-headless -avd video_viewer_reader_perf_36 -port 5558 -no-boot-anim -gpu host -feature -Vulkan -feature -GLDMA -feature HardwareDecoder -no-snapshot -no-metrics -crash-report-mode never -no-audio -no-window"
+}

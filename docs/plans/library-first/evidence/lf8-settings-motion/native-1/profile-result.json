@@ -1,0 +1,1020 @@
+{
+  "settings_motion": {
+    "actual_app_demo_repository": true,
+    "ordinary_release_acceptance": false,
+    "no_media_service_or_file_commands": true,
+    "accessibility_injected": false,
+    "cases": [
+      {
+        "name": "round-1-theme-normal-on",
+        "theme": true,
+        "target": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 27245961,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 27279295,
+            "toggle_position": 0.20720064640045166,
+            "paper_theme_progress": 0.23809999999999995,
+            "background_argb": 4291019710,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 27329295,
+            "toggle_position": 0.8723335806280375,
+            "paper_theme_progress": 0.5952428571428571,
+            "background_argb": 4285625198,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 27362628,
+            "toggle_position": 0.983477458357811,
+            "paper_theme_progress": 0.8333357142857143,
+            "background_argb": 4282007097,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 27395961,
+            "toggle_position": 1.0,
+            "paper_theme_progress": 1.0,
+            "background_argb": 4279507220,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-theme-normal-off",
+        "theme": true,
+        "target": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 28129295,
+            "toggle_position": 1.0,
+            "paper_theme_progress": 1.0,
+            "background_argb": 4279507220,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 28145961,
+            "toggle_position": 0.9620199203491211,
+            "paper_theme_progress": 0.8809571428571429,
+            "background_argb": 4281283631,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 28162628,
+            "toggle_position": 0.7927993535995483,
+            "paper_theme_progress": 0.761907142857143,
+            "background_argb": 4283125321,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 28195961,
+            "toggle_position": 0.25752484798431396,
+            "paper_theme_progress": 0.5238142857142858,
+            "background_argb": 4286743422,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 28212628,
+            "toggle_position": 0.12766641937196255,
+            "paper_theme_progress": 0.4047642857142857,
+            "background_argb": 4288519833,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 28245961,
+            "toggle_position": 0.016522541642189026,
+            "paper_theme_progress": 0.16667142857142853,
+            "background_argb": 4292137934,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 28279295,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-theme-reduced-on",
+        "theme": true,
+        "target": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 31162628,
+            "toggle_position": 1.0,
+            "paper_theme_progress": 1.0,
+            "background_argb": 4279507220,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-theme-reduced-off",
+        "theme": true,
+        "target": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 31645961,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-preload-normal-off",
+        "theme": false,
+        "target": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 34345961,
+            "toggle_position": 1.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 34362628,
+            "toggle_position": 0.9620199203491211,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 34395961,
+            "toggle_position": 0.48242509365081787,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 34412628,
+            "toggle_position": 0.25752484798431396,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 34445961,
+            "toggle_position": 0.05518876016139984,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 34462628,
+            "toggle_position": 0.016522541642189026,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 34495961,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-preload-normal-on",
+        "theme": false,
+        "target": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 35479294,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 35512628,
+            "toggle_position": 0.20720064640045166,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 35529294,
+            "toggle_position": 0.5175749063491821,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 35545961,
+            "toggle_position": 0.742475152015686,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 35579294,
+            "toggle_position": 0.9448112398386002,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 35595961,
+            "toggle_position": 0.983477458357811,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 35612628,
+            "toggle_position": 0.9987555388361216,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 35629294,
+            "toggle_position": 1.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-preload-reduced-off",
+        "theme": false,
+        "target": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 38612628,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-preload-reduced-on",
+        "theme": false,
+        "target": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 39562627,
+            "toggle_position": 1.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-theme-normal-on",
+        "theme": true,
+        "target": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 42362627,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 42395961,
+            "toggle_position": 0.20720064640045166,
+            "paper_theme_progress": 0.23809999999999995,
+            "background_argb": 4291019710,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 42429294,
+            "toggle_position": 0.742475152015686,
+            "paper_theme_progress": 0.47619285714285714,
+            "background_argb": 4287401609,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 42479294,
+            "toggle_position": 0.983477458357811,
+            "paper_theme_progress": 0.8333357142857143,
+            "background_argb": 4282007097,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 42512627,
+            "toggle_position": 1.0,
+            "paper_theme_progress": 1.0,
+            "background_argb": 4279507220,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-theme-normal-off",
+        "theme": true,
+        "target": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 43329294,
+            "toggle_position": 1.0,
+            "paper_theme_progress": 1.0,
+            "background_argb": 4279507220,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 43345961,
+            "toggle_position": 0.9620199203491211,
+            "paper_theme_progress": 0.88095,
+            "background_argb": 4281283631,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 43395961,
+            "toggle_position": 0.25752484798431396,
+            "paper_theme_progress": 0.523807142857143,
+            "background_argb": 4286743422,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 43429294,
+            "toggle_position": 0.05518876016139984,
+            "paper_theme_progress": 0.2857142857142857,
+            "background_argb": 4290295987,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 43462627,
+            "toggle_position": 0.0012444611638784409,
+            "paper_theme_progress": 0.04762142857142855,
+            "background_argb": 4293914088,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 43479294,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-theme-reduced-on",
+        "theme": true,
+        "target": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 46079294,
+            "toggle_position": 1.0,
+            "paper_theme_progress": 1.0,
+            "background_argb": 4279507220,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-theme-reduced-off",
+        "theme": true,
+        "target": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 47095961,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-preload-normal-off",
+        "theme": false,
+        "target": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 49862627,
+            "toggle_position": 1.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 49895960,
+            "toggle_position": 0.7927993535995483,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 49945960,
+            "toggle_position": 0.12766641937196255,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 49962627,
+            "toggle_position": 0.05518876016139984,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 49979294,
+            "toggle_position": 0.016522541642189026,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 49995960,
+            "toggle_position": 0.0012444611638784409,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 50012627,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-preload-normal-on",
+        "theme": false,
+        "target": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 50862627,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 50879294,
+            "toggle_position": 0.037980079650878906,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 50895960,
+            "toggle_position": 0.20720064640045166,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 50912627,
+            "toggle_position": 0.5175749063491821,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 50945960,
+            "toggle_position": 0.8723335806280375,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 50962627,
+            "toggle_position": 0.9448112398386002,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 50979294,
+            "toggle_position": 0.983477458357811,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 50995960,
+            "toggle_position": 0.9987555388361216,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 51012627,
+            "toggle_position": 1.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-preload-reduced-off",
+        "theme": false,
+        "target": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 53595960,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-preload-reduced-on",
+        "theme": false,
+        "target": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 54595960,
+            "toggle_position": 1.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-theme-normal-on",
+        "theme": true,
+        "target": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 56995960,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 57029293,
+            "toggle_position": 0.20720064640045166,
+            "paper_theme_progress": 0.23809285714285716,
+            "background_argb": 4291019710,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 57045960,
+            "toggle_position": 0.5175749063491821,
+            "paper_theme_progress": 0.35714285714285726,
+            "background_argb": 4289243299,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 57095960,
+            "toggle_position": 0.9448112398386002,
+            "paper_theme_progress": 0.7142857142857143,
+            "background_argb": 4283849044,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 57112627,
+            "toggle_position": 0.983477458357811,
+            "paper_theme_progress": 0.8333357142857143,
+            "background_argb": 4282007097,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 57145960,
+            "toggle_position": 1.0,
+            "paper_theme_progress": 1.0,
+            "background_argb": 4279507220,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-theme-normal-off",
+        "theme": true,
+        "target": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 58012627,
+            "toggle_position": 1.0,
+            "paper_theme_progress": 1.0,
+            "background_argb": 4279507220,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 58029293,
+            "toggle_position": 0.9620199203491211,
+            "paper_theme_progress": 0.8809571428571429,
+            "background_argb": 4281283631,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 58045960,
+            "toggle_position": 0.7927993535995483,
+            "paper_theme_progress": 0.761907142857143,
+            "background_argb": 4283125321,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 58062627,
+            "toggle_position": 0.48242509365081787,
+            "paper_theme_progress": 0.6428571428571429,
+            "background_argb": 4284901732,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 58079293,
+            "toggle_position": 0.25752484798431396,
+            "paper_theme_progress": 0.5238142857142858,
+            "background_argb": 4286743422,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 58112627,
+            "toggle_position": 0.05518876016139984,
+            "paper_theme_progress": 0.2857142857142857,
+            "background_argb": 4290295987,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 58129293,
+            "toggle_position": 0.016522541642189026,
+            "paper_theme_progress": 0.16667142857142853,
+            "background_argb": 4292137934,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 58179293,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-theme-reduced-on",
+        "theme": true,
+        "target": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 60779293,
+            "toggle_position": 1.0,
+            "paper_theme_progress": 1.0,
+            "background_argb": 4279507220,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-theme-reduced-off",
+        "theme": true,
+        "target": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 61795960,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-preload-normal-off",
+        "theme": false,
+        "target": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 64595960,
+            "toggle_position": 1.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 64612626,
+            "toggle_position": 0.9620199203491211,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 64629293,
+            "toggle_position": 0.7927993535995483,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 64645960,
+            "toggle_position": 0.48242509365081787,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 64662626,
+            "toggle_position": 0.25752484798431396,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 64679293,
+            "toggle_position": 0.12766641937196255,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 64695960,
+            "toggle_position": 0.05518876016139984,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 64712626,
+            "toggle_position": 0.016522541642189026,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 64729293,
+            "toggle_position": 0.0012444611638784409,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 64762626,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-preload-normal-on",
+        "theme": false,
+        "target": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 65595960,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 65612626,
+            "toggle_position": 0.037980079650878906,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 65645960,
+            "toggle_position": 0.5175749063491821,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 65662626,
+            "toggle_position": 0.742475152015686,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 65679293,
+            "toggle_position": 0.8723335806280375,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 65695960,
+            "toggle_position": 0.9448112398386002,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 65712626,
+            "toggle_position": 0.983477458357811,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 65729293,
+            "toggle_position": 0.9987555388361216,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 65745960,
+            "toggle_position": 1.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-preload-reduced-off",
+        "theme": false,
+        "target": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 68295960,
+            "toggle_position": 0.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-preload-reduced-on",
+        "theme": false,
+        "target": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 69345960,
+            "toggle_position": 1.0,
+            "paper_theme_progress": -0.0,
+            "background_argb": 4294637811,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      }
+    ],
+    "complete": true,
+    "commits": 24
+  }
+}
