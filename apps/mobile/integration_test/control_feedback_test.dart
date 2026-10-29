@@ -111,12 +111,14 @@ void main() {
         if (probe != null && !probe.done) {
           double? value;
           if (probe.kind == 'press') {
-            if (probe.ink == null && captured!.features.isNotEmpty)
+            if (probe.ink == null && captured!.features.isNotEmpty) {
               probe.ink = captured!.features.last;
-            if (probe.ink != null)
+            }
+            if (probe.ink != null) {
               value = captured!.removals > probe.removalBaseline
                   ? 0
                   : probe.ink!.animation.value;
+            }
           } else {
             final raw = find.descendant(
               of: find.byKey(Key('control-${probe.kind}')),
@@ -132,7 +134,7 @@ void main() {
               );
             }
           }
-          if (value != null)
+          if (value != null) {
             probe.add(
               SchedulerBinding.instance.currentSystemFrameTimeStamp,
               value,
@@ -143,6 +145,7 @@ void main() {
                   .disableAnimations,
               MediaQuery.disableAnimationsOf(source),
             );
+          }
         }
         WidgetsBinding.instance.addPostFrameCallback(frame);
       }
@@ -269,8 +272,9 @@ void main() {
             cases.add(entry.verify());
             active = null;
             await host('capture', name: '$name-entry');
-            if (kind != 'press')
+            if (kind != 'press') {
               expect(buttonCalls + choiceCalls + filterCalls, before + 1);
+            }
             await configure(!reduced);
             final exit = ControlProbe('$name-return', kind, !reduced, true)
               ..ink = entry.ink
