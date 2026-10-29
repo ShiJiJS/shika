@@ -26,6 +26,7 @@ void main() {
         'normal_release_acceptance': false,
         'system_accessibility_injected': false,
         'cases': cases,
+        'observations': <Map<String, dynamic>>[],
       };
       binding.reportData = {'quick_press_feedback': result};
       CaptureFactory? captured;
@@ -153,7 +154,12 @@ void main() {
                 frames.last['removed'] == true,
             'single callback and press layer removed',
           );
-          active = null;
+          (result['observations'] as List).add({
+            'name': name,
+            'reduced': reduced,
+            'callbacks_before': before,
+            'frames': frames,
+          });
           expect(captured!.features, hasLength(1));
           expect(captured!.removals, removalBaseline + 1);
           expect(
@@ -165,12 +171,35 @@ void main() {
             isTrue,
           );
           expect(frames.last['paint_value'], 0);
+          final afterConfirmation = frames
+              .where((f) => f['callbacks'] == before + 1)
+              .toList();
+          expect(afterConfirmation, isNotEmpty);
           if (reduced) {
-            expect(frames.every((f) => f['paint_value'] == 0), isTrue);
+            for (final f in frames) {
+              if (f['callbacks'] == before) {
+                expect(
+                  f['paint_value'],
+                  1,
+                  reason: 'Reduced motion shows pointer-down state immediately',
+                );
+              } else {
+                expect(f['callbacks'], before + 1);
+                expect(
+                  f['paint_value'],
+                  0,
+                  reason: 'Confirmed quick tap has no residual animation',
+                );
+                expect(f['removed'], isTrue);
+              }
+            }
           } else {
-            expect(frames.any((f) => (f['paint_value'] as double) > 0), isTrue);
             expect(
-              frames.any(
+              afterConfirmation.any((f) => (f['paint_value'] as double) > 0),
+              isTrue,
+            );
+            expect(
+              afterConfirmation.any(
                 (f) =>
                     (f['paint_value'] as double) > 0 &&
                     (f['paint_value'] as double) < 1,
@@ -178,6 +207,7 @@ void main() {
               isTrue,
             );
           }
+          active = null;
           cases.add({
             'name': name,
             'reduced': reduced,
@@ -185,6 +215,7 @@ void main() {
             'callbacks_after': calls,
             'nominal_exit_ms': reduced ? 0 : 100,
             'frames': frames,
+            'old_all_frames_zero': frames.every((f) => f['paint_value'] == 0),
           });
           await host('capture', name: '$name-done');
           await host('end', name: name);
