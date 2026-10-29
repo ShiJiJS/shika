@@ -1,0 +1,32 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart
+00:00 +0: visible Paper colors follow the app theme without a halfway jump
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Color:<Color(alpha: 1.0000, red: 0.5294, green: 0.5353, blue: 0.5157, colorSpace:
+ColorSpace.sRGB)>
+  Actual: Color:<Color(alpha: 1.0000, red: 0.0784, green: 0.0980, blue: 0.0784, colorSpace:
+ColorSpace.sRGB)>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart:33:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart line 33
+The test description was:
+  visible Paper colors follow the app theme without a halfway jump
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -1: visible Paper colors follow the app theme without a halfway jump [E]
+  Test failed. See exception logs above.
+  The test description was: visible Paper colors follow the app theme without a halfway jump
+  
+00:01 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: visible Paper colors follow the app theme without a halfway jump

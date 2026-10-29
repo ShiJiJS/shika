@@ -1,0 +1,144 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart
+00:00 +0: actual app theme reaches target at 140ms while route draft focus and scroll survive
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Color:<Color(alpha: 1.0000, red: 0.0784, green: 0.0980, blue: 0.0784, colorSpace:
+ColorSpace.sRGB)>
+  Actual: Color:<Color(alpha: 1.0000, red: 0.3490, green: 0.3604, blue: 0.3408, colorSpace:
+ColorSpace.sRGB)>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart:78:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart line 78
+The test description was:
+  actual app theme reaches target at 140ms while route draft focus and scroll survive
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -1: actual app theme reaches target at 140ms while route draft focus and scroll survive [E]
+  Test failed. See exception logs above.
+  The test description was: actual app theme reaches target at 140ms while route draft focus and scroll survive
+  
+00:01 +0 -1: actual app theme reaches target at 0ms while route draft focus and scroll survive
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Color:<Color(alpha: 1.0000, red: 0.0784, green: 0.0980, blue: 0.0784, colorSpace:
+ColorSpace.sRGB)>
+  Actual: Color:<Color(alpha: 1.0000, red: 0.9804, green: 0.9725, blue: 0.9529, colorSpace:
+ColorSpace.sRGB)>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart:78:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart line 78
+The test description was:
+  actual app theme reaches target at 0ms while route draft focus and scroll survive
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -2: actual app theme reaches target at 0ms while route draft focus and scroll survive [E]
+  Test failed. See exception logs above.
+  The test description was: actual app theme reaches target at 0ms while route draft focus and scroll survive
+  
+00:01 +0 -2: actual app reduced preference completes an already running theme transition before next paint
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Color:<Color(alpha: 1.0000, red: 0.0784, green: 0.0980, blue: 0.0784, colorSpace:
+ColorSpace.sRGB)>
+  Actual: Color:<Color(alpha: 1.0000, red: 0.8000, green: 0.7976, blue: 0.7780, colorSpace:
+ColorSpace.sRGB)>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart:125:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart line 125
+The test description was:
+  actual app reduced preference completes an already running theme transition before next paint
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +0 -3: actual app reduced preference completes an already running theme transition before next paint [E]
+  Test failed. See exception logs above.
+  The test description was: actual app reduced preference completes an already running theme transition before next paint
+  
+00:02 +0 -3: theme color reaches an unchanged chip without a second selection tween selected=false
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Color:<Color(alpha: 1.0000, red: 0.0784, green: 0.0980, blue: 0.0784, colorSpace:
+ColorSpace.sRGB)>
+  Actual: Color:<Color(alpha: 1.0000, red: 0.9804, green: 0.9725, blue: 0.9529, colorSpace:
+ColorSpace.sRGB)>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart:168:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart line 168
+The test description was:
+  theme color reaches an unchanged chip without a second selection tween selected=false
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +0 -4: theme color reaches an unchanged chip without a second selection tween selected=false [E]
+  Test failed. See exception logs above.
+  The test description was: theme color reaches an unchanged chip without a second selection tween selected=false
+  
+00:02 +0 -4: theme color reaches an unchanged chip without a second selection tween selected=true
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: Color:<Color(alpha: 1.0000, red: 0.6941, green: 0.7725, blue: 0.6275, colorSpace:
+ColorSpace.sRGB)>
+  Actual: Color:<Color(alpha: 1.0000, red: 0.3255, green: 0.4000, blue: 0.2902, colorSpace:
+ColorSpace.sRGB)>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart:168:9)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart line 168
+The test description was:
+  theme color reaches an unchanged chip without a second selection tween selected=true
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +0 -5: theme color reaches an unchanged chip without a second selection tween selected=true [E]
+  Test failed. See exception logs above.
+  The test description was: theme color reaches an unchanged chip without a second selection tween selected=true
+  
+00:02 +0 -5: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: actual app reduced preference completes an already running theme transition before next paint
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: actual app theme reaches target at 0ms while route draft focus and scroll survive
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: actual app theme reaches target at 140ms while route draft focus and scroll survive
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: theme color reaches an unchanged chip without a second selection tween selected=false
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/settings_motion_test.dart: theme color reaches an unchanged chip without a second selection tween selected=true
