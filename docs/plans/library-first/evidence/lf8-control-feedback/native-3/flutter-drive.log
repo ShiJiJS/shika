@@ -1,0 +1,78 @@
+Installing ../../.dev/lf8-control-feedback/control-profile-3.apk...        473ms
+I/js.video_viewer( 6594): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+I/Choreographer( 6594): Skipped 40 frames!  The application may be doing too much work on its main thread.
+D/WindowLayoutComponentImpl( 6594): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@873c9ce, of which baseContext=android.app.ContextImpl@6919d0b
+VMServiceFlutterDriver: Connecting to Flutter application at <redacted-local-vm-service>
+VMServiceFlutterDriver: Isolate found with number: 8228182830075115
+VMServiceFlutterDriver: Isolate 8228182830075115 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 6594): 00:00 +0: production control components follow actual Android preference without commands
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController( 6594): hide(ime(), fromIme=false)
+I/ImeTracker( 6594): io.github.shijijs.video_viewer:34dec14a: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller( 6594): Installing profile for io.github.shijijs.video_viewer
+I/flutter ( 6594): Guarded function conflict.
+I/flutter ( 6594): You must use "await" with all Future-returning test APIs.
+I/flutter ( 6594): The guarded method "pump" from class WidgetTester was called from file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/control_feedback_test.dart on line 189.
+I/flutter ( 6594): Then, the "widget" method from class WidgetController was called from file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/control_feedback_test.dart on line 129.
+I/flutter ( 6594): The first method (WidgetTester.pump) had not yet finished executing at the time that the second method (WidgetController.widget) was called. Since both are guarded, and the second was not a nested call inside the first, the first must complete its execution before the second can be called. Typically, this is achieved by putting an "await" statement in front of the call to the first.
+I/flutter ( 6594): 
+I/flutter ( 6594): When the first method (WidgetTester.pump) was called, this was the stack:
+I/flutter ( 6594): #0      TestAsyncUtils.guard (package:flutter_test/src/test_async_utils.dart:72)
+I/flutter ( 6594): #1      WidgetTester.pump (package:flutter_test/src/widget_tester.dart:652)
+I/flutter ( 6594): #2      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/control_feedback_test.dart:189)
+I/flutter ( 6594): #3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/control_feedback_test.dart:322)
+I/flutter ( 6594): <asynchronous suspension>
+I/flutter ( 6594): #4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 6594): <asynchronous suspension>
+I/flutter ( 6594): #5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 6594): <asynchronous suspension>
+I/flutter ( 6594): #6      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 6594): <asynchronous suspension>
+I/flutter ( 6594): #0      TestAsyncUtils.guardSync (package:flutter_test/src/test_async_utils.dart:312)
+I/flutter ( 6594): #1      WidgetController.widget (package:flutter_test/src/controller.dart:827)
+I/flutter ( 6594): #2      main.<anonymous closure>.frame (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/control_feedback_test.dart:129)
+I/flutter ( 6594): #3      SchedulerBinding._invokeFrameCallback (package:flutter/src/scheduler/binding.dart:1430)
+I/flutter ( 6594): #4      SchedulerBinding.handleDrawFrame (package:flutter/src/scheduler/binding.dart:1357)
+I/flutter ( 6594): #5      LiveTestWidgetsFlutterBinding.handleDrawFrame (package:flutter_test/src/binding.dart:2812)
+I/flutter ( 6594): #6      SchedulerBinding._handleDrawFrame (package:flutter/src/scheduler/binding.dart:1198)
+I/flutter ( 6594): #10     _invoke (dart:ui/hooks.dart:443)
+I/flutter ( 6594): #11     PlatformDispatcher._drawFrame (dart:ui/platform_dispatcher.dart:450)
+I/flutter ( 6594): #12     _drawFrame (dart:ui/hooks.dart:413)
+I/flutter ( 6594): (elided 3 frames from dart:async)
+I/flutter ( 6594): return target
+I/flutter ( 6594): #0      fail (package:matcher/src/expect/expect.dart:187)
+I/flutter ( 6594): #1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/control_feedback_test.dart:187)
+I/flutter ( 6594): <asynchronous suspension>
+I/flutter ( 6594): #2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/control_feedback_test.dart:322)
+I/flutter ( 6594): <asynchronous suspension>
+I/flutter ( 6594): #3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 6594): <asynchronous suspension>
+I/flutter ( 6594): #4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 6594): <asynchronous suspension>
+I/flutter ( 6594): #5      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 6594): <asynchronous suspension>
+I/flutter ( 6594): Multiple exceptions (2) were detected during the running of the current test, and at least one was unexpected.
+I/flutter ( 6594): #0      debugPrintStack (package:flutter/src/foundation/assertions.dart:1213)
+I/flutter ( 6594): #1      FlutterError.dumpErrorToConsole (package:flutter/src/foundation/assertions.dart:1033)
+I/flutter ( 6594): #2      _defaultTestExceptionReporter (package:flutter_test/src/test_exception_reporter.dart:29)
+I/flutter ( 6594): #3      new IntegrationTestWidgetsFlutterBinding.<anonymous closure> (package:integration_test/integration_test.dart:91)
+I/flutter ( 6594): #4      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1714)
+I/flutter ( 6594): #7      TestWidgetsFlutterBinding._runTest.handleUncaughtError (package:flutter_test/src/binding.dart:1915)
+I/flutter ( 6594): #8      TestWidgetsFlutterBinding._runTest.<anonymous closure> (package:flutter_test/src/binding.dart:1921)
+I/flutter ( 6594): <asynchronous suspension>
+I/flutter ( 6594): (elided 7 frames from dart:async)
+I/flutter ( 6594): 00:52 +0: production control components follow actual Android preference without commands [E]
+I/flutter ( 6594):   Test failed. See exception logs above.
+I/flutter ( 6594):   The test description was: production control components follow actual Android preference without commands
+I/flutter ( 6594):   
+I/flutter ( 6594): 00:52 +0 -1: (tearDownAll)
+I/flutter ( 6594): 00:52 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: production control components follow actual Android preference without commands
+Instance of 'FlutterErrorDetails'
+end of failure 1
+
+
+

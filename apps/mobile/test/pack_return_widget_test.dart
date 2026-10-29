@@ -164,7 +164,13 @@ void main() {
         final y = t.getTopLeft(tile('p58')).dy;
         await tap(t, tile('p58'));
         await tap(t, find.text('整包标签'));
-        await tap(t, find.widgetWithText(FilterChip, '收藏'));
+        await tap(
+          t,
+          find.ancestor(
+            of: find.text('收藏'),
+            matching: find.bySubtype<FilterChip>(),
+          ),
+        );
         repo.failLocation = true;
         await tap(t, find.text('保存整包标签'));
         await tap(t, find.byTooltip('关闭面板'));

@@ -1,0 +1,85 @@
+{
+  "control_feedback": {
+    "production_component_only": true,
+    "normal_release_acceptance": false,
+    "no_repository_or_file_commands": true,
+    "system_accessibility_injected": false,
+    "cases": [
+      {
+        "name": "round-1-press-normal-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 100,
+        "frames": [
+          {
+            "frame_us": 237631734,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237681734,
+            "paint_value": 0.5,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237698400,
+            "paint_value": 0.66666,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 237731734,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-press-normal-return",
+        "kind": "press",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 244465067,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-press-reduced-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 256065066,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      }
+    ],
+    "pre_action_frames": [],
+    "active_failure": {
+      "name": "round-1-press-reduced-return",
+      "frames": [
+        {
+          "frame_us": 262881733,
+          "paint_value": 0.0,
+          "native_flag": false,
+          "media_query_flag": false
+        }
+      ]
+    }
+  }
+}

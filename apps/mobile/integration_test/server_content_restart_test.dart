@@ -369,7 +369,12 @@ void main() {
         await tap(find.byKey(Key('pack-tile-$packId')));
         await readerReady();
         await tap(find.byTooltip('阅读设置'));
-        await tap(find.widgetWithText(ChoiceChip, '纵向拼接'));
+        await tap(
+          find.ancestor(
+            of: find.text('纵向拼接'),
+            matching: find.bySubtype<ChoiceChip>(),
+          ),
+        );
         await until(
           () =>
               reader().session.preferences.mode == ReaderMode.vertical &&

@@ -193,7 +193,7 @@ class _PackPurgeResultState extends State<PackPurgeResult> {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       for (final flag in [true, false])
-                        ChoiceChip(
+                        PaperChoiceChip(
                           label: Text(flag ? '未完成' : '全部'),
                           selected: unfinished == flag,
                           labelStyle: TextStyle(fontSize: 13, color: p.ink),

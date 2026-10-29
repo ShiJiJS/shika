@@ -1,0 +1,17 @@
+{
+  "time": 1793286826.6325061,
+  "owned_test_runners": [
+    {
+      "pid": 49426,
+      "command": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/bin/cache/dart-sdk/bin/dartvm --resolved_executable_name=/Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/bin/cache/dart-sdk/bin/dart --executable_name=/Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/bin/cache/dart-sdk/bin/dart --packages=/Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/packages/flutter_tools/.dart_tool/package_config.json /Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/bin/cache/flutter_tools.snapshot test --no-pub test/control_geometry_test.dart --reporter expanded",
+      "action": "SIGINT",
+      "reason": "New raster comparison awaited engine IO inside fake-async; confirmed framework matcher wraps identical toImage/toByteData in binding.runAsync. Existing test cannot advance that await; correct harness, not app or emulator restart."
+    },
+    {
+      "pid": 49688,
+      "command": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/bin/cache/dart-sdk/bin/dartvm --resolved_executable_name=/Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/bin/cache/dart-sdk/bin/dart --executable_name=/Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/bin/cache/dart-sdk/bin/dart --packages=/Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/packages/flutter_tools/.dart_tool/package_config.json /Users/jiangxinyi/Documents/Project/video-viewer/.dev/flutter/bin/cache/flutter_tools.snapshot test --no-pub test/control_feedback_test.dart test/press_feedback_test.dart test/control_geometry_test.dart test/catalog_selection_widget_test.dart test/fixed_preview_widget_test.dart test/pack_return_widget_test.dart test/pack_tag_names_widget_test.dart test/tag_assignment_widget_test.dart --reporter expanded",
+      "action": "SIGINT",
+      "reason": "New raster comparison awaited engine IO inside fake-async; confirmed framework matcher wraps identical toImage/toByteData in binding.runAsync. Existing test cannot advance that await; correct harness, not app or emulator restart."
+    }
+  ]
+}

@@ -975,7 +975,7 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                                 PlayOrder.sequential,
                                 PlayOrder.random,
                               ])
-                                ChoiceChip(
+                                PaperChoiceChip(
                                   key: Key('queue-order-${order.name}'),
                                   label: Text(
                                     order == PlayOrder.random ? '随机' : '顺序',

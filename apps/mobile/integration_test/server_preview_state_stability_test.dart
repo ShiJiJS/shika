@@ -176,13 +176,24 @@ void main() {
       await until(
         () =>
             find.byType(MediaTagEditor).evaluate().length == 1 &&
-            find.widgetWithText(FilterChip, '户外').evaluate().length == 1,
+            find
+                    .ancestor(
+                      of: find.text('户外'),
+                      matching: find.bySubtype<FilterChip>(),
+                    )
+                    .evaluate()
+                    .length ==
+                1,
         'real tag choices',
       );
     }
 
-    FilterChip choice(String name) =>
-        t.widget<FilterChip>(find.widgetWithText(FilterChip, name));
+    FilterChip choice(String name) => t.widget<FilterChip>(
+      find.ancestor(
+        of: find.text(name),
+        matching: find.bySubtype<FilterChip>(),
+      ),
+    );
     Future<void> backToLibrary() async {
       await tap(find.byKey(const Key('preview-back')));
       await until(
@@ -224,7 +235,12 @@ void main() {
     );
     await capture('stability-library');
     await tap(find.byTooltip('筛选视频'));
-    await tap(find.widgetWithText(FilterChip, '户外'));
+    await tap(
+      find.ancestor(
+        of: find.text('户外'),
+        matching: find.bySubtype<FilterChip>(),
+      ),
+    );
     await tap(find.text('应用筛选'));
     await until(
       () =>
@@ -245,7 +261,12 @@ void main() {
     expect(choice('户外').selected, isTrue);
     expect(choice('喜欢').selected, isTrue);
     await capture('stability-editor');
-    await tap(find.widgetWithText(FilterChip, '户外'));
+    await tap(
+      find.ancestor(
+        of: find.text('户外'),
+        matching: find.bySubtype<FilterChip>(),
+      ),
+    );
     await tap(find.byKey(const Key('tag-assignment-save')));
     await until(
       () =>

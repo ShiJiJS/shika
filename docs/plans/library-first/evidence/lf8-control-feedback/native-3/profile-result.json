@@ -1,0 +1,562 @@
+{
+  "control_feedback": {
+    "production_component_only": true,
+    "normal_release_acceptance": false,
+    "no_repository_or_file_commands": true,
+    "system_accessibility_injected": false,
+    "cases": [
+      {
+        "name": "round-1-press-normal-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 100,
+        "frames": [
+          {
+            "frame_us": 379198395,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 379215061,
+            "paint_value": 0.16666,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 379231728,
+            "paint_value": 0.33333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 379248395,
+            "paint_value": 0.5,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 379265061,
+            "paint_value": 0.66666,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 379281728,
+            "paint_value": 0.83333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 379298395,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-press-normal-return",
+        "kind": "press",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 380448395,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-press-reduced-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 382748395,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-press-reduced-return",
+        "kind": "press",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 100,
+        "frames": [
+          {
+            "frame_us": 384265061,
+            "paint_value": 0.83334,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 384281728,
+            "paint_value": 0.66667,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 384298395,
+            "paint_value": 0.5,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 384315061,
+            "paint_value": 0.33333999999999997,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 384331728,
+            "paint_value": 0.16666999999999998,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 384348395,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-choice-normal-entry",
+        "kind": "choice",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 386965061,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 386981728,
+            "paint_value": 0.03798007965087892,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 386998394,
+            "paint_value": 0.20720064640045166,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 387015061,
+            "paint_value": 0.5175749063491822,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 387031728,
+            "paint_value": 0.742475152015686,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 387048394,
+            "paint_value": 0.8723335806280376,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 387065061,
+            "paint_value": 0.9448112398386002,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 387081728,
+            "paint_value": 0.9834774583578111,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 387098394,
+            "paint_value": 0.9987555388361217,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 387115061,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-choice-normal-return",
+        "kind": "choice",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 388465061,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-choice-reduced-entry",
+        "kind": "choice",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 390848394,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-choice-reduced-return",
+        "kind": "choice",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 392248394,
+            "paint_value": 0.9620199203491212,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 392265061,
+            "paint_value": 0.7927993535995483,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 392281728,
+            "paint_value": 0.4824250936508178,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 392298394,
+            "paint_value": 0.25752484798431413,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 392315061,
+            "paint_value": 0.1276664193719626,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 392331728,
+            "paint_value": 0.055188760161399786,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 392348394,
+            "paint_value": 0.016522541642188943,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 392365061,
+            "paint_value": 0.001244461163878471,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 392381728,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-filter-normal-entry",
+        "kind": "filter",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 394898394,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 394931727,
+            "paint_value": 0.20720064640045166,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 394948394,
+            "paint_value": 0.5175749063491822,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 394965061,
+            "paint_value": 0.742475152015686,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 394981727,
+            "paint_value": 0.8723335806280376,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 395015061,
+            "paint_value": 0.9834774583578111,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 395031727,
+            "paint_value": 0.9987555388361217,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 395048394,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-filter-normal-return",
+        "kind": "filter",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 396248394,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-filter-reduced-entry",
+        "kind": "filter",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 398848394,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      }
+    ],
+    "pre_action_frames": [
+      {
+        "name": "round-1-choice-normal-entry",
+        "frame_us": 386931728,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-choice-normal-entry",
+        "frame_us": 386948394,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-choice-normal-return",
+        "frame_us": 388431728,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-choice-normal-return",
+        "frame_us": 388448394,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-choice-reduced-entry",
+        "frame_us": 390815061,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-choice-reduced-entry",
+        "frame_us": 390831728,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-choice-reduced-return",
+        "frame_us": 392181728,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-choice-reduced-return",
+        "frame_us": 392198394,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-choice-reduced-return",
+        "frame_us": 392215061,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-normal-entry",
+        "frame_us": 394848394,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-filter-normal-entry",
+        "frame_us": 394865061,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-filter-normal-entry",
+        "frame_us": 394881727,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-filter-normal-return",
+        "frame_us": 396131727,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-normal-return",
+        "frame_us": 396165061,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-normal-return",
+        "frame_us": 396181727,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-normal-return",
+        "frame_us": 396215061,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-reduced-entry",
+        "frame_us": 398798394,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-filter-reduced-entry",
+        "frame_us": 398815061,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-filter-reduced-entry",
+        "frame_us": 398831727,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-filter-reduced-return",
+        "frame_us": 400315061,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-reduced-return",
+        "frame_us": 400331727,
+        "semantic_selected": true
+      }
+    ],
+    "failure": {
+      "waiting": "return target",
+      "frames": [
+        {
+          "frame_us": 400365061,
+          "paint_value": 0.9620199203491212,
+          "native_flag": false,
+          "media_query_flag": false
+        },
+        {
+          "frame_us": 400381727,
+          "paint_value": 0.7927993535995483,
+          "native_flag": false,
+          "media_query_flag": false
+        },
+        {
+          "frame_us": 400398394,
+          "paint_value": 0.4824250936508178,
+          "native_flag": false,
+          "media_query_flag": false
+        },
+        {
+          "frame_us": 400415061,
+          "paint_value": 0.25752484798431413,
+          "native_flag": false,
+          "media_query_flag": false
+        },
+        {
+          "frame_us": 400431727,
+          "paint_value": 0.1276664193719626,
+          "native_flag": false,
+          "media_query_flag": false
+        }
+      ]
+    },
+    "active_failure": {
+      "name": "round-1-filter-reduced-return",
+      "frames": [
+        {
+          "frame_us": 400365061,
+          "paint_value": 0.9620199203491212,
+          "native_flag": false,
+          "media_query_flag": false
+        },
+        {
+          "frame_us": 400381727,
+          "paint_value": 0.7927993535995483,
+          "native_flag": false,
+          "media_query_flag": false
+        },
+        {
+          "frame_us": 400398394,
+          "paint_value": 0.4824250936508178,
+          "native_flag": false,
+          "media_query_flag": false
+        },
+        {
+          "frame_us": 400415061,
+          "paint_value": 0.25752484798431413,
+          "native_flag": false,
+          "media_query_flag": false
+        },
+        {
+          "frame_us": 400431727,
+          "paint_value": 0.1276664193719626,
+          "native_flag": false,
+          "media_query_flag": false
+        }
+      ]
+    }
+  }
+}

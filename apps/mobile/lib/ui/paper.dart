@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 export 'paper_notice.dart';
+export 'paper_controls.dart';
 
 /// Keep failures visible when a form's submit action is outside its scroll body.
 void revealFormError(GlobalKey anchor) {

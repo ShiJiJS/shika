@@ -580,7 +580,12 @@ void main() {
       await search('导航视频');
       await videoReady(27);
       await tap(find.byTooltip('筛选视频'));
-      await tap(find.widgetWithText(FilterChip, '户外'));
+      await tap(
+        find.ancestor(
+          of: find.text('户外'),
+          matching: find.bySubtype<FilterChip>(),
+        ),
+      );
       await tap(find.text('应用筛选'));
       await until(
         () => video().entry.query.tags.contains(videoTag),
@@ -626,7 +631,12 @@ void main() {
       await tap(
         find.descendant(of: find.byType(SheetFrame), matching: find.text('标签')),
       );
-      await tap(find.widgetWithText(FilterChip, '户外'));
+      await tap(
+        find.ancestor(
+          of: find.text('户外'),
+          matching: find.bySubtype<FilterChip>(),
+        ),
+      );
       await tap(find.byKey(const Key('tag-assignment-save')));
       await tap(find.text('应用筛选'));
       await until(

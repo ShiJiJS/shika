@@ -1,0 +1,268 @@
+{
+  "source": "9cd1efa099ca7ac6cb9a6e40faed64037844cfe3",
+  "legacy_source": "f5fe32c9e8136fa0b54a272609d8b7f2ac1d83ba",
+  "steps": [
+    {
+      "name": "flutter-version",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+        "flutter",
+        "--version",
+        "--machine"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer",
+      "exit_code": 0,
+      "log_sha256": "582fa8a49e6ec75986f2d0d84d39ef8c8f91c5bfc6c8170e06efd574897e8f23"
+    },
+    {
+      "name": "rollback-pub-get",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+        "flutter",
+        "pub",
+        "get",
+        "--offline",
+        "--enforce-lockfile"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/rollback/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "d4cb7a3c68b4133b4f6e58c67ff5bfd13725d8021e930388cdc98da8a575919d"
+    },
+    {
+      "name": "rollback-analyze",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+        "flutter",
+        "analyze",
+        "--no-pub"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/rollback/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "168377f9f174ff61b9260d0f30facf6de2ca2787812e832c06cc8b76ccd1e8d2"
+    },
+    {
+      "name": "rollback-tests",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+        "flutter",
+        "test",
+        "--no-pub",
+        "test"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/rollback/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "eb0759f83c9081949d859fcd1651b39a1c20cb89c0f23bd8e8c01b60dee821fc"
+    },
+    {
+      "name": "rollback-release",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+        "flutter",
+        "build",
+        "apk",
+        "--release",
+        "--target-platform",
+        "android-arm64",
+        "--dart-define=LIBRARY_MODE=server",
+        "--build-name",
+        "0.1.4-rollback.7",
+        "--build-number",
+        "13"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/rollback/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "da3f920b65d595073a95710788ccdcc76aeb1e9e45b6320ce041853bf640a4a2"
+    },
+    {
+      "name": "rollback-signature",
+      "command": [
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/build-tools/36.0.0/apksigner",
+        "verify",
+        "--print-certs",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/rollback/apps/mobile/build/app/outputs/flutter-apk/app-release.apk"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/rollback/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "2d1a06d3713b4370bc3875f8f7fd1379e6c45a2ff8dadf4321490e3f1afc8dee"
+    },
+    {
+      "name": "rollback-badging",
+      "command": [
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/build-tools/36.0.0/aapt",
+        "dump",
+        "badging",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/rollback/apps/mobile/build/app/outputs/flutter-apk/app-release.apk"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/rollback/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "79ae86e6a9827af6bc82c445068d7d4b3d7917635e6ec21bc6e24bbc5da1da04"
+    },
+    {
+      "name": "forward-pub-get",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+        "flutter",
+        "pub",
+        "get",
+        "--offline",
+        "--enforce-lockfile"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/forward/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "d4cb7a3c68b4133b4f6e58c67ff5bfd13725d8021e930388cdc98da8a575919d"
+    },
+    {
+      "name": "forward-analyze",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+        "flutter",
+        "analyze",
+        "--no-pub"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/forward/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "079efe3d15bea8b6912a443e243af6c803712d0259f0b711e2bfa37778937dd6"
+    },
+    {
+      "name": "forward-tests",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+        "flutter",
+        "test",
+        "--no-pub",
+        "test/preferences_test.dart",
+        "test/connection_widget_test.dart",
+        "test/scoped_journal_test.dart",
+        "test/preference_switch_test.dart"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/forward/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "c287c607644c1d95168325eb1b9d5507ca8561e41a01be7c7c705f56cd452257"
+    },
+    {
+      "name": "forward-release",
+      "command": [
+        "bash",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+        "flutter",
+        "build",
+        "apk",
+        "--release",
+        "--target-platform",
+        "android-arm64",
+        "--dart-define=LIBRARY_MODE=server",
+        "--build-name",
+        "0.2.0-preview.7",
+        "--build-number",
+        "13"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/forward/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "c7ed666e5321a764e45974ec7bcd0d74a91a7dbcadc4903cac0796649a3c7dfa"
+    },
+    {
+      "name": "forward-signature",
+      "command": [
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/build-tools/36.0.0/apksigner",
+        "verify",
+        "--print-certs",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/forward/apps/mobile/build/app/outputs/flutter-apk/app-release.apk"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/forward/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "2d1a06d3713b4370bc3875f8f7fd1379e6c45a2ff8dadf4321490e3f1afc8dee"
+    },
+    {
+      "name": "forward-badging",
+      "command": [
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/build-tools/36.0.0/aapt",
+        "dump",
+        "badging",
+        "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/forward/apps/mobile/build/app/outputs/flutter-apk/app-release.apk"
+      ],
+      "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-control-feedback/build-2/exports/forward/apps/mobile",
+      "exit_code": 0,
+      "log_sha256": "4920966b4468df59782a4bf40f47f852d29ea56d76d464db4fc380914c9f235a"
+    }
+  ],
+  "complete": true,
+  "rollback_overlays": {
+    "lib/ui/preferences.dart": {
+      "from": "9cd1efa099ca7ac6cb9a6e40faed64037844cfe3:apps/mobile/lib/ui/preferences.dart",
+      "sha256": "5d6d8cf778d3e94aa445d1b7c9bc0334e2bdecda655ce6e85b5f150c326815b2"
+    },
+    "lib/library/credentials.dart": {
+      "from": "9cd1efa099ca7ac6cb9a6e40faed64037844cfe3:apps/mobile/lib/library/credentials.dart",
+      "sha256": "c0363d0b5b4ac7a9a73e7210867d03e07fc36f7a5bc315e79cde93f350f01634"
+    },
+    "lib/library/scoped_journal.dart": {
+      "from": "9cd1efa099ca7ac6cb9a6e40faed64037844cfe3:apps/mobile/lib/library/scoped_journal.dart",
+      "sha256": "794d1370c70e595c9c47ec76bc4db869d1425ea97e148ee719154784c013e385"
+    },
+    "lib/library/rollback_storage.dart": {
+      "from": "9cd1efa099ca7ac6cb9a6e40faed64037844cfe3:tools/rollback-client/rollback_storage.dart.template",
+      "sha256": "eace1956ecf91abd9ef6b11ffce48c2ff54e50561ff3c06cdacf463c3967c829"
+    },
+    "test/rollback_storage_test.dart": {
+      "from": "9cd1efa099ca7ac6cb9a6e40faed64037844cfe3:tools/rollback-client/rollback_storage_test.dart.template",
+      "sha256": "61d1d3a7861a3c6f0efb7961eee20d2a26ddd960db3c60f53a325b92fc2929e9"
+    },
+    "test/rollback_compat_preferences_test.dart": {
+      "from": "9cd1efa099ca7ac6cb9a6e40faed64037844cfe3:apps/mobile/test/preferences_test.dart",
+      "sha256": "5a4bc3651e3e7413f2f9a16345c674caaf3b268ae6575ddb415590385777ea69"
+    },
+    "test/rollback_compat_scoped_journal_test.dart": {
+      "from": "9cd1efa099ca7ac6cb9a6e40faed64037844cfe3:apps/mobile/test/scoped_journal_test.dart",
+      "sha256": "a957834bf07f9d08cf68b7cb8a6e5e894baa47036ae6f8eb668ab77cf0d9bc81"
+    },
+    "lib/main.dart": {
+      "from": "f5fe32c9e8136fa0b54a272609d8b7f2ac1d83ba:apps/mobile/lib/main.dart",
+      "sha256": "50e9ddedede55c5cbe34bdef11b4de764ff973ebf4dae5b1412d5def5f911a39",
+      "change": "storage adapter wiring / retain info epoch only"
+    },
+    "lib/library/server_repository.dart": {
+      "from": "f5fe32c9e8136fa0b54a272609d8b7f2ac1d83ba:apps/mobile/lib/library/server_repository.dart",
+      "sha256": "c687321f824df026f69a7179a0a8575a3c298b405ceeb30887b32566cf2c519e",
+      "change": "storage adapter wiring / retain info epoch only"
+    }
+  },
+  "lockfile_sha256": "5872efd797846db081b0ca276f7c5b888d1b00d9211dd59a9eae8c61625c2293",
+  "lockfile_sha256_by_package": {
+    "rollback": "36a6dfded1904c24090b87b7f76072369f02e517cac78f79a4f107809978ff3b",
+    "forward": "5872efd797846db081b0ca276f7c5b888d1b00d9211dd59a9eae8c61625c2293"
+  },
+  "rollback": {
+    "path": "/Users/jiangxinyi/Documents/Project/video-viewer/tmp/releases/video-viewer-0.1.4-rollback.7-arm64.apk",
+    "version": "0.1.4-rollback.7",
+    "version_code": 13,
+    "sha256": "3e83de498e1fa0b24b7b040da9d70bcb9123876d0a7850e52ca46f11a70d74ec",
+    "bytes": 21734394,
+    "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+    "flutter_engine_abis": [
+      "arm64-v8a"
+    ],
+    "normal_entrypoint": true,
+    "integration_test_plugin": false
+  },
+  "forward": {
+    "path": "/Users/jiangxinyi/Documents/Project/video-viewer/tmp/releases/video-viewer-0.2.0-preview.7-arm64.apk",
+    "version": "0.2.0-preview.7",
+    "version_code": 13,
+    "sha256": "d55950e28a644b85149e05fac67a4a772c50e026bffd141d54a4c3b073f033ee",
+    "bytes": 23242858,
+    "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+    "flutter_engine_abis": [
+      "arm64-v8a"
+    ],
+    "normal_entrypoint": true,
+    "integration_test_plugin": false
+  }
+}

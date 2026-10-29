@@ -1,0 +1,15 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_geometry_test.dart
+00:00 +0: steady chip layout and every pixel match original in both themes, selection and disabled states
+01:20 +0 -1: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_geometry_test.dart [E]
+  Bad state: Cannot close sink while adding stream.
+  package:stream_channel/src/guarantee_channel.dart 180:7      _GuaranteeSink.close
+  package:flutter_tools/src/test/flutter_platform.dart 765:43  FlutterPlatform._startTest
+  
+One or more uncaught errors occurred shutting down:
+  Bad state: Cannot add event while adding stream.
+01:20 +0 -1: steady chip layout and every pixel match original in both themes, selection and disabled states - did not complete [E]
+01:20 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_geometry_test.dart: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_geometry_test.dart
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_geometry_test.dart: steady chip layout and every pixel match original in both themes, selection and disabled states (did not complete)

@@ -1,0 +1,68 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_feedback_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart: actual button ink reduced=false cancel=false preserves gesture and disposes once
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <1>
+  Actual: <0>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart:111:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart line 111
+The test description was:
+  actual button ink reduced=false cancel=false preserves gesture and disposes once
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_feedback_test.dart: selection multi=false reduced=false preserves callback and ends at 140ms
+00:00 +0 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart: actual button ink reduced=false cancel=false preserves gesture and disposes once [E]
+  Test failed. See exception logs above.
+  The test description was: actual button ink reduced=false cancel=false preserves gesture and disposes once
+  
+00:00 +1 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart: actual button ink reduced=false cancel=true preserves gesture and disposes once
+00:00 +2 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart: actual button ink reduced=false cancel=true preserves gesture and disposes once
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: <1>
+  Actual: <0>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart:111:13)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart line 111
+The test description was:
+  actual button ink reduced=false cancel=true preserves gesture and disposes once
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +2 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_feedback_test.dart: live reduced motion completes an in-flight selection without remount or focus/callback loss multi=false
+00:00 +2 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart: actual button ink reduced=false cancel=true preserves gesture and disposes once [E]
+  Test failed. See exception logs above.
+  The test description was: actual button ink reduced=false cancel=true preserves gesture and disposes once
+  
+00:00 +3 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_feedback_test.dart: live reduced motion completes an in-flight selection without remount or focus/callback loss multi=false
+00:00 +4 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart: actual button ink reduced=true cancel=true preserves gesture and disposes once
+00:00 +5 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_feedback_test.dart: selection multi=true reduced=false preserves callback and ends at 140ms
+00:00 +6 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart: live preference completes active actual ink closing=false without gesture duplication
+00:00 +7 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_feedback_test.dart: selection multi=true reduced=true preserves callback and ends at 140ms
+00:00 +8 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart: live preference completes active actual ink closing=true without gesture duplication
+00:00 +9 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_feedback_test.dart: live reduced motion completes an in-flight selection without remount or focus/callback loss multi=true
+00:00 +10 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_feedback_test.dart: button real Material state timing reduced=false, callback is immediate and disabled cannot submit twice
+00:00 +11 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/control_feedback_test.dart: button real Material state timing reduced=true, callback is immediate and disabled cannot submit twice
+00:00 +12 -2: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart: actual button ink reduced=false cancel=false preserves gesture and disposes once
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/press_feedback_test.dart: actual button ink reduced=false cancel=true preserves gesture and disposes once

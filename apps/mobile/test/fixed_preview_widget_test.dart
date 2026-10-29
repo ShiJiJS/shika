@@ -228,7 +228,12 @@ void main() {
       expect(repo.snapshot.round, hasLength(3));
       await t.tap(find.text('视频标签'));
       await frames(t);
-      await t.tap(find.widgetWithText(FilterChip, '花卉'));
+      await t.tap(
+        find.ancestor(
+          of: find.text('花卉'),
+          matching: find.bySubtype<FilterChip>(),
+        ),
+      );
       await frames(t);
       await t.tap(find.byKey(const Key('tag-assignment-save')));
       await frames(t);

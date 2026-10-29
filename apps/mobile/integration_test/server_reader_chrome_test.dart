@@ -247,7 +247,12 @@ void main() {
       lessThanOrEqualTo(window.height - media.viewPadding.bottom),
     );
     await capture('reader-settings');
-    await tap(find.widgetWithText(ChoiceChip, '纵向拼接'));
+    await tap(
+      find.ancestor(
+        of: find.text('纵向拼接'),
+        matching: find.bySubtype<ChoiceChip>(),
+      ),
+    );
     await until(
       () =>
           reader().session.preferences.mode == ReaderMode.vertical &&

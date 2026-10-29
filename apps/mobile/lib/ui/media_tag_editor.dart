@@ -440,14 +440,14 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
             Wrap(
               spacing: 8,
               children: [
-                ChoiceChip(
+                PaperChoiceChip(
                   label: const Text('添加标签'),
                   selected: !remove,
                   onSelected: enabled
                       ? (_) => setState(() => remove = false)
                       : null,
                 ),
-                ChoiceChip(
+                PaperChoiceChip(
                   label: const Text('移除标签'),
                   selected: remove,
                   onSelected: enabled
@@ -506,7 +506,7 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
             runSpacing: 6,
             children: [
               for (final tag in items)
-                FilterChip(
+                PaperFilterChip(
                   label: Text(tag.name),
                   selected: chosen.contains(tag.id),
                   onSelected: enabled

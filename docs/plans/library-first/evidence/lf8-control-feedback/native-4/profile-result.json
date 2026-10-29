@@ -1,0 +1,1628 @@
+{
+  "control_feedback": {
+    "production_component_only": true,
+    "normal_release_acceptance": false,
+    "no_repository_or_file_commands": true,
+    "system_accessibility_injected": false,
+    "cases": [
+      {
+        "name": "round-1-press-normal-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 100,
+        "frames": [
+          {
+            "frame_us": 587415053,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 587431720,
+            "paint_value": 0.16667,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 587448386,
+            "paint_value": 0.33333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 587465053,
+            "paint_value": 0.5,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 587481720,
+            "paint_value": 0.66667,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 587498386,
+            "paint_value": 0.83333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 587515053,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-press-normal-return",
+        "kind": "press",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 588565053,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-press-reduced-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 590915053,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-press-reduced-return",
+        "kind": "press",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 100,
+        "frames": [
+          {
+            "frame_us": 592431720,
+            "paint_value": 0.83333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 592448386,
+            "paint_value": 0.66667,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 592465053,
+            "paint_value": 0.5,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 592481720,
+            "paint_value": 0.33333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 592498386,
+            "paint_value": 0.16666999999999998,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 592515053,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-choice-normal-entry",
+        "kind": "choice",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 595298386,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 595315053,
+            "paint_value": 0.03798007965087892,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 595331719,
+            "paint_value": 0.20720064640045166,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 595348386,
+            "paint_value": 0.5175749063491822,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 595365053,
+            "paint_value": 0.742475152015686,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 595381719,
+            "paint_value": 0.8723335806280376,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 595398386,
+            "paint_value": 0.9448112398386002,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 595415053,
+            "paint_value": 0.9834774583578111,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 595431719,
+            "paint_value": 0.9987555388361217,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 595448386,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-choice-normal-return",
+        "kind": "choice",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 596681719,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-choice-reduced-entry",
+        "kind": "choice",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 599098386,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-choice-reduced-return",
+        "kind": "choice",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 600448386,
+            "paint_value": 0.9620199203491212,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 600465053,
+            "paint_value": 0.7927993535995483,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 600481719,
+            "paint_value": 0.4824250936508178,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 600498386,
+            "paint_value": 0.25752484798431413,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 600515053,
+            "paint_value": 0.1276664193719626,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 600531719,
+            "paint_value": 0.055188760161399786,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 600548386,
+            "paint_value": 0.016522541642188943,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 600565053,
+            "paint_value": 0.001244461163878471,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 600581719,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-filter-normal-entry",
+        "kind": "filter",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 603148386,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 603165052,
+            "paint_value": 0.03798007965087892,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 603181719,
+            "paint_value": 0.20720064640045166,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 603215052,
+            "paint_value": 0.742475152015686,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 603231719,
+            "paint_value": 0.8723335806280376,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 603248386,
+            "paint_value": 0.9448112398386002,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 603265052,
+            "paint_value": 0.9834774583578111,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 603281719,
+            "paint_value": 0.9987555388361217,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 603298386,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-filter-normal-return",
+        "kind": "filter",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 604648386,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-filter-reduced-entry",
+        "kind": "filter",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 606715052,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-filter-reduced-return",
+        "kind": "filter",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 608248386,
+            "paint_value": 0.9620199203491212,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 608265052,
+            "paint_value": 0.7927993535995483,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 608281719,
+            "paint_value": 0.4824250936508178,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 608298386,
+            "paint_value": 0.25752484798431413,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 608315052,
+            "paint_value": 0.1276664193719626,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 608331719,
+            "paint_value": 0.055188760161399786,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 608348386,
+            "paint_value": 0.016522541642188943,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 608365052,
+            "paint_value": 0.001244461163878471,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 608381719,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-press-normal-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 100,
+        "frames": [
+          {
+            "frame_us": 610631719,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 610648385,
+            "paint_value": 0.16666,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 610665052,
+            "paint_value": 0.33333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 610681719,
+            "paint_value": 0.5,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 610698385,
+            "paint_value": 0.66666,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 610715052,
+            "paint_value": 0.83333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 610731719,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-press-normal-return",
+        "kind": "press",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 612148385,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-press-reduced-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 614848385,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-press-reduced-return",
+        "kind": "press",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 100,
+        "frames": [
+          {
+            "frame_us": 616365052,
+            "paint_value": 0.83333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 616381719,
+            "paint_value": 0.66666,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 616398385,
+            "paint_value": 0.5,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 616415052,
+            "paint_value": 0.33333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 616431719,
+            "paint_value": 0.16666000000000003,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 616448385,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-choice-normal-entry",
+        "kind": "choice",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 618965052,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 618981718,
+            "paint_value": 0.03798007965087892,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 618998385,
+            "paint_value": 0.20720064640045166,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 619015052,
+            "paint_value": 0.5175749063491822,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 619031718,
+            "paint_value": 0.742475152015686,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 619048385,
+            "paint_value": 0.8723335806280376,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 619065052,
+            "paint_value": 0.9448112398386002,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 619081718,
+            "paint_value": 0.9834774583578111,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 619098385,
+            "paint_value": 0.9987555388361217,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 619115052,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-choice-normal-return",
+        "kind": "choice",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 620165052,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-choice-reduced-entry",
+        "kind": "choice",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 622865052,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-choice-reduced-return",
+        "kind": "choice",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 624131718,
+            "paint_value": 0.9620199203491212,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 624148385,
+            "paint_value": 0.7927993535995483,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 624165052,
+            "paint_value": 0.4824250936508178,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 624181718,
+            "paint_value": 0.25752484798431413,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 624198385,
+            "paint_value": 0.1276664193719626,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 624215052,
+            "paint_value": 0.055188760161399786,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 624231718,
+            "paint_value": 0.016522541642188943,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 624248385,
+            "paint_value": 0.001244461163878471,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 624265052,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-filter-normal-entry",
+        "kind": "filter",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 626915052,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 626931718,
+            "paint_value": 0.03798007965087892,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 626948385,
+            "paint_value": 0.20720064640045166,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 626965052,
+            "paint_value": 0.5175749063491822,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 626981718,
+            "paint_value": 0.742475152015686,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 626998385,
+            "paint_value": 0.8723335806280376,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 627015051,
+            "paint_value": 0.9448112398386002,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 627031718,
+            "paint_value": 0.9834774583578111,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 627048385,
+            "paint_value": 0.9987555388361217,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 627065051,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-2-filter-normal-return",
+        "kind": "filter",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 628431718,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-filter-reduced-entry",
+        "kind": "filter",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 630898385,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-2-filter-reduced-return",
+        "kind": "filter",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 632448385,
+            "paint_value": 0.9620199203491212,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 632465051,
+            "paint_value": 0.7927993535995483,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 632481718,
+            "paint_value": 0.4824250936508178,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 632498385,
+            "paint_value": 0.25752484798431413,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 632515051,
+            "paint_value": 0.1276664193719626,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 632531718,
+            "paint_value": 0.055188760161399786,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 632548385,
+            "paint_value": 0.016522541642188943,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 632565051,
+            "paint_value": 0.001244461163878471,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 632581718,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-press-normal-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 100,
+        "frames": [
+          {
+            "frame_us": 635098385,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 635115051,
+            "paint_value": 0.16666,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 635131718,
+            "paint_value": 0.33333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 635148385,
+            "paint_value": 0.5,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 635165051,
+            "paint_value": 0.66666,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 635181718,
+            "paint_value": 0.83333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 635198385,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-press-normal-return",
+        "kind": "press",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 636598384,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-press-reduced-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 639181718,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-press-reduced-return",
+        "kind": "press",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 100,
+        "frames": [
+          {
+            "frame_us": 640265051,
+            "paint_value": 0.83333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 640281718,
+            "paint_value": 0.66666,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 640298384,
+            "paint_value": 0.5,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 640315051,
+            "paint_value": 0.33333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 640331718,
+            "paint_value": 0.16666000000000003,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 640348384,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-choice-normal-entry",
+        "kind": "choice",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 642981718,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 642998384,
+            "paint_value": 0.03798007965087892,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 643015051,
+            "paint_value": 0.20720064640045166,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 643031718,
+            "paint_value": 0.5175749063491822,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 643048384,
+            "paint_value": 0.742475152015686,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 643065051,
+            "paint_value": 0.8723335806280376,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 643081718,
+            "paint_value": 0.9448112398386002,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 643098384,
+            "paint_value": 0.9834774583578111,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 643115051,
+            "paint_value": 0.9987555388361217,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 643148384,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-choice-normal-return",
+        "kind": "choice",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 644215051,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-choice-reduced-entry",
+        "kind": "choice",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 646881717,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-choice-reduced-return",
+        "kind": "choice",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 648415051,
+            "paint_value": 0.9620199203491212,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 648431717,
+            "paint_value": 0.7927993535995483,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 648448384,
+            "paint_value": 0.4824250936508178,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 648465051,
+            "paint_value": 0.25752484798431413,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 648481717,
+            "paint_value": 0.1276664193719626,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 648498384,
+            "paint_value": 0.055188760161399786,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 648515051,
+            "paint_value": 0.016522541642188943,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 648531717,
+            "paint_value": 0.001244461163878471,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 648548384,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-filter-normal-entry",
+        "kind": "filter",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 650898384,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 650915051,
+            "paint_value": 0.03798007965087892,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 650931717,
+            "paint_value": 0.20720064640045166,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 650948384,
+            "paint_value": 0.5175749063491822,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 650965051,
+            "paint_value": 0.742475152015686,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 650998384,
+            "paint_value": 0.9448112398386002,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 651015051,
+            "paint_value": 0.9834774583578111,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 651031717,
+            "paint_value": 0.9987555388361217,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 651048384,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-3-filter-normal-return",
+        "kind": "filter",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 652481717,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-filter-reduced-entry",
+        "kind": "filter",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 654831717,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-3-filter-reduced-return",
+        "kind": "filter",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 656365050,
+            "paint_value": 0.9620199203491212,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 656381717,
+            "paint_value": 0.7927993535995483,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 656398384,
+            "paint_value": 0.4824250936508178,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 656415050,
+            "paint_value": 0.25752484798431413,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 656431717,
+            "paint_value": 0.1276664193719626,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 656448384,
+            "paint_value": 0.055188760161399786,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 656465050,
+            "paint_value": 0.016522541642188943,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 656498384,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      }
+    ],
+    "pre_action_frames": [
+      {
+        "name": "round-1-choice-normal-entry",
+        "frame_us": 595265053,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-choice-normal-entry",
+        "frame_us": 595281719,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-choice-normal-return",
+        "frame_us": 596648386,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-choice-normal-return",
+        "frame_us": 596665053,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-choice-reduced-entry",
+        "frame_us": 599065053,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-choice-reduced-entry",
+        "frame_us": 599081719,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-choice-reduced-return",
+        "frame_us": 600398386,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-choice-reduced-return",
+        "frame_us": 600415053,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-normal-entry",
+        "frame_us": 603081719,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-filter-normal-entry",
+        "frame_us": 603115052,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-filter-normal-entry",
+        "frame_us": 603131719,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-filter-normal-return",
+        "frame_us": 604598386,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-normal-return",
+        "frame_us": 604615052,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-normal-return",
+        "frame_us": 604631719,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-reduced-entry",
+        "frame_us": 606681719,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-filter-reduced-entry",
+        "frame_us": 606698386,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-1-filter-reduced-return",
+        "frame_us": 608181719,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-reduced-return",
+        "frame_us": 608198386,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-1-filter-reduced-return",
+        "frame_us": 608215052,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-2-choice-normal-entry",
+        "frame_us": 618915052,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-2-choice-normal-entry",
+        "frame_us": 618948385,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-2-choice-normal-return",
+        "frame_us": 620148385,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-2-choice-reduced-entry",
+        "frame_us": 622831718,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-2-choice-reduced-entry",
+        "frame_us": 622848385,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-2-choice-reduced-return",
+        "frame_us": 624081718,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-2-choice-reduced-return",
+        "frame_us": 624098385,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-2-filter-normal-entry",
+        "frame_us": 626881718,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-2-filter-normal-entry",
+        "frame_us": 626898385,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-2-filter-normal-return",
+        "frame_us": 628398385,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-2-filter-normal-return",
+        "frame_us": 628415051,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-2-filter-reduced-entry",
+        "frame_us": 630865051,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-2-filter-reduced-entry",
+        "frame_us": 630881718,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-2-filter-reduced-return",
+        "frame_us": 632381718,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-2-filter-reduced-return",
+        "frame_us": 632398385,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-2-filter-reduced-return",
+        "frame_us": 632415051,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-3-choice-normal-entry",
+        "frame_us": 642915051,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-3-choice-normal-entry",
+        "frame_us": 642931718,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-3-choice-normal-entry",
+        "frame_us": 642948384,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-3-choice-normal-entry",
+        "frame_us": 642965051,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-3-choice-normal-return",
+        "frame_us": 644181717,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-3-choice-normal-return",
+        "frame_us": 644198384,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-3-choice-reduced-entry",
+        "frame_us": 646848384,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-3-choice-reduced-entry",
+        "frame_us": 646865051,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-3-choice-reduced-return",
+        "frame_us": 648365051,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-3-choice-reduced-return",
+        "frame_us": 648381717,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-3-filter-normal-entry",
+        "frame_us": 650865051,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-3-filter-normal-entry",
+        "frame_us": 650881717,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-3-filter-normal-return",
+        "frame_us": 652431717,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-3-filter-normal-return",
+        "frame_us": 652448384,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-3-filter-normal-return",
+        "frame_us": 652465050,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-3-filter-reduced-entry",
+        "frame_us": 654781717,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-3-filter-reduced-entry",
+        "frame_us": 654798384,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-3-filter-reduced-entry",
+        "frame_us": 654815050,
+        "semantic_selected": false
+      },
+      {
+        "name": "round-3-filter-reduced-return",
+        "frame_us": 656298384,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-3-filter-reduced-return",
+        "frame_us": 656315050,
+        "semantic_selected": true
+      },
+      {
+        "name": "round-3-filter-reduced-return",
+        "frame_us": 656331717,
+        "semantic_selected": true
+      }
+    ],
+    "button_callbacks": 6,
+    "choice_callbacks": 12,
+    "filter_callbacks": 12,
+    "complete": true
+  }
+}

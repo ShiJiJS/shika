@@ -108,7 +108,13 @@ void main() {
       expect(t.widget<FilledButton>(save()).onPressed, isNotNull);
       await t.enterText(input(), '标签00');
       await frames(t);
-      await tap(t, find.widgetWithText(FilterChip, '标签00'));
+      await tap(
+        t,
+        find.ancestor(
+          of: find.text('标签00'),
+          matching: find.bySubtype<FilterChip>(),
+        ),
+      );
       await tap(t, save());
       expect(repo.packLinks['p1'], {'t60', 't0'});
       await tap(t, find.byTooltip('图包操作 春日合集'));
@@ -231,7 +237,7 @@ void main() {
       repo.failMore = false;
       await tap(t, find.text('重试读取标签'));
       expect(repo.tagReads.last.offset, 50);
-      expect(find.byType(FilterChip), findsNWidgets(61));
+      expect(find.bySubtype<FilterChip>(), findsNWidgets(61));
       expect(
         t.widget<InputChip>(chosen()).label,
         isA<Text>().having((w) => w.data, 'name', '标签60'),

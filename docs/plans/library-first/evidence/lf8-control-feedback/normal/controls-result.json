@@ -1,0 +1,47 @@
+{
+  "complete": true,
+  "ordinary_code": 13,
+  "actual_modes_horizontal_then_vertical": true,
+  "live_system_reduced_in_open_reader_settings": true,
+  "tag_draft_deselected_then_cancelled": true,
+  "returned_page_index": 1,
+  "page_id_offset_and_completed_equal": true,
+  "final_preferences_same_except_two_revisions": true,
+  "unchanged_business_tables_count": 15,
+  "cancel_content_tags_tasks_and_file_tables_equal": true,
+  "actual_write_requests": [
+    {
+      "time": 1793287560.2969072,
+      "method": "POST",
+      "path": "/api/v1/pack-sessions",
+      "status": 201
+    },
+    {
+      "time": 1793287560.5276742,
+      "method": "POST",
+      "path": "/api/v1/pack-sessions/a2cc9469-0b50-4d02-ab1b-07349d93871d/opened",
+      "status": 200
+    },
+    {
+      "time": 1793287681.80778,
+      "method": "PATCH",
+      "path": "/api/v1/packs/f38cd364-006e-4e7f-a875-fcff16929a87/preferences",
+      "status": 200
+    },
+    {
+      "time": 1793287686.797413,
+      "method": "PATCH",
+      "path": "/api/v1/packs/f38cd364-006e-4e7f-a875-fcff16929a87/preferences",
+      "status": 200
+    },
+    {
+      "time": 1793287764.7952495,
+      "method": "POST",
+      "path": "/api/v1/pack-sessions/a2cc9469-0b50-4d02-ab1b-07349d93871d/opened",
+      "status": 200
+    }
+  ],
+  "deferred_exit_request_explained": "pack.opened:1793287764394926-2636266455-4",
+  "new_session_count": 1,
+  "original_audit_failure": "Incorrectly required request_records unchanged across reader exit; exact readback is one successful pack.opened for the same page/offset, with ordinary progress revision and recent timestamp. Original script/log retained; no command replay."
+}

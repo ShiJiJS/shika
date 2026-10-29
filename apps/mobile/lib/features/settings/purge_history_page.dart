@@ -132,7 +132,7 @@ class _PurgeHistoryPageState extends State<PurgeHistoryPage> {
             spacing: 8,
             runSpacing: 4,
             children: [
-              ChoiceChip(
+              PaperChoiceChip(
                 key: const Key('purge-history-review'),
                 label: const Text('原精确清单'),
                 selected: !results,
@@ -147,7 +147,7 @@ class _PurgeHistoryPageState extends State<PurgeHistoryPage> {
                       },
               ),
               if (widget.task.kind == 'pack_permanent')
-                ChoiceChip(
+                PaperChoiceChip(
                   key: const Key('purge-history-results'),
                   label: const Text('逐项结果'),
                   selected: results,
@@ -170,7 +170,7 @@ class _PurgeHistoryPageState extends State<PurgeHistoryPage> {
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 for (final flag in [true, false])
-                  ChoiceChip(
+                  PaperChoiceChip(
                     key: Key('purge-history-outcome-$flag'),
                     label: Text(flag ? '未完成' : '全部'),
                     selected: unfinished == flag,

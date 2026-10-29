@@ -304,7 +304,7 @@ class PackReaderPageState extends State<PackReaderPage>
               runSpacing: 8,
               children: [
                 for (final mode in ReaderMode.values)
-                  ChoiceChip(
+                  PaperChoiceChip(
                     label: Text(
                       mode == ReaderMode.horizontal ? '横向翻页' : '纵向拼接',
                     ),

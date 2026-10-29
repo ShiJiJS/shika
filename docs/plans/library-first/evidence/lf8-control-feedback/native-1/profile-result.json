@@ -1,0 +1,238 @@
+{
+  "control_feedback": {
+    "production_component_only": true,
+    "normal_release_acceptance": false,
+    "no_repository_or_file_commands": true,
+    "system_accessibility_injected": false,
+    "cases": [
+      {
+        "name": "round-1-press-normal-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 100,
+        "frames": [
+          {
+            "frame_us": 80765073,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 80781740,
+            "paint_value": 0.16667,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 80798407,
+            "paint_value": 0.33334,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 80815073,
+            "paint_value": 0.5,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 80831740,
+            "paint_value": 0.66667,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 80848407,
+            "paint_value": 0.83334,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 80865073,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-press-normal-return",
+        "kind": "press",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 83265073,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-press-reduced-entry",
+        "kind": "press",
+        "closing": false,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 87365073,
+            "paint_value": 1.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      },
+      {
+        "name": "round-1-press-reduced-return",
+        "kind": "press",
+        "closing": true,
+        "reduced": false,
+        "nominal_ms": 100,
+        "frames": [
+          {
+            "frame_us": 89881740,
+            "paint_value": 0.83333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 89898406,
+            "paint_value": 0.66667,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 89915073,
+            "paint_value": 0.5,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 89931740,
+            "paint_value": 0.33333,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 89948406,
+            "paint_value": 0.16666999999999998,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 89965073,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-choice-normal-entry",
+        "kind": "choice",
+        "closing": false,
+        "reduced": false,
+        "nominal_ms": 140,
+        "frames": [
+          {
+            "frame_us": 92115073,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92131740,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92148406,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92165073,
+            "paint_value": 0.0,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92181740,
+            "paint_value": 0.03798007965087892,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92198406,
+            "paint_value": 0.20720064640045166,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92215073,
+            "paint_value": 0.5175749063491822,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92231740,
+            "paint_value": 0.742475152015686,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92248406,
+            "paint_value": 0.8723335806280376,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92265073,
+            "paint_value": 0.9448112398386002,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92281740,
+            "paint_value": 0.9834774583578111,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92298406,
+            "paint_value": 0.9987555388361217,
+            "native_flag": false,
+            "media_query_flag": false
+          },
+          {
+            "frame_us": 92315073,
+            "paint_value": 1.0,
+            "native_flag": false,
+            "media_query_flag": false
+          }
+        ]
+      },
+      {
+        "name": "round-1-choice-normal-return",
+        "kind": "choice",
+        "closing": true,
+        "reduced": true,
+        "nominal_ms": 0,
+        "frames": [
+          {
+            "frame_us": 93698406,
+            "paint_value": 0.0,
+            "native_flag": true,
+            "media_query_flag": true
+          }
+        ]
+      }
+    ]
+  }
+}

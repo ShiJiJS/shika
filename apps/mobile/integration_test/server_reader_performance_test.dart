@@ -441,7 +441,12 @@ void main() {
     await firstPage();
     final rangeId = reader().session.range!.id;
     await tap(find.byTooltip('阅读设置'));
-    await tap(find.widgetWithText(ChoiceChip, '纵向拼接'));
+    await tap(
+      find.ancestor(
+        of: find.text('纵向拼接'),
+        matching: find.bySubtype<ChoiceChip>(),
+      ),
+    );
     await tap(find.byKey(const Key('reader-settings-done')));
     await imageReady();
     expect(reader().session.index, 0);
@@ -476,7 +481,12 @@ void main() {
     await checkpoint('long-end', await sample('long-end'));
     final page = reader().session.currentPage!.id;
     await tap(find.byTooltip('阅读设置'));
-    await tap(find.widgetWithText(ChoiceChip, '横向翻页'));
+    await tap(
+      find.ancestor(
+        of: find.text('横向翻页'),
+        matching: find.bySubtype<ChoiceChip>(),
+      ),
+    );
     await tap(find.byKey(const Key('reader-settings-done')));
     await imageReady();
     expect(reader().session.currentPage!.id, page);

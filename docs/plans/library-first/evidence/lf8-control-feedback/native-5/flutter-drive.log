@@ -1,0 +1,43 @@
+Installing ../../.dev/lf8-control-feedback/quick-profile.apk...        899ms
+I/WindowExtensionsImpl( 3654): Initializing Window Extensions, vendor API level=9, activity embedding enabled=true
+I/Choreographer( 3654): Skipped 97 frames!  The application may be doing too much work on its main thread.
+D/WindowLayoutComponentImpl( 3654): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@81f6eab, of which baseContext=android.app.ContextImpl@6d30db4
+I/js.video_viewer( 3654): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+VMServiceFlutterDriver: Connecting to Flutter application at <redacted-local-vm-service>
+VMServiceFlutterDriver: Isolate found with number: 8594873690162867
+VMServiceFlutterDriver: Isolate 8594873690162867 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 3654): 00:00 +0: quick native tap acknowledges once with live system motion preference
+VMServiceFlutterDriver: Connected to Flutter application.
+D/ProfileInstaller( 3654): Installing profile for io.github.shijijs.video_viewer
+D/InsetsController( 3654): hide(ime(), fromIme=false)
+I/ImeTracker( 3654): io.github.shijijs.video_viewer:629e41e3: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+I/flutter ( 3654): Expected: true
+I/flutter ( 3654):   Actual: <false>
+I/flutter ( 3654): 
+I/flutter ( 3654): #0      fail (package:matcher/src/expect/expect.dart:187)
+I/flutter ( 3654): #1      _expect (package:matcher/src/expect/expect.dart:182)
+I/flutter ( 3654): #2      expect (package:matcher/src/expect/expect.dart:65)
+I/flutter ( 3654): #3      expect (package:flutter_test/src/widget_tester.dart:473)
+I/flutter ( 3654): #4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/quick_press_feedback_test.dart:169)
+I/flutter ( 3654): <asynchronous suspension>
+I/flutter ( 3654): #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 3654): <asynchronous suspension>
+I/flutter ( 3654): #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 3654): <asynchronous suspension>
+I/flutter ( 3654): #7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 3654): <asynchronous suspension>
+I/flutter ( 3654): 00:07 +0: quick native tap acknowledges once with live system motion preference [E]
+I/flutter ( 3654):   Test failed. See exception logs above.
+I/flutter ( 3654):   The test description was: quick native tap acknowledges once with live system motion preference
+I/flutter ( 3654):   
+I/flutter ( 3654): 00:07 +0 -1: (tearDownAll)
+I/flutter ( 3654): 00:07 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: quick native tap acknowledges once with live system motion preference
+Instance of 'FlutterErrorDetails'
+end of failure 1
+
+
+

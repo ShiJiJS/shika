@@ -299,7 +299,7 @@ void main() {
         addTearDown(t.view.resetPhysicalSize);
         addTearDown(t.view.resetDevicePixelRatio);
         await host(t, paged: true, offPage: false);
-        final first = find.byType(FilterChip).first;
+        final first = find.bySubtype<FilterChip>().first;
         final candidate = t.getRect(first);
         final scroller = find
             .ancestor(
@@ -329,10 +329,16 @@ void main() {
           repo.failMore = false;
           await tap(t, find.text('重试读取标签'));
           expect(repo.videoOffsets.last, 50);
-          expect(find.byType(FilterChip), findsNWidgets(66));
+          expect(find.bySubtype<FilterChip>(), findsNWidgets(66));
           await t.enterText(search, '分页00');
           await t.pumpAndSettle();
-          await tap(t, find.widgetWithText(FilterChip, '分页00'));
+          await tap(
+            t,
+            find.ancestor(
+              of: find.text('分页00'),
+              matching: find.bySubtype<FilterChip>(),
+            ),
+          );
           expect(
             find.byKey(const Key('chosen-video-tag-分页00')),
             findsOneWidget,
@@ -352,8 +358,20 @@ void main() {
       'single replacement creates only current namespace and returns persisted IDs pack=$pack',
       (t) async {
         await host(t);
-        await tap(t, find.widgetWithText(FilterChip, '自然'));
-        await tap(t, find.widgetWithText(FilterChip, pack ? '收藏' : '庭院'));
+        await tap(
+          t,
+          find.ancestor(
+            of: find.text('自然'),
+            matching: find.bySubtype<FilterChip>(),
+          ),
+        );
+        await tap(
+          t,
+          find.ancestor(
+            of: find.text(pack ? '收藏' : '庭院'),
+            matching: find.bySubtype<FilterChip>(),
+          ),
+        );
         await t.enterText(input, '共同新标签');
         await tap(t, save);
         expect(repo.creations, [pack]);
@@ -381,7 +399,13 @@ void main() {
         targets
           ..clear()
           ..add(pack ? 'p2' : 'v2');
-        await tap(t, find.widgetWithText(FilterChip, pack ? '收藏' : '庭院'));
+        await tap(
+          t,
+          find.ancestor(
+            of: find.text(pack ? '收藏' : '庭院'),
+            matching: find.bySubtype<FilterChip>(),
+          ),
+        );
         await tap(t, save);
         expect(repo.writes.single.ids, {pack ? 'p1' : 'v1'});
         expect(repo.writes.single.replace, isFalse);

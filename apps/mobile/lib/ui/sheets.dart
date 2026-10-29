@@ -224,7 +224,7 @@ class _ScopeSheetState extends State<ScopeSheet> {
         runSpacing: 6,
         children: widget.repository.snapshot.tags
             .map(
-              (tag) => FilterChip(
+              (tag) => PaperFilterChip(
                 label: Text(widget.repository.tagName(tag)),
                 selected: draft.tags.contains(tag),
                 backgroundColor: Paper.of(context).soft,
