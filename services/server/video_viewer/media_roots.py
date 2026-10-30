@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from sqlalchemy import case, false, or_, select
+from sqlalchemy import case, false, literal, or_, select
 
 from .models import Root
 from .paths import beneath
@@ -32,14 +32,21 @@ def enabled_path(session, column, kind="video"):
     return case(*clauses, else_=False) if clauses else false()
 
 
-def owned_path(session, column, root_id, kind="pack"):
-    """Nearest explicit pack root owns pages; nested roots partition manifests."""
+def path_owner(session, column, kind="pack"):
+    """SQL counterpart of owner_for_path, including type/disabled barriers."""
     roots = list(session.scalars(select(Root)))
-    clauses = [
-        (
-            or_(column == root.path, column.startswith(root.path + "/", autoescape=True)),
-            root.id if root.mount_id and root.enabled and root.kind == kind else None,
+    clauses = []
+    for root in sorted(roots, key=lambda root: len(root.path), reverse=True):
+        owner = owner_for_path(root.path, roots, kind)
+        clauses.append(
+            (
+                or_(column == root.path, column.startswith(root.path + "/", autoescape=True)),
+                owner.id if owner else None,
+            )
         )
-        for root in sorted(roots, key=lambda root: len(root.path), reverse=True)
-    ]
-    return case(*clauses, else_=None) == root_id if clauses else false()
+    return case(*clauses, else_=None) if clauses else literal(None)
+
+
+def owned_path(session, column, root_id, kind="pack"):
+    """Pack uses its nearest root; video retains its outermost unblocked root."""
+    return path_owner(session, column, kind) == root_id

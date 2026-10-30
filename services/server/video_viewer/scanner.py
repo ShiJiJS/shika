@@ -12,7 +12,7 @@ from .errors import LibraryError
 from .file_state import path_reserved, reserved_video_ids
 from .identity import publish_discoveries
 from .media import MediaInspectionError, fingerprint, inspect_media, make_thumbnail
-from .media_roots import enabled_path, owner_for_path
+from .media_roots import enabled_path, owned_path, owner_for_path
 from .models import Directory, Observation, Root, Setting, Task, Video
 from .pack_scanner import PackScanner
 from .paths import VIDEO_EXTENSIONS, beneath, excluded, open_directory, open_video, signature
@@ -97,7 +97,7 @@ class Scanner:
                 session.flush()
                 task.result = {
                     "scope": {"all": root_id is None, "root_ids": [r.id for r in selected]},
-                    "roots": [entry(r, task.id) for r in selected],
+                    "roots": [entry(r, task.id, roots) for r in selected],
                 }
             self.future = self.executor.submit(self.run, task.id)
             return self.task(task.id)
@@ -410,7 +410,7 @@ class Scanner:
                     enabled_path(session, Video.path),
                     Video.path.startswith(str(base) + "/", autoescape=True),
                     Video.seen_scan != task_id,
-                    Video.root_id == root.id,
+                    owned_path(session, Video.path, root.id, "video"),
                     Video.id.not_in(reserved_video_ids()),
                 )
             )
@@ -422,7 +422,7 @@ class Scanner:
                 delete(Directory).where(
                     Directory.path.startswith(str(base) + "/", autoescape=True),
                     Directory.seen_scan != task_id,
-                    Directory.root_id == root.id,
+                    owned_path(session, Directory.path, root.id, "video"),
                     Directory.path.not_in(configured_paths),
                     enabled_path(session, Directory.path),
                 )

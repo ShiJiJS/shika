@@ -1,25 +1,36 @@
 """Durable per-root scan facts, indexed locally without exporting runtime state."""
 
+import hashlib
 import json
 import time
+from pathlib import Path
 
 from .authority import Authority
 from .models import Setting
+from .paths import beneath
 
 PREFIX = "root_scan_progress_v1:"
 ACTIVE = {"queued", "discovering", "waiting_for_stable_files", "processing_media", "reconciling"}
 
 
-def configuration(root):
-    return [root.path, root.kind, root.mount_id, root.enabled]
+def configuration(root, roots):
+    related = [
+        [r.id, r.path, r.kind, r.mount_id, r.enabled]
+        for r in sorted(roots, key=lambda r: r.id)
+        if beneath(Path(r.path), Path(root.path)) or beneath(Path(root.path), Path(r.path))
+    ]
+    # Include related ownership boundaries without duplicating all configured
+    # paths in every root's task/result/cache entry.
+    policy = hashlib.sha256(json.dumps(related, sort_keys=True).encode()).hexdigest()
+    return [root.path, root.kind, root.mount_id, root.enabled, policy]
 
 
-def entry(root, task_id):
+def entry(root, task_id, roots):
     return {
         "id": root.id,
         "kind": root.kind,
         "task_id": task_id,
-        "configuration": configuration(root),
+        "configuration": configuration(root, roots),
         "status": "queued" if root.enabled else "disabled",
         "phase": "queued" if root.enabled else "disabled",
         "discovered": 0,
@@ -50,7 +61,7 @@ def publish(session, task):
             session.add(Setting(key=key, value=value))
 
 
-def latest(session, root):
+def latest(session, root, roots):
     stored = session.get(Setting, PREFIX + root.id)
     if not stored:
         return None
@@ -58,7 +69,7 @@ def latest(session, root):
         value = json.loads(stored.value)
         item = value["scan"]
         if value["epoch"] == Authority.current(session) and item["configuration"] == configuration(
-            root
+            root, roots
         ):
             return {k: v for k, v in item.items() if k != "configuration"}
     except (ValueError, TypeError, KeyError):

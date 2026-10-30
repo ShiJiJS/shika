@@ -7,7 +7,7 @@ from sqlalchemy import func, select
 
 from .errors import LibraryError
 from .file_state import reserved_video_ids, set_video_signature, video_signature
-from .media_roots import enabled_path
+from .media_roots import enabled_path, path_owner
 from .models import Root, TrashItem, Video
 from .paths import open_video, signature
 
@@ -94,7 +94,7 @@ def publish_discoveries(
                 )
             )
             if restrict_candidates:
-                query = query.where(Video.root_id.in_(completed_roots))
+                query = query.where(path_owner(session, Video.path, "video").in_(completed_roots))
             # At most two candidate objects are needed to establish uniqueness.
             content_candidates = list(session.scalars(query.limit(2)))
             candidates = list(

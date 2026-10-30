@@ -327,7 +327,7 @@ def test_partial_interruption_persists_and_restart_does_not_replay(environment, 
             pending = Task(kind="scan", status="running", phase="pack_inspecting", result={})
             session.add(pending)
             session.flush()
-            item = entry(root, pending.id)
+            item = entry(root, pending.id, list(session.scalars(select(Root))))
             item["status"] = item["phase"] = "processing_media"
             item["progress"]["processed"] = item["progress"]["discovered"] = 1
             pending.result = {"scope": {"all": False, "root_ids": [root.id]}, "roots": [item]}
@@ -346,7 +346,7 @@ def test_partial_interruption_persists_and_restart_does_not_replay(environment, 
         session.flush()
         pending.result = {
             "scope": {"all": False, "root_ids": [root.id]},
-            "roots": [entry(root, pending.id)],
+            "roots": [entry(root, pending.id, list(session.scalars(select(Root))))],
         }
         queued_id = pending.id
     db.close()
@@ -460,6 +460,7 @@ def test_close_cancels_queued_scan_without_replacing_its_prior_completed_facts(
     assert queued["status"] == "interrupted"
     assert queued["result"]["root_scans"][0]["status"] == "interrupted"
     assert state(client)[1][b["id"]] == before
+
     assert not state(client)[0]["scan_queue"]
     # Deterministically exercise a future picked up after the stop signal.
     with client.app.state.db.write() as session:
@@ -469,9 +470,64 @@ def test_close_cancels_queued_scan_without_replacing_its_prior_completed_facts(
         session.flush()
         late.result = {
             "scope": {"all": False, "root_ids": [root.id]},
-            "roots": [entry(root, late.id)],
+            "roots": [entry(root, late.id, list(session.scalars(select(Root))))],
         }
         late_id = late.id
     scanner.run(late_id)
     assert client.get("/api/v1/tasks/" + late_id).json()["status"] == "interrupted"
     assert state(client)[1][b["id"]] == before
+
+
+def test_new_outer_root_invalidates_previous_inner_scope_facts(library, samples):
+    client, media = library
+    inner = media / "inner"
+    inner.mkdir()
+    assert (
+        client.put("/api/v1/roots/main", json={"name": "inner", "path": str(inner)}).status_code
+        == 200
+    )
+    put(samples / "h264.mov", inner / "one.mov")
+    scan(client)
+    assert state(client)[1]["main"]["scan"]["status"] == "completed"
+    assert (
+        client.post("/api/v1/roots", json={"name": "outer", "path": str(media)}).status_code == 201
+    )
+    assert state(client)[1]["main"]["scan"] is None
+
+
+def test_scoped_outer_uses_current_video_owner_and_preserves_type_boundary(library, samples):
+    client, media = library
+    inner = media / "inner"
+    inner.mkdir()
+    assert (
+        client.put("/api/v1/roots/main", json={"name": "inner", "path": str(inner)}).status_code
+        == 200
+    )
+    pack_source = media / "packs"
+    child_source = pack_source / "video-child"
+    child_source.mkdir(parents=True)
+    assert (
+        client.post(
+            "/api/v1/roots", json={"name": "pack", "path": str(pack_source), "kind": "pack"}
+        ).status_code
+        == 201
+    )
+    child = client.post(
+        "/api/v1/roots", json={"name": "video-child", "path": str(child_source)}
+    ).json()
+    put(samples / "h264.mov", inner / "one.mov")
+    put(samples / "portrait.mp4", child_source / "one.mp4")
+    scan(client)
+    with client.app.state.db.read() as session:
+        protected = session.scalar(select(Video).where(Video.root_id == child["id"]))
+        protected_id = protected.id
+        old_child = {c.name: getattr(protected, c.name) for c in Video.__table__.columns}
+        old_id = session.scalar(select(Video.id).where(Video.root_id == "main"))
+    outer = client.post("/api/v1/roots", json={"name": "outer", "path": str(media)}).json()
+    (inner / "one.mov").unlink()
+    (child_source / "one.mp4").unlink()
+    completed(client, start(client, outer["id"]))
+    with client.app.state.db.read() as session:
+        assert session.get(Video, old_id).status == "missing"
+        protected = session.get(Video, protected_id)
+        assert {c.name: getattr(protected, c.name) for c in Video.__table__.columns} == old_child

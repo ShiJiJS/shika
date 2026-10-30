@@ -49,7 +49,9 @@ def library_state(db):
         legacy_progress = {
             key: value for key, value in root_progress.items() if "configuration" not in value
         }
-        scans = {root.id: latest(session, root) or legacy_progress.get(root.id) for root in roots}
+        scans = {
+            root.id: latest(session, root, roots) or legacy_progress.get(root.id) for root in roots
+        }
         queued = {
             root.id: [
                 t.id
