@@ -349,7 +349,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
 
   Future<void> open({String? anchor, bool quick = false}) async {
     if (busy || viewing || repo.backupRestorePending || !widget.active) return;
-    FocusScope.of(context).unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
     final saved = position(), connection = repo.connectionIdentity;
     final current = ++generation;
     setState(() {
