@@ -2,7 +2,19 @@ import 'package:flutter/material.dart';
 
 import 'paper.dart';
 
-enum PaperGlyph { shuffle, tag, filter, play, horizontal, vertical }
+enum PaperGlyph {
+  shuffle,
+  tag,
+  filter,
+  play,
+  horizontal,
+  vertical,
+  grid,
+  settings,
+  history,
+  more,
+  expand,
+}
 
 /// Paper's outlined tool shapes; button labels own their accessibility names.
 class PaperIcon extends StatelessWidget {
@@ -38,6 +50,57 @@ class _PaperIconPainter extends CustomPainter {
       ..strokeJoin = StrokeJoin.round;
     final path = Path();
     switch (glyph) {
+      case PaperGlyph.grid:
+        for (final y in [3.0, 14.0]) {
+          for (final x in [3.0, 14.0]) {
+            path.addRRect(
+              RRect.fromRectAndRadius(
+                Rect.fromLTWH(x, y, 7, 7),
+                const Radius.circular(1),
+              ),
+            );
+          }
+        }
+      case PaperGlyph.settings:
+        path
+          ..moveTo(4, 7)
+          ..lineTo(20, 7)
+          ..moveTo(4, 17)
+          ..lineTo(20, 17)
+          ..addOval(Rect.fromCircle(center: const Offset(9, 7), radius: 3))
+          ..addOval(Rect.fromCircle(center: const Offset(16, 17), radius: 3));
+      case PaperGlyph.history:
+        path
+          ..moveTo(4, 5)
+          ..lineTo(4, 10)
+          ..lineTo(9, 10)
+          ..moveTo(4, 10)
+          ..arcToPoint(
+            const Offset(5, 18),
+            radius: const Radius.circular(8),
+            largeArc: true,
+          )
+          ..moveTo(12, 7)
+          ..lineTo(12, 13)
+          ..lineTo(16, 15);
+      case PaperGlyph.more:
+        for (final x in [5.0, 12.0, 19.0]) {
+          path.addOval(Rect.fromCircle(center: Offset(x, 12), radius: 1));
+        }
+      case PaperGlyph.expand:
+        path
+          ..moveTo(8, 3)
+          ..lineTo(3, 3)
+          ..lineTo(3, 8)
+          ..moveTo(16, 3)
+          ..lineTo(21, 3)
+          ..lineTo(21, 8)
+          ..moveTo(3, 16)
+          ..lineTo(3, 21)
+          ..lineTo(8, 21)
+          ..moveTo(16, 21)
+          ..lineTo(21, 21)
+          ..lineTo(21, 16);
       case PaperGlyph.horizontal:
         path
           ..addRRect(
@@ -112,6 +175,11 @@ class _PaperIconPainter extends CustomPainter {
     }
     canvas.save();
     canvas.scale(size.width / 24, size.height / 24);
+    if (glyph == PaperGlyph.settings) {
+      final fill = Paint()..color = color;
+      canvas.drawCircle(const Offset(9, 7), 3, fill);
+      canvas.drawCircle(const Offset(16, 17), 3, fill);
+    }
     canvas.drawPath(path, stroke);
     canvas.restore();
   }

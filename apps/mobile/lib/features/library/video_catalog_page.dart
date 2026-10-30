@@ -9,6 +9,7 @@ import '../../ui/media_layout.dart';
 import '../../ui/media_history.dart';
 import '../../ui/media_poster.dart';
 import '../../ui/paper.dart';
+import '../../ui/paper_icons.dart';
 import '../../ui/preferences.dart';
 import '../../ui/sheets.dart';
 import '../preview/video_preview_route.dart';
@@ -725,8 +726,8 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                                 ),
                                                 child: Padding(
                                                   padding: EdgeInsets.all(7),
-                                                  child: Icon(
-                                                    Icons.play_arrow_outlined,
+                                                  child: PaperIcon(
+                                                    PaperGlyph.play,
                                                     size: 20,
                                                     color: Color(0xff526347),
                                                   ),
