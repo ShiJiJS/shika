@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-zoom-flow-native25/pattern-scan.py", line 21, in <module>
+    ui.fill(0,'05-patterns');ui.device('shell','input','keyevent','4');_,nodes=ui.xml();found=[n for n in nodes if '\n05-patterns\n' in n.get('content-desc','') and n.get('clickable')=='true'];assert len(found)==1;ui.tap(found[0],'open-public-patterns-pack');deadline=time.monotonic()+45
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-zoom-flow-native25/ui.py", line 21, in fill
+    raw,nodes=xml();fields=[v for v in nodes if v.get('class')=='android.widget.EditText'];tap(fields[index],'fixture-field-'+str(index));device('shell','input','keyevent','123');device('shell','input','keyevent',*(['67']*max(32,len(fields[index].get('text',''))+2)));device('shell','input','text',value);record({'action':'fill','index':index,'value':'[fixture password]' if password else value})
+IndexError: list index out of range

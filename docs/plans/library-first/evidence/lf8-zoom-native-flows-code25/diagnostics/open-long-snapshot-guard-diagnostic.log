@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-zoom-flow-native25/open-long.py", line 9, in <module>
+    snapshot('new25','before-long-entry');ui.device('shell','am','force-stop',ui.PACKAGE);ui.device('shell','am','start','-n',ui.PACKAGE+'/.MainActivity');deadline=time.monotonic()+45
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-zoom-flow-native25/snapshot_all.py", line 15, in snapshot
+    m=json.loads((L/'runtime.json').read_text());raw=subprocess.check_output(['docker','exec',m['id'],'python','-c',CODE],timeout=20);p=L/(name+'-all-catalog.json');assert not p.exists();p.write_bytes(raw);v=json.loads(raw);print(json.dumps({'snapshot':name,'kind':kind,'tables':len(v['tables']),'counts':{k:len(x) for k,x in v['tables'].items()}}));return v
+AssertionError
