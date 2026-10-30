@@ -1,0 +1,24 @@
+{
+  "baseline_product_source": "12d6ca67ef3a8b307894468923dc08e612e02587",
+  "based_on": "ceeecf83",
+  "baseline_new_cases_failed": 5,
+  "baseline_legacy_control_passed": 1,
+  "related_passed": 20,
+  "full_client_passed": 797,
+  "full_exit": 0,
+  "analyze_exit": 0,
+  "native_verified": false,
+  "apk_built": false,
+  "nas_changed": false,
+  "files": {
+    "apps/mobile/lib/ui/home.dart": "7dfa55b008fcfc7cbfd0f50db6b43f3e26aeb7b4d3846faacaa3895ed44c1f58",
+    "apps/mobile/lib/app/media_workspace.dart": "bd0934b4abd1706eacd454052789bbb6f6b7112b5b5825ad2a9d5d2fc4023f3a",
+    "apps/mobile/test/workspace_back_navigation_test.dart": "decbea054702ee0f1a2812a2b5cbdf227ef71090d2ef333599dde7a726f1f005"
+  },
+  "logs": {
+    "client-full.log": "73469a8df2a00d82235ccbf94bb34ffa336d9a147dec81e2e3b83ac616d7d92c",
+    "related.log": "05cf963ff6898e46eadafbff421e65cd8a4fcab2ecaa641dbe8a8a734279e99f",
+    "before.log": "d1221f9bdf2b920c265e9e9a6eec37f9cc86898e8156876af522838da0d045b9",
+    "analyze.log": "04cf17853755e492b494281e678f0c725496d540886f817a40270d63053ac75d"
+  }
+}
