@@ -1,0 +1,141 @@
+{
+  "complete": true,
+  "checks": [
+    {
+      "name": "run2-round-1-normal-directions",
+      "directions": 2,
+      "scales": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      },
+      "completed_card_visible_only_expanded": true
+    },
+    {
+      "name": "run2-round-1-reduced-directions",
+      "directions": 2,
+      "scales": {
+        "window_animation_scale": "0",
+        "transition_animation_scale": "0",
+        "animator_duration_scale": "0"
+      },
+      "completed_card_visible_only_expanded": true
+    },
+    {
+      "name": "run2-round-1-scanning",
+      "task_id": "1cc61f54-eaa0-44c7-b9cf-026ffe20d5d6",
+      "real_service": true,
+      "single_visible_detail": true
+    },
+    {
+      "name": "run2-round-1-read-failure",
+      "task_id": "1cc61f54-eaa0-44c7-b9cf-026ffe20d5d6",
+      "task_status": "completed",
+      "failed_count": 1,
+      "single_visible_detail": true,
+      "failure_reason": "probe_failed"
+    },
+    {
+      "name": "run2-round-1-recovery-completed",
+      "task_id": "5b8b62fa-1c64-4981-8b05-772ac5845630",
+      "task_status": "completed",
+      "failed_count": 0,
+      "collapsed_after_replacement": true,
+      "reopened_correct_single_detail": true
+    },
+    {
+      "name": "run2-round-2-normal-directions",
+      "directions": 2,
+      "scales": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      },
+      "completed_card_visible_only_expanded": true
+    },
+    {
+      "name": "run2-round-2-reduced-directions",
+      "directions": 2,
+      "scales": {
+        "window_animation_scale": "0",
+        "transition_animation_scale": "0",
+        "animator_duration_scale": "0"
+      },
+      "completed_card_visible_only_expanded": true
+    },
+    {
+      "name": "run2-round-2-scanning",
+      "task_id": "0f5925ee-5a9e-4d2a-b3ba-196d272077cb",
+      "real_service": true,
+      "single_visible_detail": true
+    },
+    {
+      "name": "run2-round-2-read-failure",
+      "task_id": "0f5925ee-5a9e-4d2a-b3ba-196d272077cb",
+      "task_status": "completed",
+      "failed_count": 1,
+      "single_visible_detail": true,
+      "failure_reason": "probe_failed"
+    },
+    {
+      "name": "run2-round-2-recovery-completed",
+      "task_id": "ce194a9d-ad24-4e47-83f9-c8b878774a2d",
+      "task_status": "completed",
+      "failed_count": 0,
+      "collapsed_after_replacement": true,
+      "reopened_correct_single_detail": true
+    },
+    {
+      "name": "run2-round-3-normal-directions",
+      "directions": 2,
+      "scales": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      },
+      "completed_card_visible_only_expanded": true
+    },
+    {
+      "name": "run2-round-3-reduced-directions",
+      "directions": 2,
+      "scales": {
+        "window_animation_scale": "0",
+        "transition_animation_scale": "0",
+        "animator_duration_scale": "0"
+      },
+      "completed_card_visible_only_expanded": true
+    },
+    {
+      "name": "run2-round-3-scanning",
+      "task_id": "7d467737-46fa-4132-b7dd-4838cfdf71b7",
+      "real_service": true,
+      "single_visible_detail": true
+    },
+    {
+      "name": "run2-round-3-read-failure",
+      "task_id": "7d467737-46fa-4132-b7dd-4838cfdf71b7",
+      "task_status": "completed",
+      "failed_count": 1,
+      "single_visible_detail": true,
+      "failure_reason": "probe_failed"
+    },
+    {
+      "name": "run2-round-3-recovery-completed",
+      "task_id": "a8a6aab5-156f-47e1-943d-5536d06de065",
+      "task_status": "completed",
+      "failed_count": 0,
+      "collapsed_after_replacement": true,
+      "reopened_correct_single_detail": true
+    }
+  ],
+  "rounds": 3,
+  "ordinary_reduced_directions": 12,
+  "additional_open_before_scan": 3,
+  "recovery_directions": 6,
+  "service_scans": 6,
+  "state_checkpoints": 9,
+  "no_forced_service_status_or_clock": true,
+  "normal_main_release": true,
+  "prefs_preserved": true,
+  "not_normal_package_frame_timing_proof": true
+}

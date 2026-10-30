@@ -1,0 +1,30 @@
+{
+  "command": [
+    "adb",
+    "-s",
+    "emulator-5556",
+    "install",
+    "-r",
+    "video-viewer-0.2.0-preview.12-arm64.apk"
+  ],
+  "output": "Performing Streamed Install\nSuccess\n",
+  "before": {
+    "versionCode": "18 minSdk=24 targetSdk=36",
+    "versionName": "0.1.4-rollback.12",
+    "firstInstallTime": "2026-10-28 09:16:36",
+    "lastUpdateTime": "2026-10-30 08:31:48",
+    "dataDir": "/data/user/0/io.github.shijijs.video_viewer",
+    "appId": "10213"
+  },
+  "after": {
+    "versionCode": "18 minSdk=24 targetSdk=36",
+    "versionName": "0.2.0-preview.12",
+    "firstInstallTime": "2026-10-28 09:16:36",
+    "lastUpdateTime": "2026-10-30 08:31:53",
+    "dataDir": "/data/user/0/io.github.shijijs.video_viewer",
+    "appId": "10213"
+  },
+  "sha256": "d124de9a27f602eb56b3fdd23a5a3740670f0eed40a8e7131aa544347a27e4d0",
+  "trace_offset": 63,
+  "no_uninstall_or_clear": true
+}

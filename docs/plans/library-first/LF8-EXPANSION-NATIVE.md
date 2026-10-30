@@ -1,6 +1,6 @@
 # LF8：扫描详情展开的真实 Android 验证
 
-[草稿PR #122](https://github.com/ShiJiJS/video_viewer/pull/122)已提交并附在开发聊天中，基于源码PR #121。当前仅完成本段，正常新包及总验收保持开放。
+[草稿PR #122](https://github.com/ShiJiJS/video_viewer/pull/122)已提交并附在开发聊天中，基于源码PR #121。本段独立证明已完成；正常main真实服务/新包的本机项现由[配套包PR #123](LF8-EXPANSION-PACKAGE.md)补齐，总验收仍开放。
 
 承接[#120 / 源码PR #121](https://github.com/ShiJiJS/video_viewer/pull/121)，生产展开模块固定6af88978。本段不改生产lib，使用实际LibraryHome目录页、非DemoControls只读fixture，真实原生点击与系统三个动画比例；不注入无障碍替身，不执行扫描或文件命令。
 
