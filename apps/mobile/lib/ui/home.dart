@@ -2538,7 +2538,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         ),
       ),
       if (repo is! DemoControls && !rootScanNeedsAttention)
-        ExpansionTile(
+        PaperExpansionTile(
           key: const Key('root-scan-details'),
           tilePadding: EdgeInsets.zero,
           title: Text(

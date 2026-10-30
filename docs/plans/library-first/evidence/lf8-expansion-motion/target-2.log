@@ -1,0 +1,78 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_motion_diagnostic_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_feedback_test.dart: in-flight summary update and reduced motion retain body draft and focus
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following StateError was thrown running a test:
+Bad state: Too many elements
+
+When the exception was thrown, this was the stack:
+#0      Iterable.single (dart:core/iterable.dart:696:24)
+#1      WidgetController.widget (package:flutter_test/src/controller.dart:828:30)
+#2      turns (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_feedback_test.dart:15:7)
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_feedback_test.dart:67:14)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  in-flight summary update and reduced motion retain body draft and focus
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_motion_diagnostic_test.dart: actual scan details ordinary expand
+00:00 +0 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_feedback_test.dart: in-flight summary update and reduced motion retain body draft and focus [E]
+  Test failed. See exception logs above.
+  The test description was: in-flight summary update and reduced motion retain body draft and focus
+  
+00:00 +0 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_feedback_test.dart: quick reversal and removal during expansion release body and ticker
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following StateError was thrown running a test:
+Bad state: Too many elements
+
+When the exception was thrown, this was the stack:
+#0      Iterable.single (dart:core/iterable.dart:696:24)
+#1      WidgetController.widget (package:flutter_test/src/controller.dart:828:30)
+#2      turns (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_feedback_test.dart:15:7)
+#3      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_feedback_test.dart:120:14)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  quick reversal and removal during expansion release body and ticker
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_motion_diagnostic_test.dart: actual scan details ordinary expand
+00:00 +0 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_feedback_test.dart: quick reversal and removal during expansion release body and ticker [E]
+  Test failed. See exception logs above.
+  The test description was: quick reversal and removal during expansion release body and ticker
+  
+00:00 +0 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_motion_diagnostic_test.dart: actual scan details ordinary expand
+ACTUAL scan ordinary expand=true visibleHeight=1.0
+00:00 +1 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_geometry_test.dart: scan expansion retains SDK RGBA and size in32 settled configurations
+00:01 +2 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_geometry_test.dart: scan expansion retains SDK RGBA and size in32 settled configurations
+00:01 +2 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_motion_diagnostic_test.dart: actual scan details ordinary collapse
+ACTUAL scan ordinary expand=false visibleHeight=0.0
+00:01 +3 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_geometry_test.dart: scan expansion retains SDK RGBA and size in32 settled configurations
+00:01 +4 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_geometry_test.dart: scan expansion retains SDK RGBA and size in32 settled configurations
+00:01 +4 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_motion_diagnostic_test.dart: actual scan details reduced expand
+ACTUAL scan reduced expand=true visibleHeight=1.0
+00:01 +5 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_geometry_test.dart: scan expansion retains SDK RGBA and size in32 settled configurations
+00:01 +5 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_motion_diagnostic_test.dart: actual scan details reduced collapse
+ACTUAL scan reduced expand=false visibleHeight=0.0
+00:01 +6 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_geometry_test.dart: scan expansion retains SDK RGBA and size in32 settled configurations
+00:01 +6 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_motion_diagnostic_test.dart: actual scan details live expand
+ACTUAL scan live expand=true visibleHeight=1.0
+00:01 +7 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_geometry_test.dart: scan expansion retains SDK RGBA and size in32 settled configurations
+00:01 +7 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_motion_diagnostic_test.dart: actual scan details live collapse
+ACTUAL scan live expand=false visibleHeight=0.0
+00:01 +8 -2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_geometry_test.dart: scan expansion retains SDK RGBA and size in32 settled configurations
+00:02 +9 -2: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_feedback_test.dart: in-flight summary update and reduced motion retain body draft and focus
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/expansion_feedback_test.dart: quick reversal and removal during expansion release body and ticker

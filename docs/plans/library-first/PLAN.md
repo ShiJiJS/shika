@@ -1,5 +1,7 @@
 # 媒体库与图包改造实施方案
 
+> 最新源码：扫描详情展开按[#120](https://github.com/ShiJiJS/video_viewer/issues/120)接入160ms/实时减少动画，12针对/32组像素/789完整客户端与分析通过；[实现和边界](LF8-EXPANSION-MOTION.md)。真实Android/正常新包继续，当前code17候选不含该段。
+
 > 最新候选：preview.11/rollback.11同code17已完成本机覆盖/回退与复选框正常业务核对，见[配套包结果](LF8-CHECKBOX-PACKAGE.md)和[357份原始输入](evidence/lf8-checkbox-package/README.md)。旧code16保留；完整原型/目标环境继续。
 
 > 当前进度（2026-10-30）：正常preview.10/rollback.10同code16已完成本机候选交付，菜单/下拉源码、独立Android三轮和媒体库主业务已补齐；原版0.1.4服务首页菜单组合已由[补证](LF8-LEGACY-HOME-MENU.md)完成。完整766客户端/分析、覆盖保留登录/偏好/21表、主动业务差量和环境恢复通过，见[PR #114](https://github.com/ShiJiJS/video_viewer/pull/114)及[结果](LF8-MENU-DROPDOWN-PACKAGE.md)。真实手机/NAS、有声/云提供器、其余UI-06与完整45项终验继续；[RESULTS.md](RESULTS.md)为当前入口。下文旧“最新阶段”保留当时记录，原规划范围与验收条件继续适用。
