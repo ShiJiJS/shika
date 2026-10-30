@@ -1,0 +1,9 @@
+{
+  "source": "0804b2d4b427c3085c8945f68136893098ea1c03",
+  "scope": "selective committed files, with original repository Git history",
+  "exit_code": 0,
+  "stdout": "{\"requirements\": 45, \"families\": 11, \"server_runtime_files_unchanged\": 73, \"current_client_tests\": 791, \"server_tests_reused_without_rerun\": 462, \"whole_acceptance_ids_passed\": 0}\n",
+  "first_attempt": "failed: 25 pre-existing backup diagnostic logs were ignored and missing from Git archive",
+  "resolution": "added original bytes matching unchanged historical manifest; replay passed",
+  "whole_product_acceptance": false
+}

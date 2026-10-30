@@ -1,6 +1,6 @@
 # LF8：验收证据与剩余工作核对
 
-跟踪：[#133](https://github.com/ShiJiJS/video_viewer/issues/133)。当前正常候选仍为preview.16/code22，构建源码12d6ca67。原[45项要求](ACCEPTANCE.md)、[原始执行清单](INTEGRATED-CHECKLIST.json)及独立原型树1cbf605保持。此次新增[覆盖索引](ACCEPTANCE-COVERAGE.json)，逐项保留原ID、要求原文、归属和已有观察，定位实现/测试入口及下一条完整操作流程。
+跟踪：[#133](https://github.com/ShiJiJS/video_viewer/issues/133) / [草稿PR #134](https://github.com/ShiJiJS/video_viewer/pull/134)。当前正常候选仍为preview.16/code22，构建源码12d6ca67。原[45项要求](ACCEPTANCE.md)、[原始执行清单](INTEGRATED-CHECKLIST.json)及独立原型树1cbf605保持。此次新增[覆盖索引](ACCEPTANCE-COVERAGE.json)，逐项保留原ID、要求原文、归属和已有观察，定位实现/测试入口及下一条完整操作流程。
 
 ## 已实际核对
 
