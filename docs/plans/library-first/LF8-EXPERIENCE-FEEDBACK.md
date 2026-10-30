@@ -1,5 +1,7 @@
 # NAS体验反馈：下一轮 tickets 规划
 
+[规划草稿PR #143](https://github.com/ShiJiJS/video_viewer/pull/143)，基于部署PR #136。
+
 2026-10-30。当前体验版preview.16/code22、App生产源码12d6ca67、NAS服务源码b79da7b9。本轮按用户“先做tickets规划”要求，只核对事实、建GitHub issue及保存方案，不修改App/服务源码、NAS设置、扫描任务或APK。
 
 ## 核对结论
