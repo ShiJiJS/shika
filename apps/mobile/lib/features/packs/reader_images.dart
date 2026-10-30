@@ -91,12 +91,14 @@ class ReaderImage extends StatefulWidget {
     this.onFrame,
     this.onSkip,
     this.onUnauthorized,
+    this.frameDecorator,
   });
   final ReaderPage page;
   final ReaderImages images;
   final Size viewport;
   final bool thumbnail, widthFit, active;
   final VoidCallback? onFrame, onSkip, onUnauthorized;
+  final Widget Function(Widget)? frameDecorator;
   @override
   State<ReaderImage> createState() => _ReaderImageState();
 }
@@ -269,7 +271,7 @@ class _ReaderImageState extends State<ReaderImage> {
             if (current()) widget.onFrame?.call();
           });
         }
-        return child;
+        return widget.frameDecorator?.call(child) ?? child;
       },
       errorBuilder: (context, error, stack) {
         assert(() {
