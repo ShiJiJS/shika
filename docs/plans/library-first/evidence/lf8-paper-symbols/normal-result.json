@@ -1,0 +1,20 @@
+{
+  "complete": true,
+  "candidate_code": 19,
+  "installed_sha256": "086b28f6d6bf69d338ba6d4e0a99781f2efe46ef992759c8a2a6b280a7a75a56",
+  "upgrade_forward_all_35_tables_tokens_settings_preferences_unchanged": true,
+  "return_forward_all_35_tables_tokens_settings_preferences_unchanged": true,
+  "rollback_original_33_tables_tokens_preferences_preserved": true,
+  "rollback_expected_legacy_round_tables": [
+    "playback_rounds",
+    "round_entries"
+  ],
+  "rollback_exact_setting_changes": [
+    "active_round",
+    "library_round_refresh"
+  ],
+  "rollback_get_playback_creates_legacy_round": "ba299799-d3ef-40a1-bf22-d87f9f767f7a",
+  "overview_settings_more_cancel_and_immersive_exit": true,
+  "actual_light_and_dark_screens": true,
+  "uninstall_or_clear": false
+}

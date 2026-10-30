@@ -10,6 +10,7 @@ import '../library/models.dart';
 import '../library/repository.dart';
 import '../ui/media_layout.dart';
 import '../ui/paper.dart';
+import '../ui/paper_icons.dart';
 import '../ui/preferences.dart';
 import 'app_shell.dart';
 
@@ -205,10 +206,30 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
         selected: widget.destination,
         onNavigate: navigate,
         destinations: const [
-          AppDestination('library', '媒体库', Icons.grid_view),
-          AppDestination('tags', '标签', Icons.sell_outlined),
-          AppDestination('recent', '最近', Icons.history),
-          AppDestination('settings', '设置', Icons.settings_outlined),
+          AppDestination(
+            'library',
+            '媒体库',
+            Icons.grid_view,
+            glyph: PaperGlyph.grid,
+          ),
+          AppDestination(
+            'tags',
+            '标签',
+            Icons.sell_outlined,
+            glyph: PaperGlyph.tag,
+          ),
+          AppDestination(
+            'recent',
+            '最近',
+            Icons.history,
+            glyph: PaperGlyph.history,
+          ),
+          AppDestination(
+            'settings',
+            '设置',
+            Icons.settings_outlined,
+            glyph: PaperGlyph.settings,
+          ),
         ],
         header: Column(
           mainAxisSize: MainAxisSize.min,
@@ -258,6 +279,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                       ),
                       PaperMenuButton<String>(
                         tooltip: '更多',
+                        icon: const PaperIcon(PaperGlyph.more, size: 20),
                         onOpened: () =>
                             FocusManager.instance.primaryFocus?.unfocus(),
                         onSelected: (value) {

@@ -11,6 +11,7 @@ import '../../library/models.dart';
 import '../../library/repository.dart';
 import '../../ui/media_layout.dart';
 import '../../ui/paper.dart';
+import '../../ui/paper_icons.dart';
 import 'pack_reading_session.dart';
 import 'pack_file_action.dart';
 import 'reader_images.dart';
@@ -757,7 +758,7 @@ class PackReaderPageState extends State<PackReaderPage>
                           onPressed: usable && !session.inputBlocked
                               ? settings
                               : null,
-                          icon: const Icon(Icons.tune, size: 20),
+                          icon: const PaperIcon(PaperGlyph.settings, size: 20),
                         ),
                       if (quick)
                         TextButton(
@@ -767,7 +768,7 @@ class PackReaderPageState extends State<PackReaderPage>
                           child: const Text('完成'),
                         ),
                       PaperMenuButton<String>(
-                        icon: const Icon(Icons.more_horiz, size: 20),
+                        icon: const PaperIcon(PaperGlyph.more, size: 20),
                         enabled: usable && !session.inputBlocked,
                         tooltip: '图包更多',
                         onSelected: (value) async {
@@ -1038,17 +1039,17 @@ class PackReaderPageState extends State<PackReaderPage>
                         key: const Key('reader-tools'),
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          tool('总览', Icons.grid_view_outlined, overview),
+                          tool('总览', PaperGlyph.grid, overview),
                           tool(
                             session.preferences.mode == ReaderMode.horizontal
                                 ? '横向翻页'
                                 : '纵向拼接',
                             session.preferences.mode == ReaderMode.horizontal
-                                ? Icons.chrome_reader_mode_outlined
-                                : Icons.view_day_outlined,
+                                ? PaperGlyph.horizontal
+                                : PaperGlyph.vertical,
                             settings,
                           ),
-                          tool('整包标签', Icons.sell_outlined, () async {
+                          tool('整包标签', PaperGlyph.tag, () async {
                             if (await session.flush()) {
                               await widget.editTags(session.range!.pack!);
                               if (session.live) {
@@ -1059,7 +1060,7 @@ class PackReaderPageState extends State<PackReaderPage>
                           if (!quick)
                             tool(
                               '沉浸',
-                              Icons.fullscreen,
+                              PaperGlyph.expand,
                               () => setState(() => controls = false),
                             ),
                         ],
@@ -1288,7 +1289,7 @@ class PackReaderPageState extends State<PackReaderPage>
         : child;
   }
 
-  Widget tool(String label, IconData icon, VoidCallback action) => Expanded(
+  Widget tool(String label, PaperGlyph icon, VoidCallback action) => Expanded(
     child: InkWell(
       onTap: session.inputBlocked ? null : action,
       borderRadius: BorderRadius.circular(4),
@@ -1297,13 +1298,13 @@ class PackReaderPageState extends State<PackReaderPage>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 20),
+            PaperIcon(icon, size: 20),
             const SizedBox(height: 4),
             Text(
               MediaLayout.largeText(context) && label.length == 4
                   ? '${label.substring(0, 2)}\n${label.substring(2)}'
                   : label,
-              style: const TextStyle(fontSize: 12),
+              style: TextStyle(fontSize: 12, color: Paper.of(context).olive),
               maxLines: 2,
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,

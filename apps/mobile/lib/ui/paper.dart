@@ -39,9 +39,8 @@ class PaperPalette extends ThemeExtension<PaperPalette> {
   Color get soft => _color(Paper.soft, const Color(0xff293329));
   Color get line => _color(Paper.line, const Color(0xff354135));
   Color get danger => _color(Paper.danger, const Color(0xffeda699));
-  Color get muted => _color(const Color(0xff7a8172), const Color(0xff9aa494));
-  Color get catalogMeta =>
-      _color(const Color(0xff626e59), const Color(0xff9aa494));
+  Color get muted => _color(const Color(0xff626e59), const Color(0xff9aa494));
+  Color get catalogMeta => muted;
   Color get videoSurface => _color(const Color(0xffe6e4db), Colors.black);
   Color get inputSurface =>
       _color(Colors.white.withValues(alpha: .7), const Color(0xff141914));

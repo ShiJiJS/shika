@@ -9,6 +9,7 @@ import '../../ui/media_layout.dart';
 import '../../ui/media_history.dart';
 import '../../ui/media_poster.dart';
 import '../../ui/paper.dart';
+import '../../ui/paper_icons.dart';
 import '../../ui/preferences.dart';
 import '../../ui/sheets.dart';
 import '../preview/video_preview_route.dart';
@@ -716,19 +717,29 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                           ),
                                         ),
                                         if (!selecting)
-                                          const IgnorePointer(
+                                          IgnorePointer(
                                             child: Center(
                                               child: DecoratedBox(
                                                 decoration: BoxDecoration(
-                                                  color: Color(0xe6f7f6ed),
+                                                  color: p.dark
+                                                      ? p.background.withValues(
+                                                          alpha: .87,
+                                                        )
+                                                      : const Color(0xe6f7f6ed),
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: Padding(
-                                                  padding: EdgeInsets.all(7),
-                                                  child: Icon(
-                                                    Icons.play_arrow_outlined,
+                                                  padding: const EdgeInsets.all(
+                                                    7,
+                                                  ),
+                                                  child: PaperIcon(
+                                                    PaperGlyph.play,
                                                     size: 20,
-                                                    color: Color(0xff526347),
+                                                    color: p.dark
+                                                        ? p.ink
+                                                        : const Color(
+                                                            0xff526347,
+                                                          ),
                                                   ),
                                                 ),
                                               ),

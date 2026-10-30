@@ -1,0 +1,38 @@
+Waiting for another flutter command to release the startup lock...
+Resolving dependencies...
+Downloading packages...
+  android_file_picker 2.1.1 (2.1.2 available)
+  cross_file 0.3.5+5 (0.4.0 available)
+  crypto 3.0.7 (3.0.8 available)
+  cupertino_icons 1.0.9 (2.0.0 available)
+  file_picker 13.1.0 (13.3.0 available)
+  file_picker_darwin 2.3.2 (2.4.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  test_api 0.7.12 (0.7.15 available)
+  vector_math 2.4.3 (2.4.4 available)
+  video_player_avfoundation 2.12.1 (2.12.3 available)
+  web 1.1.1 (1.1.2 available)
+Got dependencies!
+11 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: video card uses reference tag type and 4dp gap
+00:00 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: four destinations keep library, tag results and actual recent video scopes independent
+00:01 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: four destinations keep library, tag results and actual recent video scopes independent
+00:02 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: four destinations keep library, tag results and actual recent video scopes independent
+00:02 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: four destinations keep library, tag results and actual recent video scopes independent
+00:03 +5: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/catalog_grid_geometry_widget_test.dart: pack rotation preserves the anchored member without a new query
+00:04 +6: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+00:04 +7: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+00:04 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack cards, per-type queries and same-name tag management stay separate from video
+00:05 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: tag dock opens the complete intersection directly and returns to its own results
+00:06 +10: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: changing appearance preserves pack source and the next search still reaches the repository
+00:06 +11: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack label search remains usable with a narrow keyboard and large system text
+00:06 +12: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: video search keeps keyboard actions reachable and restores navigation Size(844.0, 390.0)/1.0
+00:07 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: video search keeps keyboard actions reachable and restores navigation Size(360.0, 740.0)/2.0
+00:07 +14: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack search keeps keyboard actions reachable and restores navigation Size(844.0, 390.0)/1.0
+00:07 +15: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: pack search keeps keyboard actions reachable and restores navigation Size(360.0, 740.0)/2.0
+00:08 +16: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(390.0, 844.0) at text scale 1.0
+00:08 +17: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(360.0, 740.0) at text scale 2.0
+00:09 +18: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/media_workspace_widget_test.dart: library surfaces fit Size(844.0, 390.0) at text scale 1.6
+00:10 +19: All tests passed!

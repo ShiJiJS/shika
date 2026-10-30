@@ -1,0 +1,42 @@
+[
+  {
+    "scene": "home",
+    "before": "normal/screens/biz-0004-baseline18-home-light.png",
+    "after": "normal/screens/biz-0066-candidate20-home-light.png",
+    "reference": "docs/plans/library-first/evidence/lf8-integrated-baseline/reference/home.png",
+    "native_crop": [
+      0,
+      147,
+      1170,
+      2643
+    ],
+    "native_resample": 0.3333333333333333,
+    "html_reader_not_cropped": false,
+    "panel_order": [
+      "reference",
+      "code18",
+      "code20"
+    ],
+    "reader_canvas_identical": false
+  },
+  {
+    "scene": "reader",
+    "before": "normal/screens/biz-0013-baseline18-reader-light.png",
+    "after": "normal/screens/biz-0071-candidate20-reader-light.png",
+    "reference": "docs/plans/library-first/evidence/lf8-integrated-baseline/reference/reader-content832.png",
+    "native_crop": [
+      0,
+      147,
+      1170,
+      2643
+    ],
+    "native_resample": 0.3333333333333333,
+    "html_reader_not_cropped": true,
+    "panel_order": [
+      "reference",
+      "code18",
+      "code20"
+    ],
+    "reader_canvas_identical": true
+  }
+]

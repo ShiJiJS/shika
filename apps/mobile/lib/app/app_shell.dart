@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 import '../ui/paper.dart';
+import '../ui/paper_icons.dart';
 
 /// Shared safe areas and navigation. LF0 retains the legacy destinations;
 /// LF4 supplies the approved library/tags/recent/settings destinations.
 class AppDestination {
-  const AppDestination(this.id, this.label, this.icon);
+  const AppDestination(this.id, this.label, this.icon, {this.glyph});
   final String id, label;
   final IconData icon;
+  final PaperGlyph? glyph;
 }
 
 class AppShell extends StatelessWidget {
@@ -77,13 +79,22 @@ class AppShell extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        tab.icon,
-                        size: 19,
-                        color: selected == tab.id
-                            ? Paper.of(context).olive
-                            : Paper.of(context).muted,
-                      ),
+                      if (tab.glyph != null)
+                        PaperIcon(
+                          tab.glyph!,
+                          size: 18,
+                          color: selected == tab.id
+                              ? Paper.of(context).olive
+                              : Paper.of(context).muted,
+                        )
+                      else
+                        Icon(
+                          tab.icon,
+                          size: 19,
+                          color: selected == tab.id
+                              ? Paper.of(context).olive
+                              : Paper.of(context).muted,
+                        ),
                       const SizedBox(height: 2),
                       Text(
                         tab.label,
