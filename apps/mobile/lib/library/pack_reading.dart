@@ -23,7 +23,7 @@ enum ReaderFit { contain, width }
 
 class ReaderPreferences {
   const ReaderPreferences({
-    this.mode = ReaderMode.horizontal,
+    this.mode = ReaderMode.vertical,
     this.direction = ReaderDirection.ltr,
     this.gap = false,
     this.fit = ReaderFit.contain,

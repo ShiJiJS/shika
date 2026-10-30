@@ -101,8 +101,8 @@ void main() {
           final original = state().session.range!.pack!.id;
           if (scenario == 'normal') {
             await tap(find.byTooltip('图包更多'));
-            await tap(find.text('整包移入回收站'));
-            expect(find.text('整包移入回收站？'), findsOneWidget);
+            await tap(find.text('移入回收站'));
+            expect(find.text('移入回收站？'), findsOneWidget);
             await tap(find.text('移入回收站'));
           } else {
             if (scenario == 'unknown') repo.loseAfter = true;
@@ -132,8 +132,8 @@ void main() {
               find.byKey(const Key('reader-cleanup-status')),
               findsOneWidget,
             );
-            final pager = find.byKey(const Key('reader-horizontal'));
-            await t.drag(pager, const Offset(-300, 0), warnIfMissed: false);
+            final pager = find.byKey(const Key('reader-vertical'));
+            await t.drag(pager, const Offset(0, -300), warnIfMissed: false);
             await t.pump(const Duration(milliseconds: 300));
             expect(state().session.index, 1);
             expect(

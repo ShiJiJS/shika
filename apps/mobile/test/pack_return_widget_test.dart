@@ -163,7 +163,7 @@ void main() {
         expect(state.position().ids.first, 'p58');
         final y = t.getTopLeft(tile('p58')).dy;
         await tap(t, tile('p58'));
-        await tap(t, find.text('整包标签'));
+        await tap(t, find.text('图包标签'));
         await tap(
           t,
           find.ancestor(
@@ -172,7 +172,7 @@ void main() {
           ),
         );
         repo.failLocation = true;
-        await tap(t, find.text('保存整包标签'));
+        await tap(t, find.text('保存图包标签'));
         await tap(t, find.byTooltip('关闭面板'));
         expect(state.data.items.length, 73);
         expect(state.data.retryRestore, isTrue);

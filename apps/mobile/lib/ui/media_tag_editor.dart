@@ -388,7 +388,7 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
         title: widget.selectionOnly
             ? '选择图包标签'
             : single
-            ? (pack ? '整包标签' : '视频标签')
+            ? (pack ? '图包标签' : '视频标签')
             : '批量标签',
         closeEnabled: !saving,
         footer: Wrap(
@@ -416,7 +416,7 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
                     : widget.selectionOnly
                     ? '使用所选标签'
                     : single
-                    ? (pack ? '保存整包标签' : '保存视频标签')
+                    ? (pack ? '保存图包标签' : '保存视频标签')
                     : remove
                     ? '移除所选标签'
                     : '追加所选标签',

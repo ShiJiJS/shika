@@ -23,6 +23,8 @@ void main() {
     'actual reader save disables its field without cutting the popped menu exit',
     (t) async {
       final repo = AssetReadingLibrary();
+      // This scenario exercises an existing horizontal preference.
+      repo.prefs['p0'] = const ReaderPreferences(mode: ReaderMode.horizontal);
       repo.preferenceStarted = Completer<void>();
       repo.preferenceRelease = Completer<void>();
       final observer = ReaderDropdownObserver();

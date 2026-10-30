@@ -107,8 +107,8 @@ void main() {
       await state.change(PackQuery(tags: {'自然', '收藏'}, search: '包'));
       await frames(t);
       await tap(t, find.byTooltip('图包操作 包000'));
-      expect(find.text('整包移入回收站'), findsOneWidget);
-      await tap(t, find.text('整包移入回收站'));
+      expect(find.text('移入回收站'), findsOneWidget);
+      await tap(t, find.text('移入回收站'));
       expect(find.text('包000 · 3 张'), findsOneWidget);
       expect(repo.requests, isEmpty);
       await tap(t, find.widgetWithText(FilledButton, '移入回收站'));
@@ -133,7 +133,7 @@ void main() {
       final state = await start(t);
       repo.lose = true;
       await tap(t, find.byTooltip('图包操作 包000'));
-      await tap(t, find.text('整包移入回收站'));
+      await tap(t, find.text('移入回收站'));
       await tap(t, find.widgetWithText(FilledButton, '移入回收站'));
       expect(find.text('服务响应未确认'), findsOneWidget);
       await tap(t, find.text('稍后处理'));

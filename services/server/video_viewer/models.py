@@ -307,7 +307,7 @@ class PackPreferences(Base):
         ForeignKey("packs.id", ondelete="CASCADE"), primary_key=True
     )
     revision: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
-    mode: Mapped[str] = mapped_column(String, default="horizontal")
+    mode: Mapped[str] = mapped_column(String, default="vertical")
     direction: Mapped[str] = mapped_column(String, default="ltr")
     gap: Mapped[bool] = mapped_column(Boolean, default=False)
     fit: Mapped[str] = mapped_column(String, default="contain")
