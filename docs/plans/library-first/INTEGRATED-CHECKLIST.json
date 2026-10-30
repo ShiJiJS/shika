@@ -1,7 +1,7 @@
 {
   "requirements_source": "ACCEPTANCE.md",
-  "candidate_source": "a8d6180a35c6a7884e1e7ad02d26246675f29979",
-  "candidate_code": 21,
+  "candidate_source": "12d6ca67ef3a8b307894468923dc08e612e02587",
+  "candidate_code": 22,
   "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
   "does_not_replace_historical_evidence_or_target_acceptance": true,
   "items": [
@@ -49,6 +49,11 @@
           "evidence": "evidence/lf8-current-navigation/README.md",
           "scope": "Video .mp4 and pack Scope queries remain independent; same-name tag selections survive kind switches; recent-pack scope has no library search or tags. Sort and batch-selection combinations remain open.",
           "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Three normal21 flows plus independent video1/pack27 selection, independent initial search and cancelled pack tag append; tag tables unchanged.",
+          "candidate_code": 21
         }
       ]
     },
@@ -57,7 +62,7 @@
       "reference_state": "home",
       "requirement": "两列视频卡片、名称/目录搜索、目录子树、标签 AND、方向/时长/类型，分页与空结果；可预览完整匹配范围",
       "owner": "LF3/4",
-      "current_candidate": "not_checked_in_integrated_run",
+      "current_candidate": "partially_checked_in_integrated_run",
       "observations": [
         {
           "evidence": "evidence/lf8-integrated-baseline/README.md",
@@ -68,6 +73,16 @@
           "evidence": "evidence/lf8-current-navigation/README.md",
           "scope": "Normal21 video .mp4 search opens a fixed two-video scope; tag intersection opens one video. Other property and failure combinations remain open.",
           "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Three real normal21 search+parent-directory+tag+orientation+duration+type combinations open exact14 members, cancel preserves14, long-duration/MOV zero and disabled preview.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal22 summary now displays orientation/duration/type; actual zero result, clear29 and combined14 with exact source scope checked. Full normal21 combinations remain labelled21.",
+          "candidate_code": 22
         }
       ]
     },
@@ -87,6 +102,11 @@
           "evidence": "evidence/lf8-current-navigation/README.md",
           "scope": "Normal21 has 31 packs/186 pages, Scope matches 27; opens Scope26 from actual paginated list and resumes page3. Other metadata and filters remain open.",
           "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Three normal21 pack folder/read-state cases: unread26, reading1 after real open, completed0, single folder1, negative search0, reset27; other metadata/filters remain open.",
+          "candidate_code": 21
         }
       ]
     },
@@ -100,6 +120,11 @@
         {
           "evidence": "evidence/lf8-current-navigation/README.md",
           "scope": "Normal21 scrolls five times past the 24-item page before opening Scope26 in a 27-member scope. Stale requests, failures and empty results remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal21 first24 video list opens exact27-member scope; video and pack select all exact27 IDs; empty cases do not widen. Read failure and stale-request scenarios remain open.",
           "candidate_code": 21
         }
       ]
@@ -129,6 +154,11 @@
           "evidence": "evidence/lf8-current-navigation/README.md",
           "scope": "Normal21 tag AND: video2 to1 and pack31 to27, independent retained selections. Assignment and batch all-selection remain open.",
           "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal21 GET selections and readbacks match exact27 typed Scope IDs, video1/pack27 selections survive switches and pack append cancel writes no tags; assignment and failure combinations remain open.",
+          "candidate_code": 21
         }
       ]
     },
@@ -137,8 +167,19 @@
       "reference_state": "预览此范围",
       "requirement": "名称搜索+目录+标签+属性+来源都进入服务端候选；只加载前 24 条时仍可预览全部匹配结果",
       "owner": "LF3",
-      "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "current_candidate": "partially_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal21 first24 list opens27 exact video members; three attribute/directory combinations open14 exact descendants.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal22 combined search+parent directory+tag+orientation+duration+MP4 opens exact14 members, not a full27 pagination rerun.",
+          "candidate_code": 22
+        }
+      ]
     },
     {
       "id": "PRE-02",
@@ -412,12 +453,17 @@
       "reference_state": "安装发布",
       "requirement": "原包名/签名、递增 versionCode 覆盖安装，地址/token/本机偏好不丢；服务与 App 有配套版本说明和回退快照",
       "owner": "LF8",
-      "current_candidate": "not_checked_in_integrated_run",
+      "current_candidate": "partially_checked_in_integrated_run",
       "observations": [
         {
           "evidence": "evidence/lf8-current-navigation/README.md",
           "scope": "Normal21 signed pair:20-new21-old21-new21, three install-r covers preserve identity,35 tables,all settings/token hashes and preferences. Target phone and deployment remain open.",
           "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "21-new22-old22-new22 three real install-r covers preserve35 tables, complete settings/token digests, preferences and identity; signed actual APK SHA matches build; phone/NAS remain open.",
+          "candidate_code": 22
         }
       ]
     },
@@ -472,8 +518,14 @@
       "reference_state": "readersettings、restore-preview、purge、empty、错误",
       "requirement": "确认前无副作用，禁用可理解，表单错误保留；键盘出现仍能看到字段/提交",
       "owner": "LF8",
-      "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "current_candidate": "partially_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal22 empty summary shows active attributes, disabled preview and clear29; actual PNG inspected. Combined14 PNG retains IME, not a keyboard-free whole-page comparison.",
+          "candidate_code": 22
+        }
+      ]
     },
     {
       "id": "UI-05",
