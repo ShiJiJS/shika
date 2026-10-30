@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:video_viewer/main.dart' show configureApplicationWindow;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_viewer/features/packs/pack_reader_page.dart';
 import 'package:video_viewer/features/packs/reader_images.dart';
@@ -407,6 +409,43 @@ void main() {
       expect(repo.marks['p0']!.completed, false);
       expect(repo.marks['p0']!.offsetRatio, .37);
       expect(getWrites(), writes);
+    },
+  );
+  testWidgets(
+    'reader releases the entry-point portrait lock and restores it on exit',
+    (t) async {
+      final orientations = <List<String>>[];
+      final messenger =
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+      messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
+        if (call.method == 'SystemChrome.setPreferredOrientations') {
+          orientations.add(List<String>.from(call.arguments as List));
+        }
+        return null;
+      });
+      addTearDown(
+        () => messenger.setMockMethodCallHandler(SystemChannels.platform, null),
+      );
+      await configureApplicationWindow();
+      expect(orientations, [
+        ['DeviceOrientation.portraitUp'],
+      ]);
+      await open(t);
+      expect(
+        orientations.last,
+        DeviceOrientation.values.map((v) => v.toString()).toList(),
+      );
+      t.view.physicalSize = const Size(844, 390);
+      await settle(t);
+      expect(
+        orientations.length,
+        2,
+        reason: 'reflow must not reset the device orientation',
+      );
+      await t.pumpWidget(const SizedBox());
+      await t.pump();
+      expect(orientations.last, ['DeviceOrientation.portraitUp']);
+      expect(orientations.length, 3);
     },
   );
 }

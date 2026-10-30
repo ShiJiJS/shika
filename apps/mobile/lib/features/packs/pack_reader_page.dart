@@ -52,6 +52,8 @@ class PackReaderPageState extends State<PackReaderPage>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // The library stays portrait; the reader already has a landscape layout.
+    unawaited(SystemChrome.setPreferredOrientations(DeviceOrientation.values));
     session.addListener(changed);
     unawaited(session.start(resumeSessionId: widget.resumeSessionId));
   }
@@ -1325,6 +1327,9 @@ class PackReaderPageState extends State<PackReaderPage>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    unawaited(
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
+    );
     session.removeListener(changed);
     session.dispose();
     images.dispose();
