@@ -203,6 +203,11 @@ class RestoreInput(WriteInput):
     confirmed: Literal[True]
 
 
+class ScanInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    root_id: str | None = Field(default=None, min_length=1, max_length=128)
+
+
 def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fault_hook=None):
     @asynccontextmanager
     async def lifespan(app):
@@ -377,6 +382,8 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             },
             "capabilities": [
                 "typed_roots",
+                "root_scan_progress",
+                "scoped_scans",
                 "media_catalog_counts",
                 *(["pack_presentation"] if title_order_available() else []),
                 *(["video_name_order"] if title_order_available() else []),
@@ -519,8 +526,8 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         )
 
     @app.post("/api/v1/scans", dependencies=auth_required, status_code=202)
-    def scan(request: Request):
-        return request.app.state.scanner.submit()
+    def scan(request: Request, body: ScanInput | None = None):
+        return request.app.state.scanner.submit(body.root_id if body else None)
 
     @app.get("/api/v1/tasks/{task_id}", dependencies=auth_required)
     def task(task_id: str, request: Request):

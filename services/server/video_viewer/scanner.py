@@ -3,18 +3,20 @@ import subprocess
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
+from copy import deepcopy
 from pathlib import Path
 
-from sqlalchemy import delete, select, update
+from sqlalchemy import delete, select
 
 from .errors import LibraryError
 from .file_state import path_reserved, reserved_video_ids
 from .identity import publish_discoveries
 from .media import MediaInspectionError, fingerprint, inspect_media, make_thumbnail
-from .media_roots import enabled_path, owner_for_path
+from .media_roots import enabled_path, owned_path, owner_for_path
 from .models import Directory, Observation, Root, Setting, Task, Video
 from .pack_scanner import PackScanner
 from .paths import VIDEO_EXTENSIONS, beneath, excluded, open_directory, open_video, signature
+from .root_scan_progress import entry, publish, stage, terminate
 
 
 class Scanner:
@@ -28,17 +30,22 @@ class Scanner:
         self.future = None
         self.active_id = None
         with db.write() as session:
-            session.execute(
-                update(Task)
-                .where(Task.kind == "scan", Task.status.in_(["queued", "running"]))
-                .values(
-                    status="interrupted",
-                    phase="interrupted",
-                    error="service_restarted",
-                    finished_at=time.time(),
-                )
-            )
+            for task in session.scalars(
+                select(Task).where(Task.kind == "scan", Task.status.in_(["queued", "running"]))
+            ):
+                was_running = task.status == "running"
+                self.interrupt_task(task, "service_restarted")
+                if was_running:
+                    publish(session, task)
         self.scheduler = threading.Thread(target=self.schedule, name="scan-scheduler", daemon=True)
+
+    @staticmethod
+    def interrupt_task(task, error):
+        result = deepcopy(task.result)
+        terminate(result, "interrupted", error)
+        task.result = result
+        task.status, task.phase, task.error = "interrupted", "interrupted", error
+        task.finished_at = time.time()
 
     def start(self):
         if self.settings.startup_scan:
@@ -56,17 +63,42 @@ class Scanner:
                 if error.code != "restore_in_progress":
                     raise
 
-    def submit(self):
+    def submit(self, root_id=None):
         with self.lock:
             if self.stop.is_set():
                 raise LibraryError("service_stopping", "服务正在停止，请稍后重试", 503)
-            if self.future and not self.future.done():
-                return self.task(self.active_id)
             with self.db.write() as session:
+                roots = list(session.scalars(select(Root).order_by(Root.path)))
+                if root_id is not None:
+                    root = next((r for r in roots if r.id == root_id), None)
+                    if not root:
+                        raise LibraryError("root_not_found", "媒体目录不存在", 404)
+                    if not root.enabled:
+                        raise LibraryError("root_disabled", "媒体目录已停用，请启用后扫描", 409)
+                    owner = owner_for_path(Path(root.path), roots, root.kind)
+                    if root.kind == "video" and owner and owner.id != root.id:
+                        raise LibraryError(
+                            "scan_root_covered", "该视频目录由外层媒体目录扫描，请选择外层目录", 409
+                        )
+                selected = [r for r in roots if root_id is None or r.id == root_id]
+                ids = {r.id for r in selected}
+                for pending in session.scalars(
+                    select(Task)
+                    .where(Task.kind == "scan", Task.status.in_(["queued", "running"]))
+                    .order_by(Task.created_at)
+                ):
+                    scope = pending.result.get("scope", {})
+                    if scope.get("all") or (
+                        root_id is not None and ids <= set(scope.get("root_ids", []))
+                    ):
+                        return self.task(pending.id)
                 task = Task(kind="scan", status="queued", phase="queued", result={})
                 session.add(task)
                 session.flush()
-                self.active_id = task.id
+                task.result = {
+                    "scope": {"all": root_id is None, "root_ids": [r.id for r in selected]},
+                    "roots": [entry(r, task.id, roots) for r in selected],
+                }
             self.future = self.executor.submit(self.run, task.id)
             return self.task(task.id)
 
@@ -81,6 +113,19 @@ class Scanner:
                     return previous
             if not task:
                 raise LibraryError("task_not_found", "任务不存在", 404)
+            result = task.result
+            if task.kind == "scan" and result.get("scope"):
+                result = {
+                    **result,
+                    "root_scans": result.get("roots", []),
+                    # Old clients count every non-completed root as a failure.
+                    # Disabled/covered roots did not participate in old scans.
+                    "roots": [
+                        item
+                        for item in result.get("roots", [])
+                        if item["status"] not in ("disabled", "covered")
+                    ],
+                }
             return {
                 "id": task.id,
                 "kind": task.kind,
@@ -88,7 +133,7 @@ class Scanner:
                 "phase": task.phase,
                 "created_at": task.created_at,
                 "finished_at": task.finished_at,
-                "result": task.result,
+                "result": result,
                 "error": task.error,
             }
 
@@ -104,8 +149,11 @@ class Scanner:
             task = session.get(Task, task_id)
             for key, value in values.items():
                 setattr(task, key, value)
+            if task.status != "queued":
+                publish(session, task)
 
     def run(self, task_id):
+        submitted = self.task(task_id)["result"]
         result = {
             "imported": 0,
             "unchanged": 0,
@@ -118,20 +166,33 @@ class Scanner:
             "missing": 0,
             "identity_matched": 0,
             "identity_ambiguous": 0,
-            "roots": [],
+            "scope": submitted["scope"],
+            "roots": submitted["root_scans"],
             "issues": [],
             "progress": {"discovered": 0, "processed": 0, "bytes_total": 0, "bytes_processed": 0},
         }
         self.last_progress = 0
         try:
+            with self.lock:
+                if self.stop.is_set():
+                    # A future can leave the queue just as close starts. It
+                    # has not executed this root or replaced its prior facts.
+                    with self.db.write(session_control=True) as session:
+                        self.interrupt_task(session.get(Task, task_id), "scan_interrupted")
+                    return
+                self.active_id = task_id
+                self.change_task(task_id, status="running", phase="discovering", result=result)
             with self.db.read() as session:
                 initial_import = session.scalar(select(Video.id).limit(1)) is None
-            self.change_task(task_id, status="running", phase="discovering", result=result)
             with self.db.read() as session:
                 roots = list(session.scalars(select(Root).order_by(Root.path)))
             for root in roots:
                 self.check_stop()
-                if not root.enabled or root.kind != "video":
+                if (
+                    root.id not in result["scope"]["root_ids"]
+                    or not root.enabled
+                    or root.kind != "video"
+                ):
                     continue
                 self.scan_root(
                     task_id,
@@ -146,19 +207,32 @@ class Scanner:
                 self.db,
                 self.settings,
                 task_id,
-                [root["id"] for root in result["roots"] if root["status"] == "completed"],
+                [
+                    root["id"]
+                    for root in result["roots"]
+                    if root["kind"] == "video" and root["status"] == "reconciling"
+                ],
                 result,
                 self.check_stop,
+                restrict_candidates=not result["scope"]["all"],
             )
             # Readiness is published only after identity reconciliation, never
             # after merely traversing a directory. Keep it durable across upgrades.
             with self.db.write() as session:
                 became_ready = False
                 for item in result["roots"]:
-                    if item["status"] == "completed":
+                    if item["kind"] == "video" and item["status"] == "reconciling":
                         root = session.get(Root, item["id"])
                         became_ready |= root.last_scan is None
                         root.last_scan = time.time()
+                        stage(
+                            item,
+                            "partial"
+                            if item["counts"].get("failed")
+                            else "deferred"
+                            if item["counts"].get("deferred")
+                            else "completed",
+                        )
                 if became_ready:
                     flag = session.get(Setting, "library_round_refresh")
                     if flag:
@@ -175,6 +249,7 @@ class Scanner:
                 finished_at=time.time(),
             )
         except InterruptedError:
+            terminate(result, "interrupted", "scan_interrupted")
             self.change_task(
                 task_id,
                 status="interrupted",
@@ -185,6 +260,7 @@ class Scanner:
             )
         except Exception:
             # Do not serialize subprocess commands, host paths or request secrets.
+            terminate(result, "failed", "scan_failed")
             self.change_task(
                 task_id,
                 status="failed",
@@ -208,18 +284,17 @@ class Scanner:
     def scan_root(self, task_id, root, roots, result, *, initial_import=False):
         base = Path(root.path)
         entries = []
-        item = {
-            "id": root.id,
-            "status": "discovering",
-            "discovered": 0,
-            "processed": 0,
-            "bytes_total": 0,
-            "bytes_processed": 0,
-        }
-        result["roots"].append(item)
+        item = next(i for i in result["roots"] if i["id"] == root.id)
+        owner = owner_for_path(base, roots)
+        if owner and owner.id != root.id:
+            stage(item, "covered")
+            item["owner_root_id"] = owner.id
+            return
+        stage(item, "discovering")
+        item.update(bytes_total=0, bytes_processed=0)
         self.change_task(task_id, phase="discovering", result=result)
         if not root.mount_id:
-            item.update(status="unavailable", error="root_unmapped")
+            stage(item, "unavailable", error="root_unmapped")
             return
         try:
             with open_directory(base) as fd:
@@ -236,9 +311,10 @@ class Scanner:
             with self.db.write() as session:
                 stored = session.get(Root, root.id)
                 stored.available, stored.error = False, "root_unavailable"
-            item.update(status="unavailable", error="root_unavailable")
+            stage(item, "unavailable", error="root_unavailable")
             return
-        item["status"] = "processing_media"
+        item["progress"]["discovery_complete"] = True
+        stage(item, "waiting_for_stable_files")
         self.change_task(task_id, phase="waiting_for_stable_files", result=result)
         remaining = max(
             (since + self.settings.stability_seconds - time.time() for _, _, since in entries),
@@ -247,6 +323,16 @@ class Scanner:
         if remaining > 0 and self.stop.wait(remaining):
             raise InterruptedError("scan_stopped")
         self.change_task(task_id, phase="processing_media")
+        stage(item, "processing_media")
+        counter_keys = (
+            "imported",
+            "unchanged",
+            "deferred",
+            "failed",
+            "thumbnail_failed",
+            "missing",
+        )
+        baseline = {key: result[key] for key in counter_keys}
         for path, first_signature, stable_since in entries:
             self.check_stop()
             owner = owner_for_path(path, roots)
@@ -296,6 +382,13 @@ class Scanner:
             item["bytes_processed"] += first_signature[2]
             result["progress"]["processed"] += 1
             result["progress"]["bytes_processed"] += first_signature[2]
+            item["progress"].update(
+                discovered=item["discovered"],
+                processed=item["processed"],
+                bytes_total=item["bytes_total"],
+                bytes_processed=item["bytes_processed"],
+            )
+            item["counts"] = {key: result[key] - baseline[key] for key in counter_keys}
             self.progress(task_id, result, force=item["processed"] == 1)
         self.check_stop()
         try:
@@ -307,7 +400,7 @@ class Scanner:
             with self.db.write() as session:
                 stored = session.get(Root, root.id)
                 stored.available, stored.error = False, "root_unavailable"
-            item.update(status="unavailable", error="root_unavailable")
+            stage(item, "unavailable", error="root_unavailable")
             return
         # Only a successful complete traversal can mark unseen files missing.
         with self.db.write() as session:
@@ -317,6 +410,7 @@ class Scanner:
                     enabled_path(session, Video.path),
                     Video.path.startswith(str(base) + "/", autoescape=True),
                     Video.seen_scan != task_id,
+                    owned_path(session, Video.path, root.id, "video"),
                     Video.id.not_in(reserved_video_ids()),
                 )
             )
@@ -328,19 +422,21 @@ class Scanner:
                 delete(Directory).where(
                     Directory.path.startswith(str(base) + "/", autoescape=True),
                     Directory.seen_scan != task_id,
+                    owned_path(session, Directory.path, root.id, "video"),
                     Directory.path.not_in(configured_paths),
                     enabled_path(session, Directory.path),
                 )
             )
             stored = session.get(Root, root.id)
             stored.available, stored.error = True, None
-        item["status"] = "completed"
+        item["counts"] = {key: result[key] - baseline[key] for key in counter_keys}
+        stage(item, "reconciling")
         self.progress(task_id, result, force=True)
 
     def discover(self, fd, path, root, roots, task_id, entries, result, item):
         self.check_stop()
         owner = owner_for_path(path, roots)
-        if owner is None:
+        if owner is None or owner.id != root.id:
             return
         with self.db.write() as session:
             self.catalog.ensure_directory(session, path, owner.id, task_id)
@@ -384,6 +480,9 @@ class Scanner:
                     item["bytes_total"] += observed[2]
                     result["progress"]["discovered"] += 1
                     result["progress"]["bytes_total"] += observed[2]
+                    item["progress"].update(
+                        discovered=item["discovered"], bytes_total=item["bytes_total"]
+                    )
                     self.progress(task_id, result)
 
     @staticmethod
@@ -545,7 +644,14 @@ class Scanner:
                     )
 
     def close(self):
-        self.stop.set()
+        with self.lock:
+            self.stop.set()
         if self.scheduler.is_alive():
             self.scheduler.join(timeout=2)
         self.executor.shutdown(wait=True, cancel_futures=True)
+        with self.db.write(session_control=True) as session:
+            for task in session.scalars(
+                select(Task).where(Task.kind == "scan", Task.status == "queued")
+            ):
+                self.interrupt_task(task, "scan_interrupted")
+                # A queued task must not replace the last executed scan's facts.

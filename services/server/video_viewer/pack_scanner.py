@@ -26,6 +26,7 @@ from .models import (
     Root,
 )
 from .paths import beneath, excluded, open_directory, open_regular, signature
+from .root_scan_progress import stage
 
 PAGE_FIELDS = (
     "path",
@@ -113,6 +114,11 @@ class PackScanner:
 
     def tick(self, task_id, result, force=False):
         self.scanner.check_stop()
+        if getattr(self, "current_counts", None):
+            item, before, discovery = self.current_counts
+            item["counts"] = {
+                k: discovery.get(k, 0) + result["packs"][k] - v for k, v in before.items()
+            }
         result["packs"]["progress"]["updated_at"] = time.time()
         self.scanner.progress(task_id, result, force=force)
 
@@ -151,17 +157,26 @@ class PackScanner:
                 "peak_decoder_kib": 0,
             },
         }
-        active = [root for root in roots if root.kind == "pack" and root.enabled]
+        scope_ids = result["scope"]["root_ids"]
+        active = [
+            root for root in roots if root.kind == "pack" and root.enabled and root.id in scope_ids
+        ]
+        self.scope_ids = [root.id for root in active]
         if not active:
             return
         self.scanner.change_task(task_id, phase="pack_discovering", result=result)
         with self.db.write() as session:
             # Unpublished staging records can have no user/session/file references.
-            session.execute(delete(ImagePack).where(ImagePack.status == "discovered"))
+            session.execute(
+                delete(ImagePack).where(
+                    ImagePack.status == "discovered", ImagePack.root_id.in_(self.scope_ids)
+                )
+            )
             old = list(
                 session.scalars(
                     select(ImagePack).where(
                         ImagePack.status.in_(("available", "missing")),
+                        ImagePack.root_id.in_(self.scope_ids),
                         ImagePack.id.not_in(reserved_packs()),
                     )
                 )
@@ -175,15 +190,10 @@ class PackScanner:
         inventories, current = {}, []
         root_items = {}
         for root in active:
-            item = {
-                "id": root.id,
-                "kind": "pack",
-                "status": "discovering",
-                "discovered": 0,
-                "processed": 0,
-            }
+            item = next(i for i in result["roots"] if i["id"] == root.id)
+            stage(item, "discovering")
             root_items[root.id] = item
-            result["roots"].append(item)
+            discovery_before = {k: v for k, v in summary.items() if isinstance(v, int)}
             if not root.mount_id:
                 self.unavailable(root.id, item, "root_unmapped")
                 continue
@@ -212,6 +222,11 @@ class PackScanner:
                             else:
                                 summary["unsupported_files"] += 1
                     inventories[root.id] = (identity, folders)
+                    item["discovered"] = len(folders)
+                    item["progress"].update(
+                        packs_discovered=len(folders), packs_discovery_complete=True
+                    )
+                    item["counts"] = {k: summary[k] - v for k, v in discovery_before.items()}
                     if initial_catalog:
                         # With no old identity to recover, each completed pack can
                         # be browsed immediately while later packs are inspecting.
@@ -222,6 +237,7 @@ class PackScanner:
                 raise
             except OSError:
                 self.unavailable(root.id, item)
+            self.tick(task_id, result, force=True)
         paths = {str(path) for _, path, _ in current}
         inode_counts = Counter(identity for _, _, identity in current)
         summary["progress"]["packs_discovered"] = len(current)
@@ -230,6 +246,10 @@ class PackScanner:
             if root.id not in inventories:
                 continue
             item = root_items[root.id]
+            stage(item, "processing_media")
+            before = {k: v for k, v in summary.items() if isinstance(v, int)}
+            discovery_counts = dict(item["counts"])
+            self.current_counts = item, before, discovery_counts
             root_ok, deferred = True, False
             for path, identity in sorted(
                 inventories[root.id][1], key=lambda row: natural_key(str(row[0]))
@@ -247,6 +267,8 @@ class PackScanner:
                         summary["protected_packs"] += 1
                         summary["progress"]["packs_processed"] += 1
                         item["processed"] += 1
+                        item["progress"]["packs_processed"] = item["processed"]
+                        self.tick(task_id, result, force=True)
                         continue
                 candidates = [
                     pack
@@ -293,8 +315,6 @@ class PackScanner:
                             for candidate in (pack, occupied)
                         ):
                             summary["protected_packs"] += 1
-                            summary["progress"]["packs_processed"] += 1
-                            item["processed"] += 1
                             continue
                         if not pack:
                             pack = ImagePack(
@@ -317,9 +337,8 @@ class PackScanner:
                         if previous:
                             summary["updated" if changed else "unchanged"] += 1
                         if pack.error:
-                            self.issue(result, pack.error, pack_id=pack.id)
-                    summary["progress"]["packs_processed"] += 1
-                    item["processed"] += 1
+                            self.issue(result, pack.error, pack_id=pack.id, root_id=root.id)
+                            item["unreadable_packs"] = item.get("unreadable_packs", 0) + 1
                 except PackDeferred:
                     deferred = True
                     summary["deferred"] += 1
@@ -346,6 +365,13 @@ class PackScanner:
                                 and not session.scalar(reserved_packs(pack_id=failed.id).limit(1))
                             ):
                                 failed.error = "pack_directory_unavailable"
+                finally:
+                    summary["progress"]["packs_processed"] += 1
+                    item["processed"] += 1
+                    item["progress"]["packs_processed"] = item["processed"]
+                    item["counts"] = {
+                        k: discovery_counts.get(k, 0) + summary[k] - v for k, v in before.items()
+                    }
                 self.tick(task_id, result)
             accessible = True
             try:
@@ -357,34 +383,61 @@ class PackScanner:
             if not accessible:
                 self.unavailable(root.id, item)
             elif not root_ok:
-                item.update(status="partial", error="pack_scan_incomplete")
+                stage(item, "partial", error="pack_scan_incomplete")
                 with self.db.write() as session:
                     stored = session.get(Root, root.id)
                     stored.available, stored.error = True, "pack_scan_incomplete"
             elif deferred:
-                item.update(status="deferred", error="files_changing")
+                stage(item, "deferred", error="files_changing")
                 with self.db.write() as session:
                     stored = session.get(Root, root.id)
                     stored.available, stored.error = True, "files_changing"
             else:
-                item["status"] = "completed"
+                item["progress"]["discovery_complete"] = not item["counts"].get("protected_packs")
                 completed.add(root.id)
                 with self.db.write() as session:
                     stored = session.get(Root, root.id)
                     stored.available, stored.error = True, None
+                    if initial_catalog:
+                        # With no old identities, this root's fully published
+                        # result does not need to wait for the next root.
+                        stored.last_scan = time.time()
+                        pack_root_evidence.remember(session, stored, inventories[root.id][0])
+                stage(
+                    item,
+                    (
+                        "partial"
+                        if item.get("page_errors") or item.get("unreadable_packs")
+                        else "completed"
+                    )
+                    if initial_catalog
+                    else "reconciling",
+                )
             item["discovered"] = len(inventories[root.id][1])
+            self.tick(task_id, result, force=True)
         self.scanner.change_task(task_id, phase="pack_reconciling", result=result)
+        self.current_counts = None
         self.reconcile(task_id, completed, result, initial_generations, inventories)
+        for root_id in completed:
+            item = root_items[root_id]
+            if item["status"] == "reconciling":
+                stage(
+                    item,
+                    "partial"
+                    if item.get("page_errors") or item.get("unreadable_packs")
+                    else "completed",
+                )
         self.tick(task_id, result, force=True)
 
     def unavailable(self, root_id, item, code="root_unavailable"):
-        item.update(status="unavailable", error=code)
+        stage(item, "unavailable", error=code)
         with self.db.write() as session:
             root = session.get(Root, root_id)
             root.available, root.error = False, code
 
     def read_pack(self, path, identity, root, roots, previous, task_id, result):
         summary = result["packs"]
+        item = next(i for i in result["roots"] if i["id"] == root.id)
         inventory, directories = [], []
 
         def walk(fd, directory):
@@ -432,6 +485,7 @@ class PackScanner:
                 raise PackDeferred()
             walk(fd, path)
         summary["progress"]["discovered"] += len(inventory)
+        item["progress"]["discovered"] += len(inventory)
         with self.db.read() as session:
             cached = (
                 {
@@ -444,6 +498,7 @@ class PackScanner:
                 else {}
             )
         observations = []
+        stage(item, "processing_media")
         self.scanner.change_task(task_id, phase="pack_inspecting", result=result)
         for full, observed in sorted(
             inventory, key=lambda row: natural_key(str(row[0].relative_to(path)))
@@ -465,6 +520,7 @@ class PackScanner:
                     prior.signature, prior.stable_since = observed, time.time()
                 stable_since = prior.stable_since
             if time.time() - stable_since < self.settings.stability_seconds:
+                item["phase"] = "waiting_for_stable_files"
                 raise PackDeferred()
             with open_regular(full) as fd:
                 if signature(os.fstat(fd)) != observed:
@@ -526,7 +582,12 @@ class PackScanner:
                 path=str(full), relative_path=relative, signature=observed, size=observed[2]
             )
             observations.append(metadata)
+            if metadata.get("error"):
+                item["page_errors"] = item.get("page_errors", 0) + 1
             summary["progress"]["processed"] += 1
+            item["progress"]["processed"] += 1
+            item["updated_at"] = time.time()
+            self.tick(task_id, result, force=item["progress"]["processed"] == 1)
         with open_directory(path) as fd:
             if tuple(signature(os.fstat(fd))[:2]) != identity:
                 raise PackDeferred()
@@ -683,6 +744,8 @@ class PackScanner:
                 pack.status, pack.location_key = "missing", None
                 pack.generation += 1
                 summary["missing"] += 1
+                item = next(i for i in result["roots"] if i["id"] == pack.root_id)
+                item["counts"]["missing"] = item["counts"].get("missing", 0) + 1
             session.flush()
             current = list(
                 session.scalars(
@@ -720,6 +783,7 @@ class PackScanner:
                 candidates = missing[digest] if digest else []
                 if len(candidates) == counts[digest] == known_counts[digest] == 1:
                     previous = candidates[0]
+                    previous_root_id = previous.root_id
                     pages = [
                         {field: getattr(page, field) for field in PAGE_FIELDS}
                         for page in session.scalars(
@@ -745,13 +809,29 @@ class PackScanner:
                     summary["imported"] -= 1
                     summary["updated"] += 1
                     summary["missing"] -= int(previous.id in unseen_ids)
+                    if previous.id in unseen_ids:
+                        origin = next(i for i in result["roots"] if i["id"] == previous_root_id)
+                        origin["counts"]["missing"] -= 1
+                    item = next(i for i in result["roots"] if i["id"] == fresh.root_id)
+                    for key, amount in {
+                        "identity_matched": 1,
+                        "imported": -1,
+                        "updated": 1,
+                    }.items():
+                        item["counts"][key] = item["counts"].get(key, 0) + amount
                 else:
                     fresh.status, fresh.location_key = "available", fresh.path
                     if candidates:
                         summary["identity_ambiguous"] += 1
             for root_id in completed:
                 root = session.get(Root, root_id)
-                root.last_scan = time.time()
-                pack_root_evidence.remember(session, root, inventories[root_id][0])
+                item = next(i for i in result["roots"] if i["id"] == root_id)
+                if item["status"] == "reconciling":
+                    root.last_scan = time.time()
+                    pack_root_evidence.remember(session, root, inventories[root_id][0])
             # No failed/partial root can publish staged data or classify old data missing.
-            session.execute(delete(ImagePack).where(ImagePack.status == "discovered"))
+            session.execute(
+                delete(ImagePack).where(
+                    ImagePack.status == "discovered", ImagePack.root_id.in_(self.scope_ids)
+                )
+            )
