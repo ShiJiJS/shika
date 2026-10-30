@@ -1,0 +1,12 @@
+{
+  "stage": "normal-main first real-service scan",
+  "product_or_build_changed": false,
+  "cause": "Android merges active/error card text into one content-desc, exact standalone-node count missed already visible card",
+  "real_waiting_captures": [
+    "biz-0023-round-1-scanning-visible.xml",
+    "biz-0024-round-1-scanning-visible.xml",
+    "biz-0025-round-1-scanning-visible.xml"
+  ],
+  "change": "count exact title lines within actual semantic label; still require one card and exact state phrase",
+  "not_counted_in_final_three_rounds": true
+}

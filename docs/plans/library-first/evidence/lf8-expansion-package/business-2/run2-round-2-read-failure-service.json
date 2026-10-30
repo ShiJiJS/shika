@@ -1,0 +1,101 @@
+{
+  "ready": true,
+  "media": {
+    "video": {
+      "ready": true,
+      "scanning": false,
+      "indexed": 1
+    },
+    "pack": {
+      "ready": true,
+      "scanning": false,
+      "counts": {
+        "imported": 0,
+        "updated": 0,
+        "failed_pages": 0,
+        "failed_packs": 0,
+        "protected_packs": 1,
+        "unchanged": 0,
+        "deferred": 0,
+        "failed": 0,
+        "missing": 0,
+        "identity_matched": 0,
+        "identity_ambiguous": 0,
+        "thumbnail_failed": 0,
+        "unsupported_files": 0,
+        "loose_images": 0,
+        "symlinks_skipped": 0,
+        "failure_reasons": {},
+        "issues": [],
+        "progress": {
+          "discovered": 0,
+          "processed": 0,
+          "packs_discovered": 1,
+          "packs_processed": 1,
+          "peak_decoder_kib": 0,
+          "updated_at": 1793320725.2710652
+        }
+      },
+      "indexed": 0
+    }
+  },
+  "scanning": false,
+  "task_id": "0f5925ee-5a9e-4d2a-b3ba-196d272077cb",
+  "status": "completed",
+  "phase": "completed",
+  "updated_at": 1793320725.2723296,
+  "progress": {
+    "discovered": 3,
+    "processed": 3,
+    "bytes_total": 1463444,
+    "bytes_processed": 1463444,
+    "updated_at": 1793320725.2723296
+  },
+  "counts": {
+    "imported": 0,
+    "unchanged": 2,
+    "deferred": 0,
+    "failed": 1,
+    "thumbnail_failed": 0
+  },
+  "failure_reasons": {
+    "probe_failed": 1
+  },
+  "warning_reasons": {},
+  "indexed": 2,
+  "roots": [
+    {
+      "id": "legacy",
+      "ready": true,
+      "kind": "video",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1793320725.2540817,
+      "error": null,
+      "scan": {
+        "id": "legacy",
+        "status": "completed",
+        "discovered": 3,
+        "processed": 3,
+        "bytes_total": 1463444,
+        "bytes_processed": 1463444
+      }
+    },
+    {
+      "id": "packs",
+      "ready": true,
+      "kind": "pack",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1793320725.269863,
+      "error": null,
+      "scan": {
+        "id": "packs",
+        "kind": "pack",
+        "status": "completed",
+        "discovered": 1,
+        "processed": 1
+      }
+    }
+  ]
+}

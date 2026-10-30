@@ -1,0 +1,67 @@
+{
+  "ready": true,
+  "media": {
+    "video": {
+      "ready": true,
+      "scanning": true,
+      "indexed": 1
+    },
+    "pack": {
+      "ready": true,
+      "scanning": false,
+      "counts": {},
+      "indexed": 0
+    }
+  },
+  "scanning": true,
+  "task_id": "196f5a12-75a4-4aae-b6cd-5c252ad5a04e",
+  "status": "running",
+  "phase": "waiting_for_stable_files",
+  "updated_at": 1793320452.3121006,
+  "progress": {
+    "discovered": 3,
+    "processed": 0,
+    "bytes_total": 1463444,
+    "bytes_processed": 0,
+    "updated_at": 1793320452.3121006
+  },
+  "counts": {
+    "imported": 0,
+    "unchanged": 0,
+    "deferred": 0,
+    "failed": 0,
+    "thumbnail_failed": 0
+  },
+  "failure_reasons": {},
+  "warning_reasons": {},
+  "indexed": 1,
+  "roots": [
+    {
+      "id": "legacy",
+      "ready": true,
+      "kind": "video",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1793320204.846553,
+      "error": null,
+      "scan": {
+        "id": "legacy",
+        "status": "processing_media",
+        "discovered": 3,
+        "processed": 0,
+        "bytes_total": 1463444,
+        "bytes_processed": 0
+      }
+    },
+    {
+      "id": "packs",
+      "ready": true,
+      "kind": "pack",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1793320204.8718808,
+      "error": null,
+      "scan": null
+    }
+  ]
+}

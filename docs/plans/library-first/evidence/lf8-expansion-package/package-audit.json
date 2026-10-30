@@ -1,0 +1,40 @@
+{
+  "complete": true,
+  "source": "10bb0d34b3645e798f145c00060c25f814b436b1",
+  "steps": 13,
+  "production_lib": "2f02bc78653acbf12de64107e41e3236d61cb9cf",
+  "production_equal_to": "6af88978",
+  "reused_complete_client_tests": 789,
+  "reused_targeted_tests": 12,
+  "reused_static_rgba_sets": 32,
+  "reused_real_android_directions": 18,
+  "old_pair_sdk_prototype_preserved": true,
+  "build": {
+    "forward": {
+      "path": "/Users/jiangxinyi/Documents/Project/video-viewer/tmp/releases/video-viewer-0.2.0-preview.12-arm64.apk",
+      "version": "0.2.0-preview.12",
+      "version_code": 18,
+      "sha256": "d124de9a27f602eb56b3fdd23a5a3740670f0eed40a8e7131aa544347a27e4d0",
+      "bytes": 23242854,
+      "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+      "flutter_engine_abis": [
+        "arm64-v8a"
+      ],
+      "normal_entrypoint": true,
+      "integration_test_plugin": false
+    },
+    "rollback": {
+      "path": "/Users/jiangxinyi/Documents/Project/video-viewer/tmp/releases/video-viewer-0.1.4-rollback.12-arm64.apk",
+      "version": "0.1.4-rollback.12",
+      "version_code": 18,
+      "sha256": "1979867c010e42f70e434d409a2000cef5ead55640304b66973ae32ad83c3d38",
+      "bytes": 21734394,
+      "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+      "flutter_engine_abis": [
+        "arm64-v8a"
+      ],
+      "normal_entrypoint": true,
+      "integration_test_plugin": false
+    }
+  }
+}

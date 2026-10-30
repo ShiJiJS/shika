@@ -1,6 +1,6 @@
 # LF8：目录扫描详情的展开与减少动画
 
-[草稿PR #121](https://github.com/ShiJiJS/video_viewer/pull/121)已提交，源码/组件完成，[真实Android](LF8-EXPANSION-NATIVE.md)已补齐；正常main实际服务与新包继续。本轮收尾后按用户要求暂停。
+[草稿PR #121](https://github.com/ShiJiJS/video_viewer/pull/121)已提交，源码/组件完成，[真实Android](LF8-EXPANSION-NATIVE.md)与[正常包实际服务](LF8-EXPANSION-PACKAGE.md)本机项均已补齐。后续持续目标已恢复，总验收继续开放。
 
 按[#120](https://github.com/ShiJiJS/video_viewer/issues/120)继续UI-06，承接正常code17候选PR #119。实际唯一入口为LibraryHome的root-scan-details，完成扫描时折为摘要，异常仍外置详情。基线d6b67725的真实目录页/非DemoControls只读fixture六项反例：普通160ms展开/收起高度系数约0.692/0.063，减少动画首帧仍0/1，中途40ms开启减少仍约0.063/0.692；逻辑输入为组件替身，不算Android系统接入。
 
