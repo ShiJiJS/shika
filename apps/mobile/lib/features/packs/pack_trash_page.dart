@@ -634,7 +634,7 @@ class _PackTrashPageState extends State<PackTrashPage> {
       ),
       children: [
         Text(
-          '普通移除保留源文件，永久删除不能恢复。恢复图包时保留剩余图片、整包标签和阅读进度。',
+          '普通移除保留源文件，永久删除不能恢复。恢复图包时保留剩余图片、图包标签和阅读进度。',
           style: TextStyle(fontSize: 13, height: 1.7, color: p.catalogMeta),
         ),
         const SizedBox(height: 12),

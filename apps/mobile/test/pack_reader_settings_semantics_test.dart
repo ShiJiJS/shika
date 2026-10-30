@@ -21,6 +21,8 @@ void main() {
       (t) async {
         final semantics = t.ensureSemantics();
         final repo = AssetReadingLibrary();
+        // This scenario exercises an existing horizontal preference.
+        repo.prefs['p0'] = const ReaderPreferences(mode: ReaderMode.horizontal);
         t.view.devicePixelRatio = 1;
         t.view.physicalSize = sample.$1;
         try {

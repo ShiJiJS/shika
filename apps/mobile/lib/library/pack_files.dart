@@ -182,7 +182,7 @@ class PackFileCommand {
         (this.targets.isEmpty ||
             expectedImages == null ||
             expectedImages! < this.targets.length)) {
-      throw const LibraryFailure('永久删除缺少已确认的整包范围');
+      throw const LibraryFailure('永久删除缺少已确认的图包范围');
     }
     if (kind == 'retry' &&
         expectedTaskKind == 'pack_permanent' &&
@@ -198,7 +198,7 @@ class PackFileCommand {
           (scene != null &&
               (readerContext!.sessionId != scene['session_id'] ||
                   readerContext!.quick != (scene['advance'] != false)))) {
-        throw const LibraryFailure('阅读来源与整包操作不一致');
+        throw const LibraryFailure('阅读来源与操作不一致');
       }
     }
   }

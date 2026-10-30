@@ -62,7 +62,7 @@ void main() {
                       context,
                       files: files,
                       command: command,
-                      title: '整包移入回收站？',
+                      title: '移入回收站？',
                       description: '夏日海边与城市散步的完整图包 · 500 张',
                     ),
                   );

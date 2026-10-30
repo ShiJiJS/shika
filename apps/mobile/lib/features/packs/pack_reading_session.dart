@@ -528,7 +528,7 @@ class PackReadingSession extends ChangeNotifier {
           !live ||
           !opened ||
           cursor == null) {
-        cleanupError = '请先打开当前图片并确认阅读状态，再整理整包';
+        cleanupError = '请先打开当前图片并确认阅读状态，再整理图包';
         return null;
       }
       final owner = cursor!, generation = _generation;
@@ -670,7 +670,7 @@ class PackReadingSession extends ChangeNotifier {
             task == null && await cleanupFiles.canResend(command);
         cleanupError = task == null
             ? '未找到原请求，核对后可明确重新提交原请求'
-            : '整包操作尚未确认完成，请查询原结果；当前阅读位置已保留';
+            : '操作尚未确认完成，请查询原结果；当前阅读位置已保留';
         return task;
       }
       final result = task.result!;
@@ -678,7 +678,7 @@ class PackReadingSession extends ChangeNotifier {
         if (!await _ackCleanup(command)) return null;
         cleanupFrozen = false;
         needsReload = true;
-        cleanupError = '整包操作未完成，请重新读取后再试';
+        cleanupError = '操作未完成，请重新读取后再试';
         return task;
       }
       if (command.kind == 'trash') {

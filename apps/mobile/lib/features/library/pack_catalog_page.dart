@@ -733,7 +733,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
               for (final value in pendingFiles)
                 ListTile(
                   title: Text(
-                    value.label ?? (value.kind == 'trash' ? '整包移除' : '图包恢复与撤销'),
+                    value.label ?? (value.kind == 'trash' ? '移除' : '图包恢复与撤销'),
                   ),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => Navigator.pop(context, value),
@@ -813,7 +813,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
               ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('整包标签'),
+              title: const Text('图包标签'),
               trailing: const Icon(Icons.sell_outlined),
               onTap: () => Navigator.pop(context, 'tags'),
             ),
@@ -821,7 +821,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: Text(
-                  '整包移入回收站',
+                  '移入回收站',
                   style: TextStyle(color: Paper.of(context).danger),
                 ),
                 trailing: const Icon(Icons.delete_outline),
@@ -853,7 +853,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
         command: PackFileCommand.trash(packFileRequestId(), [
           pack.id,
         ], label: pack.displayTitle),
-        title: '整包移入回收站？',
+        title: '移入回收站？',
         description: '${pack.displayTitle} · ${pack.pageCount} 张',
       );
       if (outcome == null || !mounted || !outcome.files.isCurrent()) return;
@@ -1019,7 +1019,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('整包标签'),
+                title: const Text('图包标签'),
                 trailing: const Icon(Icons.chevron_right),
                 subtitle: names.isEmpty ? null : Text(names.values.join('、')),
                 onTap: () async {

@@ -184,7 +184,7 @@ class PackReaderPageState extends State<PackReaderPage>
     ScaffoldMessenger.of(context).showSnackBar(
       PaperSnackBar(
         context: context,
-        content: const Text('整包已移入回收站'),
+        content: const Text('已移入回收站'),
         duration: remaining,
         action: SnackBarAction(
           label: '撤销',
@@ -203,11 +203,11 @@ class PackReaderPageState extends State<PackReaderPage>
       final confirmed = await paperSheet<bool>(
         context,
         SheetFrame(
-          title: '整包移入回收站？',
+          title: '移入回收站？',
           children: [
             Text(session.range!.pack!.displayTitle),
             const SizedBox(height: 12),
-            const Text('保留源文件、整包标签和阅读进度。移除后返回来源，可在回收站恢复。'),
+            const Text('保留源文件、图包标签和阅读进度。移除后返回来源，可在回收站恢复。'),
             const SizedBox(height: 16),
             Wrap(
               alignment: WrapAlignment.end,
@@ -449,7 +449,7 @@ class PackReaderPageState extends State<PackReaderPage>
             style: const TextStyle(fontSize: 12, height: 1.6),
           ),
           const SizedBox(height: 16),
-          const Text('整包标签', style: TextStyle(fontSize: 13)),
+          const Text('图包标签', style: TextStyle(fontSize: 13)),
           const SizedBox(height: 6),
           Text(
             pack.tagNames.values.isEmpty
@@ -562,7 +562,7 @@ class PackReaderPageState extends State<PackReaderPage>
           children: [
             if (session.cleanupBusy) const LinearProgressIndicator(),
             Text(
-              session.cleanupBusy ? '正在确认整包操作…' : session.cleanupError,
+              session.cleanupBusy ? '正在确认操作…' : session.cleanupError,
               key: const Key('reader-cleanup-status'),
               style: TextStyle(fontSize: 12, color: Paper.of(context).danger),
             ),
@@ -817,7 +817,7 @@ class PackReaderPageState extends State<PackReaderPage>
                           if (session.cleanupSupported && !quick)
                             const PopupMenuItem(
                               value: 'cleanup',
-                              child: Text('整包移入回收站'),
+                              child: Text('移入回收站'),
                             ),
                           if (usable)
                             const PopupMenuItem(
@@ -827,7 +827,7 @@ class PackReaderPageState extends State<PackReaderPage>
                           if (usable)
                             const PopupMenuItem(
                               value: 'tags',
-                              child: Text('整包标签'),
+                              child: Text('图包标签'),
                             ),
                           if (session.range?.previous != null)
                             const PopupMenuItem(
@@ -1049,7 +1049,7 @@ class PackReaderPageState extends State<PackReaderPage>
                                 : PaperGlyph.vertical,
                             settings,
                           ),
-                          tool('整包标签', PaperGlyph.tag, () async {
+                          tool('图包标签', PaperGlyph.tag, () async {
                             if (await session.flush()) {
                               await widget.editTags(session.range!.pack!);
                               if (session.live) {
@@ -1090,7 +1090,7 @@ class PackReaderPageState extends State<PackReaderPage>
                                           }
                                         }
                                       },
-                                child: const Text('整包标签'),
+                                child: const Text('图包标签'),
                               ),
                             ),
                             const SizedBox(width: 12),

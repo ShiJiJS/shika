@@ -507,3 +507,62 @@ def test_catalog_recent_page_index_uses_manifest_position_and_does_not_write(lib
     assert latest["progress"]["page_index"] is None
     assert latest["progress"]["page_id"] == last_id
     assert latest["progress"]["revision"] == saved.json()["revision"]
+
+
+def test_vertical_default_preserves_existing_global_and_pack_choices(library):
+    import json
+
+    from video_viewer.models import Setting
+
+    client, media = library
+    _, ids = setup(client, media, count=3)
+    defaults = client.get("/api/v1/reading-defaults").json()
+    assert defaults == {
+        "mode": "vertical",
+        "direction": "ltr",
+        "gap": False,
+        "fit": "contain",
+        "revision": 0,
+    }
+    with client.app.state.db.write() as db:
+        db.add(PackPreferences(pack_id=ids[0], mode="horizontal"))
+        page = db.scalar(
+            select(PackPage).where(PackPage.pack_id == ids[1]).order_by(PackPage.ordinal)
+        )
+        db.add(PackProgress(pack_id=ids[1], page_id=page.id, offset_ratio=0.37, content_version=1))
+    custom = create(client, request_id="custom-mode", anchor_pack_id=ids[0])
+    assert custom["resume"]["preferences"]["mode"] == "horizontal"
+    assert custom["resume"]["preferences"]["overridden"] is True
+    inherited = create(client, request_id="inherited-mode", anchor_pack_id=ids[1])
+    assert inherited["resume"]["preferences"]["mode"] == "vertical"
+    assert inherited["resume"]["preferences"]["overridden"] is False
+    assert inherited["resume"]["offset_ratio"] == 0.37
+    with client.app.state.db.write() as db:
+        db.add(
+            Setting(
+                key="reader_defaults",
+                value=json.dumps({**defaults, "mode": "horizontal", "revision": 3}),
+            )
+        )
+    assert client.get("/api/v1/reading-defaults").json()["mode"] == "horizontal"
+    stored = create(client, request_id="stored-default", anchor_pack_id=ids[2])
+    assert stored["resume"]["preferences"]["mode"] == "horizontal"
+    with client.app.state.db.read() as db:
+        assert db.get(PackProgress, ids[1]).offset_ratio == 0.37
+        assert db.get(PackPreferences, ids[1]) is None
+
+
+def test_reading_preferences_request_omitting_mode_uses_vertical(library):
+    client, _ = library
+    response = client.patch(
+        "/api/v1/reading-defaults",
+        json={"values": {"gap": True}, "expected_revision": 0, "request_id": "omitted-mode"},
+    )
+    assert response.status_code == 200
+    assert response.json() == {
+        "mode": "vertical",
+        "direction": "ltr",
+        "gap": True,
+        "fit": "contain",
+        "revision": 1,
+    }

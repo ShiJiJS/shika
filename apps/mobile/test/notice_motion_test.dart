@@ -198,11 +198,11 @@ void main() {
       await t.tap(find.text('show undo'));
       await t.pump();
       await t.pump(const Duration(milliseconds: 176));
-      expect(find.text('整包已移入回收站，源文件保留'), findsOneWidget);
+      expect(find.text('已移入回收站，源文件保留'), findsOneWidget);
       expect(find.text('撤销'), findsOneWidget);
       await t.pump(const Duration(seconds: 9));
       await t.pump(const Duration(milliseconds: 176));
-      expect(find.text('整包已移入回收站，源文件保留'), findsNothing);
+      expect(find.text('已移入回收站，源文件保留'), findsNothing);
       expect(find.text('撤销'), findsNothing);
       expect(commands, 0);
       await t.pumpWidget(const SizedBox());

@@ -62,7 +62,7 @@ class Progress(PageWrite):
 
 
 class Preferences(Input):
-    mode: Literal["horizontal", "vertical"] = "horizontal"
+    mode: Literal["horizontal", "vertical"] = "vertical"
     direction: Literal["ltr", "rtl"] = "ltr"
     gap: bool = False
     fit: Literal["contain", "width"] = "contain"

@@ -23,7 +23,7 @@ from .models import (
 )
 from .requests import once
 
-DEFAULTS = {"mode": "horizontal", "direction": "ltr", "gap": False, "fit": "contain"}
+DEFAULTS = {"mode": "vertical", "direction": "ltr", "gap": False, "fit": "contain"}
 
 
 class Reading:

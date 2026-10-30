@@ -182,7 +182,7 @@ class _PackFileActionState extends State<PackFileAction> {
         ),
       if (!attempted && widget.confirm && command.kind == 'trash')
         Text(
-          '从媒体库中移除，保留源文件、整包标签和阅读进度。可以在图包回收站恢复。',
+          '从媒体库中移除，保留源文件、图包标签和阅读进度。可以在图包回收站恢复。',
           style: TextStyle(
             fontSize: 13,
             height: 1.7,
@@ -226,7 +226,7 @@ void showPackUndo(
     ..showSnackBar(
       PaperSnackBar(
         context: context,
-        content: const Text('整包已移入回收站，源文件保留'),
+        content: const Text('已移入回收站，源文件保留'),
         persist: false,
         duration: remaining > Duration.zero
             ? remaining
@@ -249,7 +249,7 @@ void showPackUndo(
                           outcome.task.id,
                           readerContext: outcome.command.readerContext,
                         ),
-                        title: '撤销整包移除',
+                        title: '撤销移除',
                         confirm: false,
                       );
                       if (undone == null) return;

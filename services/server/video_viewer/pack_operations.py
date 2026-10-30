@@ -148,7 +148,7 @@ class PackOperations:
                 return prior.id
             reject_historical(session, "pack_file_operations", key)
             if scene and (kind != "trash" or ids != [scene["pack_id"]]):
-                raise LibraryError("invalid_pack_cleanup", "阅读整理一次只能操作当前整包", 422)
+                raise LibraryError("invalid_pack_cleanup", "阅读整理一次只能操作当前图包", 422)
             if kind == "undo":
                 original = session.get(PackFileOperation, undo_of)
                 if (

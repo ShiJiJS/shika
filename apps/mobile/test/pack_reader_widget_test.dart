@@ -196,6 +196,8 @@ void main() {
       'reader actual asset frames, mode change, saved resume and layout ${sample.$1} / ${sample.$2}',
       (t) async {
         final repo = AssetReadingLibrary();
+        // This scenario exercises an existing horizontal preference.
+        repo.prefs['p0'] = const ReaderPreferences(mode: ReaderMode.horizontal);
         t.view.devicePixelRatio = 1;
         t.view.physicalSize = sample.$1;
         addTearDown(() async {

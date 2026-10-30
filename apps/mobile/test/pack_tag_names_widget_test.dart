@@ -78,13 +78,13 @@ void main() {
 
   Future<void> edit(WidgetTester t) async {
     await tap(t, find.byTooltip('图包操作 春日合集'));
-    await tap(t, find.text('整包标签'));
+    await tap(t, find.text('图包标签'));
     expect(repo.lookups.last, {'t60'});
   }
 
   Finder chosen() => find.byKey(const Key('chosen-pack-tag-t60'));
   Finder input() => find.byKey(const Key('tag-assignment-search'));
-  Finder save() => find.widgetWithText(FilledButton, '保存整包标签');
+  Finder save() => find.widgetWithText(FilledButton, '保存图包标签');
   Future<void> close(WidgetTester t) async {
     expect(t.takeException(), isNull);
     await t.pumpWidget(const SizedBox());
@@ -118,7 +118,7 @@ void main() {
       await tap(t, save());
       expect(repo.packLinks['p1'], {'t60', 't0'});
       await tap(t, find.byTooltip('图包操作 春日合集'));
-      await tap(t, find.text('整包标签'));
+      await tap(t, find.text('图包标签'));
       expect(find.byKey(const Key('chosen-pack-tag-t0')), findsOneWidget);
       expect(chosen(), findsOneWidget);
       await close(t);

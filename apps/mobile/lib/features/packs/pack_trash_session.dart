@@ -179,7 +179,7 @@ class PackTrashSession extends ChangeNotifier {
     message = permanent
         ? '已确认删除 ${result.pagesDeleted} 张图片${result.needsAttention ? '，还有待核对内容，原操作已保留' : '，${result.failed} 个图包未完成'}'
         : task.kind == 'pack_trash'
-        ? '已确认整包回收结果'
+        ? '已确认回收结果'
         : result.failed == 0
         ? '已恢复 ${result.succeeded} 个图包，标签和阅读进度保留'
         : '已恢复 ${result.succeeded} 个，${result.failed} 个未完成';

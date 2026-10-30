@@ -435,7 +435,7 @@ class TagCatalogPageState extends State<TagCatalogPage> {
         Text('$type标签', style: Paper.of(context).title.copyWith(fontSize: 23)),
         const SizedBox(height: 9),
         Text(
-          pack ? '选择一个或多个标签，找到整包图片。' : '选择一个或多个标签，确定视频预览范围。',
+          pack ? '选择一个或多个标签，找到图包。' : '选择一个或多个标签，确定视频预览范围。',
           style: TextStyle(
             fontSize: 13,
             height: 1.7,
