@@ -1,0 +1,47 @@
+Installing ../../.dev/lf8-expansion-native/expansion-profile-v3.apk...        818ms
+I/js.video_viewer(16597): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+D/WindowLayoutComponentImpl(16597): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@3ebba0c, of which baseContext=android.app.ContextImpl@eb54bd1
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:62754/OjRd-L5k5tY=/
+VMServiceFlutterDriver: Isolate found with number: 5399264248532315
+VMServiceFlutterDriver: Isolate 5399264248532315 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter (16597): 00:00 +0: actual scan page with real Android expansion input and settings
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController(16597): hide(ime(), fromIme=false)
+I/ImeTracker(16597): io.github.shijijs.video_viewer:f07f02bc: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller(16597): Installing profile for io.github.shijijs.video_viewer
+I/flutter (16597): Expected: '扫描失败'
+I/flutter (16597):   Actual: '正在读取视频信息 · 4 / 5 个'
+I/flutter (16597):    Which: is different.
+I/flutter (16597):           Expected: 扫描失败
+I/flutter (16597):             Actual: 正在读取视频信息 · ...
+I/flutter (16597):                     ^
+I/flutter (16597):            Differ at offset 0
+I/flutter (16597): 
+I/flutter (16597): #0      fail (package:matcher/src/expect/expect.dart:187)
+I/flutter (16597): #1      _expect (package:matcher/src/expect/expect.dart:182)
+I/flutter (16597): #2      expect (package:matcher/src/expect/expect.dart:65)
+I/flutter (16597): #3      expect (package:flutter_test/src/widget_tester.dart:473)
+I/flutter (16597): #4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/expansion_motion_test.dart:385)
+I/flutter (16597): <asynchronous suspension>
+I/flutter (16597): #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter (16597): <asynchronous suspension>
+I/flutter (16597): #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter (16597): <asynchronous suspension>
+I/flutter (16597): #7      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter (16597): <asynchronous suspension>
+I/flutter (16597): 00:09 +0: actual scan page with real Android expansion input and settings [E]
+I/flutter (16597):   Test failed. See exception logs above.
+I/flutter (16597):   The test description was: actual scan page with real Android expansion input and settings
+I/flutter (16597):   
+I/flutter (16597): 00:10 +0 -1: (tearDownAll)
+I/flutter (16597): 00:10 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: actual scan page with real Android expansion input and settings
+Instance of 'FlutterErrorDetails'
+end of failure 1
+
+
+
+Leaving the application running.

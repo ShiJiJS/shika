@@ -1,0 +1,8 @@
+Analyzing mobile...                                             
+
+   info • The import of 'package:flutter/rendering.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart'. Try removing the import directive • integration_test/expansion_motion_test.dart:5:8 • unnecessary_import
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • integration_test/expansion_motion_test.dart:118:13 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • integration_test/expansion_motion_test.dart:167:15 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • integration_test/expansion_motion_test.dart:169:15 • curly_braces_in_flow_control_structures
+
+4 issues found. (ran in 2.1s)
