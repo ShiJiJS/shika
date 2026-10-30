@@ -1,0 +1,71 @@
+{
+  "source_commit": "d8acf14000dd7b4c0ef0c68e0f5063a9fcdbd4e9",
+  "client_full": 832,
+  "related_rounds": [
+    37,
+    37,
+    37
+  ],
+  "analyze": "pass",
+  "source_files_hashed": 236,
+  "apk_export_files_hashed": 353,
+  "normal_code25": {
+    "path": "/Users/jiangxinyi/Documents/Project/video-viewer/tmp/releases/video-viewer-0.2.0-preview.19-arm64.apk",
+    "version": "0.2.0-preview.19",
+    "version_code": 25,
+    "sha256": "e97a6cf6fcf4816244955b895e1d821fead6889b7e2012260c99817dc55d0f38",
+    "bytes": 23308186,
+    "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+    "flutter_engine_abis": [
+      "arm64-v8a"
+    ],
+    "normal_entrypoint": true,
+    "integration_test_plugin": false
+  },
+  "rollback_code25": {
+    "path": "/Users/jiangxinyi/Documents/Project/video-viewer/tmp/releases/video-viewer-0.1.4-rollback.19-arm64.apk",
+    "version": "0.1.4-rollback.19",
+    "version_code": 25,
+    "sha256": "81bfbc080ddd1c848c7f3052022acf238470ac2cac1e7dddaeb69b3e1ca99ad4",
+    "bytes": 21734394,
+    "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+    "flutter_engine_abis": [
+      "arm64-v8a"
+    ],
+    "normal_entrypoint": true,
+    "integration_test_plugin": false
+  },
+  "normal_code24": {
+    "path": "/Users/jiangxinyi/Documents/Project/video-viewer/tmp/releases/video-viewer-0.2.0-preview.18-arm64.apk",
+    "version": "0.2.0-preview.18",
+    "version_code": 24,
+    "sha256": "94a950657e45359dcdca799c853251b55236707687c6d84cd0d24a72a0bb6949",
+    "bytes": 23308186,
+    "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+    "flutter_engine_abis": [
+      "arm64-v8a"
+    ],
+    "normal_entrypoint": true,
+    "integration_test_plugin": false
+  },
+  "normal_covers_executed": [
+    [
+      23,
+      24
+    ],
+    [
+      24,
+      25
+    ]
+  ],
+  "rollback25_cover": "pending",
+  "native_code24": "double tap/Back, real two-slot pinch and horizontal pan, vertical cross-image progress",
+  "native_code25": "resume, real two-slot pinch/horizontal pan, actual 2400x1080->1080x2400 rotation, Back and new-PID library reopen, root-A-only task/510 result with root B preserved",
+  "native_500_page_window_and_cache": "pending",
+  "native_reader_error_cleanup_sequence": "pending",
+  "native_old_new_service_combinations": "pending",
+  "native_live_scan_stream_and_queue_offline": "pending",
+  "nas_changed": false,
+  "phone_validation": "pending",
+  "independent_visual_review": false
+}
