@@ -1,0 +1,81 @@
+{
+  "checked_at": "2026-10-30T14:51:39.571398+08:00",
+  "server_source": "b79da7b9c4d2ab099c055b8eb855904e32abb0a5",
+  "deployed_image_id": "sha256:ed6097199cf852dc8b3eeeee41fee55da9f3f24d280ea88e59844d814103b1ea",
+  "archive_sha256": "461af96196d4905c374fa86e82100be85d48efc2ab9221dcde745e275a7a79ff",
+  "health": "healthy",
+  "schema": "0014",
+  "server_identity_preserved": true,
+  "initial_video_scan": {
+    "unchanged": 598,
+    "failed": 0,
+    "task_id": "05cfbe99-b145-4240-b559-097655bff06c"
+  },
+  "first_pack_scan": {
+    "id": "747e3ba6-693f-4450-86ef-fe4246c8be1d",
+    "status": "running",
+    "phase": "pack_inspecting",
+    "progress": {
+      "discovered": 107,
+      "processed": 85,
+      "packs_discovered": 687,
+      "packs_processed": 1,
+      "peak_decoder_kib": 154608,
+      "updated_at": 1793343082.971217
+    },
+    "failed_pages": 0,
+    "failed_packs": 0,
+    "failure_reasons": {},
+    "indexed_readable_at_check": 1
+  },
+  "pack_source_mount_read_only": true,
+  "installed_on_phone": false,
+  "full_target_acceptance": false,
+  "backup_sha256": "5fe1109c79dc9027481c1c0ed548837eade82e55dfcd2dfd94532f4cab2945bc",
+  "old_image_backup_sha256": "5a4d540c7f5e38cfacd951df8f6bb9f8975598bcd0c9cb3a1a523257503049c2",
+  "off_device_backup_sha_matched": true,
+  "temporary_probe_token_revoked": true,
+  "after_start_stable_table_comparison": {
+    "access_tokens": {
+      "count": 16,
+      "old_columns_unchanged": true
+    },
+    "tags": {
+      "count": 110,
+      "old_columns_unchanged": true
+    },
+    "video_tags": {
+      "count": 2110,
+      "old_columns_unchanged": true
+    },
+    "playback_rounds": {
+      "count": 69,
+      "old_columns_unchanged": true
+    },
+    "round_entries": {
+      "count": 35676,
+      "old_columns_unchanged": true
+    },
+    "file_operations": {
+      "count": 937,
+      "old_columns_unchanged": true
+    },
+    "file_steps": {
+      "count": 1852,
+      "old_columns_unchanged": true
+    },
+    "request_records": {
+      "count": 796,
+      "old_columns_unchanged": true
+    },
+    "trash_items": {
+      "count": 926,
+      "old_columns_unchanged": true
+    },
+    "reading_rows": {
+      "pack_sessions": 0,
+      "pack_progress": 0,
+      "recent_entries": 0
+    }
+  }
+}
