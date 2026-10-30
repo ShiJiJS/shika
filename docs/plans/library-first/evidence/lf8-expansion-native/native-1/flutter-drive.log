@@ -1,0 +1,38 @@
+Installing ../../.dev/lf8-expansion-native/expansion-profile.apk...        408ms
+D/WindowLayoutComponentImpl( 3746): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@f5b495e, of which baseContext=android.app.ContextImpl@12b825b
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:61154/lGNg6QbABnU=/
+VMServiceFlutterDriver: Isolate found with number: 4404102699003099
+VMServiceFlutterDriver: Isolate 4404102699003099 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 3746): 00:00 +0: actual scan page with real Android expansion input and settings
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController( 3746): hide(ime(), fromIme=false)
+I/ImeTracker( 3746): io.github.shijijs.video_viewer:7865068b: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller( 3746): Installing profile for io.github.shijijs.video_viewer
+I/flutter ( 3746): real expansion before scan update
+I/flutter ( 3746): #0      fail (package:matcher/src/expect/expect.dart:187)
+I/flutter ( 3746): #1      main.<anonymous closure>.until (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/expansion_motion_test.dart:229)
+I/flutter ( 3746): <asynchronous suspension>
+I/flutter ( 3746): #2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/expansion_motion_test.dart:306)
+I/flutter ( 3746): <asynchronous suspension>
+I/flutter ( 3746): #3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192)
+I/flutter ( 3746): <asynchronous suspension>
+I/flutter ( 3746): #4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953)
+I/flutter ( 3746): <asynchronous suspension>
+I/flutter ( 3746): #5      TestWidgetsFlutterBinding._createTestCompletionHandler.<anonymous closure> (package:flutter_test/src/binding.dart:1707)
+I/flutter ( 3746): <asynchronous suspension>
+I/flutter ( 3746): 00:34 +0: actual scan page with real Android expansion input and settings [E]
+I/flutter ( 3746):   Test failed. See exception logs above.
+I/flutter ( 3746):   The test description was: actual scan page with real Android expansion input and settings
+I/flutter ( 3746):   
+I/flutter ( 3746): 00:34 +0 -1: (tearDownAll)
+I/flutter ( 3746): 00:34 +1 -1: Some tests failed.
+Failure Details:
+Failure in method: actual scan page with real Android expansion input and settings
+Instance of 'FlutterErrorDetails'
+end of failure 1
+
+
+
+Leaving the application running.

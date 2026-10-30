@@ -1,0 +1,17 @@
+Installing ../../.dev/lf8-expansion-native/expansion-profile-v4.apk...        581ms
+I/js.video_viewer(18633): Compiler allocated 5111KB to compile void android.view.ViewRootImpl.performTraversals()
+D/WindowLayoutComponentImpl(18633): Register WindowLayoutInfoListener on Context=io.github.shijijs.video_viewer.MainActivity@3ebba0c, of which baseContext=android.app.ContextImpl@eb54bd1
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:63458/-zkz0wOrxxI=/
+VMServiceFlutterDriver: Isolate found with number: 5122546023591851
+VMServiceFlutterDriver: Isolate 5122546023591851 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter (18633): 00:00 +0: actual scan page with real Android expansion input and settings
+VMServiceFlutterDriver: Connected to Flutter application.
+D/InsetsController(18633): hide(ime(), fromIme=false)
+I/ImeTracker(18633): io.github.shijijs.video_viewer:85788890: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+D/ProfileInstaller(18633): Installing profile for io.github.shijijs.video_viewer
+I/flutter (18633): 00:29 +1: (tearDownAll)
+I/flutter (18633): 00:29 +2: All tests passed!
+All tests passed.
+Leaving the application running.
