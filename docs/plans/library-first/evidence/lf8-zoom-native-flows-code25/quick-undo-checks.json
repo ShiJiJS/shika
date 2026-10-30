@@ -1,0 +1,40 @@
+{
+  "normal_code": 25,
+  "zoomed_then_quick_remove": true,
+  "undo_clicked_while_visible": true,
+  "seconds_between_actual_remove_and_undo_taps": 6.413816928863525,
+  "undo_timer_not_extended": true,
+  "source_files_equal_before_after_cleanup_asserted_before_initial_diagnostic": 522,
+  "original_516_files_still_equal": 516,
+  "new_five_pattern_files_still_equal": 5,
+  "next_pack_observed": "05-patterns",
+  "original_restored": "04-long",
+  "saved_page_restored": 282,
+  "progress_fields_preserved": [
+    "page_id",
+    "offset_ratio",
+    "completed",
+    "content_version"
+  ],
+  "generation_delta": 2,
+  "changed_tables": [
+    "pack_file_operations",
+    "pack_file_steps",
+    "pack_progress",
+    "pack_sessions",
+    "pack_trash_items",
+    "packs",
+    "recent_entries",
+    "request_records",
+    "tasks"
+  ],
+  "changed_settings_only_existing_workflow_pointers": [
+    "last_pack_delete_operation",
+    "active_pack_opened"
+  ],
+  "access_tokens_equal": true,
+  "other_tables_settings_equal": true,
+  "one_back_after_cleanup_returned_library": true,
+  "initial_harness_assertion_diagnostic": "Assumed all settings and session rows unchanged; active opened/last delete pointers, sessions and recent entries legitimately follow cleanup/undo. Actual fields and allowed deltas checked here without replaying mutation.",
+  "visual_review": "Primary agent viewed ordinary code25 PNGs: error buttons/skip endpoint and quick restore at original 04-long 282/500, with unchanged chrome size"
+}

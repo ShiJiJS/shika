@@ -1,0 +1,87 @@
+{
+  "cycles": [
+    {
+      "kind": "rollback",
+      "before": {
+        "versionCode": "25 minSdk=24 targetSdk=36",
+        "versionName": "0.2.0-preview.19",
+        "firstInstallTime": "2026-10-25 21:53:33",
+        "lastUpdateTime": "2026-10-30 20:56:55",
+        "dataDir": "/data/user/0/io.github.shijijs.video_viewer",
+        "appId": "10217"
+      },
+      "after": {
+        "versionCode": "25 minSdk=24 targetSdk=36",
+        "versionName": "0.1.4-rollback.19",
+        "firstInstallTime": "2026-10-25 21:53:33",
+        "lastUpdateTime": "2026-10-30 22:09:00",
+        "dataDir": "/data/user/0/io.github.shijijs.video_viewer",
+        "appId": "10217"
+      },
+      "actual_installed_sha256": "81bfbc080ddd1c848c7f3052022acf238470ac2cac1e7dddaeb69b3e1ca99ad4",
+      "no_uninstall_or_clear": true
+    },
+    {
+      "kind": "normal",
+      "before": {
+        "versionCode": "25 minSdk=24 targetSdk=36",
+        "versionName": "0.1.4-rollback.19",
+        "firstInstallTime": "2026-10-25 21:53:33",
+        "lastUpdateTime": "2026-10-30 22:09:00",
+        "dataDir": "/data/user/0/io.github.shijijs.video_viewer",
+        "appId": "10217"
+      },
+      "after": {
+        "versionCode": "25 minSdk=24 targetSdk=36",
+        "versionName": "0.2.0-preview.19",
+        "firstInstallTime": "2026-10-25 21:53:33",
+        "lastUpdateTime": "2026-10-30 22:09:18",
+        "dataDir": "/data/user/0/io.github.shijijs.video_viewer",
+        "appId": "10217"
+      },
+      "actual_installed_sha256": "e97a6cf6fcf4816244955b895e1d821fead6889b7e2012260c99817dc55d0f38",
+      "no_uninstall_or_clear": true
+    }
+  ],
+  "protected_business_tables": [
+    "file_operations",
+    "file_steps",
+    "pack_file_operations",
+    "pack_file_steps",
+    "pack_missing_cleanups",
+    "pack_missing_members",
+    "pack_pages",
+    "pack_preferences",
+    "pack_progress",
+    "pack_purge_entries",
+    "pack_purge_executions",
+    "pack_purge_plans",
+    "pack_purge_steps",
+    "pack_restore_batches",
+    "pack_restore_members",
+    "pack_restore_plans",
+    "pack_session_entries",
+    "pack_sessions",
+    "pack_tag_definitions",
+    "pack_tag_links",
+    "pack_trash_items",
+    "packs",
+    "roots",
+    "tags",
+    "trash_items",
+    "video_tags"
+  ],
+  "protected_tables_equal_through_rollback": true,
+  "normal_reopen_all_35_tables_and_settings_equal_to_after_old_start": true,
+  "appearance_equal": true,
+  "old_start_changed_tables": [
+    "playback_rounds",
+    "round_entries"
+  ],
+  "old_start_changed_settings": [
+    "library_round_refresh",
+    "active_round"
+  ],
+  "server": "new 430fede5, not old-service compatibility",
+  "visual_review": "Primary agent viewed rollback25 old browse with its Video Library destination, then normal25 media library after actual install-r cycle. Old browse is intentionally present in rollback APK, not a Back route in normal APK."
+}

@@ -1,0 +1,535 @@
+{
+  "normal_code": 25,
+  "assumed_zoom_from_prior_doubletap": 2,
+  "real_positions_within_display": true,
+  "base_offset": 240,
+  "fourth_window_offset": 360,
+  "actual_page_reads": [
+    {
+      "seq": 28,
+      "offset": 0,
+      "limit": 40,
+      "total": 500,
+      "content_version": 1,
+      "items": 40
+    },
+    {
+      "seq": 63,
+      "offset": 240,
+      "limit": 40,
+      "total": 500,
+      "content_version": 1,
+      "items": 40
+    },
+    {
+      "seq": 111,
+      "offset": 280,
+      "limit": 40,
+      "total": 500,
+      "content_version": 1,
+      "items": 40
+    },
+    {
+      "seq": 173,
+      "offset": 320,
+      "limit": 40,
+      "total": 500,
+      "content_version": 1,
+      "items": 40
+    },
+    {
+      "seq": 241,
+      "offset": 360,
+      "limit": 40,
+      "total": 500,
+      "content_version": 1,
+      "items": 40
+    },
+    {
+      "seq": 367,
+      "offset": 240,
+      "limit": 40,
+      "total": 500,
+      "content_version": 1,
+      "items": 40
+    }
+  ],
+  "monotonic_waypoints": [
+    {
+      "direction": "forward",
+      "round": 4,
+      "counter": 275,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "9383f09e-d5d6-4ab1-ac85-8ca1ee772cf6",
+        "offset_ratio": 0.903951463169413,
+        "completed": 0,
+        "revision": 5,
+        "updated_at": 1793367855.990359,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 274
+      },
+      "offsets": [
+        0,
+        240
+      ]
+    },
+    {
+      "direction": "forward",
+      "round": 8,
+      "counter": 283,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "f7237068-1430-45f7-a7d6-9cbe6af574d1",
+        "offset_ratio": 0.4052013840815158,
+        "completed": 0,
+        "revision": 12,
+        "updated_at": 1793367864.5493991,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 282
+      },
+      "offsets": [
+        0,
+        240,
+        280
+      ]
+    },
+    {
+      "direction": "forward",
+      "round": 12,
+      "counter": 292,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "d991fea9-4a65-4063-8a23-7f4a9be780cd",
+        "offset_ratio": 0.9527654218649855,
+        "completed": 0,
+        "revision": 13,
+        "updated_at": 1793367872.9273205,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 291
+      },
+      "offsets": [
+        0,
+        240,
+        280
+      ]
+    },
+    {
+      "direction": "forward",
+      "round": 16,
+      "counter": 302,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "cdac06b6-ebd7-4bb3-b78e-7dcf6c521e84",
+        "offset_ratio": 0.3448392743148075,
+        "completed": 0,
+        "revision": 20,
+        "updated_at": 1793367881.2443879,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 301
+      },
+      "offsets": [
+        0,
+        240,
+        280
+      ]
+    },
+    {
+      "direction": "forward",
+      "round": 20,
+      "counter": 311,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "de5fe1e7-8588-46cc-890b-425ad5be695e",
+        "offset_ratio": 0.9080600250947573,
+        "completed": 0,
+        "revision": 23,
+        "updated_at": 1793367889.7039115,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 310
+      },
+      "offsets": [
+        0,
+        240,
+        280
+      ]
+    },
+    {
+      "direction": "forward",
+      "round": 24,
+      "counter": 321,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "b53f5605-4ea5-4e20-b84a-011533fcab0b",
+        "offset_ratio": 0.1646508731226058,
+        "completed": 0,
+        "revision": 24,
+        "updated_at": 1793367897.955311,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 320
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320
+      ]
+    },
+    {
+      "direction": "forward",
+      "round": 28,
+      "counter": 330,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "3d45b172-8a91-4709-9f9f-1ee03a733877",
+        "offset_ratio": 0.7302914297542059,
+        "completed": 0,
+        "revision": 28,
+        "updated_at": 1793367906.2673898,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 329
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320
+      ]
+    },
+    {
+      "direction": "forward",
+      "round": 32,
+      "counter": 340,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "d96c0ac5-687e-4f41-bb3c-accd14b9dc88",
+        "offset_ratio": 0.1696787579768692,
+        "completed": 0,
+        "revision": 33,
+        "updated_at": 1793367914.2817252,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 339
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320
+      ]
+    },
+    {
+      "direction": "forward",
+      "round": 36,
+      "counter": 349,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "7944fc19-089b-4048-bfe1-de83ffc0db91",
+        "offset_ratio": 0.7016552494695538,
+        "completed": 0,
+        "revision": 38,
+        "updated_at": 1793367922.1170008,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 348
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320
+      ]
+    },
+    {
+      "direction": "forward",
+      "round": 40,
+      "counter": 357,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "c798b2ad-fe52-401a-8c43-288028253556",
+        "offset_ratio": 0.29117578276100853,
+        "completed": 0,
+        "revision": 45,
+        "updated_at": 1793367930.6563904,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 356
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320
+      ]
+    },
+    {
+      "direction": "forward",
+      "round": 41,
+      "counter": 359,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "1886c108-151b-48c9-bb59-9af8b59b5856",
+        "offset_ratio": 0.2502614277589247,
+        "completed": 0,
+        "revision": 47,
+        "updated_at": 1793367935.455352,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 358
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320,
+        360
+      ]
+    },
+    {
+      "direction": "backward",
+      "round": 4,
+      "counter": 349,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "7944fc19-089b-4048-bfe1-de83ffc0db91",
+        "offset_ratio": 0.6690704940539036,
+        "completed": 0,
+        "revision": 52,
+        "updated_at": 1793367948.2847707,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 348
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320,
+        360
+      ]
+    },
+    {
+      "direction": "backward",
+      "round": 8,
+      "counter": 340,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "d96c0ac5-687e-4f41-bb3c-accd14b9dc88",
+        "offset_ratio": 0.1520062607335654,
+        "completed": 0,
+        "revision": 58,
+        "updated_at": 1793367956.0065393,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 339
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320,
+        360
+      ]
+    },
+    {
+      "direction": "backward",
+      "round": 12,
+      "counter": 332,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "3617cec3-19be-43ea-ad3b-90f5aaaf4cfc",
+        "offset_ratio": 0.5916952004279724,
+        "completed": 0,
+        "revision": 65,
+        "updated_at": 1793367964.413786,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 331
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320,
+        360
+      ]
+    },
+    {
+      "direction": "backward",
+      "round": 16,
+      "counter": 324,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "1881b4aa-6a3c-439c-bc0e-d79ceb16b6d8",
+        "offset_ratio": 0.9625453251753429,
+        "completed": 0,
+        "revision": 69,
+        "updated_at": 1793367972.6403759,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 323
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320,
+        360
+      ]
+    },
+    {
+      "direction": "backward",
+      "round": 20,
+      "counter": 317,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "49ec271c-4049-413d-b948-636406bd8f2b",
+        "offset_ratio": 0.6931421930337045,
+        "completed": 0,
+        "revision": 73,
+        "updated_at": 1793367981.4229977,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 316
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320,
+        360
+      ]
+    },
+    {
+      "direction": "backward",
+      "round": 24,
+      "counter": 308,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "56653ea5-d28e-45fb-bfdf-c6cc33dc3d0e",
+        "offset_ratio": 0.21959826138209895,
+        "completed": 0,
+        "revision": 79,
+        "updated_at": 1793367989.254301,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 307
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320,
+        360
+      ]
+    },
+    {
+      "direction": "backward",
+      "round": 28,
+      "counter": 298,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "3fbbe103-29e2-41a7-954c-1a1319d431c1",
+        "offset_ratio": 0.7752704266346002,
+        "completed": 0,
+        "revision": 83,
+        "updated_at": 1793367997.598373,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 297
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320,
+        360
+      ]
+    },
+    {
+      "direction": "backward",
+      "round": 32,
+      "counter": 289,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "932b058e-28cf-4999-b03c-88be65b01d0e",
+        "offset_ratio": 0.37949867078110106,
+        "completed": 0,
+        "revision": 87,
+        "updated_at": 1793368006.1122587,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 288
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320,
+        360
+      ]
+    },
+    {
+      "direction": "backward",
+      "round": 36,
+      "counter": 282,
+      "progress": {
+        "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+        "page_id": "d8675ff8-7407-4218-a94d-146ed7f27883",
+        "offset_ratio": 0.37398361611698744,
+        "completed": 0,
+        "revision": 90,
+        "updated_at": 1793368014.5438805,
+        "content_version": 1,
+        "recovery_reason": null,
+        "page_ordinal": 281
+      },
+      "offsets": [
+        0,
+        240,
+        280,
+        320,
+        360,
+        240
+      ]
+    }
+  ],
+  "forward_end": [
+    359,
+    {
+      "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+      "page_id": "1886c108-151b-48c9-bb59-9af8b59b5856",
+      "offset_ratio": 0.25589926774735233,
+      "completed": 0,
+      "revision": 48,
+      "updated_at": 1793367939.9161303,
+      "content_version": 1,
+      "recovery_reason": null,
+      "page_ordinal": 358
+    }
+  ],
+  "backward_end": [
+    282,
+    {
+      "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+      "page_id": "d8675ff8-7407-4218-a94d-146ed7f27883",
+      "offset_ratio": 0.37962145610541503,
+      "completed": 0,
+      "revision": 91,
+      "updated_at": 1793368018.9416437,
+      "content_version": 1,
+      "recovery_reason": null,
+      "page_ordinal": 281
+    }
+  ],
+  "old_window_reloaded_after_forward": true,
+  "resident_count_not_instrumented": true,
+  "memory": "raw dumpsys at checkpoints; no NAS speed conclusion"
+}

@@ -1,0 +1,61 @@
+{
+  "source": "d8acf14000dd7b4c0ef0c68e0f5063a9fcdbd4e9",
+  "normal": {
+    "path": "/Users/jiangxinyi/Documents/Project/video-viewer/tmp/releases/video-viewer-0.2.0-preview.19-arm64.apk",
+    "version": "0.2.0-preview.19",
+    "version_code": 25,
+    "sha256": "e97a6cf6fcf4816244955b895e1d821fead6889b7e2012260c99817dc55d0f38",
+    "bytes": 23308186,
+    "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+    "flutter_engine_abis": [
+      "arm64-v8a"
+    ],
+    "normal_entrypoint": true,
+    "integration_test_plugin": false
+  },
+  "rollback": {
+    "path": "/Users/jiangxinyi/Documents/Project/video-viewer/tmp/releases/video-viewer-0.1.4-rollback.19-arm64.apk",
+    "version": "0.1.4-rollback.19",
+    "version_code": 25,
+    "sha256": "81bfbc080ddd1c848c7f3052022acf238470ac2cac1e7dddaeb69b3e1ca99ad4",
+    "bytes": 21734394,
+    "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+    "flutter_engine_abis": [
+      "arm64-v8a"
+    ],
+    "normal_entrypoint": true,
+    "integration_test_plugin": false
+  },
+  "native_code": 25,
+  "business_table_count": 35,
+  "real_long_files": 500,
+  "actual_manifest_offsets": [
+    0,
+    240,
+    280,
+    320,
+    360,
+    240
+  ],
+  "actual_deep_ui_counters": {
+    "initial": 266,
+    "forward": 359,
+    "backward": 282,
+    "cold_reopened": 282
+  },
+  "covers": [
+    "normal25",
+    "rollback25",
+    "normal25"
+  ],
+  "NAS_deployed": false,
+  "physical_phone_tested": false,
+  "test_scope": "ordinary signed ARM64 APK and own AVD/public disposable files; not integration_test entrypoint",
+  "pending": [
+    "new-app/old-service native compatibility",
+    "continuous root scan/queued/offline native combinations",
+    "remaining content-version / mode / jump combination as needed",
+    "NAS update/readback",
+    "target phone experience"
+  ]
+}

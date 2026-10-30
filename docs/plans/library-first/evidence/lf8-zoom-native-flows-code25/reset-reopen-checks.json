@@ -1,0 +1,53 @@
+{
+  "normal_code": 25,
+  "counter": 282,
+  "back_reset_retained_reader": true,
+  "all_35_tables_and_opaque_settings_equal_for_reset": true,
+  "reset_writes": 0,
+  "cold_start_new_process": true,
+  "cold_start_library_all_tables_equal": true,
+  "resumed_progress_fields_equal": [
+    "page_id",
+    "offset_ratio",
+    "completed",
+    "content_version"
+  ],
+  "progress_before": {
+    "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+    "page_id": "d8675ff8-7407-4218-a94d-146ed7f27883",
+    "offset_ratio": 0.37962145610541503,
+    "completed": 0,
+    "revision": 91,
+    "updated_at": 1793368018.9416437,
+    "content_version": 1,
+    "recovery_reason": null,
+    "page_ordinal": 281
+  },
+  "progress_reopened": {
+    "pack_id": "3ce9c5cf-c1fa-472d-9f15-1df75e866ad3",
+    "page_id": "d8675ff8-7407-4218-a94d-146ed7f27883",
+    "offset_ratio": 0.37962145610541503,
+    "completed": 0,
+    "revision": 92,
+    "updated_at": 1793368223.124959,
+    "content_version": 1,
+    "recovery_reason": null,
+    "page_ordinal": 281
+  },
+  "cold_page_results": [
+    {
+      "offset": 280,
+      "limit": 40,
+      "total": 500,
+      "content_version": 1,
+      "items": 40
+    },
+    {
+      "offset": 240,
+      "limit": 40,
+      "total": 500,
+      "content_version": 1,
+      "items": 40
+    }
+  ]
+}

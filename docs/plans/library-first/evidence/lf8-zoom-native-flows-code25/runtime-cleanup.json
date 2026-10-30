@@ -1,0 +1,68 @@
+{
+  "original_four_before": [
+    {
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "name": "/video-viewer-client-e2e-server-1",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "name": "/video-viewer-history-purge-app-lf7",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "name": "/video-viewer-archive-app-lf7",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "name": "/video-viewer-server-1",
+      "running": true,
+      "health": "healthy"
+    }
+  ],
+  "original_four_after": [
+    {
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "name": "/video-viewer-client-e2e-server-1",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "name": "/video-viewer-history-purge-app-lf7",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "name": "/video-viewer-archive-app-lf7",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "name": "/video-viewer-server-1",
+      "running": true,
+      "health": "healthy"
+    }
+  ],
+  "original_four_identity_and_health_equal": true,
+  "owned_fixture_container_stopped": "73096298c97346dd9f06932457c8a736929e168c38fc7057da669213c2580d91",
+  "older_fixture_container_still_stopped": "be71112ad645c5816c4295d175d597ce3235ba0be9b1644d9a49d611472f5b88",
+  "owned_proxy_stopped": 17687,
+  "own_avd_stopped": true,
+  "adbd_root_restored": "restarting adbd as non root",
+  "media_mounts": [
+    {
+      "destination": "/media",
+      "rw": false
+    }
+  ],
+  "no_NAS_access_or_deployment_this_phase": true,
+  "sdk_apks_signing_avd_data_and_fixture_data_preserved": true
+}
