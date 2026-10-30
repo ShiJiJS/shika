@@ -1,0 +1,2 @@
+  if rule and rule['action']=='fail':
+   raw=json.dumps({'error':{'code':'fixture_catalog_read','message':'测试读取暂不可用，请重试'}}).encode();event({**base,'event':'injected_failure','status':503});self.respond(503,[('Content-Type','application/json')],raw,base);return

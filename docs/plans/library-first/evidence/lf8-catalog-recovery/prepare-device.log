@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-catalog-recovery/prepare-device.py", line 26, in <module>
+    pkg='io.github.shijijs.video_viewer';apkpath=device('shell','pm','path',pkg);assert apkpath.count('package:')==1;actual=device('shell','sha256sum',apkpath.removeprefix('package:')).split()[0];expected='a0a6bb14615951ecc04329154ed15b2ede0c2c7b0ceb6a989d7bd7af05d86fb3';assert actual==expected
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-catalog-recovery/prepare-device.py", line 4, in device
+    def device(*args):return subprocess.check_output([str(ADB),'-s','emulator-5556',*args],text=True,timeout=30).strip()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5556', 'shell', 'pm', 'path', 'io.github.shijijs.video_viewer']' returned non-zero exit status 1.

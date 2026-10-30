@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-catalog-recovery/probe-proxy.py", line 17, in <module>
+    seed=json.loads((L/'seed.json').read_text());media=seed['videos'][0]['media_url'];a,b=[get(port,media,method='HEAD') for port in [8777,8778]];assert a[0]==b[0] and a[1].get('Content-Length')==b[1].get('Content-Length')
+AssertionError

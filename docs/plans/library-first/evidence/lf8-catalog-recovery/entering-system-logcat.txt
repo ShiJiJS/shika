@@ -1,0 +1,1037 @@
+--------- beginning of system
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.dreams.DreamManagerService
+10-30 12:54:31.238   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.dreams.DreamManagerService took to complete: 0ms
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.print.PrintManagerService
+10-30 12:54:31.238   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.print.PrintManagerService took to complete: 0ms
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.security.AttestationVerificationManagerService
+10-30 12:54:31.238   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.security.AttestationVerificationManagerService took to complete: 0ms
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.companion.CompanionDeviceManagerService
+10-30 12:54:31.238   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.companion.CompanionDeviceManagerService took to complete: 0ms
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.companion.virtual.VirtualDeviceManagerService
+10-30 12:54:31.238   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.companion.virtual.VirtualDeviceManagerService took to complete: 0ms
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.restrictions.RestrictionsManagerService
+10-30 12:54:31.238   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.restrictions.RestrictionsManagerService took to complete: 0ms
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.media.MediaSessionService
+10-30 12:54:31.238   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.media.MediaSessionService took to complete: 0ms
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.media.MediaResourceMonitorService
+10-30 12:54:31.238   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.media.MediaResourceMonitorService took to complete: 0ms
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.biometrics.sensors.fingerprint.FingerprintService
+10-30 12:54:31.238   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.biometrics.sensors.fingerprint.FingerprintService took to complete: 0ms
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.biometrics.BiometricService
+10-30 12:54:31.238   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.biometrics.BiometricService took to complete: 0ms
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.biometrics.AuthService
+10-30 12:54:31.238   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.biometrics.AuthService took to complete: 0ms
+10-30 12:54:31.238   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.security.authenticationpolicy.AuthenticationPolicyService
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.security.authenticationpolicy.AuthenticationPolicyService took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.pm.ShortcutService$Lifecycle
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.pm.ShortcutService$Lifecycle took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.pm.LauncherAppsService
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.pm.LauncherAppsService took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.pm.CrossProfileAppsService
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.pm.CrossProfileAppsService took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.people.PeopleService
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.people.PeopleService took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.media.metrics.MediaMetricsManagerService
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.media.metrics.MediaMetricsManagerService took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.pm.BackgroundInstallControlService
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.pm.BackgroundInstallControlService took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.media.projection.MediaProjectionManagerService
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.media.projection.MediaProjectionManagerService took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.slice.SliceManagerService$Lifecycle
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.slice.SliceManagerService$Lifecycle took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.stats.StatsCompanion$Lifecycle
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.stats.StatsCompanion$Lifecycle took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.scheduling.RebootReadinessManagerService$Lifecycle
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.scheduling.RebootReadinessManagerService$Lifecycle took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.stats.pull.StatsPullAtomService
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.stats.pull.StatsPullAtomService took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.stats.bootstrap.StatsBootstrapAtomService$Lifecycle
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.stats.bootstrap.StatsBootstrapAtomService$Lifecycle took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.incident.IncidentCompanionService
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.incident.IncidentCompanionService took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.sdksandbox.SdkSandboxManagerService$Lifecycle
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.sdksandbox.SdkSandboxManagerService$Lifecycle took to complete: 0ms
+10-30 12:54:31.239   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.adservices.AdServicesManagerService$Lifecycle
+10-30 12:54:31.239   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.adservices.AdServicesManagerService$Lifecycle took to complete: 0ms
+10-30 12:54:31.239   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.job.JobSchedulerService took to complete: 2ms
+10-30 12:54:31.239   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_android.os.profiling.ProfilingService$Lifecycle
+10-30 12:54:31.239   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_android.os.profiling.ProfilingService$Lifecycle took to complete: 0ms
+10-30 12:54:31.239   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.MmsServiceBroker
+10-30 12:54:31.239   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.MmsServiceBroker took to complete: 0ms
+10-30 12:54:31.239   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.autofill.AutofillManagerService
+10-30 12:54:31.239   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.autofill.AutofillManagerService took to complete: 0ms
+10-30 12:54:31.239   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.credentials.CredentialManagerService
+10-30 12:54:31.239   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.credentials.CredentialManagerService took to complete: 0ms
+10-30 12:54:31.239   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.translation.TranslationManagerService
+10-30 12:54:31.239   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.translation.TranslationManagerService took to complete: 0ms
+10-30 12:54:31.239   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.clipboard.ClipboardService
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.clipboard.ClipboardService took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.appbinding.AppBindingService$Lifecycle
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.appbinding.AppBindingService$Lifecycle took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.tracing.TracingServiceProxy
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.tracing.TracingServiceProxy took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.os.instrumentation.DynamicInstrumentationManagerService
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.os.instrumentation.DynamicInstrumentationManagerService took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.policy.PermissionPolicyService
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.policy.PermissionPolicyService took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.pm.StagingManager$Lifecycle
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.pm.StagingManager$Lifecycle took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.crashrecovery.CrashRecoveryModule$Lifecycle
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.crashrecovery.CrashRecoveryModule$Lifecycle took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.app.GameManagerService$Lifecycle
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.app.GameManagerService$Lifecycle took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.uwb.UwbService
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.uwb.UwbService took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.ranging.RangingService
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.ranging.RangingService took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.safetycenter.SafetyCenterService
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.safetycenter.SafetyCenterService took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.appsearch.AppSearchModule$Lifecycle
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.appsearch.AppSearchModule$Lifecycle took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.media.MediaCommunicationService
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.media.MediaCommunicationService took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.compat.overrides.AppCompatOverridesService$Lifecycle
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.compat.overrides.AppCompatOverridesService$Lifecycle took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.healthconnect.HealthConnectManagerService
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.healthconnect.HealthConnectManagerService took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.devicelock.DeviceLockService
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.devicelock.DeviceLockService took to complete: 0ms
+10-30 12:54:31.240   675  2062 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.SensitiveContentProtectionManagerService
+10-30 12:54:31.240   675  2062 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.SensitiveContentProtectionManagerService took to complete: 0ms
+10-30 12:54:31.240   675  2061 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.ondevicepersonalization.OnDevicePersonalizationSystemService$Lifecycle
+10-30 12:54:31.241   675  2061 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.ondevicepersonalization.OnDevicePersonalizationSystemService$Lifecycle took to complete: 0ms
+10-30 12:54:31.241   675  2063 D SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.backup.BackupManagerService$Lifecycle
+10-30 12:54:31.241   675  2063 V SystemServerTimingAsync: ssm.onCompletedEventUser-0_{|Unlocked|}_com.android.server.backup.BackupManagerService$Lifecycle took to complete: 0ms
+10-30 12:54:31.260   675   707 V SystemServerTimingAsync: ssm.CompletedEventUser-0 took to complete: 37ms
+10-30 12:54:31.270   675   701 I BLASTSyncEngine: Unfinished container: WindowToken{ae4e565 type=2024 android.os.BinderProxy@4d577a9}
+10-30 12:54:31.270   675   701 I BLASTSyncEngine: Unfinished container: WindowToken{621d874 type=2024 android.os.BinderProxy@d588847}
+10-30 12:54:31.270   675   701 I BLASTSyncEngine: Unfinished container: WallpaperWindowToken{3eea2ce showWhenLocked=true}
+10-30 12:54:31.270   675   701 I BLASTSyncEngine: Unfinished container: WindowToken{c4b532 type=2000 android.os.BinderProxy@97d4a94}
+10-30 12:54:31.272   675   701 D ActivityTaskManager: Remove task fragment: deleteTaskFragment
+10-30 12:54:31.288   675  1859 I SoundTriggerMiddlewareLogging: LIST_MODULE [client= "com.google.android.as"] () -> [ {Id: 0, Implementor: android, Version: 1} ]
+10-30 12:54:31.291   916  1353 V WindowManagerShell: onTransitionReady(transaction=2899102925108)
+10-30 12:54:31.291   916  1024 V WindowManagerShell: onTransitionReady (#6) android.os.BinderProxy@5b4e3c2: {id=6 t=CHANGE f=0x0 trk=0 r=[0@Point(0, 0)] c=[
+10-30 12:54:31.291   916  1024 V WindowManagerShell:         {m=CHANGE f=SHOW_WALLPAPER|IS_DISPLAY leash=Surface(name=WindowedMagnification:0:31)/@0xac76217 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 snapshot=Surface(name=transition snapshot: Display{#0 state=ON size=1080x2400 ROTATION_0})/@0xb91f604}
+10-30 12:54:31.291   916  1024 V WindowManagerShell:     ]}
+10-30 12:54:31.291   916  1024 V WindowManagerShell: Playing animation for (#6) android.os.BinderProxy@5b4e3c2@0
+10-30 12:54:31.292   916  1024 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+10-30 12:54:31.292   916  1024 V WindowManagerShell: start default transition animation, info = {id=6 t=CHANGE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{m=CHANGE f=SHOW_WALLPAPER|IS_DISPLAY leash=Surface(name=WindowedMagnification:0:31)/@0xac76217 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 snapshot=Surface(name=transition snapshot: Display{#0 state=ON size=1080x2400 ROTATION_0})/@0xb91f604}]}
+10-30 12:54:31.292   916  1024 V WindowManagerShell: Display is changing, resolve the animation hint.
+10-30 12:54:31.332   675   698 V WindowManager: Sent Transition (#6) createdAt=10-30 12:54:29.208 via request=TransitionRequestInfo { type = CHANGE, triggerTask = null, pipChange = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 6 }
+10-30 12:54:31.341   675   698 V WindowManager:     startWCT=WindowContainerTransaction { changes= {} hops= [] errorCallbackToken=null taskFragmentOrganizer=null }
+10-30 12:54:31.342   675   698 V WindowManager:     info={id=6 t=CHANGE f=0x0 trk=0 r=[0@Point(0, 0)] c=[
+10-30 12:54:31.342   675   698 V WindowManager:         {WCT{RemoteToken{c2ab27a Display{#0 state=ON size=1080x2400 ROTATION_0}}} m=CHANGE f=SHOW_WALLPAPER|IS_DISPLAY leash=Surface(name=WindowedMagnification:0:31)/@0xbba7571 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0}
+10-30 12:54:31.342   675   698 V WindowManager:     ]}
+10-30 12:54:31.368   916  1024 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@a4411f1
+10-30 12:54:31.368   916  1024 W Looper  : Slow dispatch took 76ms wmshell.main app=com.android.systemui main=false group=FOREGROUND h=android.os.Handler c=com.android.wm.shell.transition.Transitions$TransitionPlayerImpl$$ExternalSyntheticLambda0@f1667a5 m=0
+10-30 12:54:31.368   916  1024 V WindowManagerShell: Transition requested (#7): android.os.BinderProxy@ebc977a TransitionRequestInfo { type = CLOSE, triggerTask = null, pipChange = null, remoteTransition = RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@ecfdb2b, appThread = null, debugName = TaskFragmentComponent }, displayChange = null, flags = 0, debugId = 7 }
+10-30 12:54:31.368   916  1024 V WindowManagerShell: RemoteTransition directly requested for (#7) android.os.BinderProxy@ebc977a: RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@ecfdb2b, appThread = null, debugName = TaskFragmentComponent }
+10-30 12:54:31.368   916  1024 V WindowManagerShell: Transition (#7): request handled by RemoteTransitionHandler
+10-30 12:54:31.383   916  1235 V WindowManagerShell: onTransitionReady(transaction=2899102925113)
+10-30 12:54:31.411   916  1024 W Looper  : Slow delivery took 77ms wmshell.main app=com.android.systemui main=false group=FOREGROUND h=android.os.Handler c=com.android.wm.shell.transition.Transitions$ShellTransitionImpl$$ExternalSyntheticLambda1@8ecb146 m=0
+10-30 12:54:31.411   916  1024 W Looper  : Slow dispatch took 34ms wmshell.main app=com.android.systemui main=false group=FOREGROUND h=android.os.Handler c=com.android.wm.shell.transition.Transitions$ShellTransitionImpl$$ExternalSyntheticLambda1@8ecb146 m=0
+10-30 12:54:31.411   916  1024 V WindowManagerShell: onTransitionReady (#7) android.os.BinderProxy@ebc977a: {id=7 t=CLOSE f=0x0 trk=0 r=[] c=[]}
+10-30 12:54:31.411   916  1024 V WindowManagerShell: No transition roots in (#7) android.os.BinderProxy@ebc977a@0 so abort
+10-30 12:54:31.411   916  1024 V WindowManagerShell: Transition was merged: (#7) android.os.BinderProxy@ebc977a@0 into (#6) android.os.BinderProxy@5b4e3c2@0
+10-30 12:54:31.411   916  1024 W Looper  : Drained
+10-30 12:54:31.420   916  1024 V WindowManagerShell: Transition requested (#8): android.os.BinderProxy@ceeff07 TransitionRequestInfo { type = CHANGE, triggerTask = null, pipChange = null, remoteTransition = RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@9e0e834, appThread = null, debugName = TaskFragmentComponent }, displayChange = null, flags = 0, debugId = 8 }
+10-30 12:54:31.420   916  1024 V WindowManagerShell: RemoteTransition directly requested for (#8) android.os.BinderProxy@ceeff07: RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@9e0e834, appThread = null, debugName = TaskFragmentComponent }
+10-30 12:54:31.420   916  1024 V WindowManagerShell: Transition (#8): request handled by RemoteTransitionHandler
+10-30 12:54:31.438   675  1984 V WindowManager: Queueing transition: TransitionRecord{176298e id=-1 type=CLOSE flags=0x0}
+10-30 12:54:31.447   675  1963 I AppWidgetServiceImpl: startListening() 0
+10-30 12:54:31.461   916  1024 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#6) android.os.BinderProxy@5b4e3c2@0
+10-30 12:54:31.461   675   698 V WindowManager: Sent Transition (#7) createdAt=10-30 12:54:29.855 via request=TransitionRequestInfo { type = CLOSE, triggerTask = null, pipChange = null, remoteTransition = RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@9db3cc1, appThread = null, debugName = TaskFragmentComponent }, displayChange = null, flags = 0, debugId = 7 }
+10-30 12:54:31.461   675   698 V WindowManager:     startWCT=WindowContainerTransaction { changes= {} hops= [] errorCallbackToken=null taskFragmentOrganizer=null }
+10-30 12:54:31.461   675   698 V WindowManager:     info={id=7 t=CLOSE f=0x0 trk=0 r=[] c=[]}
+10-30 12:54:31.462   675  1952 D CompatChangeReporter: Compat change id reported: 319212206; UID 10170; state: ENABLED
+10-30 12:54:31.474  1138  1138 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.android.settings
+10-30 12:54:31.490   675   698 V WindowManager: Finish Transition (#6): created at 10-30 12:54:29.208 collect-started=0.021ms request-sent=0.045ms started=56.281ms ready=648.832ms sent=2063.873ms commit=119.616ms finished=2278.078ms
+10-30 12:54:31.517   675  1984 I AppWidgetServiceImpl: getInstalledProvidersForProfiles() 0
+10-30 12:54:31.545   916  1437 V WindowManagerShell: onTransitionReady(transaction=2899102925122)
+10-30 12:54:31.547   916  1024 V WindowManagerShell: Track 0 became idle
+10-30 12:54:31.547   916  1024 W Looper  : Slow delivery took 36ms wmshell.main app=com.android.systemui main=false group=FOREGROUND h=android.os.Handler c=com.android.wm.shell.transition.DefaultSurfaceAnimator$$ExternalSyntheticLambda0@7bae65d m=0
+10-30 12:54:31.547   916  1024 W Looper  : Slow dispatch took 86ms wmshell.main app=com.android.systemui main=false group=FOREGROUND h=android.os.Handler c=com.android.wm.shell.transition.DefaultSurfaceAnimator$$ExternalSyntheticLambda0@7bae65d m=0
+10-30 12:54:31.547   916  1024 V WindowManagerShell: onTransitionReady (#8) android.os.BinderProxy@ceeff07: {id=8 t=CHANGE f=0x0 trk=0 r=[] c=[]}
+10-30 12:54:31.547   916  1024 V WindowManagerShell: No transition roots in (#8) android.os.BinderProxy@ceeff07@0 so abort
+10-30 12:54:31.548   916  1024 V WindowManagerShell: Transition animation finished (aborted=true), notifying core (#8) android.os.BinderProxy@ceeff07@0
+10-30 12:54:31.550   916  1024 V WindowManagerShell: Track 0 became idle
+10-30 12:54:31.550   916  1024 V WindowManagerShell: All active transition animations finished
+10-30 12:54:31.550   916  1024 W Looper  : Drained
+10-30 12:54:31.550   916  1024 V WindowManagerShell: Transition requested (#9): android.os.BinderProxy@5b29bd2 TransitionRequestInfo { type = CLOSE, triggerTask = null, pipChange = null, remoteTransition = RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@ef284a3, appThread = null, debugName = TaskFragmentComponent }, displayChange = null, flags = 0, debugId = 9 }
+10-30 12:54:31.550   916  1024 V WindowManagerShell: RemoteTransition directly requested for (#9) android.os.BinderProxy@5b29bd2: RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@ef284a3, appThread = null, debugName = TaskFragmentComponent }
+10-30 12:54:31.550   916  1024 V WindowManagerShell: Transition (#9): request handled by RemoteTransitionHandler
+10-30 12:54:31.550   916  1329 V WindowManagerShell: onTransitionReady(transaction=2899102925132)
+10-30 12:54:31.550   916  1024 V WindowManagerShell: onTransitionReady (#9) android.os.BinderProxy@5b29bd2: {id=9 t=CLOSE f=0x0 trk=1 r=[] c=[]}
+10-30 12:54:31.550   916  1024 V WindowManagerShell: No transition roots in (#9) android.os.BinderProxy@5b29bd2@1 so abort
+10-30 12:54:31.551   916  1024 V WindowManagerShell: Transition animation finished (aborted=true), notifying core (#9) android.os.BinderProxy@5b29bd2@1
+10-30 12:54:31.551   916  1024 V WindowManagerShell: Track 1 became idle
+10-30 12:54:31.551   916  1024 V WindowManagerShell: All active transition animations finished
+10-30 12:54:31.623   675   698 V WindowManager: Sent Transition (#8) createdAt=10-30 12:54:30.629 via request=TransitionRequestInfo { type = CHANGE, triggerTask = null, pipChange = null, remoteTransition = RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@740adab, appThread = null, debugName = TaskFragmentComponent }, displayChange = null, flags = 0, debugId = 8 }
+10-30 12:54:31.623   675   698 V WindowManager:     startWCT=WindowContainerTransaction { changes= {} hops= [] errorCallbackToken=null taskFragmentOrganizer=null }
+10-30 12:54:31.623   675   698 V WindowManager:     info={id=8 t=CHANGE f=0x0 trk=0 r=[] c=[]}
+10-30 12:54:31.623   675   698 V WindowManager: Finish Transition (#7): created at 10-30 12:54:29.855 collect-started=1416.722ms request-sent=1418.342ms started=1524.386ms ready=1523.812ms sent=1525.743ms commit=164.487ms finished=1690.782ms
+10-30 12:54:31.623   675   698 V WindowManager: Finish Transition (#8): created at 10-30 12:54:30.629 collect-started=751.461ms request-sent=787.115ms started=794.036ms ready=852.943ms sent=911.192ms commit=36.657ms finished=919.136ms
+10-30 12:54:31.623   675   698 V WindowManager: Sent Transition (#9) createdAt=10-30 12:54:31.438 via request=TransitionRequestInfo { type = CLOSE, triggerTask = null, pipChange = null, remoteTransition = RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@b0124dd, appThread = null, debugName = TaskFragmentComponent }, displayChange = null, flags = 0, debugId = 9 }
+10-30 12:54:31.623   675   698 V WindowManager:     startWCT=WindowContainerTransaction { changes= {} hops= [] errorCallbackToken=null taskFragmentOrganizer=null }
+10-30 12:54:31.623   675   698 V WindowManager:     info={id=9 t=CLOSE f=0x0 trk=1 r=[] c=[]}
+10-30 12:54:31.623   675   698 V WindowManager: Finish Transition (#9): created at 10-30 12:54:31.438 collect-started=103.25ms request-sent=107.857ms started=112.229ms ready=112.211ms sent=112.567ms commit=34.078ms finished=113.016ms
+10-30 12:54:31.623   675  1961 D OomAdjuster: Not killing cached processes
+10-30 12:54:31.624   916  1124 W Looper  : Slow dispatch took 1088ms SysUiBg app=com.android.systemui main=false group=FOREGROUND h=android.os.Handler c=android.telephony.TelephonyCallback$IPhoneStateListenerStub$$ExternalSyntheticLambda79@abe53a0 m=0
+10-30 12:54:31.625  1138  1138 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.android.settings
+10-30 12:54:31.626   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:31.700   675  1952 W PackageConfigPersister: App-specific configuration not found for packageName: com.google.android.apps.nexuslauncher and userId: 0
+10-30 12:54:31.715   675   853 I AppWidgetServiceImpl: Received broadcast: android.intent.action.PACKAGE_CHANGED on user 0
+10-30 12:54:31.741   675   820 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendStickyBroadcast:1698 com.android.server.wifi.ClientModeImpl.sendNetworkChangeBroadcast:3140 com.android.server.wifi.ClientModeImpl.lambda$sendNetworkChangeBroadcastWithCurrentState$14:3117 com.android.server.wifi.ClientModeImpl.$r8$lambda$mtuS9ulugUkTxNA_sDDnAioo66w:0 com.android.server.wifi.ClientModeImpl$$ExternalSyntheticLambda13.send:0 
+10-30 12:54:31.875   675   732 W PackageSettings: Skipping PackageSetting{68e703d io.github.shijijs.video_viewer/10213} due to missing metadata
+10-30 12:54:31.905   675   675 W Looper  : Slow dispatch took 190ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=android.app.LoadedApk$ReceiverDispatcher$Args$$ExternalSyntheticLambda0@2f74e37 m=0
+10-30 12:54:31.924  1447  1447 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.gms
+10-30 12:54:31.934  1775  1775 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.wallpaper
+10-30 12:54:31.971  1528  1528 I ActivityThread: ApplicationInfo updating for com.google.android.as, new timestamp: 15550
+10-30 12:54:31.971  1528  1528 I ActivityThread: assets removed: [/data/resource-cache/com.android.systemui-neutral-Kjg0.frro, /data/resource-cache/com.android.systemui-accent-mxM0.frro, /data/resource-cache/com.android.systemui-dynamic-pCO3.frro]
+10-30 12:54:31.971  1528  1528 I ActivityThread: assets added: []
+10-30 12:54:32.021   675  1440 I Telecom : TelecomServiceImpl$1: registerPhoneAccount: account=[[ ] PhoneAccount: ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0} Capabilities: CallProvider MultiUser PlaceEmerg SimSub  Audio Routes: BESW Schemes: tel voicemail  Extras: Bundle[{android.telecom.extra.SUPPORTS_VIDEO_CALLING_FALLBACK=true}] GroupId: *** SC Restrictions: [ ]]: TSI.rPA(cap)@AEA🔒
+10-30 12:54:32.021   675  1440 I Telecom : PhoneAccountRegistrar: Modify account: [ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0}]: TSI.rPA(cap)@AEA🔒
+10-30 12:54:32.022   675  1440 I Telecom : CallsManager: handlePhoneAccountChanged: phoneAccount=[[X] PhoneAccount: ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0} Capabilities: CallProvider MultiUser PlaceEmerg SimSub  Audio Routes: BESW Schemes: tel voicemail  Extras: Bundle[{android.telecom.extra.SUPPORTS_VIDEO_CALLING_FALLBACK=true}] GroupId: *** SC Restrictions: [ ]]: TSI.rPA(cap)@AEA🔒
+10-30 12:54:32.028   675  1440 I Telecom : PhoneAccountRegistrar: getSimCallManager: SimCallManager for subId 1 queried, returning: null: TSI.rPA(cap)@AEA🔒
+10-30 12:54:32.133   675  1440 I Telecom : PhoneAccountRegistrar: Notifying telephony of voice service override change for 1 SIMs, hasService = false: TSI.rPA(cap)@AEA🔒
+10-30 12:54:32.255   916  1291 V ActivityThread: getPackageInfo() caused update to cached ApplicationInfo for package android
+10-30 12:54:32.374   675   699 W Looper  : Slow dispatch took 399ms android.ui app=system_server main=false group=TOP_APP h=com.android.server.am.ActivityManagerService$UiHandler c=null m=68
+10-30 12:54:32.383  1775  1775 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.wallpaper
+10-30 12:54:32.387   675  1935 W ActivityManager: Slow operation: 353ms so far, now at finishAttachApplicationInner: after mServices.attachApplicationLocked
+10-30 12:54:32.387   675  1935 W ActivityManager: Slow operation: 354ms so far, now at finishAttachApplicationInner: after dispatching broadcasts
+10-30 12:54:32.438   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:32.519   675   675 I TransportConnection: LocalTransportService#0: Notifying [TransportManager.registerTransport()] transport = BackupTransportClient
+10-30 12:54:32.532  1775  1775 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.wallpaper
+10-30 12:54:32.645   675  1592 W ContentProviderHelper: Slow operation: 113ms so far, now at getContentProviderImpl: after resolveContentProvider
+10-30 12:54:32.645   675  1592 W ContentProviderHelper: Slow operation: 113ms so far, now at getContentProviderImpl: got app info for user
+10-30 12:54:32.645   675  1592 W ContentProviderHelper: Slow operation: 113ms so far, now at getContentProviderImpl: before checkContentProviderPermission
+10-30 12:54:32.645   675  1592 W ContentProviderHelper: Slow operation: 113ms so far, now at getContentProviderImpl: after checkContentProviderPermission
+10-30 12:54:32.645   675  1592 W ContentProviderHelper: Slow operation: 113ms so far, now at getContentProviderImpl: before getProviderByClass
+10-30 12:54:32.645   675  1592 W ContentProviderHelper: Slow operation: 113ms so far, now at getContentProviderImpl: after getProviderByClass
+10-30 12:54:32.645   675  1592 W ContentProviderHelper: Slow operation: 113ms so far, now at getContentProviderImpl: now have ContentProviderRecord
+10-30 12:54:32.645   675  1592 W ContentProviderHelper: Slow operation: 113ms so far, now at getContentProviderImpl: updating data structures
+10-30 12:54:32.645   675  1592 W ContentProviderHelper: Slow operation: 113ms so far, now at getContentProviderImpl: done!
+10-30 12:54:32.650   675   699 W Looper  : Slow dispatch took 207ms android.ui app=system_server main=false group=TOP_APP h=com.android.server.am.ActivityManagerService$UiHandler c=null m=68
+10-30 12:54:32.658   675   826 W BroadcastLoopers: Found previously unknown looper Thread[ConnectivityServiceThread,5,main]
+10-30 12:54:32.758   675  1252 I Telecom : TelecomServiceImpl$1: registerPhoneAccount: account=[[ ] PhoneAccount: ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0} Capabilities: CallProvider MultiUser PlaceEmerg SimSub  Audio Routes: BESW Schemes: tel voicemail  Extras: Bundle[{android.telecom.extra.SUPPORTS_VIDEO_CALLING_FALLBACK=true}] GroupId: *** SC Restrictions: [ ]]: TSI.rPA(cap)@AEM🔒
+10-30 12:54:32.758   675  1252 I Telecom : PhoneAccountRegistrar: Modify account: [ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0}]: TSI.rPA(cap)@AEM🔒
+10-30 12:54:32.758   675  1252 I Telecom : CallsManager: handlePhoneAccountChanged: phoneAccount=[[X] PhoneAccount: ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0} Capabilities: CallProvider MultiUser PlaceEmerg SimSub  Audio Routes: BESW Schemes: tel voicemail  Extras: Bundle[{android.telecom.extra.SUPPORTS_VIDEO_CALLING_FALLBACK=true}] GroupId: *** SC Restrictions: [ ]]: TSI.rPA(cap)@AEM🔒
+10-30 12:54:32.759   675  1252 I Telecom : PhoneAccountRegistrar: getSimCallManager: SimCallManager for subId 1 queried, returning: null: TSI.rPA(cap)@AEM🔒
+10-30 12:54:32.759   675  1252 I Telecom : PhoneAccountRegistrar: Notifying telephony of voice service override change for 1 SIMs, hasService = false: TSI.rPA(cap)@AEM🔒
+10-30 12:54:32.818   675  1593 D CompatChangeReporter: Compat change id reported: 349487600; UID 10144; state: ENABLED
+10-30 12:54:32.998   675  1252 W PackageManager: Cannot suspend package "com.android.dynsystem": has OP_SYSTEM_EXEMPT_FROM_SUSPENSION set
+10-30 12:54:32.998   675  1252 W PackageManager: Cannot suspend package "android": has OP_SYSTEM_EXEMPT_FROM_SUSPENSION set
+10-30 12:54:32.998   675  1252 W PackageManager: Cannot suspend package "com.google.android.permissioncontroller": required for permissions management
+10-30 12:54:32.998   675  1252 W PackageManager: Cannot suspend package "com.android.providers.settings": has OP_SYSTEM_EXEMPT_FROM_SUSPENSION set
+10-30 12:54:32.998   675  1252 W PackageManager: Cannot suspend package "com.android.inputdevices": has OP_SYSTEM_EXEMPT_FROM_SUSPENSION set
+10-30 12:54:32.998   675  1252 W PackageManager: Cannot suspend package "com.google.android.dialer": is the default dialer
+10-30 12:54:32.999   675  1252 W PackageManager: Cannot suspend package "com.android.server.telecom": has OP_SYSTEM_EXEMPT_FROM_SUSPENSION set
+10-30 12:54:32.999   675  1252 W PackageManager: Cannot suspend package "com.android.keychain": has OP_SYSTEM_EXEMPT_FROM_SUSPENSION set
+10-30 12:54:32.999   675  1252 W PackageManager: Cannot suspend package "com.google.android.packageinstaller": required for package installation
+10-30 12:54:32.999   675  1252 W PackageManager: Cannot suspend package "com.android.localtransport": has OP_SYSTEM_EXEMPT_FROM_SUSPENSION set
+10-30 12:54:32.999   675  1252 W PackageManager: Cannot suspend package "com.google.android.apps.nexuslauncher": contains the active launcher
+10-30 12:54:32.999   675  1252 W PackageManager: Cannot suspend package "com.android.DeviceAsWebcam": has OP_SYSTEM_EXEMPT_FROM_SUSPENSION set
+10-30 12:54:32.999   675  1252 W PackageManager: Cannot suspend package "com.android.emulator.multidisplay": has OP_SYSTEM_EXEMPT_FROM_SUSPENSION set
+10-30 12:54:32.999   675  1252 W PackageManager: Cannot suspend package "com.android.settings": has OP_SYSTEM_EXEMPT_FROM_SUSPENSION set
+10-30 12:54:32.999   675  1252 W PackageManager: Cannot suspend package "com.android.location.fused": has OP_SYSTEM_EXEMPT_FROM_SUSPENSION set
+10-30 12:54:33.102   675  1500 D BackupTransportManager: [UserID:0] Transport com.android.localtransport/.LocalTransportService registered
+10-30 12:54:33.102   675  1500 D BackupManagerService: [UserID:0] Transport com.android.localtransport/.LocalTransport registered 6951ms after first request (delay = 3000ms)
+10-30 12:54:33.126   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:33.149   675  1935 D CompatChangeReporter: Compat change id reported: 253665015; UID 10132; state: ENABLED
+10-30 12:54:33.302   675   820 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendStickyBroadcast:1698 com.android.server.wifi.ClientModeImpl.sendNetworkChangeBroadcast:3140 com.android.server.wifi.ClientModeImpl.lambda$sendNetworkChangeBroadcastWithCurrentState$14:3117 com.android.server.wifi.ClientModeImpl.$r8$lambda$mtuS9ulugUkTxNA_sDDnAioo66w:0 com.android.server.wifi.ClientModeImpl$$ExternalSyntheticLambda13.send:0 
+10-30 12:54:33.399   675   675 I TransportConnection: D2dTransportService#1: Notifying [TransportManager.registerTransport()] transport = BackupTransportClient
+10-30 12:54:33.544   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:33.593  2009  2009 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.as.oss
+10-30 12:54:33.602   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:33.629   916  1124 W Looper  : Drained
+10-30 12:54:33.629   675  1166 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 10146, code = READ_CELL_BROADCASTS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.638   675  1935 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = READ_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.638   675  1935 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = RECEIVE_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.639   675  1935 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = RECEIVE_WAP_PUSH, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.639   675  1935 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = SEND_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.639   675  1935 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = READ_CELL_BROADCASTS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.643   675  1166 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 10146, code = READ_CELL_BROADCASTS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.644   675  1166 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = READ_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.644   675  1935 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = RECEIVE_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.645   675  1935 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = RECEIVE_WAP_PUSH, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.645   675  1935 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = SEND_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.645   675  1935 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = READ_CELL_BROADCASTS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:33.722   675  1950 D CompatChangeReporter: Compat change id reported: 271850009; UID 10132; state: ENABLED
+10-30 12:54:33.687  1373  1373 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.inputmethod.latin
+10-30 12:54:33.753   675   949 D SystemServerTiming: getUserSwitchability-0
+10-30 12:54:33.753   675   949 D SystemServerTiming: TM.isInCall
+10-30 12:54:33.753   675   949 V SystemServerTiming: TM.isInCall took to complete: 0ms
+10-30 12:54:33.753   675   949 D SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH
+10-30 12:54:33.753   675   949 V SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH took to complete: 0ms
+10-30 12:54:33.753   675   949 D SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED
+10-30 12:54:33.753   675   949 V SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED took to complete: 0ms
+10-30 12:54:33.753   675   949 D SystemServerTiming: isUserUnlocked-USER_SYSTEM
+10-30 12:54:33.753   675   949 V SystemServerTiming: isUserUnlocked-USER_SYSTEM took to complete: 0ms
+10-30 12:54:33.753   675   949 V SystemServerTiming: getUserSwitchability-0 took to complete: 0ms
+10-30 12:54:33.790  1052  1052 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.android.phone
+10-30 12:54:33.791  1052  1052 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.android.stk
+10-30 12:54:33.799   675   699 W Looper  : Slow dispatch took 112ms android.ui app=system_server main=false group=TOP_APP h=com.android.server.am.ActivityManagerService$UiHandler c=null m=68
+10-30 12:54:33.800  1334  1334 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.permissioncontroller
+10-30 12:54:33.828  1334  1334 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.permissioncontroller
+10-30 12:54:33.830  1694  1694 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.android.providers.downloads
+10-30 12:54:33.855  1334  1334 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.permissioncontroller
+10-30 12:54:33.961  1694  1694 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.android.mtp
+10-30 12:54:34.050   675  1964 D CompatChangeReporter: Compat change id reported: 297989574; UID 10140; state: ENABLED
+10-30 12:54:34.057   675   700 I DropBoxManagerService: add tag=system_app_strictmode isTagEnabled=true flags=0x2
+10-30 12:54:34.060  1694  1694 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.android.providers.downloads
+10-30 12:54:34.109  1334  1334 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.permissioncontroller
+10-30 12:54:34.166  1334  1334 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.permissioncontroller
+10-30 12:54:34.223   675   832 E AppOps  : attributionTag VCN not declared in manifest of android
+10-30 12:54:34.226   675  1860 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 10146, code = READ_CELL_BROADCASTS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:34.230  1334  1334 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.permissioncontroller
+10-30 12:54:34.233  1334  1334 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.permissioncontroller
+10-30 12:54:34.234  1334  1334 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.permissioncontroller
+10-30 12:54:34.236   675  1500 D BackupTransportManager: [UserID:0] Transport com.google.android.gms/.backup.component.D2dTransportService registered
+10-30 12:54:34.236   675  1500 D BackupManagerService: [UserID:0] Transport com.google.android.gms/.backup.migrate.service.D2dTransport registered 8085ms after first request (delay = 3000ms)
+10-30 12:54:34.261   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:34.299   675  1958 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = READ_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:34.299   675  1958 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = RECEIVE_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:34.299   675  1958 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = RECEIVE_WAP_PUSH, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:34.299   675  1958 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = SEND_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:34.299   675  1958 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = READ_CELL_BROADCASTS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:54:34.334   675   832 I VcnManagementService: new snapshot: TelephonySubscriptionSnapshot{ mActiveDataSubId=1, mSubIdToInfoMap={}, mSubIdToCarrierConfigMap={1=PersistableBundle[{carrier_config_applied_bool=true, carrier_config_version_string=}]}, mPrivilegedPackages={} }
+10-30 12:54:34.336   675   675 I Telecom : PhoneAccountRegistrar: getSimCallManager: SimCallManager for subId 1 queried, returning: null: TSI.gSCMFU(a)@AEc🔒
+10-30 12:54:34.365   675   761 W BroadcastLoopers: Found previously unknown looper Thread[appscheduling.default,5,main]
+10-30 12:54:34.386  1448  1448 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.cellbroadcastreceiver
+10-30 12:54:34.406   675  2177 I Telecom : CallsManager: updateEmergencyCallNotificationAsync; show=false: CM.UEMCNA@AEg❗
+10-30 12:54:34.417   675   698 W Looper  : Slow dispatch took 136ms android.fg app=system_server main=false group=FOREGROUND h=android.os.Handler c=android.app.LoadedApk$ReceiverDispatcher$Args$$ExternalSyntheticLambda0@fda9861 m=0
+10-30 12:54:34.429  1475  1475 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.providers.media.module
+10-30 12:54:34.542   675   820 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendStickyBroadcast:1698 com.android.server.wifi.ClientModeImpl.sendNetworkChangeBroadcast:3140 com.android.server.wifi.ClientModeImpl.lambda$sendNetworkChangeBroadcastWithCurrentState$14:3117 com.android.server.wifi.ClientModeImpl.$r8$lambda$mtuS9ulugUkTxNA_sDDnAioo66w:0 com.android.server.wifi.ClientModeImpl$$ExternalSyntheticLambda13.send:0 
+10-30 12:54:34.568   675   743 I Telecom : TelecomServiceImpl$1: registerPhoneAccount: account=[[ ] PhoneAccount: ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0} Capabilities: CallProvider MultiUser PlaceEmerg SimSub  Audio Routes: BESW Schemes: tel voicemail  Extras: Bundle[{android.telecom.extra.SUPPORTS_VIDEO_CALLING_FALLBACK=true}] GroupId: *** SC Restrictions: [ ]]: TSI.rPA(cap)@AEs🔒
+10-30 12:54:34.573  1475  1475 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.providers.media.module
+10-30 12:54:34.589   464   515 E NetlinkEvent: NetlinkEvent::FindParam(): Parameter 'INTERFACE' not found
+10-30 12:54:34.589   464   515 E NetlinkEvent: NetlinkEvent::FindParam(): Parameter 'STATE' not found
+10-30 12:54:34.589   464   515 E NetlinkEvent: NetlinkEvent::FindParam(): Parameter 'TIME_NS' not found
+10-30 12:54:34.589   464   515 E NetlinkEvent: NetlinkEvent::FindParam(): Parameter 'UID' not found
+10-30 12:54:34.597   675   743 I Telecom : PhoneAccountRegistrar: Modify account: [ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0}]: TSI.rPA(cap)@AEs🔒
+10-30 12:54:34.598   675   743 I Telecom : CallsManager: handlePhoneAccountChanged: phoneAccount=[[X] PhoneAccount: ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0} Capabilities: CallProvider MultiUser PlaceEmerg SimSub  Audio Routes: BESW Schemes: tel voicemail  Extras: Bundle[{android.telecom.extra.SUPPORTS_VIDEO_CALLING_FALLBACK=true}] GroupId: *** SC Restrictions: [ ]]: TSI.rPA(cap)@AEs🔒
+10-30 12:54:34.599   675   743 I Telecom : PhoneAccountRegistrar: getSimCallManager: SimCallManager for subId 1 queried, returning: null: TSI.rPA(cap)@AEs🔒
+10-30 12:54:34.609   675   743 I Telecom : PhoneAccountRegistrar: Notifying telephony of voice service override change for 1 SIMs, hasService = false: TSI.rPA(cap)@AEs🔒
+10-30 12:54:34.611   675   675 I TransportConnection: BackupTransportService#2: Notifying [TransportManager.registerTransport()] transport = BackupTransportClient
+10-30 12:54:34.625  1475  1475 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.providers.media.module
+10-30 12:54:34.667   675   870 D ShortcutService: received package broadcast intent: Intent { act=android.intent.action.PACKAGE_CHANGED dat=package: flg=0x5000010 (has extras) }
+10-30 12:54:34.667   675   870 D ShortcutService: changing package: android userId=0
+10-30 12:54:34.771   675   826 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendStickyBroadcast:1698 android.net.connectivity.com.android.server.ConnectivityService.sendStickyBroadcast:4081 android.net.connectivity.com.android.server.ConnectivityService.sendGeneralBroadcast:4051 android.net.connectivity.com.android.server.ConnectivityService.sendConnectedBroadcast:4024 android.net.connectivity.com.android.server.ConnectivityService.sendLegacyNetworkBroadcast:12439 
+10-30 12:54:34.796   675   761 E JobScheduler.Quota: <0>com.google.android.dialer has 0 EJ quota without running anything
+10-30 12:54:34.798   675  1935 D SystemServerTiming: getUserSwitchability-0
+10-30 12:54:34.799   675  1935 D SystemServerTiming: TM.isInCall
+10-30 12:54:34.799   675  1935 V SystemServerTiming: TM.isInCall took to complete: 0ms
+10-30 12:54:34.799   675  1935 D SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH
+10-30 12:54:34.799   675  1935 V SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH took to complete: 0ms
+10-30 12:54:34.799   675  1935 D SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED
+10-30 12:54:34.874   675  1586 E AppOps  : attributionTag VCN not declared in manifest of android
+10-30 12:54:34.894  1966  2205 E ActivityThread: Failed to find provider info for androidx.car.app.connection
+10-30 12:54:34.939   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:34.943   675   675 D PackageManager: Connected to instant app resolver
+10-30 12:54:34.965   675  1935 V SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED took to complete: 166ms
+10-30 12:54:34.965   675  1935 D SystemServerTiming: isUserUnlocked-USER_SYSTEM
+10-30 12:54:34.965   675  1935 V SystemServerTiming: isUserUnlocked-USER_SYSTEM took to complete: 0ms
+10-30 12:54:34.965   675  1935 V SystemServerTiming: getUserSwitchability-0 took to complete: 166ms
+10-30 12:54:35.031   675   985 D CompatChangeReporter: Compat change id reported: 319471980; UID 10140; state: ENABLED
+10-30 12:54:35.056  1966  1966 V ActivityThread: getPackageInfo() caused update to cached ApplicationInfo for package com.google.android.dialer
+10-30 12:54:35.114   675  1592 D CompatChangeReporter: Compat change id reported: 311208629; UID 10140; state: ENABLED
+10-30 12:54:35.138  1966  1966 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.dialer
+10-30 12:54:35.175  1966  1966 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.dialer
+10-30 12:54:35.194   675   949 D ConditionProviders: Disabling component com.google.android.gms/com.google.android.location.settings.DrivingConditionProvider
+10-30 12:54:35.226   675   708 I ActivityManager: Start proc 2228:com.android.imsserviceentitlement/u0a142 for broadcast {com.android.imsserviceentitlement/com.android.imsserviceentitlement.ImsEntitlementReceiver}
+10-30 12:54:35.226   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:35.231  1599  1599 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.googlequicksearchbox
+10-30 12:54:35.241  1216  1216 I ActivityThread: ApplicationInfo updating for com.google.android.gms, new timestamp: 15550
+10-30 12:54:35.241  1216  1216 I ActivityThread: assets removed: [/data/resource-cache/com.android.systemui-neutral-Kjg0.frro, /data/resource-cache/com.android.systemui-accent-mxM0.frro, /data/resource-cache/com.android.systemui-dynamic-pCO3.frro]
+10-30 12:54:35.241  1216  1216 I ActivityThread: assets added: []
+10-30 12:54:35.283   675   708 I ActivityManager: Start proc 2234:com.google.android.apps.messaging/u0a146 for content provider {com.google.android.apps.messaging/com.google.android.apps.messaging.shared.datamodel.provider.sharedstorage.SharedStorageProvider}
+10-30 12:54:35.283   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:35.289   675   949 I Telecom : TelecomServiceImpl$1: registerPhoneAccount: account=[[ ] PhoneAccount: ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0} Capabilities: CallProvider MultiUser PlaceEmerg SimSub  Audio Routes: BESW Schemes: tel voicemail  Extras: Bundle[{android.telecom.extra.SUPPORTS_VIDEO_CALLING_FALLBACK=true}] GroupId: *** SC Restrictions: [ ]]: TSI.rPA(cap)@AFM🔒
+10-30 12:54:35.290   675   949 I Telecom : PhoneAccountRegistrar: Modify account: [ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0}]: TSI.rPA(cap)@AFM🔒
+10-30 12:54:35.306   675   949 I Telecom : CallsManager: handlePhoneAccountChanged: phoneAccount=[[X] PhoneAccount: ComponentInfo{com.android.phone/com.android.services.telephony.TelephonyConnectionService}, 1, UserHandle{0} Capabilities: CallProvider MultiUser PlaceEmerg SimSub  Audio Routes: BESW Schemes: tel voicemail  Extras: Bundle[{android.telecom.extra.SUPPORTS_VIDEO_CALLING_FALLBACK=true}] GroupId: *** SC Restrictions: [ ]]: TSI.rPA(cap)@AFM🔒
+10-30 12:54:35.314   675   949 I Telecom : PhoneAccountRegistrar: getSimCallManager: SimCallManager for subId 1 queried, returning: null: TSI.rPA(cap)@AFM🔒
+10-30 12:54:35.319  1966  1966 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.dialer
+10-30 12:54:35.314   675   949 I Telecom : PhoneAccountRegistrar: Notifying telephony of voice service override change for 1 SIMs, hasService = false: TSI.rPA(cap)@AFM🔒
+10-30 12:54:35.412  1599  1599 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.googlequicksearchbox
+10-30 12:54:35.434  1966  1966 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.dialer
+10-30 12:54:35.497  1138  1138 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:1269 android.content.ContextWrapper.sendBroadcast:506 android.content.ContextWrapper.sendBroadcast:506 com.android.settings.fuelgauge.batteryusage.BootBroadcastReceiver.$r8$lambda$NYbzklSftprvatAlISPsV0wCKqc:86 com.android.settings.fuelgauge.batteryusage.BootBroadcastReceiver$$ExternalSyntheticLambda0.run:0 
+10-30 12:54:35.561  1966  1966 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.dialer
+10-30 12:54:35.570  1966  1966 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.dialer
+10-30 12:54:35.689   675   743 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcastMultiplePermissions:1319 android.content.Context.sendBroadcastMultiplePermissions:2583 com.android.server.TelephonyRegistry.broadcastServiceStateChanged:4159 com.android.server.TelephonyRegistry.notifyServiceStateForPhoneId:1848 com.android.internal.telephony.ITelephonyRegistry$Stub.onTransact:613 
+10-30 12:54:35.723   916  1124 W Looper  : Slow delivery took 1564ms SysUiBg app=com.android.systemui main=false group=FOREGROUND h=android.os.Handler c=com.android.systemui.broadcast.ActionReceiver$onReceive$1$1$1@d3cf8 m=0
+10-30 12:54:35.733   675  1500 D BackupTransportManager: [UserID:0] Transport com.google.android.gms/.backup.BackupTransportService registered
+10-30 12:54:35.733   675  1500 D BackupManagerService: [UserID:0] Transport com.google.android.gms/.backup.BackupTransportService registered 9583ms after first request (delay = 3000ms)
+10-30 12:54:35.739   675   743 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcastMultiplePermissions:1352 com.android.server.TelephonyRegistry.broadcastServiceStateChanged:4164 com.android.server.TelephonyRegistry.notifyServiceStateForPhoneId:1848 com.android.internal.telephony.ITelephonyRegistry$Stub.onTransact:613 android.os.Binder.execTransactInternal:1421 
+10-30 12:54:35.746   675   743 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcastMultiplePermissions:1352 com.android.server.TelephonyRegistry.broadcastServiceStateChanged:4173 com.android.server.TelephonyRegistry.notifyServiceStateForPhoneId:1848 com.android.internal.telephony.ITelephonyRegistry$Stub.onTransact:613 android.os.Binder.execTransactInternal:1421 
+10-30 12:54:35.757   675  1500 I BackupManagerService: [UserID:0] Found 21 stale backup journal(s), scheduling.
+10-30 12:54:35.758   675   743 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcastMultiplePermissions:1352 com.android.server.TelephonyRegistry.broadcastServiceStateChanged:4179 com.android.server.TelephonyRegistry.notifyServiceStateForPhoneId:1848 com.android.internal.telephony.ITelephonyRegistry$Stub.onTransact:613 android.os.Binder.execTransactInternal:1421 
+10-30 12:54:36.048  1966  1966 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.dialer
+10-30 12:54:36.113  1599  1599 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.googlequicksearchbox
+10-30 12:54:36.218   675  1860 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:36.442   675  1984 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:36.495   675  1500 I BackupManagerService: [UserID:0] Stale backup journals: Scheduled 34 package(s) total
+10-30 12:54:36.548   675  1963 I AppWidgetServiceImpl: getInstalledProvidersForProfiles() 0
+10-30 12:54:36.549   675  1958 I AppWidgetServiceImpl: notifyProviderInheritance() 0
+10-30 12:54:36.616   675  1860 D OomAdjuster: Not killing cached processes
+10-30 12:54:36.746  2228  2228 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.android.imsserviceentitlement
+10-30 12:54:36.751   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:36.950   675   985 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcastMultiplePermissions:1352 android.content.Context.sendBroadcastMultiplePermissions:2529 android.content.Context.sendBroadcastMultiplePermissions:2517 com.android.server.TelephonyRegistry.broadcastDataConnectionStateChanged:4378 com.android.server.TelephonyRegistry.notifyDataConnectionForSubscriber:2321 
+10-30 12:54:36.968  1966  1966 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.dialer
+10-30 12:54:37.079   675  1963 D SystemServerTiming: getUserSwitchability-0
+10-30 12:54:37.079   675  1963 D SystemServerTiming: TM.isInCall
+10-30 12:54:37.080   675  1963 V SystemServerTiming: TM.isInCall took to complete: 1ms
+10-30 12:54:37.080   675  1963 D SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH
+10-30 12:54:37.080   675  1963 V SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH took to complete: 0ms
+10-30 12:54:37.080   675  1963 D SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED
+10-30 12:54:37.080   675  1963 V SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED took to complete: 0ms
+10-30 12:54:37.080   675  1963 D SystemServerTiming: isUserUnlocked-USER_SYSTEM
+10-30 12:54:37.080   675  1963 V SystemServerTiming: isUserUnlocked-USER_SYSTEM took to complete: 0ms
+10-30 12:54:37.080   675  1963 V SystemServerTiming: getUserSwitchability-0 took to complete: 1ms
+10-30 12:54:37.081   675  1984 D SystemServerTiming: getUserSwitchability-0
+10-30 12:54:37.081   675  1984 D SystemServerTiming: TM.isInCall
+10-30 12:54:37.082   675  1984 V SystemServerTiming: TM.isInCall took to complete: 0ms
+10-30 12:54:37.082   675  1984 D SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH
+10-30 12:54:37.082   675  1984 V SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH took to complete: 0ms
+10-30 12:54:37.082   675  1984 D SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED
+10-30 12:54:37.082   675  1984 V SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED took to complete: 0ms
+10-30 12:54:37.082   675  1984 D SystemServerTiming: isUserUnlocked-USER_SYSTEM
+10-30 12:54:37.082   675  1984 V SystemServerTiming: isUserUnlocked-USER_SYSTEM took to complete: 0ms
+10-30 12:54:37.082   675  1984 V SystemServerTiming: getUserSwitchability-0 took to complete: 0ms
+10-30 12:54:37.246   251   260 I keystore2: system/security/keystore2/watchdog/src/lib.rs:377 - Watchdog thread idle -> terminating. Have a great day.
+10-30 12:54:37.462   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:37.462   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:37.557   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:37.571   675  1963 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcastMultiplePermissions:1352 android.content.Context.sendBroadcastMultiplePermissions:2529 android.content.Context.sendBroadcastMultiplePermissions:2517 com.android.server.TelephonyRegistry.broadcastDataConnectionStateChanged:4378 com.android.server.TelephonyRegistry.notifyDataConnectionForSubscriber:2321 
+10-30 12:54:37.824  1447  1757 D ActivityThread: Loading provider com.google.android.gms.icing.proxy: com.google.android.gms.icing.proxy.InternalIcingCorporaProvider
+10-30 12:54:38.195   916  1124 W Looper  : Drained
+10-30 12:54:38.196   464   515 E NetlinkEvent: NetlinkEvent::FindParam(): Parameter 'INTERFACE' not found
+10-30 12:54:38.196   464   515 E NetlinkEvent: NetlinkEvent::FindParam(): Parameter 'STATE' not found
+10-30 12:54:38.196   464   515 E NetlinkEvent: NetlinkEvent::FindParam(): Parameter 'TIME_NS' not found
+10-30 12:54:38.196   464   515 E NetlinkEvent: NetlinkEvent::FindParam(): Parameter 'UID' not found
+10-30 12:54:38.211   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:38.284   675   743 W JobScheduler: Job didn't exist in JobStore: 165eec5 {androidx.work.systemjobscheduler} #u0a145/161 @androidx.work.systemjobscheduler@com.google.android.apps.wellbeing/androidx.work.impl.background.systemjob.SystemJobService
+10-30 12:54:38.383   675  1586 D TextToSpeechManagerPerUserService: Trying to start connection to TTS engine: com.google.android.tts
+10-30 12:54:38.385   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:38.386   675   675 D CompatChangeReporter: Compat change id reported: 151861875; UID 10149; state: ENABLED
+10-30 12:54:38.410   675   708 I ActivityManager: Start proc 2337:com.google.android.tts/u0a149 for service {com.google.android.tts/com.google.android.apps.speech.tts.googletts.service.GoogleTtsService}
+10-30 12:54:38.410   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:38.507  1447  1771 D ActivityThread: Loading provider com.google.android.gms.icing.proxy.apps: com.google.android.gms.icing.proxy.AppsContentProvider
+10-30 12:54:38.554   675  1592 D SystemServerTiming: getUserSwitchability-0
+10-30 12:54:38.554   675  1592 D SystemServerTiming: TM.isInCall
+10-30 12:54:38.555   675  1592 V SystemServerTiming: TM.isInCall took to complete: 0ms
+10-30 12:54:38.555   675  1592 D SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH
+10-30 12:54:38.555   675  1592 V SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH took to complete: 0ms
+10-30 12:54:38.555   675  1592 D SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED
+10-30 12:54:38.555   675  1592 V SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED took to complete: 0ms
+10-30 12:54:38.555   675  1592 D SystemServerTiming: isUserUnlocked-USER_SYSTEM
+10-30 12:54:38.555   675  1592 V SystemServerTiming: isUserUnlocked-USER_SYSTEM took to complete: 0ms
+10-30 12:54:38.555   675  1592 V SystemServerTiming: getUserSwitchability-0 took to complete: 0ms
+10-30 12:54:38.654   675   826 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendStickyBroadcast:1698 android.net.connectivity.com.android.server.ConnectivityService.sendStickyBroadcast:4081 android.net.connectivity.com.android.server.ConnectivityService.sendGeneralBroadcast:4051 android.net.connectivity.com.android.server.ConnectivityService.sendInetConditionBroadcast:4028 android.net.connectivity.com.android.server.ConnectivityService.updateInetCondition:12091 
+10-30 12:54:38.730   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:38.743   675  1935 W JobScheduler: Job didn't exist in JobStore: ea3fa63 #u0a132/-1667279869 com.google.android.as.oss/com.google.android.gms.learning.internal.training.InAppJobService
+10-30 12:54:38.905   675  1950 D CompatChangeReporter: Compat change id reported: 311402873; UID 10140; state: ENABLED
+10-30 12:54:38.907   675  1950 D CompatChangeReporter: Compat change id reported: 323349338; UID 10140; state: ENABLED
+10-30 12:54:39.426   675  1958 D CompatChangeReporter: Compat change id reported: 311208629; UID 10145; state: ENABLED
+10-30 12:54:39.479   675  1253 W OverlayManager: service 'idmap' died
+10-30 12:54:39.481   675   949 D SystemServerTiming: getUserSwitchability-0
+10-30 12:54:39.496   675   949 D SystemServerTiming: TM.isInCall
+10-30 12:54:39.496   675   949 V SystemServerTiming: TM.isInCall took to complete: 0ms
+10-30 12:54:39.496   675   949 D SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH
+10-30 12:54:39.496   675   949 V SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH took to complete: 0ms
+10-30 12:54:39.496   675   949 D SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED
+10-30 12:54:39.496   675   949 V SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED took to complete: 0ms
+10-30 12:54:39.496   675   949 D SystemServerTiming: isUserUnlocked-USER_SYSTEM
+10-30 12:54:39.496   675   949 V SystemServerTiming: isUserUnlocked-USER_SYSTEM took to complete: 0ms
+10-30 12:54:39.496   675   949 V SystemServerTiming: getUserSwitchability-0 took to complete: 14ms
+10-30 12:54:39.790   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:39.809   675   743 D SystemServerTiming: getUserSwitchability-0
+10-30 12:54:39.809   675   743 D SystemServerTiming: TM.isInCall
+10-30 12:54:39.810   675   743 V SystemServerTiming: TM.isInCall took to complete: 0ms
+10-30 12:54:39.810   675   743 D SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH
+10-30 12:54:39.810   675   743 V SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH took to complete: 0ms
+10-30 12:54:39.810   675   743 D SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED
+10-30 12:54:39.810   675   743 V SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED took to complete: 0ms
+10-30 12:54:39.811   675   743 D SystemServerTiming: isUserUnlocked-USER_SYSTEM
+10-30 12:54:39.811   675   743 V SystemServerTiming: isUserUnlocked-USER_SYSTEM took to complete: 0ms
+10-30 12:54:39.811   675   743 V SystemServerTiming: getUserSwitchability-0 took to complete: 1ms
+10-30 12:54:39.835  2234  2234 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.messaging
+10-30 12:54:40.063   675   743 D SystemServerTiming: getUserSwitchability-0
+10-30 12:54:40.063   675   743 D SystemServerTiming: TM.isInCall
+10-30 12:54:40.063   675   743 V SystemServerTiming: TM.isInCall took to complete: 1ms
+10-30 12:54:40.063   675   743 D SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH
+10-30 12:54:40.063   675   743 V SystemServerTiming: hasUserRestriction-DISALLOW_USER_SWITCH took to complete: 0ms
+10-30 12:54:40.063   675   743 D SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED
+10-30 12:54:40.063   675   743 V SystemServerTiming: getInt-ALLOW_USER_SWITCHING_WHEN_SYSTEM_USER_LOCKED took to complete: 0ms
+10-30 12:54:40.063   675   743 D SystemServerTiming: isUserUnlocked-USER_SYSTEM
+10-30 12:54:40.063   675   743 V SystemServerTiming: isUserUnlocked-USER_SYSTEM took to complete: 0ms
+10-30 12:54:40.063   675   743 V SystemServerTiming: getUserSwitchability-0 took to complete: 1ms
+10-30 12:54:40.155   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:40.156   675   985 D AccessibilityManagerService: notifyQuickSettingsTilesChanged userId: 0, tileComponentNames: []
+10-30 12:54:40.182  2234  2234 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.messaging
+10-30 12:54:40.232   675   985 D CompatChangeReporter: Compat change id reported: 297989574; UID 10147; state: ENABLED
+10-30 12:54:40.276   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:40.349   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:40.607   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:40.884   675   949 W JobScheduler: Job didn't exist in JobStore: ecd8c94 #u0a147/-237 com.google.android.googlequicksearchbox/com.google.android.apps.gsa.tasks.BackgroundTasksJobService
+10-30 12:54:40.884   675   985 D CompatChangeReporter: Compat change id reported: 297989574; UID 10149; state: ENABLED
+10-30 12:54:40.967   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:41.165   675   675 D TextToSpeechManagerPerUserService: Connected successfully to TTS engine: com.google.android.tts
+10-30 12:54:41.257   675  1984 W JobScheduler: Job didn't exist in JobStore: b3eb9de #u0a147/-353 com.google.android.googlequicksearchbox/com.google.android.apps.gsa.tasks.BackgroundTasksJobService
+10-30 12:54:41.649   675   743 D OomAdjuster: Not killing cached processes
+10-30 12:54:41.930  1966  1966 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.dialer
+10-30 12:54:42.173   675   698 W Looper  : Slow dispatch took 219ms android.fg app=system_server main=false group=FOREGROUND h=android.os.Handler c=com.android.server.am.SameProcessApplicationThread$$ExternalSyntheticLambda1@66614d2 m=0
+10-30 12:54:42.187   675   771 D ActivityManager: freezing 1477 com.android.printspooler
+10-30 12:54:42.232   675   708 I ActivityManager: Start proc 2453:com.google.android.deskclock/u0a163 for broadcast {com.google.android.deskclock/com.android.deskclock.AlarmInitReceiver}
+10-30 12:54:42.232   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:42.244  2234  2234 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.messaging
+10-30 12:54:42.399   675   740 D CompatChangeReporter: Compat change id reported: 319212206; UID 10147; state: ENABLED
+10-30 12:54:42.487  1528  1528 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.as
+10-30 12:54:43.242   916  1024 W Looper  : Slow delivery took 156ms wmshell.main app=com.android.systemui main=false group=FOREGROUND h=android.content.pm.LauncherApps$CallbackMessageHandler c=null m=8
+10-30 12:54:43.416  1528  1528 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.as
+10-30 12:54:43.496   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:43.552   675  1984 W JobScheduler: Job didn't exist in JobStore: 560df8d {androidx.work.systemjobscheduler} #u0a140/293 @androidx.work.systemjobscheduler@com.google.android.dialer/androidx.work.impl.background.systemjob.SystemJobService
+10-30 12:54:43.771   675  1963 I BroadcastQueue: BOOT_COMPLETED_BROADCAST_COMPLETION_LATENCY_REPORTED action:android.intent.action.LOCKED_BOOT_COMPLETED dispatchLatency:441 completeLatency:18582 dispatchRealLatency:441 completeRealLatency:18582 receiversSize:7 userId:0 userType:android.os.usertype.full.SYSTEM
+10-30 12:54:43.783  2453  2453 V ActivityThread: getPackageInfo() caused update to cached ApplicationInfo for package com.google.android.deskclock
+10-30 12:54:43.804   675   743 D CompatChangeReporter: Compat change id reported: 194532703; UID 10163; state: ENABLED
+10-30 12:54:43.932   675   707 D CompatChangeReporter: Compat change id reported: 151861875; UID 10130; state: ENABLED
+10-30 12:54:43.933   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:44.109  2453  2453 V ActivityThread: getPackageInfo() caused update to cached ApplicationInfo for package com.google.android.deskclock
+10-30 12:54:44.128   675   743 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:44.131   675   708 W ActivityManager: Slow operation: 198ms so far, now at startProcess: returned from zygote!
+10-30 12:54:44.132   675   708 W ActivityManager: Slow operation: 199ms so far, now at startProcess: done updating battery stats
+10-30 12:54:44.132   675   708 W ActivityManager: Slow operation: 199ms so far, now at startProcess: building log message
+10-30 12:54:44.132   675   708 I ActivityManager: Start proc 2490:com.android.traceur/u0a130 for broadcast {com.android.traceur/com.android.traceur.Receiver}
+10-30 12:54:44.132   675   708 W ActivityManager: Slow operation: 199ms so far, now at startProcess: starting to update pids map
+10-30 12:54:44.132   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:44.132   675   708 W ActivityManager: Slow operation: 199ms so far, now at startProcess: done updating pids map
+10-30 12:54:44.135   675   743 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:44.141   675   986 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:44.165   675   675 W Looper  : Slow dispatch took 160ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=android.app.LoadedApk$ServiceDispatcher$RunConnection@a2622c0 m=0
+10-30 12:54:44.165   675   675 W Looper  : Slow delivery took 253ms main app=system_server main=true group=FOREGROUND h=com.android.server.power.Notifier$NotifierHandler c=com.android.server.power.Notifier$$ExternalSyntheticLambda2@1537bf9 m=0
+10-30 12:54:44.246   675   675 W Looper  : Drained
+10-30 12:54:44.295   675  1963 W ActivityManager: Slow operation: 53ms so far, now at attachApplicationLocked: immediately after bindApplication
+10-30 12:54:44.295   675  1963 W ActivityManager: Slow operation: 53ms so far, now at attachApplicationLocked: after updateLruProcessLocked
+10-30 12:54:44.295   675  1963 W ActivityManager: Slow operation: 54ms so far, now at attachApplicationLocked: after updateOomAdjLocked
+10-30 12:54:44.734   675   675 W Looper  : Slow delivery took 263ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=android.app.LoadedApk$ServiceDispatcher$RunConnection@9cddb95 m=0
+10-30 12:54:44.734   675   675 W Looper  : Drained
+10-30 12:54:44.990   675   743 W JobScheduler: Job didn't exist in JobStore: eaaaaec {androidx.work.systemjobscheduler} #u0a146/1407 @androidx.work.systemjobscheduler@com.google.android.apps.messaging/androidx.work.impl.background.systemjob.SystemJobService
+10-30 12:54:45.566  1599  1599 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.googlequicksearchbox
+10-30 12:54:45.570  2337  2337 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.tts
+10-30 12:54:45.895   675   675 W Looper  : Slow dispatch took 125ms main app=system_server main=true group=FOREGROUND h=com.android.server.power.Notifier$NotifierHandler c=com.android.server.power.Notifier$$ExternalSyntheticLambda5@70c0dc2 m=0
+10-30 12:54:46.019   675   707 W ActivityManager: Slow operation: 112ms so far, now at startProcess: done starting proc!
+10-30 12:54:46.035   675  1963 D CompatChangeReporter: Compat change id reported: 311402873; UID 10149; state: ENABLED
+10-30 12:54:46.035   675  1963 D CompatChangeReporter: Compat change id reported: 323349338; UID 10149; state: ENABLED
+10-30 12:54:46.038   675   708 W ActivityManager: Slow operation: 93ms so far, now at startProcess: asking zygote to start proc
+10-30 12:54:46.106   675   708 W ActivityManager: Slow operation: 160ms so far, now at startProcess: returned from zygote!
+10-30 12:54:46.150   675   708 W ActivityManager: Slow operation: 204ms so far, now at startProcess: done updating battery stats
+10-30 12:54:46.150   675   708 W ActivityManager: Slow operation: 204ms so far, now at startProcess: building log message
+10-30 12:54:46.150   675   708 I ActivityManager: Start proc 2533:com.google.android.onetimeinitializer/u0a143 for broadcast {com.google.android.onetimeinitializer/com.google.android.onetimeinitializer.OneTimeInitializerReceiver}
+10-30 12:54:46.150   675   708 W ActivityManager: Slow operation: 204ms so far, now at startProcess: starting to update pids map
+10-30 12:54:46.150   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:46.150   675   708 W ActivityManager: Slow operation: 204ms so far, now at startProcess: done updating pids map
+10-30 12:54:46.156   675   699 W Looper  : Slow dispatch took 168ms android.ui app=system_server main=false group=TOP_APP h=com.android.server.am.ActivityManagerService$UiHandler c=null m=68
+10-30 12:54:46.191   675  1859 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:46.192   675  1859 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:46.237   916  1124 W Looper  : Slow delivery took 1050ms SysUiBg app=com.android.systemui main=false group=FOREGROUND h=com.android.systemui.qs.tileimpl.QSTileImpl$H c=null m=5
+10-30 12:54:46.238   916  1124 W Looper  : Drained
+10-30 12:54:46.249   675  1949 I ActivityManager: Background started FGS: Allowed [callingPackage: com.google.android.apps.messaging; callingUid: 10146; uidState: BFGS; uidBFSL: [BFSL]; intent: Intent { xflg=0x4 cmp=com.google.android.apps.messaging/com.google.apps.tiktok.concurrent.InternalForegroundService (has extras) }; code:PROC_STATE_BFGS; tempAllowListReason:<6ff9d46 android.intent.action.BOOT_COMPLETED/u0,reasonCode:BOOT_COMPLETED,duration:20000,callingUid:1000>; allowWiu:-1; targetSdkVersion:36; callerTargetSdkVersion:36; startForegroundCount:0; bindFromPackage:null: isBindService:false]
+10-30 12:54:46.369   675   986 W ActivityManager: Foreground service started from background can not have location/camera/microphone access: service com.google.android.apps.messaging/com.google.apps.tiktok.concurrent.InternalForegroundService
+10-30 12:54:46.376   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:46.387   675   986 W ForegroundServiceTypeLoggerModule: Foreground service start for UID: 10146 does not have any types
+10-30 12:54:46.389   675  1859 I RecoverySnapshotStorage: Snapshot for uid 10144 not found
+10-30 12:54:46.462  1599  1599 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.googlequicksearchbox
+10-30 12:54:46.550   675   708 I ActivityManager: Start proc 2570:com.android.camera2/u0a162 for broadcast {com.android.camera2/com.android.camera.SetActivitiesCameraReceiver}
+10-30 12:54:46.550   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:46.557   675  1935 D TextToSpeechManagerPerUserService: Unbinding TTS engine: com.google.android.tts. Reason: client disconnection request
+10-30 12:54:46.558   675   675 D CompatChangeReporter: Compat change id reported: 311208629; UID 10149; state: ENABLED
+10-30 12:54:46.558   675   675 W TextToSpeechManagerPerUserService: Disconnected from TTS engine
+10-30 12:54:46.694   675   706 D OomAdjuster: Not killing cached processes
+10-30 12:54:46.768   675  1859 W JobScheduler: Job didn't exist in JobStore: fcc14aa {androidx.work.systemjobscheduler} #u0a140/296 @androidx.work.systemjobscheduler@com.google.android.dialer/androidx.work.impl.background.systemjob.SystemJobService
+10-30 12:54:47.057   675  1935 W ActivityManager: Slow operation: 143ms so far, now at attachApplicationLocked: before bindApplication
+10-30 12:54:47.058   675  1935 W ActivityManager: Slow operation: 143ms so far, now at attachApplicationLocked: immediately before bindApplication
+10-30 12:54:47.111   675  1984 I AppWidgetServiceImpl: getInstalledProvidersForProfiles() 0
+10-30 12:54:47.123   675  1935 W ActivityManager: Slow operation: 208ms so far, now at attachApplicationLocked: immediately after bindApplication
+10-30 12:54:47.123   675  1935 W ActivityManager: Slow operation: 208ms so far, now at attachApplicationLocked: after updateLruProcessLocked
+10-30 12:54:47.128   675  1935 W ActivityManager: Slow operation: 213ms so far, now at attachApplicationLocked: after updateOomAdjLocked
+10-30 12:54:47.465  1599  1599 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.googlequicksearchbox
+10-30 12:54:47.580   675  1860 D BackupTransportManager: [UserID:0] Transport com.google.android.gms/.backup.BackupTransportService updated its attributes
+10-30 12:54:47.797   675   708 W ActivityManager: Slow operation: 180ms so far, now at startProcess: returned from zygote!
+10-30 12:54:47.798   675   708 W ActivityManager: Slow operation: 181ms so far, now at startProcess: done updating battery stats
+10-30 12:54:47.798   675   708 W ActivityManager: Slow operation: 181ms so far, now at startProcess: building log message
+10-30 12:54:47.798   675   708 I ActivityManager: Start proc 2628:com.android.devicediagnostics/u0a97 for broadcast {com.android.devicediagnostics/com.android.devicediagnostics.BootCompleteReceiver}
+10-30 12:54:47.799   675   708 W ActivityManager: Slow operation: 181ms so far, now at startProcess: starting to update pids map
+10-30 12:54:47.799   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:47.799   675   708 W ActivityManager: Slow operation: 181ms so far, now at startProcess: done updating pids map
+10-30 12:54:47.966   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:48.154   675  1935 D CompatChangeReporter: Compat change id reported: 349487600; UID 10146; state: ENABLED
+10-30 12:54:48.161   675   708 I ActivityManager: Start proc 2648:com.google.android.gms.unstable/u0a144 for service {com.google.android.gms/com.google.android.gms.chimera.UnstableInternalBoundBrokerService}
+10-30 12:54:48.161   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:48.206  1599  1599 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.googlequicksearchbox
+10-30 12:54:48.271   675   743 I TradeInModeService: Not starting trade-in mode, device is setup.
+10-30 12:54:48.317   675   708 I ActivityManager: Start proc 2651:com.android.dynsystem/1000 for broadcast {com.android.dynsystem/com.android.dynsystem.BootCompletedReceiver}
+10-30 12:54:48.317   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:48.460   675   743 W ForegroundServiceTypeLoggerModule: FGS stop call for: 10146 has no types!
+10-30 12:54:48.463   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:48.464   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:48.464   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:48.746   675   708 W ActivityManager: Slow operation: 141ms so far, now at startProcess: done updating battery stats
+10-30 12:54:48.746   675   708 W ActivityManager: Slow operation: 141ms so far, now at startProcess: building log message
+10-30 12:54:48.746   675   708 I ActivityManager: Start proc 2675:com.android.managedprovisioning/u0a109 for broadcast {com.android.managedprovisioning/com.android.managedprovisioning.BootReminder}
+10-30 12:54:48.746   675   708 W ActivityManager: Slow operation: 141ms so far, now at startProcess: starting to update pids map
+10-30 12:54:48.746   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:48.746   675   708 W ActivityManager: Slow operation: 142ms so far, now at startProcess: done updating pids map
+10-30 12:54:48.878   675   708 W ActivityManager: Slow operation: 124ms so far, now at startProcess: done updating battery stats
+10-30 12:54:48.878   675   708 W ActivityManager: Slow operation: 124ms so far, now at startProcess: building log message
+10-30 12:54:48.878   675   708 I ActivityManager: Start proc 2687:com.android.dynsystem:dynsystem/1000 for service {com.android.dynsystem/com.android.dynsystem.DynamicSystemInstallationService}
+10-30 12:54:48.878   675   708 W ActivityManager: Slow operation: 124ms so far, now at startProcess: starting to update pids map
+10-30 12:54:48.878   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:48.878   675   708 W ActivityManager: Slow operation: 124ms so far, now at startProcess: done updating pids map
+10-30 12:54:49.031   675  1252 I DynamicSystemService: isInstalled(): false
+10-30 12:54:49.206   675   708 I ActivityManager: Start proc 2711:com.android.providers.calendar/u0a105 for broadcast {com.android.providers.calendar/com.android.providers.calendar.CalendarReceiver}
+10-30 12:54:49.206   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:49.359   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:49.477   675  1949 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:49.477   675  1949 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:49.479   675  1592 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:49.483   675  1984 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:49.494   675  1860 W ActivityManager: pid 1447 com.google.android.gms sent binder code 1 with flags 2 to frozen apps and got error -2147483646
+10-30 12:54:49.570   675  1592 D BiometricService: canAuthenticate: User=0, Caller=0, Authenticators=255
+10-30 12:54:49.577   675  1592 D BiometricService/PreAuthInfo: Package: com.google.android.gms Sensor ID: 0 Modality: 2 User id: 0 Status: 7
+10-30 12:54:49.577   675  1592 D BiometricService/PreAuthInfo: getCanAuthenticateInternal Modality: 2 AuthenticatorStatus: 7
+10-30 12:54:49.577   675  1592 D AuthService: canAuthenticate, userId: 0, callingUserId: 0, authenticators: 255, result: 11
+10-30 12:54:49.582   675  1935 D BiometricService: canAuthenticate: User=0, Caller=0, Authenticators=32768
+10-30 12:54:49.582   675  1935 D BiometricService/PreAuthInfo: getCanAuthenticateInternal Modality: 1 AuthenticatorStatus: 9
+10-30 12:54:49.582   675  1935 D AuthService: canAuthenticate, userId: 0, callingUserId: 0, authenticators: 32768, result: 11
+10-30 12:54:49.609   675   708 I ActivityManager: Start proc 2740:com.android.shell/2000 for broadcast {com.android.shell/com.android.shell.HeapDumpReceiver}
+10-30 12:54:49.609   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:49.797   675   707 D CompatChangeReporter: Compat change id reported: 151861875; UID 10156; state: ENABLED
+10-30 12:54:49.808   675   708 I ActivityManager: Start proc 2753:com.google.android.apps.docs/u0a156 for broadcast {com.google.android.apps.docs/com.google.android.libraries.notifications.platform.entrypoints.restart.RestartReceiver}
+10-30 12:54:49.808   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:49.869   675   761 E JobScheduler.Quota: <0>com.google.android.apps.docs has 0 EJ quota without running anything
+10-30 12:54:49.869   675   761 E JobScheduler.Quota: <0>com.google.android.apps.docs has 0 EJ quota without running anything
+10-30 12:54:49.869   675   761 E JobScheduler.Quota: <0>com.google.android.apps.docs has 0 EJ quota without running anything
+10-30 12:54:49.960   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:51.239   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:51.239   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:51.239   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:51.739   675   743 D OomAdjuster: Not killing cached processes
+10-30 12:54:51.927   675   675 W Looper  : Slow dispatch took 848ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=android.app.LoadedApk$ReceiverDispatcher$Args$$ExternalSyntheticLambda0@e5d00d2 m=0
+10-30 12:54:51.927   675   675 W Looper  : Slow delivery took 782ms main app=system_server main=true group=FOREGROUND h=com.android.server.notification.NotificationManagerService$WorkerHandler c=com.android.server.notification.NotificationManagerService$CancelNotificationRunnable@84585a3 m=0
+10-30 12:54:51.947   675   675 W Looper  : Drained
+10-30 12:54:51.989   675  1952 W ContentProviderHelper: Slow operation: 60ms so far, now at getContentProviderImpl: after updateOomAdj
+10-30 12:54:51.989   675  1952 W ContentProviderHelper: Slow operation: 60ms so far, now at getContentProviderImpl: done!
+10-30 12:54:52.031   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:52.031   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:52.032   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:52.032   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:52.069   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:52.219  1447  2813 D ActivityThread: Loading provider com.google.android.gms.reminders: com.google.android.gms.reminders.provider.RemindersProvider
+10-30 12:54:52.305   675   740 D PackageManager: Instant App installer not found with android.intent.action.INSTALL_INSTANT_APP_PACKAGE
+10-30 12:54:52.306   675   740 D PackageManager: Clear ephemeral installer activity
+10-30 12:54:52.398   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:52.510   675  1949 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:54:52.588   675  1949 I AppWidgetServiceImpl: getInstalledProvidersForProfiles() 0
+10-30 12:54:52.589   675  1949 I AppWidgetServiceImpl: notifyProviderInheritance() 0
+10-30 12:54:52.589   675   707 D CompatChangeReporter: Compat change id reported: 151861875; UID 10135; state: ENABLED
+10-30 12:54:52.594   675  1963 D CompatChangeReporter: Compat change id reported: 311402873; UID 10156; state: ENABLED
+10-30 12:54:52.602   675  1963 D CompatChangeReporter: Compat change id reported: 323349338; UID 10156; state: ENABLED
+10-30 12:54:52.603   675  1963 E JobScheduler.JobStatus: App com.google.android.apps.docs became active but still in NEVER bucket
+10-30 12:54:52.628   675   740 D BiometricService: Sensor ID(0), oemStrength: 15, updatedStrength: 15, modality 2, state: 0, cookie: 0, sensorId 0, hasEnrollments: false cannot participate in Keystore operations
+10-30 12:54:52.629   675   707 W ActivityManager: Slow operation: 59ms so far, now at startProcess: done starting proc!
+10-30 12:54:52.661   675   708 W ActivityManager: Slow operation: 72ms so far, now at startProcess: done updating battery stats
+10-30 12:54:52.674   675   708 W ActivityManager: Slow operation: 85ms so far, now at startProcess: building log message
+10-30 12:54:52.674   675   708 I ActivityManager: Start proc 2846:com.google.android.apps.restore/u0a135 for broadcast {com.google.android.apps.restore/androidx.work.impl.background.systemalarm.RescheduleReceiver}
+10-30 12:54:52.674   675   708 W ActivityManager: Slow operation: 85ms so far, now at startProcess: starting to update pids map
+10-30 12:54:52.674   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:52.674   675   708 W ActivityManager: Slow operation: 85ms so far, now at startProcess: done updating pids map
+10-30 12:54:52.677   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:53.179   675   675 W Looper  : Slow dispatch took 255ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=null m=131
+10-30 12:54:53.212  2753  2753 V ActivityThread: getPackageInfo() caused update to cached ApplicationInfo for package com.google.android.apps.docs
+10-30 12:54:53.914   675   699 W Looper  : Slow dispatch took 122ms android.ui app=system_server main=false group=TOP_APP h=com.android.server.am.ActivityManagerService$UiHandler c=com.android.server.am.UidObserverController$$ExternalSyntheticLambda0@1cc1a4e m=0
+10-30 12:54:53.918   675  1860 W ActivityManager: Slow operation: 635ms so far, now at attachApplicationLocked: after updateOomAdjLocked
+10-30 12:54:53.922   675   675 W Looper  : Slow dispatch took 728ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=android.app.LoadedApk$ReceiverDispatcher$Args$$ExternalSyntheticLambda0@9c1cc7c m=0
+10-30 12:54:53.965   675   675 W Looper  : Slow delivery took 781ms main app=system_server main=true group=FOREGROUND h=com.android.server.alarm.AlarmManagerService$AlarmHandler c=null m=7
+10-30 12:54:54.002   675   675 W Looper  : Drained
+10-30 12:54:54.269   675  1166 E JobScheduler.JobStatus: App com.google.android.apps.docs became active but still in NEVER bucket
+10-30 12:54:54.287   675   675 W Looper  : Slow dispatch took 185ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=android.app.LoadedApk$ReceiverDispatcher$Args$$ExternalSyntheticLambda0@b4dc774 m=0
+10-30 12:54:54.335   675   743 E JobScheduler.JobStatus: App com.google.android.apps.docs became active but still in NEVER bucket
+10-30 12:54:54.375   675  1166 E JobScheduler.JobStatus: App com.google.android.apps.docs became active but still in NEVER bucket
+10-30 12:54:54.379   675  1935 D CompatChangeReporter: Compat change id reported: 311208629; UID 10156; state: ENABLED
+10-30 12:54:54.427  2753  2753 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.docs
+10-30 12:54:54.485   675  1935 W ActivityManager: Unable to start service Intent { act=com.google.android.finsky.BIND_PLAY_MODULE_SERVICE xflg=0x4 pkg=com.android.vending } U=0: not found
+10-30 12:54:54.686   675   740 W ActivityManager: Unable to start service Intent { act=com.google.android.finsky.BIND_PLAY_MODULE_SERVICE xflg=0x4 pkg=com.android.vending } U=0: not found
+10-30 12:54:55.065  2711  2711 V ActivityThread: getPackageInfo() caused update to cached ApplicationInfo for package com.android.providers.calendar
+10-30 12:54:55.782   675  1949 D PackageManager: Instant App installer not found with android.intent.action.INSTALL_INSTANT_APP_PACKAGE
+10-30 12:54:55.782   675  1949 D PackageManager: Clear ephemeral installer activity
+10-30 12:54:56.074   675  1859 D PackageManager: Instant App installer not found with android.intent.action.INSTALL_INSTANT_APP_PACKAGE
+10-30 12:54:56.074   675  1859 D PackageManager: Clear ephemeral installer activity
+10-30 12:54:56.108   675  1964 D PackageManager: Instant App installer not found with android.intent.action.INSTALL_INSTANT_APP_PACKAGE
+10-30 12:54:56.108   675  1964 D PackageManager: Clear ephemeral installer activity
+10-30 12:54:56.735   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:56.765   675   949 D CompatChangeReporter: Compat change id reported: 151861875; UID 10202; state: ENABLED
+10-30 12:54:56.844   675   708 W ActivityManager: Slow operation: 79ms so far, now at startProcess: returned from zygote!
+10-30 12:54:56.847   675  1950 D OomAdjuster: Not killing cached processes
+10-30 12:54:56.937   675   771 D ActivityManager: freezing 1448 com.google.android.cellbroadcastreceiver
+10-30 12:54:56.951   675   986 W ActivityManager: Slow operation: 107ms so far, now at finishAttachApplicationInner: after mServices.attachApplicationLocked
+10-30 12:54:56.955   675   986 W ActivityManager: Slow operation: 112ms so far, now at finishAttachApplicationInner: after dispatching broadcasts
+10-30 12:54:56.957   675   708 W ActivityManager: Slow operation: 193ms so far, now at startProcess: done updating battery stats
+10-30 12:54:56.957   675   708 W ActivityManager: Slow operation: 193ms so far, now at startProcess: building log message
+10-30 12:54:56.957   675   708 I ActivityManager: Start proc 2900:com.google.android.rkpdapp/u0a202 for service {com.google.android.rkpdapp/com.android.rkpdapp.service.RemoteProvisioningService}
+10-30 12:54:56.957   675   708 W ActivityManager: Slow operation: 193ms so far, now at startProcess: starting to update pids map
+10-30 12:54:56.958   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:56.958   675   708 W ActivityManager: Slow operation: 193ms so far, now at startProcess: done updating pids map
+10-30 12:54:57.062   675  1586 D CompatChangeReporter: Compat change id reported: 311402873; UID 10135; state: ENABLED
+10-30 12:54:57.062   675  1586 D CompatChangeReporter: Compat change id reported: 323349338; UID 10135; state: ENABLED
+10-30 12:54:57.185   675   708 I ActivityManager: Start proc 2915:com.google.android.apps.safetyhub/u0a134 for broadcast {com.google.android.apps.safetyhub/com.google.android.apps.safetyhub.startup.StartupBroadcastReceiver_Receiver}
+10-30 12:54:57.185   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:57.260   675   699 W Looper  : Slow dispatch took 185ms android.ui app=system_server main=false group=TOP_APP h=com.android.server.am.ActivityManagerService$UiHandler c=null m=68
+10-30 12:54:57.347   675   675 W Looper  : Slow dispatch took 414ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=android.app.LoadedApk$ReceiverDispatcher$Args$$ExternalSyntheticLambda0@4f6ac7b m=0
+10-30 12:54:57.347   675   675 W Looper  : Slow delivery took 426ms main app=system_server main=true group=FOREGROUND h=com.android.server.alarm.AlarmManagerService$AlarmHandler c=null m=7
+10-30 12:54:57.357   675   675 W Looper  : Drained
+10-30 12:54:57.592   251  2396 W keystore2: system/security/keystore2/watchdog/src/lib.rs:143 - ### Keystore Watchdog report - BEGIN ###
+10-30 12:54:57.592   251  2396 W keystore2: system/security/keystore2/watchdog/src/lib.rs:152 - When extracting from a bug report, please include this header and all 1 records below (to footer)
+10-30 12:54:57.592   251  2396 W keystore2: system/security/keystore2/watchdog/src/lib.rs:199 - ThreadId(9) Calling get_rkpd_attestation_key() Started: 10-30 04:54:56.591 UTC Pending: 1.0007605s Overdue 760.959µs
+10-30 12:54:57.592   251  2396 W keystore2: system/security/keystore2/watchdog/src/lib.rs:211 - ### Keystore Watchdog report - END ###
+10-30 12:54:57.602   675   740 W ActivityManager: Slow operation: 55ms so far, now at attachApplicationLocked: immediately after bindApplication
+10-30 12:54:57.602   675   740 W ActivityManager: Slow operation: 55ms so far, now at attachApplicationLocked: after updateLruProcessLocked
+10-30 12:54:57.607   675   740 W ActivityManager: Slow operation: 60ms so far, now at attachApplicationLocked: after updateOomAdjLocked
+10-30 12:54:57.836   675  1859 W JobScheduler: Job didn't exist in JobStore: 99a43a1 #u0a147/-353 com.google.android.googlequicksearchbox/com.google.android.apps.gsa.tasks.BackgroundTasksJobService
+10-30 12:54:58.266  2900  2900 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.rkpdapp
+10-30 12:54:58.267   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:54:58.345  2900  2900 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.rkpdapp
+10-30 12:54:58.424   675  1586 D CompatChangeReporter: Compat change id reported: 311208629; UID 10202; state: ENABLED
+10-30 12:54:58.565   251   262 I keystore2: system/security/keystore2/watchdog/src/lib.rs:230 - Watchdog complete for: ThreadId(8) Calling get_rkpd_attestation_key() Started: 10-30 04:54:56.643 UTC Pending: 1.921707126s Overdue 921.707709ms
+10-30 12:54:58.571   251  2396 W keystore2: system/security/keystore2/watchdog/src/lib.rs:143 - ### Keystore Watchdog report - BEGIN ###
+10-30 12:54:58.571   251  2396 W keystore2: system/security/keystore2/watchdog/src/lib.rs:152 - When extracting from a bug report, please include this header and all 1 records below (to footer)
+10-30 12:54:58.571   251  2396 W keystore2: system/security/keystore2/watchdog/src/lib.rs:199 - ThreadId(9) Calling get_rkpd_attestation_key() Started: 10-30 04:54:56.591 UTC Pending: 1.980231459s Overdue 980.231918ms
+10-30 12:54:58.571   251  2396 W keystore2: system/security/keystore2/watchdog/src/lib.rs:211 - ### Keystore Watchdog report - END ###
+10-30 12:54:58.580   675   741 D CompatChangeReporter: Compat change id reported: 311402873; UID 10202; state: ENABLED
+10-30 12:54:58.581   675   741 D CompatChangeReporter: Compat change id reported: 323349338; UID 10202; state: ENABLED
+10-30 12:54:58.635   251   265 I keystore2: system/security/keystore2/watchdog/src/lib.rs:230 - Watchdog complete for: ThreadId(9) Calling get_rkpd_attestation_key() Started: 10-30 04:54:56.591 UTC Pending: 2.043760251s Overdue 1.04376071s
+10-30 12:54:59.008   675   986 D CompatChangeReporter: Compat change id reported: 161145287; UID 10134; state: ENABLED
+10-30 12:54:59.045   675   707 D CompatChangeReporter: Compat change id reported: 135754954; UID 10137; state: ENABLED
+10-30 12:54:59.047   675   708 D CompatChangeReporter: Compat change id reported: 143937733; UID 10137; state: ENABLED
+10-30 12:54:59.059   675   708 I ActivityManager: Start proc 2965:com.google.android.configupdater/u0a137 for broadcast {com.google.android.configupdater/com.google.android.configupdater.MainReceiver}
+10-30 12:54:59.059   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:59.089   675   743 D CompatChangeReporter: Compat change id reported: 261072174; UID 10134; state: ENABLED
+10-30 12:54:59.192   675   986 W ActivityManager: Slow operation: 60ms so far, now at attachApplicationLocked: before bindApplication
+10-30 12:54:59.192   675   986 W ActivityManager: Slow operation: 60ms so far, now at attachApplicationLocked: immediately before bindApplication
+10-30 12:54:59.193   675   986 W ActivityManager: Slow operation: 61ms so far, now at attachApplicationLocked: immediately after bindApplication
+10-30 12:54:59.193   675   986 W ActivityManager: Slow operation: 61ms so far, now at attachApplicationLocked: after updateLruProcessLocked
+10-30 12:54:59.202   675   986 W ActivityManager: Slow operation: 69ms so far, now at attachApplicationLocked: after updateOomAdjLocked
+10-30 12:54:59.239   675  1935 D BiometricService: Sensor ID(0), oemStrength: 15, updatedStrength: 15, modality 2, state: 0, cookie: 0, sensorId 0, hasEnrollments: false cannot participate in Keystore operations
+10-30 12:54:59.344   675   743 D CompatChangeReporter: Compat change id reported: 253665015; UID 10134; state: ENABLED
+10-30 12:54:59.358   675   741 D CompatChangeReporter: Compat change id reported: 271850009; UID 10134; state: ENABLED
+10-30 12:54:59.424  2915  2915 V ActivityThread: getPackageInfo() caused update to cached ApplicationInfo for package com.google.android.apps.safetyhub
+10-30 12:54:59.436  2915  2915 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.safetyhub
+10-30 12:54:59.765   675   708 I ActivityManager: Start proc 2983:com.google.android.federatedcompute/u0a201 for broadcast {com.google.android.federatedcompute/com.android.federatedcompute.services.FederatedComputeBroadcastReceiver}
+10-30 12:54:59.765   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:54:59.954  2915  2915 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.safetyhub
+10-30 12:54:59.997   675  1592 W JobScheduler: Job didn't exist in JobStore: bd6127a {androidx.work.systemjobscheduler} #u0a202/52 @androidx.work.systemjobscheduler@com.google.android.rkpdapp/androidx.work.impl.background.systemjob.SystemJobService
+10-30 12:55:00.426   675  1935 W ActivityManager: Slow operation: 64ms so far, now at finishAttachApplicationInner: after dispatching broadcasts
+10-30 12:55:00.547   675   708 W ActivityManager: Slow operation: 108ms so far, now at startProcess: returned from zygote!
+10-30 12:55:00.552   675   708 W ActivityManager: Slow operation: 113ms so far, now at startProcess: done updating battery stats
+10-30 12:55:00.566   675   708 W ActivityManager: Slow operation: 128ms so far, now at startProcess: building log message
+10-30 12:55:00.566   675   708 I ActivityManager: Start proc 3017:com.google.android.healthconnect.controller/u0a192 for broadcast {com.google.android.healthconnect.controller/com.android.healthconnect.controller.safetycenter.SafetySourceBroadcastReceiver}
+10-30 12:55:00.566   675   708 W ActivityManager: Slow operation: 128ms so far, now at startProcess: starting to update pids map
+10-30 12:55:00.567   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:00.567   675   708 W ActivityManager: Slow operation: 128ms so far, now at startProcess: done updating pids map
+10-30 12:55:01.797   675   708 W ActivityManager: Slow operation: 94ms so far, now at startProcess: asking zygote to start proc
+10-30 12:55:01.872   675   708 W ActivityManager: Slow operation: 169ms so far, now at startProcess: returned from zygote!
+10-30 12:55:01.872   675   708 W ActivityManager: Slow operation: 169ms so far, now at startProcess: done updating battery stats
+10-30 12:55:01.872   675   708 W ActivityManager: Slow operation: 169ms so far, now at startProcess: building log message
+10-30 12:55:01.872   675   708 I ActivityManager: Start proc 3031:com.google.android.ondevicepersonalization.services/u0a200 for broadcast {com.google.android.ondevicepersonalization.services/com.android.ondevicepersonalization.services.OnDevicePersonalizationBroadcastReceiver}
+10-30 12:55:01.872   675   708 W ActivityManager: Slow operation: 169ms so far, now at startProcess: starting to update pids map
+10-30 12:55:01.872   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:01.872   675   708 W ActivityManager: Slow operation: 169ms so far, now at startProcess: done updating pids map
+10-30 12:55:01.930   675   985 D OomAdjuster: Not killing cached processes
+10-30 12:55:02.297   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:02.297   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:02.356   916  1024 W Looper  : Drained
+10-30 12:55:02.452   675   986 D CompatChangeReporter: Compat change id reported: 349487600; UID 10144; state: ENABLED
+10-30 12:55:02.570   675   853 I AppWidgetServiceImpl: Received broadcast: android.intent.action.PACKAGE_CHANGED on user 0
+10-30 12:55:02.570   675   853 D AppWidgetServiceImpl: Trying to notify widget providers changed
+10-30 12:55:02.596   675   740 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 10146, code = READ_CELL_BROADCASTS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.597   675   740 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = READ_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.597   675   740 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = RECEIVE_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.598   675   740 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = RECEIVE_WAP_PUSH, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.598   675   740 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = SEND_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.598   675   740 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = READ_CELL_BROADCASTS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.600   675   708 W ActivityManager: Slow operation: 81ms so far, now at startProcess: done updating battery stats
+10-30 12:55:02.600   675   708 W ActivityManager: Slow operation: 81ms so far, now at startProcess: building log message
+10-30 12:55:02.600   675   708 I ActivityManager: Start proc 3051:com.google.android.packageinstaller/u0a102 for broadcast {com.google.android.packageinstaller/com.android.packageinstaller.common.TemporaryFileManager}
+10-30 12:55:02.600   675   708 W ActivityManager: Slow operation: 81ms so far, now at startProcess: starting to update pids map
+10-30 12:55:02.600   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:02.600   675   708 W ActivityManager: Slow operation: 81ms so far, now at startProcess: done updating pids map
+10-30 12:55:02.601   675   870 D ShortcutService: received package broadcast intent: Intent { act=android.intent.action.PACKAGE_CHANGED dat=package: flg=0x45000010 (has extras) }
+10-30 12:55:02.601   675   870 D ShortcutService: changing package: com.google.android.apps.docs userId=0
+10-30 12:55:02.632   675   986 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 10146, code = READ_CELL_BROADCASTS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.633   675   853 I AppWidgetServiceImpl: Received broadcast: android.intent.action.PACKAGE_CHANGED on user 0
+10-30 12:55:02.641   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:02.693   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:02.739   675   949 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = READ_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.754   675   740 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = RECEIVE_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.754   675   740 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = RECEIVE_WAP_PUSH, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.754   675   740 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = SEND_SMS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.754   675   740 W AppOpService: Ignored setUidMode call for runtime permission app op: uid = 1001, code = READ_CELL_BROADCASTS, mode = allow, callingUid = 1001, oldMode = allow
+10-30 12:55:02.919   675   675 W Looper  : Slow dispatch took 169ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=android.app.LoadedApk$ReceiverDispatcher$Args$$ExternalSyntheticLambda0@7cf1d24 m=0
+10-30 12:55:02.920   675   675 W Looper  : Slow delivery took 287ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=android.app.LoadedApk$ReceiverDispatcher$Args$$ExternalSyntheticLambda0@6e3253 m=0
+10-30 12:55:02.920   675   895 W Looper  : Slow dispatch took 179ms android.perm app=system_server main=false group=FOREGROUND h=android.os.Handler c=com.android.internal.infra.ServiceConnector$Impl$$ExternalSyntheticLambda2@d46ecbc m=0
+10-30 12:55:03.048   675   895 W Looper  : Slow dispatch took 105ms android.perm app=system_server main=false group=FOREGROUND h=android.os.Handler c=android.app.LoadedApk$ServiceDispatcher$RunConnection@f6c79a2 m=0
+10-30 12:55:03.054   675   870 D ShortcutService: received package broadcast intent: Intent { act=android.intent.action.PACKAGE_CHANGED dat=package: flg=0x45000010 pkg=android (has extras) }
+10-30 12:55:03.054   675   870 D ShortcutService: changing package: com.google.android.gms userId=0
+10-30 12:55:03.096   675   675 W Looper  : Slow dispatch took 113ms main app=system_server main=true group=FOREGROUND h=android.app.ActivityThread$H c=android.app.LoadedApk$ReceiverDispatcher$Args$$ExternalSyntheticLambda0@285b4d9 m=0
+10-30 12:55:03.107   675   675 V ConditionProviders: enabling condition provider for 0: ComponentInfo{com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.azr.impl.AzrConditionProviderService}
+10-30 12:55:03.107   675   675 V ConditionProviders: Not registering ComponentInfo{com.google.android.apps.wellbeing/com.google.android.apps.wellbeing.azr.impl.AzrConditionProviderService} is already bound
+10-30 12:55:03.232   675   675 W Looper  : Drained
+10-30 12:55:03.416   675   743 I AppWidgetServiceImpl: getInstalledProvidersForProfiles() 0
+10-30 12:55:03.460   675   707 D CompatChangeReporter: Compat change id reported: 151861875; UID 10136; state: ENABLED
+10-30 12:55:03.512   675   708 W ActivityManager: Slow operation: 52ms so far, now at startProcess: returned from zygote!
+10-30 12:55:03.533   675   708 W ActivityManager: Slow operation: 74ms so far, now at startProcess: done updating battery stats
+10-30 12:55:03.534   675   708 W ActivityManager: Slow operation: 74ms so far, now at startProcess: building log message
+10-30 12:55:03.534   675   708 I ActivityManager: Start proc 3072:com.google.android.partnersetup/u0a136 for broadcast {com.google.android.partnersetup/com.google.android.partnersetup.BootReceiver}
+10-30 12:55:03.534   675   708 W ActivityManager: Slow operation: 74ms so far, now at startProcess: starting to update pids map
+10-30 12:55:03.534   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:03.534   675   708 W ActivityManager: Slow operation: 74ms so far, now at startProcess: done updating pids map
+10-30 12:55:03.561   675   795 V AccessibilityManagerService: onUserStateChangedLocked for userId: 0, forceUpdate: false
+10-30 12:55:03.562   675   795 W MagnificationConnectionManager: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-30 12:55:03.575   675   795 V AccessibilityManagerService: onUserStateChangedLocked for userId: 0, forceUpdate: false
+10-30 12:55:03.575   675   795 W MagnificationConnectionManager: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-30 12:55:03.715   675  1935 D CompatChangeReporter: Compat change id reported: 311402873; UID 10136; state: ENABLED
+10-30 12:55:03.715   675  1935 D CompatChangeReporter: Compat change id reported: 323349338; UID 10136; state: ENABLED
+10-30 12:55:03.792   675   708 W ActivityManager: Slow operation: 73ms so far, now at startProcess: returned from zygote!
+10-30 12:55:03.793   675   708 W ActivityManager: Slow operation: 73ms so far, now at startProcess: done updating battery stats
+10-30 12:55:03.793   675   708 W ActivityManager: Slow operation: 73ms so far, now at startProcess: building log message
+10-30 12:55:03.793   675   708 I ActivityManager: Start proc 3089:com.google.android.projection.gearhead:car/u0a133 for broadcast {com.google.android.projection.gearhead/com.google.android.apps.auto.carservice.gmscorecompatstub.StubComponentInitReceiver}
+10-30 12:55:03.793   675   708 W ActivityManager: Slow operation: 73ms so far, now at startProcess: starting to update pids map
+10-30 12:55:03.793   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:03.793   675   708 W ActivityManager: Slow operation: 73ms so far, now at startProcess: done updating pids map
+10-30 12:55:03.898  1447  2135 W FileUtils: Failed to chmod(/data/user/0/com.google.android.gsf/files): android.system.ErrnoException: chmod failed: ENOENT (No such file or directory)
+10-30 12:55:03.948  3072  3072 V ActivityThread: getPackageInfo() caused update to cached ApplicationInfo for package com.google.android.partnersetup
+10-30 12:55:04.067   675  1958 D CompatChangeReporter: Compat change id reported: 311208629; UID 10136; state: ENABLED
+10-30 12:55:04.079   675  1859 D CompatChangeReporter: Compat change id reported: 297989574; UID 10136; state: ENABLED
+10-30 12:55:04.095   675   708 I ActivityManager: Start proc 3111:com.google.android.photopicker/u0a197 for broadcast {com.google.android.photopicker/com.android.photopicker.PhotopickerDeviceConfigReceiver}
+10-30 12:55:04.095   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:04.277   675  1958 W JobScheduler: Job didn't exist in JobStore: 27bd374 #u0a136/8192 com.google.android.partnersetup/.ClientIdJobService
+10-30 12:55:04.490   675   708 I ActivityManager: Start proc 3126:com.android.externalstorage/u0a108 for broadcast {com.android.externalstorage/com.android.externalstorage.MountReceiver}
+10-30 12:55:04.490   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:04.618   675   707 D CompatChangeReporter: Compat change id reported: 151861875; UID 10167; state: ENABLED
+10-30 12:55:04.647   675   708 I ActivityManager: Start proc 3139:com.google.android.apps.photos/u0a167 for broadcast {com.google.android.apps.photos/com.google.android.apps.photos.sdcard.envcache.ExternalStorageStateChangeBroadcastReceiver}
+10-30 12:55:04.647   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:05.087   675   771 D ActivityManager: freezing 1775 com.google.android.apps.wallpaper
+10-30 12:55:05.491   675   707 D CompatChangeReporter: Compat change id reported: 151861875; UID 10138; state: ENABLED
+10-30 12:55:05.508   675   761 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.508   675   761 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.510   675   708 I ActivityManager: Start proc 3157:com.google.android.settings.intelligence/u0a138 for broadcast {com.google.android.settings.intelligence/com.google.android.settings.intelligence.modules.contextualcards.impl.JobBootBroadcastReceiver}
+10-30 12:55:05.511   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:05.583   675   949 D CompatChangeReporter: Compat change id reported: 311402873; UID 10167; state: ENABLED
+10-30 12:55:05.583   675   949 D CompatChangeReporter: Compat change id reported: 323349338; UID 10167; state: ENABLED
+10-30 12:55:05.583   675   949 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.603  3139  3139 V ActivityThread: getPackageInfo() caused update to cached ApplicationInfo for package com.google.android.apps.photos
+10-30 12:55:05.606  3139  3139 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.photos
+10-30 12:55:05.625   675   740 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.631   675   949 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.640   675   949 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.642   675   949 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.687   675  1859 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.694   675   949 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.728  3139  3139 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.photos
+10-30 12:55:05.746   675   949 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.753   675   986 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.756   675   949 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.768   675  1859 E JobScheduler.JobStatus: App com.google.android.apps.photos became active but still in NEVER bucket
+10-30 12:55:05.795   675   740 D CompatChangeReporter: Compat change id reported: 311208629; UID 10167; state: ENABLED
+10-30 12:55:05.802  3139  3139 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.apps.photos
+10-30 12:55:05.922   675  1935 D CompatChangeReporter: Compat change id reported: 311402873; UID 10138; state: ENABLED
+10-30 12:55:05.922   675  1935 D CompatChangeReporter: Compat change id reported: 323349338; UID 10138; state: ENABLED
+10-30 12:55:05.985   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:06.012   675   708 I ActivityManager: Start proc 3195:com.android.chrome/u0a153 for broadcast {com.android.chrome/com.google.android.apps.chrome.rlz.RevenueStatsConfigurationUpdateReceiver}
+10-30 12:55:06.012   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:06.056  3157  3157 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.settings.intelligence
+10-30 12:55:06.093  3157  3157 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.settings.intelligence
+10-30 12:55:06.099   675   761 E JobScheduler.Quota: <0>com.android.chrome has 0 EJ quota without running anything
+10-30 12:55:06.103   675   761 E JobScheduler.Quota: <0>com.android.chrome has 0 EJ quota without running anything
+10-30 12:55:06.104   675   761 E JobScheduler.Quota: <0>com.android.chrome has 0 EJ quota without running anything
+10-30 12:55:06.110  3157  3157 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.settings.intelligence
+10-30 12:55:06.116   675   986 D CompatChangeReporter: Compat change id reported: 311208629; UID 10138; state: ENABLED
+10-30 12:55:06.130  3157  3157 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.settings.intelligence
+10-30 12:55:06.135  3157  3157 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.settings.intelligence
+10-30 12:55:06.157   675   986 I AppWidgetServiceImpl: getAppWidgetIds() 0
+10-30 12:55:06.167   675   949 I AppWidgetServiceImpl: getInstalledProvidersForProfiles() 0
+10-30 12:55:06.169   675   949 I AppWidgetServiceImpl: notifyProviderInheritance() 0
+10-30 12:55:06.170  3157  3157 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.settings.intelligence
+10-30 12:55:06.172  3157  3157 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.settings.intelligence
+10-30 12:55:06.180   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:06.202  3157  3157 W ActivityThread: getPackageInfo() called with an older ApplicationInfo than the cached version for package com.google.android.settings.intelligence
+10-30 12:55:06.203   675  1586 I BroadcastQueue: BOOT_COMPLETED_BROADCAST_COMPLETION_LATENCY_REPORTED action:android.intent.action.BOOT_COMPLETED dispatchLatency:386 completeLatency:40011 dispatchRealLatency:386 completeRealLatency:40011 receiversSize:117 userId:0 userType:android.os.usertype.full.SYSTEM
+10-30 12:55:06.205   675   698 I ActivityManager: Finished processing BOOT_COMPLETED for u0
+10-30 12:55:06.259   675   986 W ActivityManager: pid 3157 com.google.android.settings.intelligence sent binder code 6 with flags 2 to frozen apps and got error -74
+10-30 12:55:06.973   675   771 D ActivityManager: freezing 2228 com.android.imsserviceentitlement
+10-30 12:55:06.996   675   732 W PackageSettings: Skipping PackageSetting{68e703d io.github.shijijs.video_viewer/10213} due to missing metadata
+10-30 12:55:07.190   675   986 D OomAdjuster: Not killing cached processes
+10-30 12:55:07.392   675   981 I MR2ServiceImpl: registerManager | callerUid: 1000, callerPid: 1138, callerPackage: com.android.settings, targetPackageName: com.android.settings, targetUserId: UserHandle{0}, hasMediaRoutingControl: true
+10-30 12:55:07.396   675   981 I MR2ServiceImpl: registerManager | callerUid: 1000, callerPid: 1138, callerPackage: com.android.settings, targetPackageName: null, targetUserId: UserHandle{0}, hasMediaRoutingControl: true
+10-30 12:55:07.407   675   981 I MR2ServiceImpl: updateScanningState | manager: 2, ownerPackageName: com.android.settings, targetPackageName: com.android.settings, scanningState: SCREEN_ON_ONLY
+10-30 12:55:07.408   675   864 I MR2ServiceImpl: Updating composite discovery preference | preference: RouteDiscoveryRequest{ preferredFeatures={}, activeScan=false }, active routers: []
+10-30 12:55:07.472  1138  1146 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:2002 android.content.ContextWrapper.startService:855 com.android.settings.network.NetworkDashboardFragment.buildPreferenceControllers:98 com.android.settings.network.NetworkDashboardFragment.-$$Nest$smbuildPreferenceControllers:0 com.android.settings.network.NetworkDashboardFragment$1.createPreferenceControllers:120 
+10-30 12:55:08.007  1138  1147 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.startService:2002 android.content.ContextWrapper.startService:855 com.android.settings.network.NetworkDashboardFragment.buildPreferenceControllers:98 com.android.settings.network.NetworkDashboardFragment.-$$Nest$smbuildPreferenceControllers:0 com.android.settings.network.NetworkDashboardFragment$1.createPreferenceControllers:120 
+10-30 12:55:08.466   675  1586 I Telecom : PhoneAccountRegistrar: getSimCallManager: SimCallManager for subId 1 queried, returning: null: TSI.gPA(cas)@AHs🔒
+10-30 12:55:08.606   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:08.629   675   708 I ActivityManager: Start proc 3260:com.google.android.accessibility.switchaccess/u0a158 for content provider {com.google.android.accessibility.switchaccess/com.google.android.accessibility.switchaccess.systemsettings.search.SwitchAccessSearchIndexablesProvider}
+10-30 12:55:08.629   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:08.707   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:08.719   675  1586 D ActivityManager: sync unfroze 1448 com.google.android.cellbroadcastreceiver for 7
+10-30 12:55:08.726   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:08.739   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:08.747   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:08.770   675   708 I ActivityManager: Start proc 3285:com.google.android.gms.ui/u0a144 for content provider {com.google.android.gms/com.google.android.gms.app.search.GmsSearchIndexablesProvider}
+10-30 12:55:08.770   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:09.224   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:09.250   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:09.281   675   708 I ActivityManager: Start proc 3328:com.google.android.marvin.talkback/u0a160 for content provider {com.google.android.marvin.talkback/com.google.android.accessibility.talkback.preference.search.TalkBackSearchIndexablesProvider}
+10-30 12:55:09.281   675   708 I ActivityManager: ProcessObserver broadcast disabled
+10-30 12:55:09.778   675   981 D BiometricService: canAuthenticate: User=0, Caller=0, Authenticators=65536
+10-30 12:55:09.779   675   981 D BiometricService/PreAuthInfo: getCanAuthenticateInternal Modality: 0 AuthenticatorStatus: 13
+10-30 12:55:09.780   675   981 D AuthService: canAuthenticate, userId: 0, callingUserId: 0, authenticators: 65536, result: 20
+10-30 12:55:09.783   675   981 D BiometricService: canAuthenticate: User=0, Caller=0, Authenticators=15
+10-30 12:55:09.784   675   981 D BiometricService/PreAuthInfo: Package: com.google.android.gms Sensor ID: 0 Modality: 2 User id: 0 Status: 7
+10-30 12:55:09.785   675   981 D BiometricService/PreAuthInfo: getCanAuthenticateInternal Modality: 2 AuthenticatorStatus: 7
+10-30 12:55:09.785   675   981 D AuthService: canAuthenticate, userId: 0, callingUserId: 0, authenticators: 15, result: 11
+10-30 12:55:10.967   675   771 D ActivityManager: freezing 1966 com.google.android.dialer
+10-30 12:55:12.271   675  1586 D OomAdjuster: Not killing cached processes
+10-30 12:55:13.110   251  2396 I keystore2: system/security/keystore2/watchdog/src/lib.rs:377 - Watchdog thread idle -> terminating. Have a great day.
+10-30 12:55:13.902   675   771 D ActivityManager: freezing 2453 com.google.android.deskclock
+10-30 12:55:14.479   675   771 D ActivityManager: freezing 3111 com.google.android.photopicker
+10-30 12:55:14.590   675   981 W ActivityManager: stopServiceToken startId 83 is last, but have 1 remaining args
+10-30 12:55:14.641   675   771 D ActivityManager: freezing 3126 com.android.externalstorage
+10-30 12:55:15.303   675   771 D ActivityManager: freezing 2337 com.google.android.tts
+10-30 12:55:16.547   675   771 D ActivityManager: freezing 2533 com.google.android.onetimeinitializer
+10-30 12:55:16.599   675   771 D ActivityManager: freezing 3195 com.android.chrome
+10-30 12:55:17.227   675   771 D ActivityManager: freezing 2648 com.google.android.gms.unstable
+10-30 12:55:17.363   675   981 D OomAdjuster: Not killing cached processes
+10-30 12:55:17.625   675   771 D ActivityManager: freezing 2570 com.android.camera2
+10-30 12:55:18.326   675   771 D ActivityManager: freezing 2628 com.android.devicediagnostics
+10-30 12:55:18.612   675   771 D ActivityManager: freezing 2687 com.android.dynsystem:dynsystem
+10-30 12:55:18.613   675   771 D ActivityManager: freezing 2651 com.android.dynsystem
+10-30 12:55:18.614   675   771 D ActivityManager: freezing 2036 com.android.localtransport
+10-30 12:55:18.614   675   771 D ActivityManager: freezing 1665 com.android.keychain
+10-30 12:55:19.199   675   771 D ActivityManager: freezing 2675 com.android.managedprovisioning
+10-30 12:55:19.573   675   771 D ActivityManager: freezing 2711 com.android.providers.calendar
+10-30 12:55:19.796   675   771 D ActivityManager: freezing 2740 com.android.shell
+10-30 12:55:22.476   675   707 I ActivityManager: Waited long enough for: ServiceRecord{1113e99 u0 com.android.settings/.SettingsDumpService c:com.android.settings}
+10-30 12:55:22.530   675  1958 D OomAdjuster: Not killing cached processes
+10-30 12:55:22.664   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:22.665   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:55:24.445   675   771 D ActivityManager: freezing 2753 com.google.android.apps.docs
+10-30 12:55:24.632   675   771 D ActivityManager: freezing 2490 com.android.traceur
+10-30 12:55:24.787   675   771 D ActivityManager: freezing 2234 com.google.android.apps.messaging
+10-30 12:55:25.143   675   771 D ActivityManager: freezing 1448 com.google.android.cellbroadcastreceiver
+10-30 12:55:25.220   675   771 D ActivityManager: freezing 3260 com.google.android.accessibility.switchaccess
+10-30 12:55:25.703   675   771 D ActivityManager: freezing 3328 com.google.android.marvin.talkback
+10-30 12:55:26.813   675   771 D ActivityManager: freezing 3285 com.google.android.gms.ui
+10-30 12:55:27.089   675   771 D ActivityManager: freezing 2846 com.google.android.apps.restore
+10-30 12:55:28.210   675   771 D ActivityManager: freezing 1694 android.process.media
+10-30 12:55:28.303   675   771 D ActivityManager: freezing 2900 com.google.android.rkpdapp
+10-30 12:55:29.402   675   771 D ActivityManager: freezing 1447 com.google.android.gms
+10-30 12:55:29.820   675   771 D ActivityManager: freezing 2915 com.google.android.apps.safetyhub
+10-30 12:55:30.440   675   771 D ActivityManager: freezing 2983 com.google.android.federatedcompute
+10-30 12:55:30.440   675   771 D ActivityManager: freezing 2965 com.google.android.configupdater
+10-30 12:55:31.706   675   771 D ActivityManager: freezing 3017 com.google.android.healthconnect.controller
+10-30 12:55:32.326   675   771 D ActivityManager: freezing 3031 com.google.android.ondevicepersonalization.services
+10-30 12:55:32.979   675   895 D OomAdjuster: Not killing cached processes
+10-30 12:55:33.462   675   771 D ActivityManager: freezing 3051 com.google.android.packageinstaller
+10-30 12:55:33.875   675   771 D ActivityManager: freezing 3072 com.google.android.partnersetup
+10-30 12:55:34.199   675   771 D ActivityManager: freezing 3089 com.google.android.projection.gearhead:car
+10-30 12:55:35.795   675   771 D ActivityManager: freezing 3139 com.google.android.apps.photos
+10-30 12:55:39.873   675  1859 D OomAdjuster: Not killing cached processes
+10-30 12:55:42.590   675   707 D ActivityManager: sync unfroze 1447 com.google.android.gms for 3
+10-30 12:55:42.603   675   761 D ActivityManager: sync unfroze 1966 com.google.android.dialer for 6
+10-30 12:55:42.612   675   761 W JobServiceContext: Sending onNetworkChanged for a job that isn't started. JobStatus{25ad03b androidx.work.systemjobscheduler:u0a140/297 @androidx.work.systemjobscheduler@com.google.android.dialer/androidx.work.impl.background.systemjob.SystemJobService u=0 s=10140 TIME=-26s896ms:none NET READY}
+10-30 12:55:42.655   675   986 W ProcessStats: Tracking association SourceState{686c0c1 system/1000 ImpBg #1662} whose proc state 6 is better than process ProcessState{7e68644 com.google.android.dialer/10140 pkg=com.google.android.dialer} proc state 14 (0 skipped)
+10-30 12:55:42.711   675  1859 W JobScheduler: Job didn't exist in JobStore: 7163b10 #u0a147/-353 com.google.android.googlequicksearchbox/com.google.android.apps.gsa.tasks.BackgroundTasksJobService
+10-30 12:55:42.987   675   771 D ActivityManager: freezing 1334 com.google.android.permissioncontroller
+10-30 12:55:43.131   675   986 D CompatChangeReporter: Compat change id reported: 349487600; UID 10144; state: ENABLED
+10-30 12:55:43.784   675   771 D ActivityManager: freezing 1679 android.process.acore
+10-30 12:55:44.785   675   771 D ActivityManager: freezing 3157 com.google.android.settings.intelligence
+10-30 12:55:46.410   675   740 W ActivityManager: pid 1966 com.google.android.dialer sent binder code 24 with flags 0 to frozen apps and got error -2147483646
+10-30 12:55:46.411  1966  2300 I ActivityThread: Removing dead content provider:android.content.ContentProviderProxy@f1e7ecb
+10-30 12:55:46.412   675   986 I ActivityManager: Process android.process.acore (pid 1679) early provider death
+10-30 12:55:46.423   675   986 I ActivityManager: Process android.process.acore (pid 1679) has died: cch+5 CEM 
+10-30 12:55:46.482   675   740 V ActivityManager: Got obituary of 1679:android.process.acore
+10-30 12:55:46.482   675  1949 D CountryDetector: No listener is left
+10-30 12:55:47.060   675   741 D OomAdjuster: Not killing cached processes
+10-30 12:55:52.261   675   741 D OomAdjuster: Not killing cached processes
+10-30 12:55:52.998   675   771 D ActivityManager: freezing 1966 com.google.android.dialer
+10-30 12:55:57.710   675   741 D OomAdjuster: Not killing cached processes
+10-30 12:55:58.510   675  1370 W AdbDebuggingManager: Read failed with count -1
+10-30 12:55:58.511   675  1370 D AdbDebuggingManager: Closing socket
+10-30 12:55:58.511   675  1370 D AdbDebuggingManager: Creating socket
+10-30 12:55:58.511   675  1370 E AdbDebuggingManager: Caught an exception opening the socket: java.io.IOException: No such file or directory
+10-30 12:55:58.511   675  1370 D AdbDebuggingManager: Closing socket
+10-30 12:55:58.511   675   698 D AdbDebuggingManager: adbd socket disconnected
+10-30 12:55:58.511   675   698 D AdbDebuggingManager: adbd socket disconnected
+10-30 12:55:59.515   675  1370 D AdbDebuggingManager: Closing socket
+10-30 12:55:59.516   675   698 D AdbDebuggingManager: adbd socket disconnected
+10-30 12:55:59.947   675   771 D ActivityManager: freezing 1447 com.google.android.gms
+10-30 12:56:00.517   675  1370 D AdbDebuggingManager: Creating socket
+10-30 12:56:00.519   675   698 D AdbDebuggingManager: adbd socket connected
+10-30 12:56:00.671   675   771 D ActivityManager: freezing 1599 com.google.android.googlequicksearchbox:search
+10-30 12:56:02.280   675   771 D ActivityManager: freezing 2009 com.google.android.as.oss
+10-30 12:56:26.369   675   761 D OomAdjuster: Not killing cached processes
+10-30 12:56:26.384   675   761 D ActivityManager: sync unfroze 3157 com.google.android.settings.intelligence for 6
+10-30 12:56:26.402   675  1935 W ProcessStats: Tracking association SourceState{5d7562 system/1000 ImpBg #1705} whose proc state 6 is better than process ProcessState{babb64b com.google.android.settings.intelligence/10138 pkg=com.google.android.settings.intelligence} proc state 14 (0 skipped)
+10-30 12:56:26.452   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.455   675   741 D ActivityManager: sync unfroze 1447 com.google.android.gms for 6
+10-30 12:56:26.475   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.490   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.492   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.492   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.493   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.495   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.499   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.501   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.503   675   876 W BroadcastLoopers: Found previously unknown looper Thread[SliceManagerService,5,main]
+10-30 12:56:26.504   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.505   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.507   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.509   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.511   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.523   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.531   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:26.575   675   741 D CompatChangeReporter: Compat change id reported: 349487600; UID 1000; state: ENABLED
+10-30 12:56:32.685   675   706 D OomAdjuster: Not killing cached processes
+10-30 12:56:33.448   675   741 E PackageManager: Failure printing domain verification information
+10-30 12:56:33.448   675   741 E PackageManager: android.content.pm.PackageManager$NameNotFoundException: Package io.github.shijijs.video_viewer unavailable
+10-30 12:56:33.448   675   741 E PackageManager: 	at com.android.server.pm.verify.domain.DomainVerificationUtils.throwPackageUnavailable(DomainVerificationUtils.java:51)
+10-30 12:56:33.448   675   741 E PackageManager: 	at com.android.server.pm.verify.domain.DomainVerificationDebug.printState(DomainVerificationDebug.java:89)
+10-30 12:56:33.448   675   741 E PackageManager: 	at com.android.server.pm.verify.domain.DomainVerificationService.printState(DomainVerificationService.java:1338)
+10-30 12:56:33.448   675   741 E PackageManager: 	at com.android.server.pm.ComputerEngine.dump(ComputerEngine.java:3114)
+10-30 12:56:33.448   675   741 E PackageManager: 	at com.android.server.pm.DumpHelper.doDump(DumpHelper.java:441)
+10-30 12:56:33.448   675   741 E PackageManager: 	at com.android.server.pm.PackageManagerService$IPackageManagerImpl.dump(PackageManagerService.java:6720)
+10-30 12:56:33.448   675   741 E PackageManager: 	at android.os.Binder.doDump(Binder.java:1072)
+10-30 12:56:33.448   675   741 E PackageManager: 	at android.os.Binder.dump(Binder.java:1062)
+10-30 12:56:33.448   675   741 E PackageManager: 	at android.os.Binder.onTransact(Binder.java:932)
+10-30 12:56:33.448   675   741 E PackageManager: 	at android.content.pm.IPackageManager$Stub.onTransact(IPackageManager.java:4729)
+10-30 12:56:33.448   675   741 E PackageManager: 	at com.android.server.pm.PackageManagerService$IPackageManagerImpl.onTransact(PackageManagerService.java:6668)
+10-30 12:56:33.448   675   741 E PackageManager: 	at android.os.Binder.execTransactInternal(Binder.java:1426)
+10-30 12:56:33.448   675   741 E PackageManager: 	at android.os.Binder.execTransact(Binder.java:1365)
+10-30 12:56:36.510   675   873 D BackgroundInstallControlService: Package event received: 0
+10-30 12:56:36.590   675   771 D ActivityManager: freezing 3157 com.google.android.settings.intelligence
+10-30 12:56:41.608   675  1586 D OomAdjuster: Not killing cached processes
+10-30 12:56:50.147   675  1586 D OomAdjuster: Not killing cached processes
+10-30 12:56:52.265   675   771 D ActivityManager: freezing 1447 com.google.android.gms
+10-30 12:56:52.613   675  1586 E PackageManager: Failure printing domain verification information
+10-30 12:56:52.613   675  1586 E PackageManager: android.content.pm.PackageManager$NameNotFoundException: Package io.github.shijijs.video_viewer unavailable
+10-30 12:56:52.613   675  1586 E PackageManager: 	at com.android.server.pm.verify.domain.DomainVerificationUtils.throwPackageUnavailable(DomainVerificationUtils.java:51)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at com.android.server.pm.verify.domain.DomainVerificationDebug.printState(DomainVerificationDebug.java:89)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at com.android.server.pm.verify.domain.DomainVerificationService.printState(DomainVerificationService.java:1338)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at com.android.server.pm.ComputerEngine.dump(ComputerEngine.java:3114)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at com.android.server.pm.DumpHelper.doDump(DumpHelper.java:441)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at com.android.server.pm.PackageManagerService$IPackageManagerImpl.dump(PackageManagerService.java:6720)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at android.os.Binder.doDump(Binder.java:1072)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at android.os.Binder.dump(Binder.java:1062)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at android.os.Binder.onTransact(Binder.java:932)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at android.content.pm.IPackageManager$Stub.onTransact(IPackageManager.java:4729)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at com.android.server.pm.PackageManagerService$IPackageManagerImpl.onTransact(PackageManagerService.java:6668)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at android.os.Binder.execTransactInternal(Binder.java:1426)
+10-30 12:56:52.613   675  1586 E PackageManager: 	at android.os.Binder.execTransact(Binder.java:1365)

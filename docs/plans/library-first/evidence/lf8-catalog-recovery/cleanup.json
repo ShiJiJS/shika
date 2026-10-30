@@ -1,0 +1,64 @@
+{
+  "restored_device_settings": {
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420",
+    "window": "0",
+    "transition": "0",
+    "animator": "0",
+    "font": "1.0",
+    "rotation": "0",
+    "accel": "1",
+    "immersive": "confirmed"
+  },
+  "exact_initial_uid_restored": true,
+  "qemu_pid_stopped": 12896,
+  "container_removed": "621dd8d82b1afdd6c293a05f015e0a402fa885562a5d3ab6a9487f1b5078fe08",
+  "no_reference_preview_started": true,
+  "proxy_pid_stopped": 23059,
+  "guest_sync_before_stop": true,
+  "original_containers_before": {
+    "/video-viewer-client-e2e-server-1": {
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "status": "running",
+      "health": "healthy"
+    },
+    "/video-viewer-history-purge-app-lf7": {
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "status": "running",
+      "health": "healthy"
+    },
+    "/video-viewer-archive-app-lf7": {
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "status": "running",
+      "health": "healthy"
+    },
+    "/video-viewer-server-1": {
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "status": "running",
+      "health": "healthy"
+    }
+  },
+  "original_containers_after": {
+    "/video-viewer-client-e2e-server-1": {
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "status": "running",
+      "health": "healthy"
+    },
+    "/video-viewer-history-purge-app-lf7": {
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "status": "running",
+      "health": "healthy"
+    },
+    "/video-viewer-archive-app-lf7": {
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "status": "running",
+      "health": "healthy"
+    },
+    "/video-viewer-server-1": {
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "status": "running",
+      "health": "healthy"
+    }
+  },
+  "no_live_database_opened_on_host": true
+}

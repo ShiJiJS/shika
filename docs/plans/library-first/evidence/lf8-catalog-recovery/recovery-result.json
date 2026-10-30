@@ -1,0 +1,648 @@
+{
+  "complete": true,
+  "normal_code": 22,
+  "runs": [
+    {
+      "kind": "video",
+      "round": 1,
+      "failure": {
+        "time": 1793336822.326661,
+        "proxy_pid": 23059,
+        "request": 26,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=24&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": "v2-r1-video-more-fail",
+        "event": "injected_failure",
+        "status": 503,
+        "authenticated_authority_header_preserved": true
+      },
+      "retry_page": {
+        "time": 1793336825.194203,
+        "proxy_pid": 23059,
+        "request": 27,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=24&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": null,
+        "event": "catalog_response",
+        "status": 200,
+        "body_sha256": "899a3c8ca60c9a5222033027df1c4c9be52cbcadd97896d53c9813c6772a43de",
+        "body_summary": {
+          "total": 27,
+          "offset": 24,
+          "limit": 24,
+          "ids": [
+            "e460d709-77c9-468b-a50b-105503f8969d",
+            "dd88a4c5-37a1-4539-9769-3a0e5901d95e",
+            "2043f3bb-48da-45ed-a093-fa0b40beea68"
+          ]
+        }
+      },
+      "anchor_preserved": true,
+      "initial_empty_retry_same_query": "NoSuch1video",
+      "held": {
+        "time": 1793336843.278841,
+        "proxy_pid": 23059,
+        "request": 64,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=0&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": "v2-r1-video-late",
+        "event": "held",
+        "status": 200,
+        "body_sha256": "54ee0682947ea3d3815d7698ec291b03af24745cb5d154b23b9a60beb48a12c4",
+        "body_summary": {
+          "total": 27,
+          "ids": [
+            "4edc7292-5bd3-4f14-a8cc-03c12f7482ad",
+            "66d5b033-31e9-474c-86d1-6f1ade4f4b3d",
+            "87a1eb44-abd0-417c-a4e1-10444e13ace1",
+            "d2849d80-9906-41e0-90e1-35f50a103084",
+            "e9408d11-1e2f-46b6-accf-19c5d6c20491",
+            "4bd421a8-141b-499f-8c78-da2605a0735d",
+            "12e4166b-b85e-42f4-b2e2-a5e01d130228",
+            "85f2e74e-bf53-4205-b6b7-32760ab27d0d",
+            "82d8cf8a-97ec-47e1-b5de-5956cc680ad5",
+            "dd429423-c018-42ee-a3a5-bd15cf28d8c8",
+            "506423ea-d19e-42a9-ba3f-9657d1fd35f2",
+            "b63fcd08-9aec-42f4-807e-8b8e7f121b16",
+            "a21ef685-fc4f-4148-a85a-ed650bd01a1b",
+            "c04a4cd4-90e7-4c2b-a209-5437cdaa35f2",
+            "916ac484-a086-4356-b0b7-c919e5f6672a",
+            "c56a4754-138c-445b-b85b-d37a0d09c713",
+            "0db32793-a21c-4a3e-88d1-9ee650c4836f",
+            "5822e7c8-613c-44ca-9926-0a295d75c1a4",
+            "22e085c5-8a04-41fd-8761-cff58c25cc23",
+            "d74ef6fc-1d95-4622-9f7b-068913fc158f",
+            "7de1c0fb-2e95-4cb8-a54b-7a5c9a789f7b",
+            "0206861f-671e-4bca-b059-61555247b4dc",
+            "ddec55ed-754a-4c39-97a9-9942e6d6b3fe",
+            "b874b52b-548a-44e9-be97-0ad8c10e7a85"
+          ]
+        }
+      },
+      "released": {
+        "time": 1793336850.697155,
+        "proxy_pid": 23059,
+        "request": 64,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=0&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": "v2-r1-video-late",
+        "event": "released",
+        "status": 200
+      },
+      "outcomes": [
+        {
+          "time": 1793336850.697411,
+          "proxy_pid": 23059,
+          "request": 64,
+          "method": "GET",
+          "path": "/api/v1/videos",
+          "query": "offset=0&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+          "rule": "v2-r1-video-late",
+          "event": "sent",
+          "status": 200,
+          "bytes": 15577
+        }
+      ],
+      "new_query_after_release": "NoLate1video"
+    },
+    {
+      "kind": "pack",
+      "round": 1,
+      "failure": {
+        "time": 1793336873.159505,
+        "proxy_pid": 23059,
+        "request": 121,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=24&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": "v2-r1-pack-more-fail",
+        "event": "injected_failure",
+        "status": 503,
+        "authenticated_authority_header_preserved": true
+      },
+      "retry_page": {
+        "time": 1793336875.827635,
+        "proxy_pid": 23059,
+        "request": 123,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=24&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": null,
+        "event": "catalog_response",
+        "status": 200,
+        "body_sha256": "5d609413c765612c172e6bfd8fd60b90294904399259913ac23e970f9683c677",
+        "body_summary": {
+          "total": 27,
+          "offset": 24,
+          "limit": 24,
+          "ids": [
+            "6aebc993-9023-4aba-a7dc-f65ff8b88baf",
+            "34b36932-da02-45f5-9c96-e6a1883018e6",
+            "050f9690-1461-4f7d-b2a6-55c6a8632751"
+          ]
+        }
+      },
+      "anchor_preserved": true,
+      "initial_empty_retry_same_query": "NoSuch1pack",
+      "held": {
+        "time": 1793336893.5627651,
+        "proxy_pid": 23059,
+        "request": 162,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=0&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": "v2-r1-pack-late",
+        "event": "held",
+        "status": 200,
+        "body_sha256": "1bfe19ab410bfe673e5b26e9166cc7cf69871c542330926df8991f53873ffe02",
+        "body_summary": {
+          "total": 27,
+          "ids": [
+            "9f196a2b-fe1b-4bc7-8212-3a31fe26cd7e",
+            "47778d37-9a6f-4102-b868-b102d6639cd4",
+            "af0a55d3-630b-41b4-a6bd-87960aef84fd",
+            "a40a961d-55ea-4732-9fcd-41610881ff8e",
+            "c870e435-6c20-43a6-95f2-b9fe040579df",
+            "a21273bf-d916-4f49-bc9c-a1f0bab7f4cd",
+            "a4632c84-5a9e-4af3-9f04-fc48bb23b44a",
+            "a67a3c67-74ea-4c93-a71a-2eb5a87a6a89",
+            "3e4e990c-1cef-47af-8aff-0b2c74882c13",
+            "fc634fc1-574c-42ac-b8fc-7d5075cd5ce8",
+            "6edb41ca-a71f-4743-b743-576f849fcb63",
+            "bbb414d6-da07-4d80-b6f5-a3a282e3c239",
+            "1d0e181e-4a67-4d1d-8d4f-e7cea7ffe79c",
+            "175bb120-fc6b-482f-b7cd-39af17388e80",
+            "b081c2b4-a496-4978-9eef-b4f90ceae9d2",
+            "072aeb58-0784-48f6-bd43-cce728cf3157",
+            "8ecefc6b-fbda-44be-8893-54011fc4411c",
+            "a8670777-5eec-45e5-a883-40539530c8ef",
+            "e731cd67-3ebf-4b3a-95e7-d1dbc2f5f451",
+            "cc014db6-0c36-4803-9ab6-2adf0d3799bd",
+            "3f57a41e-ddc0-4caa-add7-78d97d51ecdd",
+            "5bd391c5-40fb-40e9-a420-16af1532f407",
+            "6066ca51-be63-41a5-96eb-a0307544a70f",
+            "6bd8eabd-17c6-4e36-b4f8-4c8d8aea4a85"
+          ]
+        }
+      },
+      "released": {
+        "time": 1793336900.513812,
+        "proxy_pid": 23059,
+        "request": 162,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=0&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": "v2-r1-pack-late",
+        "event": "released",
+        "status": 200
+      },
+      "outcomes": [
+        {
+          "time": 1793336900.514056,
+          "proxy_pid": 23059,
+          "request": 162,
+          "method": "GET",
+          "path": "/api/v1/packs",
+          "query": "offset=0&limit=24&search=Scope&read_state=all&source=library&sort=title",
+          "rule": "v2-r1-pack-late",
+          "event": "sent",
+          "status": 200,
+          "bytes": 13878
+        }
+      ],
+      "new_query_after_release": "NoLate1pack"
+    },
+    {
+      "kind": "video",
+      "round": 2,
+      "failure": {
+        "time": 1793336922.952677,
+        "proxy_pid": 23059,
+        "request": 200,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=24&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": "v2-r2-video-more-fail",
+        "event": "injected_failure",
+        "status": 503,
+        "authenticated_authority_header_preserved": true
+      },
+      "retry_page": {
+        "time": 1793336925.8616178,
+        "proxy_pid": 23059,
+        "request": 201,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=24&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": null,
+        "event": "catalog_response",
+        "status": 200,
+        "body_sha256": "899a3c8ca60c9a5222033027df1c4c9be52cbcadd97896d53c9813c6772a43de",
+        "body_summary": {
+          "total": 27,
+          "offset": 24,
+          "limit": 24,
+          "ids": [
+            "e460d709-77c9-468b-a50b-105503f8969d",
+            "dd88a4c5-37a1-4539-9769-3a0e5901d95e",
+            "2043f3bb-48da-45ed-a093-fa0b40beea68"
+          ]
+        }
+      },
+      "anchor_preserved": true,
+      "initial_empty_retry_same_query": "NoSuch2video",
+      "held": {
+        "time": 1793336943.872546,
+        "proxy_pid": 23059,
+        "request": 238,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=0&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": "v2-r2-video-late",
+        "event": "held",
+        "status": 200,
+        "body_sha256": "54ee0682947ea3d3815d7698ec291b03af24745cb5d154b23b9a60beb48a12c4",
+        "body_summary": {
+          "total": 27,
+          "ids": [
+            "4edc7292-5bd3-4f14-a8cc-03c12f7482ad",
+            "66d5b033-31e9-474c-86d1-6f1ade4f4b3d",
+            "87a1eb44-abd0-417c-a4e1-10444e13ace1",
+            "d2849d80-9906-41e0-90e1-35f50a103084",
+            "e9408d11-1e2f-46b6-accf-19c5d6c20491",
+            "4bd421a8-141b-499f-8c78-da2605a0735d",
+            "12e4166b-b85e-42f4-b2e2-a5e01d130228",
+            "85f2e74e-bf53-4205-b6b7-32760ab27d0d",
+            "82d8cf8a-97ec-47e1-b5de-5956cc680ad5",
+            "dd429423-c018-42ee-a3a5-bd15cf28d8c8",
+            "506423ea-d19e-42a9-ba3f-9657d1fd35f2",
+            "b63fcd08-9aec-42f4-807e-8b8e7f121b16",
+            "a21ef685-fc4f-4148-a85a-ed650bd01a1b",
+            "c04a4cd4-90e7-4c2b-a209-5437cdaa35f2",
+            "916ac484-a086-4356-b0b7-c919e5f6672a",
+            "c56a4754-138c-445b-b85b-d37a0d09c713",
+            "0db32793-a21c-4a3e-88d1-9ee650c4836f",
+            "5822e7c8-613c-44ca-9926-0a295d75c1a4",
+            "22e085c5-8a04-41fd-8761-cff58c25cc23",
+            "d74ef6fc-1d95-4622-9f7b-068913fc158f",
+            "7de1c0fb-2e95-4cb8-a54b-7a5c9a789f7b",
+            "0206861f-671e-4bca-b059-61555247b4dc",
+            "ddec55ed-754a-4c39-97a9-9942e6d6b3fe",
+            "b874b52b-548a-44e9-be97-0ad8c10e7a85"
+          ]
+        }
+      },
+      "released": {
+        "time": 1793336951.618609,
+        "proxy_pid": 23059,
+        "request": 238,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=0&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": "v2-r2-video-late",
+        "event": "released",
+        "status": 200
+      },
+      "outcomes": [
+        {
+          "time": 1793336951.618995,
+          "proxy_pid": 23059,
+          "request": 238,
+          "method": "GET",
+          "path": "/api/v1/videos",
+          "query": "offset=0&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+          "rule": "v2-r2-video-late",
+          "event": "sent",
+          "status": 200,
+          "bytes": 15577
+        }
+      ],
+      "new_query_after_release": "NoLate2video"
+    },
+    {
+      "kind": "pack",
+      "round": 2,
+      "failure": {
+        "time": 1793336972.749274,
+        "proxy_pid": 23059,
+        "request": 275,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=24&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": "v2-r2-pack-more-fail",
+        "event": "injected_failure",
+        "status": 503,
+        "authenticated_authority_header_preserved": true
+      },
+      "retry_page": {
+        "time": 1793336975.4048908,
+        "proxy_pid": 23059,
+        "request": 276,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=24&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": null,
+        "event": "catalog_response",
+        "status": 200,
+        "body_sha256": "5d609413c765612c172e6bfd8fd60b90294904399259913ac23e970f9683c677",
+        "body_summary": {
+          "total": 27,
+          "offset": 24,
+          "limit": 24,
+          "ids": [
+            "6aebc993-9023-4aba-a7dc-f65ff8b88baf",
+            "34b36932-da02-45f5-9c96-e6a1883018e6",
+            "050f9690-1461-4f7d-b2a6-55c6a8632751"
+          ]
+        }
+      },
+      "anchor_preserved": true,
+      "initial_empty_retry_same_query": "NoSuch2pack",
+      "held": {
+        "time": 1793336993.1114051,
+        "proxy_pid": 23059,
+        "request": 311,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=0&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": "v2-r2-pack-late",
+        "event": "held",
+        "status": 200,
+        "body_sha256": "1bfe19ab410bfe673e5b26e9166cc7cf69871c542330926df8991f53873ffe02",
+        "body_summary": {
+          "total": 27,
+          "ids": [
+            "9f196a2b-fe1b-4bc7-8212-3a31fe26cd7e",
+            "47778d37-9a6f-4102-b868-b102d6639cd4",
+            "af0a55d3-630b-41b4-a6bd-87960aef84fd",
+            "a40a961d-55ea-4732-9fcd-41610881ff8e",
+            "c870e435-6c20-43a6-95f2-b9fe040579df",
+            "a21273bf-d916-4f49-bc9c-a1f0bab7f4cd",
+            "a4632c84-5a9e-4af3-9f04-fc48bb23b44a",
+            "a67a3c67-74ea-4c93-a71a-2eb5a87a6a89",
+            "3e4e990c-1cef-47af-8aff-0b2c74882c13",
+            "fc634fc1-574c-42ac-b8fc-7d5075cd5ce8",
+            "6edb41ca-a71f-4743-b743-576f849fcb63",
+            "bbb414d6-da07-4d80-b6f5-a3a282e3c239",
+            "1d0e181e-4a67-4d1d-8d4f-e7cea7ffe79c",
+            "175bb120-fc6b-482f-b7cd-39af17388e80",
+            "b081c2b4-a496-4978-9eef-b4f90ceae9d2",
+            "072aeb58-0784-48f6-bd43-cce728cf3157",
+            "8ecefc6b-fbda-44be-8893-54011fc4411c",
+            "a8670777-5eec-45e5-a883-40539530c8ef",
+            "e731cd67-3ebf-4b3a-95e7-d1dbc2f5f451",
+            "cc014db6-0c36-4803-9ab6-2adf0d3799bd",
+            "3f57a41e-ddc0-4caa-add7-78d97d51ecdd",
+            "5bd391c5-40fb-40e9-a420-16af1532f407",
+            "6066ca51-be63-41a5-96eb-a0307544a70f",
+            "6bd8eabd-17c6-4e36-b4f8-4c8d8aea4a85"
+          ]
+        }
+      },
+      "released": {
+        "time": 1793337000.125864,
+        "proxy_pid": 23059,
+        "request": 311,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=0&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": "v2-r2-pack-late",
+        "event": "released",
+        "status": 200
+      },
+      "outcomes": [
+        {
+          "time": 1793337000.126296,
+          "proxy_pid": 23059,
+          "request": 311,
+          "method": "GET",
+          "path": "/api/v1/packs",
+          "query": "offset=0&limit=24&search=Scope&read_state=all&source=library&sort=title",
+          "rule": "v2-r2-pack-late",
+          "event": "sent",
+          "status": 200,
+          "bytes": 13878
+        }
+      ],
+      "new_query_after_release": "NoLate2pack"
+    },
+    {
+      "kind": "video",
+      "round": 3,
+      "failure": {
+        "time": 1793337023.5988128,
+        "proxy_pid": 23059,
+        "request": 350,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=24&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": "v2-r3-video-more-fail",
+        "event": "injected_failure",
+        "status": 503,
+        "authenticated_authority_header_preserved": true
+      },
+      "retry_page": {
+        "time": 1793337026.4362361,
+        "proxy_pid": 23059,
+        "request": 351,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=24&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": null,
+        "event": "catalog_response",
+        "status": 200,
+        "body_sha256": "899a3c8ca60c9a5222033027df1c4c9be52cbcadd97896d53c9813c6772a43de",
+        "body_summary": {
+          "total": 27,
+          "offset": 24,
+          "limit": 24,
+          "ids": [
+            "e460d709-77c9-468b-a50b-105503f8969d",
+            "dd88a4c5-37a1-4539-9769-3a0e5901d95e",
+            "2043f3bb-48da-45ed-a093-fa0b40beea68"
+          ]
+        }
+      },
+      "anchor_preserved": true,
+      "initial_empty_retry_same_query": "NoSuch3video",
+      "held": {
+        "time": 1793337050.6338072,
+        "proxy_pid": 23059,
+        "request": 386,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=0&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": "v2-r3-video-late",
+        "event": "held",
+        "status": 200,
+        "body_sha256": "54ee0682947ea3d3815d7698ec291b03af24745cb5d154b23b9a60beb48a12c4",
+        "body_summary": {
+          "total": 27,
+          "ids": [
+            "4edc7292-5bd3-4f14-a8cc-03c12f7482ad",
+            "66d5b033-31e9-474c-86d1-6f1ade4f4b3d",
+            "87a1eb44-abd0-417c-a4e1-10444e13ace1",
+            "d2849d80-9906-41e0-90e1-35f50a103084",
+            "e9408d11-1e2f-46b6-accf-19c5d6c20491",
+            "4bd421a8-141b-499f-8c78-da2605a0735d",
+            "12e4166b-b85e-42f4-b2e2-a5e01d130228",
+            "85f2e74e-bf53-4205-b6b7-32760ab27d0d",
+            "82d8cf8a-97ec-47e1-b5de-5956cc680ad5",
+            "dd429423-c018-42ee-a3a5-bd15cf28d8c8",
+            "506423ea-d19e-42a9-ba3f-9657d1fd35f2",
+            "b63fcd08-9aec-42f4-807e-8b8e7f121b16",
+            "a21ef685-fc4f-4148-a85a-ed650bd01a1b",
+            "c04a4cd4-90e7-4c2b-a209-5437cdaa35f2",
+            "916ac484-a086-4356-b0b7-c919e5f6672a",
+            "c56a4754-138c-445b-b85b-d37a0d09c713",
+            "0db32793-a21c-4a3e-88d1-9ee650c4836f",
+            "5822e7c8-613c-44ca-9926-0a295d75c1a4",
+            "22e085c5-8a04-41fd-8761-cff58c25cc23",
+            "d74ef6fc-1d95-4622-9f7b-068913fc158f",
+            "7de1c0fb-2e95-4cb8-a54b-7a5c9a789f7b",
+            "0206861f-671e-4bca-b059-61555247b4dc",
+            "ddec55ed-754a-4c39-97a9-9942e6d6b3fe",
+            "b874b52b-548a-44e9-be97-0ad8c10e7a85"
+          ]
+        }
+      },
+      "released": {
+        "time": 1793337058.2217228,
+        "proxy_pid": 23059,
+        "request": 386,
+        "method": "GET",
+        "path": "/api/v1/videos",
+        "query": "offset=0&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+        "rule": "v2-r3-video-late",
+        "event": "released",
+        "status": 200
+      },
+      "outcomes": [
+        {
+          "time": 1793337058.222039,
+          "proxy_pid": 23059,
+          "request": 386,
+          "method": "GET",
+          "path": "/api/v1/videos",
+          "query": "offset=0&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+          "rule": "v2-r3-video-late",
+          "event": "sent",
+          "status": 200,
+          "bytes": 15577
+        }
+      ],
+      "new_query_after_release": "NoLate3video"
+    },
+    {
+      "kind": "pack",
+      "round": 3,
+      "failure": {
+        "time": 1793337079.8390641,
+        "proxy_pid": 23059,
+        "request": 424,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=24&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": "v2-r3-pack-more-fail",
+        "event": "injected_failure",
+        "status": 503,
+        "authenticated_authority_header_preserved": true
+      },
+      "retry_page": {
+        "time": 1793337082.509855,
+        "proxy_pid": 23059,
+        "request": 425,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=24&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": null,
+        "event": "catalog_response",
+        "status": 200,
+        "body_sha256": "5d609413c765612c172e6bfd8fd60b90294904399259913ac23e970f9683c677",
+        "body_summary": {
+          "total": 27,
+          "offset": 24,
+          "limit": 24,
+          "ids": [
+            "6aebc993-9023-4aba-a7dc-f65ff8b88baf",
+            "34b36932-da02-45f5-9c96-e6a1883018e6",
+            "050f9690-1461-4f7d-b2a6-55c6a8632751"
+          ]
+        }
+      },
+      "anchor_preserved": true,
+      "initial_empty_retry_same_query": "NoSuch3pack",
+      "held": {
+        "time": 1793337100.687086,
+        "proxy_pid": 23059,
+        "request": 462,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=0&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": "v2-r3-pack-late",
+        "event": "held",
+        "status": 200,
+        "body_sha256": "1bfe19ab410bfe673e5b26e9166cc7cf69871c542330926df8991f53873ffe02",
+        "body_summary": {
+          "total": 27,
+          "ids": [
+            "9f196a2b-fe1b-4bc7-8212-3a31fe26cd7e",
+            "47778d37-9a6f-4102-b868-b102d6639cd4",
+            "af0a55d3-630b-41b4-a6bd-87960aef84fd",
+            "a40a961d-55ea-4732-9fcd-41610881ff8e",
+            "c870e435-6c20-43a6-95f2-b9fe040579df",
+            "a21273bf-d916-4f49-bc9c-a1f0bab7f4cd",
+            "a4632c84-5a9e-4af3-9f04-fc48bb23b44a",
+            "a67a3c67-74ea-4c93-a71a-2eb5a87a6a89",
+            "3e4e990c-1cef-47af-8aff-0b2c74882c13",
+            "fc634fc1-574c-42ac-b8fc-7d5075cd5ce8",
+            "6edb41ca-a71f-4743-b743-576f849fcb63",
+            "bbb414d6-da07-4d80-b6f5-a3a282e3c239",
+            "1d0e181e-4a67-4d1d-8d4f-e7cea7ffe79c",
+            "175bb120-fc6b-482f-b7cd-39af17388e80",
+            "b081c2b4-a496-4978-9eef-b4f90ceae9d2",
+            "072aeb58-0784-48f6-bd43-cce728cf3157",
+            "8ecefc6b-fbda-44be-8893-54011fc4411c",
+            "a8670777-5eec-45e5-a883-40539530c8ef",
+            "e731cd67-3ebf-4b3a-95e7-d1dbc2f5f451",
+            "cc014db6-0c36-4803-9ab6-2adf0d3799bd",
+            "3f57a41e-ddc0-4caa-add7-78d97d51ecdd",
+            "5bd391c5-40fb-40e9-a420-16af1532f407",
+            "6066ca51-be63-41a5-96eb-a0307544a70f",
+            "6bd8eabd-17c6-4e36-b4f8-4c8d8aea4a85"
+          ]
+        }
+      },
+      "released": {
+        "time": 1793337107.862806,
+        "proxy_pid": 23059,
+        "request": 462,
+        "method": "GET",
+        "path": "/api/v1/packs",
+        "query": "offset=0&limit=24&search=Scope&read_state=all&source=library&sort=title",
+        "rule": "v2-r3-pack-late",
+        "event": "released",
+        "status": 200
+      },
+      "outcomes": [
+        {
+          "time": 1793337107.86309,
+          "proxy_pid": 23059,
+          "request": 462,
+          "method": "GET",
+          "path": "/api/v1/packs",
+          "query": "offset=0&limit=24&search=Scope&read_state=all&source=library&sort=title",
+          "rule": "v2-r3-pack-late",
+          "event": "sent",
+          "status": 200,
+          "bytes": 13878
+        }
+      ],
+      "new_query_after_release": "NoLate3pack"
+    }
+  ]
+}

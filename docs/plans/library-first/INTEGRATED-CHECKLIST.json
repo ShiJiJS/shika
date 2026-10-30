@@ -43,7 +43,7 @@
       "reference_state": "分类切换",
       "requirement": "视频/图包搜索、筛选、排序、批选状态互不污染；最近来源不沿用媒体库条件",
       "owner": "LF4",
-      "current_candidate": "not_checked_in_integrated_run",
+      "current_candidate": "partially_checked_in_integrated_run",
       "observations": [
         {
           "evidence": "evidence/lf8-current-navigation/README.md",
@@ -54,6 +54,11 @@
           "evidence": "evidence/lf8-current-filters/README.md",
           "scope": "Three normal21 flows plus independent video1/pack27 selection, independent initial search and cancelled pack tag append; tag tables unchanged.",
           "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-catalog-recovery/README.md",
+          "scope": "Normal22 six library read-recovery cycles preserve typed search and kind, new NoLate zero remains after old Scope response release; does not replace full sort/batch/recent requirement.",
+          "candidate_code": 22
         }
       ]
     },
@@ -115,7 +120,7 @@
       "reference_state": "长列表",
       "requirement": "超过一页时自动分页；旧请求不覆盖新筛选；失败留卡片/滚动；没有结果不扩大为全库",
       "owner": "LF2/4",
-      "current_candidate": "not_checked_in_integrated_run",
+      "current_candidate": "partially_checked_in_integrated_run",
       "observations": [
         {
           "evidence": "evidence/lf8-current-navigation/README.md",
@@ -126,6 +131,11 @@
           "evidence": "evidence/lf8-current-filters/README.md",
           "scope": "Normal21 first24 video list opens exact27-member scope; video and pack select all exact27 IDs; empty cases do not widen. Read failure and stale-request scenarios remain open.",
           "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-catalog-recovery/README.md",
+          "scope": "Normal22 library, video/pack each3: offset24 503 retains cards and exact viewport-relative anchor; manual same offset/query returns exact final3 and Scope27 visible; first-read failure retries same empty search; release old Scope27/first24 response after new zero leaves new zero. Controller23 uncancellable-late tests separate. Deep return/prepend and other explicit source combinations remain open.",
+          "candidate_code": 22
         }
       ]
     },
@@ -523,6 +533,11 @@
         {
           "evidence": "evidence/lf8-current-filters/README.md",
           "scope": "Normal22 empty summary shows active attributes, disabled preview and clear29; actual PNG inspected. Combined14 PNG retains IME, not a keyboard-free whole-page comparison.",
+          "candidate_code": 22
+        },
+        {
+          "evidence": "evidence/lf8-catalog-recovery/README.md",
+          "scope": "Normal22 real error text/retry, retained search and disabled empty preview/quick action verified. Confirmation/write failures and complete keyboard/layout states remain open.",
           "candidate_code": 22
         }
       ]

@@ -1,0 +1,18 @@
+{
+  "pid": 33328,
+  "command": "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64-headless -avd video_viewer_upgrade_36 -port 5556 -no-boot-anim -gpu host -feature -Vulkan -feature -GLDMA -feature HardwareDecoder -no-snapshot -no-metrics -crash-report-mode never -no-audio -no-window",
+  "root_not_enabled": true,
+  "no_reinstall_clear_or_launch": true,
+  "after_guest_sync_stop": true,
+  "initial_missing_apk_cause_not_proven": true,
+  "package_available": true,
+  "sha256": "a0a6bb14615951ecc04329154ed15b2ede0c2c7b0ceb6a989d7bd7af05d86fb3",
+  "attempts": [
+    {
+      "returncode": 0,
+      "output": "package:/data/app/~~9Ttq5XNA6DPK39a0yOTPTA==/io.github.shijijs.video_viewer-eKuycUwGOtvmKB2I8ZWCEw==/base.apk",
+      "time": 1793337258.912192
+    }
+  ],
+  "owned_qemu_stopped": true
+}
