@@ -4,7 +4,7 @@
 
 固定构建来源`12d6ca67ef3a8b307894468923dc08e612e02587`，两包同内部号 **22**，沿用原Windows包名/签名。含此前媒体库/图包、设置、统一文字图标与搜索焦点修复；本轮补媒体库摘要的方向、时长和格式，不改原筛选规则、阈值和两行高度。详见[实现与正常包记录](plans/library-first/LF8-CURRENT-FILTERS.md)。
 
-修前code21完整客户端791项通过，29视频/31包公开样本的筛选、跨页全选和空结果各三轮完成；修后code22通过27项相关布局/媒体库检查和分析、两包13步构建。正常code22实际显示属性摘要，清除恢复29，组合预览准确14成员；21→新22→旧22→新22三次覆盖逐次35表、完整设置/令牌/偏好及身份保持。[固定公开输入及只读复核](plans/library-first/evidence/lf8-current-filters/README.md)分开两版本与测试范围，没有重跑修后完整791项。此前搜索焦点/阅读/冷启动见[历史记录](plans/library-first/evidence/lf8-current-navigation/README.md)。
+当前code22完整客户端791项已重新执行通过，见[覆盖核对](plans/library-first/LF8-ACCEPTANCE-AUDIT.md)。该包已有摘要/清除/14准确成员和三次覆盖记录；读取恢复另补视频/图包各三轮，前后35表、完整设置/令牌和偏好保持。原[筛选阶段](plans/library-first/evidence/lf8-current-filters/README.md)分开code21三轮与code22修后27相关检查，本轮补齐当前完整套件，不改历史记录。此前搜索焦点/阅读/冷启动见[原版本记录](plans/library-first/evidence/lf8-current-navigation/README.md)。
 
 此前preview.12/rollback.12(code18)和未交付预检preview.13/rollback.13(code19)及更早包保持。code19首次旧界面自动读取播放协议创建范围的两表/两键差量单独保留，不能称全程只读。原型独立可移除，服务未改/未部署；没有正式发布或安装手机。code18的[扫描详情三轮业务证据](plans/library-first/LF8-EXPANSION-PACKAGE.md)及完整45项要求仍按原范围保留。
 

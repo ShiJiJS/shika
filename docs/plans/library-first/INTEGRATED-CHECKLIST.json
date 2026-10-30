@@ -558,5 +558,13 @@
       "current_candidate": "not_checked_in_integrated_run",
       "observations": []
     }
-  ]
+  ],
+  "coverage_audit": "ACCEPTANCE-COVERAGE.json",
+  "current_automated_baseline": {
+    "candidate_code": 22,
+    "candidate_source": "12d6ca67ef3a8b307894468923dc08e612e02587",
+    "client_tests": 791,
+    "evidence": "evidence/lf8-acceptance-audit/current22-flutter-test.log",
+    "scope": "current automated suite only, not full native/target acceptance"
+  }
 }

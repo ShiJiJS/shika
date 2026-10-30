@@ -1,0 +1,20 @@
+{
+  "app_source": "12d6ca67ef3a8b307894468923dc08e612e02587",
+  "candidate_code": 22,
+  "app_tree": "9e91bb19005c21d6da110fb7f05db155b51fa729",
+  "test_tree": "dbbfe11c2c92d2a3bbd29191751098f1d6378ed9",
+  "command": [
+    "bash",
+    "/Users/jiangxinyi/Documents/Project/video-viewer/scripts/dev.sh",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded"
+  ],
+  "cwd": "/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile",
+  "exit_code": 0,
+  "passed": 791,
+  "log_sha256": "8f1e05f15e5cef0e220757ce80938b5053304454b557daabbc7962742e9bba9f",
+  "server_full_suite_reused_without_rerun": 462
+}

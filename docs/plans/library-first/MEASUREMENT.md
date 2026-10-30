@@ -1,6 +1,6 @@
 # 视觉与目标设备测量约定
 
-原型参考：`design/reference/library-first/`。截图只使用合成素材/仓库公开演示视频；当前原生版本保留旧导航，不能拿 LF0 截图宣称 LF4/LF8 已通过。
+原型参考：`design/reference/library-first/`。截图只使用合成素材/仓库公开演示视频。LF0历史截图保留旧导航；当前候选已实现四入口，见[当前进度](PROGRESS-CURRENT.md)，不能拿LF0截图宣称LF4/LF8已通过。
 
 ## 视觉
 

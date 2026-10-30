@@ -1,0 +1,1844 @@
+{
+  "candidate_code": 22,
+  "candidate_source": "12d6ca67ef3a8b307894468923dc08e612e02587",
+  "app_tree": "9e91bb19005c21d6da110fb7f05db155b51fa729",
+  "original_requirements_sha256": "b21b22386ee6cd034376576c6e9bd15dcd4fe1349acb684d62ad03d1f0238261",
+  "server_source": "b79da7b9c4d2ab099c055b8eb855904e32abb0a5",
+  "server_tree": "895f69bac7104a9d532f565693fdf0a8bf26f71e",
+  "server_runtime_files": {
+    "video_viewer/__init__.py": "a983d1f2d35f5b249842b8bed8ad07c83e7c60e0ccef60d1a5beda178cc759bf",
+    "video_viewer/app.py": "9fbda7baea2aa904b202adfa8cf4fe1c7a4e98d53db686d50873ebedf82f1152",
+    "video_viewer/authority.py": "814bc0b728c47ed2f326d5d60eec59e14b945f0086274832f25950a3e98c3526",
+    "video_viewer/backup_archive.py": "9090dd747f42a0f45626f5ade1917ffbcf1afbbec8925d477d24483410162f98",
+    "video_viewer/backup_format.py": "8767eddd075e77e79014a227ec6a64b53b987f3abf9383101283411a2c578653",
+    "video_viewer/backup_history.py": "ca668f1c2b61efff732b19bb1d93247ccca5aa65e9cdb7766f9ca72ee333fb37",
+    "video_viewer/backup_history_purge.py": "7563222656346564240f0dd6af4e67df7e873b195a6dd20b9c697fcd1727f01f",
+    "video_viewer/backup_reconcile.py": "5170d2f87ed8b044d8cc7472da1c8d04e38754656c27aeaee83ef2ff706d69c5",
+    "video_viewer/backup_restore_graph.py": "01ac73859c98c51c70b6562596eee70ea5ac6d74de80dcdebde74549622369bf",
+    "video_viewer/backup_v2_schema.py": "582374d51d61b4c1b91db97506d17a39d5127c40a1c37fc86414fb0fdb3b9d40",
+    "video_viewer/backups.py": "d769b4fe2f9041a8f347a8904fd6aa09a0ed828828291c7ac07bb349a0728a38",
+    "video_viewer/catalog.py": "364910d5cd61dd254ea6fb1fabec180e11129b397f4ca3e871cb5ba6c3225b73",
+    "video_viewer/catalog_selection.py": "c94d296f2def642f38ec5d33400b466de991f06f7aa8d29434cdc43324413207",
+    "video_viewer/config.py": "b7f654492d232ec106a5920266658669ab37ec88db94190dcda924f84dae5c64",
+    "video_viewer/db.py": "d36cfd2adec1b079219ec0170b712aefb3e065c02e72b28821ec0ab1078895b2",
+    "video_viewer/directory_identity.py": "4f662b772d96d2e41fe2a8e874ec298af0dabe493ae5be9a8cac6be058b914a1",
+    "video_viewer/errors.py": "e6ef491c2be06d706eefa68a790c6466673e67af3644225cf5780c5c20cf6021",
+    "video_viewer/file_operations.py": "390e3a9278b74d172eb3415b5f6ca4dcdcef06d2c3023fce45a762d89f34cbbe",
+    "video_viewer/file_state.py": "15ac9a0d4fa3ff3ae85048807c22a83a69b65afc4956d596935b73823dc61913",
+    "video_viewer/file_transfer.py": "b2a6a39aa816c8cad4f56ae5a065677de2cc26771dd453248f8b27faa3e88993",
+    "video_viewer/identity.py": "0b1bebd58049332af9d9f5a1065db783a51dc80109a7cca6ffff830fe4a7caf8",
+    "video_viewer/image_probe.py": "1b1eff2087abbe1177ca0fa57ab8bea203bd487c133578f793205f5532017f36",
+    "video_viewer/images.py": "27be0f8f04719fc80b233156b028ea70ee065157f147cf11e92d9de39b17b681",
+    "video_viewer/library_state.py": "a3e2322e428907f96361a04a4bf7e5574d224cd930903717b52b18e3444f8b35",
+    "video_viewer/maintenance_tasks.py": "1356714f526ac449e67bd117b0b82f35e0590817b16e777cd4b9364dc2205c6d",
+    "video_viewer/management_archives.py": "8e9679d2c47d0527fc54fdd731fe8cac5ce8830fb54c535b880fd525e62dde2e",
+    "video_viewer/management_backup_api.py": "b38c90be8d1fe662914fd69ecbdd385abe034a212420f4da2a54358f2726589f",
+    "video_viewer/management_history.py": "e9d0d1e473cddf2944814ea39df96dd7ddb7cb9cbc78fb52e11ad15c7309a4fb",
+    "video_viewer/management_history_api.py": "0684749c379d86269e3a347e43197847fce96a41f035b7f95465d915d4f15c06",
+    "video_viewer/media.py": "6e8f26c5728fe1298b344c3b7bd61703da1500af1d493a8e92682111aa65b0a4",
+    "video_viewer/media_roots.py": "652528b2e7511db1ae452219d60f99b96d213174ce5b2803baf69456401811df",
+    "video_viewer/metadata_cleanup.py": "d599d2584622cb8121cb0ad88fb19ee5790190b6b0652f04fa9c6a09dd429bf4",
+    "video_viewer/models.py": "29decab51244c69b3e7f12d2c21d5529ef67ed58f2583b49d2681829f68b8c8f",
+    "video_viewer/pack_api.py": "1f988822420dbce617126f945b07bbfad888eb1b633bd8ce074aa78b5949dde2",
+    "video_viewer/pack_missing.py": "b472a605d2f3d702835249b71214dd6fa5641038b18bcf4f164954554a3ed348",
+    "video_viewer/pack_operations.py": "0246d4cafe1eb236afa945b732b5249a110b94302d367ea67d37f6ed2e47ed5e",
+    "video_viewer/pack_operations_api.py": "c7f649652bf44829c92098f59e4aa09069d5323a8aae45dc3e40e2a92540c145",
+    "video_viewer/pack_presentation.py": "c1210d8136e418d2e1913d471b232bb4c5c8eac4c06e6705579a6be4af26f81c",
+    "video_viewer/pack_purge.py": "02c0bd81381f7f96985e04b0e28e31be9afe1b82b4c85e94a02a2275b4d0bd53",
+    "video_viewer/pack_purge_io.py": "288e0853683614688997e7cce98508cac0a8c589c474bcdc7d5bad1cf05a6842",
+    "video_viewer/pack_purge_manifest.py": "e38cdb706bd4e0e45044eb8fa11fce6e7e79cfe1bd6ba7048f14d6e5d7c12c8c",
+    "video_viewer/pack_purge_plans.py": "ea1d3849733c3ef49eb8778269078074291458d96e32397fd2610b791eb426bf",
+    "video_viewer/pack_restore_plans.py": "bb584b1d6ca824ff67b8a144bf841aa7553046c22e8e3b2e785db800049f8162",
+    "video_viewer/pack_root_evidence.py": "dd8e7815e4d6c7ea7903b7d80ae38c1462b122affedb3a59e72f56532dea7dd0",
+    "video_viewer/pack_scanner.py": "3cb1c094cf3b9f188dd95069151f1b4c99cf1696f98ccfaadcb13cce3974e625",
+    "video_viewer/pack_tags.py": "f38b06591cd748a05fc29e60fd1b0155bb98baf56bcbed452cf55f9460b270d4",
+    "video_viewer/pack_title_order.py": "1f5ac0f0044f6a4c2c364cc99d3b6ca5bdf9eacc0ab95a7cd64c92acd00a3648",
+    "video_viewer/packs.py": "8bc94416cd0b3b89a92afb78859b63980c28564cddb00be8a71c3fd0f2911108",
+    "video_viewer/paths.py": "ceb27eab3d238a00368f93e5138751e415410b4269a03d0fef65fce652f95fc5",
+    "video_viewer/playback.py": "48889b2b63fc6d2daeb6da94efdef3c500e4c28a6dffb987f14316a80577f838",
+    "video_viewer/playback_defaults.py": "98187725b972937f47cdcc1db45c98812cab70e064f91fa64892778c0c9ad557",
+    "video_viewer/reading.py": "6ba77ef01d5ad1149bdaa92f100e71b16400c4809ad0685a953867f968a7aeae",
+    "video_viewer/reading_api.py": "48b9cb0ffe29afa60ff36f9fd24ee79c59cc7a8e2682c5cc230014026d9362cd",
+    "video_viewer/requests.py": "6037fa74fc4852f707b455a656e01901f0869caf429f072e3cdd4a37ad65b585",
+    "video_viewer/scanner.py": "38a7c22cc9542de4c38a295ddca5a6aa5e78d3f3bd6a10949cf4331157ebeb44",
+    "video_viewer/security.py": "628873a6e1822263621102735ddccbd33d33cb6433161d446b3a23ce7d804b96",
+    "video_viewer/streaming.py": "83df7543736dc809f71f64f57f9c3a3eacf8d8b9780d526bf2d3d5820bff753e",
+    "video_viewer/tags.py": "ad30411e1e9e2b2f785949cfe30500df884a11950f02480317fb3658c37ffd5b",
+    "migrations/env.py": "ff059c781a15f6cc0b05461ff0598ffc04121ac95ee940d3b6ab2d90768060ee",
+    "migrations/versions/0001_catalog.py": "9b5c0a3ccdfee3a9670c0a447bc24b1a308ab6a511f9b33920b8b349637c9402",
+    "migrations/versions/0002_playback.py": "1b0e6e6cf158a2215a89413103a0b92b399d9fef0e50fc20fe654dbde2af357d",
+    "migrations/versions/0003_tags.py": "c04fc60189e2d4c3bc005dbcc1b0badb1c2746f97106228209ba866d352c105c",
+    "migrations/versions/0004_file_operations.py": "f1221468853e4231afef566cd0ffaca303ecd31f6dd8bae0b866b706c117d3e4",
+    "migrations/versions/0005_media_types.py": "0265de1b4908939933f3b892a612e719b2cec1b554fda3cee883a2cc0befc356",
+    "migrations/versions/0006_pack_directory_evidence.py": "202ac3e8df823e5323b4731b4517a2eac335b427a26e20d04514c3877a8827ec",
+    "migrations/versions/0007_fixed_video_sessions.py": "28a82d514e9ef1c98f1dd4c56b4b4e38e4b3712359f312fd3afb677431cec171",
+    "migrations/versions/0008_video_sequence_revision.py": "02e96b9c9ca93fbde7714edae587000b037822a33a7b01cceddc6e57ac3594cf",
+    "migrations/versions/0009_pack_reading_state.py": "03d40b4e840c4ec1523ad41908e1d2dcac6b0838df63d68dd5ae958c93aa888a",
+    "migrations/versions/0010_pack_purge_plans.py": "9fc2f0040ecda6869761622787c4851be5fb8b451aaf51e2931c2c78fe687424",
+    "migrations/versions/0011_pack_purge_execution.py": "cc65950d0c1cc742dd3d24d44ffb8c0ec1da6f94ded995e5e3ff0d1137612877",
+    "migrations/versions/0012_pack_restore_plans.py": "d67a0581b9af3ddb70f465aca1956141a607fd4c0797a3ac1d8f75c892122e28",
+    "migrations/versions/0013_pack_missing_cleanup.py": "ff39d9b3360328203ed18627c135b378c8cb0b81c63333b4a9845287b625c052",
+    "migrations/versions/0014_management_authority.py": "6a320647f23e88d0a3d40ae3d75e76d2ee117367a59f9c611d8570ef9d24720a"
+  },
+  "server_test_count_reused": 462,
+  "server_suite_rerun_this_audit": false,
+  "current_client_tests": 791,
+  "current_client_log_sha256": "8f1e05f15e5cef0e220757ce80938b5053304454b557daabbc7962742e9bba9f",
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "families": {
+    "scanner": {
+      "baseline_source": "b79da7b9c4d2ab099c055b8eb855904e32abb0a5",
+      "historical_evidence": "evidence/lf8-upgrade-rollback/README.md",
+      "code_entries": [
+        {
+          "path": "services/server/video_viewer/pack_scanner.py",
+          "baseline_sha256": "3cb1c094cf3b9f188dd95069151f1b4c99cf1696f98ccfaadcb13cce3974e625",
+          "current_sha256": "3cb1c094cf3b9f188dd95069151f1b4c99cf1696f98ccfaadcb13cce3974e625",
+          "same": true
+        },
+        {
+          "path": "services/server/video_viewer/images.py",
+          "baseline_sha256": "27be0f8f04719fc80b233156b028ea70ee065157f147cf11e92d9de39b17b681",
+          "current_sha256": "27be0f8f04719fc80b233156b028ea70ee065157f147cf11e92d9de39b17b681",
+          "same": true
+        },
+        {
+          "path": "services/server/video_viewer/pack_api.py",
+          "baseline_sha256": "1f988822420dbce617126f945b07bbfad888eb1b633bd8ce074aa78b5949dde2",
+          "current_sha256": "1f988822420dbce617126f945b07bbfad888eb1b633bd8ce074aa78b5949dde2",
+          "same": true
+        }
+      ],
+      "tests": [
+        {
+          "path": "services/server/tests/test_packs.py",
+          "sha256": "b4f1ae1c1233750fe80bfa1475edb094de692b54ee843e911c683feb70b21773"
+        },
+        {
+          "path": "services/server/tests/test_pack_continuation.py",
+          "sha256": "32a3537e4f5457defc481adb76faffeb16c337543875819c329cb007b2c16eb9"
+        }
+      ],
+      "changed_library_files": [],
+      "changed_ui_files": [
+        "apps/mobile/lib/app/app_shell.dart",
+        "apps/mobile/lib/app/media_workspace.dart",
+        "apps/mobile/lib/features/library/pack_catalog_page.dart",
+        "apps/mobile/lib/features/library/video_catalog_page.dart",
+        "apps/mobile/lib/features/packs/pack_file_action.dart",
+        "apps/mobile/lib/features/packs/pack_purge_result.dart",
+        "apps/mobile/lib/features/packs/pack_purge_review.dart",
+        "apps/mobile/lib/features/packs/pack_purge_selection_page.dart",
+        "apps/mobile/lib/features/packs/pack_reader_page.dart",
+        "apps/mobile/lib/features/packs/pack_reading_session.dart",
+        "apps/mobile/lib/features/packs/pack_sheets.dart",
+        "apps/mobile/lib/features/packs/pack_trash_page.dart",
+        "apps/mobile/lib/features/preview/video_preview_route.dart",
+        "apps/mobile/lib/features/settings/archive_backup_page.dart",
+        "apps/mobile/lib/features/settings/default_settings_sheet.dart",
+        "apps/mobile/lib/features/settings/maintenance_task_detail.dart",
+        "apps/mobile/lib/features/settings/maintenance_tasks_page.dart",
+        "apps/mobile/lib/features/settings/media_root_sheet.dart",
+        "apps/mobile/lib/features/settings/missing_media_page.dart",
+        "apps/mobile/lib/features/settings/purge_history_page.dart",
+        "apps/mobile/lib/ui/home.dart",
+        "apps/mobile/lib/ui/media_tag_editor.dart",
+        "apps/mobile/lib/ui/paper.dart",
+        "apps/mobile/lib/ui/paper_appearance.dart",
+        "apps/mobile/lib/ui/paper_checkbox.dart",
+        "apps/mobile/lib/ui/paper_controls.dart",
+        "apps/mobile/lib/ui/paper_dropdown.dart",
+        "apps/mobile/lib/ui/paper_expansion.dart",
+        "apps/mobile/lib/ui/paper_form.dart",
+        "apps/mobile/lib/ui/paper_icons.dart",
+        "apps/mobile/lib/ui/paper_menu.dart",
+        "apps/mobile/lib/ui/paper_notice.dart",
+        "apps/mobile/lib/ui/paper_press.dart",
+        "apps/mobile/lib/ui/paper_toggle.dart",
+        "apps/mobile/lib/ui/player.dart",
+        "apps/mobile/lib/ui/preference_switch.dart",
+        "apps/mobile/lib/ui/sheets.dart",
+        "apps/mobile/lib/ui/trash_layout.dart"
+      ],
+      "does_not_establish_transitive_ui_or_target_acceptance": true
+    },
+    "navigation": {
+      "baseline_source": "a8d6180a35c6a7884e1e7ad02d26246675f29979",
+      "historical_evidence": "evidence/lf8-current-navigation/README.md",
+      "code_entries": [
+        {
+          "path": "apps/mobile/lib/app/media_workspace.dart",
+          "baseline_sha256": "66fc4961e6c79a8dbb2e559e3242a1f369f489529d35480dbf059bf1dea40211",
+          "current_sha256": "66fc4961e6c79a8dbb2e559e3242a1f369f489529d35480dbf059bf1dea40211",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/features/library/browse_context.dart",
+          "baseline_sha256": "4c436613ba28ff1255db0b13e90aaef98b5a9c1a2e29808e21d53669a1a7b05f",
+          "current_sha256": "4c436613ba28ff1255db0b13e90aaef98b5a9c1a2e29808e21d53669a1a7b05f",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/features/library/library_query_controller.dart",
+          "baseline_sha256": "17e46947194c4880076cc023b06b6bd583e10a7cfee96bcca19ceb7459cd28a3",
+          "current_sha256": "17e46947194c4880076cc023b06b6bd583e10a7cfee96bcca19ceb7459cd28a3",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/features/library/pack_query_controller.dart",
+          "baseline_sha256": "fb534e35fe5ce19abff8df1f01328cfd45b2c32e58ae0f1da5a8941efca85507",
+          "current_sha256": "fb534e35fe5ce19abff8df1f01328cfd45b2c32e58ae0f1da5a8941efca85507",
+          "same": true
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/mobile/test/media_workspace_widget_test.dart",
+          "sha256": "3f3d8d4a145c5dc6098e5e0b601d2ba3abe90505143dda1426d34e66cd590589"
+        },
+        {
+          "path": "apps/mobile/test/catalog_entry_focus_test.dart",
+          "sha256": "d8b4bb1806ddc0fdb45b9dcaabbdff2c5fcb2005ada0c2ae8e4f9fbf4b29fd2f"
+        }
+      ],
+      "changed_library_files": [],
+      "changed_ui_files": [
+        "apps/mobile/lib/features/library/video_catalog_page.dart"
+      ],
+      "does_not_establish_transitive_ui_or_target_acceptance": true
+    },
+    "tags": {
+      "baseline_source": "6f7ce972526a8b46f04f7748cdaed961e49bf286",
+      "historical_evidence": "evidence/lf8-video-tag-definitions/README.md",
+      "code_entries": [
+        {
+          "path": "apps/mobile/lib/ui/media_tag_editor.dart",
+          "baseline_sha256": "3046c7823013fba9b3d4cc1b173f9d5f17b7b9c9deb645616520b4a4bf36a851",
+          "current_sha256": "337d4e5d8dc51747774be8809d5ebf76f5bf6020acb020a07d61b3c7747fb5df",
+          "same": false
+        },
+        {
+          "path": "apps/mobile/lib/features/library/tag_catalog_page.dart",
+          "baseline_sha256": "660423295969d592cefbae8c6b026545083db1bbe87741109840c8c536dd90a8",
+          "current_sha256": "660423295969d592cefbae8c6b026545083db1bbe87741109840c8c536dd90a8",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/features/library/catalog_selection.dart",
+          "baseline_sha256": "19c6cd17c1dcb41f8279a12bd5ada74fef075acafa2722aba71a841449c1e763",
+          "current_sha256": "19c6cd17c1dcb41f8279a12bd5ada74fef075acafa2722aba71a841449c1e763",
+          "same": true
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/mobile/test/tag_catalog_paging_widget_test.dart",
+          "sha256": "bfa2ea014eedd3da60627cc03b594a0752c23df1d13acc7e31c71d957bccabbe"
+        },
+        {
+          "path": "apps/mobile/test/server_catalog_selection_test.dart",
+          "sha256": "c21a234b0f7d44efe23acf350f98d9fe9b4b8d43f3b8ea00c20e029ea01b449f"
+        }
+      ],
+      "changed_library_files": [
+        "apps/mobile/lib/library/server_api.dart"
+      ],
+      "changed_ui_files": [
+        "apps/mobile/lib/app/app_shell.dart",
+        "apps/mobile/lib/app/media_workspace.dart",
+        "apps/mobile/lib/features/library/pack_catalog_page.dart",
+        "apps/mobile/lib/features/library/video_catalog_page.dart",
+        "apps/mobile/lib/features/packs/pack_file_action.dart",
+        "apps/mobile/lib/features/packs/pack_purge_result.dart",
+        "apps/mobile/lib/features/packs/pack_purge_review.dart",
+        "apps/mobile/lib/features/packs/pack_purge_selection_page.dart",
+        "apps/mobile/lib/features/packs/pack_reader_page.dart",
+        "apps/mobile/lib/features/packs/pack_reading_session.dart",
+        "apps/mobile/lib/features/packs/pack_sheets.dart",
+        "apps/mobile/lib/features/packs/pack_trash_page.dart",
+        "apps/mobile/lib/features/packs/reader_images.dart",
+        "apps/mobile/lib/features/packs/reader_thumbnail_image.dart",
+        "apps/mobile/lib/features/preview/video_preview_route.dart",
+        "apps/mobile/lib/features/settings/archive_backup_page.dart",
+        "apps/mobile/lib/features/settings/default_settings_sheet.dart",
+        "apps/mobile/lib/features/settings/maintenance_task_detail.dart",
+        "apps/mobile/lib/features/settings/maintenance_tasks_page.dart",
+        "apps/mobile/lib/features/settings/media_root_sheet.dart",
+        "apps/mobile/lib/features/settings/missing_media_page.dart",
+        "apps/mobile/lib/features/settings/purge_history_page.dart",
+        "apps/mobile/lib/ui/home.dart",
+        "apps/mobile/lib/ui/media_tag_editor.dart",
+        "apps/mobile/lib/ui/paper.dart",
+        "apps/mobile/lib/ui/paper_appearance.dart",
+        "apps/mobile/lib/ui/paper_checkbox.dart",
+        "apps/mobile/lib/ui/paper_controls.dart",
+        "apps/mobile/lib/ui/paper_dropdown.dart",
+        "apps/mobile/lib/ui/paper_expansion.dart",
+        "apps/mobile/lib/ui/paper_form.dart",
+        "apps/mobile/lib/ui/paper_icons.dart",
+        "apps/mobile/lib/ui/paper_menu.dart",
+        "apps/mobile/lib/ui/paper_notice.dart",
+        "apps/mobile/lib/ui/paper_press.dart",
+        "apps/mobile/lib/ui/paper_toggle.dart",
+        "apps/mobile/lib/ui/player.dart",
+        "apps/mobile/lib/ui/preference_switch.dart",
+        "apps/mobile/lib/ui/sheets.dart",
+        "apps/mobile/lib/ui/trash_layout.dart"
+      ],
+      "does_not_establish_transitive_ui_or_target_acceptance": true
+    },
+    "preview": {
+      "baseline_source": "98507ea75825f3e28353a1636db2e6dc435ebe24",
+      "historical_evidence": "evidence/lf8-preview-lifecycle/README.md",
+      "code_entries": [
+        {
+          "path": "apps/mobile/lib/features/preview/video_preview_route.dart",
+          "baseline_sha256": "a16b550bf05f269ded5c73600497f91572d1bdab81c55c51e96f98cabe63b19e",
+          "current_sha256": "14f72da816e2f0d9be30f64b8410c02c984e5f508fc1abb10fd3e35788e54728",
+          "same": false
+        },
+        {
+          "path": "apps/mobile/lib/ui/player.dart",
+          "baseline_sha256": "4eb78902502420f33b9d6e0b6c0808315d6f1575c95e57c3832f5c57f5be2a3c",
+          "current_sha256": "d6846e353d3c58ac5c03ba481654cbbcc952ad9e237d7f89e2140a7990a9251e",
+          "same": false
+        },
+        {
+          "path": "apps/mobile/lib/ui/device_controls.dart",
+          "baseline_sha256": "79b84156c77e8af8ee4d3fc54ae40d9e9b44cc47a439761d8522c6039e86bb53",
+          "current_sha256": "79b84156c77e8af8ee4d3fc54ae40d9e9b44cc47a439761d8522c6039e86bb53",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/library/server_repository.dart",
+          "baseline_sha256": "5adb8758b1e80500cc582e2d4d3ddee08d1d27eb7e3e3c6cce1d88a190ddeae2",
+          "current_sha256": "5adb8758b1e80500cc582e2d4d3ddee08d1d27eb7e3e3c6cce1d88a190ddeae2",
+          "same": true
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/mobile/test/fixed_preview_widget_test.dart",
+          "sha256": "04ff7ae82bc0bf0156d5ac320eca76dc2709022e61c84d70fbd82aecaae592d4"
+        },
+        {
+          "path": "apps/mobile/test/player_lifecycle_test.dart",
+          "sha256": "43c9cbb994e8f550e2bf2cfbcb0f55efb02cfe810cd45644a3fd7759d01dac25"
+        },
+        {
+          "path": "apps/mobile/test/preview_exit_lifecycle_test.dart",
+          "sha256": "12de9f2ab54d82796f3c67885e38a1ba9a95106ad111d2d7dd291252422e19d0"
+        }
+      ],
+      "changed_library_files": [
+        "apps/mobile/lib/library/server_api.dart"
+      ],
+      "changed_ui_files": [
+        "apps/mobile/lib/app/app_shell.dart",
+        "apps/mobile/lib/app/media_workspace.dart",
+        "apps/mobile/lib/features/library/pack_catalog_page.dart",
+        "apps/mobile/lib/features/library/tag_catalog_page.dart",
+        "apps/mobile/lib/features/library/video_catalog_page.dart",
+        "apps/mobile/lib/features/packs/pack_file_action.dart",
+        "apps/mobile/lib/features/packs/pack_purge_result.dart",
+        "apps/mobile/lib/features/packs/pack_purge_review.dart",
+        "apps/mobile/lib/features/packs/pack_purge_selection_page.dart",
+        "apps/mobile/lib/features/packs/pack_reader_page.dart",
+        "apps/mobile/lib/features/packs/pack_reading_session.dart",
+        "apps/mobile/lib/features/packs/pack_sheets.dart",
+        "apps/mobile/lib/features/packs/pack_trash_page.dart",
+        "apps/mobile/lib/features/packs/reader_images.dart",
+        "apps/mobile/lib/features/packs/reader_thumbnail_image.dart",
+        "apps/mobile/lib/features/preview/video_preview_route.dart",
+        "apps/mobile/lib/features/settings/archive_backup_page.dart",
+        "apps/mobile/lib/features/settings/default_settings_sheet.dart",
+        "apps/mobile/lib/features/settings/maintenance_task_detail.dart",
+        "apps/mobile/lib/features/settings/maintenance_tasks_page.dart",
+        "apps/mobile/lib/features/settings/media_root_sheet.dart",
+        "apps/mobile/lib/features/settings/missing_media_page.dart",
+        "apps/mobile/lib/features/settings/purge_history_page.dart",
+        "apps/mobile/lib/ui/home.dart",
+        "apps/mobile/lib/ui/media_tag_editor.dart",
+        "apps/mobile/lib/ui/paper.dart",
+        "apps/mobile/lib/ui/paper_appearance.dart",
+        "apps/mobile/lib/ui/paper_checkbox.dart",
+        "apps/mobile/lib/ui/paper_controls.dart",
+        "apps/mobile/lib/ui/paper_dropdown.dart",
+        "apps/mobile/lib/ui/paper_expansion.dart",
+        "apps/mobile/lib/ui/paper_form.dart",
+        "apps/mobile/lib/ui/paper_icons.dart",
+        "apps/mobile/lib/ui/paper_menu.dart",
+        "apps/mobile/lib/ui/paper_notice.dart",
+        "apps/mobile/lib/ui/paper_press.dart",
+        "apps/mobile/lib/ui/paper_toggle.dart",
+        "apps/mobile/lib/ui/player.dart",
+        "apps/mobile/lib/ui/preference_switch.dart",
+        "apps/mobile/lib/ui/sheets.dart",
+        "apps/mobile/lib/ui/trash_layout.dart"
+      ],
+      "does_not_establish_transitive_ui_or_target_acceptance": true
+    },
+    "reader": {
+      "baseline_source": "81a11a98fdc98d682e548f6a1dfc6b04508c7ba0",
+      "historical_evidence": "evidence/lf8-reader-performance/README.md",
+      "code_entries": [
+        {
+          "path": "apps/mobile/lib/features/packs/pack_reader_page.dart",
+          "baseline_sha256": "40ccf8aa51e38fbfc04c340e528a3155c1650ae636880c3a1623824fe82deffd",
+          "current_sha256": "56776d080f128fa9960a6317001bd24d8e8589c33708b2fe491c87003409ab9c",
+          "same": false
+        },
+        {
+          "path": "apps/mobile/lib/features/packs/pack_reading_session.dart",
+          "baseline_sha256": "6ab2d8530fb02591bede717222422741af7e8ee4b05da332ac3008a64ae05edf",
+          "current_sha256": "4cfbe156ee60abb6c62eff7072b0962a055128a71763f304808d1dc68585bf38",
+          "same": false
+        },
+        {
+          "path": "apps/mobile/lib/features/packs/reader_images.dart",
+          "baseline_sha256": "38a53ad097512ed1b7af521905ff4c5e28eaa0fe67efd41655a147096189d4e1",
+          "current_sha256": "38a53ad097512ed1b7af521905ff4c5e28eaa0fe67efd41655a147096189d4e1",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/library/server_pack_reading.dart",
+          "baseline_sha256": "b1f91a9450c53a345032b2fdccda845e72e0ddd5416447908804a0abfebccd6c",
+          "current_sha256": "b1f91a9450c53a345032b2fdccda845e72e0ddd5416447908804a0abfebccd6c",
+          "same": true
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/mobile/test/pack_reading_session_test.dart",
+          "sha256": "475d0de064d3db3f457255a55eecd4001398aeaf76c3aef049ff141f1a323812"
+        },
+        {
+          "path": "apps/mobile/test/pack_reader_widget_test.dart",
+          "sha256": "e9d58a045c2f880952d6d869f49403c82468ad56ba053048060edf1aec6047e2"
+        },
+        {
+          "path": "apps/mobile/test/pack_reader_image_error_test.dart",
+          "sha256": "8173cda46b2e32092ee2f73053fa12f70cecfcc6387e20bd43aac351f10314d6"
+        }
+      ],
+      "changed_library_files": [],
+      "changed_ui_files": [
+        "apps/mobile/lib/app/app_shell.dart",
+        "apps/mobile/lib/app/media_workspace.dart",
+        "apps/mobile/lib/features/library/pack_catalog_page.dart",
+        "apps/mobile/lib/features/library/video_catalog_page.dart",
+        "apps/mobile/lib/features/packs/pack_file_action.dart",
+        "apps/mobile/lib/features/packs/pack_purge_result.dart",
+        "apps/mobile/lib/features/packs/pack_purge_review.dart",
+        "apps/mobile/lib/features/packs/pack_purge_selection_page.dart",
+        "apps/mobile/lib/features/packs/pack_reader_page.dart",
+        "apps/mobile/lib/features/packs/pack_reading_session.dart",
+        "apps/mobile/lib/features/packs/pack_sheets.dart",
+        "apps/mobile/lib/features/packs/pack_trash_page.dart",
+        "apps/mobile/lib/features/preview/video_preview_route.dart",
+        "apps/mobile/lib/features/settings/archive_backup_page.dart",
+        "apps/mobile/lib/features/settings/default_settings_sheet.dart",
+        "apps/mobile/lib/features/settings/maintenance_task_detail.dart",
+        "apps/mobile/lib/features/settings/maintenance_tasks_page.dart",
+        "apps/mobile/lib/features/settings/media_root_sheet.dart",
+        "apps/mobile/lib/features/settings/missing_media_page.dart",
+        "apps/mobile/lib/features/settings/purge_history_page.dart",
+        "apps/mobile/lib/ui/home.dart",
+        "apps/mobile/lib/ui/media_tag_editor.dart",
+        "apps/mobile/lib/ui/paper.dart",
+        "apps/mobile/lib/ui/paper_appearance.dart",
+        "apps/mobile/lib/ui/paper_checkbox.dart",
+        "apps/mobile/lib/ui/paper_controls.dart",
+        "apps/mobile/lib/ui/paper_dropdown.dart",
+        "apps/mobile/lib/ui/paper_expansion.dart",
+        "apps/mobile/lib/ui/paper_form.dart",
+        "apps/mobile/lib/ui/paper_icons.dart",
+        "apps/mobile/lib/ui/paper_menu.dart",
+        "apps/mobile/lib/ui/paper_notice.dart",
+        "apps/mobile/lib/ui/paper_press.dart",
+        "apps/mobile/lib/ui/paper_toggle.dart",
+        "apps/mobile/lib/ui/player.dart",
+        "apps/mobile/lib/ui/preference_switch.dart",
+        "apps/mobile/lib/ui/sheets.dart",
+        "apps/mobile/lib/ui/trash_layout.dart"
+      ],
+      "does_not_establish_transitive_ui_or_target_acceptance": true
+    },
+    "trash": {
+      "baseline_source": "88a45eca77d7ebac207e329231f6d89585e779c3",
+      "historical_evidence": "evidence/lf8-trash-management/README.md",
+      "code_entries": [
+        {
+          "path": "apps/mobile/lib/library/pack_files.dart",
+          "baseline_sha256": "1b62a1572015bf1ba4055bb6c96d3027c87c24b24bcbfed24ea072c934f84a76",
+          "current_sha256": "1b62a1572015bf1ba4055bb6c96d3027c87c24b24bcbfed24ea072c934f84a76",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/library/server_pack_trash.dart",
+          "baseline_sha256": "d8698bb5ffb3d493d80e49e98d1dbf117d13f964b40c56d6d02c33bfdc268137",
+          "current_sha256": "d8698bb5ffb3d493d80e49e98d1dbf117d13f964b40c56d6d02c33bfdc268137",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/features/packs/pack_file_action.dart",
+          "baseline_sha256": "dfcdc40fef9e034a9d5cd54f14fe4a76594865a153e5dbff233af088aadfa446",
+          "current_sha256": "d43702b37358f4b935f1690945d4b4766466d8a47bde87dc07380bdf71c5edc2",
+          "same": false
+        },
+        {
+          "path": "apps/mobile/lib/features/packs/pack_trash_page.dart",
+          "baseline_sha256": "2d031d612ff14ffab9f1f7ea798affc2a18e82c7e031828bd4840a260dbcd8e0",
+          "current_sha256": "a86f542c85fbebdd5eeb2c797fdba6d0d9770eab552b5a6c05f857b1b3ae2e0d",
+          "same": false
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/mobile/test/pack_file_action_test.dart",
+          "sha256": "9992f65bdee90116898bd4c9b7f22d287e7ffedc17cbec8ff83d45311ddb617e"
+        },
+        {
+          "path": "apps/mobile/test/pack_reader_cleanup_widget_test.dart",
+          "sha256": "d802a1870b39462d267d1c5403babb67b4e77c971a756da202a3de26eaeab064"
+        },
+        {
+          "path": "apps/mobile/test/pack_trash_widget_test.dart",
+          "sha256": "6fabf07f71d8b6dfe9887c736f2303f8db2f4f60a21dec4cb76cccc11f2b749d"
+        }
+      ],
+      "changed_library_files": [
+        "apps/mobile/lib/library/server_api.dart"
+      ],
+      "changed_ui_files": [
+        "apps/mobile/lib/app/app_shell.dart",
+        "apps/mobile/lib/app/media_workspace.dart",
+        "apps/mobile/lib/features/library/pack_catalog_page.dart",
+        "apps/mobile/lib/features/library/tag_catalog_page.dart",
+        "apps/mobile/lib/features/library/video_catalog_page.dart",
+        "apps/mobile/lib/features/packs/pack_file_action.dart",
+        "apps/mobile/lib/features/packs/pack_purge_result.dart",
+        "apps/mobile/lib/features/packs/pack_purge_review.dart",
+        "apps/mobile/lib/features/packs/pack_purge_selection_page.dart",
+        "apps/mobile/lib/features/packs/pack_reader_page.dart",
+        "apps/mobile/lib/features/packs/pack_reading_session.dart",
+        "apps/mobile/lib/features/packs/pack_sheets.dart",
+        "apps/mobile/lib/features/packs/pack_trash_page.dart",
+        "apps/mobile/lib/features/packs/reader_images.dart",
+        "apps/mobile/lib/features/packs/reader_thumbnail_image.dart",
+        "apps/mobile/lib/features/preview/video_preview_route.dart",
+        "apps/mobile/lib/features/settings/archive_backup_page.dart",
+        "apps/mobile/lib/features/settings/default_settings_sheet.dart",
+        "apps/mobile/lib/features/settings/maintenance_task_detail.dart",
+        "apps/mobile/lib/features/settings/maintenance_tasks_page.dart",
+        "apps/mobile/lib/features/settings/media_root_sheet.dart",
+        "apps/mobile/lib/features/settings/missing_media_page.dart",
+        "apps/mobile/lib/features/settings/purge_history_page.dart",
+        "apps/mobile/lib/ui/home.dart",
+        "apps/mobile/lib/ui/media_tag_editor.dart",
+        "apps/mobile/lib/ui/paper.dart",
+        "apps/mobile/lib/ui/paper_appearance.dart",
+        "apps/mobile/lib/ui/paper_checkbox.dart",
+        "apps/mobile/lib/ui/paper_controls.dart",
+        "apps/mobile/lib/ui/paper_dropdown.dart",
+        "apps/mobile/lib/ui/paper_expansion.dart",
+        "apps/mobile/lib/ui/paper_form.dart",
+        "apps/mobile/lib/ui/paper_icons.dart",
+        "apps/mobile/lib/ui/paper_management.dart",
+        "apps/mobile/lib/ui/paper_menu.dart",
+        "apps/mobile/lib/ui/paper_notice.dart",
+        "apps/mobile/lib/ui/paper_press.dart",
+        "apps/mobile/lib/ui/paper_toggle.dart",
+        "apps/mobile/lib/ui/player.dart",
+        "apps/mobile/lib/ui/preference_switch.dart",
+        "apps/mobile/lib/ui/sheets.dart",
+        "apps/mobile/lib/ui/trash_layout.dart"
+      ],
+      "does_not_establish_transitive_ui_or_target_acceptance": true
+    },
+    "purge": {
+      "baseline_source": "35a29d4ff5f6fa9b727b6d3f5f25340dcb4273be",
+      "historical_evidence": "evidence/lf8-purge-management/README.md",
+      "code_entries": [
+        {
+          "path": "apps/mobile/lib/library/pack_purge.dart",
+          "baseline_sha256": "fe9e0c7e86ba124f03e33988fe6cf0e4aef93c909fa9ea459da3bfe851cda51c",
+          "current_sha256": "fe9e0c7e86ba124f03e33988fe6cf0e4aef93c909fa9ea459da3bfe851cda51c",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/library/server_pack_purge.dart",
+          "baseline_sha256": "e43c0729f0fb588f45f50a0763a8ee22ac876d58136114b0f090213d3523cc35",
+          "current_sha256": "e43c0729f0fb588f45f50a0763a8ee22ac876d58136114b0f090213d3523cc35",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/features/packs/pack_purge_review.dart",
+          "baseline_sha256": "c6e4340eb4e5982c96e8aa086eac922192b853877801f91dbeae2ab58d611e37",
+          "current_sha256": "b00f35e43175535ffb87101575252fd412e3d7f7b7c16197ab603a4f76daa179",
+          "same": false
+        },
+        {
+          "path": "apps/mobile/lib/features/packs/pack_purge_result.dart",
+          "baseline_sha256": "54093e389c5cd0c5de851b6459081efc6a70c71546a0a0a167f925eed8597339",
+          "current_sha256": "1fdee31e94ae6adb5c96f83fe379e09a86cb322d968b7bb3d475df12d8f74edb",
+          "same": false
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/mobile/test/pack_purge_test.dart",
+          "sha256": "d74d423fc5318d1f9b34ef1886d2db0dfee3fb80c5290c6c09c1d1566e103c99"
+        },
+        {
+          "path": "apps/mobile/test/pack_purge_widget_test.dart",
+          "sha256": "41735295c6658d45436b68d58d7d840639234d8c14ef5cceb62c68bd44826c39"
+        },
+        {
+          "path": "apps/mobile/test/pack_purge_selections_test.dart",
+          "sha256": "c51118933633317529fa61b4e73d32d020d5bdc43e0080ca711801d09860c505"
+        }
+      ],
+      "changed_library_files": [
+        "apps/mobile/lib/library/server_api.dart"
+      ],
+      "changed_ui_files": [
+        "apps/mobile/lib/app/app_shell.dart",
+        "apps/mobile/lib/app/media_workspace.dart",
+        "apps/mobile/lib/features/library/pack_catalog_page.dart",
+        "apps/mobile/lib/features/library/tag_catalog_page.dart",
+        "apps/mobile/lib/features/library/video_catalog_page.dart",
+        "apps/mobile/lib/features/packs/pack_file_action.dart",
+        "apps/mobile/lib/features/packs/pack_purge_result.dart",
+        "apps/mobile/lib/features/packs/pack_purge_review.dart",
+        "apps/mobile/lib/features/packs/pack_purge_selection_page.dart",
+        "apps/mobile/lib/features/packs/pack_reader_page.dart",
+        "apps/mobile/lib/features/packs/pack_reading_session.dart",
+        "apps/mobile/lib/features/packs/pack_sheets.dart",
+        "apps/mobile/lib/features/packs/pack_trash_page.dart",
+        "apps/mobile/lib/features/packs/reader_images.dart",
+        "apps/mobile/lib/features/packs/reader_thumbnail_image.dart",
+        "apps/mobile/lib/features/preview/video_preview_route.dart",
+        "apps/mobile/lib/features/settings/archive_backup_page.dart",
+        "apps/mobile/lib/features/settings/default_settings_sheet.dart",
+        "apps/mobile/lib/features/settings/maintenance_task_detail.dart",
+        "apps/mobile/lib/features/settings/maintenance_tasks_page.dart",
+        "apps/mobile/lib/features/settings/media_root_sheet.dart",
+        "apps/mobile/lib/features/settings/missing_media_page.dart",
+        "apps/mobile/lib/features/settings/purge_history_page.dart",
+        "apps/mobile/lib/ui/home.dart",
+        "apps/mobile/lib/ui/media_tag_editor.dart",
+        "apps/mobile/lib/ui/paper.dart",
+        "apps/mobile/lib/ui/paper_appearance.dart",
+        "apps/mobile/lib/ui/paper_checkbox.dart",
+        "apps/mobile/lib/ui/paper_controls.dart",
+        "apps/mobile/lib/ui/paper_dropdown.dart",
+        "apps/mobile/lib/ui/paper_expansion.dart",
+        "apps/mobile/lib/ui/paper_form.dart",
+        "apps/mobile/lib/ui/paper_icons.dart",
+        "apps/mobile/lib/ui/paper_menu.dart",
+        "apps/mobile/lib/ui/paper_notice.dart",
+        "apps/mobile/lib/ui/paper_press.dart",
+        "apps/mobile/lib/ui/paper_toggle.dart",
+        "apps/mobile/lib/ui/player.dart",
+        "apps/mobile/lib/ui/preference_switch.dart",
+        "apps/mobile/lib/ui/sheets.dart",
+        "apps/mobile/lib/ui/trash_layout.dart"
+      ],
+      "does_not_establish_transitive_ui_or_target_acceptance": true
+    },
+    "settings": {
+      "baseline_source": "81b598f5e4a27fbc168c9a0bede3a899020446a6",
+      "historical_evidence": "evidence/lf8-settings-forms/README.md",
+      "code_entries": [
+        {
+          "path": "apps/mobile/lib/features/settings/default_settings_session.dart",
+          "baseline_sha256": "46a72c0c2ae258a028aec05aba98de45747a023b67ac40bd0d08b5485fa7a74a",
+          "current_sha256": "46a72c0c2ae258a028aec05aba98de45747a023b67ac40bd0d08b5485fa7a74a",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/features/settings/default_settings_sheet.dart",
+          "baseline_sha256": "6b990fea33cfcfb054280563b727eeebe5124d837aa0ed1231f523cef44c0fb8",
+          "current_sha256": "0fe6ca9c7b56a3300310e9466f4a0dcda943fc48bcbb3f33262b8db095e1198e",
+          "same": false
+        },
+        {
+          "path": "apps/mobile/lib/features/settings/media_root_sheet.dart",
+          "baseline_sha256": "10991824cb4bbefd6361eaca75d3e11a3139af55c1cc7c2a332c2b018227edf5",
+          "current_sha256": "d8ede2589dccb86f25f38917e249267a91d25f091402cd7d49b50dc7c8e03003",
+          "same": false
+        },
+        {
+          "path": "apps/mobile/lib/ui/preferences.dart",
+          "baseline_sha256": "5d6d8cf778d3e94aa445d1b7c9bc0334e2bdecda655ce6e85b5f150c326815b2",
+          "current_sha256": "5d6d8cf778d3e94aa445d1b7c9bc0334e2bdecda655ce6e85b5f150c326815b2",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/ui/home.dart",
+          "baseline_sha256": "ce944f2aed08fa79955586eda456dbb3aa8a02e97d2dcfb341fb62f94c98b9f7",
+          "current_sha256": "4ddc93b6eea368d04f08137dce24cf5b5c4c847ff3cb5c9d0bb243cc2fac2501",
+          "same": false
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/mobile/test/default_settings_session_test.dart",
+          "sha256": "b2e7bd6a0abe9969438c8737eda9a4bf36f8fd4de554306443036e946aacc41d"
+        },
+        {
+          "path": "apps/mobile/test/default_settings_widget_test.dart",
+          "sha256": "a01960e08f2c5223f2d1d3b3a9c2dab6132e4e75de4a1268255d61ef67b97c23"
+        },
+        {
+          "path": "apps/mobile/test/connection_widget_test.dart",
+          "sha256": "ee5febee22187416dca1c5d490bc483a4946547afc8390cd8ebcf9808cc9fa6a"
+        },
+        {
+          "path": "apps/mobile/test/media_root_sheet_test.dart",
+          "sha256": "05516dc075ec47f200425be7844adb4ddf23e26a5ecfaa9f115662e9edb2efd6"
+        }
+      ],
+      "changed_library_files": [
+        "apps/mobile/lib/library/server_api.dart"
+      ],
+      "changed_ui_files": [
+        "apps/mobile/lib/app/app_shell.dart",
+        "apps/mobile/lib/app/media_workspace.dart",
+        "apps/mobile/lib/features/library/pack_catalog_page.dart",
+        "apps/mobile/lib/features/library/tag_catalog_page.dart",
+        "apps/mobile/lib/features/library/video_catalog_page.dart",
+        "apps/mobile/lib/features/packs/pack_file_action.dart",
+        "apps/mobile/lib/features/packs/pack_purge_result.dart",
+        "apps/mobile/lib/features/packs/pack_purge_review.dart",
+        "apps/mobile/lib/features/packs/pack_purge_selection_page.dart",
+        "apps/mobile/lib/features/packs/pack_reader_page.dart",
+        "apps/mobile/lib/features/packs/pack_reading_session.dart",
+        "apps/mobile/lib/features/packs/pack_sheets.dart",
+        "apps/mobile/lib/features/packs/pack_trash_page.dart",
+        "apps/mobile/lib/features/packs/pack_trash_session.dart",
+        "apps/mobile/lib/features/packs/reader_images.dart",
+        "apps/mobile/lib/features/packs/reader_thumbnail_image.dart",
+        "apps/mobile/lib/features/preview/video_preview_route.dart",
+        "apps/mobile/lib/features/settings/archive_backup_page.dart",
+        "apps/mobile/lib/features/settings/default_settings_sheet.dart",
+        "apps/mobile/lib/features/settings/maintenance_task_detail.dart",
+        "apps/mobile/lib/features/settings/maintenance_tasks_page.dart",
+        "apps/mobile/lib/features/settings/media_root_sheet.dart",
+        "apps/mobile/lib/features/settings/missing_media_page.dart",
+        "apps/mobile/lib/features/settings/purge_history_page.dart",
+        "apps/mobile/lib/ui/home.dart",
+        "apps/mobile/lib/ui/media_tag_editor.dart",
+        "apps/mobile/lib/ui/paper.dart",
+        "apps/mobile/lib/ui/paper_appearance.dart",
+        "apps/mobile/lib/ui/paper_checkbox.dart",
+        "apps/mobile/lib/ui/paper_controls.dart",
+        "apps/mobile/lib/ui/paper_dropdown.dart",
+        "apps/mobile/lib/ui/paper_expansion.dart",
+        "apps/mobile/lib/ui/paper_form.dart",
+        "apps/mobile/lib/ui/paper_icons.dart",
+        "apps/mobile/lib/ui/paper_management.dart",
+        "apps/mobile/lib/ui/paper_menu.dart",
+        "apps/mobile/lib/ui/paper_notice.dart",
+        "apps/mobile/lib/ui/paper_press.dart",
+        "apps/mobile/lib/ui/paper_toggle.dart",
+        "apps/mobile/lib/ui/player.dart",
+        "apps/mobile/lib/ui/preference_switch.dart",
+        "apps/mobile/lib/ui/sheets.dart",
+        "apps/mobile/lib/ui/trash_layout.dart"
+      ],
+      "does_not_establish_transitive_ui_or_target_acceptance": true
+    },
+    "backup": {
+      "baseline_source": "848a1b8a0f80dccc3fd49ea1fa7676e5405114ba",
+      "historical_evidence": "evidence/lf8-backup-upload-diagnostics/README.md",
+      "code_entries": [
+        {
+          "path": "apps/mobile/lib/library/management_archives.dart",
+          "baseline_sha256": "d53f088fee1ae150abc3c7014ff0b19196f4e035e4a3f4dcd5b015598503cc17",
+          "current_sha256": "d53f088fee1ae150abc3c7014ff0b19196f4e035e4a3f4dcd5b015598503cc17",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/library/server_archive_backups.dart",
+          "baseline_sha256": "f6a47f0d1232849f9078bf443ef4cb2f339aaf77320b36bea807263a17e33a0d",
+          "current_sha256": "f6a47f0d1232849f9078bf443ef4cb2f339aaf77320b36bea807263a17e33a0d",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/library/backup_document.dart",
+          "baseline_sha256": "f4d1d67980d03313e11b5681eb3b9a8b447787d3e36a6d64e054b57f2f17f858",
+          "current_sha256": "f4d1d67980d03313e11b5681eb3b9a8b447787d3e36a6d64e054b57f2f17f858",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/library/backup_work_store.dart",
+          "baseline_sha256": "60b6490d37a9ba93e1014291176dd8d4e9df263b3edb1482e96b6afd754fba33",
+          "current_sha256": "60b6490d37a9ba93e1014291176dd8d4e9df263b3edb1482e96b6afd754fba33",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/features/settings/archive_backup_page.dart",
+          "baseline_sha256": "90ee4e552be219273785a9c2f67bf31898397c0e2c7bd106b8ec80fbb78e96ca",
+          "current_sha256": "01ba5f06b04cef37eef5a05202e03a8c6df8612966a209bd72cc1784370221ea",
+          "same": false
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/mobile/test/server_archive_backups_test.dart",
+          "sha256": "8c14e310a031411bb56df0e3deff58373574b9bf129351607bea07fc8b1f8e6a"
+        },
+        {
+          "path": "apps/mobile/test/archive_backup_widget_test.dart",
+          "sha256": "3b086765e522dc1e24b2565773a7f56690361e9ecf80bb148b475603131435e5"
+        },
+        {
+          "path": "apps/mobile/test/archive_upload_connection_recovery_test.dart",
+          "sha256": "da6f37dd75f5335aa4f1ce1c757850f721cd658af6c6af7e3cbbf09faf909028"
+        }
+      ],
+      "changed_library_files": [],
+      "changed_ui_files": [
+        "apps/mobile/lib/app/app_shell.dart",
+        "apps/mobile/lib/app/media_workspace.dart",
+        "apps/mobile/lib/features/library/pack_catalog_page.dart",
+        "apps/mobile/lib/features/library/video_catalog_page.dart",
+        "apps/mobile/lib/features/packs/pack_file_action.dart",
+        "apps/mobile/lib/features/packs/pack_purge_result.dart",
+        "apps/mobile/lib/features/packs/pack_purge_review.dart",
+        "apps/mobile/lib/features/packs/pack_purge_selection_page.dart",
+        "apps/mobile/lib/features/packs/pack_reader_page.dart",
+        "apps/mobile/lib/features/packs/pack_reading_session.dart",
+        "apps/mobile/lib/features/packs/pack_sheets.dart",
+        "apps/mobile/lib/features/packs/pack_trash_page.dart",
+        "apps/mobile/lib/features/preview/video_preview_route.dart",
+        "apps/mobile/lib/features/settings/archive_backup_page.dart",
+        "apps/mobile/lib/features/settings/default_settings_sheet.dart",
+        "apps/mobile/lib/features/settings/maintenance_task_detail.dart",
+        "apps/mobile/lib/features/settings/maintenance_tasks_page.dart",
+        "apps/mobile/lib/features/settings/media_root_sheet.dart",
+        "apps/mobile/lib/features/settings/missing_media_page.dart",
+        "apps/mobile/lib/features/settings/purge_history_page.dart",
+        "apps/mobile/lib/ui/home.dart",
+        "apps/mobile/lib/ui/media_tag_editor.dart",
+        "apps/mobile/lib/ui/paper.dart",
+        "apps/mobile/lib/ui/paper_appearance.dart",
+        "apps/mobile/lib/ui/paper_checkbox.dart",
+        "apps/mobile/lib/ui/paper_controls.dart",
+        "apps/mobile/lib/ui/paper_dropdown.dart",
+        "apps/mobile/lib/ui/paper_expansion.dart",
+        "apps/mobile/lib/ui/paper_form.dart",
+        "apps/mobile/lib/ui/paper_icons.dart",
+        "apps/mobile/lib/ui/paper_menu.dart",
+        "apps/mobile/lib/ui/paper_notice.dart",
+        "apps/mobile/lib/ui/paper_press.dart",
+        "apps/mobile/lib/ui/paper_toggle.dart",
+        "apps/mobile/lib/ui/player.dart",
+        "apps/mobile/lib/ui/preference_switch.dart",
+        "apps/mobile/lib/ui/sheets.dart",
+        "apps/mobile/lib/ui/trash_layout.dart"
+      ],
+      "does_not_establish_transitive_ui_or_target_acceptance": true
+    },
+    "compatibility": {
+      "baseline_source": "12d6ca67ef3a8b307894468923dc08e612e02587",
+      "historical_evidence": "evidence/lf8-current-filters/README.md",
+      "code_entries": [
+        {
+          "path": "apps/mobile/lib/library/credentials.dart",
+          "baseline_sha256": "c0363d0b5b4ac7a9a73e7210867d03e07fc36f7a5bc315e79cde93f350f01634",
+          "current_sha256": "c0363d0b5b4ac7a9a73e7210867d03e07fc36f7a5bc315e79cde93f350f01634",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/library/scoped_journal.dart",
+          "baseline_sha256": "794d1370c70e595c9c47ec76bc4db869d1425ea97e148ee719154784c013e385",
+          "current_sha256": "794d1370c70e595c9c47ec76bc4db869d1425ea97e148ee719154784c013e385",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/library/server_repository.dart",
+          "baseline_sha256": "5adb8758b1e80500cc582e2d4d3ddee08d1d27eb7e3e3c6cce1d88a190ddeae2",
+          "current_sha256": "5adb8758b1e80500cc582e2d4d3ddee08d1d27eb7e3e3c6cce1d88a190ddeae2",
+          "same": true
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/mobile/test/preferences_test.dart",
+          "sha256": "5a4bc3651e3e7413f2f9a16345c674caaf3b268ae6575ddb415590385777ea69"
+        },
+        {
+          "path": "apps/mobile/test/scoped_journal_test.dart",
+          "sha256": "a957834bf07f9d08cf68b7cb8a6e5e894baa47036ae6f8eb668ab77cf0d9bc81"
+        },
+        {
+          "path": "apps/mobile/test/backup_capabilities_test.dart",
+          "sha256": "43161cb41313f171e826e9f769663307019c98494c568e481a456a7c39b40969"
+        }
+      ],
+      "changed_library_files": [],
+      "changed_ui_files": [],
+      "does_not_establish_transitive_ui_or_target_acceptance": true
+    },
+    "visual": {
+      "baseline_source": "701fb7da0aa4da02df72da05b3b97cb419cd3f62",
+      "historical_evidence": "evidence/lf8-paper-symbols/README.md",
+      "code_entries": [
+        {
+          "path": "apps/mobile/lib/ui/paper.dart",
+          "baseline_sha256": "87e1b3ca4563ac43aa99f32b2e368dff2cd4605c296ebd5bd56a4535153faf45",
+          "current_sha256": "87e1b3ca4563ac43aa99f32b2e368dff2cd4605c296ebd5bd56a4535153faf45",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/ui/paper_icons.dart",
+          "baseline_sha256": "dafa9fae3d2b283ed7e51a616691d04d44ef98fcd7ec8f6605fe3ef43920b975",
+          "current_sha256": "dafa9fae3d2b283ed7e51a616691d04d44ef98fcd7ec8f6605fe3ef43920b975",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/ui/media_layout.dart",
+          "baseline_sha256": "b8be098336714b741e2ff76b38eb85d52f363d185feebed98482e34d10839c3d",
+          "current_sha256": "b8be098336714b741e2ff76b38eb85d52f363d185feebed98482e34d10839c3d",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/ui/paper_menu.dart",
+          "baseline_sha256": "f8b62d77ec56d926145c84862cf48aedb406189daf160488b8e534b2ba1acc90",
+          "current_sha256": "f8b62d77ec56d926145c84862cf48aedb406189daf160488b8e534b2ba1acc90",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/ui/paper_dropdown.dart",
+          "baseline_sha256": "826e8e3d641b89cb7c0b15b72c12e8fdc300b93dd3e8b4a1484289105bb6c36f",
+          "current_sha256": "826e8e3d641b89cb7c0b15b72c12e8fdc300b93dd3e8b4a1484289105bb6c36f",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/ui/paper_checkbox.dart",
+          "baseline_sha256": "fc1a90f6d5dcef76bcdbb282dda30e928c1b583a271a89068a44bf91b2838d1a",
+          "current_sha256": "fc1a90f6d5dcef76bcdbb282dda30e928c1b583a271a89068a44bf91b2838d1a",
+          "same": true
+        },
+        {
+          "path": "apps/mobile/lib/ui/paper_notice.dart",
+          "baseline_sha256": "c17ee0a290ccd9e3b6e08f5f3ab30f800d646d7de45d5a7027eb7c673b7e5051",
+          "current_sha256": "c17ee0a290ccd9e3b6e08f5f3ab30f800d646d7de45d5a7027eb7c673b7e5051",
+          "same": true
+        }
+      ],
+      "tests": [
+        {
+          "path": "apps/mobile/test/media_workspace_widget_test.dart",
+          "sha256": "3f3d8d4a145c5dc6098e5e0b601d2ba3abe90505143dda1426d34e66cd590589"
+        },
+        {
+          "path": "apps/mobile/test/pack_reader_settings_semantics_test.dart",
+          "sha256": "e41d934e03894ba70718729e01df7539fd806f3d602b7bd99df3791c94a4ee56"
+        },
+        {
+          "path": "apps/mobile/test/checkbox_motion_diagnostic_test.dart",
+          "sha256": "af2765749e42f9f6c451f07e495ef43630498823e888219d0f402d2f90bf13e3"
+        },
+        {
+          "path": "apps/mobile/test/menu_motion_test.dart",
+          "sha256": "7edcc5efb279b98fcc39ec16fb0430a3d868592f4dfdad70bef3909cca19eff4"
+        },
+        {
+          "path": "apps/mobile/test/notice_motion_test.dart",
+          "sha256": "9cdd8d399bdd9c8b358894161937da71db2cafb7bd3210048a65025a252187f0"
+        }
+      ],
+      "changed_library_files": [],
+      "changed_ui_files": [
+        "apps/mobile/lib/features/library/pack_catalog_page.dart",
+        "apps/mobile/lib/features/library/video_catalog_page.dart"
+      ],
+      "does_not_establish_transitive_ui_or_target_acceptance": true
+    }
+  },
+  "historical_record_integrity": {
+    "lf8-current-navigation": {
+      "manifest_sha256": "7015eae8df96b93e8ca396951e1d35f84ca4837e1e9ef8e2bbddc3ce3f973ef0",
+      "checked_file_count": 415,
+      "verification_scope": "fixed_file_integrity_only"
+    },
+    "lf8-current-filters": {
+      "manifest_sha256": "263f51dc699df48f2b33027812a7a38660bd5c6fd9924438323dd3843c68bf98",
+      "checked_file_count": 227,
+      "verification_scope": "fixed_file_integrity_only"
+    },
+    "lf8-catalog-recovery": {
+      "manifest_sha256": "7af837da8a6cd3281951a04de3fb6f57ceb452741ac1d7f2618970abee4a89ef",
+      "checked_file_count": 214,
+      "verification_scope": "fixed_file_integrity_only"
+    },
+    "lf8-upgrade-rollback": {
+      "manifest_sha256": "e3b585ee77fc674965a8b4a91654778f673127e7e84307cc061f3022048d825d",
+      "checked_file_count": 336,
+      "verification_scope": "fixed_file_integrity_only"
+    },
+    "lf8-backup-upload-diagnostics": {
+      "manifest_sha256": "d1f0d26bc6ad1ae6073e4fefc2c186521f775e25c0a4ab47b315bb87d1af773b",
+      "checked_file_count": 325,
+      "verification_scope": "fixed_file_integrity_only"
+    },
+    "lf8-tag-assignment": {
+      "manifest_sha256": "7bac8de51ef859fe31571f702b2334c9022a0660ef98bbc40f950b62ff781f8d",
+      "checked_file_count": 920,
+      "verification_scope": "fixed_file_integrity_only"
+    }
+  },
+  "requirements": [
+    {
+      "id": "NAV-01",
+      "reference_state": "home / packs",
+      "requirement": "冷启动与连接成功后默认媒体库；四入口为媒体库、标签、最近、设置，无独立预览 tab",
+      "owner": "LF4",
+      "implementation_and_test_family": "navigation",
+      "remaining_workflows": [
+        "R7",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "正常code18连接隔离服务后显示媒体库及四入口；只记录当前首页，未以此证明所有冷启动/兼容组合。",
+          "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Three actual cold starts with changed PIDs return to the library and four destinations; legacy-service and target-device combinations remain open.",
+          "candidate_code": 21
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "NAV-02",
+      "reference_state": "库→预览/阅读→返回",
+      "requirement": "返回原来源、类型、搜索、筛选和列表 anchor；系统返回先退出全屏/面板",
+      "owner": "LF3/4/5",
+      "implementation_and_test_family": "navigation",
+      "remaining_workflows": [
+        "R5",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Three normal21 pack reading cycles preserve search and exact deep-list anchor; release search focus on return. Panels and immersive back covered in these cycles; all other combinations remain open.",
+          "candidate_code": 21
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "NAV-03",
+      "reference_state": "分类切换",
+      "requirement": "视频/图包搜索、筛选、排序、批选状态互不污染；最近来源不沿用媒体库条件",
+      "owner": "LF4",
+      "implementation_and_test_family": "navigation",
+      "remaining_workflows": [
+        "R5",
+        "R8"
+      ],
+      "current_candidate_status": "partially_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Video .mp4 and pack Scope queries remain independent; same-name tag selections survive kind switches; recent-pack scope has no library search or tags. Sort and batch-selection combinations remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Three normal21 flows plus independent video1/pack27 selection, independent initial search and cancelled pack tag append; tag tables unchanged.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-catalog-recovery/README.md",
+          "scope": "Normal22 six library read-recovery cycles preserve typed search and kind, new NoLate zero remains after old Scope response release; does not replace full sort/batch/recent requirement.",
+          "candidate_code": 22
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "LIB-01",
+      "reference_state": "home",
+      "requirement": "两列视频卡片、名称/目录搜索、目录子树、标签 AND、方向/时长/类型，分页与空结果；可预览完整匹配范围",
+      "owner": "LF3/4",
+      "implementation_and_test_family": "navigation",
+      "remaining_workflows": [
+        "R5",
+        "R6",
+        "R8"
+      ],
+      "current_candidate_status": "partially_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "当前正常首页两列视频卡片对照；本段未完成搜索/筛选/分页/完整范围主流程。",
+          "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 video .mp4 search opens a fixed two-video scope; tag intersection opens one video. Other property and failure combinations remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Three real normal21 search+parent-directory+tag+orientation+duration+type combinations open exact14 members, cancel preserves14, long-duration/MOV zero and disabled preview.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal22 summary now displays orientation/duration/type; actual zero result, clear29 and combined14 with exact source scope checked. Full normal21 combinations remain labelled21.",
+          "candidate_code": 22
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "LIB-02",
+      "reference_state": "packs",
+      "requirement": "一包一卡，标题/目录/可用作者搜索，封面/标题/真实页数/阅读状态，目录/标签/阅读状态筛选，继续阅读",
+      "owner": "LF2/4/5",
+      "implementation_and_test_family": "reader",
+      "remaining_workflows": [
+        "R4",
+        "R5",
+        "R6",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "隔离服务实际扫描4包24图，经媒体库打开夏日祭并点击至第3/6页；本段未完成全部搜索/筛选/续读组合。",
+          "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 has 31 packs/186 pages, Scope matches 27; opens Scope26 from actual paginated list and resumes page3. Other metadata and filters remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Three normal21 pack folder/read-state cases: unread26, reading1 after real open, completed0, single folder1, negative search0, reset27; other metadata/filters remain open.",
+          "candidate_code": 21
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "LIB-03",
+      "reference_state": "长列表",
+      "requirement": "超过一页时自动分页；旧请求不覆盖新筛选；失败留卡片/滚动；没有结果不扩大为全库",
+      "owner": "LF2/4",
+      "implementation_and_test_family": "navigation",
+      "remaining_workflows": [
+        "R5",
+        "R8"
+      ],
+      "current_candidate_status": "partially_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 scrolls five times past the 24-item page before opening Scope26 in a 27-member scope. Stale requests, failures and empty results remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal21 first24 video list opens exact27-member scope; video and pack select all exact27 IDs; empty cases do not widen. Read failure and stale-request scenarios remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-catalog-recovery/README.md",
+          "scope": "Normal22 library, video/pack each3: offset24 503 retains cards and exact viewport-relative anchor; manual same offset/query returns exact final3 and Scope27 visible; first-read failure retries same empty search; release old Scope27/first24 response after new zero leaves new zero. Controller23 uncancellable-late tests separate. Deep return/prepend and other explicit source combinations remain open.",
+          "candidate_code": 22
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "TAG-01",
+      "reference_state": "video-tags / pack-tags",
+      "requirement": "两套标签 CRUD/搜索/计数独立；同名可共存，跨类型 ID 拒绝；改名不丢关联",
+      "owner": "LF1/4",
+      "implementation_and_test_family": "tags",
+      "remaining_workflows": [
+        "R5",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 equal tag names exist in independent video/pack namespaces. This segment does not recheck CRUD or invalid IDs.",
+          "candidate_code": 21
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "TAG-02",
+      "reference_state": "标签选择/批量",
+      "requirement": "多标签取交集；单项替换，批量追加保留未选标签；全选语义明确且覆盖匹配分页",
+      "owner": "LF1/4",
+      "implementation_and_test_family": "tags",
+      "remaining_workflows": [
+        "R5",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 tag AND: video2 to1 and pack31 to27, independent retained selections. Assignment and batch all-selection remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal21 GET selections and readbacks match exact27 typed Scope IDs, video1/pack27 selections survive switches and pack append cancel writes no tags; assignment and failure combinations remain open.",
+          "candidate_code": 21
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "PRE-01",
+      "reference_state": "预览此范围",
+      "requirement": "名称搜索+目录+标签+属性+来源都进入服务端候选；只加载前 24 条时仍可预览全部匹配结果",
+      "owner": "LF3",
+      "implementation_and_test_family": "preview",
+      "remaining_workflows": [
+        "R3",
+        "R5",
+        "R8"
+      ],
+      "current_candidate_status": "partially_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal21 first24 list opens27 exact video members; three attribute/directory combinations open14 exact descendants.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal22 combined search+parent directory+tag+orientation+duration+MP4 opens exact14 members, not a full27 pagination rerun.",
+          "candidate_code": 22
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "PRE-02",
+      "reference_state": "video / 队列",
+      "requirement": "从点击项开始；固定候选可回看、顺序/随机不越界；末尾选择退出/重来，不跳全库",
+      "owner": "LF3",
+      "implementation_and_test_family": "preview",
+      "remaining_workflows": [
+        "R3",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "PRE-03",
+      "reference_state": "预览中改标签",
+      "requirement": "当前项不跳走，既有候选不重排；标签删除/新增内容不静默重建轮次；返回列表才重新查询",
+      "owner": "LF3",
+      "implementation_and_test_family": "preview",
+      "remaining_workflows": [
+        "R3",
+        "R5",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "PRE-04",
+      "reference_state": "现有原生播放器",
+      "requirement": "暂停、拖进度、倍速、长按临时 2 倍、快速滑动、横向全屏、亮度/音量保留；仅当前发声",
+      "owner": "LF3",
+      "implementation_and_test_family": "preview",
+      "remaining_workflows": [
+        "R3",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "PRE-05",
+      "reference_state": "生命周期",
+      "requirement": "最多当前±1 解码器，关闭相邻准备只保留当前；后台/离页释放，旧回执不拉回画面，前台保持用户暂停意图",
+      "owner": "LF3",
+      "implementation_and_test_family": "preview",
+      "remaining_workflows": [
+        "R3",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "PKG-01",
+      "reference_state": "roots→图包",
+      "requirement": "直属文件夹为包、子目录为同包页；自然排序 1/2/10、稳定页 ID；不会为每张图片建媒体库条目",
+      "owner": "LF2",
+      "implementation_and_test_family": "scanner",
+      "remaining_workflows": [
+        "R4",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "PKG-02",
+      "reference_state": "同步外部变更",
+      "requirement": "新增/删页、唯一可识别改名保留包身份；歧义保留缺失；离线不清理；停用不删标签/进度",
+      "owner": "LF1/2",
+      "implementation_and_test_family": "scanner",
+      "remaining_workflows": [
+        "R4",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "PKG-03",
+      "reference_state": "图片获取",
+      "requirement": "仅授权 ID 可读，路径越界/符号链接/替换拒绝；单页/缩略图失败能重试或跳过，不阻塞整包",
+      "owner": "LF2",
+      "implementation_and_test_family": "scanner",
+      "remaining_workflows": [
+        "R4",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "READ-01",
+      "reference_state": "reader",
+      "requirement": "横向翻页，左右方向可切，完整适配画面；本包总览/页码跳转可用，缩放与翻页不误触",
+      "owner": "LF5",
+      "implementation_and_test_family": "reader",
+      "remaining_workflows": [
+        "R4",
+        "R6",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "同一正常安装包三轮实际双指放大/平移/系统返回，九状态同页且完整进度对象不变、图像返回基线；左右方向/总览/跳页等仍需当前整版补齐，未通过整项。",
+          "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 three LTR/RTL page cycles plus overview selection; normal20 three native zoom/pan/back cycles recorded separately, unchanged reader sources. Other same-build combinations remain open.",
+          "candidate_code": 21
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "READ-02",
+      "reference_state": "vertical",
+      "requirement": "纵向拼接惰性加载，可开关间距；尺寸占位避免图片到达后位置跳动；滚到底不自动换包",
+      "owner": "LF5",
+      "implementation_and_test_family": "reader",
+      "remaining_workflows": [
+        "R4",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 three vertical-mode and gap cycles, ending at page6 without auto-next-pack. Large-pack lazy layout remains open.",
+          "candidate_code": 21
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "READ-03",
+      "reference_state": "readersettings",
+      "requirement": "默认模式/方向/间距与每包覆盖独立；模式切换保留同一图片位置，已阅读包不被全局默认覆盖",
+      "owner": "LF5/7",
+      "implementation_and_test_family": "reader",
+      "remaining_workflows": [
+        "R2",
+        "R4",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 three horizontal/vertical same-image transitions and retained per-pack overrides. All global-default combinations remain open.",
+          "candidate_code": 21
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "READ-04",
+      "reference_state": "沉浸/进度/重开",
+      "requirement": "工具显隐和退出可达；保存 pageId+页内比例；重开续读，已删页明确回退最近有效页",
+      "owner": "LF5",
+      "implementation_and_test_family": "reader",
+      "remaining_workflows": [
+        "R4",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 immersive/range back, page3 resume and exact return anchor in three cycles. Deleted-page recovery remains open.",
+          "candidate_code": 21
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "READ-05",
+      "reference_state": "阅读范围",
+      "requirement": "查看队列，手动前后包限定当前范围，末尾返回来源；空/缺失/停用包不扩大范围",
+      "owner": "LF5",
+      "implementation_and_test_family": "reader",
+      "remaining_workflows": [
+        "R4",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "READ-06",
+      "reference_state": "大图与长包",
+      "requirement": "500 页及 4K/8K 夹具，连续切包/横纵切换无 OOM，解码窗口/缓存有界；记录目标机峰值和翻页延迟",
+      "owner": "LF5/8",
+      "implementation_and_test_family": "reader",
+      "remaining_workflows": [
+        "R4",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "REC-01",
+      "reference_state": "最近",
+      "requirement": "视频和图包分开，按实际打开去重更新；预加载不记历史；回收内容不显示，恢复保留阅读状态",
+      "owner": "LF3/4/5",
+      "implementation_and_test_family": "navigation",
+      "remaining_workflows": [
+        "R1",
+        "R3",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 recent-pack entry resumes page3 using a one-pack scope without library filters. Other video/trash combinations remain open.",
+          "candidate_code": 21
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "DEL-01",
+      "reference_state": "普通图包菜单",
+      "requirement": "移入回收站有整包影响确认；取消不变，成功留原列表；普通翻页不承担删除",
+      "owner": "LF6",
+      "implementation_and_test_family": "trash",
+      "remaining_workflows": [
+        "R1",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "DEL-02",
+      "reference_state": "pack-quick",
+      "requirement": "显式开启/退出；成功才进本范围下一包，失败留原包，末尾回来源；不另设已整理/保留状态",
+      "owner": "LF6",
+      "implementation_and_test_family": "trash",
+      "remaining_workflows": [
+        "R1",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "DEL-03",
+      "reference_state": "撤销",
+      "requirement": "8 秒提示不占布局；绑定 operation ID；恢复原包、页码、队列位置与模式；旧撤销不误撤新操作",
+      "owner": "LF6",
+      "implementation_and_test_family": "trash",
+      "remaining_workflows": [
+        "R1",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "DEL-04",
+      "reference_state": "trash",
+      "requirement": "按类型查看/全选/批量恢复；逻辑回收/恢复不动源字节；标签与进度保留；全选跨页且分批上限明确",
+      "owner": "LF6/7",
+      "implementation_and_test_family": "trash",
+      "remaining_workflows": [
+        "R1",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "DEL-05",
+      "reference_state": "purge / tasks",
+      "requirement": "永删双确认、图片清单/版本核对；部分成功逐项显示，进程中断可核对；替换/新增/非图片附件不误删",
+      "owner": "LF6",
+      "implementation_and_test_family": "purge",
+      "remaining_workflows": [
+        "R1",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "DEL-06",
+      "reference_state": "断线/重开",
+      "requirement": "已受理无回执显示待确认；查询原 request/task；不自动重放删除，查询不全局锁 UI",
+      "owner": "LF6/7",
+      "implementation_and_test_family": "trash",
+      "remaining_workflows": [
+        "R1",
+        "R2",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "SET-01",
+      "reference_state": "settings / dark",
+      "requirement": "三组设置完整；暗黑、更多主题同步、相邻准备本机持久化；字体和尺寸匹配基线",
+      "owner": "LF4/7",
+      "implementation_and_test_family": "settings",
+      "remaining_workflows": [
+        "R2",
+        "R6",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "SET-02",
+      "reference_state": "playback / defaults",
+      "requirement": "全局顺序仅影响新范围；图包默认偏好仅影响尚未独立设置的包",
+      "owner": "LF3/5/7",
+      "implementation_and_test_family": "settings",
+      "remaining_workflows": [
+        "R2",
+        "R3",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "SET-03",
+      "reference_state": "connection",
+      "requirement": "地址/端口/口令校验与失败保留输入；token 安全保存；口令不持久化；旧服务能力提示明确",
+      "owner": "LF1/7",
+      "implementation_and_test_family": "settings",
+      "remaining_workflows": [
+        "R2",
+        "R7",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "SET-04",
+      "reference_state": "roots / missing",
+      "requirement": "类型、路径、添加编辑、启停、递归扫描进度；清除失效记录确认，离线/停用不清除；图包首扫不锁已有视频",
+      "owner": "LF1/2/7",
+      "implementation_and_test_family": "settings",
+      "remaining_workflows": [
+        "R4",
+        "R7",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "SET-05",
+      "reference_state": "tasks",
+      "requirement": "扫描/文件/恢复任务，处理中、部分失败、待确认、已完成可区分；同任务只查询，不重复提交",
+      "owner": "LF6/7",
+      "implementation_and_test_family": "settings",
+      "remaining_workflows": [
+        "R1",
+        "R2",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "BAK-01",
+      "reference_state": "backup",
+      "requirement": "真实系统文件选择/保存、大小与完整性校验；两套标签/目录/阅读/回收统计；取消不报成功",
+      "owner": "LF7",
+      "implementation_and_test_family": "backup",
+      "remaining_workflows": [
+        "R2",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "BAK-02",
+      "reference_state": "restore-preview",
+      "requirement": "映射各根、留空不启用、确认替换；前快照可读；本机主题/预加载/凭据不覆盖；已永久删内容不复活",
+      "owner": "LF7",
+      "implementation_and_test_family": "backup",
+      "remaining_workflows": [
+        "R2",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "BAK-03",
+      "reference_state": "v1/v2与异常恢复",
+      "requirement": "旧 v1 在隔离库转换正确，新 v2 往返；坏包/中断/断线/磁盘失败保留正确旧状态与任务，不重放历史操作",
+      "owner": "LF7",
+      "implementation_and_test_family": "backup",
+      "remaining_workflows": [
+        "R2",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "UP-01",
+      "reference_state": "升级演练",
+      "requirement": "0004 旧视频/标签/ID/轮次/回执保留；旧客户端配新服务和新客户端配旧服务可预期；禁用根不误标缺失",
+      "owner": "LF1/8",
+      "implementation_and_test_family": "compatibility",
+      "remaining_workflows": [
+        "R7",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "UP-02",
+      "reference_state": "安装发布",
+      "requirement": "原包名/签名、递增 versionCode 覆盖安装，地址/token/本机偏好不丢；服务与 App 有配套版本说明和回退快照",
+      "owner": "LF8",
+      "implementation_and_test_family": "compatibility",
+      "remaining_workflows": [
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "current_candidate_status": "partially_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 signed pair:20-new21-old21-new21, three install-r covers preserve identity,35 tables,all settings/token hashes and preferences. Target phone and deployment remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "21-new22-old22-new22 three real install-r covers preserve35 tables, complete settings/token digests, preferences and identity; signed actual APK SHA matches build; phone/NAS remain open.",
+          "candidate_code": 22
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "UI-01",
+      "reference_state": "home、packs、video-tags、pack-tags、最近",
+      "requirement": "同素材、同数据、390×844 内容区并排；顶栏/分类/筛选/卡片/底栏层级一致",
+      "owner": "LF8",
+      "implementation_and_test_family": "visual",
+      "remaining_workflows": [
+        "R6",
+        "R8"
+      ],
+      "current_candidate_status": "partially_observed_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "首页同状态对照发现次要文字和部分图标差异，#124待修；标签集合无排序要求，不硬编码样例次序。",
+          "candidate_code": 18
+        },
+        {
+          "candidate_code": 20,
+          "evidence": "evidence/lf8-paper-symbols/README.md",
+          "scope": "本轮文字/图标修正、浅/暗首页/阅读指定状态定点复核通过；8dp阅读底栏保留原生命中约束，整项所需其它页面/状态/动作仍待完成。"
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "UI-02",
+      "reference_state": "video、reader、vertical、pack-quick",
+      "requirement": "画面完整显示、工具密度、来源/队列、按需整理、撤销不跳布局；手势录屏",
+      "owner": "LF8",
+      "implementation_and_test_family": "visual",
+      "remaining_workflows": [
+        "R1",
+        "R3",
+        "R4",
+        "R6",
+        "R8"
+      ],
+      "current_candidate_status": "partially_observed_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "阅读页同390×832内容高度对照；8dp底栏差为原生触控区保留，撤回错误裁图的20dp结论。文字色阶/图标#124待修；本段没有完整流程和全部视口通过声明。",
+          "candidate_code": 18
+        },
+        {
+          "candidate_code": 20,
+          "evidence": "evidence/lf8-paper-symbols/README.md",
+          "scope": "本轮文字/图标修正、浅/暗首页/阅读指定状态定点复核通过；8dp阅读底栏保留原生命中约束，整项所需其它页面/状态/动作仍待完成。"
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "UI-03",
+      "reference_state": "settings、dark、connection、roots、missing、trash、backup、tasks",
+      "requirement": "必要设置逐项存在；长管理页全高度，短编辑/确认底部面板；暗色一致",
+      "owner": "LF8",
+      "implementation_and_test_family": "visual",
+      "remaining_workflows": [
+        "R2",
+        "R6",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "UI-04",
+      "reference_state": "readersettings、restore-preview、purge、empty、错误",
+      "requirement": "确认前无副作用，禁用可理解，表单错误保留；键盘出现仍能看到字段/提交",
+      "owner": "LF8",
+      "implementation_and_test_family": "visual",
+      "remaining_workflows": [
+        "R1",
+        "R2",
+        "R5",
+        "R6",
+        "R8"
+      ],
+      "current_candidate_status": "partially_checked_in_integrated_run",
+      "existing_current_observations": [
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal22 empty summary shows active attributes, disabled preview and clear29; actual PNG inspected. Combined14 PNG retains IME, not a keyboard-free whole-page comparison.",
+          "candidate_code": 22
+        },
+        {
+          "evidence": "evidence/lf8-catalog-recovery/README.md",
+          "scope": "Normal22 real error text/retry, retained search and disabled empty preview/quick action verified. Confirmation/write failures and complete keyboard/layout states remain open.",
+          "candidate_code": 22
+        }
+      ],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "UI-05",
+      "reference_state": "360×740、844×390、系统放大字体、深浅色",
+      "requirement": "无溢出或被系统栏遮挡；Android SafeArea 不叠加 HTML 假 home indicator；可访问触控目标",
+      "owner": "LF8",
+      "implementation_and_test_family": "visual",
+      "remaining_workflows": [
+        "R6",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    },
+    {
+      "id": "UI-06",
+      "reference_state": "按压/切换/展开/通知",
+      "requirement": "沿用 100/140/160/240ms 的动作层级；减少动态效果直接到位；不以动画延迟实际状态",
+      "owner": "LF8",
+      "implementation_and_test_family": "visual",
+      "remaining_workflows": [
+        "R6",
+        "R8"
+      ],
+      "current_candidate_status": "not_checked_in_integrated_run",
+      "existing_current_observations": [],
+      "full_target_acceptance": "not_proven"
+    }
+  ],
+  "whole_acceptance_ids_passed": 0,
+  "scope_preserved": true
+}
