@@ -1,0 +1,55 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_upload_connection_recovery_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: file upload uses exact bytes/authentication and a single POST
+00:00 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: file upload uses exact bytes/authentication and a single POST
+00:00 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: file upload uses exact bytes/authentication and a single POST
+00:00 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: file upload uses exact bytes/authentication and a single POST
+00:00 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: file upload uses exact bytes/authentication and a single POST
+00:00 +4 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: file upload uses exact bytes/authentication and a single POST
+00:00 +4 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_upload_connection_recovery_test.dart: a real refused upload survives reopening and missing-original reads without any replay [E]
+  Expected: throws <Instance of 'ApiFailure'> with `status`: <404>
+    Actual: <Instance of 'Future<ArchivePreview>'>
+     Which: threw LibraryFailure:<未找到原备份请求，原记录已保留；没有重新提交>
+            stack package:video_viewer/library/server_backups.dart 235:9   ServerBackups._original
+                  ===== asynchronous gap ===========================
+                  package:matcher                                          expectLater
+                  package:flutter_test/src/widget_tester.dart 507:8        expectLater
+                  test/archive_upload_connection_recovery_test.dart 79:13  main.<fn>
+                  ===== asynchronous gap ===========================
+                  dart:async                                               _CustomZone.registerUnaryCallback
+                  test/archive_upload_connection_recovery_test.dart 13:23  main.<fn>
+                  
+            which is not an instance of 'ApiFailure'
+  
+  package:matcher                                          expectLater
+  package:flutter_test/src/widget_tester.dart 507:8        expectLater
+  test/archive_upload_connection_recovery_test.dart 79:13  main.<fn>
+  ===== asynchronous gap ===========================
+  dart:async                                               _CustomZone.registerUnaryCallback
+  test/archive_upload_connection_recovery_test.dart 13:23  main.<fn>
+  
+00:00 +5 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_test.dart: deadline ends a stalled real response
+00:00 +6 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_test.dart: deadline ends a stalled real response
+00:00 +7 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_test.dart: deadline ends a stalled real response
+00:00 +8 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: download goes to a verified private file and metadata mismatch leaves no file
+00:00 +9 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: download goes to a verified private file and metadata mismatch leaves no file
+00:00 +10 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: download goes to a verified private file and metadata mismatch leaves no file
+00:00 +11 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: download goes to a verified private file and metadata mismatch leaves no file
+00:00 +12 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_test.dart: redirects and media URLs cannot forward authentication to another origin
+00:00 +13 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: cancel and deadline stop a stalled file response and clean partial output
+00:00 +14 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_api_files_test.dart: cancel and deadline stop a stalled file response and clean partial output
+00:00 +15 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: latest restore point is a current scoped read, not an original receipt bypass
+00:00 +16 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: latest restore point is a current scoped read, not an original receipt bypass
+00:00 +17 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: latest restore point is a current scoped read, not an original receipt bypass
+00:00 +18 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: latest restore point is a current scoped read, not an original receipt bypass
+00:00 +19 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: snapshot lost response and reopening query one original without reinspection or restore
+00:00 +20 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: export/save cancellation and reopening preserve the same original job and file
+00:00 +21 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: lost export response reconciles by GET and never creates a replacement job
+00:00 +22 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: lost import response resumes without needing the local input or repeating POST
+00:00 +23 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: lost restore response retains complete mapping and queries the v2 original on reopening
+00:00 +24 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: unknown journal write and missing original remain query-only after reopening
+00:00 +25 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: incomplete root pages, spoofed previews and another owner cannot authorize a restore
+00:00 +26 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/server_archive_backups_test.dart: an existing v1 export is read with its own protocol before starting a v2 export
+00:00 +27 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/archive_upload_connection_recovery_test.dart: a real refused upload survives reopening and missing-original reads without any replay

@@ -1,0 +1,6 @@
+Analyzing mobile...                                             
+
+   info • The import of 'package:video_viewer/library/request_scope.dart' is unnecessary because all of the used elements are also provided by the import of 'package:video_viewer/library/server_api.dart'. Try removing the import directive • integration_test/server_archive_management_test.dart:14:8 • unnecessary_import
+   info • Statements in an if should be enclosed in a block. Try wrapping the statement in a block • integration_test/server_archive_management_test.dart:235:11 • curly_braces_in_flow_control_structures
+
+2 issues found. (ran in 2.2s)

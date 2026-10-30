@@ -1,0 +1,46 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_management_test.dart
+Running Gradle task 'assembleDebug'...                             14.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          465ms
+00:00 +0: LF8 real App v2 export, keyboard mapping, replacement and snapshot
+ARCHIVE_UI_METRICS:{"state":"archive-ui-backup-start","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-backup-dark","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":true}
+ARCHIVE_JOURNAL:{"stage":"before-system-save","state":{"version":2,"scopes":{"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]":{"scope":"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]","export":{"key":"1793123895673146-3192653316","version":2,"task":"f01d8ad1-5ae6-4edf-a9b7-69666ef08dbf","file":{"owner":"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]","id":"bb15b5fbe535ae5fea0cdf639231fa8b","bytes":19205,"sha256":"1f938590fa20481745968af42514707f8d574d15c17519ecb3e6108a2c748b00"}}}}}}
+ARCHIVE_SYSTEM_STAGE:{"stage":"cancel-save","bytes":19205,"sha256":"1f938590fa20481745968af42514707f8d574d15c17519ecb3e6108a2c748b00"}
+ARCHIVE_SYSTEM_DONE:{"stage":"cancel-save","saved":false}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-save-cancelled","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+ARCHIVE_JOURNAL:{"stage":"after-system-save-cancelled","state":{"version":2,"scopes":{"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]":{"scope":"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]","export":{"key":"1793123895673146-3192653316","version":2,"task":"f01d8ad1-5ae6-4edf-a9b7-69666ef08dbf","file":{"owner":"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]","id":"bb15b5fbe535ae5fea0cdf639231fa8b","bytes":19205,"sha256":"1f938590fa20481745968af42514707f8d574d15c17519ecb3e6108a2c748b00"}}}}}}
+ARCHIVE_JOURNAL:{"stage":"before-system-save","state":{"version":2,"scopes":{"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]":{"scope":"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]","export":{"key":"1793123895673146-3192653316","version":2,"task":"f01d8ad1-5ae6-4edf-a9b7-69666ef08dbf","file":{"owner":"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]","id":"bb15b5fbe535ae5fea0cdf639231fa8b","bytes":19205,"sha256":"1f938590fa20481745968af42514707f8d574d15c17519ecb3e6108a2c748b00"}}}}}}
+ARCHIVE_SYSTEM_STAGE:{"stage":"save","bytes":19205,"sha256":"1f938590fa20481745968af42514707f8d574d15c17519ecb3e6108a2c748b00"}
+ARCHIVE_SYSTEM_DONE:{"stage":"save","saved":true}
+ARCHIVE_SYSTEM_STAGE:{"stage":"cancel-pick","maximum_bytes":67108864}
+ARCHIVE_SYSTEM_DONE:{"stage":"cancel-pick","cancelled":true}
+ARCHIVE_UI_METRICS:{"state":"archive-ui-pick-cancelled","window":[390.0,844.0],"dpr":3.0,"text13":13.0,"viewPadding":[0.0,47.666666666666664,0.0,24.0],"keyboard":0.0,"dark":false}
+ARCHIVE_JOURNAL:{"stage":"after-system-pick-cancelled","state":{"version":2,"scopes":{"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]":{"scope":"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]"}}}}
+ARCHIVE_SYSTEM_STAGE:{"stage":"pick","maximum_bytes":67108864}
+ARCHIVE_SYSTEM_DONE:{"stage":"pick","bytes":19205,"sha256":"1f938590fa20481745968af42514707f8d574d15c17519ecb3e6108a2c748b00"}
+ARCHIVE_TRANSPORT_FAILURE:{"phase":"readingResponse","cause_type":"HttpException","code":"network_unavailable","bytes":19205,"sha256":"1f938590fa20481745968af42514707f8d574d15c17519ecb3e6108a2c748b00","message":"Connection closed while receiving data"}
+ARCHIVE_FAILURE_JOURNAL:{"version":2,"scopes":{"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]":{"scope":"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]","inspect":{"key":"1793123927263881-629801960","version":2,"digest":"1f938590fa20481745968af42514707f8d574d15c17519ecb3e6108a2c748b00","file":{"owner":"[\"http://10.0.2.2:8769\",\"b38770b31bb98639533113519a77b2fb\",\"715e175c8c615d3e9c4a784cc6d4fae8\"]","id":"0ccc1985bca044df8557ed0dcb8c2cdf","bytes":19205,"sha256":"1f938590fa20481745968af42514707f8d574d15c17519ecb3e6108a2c748b00"}}}}}
+00:40 +0: LF8 real App v2 export, keyboard mapping, replacement and snapshot - did not complete [E]
+00:40 +0: (tearDownAll) - did not complete [E]
+00:40 +0: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_management_test.dart: (tearDownAll) (did not complete)
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_management_test.dart: LF8 real App v2 export, keyboard mapping, replacement and snapshot (did not complete)
+No tests were found.
+unhandled error during finalization of test:
+/Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/integration_test/server_archive_management_test.dart
+PathNotFoundException: Deletion failed, path = '/var/folders/pt/953rhgfj5g1gm_pjr862pnhr0000gn/T/flutter_tools.nJTGQz/flutter_test_listener.wWylV4' (OS Error: No such file or directory, errno = 2)
+#0      _Directory._deleteSync (dart:io/directory_impl.dart:216:7)
+#1      FileSystemEntity.deleteSync (dart:io/file_system_entity.dart:425:7)
+#2      ForwardingFileSystemEntity.deleteSync (package:file/src/forwarding/forwarding_file_system_entity.dart:70:16)
+#3      ErrorHandlingDirectory.deleteSync.<anonymous closure> (package:flutter_tools/src/base/error_handling_io.dart:717:22)
+#4      _runSync (package:flutter_tools/src/base/error_handling_io.dart:1118:16)
+#5      ErrorHandlingDirectory.deleteSync (package:flutter_tools/src/base/error_handling_io.dart:716:12)
+#6      FlutterPlatform._createListenerDart.<anonymous closure> (package:flutter_tools/src/test/flutter_platform.dart:786:15)
+#7      FlutterPlatform._startTest.finalize (package:flutter_tools/src/test/flutter_platform.dart:591:26)
+<asynchronous suspension>
+#8      FlutterPlatform._startTest (package:flutter_tools/src/test/flutter_platform.dart:762:7)
+<asynchronous suspension>
+
