@@ -939,6 +939,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       return;
     }
     if (origin == null && data.items.isEmpty) return;
+    FocusManager.instance.primaryFocus?.unfocus();
     remember();
     final saved = pendingReturn ?? entry;
     final returnContext =
