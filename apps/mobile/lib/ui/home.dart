@@ -224,6 +224,10 @@ class _LibraryHomeState extends State<LibraryHome> {
         previousScope = nextScope;
       }
       if (!data.connected && page != 'connection') page = 'connection';
+      if (data.connected && libraryFirst && page == 'browse') {
+        page = 'library';
+        viewing = false;
+      }
       if (!data.connected && repo.connectionError != null) {
         error = repo.connectionError!;
       }
@@ -550,6 +554,9 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   void go(String next) {
+    // Legacy callbacks may still be used by shared management pages. They may
+    // never open the old autoplay destination on a fixed-preview connection.
+    if (libraryFirst && next == 'browse') next = 'library';
     _previewGeneration++;
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     setState(() {
@@ -1057,6 +1064,10 @@ class _LibraryHomeState extends State<LibraryHome> {
     canPop: page == 'browse' && !review,
     onPopInvokedWithResult: (didPop, result) {
       if (didPop) return;
+      if (libraryFirst) {
+        go('settings');
+        return;
+      }
       if (!primaryPage) {
         go('settings');
       } else if (page == 'browse') {

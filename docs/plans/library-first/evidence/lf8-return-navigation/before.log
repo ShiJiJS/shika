@@ -1,0 +1,150 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart
+00:00 +0: new workspace back from 媒体目录 never exposes legacy browse
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: no matching candidates
+  Actual: _KeyWidgetFinder:<Found 1 widget with key [<'nav-browse'>]: [
+            InkWell-[<'nav-browse'>],
+          ]>
+   Which: means one was found but none were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart:37:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart line 37
+The test description was:
+  new workspace back from 媒体目录 never exposes legacy browse
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +0 -1: new workspace back from 媒体目录 never exposes legacy browse [E]
+  Test failed. See exception logs above.
+  The test description was: new workspace back from 媒体目录 never exposes legacy browse
+  
+00:01 +0 -1: new workspace back from 回收站 never exposes legacy browse
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: no matching candidates
+  Actual: _KeyWidgetFinder:<Found 1 widget with key [<'nav-browse'>]: [
+            InkWell-[<'nav-browse'>],
+          ]>
+   Which: means one was found but none were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart:37:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart line 37
+The test description was:
+  new workspace back from 回收站 never exposes legacy browse
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +0 -2: new workspace back from 回收站 never exposes legacy browse [E]
+  Test failed. See exception logs above.
+  The test description was: new workspace back from 回收站 never exposes legacy browse
+  
+00:02 +0 -2: new workspace back from 备份与恢复 never exposes legacy browse
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: no matching candidates
+  Actual: _KeyWidgetFinder:<Found 1 widget with key [<'nav-browse'>]: [
+            InkWell-[<'nav-browse'>],
+          ]>
+   Which: means one was found but none were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart:37:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart line 37
+The test description was:
+  new workspace back from 备份与恢复 never exposes legacy browse
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:02 +0 -3: new workspace back from 备份与恢复 never exposes legacy browse [E]
+  Test failed. See exception logs above.
+  The test description was: new workspace back from 备份与恢复 never exposes legacy browse
+  
+00:02 +0 -3: new workspace back from 操作任务 never exposes legacy browse
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: no matching candidates
+  Actual: _KeyWidgetFinder:<Found 1 widget with key [<'nav-browse'>]: [
+            InkWell-[<'nav-browse'>],
+          ]>
+   Which: means one was found but none were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart:37:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart line 37
+The test description was:
+  new workspace back from 操作任务 never exposes legacy browse
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:03 +0 -4: new workspace back from 操作任务 never exposes legacy browse [E]
+  Test failed. See exception logs above.
+  The test description was: new workspace back from 操作任务 never exposes legacy browse
+  
+00:03 +0 -4: new workspace back from 服务连接 never exposes legacy browse
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: no matching candidates
+  Actual: _KeyWidgetFinder:<Found 1 widget with key [<'nav-browse'>]: [
+            InkWell-[<'nav-browse'>],
+          ]>
+   Which: means one was found but none were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart:37:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart line 37
+The test description was:
+  new workspace back from 服务连接 never exposes legacy browse
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +0 -5: new workspace back from 服务连接 never exposes legacy browse [E]
+  Test failed. See exception logs above.
+  The test description was: new workspace back from 服务连接 never exposes legacy browse
+  
+00:04 +0 -5: old service still returns from settings to legacy browse
+00:04 +1 -5: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart: new workspace back from 回收站 never exposes legacy browse
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart: new workspace back from 备份与恢复 never exposes legacy browse
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart: new workspace back from 媒体目录 never exposes legacy browse
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart: new workspace back from 操作任务 never exposes legacy browse
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/workspace_back_navigation_test.dart: new workspace back from 服务连接 never exposes legacy browse

@@ -190,9 +190,13 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
     };
     bool active(int slot) => widget.active && index == slot;
     return PopScope<void>(
-      canPop: widget.destination == 'library' && !showingTagResults,
+      canPop:
+          !widget.active ||
+          (widget.destination == 'library' && !showingTagResults),
       onPopInvokedWithResult: (didPop, result) {
-        if (didPop) return;
+        // Offstage preserves catalogue state, but must not handle a management
+        // page's return or mutate its destination before that page handles it.
+        if (didPop || !widget.active) return;
         if (showingTagResults) {
           setState(() => showingTagResults = false);
         } else {
