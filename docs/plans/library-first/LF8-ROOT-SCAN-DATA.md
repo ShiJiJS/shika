@@ -1,8 +1,8 @@
 # 分目录扫描数据与队列
 
-跟踪[#138](https://github.com/ShiJiJS/video_viewer/issues/138) / [草稿PR #147](https://github.com/ShiJiJS/video_viewer/pull/147)，#139消费本协议。服务端已实现并通过Linux检查，未部署NAS；客户端接线和配套原生组合仍待完成，票保持开放。
+跟踪[#138](https://github.com/ShiJiJS/video_viewer/issues/138) / [草稿PR #147](https://github.com/ShiJiJS/video_viewer/pull/147)，#139消费本协议。服务端已实现并通过Linux检查，未部署NAS；后续客户端已接入分目录页面，配套原生组合仍待完成，票保持开放。
 
-扫描仍使用一个工作线程。旧POST /scans不带正文仍扫描全部目录；新正文可指定root_id，绝不自动扩大到其它目录。活动/待执行任务已包含该范围时返回已有任务；否则持久化新任务并串行排队，服务重启将未完成任务标为中断，不自动重放。修改目录必须等待整个扫描队列结束。外层视频根沿用既有最外层归属，指定被外层覆盖的子根明确拒绝，不偷偷扫描外层；全扫中该子根标为covered并给出owner_root_id。
+扫描仍使用一个工作线程。旧POST /scans不带正文仍扫描全部目录；新正文可指定root_id，绝不自动扩大到其它目录。待执行任务或活动任务中尚未完成的根已包含该范围时返回已有任务；全扫中A已完成、B仍执行时，重新请求A会排队新尝试，重复请求再合并到排队A。否则持久化新任务并串行排队，服务重启将未完成任务标为中断，不自动重放。修改目录必须等待整个扫描队列结束。外层视频根沿用既有最外层归属，指定被外层覆盖的子根明确拒绝，不偷偷扫描外层；全扫中该子根标为covered并给出owner_root_id。
 
 每轮Task.result保留scope和全部选中目录的roots快照。HTTP任务结果新增root_scans完整明细；旧roots过滤停用/由外层覆盖的条目，避免旧客户端把它们误报为失败。每个根记录task_id/kind/status/phase/updated_at/finished_at，counts是本根结果；video progress的discovered/processed单位为视频，pack progress相同字段单位为图片、另有packs_discovered/packs_processed。旧roots[].discovered/processed保留视频/图包单位。discovery_complete表示已完成该层枚举，尚未知总量时只给已发现数；图包读完前不把图片数字等同图包数字。
 
@@ -22,4 +22,4 @@ POST /api/v1/scans不带正文或使用{}为全扫，{root_id:"已接入ID"}为�
 
 最终生产源码4ceb06db，完整477项及相关47项、Ruff/格式通过；143份源码/配置文件匹配实际测试镜像。13项新增用例覆盖上述范围，启动中断恢复含受控异常和私有事实种子，不冒充实际断电测试。[固定日志与中间边界](evidence/lf8-root-scan-data/README.md)保留需求基线、能力列表预期修正和重叠范围回归失败。
 
-客户端仍是dcc1d22f的第23版候选，没有接进度页面、没有纵向缩放；NAS交付仍为旧服务和code22。原型未改，未做真实收藏删除试验，原四个本机服务保持。下一步#139沿用现有布局把这些事实分别显示，再继续#142。
+后续#139已接入[分目录页面](LF8-ROOT-SCAN-UI.md)，并在430fede5补上已完成根允许排队重扫的边界；上述4ceb06db/477项保留为该次服务实现的实际版本。当前本机APK仍是dcc1d22f的第23版候选，没有本页面、没有纵向缩放；NAS交付仍为旧服务和code22。原型未改，未做真实收藏删除试验。配套原生组合与#142继续推进。

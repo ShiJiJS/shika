@@ -2,7 +2,7 @@
 
 跟踪：[139](https://github.com/ShiJiJS/video_viewer/issues/139)。
 
-来自图包扫描进度不可见反馈，继续 #24/#32/#33。优先级：高；依赖[服务端#138](https://github.com/ShiJiJS/video_viewer/issues/138)。本轮仅规划。
+来自图包扫描进度不可见反馈，继续 #24/#32/#33。优先级：高；依赖[服务端#138](https://github.com/ShiJiJS/video_viewer/issues/138)。初始规划保留如下；页面已实现，验收未全部完成。
 
 当前核对：`LibraryPreparation.fromJson`在models.dart:723起只读取顶层视频progress/counts，未建立media.pack.counts的类型进度；label未识别pack_*阶段。home.dart:1412起准备卡仍显示视频数量/字节和视频失败描述，目录行虽有rootScanLabel但受到根数据缺失影响。因此后台扫描图片时，页面可能仍显示视频已就绪/598个视频。
 
@@ -18,3 +18,7 @@
 验收：至少V+A+B三目录的真实服务组合；图包阶段可见持续变化；两根目录互不覆盖；返回/应用重开、网络暂断、老服务/字段缺失正确显示。用定点组件检查和普通安装包操作验证，不以静态假数字或模拟器时长代替NAS性能结论。
 
 入口：models.dart LibraryPreparation、server_repository读取/轮询、home.dart preparationCard/rootScanLabel/roots及设置进度入口。
+
+## 实施更新（2026-10-30）
+
+源码430fede5，[页面规则与记录](../LF8-ROOT-SCAN-UI.md)。以上六项已完成客户端代码及组件覆盖：共享事实、类型分组、每根数字/错误/队列、单根请求与能力保护、布局/主题。未勾选为整项完成，因为仍需配套普通安装包对真实服务V+A+B、重开/断网及新旧服务组合操作。客户端完整822项、新增23项连续三轮及分析通过；公开合成响应渲染的组件PNG与真实Scanner测试分别记录，不冒充NAS或普通APK画面。NAS/第23版本机APK未更新，#142未实现，票保持开放。

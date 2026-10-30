@@ -1,0 +1,182 @@
+{
+  "rule": "only earlier private PNG copies identical by SHA256 to frozen screenshots",
+  "removed": [
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-2/320-844-2.0-false-bottom.png",
+      "sha256": "c0f05d25c2dcb70058c4b554cc6c7c93bae4aadb96629a98f9881bbe8e081aff",
+      "bytes": 73805
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-2/320-844-2.0-false-top.png",
+      "sha256": "782cfb9e20e293974eca105f47f2727f6b9732ae29ffb8b3bc00233960493895",
+      "bytes": 65677
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-2/390-844-1.0-false-bottom.png",
+      "sha256": "5fbb46a53193711e619336170deacd0d9ca21e3533bf8c4c709ef54508e3ef00",
+      "bytes": 66526
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-2/390-844-1.0-false-top.png",
+      "sha256": "eeeb123301bf662c034b0d0dd76b9b4f79b6cdf4f31a3f99cc68481733aaec68",
+      "bytes": 66564
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-2/390-844-1.0-true-bottom.png",
+      "sha256": "f5ef60080878d36610e56bed7c034b22e3c61412e23686df69fcb95711b4a116",
+      "bytes": 66136
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-2/390-844-1.0-true-top.png",
+      "sha256": "cea7e79af1a0c782f41e7d5b4c44ea70b7a506afc535479fb33632f214862f91",
+      "bytes": 66121
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-2/844-390-1.0-false-bottom.png",
+      "sha256": "546b51baf18658a679d1642758dc112b52098bcd50430f77b741e6c90ee27d67",
+      "bytes": 35588
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-2/844-390-1.0-false-top.png",
+      "sha256": "7c7adbe5e9e77802215854629563bda3133d620196c2d40329dcd7830c71173f",
+      "bytes": 26820
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-accepted/320-844-2.0-false-bottom.png",
+      "sha256": "c0f05d25c2dcb70058c4b554cc6c7c93bae4aadb96629a98f9881bbe8e081aff",
+      "bytes": 73805
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-accepted/320-844-2.0-false-top.png",
+      "sha256": "782cfb9e20e293974eca105f47f2727f6b9732ae29ffb8b3bc00233960493895",
+      "bytes": 65677
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-accepted/390-844-1.0-false-bottom.png",
+      "sha256": "5fbb46a53193711e619336170deacd0d9ca21e3533bf8c4c709ef54508e3ef00",
+      "bytes": 66526
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-accepted/390-844-1.0-false-top.png",
+      "sha256": "eeeb123301bf662c034b0d0dd76b9b4f79b6cdf4f31a3f99cc68481733aaec68",
+      "bytes": 66564
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-accepted/390-844-1.0-true-bottom.png",
+      "sha256": "f5ef60080878d36610e56bed7c034b22e3c61412e23686df69fcb95711b4a116",
+      "bytes": 66136
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-accepted/390-844-1.0-true-top.png",
+      "sha256": "cea7e79af1a0c782f41e7d5b4c44ea70b7a506afc535479fb33632f214862f91",
+      "bytes": 66121
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-accepted/844-390-1.0-false-bottom.png",
+      "sha256": "546b51baf18658a679d1642758dc112b52098bcd50430f77b741e6c90ee27d67",
+      "bytes": 35588
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-accepted/844-390-1.0-false-top.png",
+      "sha256": "7c7adbe5e9e77802215854629563bda3133d620196c2d40329dcd7830c71173f",
+      "bytes": 26820
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-final/320-844-2.0-false-bottom.png",
+      "sha256": "c0f05d25c2dcb70058c4b554cc6c7c93bae4aadb96629a98f9881bbe8e081aff",
+      "bytes": 73805
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-final/320-844-2.0-false-top.png",
+      "sha256": "782cfb9e20e293974eca105f47f2727f6b9732ae29ffb8b3bc00233960493895",
+      "bytes": 65677
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-final/390-844-1.0-false-bottom.png",
+      "sha256": "5fbb46a53193711e619336170deacd0d9ca21e3533bf8c4c709ef54508e3ef00",
+      "bytes": 66526
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-final/390-844-1.0-false-top.png",
+      "sha256": "eeeb123301bf662c034b0d0dd76b9b4f79b6cdf4f31a3f99cc68481733aaec68",
+      "bytes": 66564
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-final/390-844-1.0-true-bottom.png",
+      "sha256": "f5ef60080878d36610e56bed7c034b22e3c61412e23686df69fcb95711b4a116",
+      "bytes": 66136
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-final/390-844-1.0-true-top.png",
+      "sha256": "cea7e79af1a0c782f41e7d5b4c44ea70b7a506afc535479fb33632f214862f91",
+      "bytes": 66121
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-final/844-390-1.0-false-bottom.png",
+      "sha256": "546b51baf18658a679d1642758dc112b52098bcd50430f77b741e6c90ee27d67",
+      "bytes": 35588
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-final/844-390-1.0-false-top.png",
+      "sha256": "7c7adbe5e9e77802215854629563bda3133d620196c2d40329dcd7830c71173f",
+      "bytes": 26820
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-surface/320-844-2.0-false-bottom.png",
+      "sha256": "c0f05d25c2dcb70058c4b554cc6c7c93bae4aadb96629a98f9881bbe8e081aff",
+      "bytes": 73805
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-surface/320-844-2.0-false-top.png",
+      "sha256": "782cfb9e20e293974eca105f47f2727f6b9732ae29ffb8b3bc00233960493895",
+      "bytes": 65677
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-surface/390-844-1.0-false-bottom.png",
+      "sha256": "5fbb46a53193711e619336170deacd0d9ca21e3533bf8c4c709ef54508e3ef00",
+      "bytes": 66526
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-surface/390-844-1.0-false-top.png",
+      "sha256": "eeeb123301bf662c034b0d0dd76b9b4f79b6cdf4f31a3f99cc68481733aaec68",
+      "bytes": 66564
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-surface/390-844-1.0-true-bottom.png",
+      "sha256": "f5ef60080878d36610e56bed7c034b22e3c61412e23686df69fcb95711b4a116",
+      "bytes": 66136
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-surface/390-844-1.0-true-top.png",
+      "sha256": "cea7e79af1a0c782f41e7d5b4c44ea70b7a506afc535479fb33632f214862f91",
+      "bytes": 66121
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-surface/844-390-1.0-false-bottom.png",
+      "sha256": "546b51baf18658a679d1642758dc112b52098bcd50430f77b741e6c90ee27d67",
+      "bytes": 35588
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-surface/844-390-1.0-false-top.png",
+      "sha256": "7c7adbe5e9e77802215854629563bda3133d620196c2d40329dcd7830c71173f",
+      "bytes": 26820
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-surface/empty-and-image-less.png",
+      "sha256": "053e3d310ab38c0fe453d7ce1feeec72437d7e7f975219efdb2583a62856578a",
+      "bytes": 61065
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-surface/legacy-type-warnings.png",
+      "sha256": "5d5e6b5a19096505e89fbbb21e17cc9db66740ebd26bc60ea4b78a677bf7378e",
+      "bytes": 84083
+    },
+    {
+      "path": ".dev/lf8-root-scan-ui/screens-surface/settings-entry.png",
+      "sha256": "2854a44f201057ae96fdfb764ad6435a5b7d9892bc3a264f5787d90964507e02",
+      "bytes": 60188
+    }
+  ],
+  "bytes_removed": 2074284,
+  "preserved": "final raw captures, differing earlier captures, logs, APKs, SDK, signing, AVD, runtime data, frozen prototype"
+}
