@@ -1,6 +1,6 @@
 # 纵向缩放与第25版基础检查
 
-[实现规则](../../LF8-VERTICAL-STRIP-ZOOM.md)，跟踪#142/#139/#138/#33/#24。当前生产源码d8acf14000dd7b4c0ef0c68e0f5063a9fcdbd4e9。冻结原型树仍为1cbf605。
+[实现规则](../../LF8-VERTICAL-STRIP-ZOOM.md)，[草稿PR #149](https://github.com/ShiJiJS/video_viewer/pull/149)，跟踪#142/#139/#138/#33/#24。当前生产源码d8acf14000dd7b4c0ef0c68e0f5063a9fcdbd4e9。冻结原型树仍为1cbf605。
 
 client-full-orientation.log：**完整832项通过**；reader-orientation-1/2/3：每轮37项，连续三轮通过；analyze-orientation.log无问题。orientation-source.json固定236份Dart/测试/pubspec文件，执行前后逐一SHA保持并匹配该提交。新增9个纵向用例加1个放大坏图跳过变体，覆盖上下限、双击/返回、两种指头交接、深位置旋转、跳页/模式、500条清单窗口/缓存、边缘续读、末图不误记完成和入口方向锁恢复；相关37项还包含原横向/RTL、坏图与整理撤销回归。
 
