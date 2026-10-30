@@ -371,7 +371,22 @@ void main() {
                   processed: 5,
                 );
         }
-        await t.pump();
+        await until(() {
+          final f = read();
+          if (stage == 'completed') {
+            return f['tile_present'] == true &&
+                f['height'] == 0 &&
+                (f['header_summary'] as String? ?? '').contains('5 / 5 个');
+          }
+          return f['tile_present'] == false &&
+              f['cards'] == 1 &&
+              (stage == 'scanning'
+                  ? (f['preparation_summary'] as String? ?? '').contains(
+                      '4 / 5 个',
+                    )
+                  : f['preparation_summary'] == '扫描失败' &&
+                        f['failure_detail_present'] == true);
+        }, '$prefix rendered $stage');
         final f = read();
         expect(f['tile_present'], stage == 'completed');
         expect(f['cards'], stage == 'completed' ? 0 : 1);
