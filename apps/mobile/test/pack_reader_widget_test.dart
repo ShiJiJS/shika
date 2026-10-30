@@ -11,6 +11,10 @@ import 'package:video_viewer/ui/paper.dart';
 import 'media_workspace_widget_test.dart' show WorkspaceLibrary;
 
 class AssetReadingLibrary extends WorkspaceLibrary {
+  int totalPages = 3;
+  Size Function(int index)? pageDimensions;
+  final commands = <ReaderCommand>[];
+  final manifestRequests = <({int offset, int limit})>[];
   MediaSource Function(String packId, int index)? pageImage;
   MediaSource Function(String packId, int index)? pageThumbnail;
   final prefs = <String, ReaderPreferences>{};
@@ -43,8 +47,8 @@ class _AssetReader implements PackReader {
     packId: selected,
     name: '${index + 1}.jpg',
     ordinal: index,
-    width: 400,
-    height: 600,
+    width: (repo.pageDimensions?.call(index).width ?? 400).round(),
+    height: (repo.pageDimensions?.call(index).height ?? 600).round(),
     version: 1,
     image:
         repo.pageImage?.call(selected, index) ??
@@ -72,8 +76,8 @@ class _AssetReader implements PackReader {
     rootId: 'root',
     path: '/packs/$selected',
     name: '阅读图包${selected.substring(1)}',
-    pageCount: 3,
-    readableCount: 3,
+    pageCount: repo.totalPages,
+    readableCount: repo.totalPages,
     contentVersion: 1,
     status: 'available',
     createdAt: 1,
@@ -94,6 +98,7 @@ class _AssetReader implements PackReader {
   );
   @override
   Future<T> submit<T>(ReaderCommand<T> command) async {
+    repo.commands.add(command);
     final Object result;
     switch (command) {
       case final CreatePackReading value:
@@ -152,14 +157,21 @@ class _AssetReader implements PackReader {
     required int version,
     int offset = 0,
     int limit = 40,
-  }) async => PackManifest(
-    pages: [for (var i = offset; i < 3 && i < offset + limit; i++) page(i)],
-    packId: selected,
-    version: 1,
-    total: 3,
-    offset: offset,
-    limit: limit,
-  );
+  }) async {
+    repo.manifestRequests.add((offset: offset, limit: limit));
+    return PackManifest(
+      pages: [
+        for (var i = offset; i < repo.totalPages && i < offset + limit; i++)
+          page(i),
+      ],
+      packId: selected,
+      version: 1,
+      total: repo.totalPages,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
   @override
   Future<ReaderQueuePage> queue(
     String id, {

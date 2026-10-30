@@ -1,0 +1,395 @@
+{
+  "normal_entry_code": 25,
+  "scope": {
+    "all": false,
+    "root_ids": [
+      "packs-a"
+    ]
+  },
+  "root_B_entire_fact_unchanged": true,
+  "root_A_before": {
+    "id": "packs-a",
+    "ready": true,
+    "kind": "pack",
+    "enabled": true,
+    "available": true,
+    "last_scan": 1793363621.4639776,
+    "error": null,
+    "scan": {
+      "counts": {
+        "deferred": 0,
+        "failed": 1,
+        "failed_packs": 0,
+        "failed_pages": 1,
+        "identity_ambiguous": 0,
+        "identity_matched": 0,
+        "imported": 4,
+        "loose_images": 0,
+        "missing": 0,
+        "protected_packs": 0,
+        "symlinks_skipped": 0,
+        "thumbnail_failed": 0,
+        "unchanged": 0,
+        "unsupported_files": 2,
+        "updated": 0
+      },
+      "discovered": 4,
+      "finished_at": 1793363621.4651313,
+      "id": "packs-a",
+      "kind": "pack",
+      "page_errors": 1,
+      "phase": "partial",
+      "processed": 4,
+      "progress": {
+        "discovered": 509,
+        "discovery_complete": true,
+        "packs_discovered": 4,
+        "packs_discovery_complete": true,
+        "packs_processed": 4,
+        "processed": 509
+      },
+      "status": "partial",
+      "task_id": "7cf91b9c-b215-4c2b-af0a-e172c51d5612",
+      "updated_at": 1793363621.4651244
+    },
+    "queued_task_ids": []
+  },
+  "root_A_after": {
+    "id": "packs-a",
+    "ready": true,
+    "kind": "pack",
+    "enabled": true,
+    "available": true,
+    "last_scan": 1793365429.8796303,
+    "error": null,
+    "scan": {
+      "counts": {
+        "deferred": 0,
+        "failed": 0,
+        "failed_packs": 0,
+        "failed_pages": 0,
+        "identity_ambiguous": 0,
+        "identity_matched": 0,
+        "imported": 0,
+        "loose_images": 0,
+        "missing": 0,
+        "protected_packs": 0,
+        "symlinks_skipped": 0,
+        "thumbnail_failed": 0,
+        "unchanged": 3,
+        "unsupported_files": 2,
+        "updated": 1
+      },
+      "discovered": 4,
+      "finished_at": 1793365429.8810017,
+      "id": "packs-a",
+      "kind": "pack",
+      "page_errors": 1,
+      "phase": "partial",
+      "processed": 4,
+      "progress": {
+        "discovered": 510,
+        "discovery_complete": true,
+        "packs_discovered": 4,
+        "packs_discovery_complete": true,
+        "packs_processed": 4,
+        "processed": 510
+      },
+      "status": "partial",
+      "task_id": "ead53fc0-02de-4603-afba-19363ce5c589",
+      "updated_at": 1793365429.8810008
+    },
+    "queued_task_ids": []
+  },
+  "root_B_before": {
+    "id": "packs-b",
+    "ready": true,
+    "kind": "pack",
+    "enabled": true,
+    "available": true,
+    "last_scan": 1793363622.00081,
+    "error": null,
+    "scan": {
+      "counts": {
+        "deferred": 0,
+        "failed": 0,
+        "failed_packs": 0,
+        "failed_pages": 0,
+        "identity_ambiguous": 0,
+        "identity_matched": 0,
+        "imported": 1,
+        "loose_images": 0,
+        "missing": 0,
+        "protected_packs": 0,
+        "symlinks_skipped": 0,
+        "thumbnail_failed": 0,
+        "unchanged": 0,
+        "unsupported_files": 0,
+        "updated": 0
+      },
+      "discovered": 1,
+      "finished_at": 1793363622.0016963,
+      "id": "packs-b",
+      "kind": "pack",
+      "phase": "completed",
+      "processed": 1,
+      "progress": {
+        "discovered": 4,
+        "discovery_complete": true,
+        "packs_discovered": 1,
+        "packs_discovery_complete": true,
+        "packs_processed": 1,
+        "processed": 4
+      },
+      "status": "completed",
+      "task_id": "7cf91b9c-b215-4c2b-af0a-e172c51d5612",
+      "updated_at": 1793363622.0016947
+    },
+    "queued_task_ids": []
+  },
+  "root_B_after": {
+    "id": "packs-b",
+    "ready": true,
+    "kind": "pack",
+    "enabled": true,
+    "available": true,
+    "last_scan": 1793363622.00081,
+    "error": null,
+    "scan": {
+      "counts": {
+        "deferred": 0,
+        "failed": 0,
+        "failed_packs": 0,
+        "failed_pages": 0,
+        "identity_ambiguous": 0,
+        "identity_matched": 0,
+        "imported": 1,
+        "loose_images": 0,
+        "missing": 0,
+        "protected_packs": 0,
+        "symlinks_skipped": 0,
+        "thumbnail_failed": 0,
+        "unchanged": 0,
+        "unsupported_files": 0,
+        "updated": 0
+      },
+      "discovered": 1,
+      "finished_at": 1793363622.0016963,
+      "id": "packs-b",
+      "kind": "pack",
+      "phase": "completed",
+      "processed": 1,
+      "progress": {
+        "discovered": 4,
+        "discovery_complete": true,
+        "packs_discovered": 1,
+        "packs_discovery_complete": true,
+        "packs_processed": 1,
+        "processed": 4
+      },
+      "status": "completed",
+      "task_id": "7cf91b9c-b215-4c2b-af0a-e172c51d5612",
+      "updated_at": 1793363622.0016947
+    },
+    "queued_task_ids": []
+  },
+  "task": {
+    "id": "ead53fc0-02de-4603-afba-19363ce5c589",
+    "kind": "scan",
+    "status": "completed",
+    "phase": "completed",
+    "created_at": 1793365428.9697464,
+    "finished_at": 1793365429.8856845,
+    "result": {
+      "imported": 0,
+      "unchanged": 0,
+      "deferred": 0,
+      "failed": 0,
+      "thumbnail_failed": 0,
+      "failure_reasons": {},
+      "warning_reasons": {},
+      "warnings": [],
+      "missing": 0,
+      "identity_matched": 0,
+      "identity_ambiguous": 0,
+      "scope": {
+        "all": false,
+        "root_ids": [
+          "packs-a"
+        ]
+      },
+      "roots": [
+        {
+          "id": "packs-a",
+          "kind": "pack",
+          "task_id": "ead53fc0-02de-4603-afba-19363ce5c589",
+          "configuration": [
+            "/media/packs-a",
+            "pack",
+            "packs-a",
+            true,
+            "de7ecb6f7be490b3bb7f9241cb829606551a7b6f823c97f12dac96973e9c5cfd"
+          ],
+          "status": "partial",
+          "phase": "partial",
+          "discovered": 4,
+          "processed": 4,
+          "progress": {
+            "discovered": 510,
+            "processed": 510,
+            "discovery_complete": true,
+            "packs_discovered": 4,
+            "packs_processed": 4,
+            "packs_discovery_complete": true
+          },
+          "counts": {
+            "imported": 0,
+            "updated": 1,
+            "failed_pages": 0,
+            "failed_packs": 0,
+            "protected_packs": 0,
+            "unchanged": 3,
+            "deferred": 0,
+            "failed": 0,
+            "missing": 0,
+            "identity_matched": 0,
+            "identity_ambiguous": 0,
+            "thumbnail_failed": 0,
+            "unsupported_files": 2,
+            "loose_images": 0,
+            "symlinks_skipped": 0
+          },
+          "updated_at": 1793365429.8810008,
+          "page_errors": 1,
+          "finished_at": 1793365429.8810017
+        }
+      ],
+      "issues": [],
+      "progress": {
+        "discovered": 0,
+        "processed": 0,
+        "bytes_total": 0,
+        "bytes_processed": 0,
+        "updated_at": 1793365429.88328
+      },
+      "packs": {
+        "imported": 0,
+        "updated": 1,
+        "failed_pages": 0,
+        "failed_packs": 0,
+        "protected_packs": 0,
+        "unchanged": 3,
+        "deferred": 0,
+        "failed": 0,
+        "missing": 0,
+        "identity_matched": 0,
+        "identity_ambiguous": 0,
+        "thumbnail_failed": 0,
+        "unsupported_files": 2,
+        "loose_images": 0,
+        "symlinks_skipped": 0,
+        "failure_reasons": {},
+        "issues": [],
+        "progress": {
+          "discovered": 510,
+          "processed": 510,
+          "packs_discovered": 4,
+          "packs_processed": 4,
+          "peak_decoder_kib": 159212,
+          "updated_at": 1793365429.881004
+        }
+      },
+      "root_scans": [
+        {
+          "id": "packs-a",
+          "kind": "pack",
+          "task_id": "ead53fc0-02de-4603-afba-19363ce5c589",
+          "configuration": [
+            "/media/packs-a",
+            "pack",
+            "packs-a",
+            true,
+            "de7ecb6f7be490b3bb7f9241cb829606551a7b6f823c97f12dac96973e9c5cfd"
+          ],
+          "status": "partial",
+          "phase": "partial",
+          "discovered": 4,
+          "processed": 4,
+          "progress": {
+            "discovered": 510,
+            "processed": 510,
+            "discovery_complete": true,
+            "packs_discovered": 4,
+            "packs_processed": 4,
+            "packs_discovery_complete": true
+          },
+          "counts": {
+            "imported": 0,
+            "updated": 1,
+            "failed_pages": 0,
+            "failed_packs": 0,
+            "protected_packs": 0,
+            "unchanged": 3,
+            "deferred": 0,
+            "failed": 0,
+            "missing": 0,
+            "identity_matched": 0,
+            "identity_ambiguous": 0,
+            "thumbnail_failed": 0,
+            "unsupported_files": 2,
+            "loose_images": 0,
+            "symlinks_skipped": 0
+          },
+          "updated_at": 1793365429.8810008,
+          "page_errors": 1,
+          "finished_at": 1793365429.8810017
+        }
+      ]
+    },
+    "error": null
+  },
+  "observed": [
+    {
+      "task_id": "ead53fc0-02de-4603-afba-19363ce5c589",
+      "status": "processing_media",
+      "progress": {
+        "discovered": 510,
+        "discovery_complete": false,
+        "packs_discovered": 4,
+        "packs_discovery_complete": true,
+        "packs_processed": 3,
+        "processed": 10
+      }
+    },
+    {
+      "task_id": "ead53fc0-02de-4603-afba-19363ce5c589",
+      "status": "processing_media",
+      "progress": {
+        "discovered": 510,
+        "discovery_complete": false,
+        "packs_discovered": 4,
+        "packs_discovery_complete": true,
+        "packs_processed": 3,
+        "processed": 10
+      }
+    },
+    {
+      "task_id": "ead53fc0-02de-4603-afba-19363ce5c589",
+      "status": "partial",
+      "progress": {
+        "discovered": 510,
+        "discovery_complete": true,
+        "packs_discovered": 4,
+        "packs_discovery_complete": true,
+        "packs_processed": 4,
+        "processed": 510
+      }
+    }
+  ],
+  "fixture_original_files_unchanged": 516,
+  "developer_added_only_public_fixture_file": {
+    "path": "packs-a/01-natural/11.jpg",
+    "sha256": "06fc4ecb906950a017778a5fc8fd0a3dd4161b36b034ea8f047403ba6927d64f"
+  },
+  "real_media_touched": false
+}

@@ -52,6 +52,8 @@ class PackReaderPageState extends State<PackReaderPage>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // The library stays portrait; the reader already has a landscape layout.
+    unawaited(SystemChrome.setPreferredOrientations(DeviceOrientation.values));
     session.addListener(changed);
     unawaited(session.start(resumeSessionId: widget.resumeSessionId));
   }
@@ -659,6 +661,7 @@ class PackReaderPageState extends State<PackReaderPage>
     Size size, {
     bool thumbnail = false,
     bool Function()? visible,
+    Widget Function(Widget)? frameDecorator,
   }) {
     final epoch = session.packEpoch;
     return ReaderImage(
@@ -667,6 +670,7 @@ class PackReaderPageState extends State<PackReaderPage>
       viewport: size,
       thumbnail: thumbnail,
       widthFit: session.preferences.fit == ReaderFit.width && !thumbnail,
+      frameDecorator: frameDecorator,
       onFrame: thumbnail
           ? null
           : () {
@@ -924,6 +928,12 @@ class PackReaderPageState extends State<PackReaderPage>
                                   ),
                                   session: session,
                                   jumpEpoch: jumpEpoch,
+                                  resetZoom: zoomReset,
+                                  onZoom: (value) {
+                                    if (mounted && zoomed != value) {
+                                      setState(() => zoomed = value);
+                                    }
+                                  },
                                   size: size,
                                   picture: picture,
                                   end: end,
@@ -1317,6 +1327,9 @@ class PackReaderPageState extends State<PackReaderPage>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    unawaited(
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
+    );
     session.removeListener(changed);
     session.dispose();
     images.dispose();
@@ -1383,6 +1396,7 @@ typedef _Picture = Widget Function(
   Size size, {
   bool thumbnail,
   bool Function()? visible,
+  Widget Function(Widget)? frameDecorator,
 });
 
 class _HorizontalReader extends StatefulWidget {
@@ -1734,13 +1748,16 @@ class _VerticalReader extends StatefulWidget {
     super.key,
     required this.session,
     required this.jumpEpoch,
+    required this.resetZoom,
+    required this.onZoom,
     required this.size,
     required this.picture,
     required this.end,
     required this.tap,
   });
   final PackReadingSession session;
-  final int jumpEpoch;
+  final int jumpEpoch, resetZoom;
+  final ValueChanged<bool> onZoom;
   final Size size;
   final _Picture picture;
   final Widget Function() end;
@@ -1749,49 +1766,246 @@ class _VerticalReader extends StatefulWidget {
   State<_VerticalReader> createState() => _VerticalReaderState();
 }
 
+typedef _StripAnchor = ({String id, double ratio, double trailing});
+
 class _VerticalReaderState extends State<_VerticalReader> {
   final scroll = ScrollController();
   String stamp = '';
-  bool positioning = true;
+  bool positioning = true, pinching = false, userScroll = false;
+  bool cancelledGesture = false;
   List<int> indexes = [];
-  List<double> tops = [];
-  double footer = 180;
+  List<String> ids = [];
+  List<double> tops = [], extents = [];
+  double footer = 180, scale = 1, shift = 0;
+  double gestureScale = 1, gestureBase = 1, focalX = 0;
+  Offset doubleTapPoint = Offset.zero;
+  _StripAnchor? pendingAnchor, pinchAnchor;
+  double pendingY = 0;
+  int layoutRevision = 0;
+  Drag? drag;
+  ScrollHoldController? hold;
+
   @override
   void initState() {
     super.initState();
     scroll.addListener(report);
   }
 
+  double get gap => widget.session.preferences.gap ? 12 : 0;
   double height(int index) {
     final page = widget.session.pages[index]!;
     return max(
-          120,
-          widget.size.width * max(1, page.height) / max(1, page.width),
-        ) +
-        (widget.session.preferences.gap ? 12 : 0);
+              120,
+              widget.size.width * max(1, page.height) / max(1, page.width),
+            ) *
+            scale +
+        gap;
+  }
+
+  _StripAnchor sessionAnchor() => (
+    id: widget.session.currentPage!.id,
+    ratio: widget.session.offsetRatio,
+    trailing: 0,
+  );
+
+  // The old laid-out extents are used even if the next window or viewport
+  // already changed. IDs keep the anchor valid when the window's head evicts.
+  _StripAnchor? anchorAt(double y) {
+    if (!scroll.hasClients || ids.isEmpty) return null;
+    final offset = max(0.0, scroll.offset + y);
+    var at = 0;
+    while (at + 1 < ids.length && tops[at + 1] <= offset) {
+      at++;
+    }
+    final within = max(0.0, offset - tops[at]);
+    return (
+      id: ids[at],
+      ratio: (within / extents[at]).clamp(0, 1),
+      trailing: max(0.0, within - extents[at]),
+    );
+  }
+
+  void cancelDrag() {
+    final previous = drag;
+    drag = null;
+    previous?.cancel();
+  }
+
+  void releaseHold() {
+    hold?.cancel();
+    hold = null;
+  }
+
+  void beginDrag(Offset global) {
+    if (!scroll.hasClients) return;
+    releaseHold();
+    cancelDrag();
+    drag = scroll.position.drag(
+      DragStartDetails(globalPosition: global),
+      () => drag = null,
+    );
+    scroll.position.context.setIgnorePointer(false);
+    userScroll = true;
+  }
+
+  void beginPinch(Offset local, double baseline) {
+    pinching = true;
+    userScroll = false;
+    cancelDrag();
+    releaseHold();
+    if (scroll.hasClients) hold = scroll.position.hold(() => hold = null);
+    gestureScale = scale;
+    gestureBase = baseline;
+    focalX = (local.dx - shift) / scale;
+    pinchAnchor = anchorAt(local.dy);
+  }
+
+  void changeGeometry(
+    double next,
+    double nextShift,
+    _StripAnchor? anchor,
+    double y,
+  ) {
+    if (anchor == null) return;
+    setState(() {
+      pendingAnchor = anchor;
+      pendingY = y;
+      positioning = true;
+      layoutRevision++;
+      scale = next.clamp(1, 4);
+      shift = nextShift.clamp(widget.size.width * (1 - scale), 0);
+    });
+    widget.onZoom(scale > 1.01);
+  }
+
+  void start(ScaleStartDetails details) {
+    cancelledGesture = false;
+    if (positioning) return;
+    if (details.pointerCount > 1) {
+      beginPinch(details.localFocalPoint, 1);
+    } else {
+      pinching = false;
+      beginDrag(details.focalPoint);
+    }
+  }
+
+  void update(ScaleUpdateDetails details) {
+    if (cancelledGesture || (positioning && !pinching)) return;
+    if (details.pointerCount > 1) {
+      if (!pinching) beginPinch(details.localFocalPoint, details.scale);
+      final next = (gestureScale * details.scale / gestureBase).clamp(1.0, 4.0);
+      changeGeometry(
+        next,
+        details.localFocalPoint.dx - focalX * next,
+        pinchAnchor,
+        details.localFocalPoint.dy,
+      );
+    } else {
+      if (pinching) {
+        pinching = false;
+        beginDrag(details.focalPoint);
+      }
+      if (drag == null) beginDrag(details.focalPoint);
+      if (scale > 1) {
+        final next = (shift + details.focalPointDelta.dx).clamp(
+          widget.size.width * (1 - scale),
+          0.0,
+        );
+        if (next != shift) setState(() => shift = next);
+      }
+      drag?.update(
+        DragUpdateDetails(
+          delta: Offset(0, details.focalPointDelta.dy),
+          primaryDelta: details.focalPointDelta.dy,
+          globalPosition: details.focalPoint,
+        ),
+      );
+    }
+  }
+
+  void endGesture(ScaleEndDetails details) {
+    final previous = drag;
+    drag = null;
+    previous?.end(
+      DragEndDetails(
+        velocity: Velocity(
+          pixelsPerSecond: Offset(0, details.velocity.pixelsPerSecond.dy),
+        ),
+        primaryVelocity: details.velocity.pixelsPerSecond.dy,
+      ),
+    );
+    pinching = false;
+    releaseHold();
+  }
+
+  void doubleTap() {
+    pinching = false;
+    userScroll = false;
+    cancelDrag();
+    releaseHold();
+    final next = scale > 1.01 ? 1.0 : 2.0;
+    final imageX = (doubleTapPoint.dx - shift) / scale;
+    changeGeometry(
+      next,
+      doubleTapPoint.dx - imageX * next,
+      anchorAt(doubleTapPoint.dy),
+      doubleTapPoint.dy,
+    );
+  }
+
+  @override
+  void didUpdateWidget(_VerticalReader old) {
+    super.didUpdateWidget(old);
+    final jump = old.jumpEpoch != widget.jumpEpoch;
+    if (jump ||
+        old.resetZoom != widget.resetZoom ||
+        old.size.width != widget.size.width) {
+      pendingAnchor = jump ? null : anchorAt(0);
+      if (jump) stamp = '';
+      pendingY = 0;
+      positioning = true;
+      pinching = userScroll = false;
+      cancelledGesture = true;
+      cancelDrag();
+      releaseHold();
+      scale = 1;
+      shift = 0;
+      layoutRevision++;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && scale <= 1.01) widget.onZoom(false);
+      });
+    }
   }
 
   void report() {
-    if (positioning || !scroll.hasClients || indexes.isEmpty) return;
+    if (positioning ||
+        pinching ||
+        !userScroll ||
+        !scroll.hasClients ||
+        indexes.isEmpty) {
+      return;
+    }
     final offset = scroll.offset;
     var at = 0;
     while (at + 1 < indexes.length && tops[at + 1] <= offset) {
       at++;
     }
     final index = indexes[at],
-        ratio = ((offset - tops[at]) / height(index)).clamp(0.0, 1.0);
+        ratio = ((offset - tops[at]) / extents[at]).clamp(0.0, 1.0);
     widget.session.show(
       index,
       ratio: ratio,
       end: index == widget.session.total - 1 && scroll.position.extentAfter < 2,
     );
-    if (!widget.session.loadingPages) {
-      if (index >= indexes.last - 2 &&
-          indexes.last < widget.session.total - 1) {
-        unawaited(widget.session.ensure(indexes.last + 1));
-      } else if (index <= indexes.first + 2 && indexes.first > 0) {
-        unawaited(widget.session.ensure(indexes.first - 1));
-      }
+    extendWindow(index);
+  }
+
+  void extendWindow(int index) {
+    if (indexes.isEmpty || widget.session.loadingPages) return;
+    if (index >= indexes.last - 2 && indexes.last < widget.session.total - 1) {
+      unawaited(widget.session.ensure(indexes.last + 1));
+    } else if (index <= indexes.first + 2 && indexes.first > 0) {
+      unawaited(widget.session.ensure(indexes.first - 1));
     }
   }
 
@@ -1803,17 +2017,28 @@ class _VerticalReaderState extends State<_VerticalReader> {
       stamp = '';
       return const Center(child: CircularProgressIndicator());
     }
+    final next =
+        '${s.packEpoch}:${s.windowStart}:${s.windowEnd}:${widget.size}:${s.preferences.gap}:${widget.jumpEpoch}:$layoutRevision';
+    final reflow = next != stamp;
+    final anchor = reflow
+        ? pendingAnchor ??
+              (stamp.isEmpty ? null : anchorAt(0)) ??
+              sessionAnchor()
+        : null;
+    final focalY = pendingAnchor == null ? 0.0 : pendingY;
     indexes = s.pages.keys.toList();
+    ids = [for (final i in indexes) s.pages[i]!.id];
     tops = [];
+    extents = [];
     var total = 0.0;
     for (final i in indexes) {
       tops.add(total);
-      total += height(i);
+      final extent = height(i);
+      extents.add(extent);
+      total += extent;
     }
     footer = MediaLayout.largeText(context) ? 260 : 180;
-    final next =
-        '${s.packEpoch}:${s.windowStart}:${s.windowEnd}:${widget.size}:${s.preferences.gap}:${widget.jumpEpoch}';
-    if (next != stamp) {
+    if (reflow) {
       stamp = next;
       positioning = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -1823,57 +2048,102 @@ class _VerticalReaderState extends State<_VerticalReader> {
             stamp != next) {
           return;
         }
-        final at = indexes.indexOf(s.index);
+        final selected = ids.indexOf(anchor!.id);
+        final at = selected >= 0 ? selected : indexes.indexOf(s.index);
         if (at >= 0) {
+          final ratio = selected >= 0 ? anchor.ratio : s.offsetRatio;
           scroll.jumpTo(
-            (tops[at] + s.offsetRatio * height(s.index)).clamp(
+            (tops[at] + ratio * extents[at] + anchor.trailing - focalY).clamp(
               0,
               scroll.position.maxScrollExtent,
             ),
           );
         }
-        positioning = false;
-        report();
+        pendingAnchor = null;
+        pendingY = 0;
+        setState(() => positioning = false);
+        // Loading a neighboring window is read-only. It must still work when
+        // resuming at an edge, without marking a reflow as new reading progress.
+        if (!pinching) extendWindow(s.index);
       });
     }
     if (indexes.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
-    return ListView.builder(
-      key: const Key('reader-vertical'),
-      controller: scroll,
-      scrollCacheExtent: const ScrollCacheExtent.pixels(180),
-      itemCount: indexes.length + 1,
-      itemExtentBuilder: (at, dimensions) =>
-          at == indexes.length ? footer : height(indexes[at]),
-      itemBuilder: (context, at) {
-        if (at == indexes.length) {
-          return indexes.last == s.total - 1
-              ? widget.end()
-              : const Center(child: CircularProgressIndicator());
-        }
-        final index = indexes[at], page = s.pages[index]!;
-        return Padding(
-          padding: EdgeInsets.only(bottom: s.preferences.gap ? 12 : 0),
-          child: GestureDetector(
-            onTap: widget.tap,
-            child: widget.picture(
-              page,
-              index,
-              Size(
-                widget.size.width,
-                height(index) - (s.preferences.gap ? 12 : 0),
+    return GestureDetector(
+      key: const Key('reader-vertical-gestures'),
+      behavior: HitTestBehavior.opaque,
+      onTap: widget.tap,
+      onScaleStart: start,
+      onScaleUpdate: update,
+      onScaleEnd: endGesture,
+      child: NotificationListener<ScrollEndNotification>(
+        onNotification: (_) {
+          userScroll = false;
+          return false;
+        },
+        child: ListView.builder(
+          key: const Key('reader-vertical'),
+          controller: scroll,
+          // One scale recognizer owns both fingers. Ordinary vertical input is
+          // forwarded to the real ScrollPosition, including ballistic motion.
+          physics: const NeverScrollableScrollPhysics(),
+          scrollCacheExtent: const ScrollCacheExtent.pixels(180),
+          itemCount: indexes.length + 1,
+          itemExtentBuilder: (at, dimensions) =>
+              at == indexes.length ? footer : extents[at],
+          itemBuilder: (context, at) {
+            if (at == indexes.length) {
+              return indexes.last == s.total - 1
+                  ? widget.end()
+                  : const Center(child: CircularProgressIndicator());
+            }
+            final index = indexes[at], page = s.pages[index]!;
+            final size = Size(widget.size.width * scale, extents[at] - gap);
+            return Padding(
+              padding: EdgeInsets.only(bottom: gap),
+              child: OverflowBox(
+                alignment: Alignment.topLeft,
+                minWidth: size.width,
+                maxWidth: size.width,
+                child: Transform.translate(
+                  key: ValueKey('reader-strip-${page.id}'),
+                  offset: Offset(shift, 0),
+                  child: SizedBox(
+                    width: size.width,
+                    height: size.height,
+                    child: widget.picture(
+                      page,
+                      index,
+                      size,
+                      visible: () => !positioning && !pinching,
+                      frameDecorator: (child) => GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onDoubleTapDown: (details) {
+                          final box =
+                              this.context.findRenderObject()! as RenderBox;
+                          doubleTapPoint = box.globalToLocal(
+                            details.globalPosition,
+                          );
+                        },
+                        onDoubleTap: doubleTap,
+                        child: child,
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              visible: () => !positioning,
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 
   @override
   void dispose() {
+    cancelDrag();
+    releaseHold();
     scroll.removeListener(report);
     scroll.dispose();
     super.dispose();
