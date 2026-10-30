@@ -1,0 +1,26 @@
+{
+  "complete": true,
+  "code": 21,
+  "runs": [
+    {
+      "name": "rollback21",
+      "kind": "rollback",
+      "delta": {
+        "tables": [],
+        "opaque": [],
+        "settings": []
+      }
+    },
+    {
+      "name": "return21",
+      "kind": "forward",
+      "delta": {
+        "tables": [],
+        "opaque": [],
+        "settings": []
+      }
+    }
+  ],
+  "no_uninstall_clear_or_database_write": true,
+  "all35_tables_settings_tokens_appearance_identity_preserved": true
+}

@@ -1,0 +1,74 @@
+{
+  "complete": true,
+  "code": 21,
+  "runs": [
+    {
+      "name": "cold21-1",
+      "old_pid": "10817",
+      "new_pid": "18649",
+      "delta": {
+        "tables": [],
+        "opaque": [],
+        "settings": []
+      },
+      "request_lines": [
+        "{\"time\": 1793332450.6459024, \"method\": \"GET\", \"path\": \"/api/v1/info\", \"status\": 200}",
+        "{\"time\": 1793332451.1514719, \"method\": \"GET\", \"path\": \"/api/v1/roots\", \"status\": 200}",
+        "{\"time\": 1793332451.154383, \"method\": \"GET\", \"path\": \"/api/v1/videos\", \"status\": 200}",
+        "{\"time\": 1793332451.1787727, \"method\": \"GET\", \"path\": \"/api/v1/trash\", \"status\": 200}",
+        "{\"time\": 1793332451.179381, \"method\": \"GET\", \"path\": \"/api/v1/library-state\", \"status\": 200}",
+        "{\"time\": 1793332451.18688, \"method\": \"GET\", \"path\": \"/api/v1/playback\", \"status\": 200}",
+        "{\"time\": 1793332451.1964445, \"method\": \"GET\", \"path\": \"/api/v1/tags\", \"status\": 200}",
+        "{\"time\": 1793332451.2521408, \"method\": \"GET\", \"path\": \"/api/v1/videos\", \"status\": 200}",
+        "{\"time\": 1793332451.2681894, \"method\": \"GET\", \"path\": \"/health\", \"status\": 200}",
+        "{\"time\": 1793332451.2842205, \"method\": \"GET\", \"path\": \"/api/v1/videos/2d3d0873-3519-4fea-b5f5-f1ebdbb9ad2f/thumbnail\", \"status\": 200}",
+        "{\"time\": 1793332451.2876463, \"method\": \"GET\", \"path\": \"/api/v1/videos/ea8c1d68-1c8f-4153-837c-41e73b96ef8c/thumbnail\", \"status\": 200}"
+      ]
+    },
+    {
+      "name": "cold21-2",
+      "old_pid": "18649",
+      "new_pid": "18795",
+      "delta": {
+        "tables": [],
+        "opaque": [],
+        "settings": []
+      },
+      "request_lines": [
+        "{\"time\": 1793332459.435464, \"method\": \"GET\", \"path\": \"/api/v1/info\", \"status\": 200}",
+        "{\"time\": 1793332459.950688, \"method\": \"GET\", \"path\": \"/api/v1/trash\", \"status\": 200}",
+        "{\"time\": 1793332459.9531624, \"method\": \"GET\", \"path\": \"/api/v1/videos\", \"status\": 200}",
+        "{\"time\": 1793332459.9535005, \"method\": \"GET\", \"path\": \"/api/v1/roots\", \"status\": 200}",
+        "{\"time\": 1793332459.9564734, \"method\": \"GET\", \"path\": \"/api/v1/playback\", \"status\": 200}",
+        "{\"time\": 1793332459.9609988, \"method\": \"GET\", \"path\": \"/api/v1/library-state\", \"status\": 200}",
+        "{\"time\": 1793332459.9660559, \"method\": \"GET\", \"path\": \"/api/v1/tags\", \"status\": 200}",
+        "{\"time\": 1793332459.9951751, \"method\": \"GET\", \"path\": \"/api/v1/videos\", \"status\": 200}",
+        "{\"time\": 1793332460.0265818, \"method\": \"GET\", \"path\": \"/api/v1/videos/2d3d0873-3519-4fea-b5f5-f1ebdbb9ad2f/thumbnail\", \"status\": 200}",
+        "{\"time\": 1793332460.028702, \"method\": \"GET\", \"path\": \"/api/v1/videos/ea8c1d68-1c8f-4153-837c-41e73b96ef8c/thumbnail\", \"status\": 200}"
+      ]
+    },
+    {
+      "name": "cold21-3",
+      "old_pid": "18795",
+      "new_pid": "18941",
+      "delta": {
+        "tables": [],
+        "opaque": [],
+        "settings": []
+      },
+      "request_lines": [
+        "{\"time\": 1793332468.563319, \"method\": \"GET\", \"path\": \"/api/v1/info\", \"status\": 200}",
+        "{\"time\": 1793332469.0815191, \"method\": \"GET\", \"path\": \"/api/v1/trash\", \"status\": 200}",
+        "{\"time\": 1793332469.083334, \"method\": \"GET\", \"path\": \"/api/v1/roots\", \"status\": 200}",
+        "{\"time\": 1793332469.0842764, \"method\": \"GET\", \"path\": \"/api/v1/videos\", \"status\": 200}",
+        "{\"time\": 1793332469.0881376, \"method\": \"GET\", \"path\": \"/api/v1/playback\", \"status\": 200}",
+        "{\"time\": 1793332469.0919952, \"method\": \"GET\", \"path\": \"/api/v1/library-state\", \"status\": 200}",
+        "{\"time\": 1793332469.0962112, \"method\": \"GET\", \"path\": \"/api/v1/tags\", \"status\": 200}",
+        "{\"time\": 1793332469.1331406, \"method\": \"GET\", \"path\": \"/api/v1/videos\", \"status\": 200}",
+        "{\"time\": 1793332469.153197, \"method\": \"GET\", \"path\": \"/api/v1/videos/2d3d0873-3519-4fea-b5f5-f1ebdbb9ad2f/thumbnail\", \"status\": 200}",
+        "{\"time\": 1793332469.153491, \"method\": \"GET\", \"path\": \"/api/v1/videos/ea8c1d68-1c8f-4153-837c-41e73b96ef8c/thumbnail\", \"status\": 200}"
+      ]
+    }
+  ],
+  "default_media_library_and_four_entries": true
+}

@@ -1,0 +1,152 @@
+{"time": 1793328219.928133, "action": "tap", "label": "fixture-address", "bounds": "[53,690][1028,876]"}
+{"time": 1793328222.8558238, "action": "fill", "label": "fixture-address", "value": "http://10.0.2.2:8775"}
+{"time": 1793328225.039694, "action": "tap", "label": "fixture-password", "bounds": "[53,1168][1028,1354]"}
+{"time": 1793328227.5964532, "action": "fill", "label": "fixture-password", "value": "[fixture password]"}
+{"time": 1793328229.7979121, "action": "tap", "label": "连接", "bounds": "[53,1339][1028,1465]"}
+{"time": 1793328280.855649, "action": "tap", "label": "图包\n", "bounds": "[259,308][414,419]"}
+{"time": 1793328286.409482, "action": "tap", "label": "library-pack-search", "bounds": "[180,438][1122,564]"}
+{"time": 1793328289.030973, "action": "fill", "label": "library-pack-search", "value": "Scope"}
+{"time": 1793328309.52944, "action": "tap", "label": "open actual visible Scope26", "bounds": "[603,733][1122,1618]"}
+{"time": 1793328474.182741, "action": "kernel-touch", "name": "kernel-calibration-next", "device": "/dev/input/event1", "script": "kernel-calibration-next-kernel-input.sh", "logical_point": [1056, 2238]}
+{"time": 1793328481.093963, "action": "tap", "label": "下一张", "bounds": "[990,2172][1122,2304]"}
+{"time": 1793328506.5268102, "action": "kernel-touch", "name": "gesture-round-1-pinch", "device": "/dev/input/event1", "script": "gesture-round-1-pinch-kernel-input.sh", "logical_center": [585, 1200], "initial_span": 240, "final_span": 660, "two_tracking_ids": [1100, 1101]}
+{"time": 1793328518.018666, "action": "kernel-touch", "name": "gesture-round-1-double", "device": "/dev/input/event1", "script": "gesture-round-1-double-kernel-input.sh", "two_actual_taps": true, "logical_point": [585, 1200]}
+{"time": 1793328526.710891, "action": "kernel-touch", "name": "gesture-round-2-pinch", "device": "/dev/input/event1", "script": "gesture-round-2-pinch-kernel-input.sh", "logical_center": [585, 1200], "initial_span": 240, "final_span": 660, "two_tracking_ids": [1100, 1101]}
+{"time": 1793328538.145207, "action": "kernel-touch", "name": "gesture-round-2-double", "device": "/dev/input/event1", "script": "gesture-round-2-double-kernel-input.sh", "two_actual_taps": true, "logical_point": [585, 1200]}
+{"time": 1793328810.6480992, "action": "tap", "label": "上一张", "bounds": "[48,2172][180,2304]"}
+{"time": 1793328847.063064, "action": "kernel-touch", "name": "gesture2-round-1-pinch", "device": "/dev/input/event1", "script": "gesture2-round-1-pinch-kernel-input.sh", "logical_center": [585, 1200], "initial_span": 240, "final_span": 660, "two_tracking_ids": [1100, 1101]}
+{"time": 1793328858.294454, "action": "kernel-batched-double-tap", "name": "gesture2-round-1-double", "script": "gesture2-round-1-double-batched-input.sh", "intended_gap_seconds": 0.1}
+{"time": 1793328866.2582898, "action": "kernel-touch", "name": "gesture2-round-2-pinch", "device": "/dev/input/event1", "script": "gesture2-round-2-pinch-kernel-input.sh", "logical_center": [585, 1200], "initial_span": 240, "final_span": 660, "two_tracking_ids": [1100, 1101]}
+{"time": 1793328877.272052, "action": "kernel-batched-double-tap", "name": "gesture2-round-2-double", "script": "gesture2-round-2-double-batched-input.sh", "intended_gap_seconds": 0.1}
+{"time": 1793328885.1206882, "action": "kernel-touch", "name": "gesture2-round-3-pinch", "device": "/dev/input/event1", "script": "gesture2-round-3-pinch-kernel-input.sh", "logical_center": [585, 1200], "initial_span": 240, "final_span": 660, "two_tracking_ids": [1100, 1101]}
+{"time": 1793328896.084539, "action": "kernel-batched-double-tap", "name": "gesture2-round-3-double", "script": "gesture2-round-3-double-batched-input.sh", "intended_gap_seconds": 0.1}
+{"time": 1793329128.984759, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793329133.575426, "action": "tap", "label": "翻页方向\n从左向右", "bounds": "[60,1899][1110,2049]"}
+{"time": 1793329138.3081138, "action": "tap", "label": "从右向左", "bounds": "[0,2046][1170,2190]"}
+{"time": 1793329143.5875452, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793329158.087478, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793329162.62194, "action": "tap", "label": "纵向拼接", "bounds": "[415,1707][686,1851]"}
+{"time": 1793329167.524117, "action": "tap", "label": "图片之间留间距", "bounds": "[60,2142][1110,2310]"}
+{"time": 1793329172.187485, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793329185.586237, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793329190.108787, "action": "tap", "label": "横向翻页", "bounds": "[60,1950][331,2094]"}
+{"time": 1793329195.072049, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793329202.188241, "action": "tap", "label": "总览", "bounds": "[48,2304][317,2448]"}
+{"time": 1793329206.902084, "action": "tap", "label": "第 3 页", "bounds": "[776,1499][1110,1963]"}
+{"time": 1793329215.136157, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793329219.655908, "action": "tap", "label": "翻页方向\n从右向左", "bounds": "[60,1899][1110,2049]"}
+{"time": 1793329224.158726, "action": "tap", "label": "从左向右", "bounds": "[0,1758][1170,1902]"}
+{"time": 1793329228.668916, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793329235.532974, "action": "tap", "label": "图包更多", "bounds": "[990,147][1134,291]"}
+{"time": 1793329240.048328, "action": "tap", "label": "本次图包范围", "bounds": "[630,915][1134,1059]"}
+{"time": 1793329243.503725, "action": "back", "context": "flow-round-1-queue-dismiss"}
+{"time": 1793329248.131718, "action": "tap", "label": "沉浸", "bounds": "[854,2304][1122,2448]"}
+{"time": 1793329250.4203908, "action": "back", "context": "flow-round-1-immersive-exit"}
+{"time": 1793329254.989769, "action": "tap", "label": "返回来源", "bounds": "[24,153][156,285]"}
+{"time": 1793329404.931094, "action": "tap", "label": "reopen Scope26 after offscreen-count diagnostic", "bounds": "[603,733][1122,1618]"}
+{"time": 1793329603.0028732, "action": "tap", "label": "retry actual Scope26 tap after observed no navigation", "bounds": "[603,733][1122,1618]"}
+{"time": 1793330854.161331, "action": "tap", "label": "图包\n", "bounds": "[259,308][414,419]"}
+{"time": 1793330859.144049, "action": "tap", "label": "library21-pack-search", "bounds": "[180,438][1122,564]"}
+{"time": 1793330861.602819, "action": "fill", "label": "library21-pack-search", "value": "Scope"}
+{"time": 1793330881.611845, "action": "tap", "label": "open actual visible Scope26", "bounds": "[603,739][1122,1624]"}
+{"time": 1793331103.113822, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331107.58672, "action": "tap", "label": "翻页方向\n从左向右", "bounds": "[60,1899][1110,2049]"}
+{"time": 1793331112.036254, "action": "tap", "label": "从右向左", "bounds": "[0,2046][1170,2190]"}
+{"time": 1793331116.925689, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331130.9218628, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331135.4204102, "action": "tap", "label": "纵向拼接", "bounds": "[415,1707][686,1851]"}
+{"time": 1793331139.9969192, "action": "tap", "label": "图片之间留间距", "bounds": "[60,2142][1110,2310]"}
+{"time": 1793331144.509403, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331157.30748, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331161.783545, "action": "tap", "label": "横向翻页", "bounds": "[60,1950][331,2094]"}
+{"time": 1793331166.7781508, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331173.790358, "action": "tap", "label": "总览", "bounds": "[48,2304][317,2448]"}
+{"time": 1793331178.813238, "action": "tap", "label": "第 3 页", "bounds": "[776,1499][1110,1963]"}
+{"time": 1793331187.337643, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331191.821602, "action": "tap", "label": "翻页方向\n从右向左", "bounds": "[60,1899][1110,2049]"}
+{"time": 1793331196.307675, "action": "tap", "label": "从左向右", "bounds": "[0,1758][1170,1902]"}
+{"time": 1793331200.809624, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331207.880575, "action": "tap", "label": "图包更多", "bounds": "[990,147][1134,291]"}
+{"time": 1793331212.366036, "action": "tap", "label": "本次图包范围", "bounds": "[630,915][1134,1059]"}
+{"time": 1793331214.967478, "action": "back", "context": "flow3-round-1-queue-dismiss"}
+{"time": 1793331219.4888651, "action": "tap", "label": "沉浸", "bounds": "[854,2304][1122,2448]"}
+{"time": 1793331221.7648032, "action": "back", "context": "flow3-round-1-immersive-exit"}
+{"time": 1793331226.2522829, "action": "tap", "label": "返回来源", "bounds": "[24,153][156,285]"}
+{"time": 1793331231.262957, "action": "tap", "label": "reopen Scope26 from preserved list", "bounds": "[603,739][1122,1624]"}
+{"time": 1793331245.6821928, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331250.148344, "action": "tap", "label": "翻页方向\n从左向右", "bounds": "[60,1899][1110,2049]"}
+{"time": 1793331254.6210072, "action": "tap", "label": "从右向左", "bounds": "[0,2046][1170,2190]"}
+{"time": 1793331259.458337, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331273.4998431, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331277.961354, "action": "tap", "label": "纵向拼接", "bounds": "[415,1707][686,1851]"}
+{"time": 1793331282.560961, "action": "tap", "label": "图片之间留间距", "bounds": "[60,2142][1110,2310]"}
+{"time": 1793331287.0986629, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331299.7697768, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331304.279364, "action": "tap", "label": "横向翻页", "bounds": "[60,1950][331,2094]"}
+{"time": 1793331309.188041, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331316.1662269, "action": "tap", "label": "总览", "bounds": "[48,2304][317,2448]"}
+{"time": 1793331321.266627, "action": "tap", "label": "第 3 页", "bounds": "[776,1499][1110,1963]"}
+{"time": 1793331329.7814841, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331334.252567, "action": "tap", "label": "翻页方向\n从右向左", "bounds": "[60,1899][1110,2049]"}
+{"time": 1793331338.7596002, "action": "tap", "label": "从左向右", "bounds": "[0,1758][1170,1902]"}
+{"time": 1793331343.237118, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331350.072984, "action": "tap", "label": "图包更多", "bounds": "[990,147][1134,291]"}
+{"time": 1793331354.564706, "action": "tap", "label": "本次图包范围", "bounds": "[630,915][1134,1059]"}
+{"time": 1793331357.172082, "action": "back", "context": "flow3-round-2-queue-dismiss"}
+{"time": 1793331361.681112, "action": "tap", "label": "沉浸", "bounds": "[854,2304][1122,2448]"}
+{"time": 1793331363.970242, "action": "back", "context": "flow3-round-2-immersive-exit"}
+{"time": 1793331368.4677289, "action": "tap", "label": "返回来源", "bounds": "[24,153][156,285]"}
+{"time": 1793331373.0254421, "action": "tap", "label": "reopen Scope26 from preserved list", "bounds": "[603,739][1122,1624]"}
+{"time": 1793331387.277764, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331391.7676811, "action": "tap", "label": "翻页方向\n从左向右", "bounds": "[60,1899][1110,2049]"}
+{"time": 1793331396.253022, "action": "tap", "label": "从右向左", "bounds": "[0,2046][1170,2190]"}
+{"time": 1793331401.115813, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331415.1122591, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331419.603829, "action": "tap", "label": "纵向拼接", "bounds": "[415,1707][686,1851]"}
+{"time": 1793331424.122161, "action": "tap", "label": "图片之间留间距", "bounds": "[60,2142][1110,2310]"}
+{"time": 1793331428.636338, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331440.956929, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331445.507185, "action": "tap", "label": "横向翻页", "bounds": "[60,1950][331,2094]"}
+{"time": 1793331450.434058, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331457.4201741, "action": "tap", "label": "总览", "bounds": "[48,2304][317,2448]"}
+{"time": 1793331462.4733691, "action": "tap", "label": "第 3 页", "bounds": "[776,1499][1110,1963]"}
+{"time": 1793331470.476233, "action": "tap", "label": "阅读设置", "bounds": "[858,153][990,285]"}
+{"time": 1793331474.944104, "action": "tap", "label": "翻页方向\n从右向左", "bounds": "[60,1899][1110,2049]"}
+{"time": 1793331479.464726, "action": "tap", "label": "从左向右", "bounds": "[0,1758][1170,1902]"}
+{"time": 1793331484.405689, "action": "tap", "label": "继续阅读", "bounds": "[60,2451][1110,2595]"}
+{"time": 1793331491.236774, "action": "tap", "label": "图包更多", "bounds": "[990,147][1134,291]"}
+{"time": 1793331495.761914, "action": "tap", "label": "本次图包范围", "bounds": "[630,915][1134,1059]"}
+{"time": 1793331498.362591, "action": "back", "context": "flow3-round-3-queue-dismiss"}
+{"time": 1793331502.918946, "action": "tap", "label": "沉浸", "bounds": "[854,2304][1122,2448]"}
+{"time": 1793331505.226634, "action": "back", "context": "flow3-round-3-immersive-exit"}
+{"time": 1793331509.7665222, "action": "tap", "label": "返回来源", "bounds": "[24,153][156,285]"}
+{"time": 1793331630.830081, "action": "tap", "label": "标签", "bounds": "[360,2496][585,2643]"}
+{"time": 1793331759.641404, "action": "tap", "label": "Scope\n", "bounds": "[60,1068][1110,1263]"}
+{"time": 1793331764.7556312, "action": "tap", "label": "Intersection\n", "bounds": "[60,873][1110,1068]"}
+{"time": 1793331769.327397, "action": "tap", "label": "图包", "bounds": "[218,308][309,419]"}
+{"time": 1793331773.905479, "action": "tap", "label": "Scope\n", "bounds": "[60,1068][1110,1263]"}
+{"time": 1793331778.79986, "action": "tap", "label": "Intersection\n", "bounds": "[60,873][1110,1068]"}
+{"time": 1793331783.3928409, "action": "tap", "label": "查看 27 个图包", "bounds": "[60,2325][1110,2457]"}
+{"time": 1793331804.267914, "action": "tap", "label": "open Scope26 from actual tag results", "bounds": "[603,739][1122,1624]"}
+{"time": 1793331809.7032661, "action": "tap", "label": "返回来源", "bounds": "[24,153][156,285]"}
+{"time": 1793331816.5319219, "action": "tap", "label": "返回标签选择", "bounds": "[60,152][204,296]"}
+{"time": 1793331821.0814002, "action": "tap", "label": "视频", "bounds": "[60,308][152,419]"}
+{"time": 1793331825.624087, "action": "tap", "label": "图包", "bounds": "[218,308][309,419]"}
+{"time": 1793331830.1004841, "action": "tap", "label": "最近", "bounds": "[585,2496][810,2643]"}
+{"time": 1793331834.656758, "action": "tap", "label": "recent pack kind", "bounds": "[218,308][309,419]"}
+{"time": 1793331836.9190788, "action": "tap", "label": "open actual recent Scope26", "bounds": "[60,579][1110,912]"}
+{"time": 1793331840.329397, "action": "tap", "label": "recent reader header return", "bounds": "[24,153][156,285]"}
+{"time": 1793332194.6680992, "action": "tap", "label": "媒体库", "bounds": "[135,2496][360,2643]"}
+{"time": 1793332199.2481658, "action": "tap", "label": "视频\n", "bounds": "[60,308][193,419]"}
+{"time": 1793332204.0447161, "action": "tap", "label": "video-source-search", "bounds": "[180,438][1122,564]"}
+{"time": 1793332206.57631, "action": "fill", "label": "video-source-search", "value": ".mp4"}
+{"time": 1793332211.415829, "action": "tap", "label": "预览此范围", "bounds": "[781,726][1122,858]"}
+{"time": 1793332223.124916, "action": "tap", "label": "return from actual video source", "bounds": "[36,152][180,296]"}
+{"time": 1793332227.887536, "action": "tap", "label": "图包\n", "bounds": "[259,308][414,419]"}
+{"time": 1793332232.415091, "action": "tap", "label": "标签", "bounds": "[360,2496][585,2643]"}
+{"time": 1793332237.004002, "action": "tap", "label": "视频", "bounds": "[60,308][152,419]"}
+{"time": 1793332241.513113, "action": "tap", "label": "预览这 1 个视频", "bounds": "[60,2325][1110,2457]"}
+{"time": 1793332252.683746, "action": "tap", "label": "return from actual video source", "bounds": "[36,152][180,296]"}
+{"time": 1793332447.242625, "action": "tap", "label": "设置", "bounds": "[810,2496][1035,2643]"}
+{"time": 1793332456.107522, "action": "tap", "label": "设置", "bounds": "[810,2496][1035,2643]"}
+{"time": 1793332465.301794, "action": "tap", "label": "设置", "bounds": "[810,2496][1035,2643]"}

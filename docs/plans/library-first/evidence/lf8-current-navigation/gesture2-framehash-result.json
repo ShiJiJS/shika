@@ -1,0 +1,24 @@
+{
+  "command": [
+    "ffmpeg",
+    "-v",
+    "error",
+    "-i",
+    ".dev/lf8-current-navigation/gestures2.mp4",
+    "-map",
+    "0:v:0",
+    "-c:v",
+    "rawvideo",
+    "-fps_mode",
+    "passthrough",
+    "-enc_time_base:v",
+    "1:1000000",
+    "-f",
+    "framehash",
+    "-y",
+    ".dev/lf8-current-navigation/gesture2-framehash.txt"
+  ],
+  "exit_code": 0,
+  "stderr_bytes": 0,
+  "decoded_frame_rows": 323
+}

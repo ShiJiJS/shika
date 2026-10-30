@@ -1,0 +1,126 @@
+biz-0109-flow2-reopen-from-original-list
+媒体库 [60,173][846,275]
+选择文件夹 [846,152][990,296]
+更多 [990,152][1134,296]
+视频
+2 [60,308][193,419]
+图包
+31 [259,308][414,419]
+筛选图包 [36,438][168,564]
+Scope [180,438][1122,564]
+6 张
+Scope 23
+6 张可读
+# Intersection  # Scope [48,588][567,679]
+图包操作 Scope 23 [423,588][567,607]
+6 张
+Scope 24
+6 张可读
+# Intersection  # Scope [603,588][1122,679]
+图包操作 Scope 24 [978,588][1122,607]
+6 张
+Scope 25
+6 张可读
+# Intersection  # Scope [48,733][567,1618]
+图包操作 Scope 25 [423,1462][567,1546]
+6 张
+已读
+Scope 26
+6 张可读
+# Intersection  # Scope [603,733][1122,1618]
+图包操作 Scope 26 [978,1462][1122,1546]
+6 张
+Scope 27
+6 张可读
+# Intersection  # Scope [48,1672][567,2493]
+图包操作 Scope 27 [423,2401][567,2485]
+媒体库 [135,2496][360,2643]
+标签 [360,2496][585,2643]
+最近 [585,2496][810,2643]
+设置 [810,2496][1035,2643]
+biz-0110-flow2-initial-reader
+媒体库 [60,173][846,275]
+选择文件夹 [846,152][990,296]
+更多 [990,152][1134,296]
+视频
+2 [60,308][193,419]
+图包
+31 [259,308][414,419]
+筛选图包 [36,438][168,564]
+Scope [180,438][1122,564]
+6 张
+Scope 23
+6 张可读
+# Intersection  # Scope [48,588][567,679]
+图包操作 Scope 23 [423,588][567,607]
+6 张
+Scope 24
+6 张可读
+# Intersection  # Scope [603,588][1122,679]
+图包操作 Scope 24 [978,588][1122,607]
+6 张
+Scope 25
+6 张可读
+# Intersection  # Scope [48,733][567,1618]
+图包操作 Scope 25 [423,1462][567,1546]
+6 张
+已读
+Scope 26
+6 张可读
+# Intersection  # Scope [603,733][1122,1618]
+图包操作 Scope 26 [978,1462][1122,1546]
+6 张
+Scope 27
+6 张可读
+# Intersection  # Scope [48,1672][567,2493]
+图包操作 Scope 27 [423,2401][567,2485]
+媒体库 [135,2496][360,2643]
+标签 [360,2496][585,2643]
+最近 [585,2496][810,2643]
+设置 [810,2496][1035,2643]
+biz-0111-flow2-round-1-start
+媒体库 [60,173][846,275]
+选择文件夹 [846,152][990,296]
+更多 [990,152][1134,296]
+视频
+2 [60,308][193,419]
+图包
+31 [259,308][414,419]
+筛选图包 [36,438][168,564]
+Scope [180,438][1122,564]
+6 张
+Scope 23
+6 张可读
+# Intersection  # Scope [48,588][567,679]
+图包操作 Scope 23 [423,588][567,607]
+6 张
+Scope 24
+6 张可读
+# Intersection  # Scope [603,588][1122,679]
+图包操作 Scope 24 [978,588][1122,607]
+6 张
+Scope 25
+6 张可读
+# Intersection  # Scope [48,733][567,1618]
+图包操作 Scope 25 [423,1462][567,1546]
+6 张
+已读
+Scope 26
+6 张可读
+# Intersection  # Scope [603,733][1122,1618]
+图包操作 Scope 26 [978,1462][1122,1546]
+6 张
+Scope 27
+6 张可读
+# Intersection  # Scope [48,1672][567,2493]
+图包操作 Scope 27 [423,2401][567,2485]
+媒体库 [135,2496][360,2643]
+标签 [360,2496][585,2643]
+最近 [585,2496][810,2643]
+设置 [810,2496][1035,2643]
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-current-navigation/normal/reader-flow-2.py", line 35, in <module>
+    inspect(prefix+'-start',2,'horizontal','ltr')
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-current-navigation/normal/reader-flow-2.py", line 8, in inspect
+    n=u.snap(name);assert f'{index+1} / 6' in driver.text(n) and 'Scope 26' in driver.text(n),name
+AssertionError: flow2-round-1-start

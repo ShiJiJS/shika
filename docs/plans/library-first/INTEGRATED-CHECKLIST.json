@@ -1,7 +1,7 @@
 {
   "requirements_source": "ACCEPTANCE.md",
-  "candidate_source": "701fb7da0aa4da02df72da05b3b97cb419cd3f62",
-  "candidate_code": 20,
+  "candidate_source": "a8d6180a35c6a7884e1e7ad02d26246675f29979",
+  "candidate_code": 21,
   "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
   "does_not_replace_historical_evidence_or_target_acceptance": true,
   "items": [
@@ -16,6 +16,11 @@
           "evidence": "evidence/lf8-integrated-baseline/README.md",
           "scope": "正常code18连接隔离服务后显示媒体库及四入口；只记录当前首页，未以此证明所有冷启动/兼容组合。",
           "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Three actual cold starts with changed PIDs return to the library and four destinations; legacy-service and target-device combinations remain open.",
+          "candidate_code": 21
         }
       ]
     },
@@ -25,7 +30,13 @@
       "requirement": "返回原来源、类型、搜索、筛选和列表 anchor；系统返回先退出全屏/面板",
       "owner": "LF3/4/5",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Three normal21 pack reading cycles preserve search and exact deep-list anchor; release search focus on return. Panels and immersive back covered in these cycles; all other combinations remain open.",
+          "candidate_code": 21
+        }
+      ]
     },
     {
       "id": "NAV-03",
@@ -33,7 +44,13 @@
       "requirement": "视频/图包搜索、筛选、排序、批选状态互不污染；最近来源不沿用媒体库条件",
       "owner": "LF4",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Video .mp4 and pack Scope queries remain independent; same-name tag selections survive kind switches; recent-pack scope has no library search or tags. Sort and batch-selection combinations remain open.",
+          "candidate_code": 21
+        }
+      ]
     },
     {
       "id": "LIB-01",
@@ -46,6 +63,11 @@
           "evidence": "evidence/lf8-integrated-baseline/README.md",
           "scope": "当前正常首页两列视频卡片对照；本段未完成搜索/筛选/分页/完整范围主流程。",
           "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 video .mp4 search opens a fixed two-video scope; tag intersection opens one video. Other property and failure combinations remain open.",
+          "candidate_code": 21
         }
       ]
     },
@@ -60,6 +82,11 @@
           "evidence": "evidence/lf8-integrated-baseline/README.md",
           "scope": "隔离服务实际扫描4包24图，经媒体库打开夏日祭并点击至第3/6页；本段未完成全部搜索/筛选/续读组合。",
           "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 has 31 packs/186 pages, Scope matches 27; opens Scope26 from actual paginated list and resumes page3. Other metadata and filters remain open.",
+          "candidate_code": 21
         }
       ]
     },
@@ -69,7 +96,13 @@
       "requirement": "超过一页时自动分页；旧请求不覆盖新筛选；失败留卡片/滚动；没有结果不扩大为全库",
       "owner": "LF2/4",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 scrolls five times past the 24-item page before opening Scope26 in a 27-member scope. Stale requests, failures and empty results remain open.",
+          "candidate_code": 21
+        }
+      ]
     },
     {
       "id": "TAG-01",
@@ -77,7 +110,13 @@
       "requirement": "两套标签 CRUD/搜索/计数独立；同名可共存，跨类型 ID 拒绝；改名不丢关联",
       "owner": "LF1/4",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 equal tag names exist in independent video/pack namespaces. This segment does not recheck CRUD or invalid IDs.",
+          "candidate_code": 21
+        }
+      ]
     },
     {
       "id": "TAG-02",
@@ -85,7 +124,13 @@
       "requirement": "多标签取交集；单项替换，批量追加保留未选标签；全选语义明确且覆盖匹配分页",
       "owner": "LF1/4",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 tag AND: video2 to1 and pack31 to27, independent retained selections. Assignment and batch all-selection remain open.",
+          "candidate_code": 21
+        }
+      ]
     },
     {
       "id": "PRE-01",
@@ -162,6 +207,11 @@
           "evidence": "evidence/lf8-integrated-baseline/README.md",
           "scope": "同一正常安装包三轮实际双指放大/平移/系统返回，九状态同页且完整进度对象不变、图像返回基线；左右方向/总览/跳页等仍需当前整版补齐，未通过整项。",
           "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 three LTR/RTL page cycles plus overview selection; normal20 three native zoom/pan/back cycles recorded separately, unchanged reader sources. Other same-build combinations remain open.",
+          "candidate_code": 21
         }
       ]
     },
@@ -171,7 +221,13 @@
       "requirement": "纵向拼接惰性加载，可开关间距；尺寸占位避免图片到达后位置跳动；滚到底不自动换包",
       "owner": "LF5",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 three vertical-mode and gap cycles, ending at page6 without auto-next-pack. Large-pack lazy layout remains open.",
+          "candidate_code": 21
+        }
+      ]
     },
     {
       "id": "READ-03",
@@ -179,7 +235,13 @@
       "requirement": "默认模式/方向/间距与每包覆盖独立；模式切换保留同一图片位置，已阅读包不被全局默认覆盖",
       "owner": "LF5/7",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 three horizontal/vertical same-image transitions and retained per-pack overrides. All global-default combinations remain open.",
+          "candidate_code": 21
+        }
+      ]
     },
     {
       "id": "READ-04",
@@ -187,7 +249,13 @@
       "requirement": "工具显隐和退出可达；保存 pageId+页内比例；重开续读，已删页明确回退最近有效页",
       "owner": "LF5",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 immersive/range back, page3 resume and exact return anchor in three cycles. Deleted-page recovery remains open.",
+          "candidate_code": 21
+        }
+      ]
     },
     {
       "id": "READ-05",
@@ -211,7 +279,13 @@
       "requirement": "视频和图包分开，按实际打开去重更新；预加载不记历史；回收内容不显示，恢复保留阅读状态",
       "owner": "LF3/4/5",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 recent-pack entry resumes page3 using a one-pack scope without library filters. Other video/trash combinations remain open.",
+          "candidate_code": 21
+        }
+      ]
     },
     {
       "id": "DEL-01",
@@ -339,7 +413,13 @@
       "requirement": "原包名/签名、递增 versionCode 覆盖安装，地址/token/本机偏好不丢；服务与 App 有配套版本说明和回退快照",
       "owner": "LF8",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 signed pair:20-new21-old21-new21, three install-r covers preserve identity,35 tables,all settings/token hashes and preferences. Target phone and deployment remain open.",
+          "candidate_code": 21
+        }
+      ]
     },
     {
       "id": "UI-01",

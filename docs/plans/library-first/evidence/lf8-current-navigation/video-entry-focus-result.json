@@ -1,0 +1,30 @@
+{
+  "complete": true,
+  "code": 21,
+  "ranges": [
+    {
+      "id": "89563a4b-8580-4a3a-9f05-31aed5e8540b",
+      "source": "library",
+      "count": 2,
+      "scope": {
+        "tag_ids": [],
+        "search": ".mp4"
+      }
+    },
+    {
+      "id": "87daf862-83d8-462f-b053-d3cb48c381a1",
+      "source": "tags",
+      "count": 1,
+      "scope": {
+        "tag_ids": [
+          "4b4a6620-0076-4d13-98fc-f90191775974",
+          "81ce2f50-160a-4c7e-b03e-e5bf756b7007"
+        ]
+      }
+    }
+  ],
+  "video_search_focus_not_restored": true,
+  "pack_search_preserved": true,
+  "all_pack_tables_and_two_tag_namespaces_unchanged": true,
+  "diagnostic": "Original last assertion expected tag-picker wording after returning to results. Actual results display 1 \u4e2a\u89c6\u9891, correct source and item. Resumed here without replaying earlier actions."
+}

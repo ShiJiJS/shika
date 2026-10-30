@@ -1,0 +1,135 @@
+{
+  "observed_sql_session": {
+    "id": "1e29bd83-05e9-467d-b339-30c0803c7a96",
+    "created_at": 1793331836.9894395
+  },
+  "session": {
+    "id": "1e29bd83-05e9-467d-b339-30c0803c7a96",
+    "revision": 0,
+    "scope": {
+      "directory_id": null,
+      "search": "",
+      "tag_ids": [],
+      "read_state": "all"
+    },
+    "source": {
+      "kind": "recent",
+      "sort": "recent"
+    },
+    "order": "sequential",
+    "candidate_count": 1,
+    "available_count": 1,
+    "cursor": 0,
+    "finished": false,
+    "current": {
+      "title": "Scope 26",
+      "author": null,
+      "number": null,
+      "id": "605afa32-df38-471f-987b-ea11053c4890",
+      "root_id": "packs",
+      "path": "/media/packs/Scope 26",
+      "name": "Scope 26",
+      "status": "available",
+      "error": null,
+      "page_count": 6,
+      "readable_count": 6,
+      "content_version": 1,
+      "tag_ids": [
+        "2d3a9174-cfe1-4277-a825-2a92e85e8ea5",
+        "7852ca41-da6c-4eae-a93d-f34a7e8f39fd"
+      ],
+      "tag_names": {
+        "2d3a9174-cfe1-4277-a825-2a92e85e8ea5": "Intersection",
+        "7852ca41-da6c-4eae-a93d-f34a7e8f39fd": "Scope"
+      },
+      "created_at": 1793328153.8488264,
+      "cover_url": "/api/v1/packs/605afa32-df38-471f-987b-ea11053c4890/cover?v=1",
+      "progress": {
+        "page_id": "e2ace1e2-37d2-4df6-9d16-b7d937b2f733",
+        "page_index": 2,
+        "offset_ratio": 0.0,
+        "completed": true,
+        "revision": 34,
+        "updated_at": 1793331837.6205666
+      }
+    },
+    "resume": {
+      "page": {
+        "id": "e2ace1e2-37d2-4df6-9d16-b7d937b2f733",
+        "pack_id": "605afa32-df38-471f-987b-ea11053c4890",
+        "name": "0003.png",
+        "relative_path": "0003.png",
+        "ordinal": 2,
+        "width": 900,
+        "height": 600,
+        "size": 228831,
+        "format": "PNG",
+        "sha256": "55fbe45a7160e80f7de2583db9cde96b6031544e8e90bedf250393c2d46cf5db",
+        "error": null,
+        "content_version": 1,
+        "image_url": "/api/v1/pages/e2ace1e2-37d2-4df6-9d16-b7d937b2f733/image?v=1",
+        "thumbnail_url": "/api/v1/pages/e2ace1e2-37d2-4df6-9d16-b7d937b2f733/thumbnail?v=1"
+      },
+      "page_index": 2,
+      "offset_ratio": 0.0,
+      "completed": true,
+      "revision": 34,
+      "content_version": 1,
+      "recovery_reason": null,
+      "preferences": {
+        "mode": "horizontal",
+        "direction": "ltr",
+        "gap": false,
+        "fit": "contain",
+        "revision": 20,
+        "overridden": true
+      }
+    },
+    "previous": null,
+    "next": null
+  },
+  "entries": {
+    "items": [
+      {
+        "ordinal": 0,
+        "pack": {
+          "title": "Scope 26",
+          "author": null,
+          "number": null,
+          "id": "605afa32-df38-471f-987b-ea11053c4890",
+          "root_id": "packs",
+          "path": "/media/packs/Scope 26",
+          "name": "Scope 26",
+          "status": "available",
+          "error": null,
+          "page_count": 6,
+          "readable_count": 6,
+          "content_version": 1,
+          "tag_ids": [
+            "2d3a9174-cfe1-4277-a825-2a92e85e8ea5",
+            "7852ca41-da6c-4eae-a93d-f34a7e8f39fd"
+          ],
+          "tag_names": {
+            "2d3a9174-cfe1-4277-a825-2a92e85e8ea5": "Intersection",
+            "7852ca41-da6c-4eae-a93d-f34a7e8f39fd": "Scope"
+          },
+          "created_at": 1793328153.8488264,
+          "cover_url": "/api/v1/packs/605afa32-df38-471f-987b-ea11053c4890/cover?v=1",
+          "progress": {
+            "page_id": "e2ace1e2-37d2-4df6-9d16-b7d937b2f733",
+            "page_index": 2,
+            "offset_ratio": 0.0,
+            "completed": true,
+            "revision": 34,
+            "updated_at": 1793331837.6205666
+          }
+        },
+        "available": true
+      }
+    ],
+    "total": 1,
+    "offset": 0,
+    "limit": 200,
+    "revision": 0
+  }
+}

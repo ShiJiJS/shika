@@ -1,0 +1,25 @@
+diff --git a/apps/mobile/lib/features/library/pack_catalog_page.dart b/apps/mobile/lib/features/library/pack_catalog_page.dart
+index 5baab4c8..dfb94afe 100644
+--- a/apps/mobile/lib/features/library/pack_catalog_page.dart
++++ b/apps/mobile/lib/features/library/pack_catalog_page.dart
+@@ -939,6 +939,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
+       return;
+     }
+     if (origin == null && data.items.isEmpty) return;
++    FocusManager.instance.primaryFocus?.unfocus();
+     remember();
+     final saved = pendingReturn ?? entry;
+     final returnContext =
+diff --git a/apps/mobile/lib/features/library/video_catalog_page.dart b/apps/mobile/lib/features/library/video_catalog_page.dart
+index 495a9521..a67dfb90 100644
+--- a/apps/mobile/lib/features/library/video_catalog_page.dart
++++ b/apps/mobile/lib/features/library/video_catalog_page.dart
+@@ -349,7 +349,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
+ 
+   Future<void> open({String? anchor, bool quick = false}) async {
+     if (busy || viewing || repo.backupRestorePending || !widget.active) return;
+-    FocusScope.of(context).unfocus();
++    FocusManager.instance.primaryFocus?.unfocus();
+     final saved = position(), connection = repo.connectionIdentity;
+     final current = ++generation;
+     setState(() {
