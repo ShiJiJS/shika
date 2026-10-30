@@ -1,0 +1,10 @@
+[in#0 @ 0x7644c1c000] moov atom not found
+[in#0 @ 0x7644c18000] Error opening input: Invalid data found when processing input
+Error opening input file /Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-integrated-fidelity/pinch-v2.mp4.
+Error opening input files: Invalid data found when processing input
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-integrated-fidelity/audit-pinch.py", line 14, in <module>
+    subprocess.run(['ffmpeg','-v','error','-i',str(L/'pinch-v2.mp4'),'-f','null','-'],check=True,timeout=45)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['ffmpeg', '-v', 'error', '-i', '/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-integrated-fidelity/pinch-v2.mp4', '-f', 'null', '-']' returned non-zero exit status 183.

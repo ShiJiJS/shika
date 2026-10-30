@@ -1,0 +1,50 @@
+biz-0016-reader-page-three-before
+返回来源 [24,153][156,285]
+夏日祭 [168,149][350,236]
+示例作者 · 034 [168,236][407,290]
+阅读设置 [858,153][990,285]
+图包更多 [990,147][1134,291]
+上一张 [48,2172][180,2304]
+20% [281,2166][425,2310]
+2 / 6 [903,2208][990,2268]
+下一张 [990,2172][1122,2304]
+总览 [48,2304][317,2448]
+横向翻页 [317,2304][585,2448]
+整包标签 [585,2304][854,2448]
+沉浸 [854,2304][1122,2448]
+媒体库 · 全部图包
+3 / 4 [48,2472][870,2616]
+下一包 [870,2472][1122,2616]
+biz-0017-reader-page-three-after
+返回来源 [24,153][156,285]
+夏日祭 [168,149][350,236]
+示例作者 · 034 [168,236][407,290]
+阅读设置 [858,153][990,285]
+图包更多 [990,147][1134,291]
+上一张 [48,2172][180,2304]
+40% [407,2166][551,2310]
+3 / 6 [903,2208][990,2268]
+下一张 [990,2172][1122,2304]
+总览 [48,2304][317,2448]
+横向翻页 [317,2304][585,2448]
+整包标签 [585,2304][854,2448]
+沉浸 [854,2304][1122,2448]
+媒体库 · 全部图包
+3 / 4 [48,2472][870,2616]
+下一包 [870,2472][1122,2616]
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-integrated-fidelity/normal/probe-pinch.py", line 7, in <module>
+    before=o.read('pinch-probe-before');p='/sdcard/lf8-integrated-pinch-probe.mp4';assert not device('shell','pidof','screenrecord').strip()
+                                                                                              ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-integrated-fidelity/normal/ui_driver.py", line 4, in device
+    def device(*args):return subprocess.check_output([ADB,'-s',SERIAL,*args],timeout=30)
+                             ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8_2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 473, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.8_2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/Users/jiangxinyi/Documents/Project/video-viewer/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5556', 'shell', 'pidof', 'screenrecord']' returned non-zero exit status 1.
