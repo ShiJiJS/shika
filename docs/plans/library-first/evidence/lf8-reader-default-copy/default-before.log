@@ -1,0 +1,65 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_______ test_vertical_default_preserves_existing_global_and_pack_choices _______
+
+library = (<starlette.testclient.TestClient object at 0xffff94320590>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_vertical_default_preserve0/media'))
+
+    def test_vertical_default_preserves_existing_global_and_pack_choices(library):
+        import json
+    
+        from video_viewer.models import Setting
+    
+        client, media = library
+        _, ids = setup(client, media, count=3)
+        defaults = client.get("/api/v1/reading-defaults").json()
+>       assert defaults == {
+            "mode": "vertical",
+            "direction": "ltr",
+            "gap": False,
+            "fit": "contain",
+            "revision": 0,
+        }
+E       AssertionError: assert {'mode': 'hor...contain', ...} == {'mode': 'ver...contain', ...}
+E         
+E         Omitting 4 identical items, use -vv to show
+E         Differing items:
+E         {'mode': 'horizontal'} != {'mode': 'vertical'}
+E         Use -v to get more diff
+
+tests/test_reading.py:520: AssertionError
+_________ test_reading_preferences_request_omitting_mode_uses_vertical _________
+
+library = (<starlette.testclient.TestClient object at 0xffff91ab82d0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_reading_preferences_reque0/media'))
+
+    def test_reading_preferences_request_omitting_mode_uses_vertical(library):
+        client, _ = library
+        response = client.patch(
+            "/api/v1/reading-defaults",
+            json={"values": {"gap": True}, "expected_revision": 0, "request_id": "omitted-mode"},
+        )
+        assert response.status_code == 200
+>       assert response.json() == {
+            "mode": "vertical",
+            "direction": "ltr",
+            "gap": True,
+            "fit": "contain",
+            "revision": 1,
+        }
+E       AssertionError: assert {'mode': 'hor...contain', ...} == {'mode': 'ver...contain', ...}
+E         
+E         Omitting 4 identical items, use -vv to show
+E         Differing items:
+E         {'mode': 'horizontal'} != {'mode': 'vertical'}
+E         Use -v to get more diff
+
+tests/test_reading.py:562: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_reading.py::test_vertical_default_preserves_existing_global_and_pack_choices
+FAILED tests/test_reading.py::test_reading_preferences_request_omitting_mode_uses_vertical
+2 failed, 9 deselected, 1 warning in 0.96s
