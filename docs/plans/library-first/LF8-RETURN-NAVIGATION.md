@@ -1,6 +1,6 @@
 # 新版返回旧页：首轮源码修复
 
-跟踪[#140](https://github.com/ShiJiJS/video_viewer/issues/140)，基于[反馈规划#143](https://github.com/ShiJiJS/video_viewer/pull/143)。本段处理已复现的返回路径，Android正常包、手势/预测返回及其它组合仍待核对，issue不关闭。
+跟踪[#140](https://github.com/ShiJiJS/video_viewer/issues/140) / [草稿PR #144](https://github.com/ShiJiJS/video_viewer/pull/144)，基于[反馈规划#143](https://github.com/ShiJiJS/video_viewer/pull/143)。本段处理已复现的返回路径，Android正常包、手势/预测返回及其它组合仍待核对，issue不关闭。
 
 ## 复现和修复
 
