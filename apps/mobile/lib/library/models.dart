@@ -53,6 +53,8 @@ class ServiceCapabilities {
       managementHistory && values.contains('management_purge_history');
   final Set<String> values;
   bool get typedRoots => values.contains('typed_roots');
+  bool get rootScanProgress => values.contains('root_scan_progress');
+  bool get scopedScans => values.contains('scoped_scans');
   bool get packPresentation => values.contains('pack_presentation');
   bool get videoNameOrder => values.contains('video_name_order');
   bool get mediaCatalogCounts => values.contains('media_catalog_counts');
@@ -719,6 +721,69 @@ class BackupPreview {
   }
 }
 
+/// A root's last executed scan and its later queue entries are separate facts.
+class RootScanProgress {
+  RootScanProgress(Map<String, dynamic> detail)
+    : detail = Map.unmodifiable(detail),
+      scan = Map.unmodifiable(_scanMap(detail['scan']));
+  final Map<String, dynamic> detail, scan;
+  bool get known => scan.isNotEmpty;
+  String get status => _scanText(scan['status']) ?? 'unknown';
+  String? get taskId => _scanText(scan['task_id']);
+  bool get queued =>
+      detail['queued_task_ids'] is List &&
+      (detail['queued_task_ids'] as List).whereType<String>().isNotEmpty;
+  bool? get available =>
+      detail['available'] is bool ? detail['available'] as bool : null;
+  bool get active => const {
+    'queued',
+    'discovering',
+    'processing_media',
+    'waiting_for_stable_files',
+    'reconciling',
+  }.contains(status);
+  bool get needsAttention =>
+      active ||
+      queued ||
+      count('thumbnail_failed') > 0 ||
+      const {
+        'partial',
+        'deferred',
+        'unavailable',
+        'interrupted',
+        'failed',
+      }.contains(status);
+  bool get hasImageProgress => scan['progress'] is Map;
+  bool get totalKnown =>
+      _scanMap(scan['progress'])['discovery_complete'] == true;
+  bool get packTotalKnown =>
+      _scanMap(scan['progress'])['packs_discovery_complete'] == true;
+  int? get discovered => _scanCount(_scanMap(scan['progress'])['discovered']);
+  int? get processed => _scanCount(_scanMap(scan['progress'])['processed']);
+  int? get packsDiscovered =>
+      _scanCount(_scanMap(scan['progress'])['packs_discovered']);
+  int? get packsProcessed =>
+      _scanCount(_scanMap(scan['progress'])['packs_processed']);
+  int? get legacyDiscovered => _scanCount(scan['discovered']);
+  int? get legacyProcessed => _scanCount(scan['processed']);
+  int count(String key) => _scanCount(_scanMap(scan['counts'])[key]) ?? 0;
+  int get pageErrors => _scanCount(scan['page_errors']) ?? 0;
+  int get unreadablePacks => _scanCount(scan['unreadable_packs']) ?? 0;
+  String? get error => _scanText(scan['error']) ?? _scanText(detail['error']);
+  DateTime? get finishedAt => _scanTime(scan['finished_at']);
+  DateTime? get lastCompletedAt => _scanTime(detail['last_scan']);
+}
+
+Map<String, dynamic> _scanMap(Object? value) =>
+    value is Map ? Map<String, dynamic>.from(value) : const {};
+String? _scanText(Object? value) => value is String ? value : null;
+int? _scanCount(Object? value) =>
+    value is num && value.isFinite && value >= 0 ? value.toInt() : null;
+DateTime? _scanTime(Object? value) =>
+    value is num && value.isFinite && value > 0 && value <= 8640000000000
+    ? DateTime.fromMillisecondsSinceEpoch((value * 1000).round()).toLocal()
+    : null;
+
 /// Server-owned preparation state. Progress updates do not replace paged lists.
 class LibraryPreparation {
   const LibraryPreparation({
@@ -736,6 +801,7 @@ class LibraryPreparation {
     this.failureReasons = const {},
     this.deferred = 0,
     this.roots = const {},
+    this.media = const {},
     this.syncError,
   });
   final bool ready, scanning;
@@ -745,6 +811,43 @@ class LibraryPreparation {
   final int thumbnailFailed;
   final Map<String, int> failureReasons;
   final Map<String, Map<String, dynamic>> roots;
+  final Map<String, Map<String, dynamic>> media;
+  RootScanProgress rootProgress(String id) {
+    final facts = RootScanProgress(roots[id] ?? const {});
+    // Old services stopped only the round, leaving a root marked discovering.
+    // Their root entries all belong to that round and have no task_id.
+    if (!scanning &&
+        facts.active &&
+        facts.taskId == null &&
+        const {'failed', 'interrupted'}.contains(status)) {
+      return RootScanProgress({
+        ...facts.detail,
+        'scan': {
+          ...facts.scan,
+          'status': status,
+          'error': status == 'failed' ? 'scan_failed' : 'scan_interrupted',
+        },
+      });
+    }
+    return facts;
+  }
+
+  Map<String, dynamic> mediaProgress(MediaKind kind) =>
+      media[kind.name] ?? const {};
+  bool get legacyNeedsAttention {
+    final pack = _scanMap(mediaProgress(MediaKind.pack)['counts']);
+    return failed > 0 ||
+        thumbnailFailed > 0 ||
+        deferred > 0 ||
+        failureReasons.isNotEmpty ||
+        const [
+          'failed_pages',
+          'failed_packs',
+          'deferred',
+          'thumbnail_failed',
+        ].any((key) => (_scanCount(pack[key]) ?? 0) > 0);
+  }
+
   factory LibraryPreparation.fromJson(
     Map<String, dynamic> data, {
     bool? ready,
@@ -772,6 +875,10 @@ class LibraryPreparation {
         for (final root in data['roots'] as List? ?? [])
           root['id'] as String: Map<String, dynamic>.from(root as Map),
       },
+      media: {
+        for (final entry in _scanMap(data['media']).entries)
+          entry.key: _scanMap(entry.value),
+      },
     );
   }
   LibraryPreparation offline() => LibraryPreparation(
@@ -789,6 +896,7 @@ class LibraryPreparation {
     failureReasons: failureReasons,
     deferred: deferred,
     roots: roots,
+    media: media,
     syncError: '进度暂未同步，正在重试',
   );
   String get label => switch (phase) {
@@ -797,17 +905,21 @@ class LibraryPreparation {
     'waiting_for_stable_files' => '等待文件写入稳定',
     'processing_media' => '正在读取视频信息',
     'reconciling_identities' => '正在核对文件身份',
+    'pack_discovering' => '正在查找图包',
+    'pack_inspecting' => '正在读取图片',
+    'pack_reconciling' => '正在核对图包记录',
     'completed' => ready ? '扫描完成' : '部分目录未就绪，请检查媒体目录',
     'interrupted' => '扫描已中断',
     'failed' => '扫描失败',
     _ => ready ? '视频库已就绪' : '等待首次扫描',
   };
-  String get summary =>
-      '$label${discovered > 0
-          ? phase == 'discovering'
-                ? ' · 已发现 $discovered 个'
-                : ' · $processed / $discovered 个'
-          : ''}';
+  String get summary => phase.startsWith('pack_')
+      ? label
+      : '$label${discovered > 0
+            ? phase == 'discovering'
+                  ? ' · 已发现 $discovered 个'
+                  : ' · $processed / $discovered 个'
+            : ''}';
   String get failureDetail => failureReasons.entries
       .map((entry) {
         final label = switch (entry.key) {

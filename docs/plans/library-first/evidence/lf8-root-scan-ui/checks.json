@@ -1,0 +1,20 @@
+{
+  "source_commit": "430fede546fe7649bdffeb7f399c6d86b6bbb212",
+  "image_id": "sha256:d9e4dfe4230774bc918a5831a59f037748b155fc5087c4ead239ad0b88c81715",
+  "client_full": 822,
+  "client_new_tests_each_stable_round": [
+    23,
+    23,
+    23
+  ],
+  "client_analyze": "pass",
+  "server_full": 478,
+  "server_related": 48,
+  "server_ruff": "pass",
+  "server_format": "pass",
+  "server_full_command": "docker run --rm --read-only --shm-size=64m --tmpfs /tmp:mode=1777 video-viewer-server:lf8-root-scan-ui",
+  "component_screenshots": 13,
+  "ordinary_apk_validation": "pending",
+  "nas_phone_validation": "pending",
+  "vertical_zoom": "not implemented"
+}

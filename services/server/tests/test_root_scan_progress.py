@@ -495,6 +495,46 @@ def test_new_outer_root_invalidates_previous_inner_scope_facts(library, samples)
     assert state(client)[1]["main"]["scan"] is None
 
 
+def test_completed_root_in_active_full_scan_can_queue_a_real_rescan(library, monkeypatch):
+    from video_viewer.pack_scanner import inspect_image as inspect
+
+    client, media = library
+    a, b = roots(client, media)
+    image(Path(a["path"]) / "one/1.png")
+    image(Path(b["path"]) / "one/1.png")
+    entered, release = threading.Event(), threading.Event()
+
+    def held(fd, *args):
+        if os.readlink(f"/proc/self/fd/{fd}").startswith(b["path"]):
+            entered.set()
+            assert release.wait(10)
+        return inspect(fd, *args)
+
+    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", held)
+    time.sleep(0.05)
+    full = client.post("/api/v1/scans").json()
+    try:
+        assert entered.wait(10)
+        previous = state(client)[1][a["id"]]["scan"]
+        assert previous["status"] == "completed"
+        image(Path(a["path"]) / "one/2.png", color="blue")
+        time.sleep(0.05)
+        rescan = start(client, a["id"])
+        assert rescan["id"] != full["id"] and rescan["status"] == "queued"
+        assert start(client, a["id"])["id"] == rescan["id"]
+        current = state(client)[1][a["id"]]
+        assert current["scan"] == previous
+        assert current["queued_task_ids"] == [rescan["id"]]
+    finally:
+        release.set()
+    completed(client, full)
+    completed(client, rescan)
+    catalog = client.get("/api/v1/packs").json()["items"]
+    assert next(p for p in catalog if p["root_id"] == a["id"])["page_count"] == 2
+    assert state(client)[1][a["id"]]["scan"]["task_id"] == rescan["id"]
+    assert state(client)[1][b["id"]]["scan"]["task_id"] == full["id"]
+
+
 def test_scoped_outer_uses_current_video_owner_and_preserves_type_boundary(library, samples):
     client, media = library
     inner = media / "inner"

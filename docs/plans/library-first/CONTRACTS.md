@@ -75,7 +75,7 @@ LF3 暂将默认顺序保存在本机 `UiPreferences.videoOrder`，与活动会�
 
 ## LF8 接入目录扫描（#138服务已实现，#139客户端待接）
 
-schema0014新增root_scan_progress/scoped_scans能力，不新增表列。POST /scans旧空正文保持全扫，新正文root_id只选该接入目录；共享单工作线程和持久队列、覆盖请求去重，停用/被外层覆盖的视频别名明确拒绝，不扩大范围。HTTP任务result.root_scans含完整每根事实，旧roots过滤disabled/covered，scope表明所选根。library-state每根scan保留最近执行结果，queued_task_ids和scan_queue单列队列；重扫A不替换B。
+schema0014新增root_scan_progress/scoped_scans能力，不新增表列。POST /scans旧空正文保持全扫，新正文root_id只选该接入目录；共享单工作线程和持久队列，未完成/排队范围去重。全扫中A已完成、B仍运行时，指定A允许新排队尝试；重复A合并到该队列项。停用/被外层覆盖的视频别名明确拒绝，不扩大范围。HTTP任务result.root_scans含完整每根事实，旧roots过滤disabled/covered，scope表明所选根。library-state每根scan保留最近执行结果，queued_task_ids和scan_queue单列队列；重扫A不替换B。客户端只有同时支持两项能力才发送指定根请求，失败不改发全扫。
 
 视频progress以视频为单位；图包progress以图片为单位，packs_discovered/processed另计图包，旧root.discovered/processed仍为视频/图包。未知总量不充当分母；page_errors含缓存坏页。Task快照与本机索引同一事务发布，管理代次/相关根范围签名失配不复用数字；索引不进入便携备份。缺失与限定候选使用当前路径归属，保留原视频外层/图包内层及类型/停用边界。
 

@@ -16,7 +16,7 @@ from .media_roots import enabled_path, owned_path, owner_for_path
 from .models import Directory, Observation, Root, Setting, Task, Video
 from .pack_scanner import PackScanner
 from .paths import VIDEO_EXTENSIONS, beneath, excluded, open_directory, open_video, signature
-from .root_scan_progress import entry, publish, stage, terminate
+from .root_scan_progress import ACTIVE, entry, publish, stage, terminate
 
 
 class Scanner:
@@ -88,9 +88,24 @@ class Scanner:
                     .order_by(Task.created_at)
                 ):
                     scope = pending.result.get("scope", {})
-                    if scope.get("all") or (
-                        root_id is not None and ids <= set(scope.get("root_ids", []))
-                    ):
+                    if root_id is None:
+                        covered = scope.get("all")
+                    else:
+                        current = next(
+                            (
+                                item
+                                for item in pending.result.get("roots", [])
+                                if item["id"] == root_id
+                            ),
+                            {},
+                        )
+                        # A finished root in a still-running full scan needs a
+                        # new queued attempt; merging it would lose the user's
+                        # request to inspect files added after its first pass.
+                        covered = (scope.get("all") or ids <= set(scope.get("root_ids", []))) and (
+                            pending.status == "queued" or current.get("status") in ACTIVE
+                        )
+                    if covered:
                         return self.task(pending.id)
                 task = Task(kind="scan", status="queued", phase="queued", result={})
                 session.add(task)

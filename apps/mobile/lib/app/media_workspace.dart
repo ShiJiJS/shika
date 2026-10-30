@@ -6,6 +6,7 @@ import '../features/library/browse_context.dart';
 import '../features/library/pack_catalog_page.dart';
 import '../features/library/tag_catalog_page.dart';
 import '../features/library/video_catalog_page.dart';
+import '../features/settings/scan_progress_card.dart';
 import '../library/models.dart';
 import '../library/repository.dart';
 import '../ui/media_layout.dart';
@@ -323,6 +324,53 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                 ),
               ),
             widget.status,
+            if (widget.destination == 'library' && !compactKeyboard)
+              ValueListenableBuilder<LibraryPreparation>(
+                valueListenable: widget.repository.libraryPreparation,
+                builder: (context, state, _) {
+                  final roots = widget.repository.snapshot.roots;
+                  final attention =
+                      state.scanning ||
+                      state.syncError != null ||
+                      (!widget.repository.capabilities.rootScanProgress &&
+                          state.legacyNeedsAttention) ||
+                      (widget.repository.capabilities.rootScanProgress &&
+                          roots.any(
+                            (r) => r.enabled && !state.rootProgress(r.id).known,
+                          )) ||
+                      roots.any(
+                        (r) =>
+                            r.enabled &&
+                            state.rootProgress(r.id).needsAttention,
+                      );
+                  if (!attention) return const SizedBox();
+                  return Padding(
+                    key: const Key('library-scan-notice'),
+                    padding: const EdgeInsets.only(left: 20, right: 12),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            scanActivityLabel(
+                              state,
+                              roots,
+                              precise: widget
+                                  .repository
+                                  .capabilities
+                                  .rootScanProgress,
+                            ),
+                            style: TextStyle(fontSize: 12, color: p.olive),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => navigate('roots'),
+                          child: const Text('查看进度'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             if (widget.destination != 'settings')
               SizedBox(
                 width: double.infinity,

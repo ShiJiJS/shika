@@ -116,6 +116,8 @@ abstract class LibraryRepository extends ChangeNotifier {
   final catalogCounts = ValueNotifier<MediaCatalogCounts?>(null);
   Future<void> refreshCatalogCounts() async {}
   Future<void> requestScan() => refresh();
+  Future<void> requestRootScan(String rootId) =>
+      Future.error(const LibraryFailure('当前服务不支持单独扫描目录，请升级服务端'));
   final ValueNotifier<String?> backupStatus = ValueNotifier(null);
   final ValueNotifier<String?> fileStatus = ValueNotifier(null);
   ServiceCapabilities get capabilities => const ServiceCapabilities.legacy();
