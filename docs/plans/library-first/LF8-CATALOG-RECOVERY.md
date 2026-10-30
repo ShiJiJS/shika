@@ -1,6 +1,6 @@
 # LF8：正常安装包的媒体库读取恢复
 
-按[issue #131](https://github.com/ShiJiJS/video_viewer/issues/131)推进。沿用正常签名preview.16/code22（生产12d6ca67），不为补证另造测试App。复核现有控制器的分页失败、重试相同offset、旧请求失效测试，然后补两类型正常包的实际连接记录。
+按[issue #131](https://github.com/ShiJiJS/video_viewer/issues/131)推进，已提交[草稿PR #132](https://github.com/ShiJiJS/video_viewer/pull/132)。沿用正常签名preview.16/code22（生产12d6ca67），不为补证另造测试App。复核现有控制器的分页失败、重试相同offset、旧请求失效测试，然后补两类型正常包的实际连接记录。
 
 新建29视频/31包公开样本服务，前方放置仅绑定127.0.0.1的独立测试转发器；只对GET /videos和/packs的指定search/offset注入503或扣留真实服务响应，其他请求原样转发。规则由本机文件控制，控制入口不进入生产服务，不记录口令或Authorization。迟到响应区分成功发送与连接已被客户端取消，不将“尝试发送”冒充App接收。
 
