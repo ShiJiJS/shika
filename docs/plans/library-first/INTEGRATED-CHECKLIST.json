@@ -1,0 +1,399 @@
+{
+  "requirements_source": "ACCEPTANCE.md",
+  "candidate_source": "10bb0d34b3645e798f145c00060c25f814b436b1",
+  "candidate_code": 18,
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "does_not_replace_historical_evidence_or_target_acceptance": true,
+  "items": [
+    {
+      "id": "NAV-01",
+      "reference_state": "home / packs",
+      "requirement": "冷启动与连接成功后默认媒体库；四入口为媒体库、标签、最近、设置，无独立预览 tab",
+      "owner": "LF4",
+      "current_candidate": "partially_observed_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "正常code18连接隔离服务后显示媒体库及四入口；只记录当前首页，未以此证明所有冷启动/兼容组合。"
+        }
+      ]
+    },
+    {
+      "id": "NAV-02",
+      "reference_state": "库→预览/阅读→返回",
+      "requirement": "返回原来源、类型、搜索、筛选和列表 anchor；系统返回先退出全屏/面板",
+      "owner": "LF3/4/5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "NAV-03",
+      "reference_state": "分类切换",
+      "requirement": "视频/图包搜索、筛选、排序、批选状态互不污染；最近来源不沿用媒体库条件",
+      "owner": "LF4",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "LIB-01",
+      "reference_state": "home",
+      "requirement": "两列视频卡片、名称/目录搜索、目录子树、标签 AND、方向/时长/类型，分页与空结果；可预览完整匹配范围",
+      "owner": "LF3/4",
+      "current_candidate": "partially_observed_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "当前正常首页两列视频卡片对照；本段未完成搜索/筛选/分页/完整范围主流程。"
+        }
+      ]
+    },
+    {
+      "id": "LIB-02",
+      "reference_state": "packs",
+      "requirement": "一包一卡，标题/目录/可用作者搜索，封面/标题/真实页数/阅读状态，目录/标签/阅读状态筛选，继续阅读",
+      "owner": "LF2/4/5",
+      "current_candidate": "partially_observed_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "隔离服务实际扫描4包24图，经媒体库打开夏日祭并点击至第3/6页；本段未完成全部搜索/筛选/续读组合。"
+        }
+      ]
+    },
+    {
+      "id": "LIB-03",
+      "reference_state": "长列表",
+      "requirement": "超过一页时自动分页；旧请求不覆盖新筛选；失败留卡片/滚动；没有结果不扩大为全库",
+      "owner": "LF2/4",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "TAG-01",
+      "reference_state": "video-tags / pack-tags",
+      "requirement": "两套标签 CRUD/搜索/计数独立；同名可共存，跨类型 ID 拒绝；改名不丢关联",
+      "owner": "LF1/4",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "TAG-02",
+      "reference_state": "标签选择/批量",
+      "requirement": "多标签取交集；单项替换，批量追加保留未选标签；全选语义明确且覆盖匹配分页",
+      "owner": "LF1/4",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PRE-01",
+      "reference_state": "预览此范围",
+      "requirement": "名称搜索+目录+标签+属性+来源都进入服务端候选；只加载前 24 条时仍可预览全部匹配结果",
+      "owner": "LF3",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PRE-02",
+      "reference_state": "video / 队列",
+      "requirement": "从点击项开始；固定候选可回看、顺序/随机不越界；末尾选择退出/重来，不跳全库",
+      "owner": "LF3",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PRE-03",
+      "reference_state": "预览中改标签",
+      "requirement": "当前项不跳走，既有候选不重排；标签删除/新增内容不静默重建轮次；返回列表才重新查询",
+      "owner": "LF3",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PRE-04",
+      "reference_state": "现有原生播放器",
+      "requirement": "暂停、拖进度、倍速、长按临时 2 倍、快速滑动、横向全屏、亮度/音量保留；仅当前发声",
+      "owner": "LF3",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PRE-05",
+      "reference_state": "生命周期",
+      "requirement": "最多当前±1 解码器，关闭相邻准备只保留当前；后台/离页释放，旧回执不拉回画面，前台保持用户暂停意图",
+      "owner": "LF3",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PKG-01",
+      "reference_state": "roots→图包",
+      "requirement": "直属文件夹为包、子目录为同包页；自然排序 1/2/10、稳定页 ID；不会为每张图片建媒体库条目",
+      "owner": "LF2",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PKG-02",
+      "reference_state": "同步外部变更",
+      "requirement": "新增/删页、唯一可识别改名保留包身份；歧义保留缺失；离线不清理；停用不删标签/进度",
+      "owner": "LF1/2",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PKG-03",
+      "reference_state": "图片获取",
+      "requirement": "仅授权 ID 可读，路径越界/符号链接/替换拒绝；单页/缩略图失败能重试或跳过，不阻塞整包",
+      "owner": "LF2",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "READ-01",
+      "reference_state": "reader",
+      "requirement": "横向翻页，左右方向可切，完整适配画面；本包总览/页码跳转可用，缩放与翻页不误触",
+      "owner": "LF5",
+      "current_candidate": "partially_observed_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "同一正常安装包三轮实际双指放大/平移/系统返回，九状态同页且完整进度对象不变、图像返回基线；左右方向/总览/跳页等仍需当前整版补齐，未通过整项。"
+        }
+      ]
+    },
+    {
+      "id": "READ-02",
+      "reference_state": "vertical",
+      "requirement": "纵向拼接惰性加载，可开关间距；尺寸占位避免图片到达后位置跳动；滚到底不自动换包",
+      "owner": "LF5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "READ-03",
+      "reference_state": "readersettings",
+      "requirement": "默认模式/方向/间距与每包覆盖独立；模式切换保留同一图片位置，已阅读包不被全局默认覆盖",
+      "owner": "LF5/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "READ-04",
+      "reference_state": "沉浸/进度/重开",
+      "requirement": "工具显隐和退出可达；保存 pageId+页内比例；重开续读，已删页明确回退最近有效页",
+      "owner": "LF5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "READ-05",
+      "reference_state": "阅读范围",
+      "requirement": "查看队列，手动前后包限定当前范围，末尾返回来源；空/缺失/停用包不扩大范围",
+      "owner": "LF5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "READ-06",
+      "reference_state": "大图与长包",
+      "requirement": "500 页及 4K/8K 夹具，连续切包/横纵切换无 OOM，解码窗口/缓存有界；记录目标机峰值和翻页延迟",
+      "owner": "LF5/8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "REC-01",
+      "reference_state": "最近",
+      "requirement": "视频和图包分开，按实际打开去重更新；预加载不记历史；回收内容不显示，恢复保留阅读状态",
+      "owner": "LF3/4/5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "DEL-01",
+      "reference_state": "普通图包菜单",
+      "requirement": "移入回收站有整包影响确认；取消不变，成功留原列表；普通翻页不承担删除",
+      "owner": "LF6",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "DEL-02",
+      "reference_state": "pack-quick",
+      "requirement": "显式开启/退出；成功才进本范围下一包，失败留原包，末尾回来源；不另设已整理/保留状态",
+      "owner": "LF6",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "DEL-03",
+      "reference_state": "撤销",
+      "requirement": "8 秒提示不占布局；绑定 operation ID；恢复原包、页码、队列位置与模式；旧撤销不误撤新操作",
+      "owner": "LF6",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "DEL-04",
+      "reference_state": "trash",
+      "requirement": "按类型查看/全选/批量恢复；逻辑回收/恢复不动源字节；标签与进度保留；全选跨页且分批上限明确",
+      "owner": "LF6/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "DEL-05",
+      "reference_state": "purge / tasks",
+      "requirement": "永删双确认、图片清单/版本核对；部分成功逐项显示，进程中断可核对；替换/新增/非图片附件不误删",
+      "owner": "LF6",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "DEL-06",
+      "reference_state": "断线/重开",
+      "requirement": "已受理无回执显示待确认；查询原 request/task；不自动重放删除，查询不全局锁 UI",
+      "owner": "LF6/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "SET-01",
+      "reference_state": "settings / dark",
+      "requirement": "三组设置完整；暗黑、更多主题同步、相邻准备本机持久化；字体和尺寸匹配基线",
+      "owner": "LF4/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "SET-02",
+      "reference_state": "playback / defaults",
+      "requirement": "全局顺序仅影响新范围；图包默认偏好仅影响尚未独立设置的包",
+      "owner": "LF3/5/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "SET-03",
+      "reference_state": "connection",
+      "requirement": "地址/端口/口令校验与失败保留输入；token 安全保存；口令不持久化；旧服务能力提示明确",
+      "owner": "LF1/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "SET-04",
+      "reference_state": "roots / missing",
+      "requirement": "类型、路径、添加编辑、启停、递归扫描进度；清除失效记录确认，离线/停用不清除；图包首扫不锁已有视频",
+      "owner": "LF1/2/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "SET-05",
+      "reference_state": "tasks",
+      "requirement": "扫描/文件/恢复任务，处理中、部分失败、待确认、已完成可区分；同任务只查询，不重复提交",
+      "owner": "LF6/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "BAK-01",
+      "reference_state": "backup",
+      "requirement": "真实系统文件选择/保存、大小与完整性校验；两套标签/目录/阅读/回收统计；取消不报成功",
+      "owner": "LF7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "BAK-02",
+      "reference_state": "restore-preview",
+      "requirement": "映射各根、留空不启用、确认替换；前快照可读；本机主题/预加载/凭据不覆盖；已永久删内容不复活",
+      "owner": "LF7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "BAK-03",
+      "reference_state": "v1/v2与异常恢复",
+      "requirement": "旧 v1 在隔离库转换正确，新 v2 往返；坏包/中断/断线/磁盘失败保留正确旧状态与任务，不重放历史操作",
+      "owner": "LF7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "UP-01",
+      "reference_state": "升级演练",
+      "requirement": "0004 旧视频/标签/ID/轮次/回执保留；旧客户端配新服务和新客户端配旧服务可预期；禁用根不误标缺失",
+      "owner": "LF1/8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "UP-02",
+      "reference_state": "安装发布",
+      "requirement": "原包名/签名、递增 versionCode 覆盖安装，地址/token/本机偏好不丢；服务与 App 有配套版本说明和回退快照",
+      "owner": "LF8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "UI-01",
+      "reference_state": "home、packs、video-tags、pack-tags、最近",
+      "requirement": "同素材、同数据、390×844 内容区并排；顶栏/分类/筛选/卡片/底栏层级一致",
+      "owner": "LF8",
+      "current_candidate": "observed_difference_open",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "首页同状态对照发现次要文字和部分图标差异，#124待修；标签集合无排序要求，不硬编码样例次序。"
+        }
+      ]
+    },
+    {
+      "id": "UI-02",
+      "reference_state": "video、reader、vertical、pack-quick",
+      "requirement": "画面完整显示、工具密度、来源/队列、按需整理、撤销不跳布局；手势录屏",
+      "owner": "LF8",
+      "current_candidate": "observed_difference_open",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "阅读页同390×832内容高度对照；8dp底栏差为原生触控区保留，撤回错误裁图的20dp结论。文字色阶/图标#124待修；本段没有完整流程和全部视口通过声明。"
+        }
+      ]
+    },
+    {
+      "id": "UI-03",
+      "reference_state": "settings、dark、connection、roots、missing、trash、backup、tasks",
+      "requirement": "必要设置逐项存在；长管理页全高度，短编辑/确认底部面板；暗色一致",
+      "owner": "LF8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "UI-04",
+      "reference_state": "readersettings、restore-preview、purge、empty、错误",
+      "requirement": "确认前无副作用，禁用可理解，表单错误保留；键盘出现仍能看到字段/提交",
+      "owner": "LF8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "UI-05",
+      "reference_state": "360×740、844×390、系统放大字体、深浅色",
+      "requirement": "无溢出或被系统栏遮挡；Android SafeArea 不叠加 HTML 假 home indicator；可访问触控目标",
+      "owner": "LF8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "UI-06",
+      "reference_state": "按压/切换/展开/通知",
+      "requirement": "沿用 100/140/160/240ms 的动作层级；减少动态效果直接到位；不以动画延迟实际状态",
+      "owner": "LF8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    }
+  ]
+}
