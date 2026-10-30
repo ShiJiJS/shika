@@ -1,0 +1,32 @@
+{
+  "requests": [
+    {
+      "time": 1793334563.7209296,
+      "method": "GET",
+      "path": "/api/v1/videos",
+      "query": "directory_id=37e5f184-1bb5-43b2-9dc4-6c54be1ada04&tag_ids=a0822306-8d79-40e5-9856-4f93e19195de&orientation=landscape&duration=long&file_type=MP4&offset=0&limit=24&search=Scope&source=library&sort=name&name_locale=zh-CN",
+      "status": 200
+    },
+    {
+      "time": 1793334567.5959322,
+      "method": "GET",
+      "path": "/api/v1/library-state",
+      "query": "",
+      "status": 200
+    },
+    {
+      "time": 1793334568.474973,
+      "method": "GET",
+      "path": "/health",
+      "query": "",
+      "status": 200
+    }
+  ],
+  "response": {
+    "items": [],
+    "total": 0,
+    "offset": 0,
+    "limit": 24
+  },
+  "preview_enabled": false
+}

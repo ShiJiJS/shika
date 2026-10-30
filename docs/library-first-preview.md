@@ -1,10 +1,10 @@
-# 媒体库安装候选：App preview.15 / 配套回退包
+# 媒体库安装候选：App preview.16 / 配套回退包
 
-> 本机候选已修正内容返回后的搜索焦点，完成阅读/来源与覆盖安装检查。完整原型终验和实际手机/NAS尚未完成；本轮收尾后按要求暂停。
+> 本机候选已补齐视频筛选摘要，完成对应正常包显示和覆盖安装检查。完整原型终验和实际手机/NAS尚未完成，持续推进中。
 
-固定构建来源`a8d6180a35c6a7884e1e7ad02d26246675f29979`，两包同内部号 **21**，沿用原Windows包名/签名。含此前媒体库/图包、设置和统一的文字图标；本轮修正图包/视频搜索进入内容再返回时的焦点，保留搜索、筛选和原位置。详见[实现与正常包记录](plans/library-first/LF8-CONTENT-ENTRY-FOCUS.md)。
+固定构建来源`12d6ca67ef3a8b307894468923dc08e612e02587`，两包同内部号 **22**，沿用原Windows包名/签名。含此前媒体库/图包、设置、统一文字图标与搜索焦点修复；本轮补媒体库摘要的方向、时长和格式，不改原筛选规则、阈值和两行高度。详见[实现与正常包记录](plans/library-first/LF8-CURRENT-FILTERS.md)。
 
-本轮27项相关App回归及分析通过，隔离两包构建各分析、旧85/新14相关检查通过，未重跑完整客户端套件。正常code21用31包/186图完成三轮来源返回与横纵阅读检查、两套标签/最近/视频固定范围、三次冷启动；20→新21→旧21→新21三次覆盖逐次35表、完整设置/令牌/偏好及身份保持。[固定公开输入及只读复核](plans/library-first/evidence/lf8-current-navigation/README.md)保留实际截图与失败诊断。此前code20浅暗视觉定点复核见[历史记录](plans/library-first/evidence/lf8-paper-symbols/README.md)，本轮仅修焦点，无视觉布局变化。
+修前code21完整客户端791项通过，29视频/31包公开样本的筛选、跨页全选和空结果各三轮完成；修后code22通过27项相关布局/媒体库检查和分析、两包13步构建。正常code22实际显示属性摘要，清除恢复29，组合预览准确14成员；21→新22→旧22→新22三次覆盖逐次35表、完整设置/令牌/偏好及身份保持。[固定公开输入及只读复核](plans/library-first/evidence/lf8-current-filters/README.md)分开两版本与测试范围，没有重跑修后完整791项。此前搜索焦点/阅读/冷启动见[历史记录](plans/library-first/evidence/lf8-current-navigation/README.md)。
 
 此前preview.12/rollback.12(code18)和未交付预检preview.13/rollback.13(code19)及更早包保持。code19首次旧界面自动读取播放协议创建范围的两表/两键差量单独保留，不能称全程只读。原型独立可移除，服务未改/未部署；没有正式发布或安装手机。code18的[扫描详情三轮业务证据](plans/library-first/LF8-EXPANSION-PACKAGE.md)及完整45项要求仍按原范围保留。
 
@@ -14,13 +14,13 @@
 
 | 文件 | 用途 | 字节数 | SHA256 |
 | --- | --- | ---: | --- |
-| `video-viewer-0.2.0-preview.15-arm64.apk` | 新媒体库候选 | 23242650 | `6f434977f50ff28f46d8b6297b6a3e6e4f1bd16ed6afa330cbe030fd232037dd` |
-| `video-viewer-0.1.4-rollback.15-arm64.apk` | 旧视频界面配套回退 | 21734394 | `6c6b62db24cc3a1a083382cc27b1ac6e3649c907731996806cbe2b0ae1f0ac24` |
+| `video-viewer-0.2.0-preview.16-arm64.apk` | 新媒体库候选 | 23242646 | `a0a6bb14615951ecc04329154ed15b2ede0c2c7b0ceb6a989d7bd7af05d86fb3` |
+| `video-viewer-0.1.4-rollback.16-arm64.apk` | 旧视频界面配套回退 | 21734394 | `89f4a21084c054e415e5d2da0b00e1e28a39f6a46f7e180cc6967e37ac385478` |
 | `video-viewer-server-0.2.0-preview.2-linux-arm64.tar.gz` | 配套服务（沿用，未重新构建） | 222497149 | `461af96196d4905c374fa86e82100be85d48efc2ab9221dcde745e275a7a79ff` |
 
 两包均为 Android ARM64、正常 `lib/main.dart`、非调试包，不含集成测试插件或原型资产。包名 `io.github.shijijs.video_viewer`，签名证书 SHA256：`f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161`。旧界面基于原 0.1.4 源码，附兼容偏好和操作日志的适配，不能管理图包及新版完整备份任务。
 
-直接覆盖安装，**不要先卸载或清除数据**。需要退回旧界面时覆盖安装 `rollback.15`，再升回时覆盖 `preview.15`；二者内部号同为21。原 Windows 5及旧code8至20包不能直接覆盖code21；此前两包均保留。目标手机安装器行为尚待验证。
+直接覆盖安装，**不要先卸载或清除数据**。需要退回旧界面时覆盖安装 `rollback.16`，再升回时覆盖 `preview.16`；二者内部号同为22。原Windows 5及旧code8至21包不能直接覆盖code22；此前两包均保留。目标手机安装器行为尚待验证。
 
 ## 配套服务与数据
 

@@ -1,0 +1,21 @@
+diff --git a/apps/mobile/lib/features/library/video_catalog_page.dart b/apps/mobile/lib/features/library/video_catalog_page.dart
+index a67dfb90..3bbdfff7 100644
+--- a/apps/mobile/lib/features/library/video_catalog_page.dart
++++ b/apps/mobile/lib/features/library/video_catalog_page.dart
+@@ -517,6 +517,16 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
+                                         ),
+                                         if (entry.search.isNotEmpty)
+                                           '“${entry.search}”',
++                                        if (entry.query.orientation.isNotEmpty)
++                                          entry.query.orientation == 'portrait'
++                                              ? '竖版'
++                                              : '横版',
++                                        if (entry.query.duration.isNotEmpty)
++                                          entry.query.duration == 'short'
++                                              ? '10 秒以内'
++                                              : '10 秒以上',
++                                        if (entry.query.type.isNotEmpty)
++                                          entry.query.type,
+                                       ].join(' · '),
+                                       maxLines: 2,
+                                       overflow: TextOverflow.ellipsis,
