@@ -1,6 +1,6 @@
 # 默认纵向与操作文案：源码阶段
 
-跟踪[#137](https://github.com/ShiJiJS/video_viewer/issues/137)及[#141](https://github.com/ShiJiJS/video_viewer/issues/141)，基于返回修复PR #144。本轮改实现并执行隔离检查，不更新NAS、参考原型或已交付code22两包。
+跟踪[#137](https://github.com/ShiJiJS/video_viewer/issues/137)及[#141](https://github.com/ShiJiJS/video_viewer/issues/141)，[草稿PR #145](https://github.com/ShiJiJS/video_viewer/pull/145)，基于返回修复PR #144。本轮改实现并执行隔离检查，不更新NAS、参考原型或已交付code22两包。
 
 ## 默认值与兼容
 
@@ -27,3 +27,5 @@
 最终源码阶段：客户端完整799项、相关26项与analyze通过；Linux服务完整463项通过。完整服务套件使用增强前的阅读测试，之后补有效页37%位置断言及省略mode的第二例，最终阅读文件11项通过。两镜像58个业务Python文件与当前源码逐一SHA相同；测试文件SHA不同分别保存，不声称最终测试树完整464项重跑。Ruff检查/格式通过。
 
 正常入口preview.17/rollback.17（同code23）已从固定dcc1d22f隔离构建完成，13步全部退出0，旧85/新14配套检查及双方分析通过。两包原Windows签名、ARM64、非调试且无原型/集成测试插件；仅生成本机候选，尚未安装或复制到NAS。旧code22两包保留。
+
+本轮候选SHA核对后已删除两个隔离构建输出目录，发布文件路径中的两包、源码导出/清单及日志保留，供后续原生验证使用。

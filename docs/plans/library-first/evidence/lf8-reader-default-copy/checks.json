@@ -170,10 +170,18 @@
   "logs": {
     "client-related.log": "9c13b999d46c21aa21d8bbaef2d8f9844c762d7bd3b47b04d275d807d2f036e5",
     "client-full.log": "fd50d871e406d73c08e5cf4d79b3ccbceb206c0545670364bc9f12bb0ea08a41",
+    "build-rollback-tests.log": "7c8f676f6e21b7d75c55fb375b8f47426b8caa42a4a9d6893db502f1eecb5f7b",
     "server-reading.log": "6a7fac9a4a9e28e76fd8863787e5f20fdc3d145ce930fb07c346728ec96021ef",
     "server-ruff.log": "539192c6f273557bba0649140f922bc9029fddc262fd3877c241361fc74aab00",
+    "build-rollback-signature.log": "2d1a06d3713b4370bc3875f8f7fd1379e6c45a2ff8dadf4321490e3f1afc8dee",
     "default-before.log": "9483f15544c1d011ddc256a8b9e9c5be63c3c42b0b931d883728234406ec51e9",
+    "build-forward-tests.log": "8cca1f37bc421beeaab170de724c947778ace9480a02ddfdd1a351d5074a0456",
     "server-full.log": "d94cb525d0448e471fd78bd6ad0fcff1a6db05f9a3e191dc795cd9d44ac831e8",
+    "build-forward-signature.log": "2d1a06d3713b4370bc3875f8f7fd1379e6c45a2ff8dadf4321490e3f1afc8dee",
     "analyze.log": "168377f9f174ff61b9260d0f30facf6de2ca2787812e832c06cc8b76ccd1e8d2"
-  }
+  },
+  "candidate_build_source": "dcc1d22f65bcddb87768868230d0f1a8e480432c",
+  "candidate_code": 23,
+  "candidate_built": true,
+  "candidate_installed_or_distributed": false
 }
