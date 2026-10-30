@@ -1,0 +1,19 @@
+{
+  "catalog_pass_through": [
+    {
+      "path": "/api/v1/videos?search=Scope&offset=0&limit=24",
+      "status": 200,
+      "same_body": true
+    },
+    {
+      "path": "/api/v1/packs?search=Scope&offset=0&limit=24",
+      "status": 200,
+      "same_body": true
+    }
+  ],
+  "failure_status": 503,
+  "hold_release_real_response": true,
+  "head_status": 200,
+  "head_content_length": "1290627",
+  "no_write_requests": true
+}

@@ -1,0 +1,25 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: pagination failure preserves whole-pack cards and retries the same page, without changing video playback
+00:00 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart: deep return failure retains the old window; retry locates one page then pages both ways
+00:00 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: a failed refresh keeps its refresh intent instead of appending another page on retry
+00:00 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart: a late return lookup cannot replace a new search
+00:00 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: new pack query wins over late results; source and filters belong to its own context
+00:00 +5: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart: new query wins over a late response without changing playback
+00:00 +6: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: leaving cancels loading but retains cards; changing connection clears cards and rejects old receipts
+00:00 +7: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: leaving cancels loading but retains cards; changing connection clears cards and rejects old receipts
+00:00 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart: sliding pages retain at most 120 members and can page back after eviction
+00:00 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart: sliding pages retain at most 120 members and can page back after eviction
+00:00 +10: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: localized restore and prepend keep complete scope and authoritative offsets
+00:00 +11: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart: changed membership retains the old window and requests anchor restoration
+00:00 +12: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart: unexpected cancellation of a current return remains an explicit retry
+00:00 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: restore failure retains old deep cards and repeats location instead of appending
+00:00 +14: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart: leaving a page rejects in-flight results and releases loading
+00:00 +15: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: a current location cancelled outside the controller is not published as a successful restore
+00:00 +16: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart: empty append reports catalog changes without endless auto pagination
+00:00 +17: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart: empty append reports catalog changes without endless auto pagination
+00:00 +18: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: changed membership while paging retains old rows and requires stable relocation
+00:00 +19: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/library_query_controller_test.dart: scroll position does not change query identity; source and tags do
+00:00 +20: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: late location cannot overwrite a new query or a replaced connection
+00:00 +21: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: recent paging and return retain source/order and never reuse library items
+00:00 +22: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_query_controller_test.dart: a recent pack source cannot fall back to the whole catalog before its protocol exists
+00:00 +23: All tests passed!
