@@ -21,7 +21,9 @@ def inode_key(video):
     return video.device, video.inode, *content_key(video)
 
 
-def publish_discoveries(db, settings, task_id, completed_roots, result, check_stop):
+def publish_discoveries(
+    db, settings, task_id, completed_roots, result, check_stop, *, restrict_candidates=False
+):
     content_columns = (Video.size, Video.quick_hash, Video.sha256)
     inode_columns = (Video.device, Video.inode, *content_columns)
     new_scope = (
@@ -91,6 +93,8 @@ def publish_discoveries(db, settings, task_id, completed_roots, result, check_st
                     Video.id.not_in(select(TrashItem.video_id).where(TrashItem.status == "active")),
                 )
             )
+            if restrict_candidates:
+                query = query.where(Video.root_id.in_(completed_roots))
             # At most two candidate objects are needed to establish uniqueness.
             content_candidates = list(session.scalars(query.limit(2)))
             candidates = list(
@@ -132,10 +136,22 @@ def publish_discoveries(db, settings, task_id, completed_roots, result, check_st
                 old.status, old.location_key, old.error = "available", fresh.path, None
                 old.generation += 1
                 result["identity_matched"] += 1
+                item = next((i for i in result.get("roots", []) if i["id"] == fresh.root_id), None)
+                if item:
+                    item["counts"]["identity_matched"] = (
+                        item["counts"].get("identity_matched", 0) + 1
+                    )
             else:
                 fresh.status, fresh.error = "available", None
                 if content_candidates:
                     result["identity_ambiguous"] += 1
+                    item = next(
+                        (i for i in result.get("roots", []) if i["id"] == fresh.root_id), None
+                    )
+                    if item:
+                        item["counts"]["identity_ambiguous"] = (
+                            item["counts"].get("identity_ambiguous", 0) + 1
+                        )
                     if len(result["issues"]) < 100:
                         result["issues"].append(
                             {

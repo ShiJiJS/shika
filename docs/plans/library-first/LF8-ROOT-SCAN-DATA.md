@@ -1,0 +1,19 @@
+# 分目录扫描数据与队列
+
+跟踪#138，#139消费本协议。本段开发中，未部署NAS，未宣称完成。
+
+扫描仍使用一个工作线程。旧POST /scans不带正文仍扫描全部目录；新正文可指定root_id，绝不自动扩大到其它目录。活动/待执行任务已包含该范围时返回已有任务；否则持久化新任务并串行排队，服务重启将未完成任务标为中断，不自动重放。修改目录必须等待整个扫描队列结束。外层视频根沿用既有最外层归属，指定被外层覆盖的子根明确拒绝，不偷偷扫描外层；全扫中该子根标为covered并给出owner_root_id。
+
+每轮Task.result保留scope和全部选中目录的roots快照。HTTP任务结果新增root_scans完整明细；旧roots过滤停用/由外层覆盖的条目，避免旧客户端把它们误报为失败。每个根记录task_id/kind/status/phase/updated_at/finished_at，counts是本根结果；video progress的discovered/processed单位为视频，pack progress相同字段单位为图片、另有packs_discovered/packs_processed。旧roots[].discovered/processed保留视频/图包单位。discovery_complete表示已完成该层枚举，尚未知总量时只给已发现数；图包读完前不把图片数字等同图包数字。
+
+视频processed计已检查尝试（含失败/等待稳定），图包packs_processed计已处理尝试（含延迟/保护跳过）；图片processed仅计完成签名核对的图片（含坏图），发现后变化的图片仍待处理。三个数字不能都叫“成功入库”。counts保留新增/更新/未变/延迟/失败/缺失/缩略图告警等原有结果口径，page_errors额外统计本次实际检查到的坏页（含缓存坏页），不把缓存命中伪装成没有错误。图片总量只有所有可检查包的枚举均完成时才discovery_complete；受保护包未读取时不编造其中图片数。
+
+Task快照与root_scan_progress_v1:<id>本机可重建索引在同一短写事务发布。索引包括管理代次和根配置，恢复或换目录后不沿用旧数字；不进入便携备份，不增加迁移或重放文件操作。library-state保留旧字段，并新增每根最新scan和queued_task_ids及scan_queue；只扫A不抹掉B最近的结果。旧任务没有细分数据时保留旧字段，不从全局数字编造每根图片数。
+
+首次导入没有旧身份需要核对时，A完整发布后立即completed/partial并保存完成时间，B可以继续读取；服务中断也保留A的结果。已有历史的身份核对可能需要同一轮多个根的完整清单，已读完的根进入reconciling并保留数字，不能提前谎报完成；核对后才finished。指定根只清理/核对该范围，不把其它根的消失/标签/进度作为本次变更。单次全扫仍可沿用原跨根唯一身份规则；视频子根的就绪沿用实际外层归属，避免未单扫子根导致整个媒体库永远未就绪。
+
+library-state的roots[].scan是该根最新已执行结果，queued_task_ids另列后续排队；新目录尚未执行时scan=null，队列可单独显示“排队中”。仅排队/取消的任务不覆盖先前已完成事实。顶层progress/counts仍是旧视频口径，media.pack.counts仍是所选任务的图包汇总，不能在客户端拿它们冒充其它目录的数字。读取断网时保留上次值并标记未同步，不启动自动写入重试。
+
+POST /api/v1/scans不带正文或使用{}为全扫，{root_id:"已接入ID"}为指定目录。未知ID为404、停用目录及被外层覆盖的视频根为409、空ID/未知字段/类型错误为422；调用方不能在这些错误后改发全扫。两项能力root_scan_progress/scoped_scans随本实现一起声明，schema仍为0014，因为只使用既有Task/Setting持久化，没有新表/列。
+
+验证使用可丢弃V+A+B目录，阻塞读取观察A已读/B运行中的独立数字；覆盖坏图、变化文件、离线、停用、中断、只重扫A、队列去重与范围隔离、重叠根、恢复后索引失效。通过后公布root_scan_progress与scoped_scans能力；客户端需能力判断，不支持时不得退为全扫。
