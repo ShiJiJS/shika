@@ -1,0 +1,240 @@
+{
+  "ready": {
+    "ready": true,
+    "media": {
+      "video": {
+        "ready": true,
+        "scanning": false,
+        "indexed": 2
+      },
+      "pack": {
+        "ready": true,
+        "scanning": false,
+        "counts": {
+          "imported": 4,
+          "updated": 0,
+          "failed_pages": 0,
+          "failed_packs": 0,
+          "protected_packs": 0,
+          "unchanged": 0,
+          "deferred": 0,
+          "failed": 0,
+          "missing": 0,
+          "identity_matched": 0,
+          "identity_ambiguous": 0,
+          "thumbnail_failed": 0,
+          "unsupported_files": 0,
+          "loose_images": 0,
+          "symlinks_skipped": 0,
+          "failure_reasons": {},
+          "issues": [],
+          "progress": {
+            "discovered": 24,
+            "processed": 24,
+            "packs_discovered": 4,
+            "packs_processed": 4,
+            "peak_decoder_kib": 152892,
+            "updated_at": 1793325554.899989
+          }
+        },
+        "indexed": 4
+      }
+    },
+    "scanning": false,
+    "task_id": "33f80378-2834-49d5-9738-1824b5ec729b",
+    "status": "completed",
+    "phase": "completed",
+    "updated_at": 1793325554.9032156,
+    "progress": {
+      "discovered": 2,
+      "processed": 2,
+      "bytes_total": 1463402,
+      "bytes_processed": 1463402,
+      "updated_at": 1793325554.9032156
+    },
+    "counts": {
+      "imported": 0,
+      "unchanged": 2,
+      "deferred": 0,
+      "failed": 0,
+      "thumbnail_failed": 0
+    },
+    "failure_reasons": {},
+    "warning_reasons": {},
+    "indexed": 2,
+    "roots": [
+      {
+        "id": "packs",
+        "ready": true,
+        "kind": "pack",
+        "enabled": true,
+        "available": true,
+        "last_scan": 1793325554.8984227,
+        "error": null,
+        "scan": {
+          "id": "packs",
+          "kind": "pack",
+          "status": "completed",
+          "discovered": 4,
+          "processed": 4
+        }
+      },
+      {
+        "id": "videos",
+        "ready": true,
+        "kind": "video",
+        "enabled": true,
+        "available": true,
+        "last_scan": 1793325547.9340444,
+        "error": null,
+        "scan": {
+          "id": "videos",
+          "status": "completed",
+          "discovered": 2,
+          "processed": 2,
+          "bytes_total": 1463402,
+          "bytes_processed": 1463402
+        }
+      }
+    ]
+  },
+  "videos": [
+    {
+      "id": "691bcd96-b1d7-4c11-b69f-a4bacdf89c01",
+      "root_id": "videos",
+      "path": "/media/videos/横屏/风里的花园.mp4",
+      "name": "风里的花园.mp4",
+      "status": "available",
+      "error": null,
+      "size": 1290627,
+      "created_at": 1793325547.441437,
+      "duration": 5.055,
+      "width": 960,
+      "height": 540,
+      "rotation": 0,
+      "type": "MP4",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "thumbnail_url": "/api/v1/videos/691bcd96-b1d7-4c11-b69f-a4bacdf89c01/thumbnail",
+      "media_url": "/api/v1/videos/691bcd96-b1d7-4c11-b69f-a4bacdf89c01/stream",
+      "tag_ids": []
+    },
+    {
+      "id": "de8b764a-ea63-4e23-8e34-e1fdd83586b6",
+      "root_id": "videos",
+      "path": "/media/videos/竖屏/水边的花.mp4",
+      "name": "水边的花.mp4",
+      "status": "available",
+      "error": null,
+      "size": 172775,
+      "created_at": 1793325547.2216492,
+      "duration": 5.005,
+      "width": 360,
+      "height": 640,
+      "rotation": 0,
+      "type": "MP4",
+      "video_codec": "h264",
+      "audio_codec": null,
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "thumbnail_url": "/api/v1/videos/de8b764a-ea63-4e23-8e34-e1fdd83586b6/thumbnail",
+      "media_url": "/api/v1/videos/de8b764a-ea63-4e23-8e34-e1fdd83586b6/stream",
+      "tag_ids": []
+    }
+  ],
+  "packs": [
+    {
+      "id": "5f94361f-e82b-4964-8740-521d761f2d35",
+      "root_id": "packs",
+      "path": "/media/packs/示例作者 NO.019 - 灵梦 · 新年快乐",
+      "name": "示例作者 NO.019 - 灵梦 · 新年快乐",
+      "title": "灵梦 · 新年快乐",
+      "author": "示例作者",
+      "number": "019",
+      "status": "available",
+      "error": null,
+      "page_count": 6,
+      "readable_count": 6,
+      "content_version": 1,
+      "tag_ids": [],
+      "tag_names": {},
+      "created_at": 1793325549.7639916,
+      "cover_url": "/api/v1/packs/5f94361f-e82b-4964-8740-521d761f2d35/cover?v=1",
+      "progress": null
+    },
+    {
+      "id": "bada0c5b-5c16-4b50-9a8b-20e26b25ef47",
+      "root_id": "packs",
+      "path": "/media/packs/示例作者 NO.034 - 夏日祭",
+      "name": "示例作者 NO.034 - 夏日祭",
+      "title": "夏日祭",
+      "author": "示例作者",
+      "number": "034",
+      "status": "available",
+      "error": null,
+      "page_count": 6,
+      "readable_count": 6,
+      "content_version": 1,
+      "tag_ids": [],
+      "tag_names": {},
+      "created_at": 1793325551.5898237,
+      "cover_url": "/api/v1/packs/bada0c5b-5c16-4b50-9a8b-20e26b25ef47/cover?v=1",
+      "progress": null
+    },
+    {
+      "id": "83d45a9c-289c-431c-9f95-20a9ae0e3aaf",
+      "root_id": "packs",
+      "path": "/media/packs/示例作者 NO.051 - 加藤惠 · 和服",
+      "name": "示例作者 NO.051 - 加藤惠 · 和服",
+      "title": "加藤惠 · 和服",
+      "author": "示例作者",
+      "number": "051",
+      "status": "available",
+      "error": null,
+      "page_count": 6,
+      "readable_count": 6,
+      "content_version": 1,
+      "tag_ids": [],
+      "tag_names": {},
+      "created_at": 1793325553.2590594,
+      "cover_url": "/api/v1/packs/83d45a9c-289c-431c-9f95-20a9ae0e3aaf/cover?v=1",
+      "progress": null
+    },
+    {
+      "id": "1cf9d051-2a8c-4f5d-82e1-533a6d206c60",
+      "root_id": "packs",
+      "path": "/media/packs/示例作者 NO.057 - 原野上的浪漫",
+      "name": "示例作者 NO.057 - 原野上的浪漫",
+      "title": "原野上的浪漫",
+      "author": "示例作者",
+      "number": "057",
+      "status": "available",
+      "error": null,
+      "page_count": 6,
+      "readable_count": 6,
+      "content_version": 1,
+      "tag_ids": [],
+      "tag_names": {},
+      "created_at": 1793325554.877208,
+      "cover_url": "/api/v1/packs/1cf9d051-2a8c-4f5d-82e1-533a6d206c60/cover?v=1",
+      "progress": null
+    }
+  ],
+  "tags": {
+    "video": {
+      "户外": "2c1008aa-19aa-4bce-8ac4-48789382d9a4",
+      "自然": "67151a83-ed80-4c0b-b249-13683746d2a1",
+      "喜欢": "23f130aa-6b98-499b-ab9e-65b4e8afb306"
+    },
+    "pack": {
+      "和服": "238a626d-8e8f-4b93-9202-db381385a543",
+      "户外": "c5bf967e-077f-4cfd-a681-d3073ed4102e",
+      "白裙": "11a9bb61-ef36-4de3-9da2-ca5af40aa42c",
+      "角色": "5c100130-6c48-45df-b8a9-8ae8326c90ea",
+      "喜欢": "fa799919-74a3-496d-90da-c559d3c1c5e7"
+    }
+  },
+  "public_fixture_only": true,
+  "progress_seeded": false,
+  "no_direct_database_writes": true
+}
