@@ -1,6 +1,6 @@
 # NAS 媒体库体验版
 
-2026-10-30 已按用户授权升级现有NAS服务，并交付可覆盖安装的App。跟踪[#135](https://github.com/ShiJiJS/video_viewer/issues/135)，基于#134。当前是体验版，原45项完整验收继续。
+2026-10-30 已按用户授权升级现有NAS服务，并交付可覆盖安装的App。跟踪[#135](https://github.com/ShiJiJS/video_viewer/issues/135) / [草稿PR #136](https://github.com/ShiJiJS/video_viewer/pull/136)，基于#134。当前是体验版，原45项完整验收继续。
 
 ## 安装和开始体验
 
