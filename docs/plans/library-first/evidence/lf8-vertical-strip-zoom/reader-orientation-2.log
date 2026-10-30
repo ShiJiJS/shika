@@ -1,0 +1,70 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:02 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_visible_skip_test.dart: visible failed last image skips while viewport remains on previous page; zoom=false
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65021/last
+00:02 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:03 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_visible_skip_test.dart: visible failed last image skips while viewport remains on previous page; zoom=false
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65021/last
+00:03 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:03 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:03 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_visible_skip_test.dart: visible failed last image skips while viewport remains on previous page; zoom=true
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65035/last
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65035/last
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65035/last
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65035/last
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65035/last
+00:04 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:06 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65046/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65046/p0/2
+00:06 +5: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(390.0, 844.0) / 1.0
+00:06 +6: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65046/p0/2
+00:07 +7: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:07 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(390.0, 844.0) / 1.0
+00:07 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:07 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(390.0, 844.0) / 1.0
+00:08 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:08 +10: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(390.0, 844.0) / 1.0
+00:08 +11: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(360.0, 740.0) / 2.0
+00:08 +11: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65080/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65080/p0/2
+00:09 +12: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(360.0, 740.0) / 2.0
+00:09 +12: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:09 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:10 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:10 +14: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:10 +15: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:10 +15: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(844.0, 390.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65098/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65098/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65098/p0/2
+00:10 +16: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(844.0, 390.0) / 1.0
+00:11 +16: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(844.0, 390.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:65098/p0/2
+00:11 +17: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(844.0, 390.0) / 1.0
+00:11 +18: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(844.0, 390.0) / 1.0
+00:12 +19: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(844.0, 390.0) / 1.0
+00:12 +20: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:13 +21: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:13 +22: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:14 +23: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:14 +24: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:15 +25: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:16 +26: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:16 +27: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:17 +28: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:17 +29: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:18 +30: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:19 +31: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:19 +32: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:22 +33: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: a moving single finger can become a pinch and shrink back to fit
+00:24 +34: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: resuming at a window edge loads neighbors without inventing new progress
+00:24 +35: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: zoom, reset and rotation on the last image cannot mark the pack read
+00:25 +36: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: reader releases the entry-point portrait lock and restores it on exit
+00:25 +37: All tests passed!

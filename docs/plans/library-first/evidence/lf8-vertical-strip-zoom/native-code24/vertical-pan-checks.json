@@ -1,0 +1,53 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "counter": [
+        "1 / 4"
+      ]
+    },
+    {
+      "round": 2,
+      "counter": [
+        "1 / 4"
+      ]
+    },
+    {
+      "round": 3,
+      "counter": [
+        "2 / 4"
+      ]
+    }
+  ],
+  "crossed_image_boundary_in_same_pack": true,
+  "changed_tables": [
+    "pack_progress",
+    "request_records"
+  ],
+  "progress_before": [
+    {
+      "pack_id": "4e0a78e5-d72a-49d6-b928-1439e13b44ac",
+      "page_id": "efd97c6e-5313-4e03-bbfe-12c6ef876b23",
+      "offset_ratio": 0.0,
+      "completed": 0,
+      "revision": 1,
+      "updated_at": 1793363895.8496907,
+      "content_version": 1,
+      "recovery_reason": null
+    }
+  ],
+  "progress_after": [
+    {
+      "pack_id": "4e0a78e5-d72a-49d6-b928-1439e13b44ac",
+      "page_id": "c0d43dec-30f2-40b3-b190-e11cd113ee5b",
+      "offset_ratio": 0.530191386542043,
+      "completed": 0,
+      "revision": 4,
+      "updated_at": 1793364224.2916021,
+      "content_version": 1,
+      "recovery_reason": null
+    }
+  ],
+  "preferences_settings_opaque_unchanged": true,
+  "visual_check": "reviewed selected actual APK captures"
+}

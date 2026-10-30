@@ -1,0 +1,94 @@
+00:00 +0: loading /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart
+00:00 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: pinch clamps at 4x, pans both axes, and Back resets before leaving
+00:03 +0: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_visible_skip_test.dart: visible failed last image skips while viewport remains on previous page; zoom=false
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58510/last
+00:03 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: pinch clamps at 4x, pans both axes, and Back resets before leaving
+00:04 +1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_visible_skip_test.dart: visible failed last image skips while viewport remains on previous page; zoom=false
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58510/last
+00:04 +2: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: pinch clamps at 4x, pans both axes, and Back resets before leaving
+00:04 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: pinch clamps at 4x, pans both axes, and Back resets before leaving
+00:05 +3: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_visible_skip_test.dart: visible failed last image skips while viewport remains on previous page; zoom=true
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58605/last
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58605/last
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58605/last
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58605/last
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58605/last
+00:06 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: pinch clamps at 4x, pans both axes, and Back resets before leaving
+00:08 +4: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58639/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58639/p0/2
+00:08 +5: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: pinch clamps at 4x, pans both axes, and Back resets before leaving
+00:08 +6: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58639/p0/2
+00:09 +7: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(390.0, 844.0), 1.0, 404)
+00:09 +8: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(390.0, 844.0) / 1.0
+00:10 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(390.0, 844.0) / 1.0
+00:10 +9: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(390.0, 844.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:11 +10: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_cleanup_widget_test.dart: quick cleanup preserves reader and source Size(390.0, 844.0) / 1.0
+00:11 +11: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(360.0, 740.0) / 2.0
+00:11 +11: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(360.0, 740.0), 2.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58813/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58813/p0/2
+00:12 +12: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_widget_test.dart: reader actual asset frames, mode change, saved resume and layout Size(360.0, 740.0) / 2.0
+00:12 +13: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:12 +14: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:12 +14: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.vertical, Size(844.0, 390.0), 1.0, 200)
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+READER_IMAGE_FAILURE p0-2: Exception: Invalid image data
+00:13 +15: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:13 +15: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/pack_reader_image_error_test.dart: last failed image can be skipped to pack end (ReaderMode.horizontal, Size(844.0, 390.0), 1.0, 404)
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58824/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58824/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58824/p0/2
+READER_IMAGE_FAILURE p0-2: HTTP request failed, statusCode: 404, http://127.0.0.1:58824/p0/2
+00:14 +16: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:15 +17: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:15 +18: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:16 +19: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:16 +20: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:17 +21: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:19 +22: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:19 +23: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:21 +24: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:22 +25: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:23 +26: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:23 +27: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:24 +28: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:25 +29: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:26 +30: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+00:26 +31: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+pumpAndSettle timed out
+
+When the exception was thrown, this was the stack:
+#0      WidgetTester.pumpAndSettle.<anonymous closure> (package:flutter_test/src/widget_tester.dart:717:11)
+<asynchronous suspension>
+#1      TestAsyncUtils.guard.<anonymous closure> (package:flutter_test/src/test_async_utils.dart:130:27)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart:278:7)
+<asynchronous suspension>
+#3      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#4      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+The test description was:
+  rotation retains visual page anchor while jump and mode changes reset zoom
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:43 +31 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom [E]
+  Test failed. See exception logs above.
+  The test description was: rotation retains visual page anchor while jump and mode changes reset zoom
+  
+00:43 +31 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: scaled scrolling extends and evicts a 500-page window with bounded image cache
+00:56 +32 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: a moving single finger can become a pinch and shrink back to fit
+00:57 +33 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: resuming at a window edge loads neighbors without inventing new progress
+00:57 +34 -1: /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: zoom, reset and rotation on the last image cannot mark the pack read
+00:57 +35 -1: Some tests failed.
+
+Failing tests:
+  /Users/jiangxinyi/Documents/Project/video-viewer/apps/mobile/test/vertical_strip_zoom_test.dart: rotation retains visual page anchor while jump and mode changes reset zoom
