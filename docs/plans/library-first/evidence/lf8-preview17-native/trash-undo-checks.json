@@ -1,0 +1,17 @@
+{
+  "pack": "C Fresh",
+  "native_move_undo": true,
+  "new_copy_seen": true,
+  "changed_tables": [
+    "pack_file_operations",
+    "pack_file_steps",
+    "pack_trash_items",
+    "packs",
+    "tasks"
+  ],
+  "target_generation_delta": 2,
+  "only_target_pack_and_successful_trash_undo_tasks_changed": true,
+  "unrelated_tables_settings_tokens_equal": true,
+  "last_delete_pointer_added_for_exact_original_operation": true,
+  "initial_audit_missing_expected_generation_and_pointer_changes_corrected_without_repeating_commands": true
+}
