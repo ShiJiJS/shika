@@ -19,6 +19,7 @@ import '../features/settings/maintenance_tasks_page.dart';
 import 'paper_management.dart';
 import '../features/settings/default_settings_sheet.dart';
 import '../features/settings/media_root_sheet.dart';
+import '../features/settings/scan_progress_card.dart';
 import '../features/settings/missing_media_page.dart';
 import '../library/repository.dart';
 import 'trash_layout.dart';
@@ -1423,6 +1424,26 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   Widget preparationCard({bool locked = false}) {
     final state = repo.libraryPreparation.value;
+    if (groupedScanProgress) {
+      return ScanProgressCard(
+        key: const Key('library-preparation'),
+        state: state,
+        roots: data.roots,
+        precise: repo.capabilities.rootScanProgress,
+        scoped:
+            repo.capabilities.scopedScans && repo.capabilities.rootScanProgress,
+        showAll: locked || rootScanNeedsAttention,
+        busy: busy,
+        onScanAll: () async {
+          if (await perform(repo.requestScan)) notice('扫描请求已提交，进度会自动同步');
+        },
+        onScanRoot: (id) async {
+          if (await perform(() => repo.requestRootScan(id))) {
+            notice('扫描请求已提交，进度会自动同步');
+          }
+        },
+      );
+    }
     final p = Paper.of(context);
     final active = state.scanning && state.syncError == null;
     String bytes(int count) {
@@ -1544,11 +1565,19 @@ class _LibraryHomeState extends State<LibraryHome> {
   }
 
   String rootScanLabel(MediaRoot root) {
+    if (groupedScanProgress) {
+      return scanRootLabel(
+        root,
+        repo.libraryPreparation.value.rootProgress(root.id),
+      );
+    }
     if (!root.enabled) return '已停用 · 标签与阅读记录保留';
     final state = repo.libraryPreparation.value;
     final detail = state.roots[root.id];
     final scan = detail?['scan'] as Map?;
-    if (detail?['available'] == false || !root.available) return '目录暂不可用';
+    if ((detail?['available'] as bool? ?? root.available) == false) {
+      return '目录暂不可用';
+    }
     if (state.scanning && scan != null) {
       if (scan['status'] == 'unavailable') return '目录暂不可用';
       if (scan['status'] == 'discovering') {
@@ -1565,6 +1594,8 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   Widget rootMetadata(MediaRoot root) {
     final label = rootScanLabel(root);
+    final facts = repo.libraryPreparation.value.rootProgress(root.id);
+    final available = facts.available ?? root.available;
     final separateDate =
         MediaLayout.largeText(context) && label == '可访问 · ${root.lastScan}';
     return Text(
@@ -1572,7 +1603,11 @@ class _LibraryHomeState extends State<LibraryHome> {
       style: TextStyle(
         fontSize: 12,
         height: 1.7,
-        color: !root.enabled || root.available
+        color:
+            !root.enabled ||
+                available ||
+                facts.status == 'covered' ||
+                (groupedScanProgress && !facts.known && facts.error == null)
             ? Paper.of(context).catalogMeta
             : Paper.of(context).danger,
       ),
@@ -2469,8 +2504,20 @@ class _LibraryHomeState extends State<LibraryHome> {
       ),
     ],
   );
+  bool get groupedScanProgress =>
+      repo.capabilities.imagePacks || repo.capabilities.rootScanProgress;
+
   bool get rootScanNeedsAttention {
     final state = repo.libraryPreparation.value;
+    if (groupedScanProgress) {
+      return state.scanning ||
+          state.syncError != null ||
+          (!repo.capabilities.rootScanProgress && state.legacyNeedsAttention) ||
+          data.roots.any((root) {
+            final facts = state.rootProgress(root.id);
+            return root.enabled && (!facts.known || facts.needsAttention);
+          });
+    }
     return !state.ready ||
         state.scanning ||
         state.syncError != null ||
@@ -2537,23 +2584,33 @@ class _LibraryHomeState extends State<LibraryHome> {
           ),
         ),
       const SizedBox(height: 20),
-      OutlinedButton(
-        onPressed: busy || repo.libraryPreparation.value.scanning
-            ? null
-            : () async {
-                if (await perform(repo.requestScan)) notice('扫描已提交，进度会自动同步');
-              },
-        child: actionLabel(
-          Icons.refresh,
-          repo.libraryPreparation.value.scanning ? '同步进行中' : '同步外部变更',
+      if (!groupedScanProgress || !rootScanNeedsAttention)
+        OutlinedButton(
+          onPressed:
+              busy ||
+                  (repo.libraryPreparation.value.scanning &&
+                      !repo.capabilities.scopedScans)
+              ? null
+              : () async {
+                  if (await perform(repo.requestScan)) notice('扫描已提交，进度会自动同步');
+                },
+          child: actionLabel(
+            Icons.refresh,
+            groupedScanProgress
+                ? '全部扫描'
+                : repo.libraryPreparation.value.scanning
+                ? '同步进行中'
+                : '同步外部变更',
+          ),
         ),
-      ),
       if (repo is! DemoControls && !rootScanNeedsAttention)
         PaperExpansionTile(
           key: const Key('root-scan-details'),
           tilePadding: EdgeInsets.zero,
           title: Text(
-            repo.libraryPreparation.value.summary,
+            groupedScanProgress
+                ? '查看扫描记录'
+                : repo.libraryPreparation.value.summary,
             key: const Key('root-scan-summary'),
             style: TextStyle(
               fontSize: 13,

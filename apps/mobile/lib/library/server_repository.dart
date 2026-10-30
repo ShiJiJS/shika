@@ -1302,6 +1302,25 @@ class ServerLibraryRepository extends LibraryRepository
   }
 
   @override
+  Future<void> requestRootScan(String rootId) async {
+    ensureNotRestoring();
+    if (!capabilities.scopedScans || !capabilities.rootScanProgress) {
+      throw const LibraryFailure('当前服务不支持单独扫描目录，请升级服务端');
+    }
+    final target = api, generation = _generation;
+    await call(
+      'POST',
+      '/api/v1/scans',
+      using: target,
+      body: {'root_id': rootId},
+    );
+    if (_disposed || generation != _generation || !identical(target, _api)) {
+      throw const RequestCancelled();
+    }
+    await pollPreparation(target, generation);
+  }
+
+  @override
   List<LibraryVideo> query({
     VideoQuery? scope,
     String search = '',
