@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -91,7 +92,10 @@ void main() {
       final repo = ScanDetailsLibrary();
       final preferences = UiPreferences();
       late BuildContext source;
-      var observing = true;
+      var observing = true, lifecycleArmed = false;
+      Timer? scanTimer;
+      Map<String, dynamic>? lifecycleBefore;
+      var lifecycleUps = 0;
       ExpansionProbe? active;
       final cases = <Map<String, dynamic>>[],
           lifecycle = <Map<String, dynamic>>[];
@@ -216,6 +220,7 @@ void main() {
           };
           await host('failure', name: 'terminal');
         }
+        scanTimer?.cancel();
         observing = false;
         await t.pumpWidget(const SizedBox());
         await t.pump();
@@ -276,7 +281,31 @@ void main() {
               },
             ),
           ),
-          home: LibraryHome(repository: repo, preferences: preferences),
+          home: Listener(
+            onPointerUp: (event) {
+              if (!lifecycleArmed) return;
+              lifecycleArmed = false;
+              lifecycleUps++;
+              scanTimer = Timer(const Duration(milliseconds: 40), () {
+                final f = read();
+                lifecycleBefore = {
+                  ...f,
+                  'pointer_up_us': event.timeStamp.inMicroseconds,
+                  'fixture_timer_ms': 40,
+                };
+                result['last_lifecycle_before'] = lifecycleBefore;
+                expect(f['expanded'], isTrue);
+                expect(f['height'], inExclusiveRange(0, 1));
+                repo.libraryPreparation.value = const LibraryPreparation(
+                  scanning: true,
+                  phase: 'processing_media',
+                  discovered: 5,
+                  processed: 4,
+                );
+              });
+            },
+            child: LibraryHome(repository: repo, preferences: preferences),
+          ),
         ),
       );
       await t.pumpAndSettle();
@@ -302,33 +331,29 @@ void main() {
         await configure(false);
         await probe('$prefix-live-collapse', 0, false, live: true);
         await configure(false);
+        lifecycleBefore = null;
+        lifecycleArmed = true;
         await host('tap', point: point());
-        await until(() {
-          final f = read();
-          return f['expanded'] == true &&
-              (f['height'] as double) > 0 &&
-              (f['height'] as double) < 1;
-        }, 'real expansion before scan update');
-        final before = read();
+        await until(
+          () => lifecycleBefore != null,
+          'native-UP async scan update',
+        );
+        final before = lifecycleBefore!;
+        expect(before['height'], inExclusiveRange(0, 1));
         for (final stage in ['scanning', 'failed', 'completed']) {
-          repo.libraryPreparation.value = stage == 'scanning'
-              ? const LibraryPreparation(
-                  scanning: true,
-                  phase: 'processing_media',
-                  discovered: 5,
-                  processed: 4,
-                )
-              : stage == 'failed'
-              ? const LibraryPreparation(
-                  phase: 'failed',
-                  failed: 1,
-                  failureReasons: {'probe_timeout': 1},
-                )
-              : const LibraryPreparation(
-                  phase: 'completed',
-                  discovered: 5,
-                  processed: 5,
-                );
+          if (stage != 'scanning') {
+            repo.libraryPreparation.value = stage == 'failed'
+                ? const LibraryPreparation(
+                    phase: 'failed',
+                    failed: 1,
+                    failureReasons: {'probe_timeout': 1},
+                  )
+                : const LibraryPreparation(
+                    phase: 'completed',
+                    discovered: 5,
+                    processed: 5,
+                  );
+          }
           await t.pump();
           final f = read();
           expect(f['tile_present'], stage == 'completed');
@@ -363,6 +388,8 @@ void main() {
         'additional_lifecycle_taps': 3,
         'lifecycle_states': 9,
         'recording_groups': 3,
+        'lifecycle_pointer_ups': lifecycleUps,
+        'lifecycle_trigger': 'native UP then real40ms fixture timer; frame observer stays passive',
       });
     },
   );
