@@ -1,6 +1,6 @@
 # LF8：目录扫描详情的展开与减少动画
 
-[草稿PR #121](https://github.com/ShiJiJS/video_viewer/pull/121)已提交，源码/组件完成，真实Android与正常新包继续。
+[草稿PR #121](https://github.com/ShiJiJS/video_viewer/pull/121)已提交，源码/组件完成，[真实Android](LF8-EXPANSION-NATIVE.md)已补齐；正常main实际服务与新包继续。本轮收尾后按用户要求暂停。
 
 按[#120](https://github.com/ShiJiJS/video_viewer/issues/120)继续UI-06，承接正常code17候选PR #119。实际唯一入口为LibraryHome的root-scan-details，完成扫描时折为摘要，异常仍外置详情。基线d6b67725的真实目录页/非DemoControls只读fixture六项反例：普通160ms展开/收起高度系数约0.692/0.063，减少动画首帧仍0/1，中途40ms开启减少仍约0.063/0.692；逻辑输入为组件替身，不算Android系统接入。
 
@@ -20,4 +20,4 @@
 
 [13份原始输入与离线复核](evidence/lf8-expansion-motion/README.md)已冻结。实际基线六失败、style-only两失败、全树箭头选择器过宽导致的两项测试失败，以及if花括号的一条分析提示分开保留；未放宽高度/端点或像素断言。最终源含花括号修订，完整789再次涵盖全部新增检查。
 
-源码/组件项已完成；真实Android系统/输入、正常main目录/扫描状态和后续配套包仍待验收。SDK/服务、原型1cbf605与当前code17两包保持；本段未启动AVD/容器或操作真实媒体/NAS，不称完整UI-05/06或45项完成。
+源码/组件项已完成；真实Android系统/输入现由[三轮18方向、6中途切换及9个扫描状态](LF8-EXPANSION-NATIVE.md)补齐，正常main实际服务目录/扫描状态和后续配套包仍待验收。SDK/服务、原型1cbf605与当前code17两包保持；本源码段未启动AVD/容器或操作真实媒体/NAS，不称完整UI-05/06或45项完成。

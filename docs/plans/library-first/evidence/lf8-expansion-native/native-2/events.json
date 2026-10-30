@@ -1,0 +1,170 @@
+[
+  {
+    "time": 1793318920.008461,
+    "action": "fullscreen_ready",
+    "name": null,
+    "reduced": null,
+    "education_observed": false
+  },
+  {
+    "time": 1793318920.161539,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793318920.909227,
+    "action": "begin",
+    "name": "round-1",
+    "reduced": null
+  },
+  {
+    "time": 1793318921.0691478,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      528,
+      1019
+    ]
+  },
+  {
+    "time": 1793318921.558763,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      528,
+      1019
+    ]
+  },
+  {
+    "time": 1793318922.203407,
+    "action": "configure",
+    "name": null,
+    "reduced": true,
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    }
+  },
+  {
+    "time": 1793318922.562687,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      528,
+      1019
+    ]
+  },
+  {
+    "time": 1793318923.067849,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      528,
+      1019
+    ]
+  },
+  {
+    "time": 1793318923.7284968,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793318924.247692,
+    "action": "tap_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      528,
+      1019
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.040s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793318924.731926,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793318925.264322,
+    "action": "tap_reduce",
+    "name": null,
+    "reduced": null,
+    "point": [
+      528,
+      1019
+    ],
+    "actual": {
+      "transition_animation_scale": "0",
+      "animator_duration_scale": "0",
+      "window_animation_scale": "0"
+    },
+    "sequence": [
+      "native-input",
+      "0.040s observation interval",
+      "transition_animation_scale",
+      "animator_duration_scale",
+      "window_animation_scale"
+    ]
+  },
+  {
+    "time": 1793318925.760163,
+    "action": "configure",
+    "name": null,
+    "reduced": false,
+    "actual": {
+      "transition_animation_scale": "1",
+      "animator_duration_scale": "1",
+      "window_animation_scale": "1"
+    }
+  },
+  {
+    "time": 1793318925.798074,
+    "action": "tap",
+    "name": null,
+    "reduced": null,
+    "point": [
+      528,
+      1019
+    ]
+  },
+  {
+    "time": 1793318951.3089652,
+    "action": "failure",
+    "name": "terminal",
+    "reduced": null
+  }
+]
