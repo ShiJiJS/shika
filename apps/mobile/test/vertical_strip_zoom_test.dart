@@ -248,35 +248,30 @@ void main() {
       expect(image().viewport.width, 390);
       await doubleTap(t);
       expect(state.zoomed, true);
-      await t.tap(find.byTooltip('阅读设置'));
-      await t.pumpAndSettle();
-      await settle(t);
-      await t.tap(find.text('横向翻页').last);
-      await settle(
-        t,
-        () =>
-            state.session.preferences.mode == ReaderMode.horizontal &&
-            !state.session.busy,
-      );
-      await t.tap(find.text('继续阅读'));
-      await t.pumpAndSettle();
-      await settle(t);
+      Future<void> selectMode(ReaderMode mode, String label) async {
+        final done = find.byKey(const Key('reader-settings-done'));
+        await t.tap(find.byTooltip('阅读设置').hitTestable());
+        await settle(
+          t,
+          () =>
+              done.evaluate().isNotEmpty &&
+              ModalRoute.of(t.element(done))!.animation!.status ==
+                  AnimationStatus.completed,
+        );
+        await t.tap(find.text(label).last.hitTestable());
+        await settle(
+          t,
+          () => state.session.preferences.mode == mode && !state.session.busy,
+        );
+        await t.tap(done.hitTestable());
+        await settle(t, () => done.evaluate().isEmpty);
+      }
+
+      await selectMode(ReaderMode.horizontal, '横向翻页');
       expect(state.zoomed, false);
       expect(state.session.index, 244);
       expect(find.byKey(const Key('reader-horizontal')), findsOneWidget);
-      await t.tap(find.byTooltip('阅读设置'));
-      await t.pumpAndSettle();
-      await settle(t);
-      await t.tap(find.text('纵向拼接').last);
-      await settle(
-        t,
-        () =>
-            state.session.preferences.mode == ReaderMode.vertical &&
-            !state.session.busy,
-      );
-      await t.tap(find.text('继续阅读'));
-      await t.pumpAndSettle();
-      await settle(t);
+      await selectMode(ReaderMode.vertical, '纵向拼接');
       expect(image().viewport.width, 390);
       expect(state.zoomed, false);
       expect(state.session.pages.length, lessThanOrEqualTo(120));
