@@ -10,8 +10,13 @@
       "reference_state": "home / packs",
       "requirement": "冷启动与连接成功后默认媒体库；四入口为媒体库、标签、最近、设置，无独立预览 tab",
       "owner": "LF4",
-      "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "current_candidate": "partially_observed_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "正常code18连接隔离服务后显示媒体库及四入口；只记录当前首页，未以此证明所有冷启动/兼容组合。"
+        }
+      ]
     },
     {
       "id": "NAV-02",
@@ -34,16 +39,26 @@
       "reference_state": "home",
       "requirement": "两列视频卡片、名称/目录搜索、目录子树、标签 AND、方向/时长/类型，分页与空结果；可预览完整匹配范围",
       "owner": "LF3/4",
-      "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "current_candidate": "partially_observed_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "当前正常首页两列视频卡片对照；本段未完成搜索/筛选/分页/完整范围主流程。"
+        }
+      ]
     },
     {
       "id": "LIB-02",
       "reference_state": "packs",
       "requirement": "一包一卡，标题/目录/可用作者搜索，封面/标题/真实页数/阅读状态，目录/标签/阅读状态筛选，继续阅读",
       "owner": "LF2/4/5",
-      "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "current_candidate": "partially_observed_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "隔离服务实际扫描4包24图，经媒体库打开夏日祭并点击至第3/6页；本段未完成全部搜索/筛选/续读组合。"
+        }
+      ]
     },
     {
       "id": "LIB-03",
@@ -138,8 +153,13 @@
       "reference_state": "reader",
       "requirement": "横向翻页，左右方向可切，完整适配画面；本包总览/页码跳转可用，缩放与翻页不误触",
       "owner": "LF5",
-      "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "current_candidate": "partially_observed_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "同一正常安装包三轮实际双指放大/平移/系统返回，九状态同页且完整进度对象不变、图像返回基线；左右方向/总览/跳页等仍需当前整版补齐，未通过整项。"
+        }
+      ]
     },
     {
       "id": "READ-02",
@@ -322,16 +342,26 @@
       "reference_state": "home、packs、video-tags、pack-tags、最近",
       "requirement": "同素材、同数据、390×844 内容区并排；顶栏/分类/筛选/卡片/底栏层级一致",
       "owner": "LF8",
-      "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "current_candidate": "observed_difference_open",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "首页同状态对照发现次要文字和部分图标差异，#124待修；标签集合无排序要求，不硬编码样例次序。"
+        }
+      ]
     },
     {
       "id": "UI-02",
       "reference_state": "video、reader、vertical、pack-quick",
       "requirement": "画面完整显示、工具密度、来源/队列、按需整理、撤销不跳布局；手势录屏",
       "owner": "LF8",
-      "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "current_candidate": "observed_difference_open",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "阅读页同390×832内容高度对照；8dp底栏差为原生触控区保留，撤回错误裁图的20dp结论。文字色阶/图标#124待修；本段没有完整流程和全部视口通过声明。"
+        }
+      ]
     },
     {
       "id": "UI-03",

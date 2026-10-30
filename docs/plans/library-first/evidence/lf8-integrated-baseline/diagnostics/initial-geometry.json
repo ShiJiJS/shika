@@ -1,0 +1,48 @@
+[
+  {
+    "scene": "home",
+    "native": "normal/screens/biz-0009-normal18-home-light.png",
+    "reference": "reference/home.png",
+    "native_crop": [
+      0,
+      147,
+      1170,
+      2643
+    ],
+    "reference_crop": [
+      0,
+      0,
+      390,
+      832
+    ],
+    "native_resample": 0.3333333333333333,
+    "pair_layout": "reference left native right, no component moved or image stretched",
+    "logical_content_size": [
+      390,
+      832
+    ]
+  },
+  {
+    "scene": "reader",
+    "native": "normal/screens/biz-0028-pinch-v3-baseline-page-three.png",
+    "reference": "reference/reader.png",
+    "native_crop": [
+      0,
+      147,
+      1170,
+      2643
+    ],
+    "reference_crop": [
+      0,
+      0,
+      390,
+      832
+    ],
+    "native_resample": 0.3333333333333333,
+    "pair_layout": "reference left native right, no component moved or image stretched",
+    "logical_content_size": [
+      390,
+      832
+    ]
+  }
+]

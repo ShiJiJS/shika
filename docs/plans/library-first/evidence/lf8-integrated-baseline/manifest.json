@@ -1,0 +1,333 @@
+{
+  "candidate_source": "10bb0d34b3645e798f145c00060c25f814b436b1",
+  "candidate_code": 18,
+  "apk_sha256": "d124de9a27f602eb56b3fdd23a5a3740670f0eed40a8e7131aa544347a27e4d0",
+  "production_lib_tree": "2f02bc78653acbf12de64107e41e3236d61cb9cf",
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "files": {
+    "README.md": {
+      "bytes": 4135,
+      "sha256": "f3019d5cf643ae893d9b38571984c97d0255268a970cb64c69401e72a000bc54"
+    },
+    "audit-pinch-v3.py": {
+      "bytes": 1588,
+      "sha256": "bdb876c64a8deb1eadef453fb62992efe39e7ae4400216bfce281784d1f5170a"
+    },
+    "cleanup.json": {
+      "bytes": 2016,
+      "sha256": "ab742b944ca53d828f013710a00fda9b0c8eee979f527a6aec14249169977ef6"
+    },
+    "compare/home-reference-left-native-right.png": {
+      "bytes": 210843,
+      "sha256": "421835b602ea37efb21be6ff3d27b58ec5a35368a2af263d38d3e488304bb549"
+    },
+    "compare/reader-equal-content-height.png": {
+      "bytes": 90032,
+      "sha256": "a2252c74d5533adc672466ba34c1ccace10f156eed4f923a53a8b9e65e71c42e"
+    },
+    "debug-access.json": {
+      "bytes": 378,
+      "sha256": "a510628080f2eed2e4e11344060dd0a984198991cddc638fcf173138d58bf8f6"
+    },
+    "device.json": {
+      "bytes": 417,
+      "sha256": "c94182ec936b74009de25d6bd5d21d785943859a1824bded843c36098a902bcf"
+    },
+    "diagnostics/audit-pinch.log": {
+      "bytes": 1000,
+      "sha256": "198ad199ace612e21ba9bb1ba1a06eec4295e0684638c5575973ea6c939eea22"
+    },
+    "diagnostics/initial-geometry.json": {
+      "bytes": 944,
+      "sha256": "757fee2f638039b845fe95c9accf279562c47512413fe9948f7d5477866c5ca1"
+    },
+    "diagnostics/initial18.log": {
+      "bytes": 540,
+      "sha256": "03831e0cb90eb741cb49c72625bde9d7ecb10cb56fde211d9e718fd3fffc8b9a"
+    },
+    "diagnostics/open-reader.log": {
+      "bytes": 4009,
+      "sha256": "1f0d2ea8e8aec8daa5c0e91d8725bbf1908e4fccab6229db58bae5fc6fb9d83f"
+    },
+    "diagnostics/pinch-probe.log": {
+      "bytes": 2597,
+      "sha256": "94137ec0d2d8d7109bb7707f7b07bf3c0ac0cfc2464766b5da6e12af4c1ea4c9"
+    },
+    "diagnostics/pinch-v2-record.log": {
+      "bytes": 66,
+      "sha256": "c13fde60b5ef7d7fa6771c18434b337cbe9582fee4464bff9802eaeefa8a7565"
+    },
+    "diagnostics/pinch-v2.mp4": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "diagnostics/reader-wrong-crop.png": {
+      "bytes": 89631,
+      "sha256": "1fc2a3ca9e410d6c960accba92aaba10c4933128a99091ec5798ff17a9551101"
+    },
+    "history/close-current-lab.py": {
+      "bytes": 4398,
+      "sha256": "76448f97bf7e67d34093a4f71c9ad41587f5c327b20b1dfcce8f86bd90a25a17"
+    },
+    "history/native_input.py": {
+      "bytes": 1656,
+      "sha256": "a9c4b6f38800aab69c02e053e9927a07493b26e438963fc2cfa74762f9544e1d"
+    },
+    "history/probe-pinch-v3.py": {
+      "bytes": 2902,
+      "sha256": "8a47ce0956c61e94ecd0750cd53d827c4b6e9904c0f214e86f4315507f1e8075"
+    },
+    "input-codes.txt": {
+      "bytes": 1115,
+      "sha256": "04572ecc585d4f5b9f3e5171fe85763a413344318ce2c8db24e1c35b4e24a940"
+    },
+    "input-devices.txt": {
+      "bytes": 15042,
+      "sha256": "9e8df01c732629bdcb03ebf030167082b6e6cbb2ddf553e8b8a6fed876e4dca6"
+    },
+    "input-display-390x905.txt": {
+      "bytes": 81277,
+      "sha256": "8245845626fa6718fc550015b755422cf827d299a212e3a3995de337bc9e0620"
+    },
+    "installed-apk.json": {
+      "bytes": 223,
+      "sha256": "035ac5d5116dc9db02b253f5041f93a82da37357d0834da0718dc7b61afcdd10"
+    },
+    "normal/screens/biz-0009-normal18-home-light-window.txt": {
+      "bytes": 198,
+      "sha256": "d646355b70c2dd0b9f9a280d4f031f115156c3b50b4debee810ada0d08d444e8"
+    },
+    "normal/screens/biz-0009-normal18-home-light.png": {
+      "bytes": 527508,
+      "sha256": "735a3c86961ab6fda88e15ecf51b7b089347a55acb4e108599948a7e470883d8"
+    },
+    "normal/screens/biz-0009-normal18-home-light.xml": {
+      "bytes": 10856,
+      "sha256": "520daae6551b984c0a2ede0f72870d41495b3b385e53c59c573ca8f1ea61ea4c"
+    },
+    "normal/screens/biz-0028-pinch-v3-baseline-page-three-window.txt": {
+      "bytes": 198,
+      "sha256": "d646355b70c2dd0b9f9a280d4f031f115156c3b50b4debee810ada0d08d444e8"
+    },
+    "normal/screens/biz-0028-pinch-v3-baseline-page-three.png": {
+      "bytes": 257291,
+      "sha256": "813439ffbd4694144b051580e0350e47d7460ebf05d2a1b275ba4eb820952cfa"
+    },
+    "normal/screens/biz-0028-pinch-v3-baseline-page-three.xml": {
+      "bytes": 10342,
+      "sha256": "63575294b45c5a499ec460d2e029b955febac7eae45d1b43315b49abe898769e"
+    },
+    "normal/screens/biz-0029-pinch-v3-round-1-zoomed-window.txt": {
+      "bytes": 198,
+      "sha256": "d646355b70c2dd0b9f9a280d4f031f115156c3b50b4debee810ada0d08d444e8"
+    },
+    "normal/screens/biz-0029-pinch-v3-round-1-zoomed.png": {
+      "bytes": 430984,
+      "sha256": "293aa2237dc3fae0d7e9179ff9ba3fbd4c6a602f0d90955b1f3f9704d72b75dd"
+    },
+    "normal/screens/biz-0029-pinch-v3-round-1-zoomed.xml": {
+      "bytes": 10342,
+      "sha256": "63575294b45c5a499ec460d2e029b955febac7eae45d1b43315b49abe898769e"
+    },
+    "normal/screens/biz-0030-pinch-v3-round-1-panned-window.txt": {
+      "bytes": 198,
+      "sha256": "d646355b70c2dd0b9f9a280d4f031f115156c3b50b4debee810ada0d08d444e8"
+    },
+    "normal/screens/biz-0030-pinch-v3-round-1-panned.png": {
+      "bytes": 318224,
+      "sha256": "c6cc06fa73396a2d606c98e45608eae43f2e047daac80fbd3a80b768a7602bab"
+    },
+    "normal/screens/biz-0030-pinch-v3-round-1-panned.xml": {
+      "bytes": 10342,
+      "sha256": "63575294b45c5a499ec460d2e029b955febac7eae45d1b43315b49abe898769e"
+    },
+    "normal/screens/biz-0031-pinch-v3-round-1-back-reset-window.txt": {
+      "bytes": 198,
+      "sha256": "d646355b70c2dd0b9f9a280d4f031f115156c3b50b4debee810ada0d08d444e8"
+    },
+    "normal/screens/biz-0031-pinch-v3-round-1-back-reset.png": {
+      "bytes": 257749,
+      "sha256": "ad72778e1bfc61f72a571cbdb5539f8bbe3a072c54355cd26424bb19b1c9bd13"
+    },
+    "normal/screens/biz-0031-pinch-v3-round-1-back-reset.xml": {
+      "bytes": 10342,
+      "sha256": "63575294b45c5a499ec460d2e029b955febac7eae45d1b43315b49abe898769e"
+    },
+    "normal/screens/biz-0032-pinch-v3-round-2-zoomed-window.txt": {
+      "bytes": 198,
+      "sha256": "d646355b70c2dd0b9f9a280d4f031f115156c3b50b4debee810ada0d08d444e8"
+    },
+    "normal/screens/biz-0032-pinch-v3-round-2-zoomed.png": {
+      "bytes": 430984,
+      "sha256": "293aa2237dc3fae0d7e9179ff9ba3fbd4c6a602f0d90955b1f3f9704d72b75dd"
+    },
+    "normal/screens/biz-0032-pinch-v3-round-2-zoomed.xml": {
+      "bytes": 10342,
+      "sha256": "63575294b45c5a499ec460d2e029b955febac7eae45d1b43315b49abe898769e"
+    },
+    "normal/screens/biz-0033-pinch-v3-round-2-panned-window.txt": {
+      "bytes": 198,
+      "sha256": "d646355b70c2dd0b9f9a280d4f031f115156c3b50b4debee810ada0d08d444e8"
+    },
+    "normal/screens/biz-0033-pinch-v3-round-2-panned.png": {
+      "bytes": 319564,
+      "sha256": "0a246d04383d51270130bacbcc11a5ff18274b23c979f471f8c794404d134d18"
+    },
+    "normal/screens/biz-0033-pinch-v3-round-2-panned.xml": {
+      "bytes": 10342,
+      "sha256": "63575294b45c5a499ec460d2e029b955febac7eae45d1b43315b49abe898769e"
+    },
+    "normal/screens/biz-0034-pinch-v3-round-2-back-reset-window.txt": {
+      "bytes": 198,
+      "sha256": "d646355b70c2dd0b9f9a280d4f031f115156c3b50b4debee810ada0d08d444e8"
+    },
+    "normal/screens/biz-0034-pinch-v3-round-2-back-reset.png": {
+      "bytes": 257769,
+      "sha256": "2b59e392dd042ae45d6e341fa65a089650a69e94634a5d90a1d9709603d6fe85"
+    },
+    "normal/screens/biz-0034-pinch-v3-round-2-back-reset.xml": {
+      "bytes": 10342,
+      "sha256": "63575294b45c5a499ec460d2e029b955febac7eae45d1b43315b49abe898769e"
+    },
+    "normal/screens/biz-0035-pinch-v3-round-3-zoomed-window.txt": {
+      "bytes": 198,
+      "sha256": "d646355b70c2dd0b9f9a280d4f031f115156c3b50b4debee810ada0d08d444e8"
+    },
+    "normal/screens/biz-0035-pinch-v3-round-3-zoomed.png": {
+      "bytes": 431004,
+      "sha256": "858752d1f4e5c571595daf4225af89e001421884757794303ef413b35a9af6b6"
+    },
+    "normal/screens/biz-0035-pinch-v3-round-3-zoomed.xml": {
+      "bytes": 10342,
+      "sha256": "63575294b45c5a499ec460d2e029b955febac7eae45d1b43315b49abe898769e"
+    },
+    "normal/screens/biz-0036-pinch-v3-round-3-panned-window.txt": {
+      "bytes": 198,
+      "sha256": "d646355b70c2dd0b9f9a280d4f031f115156c3b50b4debee810ada0d08d444e8"
+    },
+    "normal/screens/biz-0036-pinch-v3-round-3-panned.png": {
+      "bytes": 319048,
+      "sha256": "5785147ccf5d249241a79a713e34c7c7a4166e48b240083a329ae67c181f7012"
+    },
+    "normal/screens/biz-0036-pinch-v3-round-3-panned.xml": {
+      "bytes": 10342,
+      "sha256": "63575294b45c5a499ec460d2e029b955febac7eae45d1b43315b49abe898769e"
+    },
+    "normal/screens/biz-0037-pinch-v3-round-3-back-reset-window.txt": {
+      "bytes": 198,
+      "sha256": "d646355b70c2dd0b9f9a280d4f031f115156c3b50b4debee810ada0d08d444e8"
+    },
+    "normal/screens/biz-0037-pinch-v3-round-3-back-reset.png": {
+      "bytes": 257769,
+      "sha256": "2b59e392dd042ae45d6e341fa65a089650a69e94634a5d90a1d9709603d6fe85"
+    },
+    "normal/screens/biz-0037-pinch-v3-round-3-back-reset.xml": {
+      "bytes": 10342,
+      "sha256": "63575294b45c5a499ec460d2e029b955febac7eae45d1b43315b49abe898769e"
+    },
+    "original-settings.json": {
+      "bytes": 216,
+      "sha256": "1ad87cef6b3b18b696ff438cd7a044adfd61f9e5b1923f900219579953aa444a"
+    },
+    "pinch-v3-before-reader-service.json": {
+      "bytes": 907,
+      "sha256": "f8ac98bd5d847f670732e282530c2e33b04670f8360fefa46dfdfebd826892e6"
+    },
+    "pinch-v3-getevent.txt": {
+      "bytes": 18396,
+      "sha256": "7b5cf6dd45e1c73a4ae769496e5c79c445019538663b79d9de4889202c3932a2"
+    },
+    "pinch-v3-pixel-proof.json": {
+      "bytes": 1188,
+      "sha256": "98dbaaa9786f8d96ce9e31ad10318b998330b4f8acdfacda0b818bd807b5f0c6"
+    },
+    "pinch-v3-result.json": {
+      "bytes": 721,
+      "sha256": "ab526efc0429ba79ca562a10c72f73c07f101454e73bc2c3bef05cc47532a6ad"
+    },
+    "pinch-v3-round-1-back-reset-reader-service.json": {
+      "bytes": 907,
+      "sha256": "f8ac98bd5d847f670732e282530c2e33b04670f8360fefa46dfdfebd826892e6"
+    },
+    "pinch-v3-round-1-kernel-input.sh": {
+      "bytes": 4801,
+      "sha256": "3d900f0acedd2aa09cbcda249457083ab306d8dd8ebe10288ceb2ffee50ea506"
+    },
+    "pinch-v3-round-1-panned-reader-service.json": {
+      "bytes": 907,
+      "sha256": "f8ac98bd5d847f670732e282530c2e33b04670f8360fefa46dfdfebd826892e6"
+    },
+    "pinch-v3-round-1-zoomed-reader-service.json": {
+      "bytes": 907,
+      "sha256": "f8ac98bd5d847f670732e282530c2e33b04670f8360fefa46dfdfebd826892e6"
+    },
+    "pinch-v3-round-2-back-reset-reader-service.json": {
+      "bytes": 907,
+      "sha256": "f8ac98bd5d847f670732e282530c2e33b04670f8360fefa46dfdfebd826892e6"
+    },
+    "pinch-v3-round-2-kernel-input.sh": {
+      "bytes": 4801,
+      "sha256": "3d900f0acedd2aa09cbcda249457083ab306d8dd8ebe10288ceb2ffee50ea506"
+    },
+    "pinch-v3-round-2-panned-reader-service.json": {
+      "bytes": 907,
+      "sha256": "f8ac98bd5d847f670732e282530c2e33b04670f8360fefa46dfdfebd826892e6"
+    },
+    "pinch-v3-round-2-zoomed-reader-service.json": {
+      "bytes": 907,
+      "sha256": "f8ac98bd5d847f670732e282530c2e33b04670f8360fefa46dfdfebd826892e6"
+    },
+    "pinch-v3-round-3-back-reset-reader-service.json": {
+      "bytes": 907,
+      "sha256": "f8ac98bd5d847f670732e282530c2e33b04670f8360fefa46dfdfebd826892e6"
+    },
+    "pinch-v3-round-3-kernel-input.sh": {
+      "bytes": 4801,
+      "sha256": "3d900f0acedd2aa09cbcda249457083ab306d8dd8ebe10288ceb2ffee50ea506"
+    },
+    "pinch-v3-round-3-panned-reader-service.json": {
+      "bytes": 907,
+      "sha256": "f8ac98bd5d847f670732e282530c2e33b04670f8360fefa46dfdfebd826892e6"
+    },
+    "pinch-v3-round-3-zoomed-reader-service.json": {
+      "bytes": 907,
+      "sha256": "f8ac98bd5d847f670732e282530c2e33b04670f8360fefa46dfdfebd826892e6"
+    },
+    "pinch-v3.mp4": {
+      "bytes": 1444632,
+      "sha256": "d78793e28ab1ef3828ef1f932fcea0b875b4360c283ddd2484c9cb90e3c7a1b7"
+    },
+    "reference/home.png": {
+      "bytes": 101368,
+      "sha256": "fe7f4612d81aa172262b8f5a68442801a9f865c3e624b5840f3b4b86bdf7344e"
+    },
+    "reference/loaded-source.json": {
+      "bytes": 474,
+      "sha256": "37351fe117412f70bc6930c2f92e6e19f917babb68ac77b1b58ac46cf6cbb53f"
+    },
+    "reference/reader-content832-metrics.json": {
+      "bytes": 672,
+      "sha256": "10f26fcefa07e92ec94527bd618720926d750fff008a9dfa06007d764682e1b4"
+    },
+    "reference/reader-content832.png": {
+      "bytes": 37202,
+      "sha256": "8314d09f67755a826e07c9e1bdacb95c88bc6f2231db1234d7aed53da31ad692"
+    },
+    "reference/reader.png": {
+      "bytes": 37161,
+      "sha256": "248dc0113d432bfafaadb05b05f070e089d3eab7f9e77acede6e97ad920fba4b"
+    },
+    "review/independent-review.md": {
+      "bytes": 2729,
+      "sha256": "89e53f710f0f89a453ea44956cd4464b43a97310b05f8fb98054d6c86d236155"
+    },
+    "runtime.json": {
+      "bytes": 8437,
+      "sha256": "e060d94cfd1472b5d8c7e04a2d02e6249ef8c59cb8b514cb305e0970507736c5"
+    },
+    "verify.py": {
+      "bytes": 3732,
+      "sha256": "c7c5a4b4173caf7ca5ddffb30a6dd6e778a8201253d21bd1f55b0b0321452a30"
+    }
+  }
+}
