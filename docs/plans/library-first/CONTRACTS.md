@@ -72,3 +72,11 @@ LF2 不提供阅读会话、进度更新、最近写入或图包整理接口；�
 `savedPreviewEntry` 只读暴露已保存固定会话的入口。一次新连接可用它初始化媒体库草稿，之后不跟随活动轮次覆盖草稿；重开不自动导航到预览，也不写 opened。连接失效时二级预览释放播放器并返回登录界面。
 
 LF3 暂将默认顺序保存在本机 `UiPreferences.videoOrder`，与活动会话的 order 分离；仅在新 begin 时作为显式 order 发送。首次新入口沿用已有顺序形成初始默认；设置默认值不调用 setScope / POST rounds，当前范围重排也不改默认值。本机偏好写入串行执行，成功后才发布新值；外观、相邻准备和默认顺序不互相覆盖，失败保留旧值。此处只完成 SET-02 的会话隔离；PLAN 规定的服务端管理默认值及 v2 备份仍由 LF7 完成，届时迁移/冲突规则与连接隔离必须单独验证，不能以当前本机持久化代替。
+
+## LF8 接入目录扫描（#138服务已实现，#139客户端待接）
+
+schema0014新增root_scan_progress/scoped_scans能力，不新增表列。POST /scans旧空正文保持全扫，新正文root_id只选该接入目录；共享单工作线程和持久队列、覆盖请求去重，停用/被外层覆盖的视频别名明确拒绝，不扩大范围。HTTP任务result.root_scans含完整每根事实，旧roots过滤disabled/covered，scope表明所选根。library-state每根scan保留最近执行结果，queued_task_ids和scan_queue单列队列；重扫A不替换B。
+
+视频progress以视频为单位；图包progress以图片为单位，packs_discovered/processed另计图包，旧root.discovered/processed仍为视频/图包。未知总量不充当分母；page_errors含缓存坏页。Task快照与本机索引同一事务发布，管理代次/相关根范围签名失配不复用数字；索引不进入便携备份。缺失与限定候选使用当前路径归属，保留原视频外层/图包内层及类型/停用边界。
+
+首次无旧身份的根可先完成，其它根继续；需要全范围身份核对的根保留数字并显示reconciling。中断持久化，不自动重放队列/文件操作。[细则和验证](LF8-ROOT-SCAN-DATA.md)给出单位、旧协议和边界；本段未部署NAS、未验证当前客户端组合，客户端不能在不支持/请求失败时自动退成全扫。

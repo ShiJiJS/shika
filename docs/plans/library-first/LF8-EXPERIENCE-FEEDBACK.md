@@ -19,7 +19,7 @@
 | 票据 | 范围 | 状态 |
 | --- | --- | --- |
 | [#137](https://github.com/ShiJiJS/video_viewer/issues/137) 图包阅读默认使用纵向拼接，保留用户单独选择 | [细项](issues/LF8-FEEDBACK-READER-DEFAULT.md) | 代码/第23版原生基础流程通过，待NAS默认读回与手机 |
-| [#138](https://github.com/ShiJiJS/video_viewer/issues/138) 扫描进度按接入目录独立记录，区分视频与图包 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-DATA.md) | 已建票，未实施 |
+| [#138](https://github.com/ShiJiJS/video_viewer/issues/138) 扫描进度按接入目录独立记录，区分视频与图包 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-DATA.md) | 服务端已实现/完整477项通过，待客户端与NAS联调 |
 | [#139](https://github.com/ShiJiJS/video_viewer/issues/139) 扫描页面分别显示视频、图包及每个接入目录的进度 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-UI.md) | 已建票，未实施 |
 | [#140](https://github.com/ShiJiJS/video_viewer/issues/140) 修复新版返回操作可能进入旧浏览页的问题 | [细项](issues/LF8-FEEDBACK-LEGACY-RETURN.md) | 代码/第23版返回基础流程通过，完整组合和手机待验 |
 | [#141](https://github.com/ShiJiJS/video_viewer/issues/141) 简化图包操作文案，去掉“整包”措辞且保持行为不变 | [细项](issues/LF8-FEEDBACK-ACTION-COPY.md) | 代码/第23版原生文案和撤销通过，待服务部署/手机 |
@@ -27,7 +27,7 @@
 
 所有票初始均未实施、未验收。扫描拆为服务端与客户端两票，是同一需求的前后依赖。
 
-后续更新：#140首轮代码修复见PR #144；#137/#141实现及本机第23版候选见PR #145。三票的第23版正常Android包基础路径已检查，见[原生记录](LF8-PREVIEW17-NATIVE.md)；默认值还需实际NAS读回，完整组合/手机与服务部署待验，当前未关闭。#138/#139/#142仍未实施。原规划事实按当时code22保留。
+后续更新：#140首轮代码修复见PR #144；#137/#141实现及本机第23版候选见PR #145。三票的第23版正常Android包基础路径已检查，见[原生记录](LF8-PREVIEW17-NATIVE.md)；默认值还需实际NAS读回，完整组合/手机与服务部署待验，当前未关闭。#138服务端见[PR #147与规则](LF8-ROOT-SCAN-DATA.md)，完整477项通过；#139/#142仍未实施。#138尚待页面及配套联调。原规划事实按当时code22保留。
 
 ## 确定的操作规则
 
