@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-service-compat-native25/queue-offline-flow.py", line 35, in <module>
+    baseline=state();assert not baseline['scanning'];base=roots(baseline);assert base['packs-a']['scan']['progress']['processed']==515;assert base['packs-b']['scan']['progress']['processed']==4;before=snapshot('new-service','before-native-queue');thread=threading.Thread(target=watch,daemon=True);thread.start()
+AssertionError

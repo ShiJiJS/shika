@@ -1,0 +1,23 @@
+{"snapshot": "before-native-queue", "kind": "new-service", "tables": 35, "counts": {"alembic_version": 1, "directories": 11, "file_operations": 0, "file_steps": 0, "observations": 520, "pack_file_operations": 2, "pack_file_steps": 2, "pack_missing_cleanups": 0, "pack_missing_members": 0, "pack_pages": 519, "pack_preferences": 4, "pack_progress": 4, "pack_purge_entries": 0, "pack_purge_executions": 0, "pack_purge_plans": 0, "pack_purge_steps": 0, "pack_restore_batches": 0, "pack_restore_members": 0, "pack_restore_plans": 0, "pack_session_entries": 12, "pack_sessions": 7, "pack_tag_definitions": 0, "pack_tag_links": 0, "pack_trash_items": 1, "packs": 6, "playback_rounds": 1, "recent_entries": 4, "request_records": 114, "roots": 3, "round_entries": 1, "tags": 0, "tasks": 14, "trash_items": 0, "video_tags": 0, "videos": 1}}
+{'stage': 'A-active', 'A1': '4049cbb0-356f-4db9-b8e9-f11d49e1ed0b', 'root_B_unchanged': True}
+{'stage': 'B-queued', 'B1': 'e7f00e56-ca6f-4763-8528-b8fbfc389c7b', 'root_B_old_fact_retained': True}
+{'stage': 'App-transport-offline', 'offline_started': 1793501284.40338}
+{'stage': 'offline-verified', 'offline_A_processed_before': 559, 'offline_A_processed_after': 607}
+{'stage': 'App-reconnected', 'reconnected_at': 1793501298.48368}
+{'waiting': 'App-reconnected', 'roots': [('packs-a', 'processing_media', 713), ('packs-b', 'completed', 4), ('videos', 'completed', 1)]}
+{'waiting': 'App-reconnected', 'roots': [('packs-a', 'processing_media', 783), ('packs-b', 'completed', 4), ('videos', 'completed', 1)]}
+{'waiting': 'App-reconnected', 'roots': [('packs-a', 'processing_media', 852), ('packs-b', 'completed', 4), ('videos', 'completed', 1)]}
+{'waiting': 'App-reconnected', 'roots': [('packs-a', 'processing_media', 924), ('packs-b', 'completed', 4), ('videos', 'completed', 1)]}
+{'waiting': 'App-reconnected', 'roots': [('packs-a', 'processing_media', 994), ('packs-b', 'completed', 4), ('videos', 'completed', 1)]}
+{'waiting': 'App-reconnected', 'roots': [('packs-a', 'processing_media', 1060), ('packs-b', 'completed', 4), ('videos', 'completed', 1)]}
+{'waiting': 'App-reconnected', 'roots': [('packs-a', 'processing_media', 1130), ('packs-b', 'completed', 4), ('videos', 'completed', 1)]}
+{'waiting': 'App-reconnected', 'roots': [('packs-a', 'processing_media', 1200), ('packs-b', 'completed', 4), ('videos', 'completed', 1)]}
+{'waiting': 'App-reconnected', 'roots': [('packs-a', 'processing_media', 1270), ('packs-b', 'completed', 4), ('videos', 'completed', 1)]}
+{'waiting': 'App-reconnected', 'roots': [('packs-a', 'processing_media', 1339), ('packs-b', 'completed', 4), ('videos', 'completed', 1)]}
+{'waiting': 'App-reconnected', 'roots': [('packs-a', 'processing_media', 1404), ('packs-b', 'completed', 4), ('videos', 'completed', 1)]}
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-service-compat-native25/queue-offline-flow.py", line 60, in <module>
+    s=wait(lambda s: roots(s)['packs-a']['scan']['task_id']==a1 and roots(s)['packs-a']['scan']['status']=='partial' and roots(s)['packs-b']['scan']['task_id']==b1 and roots(s)['packs-b']['scan']['status'] in ACTIVE);a_done=roots(s)['packs-a'];assert a_done['scan']['progress']['processed']==1515;save('A-finished-B-active',A1_completed=1515);text,_=screen_text('16-A-finished-B-active');assert '1515 / 1515 张图片' in text
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-service-compat-native25/queue-offline-flow.py", line 22, in wait
+    assert time.monotonic()<deadline,('state wait timed out',events.get('stage'))
+AssertionError: ('state wait timed out', 'App-reconnected')

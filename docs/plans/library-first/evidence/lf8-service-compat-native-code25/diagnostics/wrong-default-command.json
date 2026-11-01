@@ -1,0 +1,14 @@
+{
+  "id": "f9285bc34a3026ef09c66ccc26835bc55335dd6cad098ba3fc03a0dee6e1a7ee",
+  "image": "sha256:d9e4dfe4230774bc918a5831a59f037748b155fc5087c4ead239ad0b88c81715",
+  "actual_cmd": [
+    "python",
+    "-m",
+    "pytest",
+    "-q"
+  ],
+  "corrected_cmd": "uvicorn video_viewer.app:create_app --factory",
+  "product_test_result": false,
+  "reason": "Local container setup omitted explicit runtime command for test-target image",
+  "stopped": true
+}

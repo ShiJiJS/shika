@@ -1,0 +1,14 @@
+{'stage': 'A-finished-B-active', 'A1_completed': 1515}
+{'stage': 'A-requeued-B-active', 'A2': 'd6c9a2c0-5c85-4eed-a18b-cb1edead3d7b', 'A1_fact_preserved_while_queued': True}
+{'waiting': 'A-requeued-B-active', 'roots': [('packs-a', 'partial', 1515), ('packs-b', 'processing_media', 258), ('videos', 'completed', 1)]}
+{'waiting': 'A-requeued-B-active', 'roots': [('packs-a', 'partial', 1515), ('packs-b', 'processing_media', 328), ('videos', 'completed', 1)]}
+{'waiting': 'A-requeued-B-active', 'roots': [('packs-a', 'partial', 1515), ('packs-b', 'processing_media', 392), ('videos', 'completed', 1)]}
+{'waiting': 'A-requeued-B-active', 'roots': [('packs-a', 'partial', 1515), ('packs-b', 'processing_media', 459), ('videos', 'completed', 1)]}
+{'waiting': 'A-requeued-B-active', 'roots': [('packs-a', 'partial', 1515), ('packs-b', 'processing_media', 518), ('videos', 'completed', 1)]}
+{'waiting': 'A-requeued-B-active', 'roots': [('packs-a', 'partial', 1515), ('packs-b', 'processing_media', 577), ('videos', 'completed', 1)]}
+{"snapshot": "after-native-queue", "kind": "new-service", "tables": 35, "counts": {"alembic_version": 1, "directories": 13, "file_operations": 0, "file_steps": 0, "observations": 2120, "pack_file_operations": 2, "pack_file_steps": 2, "pack_missing_cleanups": 0, "pack_missing_members": 0, "pack_pages": 2119, "pack_preferences": 4, "pack_progress": 4, "pack_purge_entries": 0, "pack_purge_executions": 0, "pack_purge_plans": 0, "pack_purge_steps": 0, "pack_restore_batches": 0, "pack_restore_members": 0, "pack_restore_plans": 0, "pack_session_entries": 12, "pack_sessions": 7, "pack_tag_definitions": 0, "pack_tag_links": 0, "pack_trash_items": 1, "packs": 8, "playback_rounds": 1, "recent_entries": 4, "request_records": 114, "roots": 3, "round_entries": 1, "tags": 0, "tasks": 17, "trash_items": 0, "video_tags": 0, "videos": 1}}
+{'stage': 'passed', 'exact_scan_POSTs': 3, 'final_A_images': 1515, 'final_B_images': 604}
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-service-compat-native25/resume-queue-after-deadline.py", line 53, in <module>
+    (L/'queue-native-checks.json').write_text(json.dumps({'normal_code':25,'service_source':'430fede546fe7649bdffeb7f399c6d86b6bbb212','events':events,'baseline':baseline,'final':s,'tasks':tasks,'scan_posts':posts,'read_only_User_tables_preserved':protected,'access_tokens_equal':True,'baseline_public_file_hashes_kept':len(hashes),'new_synthetic_files':1600,'original_media_or_NAS_changes':False,'passive_offline_state_retained_and_actions_disabled':True,'offline_backend_progress':[processed_start,processed_end],'visual_review':'pending','no_performance_claim':True},indent=2)+'\n')
+NameError: name 'processed_start' is not defined

@@ -1,0 +1,1073 @@
+[
+  {
+    "time": 1793501274.8732219,
+    "task_id": "4049cbb0-356f-4db9-b8e9-f11d49e1ed0b",
+    "roots": [
+      {
+        "id": "packs-a",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 0,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 3,
+            "unsupported_files": 2,
+            "updated": 0
+          },
+          "discovered": 6,
+          "id": "packs-a",
+          "kind": "pack",
+          "page_errors": 1,
+          "phase": "processing_media",
+          "processed": 3,
+          "progress": {
+            "discovered": 510,
+            "discovery_complete": false,
+            "packs_discovered": 6,
+            "packs_discovery_complete": true,
+            "packs_processed": 3,
+            "processed": 10
+          },
+          "status": "processing_media",
+          "task_id": "4049cbb0-356f-4db9-b8e9-f11d49e1ed0b",
+          "updated_at": 1793501274.559413
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "packs-b",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 0,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 0,
+            "unsupported_files": 0,
+            "updated": 1
+          },
+          "discovered": 1,
+          "finished_at": 1793501205.0214605,
+          "id": "packs-b",
+          "kind": "pack",
+          "phase": "completed",
+          "processed": 1,
+          "progress": {
+            "discovered": 4,
+            "discovery_complete": true,
+            "packs_discovered": 1,
+            "packs_discovery_complete": true,
+            "packs_processed": 1,
+            "processed": 4
+          },
+          "status": "completed",
+          "task_id": "c2b827d5-6e4a-4d0f-a813-dea5507cafeb",
+          "updated_at": 1793501205.0214603
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "videos",
+        "scan": {
+          "bytes_processed": 1290627,
+          "bytes_total": 1290627,
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "imported": 1,
+            "missing": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 0
+          },
+          "discovered": 1,
+          "finished_at": 1793501132.0354242,
+          "id": "videos",
+          "kind": "video",
+          "phase": "completed",
+          "processed": 1,
+          "progress": {
+            "bytes_processed": 1290627,
+            "bytes_total": 1290627,
+            "discovered": 1,
+            "discovery_complete": true,
+            "processed": 1
+          },
+          "status": "completed",
+          "task_id": "c2b827d5-6e4a-4d0f-a813-dea5507cafeb",
+          "updated_at": 1793501132.0354216
+        },
+        "queued_task_ids": []
+      }
+    ]
+  },
+  {
+    "time": 1793501432.192975,
+    "task_id": "4049cbb0-356f-4db9-b8e9-f11d49e1ed0b",
+    "roots": [
+      {
+        "id": "packs-a",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 0,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 5,
+            "unsupported_files": 2,
+            "updated": 0
+          },
+          "discovered": 6,
+          "id": "packs-a",
+          "kind": "pack",
+          "page_errors": 1,
+          "phase": "processing_media",
+          "processed": 5,
+          "progress": {
+            "discovered": 1515,
+            "discovery_complete": false,
+            "packs_discovered": 6,
+            "packs_discovery_complete": true,
+            "packs_processed": 5,
+            "processed": 1255
+          },
+          "status": "processing_media",
+          "task_id": "4049cbb0-356f-4db9-b8e9-f11d49e1ed0b",
+          "updated_at": 1793501431.3727992
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "packs-b",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 0,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 0,
+            "unsupported_files": 0,
+            "updated": 1
+          },
+          "discovered": 1,
+          "finished_at": 1793501205.0214605,
+          "id": "packs-b",
+          "kind": "pack",
+          "phase": "completed",
+          "processed": 1,
+          "progress": {
+            "discovered": 4,
+            "discovery_complete": true,
+            "packs_discovered": 1,
+            "packs_discovery_complete": true,
+            "packs_processed": 1,
+            "processed": 4
+          },
+          "status": "completed",
+          "task_id": "c2b827d5-6e4a-4d0f-a813-dea5507cafeb",
+          "updated_at": 1793501205.0214603
+        },
+        "queued_task_ids": [
+          "e7f00e56-ca6f-4763-8528-b8fbfc389c7b"
+        ]
+      },
+      {
+        "id": "videos",
+        "scan": {
+          "bytes_processed": 1290627,
+          "bytes_total": 1290627,
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "imported": 1,
+            "missing": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 0
+          },
+          "discovered": 1,
+          "finished_at": 1793501132.0354242,
+          "id": "videos",
+          "kind": "video",
+          "phase": "completed",
+          "processed": 1,
+          "progress": {
+            "bytes_processed": 1290627,
+            "bytes_total": 1290627,
+            "discovered": 1,
+            "discovery_complete": true,
+            "processed": 1
+          },
+          "status": "completed",
+          "task_id": "c2b827d5-6e4a-4d0f-a813-dea5507cafeb",
+          "updated_at": 1793501132.0354216
+        },
+        "queued_task_ids": []
+      }
+    ]
+  },
+  {
+    "time": 1793501632.8331149,
+    "task_id": "e7f00e56-ca6f-4763-8528-b8fbfc389c7b",
+    "roots": [
+      {
+        "id": "packs-a",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 1,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 5,
+            "unsupported_files": 2,
+            "updated": 0
+          },
+          "discovered": 6,
+          "finished_at": 1793501489.9309645,
+          "id": "packs-a",
+          "kind": "pack",
+          "page_errors": 1,
+          "phase": "partial",
+          "processed": 6,
+          "progress": {
+            "discovered": 1515,
+            "discovery_complete": true,
+            "packs_discovered": 6,
+            "packs_discovery_complete": true,
+            "packs_processed": 6,
+            "processed": 1515
+          },
+          "status": "partial",
+          "task_id": "4049cbb0-356f-4db9-b8e9-f11d49e1ed0b",
+          "updated_at": 1793501489.930963
+        },
+        "queued_task_ids": [
+          "d6c9a2c0-5c85-4eed-a18b-cb1edead3d7b"
+        ]
+      },
+      {
+        "id": "packs-b",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 0,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 1,
+            "unsupported_files": 0,
+            "updated": 0
+          },
+          "discovered": 2,
+          "id": "packs-b",
+          "kind": "pack",
+          "phase": "processing_media",
+          "processed": 1,
+          "progress": {
+            "discovered": 604,
+            "discovery_complete": false,
+            "packs_discovered": 2,
+            "packs_discovery_complete": true,
+            "packs_processed": 1,
+            "processed": 604
+          },
+          "status": "processing_media",
+          "task_id": "e7f00e56-ca6f-4763-8528-b8fbfc389c7b",
+          "updated_at": 1793501632.811516
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "videos",
+        "scan": {
+          "bytes_processed": 1290627,
+          "bytes_total": 1290627,
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "imported": 1,
+            "missing": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 0
+          },
+          "discovered": 1,
+          "finished_at": 1793501132.0354242,
+          "id": "videos",
+          "kind": "video",
+          "phase": "completed",
+          "processed": 1,
+          "progress": {
+            "bytes_processed": 1290627,
+            "bytes_total": 1290627,
+            "discovered": 1,
+            "discovery_complete": true,
+            "processed": 1
+          },
+          "status": "completed",
+          "task_id": "c2b827d5-6e4a-4d0f-a813-dea5507cafeb",
+          "updated_at": 1793501132.0354216
+        },
+        "queued_task_ids": []
+      }
+    ]
+  },
+  {
+    "time": 1793501520.781882,
+    "task_id": "e7f00e56-ca6f-4763-8528-b8fbfc389c7b",
+    "roots": [
+      {
+        "id": "packs-a",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 1,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 5,
+            "unsupported_files": 2,
+            "updated": 0
+          },
+          "discovered": 6,
+          "finished_at": 1793501489.9309645,
+          "id": "packs-a",
+          "kind": "pack",
+          "page_errors": 1,
+          "phase": "partial",
+          "processed": 6,
+          "progress": {
+            "discovered": 1515,
+            "discovery_complete": true,
+            "packs_discovered": 6,
+            "packs_discovery_complete": true,
+            "packs_processed": 6,
+            "processed": 1515
+          },
+          "status": "partial",
+          "task_id": "4049cbb0-356f-4db9-b8e9-f11d49e1ed0b",
+          "updated_at": 1793501489.930963
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "packs-b",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 0,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 1,
+            "unsupported_files": 0,
+            "updated": 0
+          },
+          "discovered": 2,
+          "id": "packs-b",
+          "kind": "pack",
+          "phase": "processing_media",
+          "processed": 1,
+          "progress": {
+            "discovered": 604,
+            "discovery_complete": false,
+            "packs_discovered": 2,
+            "packs_discovery_complete": true,
+            "packs_processed": 1,
+            "processed": 143
+          },
+          "status": "processing_media",
+          "task_id": "e7f00e56-ca6f-4763-8528-b8fbfc389c7b",
+          "updated_at": 1793501520.47453
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "videos",
+        "scan": {
+          "bytes_processed": 1290627,
+          "bytes_total": 1290627,
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "imported": 1,
+            "missing": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 0
+          },
+          "discovered": 1,
+          "finished_at": 1793501132.0354242,
+          "id": "videos",
+          "kind": "video",
+          "phase": "completed",
+          "processed": 1,
+          "progress": {
+            "bytes_processed": 1290627,
+            "bytes_total": 1290627,
+            "discovered": 1,
+            "discovery_complete": true,
+            "processed": 1
+          },
+          "status": "completed",
+          "task_id": "c2b827d5-6e4a-4d0f-a813-dea5507cafeb",
+          "updated_at": 1793501132.0354216
+        },
+        "queued_task_ids": []
+      }
+    ]
+  },
+  {
+    "time": 1793501581.826473,
+    "task_id": "e7f00e56-ca6f-4763-8528-b8fbfc389c7b",
+    "roots": [
+      {
+        "id": "packs-a",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 1,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 5,
+            "unsupported_files": 2,
+            "updated": 0
+          },
+          "discovered": 6,
+          "finished_at": 1793501489.9309645,
+          "id": "packs-a",
+          "kind": "pack",
+          "page_errors": 1,
+          "phase": "partial",
+          "processed": 6,
+          "progress": {
+            "discovered": 1515,
+            "discovery_complete": true,
+            "packs_discovered": 6,
+            "packs_discovery_complete": true,
+            "packs_processed": 6,
+            "processed": 1515
+          },
+          "status": "partial",
+          "task_id": "4049cbb0-356f-4db9-b8e9-f11d49e1ed0b",
+          "updated_at": 1793501489.930963
+        },
+        "queued_task_ids": [
+          "d6c9a2c0-5c85-4eed-a18b-cb1edead3d7b"
+        ]
+      },
+      {
+        "id": "packs-b",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 0,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 1,
+            "unsupported_files": 0,
+            "updated": 0
+          },
+          "discovered": 2,
+          "id": "packs-b",
+          "kind": "pack",
+          "phase": "processing_media",
+          "processed": 1,
+          "progress": {
+            "discovered": 604,
+            "discovery_complete": false,
+            "packs_discovered": 2,
+            "packs_discovery_complete": true,
+            "packs_processed": 1,
+            "processed": 406
+          },
+          "status": "processing_media",
+          "task_id": "e7f00e56-ca6f-4763-8528-b8fbfc389c7b",
+          "updated_at": 1793501580.7459579
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "videos",
+        "scan": {
+          "bytes_processed": 1290627,
+          "bytes_total": 1290627,
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "imported": 1,
+            "missing": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 0
+          },
+          "discovered": 1,
+          "finished_at": 1793501132.0354242,
+          "id": "videos",
+          "kind": "video",
+          "phase": "completed",
+          "processed": 1,
+          "progress": {
+            "bytes_processed": 1290627,
+            "bytes_total": 1290627,
+            "discovered": 1,
+            "discovery_complete": true,
+            "processed": 1
+          },
+          "status": "completed",
+          "task_id": "c2b827d5-6e4a-4d0f-a813-dea5507cafeb",
+          "updated_at": 1793501132.0354216
+        },
+        "queued_task_ids": []
+      }
+    ]
+  },
+  {
+    "time": 1793501644.070133,
+    "task_id": "d6c9a2c0-5c85-4eed-a18b-cb1edead3d7b",
+    "roots": [
+      {
+        "id": "packs-a",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 0,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 6,
+            "unsupported_files": 2,
+            "updated": 0
+          },
+          "discovered": 6,
+          "finished_at": 1793501635.5878766,
+          "id": "packs-a",
+          "kind": "pack",
+          "page_errors": 1,
+          "phase": "partial",
+          "processed": 6,
+          "progress": {
+            "discovered": 1515,
+            "discovery_complete": true,
+            "packs_discovered": 6,
+            "packs_discovery_complete": true,
+            "packs_processed": 6,
+            "processed": 1515
+          },
+          "status": "partial",
+          "task_id": "d6c9a2c0-5c85-4eed-a18b-cb1edead3d7b",
+          "updated_at": 1793501635.587874
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "packs-b",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 1,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 1,
+            "unsupported_files": 0,
+            "updated": 0
+          },
+          "discovered": 2,
+          "finished_at": 1793501632.9580717,
+          "id": "packs-b",
+          "kind": "pack",
+          "phase": "completed",
+          "processed": 2,
+          "progress": {
+            "discovered": 604,
+            "discovery_complete": true,
+            "packs_discovered": 2,
+            "packs_discovery_complete": true,
+            "packs_processed": 2,
+            "processed": 604
+          },
+          "status": "completed",
+          "task_id": "e7f00e56-ca6f-4763-8528-b8fbfc389c7b",
+          "updated_at": 1793501632.95807
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "videos",
+        "scan": {
+          "bytes_processed": 1290627,
+          "bytes_total": 1290627,
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "imported": 1,
+            "missing": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 0
+          },
+          "discovered": 1,
+          "finished_at": 1793501132.0354242,
+          "id": "videos",
+          "kind": "video",
+          "phase": "completed",
+          "processed": 1,
+          "progress": {
+            "bytes_processed": 1290627,
+            "bytes_total": 1290627,
+            "discovered": 1,
+            "discovery_complete": true,
+            "processed": 1
+          },
+          "status": "completed",
+          "task_id": "c2b827d5-6e4a-4d0f-a813-dea5507cafeb",
+          "updated_at": 1793501132.0354216
+        },
+        "queued_task_ids": []
+      }
+    ]
+  },
+  {
+    "time": 1793501633.38909,
+    "task_id": "d6c9a2c0-5c85-4eed-a18b-cb1edead3d7b",
+    "roots": [
+      {
+        "id": "packs-a",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 0,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 3,
+            "unsupported_files": 2,
+            "updated": 0
+          },
+          "discovered": 6,
+          "id": "packs-a",
+          "kind": "pack",
+          "page_errors": 1,
+          "phase": "processing_media",
+          "processed": 3,
+          "progress": {
+            "discovered": 510,
+            "discovery_complete": false,
+            "packs_discovered": 6,
+            "packs_discovery_complete": true,
+            "packs_processed": 3,
+            "processed": 10
+          },
+          "status": "processing_media",
+          "task_id": "d6c9a2c0-5c85-4eed-a18b-cb1edead3d7b",
+          "updated_at": 1793501633.1550276
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "packs-b",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 1,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 1,
+            "unsupported_files": 0,
+            "updated": 0
+          },
+          "discovered": 2,
+          "finished_at": 1793501632.9580717,
+          "id": "packs-b",
+          "kind": "pack",
+          "phase": "completed",
+          "processed": 2,
+          "progress": {
+            "discovered": 604,
+            "discovery_complete": true,
+            "packs_discovered": 2,
+            "packs_discovery_complete": true,
+            "packs_processed": 2,
+            "processed": 604
+          },
+          "status": "completed",
+          "task_id": "e7f00e56-ca6f-4763-8528-b8fbfc389c7b",
+          "updated_at": 1793501632.95807
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "videos",
+        "scan": {
+          "bytes_processed": 1290627,
+          "bytes_total": 1290627,
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "imported": 1,
+            "missing": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 0
+          },
+          "discovered": 1,
+          "finished_at": 1793501132.0354242,
+          "id": "videos",
+          "kind": "video",
+          "phase": "completed",
+          "processed": 1,
+          "progress": {
+            "bytes_processed": 1290627,
+            "bytes_total": 1290627,
+            "discovered": 1,
+            "discovery_complete": true,
+            "processed": 1
+          },
+          "status": "completed",
+          "task_id": "c2b827d5-6e4a-4d0f-a813-dea5507cafeb",
+          "updated_at": 1793501132.0354216
+        },
+        "queued_task_ids": []
+      }
+    ]
+  },
+  {
+    "time": 1793501638.718965,
+    "task_id": "d6c9a2c0-5c85-4eed-a18b-cb1edead3d7b",
+    "roots": [
+      {
+        "id": "packs-a",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 0,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 6,
+            "unsupported_files": 2,
+            "updated": 0
+          },
+          "discovered": 6,
+          "finished_at": 1793501635.5878766,
+          "id": "packs-a",
+          "kind": "pack",
+          "page_errors": 1,
+          "phase": "partial",
+          "processed": 6,
+          "progress": {
+            "discovered": 1515,
+            "discovery_complete": true,
+            "packs_discovered": 6,
+            "packs_discovery_complete": true,
+            "packs_processed": 6,
+            "processed": 1515
+          },
+          "status": "partial",
+          "task_id": "d6c9a2c0-5c85-4eed-a18b-cb1edead3d7b",
+          "updated_at": 1793501635.587874
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "packs-b",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 1,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 1,
+            "unsupported_files": 0,
+            "updated": 0
+          },
+          "discovered": 2,
+          "finished_at": 1793501632.9580717,
+          "id": "packs-b",
+          "kind": "pack",
+          "phase": "completed",
+          "processed": 2,
+          "progress": {
+            "discovered": 604,
+            "discovery_complete": true,
+            "packs_discovered": 2,
+            "packs_discovery_complete": true,
+            "packs_processed": 2,
+            "processed": 604
+          },
+          "status": "completed",
+          "task_id": "e7f00e56-ca6f-4763-8528-b8fbfc389c7b",
+          "updated_at": 1793501632.95807
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "videos",
+        "scan": {
+          "bytes_processed": 1290627,
+          "bytes_total": 1290627,
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "imported": 1,
+            "missing": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 0
+          },
+          "discovered": 1,
+          "finished_at": 1793501132.0354242,
+          "id": "videos",
+          "kind": "video",
+          "phase": "completed",
+          "processed": 1,
+          "progress": {
+            "bytes_processed": 1290627,
+            "bytes_total": 1290627,
+            "discovered": 1,
+            "discovery_complete": true,
+            "processed": 1
+          },
+          "status": "completed",
+          "task_id": "c2b827d5-6e4a-4d0f-a813-dea5507cafeb",
+          "updated_at": 1793501132.0354216
+        },
+        "queued_task_ids": []
+      }
+    ]
+  },
+  {
+    "time": 1793501644.070133,
+    "task_id": "d6c9a2c0-5c85-4eed-a18b-cb1edead3d7b",
+    "roots": [
+      {
+        "id": "packs-a",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 0,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 6,
+            "unsupported_files": 2,
+            "updated": 0
+          },
+          "discovered": 6,
+          "finished_at": 1793501635.5878766,
+          "id": "packs-a",
+          "kind": "pack",
+          "page_errors": 1,
+          "phase": "partial",
+          "processed": 6,
+          "progress": {
+            "discovered": 1515,
+            "discovery_complete": true,
+            "packs_discovered": 6,
+            "packs_discovery_complete": true,
+            "packs_processed": 6,
+            "processed": 1515
+          },
+          "status": "partial",
+          "task_id": "d6c9a2c0-5c85-4eed-a18b-cb1edead3d7b",
+          "updated_at": 1793501635.587874
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "packs-b",
+        "scan": {
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "failed_packs": 0,
+            "failed_pages": 0,
+            "identity_ambiguous": 0,
+            "identity_matched": 0,
+            "imported": 1,
+            "loose_images": 0,
+            "missing": 0,
+            "protected_packs": 0,
+            "symlinks_skipped": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 1,
+            "unsupported_files": 0,
+            "updated": 0
+          },
+          "discovered": 2,
+          "finished_at": 1793501632.9580717,
+          "id": "packs-b",
+          "kind": "pack",
+          "phase": "completed",
+          "processed": 2,
+          "progress": {
+            "discovered": 604,
+            "discovery_complete": true,
+            "packs_discovered": 2,
+            "packs_discovery_complete": true,
+            "packs_processed": 2,
+            "processed": 604
+          },
+          "status": "completed",
+          "task_id": "e7f00e56-ca6f-4763-8528-b8fbfc389c7b",
+          "updated_at": 1793501632.95807
+        },
+        "queued_task_ids": []
+      },
+      {
+        "id": "videos",
+        "scan": {
+          "bytes_processed": 1290627,
+          "bytes_total": 1290627,
+          "counts": {
+            "deferred": 0,
+            "failed": 0,
+            "imported": 1,
+            "missing": 0,
+            "thumbnail_failed": 0,
+            "unchanged": 0
+          },
+          "discovered": 1,
+          "finished_at": 1793501132.0354242,
+          "id": "videos",
+          "kind": "video",
+          "phase": "completed",
+          "processed": 1,
+          "progress": {
+            "bytes_processed": 1290627,
+            "bytes_total": 1290627,
+            "discovered": 1,
+            "discovery_complete": true,
+            "processed": 1
+          },
+          "status": "completed",
+          "task_id": "c2b827d5-6e4a-4d0f-a813-dea5507cafeb",
+          "updated_at": 1793501132.0354216
+        },
+        "queued_task_ids": []
+      }
+    ]
+  }
+]

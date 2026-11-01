@@ -1,0 +1,170 @@
+{
+  "original_four_before": [
+    {
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "name": "/video-viewer-client-e2e-server-1",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "name": "/video-viewer-history-purge-app-lf7",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "name": "/video-viewer-archive-app-lf7",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "name": "/video-viewer-server-1",
+      "running": true,
+      "health": "healthy"
+    }
+  ],
+  "original_four_after": [
+    {
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "name": "/video-viewer-client-e2e-server-1",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "name": "/video-viewer-history-purge-app-lf7",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "name": "/video-viewer-archive-app-lf7",
+      "running": true,
+      "health": "healthy"
+    },
+    {
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "name": "/video-viewer-server-1",
+      "running": true,
+      "health": "healthy"
+    }
+  ],
+  "original_four_ID_health_equal": true,
+  "owned_containers_removed_after_snapshots": [
+    {
+      "id": "ea99d30fc94def994d5c282009d69d90f40e84bb48245f1740865b3ccc21267f",
+      "name": "/video-viewer-old-service-native25",
+      "image": "sha256:886b79b72ecb9116087d892f230471943121f24ccef093113cc3197b4607fef4",
+      "cmd": [
+        "uvicorn",
+        "video_viewer.app:create_app",
+        "--factory",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8760",
+        "--workers",
+        "1",
+        "--no-access-log"
+      ],
+      "media_mounts": [
+        {
+          "destination": "/media",
+          "rw": false
+        }
+      ]
+    },
+    {
+      "id": "787e03e42ff0daa954158d895aa77fb42925d9cfd4b60de691bfbad1c41d16b6",
+      "name": "/video-viewer-root-queue-native25",
+      "image": "sha256:d9e4dfe4230774bc918a5831a59f037748b155fc5087c4ead239ad0b88c81715",
+      "cmd": [
+        "uvicorn",
+        "video_viewer.app:create_app",
+        "--factory",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8760",
+        "--workers",
+        "1",
+        "--no-access-log"
+      ],
+      "media_mounts": [
+        {
+          "destination": "/media",
+          "rw": false
+        }
+      ]
+    },
+    {
+      "id": "f9285bc34a3026ef09c66ccc26835bc55335dd6cad098ba3fc03a0dee6e1a7ee",
+      "name": "/video-viewer-root-queue-native25-command-diagnostic",
+      "image": "sha256:d9e4dfe4230774bc918a5831a59f037748b155fc5087c4ead239ad0b88c81715",
+      "cmd": [
+        "python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "media_mounts": [
+        {
+          "destination": "/media",
+          "rw": false
+        }
+      ]
+    },
+    {
+      "id": "489638b19857d63131eba6dba3440aaad5d21f449e122e6d9597e4464b23e215",
+      "name": "/video-viewer-root-queue-native25-identity-diagnostic",
+      "image": "sha256:d9e4dfe4230774bc918a5831a59f037748b155fc5087c4ead239ad0b88c81715",
+      "cmd": [
+        "uvicorn",
+        "video_viewer.app:create_app",
+        "--factory",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8760",
+        "--workers",
+        "1",
+        "--no-access-log"
+      ],
+      "media_mounts": [
+        {
+          "destination": "/media",
+          "rw": false
+        }
+      ]
+    }
+  ],
+  "owned_proxy_and_avd_stopped": true,
+  "adbd_non_root": true,
+  "removed": [
+    {
+      "kind": "own-generated-media",
+      "files": 1000,
+      "apparent_bytes": 1046808
+    },
+    {
+      "kind": "own-generated-media",
+      "files": 600,
+      "apparent_bytes": 628035
+    },
+    {
+      "kind": "own-rebuildable-data",
+      "apparent_bytes": 3061872
+    },
+    {
+      "kind": "own-rebuildable-new-data",
+      "apparent_bytes": 9062154
+    }
+  ],
+  "original_public_fixture_files_kept_by_sha256": 522,
+  "fixture_bytes_kept_but_initial_hardlinks_had_changed_ctime": true,
+  "private_readonly_business_snapshots_and_logs_kept": true,
+  "NAS_only_read_preflight_no_deployment": true,
+  "SDK_signing_APKs_common_AVD_and_original_data_kept": true
+}

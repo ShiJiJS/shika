@@ -1,0 +1,24 @@
+{
+  "client": "preview.19/code25",
+  "client_source": "d8acf14000dd7b4c0ef0c68e0f5063a9fcdbd4e9",
+  "ordinary_release_APK": true,
+  "old_service_native_passed": true,
+  "new_service_queue_offline_native_passed": true,
+  "final_proof_reconstructed_readonly_without_replay": true,
+  "original_harness_results": "Old entry helper assumed a non-existent View Progress banner; queue helper hit its wait deadline; continuation output generation referenced an absent local variable. Correct routes and read-only final verification are separate. These errors were not product fixes.",
+  "public_native_screens": 10,
+  "protected_business_tables": 28,
+  "scan_requests_exactly": [
+    "packs-a",
+    "packs-b",
+    "packs-a"
+  ],
+  "final_attempted_images": {
+    "A": 1515,
+    "B": 604
+  },
+  "A_intentionally_bad_images": 1,
+  "NAS_only_read_preflight": true,
+  "NAS_deployment_pending": true,
+  "phone_not_tested": true
+}
