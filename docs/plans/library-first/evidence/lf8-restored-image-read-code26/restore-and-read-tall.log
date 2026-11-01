@@ -1,0 +1,18 @@
+{"snapshot": "tall-before-logical-restore", "kind": "normal26", "tables": 35, "counts": {"alembic_version": 1, "directories": 33, "file_operations": 0, "file_steps": 0, "observations": 47, "pack_file_operations": 20, "pack_file_steps": 30, "pack_missing_cleanups": 0, "pack_missing_members": 0, "pack_pages": 48, "pack_preferences": 12, "pack_progress": 12, "pack_purge_entries": 15, "pack_purge_executions": 14, "pack_purge_plans": 15, "pack_purge_steps": 69, "pack_restore_batches": 1, "pack_restore_members": 1, "pack_restore_plans": 1, "pack_session_entries": 14, "pack_sessions": 13, "pack_tag_definitions": 1, "pack_tag_links": 16, "pack_trash_items": 15, "packs": 25, "playback_rounds": 0, "recent_entries": 12, "request_records": 44, "roots": 1, "round_entries": 0, "tags": 0, "tasks": 45, "trash_items": 0, "video_tags": 0, "videos": 0}}
+{"snapshot": "tall-after-logical-restore", "kind": "normal26", "tables": 35, "counts": {"alembic_version": 1, "directories": 33, "file_operations": 0, "file_steps": 0, "observations": 47, "pack_file_operations": 21, "pack_file_steps": 31, "pack_missing_cleanups": 0, "pack_missing_members": 0, "pack_pages": 48, "pack_preferences": 12, "pack_progress": 12, "pack_purge_entries": 15, "pack_purge_executions": 14, "pack_purge_plans": 15, "pack_purge_steps": 69, "pack_restore_batches": 2, "pack_restore_members": 2, "pack_restore_plans": 2, "pack_session_entries": 14, "pack_sessions": 13, "pack_tag_definitions": 1, "pack_tag_links": 16, "pack_trash_items": 15, "packs": 25, "playback_rounds": 0, "recent_entries": 12, "request_records": 44, "roots": 1, "round_entries": 0, "tags": 0, "tasks": 47, "trash_items": 0, "video_tags": 0, "videos": 0}}
+Traceback (most recent call last):
+  File "[workspace]/.dev/lf8-restored-image-read26/restore-and-read-tall.py", line 15, in <module>
+    ui.choose('返回设置');f.settings_row('操作任务');f.prefix('恢复 1 个图包\n本机结果待核对');f.until(lambda n:'任务详情' in f.labels(n),'original restore result');f.until(lambda n:restored['id'] in '\n'.join(f.labels(n)),'same native restore task id');ui.snap('10-tall-original-restore-result')
+  File "[workspace]/.dev/lf8-restored-image-read26/helpers.py", line 29, in settings_row
+    def settings_row(value):ui.choose('设置');prefix(value+'\n')
+  File "[workspace]/.dev/lf8-restored-image-read26/ui.py", line 17, in choose
+    raw,nodes=xml();found=[n for n in nodes if n.get('clickable')=='true' and (n.get('content-desc')==label or n.get('text')==label)];assert len(found)==1,(label,len(found));tap(found[0],label)
+  File "[workspace]/.dev/lf8-restored-image-read26/ui.py", line 6, in xml
+    device('shell','uiautomator','dump','/sdcard/lf8-purge26-ui.xml')
+  File "[workspace]/.dev/lf8-restored-image-read26/ui.py", line 4, in device
+    def device(*a):return subprocess.check_output([str(ADB),'-s','emulator-5554',*a],timeout=40)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['[workspace]/.dev/android-sdk/platform-tools/adb', '-s', 'emulator-5554', 'shell', 'uiautomator', 'dump', '/sdcard/lf8-purge26-ui.xml']' returned non-zero exit status 255.

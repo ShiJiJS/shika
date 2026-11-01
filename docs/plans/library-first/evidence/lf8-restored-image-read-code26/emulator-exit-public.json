@@ -1,0 +1,63 @@
+{
+  "captureTime": "2026-11-01 15:41:18.4983 +0800",
+  "procName": "qemu-system-aarch64-headless",
+  "exception": {
+    "codes": "0x0000000000000001, 0x0000000000000000",
+    "rawCodes": [
+      1,
+      0
+    ],
+    "type": "EXC_BAD_ACCESS",
+    "signal": "SIGSEGV",
+    "subtype": "KERN_INVALID_ADDRESS at 0x0000000000000000"
+  },
+  "termination": {
+    "flags": 0,
+    "code": 11,
+    "namespace": "SIGNAL",
+    "indicator": "Segmentation fault: 11",
+    "byProc": "exc handler",
+    "byPid": 41892
+  },
+  "faultingThread": 3,
+  "faulting_frames": [
+    {
+      "imageOffset": 22945088,
+      "symbol": "android::crashreport::CrashReporter::GenerateDumpAndDie(char const*)",
+      "symbolLocation": 52,
+      "imageIndex": 0
+    },
+    {
+      "imageOffset": 22953592,
+      "symbol": "_ZZN7android11crashreport13CrashReporter12hangDetectorEvENK3$_0clINSt3__117basic_string_viewIcNS4_11char_traitsIcEEEEEEDaT_",
+      "symbolLocation": 68,
+      "imageIndex": 0
+    },
+    {
+      "imageOffset": 22953412,
+      "symbol": "std::__1::__function::__func<android::crashreport::CrashReporter::hangDetector()::$_0, std::__1::allocator<android::crashreport::CrashReporter::hangDetector()::$_0>, void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>&&)",
+      "symbolLocation": 16,
+      "imageIndex": 0
+    },
+    {
+      "imageOffset": 22958280,
+      "symbol": "std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)>::operator()(std::__1::basic_string_view<char, std::__1::char_traits<char>>) const",
+      "symbolLocation": 40,
+      "imageIndex": 0
+    },
+    {
+      "imageOffset": 22958056,
+      "symbol": "android::crashreport::HangDetector::LooperWatcher::process(std::__1::function<void (std::__1::basic_string_view<char, std::__1::char_traits<char>>)> const&)",
+      "symbolLocation": 824,
+      "imageIndex": 0
+    },
+    {
+      "imageOffset": 22960620,
+      "symbol": "android::crashreport::HangDetector::workerThread()",
+      "symbolLocation": 520,
+      "imageIndex": 0
+    }
+  ],
+  "owned_qemu_process_confirmed_absent": true,
+  "will_restart_only_after_live_full_suite_finishes": true
+}

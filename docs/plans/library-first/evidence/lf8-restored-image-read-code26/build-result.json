@@ -1,0 +1,49 @@
+{
+  "source": "82eacdbd58d38524050bcb20b442549e1a65276e",
+  "platform": "linux/arm64",
+  "runtime_files_matched": 78,
+  "changed_existing_files": [
+    "video_viewer/images.py"
+  ],
+  "added_files": [
+    "video_viewer/rollback_images.py"
+  ],
+  "other_76_files_unchanged": true,
+  "pytest_present": false,
+  "local_image_index_id": "sha256:a60a0177748db61a76f728b330654a43fb0ec65c8f7bacdf9be3bd8064747521",
+  "archive_config_sha256": "d5e376244d6ab28f33980f0c771bf48d64916e350c66f81cab302ec66d0b449c",
+  "archive_rootfs_matches_local_image": true,
+  "rootfs_diff_ids": [
+    "sha256:dca69811453d69d10b6c0345a5c49147162abe20a2f77802d66efc60667949ea",
+    "sha256:8cc4a854ef0c8479b56bcc56c702d23ffeafd3d23c44dc9c66f6abb2e7fd1129",
+    "sha256:ab24ed427f749483d23bd483bae80fd7bc2871ab738a922840aa025116f8335f",
+    "sha256:6c0a4b583bd97f7249f788d71aacb568e7c515ba29a4f5df5ed58f3750cc9146",
+    "sha256:8dca594ca921008ce0ac306cf6c8b9d69e2788dcd588d0acfec00abc4fed3a11",
+    "sha256:431d801af91ba22fec5b64cc93d8c3359189e295e86e36dfcd4d85cf991fdf9e",
+    "sha256:0da654e3710cb452e9542acb8a0d49fec92a66d8b0fa8345e959e6461d2c3bd8",
+    "sha256:dffca0f9120725a10ccd27d3cea0df1ff75d0250ef2023299cb435d1d6d3fcde",
+    "sha256:44c9471a16a74facf564cd9766541adb1c6fc24a8746ad9159ab790868b83bd0",
+    "sha256:1c319b9cd6daaeff3d6bfcc18d90a25a52d205323c50785122694db5ab9a9e06",
+    "sha256:d1e8d698103b06c7587efd66d21e5f1fb920479c227570b058cf801723c8d5ad",
+    "sha256:d20c9a9894d82a8005255ba12fab5525f6089e4074301328af67971b138735c3"
+  ],
+  "healthcheck": {
+    "Test": [
+      "CMD",
+      "python",
+      "-I",
+      "-S",
+      "-B",
+      "/app/video_viewer/healthcheck.py"
+    ],
+    "Interval": 15000000000,
+    "Timeout": 10000000000,
+    "StartPeriod": 20000000000
+  },
+  "archive": {
+    "name": "video-viewer-server-0.2.0-preview.6-linux-arm64.tar.gz",
+    "bytes": 222278546,
+    "sha256": "64cacfb5455ef66063608df7a0541e848dd0177da2e504f931ce564ac4eba4c9"
+  },
+  "nas_deployed": false
+}

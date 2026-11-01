@@ -1,0 +1,28 @@
+F........                                                                [100%]
+=================================== FAILURES ===================================
+_ test_restored_returned_page_original_cover_thumbnail_range_and_old_purge_guard _
+
+library = (<starlette.testclient.TestClient object at 0xffff97d452b0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_restored_returned_page_or0/media'))
+
+    def test_restored_returned_page_original_cover_thumbnail_range_and_old_purge_guard(library):
+        client, media = library
+        task, pack, page, remaining = restored(client, media)
+        before, files = catalogue(client), tree(media)
+        raw = remaining.read_bytes()
+        for path in routes(pack, page):
+            response = client.get(path)
+>           assert response.status_code == 200, response.text
+E           AssertionError: {"error":{"code":"image_changed","message":"图片已变化，请同步图包"}}
+E           assert 409 == 200
+E            +  where 409 = <Response [409 Conflict]>.status_code
+
+tests/test_rolled_back_image_reads.py:58: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_rolled_back_image_reads.py::test_restored_returned_page_original_cover_thumbnail_range_and_old_purge_guard
+1 failed, 8 passed, 2 deselected, 1 warning in 7.28s

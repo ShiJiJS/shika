@@ -1,0 +1,76 @@
+{
+  "owned_container_stopped_retained_for_issue_163": "bd7212b8a00a4e24895651a12a5fd836e7b1665bda9008b9b70bf0cdc906869c",
+  "exact_media_data_config_control_retained": true,
+  "tall_not_rescanned_after_restoration": true,
+  "proxy_pid_stopped": 44967,
+  "owned_avd_removed": "video_viewer_restore_read_36",
+  "emulator_process_gone": true,
+  "other_avd_registry_files_identical": [
+    "video_viewer_reader_perf_36.ini",
+    "video_viewer_upgrade_36.ini",
+    "video_viewer_api_36.ini"
+  ],
+  "removed_paths": [
+    {
+      "path": ".dev/avd/video_viewer_restore_read_36.ini",
+      "apparent_bytes": 130
+    },
+    {
+      "path": ".dev/lf8-restored-image-read26/avd",
+      "apparent_bytes": 2081670198
+    },
+    {
+      "path": ".dev/lf8-restored-image-read26/export",
+      "apparent_bytes": 1543407
+    },
+    {
+      "path": ".dev/lf8-restored-image-read26/test-export",
+      "apparent_bytes": 1543553
+    },
+    {
+      "path": ".dev/lf8-restored-image-read26/server-source.tar",
+      "apparent_bytes": 1679360
+    },
+    {
+      "path": ".dev/lf8-restored-image-read26/test-source.tar",
+      "apparent_bytes": 1679360
+    }
+  ],
+  "apparent_bytes_removed": 2088116008,
+  "not_actual_disk_space_reclaimed": true,
+  "removed_test_image_tags": [
+    "video-viewer-server:lf8-restored-read-red",
+    "video-viewer-server:lf8-restored-read-test",
+    "video-viewer-server:lf8-restored-image-read-final",
+    "video-viewer-server:lf8-restored-image-read-atomic"
+  ],
+  "original_four_container_ids_healthy": [
+    {
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "health": "healthy"
+    },
+    {
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "health": "healthy"
+    },
+    {
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "health": "healthy"
+    },
+    {
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "health": "healthy"
+    }
+  ],
+  "running_containers_exactly_original_four": true,
+  "sdk_signing_regular_avds_untouched": true,
+  "normal_rollback_apks_candidate_runtime_archive_retained": [
+    "video-viewer-0.2.0-preview.20-arm64.apk",
+    "video-viewer-0.1.4-rollback.20-arm64.apk",
+    "video-viewer-server-0.2.0-preview.6-linux-arm64.tar.gz"
+  ],
+  "private_full_backup_retained_0600": true,
+  "prior_nas_backups_untouched": true,
+  "nas_accessed": false,
+  "global_docker_prune": false
+}
