@@ -1,0 +1,101 @@
+{
+  "image_verified": "sha256:d539a11c76448fe54535f332a627b71c40d1bb38cb3060d2e45cfd69995480e8",
+  "runtime_files_matched": 76,
+  "pytest_present": false,
+  "mounts_env_ports_limits_preserved": true,
+  "protected_business_tables": 29,
+  "all_business_comparisons_equal": true,
+  "media_identity_metadata_without_scan_marker_equal": true,
+  "settings_except_two_scan_prefixes_equal": true,
+  "schema": "0014",
+  "integrity": "ok",
+  "server_id_preserved": true,
+  "new_capabilities_present": true,
+  "defaults": {
+    "mode": "vertical",
+    "direction": "ltr",
+    "gap": false,
+    "fit": "contain",
+    "revision": 0
+  },
+  "video_catalog_total": 598,
+  "pack_catalog_total": 683,
+  "video_cover_image_ranges": [
+    206,
+    206,
+    206
+  ],
+  "range_bytes_each": 1024,
+  "rows": {
+    "tags": 110,
+    "video_tags": 2110,
+    "packs": 687,
+    "pack_pages": 34745,
+    "pack_progress": 6,
+    "pack_sessions": 7,
+    "pack_preferences": 6
+  },
+  "scan_status": "running",
+  "root_progress": [
+    {
+      "kind": "pack",
+      "enabled": true,
+      "scan": {
+        "status": "processing_media",
+        "phase": "processing_media",
+        "discovered": 687,
+        "processed": 8,
+        "progress": {
+          "discovered": 582,
+          "discovery_complete": false,
+          "packs_discovered": 687,
+          "packs_discovery_complete": true,
+          "packs_processed": 8,
+          "processed": 511
+        },
+        "counts": {
+          "deferred": 0,
+          "failed": 0,
+          "failed_packs": 0,
+          "failed_pages": 0,
+          "identity_ambiguous": 0,
+          "identity_matched": 0,
+          "imported": 0,
+          "loose_images": 0,
+          "missing": 0,
+          "protected_packs": 0,
+          "symlinks_skipped": 0,
+          "thumbnail_failed": 0,
+          "unchanged": 8,
+          "unsupported_files": 0,
+          "updated": 0
+        }
+      }
+    },
+    {
+      "kind": "video",
+      "enabled": true,
+      "scan": {
+        "status": "completed",
+        "phase": "completed",
+        "discovered": 598,
+        "processed": 598,
+        "progress": {
+          "bytes_processed": 151595038708,
+          "bytes_total": 151595038708,
+          "discovered": 598,
+          "discovery_complete": true,
+          "processed": 598
+        },
+        "counts": {
+          "deferred": 0,
+          "failed": 0,
+          "imported": 0,
+          "missing": 0,
+          "thumbnail_failed": 0,
+          "unchanged": 598
+        }
+      }
+    }
+  ]
+}

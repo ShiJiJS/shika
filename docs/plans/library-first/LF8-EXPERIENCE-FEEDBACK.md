@@ -18,12 +18,12 @@
 
 | 票据 | 范围 | 状态 |
 | --- | --- | --- |
-| [#137](https://github.com/ShiJiJS/video_viewer/issues/137) 图包阅读默认使用纵向拼接，保留用户单独选择 | [细项](issues/LF8-FEEDBACK-READER-DEFAULT.md) | 代码/第23版原生基础流程通过，待NAS默认读回与手机 |
-| [#138](https://github.com/ShiJiJS/video_viewer/issues/138) 扫描进度按接入目录独立记录，区分视频与图包 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-DATA.md) | 服务/页面已实现，完整478项与第25版排队/断线/旧服务通过，待NAS/手机 |
-| [#139](https://github.com/ShiJiJS/video_viewer/issues/139) 扫描页面分别显示视频、图包及每个接入目录的进度 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-UI.md) | 第25版独立数字/排队/断线/旧服务通过，待NAS/手机 |
+| [#137](https://github.com/ShiJiJS/video_viewer/issues/137) 图包阅读默认使用纵向拼接，保留用户单独选择 | [细项](issues/LF8-FEEDBACK-READER-DEFAULT.md) | 代码/第23版原生基础流程通过，NAS默认读回/交付完成，待手机 |
+| [#138](https://github.com/ShiJiJS/video_viewer/issues/138) 扫描进度按接入目录独立记录，区分视频与图包 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-DATA.md) | 服务/页面已实现，完整478项与第25版排队/断线/旧服务通过，NAS更新/交付完成，待手机 |
+| [#139](https://github.com/ShiJiJS/video_viewer/issues/139) 扫描页面分别显示视频、图包及每个接入目录的进度 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-UI.md) | 第25版独立数字/排队/断线/旧服务通过，NAS更新/交付完成，待手机 |
 | [#140](https://github.com/ShiJiJS/video_viewer/issues/140) 修复新版返回操作可能进入旧浏览页的问题 | [细项](issues/LF8-FEEDBACK-LEGACY-RETURN.md) | 第23版及第25版旧服务返回/冷启通过，其余组合和手机待验 |
-| [#141](https://github.com/ShiJiJS/video_viewer/issues/141) 简化图包操作文案，去掉“整包”措辞且保持行为不变 | [细项](issues/LF8-FEEDBACK-ACTION-COPY.md) | 代码/第23版原生文案和撤销通过，待服务部署/手机 |
-| [#142](https://github.com/ShiJiJS/video_viewer/issues/142) 纵向拼接阅读支持双指缩放和放大后移动 | [细项](issues/LF8-FEEDBACK-VERTICAL-ZOOM.md) | 代码/第25版双指、500实文件/坏图/整理/回退通过，旧服务续读/返回通过，待NAS/手机及其余组合 |
+| [#141](https://github.com/ShiJiJS/video_viewer/issues/141) 简化图包操作文案，去掉“整包”措辞且保持行为不变 | [细项](issues/LF8-FEEDBACK-ACTION-COPY.md) | 代码/第23版原生文案和撤销通过，服务已部署，待手机 |
+| [#142](https://github.com/ShiJiJS/video_viewer/issues/142) 纵向拼接阅读支持双指缩放和放大后移动 | [细项](issues/LF8-FEEDBACK-VERTICAL-ZOOM.md) | 代码/第25版双指、500实文件/坏图/整理/回退通过，旧服务续读/返回通过，NAS更新/交付完成，待手机及其余组合 |
 
 所有票初始均未实施、未验收。扫描拆为服务端与客户端两票，是同一需求的前后依赖。
 
@@ -46,3 +46,5 @@
 4. 每次实际交付都记录对应源码、服务兼容能力和同版原签名APK，保持递增内部号与配套回退包。NAS升级先备份，用户真实收藏不用于删除测试；本次规划不交付新包。
 
 原45项验收不减少，#133的其余完整操作流程及#78/#89/#100仍开放。本轮反馈票优先于此前笼统的下一步R1安排，R1等未完成项继续保留。参考原型`design/reference/library-first`的冻结树1cbf605保持，不在本轮改写；新反馈是后续明确的行为补充，不能机械沿用旧默认值/旧文案。
+
+2026-11-01部署更新：[NAS第25版交付](../../nas-preview-2026-11-01.md)已完成完整备份、配套服务更新、管理/阅读数据核对、默认值/目录进度读回及正常/同号回退包交付。原16登录凭据保留，真实收藏未做删除试验；六票继续保留手机及其余验收范围。上文“待NAS”属于此前时点，不再是当前阻塞。
