@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "[workspace]/.dev/lf8-backup-restore-finish26/verify-phase.py", line 38, in <module>
+    assert set(settings_changed)=={'management_epoch','management_history_epochs','management_history_ref','pack_root_scan_v1:main','root_scan_progress_v1:main'}
+AssertionError

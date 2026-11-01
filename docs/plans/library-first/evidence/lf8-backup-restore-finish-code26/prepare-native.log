@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "[workspace]/.dev/lf8-backup-restore-finish26/prepare-native.py", line 21, in <module>
+    task=api.wait(api.call('POST','/api/v1/scans',{'root_id':'main'})['id']);assert task['status']=='completed' and task['result']['packs']['deferred']==0
+AssertionError

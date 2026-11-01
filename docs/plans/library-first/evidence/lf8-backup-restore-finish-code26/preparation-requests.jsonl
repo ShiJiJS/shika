@@ -1,0 +1,44 @@
+{"time": 1793527277.0470421, "method": "POST", "path": "/api/v1/auth/login", "body": null, "status": 200}
+{"time": 1793527277.1612039, "method": "GET", "path": "/api/v1/roots", "body": null, "status": 200}
+{"time": 1793527308.755824, "method": "PUT", "path": "/api/v1/roots/main", "body": {"name": "Synthetic backup only", "path": "/media", "kind": "pack", "enabled": true}, "status": 200}
+{"time": 1793527309.4949682, "method": "POST", "path": "/api/v1/scans", "body": {"root_id": "main"}, "status": 202}
+{"time": 1793527309.5155241, "method": "GET", "path": "/api/v1/tasks/3bec9fc3-59c0-401a-b1da-957ee5115a56", "body": null, "status": 200}
+{"time": 1793527309.73617, "method": "GET", "path": "/api/v1/tasks/3bec9fc3-59c0-401a-b1da-957ee5115a56", "body": null, "status": 200}
+{"time": 1793527448.127616, "method": "GET", "path": "/api/v1/tasks?limit=100", "body": null, "status": 200}
+{"time": 1793527448.1655, "method": "POST", "path": "/api/v1/scans", "body": {"root_id": "main"}, "status": 202}
+{"time": 1793527448.178596, "method": "GET", "path": "/api/v1/tasks/f71be9ee-d3a0-4bf2-a457-d8ca038325be", "body": null, "status": 200}
+{"time": 1793527448.393657, "method": "GET", "path": "/api/v1/tasks/f71be9ee-d3a0-4bf2-a457-d8ca038325be", "body": null, "status": 200}
+{"time": 1793527448.600838, "method": "GET", "path": "/api/v1/tasks/f71be9ee-d3a0-4bf2-a457-d8ca038325be", "body": null, "status": 200}
+{"time": 1793527448.810706, "method": "GET", "path": "/api/v1/tasks/f71be9ee-d3a0-4bf2-a457-d8ca038325be", "body": null, "status": 200}
+{"time": 1793527448.82038, "method": "GET", "path": "/api/v1/packs", "body": null, "status": 200}
+{"time": 1793527448.8324292, "method": "GET", "path": "/api/v1/packs/2ea894a0-5157-4d39-be99-b000a8cf12ef/pages", "body": null, "status": 200}
+{"time": 1793527448.840256, "method": "POST", "path": "/api/v1/pack-tags", "body": {"request_id": "baseline-tag", "name": "Before backup"}, "status": 201}
+{"time": 1793527448.847605, "method": "PATCH", "path": "/api/v1/pack-tag-links", "body": {"request_id": "baseline-link", "pack_ids": ["2ea894a0-5157-4d39-be99-b000a8cf12ef"], "tag_ids": ["85892ba7-6820-4950-991a-fe2a6a13cdcf"], "mode": "add"}, "status": 200}
+{"time": 1793527448.85536, "method": "POST", "path": "/api/v1/pack-sessions", "body": {"request_id": "baseline-reading", "anchor_pack_id": "2ea894a0-5157-4d39-be99-b000a8cf12ef", "source": "library", "sort": "name", "order": "sequential"}, "status": 201}
+{"time": 1793527448.886446, "method": "POST", "path": "/api/v1/pack-sessions/d1073b2a-cbea-49cc-ab61-0c9a0f99d45c/opened", "body": {"request_id": "baseline-open", "pack_id": "2ea894a0-5157-4d39-be99-b000a8cf12ef", "page_id": "42aa42ce-76ea-4fb5-841f-b47a21052695", "content_version": 1, "expected_session_revision": 0, "expected_revision": 0}, "status": 200}
+{"time": 1793527448.901474, "method": "PATCH", "path": "/api/v1/packs/2ea894a0-5157-4d39-be99-b000a8cf12ef/progress", "body": {"request_id": "baseline-progress", "session_id": "d1073b2a-cbea-49cc-ab61-0c9a0f99d45c", "page_id": "42aa42ce-76ea-4fb5-841f-b47a21052695", "content_version": 1, "expected_session_revision": 0, "expected_revision": 1, "offset_ratio": 0.45, "completed": false}, "status": 200}
+{"time": 1793527449.060448, "method": "POST", "path": "/api/v1/management-backups", "body": {"request_id": "baseline-export"}, "status": 202}
+{"time": 1793527449.068331, "method": "GET", "path": "/api/v1/tasks/fd9a79d5-034e-4ff3-9f58-4caad3403752", "body": null, "status": 200}
+{"time": 1793527449.27509, "method": "GET", "path": "/api/v1/tasks/fd9a79d5-034e-4ff3-9f58-4caad3403752", "body": null, "status": 200}
+{"method": "POST", "path": "/api/v1/management-backups/imports", "status": 202, "body_bytes": 11556, "idempotency_key": "baseline-import"}
+{"time": 1793527449.303977, "method": "GET", "path": "/api/v1/tasks/d1ffdbdf-e6d0-4d89-873e-dca8184aaa7e", "body": null, "status": 200}
+{"time": 1793527449.516629, "method": "GET", "path": "/api/v1/tasks/d1ffdbdf-e6d0-4d89-873e-dca8184aaa7e", "body": null, "status": 200}
+{"time": 1793527449.520881, "method": "POST", "path": "/api/v1/pack-tags", "body": {"request_id": "snapshot-tag", "name": "Saved in restore point"}, "status": 201}
+{"time": 1793527449.527583, "method": "PATCH", "path": "/api/v1/pack-tag-links", "body": {"request_id": "snapshot-link", "pack_ids": ["2ea894a0-5157-4d39-be99-b000a8cf12ef"], "tag_ids": ["90d2d225-69ad-435e-a41f-233c19802cd5"], "mode": "add"}, "status": 200}
+{"time": 1793527449.731095, "method": "POST", "path": "/api/v1/management-backups/restores", "body": {"request_id": "preparation-restore", "preview_id": "d1ffdbdf-e6d0-4d89-873e-dca8184aaa7e", "root_mapping": {"main": "/media"}, "confirmed": true}, "status": 202}
+{"time": 1793527449.753599, "method": "GET", "path": "/api/v1/tasks/be9f229f-0768-4208-abf2-d16218753111", "body": null, "status": 200}
+{"time": 1793527449.9633238, "method": "GET", "path": "/api/v1/tasks/be9f229f-0768-4208-abf2-d16218753111", "body": null, "status": 200}
+{"time": 1793527450.1726878, "method": "GET", "path": "/api/v1/tasks/be9f229f-0768-4208-abf2-d16218753111", "body": null, "status": 200}
+{"time": 1793527450.399146, "method": "GET", "path": "/api/v1/tasks/be9f229f-0768-4208-abf2-d16218753111", "body": null, "status": 200}
+{"time": 1793527450.403648, "method": "GET", "path": "/api/v1/info", "body": null, "status": 200}
+{"time": 1793527450.408462, "method": "GET", "path": "/api/v1/packs/2ea894a0-5157-4d39-be99-b000a8cf12ef", "body": null, "status": 200}
+{"time": 1793527450.530714, "method": "GET", "path": "/api/v1/management-backups/latest-restore", "body": null, "status": 200}
+{"time": 1793528095.367184, "method": "GET", "path": "/api/v1/tasks/b8394222-4343-4a7e-a448-c8716f378672", "body": null, "status": 200}
+{"time": 1793528139.124195, "method": "GET", "path": "/api/v1/tasks/458b2918-5403-45f4-be72-dd47537b6621", "body": null, "status": 200}
+{"time": 1793528139.163563, "method": "GET", "path": "/api/v1/tasks/b8394222-4343-4a7e-a448-c8716f378672", "body": null, "status": 200}
+{"time": 1793528156.910244, "method": "GET", "path": "/api/v1/tasks/458b2918-5403-45f4-be72-dd47537b6621", "body": null, "status": 200}
+{"time": 1793528157.123946, "method": "GET", "path": "/api/v1/tasks/458b2918-5403-45f4-be72-dd47537b6621", "body": null, "status": 200}
+{"time": 1793528157.337974, "method": "GET", "path": "/api/v1/tasks/458b2918-5403-45f4-be72-dd47537b6621", "body": null, "status": 200}
+{"time": 1793528157.5455942, "method": "GET", "path": "/api/v1/tasks/458b2918-5403-45f4-be72-dd47537b6621", "body": null, "status": 200}
+{"time": 1793528168.598185, "method": "GET", "path": "/api/v1/tasks/b8394222-4343-4a7e-a448-c8716f378672", "body": null, "status": 200}
+{"time": 1793528212.137496, "method": "GET", "path": "/api/v1/packs/2ea894a0-5157-4d39-be99-b000a8cf12ef", "body": null, "status": 200}

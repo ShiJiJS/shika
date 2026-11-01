@@ -1,0 +1,54 @@
+{
+  "owned_new_fixture_removed": "8815dc2e2627a848b4560bfdbbe70c258fcb8b37e4f172bafac6be8612eec9c6",
+  "owned_avd_removed": true,
+  "proxy_stopped": true,
+  "removed_paths": [
+    {
+      "path": ".dev/avd/video_viewer_restore_finish_36.ini",
+      "apparent_bytes": 132
+    },
+    {
+      "path": ".dev/lf8-backup-restore-finish26/avd",
+      "apparent_bytes": 2017117254
+    },
+    {
+      "path": ".dev/lf8-backup-restore-finish26/export",
+      "apparent_bytes": 1574279
+    },
+    {
+      "path": ".dev/lf8-backup-restore-finish26/source.tar",
+      "apparent_bytes": 1710080
+    },
+    {
+      "path": ".dev/lf8-backup-restore-finish26/data",
+      "apparent_bytes": 7420338
+    },
+    {
+      "path": ".dev/lf8-backup-restore-finish26/config",
+      "apparent_bytes": 218
+    },
+    {
+      "path": ".dev/lf8-backup-restore-finish26/media",
+      "apparent_bytes": 609436
+    },
+    {
+      "path": ".dev/lf8-backup-restore-finish26/control",
+      "apparent_bytes": 330
+    },
+    {
+      "path": ".dev/lf8-backup-restore-finish26/baseline-private.vvbackup",
+      "apparent_bytes": 11556
+    }
+  ],
+  "apparent_bytes_removed": 2028443623,
+  "not_actual_disk_space_reclaimed": true,
+  "test_tags_removed": [
+    "video-viewer-server:lf8-restore-finish-red",
+    "video-viewer-server:lf8-restore-finish-work",
+    "video-viewer-server:lf8-restore-finish-final"
+  ],
+  "original_four_services_healthy": true,
+  "previous_stopped_identity_fixture_preserved": true,
+  "regular_avds_sdk_signing_apks_candidate_archive_preserved": true,
+  "global_docker_prune": false
+}

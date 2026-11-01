@@ -1,0 +1,69 @@
+{
+  "id": "f71be9ee-d3a0-4bf2-a457-d8ca038325be",
+  "kind": "scan",
+  "status": "queued",
+  "phase": "queued",
+  "created_at": 1793527448.170221,
+  "finished_at": null,
+  "result": {
+    "scope": {
+      "all": false,
+      "root_ids": [
+        "main"
+      ]
+    },
+    "roots": [
+      {
+        "id": "main",
+        "kind": "pack",
+        "task_id": "f71be9ee-d3a0-4bf2-a457-d8ca038325be",
+        "configuration": [
+          "/media",
+          "pack",
+          "main",
+          true,
+          "2310218b1d507641c4918b179bdac195235d0246623315c2708aae8e5df4c7f7"
+        ],
+        "status": "queued",
+        "phase": "queued",
+        "discovered": 0,
+        "processed": 0,
+        "progress": {
+          "discovered": 0,
+          "processed": 0,
+          "discovery_complete": false,
+          "packs_discovered": 0,
+          "packs_processed": 0
+        },
+        "counts": {}
+      }
+    ],
+    "root_scans": [
+      {
+        "id": "main",
+        "kind": "pack",
+        "task_id": "f71be9ee-d3a0-4bf2-a457-d8ca038325be",
+        "configuration": [
+          "/media",
+          "pack",
+          "main",
+          true,
+          "2310218b1d507641c4918b179bdac195235d0246623315c2708aae8e5df4c7f7"
+        ],
+        "status": "queued",
+        "phase": "queued",
+        "discovered": 0,
+        "processed": 0,
+        "progress": {
+          "discovered": 0,
+          "processed": 0,
+          "discovery_complete": false,
+          "packs_discovered": 0,
+          "packs_processed": 0
+        },
+        "counts": {}
+      }
+    ]
+  },
+  "error": null
+}

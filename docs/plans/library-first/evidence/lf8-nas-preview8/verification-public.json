@@ -1,0 +1,60 @@
+{
+  "source": "2de02374e21567d72cc8bb94dde0bda43fde5a06",
+  "runtime": "preview.8",
+  "runtime_files_matched": 79,
+  "paired_snapshot_sha256": "844bbf1b9279b18490b5b818cb7d99327acca7f6616f9ddeb8adac4edd078b7c",
+  "paired_snapshot_bytes": 1876367360,
+  "schema": "0014",
+  "integrity": "ok",
+  "identity_mounts_env_ports_limits_preserved": true,
+  "all_protected_business_data_preserved": true,
+  "protected_tables": 29,
+  "row_counts": {
+    "tags": 110,
+    "video_tags": 2110,
+    "packs": 687,
+    "pack_pages": 34745,
+    "pack_progress": 6,
+    "pack_preferences": 6,
+    "pack_sessions": 7
+  },
+  "video_total": 598,
+  "pack_total": 683,
+  "source_ranges": [
+    {
+      "kind": "video",
+      "status": 206,
+      "bytes": 1024
+    },
+    {
+      "kind": "cover",
+      "status": 206,
+      "bytes": 1024
+    },
+    {
+      "kind": "image",
+      "status": 206,
+      "bytes": 1024
+    }
+  ],
+  "reading_position_check": {
+    "recent_total": 6,
+    "existing_position_readable": true,
+    "offset_ratio": 0.24275218915877367,
+    "page_index": 15
+  },
+  "packages": [
+    {
+      "name": "video-viewer-0.2.0-preview.20-arm64.apk",
+      "sha256": "8bf34bc97a28f41214ba82f4d1b0be9743e82d6319a9f14f51f035e6fe048f51"
+    },
+    {
+      "name": "video-viewer-0.1.4-rollback.20-arm64.apk",
+      "sha256": "b7a70349843dc5a8f963bce7051fbc64b126028934ab871a36583e8cd35769eb"
+    }
+  ],
+  "health": "healthy",
+  "restart_count": 0,
+  "no_media_write_or_delete": true,
+  "no_new_apk_needed": true
+}

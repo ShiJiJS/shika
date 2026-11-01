@@ -1,0 +1,45 @@
+{
+  "same_deployed_container": true,
+  "running": true,
+  "health": "healthy",
+  "restart_count": 0,
+  "oom": false,
+  "actual_recent_health_checks": [
+    {
+      "exit_code": 0,
+      "start": "2026-11-01T18:27:24.926933221+08:00",
+      "end": "2026-11-01T18:27:25.234946377+08:00"
+    },
+    {
+      "exit_code": 0,
+      "start": "2026-11-01T18:27:40.406623944+08:00",
+      "end": "2026-11-01T18:27:40.886731533+08:00"
+    },
+    {
+      "exit_code": 0,
+      "start": "2026-11-01T18:27:56.041259389+08:00",
+      "end": "2026-11-01T18:27:56.551464649+08:00"
+    },
+    {
+      "exit_code": 0,
+      "start": "2026-11-01T18:28:11.9845062+08:00",
+      "end": "2026-11-01T18:28:12.386010782+08:00"
+    },
+    {
+      "exit_code": 0,
+      "start": "2026-11-01T18:28:27.843153626+08:00",
+      "end": "2026-11-01T18:28:28.145117615+08:00"
+    }
+  ],
+  "all_original_tokens_preserved": 16,
+  "own_probe_session_revoked": true,
+  "paired_complete_snapshot_preserved": true,
+  "paired_snapshot_bytes": 1876367360,
+  "paired_snapshot_sha256": "844bbf1b9279b18490b5b818cb7d99327acca7f6616f9ddeb8adac4edd078b7c",
+  "new_and_old_runtime_archives_preserved": true,
+  "nas_staging_and_extracted_copy_removed": true,
+  "package_instructions_updated": true,
+  "normal_and_rollback_code26_ready": true,
+  "nas_service": "preview.8",
+  "source": "2de02374e21567d72cc8bb94dde0bda43fde5a06"
+}

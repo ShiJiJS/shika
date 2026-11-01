@@ -26,7 +26,9 @@ def create_backup_fault_app():
 
     def checkpoint(current, _task):
         if current == phase:
-            marker.write_text(current)
+            incoming = marker.with_suffix(".incoming")
+            incoming.write_text(current)
+            incoming.replace(marker)
             while True:
                 time.sleep(0.05)
 
