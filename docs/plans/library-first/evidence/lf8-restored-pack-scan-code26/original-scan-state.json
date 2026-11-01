@@ -1,0 +1,708 @@
+{
+  "phase": "fixed_scans_and_reading_verified",
+  "task_id": "e9facd1b-7c33-4aff-8e06-d1b15d8681b2",
+  "entry": "explicit preparation API, not native UI",
+  "first_terminal_task_with_stability_wait": {
+    "id": "e9facd1b-7c33-4aff-8e06-d1b15d8681b2",
+    "kind": "scan",
+    "status": "completed",
+    "phase": "completed",
+    "created_at": 1793523395.1715758,
+    "finished_at": 1793523395.5300002,
+    "result": {
+      "imported": 0,
+      "unchanged": 0,
+      "deferred": 0,
+      "failed": 0,
+      "thumbnail_failed": 0,
+      "failure_reasons": {},
+      "warning_reasons": {},
+      "warnings": [],
+      "missing": 0,
+      "identity_matched": 0,
+      "identity_ambiguous": 0,
+      "scope": {
+        "all": false,
+        "root_ids": [
+          "purge"
+        ]
+      },
+      "roots": [
+        {
+          "id": "purge",
+          "kind": "pack",
+          "task_id": "e9facd1b-7c33-4aff-8e06-d1b15d8681b2",
+          "configuration": [
+            "/media",
+            "pack",
+            "purge",
+            true,
+            "03479c6b7849bcd12015c32205a6601b227d90898f336b2bf48727715141e793"
+          ],
+          "status": "deferred",
+          "phase": "deferred",
+          "discovered": 15,
+          "processed": 15,
+          "progress": {
+            "discovered": 5,
+            "processed": 4,
+            "discovery_complete": false,
+            "packs_discovered": 15,
+            "packs_processed": 15,
+            "packs_discovery_complete": true
+          },
+          "counts": {
+            "imported": 0,
+            "updated": 1,
+            "failed_pages": 0,
+            "failed_packs": 0,
+            "protected_packs": 4,
+            "unchanged": 9,
+            "deferred": 1,
+            "failed": 0,
+            "missing": 0,
+            "identity_matched": 1,
+            "identity_ambiguous": 0,
+            "thumbnail_failed": 0,
+            "unsupported_files": 22,
+            "loose_images": 0,
+            "symlinks_skipped": 0
+          },
+          "updated_at": 1793523395.496653,
+          "unreadable_packs": 8,
+          "error": "files_changing",
+          "finished_at": 1793523395.496658
+        }
+      ],
+      "issues": [],
+      "progress": {
+        "discovered": 0,
+        "processed": 0,
+        "bytes_total": 0,
+        "bytes_processed": 0,
+        "updated_at": 1793523395.5279987
+      },
+      "packs": {
+        "imported": 0,
+        "updated": 1,
+        "failed_pages": 0,
+        "failed_packs": 0,
+        "protected_packs": 4,
+        "unchanged": 9,
+        "deferred": 1,
+        "failed": 0,
+        "missing": 0,
+        "identity_matched": 1,
+        "identity_ambiguous": 0,
+        "thumbnail_failed": 0,
+        "unsupported_files": 22,
+        "loose_images": 0,
+        "symlinks_skipped": 0,
+        "failure_reasons": {
+          "pack_empty": 8
+        },
+        "issues": [
+          {
+            "code": "pack_empty",
+            "pack_id": "06234628-eb7d-46ef-a05c-8099788157e2",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "39e54a15-3b4a-43dd-b358-52e3dc2e2fca",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "6b1e7ad8-8cf2-4712-a07d-d8eafd6e63b7",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "37a536f3-ca1a-401d-b092-1db94ea6aebe",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "4ee340c7-1428-4996-b6cb-cbc7950cd79a",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "f3a2342c-b153-4b25-9f51-2df185f16673",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "fde0fd10-c927-4dba-9eb9-685a902dda93",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "53cc1768-7c7e-490d-8be9-a7088e95e4cf",
+            "root_id": "purge",
+            "name": null
+          }
+        ],
+        "progress": {
+          "discovered": 5,
+          "processed": 4,
+          "packs_discovered": 15,
+          "packs_processed": 15,
+          "peak_decoder_kib": 0,
+          "updated_at": 1793523395.5252671
+        }
+      },
+      "root_scans": [
+        {
+          "id": "purge",
+          "kind": "pack",
+          "task_id": "e9facd1b-7c33-4aff-8e06-d1b15d8681b2",
+          "configuration": [
+            "/media",
+            "pack",
+            "purge",
+            true,
+            "03479c6b7849bcd12015c32205a6601b227d90898f336b2bf48727715141e793"
+          ],
+          "status": "deferred",
+          "phase": "deferred",
+          "discovered": 15,
+          "processed": 15,
+          "progress": {
+            "discovered": 5,
+            "processed": 4,
+            "discovery_complete": false,
+            "packs_discovered": 15,
+            "packs_processed": 15,
+            "packs_discovery_complete": true
+          },
+          "counts": {
+            "imported": 0,
+            "updated": 1,
+            "failed_pages": 0,
+            "failed_packs": 0,
+            "protected_packs": 4,
+            "unchanged": 9,
+            "deferred": 1,
+            "failed": 0,
+            "missing": 0,
+            "identity_matched": 1,
+            "identity_ambiguous": 0,
+            "thumbnail_failed": 0,
+            "unsupported_files": 22,
+            "loose_images": 0,
+            "symlinks_skipped": 0
+          },
+          "updated_at": 1793523395.496653,
+          "unreadable_packs": 8,
+          "error": "files_changing",
+          "finished_at": 1793523395.496658
+        }
+      ]
+    },
+    "error": null
+  },
+  "explicit_followup_scan_id": "383568e6-ba13-416a-8e3a-92cecf8f2e10",
+  "followup_reason": "first task terminal with known changed-file stability wait; explicit second preparation scan, not timeout restart",
+  "scan_task": {
+    "id": "383568e6-ba13-416a-8e3a-92cecf8f2e10",
+    "kind": "scan",
+    "status": "completed",
+    "phase": "completed",
+    "created_at": 1793523467.89872,
+    "finished_at": 1793523468.2479658,
+    "result": {
+      "imported": 0,
+      "unchanged": 0,
+      "deferred": 0,
+      "failed": 0,
+      "thumbnail_failed": 0,
+      "failure_reasons": {},
+      "warning_reasons": {},
+      "warnings": [],
+      "missing": 0,
+      "identity_matched": 0,
+      "identity_ambiguous": 0,
+      "scope": {
+        "all": false,
+        "root_ids": [
+          "purge"
+        ]
+      },
+      "roots": [
+        {
+          "id": "purge",
+          "kind": "pack",
+          "task_id": "383568e6-ba13-416a-8e3a-92cecf8f2e10",
+          "configuration": [
+            "/media",
+            "pack",
+            "purge",
+            true,
+            "03479c6b7849bcd12015c32205a6601b227d90898f336b2bf48727715141e793"
+          ],
+          "status": "partial",
+          "phase": "partial",
+          "discovered": 15,
+          "processed": 15,
+          "progress": {
+            "discovered": 5,
+            "processed": 5,
+            "discovery_complete": false,
+            "packs_discovered": 15,
+            "packs_processed": 15,
+            "packs_discovery_complete": true
+          },
+          "counts": {
+            "imported": 0,
+            "updated": 1,
+            "failed_pages": 0,
+            "failed_packs": 0,
+            "protected_packs": 4,
+            "unchanged": 10,
+            "deferred": 0,
+            "failed": 0,
+            "missing": 0,
+            "identity_matched": 0,
+            "identity_ambiguous": 0,
+            "thumbnail_failed": 0,
+            "unsupported_files": 22,
+            "loose_images": 0,
+            "symlinks_skipped": 0
+          },
+          "updated_at": 1793523468.2443056,
+          "unreadable_packs": 8,
+          "finished_at": 1793523468.244307
+        }
+      ],
+      "issues": [],
+      "progress": {
+        "discovered": 0,
+        "processed": 0,
+        "bytes_total": 0,
+        "bytes_processed": 0,
+        "updated_at": 1793523468.2463531
+      },
+      "packs": {
+        "imported": 0,
+        "updated": 1,
+        "failed_pages": 0,
+        "failed_packs": 0,
+        "protected_packs": 4,
+        "unchanged": 10,
+        "deferred": 0,
+        "failed": 0,
+        "missing": 0,
+        "identity_matched": 0,
+        "identity_ambiguous": 0,
+        "thumbnail_failed": 0,
+        "unsupported_files": 22,
+        "loose_images": 0,
+        "symlinks_skipped": 0,
+        "failure_reasons": {
+          "pack_empty": 8
+        },
+        "issues": [
+          {
+            "code": "pack_empty",
+            "pack_id": "06234628-eb7d-46ef-a05c-8099788157e2",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "39e54a15-3b4a-43dd-b358-52e3dc2e2fca",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "6b1e7ad8-8cf2-4712-a07d-d8eafd6e63b7",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "37a536f3-ca1a-401d-b092-1db94ea6aebe",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "4ee340c7-1428-4996-b6cb-cbc7950cd79a",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "f3a2342c-b153-4b25-9f51-2df185f16673",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "fde0fd10-c927-4dba-9eb9-685a902dda93",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "53cc1768-7c7e-490d-8be9-a7088e95e4cf",
+            "root_id": "purge",
+            "name": null
+          }
+        ],
+        "progress": {
+          "discovered": 5,
+          "processed": 5,
+          "packs_discovered": 15,
+          "packs_processed": 15,
+          "peak_decoder_kib": 149092,
+          "updated_at": 1793523468.24431
+        }
+      },
+      "root_scans": [
+        {
+          "id": "purge",
+          "kind": "pack",
+          "task_id": "383568e6-ba13-416a-8e3a-92cecf8f2e10",
+          "configuration": [
+            "/media",
+            "pack",
+            "purge",
+            true,
+            "03479c6b7849bcd12015c32205a6601b227d90898f336b2bf48727715141e793"
+          ],
+          "status": "partial",
+          "phase": "partial",
+          "discovered": 15,
+          "processed": 15,
+          "progress": {
+            "discovered": 5,
+            "processed": 5,
+            "discovery_complete": false,
+            "packs_discovered": 15,
+            "packs_processed": 15,
+            "packs_discovery_complete": true
+          },
+          "counts": {
+            "imported": 0,
+            "updated": 1,
+            "failed_pages": 0,
+            "failed_packs": 0,
+            "protected_packs": 4,
+            "unchanged": 10,
+            "deferred": 0,
+            "failed": 0,
+            "missing": 0,
+            "identity_matched": 0,
+            "identity_ambiguous": 0,
+            "thumbnail_failed": 0,
+            "unsupported_files": 22,
+            "loose_images": 0,
+            "symlinks_skipped": 0
+          },
+          "updated_at": 1793523468.2443056,
+          "unreadable_packs": 8,
+          "finished_at": 1793523468.244307
+        }
+      ]
+    },
+    "error": null
+  },
+  "packs": [
+    {
+      "pack": {
+        "id": "1958716a-589a-4942-8a00-0a812b165e28",
+        "root_id": "purge",
+        "path": "/media/Restore-partial",
+        "name": "Restore-partial",
+        "title": "Restore-partial",
+        "author": null,
+        "number": null,
+        "status": "available",
+        "error": null,
+        "page_count": 1,
+        "readable_count": 1,
+        "content_version": 4,
+        "tag_ids": [
+          "5df6382b-21b9-445d-b358-53cc3e9f6881"
+        ],
+        "tag_names": {
+          "5df6382b-21b9-445d-b358-53cc3e9f6881": "Purge retained tag"
+        },
+        "created_at": 1793512812.8733397,
+        "cover_url": "/api/v1/packs/1958716a-589a-4942-8a00-0a812b165e28/cover?v=4",
+        "progress": {
+          "page_id": "e461e7c1-6de6-4765-bf7f-ddb9ccdcf54f",
+          "page_index": 0,
+          "offset_ratio": 0.0,
+          "completed": false,
+          "revision": 4,
+          "updated_at": 1793519458.5348198
+        }
+      },
+      "remaining_page": {
+        "id": "e461e7c1-6de6-4765-bf7f-ddb9ccdcf54f",
+        "pack_id": "1958716a-589a-4942-8a00-0a812b165e28",
+        "name": "03.png",
+        "relative_path": "03.png",
+        "ordinal": 0,
+        "width": 64,
+        "height": 96,
+        "size": 13547,
+        "format": "PNG",
+        "sha256": "4d24500cbc9d7246a1b4d3aa5675846f365ff49a67db24f5bed7963acedce4a3",
+        "error": null,
+        "content_version": 4,
+        "image_url": "/api/v1/pages/e461e7c1-6de6-4765-bf7f-ddb9ccdcf54f/image?v=4",
+        "thumbnail_url": "/api/v1/pages/e461e7c1-6de6-4765-bf7f-ddb9ccdcf54f/thumbnail?v=4"
+      }
+    },
+    {
+      "pack": {
+        "id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+        "root_id": "purge",
+        "path": "/media/Restore-read-tall",
+        "name": "Restore-read-tall",
+        "title": "Restore-read-tall",
+        "author": null,
+        "number": null,
+        "status": "available",
+        "error": null,
+        "page_count": 1,
+        "readable_count": 1,
+        "content_version": 4,
+        "tag_ids": [
+          "5df6382b-21b9-445d-b358-53cc3e9f6881"
+        ],
+        "tag_names": {
+          "5df6382b-21b9-445d-b358-53cc3e9f6881": "Purge retained tag"
+        },
+        "created_at": 1793519489.0987656,
+        "cover_url": "/api/v1/packs/b7212acf-a7f2-4a9a-8127-b85d120d4868/cover?v=4",
+        "progress": {
+          "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+          "page_index": 0,
+          "offset_ratio": 0.45,
+          "completed": false,
+          "revision": 4,
+          "updated_at": 1793520171.9529674
+        }
+      },
+      "remaining_page": {
+        "id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+        "pack_id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+        "name": "03.png",
+        "relative_path": "03.png",
+        "ordinal": 0,
+        "width": 600,
+        "height": 3000,
+        "size": 210063,
+        "format": "PNG",
+        "sha256": "2a593609721905262821733d8890c72ed87d98c15e58f81ba0539bb58aa7bb81",
+        "error": null,
+        "content_version": 4,
+        "image_url": "/api/v1/pages/508632ed-3b55-4791-9ebc-51f5a316ecc6/image?v=4",
+        "thumbnail_url": "/api/v1/pages/508632ed-3b55-4791-9ebc-51f5a316ecc6/thumbnail?v=4"
+      }
+    }
+  ],
+  "protected_28_tables_unchanged": [
+    "alembic_version",
+    "file_operations",
+    "file_steps",
+    "pack_file_operations",
+    "pack_missing_cleanups",
+    "pack_missing_members",
+    "pack_preferences",
+    "pack_progress",
+    "pack_purge_entries",
+    "pack_purge_executions",
+    "pack_purge_plans",
+    "pack_purge_steps",
+    "pack_restore_batches",
+    "pack_restore_members",
+    "pack_restore_plans",
+    "pack_session_entries",
+    "pack_sessions",
+    "pack_tag_definitions",
+    "pack_tag_links",
+    "pack_trash_items",
+    "playback_rounds",
+    "recent_entries",
+    "request_records",
+    "round_entries",
+    "tags",
+    "trash_items",
+    "video_tags",
+    "videos"
+  ],
+  "non_scan_settings_and_credentials_unchanged": true,
+  "scan_setting_keys_updated": [
+    "pack_root_scan_v1:purge",
+    "root_scan_progress_v1:purge"
+  ],
+  "all_49_files_byte_identical": true,
+  "unmanaged_duplicate_retired": "62d5fe84-0cc6-434b-b391-75da4740f722",
+  "original_id_restored": "1958716a-589a-4942-8a00-0a812b165e28",
+  "tall_original_id_preserved": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+  "tall_offset_ratio": 0.45,
+  "api_recent": {
+    "items": [
+      {
+        "title": "Restore-read-tall",
+        "author": null,
+        "number": null,
+        "id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+        "root_id": "purge",
+        "path": "/media/Restore-read-tall",
+        "name": "Restore-read-tall",
+        "status": "available",
+        "error": null,
+        "page_count": 1,
+        "readable_count": 1,
+        "content_version": 4,
+        "tag_ids": [
+          "5df6382b-21b9-445d-b358-53cc3e9f6881"
+        ],
+        "tag_names": {
+          "5df6382b-21b9-445d-b358-53cc3e9f6881": "Purge retained tag"
+        },
+        "created_at": 1793519489.0987656,
+        "cover_url": "/api/v1/packs/b7212acf-a7f2-4a9a-8127-b85d120d4868/cover?v=4",
+        "progress": {
+          "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+          "page_index": 0,
+          "offset_ratio": 0.45,
+          "completed": false,
+          "revision": 4,
+          "updated_at": 1793520171.9529674
+        }
+      },
+      {
+        "title": "Restore-partial",
+        "author": null,
+        "number": null,
+        "id": "1958716a-589a-4942-8a00-0a812b165e28",
+        "root_id": "purge",
+        "path": "/media/Restore-partial",
+        "name": "Restore-partial",
+        "status": "available",
+        "error": null,
+        "page_count": 1,
+        "readable_count": 1,
+        "content_version": 4,
+        "tag_ids": [
+          "5df6382b-21b9-445d-b358-53cc3e9f6881"
+        ],
+        "tag_names": {
+          "5df6382b-21b9-445d-b358-53cc3e9f6881": "Purge retained tag"
+        },
+        "created_at": 1793512812.8733397,
+        "cover_url": "/api/v1/packs/1958716a-589a-4942-8a00-0a812b165e28/cover?v=4",
+        "progress": {
+          "page_id": "e461e7c1-6de6-4765-bf7f-ddb9ccdcf54f",
+          "page_index": 0,
+          "offset_ratio": 0.0,
+          "completed": false,
+          "revision": 4,
+          "updated_at": 1793519458.5348198
+        }
+      },
+      {
+        "title": "Keep-available",
+        "author": null,
+        "number": null,
+        "id": "f41dbd5c-e5d3-45e0-86ec-84b29edff6b9",
+        "root_id": "purge",
+        "path": "/media/Keep-available",
+        "name": "Keep-available",
+        "status": "available",
+        "error": null,
+        "page_count": 3,
+        "readable_count": 3,
+        "content_version": 1,
+        "tag_ids": [
+          "5df6382b-21b9-445d-b358-53cc3e9f6881"
+        ],
+        "tag_names": {
+          "5df6382b-21b9-445d-b358-53cc3e9f6881": "Purge retained tag"
+        },
+        "created_at": 1793512810.9105217,
+        "cover_url": "/api/v1/packs/f41dbd5c-e5d3-45e0-86ec-84b29edff6b9/cover?v=1",
+        "progress": {
+          "page_id": "e6bb326d-5ee4-4fde-9616-4ccd37fc4154",
+          "page_index": 2,
+          "offset_ratio": 0.5,
+          "completed": false,
+          "revision": 2,
+          "updated_at": 1793512813.2763453
+        }
+      }
+    ],
+    "total": 3,
+    "offset": 0,
+    "limit": 24,
+    "anchor_index": null
+  },
+  "image_responses": [
+    {
+      "pack_id": "1958716a-589a-4942-8a00-0a812b165e28",
+      "page_id": "e461e7c1-6de6-4765-bf7f-ddb9ccdcf54f",
+      "kind": "cover",
+      "status": 200,
+      "bytes": 1862,
+      "sha256": "f1f2ac2881748846006dfe4105829c2e92510469b3179d21fb5271c37038e3d5"
+    },
+    {
+      "pack_id": "1958716a-589a-4942-8a00-0a812b165e28",
+      "page_id": "e461e7c1-6de6-4765-bf7f-ddb9ccdcf54f",
+      "kind": "image",
+      "status": 200,
+      "bytes": 13547,
+      "sha256": "4d24500cbc9d7246a1b4d3aa5675846f365ff49a67db24f5bed7963acedce4a3"
+    },
+    {
+      "pack_id": "1958716a-589a-4942-8a00-0a812b165e28",
+      "page_id": "e461e7c1-6de6-4765-bf7f-ddb9ccdcf54f",
+      "kind": "thumbnail",
+      "status": 200,
+      "bytes": 1862,
+      "sha256": "f1f2ac2881748846006dfe4105829c2e92510469b3179d21fb5271c37038e3d5"
+    },
+    {
+      "pack_id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+      "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+      "kind": "cover",
+      "status": 200,
+      "bytes": 32674,
+      "sha256": "0a9adab9614d5478a99079710de99116a3eac8c9c4652dfba02e8f5ca2e93086"
+    },
+    {
+      "pack_id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+      "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+      "kind": "image",
+      "status": 200,
+      "bytes": 210063,
+      "sha256": "2a593609721905262821733d8890c72ed87d98c15e58f81ba0539bb58aa7bb81"
+    },
+    {
+      "pack_id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+      "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+      "kind": "thumbnail",
+      "status": 200,
+      "bytes": 32674,
+      "sha256": "0a9adab9614d5478a99079710de99116a3eac8c9c4652dfba02e8f5ca2e93086"
+    }
+  ],
+  "read_37_tables_settings_unchanged": true
+}

@@ -30,6 +30,28 @@ class ReturnedImageReads:
         expected = page.signature
         if not page.sha256 or observed[:4] != expected[:4]:
             return False
+        for row in self.evidence(session, page, pack, root.path):
+            key = (row.id, tuple(expected), tuple(observed), page.sha256)
+            with self.lock:
+                cached = key in self.verified
+                if cached:
+                    self.verified.move_to_end(key)
+            if cached:
+                return signature(os.fstat(fd)) == observed
+            if self.digest(fd, observed) != page.sha256:
+                return False
+            with self.lock:
+                self.verified[key] = None
+                self.verified.move_to_end(key)
+                while len(self.verified) > self.max_entries:
+                    self.verified.popitem(last=False)
+            return True
+        return False
+
+    @staticmethod
+    def evidence(session, page, pack, root_path):
+        """Current journal proof shared by descriptor reads and hashed scans."""
+        expected = page.signature
         statement = (
             select(PackPurgeStep)
             .join(PackFileStep, PackFileStep.id == PackPurgeStep.parent_id)
@@ -40,13 +62,13 @@ class ReturnedImageReads:
             .where(
                 PackFileStep.pack_id == pack.id,
                 PackFileStep.original_path == pack.path,
-                PackFileStep.root_path == root.path,
+                PackFileStep.root_path == root_path,
                 PackFileOperation.kind == "permanent",
                 PackFileOperation.historical.is_(False),
                 PackPurgePlan.historical.is_(False),
                 PackTrashItem.pack_id == pack.id,
                 PackTrashItem.original_path == pack.path,
-                PackTrashItem.root_path == root.path,
+                PackTrashItem.root_path == root_path,
                 PackTrashItem.status == "restored",
                 PackPurgeStep.kind == "image",
                 PackPurgeStep.page_id == page.id,
@@ -64,22 +86,7 @@ class ReturnedImageReads:
                 or row.source_signature[:4] != expected[:4]
             ):
                 continue
-            key = (row.id, tuple(expected), tuple(observed), page.sha256)
-            with self.lock:
-                cached = key in self.verified
-                if cached:
-                    self.verified.move_to_end(key)
-            if cached:
-                return signature(os.fstat(fd)) == observed
-            if self.digest(fd, observed) != page.sha256:
-                return False
-            with self.lock:
-                self.verified[key] = None
-                self.verified.move_to_end(key)
-                while len(self.verified) > self.max_entries:
-                    self.verified.popitem(last=False)
-            return True
-        return False
+            yield row
 
     @staticmethod
     def digest(fd, observed):

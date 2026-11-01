@@ -1,0 +1,68 @@
+{
+  "owned_fixture_container_stopped_and_retained": "66c807c0d9e6230741d56058e8b4c9cec9e9b1d84d99461fa5adc8af25743c02",
+  "retained_small_media_data_config_control_for_followup": true,
+  "source": "7ddf20d4d3e057beb3bf1232b023a212c76160e9",
+  "owned_avd_removed": "video_viewer_restore_scan_36",
+  "owned_emulator_orderly_stopped": true,
+  "emulator_process_confirmed_absent": true,
+  "proxy_pid_stopped": 89506,
+  "removed_paths": [
+    {
+      "path": ".dev/avd/video_viewer_restore_scan_36.ini",
+      "apparent_bytes": 129
+    },
+    {
+      "path": ".dev/lf8-restored-pack-scan26/avd",
+      "apparent_bytes": 1929626675
+    },
+    {
+      "path": ".dev/lf8-restored-pack-scan26/export",
+      "apparent_bytes": 1558470
+    },
+    {
+      "path": ".dev/lf8-restored-pack-scan26/source.tar",
+      "apparent_bytes": 1689600
+    }
+  ],
+  "apparent_bytes_removed": 1932874874,
+  "not_actual_disk_space_reclaimed": true,
+  "removed_test_image_tags": [
+    "video-viewer-server:lf8-restored-scan-red",
+    "video-viewer-server:lf8-restored-scan-work",
+    "video-viewer-server:lf8-restored-scan-final"
+  ],
+  "candidate_runtime_archive_normal_rollback_apks_retained": [
+    "video-viewer-0.2.0-preview.20-arm64.apk",
+    "video-viewer-0.1.4-rollback.20-arm64.apk",
+    "video-viewer-server-0.2.0-preview.7-linux-arm64.tar.gz"
+  ],
+  "other_avd_registry_files_identical": [
+    "video_viewer_reader_perf_36.ini",
+    "video_viewer_upgrade_36.ini",
+    "video_viewer_api_36.ini"
+  ],
+  "original_four_container_ids_healthy": [
+    {
+      "id": "cb37ed11d11047225d78735a8aa3d9c2a4ed49b232d77d980d9b396106401910",
+      "health": "healthy"
+    },
+    {
+      "id": "d8f27aa78066376171d9d647fdd98762a0613ccbd55b5efaf92a0df4fd2d746c",
+      "health": "healthy"
+    },
+    {
+      "id": "fcbe79e4a8d62a2503357c8e23b527d7fd4aca6325d57a0d633ce01f94c92e33",
+      "health": "healthy"
+    },
+    {
+      "id": "9544c5e6dee95a75a23c36fa9c89262b471aadc48ab54ba8c64229284019d07b",
+      "health": "healthy"
+    }
+  ],
+  "running_containers_exactly_original_four": true,
+  "private_complete_backup_retained_0600": true,
+  "sdk_signing_regular_avds_preserved": true,
+  "prior_nas_complete_backups_untouched": true,
+  "nas_accessed": false,
+  "global_docker_prune": false
+}
