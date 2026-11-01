@@ -19,3 +19,7 @@
 验收：正常模式/快速整理、媒体库菜单/阅读菜单/批量标签、回收站/撤销/结果待确认/错误页逐处核对文案与可访问性；关键动作请求对象与修前相同，取消零写。仅文案本身不另造镜像测试，复用相关业务检查确认行为没变。
 
 入口：pack_reader_page、pack_reading_session、pack_file_action、pack_trash_page/session、pack_catalog_page、tag_catalog_page、media_tag_editor、pack_files以及pack_operations错误。
+
+### 2026-11-01 NAS交付
+
+[第25版NAS更新与安装记录](../../../nas-preview-2026-11-01.md)：完整停机快照及Mac副本校验后更新服务430fede5，原标签/凭据/阅读位置/偏好保持；默认纵向与按目录进度读回，视频/封面/原图读取通过，正常preview.19与同号rollback.19已放packages。临时中转和解包副本清理。原型树保持，实体手机及其余组合未验，不关闭票；此前未部署表述保留其历史时间范围。

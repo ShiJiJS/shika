@@ -1,0 +1,1123 @@
+{
+  "schema_before": "0014",
+  "schema_after": "0014",
+  "tables": {
+    "access_tokens": {
+      "before": {
+        "columns": [
+          "digest",
+          "expires_at",
+          "issued_epoch"
+        ],
+        "count": 17,
+        "digest": "b57770ac2787446302634850a03b4461a9e39c087e63b33bdff081f28038b0c1"
+      },
+      "after": {
+        "columns": [
+          "digest",
+          "expires_at",
+          "issued_epoch"
+        ],
+        "count": 17,
+        "digest": "b57770ac2787446302634850a03b4461a9e39c087e63b33bdff081f28038b0c1"
+      }
+    },
+    "alembic_version": {
+      "before": {
+        "columns": [
+          "version_num"
+        ],
+        "count": 1,
+        "digest": "c12c0ed9c9ad90a167394b10e81a11cb1ed2c4980d372f22b2176fdcf7f1df8d"
+      },
+      "after": {
+        "columns": [
+          "version_num"
+        ],
+        "count": 1,
+        "digest": "c12c0ed9c9ad90a167394b10e81a11cb1ed2c4980d372f22b2176fdcf7f1df8d"
+      }
+    },
+    "directories": {
+      "before": {
+        "columns": [
+          "id",
+          "root_id",
+          "path",
+          "name",
+          "seen_scan"
+        ],
+        "count": 781,
+        "digest": "4c258ba22384235332d4a812ebdcc5d2a70962f2d9c6b297e1ec35e1b59396e9"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "root_id",
+          "path",
+          "name",
+          "seen_scan"
+        ],
+        "count": 781,
+        "digest": "27904abbbb6abbb3abb73438a591b8ada8a85d8e1982a6a278e6938d46028752"
+      }
+    },
+    "file_operations": {
+      "before": {
+        "columns": [
+          "id",
+          "request_key",
+          "request_hash",
+          "kind",
+          "undo_of",
+          "round_snapshot",
+          "historical"
+        ],
+        "count": 937,
+        "digest": "d0a8bead1542b933014457b4a2ebabf6989e4d6c00db6e2e7c9fd8f8afbf8a75"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "request_key",
+          "request_hash",
+          "kind",
+          "undo_of",
+          "round_snapshot",
+          "historical"
+        ],
+        "count": 937,
+        "digest": "d0a8bead1542b933014457b4a2ebabf6989e4d6c00db6e2e7c9fd8f8afbf8a75"
+      }
+    },
+    "file_steps": {
+      "before": {
+        "columns": [
+          "id",
+          "operation_id",
+          "requested_id",
+          "video_id",
+          "trash_id",
+          "original_status",
+          "root_path",
+          "original_path",
+          "source",
+          "destination",
+          "staging",
+          "copy_path",
+          "expected_hash",
+          "expected_size",
+          "source_signature",
+          "claimed_identity",
+          "published_identity",
+          "copy_identity",
+          "phase",
+          "outcome",
+          "error"
+        ],
+        "count": 1852,
+        "digest": "969d70b579900d415c191f2ccbccf87e32ec0e420d3518cc4eee24eb8c0c7486"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "operation_id",
+          "requested_id",
+          "video_id",
+          "trash_id",
+          "original_status",
+          "root_path",
+          "original_path",
+          "source",
+          "destination",
+          "staging",
+          "copy_path",
+          "expected_hash",
+          "expected_size",
+          "source_signature",
+          "claimed_identity",
+          "published_identity",
+          "copy_identity",
+          "phase",
+          "outcome",
+          "error"
+        ],
+        "count": 1852,
+        "digest": "969d70b579900d415c191f2ccbccf87e32ec0e420d3518cc4eee24eb8c0c7486"
+      }
+    },
+    "observations": {
+      "before": {
+        "columns": [
+          "path",
+          "signature",
+          "stable_since"
+        ],
+        "count": 40114,
+        "digest": "f491bf25883da1d6bd40497fc830e5b624fe8d648dc30b3d077af3ebcab557cb"
+      },
+      "after": {
+        "columns": [
+          "path",
+          "signature",
+          "stable_since"
+        ],
+        "count": 40114,
+        "digest": "f491bf25883da1d6bd40497fc830e5b624fe8d648dc30b3d077af3ebcab557cb"
+      }
+    },
+    "pack_file_operations": {
+      "before": {
+        "columns": [
+          "id",
+          "request_key",
+          "request_hash",
+          "kind",
+          "undo_of",
+          "session_snapshot",
+          "historical"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "request_key",
+          "request_hash",
+          "kind",
+          "undo_of",
+          "session_snapshot",
+          "historical"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_file_steps": {
+      "before": {
+        "columns": [
+          "id",
+          "operation_id",
+          "pack_id",
+          "page_id",
+          "requested_id",
+          "root_path",
+          "original_path",
+          "source_signature",
+          "expected_hash",
+          "expected_size",
+          "phase",
+          "outcome",
+          "error"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "operation_id",
+          "pack_id",
+          "page_id",
+          "requested_id",
+          "root_path",
+          "original_path",
+          "source_signature",
+          "expected_hash",
+          "expected_size",
+          "phase",
+          "outcome",
+          "error"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_missing_cleanups": {
+      "before": {
+        "columns": [
+          "id",
+          "request_id",
+          "historical"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "request_id",
+          "historical"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_missing_members": {
+      "before": {
+        "columns": [
+          "cleanup_id",
+          "pack_id",
+          "root_id",
+          "generation",
+          "name",
+          "path",
+          "outcome",
+          "error"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "cleanup_id",
+          "pack_id",
+          "root_id",
+          "generation",
+          "name",
+          "path",
+          "outcome",
+          "error"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_pages": {
+      "before": {
+        "columns": [
+          "id",
+          "pack_id",
+          "path",
+          "relative_path",
+          "ordinal",
+          "width",
+          "height",
+          "size",
+          "format",
+          "signature",
+          "sha256",
+          "error",
+          "thumbnail",
+          "seen_scan"
+        ],
+        "count": 34745,
+        "digest": "2e293bb9303eb94f523251a3013a43098ed239aa71574f9a86ce98843eeadd1f"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "pack_id",
+          "path",
+          "relative_path",
+          "ordinal",
+          "width",
+          "height",
+          "size",
+          "format",
+          "signature",
+          "sha256",
+          "error",
+          "thumbnail",
+          "seen_scan"
+        ],
+        "count": 34745,
+        "digest": "2e293bb9303eb94f523251a3013a43098ed239aa71574f9a86ce98843eeadd1f"
+      }
+    },
+    "pack_preferences": {
+      "before": {
+        "columns": [
+          "pack_id",
+          "mode",
+          "direction",
+          "gap",
+          "fit",
+          "revision"
+        ],
+        "count": 6,
+        "digest": "0e2581eb411952449b58bac16a858212e65bee01b91b9eaa43c1c3be4004d063"
+      },
+      "after": {
+        "columns": [
+          "pack_id",
+          "mode",
+          "direction",
+          "gap",
+          "fit",
+          "revision"
+        ],
+        "count": 6,
+        "digest": "0e2581eb411952449b58bac16a858212e65bee01b91b9eaa43c1c3be4004d063"
+      }
+    },
+    "pack_progress": {
+      "before": {
+        "columns": [
+          "pack_id",
+          "page_id",
+          "offset_ratio",
+          "completed",
+          "revision",
+          "updated_at",
+          "content_version",
+          "recovery_reason"
+        ],
+        "count": 6,
+        "digest": "24730d498dbe57d770af5ad044bc2620c2d27bf62374badba30207eb40e060d9"
+      },
+      "after": {
+        "columns": [
+          "pack_id",
+          "page_id",
+          "offset_ratio",
+          "completed",
+          "revision",
+          "updated_at",
+          "content_version",
+          "recovery_reason"
+        ],
+        "count": 6,
+        "digest": "24730d498dbe57d770af5ad044bc2620c2d27bf62374badba30207eb40e060d9"
+      }
+    },
+    "pack_purge_entries": {
+      "before": {
+        "columns": [
+          "name",
+          "path",
+          "image_count",
+          "image_bytes",
+          "retained_entries",
+          "id",
+          "plan_id",
+          "pack_id",
+          "trash_id",
+          "source",
+          "manifest",
+          "digest",
+          "error"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "name",
+          "path",
+          "image_count",
+          "image_bytes",
+          "retained_entries",
+          "id",
+          "plan_id",
+          "pack_id",
+          "trash_id",
+          "source",
+          "manifest",
+          "digest",
+          "error"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_purge_executions": {
+      "before": {
+        "columns": [
+          "id",
+          "plan_id"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "plan_id"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_purge_plans": {
+      "before": {
+        "columns": [
+          "historical",
+          "id",
+          "request_key",
+          "request_hash",
+          "expires_at",
+          "digest"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "historical",
+          "id",
+          "request_key",
+          "request_hash",
+          "expires_at",
+          "digest"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_purge_steps": {
+      "before": {
+        "columns": [
+          "id",
+          "parent_id",
+          "kind",
+          "page_id",
+          "relative_path",
+          "source_signature",
+          "expected_hash",
+          "expected_size",
+          "state",
+          "phase",
+          "outcome",
+          "error"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "state_counts": {}
+      },
+      "after": {
+        "columns": [
+          "id",
+          "parent_id",
+          "kind",
+          "page_id",
+          "relative_path",
+          "source_signature",
+          "expected_hash",
+          "expected_size",
+          "state",
+          "phase",
+          "outcome",
+          "error"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "state_counts": {}
+      }
+    },
+    "pack_restore_batches": {
+      "before": {
+        "columns": [
+          "plan_id",
+          "ordinal",
+          "operation_id"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "plan_id",
+          "ordinal",
+          "operation_id"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_restore_members": {
+      "before": {
+        "columns": [
+          "plan_id",
+          "ordinal",
+          "pack_id",
+          "trash_id",
+          "name",
+          "path",
+          "source",
+          "phase",
+          "outcome",
+          "error"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "plan_id",
+          "ordinal",
+          "pack_id",
+          "trash_id",
+          "name",
+          "path",
+          "source",
+          "phase",
+          "outcome",
+          "error"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_restore_plans": {
+      "before": {
+        "columns": [
+          "id",
+          "request_key",
+          "request_hash",
+          "historical",
+          "stop_requested",
+          "batch_size"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "request_key",
+          "request_hash",
+          "historical",
+          "stop_requested",
+          "batch_size"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_session_entries": {
+      "before": {
+        "columns": [
+          "session_id",
+          "ordinal",
+          "pack_id"
+        ],
+        "count": 53,
+        "digest": "c9fb6cd5b8deeaf3d75b7bdf476ae77b047327fd71f1dd734de08cd9d8d18067"
+      },
+      "after": {
+        "columns": [
+          "session_id",
+          "ordinal",
+          "pack_id"
+        ],
+        "count": 53,
+        "digest": "c9fb6cd5b8deeaf3d75b7bdf476ae77b047327fd71f1dd734de08cd9d8d18067"
+      }
+    },
+    "pack_sessions": {
+      "before": {
+        "columns": [
+          "id",
+          "request_id",
+          "request_hash",
+          "scope",
+          "source",
+          "order",
+          "cursor",
+          "revision",
+          "finished",
+          "candidate_count",
+          "created_at"
+        ],
+        "count": 7,
+        "digest": "470467442f903b5181c5322331b9cde899442808e348c3a06a4d2406f1e8416d"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "request_id",
+          "request_hash",
+          "scope",
+          "source",
+          "order",
+          "cursor",
+          "revision",
+          "finished",
+          "candidate_count",
+          "created_at"
+        ],
+        "count": 7,
+        "digest": "470467442f903b5181c5322331b9cde899442808e348c3a06a4d2406f1e8416d"
+      }
+    },
+    "pack_tag_definitions": {
+      "before": {
+        "columns": [
+          "id",
+          "name",
+          "created_at"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "name",
+          "created_at"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_tag_links": {
+      "before": {
+        "columns": [
+          "pack_id",
+          "tag_id"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "after": {
+        "columns": [
+          "pack_id",
+          "tag_id"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "pack_trash_items": {
+      "before": {
+        "columns": [
+          "id",
+          "pack_id",
+          "operation_id",
+          "root_path",
+          "original_path",
+          "manifest",
+          "status",
+          "deleted_at",
+          "purged_pages"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_counts": {}
+      },
+      "after": {
+        "columns": [
+          "id",
+          "pack_id",
+          "operation_id",
+          "root_path",
+          "original_path",
+          "manifest",
+          "status",
+          "deleted_at",
+          "purged_pages"
+        ],
+        "count": 0,
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "status_counts": {}
+      }
+    },
+    "packs": {
+      "before": {
+        "columns": [
+          "id",
+          "root_id",
+          "path",
+          "location_key",
+          "name",
+          "status",
+          "error",
+          "device",
+          "inode",
+          "content_version",
+          "page_count",
+          "generation",
+          "seen_scan",
+          "created_at",
+          "directory_signature"
+        ],
+        "count": 687,
+        "digest": "828f3ed19190c13e697d623ff8cf96b8ea8f9e7b06922a2cc7261357c75aa30c",
+        "status_counts": {
+          "available": 687
+        }
+      },
+      "after": {
+        "columns": [
+          "id",
+          "root_id",
+          "path",
+          "location_key",
+          "name",
+          "status",
+          "error",
+          "device",
+          "inode",
+          "content_version",
+          "page_count",
+          "generation",
+          "seen_scan",
+          "created_at",
+          "directory_signature"
+        ],
+        "count": 687,
+        "digest": "828f3ed19190c13e697d623ff8cf96b8ea8f9e7b06922a2cc7261357c75aa30c",
+        "status_counts": {
+          "available": 687
+        }
+      }
+    },
+    "playback_rounds": {
+      "before": {
+        "columns": [
+          "id",
+          "request_id",
+          "request_hash",
+          "order",
+          "scope",
+          "cursor",
+          "revision",
+          "finished",
+          "candidate_count",
+          "created_at",
+          "membership",
+          "source",
+          "sort",
+          "sequence_revision"
+        ],
+        "count": 71,
+        "digest": "fe1311c300873e2d8e44a245d1f645e9d7e323f5f21906b7f555e746798157d4"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "request_id",
+          "request_hash",
+          "order",
+          "scope",
+          "cursor",
+          "revision",
+          "finished",
+          "candidate_count",
+          "created_at",
+          "membership",
+          "source",
+          "sort",
+          "sequence_revision"
+        ],
+        "count": 71,
+        "digest": "fe1311c300873e2d8e44a245d1f645e9d7e323f5f21906b7f555e746798157d4"
+      }
+    },
+    "recent_entries": {
+      "before": {
+        "columns": [
+          "id",
+          "kind",
+          "video_id",
+          "pack_id",
+          "opened_at"
+        ],
+        "count": 8,
+        "digest": "ffbae6d71bbfa03ab04492129dd033d8c84be928c007aad84ba1c8b6694f82db"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "kind",
+          "video_id",
+          "pack_id",
+          "opened_at"
+        ],
+        "count": 8,
+        "digest": "ffbae6d71bbfa03ab04492129dd033d8c84be928c007aad84ba1c8b6694f82db"
+      }
+    },
+    "request_records": {
+      "before": {
+        "columns": [
+          "id",
+          "fingerprint",
+          "result",
+          "created_at"
+        ],
+        "count": 832,
+        "digest": "e65c1b4b3cd0e8c9d0721b3a829473819d670a2c5acd8c45c446f35aa09baaf3"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "fingerprint",
+          "result",
+          "created_at"
+        ],
+        "count": 832,
+        "digest": "e65c1b4b3cd0e8c9d0721b3a829473819d670a2c5acd8c45c446f35aa09baaf3"
+      }
+    },
+    "roots": {
+      "before": {
+        "columns": [
+          "id",
+          "name",
+          "path",
+          "mount_id",
+          "available",
+          "error",
+          "last_scan",
+          "kind",
+          "enabled"
+        ],
+        "count": 2,
+        "digest": "43136bd25120e10ea3c2d293da56a0ccbc84f1611637b8281037d5dfa35b91b8"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "name",
+          "path",
+          "mount_id",
+          "available",
+          "error",
+          "last_scan",
+          "kind",
+          "enabled"
+        ],
+        "count": 2,
+        "digest": "c996f628dc9766f9bc0a4b7f7f978dce1942ccf553da7cca27642a515a8aa397"
+      }
+    },
+    "round_entries": {
+      "before": {
+        "columns": [
+          "round_id",
+          "ordinal",
+          "video_id",
+          "source_ordinal"
+        ],
+        "count": 36872,
+        "digest": "3f716fe4d11ed96cbf8222c71e80917154db1329ea35c8a554d970b70937d1da"
+      },
+      "after": {
+        "columns": [
+          "round_id",
+          "ordinal",
+          "video_id",
+          "source_ordinal"
+        ],
+        "count": 36872,
+        "digest": "3f716fe4d11ed96cbf8222c71e80917154db1329ea35c8a554d970b70937d1da"
+      }
+    },
+    "settings": {
+      "before": {
+        "columns": [
+          "key",
+          "value"
+        ],
+        "count": 9,
+        "digest": "595741684cf58a7b5284ce55b60bdaeeae30b14424d09da52ce3ea15a7532286"
+      },
+      "after": {
+        "columns": [
+          "key",
+          "value"
+        ],
+        "count": 11,
+        "digest": "8770b4b8b1c69c4bd8a1830e77c8e39b4b9565ffdbbe829758e39ee6982ff897"
+      }
+    },
+    "tags": {
+      "before": {
+        "columns": [
+          "id",
+          "name",
+          "created_at"
+        ],
+        "count": 110,
+        "digest": "5cc70947f63473cf951e47bdf33ab2ee70b8b8db85cd469ee22f478308e39012"
+      },
+      "after": {
+        "columns": [
+          "id",
+          "name",
+          "created_at"
+        ],
+        "count": 110,
+        "digest": "5cc70947f63473cf951e47bdf33ab2ee70b8b8db85cd469ee22f478308e39012"
+      }
+    },
+    "tasks": {
+      "before": {
+        "columns": [
+          "id",
+          "kind",
+          "status",
+          "phase",
+          "created_at",
+          "finished_at",
+          "result",
+          "error"
+        ],
+        "count": 2279,
+        "digest": "cb6eed0dc888d8f16bbd8c6d5a33e5dc3d56a995aaa7bc8e304691e8f060d27b",
+        "status_counts": {
+          "completed": 2276,
+          "interrupted": 3
+        }
+      },
+      "after": {
+        "columns": [
+          "id",
+          "kind",
+          "status",
+          "phase",
+          "created_at",
+          "finished_at",
+          "result",
+          "error"
+        ],
+        "count": 2280,
+        "digest": "011b6e1111991884b81c064a6b79b0cf952f5464c94cf3916abbb81945fff207",
+        "status_counts": {
+          "completed": 2276,
+          "interrupted": 3,
+          "running": 1
+        }
+      }
+    },
+    "trash_items": {
+      "before": {
+        "columns": [
+          "id",
+          "video_id",
+          "operation_id",
+          "root_path",
+          "original_path",
+          "trash_path",
+          "sha256",
+          "size",
+          "status",
+          "deleted_at"
+        ],
+        "count": 926,
+        "digest": "2b0991cfdcd4db18c7418004f75bba0069bc6a3f05f9ec971c7f3c135958e166",
+        "status_counts": {
+          "purged": 906,
+          "restored": 20
+        }
+      },
+      "after": {
+        "columns": [
+          "id",
+          "video_id",
+          "operation_id",
+          "root_path",
+          "original_path",
+          "trash_path",
+          "sha256",
+          "size",
+          "status",
+          "deleted_at"
+        ],
+        "count": 926,
+        "digest": "2b0991cfdcd4db18c7418004f75bba0069bc6a3f05f9ec971c7f3c135958e166",
+        "status_counts": {
+          "purged": 906,
+          "restored": 20
+        }
+      }
+    },
+    "video_tags": {
+      "before": {
+        "columns": [
+          "video_id",
+          "tag_id"
+        ],
+        "count": 2110,
+        "digest": "178d714d699dd48998261b483b35138d0a1b2151ec130041168df9788ab5fd18"
+      },
+      "after": {
+        "columns": [
+          "video_id",
+          "tag_id"
+        ],
+        "count": 2110,
+        "digest": "178d714d699dd48998261b483b35138d0a1b2151ec130041168df9788ab5fd18"
+      }
+    },
+    "videos": {
+      "before": {
+        "columns": [
+          "id",
+          "root_id",
+          "path",
+          "location_key",
+          "name",
+          "status",
+          "error",
+          "size",
+          "device",
+          "inode",
+          "mtime_ns",
+          "ctime_ns",
+          "sha256",
+          "quick_hash",
+          "duration",
+          "width",
+          "height",
+          "rotation",
+          "type",
+          "video_codec",
+          "audio_codec",
+          "container",
+          "thumbnail",
+          "seen_scan",
+          "created_at",
+          "generation"
+        ],
+        "count": 5285,
+        "digest": "8175a9221bf7f946214078a5edf3f8ff97f46b3acd0395861174d6bf459558ce",
+        "status_counts": {
+          "available": 598,
+          "deleted": 3406,
+          "superseded": 1281
+        }
+      },
+      "after": {
+        "columns": [
+          "id",
+          "root_id",
+          "path",
+          "location_key",
+          "name",
+          "status",
+          "error",
+          "size",
+          "device",
+          "inode",
+          "mtime_ns",
+          "ctime_ns",
+          "sha256",
+          "quick_hash",
+          "duration",
+          "width",
+          "height",
+          "rotation",
+          "type",
+          "video_codec",
+          "audio_codec",
+          "container",
+          "thumbnail",
+          "seen_scan",
+          "created_at",
+          "generation"
+        ],
+        "count": 5285,
+        "digest": "7311cb7edf753632541b63c2ea6ecdfaab052094de56093d7682abc2c020f238",
+        "status_counts": {
+          "available": 598,
+          "deleted": 3406,
+          "superseded": 1281
+        }
+      }
+    }
+  }
+}
