@@ -28,13 +28,20 @@ def legacy_move_receipts(monkeypatch):
         prepare(self, session, operation, requested_id)
         if operation.kind != "trash":
             return
-        step = session.scalar(select(FileStep).where(
-            FileStep.operation_id == operation.id, FileStep.requested_id == requested_id
-        ))
+        step = session.scalar(
+            select(FileStep).where(
+                FileStep.operation_id == operation.id, FileStep.requested_id == requested_id
+            )
+        )
         if step and step.outcome == "pending":
-            step.destination = str((self.settings.trash_dir or Path(step.root_path) / ".video-viewer-trash")
-                                   / step.trash_id / Path(step.source).name)
-            step.copy_path = str(Path(step.destination).parent / ".video-viewer-tmp" / (step.id + ".part"))
+            step.destination = str(
+                (self.settings.trash_dir or Path(step.root_path) / ".video-viewer-trash")
+                / step.trash_id
+                / Path(step.source).name
+            )
+            step.copy_path = str(
+                Path(step.destination).parent / ".video-viewer-tmp" / (step.id + ".part")
+            )
 
     monkeypatch.setattr(FileOperations, "prepare_step", old_intent)
 

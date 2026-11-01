@@ -155,10 +155,14 @@ def reconcile(payload, current, mapping, settings, stop):
             original = mapped_path(item["original_path"], old_root["path"], root["path"])
             item["original_path"] = original or item["original_path"]
             item["root_path"] = root["path"]
-            item["trash_path"] = item["original_path"] if logical else str(
-                (settings.trash_dir or Path(root["path"]) / ".video-viewer-trash")
-                / item["id"]
-                / Path(item["original_path"]).name
+            item["trash_path"] = (
+                item["original_path"]
+                if logical
+                else str(
+                    (settings.trash_dir or Path(root["path"]) / ".video-viewer-trash")
+                    / item["id"]
+                    / Path(item["original_path"]).name
+                )
             )
     for video in tables["videos"]:
         check_stop()
@@ -186,8 +190,9 @@ def reconcile(payload, current, mapping, settings, stop):
         ):
             marked = None
         if marked is None and (not known or known["status"] != "available"):
-            marked = next((item for item in trash_by_video[video["id"]]
-                           if item["status"] == "active"), None)
+            marked = next(
+                (item for item in trash_by_video[video["id"]] if item["status"] == "active"), None
+            )
         if marked and marked["trash_path"] == marked["original_path"]:
             result = verified(marked["trash_path"], video, is_trash=True, item=marked)
             for previous in trash_by_video[video["id"]]:
@@ -195,11 +200,19 @@ def reconcile(payload, current, mapping, settings, stop):
                     previous["status"] = "restored"
             trash[marked["id"]] = copy.deepcopy(marked)
             video["status"], video["path"], video["location_key"] = (
-                "trash", marked["original_path"], marked["original_path"]
+                "trash",
+                marked["original_path"],
+                marked["original_path"],
             )
             video["error"] = None if result else "trash_missing"
             if result:
-                video["device"], video["inode"], video["size"], video["mtime_ns"], video["ctime_ns"] = result
+                (
+                    video["device"],
+                    video["inode"],
+                    video["size"],
+                    video["mtime_ns"],
+                    video["ctime_ns"],
+                ) = result
             continue
         candidates = []
         if known and known["sha256"] == video["sha256"] and known["status"] == "available":

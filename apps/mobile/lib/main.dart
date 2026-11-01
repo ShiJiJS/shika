@@ -9,12 +9,13 @@ import 'library/credentials.dart';
 import 'library/server_repository.dart';
 import 'library/file_command_store.dart';
 import 'library/backup_work_store.dart';
+import 'library/backup_file_picker.dart';
 import 'ui/home.dart';
 import 'ui/paper.dart';
 import 'ui/preferences.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+/// Shared by the real entry point and isolated native startup checks.
+Future<void> configureApplicationWindow() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -24,6 +25,11 @@ Future<void> main() async {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureApplicationWindow();
   const demo =
       String.fromEnvironment('LIBRARY_MODE', defaultValue: 'server') == 'demo';
   final LibraryRepository repository = demo
@@ -39,6 +45,9 @@ Future<void> main() async {
       : ServerLibraryRepository(
           SecureCredentialStore(),
           fileCommands: SecureFileCommandStore(),
+          packCommands: SecureFileCommandStore(
+            key: 'video_viewer.pack_commands.v1',
+          ),
           backupWork: SecureBackupWorkStore(),
           address: const String.fromEnvironment(
             'SERVER_ADDRESS',
@@ -70,14 +79,18 @@ class VideoViewerApp extends StatefulWidget {
     required this.repository,
     this.initialError,
     this.backupFiles,
+    this.backupArchiveFiles = const NativeBackupArchiveFiles(),
     this.preferences,
     this.initializeRepository = false,
+    this.navigatorObservers = const [],
   });
   final LibraryRepository repository;
   final String? initialError;
   final BackupFiles? backupFiles;
+  final BackupArchiveFiles backupArchiveFiles;
   final UiPreferences? preferences;
   final bool initializeRepository;
+  final List<NavigatorObserver> navigatorObservers;
   @override
   State<VideoViewerApp> createState() => _VideoViewerAppState();
 }
@@ -96,27 +109,37 @@ class _VideoViewerAppState extends State<VideoViewerApp> {
     builder: (context, _) => MaterialApp(
       title: 'Video Viewer',
       debugShowCheckedModeBanner: false,
+      navigatorObservers: widget.navigatorObservers,
       theme: Paper.theme,
       darkTheme: Paper.darkTheme,
       themeMode: preferences.dark ? ThemeMode.dark : ThemeMode.light,
-      builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: preferences.dark
-              ? Brightness.light
-              : Brightness.dark,
-          systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
-          systemNavigationBarIconBrightness: preferences.dark
-              ? Brightness.light
-              : Brightness.dark,
+      themeAnimationDuration: Duration.zero,
+      builder: (context, child) => PaperAppearanceTheme(
+        data: Theme.of(context),
+        reduced: MediaQuery.disableAnimationsOf(context),
+        child: Builder(
+          builder: (context) => AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: preferences.dark
+                  ? Brightness.light
+                  : Brightness.dark,
+              systemNavigationBarColor: Theme.of(context)
+                  .scaffoldBackgroundColor,
+              systemNavigationBarIconBrightness: preferences.dark
+                  ? Brightness.light
+                  : Brightness.dark,
+            ),
+            child: PaperControlTheme(child: child!),
+          ),
         ),
-        child: child!,
       ),
       home: LibraryHome(
         key: ObjectKey(widget.repository),
         repository: widget.repository,
         initialError: widget.initialError,
         backupFiles: widget.backupFiles,
+        backupArchiveFiles: widget.backupArchiveFiles,
         preferences: preferences,
         initializeRepository: widget.initializeRepository,
       ),

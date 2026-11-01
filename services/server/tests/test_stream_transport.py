@@ -8,11 +8,7 @@ import time
 import httpx
 
 from .conftest import put
-
-
-def process_kib(pid):
-    with open(f"/proc/{pid}/status") as status:
-        return int(next(line.split()[1] for line in status if line.startswith("VmRSS:")))
+from .http_streams import available_stream, process_kib
 
 
 def test_real_http_backpressure_cancellation_and_bounded_memory(environment, samples):
@@ -70,7 +66,7 @@ def test_real_http_backpressure_cancellation_and_bounded_memory(environment, sam
             client.headers["Authorization"] = "Bearer " + login.json()["access_token"]
             while time.monotonic() < deadline:
                 listing = client.get("/api/v1/videos").json()
-                if listing["total"] == 1 and client.get('/api/v1/library-state').json()['ready']:
+                if listing["total"] == 1 and client.get("/api/v1/library-state").json()["ready"]:
                     break
                 time.sleep(0.03)
             assert listing["total"] == 1
@@ -79,7 +75,7 @@ def test_real_http_backpressure_cancellation_and_bounded_memory(environment, sam
             baseline_fds = len(os.listdir(f"/proc/{server.pid}/fd"))
             peak_memory = baseline_memory
             for _ in range(3):
-                with client.stream("GET", route) as response:
+                with available_stream(client, route) as response:
                     assert response.status_code == 200
                     assert response.headers["content-length"] == str(source.stat().st_size)
                     chunks = response.iter_raw(chunk_size=1024)

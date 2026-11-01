@@ -9,6 +9,8 @@ import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/player.dart';
 
 class PagedLibrary extends DemoLibraryRepository {
+  @override
+  bool get supportsFixedPreviews => false;
   PagedLibrary() : super(MemoryStateStore(), latency: Duration.zero) {
     libraryPreparation.value = const LibraryPreparation(
       ready: false,

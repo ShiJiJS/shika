@@ -4,6 +4,7 @@ import 'package:video_viewer/library/demo_repository.dart';
 import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/state_store.dart';
 import 'package:video_viewer/main.dart';
+import 'package:video_viewer/ui/paper_management.dart';
 
 class _PendingRestore extends DemoLibraryRepository {
   _PendingRestore() : super(MemoryStateStore(), scenario: DemoScenario.empty);
@@ -32,7 +33,13 @@ void main() {
       await t.tap(find.byKey(const Key('nav-tags')));
       await t.pumpAndSettle();
       expect(
-        t.widget<TextButton>(find.widgetWithText(TextButton, '新建标签')).onPressed,
+        t
+            .widget<IconButton>(
+              find.byWidgetPredicate(
+                (widget) => widget is IconButton && widget.tooltip == '新建视频标签',
+              ),
+            )
+            .onPressed,
         isNull,
       );
       await t.tap(find.byKey(const Key('nav-settings')));
@@ -40,9 +47,7 @@ void main() {
       await t.tap(find.text('备份与恢复'));
       await t.pumpAndSettle();
       expect(
-        t
-            .widget<FilledButton>(find.widgetWithText(FilledButton, '导出备份'))
-            .onPressed,
+        t.widget<PaperActionRow>(find.byKey(const Key('backup-export'))).onTap,
         isNull,
       );
       await t.tap(find.byTooltip('返回设置'));
@@ -51,7 +56,7 @@ void main() {
       await t.pumpAndSettle();
       expect(
         t
-            .widget<FilledButton>(find.widgetWithText(FilledButton, '连接'))
+            .widget<FilledButton>(find.byKey(const Key('connection-save')))
             .onPressed,
         isNotNull,
       );
@@ -69,9 +74,7 @@ void main() {
       await t.pumpAndSettle();
       expect(repo.backupRestorePending, isFalse);
       expect(
-        t
-            .widget<FilledButton>(find.widgetWithText(FilledButton, '导出备份'))
-            .onPressed,
+        t.widget<PaperActionRow>(find.byKey(const Key('backup-export'))).onTap,
         isNotNull,
       );
       await t.pumpWidget(const SizedBox());

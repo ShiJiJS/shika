@@ -20,9 +20,11 @@ def test_unchanged_batch_purge_does_not_read_full_media(library, samples, monkey
 
     monkeypatch.setattr(client.app.state.files.transfer, "digest", forbidden)
     rows = client.get("/api/v1/trash").json()["items"]
-    result, _ = operation(client, "/api/v1/trash/permanent", {
-        "trash_ids": [row["id"] for row in rows], "confirmed": True
-    })
+    result, _ = operation(
+        client,
+        "/api/v1/trash/permanent",
+        {"trash_ids": [row["id"] for row in rows], "confirmed": True},
+    )
     assert result["result"]["succeeded"] == 8, result
     assert not list(media.glob("*.mov"))
 
@@ -40,9 +42,9 @@ def test_changed_same_size_with_restored_mtime_is_not_fast_deleted(library, samp
     path.write_bytes(modified)
     os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns))
     row = client.get("/api/v1/trash").json()["items"][0]
-    result, _ = operation(client, "/api/v1/trash/permanent", {
-        "trash_ids": [row["id"]], "confirmed": True
-    })
+    result, _ = operation(
+        client, "/api/v1/trash/permanent", {"trash_ids": [row["id"]], "confirmed": True}
+    )
     assert result["result"]["succeeded"] == 0
     assert path.read_bytes() == modified
 
@@ -67,7 +69,12 @@ def test_external_folder_deletion_sync_and_confirmed_metadata_cleanup(library, s
     assert client.get("/api/v1/videos?status=missing").json()["total"] == 0
     assert (media / "keep.mp4").exists()
     assert not path.exists()
-    assert next(t for t in client.get("/api/v1/tags").json()["items"] if t["id"] == marked["id"])["video_count"] == 0
+    assert (
+        next(t for t in client.get("/api/v1/tags").json()["items"] if t["id"] == marked["id"])[
+            "video_count"
+        ]
+        == 0
+    )
     put(samples / "h264.mov", path)
     scan(client)
     fresh = next(v for v in client.get("/api/v1/videos").json()["items"] if v["name"] == "gone.mov")
@@ -85,12 +92,16 @@ def test_offline_root_or_returned_file_is_not_forgotten(library, samples):
     away = media.with_name("offline")
     media.rename(away)
     scan(client)
-    response = client.post("/api/v1/videos/forget-missing", json={"request_id": "offline", "confirmed": True})
+    response = client.post(
+        "/api/v1/videos/forget-missing", json={"request_id": "offline", "confirmed": True}
+    )
     assert response.json()["removed"] == 0
     assert response.json()["skipped"] == 1
     away.rename(media)
     scan(client)
     put(samples / "h264.mov", path)
-    response = client.post("/api/v1/videos/forget-missing", json={"request_id": "returned", "confirmed": True})
+    response = client.post(
+        "/api/v1/videos/forget-missing", json={"request_id": "returned", "confirmed": True}
+    )
     assert response.json() == {"removed": 0, "skipped": 1}
     assert path.exists()

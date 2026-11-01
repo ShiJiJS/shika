@@ -1,0 +1,722 @@
+{
+  "requirements_source": "ACCEPTANCE.md",
+  "candidate_source": "12d6ca67ef3a8b307894468923dc08e612e02587",
+  "candidate_code": 22,
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "does_not_replace_historical_evidence_or_target_acceptance": true,
+  "items": [
+    {
+      "id": "NAV-01",
+      "reference_state": "home / packs",
+      "requirement": "冷启动与连接成功后默认媒体库；四入口为媒体库、标签、最近、设置，无独立预览 tab",
+      "owner": "LF4",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "正常code18连接隔离服务后显示媒体库及四入口；只记录当前首页，未以此证明所有冷启动/兼容组合。",
+          "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Three actual cold starts with changed PIDs return to the library and four destinations; legacy-service and target-device combinations remain open.",
+          "candidate_code": 21
+        }
+      ]
+    },
+    {
+      "id": "NAV-02",
+      "reference_state": "库→预览/阅读→返回",
+      "requirement": "返回原来源、类型、搜索、筛选和列表 anchor；系统返回先退出全屏/面板",
+      "owner": "LF3/4/5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Three normal21 pack reading cycles preserve search and exact deep-list anchor; release search focus on return. Panels and immersive back covered in these cycles; all other combinations remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26搜索图包菜单关闭/移除取消结束输入焦点，保留搜索；三轮恢复后阅读返回最近。未替代全部深列表/来源/设备组合。",
+          "candidate_code": 26
+        }
+      ]
+    },
+    {
+      "id": "NAV-03",
+      "reference_state": "分类切换",
+      "requirement": "视频/图包搜索、筛选、排序、批选状态互不污染；最近来源不沿用媒体库条件",
+      "owner": "LF4",
+      "current_candidate": "partially_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Video .mp4 and pack Scope queries remain independent; same-name tag selections survive kind switches; recent-pack scope has no library search or tags. Sort and batch-selection combinations remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Three normal21 flows plus independent video1/pack27 selection, independent initial search and cancelled pack tag append; tag tables unchanged.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-catalog-recovery/README.md",
+          "scope": "Normal22 six library read-recovery cycles preserve typed search and kind, new NoLate zero remains after old Scope response release; does not replace full sort/batch/recent requirement.",
+          "candidate_code": 22
+        },
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "三轮普通26从最近续读建立准确4个最近图包成员、空搜索，未继承媒体库04-long搜索；其余筛选/排序/批选组合保留。",
+          "candidate_code": 26
+        }
+      ]
+    },
+    {
+      "id": "LIB-01",
+      "reference_state": "home",
+      "requirement": "两列视频卡片、名称/目录搜索、目录子树、标签 AND、方向/时长/类型，分页与空结果；可预览完整匹配范围",
+      "owner": "LF3/4",
+      "current_candidate": "partially_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "当前正常首页两列视频卡片对照；本段未完成搜索/筛选/分页/完整范围主流程。",
+          "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 video .mp4 search opens a fixed two-video scope; tag intersection opens one video. Other property and failure combinations remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Three real normal21 search+parent-directory+tag+orientation+duration+type combinations open exact14 members, cancel preserves14, long-duration/MOV zero and disabled preview.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal22 summary now displays orientation/duration/type; actual zero result, clear29 and combined14 with exact source scope checked. Full normal21 combinations remain labelled21.",
+          "candidate_code": 22
+        }
+      ]
+    },
+    {
+      "id": "LIB-02",
+      "reference_state": "packs",
+      "requirement": "一包一卡，标题/目录/可用作者搜索，封面/标题/真实页数/阅读状态，目录/标签/阅读状态筛选，继续阅读",
+      "owner": "LF2/4/5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "隔离服务实际扫描4包24图，经媒体库打开夏日祭并点击至第3/6页；本段未完成全部搜索/筛选/续读组合。",
+          "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 has 31 packs/186 pages, Scope matches 27; opens Scope26 from actual paginated list and resumes page3. Other metadata and filters remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Three normal21 pack folder/read-state cases: unread26, reading1 after real open, completed0, single folder1, negative search0, reset27; other metadata/filters remain open.",
+          "candidate_code": 21
+        }
+      ]
+    },
+    {
+      "id": "LIB-03",
+      "reference_state": "长列表",
+      "requirement": "超过一页时自动分页；旧请求不覆盖新筛选；失败留卡片/滚动；没有结果不扩大为全库",
+      "owner": "LF2/4",
+      "current_candidate": "partially_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 scrolls five times past the 24-item page before opening Scope26 in a 27-member scope. Stale requests, failures and empty results remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal21 first24 video list opens exact27-member scope; video and pack select all exact27 IDs; empty cases do not widen. Read failure and stale-request scenarios remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-catalog-recovery/README.md",
+          "scope": "Normal22 library, video/pack each3: offset24 503 retains cards and exact viewport-relative anchor; manual same offset/query returns exact final3 and Scope27 visible; first-read failure retries same empty search; release old Scope27/first24 response after new zero leaves new zero. Controller23 uncancellable-late tests separate. Deep return/prepend and other explicit source combinations remain open.",
+          "candidate_code": 22
+        }
+      ]
+    },
+    {
+      "id": "TAG-01",
+      "reference_state": "video-tags / pack-tags",
+      "requirement": "两套标签 CRUD/搜索/计数独立；同名可共存，跨类型 ID 拒绝；改名不丢关联",
+      "owner": "LF1/4",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 equal tag names exist in independent video/pack namespaces. This segment does not recheck CRUD or invalid IDs.",
+          "candidate_code": 21
+        }
+      ]
+    },
+    {
+      "id": "TAG-02",
+      "reference_state": "标签选择/批量",
+      "requirement": "多标签取交集；单项替换，批量追加保留未选标签；全选语义明确且覆盖匹配分页",
+      "owner": "LF1/4",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 tag AND: video2 to1 and pack31 to27, independent retained selections. Assignment and batch all-selection remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal21 GET selections and readbacks match exact27 typed Scope IDs, video1/pack27 selections survive switches and pack append cancel writes no tags; assignment and failure combinations remain open.",
+          "candidate_code": 21
+        }
+      ]
+    },
+    {
+      "id": "PRE-01",
+      "reference_state": "预览此范围",
+      "requirement": "名称搜索+目录+标签+属性+来源都进入服务端候选；只加载前 24 条时仍可预览全部匹配结果",
+      "owner": "LF3",
+      "current_candidate": "partially_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal21 first24 list opens27 exact video members; three attribute/directory combinations open14 exact descendants.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal22 combined search+parent directory+tag+orientation+duration+MP4 opens exact14 members, not a full27 pagination rerun.",
+          "candidate_code": 22
+        }
+      ]
+    },
+    {
+      "id": "PRE-02",
+      "reference_state": "video / 队列",
+      "requirement": "从点击项开始；固定候选可回看、顺序/随机不越界；末尾选择退出/重来，不跳全库",
+      "owner": "LF3",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PRE-03",
+      "reference_state": "预览中改标签",
+      "requirement": "当前项不跳走，既有候选不重排；标签删除/新增内容不静默重建轮次；返回列表才重新查询",
+      "owner": "LF3",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PRE-04",
+      "reference_state": "现有原生播放器",
+      "requirement": "暂停、拖进度、倍速、长按临时 2 倍、快速滑动、横向全屏、亮度/音量保留；仅当前发声",
+      "owner": "LF3",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PRE-05",
+      "reference_state": "生命周期",
+      "requirement": "最多当前±1 解码器，关闭相邻准备只保留当前；后台/离页释放，旧回执不拉回画面，前台保持用户暂停意图",
+      "owner": "LF3",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PKG-01",
+      "reference_state": "roots→图包",
+      "requirement": "直属文件夹为包、子目录为同包页；自然排序 1/2/10、稳定页 ID；不会为每张图片建媒体库条目",
+      "owner": "LF2",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PKG-02",
+      "reference_state": "同步外部变更",
+      "requirement": "新增/删页、唯一可识别改名保留包身份；歧义保留缺失；离线不清理；停用不删标签/进度",
+      "owner": "LF1/2",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "PKG-03",
+      "reference_state": "图片获取",
+      "requirement": "仅授权 ID 可读，路径越界/符号链接/替换拒绝；单页/缩略图失败能重试或跳过，不阻塞整包",
+      "owner": "LF2",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "READ-01",
+      "reference_state": "reader",
+      "requirement": "横向翻页，左右方向可切，完整适配画面；本包总览/页码跳转可用，缩放与翻页不误触",
+      "owner": "LF5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "同一正常安装包三轮实际双指放大/平移/系统返回，九状态同页且完整进度对象不变、图像返回基线；左右方向/总览/跳页等仍需当前整版补齐，未通过整项。",
+          "candidate_code": 18
+        },
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 three LTR/RTL page cycles plus overview selection; normal20 three native zoom/pan/back cycles recorded separately, unchanged reader sources. Other same-build combinations remain open.",
+          "candidate_code": 21
+        }
+      ]
+    },
+    {
+      "id": "READ-02",
+      "reference_state": "vertical",
+      "requirement": "纵向拼接惰性加载，可开关间距；尺寸占位避免图片到达后位置跳动；滚到底不自动换包",
+      "owner": "LF5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 three vertical-mode and gap cycles, ending at page6 without auto-next-pack. Large-pack lazy layout remains open.",
+          "candidate_code": 21
+        }
+      ]
+    },
+    {
+      "id": "READ-03",
+      "reference_state": "readersettings",
+      "requirement": "默认模式/方向/间距与每包覆盖独立；模式切换保留同一图片位置，已阅读包不被全局默认覆盖",
+      "owner": "LF5/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 three horizontal/vertical same-image transitions and retained per-pack overrides. All global-default combinations remain open.",
+          "candidate_code": 21
+        }
+      ]
+    },
+    {
+      "id": "READ-04",
+      "reference_state": "沉浸/进度/重开",
+      "requirement": "工具显隐和退出可达；保存 pageId+页内比例；重开续读，已删页明确回退最近有效页",
+      "owner": "LF5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 immersive/range back, page3 resume and exact return anchor in three cycles. Deleted-page recovery remains open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-restored-image-read-code26/README.md",
+          "scope": "普通26/服务82e本机合成长图：部分删除后恢复同一剩余页，实际原图200；初次与真实强停PID3283→3952后均续读45%，返回最近保持。原短图明确返回最后一张保存0，另记。新长图恢复后未扫描，#163扫描身份关联未解决；图片专用模拟器配置不证明视频/音频或目标手机。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "普通26/服务7dd本机：上轮部分删除恢复的原Tall明确重扫后仍原页/45%，从原标签实际打开，再真实强停PID3575→6731、同Android启动下冷启最近续读同页45%，返回保持。两个入口scope分别有/无原标签，未把字段检查替代实际ROW13中部画面；图片专用模拟器配置不证明视频/音频或目标手机。",
+          "candidate_code": 26
+        }
+      ]
+    },
+    {
+      "id": "READ-05",
+      "reference_state": "阅读范围",
+      "requirement": "查看队列，手动前后包限定当前范围，末尾返回来源；空/缺失/停用包不扩大范围",
+      "owner": "LF5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "READ-06",
+      "reference_state": "大图与长包",
+      "requirement": "500 页及 4K/8K 夹具，连续切包/横纵切换无 OOM，解码窗口/缓存有界；记录目标机峰值和翻页延迟",
+      "owner": "LF5/8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "REC-01",
+      "reference_state": "最近",
+      "requirement": "视频和图包分开，按实际打开去重更新；预加载不记历史；回收内容不显示，恢复保留阅读状态",
+      "owner": "LF3/4/5",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 recent-pack entry resumes page3 using a one-pack scope without library filters. Other video/trash combinations remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26图包回收期间最近隐藏，恢复后从282续读，去重一条、其余历史保持；视频及全部预加载组合保留。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-bulk-code26/README.md",
+          "scope": "三轮恢复保持原8条最近/进度/偏好，最终原生最近7项=6个恢复包+1个可用对照，均显示原第2/2张且完成标记保持。此轮只查看最近列表，未重新打开阅读；原单包282/500续读保留其此前记录范围。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-purge-code26/README.md",
+          "scope": "恢复部分删除包后原页ID/偏移、进度/偏好/标签与最近行保持，最近显示剩余1/1；未再次打开阅读或保存进度，截图封面重载及三个读图接口409已记#161，因此不是恢复后阅读通过。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-image-read-code26/README.md",
+          "scope": "普通26恢复后最近显示剩余1/1并实际打开，同一长图页与45%位置在冷启/返回后保持。Tall准备扫描暴露另一原样本旧missing+新available，标签/最近仍在旧ID，实际最近仅2包；#163优先修复，不能把扫描后的最近判通过。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "同一故障样本旧missing+新available在明确扫描后找回原ID，原标签/最近行保持，最近2→3包；普通26实际显示并读取，后续指定目录扫描、真实强停续读及返回仍3包。新ID已含管理数据则保留两侧、报告冲突，未自动合并丢弃。",
+          "candidate_code": 26
+        }
+      ]
+    },
+    {
+      "id": "DEL-01",
+      "reference_state": "普通图包菜单",
+      "requirement": "移入回收站有整包影响确认；取消不变，成功留原列表；普通翻页不承担删除",
+      "owner": "LF6",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26菜单关闭/取消保持37表和设置、无写请求；实际移除留搜索列表、键盘不弹出；未覆盖所有布局/设备。",
+          "candidate_code": 26
+        }
+      ]
+    },
+    {
+      "id": "DEL-02",
+      "reference_state": "pack-quick",
+      "requirement": "显式开启/退出；成功才进本范围下一包，失败留原包，末尾回来源；不另设已整理/保留状态",
+      "owner": "LF6",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "DEL-03",
+      "reference_state": "撤销",
+      "requirement": "8 秒提示不占布局；绑定 operation ID；恢复原包、页码、队列位置与模式；旧撤销不误撤新操作",
+      "owner": "LF6",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "DEL-04",
+      "reference_state": "trash",
+      "requirement": "按类型查看/全选/批量恢复；逻辑回收/恢复不动源字节；标签与进度保留；全选跨页且分批上限明确",
+      "owner": "LF6/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26单包通过正式分型回收站恢复三轮，标签/偏好/进度和522源文件字节保持；跨页/大批量仍保留。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-bulk-code26/README.md",
+          "scope": "普通code26在1031合成包中按图包类型/Bulk-筛选1027；真实页1→2→1选择与取消零写。三轮各唯一POST，默认1000+27子批次、4对照不变、3093源文件SHA保持、1031标签关联和8份进度/偏好保留。仅浅色约390dp本机模拟器，其他类型与手机不据此通过。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-purge-code26/README.md",
+          "scope": "普通26三轮部分删除原任务重试只处理剩余03，附件/标签/阅读数据保持；另例原生恢复剩余图片，数据与最近1/1保持，旧删除stale_pack_state。#161发现封面/原图/缩略图409，未证明恢复后阅读，整项不关闭。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-image-read-code26/README.md",
+          "scope": "普通26/服务82e本机新长图2/3永久删除后明确恢复一次，原计划1/1；恢复前后页、标签、阅读偏好/进度、最近和会话行保持，剩余图片及附件字节相同，随后实际读图与冷启续读通过。再次扫描的身份关联缺陷#163另列，NAS未更新。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "服务7dd复用成功归位日志和稳定图片完整SHA作为扫描连续性证据，部分永久删除恢复后的原包/剩余页、标签/进度/偏好保持；无管理重复新记录安全退回原ID。原样本两次准备扫描后28张非扫描表保持、49文件字节相同；单目录普通App再扫与实际阅读通过，NAS未部署。",
+          "candidate_code": 26
+        }
+      ]
+    },
+    {
+      "id": "DEL-05",
+      "reference_state": "purge / tasks",
+      "requirement": "永删双确认、图片清单/版本核对；部分成功逐项显示，进程中断可核对；替换/新增/非图片附件不误删",
+      "owner": "LF6",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-pack-purge-code26/README.md",
+          "scope": "普通26明确核对精确3图/保留2项内容，复选框门槛/取消和保存选择已验。核对后新增图片、同字节替换身份、新增附件均0/3；空目录2/2安全移除；最终只少原核对28图，44原文件与2新增内容保留。服务cf9a修复ctime归位后的原任务重试，未放松内容/身份保护；无真机/NAS删除试验。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-image-read-code26/README.md",
+          "scope": "普通26本机明确核对3张图片和保留2项附件，一次永久删除真实2/3，第三张受控EACCES归位；逻辑恢复后明确重试原删除仍stale_pack_state，结果2/3和文件保持。仅对已记录成功归位/已恢复图片只读校验完整SHA；外部改写/替换/mtime/缺失/软链接等由新增用例保持拒绝。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "扫描后普通26明确重试同一原Tall永久删除任务一次，仍stale_pack_state、2/3不变；49文件/附件与除任务/请求记录外33表、设置/凭据保持。没有新永久删除/恢复POST。外部内容/同字节文件身份/mtime/目录/创建时间替换与缺少/历史化日志由新增用例拒绝，原删除历史页ID不因索引清理丢失。",
+          "candidate_code": 26
+        }
+      ]
+    },
+    {
+      "id": "DEL-06",
+      "reference_state": "断线/重开",
+      "requirement": "已受理无回执显示待确认；查询原 request/task；不自动重放删除，查询不全局锁 UI",
+      "owner": "LF6/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26三次真实后端受理202但未向App交付响应后强停、旧PID消失/新PID重开，原回执503后200找回同任务，不重发；其它命令/来源/部分结果仍保留。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-bulk-code26/README.md",
+          "scope": "三轮1027成员请求在真实202受理后未交付响应，停止旧PID；后台仍running后完成，新PID冷启保留原请求。原GET回执503→200，只查同父任务与第二页明细，每轮一POST，查询37表零写；永删/其他异常组合继续。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-purge-code26/README.md",
+          "scope": "普通26三轮真实受理后暂不交付回执，活PID强停并消失，后台App缺席时running到2/3，新PID媒体库冷启，原回执503到200只查询；同一任务明确重试到3/3，每轮唯一原永久POST。Purge06滚动驱动修正、Purge08已完成后的导航读取重叠及前五诊断单独保留，不冒称驱动无错误。",
+          "candidate_code": 26
+        }
+      ]
+    },
+    {
+      "id": "SET-01",
+      "reference_state": "settings / dark",
+      "requirement": "三组设置完整；暗黑、更多主题同步、相邻准备本机持久化；字体和尺寸匹配基线",
+      "owner": "LF4/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "SET-02",
+      "reference_state": "playback / defaults",
+      "requirement": "全局顺序仅影响新范围；图包默认偏好仅影响尚未独立设置的包",
+      "owner": "LF3/5/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "SET-03",
+      "reference_state": "connection",
+      "requirement": "地址/端口/口令校验与失败保留输入；token 安全保存；口令不持久化；旧服务能力提示明确",
+      "owner": "LF1/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "SET-04",
+      "reference_state": "roots / missing",
+      "requirement": "类型、路径、添加编辑、启停、递归扫描进度；清除失效记录确认，离线/停用不清除；图包首扫不锁已有视频",
+      "owner": "LF1/2/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "普通26实际扫描此目录一次，仅root_id=purge且scope.all=false；15/15图包、5张图片、原有8空包/4保护图包的结果与新完成时间真实显示。仅1个本机合成目录，不作为多目录/手机的新验证；原有目录映射与源字节保持。",
+          "candidate_code": 26
+        }
+      ]
+    },
+    {
+      "id": "SET-05",
+      "reference_state": "tasks",
+      "requirement": "扫描/文件/恢复任务，处理中、部分失败、待确认、已完成可区分；同任务只查询，不重复提交",
+      "owner": "LF6/7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26三轮操作任务找回原恢复请求及相同任务编号/成员1/1，查询阶段37表不变；其它任务类型与状态组合保留。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-bulk-code26/README.md",
+          "scope": "三轮原生任务待确认、503保留与已完成1027/1027、全部/第二页成员已核对，实际子批次1000+27；没有据此验证部分失败或停止后续批次。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-purge-code26/README.md",
+          "scope": "原生部分2/3、逐项未完成03及目录、明确重试与同任务3/3已验；每轮查询37表/设置相同、无写。#159恢复终态后偶发503、#160零未提交选择挤占待处理、#161恢复后读图409继续，不关闭完整任务体验。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-image-read-code26/README.md",
+          "scope": "普通26新长图一次原恢复计划1/1，模拟器退出后仍从本机待核对记录查询原回执，未重提恢复；再打开原删除结果并明确重试被恢复状态阻止。两次QEMU退出与辅助驱动中断保留，后续图片专用配置和真实App强停区分；#159/#160/#78仍开放。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "原扫描第一次终态deferred属默认稳定等待，明确再扫一次后完成目标图片；App额外指定目录扫描一次。三个原任务分别记录，无超时重启或删除/恢复重放。初版脚本误比较扫描设置/seen_scan已保留，后续只查原任务；旧删除明确重试仍被恢复状态保护。#159/#160/#78保持开放。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-backup-restore-finish-code26/README.md",
+          "scope": "普通26一次管理恢复后，在提交后清理暂停期间原生查看快照202排队，解除后同任务打开预览；取消保留当前两标签，实际原03页45%和3源文件保持。服务2de完整534/新增10覆盖v1/v2成功失败中断冷恢复与新占用保护，不替代目标手机或全部任务组合。",
+          "candidate_code": 26
+        }
+      ]
+    },
+    {
+      "id": "BAK-01",
+      "reference_state": "backup",
+      "requirement": "真实系统文件选择/保存、大小与完整性校验；两套标签/目录/阅读/回收统计；取消不报成功",
+      "owner": "LF7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "BAK-02",
+      "reference_state": "restore-preview",
+      "requirement": "映射各根、留空不启用、确认替换；前快照可读；本机主题/预加载/凭据不覆盖；已永久删内容不复活",
+      "owner": "LF7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "BAK-03",
+      "reference_state": "v1/v2与异常恢复",
+      "requirement": "旧 v1 在隔离库转换正确，新 v2 往返；坏包/中断/断线/磁盘失败保留正确旧状态与任务，不重放历史操作",
+      "owner": "LF7",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "UP-01",
+      "reference_state": "升级演练",
+      "requirement": "0004 旧视频/标签/ID/轮次/回执保留；旧客户端配新服务和新客户端配旧服务可预期；禁用根不误标缺失",
+      "owner": "LF1/8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "UP-02",
+      "reference_state": "安装发布",
+      "requirement": "原包名/签名、递增 versionCode 覆盖安装，地址/token/本机偏好不丢；服务与 App 有配套版本说明和回退快照",
+      "owner": "LF8",
+      "current_candidate": "partially_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-navigation/README.md",
+          "scope": "Normal21 signed pair:20-new21-old21-new21, three install-r covers preserve identity,35 tables,all settings/token hashes and preferences. Target phone and deployment remain open.",
+          "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "21-new22-old22-new22 three real install-r covers preserve35 tables, complete settings/token digests, preferences and identity; signed actual APK SHA matches build; phone/NAS remain open.",
+          "candidate_code": 22
+        }
+      ]
+    },
+    {
+      "id": "UI-01",
+      "reference_state": "home、packs、video-tags、pack-tags、最近",
+      "requirement": "同素材、同数据、390×844 内容区并排；顶栏/分类/筛选/卡片/底栏层级一致",
+      "owner": "LF8",
+      "current_candidate": "partially_observed_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "首页同状态对照发现次要文字和部分图标差异，#124待修；标签集合无排序要求，不硬编码样例次序。",
+          "candidate_code": 18
+        },
+        {
+          "candidate_code": 20,
+          "evidence": "evidence/lf8-paper-symbols/README.md",
+          "scope": "本轮文字/图标修正、浅/暗首页/阅读指定状态定点复核通过；8dp阅读底栏保留原生命中约束，整项所需其它页面/状态/动作仍待完成。"
+        }
+      ]
+    },
+    {
+      "id": "UI-02",
+      "reference_state": "video、reader、vertical、pack-quick",
+      "requirement": "画面完整显示、工具密度、来源/队列、按需整理、撤销不跳布局；手势录屏",
+      "owner": "LF8",
+      "current_candidate": "partially_observed_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-integrated-baseline/README.md",
+          "scope": "阅读页同390×832内容高度对照；8dp底栏差为原生触控区保留，撤回错误裁图的20dp结论。文字色阶/图标#124待修；本段没有完整流程和全部视口通过声明。",
+          "candidate_code": 18
+        },
+        {
+          "candidate_code": 20,
+          "evidence": "evidence/lf8-paper-symbols/README.md",
+          "scope": "本轮文字/图标修正、浅/暗首页/阅读指定状态定点复核通过；8dp阅读底栏保留原生命中约束，整项所需其它页面/状态/动作仍待完成。"
+        }
+      ]
+    },
+    {
+      "id": "UI-03",
+      "reference_state": "settings、dark、connection、roots、missing、trash、backup、tasks",
+      "requirement": "必要设置逐项存在；长管理页全高度，短编辑/确认底部面板；暗色一致",
+      "owner": "LF8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "UI-04",
+      "reference_state": "readersettings、restore-preview、purge、empty、错误",
+      "requirement": "确认前无副作用，禁用可理解，表单错误保留；键盘出现仍能看到字段/提交",
+      "owner": "LF8",
+      "current_candidate": "partially_checked_in_integrated_run",
+      "observations": [
+        {
+          "evidence": "evidence/lf8-current-filters/README.md",
+          "scope": "Normal22 empty summary shows active attributes, disabled preview and clear29; actual PNG inspected. Combined14 PNG retains IME, not a keyboard-free whole-page comparison.",
+          "candidate_code": 22
+        },
+        {
+          "evidence": "evidence/lf8-catalog-recovery/README.md",
+          "scope": "Normal22 real error text/retry, retained search and disabled empty preview/quick action verified. Confirmation/write failures and complete keyboard/layout states remain open.",
+          "candidate_code": 22
+        }
+      ]
+    },
+    {
+      "id": "UI-05",
+      "reference_state": "360×740、844×390、系统放大字体、深浅色",
+      "requirement": "无溢出或被系统栏遮挡；Android SafeArea 不叠加 HTML 假 home indicator；可访问触控目标",
+      "owner": "LF8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    },
+    {
+      "id": "UI-06",
+      "reference_state": "按压/切换/展开/通知",
+      "requirement": "沿用 100/140/160/240ms 的动作层级；减少动态效果直接到位；不以动画延迟实际状态",
+      "owner": "LF8",
+      "current_candidate": "not_checked_in_integrated_run",
+      "observations": []
+    }
+  ],
+  "coverage_audit": "ACCEPTANCE-COVERAGE.json",
+  "current_automated_baseline": {
+    "candidate_code": 22,
+    "candidate_source": "12d6ca67ef3a8b307894468923dc08e612e02587",
+    "client_tests": 791,
+    "evidence": "evidence/lf8-acceptance-audit/current22-flutter-test.log",
+    "scope": "current automated suite only, not full native/target acceptance"
+  },
+  "nas_preview_deployment": "../../nas-preview-2026-10-30.md",
+  "latest_observation_candidate": {
+    "candidate_code": 26,
+    "candidate_source": "8416a3f7359af94f1da802185b136770d6499986",
+    "base_candidate_fields_preserved_for_historical_audit": true
+  }
+}

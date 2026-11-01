@@ -1,5 +1,7 @@
 # 服务端开发环境
 
+Mac 使用 OrbStack 原生 Docker，见 [Mac 开发与 VS Code 配置](macos-development.md)。下列 WSL2 配置保留为 Windows 开发记录。
+
 2026-10-16 环境检查结论：本机 WSL2 中的 Docker 可以用于服务端开发，Windows 和 Android 模拟器均可访问容器发布的端口。当次环境探针不代表业务实现；后续服务端 API 的实际完成情况见 [服务端验证记录](server-validation.md)。
 
 ## 当前任务进度

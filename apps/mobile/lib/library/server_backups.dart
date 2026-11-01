@@ -1,13 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io' show FileSystemException;
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 
 import 'backup_work_store.dart';
+import 'backup_document.dart';
+import 'management_archives.dart';
 import 'models.dart';
 import 'server_api.dart';
+
+part 'server_archive_backups.dart';
 
 typedef _Json = Map<String, dynamic>;
 _Json _map(Object? value) => Map<String, dynamic>.from(value as Map);
@@ -35,11 +40,34 @@ class ServerBackups {
   _Json _state = {};
   Future<void> _writes = Future.value();
   bool _disposed = false;
+  bool _storageFailed = false;
+  bool get storageHealthy => !_storageFailed;
   String? _previewDigest;
   BackupPreview? _preview;
+  ArchivePreview? _archivePreview;
+  bool get archivePreviewPending => _state['inspect'] != null;
   bool get restorePending => _state['restore'] != null;
+  List<Map<String, Object?>> get pendingReceipts {
+    final result = <Map<String, Object?>>[];
+    for (final kind in ['export', 'inspect', 'restore']) {
+      final command = _state[kind];
+      if (command == null) continue;
+      if (command is! Map) throw const LibraryFailure('本机备份操作记录无法读取');
+      result.add({
+        'kind': kind,
+        'key': command['key'],
+        'task': command['task'],
+        if (command['version'] == 2) 'version': 2,
+      });
+    }
+    return List.unmodifiable(result);
+  }
+
   void _check() {
     if (_disposed) throw const RequestCancelled();
+    if (_storageFailed) {
+      throw const LibraryFailure('本机备份日志写入结果未确认，请重新连接后核对原任务；原记录已保留');
+    }
   }
 
   Future<T> _serial<T>(Future<T> Function() action) {
@@ -52,14 +80,21 @@ class ServerBackups {
   }
 
   Future<void> initialize() => _serial(() async {
-    final text = await store.read();
+    String? text;
+    try {
+      text = await store.read();
+    } catch (_) {
+      _storageFailed = true;
+      rethrow;
+    }
     _check();
     if (text != null) {
       try {
         final saved = _map(jsonDecode(text));
         if (saved['scope'] == scope) _state = saved;
       } catch (_) {
-        /* Ignore invalid local receipts. */
+        _storageFailed = true;
+        throw const LibraryFailure('本机备份操作记录无法读取，原记录已保留，请先核对服务端任务');
       }
     }
     status.value = restorePending ? '恢复结果待确认，请查询原任务' : null;
@@ -67,7 +102,13 @@ class ServerBackups {
   });
   Future<void> _save(_Json next) async {
     _check();
-    await store.write(jsonEncode({'scope': scope, ...next}));
+    try {
+      await store.write(jsonEncode({'scope': scope, ...next}));
+    } catch (_) {
+      _storageFailed = true;
+      onChanged();
+      rethrow;
+    }
     _check();
     _state = next;
     onChanged();
@@ -78,8 +119,13 @@ class ServerBackups {
     if (restorePending) throw const LibraryFailure('恢复结果尚未确认，请先查询结果');
   }
 
-  Future<_Json> _json(String method, String path, {Object? body}) =>
-      api.json(method, path, body: body, scope: _lifetime);
+  Future<_Json> _json(String method, String path, {Object? body}) => api.json(
+    method,
+    path,
+    body: body,
+    scope: _lifetime,
+    originalReceipt: method == 'GET',
+  );
 
   Future<_Json> _poll(String id, String kind) async {
     final deadline = DateTime.now().add(const Duration(minutes: 2));
@@ -122,14 +168,17 @@ class ServerBackups {
 
   Future<String> export() => _serial(() async {
     _canStart();
+    final fresh = _state['export'] == null;
     var command = _map(_state['export'] ?? {'key': _nonce()});
     await _save({..._state, 'export': command});
     if (command['task'] == null) {
-      final accepted = await _json(
-        'POST',
-        '/api/v1/backups',
-        body: {'request_id': command['key']},
-      );
+      final accepted = fresh
+          ? await _json(
+              'POST',
+              '/api/v1/backups',
+              body: {'request_id': command['key']},
+            )
+          : await _original('export', command['key']);
       command = {...command, 'task': accepted['id']};
       await _save({..._state, 'export': command});
     }
@@ -145,6 +194,7 @@ class ServerBackups {
         maximumBytes: 32 * 1024 * 1024,
         timeout: const Duration(minutes: 2),
         scope: _lifetime,
+        originalReceipt: true,
       );
       _check();
       if (sha256.convert(response.bytes).toString() !=
@@ -162,6 +212,31 @@ class ServerBackups {
       throw const LibraryFailure('服务返回的备份不是有效的 UTF-8 文件');
     }
   });
+
+  Future<_Json> _original(String kind, String key, {int version = 1}) async {
+    try {
+      final value = await _json(
+        'GET',
+        version == 2
+            ? '/api/v1/management-backups/requests/$kind/${Uri.encodeComponent(key)}'
+            : '/api/v1/backup-requests/$kind/${Uri.encodeComponent(key)}',
+      );
+      if (value['kind'] != 'backup_$kind${version == 2 ? '_v2' : ''}' ||
+          value['id'] is! String ||
+          (value['id'] as String).isEmpty) {
+        throw const LibraryFailure('备份原请求身份不完整，请继续核对原结果');
+      }
+      return value;
+    } on ApiFailure catch (error) {
+      if (error.status == 404) {
+        if (kind == 'restore') {
+          throw const LibraryFailure('未找到原恢复请求，原记录已保留；没有补执行恢复');
+        }
+        throw const LibraryFailure('未找到原备份请求，原记录已保留；没有重新提交');
+      }
+      rethrow;
+    }
+  }
 
   Future<BackupPreview> inspect(String text) => _serial(() => _inspect(text));
   Future<BackupPreview> _inspect(String text) async {
@@ -185,23 +260,37 @@ class ServerBackups {
     var command = _state['inspect'] == null
         ? <String, dynamic>{}
         : _map(_state['inspect']);
+    if (command.isNotEmpty &&
+        command['digest'] != digest &&
+        command['task'] == null) {
+      final original = await _original('inspect', command['key']);
+      command = {...command, 'task': original['id']};
+      await _save({..._state, 'inspect': command});
+      await _poll(command['task'], 'inspect');
+    }
+    final fresh = command['digest'] != digest;
     if (command['digest'] != digest) {
       command = {'digest': digest, 'key': _nonce()};
     }
     await _save({..._state, 'inspect': command});
     if (command['task'] == null) {
-      final accepted = await api.request(
-        'POST',
-        '/api/v1/backup-imports',
-        timeout: const Duration(minutes: 2),
-        body: raw,
-        headers: {'Idempotency-Key': command['key']},
-        scope: _lifetime,
-      );
-      command = {
-        ...command,
-        'task': _map(jsonDecode(utf8.decode(accepted.bytes)))['id'],
-      };
+      if (!fresh) {
+        final found = await _original('inspect', command['key']);
+        command = {...command, 'task': found['id']};
+      } else {
+        final accepted = await api.request(
+          'POST',
+          '/api/v1/backup-imports',
+          timeout: const Duration(minutes: 2),
+          body: raw,
+          headers: {'Idempotency-Key': command['key']},
+          scope: _lifetime,
+        );
+        command = {
+          ...command,
+          'task': _map(jsonDecode(utf8.decode(accepted.bytes)))['id'],
+        };
+      }
       await _save({..._state, 'inspect': command});
     }
     final task = await _poll(command['task'], 'inspect');
@@ -276,24 +365,64 @@ class ServerBackups {
         await _reconcile();
       });
 
-  Future<void> reconcile() => _serial(_reconcile);
-  Future<void> _reconcile() async {
+  Future<bool> attachReceipt(String kind, String key, String identity) =>
+      _serial(() async {
+        if (!['export', 'inspect', 'restore'].contains(kind)) {
+          throw const LibraryFailure('备份请求类型不完整');
+        }
+        final raw = _state[kind];
+        if (raw is! Map || raw['key'] != key) return false;
+        final command = _map(raw);
+        if (command['task'] != null && command['task'] != identity) {
+          throw const LibraryFailure('备份原请求身份已变化');
+        }
+        await _save({
+          ..._state,
+          kind: {...command, 'task': identity},
+        });
+        return true;
+      });
+
+  Future<void> markExportSaved(
+    String identity, {
+    BackupFileStore? files,
+  }) => _serial(() async {
+    if (_state['export'] case final Map command
+        when command['task'] == identity) {
+      final document = files != null && command['file'] is Map
+          ? files.restore(_map(command['file']))
+          : null;
+      await _remove('export');
+      // Delete only after durable settlement; an unknown journal write retains
+      // the original private copy for reconciliation.
+      try {
+        await document?.delete();
+      } on FileSystemException {
+        /* Private OS cleanup can retry later. */
+      }
+    }
+  });
+
+  Future<void> reconcile({String? expectedRequestId}) =>
+      _serial(() => _reconcile(expectedRequestId: expectedRequestId));
+  Future<void> _reconcile({String? expectedRequestId}) async {
     if (!restorePending) return;
     var command = _map(_state['restore']);
+    if (expectedRequestId != null && command['key'] != expectedRequestId) {
+      return;
+    }
     if (command['task'] == null) {
       try {
-        final found = await _json(
-          'GET',
-          '/api/v1/backup-requests/restore/${command['key']}',
+        final found = await _original(
+          'restore',
+          command['key'],
+          version: command['version'] == 2 ? 2 : 1,
         );
         command = {...command, 'task': found['id']};
         await _save({..._state, 'restore': command});
       } on ApiFailure catch (error) {
         if (error.status == 404) {
-          await _save({});
-          _preview = null;
-          _previewDigest = null;
-          throw const LibraryFailure('未找到已受理的恢复，请重新选择文件并确认；没有补执行恢复');
+          throw const LibraryFailure('未找到原恢复请求，原记录已保留；没有补执行恢复');
         }
         rethrow;
       }
@@ -304,12 +433,20 @@ class ServerBackups {
       throw _failed(task);
     }
     _check();
-    await onRestored();
-    _check();
-    await _save({});
+    await _save({
+      ..._state,
+      'restore': {...command, 'settled': true},
+    });
     _preview = null;
     _previewDigest = null;
-    status.value = '管理数据已恢复';
+    _archivePreview = null;
+    // The coordinator may replace and dispose this transport. Its old journal
+    // is settled before handing over; it must not publish into the new owner.
+    await onRestored();
+    if (!_disposed) {
+      await _remove('restore');
+      status.value = '管理数据已恢复';
+    }
   }
 
   void dispose() {

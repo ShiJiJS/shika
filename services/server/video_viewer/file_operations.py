@@ -18,11 +18,13 @@ from .file_state import (
     video_signature,
 )
 from .file_transfer import FileTransfer
+from .management_history import reject_historical
 from .models import (
     FileOperation,
     FileStep,
     PlaybackRound,
     Root,
+    RoundEntry,
     Setting,
     Tag,
     Task,
@@ -73,7 +75,16 @@ class FileOperations:
     def snapshot_round(self, session):
         active = session.get(Setting, "active_round")
         round = session.get(PlaybackRound, active.value) if active else None
-        return {"id": round.id, "cursor": round.cursor, "finished": round.finished} if round else {}
+        if not round:
+            return {}
+        snapshot = {"id": round.id, "cursor": round.cursor, "finished": round.finished}
+        if round.membership == "fixed":
+            snapshot["video_id"] = session.scalar(
+                select(RoundEntry.video_id).where(
+                    RoundEntry.round_id == round.id, RoundEntry.ordinal == round.cursor
+                )
+            )
+        return snapshot
 
     def submit(self, kind, ids, request_id, undo_of=None):
         if self.stop.is_set():
@@ -85,9 +96,12 @@ class FileOperations:
         with self.db.write() as session:
             previous = session.scalar(select(FileOperation).where(FileOperation.request_key == key))
             if previous:
+                if previous.historical:
+                    reject_historical(session, "file_operations", key)
                 if previous.request_hash != digest:
                     raise LibraryError("idempotency_conflict", "请求标识已用于不同的文件操作")
                 return previous.id
+            reject_historical(session, "file_operations", key)
             if kind == "undo":
                 original = session.get(FileOperation, undo_of)
                 latest = session.get(Setting, "last_delete_operation")
@@ -305,9 +319,11 @@ class FileOperations:
                     code = "stale_operation"
                 elif kind != "trash" and (not item or item.status != "active"):
                     code = "item_not_found"
-                elif kind != "trash" and session.scalar(select(Video.id).where(
-                    Video.location_key == step.destination, Video.id != video.id
-                )):
+                elif kind != "trash" and session.scalar(
+                    select(Video.id).where(
+                        Video.location_key == step.destination, Video.id != video.id
+                    )
+                ):
                     code = "destination_conflict"
                 if code:
                     step.phase, step.outcome, step.error = "prepared", "failed", code
@@ -332,7 +348,9 @@ class FileOperations:
     def progress(self, operation_id):
         with self.db.write() as session:
             outcomes = list(
-                session.scalars(select(FileStep.outcome).where(FileStep.operation_id == operation_id))
+                session.scalars(
+                    select(FileStep.outcome).where(FileStep.operation_id == operation_id)
+                )
             )
             session.get(Task, operation_id).result = {
                 "total": len(outcomes),
@@ -363,7 +381,8 @@ class FileOperations:
                 )
             )
             video.status, video.location_key = (
-                "trash", step.source if step.source == step.destination else None
+                "trash",
+                step.source if step.source == step.destination else None,
             )
         elif kind == "permanent":
             session.get(TrashItem, step.trash_id).status = "purged"
@@ -371,9 +390,7 @@ class FileOperations:
             session.execute(delete(VideoTag).where(VideoTag.video_id == video.id))
         else:
             conflicting = session.scalar(
-                select(Video).where(
-                    Video.location_key == step.destination, Video.id != video.id
-                )
+                select(Video).where(Video.location_key == step.destination, Video.id != video.id)
             )
             if conflicting:
                 conflicting.status, conflicting.location_key = "missing", None
@@ -482,15 +499,24 @@ class FileOperations:
                 snapshot = original.round_snapshot
                 round = session.get(PlaybackRound, snapshot.get("id")) if snapshot else None
                 tag_ids = round.scope.get("tag_ids", []) if round else []
-                tags_exist = not tag_ids or session.scalar(
-                    select(func.count()).select_from(Tag).where(Tag.id.in_(tag_ids))
-                ) == len(set(tag_ids))
+                tags_exist = (
+                    (round and round.membership == "fixed")
+                    or not tag_ids
+                    or session.scalar(
+                        select(func.count()).select_from(Tag).where(Tag.id.in_(tag_ids))
+                    )
+                    == len(set(tag_ids))
+                )
                 target = (
                     next(
                         (
                             row
                             for row in self.playback.eligible(session, round)
-                            if row[0] == snapshot["cursor"]
+                            if (
+                                row[1] == snapshot["video_id"]
+                                if "video_id" in snapshot
+                                else row[0] == snapshot["cursor"]
+                            )
                         ),
                         None,
                     )
@@ -500,7 +526,7 @@ class FileOperations:
                 if target and self.playback.streams.can_play(
                     session, session.get(Video, target[1])
                 ):
-                    round.cursor, round.finished = snapshot["cursor"], snapshot["finished"]
+                    round.cursor, round.finished = target[0], snapshot["finished"]
                     round.revision += 1
                     pointer = session.get(Setting, "active_round")
                     if pointer:
@@ -521,6 +547,8 @@ class FileOperations:
             task.result = {
                 "operation_id": operation_id,
                 "items": items,
+                "total": len(steps),
+                "processed": sum(step.outcome != "pending" for step in steps),
                 "succeeded": successes,
                 "failed": len(steps) - successes,
                 "partial": 0 < successes < len(steps),

@@ -1,0 +1,16 @@
+# 第26版App体验更新
+
+[草稿PR #155](https://github.com/ShiJiJS/video_viewer/pull/155)（基于#152）。
+2026-11-01，正常preview.20/code26和旧视频界面rollback.20/code26已放入NAS原部署目录的packages，附新版安装说明。第25版包和原说明另存保留。
+
+直接覆盖安装，不要卸载或清除数据。两份沿用原Windows签名和包名，已有连接保留；需要回退时使用同号rollback.20，再覆盖正常包可回来。真实手机尚未安装验证。
+
+本次修复搜索图包后关闭菜单或移除图包时，键盘重新弹出并遮挡底部导航的问题。搜索条件和列表位置保留，移除/恢复方式不变。默认纵向、双指缩放、分目录进度、返回媒体库和简化文案继续保留，已有单包阅读方式仍优先。
+
+客户端8416a3f7，完整834项与分析通过；普通26覆盖25的包摘要、安装身份/数据目录/首次安装时间核对保持。三次本机公开样本恢复已受理但未向App交付回执时强停重开，均查询原请求/任务、不重发，恢复标签/偏好/原第282张位置，并从最近继续。详见[连续记录](plans/library-first/LF8-PACK-RESTORE-CONTINUATION.md)。这些检查不替代手机手势、声音、系统/云盘文件选择或NAS性能验证。
+
+服务沿用[本日先前更新](nas-preview-2026-11-01.md)的430fede5/runtime preview.3。本次仅复制APK和说明，容器身份、启动时间和重启次数保持，没有新登录、重启、迁移或数据库/媒体操作；两份文件SHA见[分发记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-pack-restore-code26/nas-packages-public.json)。旧镜像、成对NAS/Mac完整备份保留。
+
+Docker健康监测曾连续超时，而直接HTTP健康接口和容器内HTTP均成功；复制前后状态曾恢复healthy。[#154](https://github.com/ShiJiJS/video_viewer/issues/154)保留此前失败，继续查检查命令开销及资源影响，不能当成连续稳定性已通过。本次未修改监测参数。
+
+图包源目录继续只读，原收藏未做删除试验。试验副本/构建导出及自有模拟器/代理/容器已清理，签名/开发环境和交付包保留。原45项、目标手机及三个偶发问题继续，未正式发布或合并。

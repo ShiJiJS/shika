@@ -14,15 +14,29 @@ from pathlib import Path
 
 def main():
     if os.name != "posix":
-        raise SystemExit("Run this fixture helper inside WSL")
+        raise SystemExit("Run this fixture helper on Mac/Linux or inside WSL")
     running = subprocess.check_output(
-        ["docker", "inspect", "--format", "{{.State.Running}}", "video-viewer-client-e2e-server-1"],
+        [
+            "docker",
+            "inspect",
+            "--format",
+            "{{.State.Running}}",
+            "video-viewer-client-e2e-server-1",
+        ],
         text=True,
     ).strip()
     if running != "false":
-        raise SystemExit("Stop only the isolated e2e container before replacing its management directory")
-    base = Path.home() / ".local/share/video-viewer-e2e"
-    if base.resolve() != base or base.is_symlink():
+        raise SystemExit(
+            "Stop only the isolated e2e container before replacing its management directory"
+        )
+    base = Path(
+        os.environ.get("VV_E2E_HOME", Path.home() / ".local/share/video-viewer-e2e")
+    )
+    allowed = {
+        Path.home() / ".local/share/video-viewer-e2e",
+        Path(__file__).resolve().parent.parent / ".dev/e2e",
+    }
+    if base not in allowed or base.resolve() != base or base.is_symlink():
         raise SystemExit("Unexpected fixture base")
     data, media = base / "data", base / "media"
     for target in [data, media]:
@@ -30,8 +44,11 @@ def main():
             raise SystemExit("Unexpected disposable fixture directory")
     mounts = json.loads((base / "config/mounts.json").read_text())
     if {(item["id"], item["path"]) for item in mounts} != {
-        ("shorts", "/media/shorts"), ("camera", "/media/camera")
-    } or (base / "config/passphrase").read_text().strip() != "video-viewer-emulator-fixture-only":
+        ("shorts", "/media/shorts"),
+        ("camera", "/media/camera"),
+    } or (
+        base / "config/passphrase"
+    ).read_text().strip() != "video-viewer-emulator-fixture-only":
         raise SystemExit("Not the isolated emulator fixture")
     if not (data / "e2e-seeded").is_file():
         raise SystemExit("Missing disposable fixture marker")
@@ -42,10 +59,21 @@ def main():
     saved = snapshots / f"before-fresh-instance-{time.time_ns()}"
     if saved.exists() or saved.parent.resolve() != snapshots:
         raise SystemExit("Unexpected snapshot destination")
-    data.rename(saved)
-    data.mkdir(mode=0o700)
-    (data / "e2e-seeded").write_text("Preserve existing disposable media; do not seed it again")
-    print(json.dumps({"fresh_instance_prepared": True, "preserved_snapshot": str(saved)}))
+    # Preserve the bind mount's directory inode. OrbStack can keep exposing the
+    # renamed old directory even after a container is recreated at the same
+    # source path; moving its contents avoids that host/VM aliasing.
+    entries = list(data.iterdir())
+    if any(item.is_symlink() or item.resolve().parent != data for item in entries):
+        raise SystemExit("Unexpected link in disposable management directory")
+    saved.mkdir(mode=0o700)
+    for item in entries:
+        item.rename(saved / item.name)
+    (data / "e2e-seeded").write_text(
+        "Preserve existing disposable media; do not seed it again"
+    )
+    print(
+        json.dumps({"fresh_instance_prepared": True, "preserved_snapshot": str(saved)})
+    )
 
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ from sqlalchemy import delete, select
 
 from .errors import LibraryError
 from .file_state import reserved_video_ids
+from .media_roots import owner_for_path
 from .models import Root, Task, TrashItem, Video, VideoTag
 from .paths import beneath, open_directory
 from .requests import once
@@ -14,15 +15,24 @@ from .requests import once
 
 def forget_missing(db, request_id):
     with db.write() as session:
+
         def action():
-            if session.scalar(select(Task.id).where(
-                Task.kind == "scan", Task.status.in_(("queued", "running"))
-            ).limit(1)):
+            if session.scalar(
+                select(Task.id)
+                .where(Task.kind == "scan", Task.status.in_(("queued", "running")))
+                .limit(1)
+            ):
                 raise LibraryError("scan_in_progress", "请等待目录同步完成后再清理", 409)
             roots = {root.id: root for root in session.scalars(select(Root))}
             identities = {}
             for root in roots.values():
-                if not root.available or not root.mount_id or root.last_scan is None:
+                if (
+                    not root.available
+                    or not root.enabled
+                    or root.kind != "video"
+                    or not root.mount_id
+                    or root.last_scan is None
+                ):
                     continue
                 try:
                     with open_directory(Path(root.path)) as fd:
@@ -31,11 +41,18 @@ def forget_missing(db, request_id):
                 except OSError:
                     continue
             removed = skipped = 0
-            for video in session.scalars(select(Video).where(
-                Video.status == "missing", Video.id.not_in(reserved_video_ids()),
-                Video.id.not_in(select(TrashItem.video_id).where(TrashItem.status == "active")),
-            )):
-                if video.root_id not in identities or not beneath(Path(video.path), Path(roots[video.root_id].path)):
+            for video in session.scalars(
+                select(Video).where(
+                    Video.status == "missing",
+                    Video.id.not_in(reserved_video_ids()),
+                    Video.id.not_in(select(TrashItem.video_id).where(TrashItem.status == "active")),
+                )
+            ):
+                if (
+                    owner_for_path(video.path, roots.values()) is None
+                    or video.root_id not in identities
+                    or not beneath(Path(video.path), Path(roots[video.root_id].path))
+                ):
                     skipped += 1
                     continue
                 try:
@@ -60,7 +77,9 @@ def forget_missing(db, request_id):
                         if (info.st_dev, info.st_ino) != identity:
                             raise OSError("root_changed")
                 except OSError as error:
-                    raise LibraryError("root_unavailable", "目录已离线，未清除失效记录", 409) from error
+                    raise LibraryError(
+                        "root_unavailable", "目录已离线，未清除失效记录", 409
+                    ) from error
             # Keep tombstones for old round/file receipts; they are not listed,
             # playable, or eligible for identity/tag recovery after confirmation.
             return {"removed": removed, "skipped": skipped}

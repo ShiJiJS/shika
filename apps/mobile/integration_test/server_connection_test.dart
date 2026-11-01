@@ -8,6 +8,7 @@ import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/sheets.dart';
+import 'package:video_viewer/ui/player.dart';
 
 import 'support/fixture.dart';
 
@@ -45,6 +46,12 @@ void main() {
         expect(repo.snapshot.port, 8761);
         expect(repo.snapshot.query.folder, '/media/shorts/自然/花卉');
         expect(repo.playbackTotal, 25);
+        expect(repo.fixedPreview, isTrue);
+        expect(
+          find.byType(MovieStage),
+          findsNothing,
+          reason: 'saved scope does not autoplay after restart',
+        );
         expect(find.text('连接你的视频库'), findsNothing);
         final after =
             (await fixture('/__fixture/trace', method: 'GET'))['items'] as List;
@@ -116,8 +123,14 @@ void main() {
           find.byType(CircularProgressIndicator).evaluate().isEmpty,
       '$expected videos',
     );
-    Finder field(String label) => find.byWidgetPredicate(
-      (widget) => widget is TextField && widget.decoration?.labelText == label,
+    Finder field(String label) => find.byKey(
+      Key(
+        {
+          '服务地址': 'connection-address',
+          '端口': 'connection-port',
+          '个人口令': 'connection-passphrase',
+        }[label]!,
+      ),
     );
     Future<void> start() async {
       await t.pumpWidget(
@@ -150,10 +163,18 @@ void main() {
       await textTap(all ? '使用全部目录' : '使用此目录');
     }
 
+    Future<void> syncRoots() async {
+      await textTap('同步外部变更');
+      await until(
+        () => !repo.libraryPreparation.value.scanning,
+        'external change scan finished',
+      );
+    }
+
     Future<void> refreshRoots() async {
       await nav('settings');
       await textTap('媒体目录');
-      await textTap('刷新媒体目录');
+      await syncRoots();
     }
 
     await start();
@@ -190,8 +211,10 @@ void main() {
           : t.widget<Text>(find.byKey(const Key('operation-error'))).data,
     );
     expect(repo.snapshot.roots, hasLength(2));
-    // Initial connection gets a small playback window, not the entire catalog.
+    // Connection reads metadata; only an explicit library entry starts preview.
     expect(repo.snapshot.videos.length, lessThan(27));
+    expect(repo.playbackIdentity, isEmpty);
+    expect(find.byType(MovieStage), findsNothing);
     await nav('library');
     await count(27);
     await until(
@@ -201,30 +224,28 @@ void main() {
       'authenticated thumbnails decoded on Android',
     );
     final grid = find.byKey(const Key('video-grid'));
-    expect(
-      (t.widget<GridView>(grid).childrenDelegate as SliverChildBuilderDelegate)
-          .childCount,
-      25,
-    );
+    int loadedCards() => t
+        .widget<SliverGrid>(
+          find.descendant(of: grid, matching: find.byType(SliverGrid)),
+        )
+        .delegate
+        .estimatedChildCount!;
+    expect(loadedCards(), 24);
     await fixture('/__fixture/checkpoint/library');
     await t.pump(const Duration(seconds: 2));
-    await t.scrollUntilVisible(
-      find.text('加载更多'),
-      550,
-      scrollable: find.descendant(of: grid, matching: find.byType(Scrollable)),
-    );
-    await textTap('加载更多');
+    await t.drag(grid, const Offset(0, -6000));
     await until(
-      () =>
-          (t.widget<GridView>(grid).childrenDelegate
-                  as SliverChildBuilderDelegate)
-              .childCount ==
-          27,
-      'second page appended',
+      () => loadedCards() == 27,
+      'second page appended automatically',
     );
     await folder(['端到端短视频', '自然', '花卉']);
     await count(25);
-    expect(repo.snapshot.query.folder, '/media/shorts/自然/花卉');
+    expect(
+      repo.snapshot.query.folder,
+      isEmpty,
+      reason: 'folder draft is independent of active playback',
+    );
+    expect(repo.playbackIdentity, isEmpty);
     await folder(['端到端短视频', '空目录']);
     await count(0);
     expect(find.text('没有符合条件的视频'), findsOneWidget);
@@ -246,9 +267,29 @@ void main() {
     await refreshRoots();
     await nav('library');
     await count(28);
-    expect(repo.playbackTotal, 27, reason: 'new media joins the next round');
+    expect(
+      repo.playbackTotal,
+      0,
+      reason: 'scan and selection still do not start playback',
+    );
     await folder(['端到端短视频', '自然', '花卉']);
     await count(25);
+    await textTap('预览此范围');
+    await until(
+      () => find.byType(MovieStage).evaluate().isNotEmpty,
+      'explicit fixed folder preview',
+    );
+    expect(repo.fixedPreview, isTrue);
+    expect(repo.playbackTotal, 25);
+    expect(repo.snapshot.query.folder, '/media/shorts/自然/花卉');
+    final preview = t.widget<MovieStage>(find.byType(MovieStage)).session!;
+    await tap(find.byKey(const Key('preview-back')));
+    await until(
+      () =>
+          preview.debugPlayers.isEmpty &&
+          find.byKey(const Key('video-grid')).evaluate().isNotEmpty,
+      'return releases playback',
+    );
     final serverId = (await store.read())!.serverId;
     await t.pumpWidget(const SizedBox());
     await t.pump(const Duration(milliseconds: 300));
@@ -278,7 +319,7 @@ void main() {
     await fixture('/__fixture/checkpoint/roots');
     await t.pump(const Duration(seconds: 2));
     await fixture('/__fixture/actions/reconnect');
-    await textTap('刷新媒体目录');
+    await syncRoots();
     expect(repo.snapshot.roots.every((r) => r.available), isTrue);
 
     final trace =
@@ -299,7 +340,7 @@ void main() {
       isTrue,
       reason: 'host runner must physically stop the fixture',
     );
-    await textTap('刷新媒体目录');
+    await syncRoots();
     expect(find.byKey(const Key('operation-error')), findsOneWidget);
     expect(repo.snapshot.connected, isTrue);
     expect((await store.read())!.serverId, serverId);
@@ -313,7 +354,7 @@ void main() {
       }
     }
     expect(up, isTrue);
-    await textTap('刷新媒体目录');
+    await syncRoots();
     expect(find.byKey(const Key('operation-error')), findsNothing);
     expect((await store.read())!.serverId, serverId);
     await nav('library');
@@ -370,7 +411,10 @@ void main() {
     } finally {
       client.close(force: true);
     }
-    await refreshRoots();
+    // Opening roots already performs an authenticated read and detects expiry.
+    await nav('settings');
+    await textTap('媒体目录');
+    await until(() => !repo.snapshot.connected, 'revoked session detected');
     expect(find.text('连接你的视频库'), findsOneWidget);
     expect(await store.read(), isNull);
     expect(
@@ -387,6 +431,7 @@ void main() {
     await textTap('连接');
     expect(repo.snapshot.connected, isTrue);
     await nav('library');
+    await folder([], all: true);
     await count(28);
     await folder(['端到端短视频', '自然', '花卉']);
     await count(25);

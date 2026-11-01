@@ -2,10 +2,12 @@ import os
 import threading
 from pathlib import Path
 
+from sqlalchemy import select
 from starlette.responses import FileResponse
 
 from .errors import LibraryError
 from .library_state import prepared
+from .media_roots import owner_for_path
 from .models import Root, Video
 from .paths import open_directory, open_video, signature
 
@@ -28,15 +30,19 @@ MIME_TYPES = {
 class DescriptorResponse(FileResponse):
     """Starlette Range handling over an already verified, stable open file."""
 
-    def __init__(self, fd, release, video):
+    def __init__(self, fd, release, video, *, media_type=None, extra_headers=None):
         self.fd, self.release = fd, release
         super().__init__(
             f"/proc/self/fd/{fd}",
             stat_result=os.fstat(fd),
-            media_type=MIME_TYPES.get(video.type, "application/octet-stream"),
+            media_type=media_type or MIME_TYPES.get(video.type, "application/octet-stream"),
             filename=video.name,
             content_disposition_type="inline",
-            headers={"ETag": f'"{video.sha256}"', "Cache-Control": "private, no-cache"},
+            headers={
+                "ETag": f'"{video.sha256}"',
+                "Cache-Control": "private, no-cache",
+                **(extra_headers or {}),
+            },
         )
 
     async def __call__(self, scope, receive, send):
@@ -66,7 +72,11 @@ class MediaStreams:
         if not video or video.status != "available" or video.error:
             raise LibraryError("video_unavailable", "视频当前不可播放", 404)
         root = session.get(Root, video.root_id)
-        if not root.available:
+        if (
+            not root.available
+            or not root.enabled
+            or owner_for_path(video.path, list(session.scalars(select(Root)))) is None
+        ):
             raise LibraryError("root_unavailable", "媒体目录暂不可用")
         try:
             with open_directory(Path(root.path)) as root_fd:

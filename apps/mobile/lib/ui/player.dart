@@ -8,6 +8,8 @@ import 'package:video_player/video_player.dart';
 
 import '../library/models.dart';
 import 'paper.dart';
+import 'media_layout.dart';
+import 'paper_icons.dart';
 import 'device_controls.dart';
 import 'media_poster.dart';
 import 'playback_session.dart';
@@ -24,6 +26,7 @@ class MovieStage extends StatefulWidget {
     this.preloadAdjacent = true,
     this.onPlaybackFailure,
     this.session,
+    this.inlineControls = false,
   });
   final List<LibraryVideo> videos;
   final int index;
@@ -34,6 +37,7 @@ class MovieStage extends StatefulWidget {
   final bool preloadAdjacent;
   final Future<String?> Function(LibraryVideo)? onPlaybackFailure;
   final PlaybackSession? session;
+  final bool inlineControls;
   @override
   State<MovieStage> createState() => _MovieStageState();
 }
@@ -182,6 +186,7 @@ class _MovieStageState extends State<MovieStage> {
             footer: widget.footerBuilder?.call(widget.videos[index]),
             onUnauthorized: widget.onUnauthorized,
             onPlaybackFailure: widget.onPlaybackFailure,
+            inlineControls: widget.inlineControls,
           ),
         ),
       );
@@ -205,6 +210,7 @@ class _MoviePage extends StatefulWidget {
     this.footer,
     this.onUnauthorized,
     this.onPlaybackFailure,
+    this.inlineControls = false,
   });
   final LibraryVideo video;
   final bool active, suspended;
@@ -213,6 +219,7 @@ class _MoviePage extends StatefulWidget {
   final Widget? footer;
   final void Function(MediaSource)? onUnauthorized;
   final Future<String?> Function(LibraryVideo)? onPlaybackFailure;
+  final bool inlineControls;
 
   @override
   State<_MoviePage> createState() => _MoviePageState();
@@ -227,10 +234,44 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   bool _foreground = true;
   bool _loading = false;
   bool _playRequested = false;
+  bool? _orientationPlayIntent;
   double _baseSpeed = 1;
   final _screenRevision = ValueNotifier(0);
-  MaterialPageRoute<void>? _fullscreenRoute;
+  PaperPageRoute<void>? _fullscreenRoute;
   NavigatorState? _fullscreenNavigator;
+  Completer<void>? _initializationCancelled;
+
+  void _cancelInitialization() {
+    final pending = _initializationCancelled;
+    _initializationCancelled = null;
+    if (pending != null && !pending.isCompleted) pending.complete();
+  }
+
+  Future<void> _initialize(
+    VideoPlayerController controller,
+    Duration limit,
+  ) async {
+    final cancelled = _initializationCancelled = Completer<void>();
+    final expired = Completer<void>();
+    final timer = Timer(
+      limit,
+      () => expired.completeError(
+        TimeoutException('Video initialization timed out', limit),
+      ),
+    );
+    try {
+      await Future.any([
+        controller.initialize(),
+        cancelled.future,
+        expired.future,
+      ]);
+    } finally {
+      timer.cancel();
+      if (identical(_initializationCancelled, cancelled)) {
+        _initializationCancelled = null;
+      }
+    }
+  }
 
   void _repaint() {
     if (!mounted) return;
@@ -274,8 +315,12 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                 (widget.active && !widget.session.contains(_controller!))))) {
       unawaited(_load());
     } else if (!widget.active || widget.suspended) {
-      if (widget.active && widget.suspended && !oldWidget.suspended) {
-        _resumeAfterSuspension = _playRequested;
+      if (widget.active &&
+          widget.suspended &&
+          (!oldWidget.active || !oldWidget.suspended)) {
+        // Picking another item while a queue covers the stage requests play
+        // once it closes; reopening the current item preserves its pause.
+        _resumeAfterSuspension = !oldWidget.active || _playRequested;
       }
       _playRequested = false;
       unawaited(widget.session.silence(_controller));
@@ -315,24 +360,38 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden ||
+        state == AppLifecycleState.detached) {
+      _orientationPlayIntent = null;
+    }
     _foreground = state == AppLifecycleState.resumed;
     if (state != AppLifecycleState.resumed) {
       _resumeAfterSuspension = false;
-      if (widget.video.source.asset) {
+      // Rotation can briefly remove focus. Keep its decoder and timeline until
+      // a real hidden/paused transition requires network resource release.
+      if (widget.video.source.asset ||
+          (state == AppLifecycleState.inactive &&
+              _orientationPlayIntent != null)) {
         _playRequested = false;
         unawaited(widget.session.silence(_controller));
         _repaint();
       } else {
         _unload();
       }
-    } else if (_controller == null && widget.prepare) {
-      unawaited(_load(autoplay: false));
-    } else if (widget.active && !widget.suspended && _controller != null) {
-      unawaited(_activate(rewind: false, play: false));
+    } else {
+      final playing = _orientationPlayIntent ?? false;
+      _orientationPlayIntent = null;
+      if (_controller == null && widget.prepare) {
+        unawaited(_load(autoplay: playing));
+      } else if (widget.active && !widget.suspended && _controller != null) {
+        unawaited(_activate(rewind: false, play: playing));
+      }
     }
   }
 
   void _unload() {
+    _cancelInitialization();
     ++_generation;
     _loading = false;
     _playRequested = false;
@@ -347,9 +406,11 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
     int emptyTrackRetry = 0,
     int transientRetry = 0,
   }) async {
+    _cancelInitialization();
     final generation = ++_generation;
     _loading = true;
     _playRequested = autoplay && widget.active && !widget.suspended;
+    _resumeAfterSuspension = autoplay && widget.active && widget.suspended;
     final old = _controller;
     _controller = null;
     _error = null;
@@ -397,9 +458,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
         await widget.session.release(next);
         return;
       }
-      await next.initialize().timeout(
-        Duration(seconds: widget.active ? 30 : 20),
-      );
+      await _initialize(next, Duration(seconds: widget.active ? 30 : 20));
       if (!mounted ||
           generation != _generation ||
           !widget.session.contains(next)) {
@@ -527,6 +586,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   Future<void> _fullscreen() async {
     final player = _controller;
     if (player == null || !player.value.isInitialized || _wide) return;
+    _orientationPlayIntent = _playRequested;
     setState(() => _wide = true);
     try {
       await SystemChrome.setPreferredOrientations([
@@ -536,9 +596,11 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       if (!mounted) return;
       final navigator = _fullscreenNavigator = Navigator.of(context);
-      final route = _fullscreenRoute = MaterialPageRoute<void>(
+      final route = _fullscreenRoute = PaperPageRoute<void>(
         builder: (context) => Scaffold(
-          backgroundColor: Colors.black,
+          backgroundColor: widget.inlineControls
+              ? const Color(0xff111612)
+              : Colors.black,
           body: ValueListenableBuilder<int>(
             valueListenable: _screenRevision,
             builder: (context, _, _) {
@@ -553,7 +615,11 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                   controller: current,
                   name: widget.video.name,
                   fullscreen: true,
-                  onExit: () => Navigator.pop(context),
+                  inlineControls: widget.inlineControls,
+                  onExit: () {
+                    _orientationPlayIntent = _playRequested;
+                    Navigator.pop(context);
+                  },
                   onSpeedChanged: (speed) => _baseSpeed = speed,
                   isPlayRequested: () => _playRequested,
                   onPlayRequested: _changePlayRequest,
@@ -614,6 +680,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
       );
       await navigator.push(route);
     } finally {
+      _orientationPlayIntent ??= _playRequested;
       if (mounted) setState(() => _wide = false);
       _fullscreenRoute = null;
       _fullscreenNavigator = null;
@@ -626,7 +693,9 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) => ColoredBox(
-    color: Paper.of(context).videoSurface,
+    color: widget.inlineControls
+        ? const Color(0xff111612)
+        : Paper.of(context).videoSurface,
     child: Stack(
       children: [
         Positioned.fill(
@@ -667,6 +736,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                   controller: _controller!,
                   name: widget.video.name,
                   interactionsEnabled: !widget.suspended && !_wide && !_loading,
+                  inlineControls: widget.inlineControls,
                   footer: widget.footer,
                   onFullscreen: widget.video.portrait ? null : _fullscreen,
                   onSpeedChanged: (speed) => _baseSpeed = speed,
@@ -678,6 +748,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
     ),
   );
   void _changePlayRequest(bool playing) {
+    _orientationPlayIntent = null;
     _playRequested = playing;
     _repaint();
   }
@@ -685,6 +756,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
   @override
   void dispose() {
     ++_generation;
+    _cancelInitialization();
     final route = _fullscreenRoute, navigator = _fullscreenNavigator;
     if (route != null && navigator != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -714,6 +786,7 @@ class PlayerSurface extends StatefulWidget {
     this.onSpeedChanged,
     this.isPlayRequested,
     this.onPlayRequested,
+    this.inlineControls = false,
   });
   final VideoPlayerController controller;
   final String name;
@@ -723,6 +796,7 @@ class PlayerSurface extends StatefulWidget {
   final ValueChanged<double>? onSpeedChanged;
   final bool Function()? isPlayRequested;
   final ValueChanged<bool>? onPlayRequested;
+  final bool inlineControls;
   @override
   State<PlayerSurface> createState() => _PlayerSurfaceState();
 }
@@ -733,7 +807,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
   double? _previousSpeed;
   Future<void> _speedChanges = Future.value();
   Timer? _hideTimer, _feedbackTimer;
-  late bool _controls = widget.fullscreen;
+  late bool _controls = widget.fullscreen || widget.inlineControls;
   bool _seeking = false, _resumeAfterSeek = false, _deviceEnabled = true;
   double _seekStart = 0, _seekMs = 0, _seekDx = 0;
   Map<String, double>? _levels;
@@ -750,6 +824,14 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     widget.onPlayRequested?.call(playing);
     if (!playing) _endBoost();
     unawaited(playing ? controller.play() : controller.pause());
+    if (widget.inlineControls) {
+      setState(() => _controls = true);
+      if (playing) {
+        _scheduleHide();
+      } else {
+        _hideTimer?.cancel();
+      }
+    }
   }
 
   @override
@@ -758,8 +840,8 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     WidgetsBinding.instance.addObserver(this);
     if (widget.fullscreen) {
       unawaited(_readLevels());
-      _scheduleHide();
     }
+    if (widget.fullscreen || widget.inlineControls) _scheduleHide();
   }
 
   Future<void> _readLevels() async {
@@ -776,7 +858,9 @@ class _PlayerSurfaceState extends State<PlayerSurface>
   void _scheduleHide() {
     _hideTimer?.cancel();
     _hideTimer = Timer(const Duration(seconds: 3), () {
-      if (mounted && !_seeking) setState(() => _controls = false);
+      if (mounted && !_seeking && (_playRequested || !widget.inlineControls)) {
+        setState(() => _controls = false);
+      }
     });
   }
 
@@ -838,10 +922,14 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     });
   }
 
-  void _moveSeek(DragUpdateDetails details, {bool track = false}) {
+  void _moveSeek(
+    DragUpdateDetails details, {
+    bool track = false,
+    double? trackWidth,
+  }) {
     if (!_seeking) return;
     final duration = controller.value.duration.inMilliseconds.toDouble();
-    final width = context.size!.width;
+    final width = trackWidth ?? context.size!.width;
     _seekDx += details.delta.dx;
     setState(
       () => _seekMs = track
@@ -927,6 +1015,194 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     if (_controls) _scheduleHide();
   }
 
+  ({bool stacked, bool separateSpeed, double height}) _inlineLayout(
+    VideoPlayerValue value,
+    Duration position,
+    double width,
+  ) {
+    final style = DefaultTextStyle.of(context).style.copyWith(fontSize: 12);
+    double measure(String text) {
+      final painter = TextPainter(
+        text: TextSpan(text: text, style: style),
+        textDirection: Directionality.of(context),
+        textScaler: MediaQuery.textScalerOf(context),
+        maxLines: 1,
+      )..layout();
+      final result = painter.width;
+      painter.dispose();
+      return result;
+    }
+
+    final timeWidth = measure(
+      '${timeLabel(position)} / ${timeLabel(value.duration)}',
+    );
+    // Reserve the widest speed label so selecting a speed does not move the track.
+    final speedWidth = measure('1.5×') + 35;
+    final toggleWidth = (measure('暂停') + 12).clamp(40.0, double.infinity);
+    final innerWidth = width - 32;
+    final stacked = toggleWidth + 88 + timeWidth + speedWidth > innerWidth;
+    final separateSpeed = stacked && timeWidth + 8 + speedWidth > innerWidth;
+    return (
+      stacked: stacked,
+      separateSpeed: separateSpeed,
+      height: 48.0 * (stacked ? (separateSpeed ? 3 : 2) : 1),
+    );
+  }
+
+  Widget _inlineControlBar(
+    VideoPlayerValue value,
+    Duration position,
+    ({bool stacked, bool separateSpeed, double height}) layout,
+  ) {
+    final toggle = TextButton(
+      onPressed: widget.interactionsEnabled ? _togglePlayback : null,
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.white,
+        minimumSize: const Size(40, 44),
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        textStyle: const TextStyle(fontSize: 12),
+      ),
+      child: Text(_playRequested ? '暂停' : '播放'),
+    );
+    final track = Expanded(
+      child: LayoutBuilder(
+        builder: (context, constraints) => GestureDetector(
+          key: const Key('video-progress-touch'),
+          behavior: HitTestBehavior.opaque,
+          onHorizontalDragStart: !widget.interactionsEnabled
+              ? null
+              : (_) => _startSeek(),
+          onHorizontalDragUpdate: (details) =>
+              _moveSeek(details, track: true, trackWidth: constraints.maxWidth),
+          onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
+          onHorizontalDragCancel: () => unawaited(_finishSeek(cancel: true)),
+          child: SizedBox(
+            height: 48,
+            child: SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                trackHeight: 2,
+                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
+                overlayShape: const RoundSliderOverlayShape(overlayRadius: 12),
+              ),
+              child: IgnorePointer(
+                child: Slider(
+                  key: const Key('video-progress'),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  activeColor: const Color(0xffb9cba9),
+                  inactiveColor: Colors.white38,
+                  min: 0,
+                  max: value.duration.inMilliseconds > 0
+                      ? value.duration.inMilliseconds.toDouble()
+                      : 1,
+                  value: position.inMilliseconds.toDouble().clamp(
+                    0,
+                    value.duration.inMilliseconds > 0
+                        ? value.duration.inMilliseconds.toDouble()
+                        : 1,
+                  ),
+                  onChanged: (_) {},
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    final time = Text(
+      '${timeLabel(position)} / ${timeLabel(value.duration)}',
+      key: const Key('playback-time'),
+      style: const TextStyle(color: Colors.white, fontSize: 12),
+    );
+    final speed = PaperMenuButton<double>(
+      tooltip: '播放速度',
+      enabled: widget.interactionsEnabled,
+      initialValue: value.playbackSpeed,
+      onOpened: () => _hideTimer?.cancel(),
+      onCanceled: _scheduleHide,
+      onSelected: (speed) {
+        widget.onSpeedChanged?.call(speed);
+        _setSpeed(speed);
+        _scheduleHide();
+      },
+      itemBuilder: (_) => [.5, 1.0, 1.5, 2.0]
+          .map((speed) => PopupMenuItem(value: speed, child: Text('$speed×')))
+          .toList(),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10, right: 4),
+        child: SizedBox(
+          height: 48,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${value.playbackSpeed.toString().replaceFirst(RegExp(r'\.0$'), '')}×',
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+              ),
+              const SizedBox(width: 4),
+              const Icon(Icons.expand_more, size: 17, color: Colors.white),
+            ],
+          ),
+        ),
+      ),
+    );
+    return Positioned(
+      // Keep the speed popup independent of hints appearing above the bar.
+      key: const Key('playback-controls-layer'),
+      left: 10,
+      right: 10,
+      bottom: 12,
+      height: layout.height,
+      child: IgnorePointer(
+        ignoring: !_controls,
+        child: AnimatedOpacity(
+          opacity: _controls ? 1 : 0,
+          duration: MediaLayout.motion(context, 160),
+          child: Container(
+            key: const Key('playback-controls'),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            decoration: BoxDecoration(
+              color: const Color(0xff0d110e).withValues(alpha: .94),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: layout.stacked
+                ? Column(
+                    children: [
+                      SizedBox(
+                        height: 48,
+                        child: Row(children: [toggle, track]),
+                      ),
+                      if (layout.separateSpeed) ...[
+                        SizedBox(
+                          height: 48,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: time,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 48,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: speed,
+                          ),
+                        ),
+                      ] else
+                        SizedBox(
+                          height: 48,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [time, speed],
+                          ),
+                        ),
+                    ],
+                  )
+                : Row(children: [toggle, track, time, speed]),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void didUpdateWidget(PlayerSurface oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -971,305 +1247,202 @@ class _PlayerSurfaceState extends State<PlayerSurface>
       final position = Duration(
         milliseconds: (_seeking ? _seekMs : v.position.inMilliseconds).round(),
       );
-      return Semantics(
-        label: widget.name,
-        value: '${_playRequested ? '正在播放' : '已暂停'}，${v.playbackSpeed}倍速',
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Listener(
-                onPointerCancel: (_) {
-                  _endBoost();
-                  if (_seeking) unawaited(_finishSeek(cancel: true));
-                  _finishLevel();
-                },
-                child: GestureDetector(
-                  key: const Key('video-gesture-surface'),
-                  behavior: HitTestBehavior.opaque,
-                  onTap: !widget.interactionsEnabled
-                      ? null
-                      : () {
-                          if (widget.fullscreen) {
-                            setState(() => _controls = !_controls);
-                            if (_controls) _scheduleHide();
-                          } else {
-                            _togglePlayback();
-                          }
-                        },
-                  onLongPressStart: !widget.interactionsEnabled
-                      ? null
-                      : (_) => _startBoost(),
-                  onLongPressEnd: (_) => _endBoost(),
-                  onLongPressCancel: _endBoost,
-                  onHorizontalDragStart: !widget.interactionsEnabled
-                      ? null
-                      : (_) => _startSeek(),
-                  onHorizontalDragUpdate: _moveSeek,
-                  onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
-                  onHorizontalDragCancel: () =>
-                      unawaited(_finishSeek(cancel: true)),
-                  onVerticalDragStart: widget.fullscreen ? _startLevel : null,
-                  onVerticalDragUpdate: widget.fullscreen ? _moveLevel : null,
-                  onVerticalDragEnd: widget.fullscreen
-                      ? (_) => _finishLevel()
-                      : null,
-                  onVerticalDragCancel: widget.fullscreen ? _finishLevel : null,
-                  child: Center(
-                    child: AspectRatio(
-                      aspectRatio: v.aspectRatio,
-                      child: VideoPlayer(
-                        controller,
-                        key: const Key('actual-video'),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            if (widget.footer != null)
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 160),
-                left: 16,
-                right: widget.onFullscreen == null ? 16 : 82,
-                bottom: _controls ? 62 : 28,
-                child: widget.footer!,
-              ),
-            if (_previousSpeed != null || _feedback != null)
-              Positioned(
-                top: widget.fullscreen ? 60 : 18,
-                left: 0,
-                right: 0,
-                child: IgnorePointer(
-                  child: Center(
-                    child: Container(
-                      key: Key(
-                        _previousSpeed != null
-                            ? 'hold-speed-hint'
-                            : 'device-level-hint',
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withValues(alpha: .55),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        _previousSpeed != null ? '2× 快进中' : _feedback!,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          final inlineLayout = widget.inlineControls
+              ? _inlineLayout(v, position, constraints.maxWidth)
+              : (stacked: false, separateSpeed: false, height: 48.0);
+          return Semantics(
+            label: widget.name,
+            value: '${_playRequested ? '正在播放' : '已暂停'}，${v.playbackSpeed}倍速',
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Listener(
+                    onPointerCancel: (_) {
+                      _endBoost();
+                      if (_seeking) unawaited(_finishSeek(cancel: true));
+                      _finishLevel();
+                    },
+                    child: GestureDetector(
+                      key: const Key('video-gesture-surface'),
+                      behavior: HitTestBehavior.opaque,
+                      onTap: !widget.interactionsEnabled
+                          ? null
+                          : () {
+                              if (widget.fullscreen) {
+                                setState(() => _controls = !_controls);
+                                if (_controls) _scheduleHide();
+                              } else {
+                                _togglePlayback();
+                              }
+                            },
+                      onLongPressStart: !widget.interactionsEnabled
+                          ? null
+                          : (_) => _startBoost(),
+                      onLongPressEnd: (_) => _endBoost(),
+                      onLongPressCancel: _endBoost,
+                      onHorizontalDragStart: !widget.interactionsEnabled
+                          ? null
+                          : (_) => _startSeek(),
+                      onHorizontalDragUpdate: _moveSeek,
+                      onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
+                      onHorizontalDragCancel: () =>
+                          unawaited(_finishSeek(cancel: true)),
+                      onVerticalDragStart: widget.fullscreen
+                          ? _startLevel
+                          : null,
+                      onVerticalDragUpdate: widget.fullscreen
+                          ? _moveLevel
+                          : null,
+                      onVerticalDragEnd: widget.fullscreen
+                          ? (_) => _finishLevel()
+                          : null,
+                      onVerticalDragCancel: widget.fullscreen
+                          ? _finishLevel
+                          : null,
+                      child: Center(
+                        child: AspectRatio(
+                          aspectRatio: v.aspectRatio,
+                          child: VideoPlayer(
+                            controller,
+                            key: const Key('actual-video'),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            if (widget.onFullscreen != null)
-              Positioned(
-                right: 12,
-                bottom: _controls ? 66 : 32,
-                child: FilledButton.tonalIcon(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Paper.of(context).background
-                        .withValues(alpha: .9),
-                    foregroundColor: Paper.of(context).ink,
-                    shape: const StadiumBorder(),
-                    minimumSize: const Size(74, 36),
-                    padding: const EdgeInsets.symmetric(horizontal: 13),
-                  ),
-                  onPressed: widget.onFullscreen,
-                  icon: const Icon(Icons.fullscreen, size: 19),
-                  label: const Text('横屏'),
-                ),
-              ),
-            if (widget.fullscreen)
-              Positioned(
-                top: 6,
-                left: 8,
-                right: 12,
-                child: SafeArea(
-                  bottom: false,
-                  child: IgnorePointer(
-                    ignoring: !_controls,
-                    child: AnimatedOpacity(
-                      opacity: _controls ? 1 : 0,
-                      duration: const Duration(milliseconds: 160),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            key: const Key('fullscreen-exit'),
-                            tooltip: '退出全屏',
-                            onPressed: widget.onExit,
-                            style: IconButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              foregroundColor: Colors.white,
-                            ),
-                            icon: const Icon(
-                              Icons.arrow_back_ios_new,
-                              size: 22,
-                            ),
+                if (widget.inlineControls &&
+                    !_playRequested &&
+                    (!_controls ||
+                        constraints.maxHeight - inlineLayout.height - 12 >= 60))
+                  Positioned.fill(
+                    bottom:
+                        _controls &&
+                            constraints.maxHeight <
+                                2 * (inlineLayout.height + 42)
+                        ? inlineLayout.height + 12
+                        : 0,
+                    child: Center(
+                      child: IconButton(
+                        key: const Key('inline-play'),
+                        tooltip: '播放视频',
+                        style: IconButton.styleFrom(
+                          backgroundColor: Paper.background.withValues(
+                            alpha: .94,
                           ),
-                        ],
+                          foregroundColor: Paper.olive,
+                          minimumSize: const Size(60, 60),
+                          shape: const CircleBorder(),
+                        ),
+                        onPressed: widget.interactionsEnabled
+                            ? _togglePlayback
+                            : null,
+                        icon: const PaperIcon(
+                          PaperGlyph.play,
+                          size: 28,
+                          color: Paper.olive,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: _controls ? 56 : 26,
-              child: GestureDetector(
-                key: const Key('video-progress-touch'),
-                behavior: HitTestBehavior.opaque,
-                onHorizontalDragStart: !widget.interactionsEnabled
-                    ? null
-                    : (_) => _startSeek(),
-                onHorizontalDragUpdate: (d) => _moveSeek(d, track: true),
-                onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
-                onHorizontalDragCancel: () =>
-                    unawaited(_finishSeek(cancel: true)),
-                child: ClipRect(
-                  child: OverflowBox(
-                    alignment: Alignment.bottomCenter,
-                    minHeight: 56,
-                    maxHeight: 56,
+                if (widget.footer != null)
+                  AnimatedPositioned(
+                    duration: MediaLayout.motion(context, 160),
+                    left: 16,
+                    right: widget.onFullscreen == null ? 16 : 82,
+                    bottom: _controls ? 62 : 28,
+                    child: widget.footer!,
+                  ),
+                if (_previousSpeed != null || _feedback != null)
+                  Positioned(
+                    top: widget.fullscreen ? 60 : 18,
+                    left: 0,
+                    right: 0,
                     child: IgnorePointer(
-                      ignoring: !_controls,
-                      child: AnimatedOpacity(
-                        opacity: _controls ? 1 : 0,
-                        duration: const Duration(milliseconds: 160),
+                      child: Center(
                         child: Container(
-                          key: const Key('playback-controls'),
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [Colors.transparent, Color(0x75000000)],
+                          key: Key(
+                            _previousSpeed != null
+                                ? 'hold-speed-hint'
+                                : 'device-level-hint',
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: .55),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            _previousSpeed != null ? '2× 快进中' : _feedback!,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
                             ),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Column(
+                        ),
+                      ),
+                    ),
+                  ),
+                if (widget.onFullscreen != null)
+                  Positioned(
+                    right: 12,
+                    bottom: _controls
+                        ? (widget.inlineControls
+                              ? inlineLayout.height + 18
+                              : 66)
+                        : 32,
+                    child: FilledButton.tonalIcon(
+                      style: FilledButton.styleFrom(
+                        backgroundColor:
+                            (widget.inlineControls
+                                    ? Paper.background
+                                    : Paper.of(context).background)
+                                .withValues(alpha: .9),
+                        foregroundColor: widget.inlineControls
+                            ? Paper.olive
+                            : Paper.of(context).ink,
+                        shape: widget.inlineControls
+                            ? RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(7),
+                              )
+                            : const StadiumBorder(),
+                        minimumSize: const Size(74, 36),
+                        padding: const EdgeInsets.symmetric(horizontal: 13),
+                      ),
+                      onPressed: widget.onFullscreen,
+                      icon: const Icon(Icons.fullscreen, size: 19),
+                      label: Text(widget.inlineControls ? '横向全屏' : '横屏'),
+                    ),
+                  ),
+                if (widget.fullscreen)
+                  Positioned(
+                    top: 6,
+                    left: 8,
+                    right: 12,
+                    child: SafeArea(
+                      bottom: false,
+                      child: IgnorePointer(
+                        ignoring: !_controls,
+                        child: AnimatedOpacity(
+                          opacity: _controls ? 1 : 0,
+                          duration: MediaLayout.motion(context, 160),
+                          child: Row(
                             children: [
-                              SizedBox(
-                                height: 28,
-                                child: Row(
-                                  children: [
-                                    if (widget.fullscreen)
-                                      IconButton(
-                                        tooltip: _playRequested ? '暂停' : '播放',
-                                        constraints: const BoxConstraints(
-                                          minWidth: 30,
-                                          minHeight: 28,
-                                        ),
-                                        padding: EdgeInsets.zero,
-                                        onPressed: () {
-                                          _togglePlayback();
-                                          _scheduleHide();
-                                        },
-                                        icon: Icon(
-                                          _playRequested
-                                              ? Icons.pause
-                                              : Icons.play_arrow,
-                                          color: Colors.white,
-                                          size: 20,
-                                        ),
-                                      ),
-                                    Expanded(
-                                      child: Text(
-                                        '${timeLabel(position)} / ${timeLabel(v.duration)}',
-                                        key: const Key('playback-time'),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ),
-                                    PopupMenuButton<double>(
-                                      tooltip: '播放速度',
-                                      initialValue: v.playbackSpeed,
-                                      onOpened: () => _hideTimer?.cancel(),
-                                      onCanceled: _scheduleHide,
-                                      onSelected: (speed) {
-                                        widget.onSpeedChanged?.call(speed);
-                                        _setSpeed(speed);
-                                        _scheduleHide();
-                                      },
-                                      itemBuilder: (_) => [.5, 1.0, 1.5, 2.0]
-                                          .map(
-                                            (speed) => PopupMenuItem(
-                                              value: speed,
-                                              child: Text('$speed×'),
-                                            ),
-                                          )
-                                          .toList(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                        ),
-                                        child: Text(
-                                          '${v.playbackSpeed}×',
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                              IconButton(
+                                key: const Key('fullscreen-exit'),
+                                tooltip: '退出全屏',
+                                onPressed: widget.onExit,
+                                style: IconButton.styleFrom(
+                                  backgroundColor: Colors.transparent,
+                                  foregroundColor: Colors.white,
                                 ),
-                              ),
-                              SizedBox(
-                                height: 28,
-                                child: SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
-                                    trackHeight: 2,
-                                    thumbShape: const RoundSliderThumbShape(
-                                      enabledThumbRadius: 4,
-                                    ),
-                                    overlayShape: const RoundSliderOverlayShape(
-                                      overlayRadius: 8,
-                                    ),
-                                  ),
-                                  child: IgnorePointer(
-                                    child: Slider(
-                                      key: const Key('video-progress'),
-                                      activeColor: Colors.white,
-                                      inactiveColor: Colors.white38,
-                                      min: 0,
-                                      max: v.duration.inMilliseconds > 0
-                                          ? v.duration.inMilliseconds.toDouble()
-                                          : 1,
-                                      value: position.inMilliseconds
-                                          .toDouble()
-                                          .clamp(
-                                            0,
-                                            v.duration.inMilliseconds > 0
-                                                ? v.duration.inMilliseconds
-                                                      .toDouble()
-                                                : 1,
-                                          ),
-                                      onChangeStart: (_) => _startSeek(),
-                                      onChanged: (value) {
-                                        if (_seeking) {
-                                          setState(() => _seekMs = value);
-                                        } else {
-                                          unawaited(
-                                            controller.seekTo(
-                                              Duration(
-                                                milliseconds: value.round(),
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                      },
-                                      onChangeEnd: (_) =>
-                                          unawaited(_finishSeek()),
-                                    ),
-                                  ),
+                                icon: const Icon(
+                                  Icons.arrow_back_ios_new,
+                                  size: 22,
                                 ),
                               ),
                             ],
@@ -1278,11 +1451,197 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                       ),
                     ),
                   ),
-                ),
-              ),
+                if (widget.inlineControls)
+                  _inlineControlBar(v, position, inlineLayout)
+                else
+                  Positioned(
+                    key: const Key('playback-controls-layer'),
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    height: _controls ? 56 : 26,
+                    child: GestureDetector(
+                      key: const Key('video-progress-touch'),
+                      behavior: HitTestBehavior.opaque,
+                      onHorizontalDragStart: !widget.interactionsEnabled
+                          ? null
+                          : (_) => _startSeek(),
+                      onHorizontalDragUpdate: (d) => _moveSeek(d, track: true),
+                      onHorizontalDragEnd: (_) => unawaited(_finishSeek()),
+                      onHorizontalDragCancel: () =>
+                          unawaited(_finishSeek(cancel: true)),
+                      child: ClipRect(
+                        child: OverflowBox(
+                          alignment: Alignment.bottomCenter,
+                          minHeight: 56,
+                          maxHeight: 56,
+                          child: IgnorePointer(
+                            ignoring: !_controls,
+                            child: AnimatedOpacity(
+                              opacity: _controls ? 1 : 0,
+                              duration: MediaLayout.motion(context, 160),
+                              child: Container(
+                                key: const Key('playback-controls'),
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Colors.transparent,
+                                      Color(0x75000000),
+                                    ],
+                                  ),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 28,
+                                      child: Row(
+                                        children: [
+                                          if (widget.fullscreen ||
+                                              widget.inlineControls)
+                                            IconButton(
+                                              tooltip: _playRequested
+                                                  ? '暂停'
+                                                  : '播放',
+                                              constraints: const BoxConstraints(
+                                                minWidth: 30,
+                                                minHeight: 28,
+                                              ),
+                                              padding: EdgeInsets.zero,
+                                              onPressed: () {
+                                                _togglePlayback();
+                                                _scheduleHide();
+                                              },
+                                              icon: Icon(
+                                                _playRequested
+                                                    ? Icons.pause
+                                                    : Icons.play_arrow,
+                                                color: Colors.white,
+                                                size: 20,
+                                              ),
+                                            ),
+                                          Expanded(
+                                            child: Text(
+                                              '${timeLabel(position)} / ${timeLabel(v.duration)}',
+                                              key: const Key('playback-time'),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                          PaperMenuButton<double>(
+                                            tooltip: '播放速度',
+                                            initialValue: v.playbackSpeed,
+                                            onOpened: () =>
+                                                _hideTimer?.cancel(),
+                                            onCanceled: _scheduleHide,
+                                            onSelected: (speed) {
+                                              widget.onSpeedChanged?.call(
+                                                speed,
+                                              );
+                                              _setSpeed(speed);
+                                              _scheduleHide();
+                                            },
+                                            itemBuilder: (_) =>
+                                                [.5, 1.0, 1.5, 2.0]
+                                                    .map(
+                                                      (speed) => PopupMenuItem(
+                                                        value: speed,
+                                                        child: Text('$speed×'),
+                                                      ),
+                                                    )
+                                                    .toList(),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 8,
+                                                  ),
+                                              child: Text(
+                                                '${v.playbackSpeed}×',
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 28,
+                                      child: SliderTheme(
+                                        data: SliderTheme.of(context).copyWith(
+                                          trackHeight: 2,
+                                          thumbShape:
+                                              const RoundSliderThumbShape(
+                                                enabledThumbRadius: 4,
+                                              ),
+                                          overlayShape:
+                                              const RoundSliderOverlayShape(
+                                                overlayRadius: 8,
+                                              ),
+                                        ),
+                                        child: IgnorePointer(
+                                          child: Slider(
+                                            key: const Key('video-progress'),
+                                            activeColor: Colors.white,
+                                            inactiveColor: Colors.white38,
+                                            min: 0,
+                                            max: v.duration.inMilliseconds > 0
+                                                ? v.duration.inMilliseconds
+                                                      .toDouble()
+                                                : 1,
+                                            value: position.inMilliseconds
+                                                .toDouble()
+                                                .clamp(
+                                                  0,
+                                                  v.duration.inMilliseconds > 0
+                                                      ? v
+                                                            .duration
+                                                            .inMilliseconds
+                                                            .toDouble()
+                                                      : 1,
+                                                ),
+                                            onChangeStart: (_) => _startSeek(),
+                                            onChanged: (value) {
+                                              if (_seeking) {
+                                                setState(() => _seekMs = value);
+                                              } else {
+                                                unawaited(
+                                                  controller.seekTo(
+                                                    Duration(
+                                                      milliseconds: value
+                                                          .round(),
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            onChangeEnd: (_) =>
+                                                unawaited(_finishSeek()),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       );
     },
   );

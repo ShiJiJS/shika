@@ -8,9 +8,11 @@
       "cwd": "${workspaceFolder}/apps/mobile",
       "program": "${workspaceFolder}/apps/mobile/lib/main.dart",
       "deviceId": "emulator-5554",
-      "preLaunchTask": "Start Android emulator",
+      "preLaunchTask": "Prepare Android debug",
       "flutterMode": "debug",
-      "toolArgs": ["--dart-define=LIBRARY_MODE=server"]
+      "toolArgs": [
+        "--dart-define=LIBRARY_MODE=server"
+      ]
     },
     {
       "name": "Video Viewer Demo (Android)",
@@ -21,7 +23,9 @@
       "deviceId": "emulator-5554",
       "preLaunchTask": "Start Android emulator",
       "flutterMode": "debug",
-      "toolArgs": ["--dart-define=LIBRARY_MODE=demo"]
+      "toolArgs": [
+        "--dart-define=LIBRARY_MODE=demo"
+      ]
     }
   ]
 }
