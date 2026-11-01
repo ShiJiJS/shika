@@ -1,5 +1,6 @@
 # 图包菜单、恢复找回和最近续读
 
+[草稿PR #155](https://github.com/ShiJiJS/video_viewer/pull/155)（基于#152）。
 2026-11-01。实现与边界见[连续操作](../../LF8-PACK-RESTORE-CONTINUATION.md)，键盘问题#153、NAS监测问题#154。本轮普通客户端8416a3f7/preview.20/code26；服务430fede5的76运行文件匹配，未改后端协议。原型树1cbf605独立未变。10张PNG均来自普通APK实际Android操作，主Agent已查看，未作独立视觉评审。
 
 ## 记录

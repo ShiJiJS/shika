@@ -1,5 +1,6 @@
 # 第26版App体验更新
 
+[草稿PR #155](https://github.com/ShiJiJS/video_viewer/pull/155)（基于#152）。
 2026-11-01，正常preview.20/code26和旧视频界面rollback.20/code26已放入NAS原部署目录的packages，附新版安装说明。第25版包和原说明另存保留。
 
 直接覆盖安装，不要卸载或清除数据。两份沿用原Windows签名和包名，已有连接保留；需要回退时使用同号rollback.20，再覆盖正常包可回来。真实手机尚未安装验证。

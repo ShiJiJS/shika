@@ -1,5 +1,6 @@
 # 当前进度
 
+[草稿PR #155](https://github.com/ShiJiJS/video_viewer/pull/155)（基于#152）。
 更新：2026-11-01。六项反馈的NAS服务已更新；追加图包菜单键盘修复#153和三轮恢复找回，第26版及同号回退包已交付到原packages目录。尚未安装真实手机或正式发布，六票保持开放。[安装与部署记录](../../nas-preview-2026-11-01.md)，[草稿PR #152](https://github.com/ShiJiJS/video_viewer/pull/152)。
 
 当前候选为preview.20/code26，客户端8416a3f7，完整834项及分析通过；普通26覆盖25并核对身份/包摘要，修复菜单关闭后键盘重新弹出。服务源码430fede5未变，完整478项沿用固定源码结果；此前37项三轮和第25版缩放/扫描原生记录保留原版本范围。草稿PR尚未合并。[本轮操作](LF8-PACK-RESTORE-CONTINUATION.md)与[第26版安装](../../nas-app-preview-2026-11-01-code26.md)。
