@@ -1,0 +1,94 @@
+{
+  "client_source": "8416a3f7359af94f1da802185b136770d6499986",
+  "server_source": "6a119b1c0c2022a2f9cc615679bc8aab790f122e",
+  "normal_code": 26,
+  "normal_release_apk_sha256": "8bf34bc97a28f41214ba82f4d1b0be9743e82d6319a9f14f51f035e6fe048f51",
+  "rounds": [
+    {
+      "round": "bulk1",
+      "request_id": "1793511661477232-4202187303",
+      "task_id": "ddefb1f1-8ec8-41c3-949a-fee8f8cb6a43",
+      "old_pid": "4024",
+      "new_pid": "6326",
+      "backend_observed_running_after_app_stopped": true,
+      "backend_completed_before_app_restarted": true,
+      "one_native_restore_post": true,
+      "receipt_503_then_200": true,
+      "query_navigation_writes": 0,
+      "actual_default_batch_members": [
+        1000,
+        27
+      ],
+      "complete_unique_members_succeeded": 1027,
+      "original_task_second_native_page": true,
+      "all_37_tables_equal_during_query": true,
+      "all_other_non_operation_business_data_preserved": true,
+      "control_packs_unchanged": 4,
+      "fixture_files_bytes_preserved": 3093
+    },
+    {
+      "round": "bulk2",
+      "request_id": "1793511808326966-2492813815",
+      "task_id": "07f8cf72-9e3d-4772-8548-ab248f8492d7",
+      "old_pid": "6326",
+      "new_pid": "7361",
+      "backend_observed_running_after_app_stopped": true,
+      "backend_completed_before_app_restarted": true,
+      "one_native_restore_post": true,
+      "receipt_503_then_200": true,
+      "query_navigation_writes": 0,
+      "actual_default_batch_members": [
+        1000,
+        27
+      ],
+      "complete_unique_members_succeeded": 1027,
+      "original_task_second_native_page": true,
+      "all_37_tables_equal_during_query": true,
+      "all_other_non_operation_business_data_preserved": true,
+      "control_packs_unchanged": 4,
+      "fixture_files_bytes_preserved": 3093
+    },
+    {
+      "round": "bulk3",
+      "request_id": "1793511920159585-3363407053",
+      "task_id": "a59824f4-24ba-4c73-9214-78415a15db5a",
+      "old_pid": "7361",
+      "new_pid": "8306",
+      "backend_observed_running_after_app_stopped": true,
+      "backend_completed_before_app_restarted": true,
+      "one_native_restore_post": true,
+      "receipt_503_then_200": true,
+      "query_navigation_writes": 0,
+      "actual_default_batch_members": [
+        1000,
+        27
+      ],
+      "complete_unique_members_succeeded": 1027,
+      "original_task_second_native_page": true,
+      "all_37_tables_equal_during_query": true,
+      "all_other_non_operation_business_data_preserved": true,
+      "control_packs_unchanged": 4,
+      "fixture_files_bytes_preserved": 3093
+    }
+  ],
+  "native_post_counts": {
+    "/api/v1/pack-restore-plans": 3,
+    "/api/v1/pack-trash/restore": 0,
+    "/api/v1/packs/trash": 0,
+    "/api/v1/pack-purge-plans": 0
+  },
+  "preparation_logical_trash_via_api_not_native_actions": true,
+  "synthetic_packs": 1031,
+  "target_members": 1027,
+  "default_batch_size": 1000,
+  "physical_phone": false,
+  "real_nas_access_or_mutations": false,
+  "nas_performance_or_large_photo_proof": false,
+  "default_file_stability_seconds": 2,
+  "client_full_tests_reused": 834,
+  "client_full_log_sha256": "536cebb05efff57f13a795de1d5585aee4b9418e7be3c0f29edf299a4f3025ec",
+  "server_full_tests_reused": 491,
+  "server_full_log_sha256": "1e1b8130d5b8bcacb738e7ee79bb3f7b4bad1bebb0f4fbd9e5e5aa864db33796",
+  "unchanged_product_source_trees_checked": true,
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca"
+}
