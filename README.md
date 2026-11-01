@@ -8,7 +8,7 @@ P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已�
 
 ## 当前可用版本
 
-2026-11-01：**第27版 App（preview.21）与同号旧界面回退包已放入 NAS 原部署目录的 `packages/`**，服务已更新到 **preview.8**。直接覆盖安装正常包，不要卸载或清除数据；原地址、口令和签名保持。见[第27版安装说明](docs/nas-app-preview-2026-11-01-code27.md)和[NAS备份与更新记录](docs/nas-preview-2026-11-01-service8.md)。
+2026-11-01：**第28版 App（preview.22）与同号旧界面回退包已放入 NAS 原部署目录的 `packages/`**，服务已更新到 **preview.8**。直接覆盖安装正常包，不要卸载或清除数据；原地址、口令和签名保持。见[第28版安装说明](docs/nas-app-preview-2026-11-01-code28.md)和[NAS备份与更新记录](docs/nas-preview-2026-11-01-service8.md)。
 
 视频与图包各有媒体库、标签和最近记录，从库或标签选定范围后进入播放/阅读。图包以文件夹为单位，支持横向翻页、默认纵向拼接与缩放、续读、打标签、快速移除和撤销。设置中提供目录独立扫描进度、回收站、操作任务和管理备份。当前NAS图包源目录只读，移入回收站不会移动原图。
 
@@ -32,7 +32,7 @@ P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已�
 - [可移除设计参考原型](design/reference/README.md)（不随 App 发布）
 - [媒体库与图包升级规划：框架、实施任务与原型一致性验收](docs/plans/library-first/PLAN.md)（LF8 验收进行中）
 - [当前版本、已交付功能与剩余事项](docs/plans/library-first/PROGRESS-CURRENT.md)
-- [第27版安装与同号回退](docs/nas-app-preview-2026-11-01-code27.md)
+- [第28版安装与同号回退](docs/nas-app-preview-2026-11-01-code28.md)
 - [媒体库预览包：安装、旧服务兼容与回退边界](docs/library-first-preview.md)
 
 - [Mac 开发环境、VS Code F5、测试、打包与 NAS 维护](docs/macos-development.md)

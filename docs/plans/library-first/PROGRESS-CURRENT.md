@@ -1,12 +1,14 @@
 # 当前进度
 
-更新于2026-11-01。可用版本是 **第27版App（preview.21/code27）+ NAS服务preview.8**。正常包、同号旧界面回退包和说明都在NAS原部署目录的 `packages/`。直接覆盖安装，不要卸载或清除数据；地址和口令保持。
+更新于2026-11-01。可用版本是 **第28版App（preview.22/code28）+ NAS服务preview.8**。正常包、同号旧界面回退包和说明都在NAS原部署目录的 `packages/`。直接覆盖安装，不要卸载或清除数据；地址和口令保持。
 
-[安装与回退](../../nas-app-preview-2026-11-01-code27.md) · [NAS更新与完整备份](../../nas-preview-2026-11-01-service8.md) · [最新草稿PR #167](https://github.com/ShiJiJS/video_viewer/pull/167)
+[安装与回退](../../nas-app-preview-2026-11-01-code28.md) · [NAS更新与完整备份](../../nas-preview-2026-11-01-service8.md) · [整体草稿PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)
 
-[整体审阅草稿PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)汇总当前程序、规划及独立原型，保留main的命令行工具；历史证据通过固定原提交追溯，阶段分支完整保留。App/服务/原型与当前阶段源码逐文件一致，安装包和NAS未变，整合不代表正式验收完成。
+[整体审阅草稿PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)汇总当前程序、规划及独立原型，保留main的命令行工具；历史证据通过固定原提交追溯，阶段分支完整保留。第28版在该分支继续开发，服务和原型未变，整合不代表正式验收完成。
 
-开发工具另补CLI 0.1.1（[#169](https://github.com/ShiJiJS/video_viewer/issues/169)）：修改命令及其前置查询遇到过期凭据后停止，要求显式重新登录，避免自动将旧命令写入恢复后的数据；只读查询保留原自动登录。旧代码本地样本2失败/1对照通过，修复后15项CLI检查和Ruff通过。VS Code新增`CLI: help`、`CLI: tests`，使用`.dev/cli`与锁定依赖，配置中的实际命令已执行通过。本机`rv`已更新0.1.1，旧工具源码/安装信息保留。手机第27版及NAS服务不变，没有新APK。
+第28版修复[#170](https://github.com/ShiJiJS/video_viewer/issues/170)：上次图片被移除后，正确打开附近图片时保留定位提示。旧代码两项检查失败，修复后21项相关检查通过；普通APK覆盖安装、关闭后从最近续读的画面对照通过，标签、偏好和剩余图片保持。测试仅用本机合成资料；两份新APK已交付，NAS服务无需更新。自有临时容器、代理、模拟器和构建导出已清理。
+
+开发工具另补CLI 0.1.1（[#169](https://github.com/ShiJiJS/video_viewer/issues/169)）：修改命令及其前置查询遇到过期凭据后停止，要求显式重新登录，避免自动将旧命令写入恢复后的数据；只读查询保留原自动登录。旧代码本地样本2失败/1对照通过，修复后15项CLI检查和Ruff通过。VS Code新增`CLI: help`、`CLI: tests`，使用`.dev/cli`与锁定依赖，配置中的实际命令已执行通过。本机`rv`已更新0.1.1，旧工具源码/安装信息保留。
 
 ## 已交付
 

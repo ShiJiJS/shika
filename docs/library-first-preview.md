@@ -1,6 +1,6 @@
 # 媒体库安装候选：App preview.16 / 配套回退包
 
-> **当前请使用[第27版preview.21与同号回退包](nas-app-preview-2026-11-01-code27.md)，NAS服务现为[preview.8](nas-preview-2026-11-01-service8.md)。** 下文第22版/preview.16保留当时的验证和回退范围，不作为当前取包入口。
+> **当前请使用[第28版preview.22与同号回退包](nas-app-preview-2026-11-01-code28.md)，NAS服务现为[preview.8](nas-preview-2026-11-01-service8.md)。** 下文第22版/preview.16保留当时的验证和回退范围，不作为当前取包入口。
 
 > 2026-10-30已按授权部署到现有NAS，并将两份原签名APK放入NAS packages供体验。图包首次扫描进行中；完整原型、实际手机与NAS性能仍待验收。见[部署和安装说明](nas-preview-2026-10-30.md)。
 
