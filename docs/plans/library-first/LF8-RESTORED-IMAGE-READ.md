@@ -1,5 +1,7 @@
 # 部分删除后恢复：图片读取与续读
 
+[草稿PR #164](https://github.com/ShiJiJS/video_viewer/pull/164)，基于[#162](https://github.com/ShiJiJS/video_viewer/pull/162)。#161候选尚未部署，#163扫描关联继续优先处理。
+
 2026-11-01，继续 #161、#31/#33/#24/#133。服务产品源码 `82eacdbd58d38524050bcb20b442549e1a65276e`，本机 runtime preview.6；测试辅助进程的检查点发布另修于 `e4bcf533`。普通原签名 preview.20/code26 和客户端 `8416a3f7` 保持。本轮未访问 NAS，没有数据库迁移、新 APK、原型改版或正式发布。
 
 ## 修复结果
