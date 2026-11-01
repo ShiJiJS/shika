@@ -1,0 +1,115 @@
+{
+  "source": "82eacdbd58d38524050bcb20b442549e1a65276e",
+  "old_available_pack": {
+    "id": "1958716a-589a-4942-8a00-0a812b165e28",
+    "root_id": "purge",
+    "path": "/media/Restore-partial",
+    "location_key": "/media/Restore-partial",
+    "name": "Restore-partial",
+    "status": "available",
+    "error": null,
+    "device": "36",
+    "inode": "18795",
+    "content_version": 3,
+    "page_count": 1,
+    "generation": 5,
+    "seen_scan": "19bf3d4a-5a5e-404c-adf8-4e50c797a657",
+    "created_at": 1793512812.8733397,
+    "directory_signature": "[\"36\", \"18795\", 224, \"1793512770538496705\", \"1793512770538496705\", null]"
+  },
+  "old_pack_after_scan": {
+    "id": "1958716a-589a-4942-8a00-0a812b165e28",
+    "root_id": "purge",
+    "path": "/media/Restore-partial",
+    "location_key": null,
+    "name": "Restore-partial",
+    "status": "missing",
+    "error": null,
+    "device": "36",
+    "inode": "18795",
+    "content_version": 3,
+    "page_count": 1,
+    "generation": 6,
+    "seen_scan": "19bf3d4a-5a5e-404c-adf8-4e50c797a657",
+    "created_at": 1793512812.8733397,
+    "directory_signature": "[\"36\", \"18795\", 224, \"1793512770538496705\", \"1793512770538496705\", null]"
+  },
+  "new_available_pack": {
+    "id": "62d5fe84-0cc6-434b-b391-75da4740f722",
+    "root_id": "purge",
+    "path": "/media/Restore-partial",
+    "location_key": "/media/Restore-partial",
+    "name": "Restore-partial",
+    "status": "available",
+    "error": null,
+    "device": "36",
+    "inode": "18795",
+    "content_version": 1,
+    "page_count": 1,
+    "generation": 1,
+    "seen_scan": "eddba141-684b-4aa8-bea7-65d1acce0a30",
+    "created_at": 1793519488.262261,
+    "directory_signature": "[\"36\", \"18795\", 160, \"1793516380110102673\", \"1793516380110102673\", null]"
+  },
+  "old_remaining_page": {
+    "id": "e461e7c1-6de6-4765-bf7f-ddb9ccdcf54f",
+    "pack_id": "1958716a-589a-4942-8a00-0a812b165e28",
+    "path": "/media/Restore-partial/03.png",
+    "relative_path": "03.png",
+    "ordinal": 2,
+    "width": 64,
+    "height": 96,
+    "size": 13547,
+    "format": "PNG",
+    "signature": "[\"36\", \"18799\", 13547, \"1793512770538365912\", \"1793516380110102590\"]",
+    "sha256": "4d24500cbc9d7246a1b4d3aa5675846f365ff49a67db24f5bed7963acedce4a3",
+    "error": null,
+    "thumbnail": "711bd163-e1c0-4a1e-a146-73effa28a35e.jpg",
+    "seen_scan": "19bf3d4a-5a5e-404c-adf8-4e50c797a657"
+  },
+  "new_pages": [
+    {
+      "id": "20c7e4d8-4851-489e-a701-dd7c5157660d",
+      "pack_id": "62d5fe84-0cc6-434b-b391-75da4740f722",
+      "path": "/media/Restore-partial/03.png",
+      "relative_path": "03.png",
+      "ordinal": 0,
+      "width": 64,
+      "height": 96,
+      "size": 13547,
+      "format": "PNG",
+      "signature": "[\"36\", \"18799\", 13547, \"1793512770538365912\", \"1793516385819101567\"]",
+      "sha256": "4d24500cbc9d7246a1b4d3aa5675846f365ff49a67db24f5bed7963acedce4a3",
+      "error": null,
+      "thumbnail": "e22c1616-61eb-4226-bf34-8b15ceb9846e.jpg",
+      "seen_scan": "eddba141-684b-4aa8-bea7-65d1acce0a30"
+    }
+  ],
+  "same_directory_device_inode": true,
+  "same_remaining_image_sha256": true,
+  "old_recent_entries": [
+    {
+      "id": "451d5470-8b82-4bd3-8162-ddffd6ef675b",
+      "kind": "pack",
+      "video_id": null,
+      "pack_id": "1958716a-589a-4942-8a00-0a812b165e28",
+      "opened_at": 1793519370.157751
+    }
+  ],
+  "old_tag_links": [
+    {
+      "pack_id": "1958716a-589a-4942-8a00-0a812b165e28",
+      "tag_id": "5df6382b-21b9-445d-b358-53cc3e9f6881"
+    }
+  ],
+  "new_tag_links": [],
+  "new_identity_not_in_recent": true,
+  "scans_were_explicit_preparation_for_separate_synthetic_tall_pack": true,
+  "real_media_or_nas_used": false,
+  "new_recent_entries": [],
+  "api_recent_ids": [
+    "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+    "f41dbd5c-e5d3-45e0-86ec-84b29edff6b9"
+  ],
+  "old_recent_data_preserved_but_hidden_by_missing_state": true
+}

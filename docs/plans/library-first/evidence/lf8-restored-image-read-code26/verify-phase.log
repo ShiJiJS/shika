@@ -1,0 +1,33 @@
+{
+  "product_source": "82eacdbd58d38524050bcb20b442549e1a65276e",
+  "test_fixture_source": "e4bcf533ae4723710928aea7dc98ad33229579a5",
+  "client_unchanged": true,
+  "original_failure_read_200_before_scans": true,
+  "readonly_full_37_table_comparisons": 3,
+  "native_permanent_posts": 1,
+  "native_restore_posts": 1,
+  "native_tall_image_gets_200": 2,
+  "native_cold_pid_pair": [
+    "3283",
+    "3952"
+  ],
+  "same_page_offset_ratio": 0.45,
+  "restoration_preserved_tables": [
+    "pack_pages",
+    "pack_preferences",
+    "pack_progress",
+    "pack_tag_links",
+    "recent_entries",
+    "pack_sessions",
+    "pack_session_entries"
+  ],
+  "initial_files_preserved": 46,
+  "final_files": 49,
+  "only_two_confirmed_tall_images_deleted": true,
+  "next_blocking_scan_identity_issue": 163,
+  "tall_not_scanned_after_restore": true,
+  "full_server_passed": 509,
+  "targeted_passed": 44,
+  "first_full_fixture_race_preserved": true,
+  "nas_accessed": false
+}

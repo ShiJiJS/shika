@@ -1,0 +1,11 @@
+{
+  "avd": "video_viewer_restore_read_36",
+  "gpu": "software",
+  "GLDMA": "off",
+  "host_video": "off",
+  "audio": "off",
+  "purpose": "isolate image-only native validation after two QEMU exits; does not prove video/audio or original-profile stability",
+  "same_ordinary_code26_apk": true,
+  "userdata_preserved": true,
+  "original_profile_failure_not_fixed": true
+}

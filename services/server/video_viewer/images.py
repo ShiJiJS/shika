@@ -16,6 +16,7 @@ from .errors import LibraryError
 from .media_roots import owner_for_path
 from .models import ImagePack, PackPage, Root, uid
 from .paths import beneath, open_directory, open_regular, signature, validate_path
+from .rollback_images import ReturnedImageReads
 from .streaming import DescriptorResponse
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
@@ -76,6 +77,7 @@ class ImageStreams:
     def __init__(self, db, settings):
         self.db, self.settings = db, settings
         self.slots = threading.BoundedSemaphore(settings.media_streams)
+        self.returned = ReturnedImageReads()
 
     def verified_fd(self, session, page, version):
         if not page:
@@ -110,7 +112,10 @@ class ImageStreams:
                 if tuple(observed[:2]) != (pack.device, pack.inode) or birth_changed:
                     raise LibraryError("pack_changed", "图包目录身份已变化，请同步目录", 409)
             with open_regular(Path(page.path)) as fd:
-                if signature(os.fstat(fd)) != page.signature:
+                observed = signature(os.fstat(fd))
+                if observed != page.signature and not self.returned.matches(
+                    session, page, pack, root, fd, observed
+                ):
                     raise LibraryError("image_changed", "图片已变化，请同步图包", 409)
                 return os.dup(fd), pack
         except OSError as error:

@@ -315,6 +315,11 @@
           "evidence": "evidence/lf8-current-navigation/README.md",
           "scope": "Normal21 immersive/range back, page3 resume and exact return anchor in three cycles. Deleted-page recovery remains open.",
           "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-restored-image-read-code26/README.md",
+          "scope": "普通26/服务82e本机合成长图：部分删除后恢复同一剩余页，实际原图200；初次与真实强停PID3283→3952后均续读45%，返回最近保持。原短图明确返回最后一张保存0，另记。新长图恢复后未扫描，#163扫描身份关联未解决；图片专用模拟器配置不证明视频/音频或目标手机。",
+          "candidate_code": 26
         }
       ]
     },
@@ -359,6 +364,11 @@
         {
           "evidence": "evidence/lf8-pack-purge-code26/README.md",
           "scope": "恢复部分删除包后原页ID/偏移、进度/偏好/标签与最近行保持，最近显示剩余1/1；未再次打开阅读或保存进度，截图封面重载及三个读图接口409已记#161，因此不是恢复后阅读通过。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-image-read-code26/README.md",
+          "scope": "普通26恢复后最近显示剩余1/1并实际打开，同一长图页与45%位置在冷启/返回后保持。Tall准备扫描暴露另一原样本旧missing+新available，标签/最近仍在旧ID，实际最近仅2包；#163优先修复，不能把扫描后的最近判通过。",
           "candidate_code": 26
         }
       ]
@@ -414,6 +424,11 @@
           "evidence": "evidence/lf8-pack-purge-code26/README.md",
           "scope": "普通26三轮部分删除原任务重试只处理剩余03，附件/标签/阅读数据保持；另例原生恢复剩余图片，数据与最近1/1保持，旧删除stale_pack_state。#161发现封面/原图/缩略图409，未证明恢复后阅读，整项不关闭。",
           "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-image-read-code26/README.md",
+          "scope": "普通26/服务82e本机新长图2/3永久删除后明确恢复一次，原计划1/1；恢复前后页、标签、阅读偏好/进度、最近和会话行保持，剩余图片及附件字节相同，随后实际读图与冷启续读通过。再次扫描的身份关联缺陷#163另列，NAS未更新。",
+          "candidate_code": 26
         }
       ]
     },
@@ -427,6 +442,11 @@
         {
           "evidence": "evidence/lf8-pack-purge-code26/README.md",
           "scope": "普通26明确核对精确3图/保留2项内容，复选框门槛/取消和保存选择已验。核对后新增图片、同字节替换身份、新增附件均0/3；空目录2/2安全移除；最终只少原核对28图，44原文件与2新增内容保留。服务cf9a修复ctime归位后的原任务重试，未放松内容/身份保护；无真机/NAS删除试验。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-image-read-code26/README.md",
+          "scope": "普通26本机明确核对3张图片和保留2项附件，一次永久删除真实2/3，第三张受控EACCES归位；逻辑恢复后明确重试原删除仍stale_pack_state，结果2/3和文件保持。仅对已记录成功归位/已恢复图片只读校验完整SHA；外部改写/替换/mtime/缺失/软链接等由新增用例保持拒绝。",
           "candidate_code": 26
         }
       ]
@@ -507,6 +527,11 @@
         {
           "evidence": "evidence/lf8-pack-purge-code26/README.md",
           "scope": "原生部分2/3、逐项未完成03及目录、明确重试与同任务3/3已验；每轮查询37表/设置相同、无写。#159恢复终态后偶发503、#160零未提交选择挤占待处理、#161恢复后读图409继续，不关闭完整任务体验。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-image-read-code26/README.md",
+          "scope": "普通26新长图一次原恢复计划1/1，模拟器退出后仍从本机待核对记录查询原回执，未重提恢复；再打开原删除结果并明确重试被恢复状态阻止。两次QEMU退出与辅助驱动中断保留，后续图片专用配置和真实App强停区分；#159/#160/#78仍开放。",
           "candidate_code": 26
         }
       ]

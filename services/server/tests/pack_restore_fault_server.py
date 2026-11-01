@@ -28,7 +28,10 @@ def create_fault_app():
 
                         if session.get(Task, identity).kind != "pack_restore":
                             return
-                Path(os.environ["TEST_RESTORE_MARKER"]).write_text(phase)
+                marker = Path(os.environ["TEST_RESTORE_MARKER"])
+                incoming = marker.with_name(marker.name + ".incoming")
+                incoming.write_text(phase)
+                incoming.replace(marker)
                 while True:
                     time.sleep(0.05)
 

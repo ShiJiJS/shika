@@ -1,0 +1,167 @@
+{
+  "name": "Restore-read-tall",
+  "phase": "native_read_and_cold_resume_completed",
+  "pack_id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+  "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+  "original_operation": "d4b047ca-b106-46b4-9d7d-1c3e820b5eee",
+  "request_id": "1793519702244375-4284948497",
+  "actual_native_permanent_posts": 1,
+  "partial_task": {
+    "server_time": 1793519815.6144361,
+    "id": "d4b047ca-b106-46b4-9d7d-1c3e820b5eee",
+    "kind": "pack_permanent",
+    "status": "failed",
+    "phase": "completed",
+    "created_at": 1793519702.6425288,
+    "finished_at": 1793519702.891797,
+    "result": {
+      "operation_id": "d4b047ca-b106-46b4-9d7d-1c3e820b5eee",
+      "total": 1,
+      "processed": 1,
+      "succeeded": 0,
+      "failed": 1,
+      "partial": true,
+      "needs_attention": false,
+      "pages_pending_reconciliation": 0,
+      "pages_deleted": 2,
+      "pages_total": 3,
+      "items": [
+        {
+          "requested_id": "17964c31-a914-451c-ada5-bb24ecb8a2cb",
+          "trash_id": "17964c31-a914-451c-ada5-bb24ecb8a2cb",
+          "pack_id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+          "outcome": "failed",
+          "phase": "prepared",
+          "error": "permission_denied",
+          "pages_deleted": 2,
+          "pages_total": 3
+        }
+      ],
+      "reading_transition": null,
+      "reading_restored": false,
+      "undo_expires_at": null
+    },
+    "error": "permission_denied"
+  },
+  "explicit_fixture_ctime_only_update": {
+    "before": [
+      "36",
+      "18975",
+      210063,
+      "1793519485189903623",
+      "1793519702863748324"
+    ],
+    "after": [
+      "36",
+      "18975",
+      210063,
+      "1793519485189903623",
+      "1793519815939209118"
+    ],
+    "sha256": "2a593609721905262821733d8890c72ed87d98c15e58f81ba0539bb58aa7bb81",
+    "after_sha256": "2a593609721905262821733d8890c72ed87d98c15e58f81ba0539bb58aa7bb81",
+    "original_mode_restored": true
+  },
+  "remaining_image_file_bytes_unchanged": true,
+  "new_source": "82eacdbd58d38524050bcb20b442549e1a65276e",
+  "same_mode_chmod_did_not_advance_ctime_first_attempt": true,
+  "no_permanent_operation_replayed": true,
+  "additional_owned_emulator_reboot": true,
+  "image_only_emulator_profile": true,
+  "restore_completed_before_emulator_exit": true,
+  "restore_result_entry": "pending-original-request",
+  "restore_plan": {
+    "id": "9158029d-54fc-47ee-8c4a-d845c3d8b71d",
+    "kind": "pack_restore_plan",
+    "status": "completed",
+    "phase": "completed",
+    "created_at": 1793519865.8457713,
+    "finished_at": 1793519865.9087453,
+    "error": null,
+    "result": {
+      "operation_id": "9158029d-54fc-47ee-8c4a-d845c3d8b71d",
+      "total": 1,
+      "processed": 1,
+      "succeeded": 1,
+      "failed": 0,
+      "stopped": 0,
+      "remaining": 0,
+      "partial": false,
+      "batches": 1
+    },
+    "historical": false,
+    "stop_requested": false,
+    "batch_size": 1000,
+    "request_id": "1793519865688502-2868759200"
+  },
+  "old_purge_retry": {
+    "server_time": 1793520092.4887617,
+    "id": "d4b047ca-b106-46b4-9d7d-1c3e820b5eee",
+    "kind": "pack_permanent",
+    "status": "failed",
+    "phase": "completed",
+    "created_at": 1793519702.6425288,
+    "finished_at": 1793520086.6460686,
+    "result": {
+      "operation_id": "d4b047ca-b106-46b4-9d7d-1c3e820b5eee",
+      "total": 1,
+      "processed": 1,
+      "succeeded": 0,
+      "failed": 1,
+      "partial": true,
+      "needs_attention": false,
+      "pages_pending_reconciliation": 0,
+      "pages_deleted": 2,
+      "pages_total": 3,
+      "items": [
+        {
+          "requested_id": "17964c31-a914-451c-ada5-bb24ecb8a2cb",
+          "trash_id": "17964c31-a914-451c-ada5-bb24ecb8a2cb",
+          "pack_id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+          "outcome": "failed",
+          "phase": "prepared",
+          "error": "stale_pack_state",
+          "pages_deleted": 2,
+          "pages_total": 3
+        }
+      ],
+      "reading_transition": null,
+      "reading_restored": false,
+      "undo_expires_at": null
+    },
+    "error": "stale_pack_state"
+  },
+  "restore_queries_acknowledged_natively": true,
+  "first_read_progress": {
+    "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+    "page_index": 0,
+    "offset_ratio": 0.45,
+    "completed": false,
+    "revision": 3,
+    "updated_at": 1793520113.8257687
+  },
+  "native_restore_posts": 1,
+  "remaining_image_and_attachments_preserved": true,
+  "old_app_pid": "3283",
+  "new_app_pid": "3952",
+  "old_pid_absent_from_ps": true,
+  "cold_resume_progress": {
+    "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+    "page_index": 0,
+    "offset_ratio": 0.45,
+    "completed": false,
+    "revision": 4,
+    "updated_at": 1793520171.9529674
+  },
+  "progress_after_back": {
+    "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+    "page_index": 0,
+    "offset_ratio": 0.45,
+    "completed": false,
+    "revision": 4,
+    "updated_at": 1793520171.9529674
+  },
+  "all_fixture_bytes_preserved_during_reading": true,
+  "native_permanent_posts": 1,
+  "tall_image_read_200_count": 2
+}
