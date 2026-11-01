@@ -1,0 +1,31 @@
+import fixture_control as ctrl
+import json,time,subprocess,re,sys
+import ui,api,helpers as f,media
+from snapshot_all import snapshot
+L=ui.L;name=sys.argv[1];sf=L/(name+'-state.json');assert not sf.exists()
+_,ns=ui.xml()
+if '返回设置' not in f.labels(ns):f.trash_page()
+ui.fill(0,name);ui.device('shell','input','keyevent','4');f.until(lambda n:'共 1 个图包' in f.labels(n),'one target');_,ns=ui.xml();box=next(n for n in ns if n.get('content-desc')=='选择回收内容 '+name)
+if box.get('checked')!='true':ui.tap(box,'select '+name)
+before=media.save(name+'-before');snapshot('normal26',name+'-before-permanent')
+ui.choose('永久删除');f.until(lambda n:any('我确认永久删除' in x for x in f.labels(n)),'review ready');ui.snap(name+'-review');_,ns=ui.xml();assert any(n.get('content-desc')=='确认永久删除' and n.get('enabled')=='false' for n in ns)
+ui.choose('我确认永久删除本批清单中的图片，无法恢复。')
+marker=L/'accepted-but-unanswered.json';checkpoint=L/'control/checkpoint.json'
+for p in [marker,checkpoint]:
+ if p.exists():p.unlink()
+ctrl.write(L/'control/executor.json', {'target':name,'partial':True,'hold_after_first':True});ctrl.write(L/'fault.json', {'hold_permanent_response':True,'block_receipts':True})
+ui.choose('确认永久删除');deadline=time.monotonic()+30
+while not marker.exists() or not checkpoint.exists():
+ assert time.monotonic()<deadline,'actual admission or first committed file not observed';time.sleep(.02)
+accepted=json.loads(marker.read_text());cp=json.loads(checkpoint.read_text());identity=accepted['response']['id'];assert cp['operation_id']==identity
+assert not (L/'media'/name/'01.png').exists() and (L/'media'/name/'02.png').exists() and (L/'media'/name/'03.png').exists()
+pid=ui.device('shell','pidof',ui.PACKAGE).decode().strip();assert pid.isdigit();ui.device('shell','am','force-stop',ui.PACKAGE)
+try:remaining=ui.device('shell','pidof',ui.PACKAGE).decode().strip()
+except subprocess.CalledProcessError as e:assert e.returncode==1;remaining=''
+assert not remaining;ps=ui.device('shell','ps','-A','-o','PID,NAME').decode();assert not re.search(r'^\s*'+pid+r'\s',ps,re.M)
+state={'name':name,'phase':'app_stopped','accepted':accepted,'checkpoint':cp,'old_pid':pid,'old_pid_absent_from_ps':True,'first_file_committed_before_stop':True,'normal_code':26};sf.write_text(json.dumps(state,indent=2))
+ctrl.write(L/'fault.json', {'hold_permanent_response':False,'block_receipts':True});running=api.call('GET','/api/v1/pack-operations/'+identity);assert running['status']=='running';state['backend_observed_running_with_app_absent']=True
+ctrl.write(L/'control/executor.json', {'target':name,'partial':True,'hold_after_first':False})
+task=api.wait(identity,route='/api/v1/pack-operations/');assert task['status']=='failed' and task['result']['partial'] and task['result']['pages_deleted']==2 and task['result']['pages_total']==3
+state['partial_while_app_absent']=task;state['phase']='backend_partial';sf.write_text(json.dumps(state,indent=2));after=media.save(name+'-partial');media.compare_deleted(before,after,[name+'/01.png',name+'/02.png']);snapshot('normal26',name+'-partial-app-absent')
+f.cold_open();newpid=ui.device('shell','pidof',ui.PACKAGE).decode().strip();assert newpid.isdigit() and newpid!=pid;state.update(phase='cold_library_receipt_blocked',new_pid=newpid);sf.write_text(json.dumps(state,indent=2));ui.snap(name+'-cold-library');f.settings_row('操作任务');ui.snap(name+'-pending-original');print({'name':name,'old_pid':pid,'new_pid':newpid,'partial':'2/3','actual_file_removals':2,'original_task':identity})

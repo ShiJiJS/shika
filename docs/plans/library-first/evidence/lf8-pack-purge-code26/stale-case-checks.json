@@ -1,0 +1,35 @@
+[
+  {
+    "case": "Changed-add-image",
+    "added": "new.png",
+    "original_request": "1793516892689864-1488157281",
+    "original_task": "093dbb7a-3716-4728-8291-ac5c1ca49f2c",
+    "deleted_images": 0,
+    "error": "manifest_changed",
+    "all_files_after_explicit_mutation_unchanged": true,
+    "source": "cf9a60d79d15aabd4a895a25e17d1bdfdcae688f"
+  },
+  {
+    "case": "Changed-replace-image",
+    "replaced": "02.png",
+    "original_inode": 17546551,
+    "replacement_inode": 17639410,
+    "same_bytes": true,
+    "original_request": "1793516935416790-1241632694",
+    "original_task": "f8f9f945-aaa1-4146-80ec-5ad3045dc719",
+    "deleted_images": 0,
+    "error": "manifest_changed",
+    "all_files_after_explicit_mutation_unchanged": true,
+    "source": "cf9a60d79d15aabd4a895a25e17d1bdfdcae688f"
+  },
+  {
+    "case": "Changed-add-attachment",
+    "added": "new-note.txt",
+    "original_request": "1793516978474949-3203952388",
+    "original_task": "0d65430d-c8ac-44c5-9a97-9a373bee2780",
+    "deleted_images": 0,
+    "error": "manifest_changed",
+    "all_files_after_explicit_mutation_unchanged": true,
+    "source": "cf9a60d79d15aabd4a895a25e17d1bdfdcae688f"
+  }
+]

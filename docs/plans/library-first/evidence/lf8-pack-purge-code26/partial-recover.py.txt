@@ -1,0 +1,12 @@
+import fixture_control as ctrl
+import json,sys,time
+import ui,api,helpers as f,media
+from snapshot_all import snapshot
+L=ui.L;name=sys.argv[1];sf=L/(name+'-state.json');state=json.loads(sf.read_text());assert state['phase']=='cold_library_receipt_blocked';identity=state['accepted']['response']['id'];request=state['accepted']['command']['request_id'];label='永久删除 1 个图包中的 3 张图片\n本机结果待核对'
+f.prefix(label);ui.snap(name+'-receipt-offline');trace=[json.loads(x) for x in (L/'requests.jsonl').read_text().splitlines()];assert any(r['path']=='/api/v1/pack-file-requests/'+request and r.get('injected_receipt_offline') and r['status']==503 for r in trace)
+ctrl.write(L/'fault.json',{});f.prefix(label);f.until(lambda n:'任务详情' in f.labels(n),'original task');ui.snap(name+'-partial-task');ui.choose('查看逐项图片结果');f.until(lambda n:'已确认删除 2/3 张' in f.labels(n),'partial result');ui.snap(name+'-partial-image-results')
+unfinished=api.call('GET','/api/v1/pack-operations/'+identity+'/pages?kind=image&outcome=unfinished&limit=200');all_images=api.call('GET','/api/v1/pack-operations/'+identity+'/pages?kind=image&outcome=all&limit=200');assert unfinished['total']==1 and unfinished['items'][0]['relative_path']=='03.png' and all_images['total']==3;assert sum(p['outcome']=='succeeded' for p in all_images['items'])==2
+(L/(name+'-partial-image-steps.json')).write_text(json.dumps({'unfinished':unfinished,'all':all_images},indent=2));snapshot('normal26',name+'-after-query');b=json.loads((L/(name+'-partial-app-absent-all-catalog.json')).read_text());a=json.loads((L/(name+'-after-query-all-catalog.json')).read_text())
+for k in ['tables','opaque_table_digests','setting_key_sha256']:assert b[k]==a[k],k
+assert media.files()==json.loads((L/(name+'-partial-files.json')).read_text());state.update(phase='partial_result_queried',receipt_503_then_200=True,query_end_seq=max(json.loads(x)['seq'] for x in (L/'requests.jsonl').read_text().splitlines()),query_37_tables_equal=True);sf.write_text(json.dumps(state,indent=2))
+ctrl.write(L/'control/executor.json',{});ui.choose('重试原任务');f.until(lambda n:'重试原任务' in f.labels(n),'explicit retry confirmation');ui.snap(name+'-retry-confirm');_,nodes=ui.xml();print('retry buttons:',[n.get('content-desc') or n.get('text') for n in nodes if n.get('clickable')=='true'],flush=True)

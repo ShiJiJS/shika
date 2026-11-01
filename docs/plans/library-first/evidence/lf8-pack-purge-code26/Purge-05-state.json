@@ -1,0 +1,120 @@
+{
+  "name": "Purge-05",
+  "phase": "completed",
+  "accepted": {
+    "seq": 1024,
+    "time": 1793515727.913244,
+    "command": {
+      "request_id": "1793515727337637-3728128398",
+      "plan_id": "8a1f64fa-8664-4db4-a3b7-863fa3a674e0",
+      "digest": "4772d0bc92bb01919237a8d7d0f550916dbfe27438905ed28b981d2786d6a019",
+      "confirmed": true
+    },
+    "response": {
+      "server_time": 1793515727.9069834,
+      "id": "d0c7b783-6e59-4e03-ad5a-6cd359272cbb",
+      "kind": "pack_permanent",
+      "status": "queued",
+      "phase": "queued",
+      "created_at": 1793515727.887059,
+      "finished_at": null,
+      "result": {},
+      "error": null
+    }
+  },
+  "checkpoint": {
+    "phase": "purge_image_committed",
+    "identity": "c75ee5cd-ee8f-4891-a2fe-5705632d04f9",
+    "operation_id": "d0c7b783-6e59-4e03-ad5a-6cd359272cbb",
+    "target": "Purge-05",
+    "time": 1793515727.9839065
+  },
+  "old_pid": "3323",
+  "old_pid_absent_from_ps": true,
+  "first_file_committed_before_stop": true,
+  "normal_code": 26,
+  "partial_while_app_absent": {
+    "server_time": 1793515760.171731,
+    "id": "d0c7b783-6e59-4e03-ad5a-6cd359272cbb",
+    "kind": "pack_permanent",
+    "status": "failed",
+    "phase": "completed",
+    "created_at": 1793515727.887059,
+    "finished_at": 1793515759.9503183,
+    "result": {
+      "operation_id": "d0c7b783-6e59-4e03-ad5a-6cd359272cbb",
+      "total": 1,
+      "processed": 1,
+      "succeeded": 0,
+      "failed": 1,
+      "partial": true,
+      "needs_attention": false,
+      "pages_pending_reconciliation": 0,
+      "pages_deleted": 2,
+      "pages_total": 3,
+      "items": [
+        {
+          "requested_id": "ae5dab0c-c740-463f-b578-6d875348b1e8",
+          "trash_id": "ae5dab0c-c740-463f-b578-6d875348b1e8",
+          "pack_id": "1911c23a-e301-40bb-8eed-ffbf4e67ed21",
+          "outcome": "failed",
+          "phase": "prepared",
+          "error": "permission_denied",
+          "pages_deleted": 2,
+          "pages_total": 3
+        }
+      ],
+      "reading_transition": null,
+      "reading_restored": false,
+      "undo_expires_at": null
+    },
+    "error": "permission_denied"
+  },
+  "fixture_control_interruption": true,
+  "host_explicit_original_task_recovery": true,
+  "standard_round": false,
+  "new_pid": "4319",
+  "receipt_503_then_200": true,
+  "query_end_seq": 1063,
+  "query_37_tables_equal": true,
+  "retry_same_operation_id": true,
+  "original_succeeded_image_step_rows_unchanged": true,
+  "attachments_preserved": true,
+  "final_task": {
+    "server_time": 1793515835.6997643,
+    "id": "d0c7b783-6e59-4e03-ad5a-6cd359272cbb",
+    "kind": "pack_permanent",
+    "status": "completed",
+    "phase": "completed",
+    "created_at": 1793515727.887059,
+    "finished_at": 1793515829.6903245,
+    "result": {
+      "operation_id": "d0c7b783-6e59-4e03-ad5a-6cd359272cbb",
+      "total": 1,
+      "processed": 1,
+      "succeeded": 1,
+      "failed": 0,
+      "partial": false,
+      "needs_attention": false,
+      "pages_pending_reconciliation": 0,
+      "pages_deleted": 3,
+      "pages_total": 3,
+      "items": [
+        {
+          "requested_id": "ae5dab0c-c740-463f-b578-6d875348b1e8",
+          "trash_id": "ae5dab0c-c740-463f-b578-6d875348b1e8",
+          "pack_id": "1911c23a-e301-40bb-8eed-ffbf4e67ed21",
+          "outcome": "succeeded",
+          "phase": "committed",
+          "error": null,
+          "pages_deleted": 3,
+          "pages_total": 3
+        }
+      ],
+      "reading_transition": null,
+      "reading_restored": false,
+      "undo_expires_at": null
+    },
+    "error": null
+  }
+}

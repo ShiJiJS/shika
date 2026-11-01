@@ -1,0 +1,41 @@
+import json,time
+import ui
+L=ui.L
+def labels(nodes=None):
+ if nodes is None:_,nodes=ui.xml()
+ return [n.get('content-desc') or n.get('text') or '' for n in nodes]
+def until(test,reason,seconds=45):
+ end=time.monotonic()+seconds
+ while True:
+  _,nodes=ui.xml()
+  if test(nodes):return nodes
+  assert time.monotonic()<end,(reason,labels(nodes));time.sleep(.1)
+def prefix(value):
+ for swipe in range(21):
+  _,nodes=ui.xml();found=[n for n in nodes if n.get('clickable')=='true' and (n.get('content-desc') or n.get('text') or '').startswith(value)]
+  if found:
+   assert len(found)==1,(value,len(found));ui.tap(found[0],value);return
+  assert swipe<20,(value,labels(nodes))
+  ui.device('shell','input','swipe','540','1740','540','700','250')
+def scroll_find(value,direction='down',max_swipes=20):
+ for i in range(max_swipes+1):
+  _,nodes=ui.xml();found=[n for n in nodes if n.get('clickable')=='true' and (n.get('content-desc')==value or n.get('text')==value)]
+  if found:
+   assert len(found)==1;(L/'scroll-last.json').write_text(json.dumps({'target':value,'swipes':i,'direction':direction}));return found[0]
+  assert i<max_swipes,(value,labels(nodes))
+  points=['540','1740','540','700'] if direction=='down' else ['540','680','540','1790']
+  ui.device('shell','input','swipe',*points,'250')
+def scroll_choose(value,**kw):ui.tap(scroll_find(value,**kw),value)
+def settings_row(value):ui.choose('设置');prefix(value+'\n')
+def cold_open():
+ ui.device('shell','am','start','-n',ui.PACKAGE+'/.MainActivity')
+ return until(lambda n:'媒体库' in labels(n) and any(v.get('class')=='android.widget.EditText' for v in n),'cold library',60)
+def trash_page():
+ settings_row('回收站');ui.choose('图包');until(lambda n:any(s.startswith('共 ') and s.endswith(' 个图包') for s in labels(n)),'trash loaded')
+def task_pending_prefix():return '恢复 1027 个图包\n本机结果待核对'
+def seek_top():
+ for i in range(12):
+  _,n=ui.xml()
+  if '全选' in labels(n):return n
+  ui.device('shell','input','swipe','540','650','540','1850','250')
+ raise AssertionError('Trash top not found')

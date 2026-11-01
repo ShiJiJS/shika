@@ -1,0 +1,37 @@
+import json
+import ui, api, helpers as f, media
+from snapshot_all import snapshot
+L=ui.L;name='Restore-partial';state=json.loads((L/(name+'-state.json')).read_text());assert state['phase']=='partial_result_queried'
+identity=state['accepted']['response']['id']
+# Previous recovery driver has opened the explicit retry sheet; cancel it.
+ui.choose('取消');ui.choose('返回操作任务');ui.choose('返回设置')
+before=media.save(name+'-before-logical-restore');snapshot('normal26',name+'-before-logical-restore')
+f.trash_page();ui.fill(0,name);ui.device('shell','input','keyevent','4');f.until(lambda n:'共 1 个图包' in f.labels(n),'remaining-image trash item')
+ui.choose('选择回收内容 '+name);ui.choose('恢复所选');f.until(lambda n:'确认整份恢复' in f.labels(n),'restore confirmation');ui.snap(name+'-restore-review')
+seq=max(json.loads(x)['seq'] for x in (L/'requests.jsonl').read_text().splitlines())
+ui.choose('确认整份恢复');f.until(lambda n:'共 0 个图包' in f.labels(n),'remaining image restored')
+ui.snap(name+'-restored-trash');assert media.files()==before
+trace=[json.loads(x) for x in (L/'requests.jsonl').read_text().splitlines()]
+posts=[x for x in trace if x['seq']>seq and x['path']=='/api/v1/pack-restore-plans' and x['method']=='POST'];assert len(posts)==1
+request=posts[0]['command']['request_id']
+restored=api.call('GET','/api/v1/pack-restore-requests/'+request);assert restored['status']=='completed' and restored['result']['succeeded']==1
+snapshot('normal26',name+'-after-logical-restore')
+old=json.loads((L/(name+'-before-logical-restore-all-catalog.json')).read_text());new=json.loads((L/(name+'-after-logical-restore-all-catalog.json')).read_text())
+for key in ['pack_tag_definitions','pack_tag_links','pack_preferences','pack_progress','pack_sessions','pack_session_entries','recent_entries','pack_pages']:
+    assert old['tables'][key]==new['tables'][key],key
+assert old['opaque_table_digests']==new['opaque_table_digests']
+ui.choose('返回设置');f.settings_row('操作任务');f.prefix('永久删除图包图片\n部分完成')
+ui.choose('查看逐项图片结果');f.until(lambda n:'已确认删除 2/3 张' in f.labels(n),'old result preserved')
+ui.choose('重试原任务');f.until(lambda n:'重试未完成项' in f.labels(n),'explicit original retry');ui.choose('重试未完成项')
+f.until(lambda n:'已确认删除 2/3 张' in f.labels(n),'restored content protected');ui.snap(name+'-old-retry-protected')
+task=api.wait(identity,route='/api/v1/pack-operations/');assert task['status']=='failed' and task['result']['pages_deleted']==2
+assert task['result']['items'][0]['error']=='stale_pack_state',task
+assert media.files()==before and (L/'media'/name/'03.png').exists()
+snapshot('normal26',name+'-after-old-retry')
+final=json.loads((L/(name+'-after-old-retry-all-catalog.json')).read_text())
+for key in ['pack_tag_definitions','pack_tag_links','pack_preferences','pack_progress','pack_sessions','pack_session_entries','recent_entries','pack_pages','packs','pack_trash_items']:
+    assert new['tables'][key]==final['tables'][key],key
+ui.choose('关闭');ui.choose('返回操作任务');ui.choose('返回设置');ui.choose('媒体库');ui.choose('图包');ui.fill(0,'');ui.device('shell','input','keyevent','4');ui.choose('最近')
+f.until(lambda n:any(name in x and '1/1' in x for x in f.labels(n)),'recent remaining page');ui.snap(name+'-recent-one-of-one')
+result={'name':name,'original_operation':identity,'restored_task':restored,'blocked_old_retry':task,'remaining_image_bytes_preserved':True,'tag_progress_preferences_page_ids_and_recent_rows_preserved':True,'recent_displays_one_of_one':True}
+(L/(name+'-result.json')).write_text(json.dumps(result,indent=2));print(result,flush=True)

@@ -1,0 +1,71 @@
+{
+  "name": "Restore-partial",
+  "original_operation": "543039fb-d06b-4c2d-8604-6d32460e6019",
+  "restored_task": {
+    "id": "7c506bc3-f042-4884-8bde-2440cb1181c7",
+    "kind": "pack_restore_plan",
+    "status": "completed",
+    "phase": "completed",
+    "created_at": 1793516465.5738437,
+    "finished_at": 1793516465.6462264,
+    "error": null,
+    "result": {
+      "operation_id": "7c506bc3-f042-4884-8bde-2440cb1181c7",
+      "total": 1,
+      "processed": 1,
+      "succeeded": 1,
+      "failed": 0,
+      "stopped": 0,
+      "remaining": 0,
+      "partial": false,
+      "batches": 1
+    },
+    "historical": false,
+    "stop_requested": false,
+    "batch_size": 1000,
+    "request_id": "1793516465257012-3746862547"
+  },
+  "blocked_old_retry": {
+    "server_time": 1793516832.1151109,
+    "id": "543039fb-d06b-4c2d-8604-6d32460e6019",
+    "kind": "pack_permanent",
+    "status": "failed",
+    "phase": "completed",
+    "created_at": 1793516379.0812411,
+    "finished_at": 1793516695.9182549,
+    "result": {
+      "operation_id": "543039fb-d06b-4c2d-8604-6d32460e6019",
+      "total": 1,
+      "processed": 1,
+      "succeeded": 0,
+      "failed": 1,
+      "partial": true,
+      "needs_attention": false,
+      "pages_pending_reconciliation": 0,
+      "pages_deleted": 2,
+      "pages_total": 3,
+      "items": [
+        {
+          "requested_id": "d17f7591-c87f-431f-9e17-ffa6208ebd2f",
+          "trash_id": "d17f7591-c87f-431f-9e17-ffa6208ebd2f",
+          "pack_id": "1958716a-589a-4942-8a00-0a812b165e28",
+          "outcome": "failed",
+          "phase": "prepared",
+          "error": "stale_pack_state",
+          "pages_deleted": 2,
+          "pages_total": 3
+        }
+      ],
+      "reading_transition": null,
+      "reading_restored": false,
+      "undo_expires_at": null
+    },
+    "error": "stale_pack_state"
+  },
+  "first_retry_blocked_by_local_restore_receipt_before_post": true,
+  "restore_receipt_queried_natively_before_second_explicit_retry": true,
+  "remaining_image_bytes_preserved": true,
+  "tag_progress_preferences_page_ids_and_recent_rows_preserved": true,
+  "recent_displays_one_of_one": true,
+  "driver_navigation_selector_adjusted_without_business_replay": true
+}

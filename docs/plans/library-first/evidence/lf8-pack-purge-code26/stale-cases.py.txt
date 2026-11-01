@@ -1,0 +1,18 @@
+import importlib.util,json,os,sys,time
+from pathlib import Path
+import ui,api,helpers as f,media
+from snapshot_all import snapshot
+L=ui.L;R=L.parents[1];assert json.loads((L/'Purge-03-state.json').read_text())['phase']=='completed';results=[]
+spec=importlib.util.spec_from_file_location('patterns',R/'scripts/fixtures/generate-bulk-management.py');patterns=importlib.util.module_from_spec(spec);spec.loader.exec_module(patterns)
+for name in ['Changed-add-image','Changed-replace-image','Changed-add-attachment']:
+ assert not (L/(name+'-result.json')).exists();f.trash_page();ui.fill(0,name);ui.device('shell','input','keyevent','4');f.until(lambda n:'共 1 个图包' in f.labels(n),'one changed-case pack');ui.choose('选择回收内容 '+name);ui.choose('永久删除');f.until(lambda n:any('我确认永久删除' in x for x in f.labels(n)),'fresh review');ui.snap(name+'-before-change')
+ root=L/'media'/name;old=media.save(name+'-before-change');mutation={'case':name}
+ if name=='Changed-add-image':
+  (root/'new.png').write_bytes(patterns.png(81,4));mutation['added']='new.png'
+ elif name=='Changed-replace-image':
+  p=root/'02.png';prior=p.stat();temp=root/'replacement';temp.write_bytes(p.read_bytes());os.utime(temp,ns=(prior.st_atime_ns,prior.st_mtime_ns));os.replace(temp,p);mutation.update(replaced='02.png',original_inode=prior.st_ino,replacement_inode=p.stat().st_ino,same_bytes=True);assert prior.st_ino!=p.stat().st_ino
+ else:(root/'new-note.txt').write_text('New synthetic attachment after confirmation review\n');mutation['added']='new-note.txt'
+ changed=media.save(name+'-after-explicit-change');snapshot('normal26',name+'-before-physical');seq=max(json.loads(x)['seq'] for x in (L/'requests.jsonl').read_text().splitlines());ui.choose('我确认永久删除本批清单中的图片，无法恢复。');ui.choose('确认永久删除');f.until(lambda n:'已确认删除 0/3 张' in f.labels(n),'changed manifest stops zero deletions');ui.snap(name+'-protected-result')
+ trace=[json.loads(x) for x in (L/'requests.jsonl').read_text().splitlines()];posts=[x for x in trace if x['seq']>seq and x['path']=='/api/v1/pack-trash/permanent' and x['method']=='POST'];assert len(posts)==1;request=posts[0]['command']['request_id'];task=api.call('GET','/api/v1/pack-file-requests/'+request);assert task['status']=='failed' and task['result']['pages_deleted']==0 and task['result']['pages_total']==3
+ assert media.files()==changed;mutation.update(original_request=request,original_task=task['id'],deleted_images=0,error=task['result']['items'][0]['error'],all_files_after_explicit_mutation_unchanged=True,source=json.loads((L/'runtime.json').read_text())['source']);(L/(name+'-result.json')).write_text(json.dumps(mutation,indent=2));snapshot('normal26',name+'-after-physical');results.append(mutation);ui.choose('关闭');ui.choose('返回设置');print(mutation,flush=True)
+(L/'stale-case-checks.json').write_text(json.dumps(results,indent=2));print('All three post-review changes stopped with zero image deletions; new/replaced content and attachments retained.',flush=True)
