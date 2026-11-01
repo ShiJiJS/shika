@@ -1,12 +1,18 @@
 # Video Viewer
 
-部署在 NAS 上的私人短视频库，配套 Android 优先的跨平台 App，用于随机浏览、标签筛选与快速整理。
+部署在 NAS 上的私人视频与图包媒体库，配套 Android App，用于按范围浏览、阅读、标签筛选与快速整理。
 
 P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已确认的 B 风格。S1–S6 服务端与 I1–I6 真实服务联调已完成：认证、扫描、播放、轮次、标签、回收站、外部文件变化及备份恢复均有 WSL2 Docker 和 Android 模拟器证据。Flutter 默认连接真实服务，保留独立演示模式。V1 已部署极空间 ARM64 NAS，提供手机测试包与使用说明；首次建库、Find X8 体验及性能验收继续进行，见 [V1 状态](docs/v1-validation.md)。
 
 服务端技术栈：Python / FastAPI / Uvicorn、SQLite / SQLAlchemy / Alembic、FFmpeg / ffprobe；通过 Docker Compose 单服务、单端口部署。NAS 资源与预加载的评估范围见 [服务端方案](docs/server-plan.md)。
 
-当前媒体库与图包改造处于 LF8 验收，LF0–LF7 已有分阶段实现，按 [LF issues](docs/plans/library-first/ISSUES.md) 继续推进。已生成 [App preview.10、旧界面配套回退包和服务 preview.2](docs/library-first-preview.md)，原签名覆盖/回退、媒体库主要业务及服务数据升级/回退已有本机证据；原版服务首页菜单组合也已补证，真实手机/NAS和其余终验继续。下列第一版范围保留为历史发布记录。
+## 当前可用版本
+
+2026-11-01：**第27版 App（preview.21）与同号旧界面回退包已放入 NAS 原部署目录的 `packages/`**，服务已更新到 **preview.8**。直接覆盖安装正常包，不要卸载或清除数据；原地址、口令和签名保持。见[第27版安装说明](docs/nas-app-preview-2026-11-01-code27.md)和[NAS备份与更新记录](docs/nas-preview-2026-11-01-service8.md)。
+
+视频与图包各有媒体库、标签和最近记录，从库或标签选定范围后进入播放/阅读。图包以文件夹为单位，支持横向翻页、默认纵向拼接与缩放、续读、打标签、快速移除和撤销。设置中提供目录独立扫描进度、回收站、操作任务和管理备份。当前NAS图包源目录只读，移入回收站不会移动原图。
+
+主要功能已实现并交付试用，仍按[完整要求](docs/plans/library-first/ACCEPTANCE.md)验收。真实手机安装、声音/手势、系统和云文件选择及完整性能尚未全部确认，三个历史偶发问题仍开放；见[当前进度](docs/plans/library-first/PROGRESS-CURRENT.md)。参考原型独立存放、不随App发布、可单独移除。下列第一版范围保留为历史记录。
 
 ## 第一版范围
 
@@ -24,6 +30,8 @@ P2 HTML 原型与 [Flutter Android 客户端](apps/mobile/README.md) 沿用已�
 
 - [可移除设计参考原型](design/reference/README.md)（不随 App 发布）
 - [媒体库与图包升级规划：框架、实施任务与原型一致性验收](docs/plans/library-first/PLAN.md)（LF8 验收进行中）
+- [当前版本、已交付功能与剩余事项](docs/plans/library-first/PROGRESS-CURRENT.md)
+- [第27版安装与同号回退](docs/nas-app-preview-2026-11-01-code27.md)
 - [媒体库预览包：安装、旧服务兼容与回退边界](docs/library-first-preview.md)
 
 - [Mac 开发环境、VS Code F5、测试、打包与 NAS 维护](docs/macos-development.md)
