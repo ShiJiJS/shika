@@ -2,6 +2,8 @@
 
 跟踪：[#154](https://github.com/ShiJiJS/video_viewer/issues/154)，关联#135/#33。
 
+[草稿PR #156](https://github.com/ShiJiJS/video_viewer/pull/156)，基于#155。
+
 2026-11-01追加：实现6a119b1c/runtime preview.4，491项服务检查通过，新NAS镜像已在完整备份后启动。探测改为固定回环HTTP、少量CPython导入；内部2秒总期限保持，进程整体预算10秒。真实Docker已验证200健康→503不健康→200恢复，3秒慢响应仍失败。数据核对、繁忙扫描连续记录与未定位的宿主压力边界见[本次修复与部署](../LF8-NAS-HEALTHCHECK.md)。客户端仍为code26，不需要重装App；本票保持开放等待审阅及后续使用。
 
 以下是修复前的原始发现，保持其时间和版本范围（430fede5/runtime preview.3）：

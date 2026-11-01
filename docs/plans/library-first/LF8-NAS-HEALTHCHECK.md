@@ -1,5 +1,7 @@
 # NAS 健康检查开销与试用更新
 
+[草稿PR #156](https://github.com/ShiJiJS/video_viewer/pull/156)（基于#155）。
+
 2026-11-01，跟踪 [#154](https://github.com/ShiJiJS/video_viewer/issues/154)，关联 #135/#33。服务实现 `6a119b1c0c2022a2f9cc615679bc8aab790f122e`，运行镜像 `video-viewer-server:0.2.0-preview.4`，ARM64。客户端仍为 `8416a3f7` / preview.20 / code26；没有重新打包 App、改协议或迁移数据库。
 
 ## 修改原因与边界
