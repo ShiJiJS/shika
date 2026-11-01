@@ -25,6 +25,7 @@ from .models import (
     PackRestorePlan,
     Root,
 )
+from .pack_returned_identity import returned_continuity, unmanaged_duplicate
 from .paths import beneath, excluded, open_directory, open_regular, signature
 from .root_scan_progress import stage
 
@@ -284,7 +285,7 @@ class PackScanner:
                     proven = [
                         candidate
                         for candidate in candidates
-                        if self.continuity(candidate, pages, stamp)
+                        if self.continuity(candidate, pages, stamp, root.path)
                     ]
                     located_match = next(
                         (
@@ -299,10 +300,49 @@ class PackScanner:
                     else:
                         previous = proven[0] if len(proven) == inode_counts[identity] == 1 else None
                     with self.db.write() as session:
-                        pack = session.get(ImagePack, previous.id) if previous else None
+                        # A prior scan may already have split one restored inode
+                        # into old missing + new available. Prefer the original
+                        # only with current journal proof and no competing data.
+                        returned = [
+                            session.get(ImagePack, candidate.id)
+                            for candidate in candidates
+                            if candidate.status == "missing"
+                            and candidate.path == str(path)
+                            and candidate.root_id == root.id
+                            and returned_continuity(session, candidate, pages, stamp, root.path)
+                        ]
                         occupied = session.scalar(
                             select(ImagePack).where(ImagePack.location_key == str(path))
                         )
+                        repair = (
+                            returned[0] if len(returned) == inode_counts[identity] == 1 else None
+                        )
+                        if repair and occupied and repair.id != occupied.id:
+                            if (
+                                repair.status == "missing"
+                                and occupied.status == "available"
+                                and initial_generations.get(repair.id) == repair.generation
+                                and initial_generations.get(occupied.id) == occupied.generation
+                                and not session.scalar(reserved_packs(pack_id=repair.id).limit(1))
+                                and not session.scalar(reserved_packs(pack_id=occupied.id).limit(1))
+                                and unmanaged_duplicate(session, occupied)
+                            ):
+                                session.execute(
+                                    delete(PackPage).where(PackPage.pack_id == occupied.id)
+                                )
+                                session.delete(occupied)
+                                session.flush()
+                                previous, occupied = repair, None
+                                summary["identity_matched"] += 1
+                            else:
+                                summary["identity_ambiguous"] += 1
+                                summary["failed_packs"] += 1
+                                root_ok = False
+                                self.issue(
+                                    result, "identity_ambiguous", pack_id=repair.id, root_id=root.id
+                                )
+                                continue
+                        pack = session.get(ImagePack, previous.id) if previous else None
                         # Inspection runs outside the write transaction. A cleanup accepted
                         # meanwhile owns both the stable identity and the occupied location.
                         if any(
@@ -597,7 +637,7 @@ class PackScanner:
                     raise PackDeferred()
         return sorted(observations, key=lambda row: natural_key(row["relative_path"])), stamp
 
-    def continuity(self, previous, observations, stamp):
+    def continuity(self, previous, observations, stamp, root_path):
         old = previous.directory_signature
         if old:
             if old[:2] != stamp[:2]:
@@ -615,7 +655,7 @@ class PackScanner:
                     select(PackPage.signature).where(PackPage.pack_id == previous.id)
                 )
                 if signature
-            )
+            ) or returned_continuity(session, previous, observations, stamp, root_path)
 
     def publish_pages(self, session, pack, observations, path, root_id, identity, task_id, stamp):
         old = list(session.scalars(select(PackPage).where(PackPage.pack_id == pack.id)))
