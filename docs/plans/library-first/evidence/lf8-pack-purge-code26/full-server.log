@@ -1,0 +1,64 @@
+........................................................................ [ 14%]
+.............................................F.......................... [ 28%]
+.................................................................F...... [ 43%]
+........................................................................ [ 57%]
+........................................................................ [ 72%]
+........................................................................ [ 86%]
+.................................................................        [100%]
+=================================== FAILURES ===================================
+_____________ test_cross_filesystem_enospc_retains_complete_source _____________
+
+environment = (Settings(data_dir=PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cross_filesystem_enospc_r0/data'), mounts=(Mount(id=...ir=None, backup_max_bytes=33554432), PosixPath('/tmp/pytest-of-viewer/pytest-0/test_cross_filesystem_enospc_r0/media'))
+samples = PosixPath('/tmp/pytest-of-viewer/pytest-0/formats0')
+
+    def test_cross_filesystem_enospc_retains_complete_source(environment, samples):
+        settings, media = environment
+        source = media / "large.mp4"
+        put(samples / "portrait.mp4", source)
+        with tempfile.TemporaryDirectory(prefix="video-viewer-full-", dir="/dev/shm") as destination:
+            capacity = os.statvfs(destination)
+            size = capacity.f_bavail * capacity.f_frsize + 1024 * 1024
+>           assert size < 256 * 1024 * 1024, "expected disposable Docker shared memory limit"
+E           AssertionError: expected disposable Docker shared memory limit
+E           assert 6300893184 < ((256 * 1024) * 1024)
+
+tests/test_file_operations.py:347: AssertionError
+_ test_restore_point_inspection_uses_original_snapshot_without_replacing_data __
+
+library = (<starlette.testclient.TestClient object at 0xffff9091e7a0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_restore_point_inspection_0/media'))
+samples = PosixPath('/tmp/pytest-of-viewer/pytest-0/formats0')
+
+    def test_restore_point_inspection_uses_original_snapshot_without_replacing_data(library, samples):
+        client, media = library
+        root, _ = seed(client, media, samples)
+        assert client.get(PREFIX + "/latest-restore").json() == {"item": None}
+        raw, _ = export(client)
+        preview = inspect(client, raw)
+        late = tag(client, "snapshot-only", request_id="snapshot-only-tag")
+        outcome = restore(client, preview, {"main": str(media), root["id"]: root["path"]})
+        assert outcome["status"] == "completed", outcome
+        epoch = client.get("/api/v1/info").json()["management_epoch"]
+        client.headers["X-Management-Epoch"] = epoch
+        point = client.get(PREFIX + "/latest-restore").json()["item"]
+        assert point["restore_id"] == outcome["id"]
+        assert point["snapshot_id"] == outcome["result"]["pre_snapshot_id"]
+        assert point["kind"] == "backup_snapshot_v2" and point["bytes"] > 0
+        before = tree(media)
+        path = PREFIX + "/from-snapshot/" + point["snapshot_id"]
+        accepted = client.post(path, json={"request_id": "snapshot-inspect"})
+>       assert accepted.status_code == 202, accepted.text
+E       AssertionError: {"error":{"code":"restore_in_progress","message":"管理数据正在恢复，请稍后重试"}}
+E       assert 503 == 202
+E        +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+tests/test_management_archives.py:629: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_file_operations.py::test_cross_filesystem_enospc_retains_complete_source
+FAILED tests/test_management_archives.py::test_restore_point_inspection_uses_original_snapshot_without_replacing_data
+2 failed, 495 passed, 1 warning in 752.76s (0:12:32)
