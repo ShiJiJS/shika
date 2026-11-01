@@ -1,6 +1,6 @@
 # LF8：验收证据与剩余工作核对
 
-当前执行更新（2026-11-01）：下文code22及“尚未开始R1/暂停”属于当时固定审计记录。已恢复持续推进；最新候选26、R1单图包三轮恢复与其余范围见[当前进度](PROGRESS-CURRENT.md)和[连续记录](LF8-PACK-RESTORE-CONTINUATION.md)。原45项及历史审计报告不改写为当前全部通过。
+当前执行更新（2026-11-01）：下文code22及“尚未开始R1/暂停”属于当时固定审计记录。已恢复持续推进；最新候选26、R1单图包三轮恢复及[1027包跨页/默认分批三轮](LF8-PACK-BULK-RESTORE.md)已补，其余范围见[当前进度](PROGRESS-CURRENT.md)和[连续记录](LF8-PACK-RESTORE-CONTINUATION.md)。原45项及历史审计报告不改写为当前全部通过。
 
 跟踪：[#133](https://github.com/ShiJiJS/video_viewer/issues/133) / [草稿PR #134](https://github.com/ShiJiJS/video_viewer/pull/134)。当前正常候选仍为preview.16/code22，构建源码12d6ca67。原[45项要求](ACCEPTANCE.md)、[原始执行清单](INTEGRATED-CHECKLIST.json)及独立原型树1cbf605保持。此次新增[覆盖索引](ACCEPTANCE-COVERAGE.json)，逐项保留原ID、要求原文、归属和已有观察，定位实现/测试入口及下一条完整操作流程。
 

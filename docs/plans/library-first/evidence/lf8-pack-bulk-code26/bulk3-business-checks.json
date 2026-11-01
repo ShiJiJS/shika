@@ -1,0 +1,35 @@
+{
+  "round": "bulk3",
+  "task_id": "a59824f4-24ba-4c73-9214-78415a15db5a",
+  "request_id": "1793511920159585-3363407053",
+  "target_packs": 1027,
+  "control_packs_unchanged": 4,
+  "members_succeeded": 1027,
+  "default_batch_size": 1000,
+  "actual_batch_members": [
+    1000,
+    27
+  ],
+  "all_pack_non_generation_columns_equal": true,
+  "generation_delta": 2,
+  "tag_links_preserved": 1031,
+  "reading_progress_rows_preserved": 8,
+  "preferences_rows_preserved": 8,
+  "recent_rows_preserved": 8,
+  "all_other_business_tables_equal": true,
+  "all_37_tables_equal_during_query_and_cold_navigation": true,
+  "media_files_bytes_and_sha_preserved": 3093,
+  "allowed_changed_tables": [
+    "pack_file_operations",
+    "pack_file_steps",
+    "pack_restore_batches",
+    "pack_restore_members",
+    "pack_restore_plans",
+    "pack_trash_items",
+    "packs",
+    "tasks"
+  ],
+  "settings_changed": [
+    "last_pack_delete_operation"
+  ]
+}

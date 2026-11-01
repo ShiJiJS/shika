@@ -1,0 +1,30 @@
+{
+  "own_container_removed": true,
+  "own_proxy_pid_stopped": 28134,
+  "own_avd_process_and_data_removed": true,
+  "owned_avd_registration_removed": true,
+  "original_four_container_ids_healthy": true,
+  "original_container_count": 4,
+  "original_apks_sdk_signing_and_regular_avds_retained": true,
+  "runtime_image_retained": true,
+  "nas_access_or_media_mutation": false,
+  "removed": [
+    {
+      "name": "avd",
+      "apparent_bytes": 2043135086
+    },
+    {
+      "name": "data",
+      "apparent_bytes": 17235890
+    },
+    {
+      "name": "config",
+      "apparent_bytes": 268
+    },
+    {
+      "name": "media",
+      "apparent_bytes": 28152186
+    }
+  ],
+  "global_prune": false
+}
