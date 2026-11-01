@@ -1,5 +1,7 @@
 # LF0–LF8 逐项收口台账（进行中）
 
+> 当前入口：[第28版交付及剩余事项](PROGRESS-CURRENT.md)。本表下文为截至各段版本的历史台账；新增[图片移除续读提示修复](../../nas-app-preview-2026-11-01-code28.md)和[当前长列表返回核对](LF8-DEEP-CATALOG-RETURN.md)各有明确范围，不自动将整项判为通过。
+
 更新：2026-10-30。总任务#24、LF8/#33保持开放。此表把已有阶段证据与剩余工作放在同一入口；“有阶段证据”不代表整项通过。原生界面、业务行为、服务端安全、性能和发布分别核对，不能互相替代。
 
 当前NAS体验部署（[#135](https://github.com/ShiJiJS/video_viewer/issues/135)）：已按授权升级现有ARM64服务，停机完整快照与旧镜像保留，快照在Mac另存同SHA副本。0004→0014迁移的15旧表原列相同，启动后9组稳定表再核对一致；598视频未变/0失败，110标签/2110关联保留。图包只读根启用，发现687包，首包40页目录/封面/原图1024字节Range成功，首次扫描仍运行。两份code22原签名APK已交付NAS packages；本机清理47处生成文件，实际空闲空间增加90.43GiB。没有手机安装或整版验收结论；[部署/回退/清理边界](../../nas-preview-2026-10-30.md)及[公开记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-nas-preview/README.md)。
