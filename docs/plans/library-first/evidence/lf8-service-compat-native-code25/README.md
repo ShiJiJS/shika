@@ -1,6 +1,6 @@
 # 旧服务兼容、分目录队列与断线恢复
 
-2026-11-01，承接[本轮流程](../../LF8-SERVICE-COMPAT-NATIVE.md)，跟踪#138/#139/#140/#142/#33/#24。普通原签名preview.19/code25，实际安装APK摘要仍e97a6cf6…d0f38；生产客户端d8acf140未变，236份源文件匹配原固定清单。旧服务b79da7b9运行75份文件、新服务430fede5运行76份文件逐一匹配Git，见两份server-source.json。原型树1cbf605保持。
+2026-11-01，[草稿PR #151](https://github.com/ShiJiJS/video_viewer/pull/151)基于#150，承接[本轮流程](../../LF8-SERVICE-COMPAT-NATIVE.md)，跟踪#138/#139/#140/#142/#33/#24。普通原签名preview.19/code25，实际安装APK摘要仍e97a6cf6…d0f38；生产客户端d8acf140未变，236份源文件匹配原固定清单。旧服务b79da7b9运行75份文件、新服务430fede5运行76份文件逐一匹配Git，见两份server-source.json。原型树1cbf605保持。
 
 本轮是同一普通APK的真实Android操作，不是组件合成响应。自己的API36模拟器保持software GPU、音频关闭，无测试入口注入，没有安装实体手机。此前832/478项完整套件及客户端37项三轮结果仍属其原固定版本，本轮不冒充重跑。
 
