@@ -21,6 +21,7 @@ class AssetReadingLibrary extends WorkspaceLibrary {
   final marks = <String, ReaderMark>{};
   final revisions = <String, int>{};
   int openedCount = 0, scopes = 0;
+  String? resumeRecoveryReason;
   Completer<void>? preferenceStarted, preferenceRelease;
   @override
   ServiceCapabilities get capabilities => ServiceCapabilities([
@@ -68,6 +69,7 @@ class _AssetReader implements PackReader {
       version: 1,
       preferences: preferences,
       sessionRevision: revision,
+      recoveryReason: repo.resumeRecoveryReason,
     );
   }
 
@@ -108,6 +110,7 @@ class _AssetReader implements PackReader {
         break;
       case final OpenPackReading value:
         repo.openedCount++;
+        repo.resumeRecoveryReason = null;
         repo.marks[selected] ??= ReaderMark(value.pageId);
         repo.revisions[selected] = (repo.revisions[selected] ?? 0) + 1;
         result = state;
@@ -199,6 +202,97 @@ class _AssetReader implements PackReader {
 }
 
 void main() {
+  for (final sample in [
+    (const Size(390, 844), 1.0),
+    (const Size(360, 740), 2.0),
+    (const Size(844, 390), 1.0),
+  ]) {
+    testWidgets(
+      'recovery explanation stays visible with a usable picture and return action ${sample.$1} / ${sample.$2}',
+      (t) async {
+        final repo = AssetReadingLibrary()
+          ..resumeRecoveryReason = 'page_removed';
+        t.view.devicePixelRatio = 1;
+        t.view.physicalSize = sample.$1;
+        addTearDown(() async {
+          await t.pumpWidget(const SizedBox());
+          await t.pump();
+          repo.dispose();
+          t.view.resetPhysicalSize();
+          t.view.resetDevicePixelRatio();
+        });
+        await t.pumpWidget(
+          MaterialApp(
+            theme: Paper.theme,
+            builder: (context, child) => MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: TextScaler.linear(sample.$2)),
+              child: child!,
+            ),
+            home: Builder(
+              builder: (context) => Scaffold(
+                body: TextButton(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => PackReaderPage(
+                        repository: repo,
+                        entry: PackReadingEntry(PackQuery(), anchorId: 'p0'),
+                        editTags: (_) async {},
+                      ),
+                    ),
+                  ),
+                  child: const Text('打开图包'),
+                ),
+              ),
+            ),
+          ),
+        );
+        await t.tap(find.text('打开图包'));
+        var opened = false;
+        for (var i = 0; i < 150; i++) {
+          await t.pump(const Duration(milliseconds: 30));
+          await t.runAsync(
+            () => Future<void>.delayed(const Duration(milliseconds: 3)),
+          );
+          expect(t.takeException(), isNull);
+          if (find.byType(PackReaderPage).evaluate().isEmpty) continue;
+          final reader = t.state<PackReaderPageState>(
+            find.byType(PackReaderPage),
+          );
+          if (reader.session.opened && !reader.session.busy) {
+            opened = true;
+            break;
+          }
+        }
+        expect(opened, isTrue, reason: 'the actual asset must decode and open');
+        expect(repo.resumeRecoveryReason, isNull);
+        await t.pump(const Duration(milliseconds: 500));
+        final notice = find.text('上次阅读的图片已移除，已定位到附近可读图片');
+        expect(notice, findsOneWidget);
+        final bounds = t.getRect(notice);
+        expect(bounds.left, greaterThanOrEqualTo(0));
+        expect(bounds.right, lessThanOrEqualTo(sample.$1.width));
+        expect(bounds.top, greaterThanOrEqualTo(0));
+        expect(bounds.bottom, lessThanOrEqualTo(sample.$1.height));
+        expect(
+          t.getSize(find.byKey(const Key('reader-canvas'))).height,
+          greaterThan(80),
+        );
+        if (sample.$1.width > sample.$1.height) {
+          final actions = t.getRect(find.byKey(const Key('reader-controls')));
+          expect(actions.top - bounds.bottom, greaterThan(80));
+        }
+        final back = find.byTooltip('返回来源');
+        expect(back.hitTestable(), findsOneWidget);
+        await t.tap(back);
+        await t.pumpAndSettle();
+        expect(find.byType(PackReaderPage), findsNothing);
+        expect(find.text('打开图包'), findsOneWidget);
+        expect(t.takeException(), isNull);
+      },
+    );
+  }
+
   for (final sample in [
     (const Size(390, 844), 1.0),
     (const Size(360, 740), 2.0),
