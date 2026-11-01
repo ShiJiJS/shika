@@ -1,0 +1,47 @@
+{
+  "requests": 717,
+  "status_counts": {
+    "401": 1,
+    "200": 694,
+    "404": 8,
+    "503": 2,
+    "201": 5,
+    "202": 7
+  },
+  "probe_excluded_from_app_run": {
+    "seq": 1,
+    "status": 401,
+    "reason": "Known wrong dummy login used solely to validate chunked observer body framing"
+  },
+  "playback_404": "Eight GET /playback responses before any playback round; rollback startup later creates one round. No successful playback claimed for this phase.",
+  "cover_503_observations": [
+    {
+      "seq": 17,
+      "path": "/api/v1/packs/3ce9c5cf-c1fa-472d-9f15-1df75e866ad3/cover",
+      "status": 503,
+      "later_same_path": [
+        {
+          "seq": 18,
+          "status": 200
+        },
+        {
+          "seq": 405,
+          "status": 200
+        }
+      ]
+    },
+    {
+      "seq": 407,
+      "path": "/api/v1/packs/c2ae8aff-cef2-40cd-98d8-f5cbad9bbb5e/cover",
+      "status": 503,
+      "later_same_path": [
+        {
+          "seq": 410,
+          "status": 200
+        }
+      ]
+    }
+  ],
+  "error_response_body_not_captured": true,
+  "no_headers_credentials_request_bodies_or_image_bodies_in_trace": true
+}

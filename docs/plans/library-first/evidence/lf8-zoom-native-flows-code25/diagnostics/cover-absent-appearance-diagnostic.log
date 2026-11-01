@@ -1,0 +1,13 @@
+{"snapshot": "cover-before-rollback25", "kind": "new25", "tables": 35, "counts": {"alembic_version": 1, "directories": 11, "file_operations": 0, "file_steps": 0, "observations": 520, "pack_file_operations": 2, "pack_file_steps": 2, "pack_missing_cleanups": 0, "pack_missing_members": 0, "pack_pages": 519, "pack_preferences": 4, "pack_progress": 4, "pack_purge_entries": 0, "pack_purge_executions": 0, "pack_purge_plans": 0, "pack_purge_steps": 0, "pack_restore_batches": 0, "pack_restore_members": 0, "pack_restore_plans": 0, "pack_session_entries": 12, "pack_sessions": 7, "pack_tag_definitions": 0, "pack_tag_links": 0, "pack_trash_items": 1, "packs": 6, "playback_rounds": 0, "recent_entries": 4, "request_records": 114, "roots": 3, "round_entries": 0, "tags": 0, "tasks": 13, "trash_items": 0, "video_tags": 0, "videos": 1}}
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-zoom-flow-native25/cover-cycle.py", line 19, in <module>
+    before=snapshot('new25','cover-before-rollback25');preferences=pref('cover-before');install('rollback','视频库');old=snapshot('rollback25','cover-after-rollback25');assert pref('cover-after-rollback')==preferences
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-zoom-flow-native25/cover-cycle.py", line 9, in pref
+    raw=ui.device('exec-out','cat','/data/user/0/'+ui.PACKAGE+'/files/appearance.json');v=json.loads(raw);(ui.L/(name+'-appearance.json')).write_text(json.dumps(v,indent=2)+'\n');return v
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)

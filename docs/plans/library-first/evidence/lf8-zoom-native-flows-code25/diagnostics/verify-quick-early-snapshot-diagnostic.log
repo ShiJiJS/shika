@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-zoom-flow-native25/verify-quick-undo.py", line 11, in <module>
+    restored=[n.get('content-desc') or n.get('text') for n in E.parse(l/'screens/32-quick-restored-long.xml').iter('node')];assert '04-long' in restored and '282 / 500' in restored
+AssertionError

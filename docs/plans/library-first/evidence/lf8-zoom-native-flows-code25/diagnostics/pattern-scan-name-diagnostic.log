@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-zoom-flow-native25/pattern-scan.py", line 4, in <module>
+    before=api.call('GET','/api/v1/library-state');roots={r['name']:r for r in before['roots']};a=roots['Packs A'];b=roots['Packs B'];old=a['scan']['task_id'];_,nodes=ui.xml();buttons=[n for n in nodes if n.get('content-desc')=='扫描此目录' and n.get('clickable')=='true'];assert len(buttons)==3;ui.tap(buttons[1],'scan-root-A-only-for-developer-public-pattern-fixture');deadline=time.monotonic()+60
+  File "/Users/jiangxinyi/Documents/Project/video-viewer/.dev/lf8-zoom-flow-native25/pattern-scan.py", line 4, in <dictcomp>
+    before=api.call('GET','/api/v1/library-state');roots={r['name']:r for r in before['roots']};a=roots['Packs A'];b=roots['Packs B'];old=a['scan']['task_id'];_,nodes=ui.xml();buttons=[n for n in nodes if n.get('content-desc')=='扫描此目录' and n.get('clickable')=='true'];assert len(buttons)==3;ui.tap(buttons[1],'scan-root-A-only-for-developer-public-pattern-fixture');deadline=time.monotonic()+60
+KeyError: 'name'

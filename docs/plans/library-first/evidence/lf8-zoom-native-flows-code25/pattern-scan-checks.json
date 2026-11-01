@@ -1,0 +1,104 @@
+{
+  "fixture_preparation_only": true,
+  "before_root_A": {
+    "id": "packs-a",
+    "ready": true,
+    "kind": "pack",
+    "enabled": true,
+    "available": true,
+    "last_scan": 1793366874.977096,
+    "error": null,
+    "scan": {
+      "counts": {
+        "deferred": 0,
+        "failed": 0,
+        "failed_packs": 0,
+        "failed_pages": 0,
+        "identity_ambiguous": 0,
+        "identity_matched": 0,
+        "imported": 0,
+        "loose_images": 0,
+        "missing": 0,
+        "protected_packs": 0,
+        "symlinks_skipped": 0,
+        "thumbnail_failed": 0,
+        "unchanged": 4,
+        "unsupported_files": 2,
+        "updated": 0
+      },
+      "discovered": 4,
+      "finished_at": 1793366874.978362,
+      "id": "packs-a",
+      "kind": "pack",
+      "page_errors": 1,
+      "phase": "partial",
+      "processed": 4,
+      "progress": {
+        "discovered": 510,
+        "discovery_complete": true,
+        "packs_discovered": 4,
+        "packs_discovery_complete": true,
+        "packs_processed": 4,
+        "processed": 510
+      },
+      "status": "partial",
+      "task_id": "ea494a19-afa7-4046-ad1a-dd8f98ca2df5",
+      "updated_at": 1793366874.9783618
+    },
+    "queued_task_ids": []
+  },
+  "after_root_A": {
+    "id": "packs-a",
+    "ready": true,
+    "kind": "pack",
+    "enabled": true,
+    "available": true,
+    "last_scan": 1793368348.1659205,
+    "error": null,
+    "scan": {
+      "counts": {
+        "deferred": 0,
+        "failed": 0,
+        "failed_packs": 0,
+        "failed_pages": 0,
+        "identity_ambiguous": 0,
+        "identity_matched": 0,
+        "imported": 1,
+        "loose_images": 0,
+        "missing": 0,
+        "protected_packs": 0,
+        "symlinks_skipped": 0,
+        "thumbnail_failed": 0,
+        "unchanged": 4,
+        "unsupported_files": 2,
+        "updated": 0
+      },
+      "discovered": 5,
+      "finished_at": 1793368348.1719935,
+      "id": "packs-a",
+      "kind": "pack",
+      "page_errors": 1,
+      "phase": "partial",
+      "processed": 5,
+      "progress": {
+        "discovered": 515,
+        "discovery_complete": true,
+        "packs_discovered": 5,
+        "packs_discovery_complete": true,
+        "packs_processed": 5,
+        "processed": 515
+      },
+      "status": "partial",
+      "task_id": "9860e7c4-9ff8-4d4d-bbdc-b1b11be84eb7",
+      "updated_at": 1793368348.171989
+    },
+    "queued_task_ids": []
+  },
+  "root_B_unchanged": true,
+  "scope": {
+    "all": false,
+    "root_ids": [
+      "packs-a"
+    ]
+  }
+}
