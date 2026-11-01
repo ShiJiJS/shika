@@ -646,7 +646,9 @@ class PackFileJournal {
             _map(_book![_missingNamespace] ?? <String, dynamic>{})[scope] ??
                 <String, dynamic>{},
           ).length +
-          _purgeSelectionRows(_book!, scope).length;
+          _purgeSelectionRows(_book!, scope).entries.where((entry) {
+            return _purgeSelection(entry.key, entry.value).remaining.isNotEmpty;
+          }).length;
     } catch (_) {
       return null;
     }
