@@ -355,6 +355,11 @@
           "evidence": "evidence/lf8-pack-bulk-code26/README.md",
           "scope": "三轮恢复保持原8条最近/进度/偏好，最终原生最近7项=6个恢复包+1个可用对照，均显示原第2/2张且完成标记保持。此轮只查看最近列表，未重新打开阅读；原单包282/500续读保留其此前记录范围。",
           "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-purge-code26/README.md",
+          "scope": "恢复部分删除包后原页ID/偏移、进度/偏好/标签与最近行保持，最近显示剩余1/1；未再次打开阅读或保存进度，截图封面重载及三个读图接口409已记#161，因此不是恢复后阅读通过。",
+          "candidate_code": 26
         }
       ]
     },
@@ -404,6 +409,11 @@
           "evidence": "evidence/lf8-pack-bulk-code26/README.md",
           "scope": "普通code26在1031合成包中按图包类型/Bulk-筛选1027；真实页1→2→1选择与取消零写。三轮各唯一POST，默认1000+27子批次、4对照不变、3093源文件SHA保持、1031标签关联和8份进度/偏好保留。仅浅色约390dp本机模拟器，其他类型与手机不据此通过。",
           "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-purge-code26/README.md",
+          "scope": "普通26三轮部分删除原任务重试只处理剩余03，附件/标签/阅读数据保持；另例原生恢复剩余图片，数据与最近1/1保持，旧删除stale_pack_state。#161发现封面/原图/缩略图409，未证明恢复后阅读，整项不关闭。",
+          "candidate_code": 26
         }
       ]
     },
@@ -413,7 +423,13 @@
       "requirement": "永删双确认、图片清单/版本核对；部分成功逐项显示，进程中断可核对；替换/新增/非图片附件不误删",
       "owner": "LF6",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-pack-purge-code26/README.md",
+          "scope": "普通26明确核对精确3图/保留2项内容，复选框门槛/取消和保存选择已验。核对后新增图片、同字节替换身份、新增附件均0/3；空目录2/2安全移除；最终只少原核对28图，44原文件与2新增内容保留。服务cf9a修复ctime归位后的原任务重试，未放松内容/身份保护；无真机/NAS删除试验。",
+          "candidate_code": 26
+        }
+      ]
     },
     {
       "id": "DEL-06",
@@ -430,6 +446,11 @@
         {
           "evidence": "evidence/lf8-pack-bulk-code26/README.md",
           "scope": "三轮1027成员请求在真实202受理后未交付响应，停止旧PID；后台仍running后完成，新PID冷启保留原请求。原GET回执503→200，只查同父任务与第二页明细，每轮一POST，查询37表零写；永删/其他异常组合继续。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-purge-code26/README.md",
+          "scope": "普通26三轮真实受理后暂不交付回执，活PID强停并消失，后台App缺席时running到2/3，新PID媒体库冷启，原回执503到200只查询；同一任务明确重试到3/3，每轮唯一原永久POST。Purge06滚动驱动修正、Purge08已完成后的导航读取重叠及前五诊断单独保留，不冒称驱动无错误。",
           "candidate_code": 26
         }
       ]
@@ -481,6 +502,11 @@
         {
           "evidence": "evidence/lf8-pack-bulk-code26/README.md",
           "scope": "三轮原生任务待确认、503保留与已完成1027/1027、全部/第二页成员已核对，实际子批次1000+27；没有据此验证部分失败或停止后续批次。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-pack-purge-code26/README.md",
+          "scope": "原生部分2/3、逐项未完成03及目录、明确重试与同任务3/3已验；每轮查询37表/设置相同、无写。#159恢复终态后偶发503、#160零未提交选择挤占待处理、#161恢复后读图409继续，不关闭完整任务体验。",
           "candidate_code": 26
         }
       ]

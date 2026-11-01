@@ -74,6 +74,27 @@ class PurgeTree:
             return True
         return row.phase in ("purging", "removing") and not file_stat(self.source(row))
 
+    def revalidate_returned_image(self, row, path, expected, observed):
+        # A journaled rollback can be followed by a ctime-only attribute update.
+        # Permit that narrow case only after hashing the same returned inode;
+        # mtime/size changes and replacements still invalidate the frozen tree.
+        if (
+            not row
+            or row.phase != "rolled_back"
+            or not row.state.get("source_signature")
+            or observed is None
+            or observed[:4] != expected[:4]
+        ):
+            return False
+        transfer = ImagePurgeTransfer(self.owner.stop, self.owner.mark, self.validate_transfer)
+        verified = transfer.verified(path, row, expected[:2])
+        if verified[:4] != expected[:4]:
+            raise LibraryError("manifest_changed", "文件在确认后变化，请重新核对")
+        # Reuse the rollback checkpoint so the page and journal signatures stay
+        # in sync. The following claim verifies identity and bytes again.
+        self.owner.mark(row.id, "rolled_back", source_signature=verified)
+        return True
+
     def check(self, *, full=False):
         self.basic(pack=False)
         removed = {row.relative_path for row in self.rows if self.removed(row)}
@@ -120,7 +141,9 @@ class PurgeTree:
                     if row
                     else expected["signature"]
                 )
-                if current != wanted:
+                if current != wanted and not self.revalidate_returned_image(
+                    row, full_path, wanted, current
+                ):
                     raise LibraryError("manifest_changed", "文件在确认后变化，请重新核对")
 
     def transfer_step(self, row):

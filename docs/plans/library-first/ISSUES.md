@@ -92,3 +92,6 @@
 新增独立profile入口，计划每类30次Flutter缓存冷首图、正常相邻翻页、连续拖过500页、内核PSS/RSS/VmHWM和帧时序；静态检查通过，原型独立。前三次采集错误（异步tester保护、控制消息分块协议、Tooltip类型）分别修正/留档，不算产品故障。随后SWANGLE/GLES在8次4K重复后bad color buffer/GL context异常、QEMU81429挂起并离开进程表；内核PSS采样最大196416KiB、RSS高水位297432KiB，不能据此诊断App OOM。只在确认进程消失后换官方CLI支持的SwiftShader复测；另一次进度确认等待超时，正在加完整状态诊断，尚未归因。所有失败均不算成功轮次，不用8次样本冒充30次分位数。
 
 [方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-performance/docs/plans/library-first/LF8-READER-PERFORMANCE.md)／[当前诊断记录](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-reader-performance/docs/plans/library-first/evidence/lf8-reader-performance/README.md)。完整30次、三轮500页、普通release入口与目标手机/NAS仍待完成；#78/#89与#24/#33保持开放。指定SMB目录在Mac可读，目前只确认路径可达；未把它当成真实图包已验收，未扫描/修改真实收藏或NAS服务。
+
+
+2026-11-01追加：[#158](https://github.com/ShiJiJS/video_viewer/issues/158)归位图片原任务重试误判的本机修复及三轮普通26验证见[记录](LF8-PACK-PURGE-RETRY.md)/[证据](evidence/lf8-pack-purge-code26/README.md)。cf9a/runtime preview.5的497服务检查通过，旧失败与驱动异常保留；未新建APK或部署NAS。新发现[#161](https://github.com/ShiJiJS/video_viewer/issues/161)恢复后读图409优先继续，不能把数据保持/最近1/1写成读图通过；[#159](https://github.com/ShiJiJS/video_viewer/issues/159)终态后503、[#160](https://github.com/ShiJiJS/video_viewer/issues/160)空选择挤占待处理分开跟踪。原45项要求/归属/状态不改，只追加DEL-04/05/06、SET-05、REC-01本轮观察；#24/#33/#31/#133继续。

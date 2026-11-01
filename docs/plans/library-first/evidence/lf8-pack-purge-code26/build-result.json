@@ -1,0 +1,46 @@
+{
+  "source": "cf9a60d79d15aabd4a895a25e17d1bdfdcae688f",
+  "tag": "video-viewer-server:0.2.0-preview.5",
+  "platform": "linux/arm64",
+  "runtime_files_matched": 77,
+  "changed_runtime_files": [
+    "video_viewer/pack_purge_io.py"
+  ],
+  "other_76_files_unchanged": true,
+  "pytest_present": false,
+  "local_image_id": "sha256:7727732a5929538eac57b7bd744673cd05563b28fcd73272806b89227ef1946a",
+  "archive_config_sha256": "50a36ccef523fc85bca82191fc666df0b0531936814b893c705f3c204eae731b",
+  "rootfs_diff_ids": [
+    "sha256:dca69811453d69d10b6c0345a5c49147162abe20a2f77802d66efc60667949ea",
+    "sha256:8cc4a854ef0c8479b56bcc56c702d23ffeafd3d23c44dc9c66f6abb2e7fd1129",
+    "sha256:ab24ed427f749483d23bd483bae80fd7bc2871ab738a922840aa025116f8335f",
+    "sha256:6c0a4b583bd97f7249f788d71aacb568e7c515ba29a4f5df5ed58f3750cc9146",
+    "sha256:8dca594ca921008ce0ac306cf6c8b9d69e2788dcd588d0acfec00abc4fed3a11",
+    "sha256:431d801af91ba22fec5b64cc93d8c3359189e295e86e36dfcd4d85cf991fdf9e",
+    "sha256:0da654e3710cb452e9542acb8a0d49fec92a66d8b0fa8345e959e6461d2c3bd8",
+    "sha256:dffca0f9120725a10ccd27d3cea0df1ff75d0250ef2023299cb435d1d6d3fcde",
+    "sha256:3bc054e4b0cf80c290b679fd4990eae513301331c5228e7f2bc518257d0908b4",
+    "sha256:579ce405499122732d02d730c6fe1e056c0555e3f74ff813cf78710a18592e16",
+    "sha256:37f92972d6abd95c76b26c10655e84777cbd8e23d7ed17a813dfbf7eadf14740",
+    "sha256:6aee412d725171d262c07bd3aba26641ee83db8120baf393e672872a896f25c0"
+  ],
+  "healthcheck": {
+    "Test": [
+      "CMD",
+      "python",
+      "-I",
+      "-S",
+      "-B",
+      "/app/video_viewer/healthcheck.py"
+    ],
+    "Interval": 15000000000,
+    "Timeout": 10000000000,
+    "StartPeriod": 20000000000
+  },
+  "archive": {
+    "name": "video-viewer-server-0.2.0-preview.5-linux-arm64.tar.gz",
+    "bytes": 222278741,
+    "sha256": "bff9ee929ac740c710967839562a8b58cbc9dc7f76a4d24f58341bacfe81a939"
+  },
+  "nas_deployed": false
+}

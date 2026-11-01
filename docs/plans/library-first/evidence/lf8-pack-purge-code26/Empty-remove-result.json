@@ -1,0 +1,44 @@
+{
+  "name": "Empty-remove",
+  "task": {
+    "server_time": 1793516337.3626869,
+    "id": "e787d40d-abcb-4b85-a822-43df4912ca30",
+    "kind": "pack_permanent",
+    "status": "completed",
+    "phase": "completed",
+    "created_at": 1793516330.0944028,
+    "finished_at": 1793516330.3994648,
+    "result": {
+      "operation_id": "e787d40d-abcb-4b85-a822-43df4912ca30",
+      "total": 1,
+      "processed": 1,
+      "succeeded": 1,
+      "failed": 0,
+      "partial": false,
+      "needs_attention": false,
+      "pages_pending_reconciliation": 0,
+      "pages_deleted": 2,
+      "pages_total": 2,
+      "items": [
+        {
+          "requested_id": "16a4ed3e-6a6b-4d0b-87e4-6b21d17ec4d5",
+          "trash_id": "16a4ed3e-6a6b-4d0b-87e4-6b21d17ec4d5",
+          "pack_id": "4387cbc2-d21f-4f8d-ac9b-d03581ddb3a6",
+          "outcome": "succeeded",
+          "phase": "committed",
+          "error": null,
+          "pages_deleted": 2,
+          "pages_total": 2
+        }
+      ],
+      "reading_transition": null,
+      "reading_restored": false,
+      "undo_expires_at": null
+    },
+    "error": null
+  },
+  "only_two_confirmed_images_removed": true,
+  "empty_root_and_child_removed": true,
+  "other_files_byte_identical": true,
+  "native_permanent_posts": 1
+}

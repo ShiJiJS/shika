@@ -1,0 +1,38 @@
+"""Own diagnostic wrapper; install fault checkpoints before startup recovery."""
+import errno,json,threading,time,traceback
+from pathlib import Path
+from dataclasses import replace
+from video_viewer.app import create_app
+from video_viewer.config import Settings
+from video_viewer.pack_operations import PackOperations
+
+CONTROL=Path('/control')
+def settings():return json.loads((CONTROL/'executor.json').read_text())
+def record(value):
+ with (CONTROL/'exception-events.jsonl').open('a') as f:f.write(json.dumps({'time':time.time(),**value})+'\n')
+def trace(frame,event,arg):
+ if event=='exception' and frame.f_code.co_filename.endswith('/pack_purge.py') and frame.f_code.co_name=='run':
+  typ,error,tb=arg;record({'type':typ.__name__,'message':str(error),'traceback':''.join(traceback.format_exception(typ,error,tb))})
+ return trace
+def checkpoint(purge,phase,identity):
+ try:
+  config=settings();row=purge.rows.get(identity)
+  if not row or not purge.tree or purge.tree.path.name!=config.get('target'):return
+  if phase=='purge_image_committed' and row.relative_path=='01.png' and config.get('hold_after_first'):
+   (CONTROL/'checkpoint.json').write_text(json.dumps({'phase':phase,'identity':identity,'operation_id':purge.tree.parent.operation_id,'target':purge.tree.path.name,'time':time.time()}))
+   deadline=time.monotonic()+120
+   while settings().get('hold_after_first') and time.monotonic()<deadline and not purge.stop.is_set():time.sleep(.025)
+  if phase=='purge_purging' and row.relative_path=='03.png' and config.get('partial'):
+   with (CONTROL/'fault-events.jsonl').open('a') as f:f.write(json.dumps({'phase':phase,'identity':identity,'operation_id':purge.tree.parent.operation_id,'target':purge.tree.path.name,'errno':errno.EACCES,'time':time.time()})+'\n')
+   raise PermissionError(errno.EACCES,'Controlled disposable fixture page failure')
+ except BaseException as error:
+  if not isinstance(error,PermissionError):record({'checkpoint':phase,'type':type(error).__name__,'message':str(error),'traceback':traceback.format_exc()})
+  raise
+def create_fixture_app():
+ threading.settrace(trace)
+ original=PackOperations.start
+ def start(owner):
+  owner.purge.fault_hook=lambda phase,identity:checkpoint(owner.purge,phase,identity)
+  return original(owner)
+ PackOperations.start=start
+ return create_app(replace(Settings.from_env(),startup_scan=False,scan_interval=0))

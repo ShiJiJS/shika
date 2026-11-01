@@ -1,0 +1,64 @@
+{
+  "unfinished": {
+    "items": [
+      {
+        "id": "acf4b854-114a-47c0-9712-49f596407bd2",
+        "parent_id": "60084516-bbd3-47ad-a440-fd7567376ba1",
+        "kind": "image",
+        "page_id": "5ccaf735-6580-4270-833c-003d7d292788",
+        "relative_path": "03.png",
+        "phase": "rolled_back",
+        "outcome": "failed",
+        "error": "permission_denied",
+        "pack_id": "be4dbd36-16dc-4874-ac5c-6401c5fb69ce",
+        "pack_name": "Purge-08"
+      }
+    ],
+    "total": 1,
+    "offset": 0,
+    "limit": 200
+  },
+  "all": {
+    "items": [
+      {
+        "id": "a521789e-8a29-4ab0-b890-8a5b17b98d94",
+        "parent_id": "60084516-bbd3-47ad-a440-fd7567376ba1",
+        "kind": "image",
+        "page_id": "a96decad-4c85-420f-90be-cac71791f930",
+        "relative_path": "01.png",
+        "phase": "committed",
+        "outcome": "succeeded",
+        "error": null,
+        "pack_id": "be4dbd36-16dc-4874-ac5c-6401c5fb69ce",
+        "pack_name": "Purge-08"
+      },
+      {
+        "id": "b2a353b8-d641-4c29-9a8d-2cbad50205eb",
+        "parent_id": "60084516-bbd3-47ad-a440-fd7567376ba1",
+        "kind": "image",
+        "page_id": "5db3736d-7c77-446f-9000-574cbebdcb1a",
+        "relative_path": "02.png",
+        "phase": "committed",
+        "outcome": "succeeded",
+        "error": null,
+        "pack_id": "be4dbd36-16dc-4874-ac5c-6401c5fb69ce",
+        "pack_name": "Purge-08"
+      },
+      {
+        "id": "acf4b854-114a-47c0-9712-49f596407bd2",
+        "parent_id": "60084516-bbd3-47ad-a440-fd7567376ba1",
+        "kind": "image",
+        "page_id": "5ccaf735-6580-4270-833c-003d7d292788",
+        "relative_path": "03.png",
+        "phase": "rolled_back",
+        "outcome": "failed",
+        "error": "permission_denied",
+        "pack_id": "be4dbd36-16dc-4874-ac5c-6401c5fb69ce",
+        "pack_name": "Purge-08"
+      }
+    ],
+    "total": 3,
+    "offset": 0,
+    "limit": 200
+  }
+}

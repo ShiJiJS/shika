@@ -1,0 +1,20 @@
+{
+  "observed_on": "Purge-05",
+  "source": "private fixture wrapper, not product code",
+  "events": [
+    {
+      "time": 1793515728.3812616,
+      "checkpoint": "purge_image_committed",
+      "type": "JSONDecodeError",
+      "message": "Expecting ',' delimiter: line 1 column 66 (char 65)",
+      "traceback": "Traceback (most recent call last):\n  File \"/fixture/fixture_app.py\", line 24, in checkpoint\n    while settings().get('hold_after_first') and time.monotonic()<deadline and not purge.stop.is_set():time.sleep(.025)\n          ~~~~~~~~^^\n  File \"/fixture/fixture_app.py\", line 10, in settings\n    def settings():return json.loads((CONTROL/'executor.json').read_text())\n                          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/json/__init__.py\", line 352, in loads\n    return _default_decoder.decode(s)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"/usr/local/lib/python3.13/json/decoder.py\", line 345, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/json/decoder.py\", line 361, in raw_decode\n    obj, end = self.scan_once(s, idx)\n               ~~~~~~~~~~~~~~^^^^^^^^\njson.decoder.JSONDecodeError: Expecting ',' delimiter: line 1 column 66 (char 65)\n"
+    },
+    {
+      "time": 1793515728.3846776,
+      "type": "JSONDecodeError",
+      "message": "Expecting ',' delimiter: line 1 column 66 (char 65)",
+      "traceback": "Traceback (most recent call last):\n  File \"/app/video_viewer/pack_purge.py\", line 456, in run\n    self.run_parent(parent, manifest, rows)\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/video_viewer/pack_purge.py\", line 351, in run_parent\n    self.commit_image(row)\n    ~~~~~~~~~~~~~~~~~^^^^^\n  File \"/app/video_viewer/pack_purge.py\", line 285, in commit_image\n    self.checkpoint(\"purge_image_committed\", row.id)\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/app/video_viewer/pack_purge.py\", line 44, in checkpoint\n    self.fault_hook(phase, identity)\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/fixture/fixture_app.py\", line 35, in <lambda>\n    owner.purge.fault_hook=lambda phase,identity:checkpoint(owner.purge,phase,identity)\n                                                 ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/fixture/fixture_app.py\", line 24, in checkpoint\n    while settings().get('hold_after_first') and time.monotonic()<deadline and not purge.stop.is_set():time.sleep(.025)\n          ~~~~~~~~^^\n  File \"/fixture/fixture_app.py\", line 10, in settings\n    def settings():return json.loads((CONTROL/'executor.json').read_text())\n                          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/json/__init__.py\", line 352, in loads\n    return _default_decoder.decode(s)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"/usr/local/lib/python3.13/json/decoder.py\", line 345, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/json/decoder.py\", line 361, in raw_decode\n    obj, end = self.scan_once(s, idx)\n               ~~~~~~~~~~~~~~^^^^^^^^\njson.decoder.JSONDecodeError: Expecting ',' delimiter: line 1 column 66 (char 65)\n"
+    }
+  ],
+  "past_Purge02_Purge03_same_cause_not_proven": true
+}

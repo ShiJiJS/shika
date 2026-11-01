@@ -1,0 +1,13 @@
+import fixture_control as ctrl
+import json,sys
+import ui,api,helpers as f,media
+from snapshot_all import snapshot
+L=ui.L;name=sys.argv[1];sf=L/(name+'-state.json');state=json.loads(sf.read_text());assert state['phase']=='partial_result_queried';identity=state['accepted']['response']['id']
+ui.choose('重试未完成项');f.until(lambda n:'已确认删除 3/3 张' in f.labels(n),'original retry result');ui.snap(name+'-retry-completed');task=api.wait(identity,route='/api/v1/pack-operations/');assert task['status']=='completed' and task['result']['pages_deleted']==3 and task['result']['pages_total']==3
+before=json.loads((L/(name+'-partial-files.json')).read_text());after=media.save(name+'-after-retry');media.compare_deleted(before,after,[name+'/03.png']);assert after[name+'/notes.txt']==before[name+'/notes.txt'] and after[name+'/extras/data.bin']==before[name+'/extras/data.bin']
+steps=api.call('GET','/api/v1/pack-operations/'+identity+'/pages?kind=image&outcome=all&limit=200');original=json.loads((L/(name+'-partial-image-steps.json')).read_text())['all'];assert {x['id'] for x in steps['items']}=={x['id'] for x in original['items']} and all(x['outcome']=='succeeded' for x in steps['items']);(L/(name+'-finished-steps.json')).write_text(json.dumps(steps,indent=2));snapshot('normal26',name+'-after-retry')
+partial=json.loads((L/(name+'-after-query-all-catalog.json')).read_text());finished=json.loads((L/(name+'-after-retry-all-catalog.json')).read_text());succeeded_ids={x['id'] for x in original['items'] if x['outcome']=='succeeded'}
+for ident in succeeded_ids:assert next(x for x in partial['tables']['pack_purge_steps'] if x['id']==ident)==next(x for x in finished['tables']['pack_purge_steps'] if x['id']==ident),ident
+for key in ['pack_tag_definitions','pack_tag_links','pack_preferences','pack_progress','pack_sessions','pack_session_entries','recent_entries','roots','directories','observations','videos','tags','video_tags','playback_rounds','round_entries']:assert partial['tables'][key]==finished['tables'][key],key
+assert partial['opaque_table_digests']==finished['opaque_table_digests'] and partial['setting_key_sha256']==finished['setting_key_sha256']
+state.update(phase='completed',retry_same_operation_id=True,original_succeeded_image_step_rows_unchanged=True,attachments_preserved=True,final_task=task);sf.write_text(json.dumps(state,indent=2));ui.choose('关闭');ui.choose('返回操作任务');ui.choose('返回设置');print({'name':name,'completed':'3/3','only_original_remaining_image_retried':True,'same_operation_id':identity,'already_deleted_step_rows_unchanged':True,'attachments_retained':2})

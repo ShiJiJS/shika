@@ -1,0 +1,63 @@
+"""Independent checks over captured native requests, catalog snapshots and bytes."""
+import hashlib,json,subprocess
+from pathlib import Path
+import media
+L=Path(__file__).resolve().parent;R=L.parents[1]
+trace=[json.loads(x) for x in (L/'requests.jsonl').read_text().splitlines()]
+def read(name):return json.loads((L/name).read_text())
+rounds=[]
+for name in ['Purge-06','Purge-07','Purge-08']:
+    s=read(name+'-state.json');assert s['phase']=='completed'
+    assert not s.get('fixture_control_interruption') and not s.get('additional_emulator_restart') and not s.get('additional_diagnostic_service_restart')
+    identity=s['accepted']['response']['id'];request=s['accepted']['command']['request_id']
+    posts=[r for r in trace if r['method']=='POST' and r['path']=='/api/v1/pack-trash/permanent' and r.get('command',{}).get('request_id')==request]
+    assert len(posts)==1 and posts[0]['status']==202 and posts[0]['response_held']
+    assert s['old_pid_absent_from_ps'] and s['old_pid']!=s['new_pid'] and s['backend_observed_running_with_app_absent']
+    assert s['partial_while_app_absent']['result']['pages_deleted']==2 and s['partial_while_app_absent']['result']['pages_total']==3
+    receipts=[r for r in trace if r['path']=='/api/v1/pack-file-requests/'+request]
+    assert any(r['status']==503 and r.get('injected_receipt_offline') for r in receipts) and any(r['status']==200 for r in receipts)
+    assert not [r for r in trace if posts[0]['seq']<r['seq']<=s['query_end_seq'] and r['method'] not in ['GET','HEAD']]
+    partial=read(name+'-partial-app-absent-all-catalog.json');queried=read(name+'-after-query-all-catalog.json')
+    for key in ['tables','opaque_table_digests','setting_key_sha256']:assert partial[key]==queried[key]
+    retry=[r for r in trace if r['method']=='POST' and r['path']=='/api/v1/pack-operations/'+identity+'/retry']
+    assert len(retry)==1 and retry[0]['seq']>s['query_end_seq']
+    before=read(name+'-before-files.json');p=read(name+'-partial-files.json');after=read(name+'-after-retry-files.json')
+    media.compare_deleted(before,p,[name+'/01.png',name+'/02.png']);media.compare_deleted(p,after,[name+'/03.png'])
+    original=read(name+'-partial-image-steps.json')['all']['items'];finished=read(name+'-finished-steps.json')['items']
+    assert {x['id'] for x in original}=={x['id'] for x in finished} and all(x['outcome']=='succeeded' for x in finished)
+    end=read(name+'-after-retry-all-catalog.json')
+    ids={x['id'] for x in original if x['outcome']=='succeeded'}
+    for identity2 in ids:
+        assert next(x for x in queried['tables']['pack_purge_steps'] if x['id']==identity2)==next(x for x in end['tables']['pack_purge_steps'] if x['id']==identity2)
+    for key in ['pack_tag_definitions','pack_tag_links','pack_preferences','pack_progress','pack_sessions','pack_session_entries','recent_entries','roots','directories','observations','videos','tags','video_tags','playback_rounds','round_entries']:
+        assert queried['tables'][key]==end['tables'][key],key
+    assert queried['opaque_table_digests']==end['opaque_table_digests'] and queried['setting_key_sha256']==end['setting_key_sha256']
+    rounds.append({'name':name,'operation_id':identity,'request_id':request,'old_pid':s['old_pid'],'new_pid':s['new_pid'],'native_permanent_posts':1,'native_explicit_original_retries':1,'app_absent_running_then_partial':'2/3','receipt_503_then_200':True,'query_writes':0,'query_all_37_tables_equal':True,'final':'3/3','already_deleted_step_rows_unchanged':True,'only_original_remaining_image_retried':True,'non_image_attachments_retained':2,'unrelated_file_bytes_identical':True,'protected_business_rows_and_settings_equal':True})
+assert rounds[0]['new_pid']==rounds[1]['old_pid'] and rounds[1]['new_pid']==rounds[2]['old_pid']
+inputs=read('media-before.json')
+for n in ['additional-fixtures.json','last-fixture.json','final-added-fixture.json']:
+    part=read(n)['initial_added_files'];assert not set(inputs)&set(part);inputs.update(part)
+assert len(inputs)==72
+deleted=[f'Purge-{i:02d}/{p:02d}.png' for i in range(1,9) for p in range(1,4)]+['Empty-remove/01.png','Empty-remove/02.png','Restore-partial/01.png','Restore-partial/02.png']
+actual=media.files();assert set(inputs)-set(actual)==set(deleted) and set(actual)-set(inputs)=={'Changed-add-image/new.png','Changed-add-attachment/new-note.txt'}
+assert all(v==actual[k] for k,v in inputs.items() if k in actual)
+for name in ['Changed-add-image','Changed-replace-image','Changed-add-attachment']:
+    result=read(name+'-result.json');assert result['deleted_images']==0 and result['all_files_after_explicit_mutation_unchanged']
+assert read('Empty-remove-result.json')['empty_root_and_child_removed']
+assert read('Restore-partial-result.json')['blocked_old_retry']['result']['items'][0]['error']=='stale_pack_state'
+assert read('Restore-partial-result.json')['recent_displays_one_of_one']
+counts={p:sum(r['method']=='POST' and r['path']==p for r in trace) for p in ['/api/v1/pack-purge-plans','/api/v1/pack-trash/permanent','/api/v1/pack-restore-plans','/api/v1/pack-trash/restore','/api/v1/packs/trash']}
+assert counts=={'/api/v1/pack-purge-plans':14,'/api/v1/pack-trash/permanent':13,'/api/v1/pack-restore-plans':1,'/api/v1/pack-trash/restore':0,'/api/v1/packs/trash':0},counts
+native_retries=[r for r in trace if r['method']=='POST' and r['path'].startswith('/api/v1/pack-operations/') and r['path'].endswith('/retry')]
+assert len(native_retries)==10
+assert not [r for r in trace if r['method'] not in ['GET','HEAD'] and r['path'] not in ['/api/v1/auth/login','/api/v1/pack-purge-plans','/api/v1/pack-trash/permanent','/api/v1/pack-restore-plans'] and r not in native_retries]
+assert '497 passed' in (L/'full-server-verified-env.log').read_text()
+assert '50 passed' in (L/'rollback-final-targeted.log').read_text()
+assert subprocess.check_output(['git','rev-parse','HEAD:apps/mobile'],cwd=R)==subprocess.check_output(['git','rev-parse','8416a3f7:apps/mobile'],cwd=R)
+assert subprocess.check_output(['git','rev-parse','HEAD:design/reference/library-first'],cwd=R,text=True).strip()=='1cbf605af8f03fa067a4ce8e914bb809e3a487ca'
+result={'client_source':'8416a3f7359af94f1da802185b136770d6499986','server_source':'cf9a60d79d15aabd4a895a25e17d1bdfdcae688f','normal_code':26,'rounds':rounds,'initial_synthetic_directories':15,'initial_files':72,'confirmed_deleted_images':len(deleted),'remaining_original_files':len(inputs)-len(deleted),'added_after_review_files_retained':2,'final_files':len(actual),'all_retained_original_file_bytes_identical':True,'client_unchanged_full_834_reused':True,'server_full_checks':497,'targeted_checks':50,'real_phone':False,'nas_access_or_deployment':False,'synthetic_small_images_not_performance_proof':True,'diagnostic_cases_excluded_from_three_rounds':['Purge-01 old-source failure and fixed original retry','Purge-02 fixture interruption, preparation API recovery','Purge-03 fixture interruption, diagnostic service restart','Purge-04 QEMU hang and reboot','Purge-05 captured fixture JSONDecodeError, preparation API recovery']}
+result.update(native_post_counts=counts,native_original_task_retries=len(native_retries),preparation_api_original_retries=2,preparation_api_logical_trash_not_native=True)
+conflict=read('restored-image-read-conflict.json');assert all(x['status']==409 for x in conflict['responses'].values())
+assert conflict['identity_size_mtime_bytes_equal'] and conflict['ctime_differs']
+result.update(restored_image_read_blocker_issue=161,restored_data_preservation_does_not_prove_reading=True,restored_image_urls_return_image_changed_409=True)
+(L/'verified-flows.json').write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2))
