@@ -150,6 +150,32 @@
       }
     },
     {
+      "label": "CLI: help",
+      "type": "process",
+      "command": "uv",
+      "args": [
+        "--directory", "${workspaceFolder}/apps/cli",
+        "run", "--locked", "--extra", "dev", "rv", "--help"
+      ],
+      "options": {
+        "env": { "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.dev/cli" }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "CLI: tests",
+      "type": "process",
+      "command": "uv",
+      "args": [
+        "--directory", "${workspaceFolder}/apps/cli",
+        "run", "--locked", "--extra", "dev", "pytest", "-q"
+      ],
+      "options": {
+        "env": { "UV_PROJECT_ENVIRONMENT": "${workspaceFolder}/.dev/cli" }
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Prepare Android debug",
       "dependsOn": [
         "Server: start local Docker",

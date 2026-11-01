@@ -4,6 +4,8 @@
 token、触发扫描并等待完成、按路径定位视频、查/建标签、批量打标、创建和下载
 管理备份。
 
+当前0.1.1修复凭据过期时自动重新登录并继续旧修改命令的问题。写命令（包括标签名称查询等前置读取）遇401即停止，先显式`rv login`，重新核对当前数据后再执行。不会自动把原修改命令带入恢复后的管理数据。手机App和NAS服务不受本次CLI更新影响。
+
 与主程序代码**分目录维护**（`apps/cli`，与 `apps/mobile`、`services/server`
 并列）：这里只有 HTTP API 的消费代码，不 import 服务端代码、不读写其数据库，
 也不感知部署形态。接口契约以服务端 `/openapi.json` 为准，本目录不复制契约定义。
@@ -66,7 +68,7 @@ rv backup --download backup.json                  # 打标前先做管理备份
 | --- | --- |
 | `RV_BASE_URL` | 服务地址 |
 | `RV_TOKEN` | 直接提供 Bearer token（CI / 一次性调用） |
-| `RV_PASSPHRASE` | 口令。设置后 token 过期返回 401 时会自动重登录一次并写回缓存 |
+| `RV_PASSPHRASE` | 口令。只读命令遇401时可自动重登录一次；修改命令须先显式登录 |
 | `RV_TIMEOUT` | 单次请求超时秒数 |
 | `RV_CONFIG_DIR` | 配置目录 |
 
@@ -74,6 +76,8 @@ token 缓存在 `~/.config/rv/token.json`，权限 0600，并绑定 base_url：�
 不会把 token 发给别的地址。口令永远不落盘。
 
 ## 幂等与重试
+
+自动重登录仅适用于`info/tasks/task/dirs/resolve/videos/find/show/tags`等只读命令。扫描、备份、标签修改和退出登录不会自动重新登录；修改流程中的前置GET也遵守同一限制。底层HTTP客户端不自动重放POST/PATCH/DELETE。
 
 服务端写操作要求 `request_id`。`rv` 每次默认生成新的随机 ID；打标类命令的
 `add`/`remove` 语义本身幂等，网络失败后直接重跑即可。想要精确重放同一响应时，
@@ -93,6 +97,15 @@ token 缓存在 `~/.config/rv/token.json`，权限 0600，并绑定 base_url：�
 | 8 | 等待任务超时 |
 
 ## 开发
+
+本机VS Code任务新增`CLI: help`和`CLI: tests`，使用项目的`.dev/cli`隔离环境及`uv.lock`，不改变服务端Python环境。终端对应命令：
+
+```bash
+UV_PROJECT_ENVIRONMENT="$PWD/.dev/cli" uv --directory apps/cli run --locked --extra dev rv --help
+UV_PROJECT_ENVIRONMENT="$PWD/.dev/cli" uv --directory apps/cli run --locked --extra dev pytest -q
+```
+
+测试只连接本机临时HTTP样本服务，并使用临时凭据目录，不连接NAS。原pip开发方式仍可使用：
 
 ```bash
 pip install -e '.[dev]'

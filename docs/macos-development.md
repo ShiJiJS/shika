@@ -71,6 +71,8 @@ OrbStack 默认共享内存容量较大，因此服务端回归容器显式指�
 
 ## NAS 维护和交付
 
+命令行工具`rv`也已迁入当前整合分支。VS Code的`CLI: help`及`CLI: tests`任务使用`.dev/cli`隔离环境和锁定依赖；命令行和凭据重登录边界见[CLI说明](../apps/cli/README.md)。这些任务不重启NAS，不使用真实库做修改试验。
+
 ```bash
 python3 scripts/nas-status.py
 mkdir -p tmp/releases
