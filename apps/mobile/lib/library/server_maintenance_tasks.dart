@@ -214,7 +214,9 @@ class _ServerMaintenanceTasks
       );
       final files = historical ? historicalFiles(sourceScope) : null;
       result.addAll([
-        for (final value in selections)
+        // Submitted batches have their own original-request receipts below.
+        // Keep the saved choice for history without duplicating it as pending.
+        for (final value in selections.where((v) => v.remaining.isNotEmpty))
           MaintenanceReceipt(
             id: localId(sourceScope, 'purge-selection:${value.id}'),
             requestId: value.id,
