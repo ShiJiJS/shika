@@ -442,7 +442,7 @@ class ManagementArchives:
         controls = {task_id, inputs["preview_id"], inputs["pre_snapshot_id"]}
         engine = _readonly(graph.database)
         try:
-            with engine.connect() as source, self.db.write() as session:
+            with engine.connect() as source, self.owner.completing_restore(task_id) as session:
                 if (
                     session.scalar(
                         select(func.count()).select_from(Task).where(Task.id.in_(controls))

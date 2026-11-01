@@ -7,6 +7,7 @@ import threading
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 
 from sqlalchemy import delete, select
 
@@ -322,6 +323,24 @@ class Backups:
         if self.fault_hook:
             self.fault_hook(phase, task_id)
 
+    def release_restore(self, task_id):
+        with self.db.write_lock:
+            # Post-commit cleanup may outlive admission of the next restore.
+            if self.db.maintenance_task == task_id:
+                self.db.maintenance_task, self.db.maintenance_owner = None, None
+
+    @contextmanager
+    def completing_restore(self, task_id):
+        """Commit the terminal receipt and release its gate under one writer lock."""
+        with self.db.write_lock:
+            with self.db.write() as session:
+                yield session
+                task = session.get(Task, task_id)
+                pending = session.get(Setting, "maintenance_restore")
+                if task.status not in ("completed", "failed") or (pending and pending.value):
+                    raise RuntimeError("Terminal restore still has a durable reservation")
+            self.release_restore(task_id)
+
     @staticmethod
     def details(document, raw):
         return {
@@ -386,7 +405,7 @@ class Backups:
             "historical_operations_replayed": 0,
             "unmapped_roots": [root_id for root_id, value in mapping.items() if value is None],
         }
-        with self.db.write() as session:
+        with self.completing_restore(task_id) as session:
             for table in reversed(TABLES):
                 statement = table.delete()
                 if table.name == "tasks":
@@ -494,25 +513,37 @@ class Backups:
         finally:
             if is_restore:
                 with self.db.write_lock:
-                    self.db.maintenance_task, self.db.maintenance_owner = None, None
-                if self.start_regular and not self.regular_started and not self.stop.is_set():
-                    self.start_normal()
+                    self.release_restore(task_id)
+                    if (
+                        not self.db.maintenance_task
+                        and self.start_regular
+                        and not self.regular_started
+                        and not self.stop.is_set()
+                    ):
+                        self.start_normal()
 
     def fail(self, task_id, error, status, is_restore):
-        with self.db.write() as session:
-            task = session.get(Task, task_id)
+        with self.db.write_lock:
             # Post-commit cleanup cannot rewrite an already committed restore
-            # into a failed job or invite a second execution.
-            if task.status == "completed":
-                return
-            task.status, task.error, task.phase, task.finished_at = (
-                status,
-                error,
-                status,
-                time.time(),
+            # into a failure, or attempt a write through a newer restore's gate.
+            with self.db.read() as session:
+                if session.get(Task, task_id).status == "completed":
+                    return
+            writer = (
+                self.completing_restore(task_id)
+                if is_restore and status != "interrupted"
+                else self.db.write()
             )
-            if is_restore and status != "interrupted":
-                session.get(Setting, "maintenance_restore").value = ""
+            with writer as session:
+                task = session.get(Task, task_id)
+                task.status, task.error, task.phase, task.finished_at = (
+                    status,
+                    error,
+                    status,
+                    time.time(),
+                )
+                if is_restore and status != "interrupted":
+                    session.get(Setting, "maintenance_restore").value = ""
 
     def close(self):
         self.stop.set()
