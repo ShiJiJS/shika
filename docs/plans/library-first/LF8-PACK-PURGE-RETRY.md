@@ -1,5 +1,7 @@
 # 图包删除清单、部分结果与原任务重试
 
+[草稿PR #162](https://github.com/ShiJiJS/video_viewer/pull/162)，基于#157；#161恢复后读图409仍开放，未部署NAS。
+
 2026-11-01，继续 #31/#33/#24/#133 的 R1。普通原签名 preview.20/code26，客户端 `8416a3f7359af94f1da802185b136770d6499986` 保持；本轮修复服务 #158，固定源码 `cf9a60d79d15aabd4a895a25e17d1bdfdcae688f`，本机 runtime preview.5。没有新 APK、数据库迁移、原型改版或 NAS 部署。
 
 ## 修复的实际问题

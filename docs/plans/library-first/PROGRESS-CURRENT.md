@@ -1,8 +1,8 @@
 # 当前进度
 
-最新本机修复及检查：[图包删除与原任务重试](LF8-PACK-PURGE-RETRY.md)。#158的归位后误判已修复，cf9a/runtime preview.5本机497项通过，普通26三轮原任务2/3→3/3、附件/变化保护已验。**新发现#161：部分删除恢复后文件与进度在，但图片接口409，未通过实际读图；下一步先修复这项，NAS保持上轮preview.4，本轮未访问。** #159恢复完成后偶发503、#160空选择待处理堆积分别开放。App未改，无新APK。
+最新[草稿PR #162](https://github.com/ShiJiJS/video_viewer/pull/162)（基于#157），[图包删除与原任务重试](LF8-PACK-PURGE-RETRY.md)。#158的归位后误判已修复，cf9a/runtime preview.5本机497项通过，普通26三轮原任务2/3→3/3、附件/变化保护已验。**新发现#161：部分删除恢复后文件与进度在，但图片接口409，未通过实际读图；下一步先修复这项，NAS保持上轮preview.4，本轮未访问。** #159恢复完成后偶发503、#160空选择待处理堆积分别开放。App未改，无新APK。
 
-[最新草稿PR #157](https://github.com/ShiJiJS/video_viewer/pull/157)（基于[#156](https://github.com/ShiJiJS/video_viewer/pull/156)，补1027包跨页/分批恢复三轮验证）。
+[上一轮草稿PR #157](https://github.com/ShiJiJS/video_viewer/pull/157)（基于[#156](https://github.com/ShiJiJS/video_viewer/pull/156)，补1027包跨页/分批恢复三轮验证）。
 更新：2026-11-01。六项反馈的NAS服务已更新；追加图包菜单键盘修复#153和三轮恢复找回，第26版及同号回退包已交付到原packages目录。尚未安装真实手机或正式发布，六票保持开放。[安装与部署记录](../../nas-preview-2026-11-01.md)，[草稿PR #152](https://github.com/ShiJiJS/video_viewer/pull/152)。
 
 当前候选仍为preview.20/code26，客户端8416a3f7，完整834项及分析通过；普通26覆盖25并核对身份/包摘要，修复菜单关闭后键盘重新弹出。服务已追加健康检查修复6a119b1c/runtime preview.4，完整491项通过，旧76份业务运行文件字节保持，只新增探测文件；此前37项三轮和第25版缩放/扫描原生记录保留原版本范围。草稿PR尚未合并。[第26版操作](LF8-PACK-RESTORE-CONTINUATION.md)、[安装说明](../../nas-app-preview-2026-11-01-code26.md)与[最新服务记录](LF8-NAS-HEALTHCHECK.md)。
