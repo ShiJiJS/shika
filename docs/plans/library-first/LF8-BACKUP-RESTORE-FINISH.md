@@ -1,5 +1,7 @@
 # 备份恢复完成后可立即继续操作
 
+[草稿 PR #166](https://github.com/ShiJiJS/video_viewer/pull/166)，基于 #165。[后续 NAS preview.8 已交付](../../nas-preview-2026-11-01-service8.md)，现有第26版可直接使用。本页其余部分保留本机验证时的范围，未部署等描述属于该阶段。
+
 2026-11-01，处理 [#159](https://github.com/ShiJiJS/video_viewer/issues/159)，基于草稿 [#165](https://github.com/ShiJiJS/video_viewer/pull/165)。固定产品源码 `2de02374e21567d72cc8bb94dde0bda43fde5a06`，本机 runtime preview.8。普通原签名 preview.20/code26、客户端 `8416a3f7` 保持；无需新 APK。本轮未访问 NAS、未修改原型、API、数据库结构或图包回收/恢复逻辑。
 
 ## 问题与实现
