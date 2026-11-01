@@ -64,6 +64,27 @@ void main() {
     );
   }
 
+  for (final reason in ['page_removed', 'page_unreadable']) {
+    test(
+      'recovery notice survives opened acknowledgement and resets for the next pack: $reason',
+      () async {
+        final range = server.range();
+        (range['resume'] as Map)['recovery_reason'] = reason;
+        server.overrideKind = 'session';
+        server.replyOverride = range;
+        await start();
+        expect(session.recoveryReason, reason);
+        frame();
+        await until(() => session.opened && !session.busy);
+        // The server acknowledges recovery by clearing its durable marker.
+        expect(session.recoveryReason, reason);
+        server.replyOverride = null;
+        expect(await session.move('p1'), isTrue);
+        expect(session.recoveryReason, isNull);
+      },
+    );
+  }
+
   test('prefetch never opens; only current displayed frames own progress and old frames are ignored', () async {
     await start();
     await session.ensure(40);

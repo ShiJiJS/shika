@@ -437,7 +437,9 @@ class PackReadingSession extends ChangeNotifier {
         progressRevision: value.revision,
       );
       preferences = value.preferences;
-      recoveryReason = value.recoveryReason;
+      // The opened receipt clears the durable recovery marker. Keep its
+      // explanation visible for this reading view; _install resets it per pack.
+      recoveryReason = value.recoveryReason ?? recoveryReason;
       if (_sameMark(mark, value.mark)) _saved = serial;
     });
   }
