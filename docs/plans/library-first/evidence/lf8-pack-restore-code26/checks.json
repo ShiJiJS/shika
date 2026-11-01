@@ -1,0 +1,118 @@
+{
+  "source": "8416a3f7359af94f1da802185b136770d6499986",
+  "legacy_source": "f5fe32c9e8136fa0b54a272609d8b7f2ac1d83ba",
+  "complete": true,
+  "packages": {
+    "forward": {
+      "version": "0.2.0-preview.20",
+      "version_code": 26,
+      "sha256": "8bf34bc97a28f41214ba82f4d1b0be9743e82d6319a9f14f51f035e6fe048f51",
+      "bytes": 23308178,
+      "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+      "flutter_engine_abis": [
+        "arm64-v8a"
+      ],
+      "normal_entrypoint": true,
+      "integration_test_plugin": false
+    },
+    "rollback": {
+      "version": "0.1.4-rollback.20",
+      "version_code": 26,
+      "sha256": "b7a70349843dc5a8f963bce7051fbc64b126028934ab871a36583e8cd35769eb",
+      "bytes": 21734394,
+      "certificate_sha256": "f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161",
+      "flutter_engine_abis": [
+        "arm64-v8a"
+      ],
+      "normal_entrypoint": true,
+      "integration_test_plugin": false
+    }
+  },
+  "steps": [
+    {
+      "name": "flutter-version",
+      "exit_code": 0,
+      "log_sha256": "582fa8a49e6ec75986f2d0d84d39ef8c8f91c5bfc6c8170e06efd574897e8f23"
+    },
+    {
+      "name": "rollback-pub-get",
+      "exit_code": 0,
+      "log_sha256": "d4cb7a3c68b4133b4f6e58c67ff5bfd13725d8021e930388cdc98da8a575919d"
+    },
+    {
+      "name": "rollback-analyze",
+      "exit_code": 0,
+      "log_sha256": "bc8c378671788080e05179b83c5cf29e5ac4f7cc4f4eb4720095b0541c97f810"
+    },
+    {
+      "name": "rollback-tests",
+      "exit_code": 0,
+      "log_sha256": "31030be84cfabd8402d8411501f5e178a2bc54b529e735c6bc361e70d64dabac"
+    },
+    {
+      "name": "rollback-release",
+      "exit_code": 0,
+      "log_sha256": "e44d8028107a59339aad9f02f04cd7271d365b2ff5ff39111fb3c549dfca6bf3"
+    },
+    {
+      "name": "rollback-signature",
+      "exit_code": 0,
+      "log_sha256": "2d1a06d3713b4370bc3875f8f7fd1379e6c45a2ff8dadf4321490e3f1afc8dee"
+    },
+    {
+      "name": "rollback-badging",
+      "exit_code": 0,
+      "log_sha256": "35692fb7a3dc572f5320c404484ee9af66894885420df95ccf6afc31024e4050"
+    },
+    {
+      "name": "forward-pub-get",
+      "exit_code": 0,
+      "log_sha256": "d4cb7a3c68b4133b4f6e58c67ff5bfd13725d8021e930388cdc98da8a575919d"
+    },
+    {
+      "name": "forward-analyze",
+      "exit_code": 0,
+      "log_sha256": "ebe6588cb39cc8deb193f282678e3fa210e19fb250009e7b47bcba69fc96eab3"
+    },
+    {
+      "name": "forward-tests",
+      "exit_code": 0,
+      "log_sha256": "5a4b0a865816a8cfd6ce35b8446a76fc229cb450050bb9d84b82428e6778a46f"
+    },
+    {
+      "name": "forward-release",
+      "exit_code": 0,
+      "log_sha256": "40e546b91822d6ac010f024346dd9f36f126aee76ff55bb7937cf8d45cad6ab6"
+    },
+    {
+      "name": "forward-signature",
+      "exit_code": 0,
+      "log_sha256": "2d1a06d3713b4370bc3875f8f7fd1379e6c45a2ff8dadf4321490e3f1afc8dee"
+    },
+    {
+      "name": "forward-badging",
+      "exit_code": 0,
+      "log_sha256": "b326f64ca50b701758b4ad425ae671cb892d3499f286b8741f3439d100258f5b"
+    }
+  ],
+  "full_client_tests": 834,
+  "full_test_source_tree_checked_after_run": true,
+  "fixture_source_media_files": 522,
+  "fixture_stability_seconds": 0,
+  "new_default_stability_or_nas_performance_proof": false,
+  "prototype_tree": "1cbf605af8f03fa067a4ce8e914bb809e3a487ca",
+  "primary_visual_review_screens": [
+    "async1-removed-library",
+    "26-remove-cancel-no-keyboard",
+    "restart1-removed-library",
+    "restart2-pending-task-offline",
+    "restart3-recent-hidden-while-trashed",
+    "restart1-original-task-all-members",
+    "restart2-original-task-all-members",
+    "restart3-original-task-all-members",
+    "restart3-resume282",
+    "restart3-return-recent"
+  ],
+  "independent_visual_review": false,
+  "nas_monitor_issue": "https://github.com/ShiJiJS/video_viewer/issues/154"
+}

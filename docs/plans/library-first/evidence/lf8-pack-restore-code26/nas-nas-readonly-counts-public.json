@@ -1,0 +1,68 @@
+{
+  "counts": {
+    "packs": 687,
+    "pack_pages": 34745,
+    "tags": 110,
+    "video_tags": 2110,
+    "pack_progress": 6,
+    "pack_preferences": 6,
+    "pack_sessions": 7
+  },
+  "root_scan_facts": [
+    {
+      "kind": "video",
+      "status": "completed",
+      "phase": "completed",
+      "processed": 598,
+      "discovered": 598,
+      "progress": {
+        "bytes_processed": 151595038708,
+        "bytes_total": 151595038708,
+        "discovered": 598,
+        "discovery_complete": true,
+        "processed": 598
+      },
+      "counts": {
+        "deferred": 0,
+        "failed": 0,
+        "imported": 0,
+        "missing": 0,
+        "thumbnail_failed": 0,
+        "unchanged": 598
+      }
+    },
+    {
+      "kind": "pack",
+      "status": "processing_media",
+      "phase": "processing_media",
+      "processed": 106,
+      "discovered": 687,
+      "progress": {
+        "discovered": 6876,
+        "discovery_complete": false,
+        "packs_discovered": 687,
+        "packs_discovery_complete": true,
+        "packs_processed": 106,
+        "processed": 6830
+      },
+      "counts": {
+        "deferred": 0,
+        "failed": 0,
+        "failed_packs": 0,
+        "failed_pages": 0,
+        "identity_ambiguous": 0,
+        "identity_matched": 0,
+        "imported": 0,
+        "loose_images": 0,
+        "missing": 0,
+        "protected_packs": 0,
+        "symlinks_skipped": 0,
+        "thumbnail_failed": 0,
+        "unchanged": 106,
+        "unsupported_files": 4,
+        "updated": 0
+      }
+    }
+  ],
+  "sql_read_seconds": 2.394023282919079
+}

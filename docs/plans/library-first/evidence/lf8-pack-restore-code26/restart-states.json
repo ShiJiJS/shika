@@ -1,0 +1,219 @@
+{
+  "restart1": {
+    "accepted": {
+      "seq": 278,
+      "time": 1793505749.464365,
+      "command": {
+        "request_id": "1793505749306166-425740217",
+        "trash_ids": [
+          "70f2d136-0a13-4d77-b75c-6eb0c4d1ac16"
+        ]
+      },
+      "response": {
+        "id": "de05fabc-89ea-4e0d-8718-bb1f6c21bfaf",
+        "kind": "pack_restore_plan",
+        "status": "queued",
+        "phase": "queued",
+        "created_at": 1793505749.4398952,
+        "finished_at": null,
+        "error": null,
+        "result": {
+          "operation_id": "de05fabc-89ea-4e0d-8718-bb1f6c21bfaf",
+          "total": 1,
+          "processed": 0,
+          "succeeded": 0,
+          "failed": 0,
+          "stopped": 0,
+          "remaining": 1,
+          "partial": false,
+          "batches": 0
+        },
+        "historical": false,
+        "stop_requested": false,
+        "batch_size": 1000,
+        "request_id": "1793505749306166-425740217"
+      }
+    },
+    "old_pid": "5435",
+    "phase": "completed",
+    "http_response_withheld": true,
+    "code": 26,
+    "old_pid_absent_from_ps": true,
+    "backend_completed_while_app_absent": {
+      "id": "de05fabc-89ea-4e0d-8718-bb1f6c21bfaf",
+      "kind": "pack_restore_plan",
+      "status": "completed",
+      "phase": "completed",
+      "created_at": 1793505749.4398952,
+      "finished_at": 1793505749.4844072,
+      "error": null,
+      "result": {
+        "operation_id": "de05fabc-89ea-4e0d-8718-bb1f6c21bfaf",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "failed": 0,
+        "stopped": 0,
+        "remaining": 0,
+        "partial": false,
+        "batches": 1
+      },
+      "historical": false,
+      "stop_requested": false,
+      "batch_size": 1000,
+      "request_id": "1793505749306166-425740217"
+    },
+    "new_pid": "6185",
+    "original_receipt_queried_offline": true,
+    "preexisting_completed_restore_records": 2,
+    "read_only_navigation_while_receipt_offline": true,
+    "original_task_id_in_native_tree": true,
+    "original_member_visually_verified_in_png": "restart1-original-task-all-members.png",
+    "static_text_not_all_exported_by_native_tree": true,
+    "query_end_seq": 341,
+    "preexisting_records_queried_and_cleared": 2,
+    "recent_resume282": true
+  },
+  "restart2": {
+    "accepted": {
+      "seq": 376,
+      "time": 1793506073.8722172,
+      "command": {
+        "request_id": "1793506073723609-3780464737",
+        "trash_ids": [
+          "8c3eafa2-3934-4ad6-87d5-13ca7dd187ca"
+        ]
+      },
+      "response": {
+        "id": "ee23bb3d-2088-498d-a65e-5e91a2e8d8f4",
+        "kind": "pack_restore_plan",
+        "status": "queued",
+        "phase": "queued",
+        "created_at": 1793506073.855655,
+        "finished_at": null,
+        "error": null,
+        "result": {
+          "operation_id": "ee23bb3d-2088-498d-a65e-5e91a2e8d8f4",
+          "total": 1,
+          "processed": 0,
+          "succeeded": 0,
+          "failed": 0,
+          "stopped": 0,
+          "remaining": 1,
+          "partial": false,
+          "batches": 0
+        },
+        "historical": false,
+        "stop_requested": false,
+        "batch_size": 1000,
+        "request_id": "1793506073723609-3780464737"
+      }
+    },
+    "old_pid": "6185",
+    "phase": "completed",
+    "http_response_withheld": true,
+    "code": 26,
+    "old_pid_absent_from_ps": true,
+    "backend_completed_while_app_absent": {
+      "id": "ee23bb3d-2088-498d-a65e-5e91a2e8d8f4",
+      "kind": "pack_restore_plan",
+      "status": "completed",
+      "phase": "completed",
+      "created_at": 1793506073.855655,
+      "finished_at": 1793506073.8848646,
+      "error": null,
+      "result": {
+        "operation_id": "ee23bb3d-2088-498d-a65e-5e91a2e8d8f4",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "failed": 0,
+        "stopped": 0,
+        "remaining": 0,
+        "partial": false,
+        "batches": 1
+      },
+      "historical": false,
+      "stop_requested": false,
+      "batch_size": 1000,
+      "request_id": "1793506073723609-3780464737"
+    },
+    "new_pid": "7388",
+    "original_task_id_in_native_tree": true,
+    "actual_original_member_api_verified": true,
+    "original_receipt_queried_offline": true,
+    "query_end_seq": 400,
+    "recent_resume282": true
+  },
+  "restart3": {
+    "accepted": {
+      "seq": 445,
+      "time": 1793506210.459641,
+      "command": {
+        "request_id": "1793506210301173-4035013667",
+        "trash_ids": [
+          "895a3a97-6c64-4a09-b76f-ae61750652e4"
+        ]
+      },
+      "response": {
+        "id": "3679fbcf-ff7f-4225-a36c-59cc5a891478",
+        "kind": "pack_restore_plan",
+        "status": "queued",
+        "phase": "queued",
+        "created_at": 1793506210.4399445,
+        "finished_at": null,
+        "error": null,
+        "result": {
+          "operation_id": "3679fbcf-ff7f-4225-a36c-59cc5a891478",
+          "total": 1,
+          "processed": 0,
+          "succeeded": 0,
+          "failed": 0,
+          "stopped": 0,
+          "remaining": 1,
+          "partial": false,
+          "batches": 0
+        },
+        "historical": false,
+        "stop_requested": false,
+        "batch_size": 1000,
+        "request_id": "1793506210301173-4035013667"
+      }
+    },
+    "old_pid": "7388",
+    "phase": "completed",
+    "http_response_withheld": true,
+    "code": 26,
+    "old_pid_absent_from_ps": true,
+    "backend_completed_while_app_absent": {
+      "id": "3679fbcf-ff7f-4225-a36c-59cc5a891478",
+      "kind": "pack_restore_plan",
+      "status": "completed",
+      "phase": "completed",
+      "created_at": 1793506210.4399445,
+      "finished_at": 1793506210.4836733,
+      "error": null,
+      "result": {
+        "operation_id": "3679fbcf-ff7f-4225-a36c-59cc5a891478",
+        "total": 1,
+        "processed": 1,
+        "succeeded": 1,
+        "failed": 0,
+        "stopped": 0,
+        "remaining": 0,
+        "partial": false,
+        "batches": 1
+      },
+      "historical": false,
+      "stop_requested": false,
+      "batch_size": 1000,
+      "request_id": "1793506210301173-4035013667"
+    },
+    "new_pid": "8449",
+    "original_task_id_in_native_tree": true,
+    "actual_original_member_api_verified": true,
+    "original_receipt_queried_offline": true,
+    "query_end_seq": 469,
+    "recent_resume282": true
+  }
+}
