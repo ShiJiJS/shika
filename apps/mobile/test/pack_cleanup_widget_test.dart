@@ -100,6 +100,51 @@ void main() {
     return t.state<PackCatalogPageState>(find.byType(PackCatalogPage));
   }
 
+  for (final confirm in [false, true]) {
+    testWidgets(
+      'ordinary card actions keep dismissed search input closed after ${confirm ? 'removal' : 'cancel'}',
+      (t) async {
+        final state = await start(t);
+        final search = find.byKey(const Key('pack-search'));
+        await t.enterText(search, '包000');
+        await frames(t);
+        await t.showKeyboard(search);
+        final input = t.widget<EditableText>(
+          find.descendant(of: search, matching: find.byType(EditableText)),
+        );
+        // Android Back hides the keyboard while the field can retain focus.
+        t.testTextInput.hide();
+        await frames(t);
+        expect(input.focusNode.hasFocus, isTrue);
+        expect(t.testTextInput.isVisible, isFalse);
+        final scroll = state.scroll.offset;
+
+        await tap(t, find.byTooltip('图包操作 包000'));
+        await tap(t, find.text('移入回收站'));
+        await tap(
+          t,
+          confirm
+              ? find.widgetWithText(FilledButton, '移入回收站')
+              : find.text('取消'),
+        );
+
+        expect(input.focusNode.hasFocus, isFalse);
+        expect(t.testTextInput.isVisible, isFalse);
+        expect(state.entry.query.search, '包000');
+        expect(t.widget<TextField>(search).controller!.text, '包000');
+        expect(state.scroll.offset, closeTo(scroll, 1));
+        expect(state.data.total, confirm ? 0 : 1);
+        expect(
+          repo.requests.where((value) => value.startsWith('POST ')).length,
+          confirm ? 1 : 0,
+        );
+        expect(t.takeException(), isNull);
+        await t.pumpWidget(const SizedBox());
+        await frames(t);
+      },
+    );
+  }
+
   testWidgets(
     'ordinary card menu confirms whole pack, removes it and undo restores the same library query',
     (t) async {

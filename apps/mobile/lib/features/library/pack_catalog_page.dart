@@ -789,6 +789,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
 
   Future<void> actions(LibraryPack pack) async {
     if (_detailsOpen || busy) return;
+    FocusManager.instance.primaryFocus?.unfocus();
     _detailsOpen = true;
     String? action;
     try {
