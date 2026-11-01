@@ -1,0 +1,21 @@
+{
+  "host_shell_seconds": 0.8944264169999999,
+  "processes": [
+    "  13943       1 Ssl  containerd",
+    "  14034       1 Ssl  dockerd",
+    " 563589       1 Sl   containerd-shim",
+    " 563670  563613 Sl   uvicorn",
+    " 627365  563589 Ds   python",
+    "2055923       1 S    python3"
+  ],
+  "memory": {
+    "MemTotal": "3802208 kB",
+    "MemFree": "398760 kB",
+    "MemAvailable": "1772976 kB",
+    "Cached": "2003132 kB",
+    "SwapTotal": "5044204 kB",
+    "SwapFree": "4291908 kB",
+    "Dirty": "354736 kB",
+    "Writeback": "39820 kB"
+  }
+}

@@ -1,0 +1,117 @@
+[
+  {
+    "name": "docker_healthy",
+    "health": {
+      "Status": "healthy",
+      "FailingStreak": 0,
+      "Log": [
+        {
+          "Start": "2026-11-01T12:53:34.692190895+08:00",
+          "End": "2026-11-01T12:53:34.719127649+08:00",
+          "ExitCode": 0,
+          "Output": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "200",
+    "exit_code": 0,
+    "seconds_including_local_docker_exec": 0.044072499999999515,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "503",
+    "exit_code": 1,
+    "seconds_including_local_docker_exec": 0.046326624999999844,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "docker_unhealthy",
+    "health": {
+      "Status": "unhealthy",
+      "FailingStreak": 3,
+      "Log": [
+        {
+          "Start": "2026-11-01T12:53:34.692190895+08:00",
+          "End": "2026-11-01T12:53:34.719127649+08:00",
+          "ExitCode": 0,
+          "Output": ""
+        },
+        {
+          "Start": "2026-11-01T12:53:49.719645363+08:00",
+          "End": "2026-11-01T12:53:49.739099515+08:00",
+          "ExitCode": 1,
+          "Output": ""
+        },
+        {
+          "Start": "2026-11-01T12:54:04.739418111+08:00",
+          "End": "2026-11-01T12:54:04.770550064+08:00",
+          "ExitCode": 1,
+          "Output": ""
+        },
+        {
+          "Start": "2026-11-01T12:54:19.776689038+08:00",
+          "End": "2026-11-01T12:54:19.796652487+08:00",
+          "ExitCode": 1,
+          "Output": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "response_after_three_seconds",
+    "exit_code": 1,
+    "seconds_including_local_docker_exec": 2.056252041999997,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "docker_healthy",
+    "health": {
+      "Status": "healthy",
+      "FailingStreak": 0,
+      "Log": [
+        {
+          "Start": "2026-11-01T12:53:34.692190895+08:00",
+          "End": "2026-11-01T12:53:34.719127649+08:00",
+          "ExitCode": 0,
+          "Output": ""
+        },
+        {
+          "Start": "2026-11-01T12:53:49.719645363+08:00",
+          "End": "2026-11-01T12:53:49.739099515+08:00",
+          "ExitCode": 1,
+          "Output": ""
+        },
+        {
+          "Start": "2026-11-01T12:54:04.739418111+08:00",
+          "End": "2026-11-01T12:54:04.770550064+08:00",
+          "ExitCode": 1,
+          "Output": ""
+        },
+        {
+          "Start": "2026-11-01T12:54:19.776689038+08:00",
+          "End": "2026-11-01T12:54:19.796652487+08:00",
+          "ExitCode": 1,
+          "Output": ""
+        },
+        {
+          "Start": "2026-11-01T12:54:34.80151991+08:00",
+          "End": "2026-11-01T12:54:34.829635713+08:00",
+          "ExitCode": 0,
+          "Output": ""
+        }
+      ]
+    }
+  },
+  {
+    "name": "recovered_200",
+    "exit_code": 0,
+    "seconds_including_local_docker_exec": 0.04697099999999921,
+    "stdout": "",
+    "stderr": ""
+  }
+]

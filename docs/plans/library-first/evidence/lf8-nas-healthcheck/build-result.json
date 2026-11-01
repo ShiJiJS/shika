@@ -1,0 +1,57 @@
+{
+  "source": "6a119b1c0c2022a2f9cc615679bc8aab790f122e",
+  "tag": "video-viewer-server:0.2.0-preview.4",
+  "platform": "linux/arm64",
+  "target": "runtime",
+  "runtime_files_matched": 77,
+  "old_76_runtime_files_unchanged": true,
+  "pytest_present": false,
+  "local_image_id": "sha256:4b6ff35d6b57a9a7df8da6e0e9594e2be952cf99d303b6ad580ee49e189a5a44",
+  "archive_config_sha256": "3248aecb1f5bc004e58f15182f4571e5b61efb4ef481183a91b585c4644682ed",
+  "rootfs_diff_ids": [
+    "sha256:dca69811453d69d10b6c0345a5c49147162abe20a2f77802d66efc60667949ea",
+    "sha256:8cc4a854ef0c8479b56bcc56c702d23ffeafd3d23c44dc9c66f6abb2e7fd1129",
+    "sha256:ab24ed427f749483d23bd483bae80fd7bc2871ab738a922840aa025116f8335f",
+    "sha256:6c0a4b583bd97f7249f788d71aacb568e7c515ba29a4f5df5ed58f3750cc9146",
+    "sha256:8dca594ca921008ce0ac306cf6c8b9d69e2788dcd588d0acfec00abc4fed3a11",
+    "sha256:431d801af91ba22fec5b64cc93d8c3359189e295e86e36dfcd4d85cf991fdf9e",
+    "sha256:0da654e3710cb452e9542acb8a0d49fec92a66d8b0fa8345e959e6461d2c3bd8",
+    "sha256:dffca0f9120725a10ccd27d3cea0df1ff75d0250ef2023299cb435d1d6d3fcde",
+    "sha256:70b4ae39539c495210ac482978912d9e00bc11847d7a6f66d92b2ec1bd30b9b0",
+    "sha256:825612a45dacd729e5dc8778c6eb464b2db4642a79bc6ed663f33af211de7692",
+    "sha256:c4739fa950b5a80d0d675b6b66d577389355cd6c4060df28edf7e086d7a2c286",
+    "sha256:499424ebb434e5875de97a69d3d7707b9320490b430024af350b3798d35b8032"
+  ],
+  "healthcheck": {
+    "Test": [
+      "CMD",
+      "python",
+      "-I",
+      "-S",
+      "-B",
+      "/app/video_viewer/healthcheck.py"
+    ],
+    "Interval": 15000000000,
+    "Timeout": 10000000000,
+    "StartPeriod": 20000000000
+  },
+  "runtime_cmd": [
+    "uvicorn",
+    "video_viewer.app:create_app",
+    "--factory",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8760",
+    "--workers",
+    "1",
+    "--no-access-log"
+  ],
+  "runtime_user": "1000:1000",
+  "archive": {
+    "path": "video-viewer-server-0.2.0-preview.4-linux-arm64.tar.gz",
+    "bytes": 222277764,
+    "sha256": "407fdd19ed51dcc01bf1f633105e18facf30df6b8b3555c1041d0caa268f3d27"
+  },
+  "complete": true
+}
