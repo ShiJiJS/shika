@@ -1,0 +1,31 @@
+{
+  "original_urllib": {
+    "samples": 12,
+    "process_returned_success_without_docker_external_deadline": 12,
+    "imports_median": 32.82524738099892,
+    "imports_max": 37.189364277990535,
+    "probe_median": 5.890173924970441,
+    "probe_max": 8.82963084592484,
+    "ssh_docker_exec_max": 67.073663208
+  },
+  "first_socket_wrapper": {
+    "samples": 12,
+    "process_returned_success_without_docker_external_deadline": 7,
+    "imports_median": 3.8436758861644194,
+    "imports_max": 7.964434549910948,
+    "probe_median": 1.9401788200484589,
+    "probe_max": 4.305909557035193,
+    "ssh_docker_exec_max": 24.345897708999985
+  },
+  "numeric_c_socket": {
+    "samples": 12,
+    "process_returned_success_without_docker_external_deadline": 12,
+    "imports_median": 0.010956167941913009,
+    "imports_max": 0.9832708479370922,
+    "probe_median": 0.02835904504172504,
+    "probe_max": 0.07747221598401666,
+    "ssh_docker_exec_max": 5.481220875
+  },
+  "not_same_as_docker_health_exit_status": true,
+  "sequential_sample_sets_not_simultaneous_load_control": true
+}
