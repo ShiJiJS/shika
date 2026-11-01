@@ -1,5 +1,7 @@
 # 媒体库与图包改造实施方案
 
+> 当前入口（2026-11-01）：[第28版App、NAS preview.8与剩余事项](PROGRESS-CURRENT.md)。下列“最新/当前阶段”均保留各段当时的记录，不作为当前取包或待办入口；原规划、45项要求和独立原型范围保持。
+
 > 最新源码：扫描详情展开按[#120](https://github.com/ShiJiJS/video_viewer/issues/120)接入160ms/实时减少动画，12针对/32组像素/789完整客户端与分析通过；[实现和边界](LF8-EXPANSION-MOTION.md)。真实Android/正常新包继续，当前code17候选不含该段。
 
 > 最新候选：preview.11/rollback.11同code17已完成本机覆盖/回退与复选框正常业务核对，见[配套包结果](LF8-CHECKBOX-PACKAGE.md)和[357份原始输入](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-checkbox-package/README.md)。旧code16保留；完整原型/目标环境继续。
