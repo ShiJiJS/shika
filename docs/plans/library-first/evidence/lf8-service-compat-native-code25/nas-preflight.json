@@ -1,0 +1,29 @@
+{
+  "checked_at": "2026-11-01T10:49:04.203270+08:00",
+  "read_only_inside_owning_NAS_container": true,
+  "health": {
+    "container_running": true,
+    "health": "healthy",
+    "image": "sha256:ed6097199cf852dc8b3eeeee41fee55da9f3f24d280ea88e59844d814103b1ea",
+    "configured_image": "video-viewer-server:0.2.0-preview.2",
+    "started_at": "2026-10-30T06:43:35.037798684Z"
+  },
+  "schema": "0014",
+  "available_packs": 687,
+  "pack_pages": 34745,
+  "tags": 110,
+  "video_tags": 2110,
+  "pack_progress_rows": 6,
+  "pack_session_rows": 7,
+  "root_rows": 2,
+  "reader_defaults": {
+    "reader_defaults_present": false,
+    "reader_defaults": null,
+    "pack_preferences_count": 6
+  },
+  "storage": {
+    "data_apparent_kib": 1888604,
+    "filesystem_available_bytes": 2813673496576
+  },
+  "deployed_or_modified_NAS": false
+}

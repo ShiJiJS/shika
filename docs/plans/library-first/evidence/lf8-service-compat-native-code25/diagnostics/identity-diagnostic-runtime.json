@@ -1,0 +1,21 @@
+{
+  "id": "489638b19857d63131eba6dba3440aaad5d21f449e122e6d9597e4464b23e215",
+  "name": "video-viewer-root-queue-native25",
+  "image": "sha256:d9e4dfe4230774bc918a5831a59f037748b155fc5087c4ead239ad0b88c81715",
+  "server_source": "430fede546fe7649bdffeb7f399c6d86b6bbb212",
+  "upstream_port": 8787,
+  "proxy_port": 8783,
+  "isolated_new_data_and_media": true,
+  "runtime_cmd_explicit": [
+    "uvicorn",
+    "video_viewer.app:create_app",
+    "--factory",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8760",
+    "--workers",
+    "1",
+    "--no-access-log"
+  ]
+}

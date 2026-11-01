@@ -1,0 +1,199 @@
+{
+  "ready": true,
+  "media": {
+    "video": {
+      "ready": true,
+      "scanning": false,
+      "indexed": 1
+    },
+    "pack": {
+      "ready": true,
+      "scanning": false,
+      "counts": {
+        "imported": 0,
+        "updated": 0,
+        "failed_pages": 0,
+        "failed_packs": 0,
+        "protected_packs": 0,
+        "unchanged": 0,
+        "deferred": 6,
+        "failed": 0,
+        "missing": 0,
+        "identity_matched": 0,
+        "identity_ambiguous": 0,
+        "thumbnail_failed": 0,
+        "unsupported_files": 2,
+        "loose_images": 0,
+        "symlinks_skipped": 0,
+        "failure_reasons": {},
+        "issues": [],
+        "progress": {
+          "discovered": 519,
+          "processed": 0,
+          "packs_discovered": 6,
+          "packs_processed": 6,
+          "peak_decoder_kib": 0,
+          "updated_at": 1793500778.857973
+        }
+      },
+      "indexed": 6
+    }
+  },
+  "scanning": false,
+  "scan_queue": [],
+  "task_id": "0ea4de2b-42cf-48cb-84dc-9caa08873b4e",
+  "status": "completed",
+  "phase": "completed",
+  "updated_at": 1793500778.859143,
+  "progress": {
+    "discovered": 1,
+    "processed": 1,
+    "bytes_total": 1290627,
+    "bytes_processed": 1290627,
+    "updated_at": 1793500778.859143
+  },
+  "counts": {
+    "imported": 1,
+    "unchanged": 0,
+    "deferred": 0,
+    "failed": 0,
+    "thumbnail_failed": 0
+  },
+  "failure_reasons": {},
+  "warning_reasons": {},
+  "indexed": 1,
+  "roots": [
+    {
+      "id": "packs-a",
+      "ready": true,
+      "kind": "pack",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1793368759.2363143,
+      "error": "files_changing",
+      "scan": {
+        "counts": {
+          "deferred": 5,
+          "failed": 0,
+          "failed_packs": 0,
+          "failed_pages": 0,
+          "identity_ambiguous": 0,
+          "identity_matched": 0,
+          "imported": 0,
+          "loose_images": 0,
+          "missing": 0,
+          "protected_packs": 0,
+          "symlinks_skipped": 0,
+          "thumbnail_failed": 0,
+          "unchanged": 0,
+          "unsupported_files": 2,
+          "updated": 0
+        },
+        "discovered": 5,
+        "error": "files_changing",
+        "finished_at": 1793500778.842926,
+        "id": "packs-a",
+        "kind": "pack",
+        "phase": "deferred",
+        "processed": 5,
+        "progress": {
+          "discovered": 515,
+          "discovery_complete": false,
+          "packs_discovered": 5,
+          "packs_discovery_complete": true,
+          "packs_processed": 5,
+          "processed": 0
+        },
+        "status": "deferred",
+        "task_id": "0ea4de2b-42cf-48cb-84dc-9caa08873b4e",
+        "updated_at": 1793500778.842925
+      },
+      "queued_task_ids": []
+    },
+    {
+      "id": "packs-b",
+      "ready": true,
+      "kind": "pack",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1793368693.605433,
+      "error": "files_changing",
+      "scan": {
+        "counts": {
+          "deferred": 1,
+          "failed": 0,
+          "failed_packs": 0,
+          "failed_pages": 0,
+          "identity_ambiguous": 0,
+          "identity_matched": 0,
+          "imported": 0,
+          "loose_images": 0,
+          "missing": 0,
+          "protected_packs": 0,
+          "symlinks_skipped": 0,
+          "thumbnail_failed": 0,
+          "unchanged": 0,
+          "unsupported_files": 0,
+          "updated": 0
+        },
+        "discovered": 1,
+        "error": "files_changing",
+        "finished_at": 1793500778.8497736,
+        "id": "packs-b",
+        "kind": "pack",
+        "phase": "deferred",
+        "processed": 1,
+        "progress": {
+          "discovered": 4,
+          "discovery_complete": false,
+          "packs_discovered": 1,
+          "packs_discovery_complete": true,
+          "packs_processed": 1,
+          "processed": 0
+        },
+        "status": "deferred",
+        "task_id": "0ea4de2b-42cf-48cb-84dc-9caa08873b4e",
+        "updated_at": 1793500778.8497725
+      },
+      "queued_task_ids": []
+    },
+    {
+      "id": "videos",
+      "ready": true,
+      "kind": "video",
+      "enabled": true,
+      "available": true,
+      "last_scan": 1793500778.764293,
+      "error": null,
+      "scan": {
+        "bytes_processed": 1290627,
+        "bytes_total": 1290627,
+        "counts": {
+          "deferred": 0,
+          "failed": 0,
+          "imported": 1,
+          "missing": 0,
+          "thumbnail_failed": 0,
+          "unchanged": 0
+        },
+        "discovered": 1,
+        "finished_at": 1793500778.7643008,
+        "id": "videos",
+        "kind": "video",
+        "phase": "completed",
+        "processed": 1,
+        "progress": {
+          "bytes_processed": 1290627,
+          "bytes_total": 1290627,
+          "discovered": 1,
+          "discovery_complete": true,
+          "processed": 1
+        },
+        "status": "completed",
+        "task_id": "0ea4de2b-42cf-48cb-84dc-9caa08873b4e",
+        "updated_at": 1793500778.7642996
+      },
+      "queued_task_ids": []
+    }
+  ]
+}

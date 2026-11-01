@@ -1,0 +1,44 @@
+{
+  "old-requests.jsonl": {
+    "requests": 67,
+    "statuses": {
+      "200": 65,
+      "503": 1,
+      "201": 1
+    },
+    "scans_POST": []
+  },
+  "requests.jsonl": {
+    "requests": 236,
+    "statuses": {
+      "200": 233,
+      "202": 3
+    },
+    "scans_POST": [
+      {
+        "seq": 56,
+        "status": 202,
+        "scan_request": {
+          "all": false,
+          "root_id": "packs-a"
+        }
+      },
+      {
+        "seq": 60,
+        "status": 202,
+        "scan_request": {
+          "all": false,
+          "root_id": "packs-b"
+        }
+      },
+      {
+        "seq": 157,
+        "status": 202,
+        "scan_request": {
+          "all": false,
+          "root_id": "packs-a"
+        }
+      }
+    ]
+  }
+}

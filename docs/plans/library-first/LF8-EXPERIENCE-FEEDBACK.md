@@ -19,15 +19,15 @@
 | 票据 | 范围 | 状态 |
 | --- | --- | --- |
 | [#137](https://github.com/ShiJiJS/video_viewer/issues/137) 图包阅读默认使用纵向拼接，保留用户单独选择 | [细项](issues/LF8-FEEDBACK-READER-DEFAULT.md) | 代码/第23版原生基础流程通过，待NAS默认读回与手机 |
-| [#138](https://github.com/ShiJiJS/video_viewer/issues/138) 扫描进度按接入目录独立记录，区分视频与图包 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-DATA.md) | 服务/页面已实现，完整478项与普通包单根基础通过，持续组合和NAS待验 |
-| [#139](https://github.com/ShiJiJS/video_viewer/issues/139) 扫描页面分别显示视频、图包及每个接入目录的进度 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-UI.md) | 页面/组件与第25版真实服务单根重扫通过，完整组合和NAS/手机待验 |
-| [#140](https://github.com/ShiJiJS/video_viewer/issues/140) 修复新版返回操作可能进入旧浏览页的问题 | [细项](issues/LF8-FEEDBACK-LEGACY-RETURN.md) | 代码/第23版返回基础流程通过，完整组合和手机待验 |
+| [#138](https://github.com/ShiJiJS/video_viewer/issues/138) 扫描进度按接入目录独立记录，区分视频与图包 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-DATA.md) | 服务/页面已实现，完整478项与第25版排队/断线/旧服务通过，待NAS/手机 |
+| [#139](https://github.com/ShiJiJS/video_viewer/issues/139) 扫描页面分别显示视频、图包及每个接入目录的进度 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-UI.md) | 第25版独立数字/排队/断线/旧服务通过，待NAS/手机 |
+| [#140](https://github.com/ShiJiJS/video_viewer/issues/140) 修复新版返回操作可能进入旧浏览页的问题 | [细项](issues/LF8-FEEDBACK-LEGACY-RETURN.md) | 第23版及第25版旧服务返回/冷启通过，其余组合和手机待验 |
 | [#141](https://github.com/ShiJiJS/video_viewer/issues/141) 简化图包操作文案，去掉“整包”措辞且保持行为不变 | [细项](issues/LF8-FEEDBACK-ACTION-COPY.md) | 代码/第23版原生文案和撤销通过，待服务部署/手机 |
-| [#142](https://github.com/ShiJiJS/video_viewer/issues/142) 纵向拼接阅读支持双指缩放和放大后移动 | [细项](issues/LF8-FEEDBACK-VERTICAL-ZOOM.md) | 代码/第25版双指、500实文件/坏图/整理/回退通过，新旧服务与NAS/手机待验 |
+| [#142](https://github.com/ShiJiJS/video_viewer/issues/142) 纵向拼接阅读支持双指缩放和放大后移动 | [细项](issues/LF8-FEEDBACK-VERTICAL-ZOOM.md) | 代码/第25版双指、500实文件/坏图/整理/回退通过，旧服务续读/返回通过，待NAS/手机及其余组合 |
 
 所有票初始均未实施、未验收。扫描拆为服务端与客户端两票，是同一需求的前后依赖。
 
-后续更新：#140首轮代码修复见PR #144；#137/#141实现及本机第23版候选见PR #145。三票的第23版正常Android包基础路径已检查，见[原生记录](LF8-PREVIEW17-NATIVE.md)；默认值还需实际NAS读回，完整组合/手机与服务部署待验，当前未关闭。#138服务端见[PR #147与规则](LF8-ROOT-SCAN-DATA.md)，完整477项通过；#139已完成[页面与请求接线](LF8-ROOT-SCAN-UI.md)，客户端完整822项、新增23项三轮及分析通过；同时补上全扫内已完成根可重新排队的边界。#142已实现[纵向缩放与阅读器旋转](LF8-VERTICAL-STRIP-ZOOM.md)，完整客户端832项、相关37项三轮通过；普通code24/25缩放基础、code25真实旋转与A单根重扫已有记录。随后[code25连续操作](LF8-ZOOM-NATIVE-FLOWS.md)补齐500实文件往返/补页/续读、长宽/8K图真实手指交接、坏图、快速整理/原8秒撤销和回退25覆盖；NAS仍code22，新App/旧服务、持续扫描/排队/断网及手机待验；各票保持开放。原规划事实按当时code22保留。
+后续更新：#140首轮代码修复见PR #144；#137/#141实现及本机第23版候选见PR #145。三票的第23版正常Android包基础路径已检查，见[原生记录](LF8-PREVIEW17-NATIVE.md)；默认值还需实际NAS读回，完整组合/手机与服务部署待验，当前未关闭。#138服务端见[PR #147与规则](LF8-ROOT-SCAN-DATA.md)，完整477项通过；#139已完成[页面与请求接线](LF8-ROOT-SCAN-UI.md)，客户端完整822项、新增23项三轮及分析通过；同时补上全扫内已完成根可重新排队的边界。#142已实现[纵向缩放与阅读器旋转](LF8-VERTICAL-STRIP-ZOOM.md)，完整客户端832项、相关37项三轮通过；普通code24/25缩放基础、code25真实旋转与A单根重扫已有记录。随后[code25连续操作](LF8-ZOOM-NATIVE-FLOWS.md)补齐500实文件往返/补页/续读、长宽/8K图真实手指交接、坏图、快速整理/原8秒撤销和回退25覆盖；NAS仍code22，随后[服务兼容和分目录连续检查](LF8-SERVICE-COMPAT-NATIVE.md)补齐旧服务返回/续读、A/B独立进度/排队及断线保留；NAS备份/更新/读回与手机待完成，各票保持开放。原规划事实按当时code22保留。
 
 ## 确定的操作规则
 

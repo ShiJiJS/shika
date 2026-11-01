@@ -1,0 +1,41 @@
+{
+  "actual_samples": 627,
+  "observed_state_samples": 627,
+  "observation_errors": 0,
+  "per_root_task_monotonic": true,
+  "task_ranges": {
+    "packs-a/c2b827d5-6e4a-4d0f-a813-dea5507cafeb": {
+      "samples": 5,
+      "min": 515,
+      "max": 515
+    },
+    "packs-b/c2b827d5-6e4a-4d0f-a813-dea5507cafeb": {
+      "samples": 394,
+      "min": 4,
+      "max": 4
+    },
+    "videos/c2b827d5-6e4a-4d0f-a813-dea5507cafeb": {
+      "samples": 627,
+      "min": 1,
+      "max": 1
+    },
+    "packs-a/4049cbb0-356f-4db9-b8e9-f11d49e1ed0b": {
+      "samples": 601,
+      "min": 10,
+      "max": 1515
+    },
+    "packs-b/e7f00e56-ca6f-4763-8528-b8fbfc389c7b": {
+      "samples": 233,
+      "min": 143,
+      "max": 604
+    },
+    "packs-a/d6c9a2c0-5c85-4eed-a18b-cb1edead3d7b": {
+      "samples": 21,
+      "min": 10,
+      "max": 1515
+    }
+  },
+  "A1_fact_equal_while_B1_active_samples": 212,
+  "full_watch_sha256_private": "b6edbe3c556ea8e7e7b77db1a343a507690389915018f5a4fc67b01e8094dea7",
+  "observation_gap": "Original helper stopped after a 180-second wait. Continued observation with saved task IDs; no request replay."
+}
