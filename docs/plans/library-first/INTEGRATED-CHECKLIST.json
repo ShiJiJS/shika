@@ -35,6 +35,11 @@
           "evidence": "evidence/lf8-current-navigation/README.md",
           "scope": "Three normal21 pack reading cycles preserve search and exact deep-list anchor; release search focus on return. Panels and immersive back covered in these cycles; all other combinations remain open.",
           "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26搜索图包菜单关闭/移除取消结束输入焦点，保留搜索；三轮恢复后阅读返回最近。未替代全部深列表/来源/设备组合。",
+          "candidate_code": 26
         }
       ]
     },
@@ -59,6 +64,11 @@
           "evidence": "evidence/lf8-catalog-recovery/README.md",
           "scope": "Normal22 six library read-recovery cycles preserve typed search and kind, new NoLate zero remains after old Scope response release; does not replace full sort/batch/recent requirement.",
           "candidate_code": 22
+        },
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "三轮普通26从最近续读建立准确4个最近图包成员、空搜索，未继承媒体库04-long搜索；其余筛选/排序/批选组合保留。",
+          "candidate_code": 26
         }
       ]
     },
@@ -335,6 +345,11 @@
           "evidence": "evidence/lf8-current-navigation/README.md",
           "scope": "Normal21 recent-pack entry resumes page3 using a one-pack scope without library filters. Other video/trash combinations remain open.",
           "candidate_code": 21
+        },
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26图包回收期间最近隐藏，恢复后从282续读，去重一条、其余历史保持；视频及全部预加载组合保留。",
+          "candidate_code": 26
         }
       ]
     },
@@ -344,7 +359,13 @@
       "requirement": "移入回收站有整包影响确认；取消不变，成功留原列表；普通翻页不承担删除",
       "owner": "LF6",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26菜单关闭/取消保持37表和设置、无写请求；实际移除留搜索列表、键盘不弹出；未覆盖所有布局/设备。",
+          "candidate_code": 26
+        }
+      ]
     },
     {
       "id": "DEL-02",
@@ -368,7 +389,13 @@
       "requirement": "按类型查看/全选/批量恢复；逻辑回收/恢复不动源字节；标签与进度保留；全选跨页且分批上限明确",
       "owner": "LF6/7",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26单包通过正式分型回收站恢复三轮，标签/偏好/进度和522源文件字节保持；跨页/大批量仍保留。",
+          "candidate_code": 26
+        }
+      ]
     },
     {
       "id": "DEL-05",
@@ -384,7 +411,13 @@
       "requirement": "已受理无回执显示待确认；查询原 request/task；不自动重放删除，查询不全局锁 UI",
       "owner": "LF6/7",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26三次真实后端受理202但未向App交付响应后强停、旧PID消失/新PID重开，原回执503后200找回同任务，不重发；其它命令/来源/部分结果仍保留。",
+          "candidate_code": 26
+        }
+      ]
     },
     {
       "id": "SET-01",
@@ -424,7 +457,13 @@
       "requirement": "扫描/文件/恢复任务，处理中、部分失败、待确认、已完成可区分；同任务只查询，不重复提交",
       "owner": "LF6/7",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-pack-restore-code26/README.md",
+          "scope": "普通26三轮操作任务找回原恢复请求及相同任务编号/成员1/1，查询阶段37表不变；其它任务类型与状态组合保留。",
+          "candidate_code": 26
+        }
+      ]
     },
     {
       "id": "BAK-01",
@@ -567,5 +606,10 @@
     "evidence": "evidence/lf8-acceptance-audit/current22-flutter-test.log",
     "scope": "current automated suite only, not full native/target acceptance"
   },
-  "nas_preview_deployment": "../../nas-preview-2026-10-30.md"
+  "nas_preview_deployment": "../../nas-preview-2026-10-30.md",
+  "latest_observation_candidate": {
+    "candidate_code": 26,
+    "candidate_source": "8416a3f7359af94f1da802185b136770d6499986",
+    "base_candidate_fields_preserved_for_historical_audit": true
+  }
 }

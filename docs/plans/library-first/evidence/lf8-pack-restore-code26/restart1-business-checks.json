@@ -1,0 +1,44 @@
+{
+  "before": "restart1-before-trash",
+  "after": "restart1-after-task-query",
+  "parent_id": "de05fabc-89ea-4e0d-8718-bb1f6c21bfaf",
+  "request_id": "1793505749306166-425740217",
+  "one_parent_one_member_one_batch": true,
+  "status": "completed",
+  "pack_identity_and_non_generation_columns_equal": true,
+  "generation_delta": 2,
+  "stable_tables_compared": [
+    "access_tokens",
+    "pack_tag_definitions",
+    "pack_tag_links",
+    "pack_preferences",
+    "pack_progress",
+    "recent_entries",
+    "pack_sessions",
+    "pack_session_entries",
+    "pack_pages",
+    "roots",
+    "directories",
+    "observations",
+    "videos",
+    "tags",
+    "video_tags",
+    "playback_rounds",
+    "round_entries"
+  ],
+  "nonempty_tag_links": 1,
+  "changed_tables": [
+    "pack_file_operations",
+    "pack_file_steps",
+    "pack_restore_batches",
+    "pack_restore_members",
+    "pack_restore_plans",
+    "pack_trash_items",
+    "packs",
+    "tasks"
+  ],
+  "only_settings_changed": [
+    "last_pack_delete_operation"
+  ],
+  "progress_preferences_recent_rows_and_sessions_equal": true
+}

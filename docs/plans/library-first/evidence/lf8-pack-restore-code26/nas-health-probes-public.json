@@ -1,0 +1,26 @@
+{
+  "probes": [
+    {
+      "import_seconds": 1.3011192970443517,
+      "http_seconds": 0.5216321779880673,
+      "status": 200,
+      "ssh_docker_total_seconds": 3.2932777079999997
+    },
+    {
+      "import_seconds": 2.052805039100349,
+      "http_seconds": 0.46445733797736466,
+      "status": 200,
+      "ssh_docker_total_seconds": 4.465643084
+    },
+    {
+      "import_seconds": 1.344806884881109,
+      "http_seconds": 0.6384260230697691,
+      "status": 200,
+      "ssh_docker_total_seconds": 3.2939915000000006
+    }
+  ],
+  "docker_health": "healthy",
+  "failing_streak": 1,
+  "restarts": 0,
+  "oom": false
+}
