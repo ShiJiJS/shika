@@ -1,0 +1,298 @@
+{
+  "phase": "native_scoped_scan_verified",
+  "root_id": "purge",
+  "before_task_ids": [
+    "19bf3d4a-5a5e-404c-adf8-4e50c797a657",
+    "2617dc69-a029-4388-a01e-276453277c0d",
+    "12ef4725-a3d1-4cb6-ba13-cd0c0503d040",
+    "5e5d5147-3204-460c-a74f-cd2bf8a86413",
+    "85b74fcd-7b56-453b-99bb-0dd70f5266e3",
+    "c9058098-a19e-4c5e-9bb8-f9053fd330c5",
+    "f4af8b44-9420-4623-90c3-e114df64338f",
+    "7e2e96c3-8132-41b0-9f74-8557f8c3a24a",
+    "aca08398-80fa-43cc-b105-105a1dfc259a",
+    "1657b251-9984-4b3a-becb-7df1a462e2d8",
+    "669346aa-2022-4c92-9379-17840e8f6ed4",
+    "d4c9a1ec-7e67-4d2c-94f0-da585d46942a",
+    "7f53b45a-5719-4fa3-ba64-73bb05e20508",
+    "72304d52-78b0-44fd-b95e-e3efc61e62fc",
+    "73497af4-e919-47b9-b54e-e6aa961c54dc",
+    "dcd2bf6b-b81a-4030-8ceb-fdc5fbe8f9bf",
+    "eb38e11c-32f0-4227-89a2-914a80fdd49e",
+    "8a1f64fa-8664-4db4-a3b7-863fa3a674e0",
+    "d0c7b783-6e59-4e03-ad5a-6cd359272cbb",
+    "95b4357c-5a32-4b84-ab44-8c3b4d70e860",
+    "29fa6f76-4f07-47ea-9b4d-adcf3274d64e",
+    "56967c21-14c1-4e4a-92ce-0919cdb2777b",
+    "6ca671a2-a2bd-4658-a3dd-4cb23672102c",
+    "6c82e67d-8448-4c73-8cb7-58cc8d89898e",
+    "76246e00-8abb-41de-aa9a-769a35be4989",
+    "07fbffd1-0b69-4b20-b178-b5ef82b2fbd5",
+    "0c155e51-7366-481e-a47f-c5e5bb641948",
+    "95c9d1ed-5b86-4955-b047-e167b701bc7a",
+    "bb496022-b14c-45cb-a03e-11aa7fe069fe",
+    "e787d40d-abcb-4b85-a822-43df4912ca30",
+    "83fc32eb-4c6b-4c63-83e9-71aa5a17484b",
+    "543039fb-d06b-4c2d-8604-6d32460e6019",
+    "7c506bc3-f042-4884-8bde-2440cb1181c7",
+    "40e46fbd-068f-4a27-95c7-208ba2730b99",
+    "7cb90b87-bc0a-4b90-a96f-5de2ea4ca54b",
+    "093dbb7a-3716-4728-8291-ac5c1ca49f2c",
+    "1624825c-8720-4a62-aa8f-24771693dc93",
+    "f8f9f945-aaa1-4146-80ec-5ad3045dc719",
+    "cfd0379b-be58-4d31-8047-0a91cf862d5a",
+    "0d65430d-c8ac-44c5-9a97-9a373bee2780",
+    "0adf7e90-7797-47c6-ba4e-2c147676e8d9",
+    "eddba141-684b-4aa8-bea7-65d1acce0a30",
+    "ab37d874-2b18-48e5-b7a0-c7e3fca0b4d2",
+    "f525bbe9-f53e-4b48-a8d5-e879509ae5cd",
+    "d4b047ca-b106-46b4-9d7d-1c3e820b5eee",
+    "9158029d-54fc-47ee-8c4a-d845c3d8b71d",
+    "716ed88e-6457-4cae-a8cc-cefd8ef07a8a",
+    "e9facd1b-7c33-4aff-8e06-d1b15d8681b2",
+    "383568e6-ba13-416a-8e3a-92cecf8f2e10"
+  ],
+  "task_id": "28b88b90-3246-4211-b0e4-9520d399be59",
+  "task": {
+    "id": "28b88b90-3246-4211-b0e4-9520d399be59",
+    "kind": "scan",
+    "status": "completed",
+    "phase": "completed",
+    "created_at": 1793524046.5719044,
+    "finished_at": 1793524047.0312848,
+    "result": {
+      "imported": 0,
+      "unchanged": 0,
+      "deferred": 0,
+      "failed": 0,
+      "thumbnail_failed": 0,
+      "failure_reasons": {},
+      "warning_reasons": {},
+      "warnings": [],
+      "missing": 0,
+      "identity_matched": 0,
+      "identity_ambiguous": 0,
+      "scope": {
+        "all": false,
+        "root_ids": [
+          "purge"
+        ]
+      },
+      "roots": [
+        {
+          "id": "purge",
+          "kind": "pack",
+          "task_id": "28b88b90-3246-4211-b0e4-9520d399be59",
+          "configuration": [
+            "/media",
+            "pack",
+            "purge",
+            true,
+            "03479c6b7849bcd12015c32205a6601b227d90898f336b2bf48727715141e793"
+          ],
+          "status": "partial",
+          "phase": "partial",
+          "discovered": 15,
+          "processed": 15,
+          "progress": {
+            "discovered": 5,
+            "processed": 5,
+            "discovery_complete": false,
+            "packs_discovered": 15,
+            "packs_processed": 15,
+            "packs_discovery_complete": true
+          },
+          "counts": {
+            "imported": 0,
+            "updated": 0,
+            "failed_pages": 0,
+            "failed_packs": 0,
+            "protected_packs": 4,
+            "unchanged": 11,
+            "deferred": 0,
+            "failed": 0,
+            "missing": 0,
+            "identity_matched": 0,
+            "identity_ambiguous": 0,
+            "thumbnail_failed": 0,
+            "unsupported_files": 22,
+            "loose_images": 0,
+            "symlinks_skipped": 0
+          },
+          "updated_at": 1793524047.024989,
+          "unreadable_packs": 8,
+          "finished_at": 1793524047.024992
+        }
+      ],
+      "issues": [],
+      "progress": {
+        "discovered": 0,
+        "processed": 0,
+        "bytes_total": 0,
+        "bytes_processed": 0,
+        "updated_at": 1793524047.029304
+      },
+      "packs": {
+        "imported": 0,
+        "updated": 0,
+        "failed_pages": 0,
+        "failed_packs": 0,
+        "protected_packs": 4,
+        "unchanged": 11,
+        "deferred": 0,
+        "failed": 0,
+        "missing": 0,
+        "identity_matched": 0,
+        "identity_ambiguous": 0,
+        "thumbnail_failed": 0,
+        "unsupported_files": 22,
+        "loose_images": 0,
+        "symlinks_skipped": 0,
+        "failure_reasons": {
+          "pack_empty": 8
+        },
+        "issues": [
+          {
+            "code": "pack_empty",
+            "pack_id": "06234628-eb7d-46ef-a05c-8099788157e2",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "39e54a15-3b4a-43dd-b358-52e3dc2e2fca",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "6b1e7ad8-8cf2-4712-a07d-d8eafd6e63b7",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "37a536f3-ca1a-401d-b092-1db94ea6aebe",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "4ee340c7-1428-4996-b6cb-cbc7950cd79a",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "f3a2342c-b153-4b25-9f51-2df185f16673",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "fde0fd10-c927-4dba-9eb9-685a902dda93",
+            "root_id": "purge",
+            "name": null
+          },
+          {
+            "code": "pack_empty",
+            "pack_id": "53cc1768-7c7e-490d-8be9-a7088e95e4cf",
+            "root_id": "purge",
+            "name": null
+          }
+        ],
+        "progress": {
+          "discovered": 5,
+          "processed": 5,
+          "packs_discovered": 15,
+          "packs_processed": 15,
+          "peak_decoder_kib": 0,
+          "updated_at": 1793524047.0249996
+        }
+      },
+      "root_scans": [
+        {
+          "id": "purge",
+          "kind": "pack",
+          "task_id": "28b88b90-3246-4211-b0e4-9520d399be59",
+          "configuration": [
+            "/media",
+            "pack",
+            "purge",
+            true,
+            "03479c6b7849bcd12015c32205a6601b227d90898f336b2bf48727715141e793"
+          ],
+          "status": "partial",
+          "phase": "partial",
+          "discovered": 15,
+          "processed": 15,
+          "progress": {
+            "discovered": 5,
+            "processed": 5,
+            "discovery_complete": false,
+            "packs_discovered": 15,
+            "packs_processed": 15,
+            "packs_discovery_complete": true
+          },
+          "counts": {
+            "imported": 0,
+            "updated": 0,
+            "failed_pages": 0,
+            "failed_packs": 0,
+            "protected_packs": 4,
+            "unchanged": 11,
+            "deferred": 0,
+            "failed": 0,
+            "missing": 0,
+            "identity_matched": 0,
+            "identity_ambiguous": 0,
+            "thumbnail_failed": 0,
+            "unsupported_files": 22,
+            "loose_images": 0,
+            "symlinks_skipped": 0
+          },
+          "updated_at": 1793524047.024989,
+          "unreadable_packs": 8,
+          "finished_at": 1793524047.024992
+        }
+      ]
+    },
+    "error": null
+  },
+  "only_one_native_scan_post": true,
+  "pack_page_ids_and_content_unchanged_except_seen_scan": true,
+  "initial_seen_scan_comparison_corrected_without_resubmission": true,
+  "protected_28_tables_unchanged": [
+    "alembic_version",
+    "file_operations",
+    "file_steps",
+    "pack_file_operations",
+    "pack_missing_cleanups",
+    "pack_missing_members",
+    "pack_preferences",
+    "pack_progress",
+    "pack_purge_entries",
+    "pack_purge_executions",
+    "pack_purge_plans",
+    "pack_purge_steps",
+    "pack_restore_batches",
+    "pack_restore_members",
+    "pack_restore_plans",
+    "pack_session_entries",
+    "pack_sessions",
+    "pack_tag_definitions",
+    "pack_tag_links",
+    "pack_trash_items",
+    "playback_rounds",
+    "recent_entries",
+    "request_records",
+    "round_entries",
+    "tags",
+    "trash_items",
+    "video_tags",
+    "videos"
+  ],
+  "non_scan_settings_and_credentials_unchanged": true,
+  "all_49_files_unchanged": true,
+  "no_native_delete_restore_post": true
+}

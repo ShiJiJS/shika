@@ -1,0 +1,56 @@
+{
+  "phase": "native_cold_read_verified",
+  "pack_id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+  "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+  "first_progress": {
+    "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+    "page_index": 0,
+    "offset_ratio": 0.45,
+    "completed": false,
+    "revision": 5,
+    "updated_at": 1793524327.1512167
+  },
+  "original_tag_scope": {
+    "request_id": "1793524325247107-3266932981-2",
+    "source": "tags",
+    "scope": {
+      "directory_id": null,
+      "search": "",
+      "tag_ids": [
+        "5df6382b-21b9-445d-b358-53cc3e9f6881"
+      ],
+      "read_state": "all"
+    },
+    "sort": "title",
+    "order": "sequential",
+    "anchor_pack_id": "b7212acf-a7f2-4a9a-8127-b85d120d4868"
+  },
+  "old_app_pid": "3575",
+  "new_app_pid": "6731",
+  "old_pid_absent": true,
+  "same_android_boot_no_emulator_reboot": true,
+  "cold_progress": {
+    "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+    "page_index": 0,
+    "offset_ratio": 0.45,
+    "completed": false,
+    "revision": 6,
+    "updated_at": 1793524410.2055511
+  },
+  "after_back_progress": {
+    "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+    "page_index": 0,
+    "offset_ratio": 0.45,
+    "completed": false,
+    "revision": 6,
+    "updated_at": 1793524410.2055511
+  },
+  "native_image_reads_200": 2,
+  "native_tall_sources": [
+    "tags",
+    "recent"
+  ],
+  "recent_total": 3,
+  "all_49_files_unchanged": true,
+  "no_native_delete_restore_post": true
+}

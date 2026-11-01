@@ -1,0 +1,255 @@
+FFFFFFF......                                                            [100%]
+=================================== FAILURES ===================================
+___ test_scan_restored_returned_image_preserves_original_identity_and_resume ___
+
+library = (<starlette.testclient.TestClient object at 0xffff8074aba0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_scan_restored_returned_im0/media'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff80820050>
+
+    def test_scan_restored_returned_image_preserves_original_identity_and_resume(library, monkeypatch):
+        client, media = library
+        no_birth(monkeypatch)
+        task, original, page, remaining = restored(client, media)
+        tag, reading = managed(client, original)
+        before, files = metadata(client, original["id"]), tree(media)
+        sync(client)
+        current = next(p for p in packs(client)["items"] if p["path"] == original["path"])
+>       assert current["id"] == original["id"], (current, original)
+E       AssertionError: ({'id': '6296aedf-6bfc-451b-b6fc-f72ac8963faa', 'root_id': '65b59821-8374-4b41-9e7e-14bbd62f4b4b', 'path': '/tmp/pytes...', 'path': '/tmp/pytest-of-viewer/pytest-0/test_scan_restored_returned_im0/media/packs/pack-0', 'name': 'pack-0', ...})
+E       assert '6296aedf-6bf...-f72ac8963faa' == '197b2e5f-d0b...-8415a557d7dc'
+E
+E         - 197b2e5f-d0b4-463f-980d-8415a557d7dc
+E         + 6296aedf-6bfc-451b-b6fc-f72ac8963faa
+
+tests/test_restored_pack_scan.py:75: AssertionError
+_____ test_scan_repairs_existing_unmanaged_duplicate_to_original_identity ______
+
+library = (<starlette.testclient.TestClient object at 0xffff7f372d50>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_scan_repairs_existing_unm0/media'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff80820b00>
+
+    def test_scan_repairs_existing_unmanaged_duplicate_to_original_identity(library, monkeypatch):
+        client, media = library
+        no_birth(monkeypatch)
+        _, original, page, remaining = restored(client, media)
+        managed(client, original)
+        before, files = metadata(client, original["id"]), tree(media)
+        duplicate = legacy_duplicate(client, original)
+        sync(client)
+        current = next(p for p in packs(client)["items"] if p["path"] == original["path"])
+>       assert current["id"] == original["id"], (current, duplicate)
+E       AssertionError: ({'id': '506d9392-2714-4970-825e-503ea6e8a463', 'root_id': '1b66e39f-d877-4ff4-9766-5aca1717adf3', 'path': '/tmp/pytes...', 'path': '/tmp/pytest-of-viewer/pytest-0/test_scan_repairs_existing_unm0/media/packs/pack-0', 'name': 'pack-0', ...})
+E       assert '506d9392-271...-503ea6e8a463' == 'fde3282a-ebf...-3fb0b4ffd9d6'
+E
+E         - fde3282a-ebfc-415e-a988-3fb0b4ffd9d6
+E         + 506d9392-2714-4970-825e-503ea6e8a463
+
+tests/test_restored_pack_scan.py:116: AssertionError
+_ test_existing_duplicate_with_management_rows_is_not_silently_discarded[tag] __
+
+library = (<starlette.testclient.TestClient object at 0xffff7ed46990>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_existing_duplicate_with_m0/media'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff7ec3ad50>
+relation = 'tag'
+
+    @pytest.mark.parametrize("relation", ["tag", "progress", "preferences", "recent", "session"])
+    def test_existing_duplicate_with_management_rows_is_not_silently_discarded(library, monkeypatch, relation):
+        client, media = library
+        no_birth(monkeypatch)
+        _, original, _, _ = restored(client, media)
+        managed(client, original)
+        duplicate = legacy_duplicate(client, original)
+        with client.app.state.db.write() as session:
+            page = session.scalar(select(PackPage).where(PackPage.pack_id == duplicate["id"]))
+            if relation == "tag":
+                tag = session.scalar(select(PackTagLink).where(PackTagLink.pack_id == original["id"]))
+                session.add(PackTagLink(pack_id=duplicate["id"], tag_id=tag.tag_id))
+            elif relation == "progress":
+                session.add(PackProgress(pack_id=duplicate["id"], page_id=page.id, offset_ratio=.73))
+            elif relation == "preferences":
+                session.add(PackPreferences(pack_id=duplicate["id"], mode="horizontal"))
+            elif relation == "recent":
+                session.add(RecentEntry(kind="pack", pack_id=duplicate["id"]))
+            else:
+                entry = session.scalar(select(PackSessionEntry).where(PackSessionEntry.pack_id == original["id"]))
+                session.add(PackSessionEntry(session_id=entry.session_id, pack_id=duplicate["id"], ordinal=100))
+        before = {p["id"]: metadata(client, p["id"]) for p in (original, duplicate)}
+        files = tree(media)
+        job = sync(client)
+        for identity, values in before.items():
+            assert metadata(client, identity) == values
+            with client.app.state.db.read() as session:
+                assert session.get(ImagePack, identity)
+        assert tree(media) == files
+>       assert job["result"]["packs"]["identity_ambiguous"] >= 1
+E       assert 0 >= 1
+
+tests/test_restored_pack_scan.py:153: AssertionError
+_ test_existing_duplicate_with_management_rows_is_not_silently_discarded[progress] _
+
+library = (<starlette.testclient.TestClient object at 0xffff7c2022c0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_existing_duplicate_with_m1/media'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff804bd6a0>
+relation = 'progress'
+
+    @pytest.mark.parametrize("relation", ["tag", "progress", "preferences", "recent", "session"])
+    def test_existing_duplicate_with_management_rows_is_not_silently_discarded(library, monkeypatch, relation):
+        client, media = library
+        no_birth(monkeypatch)
+        _, original, _, _ = restored(client, media)
+        managed(client, original)
+        duplicate = legacy_duplicate(client, original)
+        with client.app.state.db.write() as session:
+            page = session.scalar(select(PackPage).where(PackPage.pack_id == duplicate["id"]))
+            if relation == "tag":
+                tag = session.scalar(select(PackTagLink).where(PackTagLink.pack_id == original["id"]))
+                session.add(PackTagLink(pack_id=duplicate["id"], tag_id=tag.tag_id))
+            elif relation == "progress":
+                session.add(PackProgress(pack_id=duplicate["id"], page_id=page.id, offset_ratio=.73))
+            elif relation == "preferences":
+                session.add(PackPreferences(pack_id=duplicate["id"], mode="horizontal"))
+            elif relation == "recent":
+                session.add(RecentEntry(kind="pack", pack_id=duplicate["id"]))
+            else:
+                entry = session.scalar(select(PackSessionEntry).where(PackSessionEntry.pack_id == original["id"]))
+                session.add(PackSessionEntry(session_id=entry.session_id, pack_id=duplicate["id"], ordinal=100))
+        before = {p["id"]: metadata(client, p["id"]) for p in (original, duplicate)}
+        files = tree(media)
+        job = sync(client)
+        for identity, values in before.items():
+            assert metadata(client, identity) == values
+            with client.app.state.db.read() as session:
+                assert session.get(ImagePack, identity)
+        assert tree(media) == files
+>       assert job["result"]["packs"]["identity_ambiguous"] >= 1
+E       assert 0 >= 1
+
+tests/test_restored_pack_scan.py:153: AssertionError
+_ test_existing_duplicate_with_management_rows_is_not_silently_discarded[preferences] _
+
+library = (<starlette.testclient.TestClient object at 0xffff7c200d60>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_existing_duplicate_with_m2/media'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff77e2a690>
+relation = 'preferences'
+
+    @pytest.mark.parametrize("relation", ["tag", "progress", "preferences", "recent", "session"])
+    def test_existing_duplicate_with_management_rows_is_not_silently_discarded(library, monkeypatch, relation):
+        client, media = library
+        no_birth(monkeypatch)
+        _, original, _, _ = restored(client, media)
+        managed(client, original)
+        duplicate = legacy_duplicate(client, original)
+        with client.app.state.db.write() as session:
+            page = session.scalar(select(PackPage).where(PackPage.pack_id == duplicate["id"]))
+            if relation == "tag":
+                tag = session.scalar(select(PackTagLink).where(PackTagLink.pack_id == original["id"]))
+                session.add(PackTagLink(pack_id=duplicate["id"], tag_id=tag.tag_id))
+            elif relation == "progress":
+                session.add(PackProgress(pack_id=duplicate["id"], page_id=page.id, offset_ratio=.73))
+            elif relation == "preferences":
+                session.add(PackPreferences(pack_id=duplicate["id"], mode="horizontal"))
+            elif relation == "recent":
+                session.add(RecentEntry(kind="pack", pack_id=duplicate["id"]))
+            else:
+                entry = session.scalar(select(PackSessionEntry).where(PackSessionEntry.pack_id == original["id"]))
+                session.add(PackSessionEntry(session_id=entry.session_id, pack_id=duplicate["id"], ordinal=100))
+        before = {p["id"]: metadata(client, p["id"]) for p in (original, duplicate)}
+        files = tree(media)
+        job = sync(client)
+        for identity, values in before.items():
+            assert metadata(client, identity) == values
+            with client.app.state.db.read() as session:
+                assert session.get(ImagePack, identity)
+        assert tree(media) == files
+>       assert job["result"]["packs"]["identity_ambiguous"] >= 1
+E       assert 0 >= 1
+
+tests/test_restored_pack_scan.py:153: AssertionError
+_ test_existing_duplicate_with_management_rows_is_not_silently_discarded[recent] _
+
+library = (<starlette.testclient.TestClient object at 0xffff7e3b6b10>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_existing_duplicate_with_m3/media'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff7c29da50>
+relation = 'recent'
+
+    @pytest.mark.parametrize("relation", ["tag", "progress", "preferences", "recent", "session"])
+    def test_existing_duplicate_with_management_rows_is_not_silently_discarded(library, monkeypatch, relation):
+        client, media = library
+        no_birth(monkeypatch)
+        _, original, _, _ = restored(client, media)
+        managed(client, original)
+        duplicate = legacy_duplicate(client, original)
+        with client.app.state.db.write() as session:
+            page = session.scalar(select(PackPage).where(PackPage.pack_id == duplicate["id"]))
+            if relation == "tag":
+                tag = session.scalar(select(PackTagLink).where(PackTagLink.pack_id == original["id"]))
+                session.add(PackTagLink(pack_id=duplicate["id"], tag_id=tag.tag_id))
+            elif relation == "progress":
+                session.add(PackProgress(pack_id=duplicate["id"], page_id=page.id, offset_ratio=.73))
+            elif relation == "preferences":
+                session.add(PackPreferences(pack_id=duplicate["id"], mode="horizontal"))
+            elif relation == "recent":
+                session.add(RecentEntry(kind="pack", pack_id=duplicate["id"]))
+            else:
+                entry = session.scalar(select(PackSessionEntry).where(PackSessionEntry.pack_id == original["id"]))
+                session.add(PackSessionEntry(session_id=entry.session_id, pack_id=duplicate["id"], ordinal=100))
+        before = {p["id"]: metadata(client, p["id"]) for p in (original, duplicate)}
+        files = tree(media)
+        job = sync(client)
+        for identity, values in before.items():
+            assert metadata(client, identity) == values
+            with client.app.state.db.read() as session:
+                assert session.get(ImagePack, identity)
+        assert tree(media) == files
+>       assert job["result"]["packs"]["identity_ambiguous"] >= 1
+E       assert 0 >= 1
+
+tests/test_restored_pack_scan.py:153: AssertionError
+_ test_existing_duplicate_with_management_rows_is_not_silently_discarded[session] _
+
+library = (<starlette.testclient.TestClient object at 0xffff7dd5f8a0>, PosixPath('/tmp/pytest-of-viewer/pytest-0/test_existing_duplicate_with_m4/media'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff807fb550>
+relation = 'session'
+
+    @pytest.mark.parametrize("relation", ["tag", "progress", "preferences", "recent", "session"])
+    def test_existing_duplicate_with_management_rows_is_not_silently_discarded(library, monkeypatch, relation):
+        client, media = library
+        no_birth(monkeypatch)
+        _, original, _, _ = restored(client, media)
+        managed(client, original)
+        duplicate = legacy_duplicate(client, original)
+        with client.app.state.db.write() as session:
+            page = session.scalar(select(PackPage).where(PackPage.pack_id == duplicate["id"]))
+            if relation == "tag":
+                tag = session.scalar(select(PackTagLink).where(PackTagLink.pack_id == original["id"]))
+                session.add(PackTagLink(pack_id=duplicate["id"], tag_id=tag.tag_id))
+            elif relation == "progress":
+                session.add(PackProgress(pack_id=duplicate["id"], page_id=page.id, offset_ratio=.73))
+            elif relation == "preferences":
+                session.add(PackPreferences(pack_id=duplicate["id"], mode="horizontal"))
+            elif relation == "recent":
+                session.add(RecentEntry(kind="pack", pack_id=duplicate["id"]))
+            else:
+                entry = session.scalar(select(PackSessionEntry).where(PackSessionEntry.pack_id == original["id"]))
+                session.add(PackSessionEntry(session_id=entry.session_id, pack_id=duplicate["id"], ordinal=100))
+        before = {p["id"]: metadata(client, p["id"]) for p in (original, duplicate)}
+        files = tree(media)
+        job = sync(client)
+        for identity, values in before.items():
+            assert metadata(client, identity) == values
+            with client.app.state.db.read() as session:
+                assert session.get(ImagePack, identity)
+        assert tree(media) == files
+>       assert job["result"]["packs"]["identity_ambiguous"] >= 1
+E       assert 0 >= 1
+
+tests/test_restored_pack_scan.py:153: AssertionError
+=============================== warnings summary ===============================
+../usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1
+  /usr/local/lib/python3.13/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_restored_pack_scan.py::test_scan_restored_returned_image_preserves_original_identity_and_resume
+FAILED tests/test_restored_pack_scan.py::test_scan_repairs_existing_unmanaged_duplicate_to_original_identity
+FAILED tests/test_restored_pack_scan.py::test_existing_duplicate_with_management_rows_is_not_silently_discarded[tag]
+FAILED tests/test_restored_pack_scan.py::test_existing_duplicate_with_management_rows_is_not_silently_discarded[progress]
+FAILED tests/test_restored_pack_scan.py::test_existing_duplicate_with_management_rows_is_not_silently_discarded[preferences]
+FAILED tests/test_restored_pack_scan.py::test_existing_duplicate_with_management_rows_is_not_silently_discarded[recent]
+FAILED tests/test_restored_pack_scan.py::test_existing_duplicate_with_management_rows_is_not_silently_discarded[session]
+7 failed, 6 passed, 1 warning in 15.78s

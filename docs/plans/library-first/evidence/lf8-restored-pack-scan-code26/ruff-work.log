@@ -1,0 +1,4 @@
+error: Failed to initialize cache at /tmp/video-viewer-ruff-cache: Read-only file system (os error 30)
+ruff failed
+  Cause: Failed to create temporary file
+  Cause: No such file or directory (os error 2) at path "/tmp/video-viewer-ruff-cache/0.17.1/.tmpx6LJYJ"

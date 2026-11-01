@@ -320,6 +320,11 @@
           "evidence": "evidence/lf8-restored-image-read-code26/README.md",
           "scope": "普通26/服务82e本机合成长图：部分删除后恢复同一剩余页，实际原图200；初次与真实强停PID3283→3952后均续读45%，返回最近保持。原短图明确返回最后一张保存0，另记。新长图恢复后未扫描，#163扫描身份关联未解决；图片专用模拟器配置不证明视频/音频或目标手机。",
           "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "普通26/服务7dd本机：上轮部分删除恢复的原Tall明确重扫后仍原页/45%，从原标签实际打开，再真实强停PID3575→6731、同Android启动下冷启最近续读同页45%，返回保持。两个入口scope分别有/无原标签，未把字段检查替代实际ROW13中部画面；图片专用模拟器配置不证明视频/音频或目标手机。",
+          "candidate_code": 26
         }
       ]
     },
@@ -369,6 +374,11 @@
         {
           "evidence": "evidence/lf8-restored-image-read-code26/README.md",
           "scope": "普通26恢复后最近显示剩余1/1并实际打开，同一长图页与45%位置在冷启/返回后保持。Tall准备扫描暴露另一原样本旧missing+新available，标签/最近仍在旧ID，实际最近仅2包；#163优先修复，不能把扫描后的最近判通过。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "同一故障样本旧missing+新available在明确扫描后找回原ID，原标签/最近行保持，最近2→3包；普通26实际显示并读取，后续指定目录扫描、真实强停续读及返回仍3包。新ID已含管理数据则保留两侧、报告冲突，未自动合并丢弃。",
           "candidate_code": 26
         }
       ]
@@ -429,6 +439,11 @@
           "evidence": "evidence/lf8-restored-image-read-code26/README.md",
           "scope": "普通26/服务82e本机新长图2/3永久删除后明确恢复一次，原计划1/1；恢复前后页、标签、阅读偏好/进度、最近和会话行保持，剩余图片及附件字节相同，随后实际读图与冷启续读通过。再次扫描的身份关联缺陷#163另列，NAS未更新。",
           "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "服务7dd复用成功归位日志和稳定图片完整SHA作为扫描连续性证据，部分永久删除恢复后的原包/剩余页、标签/进度/偏好保持；无管理重复新记录安全退回原ID。原样本两次准备扫描后28张非扫描表保持、49文件字节相同；单目录普通App再扫与实际阅读通过，NAS未部署。",
+          "candidate_code": 26
         }
       ]
     },
@@ -447,6 +462,11 @@
         {
           "evidence": "evidence/lf8-restored-image-read-code26/README.md",
           "scope": "普通26本机明确核对3张图片和保留2项附件，一次永久删除真实2/3，第三张受控EACCES归位；逻辑恢复后明确重试原删除仍stale_pack_state，结果2/3和文件保持。仅对已记录成功归位/已恢复图片只读校验完整SHA；外部改写/替换/mtime/缺失/软链接等由新增用例保持拒绝。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "扫描后普通26明确重试同一原Tall永久删除任务一次，仍stale_pack_state、2/3不变；49文件/附件与除任务/请求记录外33表、设置/凭据保持。没有新永久删除/恢复POST。外部内容/同字节文件身份/mtime/目录/创建时间替换与缺少/历史化日志由新增用例拒绝，原删除历史页ID不因索引清理丢失。",
           "candidate_code": 26
         }
       ]
@@ -505,7 +525,13 @@
       "requirement": "类型、路径、添加编辑、启停、递归扫描进度；清除失效记录确认，离线/停用不清除；图包首扫不锁已有视频",
       "owner": "LF1/2/7",
       "current_candidate": "not_checked_in_integrated_run",
-      "observations": []
+      "observations": [
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "普通26实际扫描此目录一次，仅root_id=purge且scope.all=false；15/15图包、5张图片、原有8空包/4保护图包的结果与新完成时间真实显示。仅1个本机合成目录，不作为多目录/手机的新验证；原有目录映射与源字节保持。",
+          "candidate_code": 26
+        }
+      ]
     },
     {
       "id": "SET-05",
@@ -532,6 +558,11 @@
         {
           "evidence": "evidence/lf8-restored-image-read-code26/README.md",
           "scope": "普通26新长图一次原恢复计划1/1，模拟器退出后仍从本机待核对记录查询原回执，未重提恢复；再打开原删除结果并明确重试被恢复状态阻止。两次QEMU退出与辅助驱动中断保留，后续图片专用配置和真实App强停区分；#159/#160/#78仍开放。",
+          "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
+          "scope": "原扫描第一次终态deferred属默认稳定等待，明确再扫一次后完成目标图片；App额外指定目录扫描一次。三个原任务分别记录，无超时重启或删除/恢复重放。初版脚本误比较扫描设置/seen_scan已保留，后续只查原任务；旧删除明确重试仍被恢复状态保护。#159/#160/#78保持开放。",
           "candidate_code": 26
         }
       ]

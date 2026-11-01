@@ -1,0 +1,50 @@
+{
+  "source": "7ddf20d4d3e057beb3bf1232b023a212c76160e9",
+  "platform": "linux/arm64",
+  "runtime_files_matched": 79,
+  "changed_existing_files": [
+    "video_viewer/pack_scanner.py",
+    "video_viewer/rollback_images.py"
+  ],
+  "added_files": [
+    "video_viewer/pack_returned_identity.py"
+  ],
+  "other_76_files_unchanged": true,
+  "pytest_present": false,
+  "local_image_index_id": "sha256:9d39c78c5313b010be97e9b479cc59f611bbcd1216dbe9f83da970800cb7f66e",
+  "archive_config_sha256": "eb1301f2c53efe0a980cc575d45a043fd48e3dea3de55403a1b6d20511d16e4a",
+  "archive_rootfs_matches_local_image": true,
+  "rootfs_diff_ids": [
+    "sha256:dca69811453d69d10b6c0345a5c49147162abe20a2f77802d66efc60667949ea",
+    "sha256:8cc4a854ef0c8479b56bcc56c702d23ffeafd3d23c44dc9c66f6abb2e7fd1129",
+    "sha256:ab24ed427f749483d23bd483bae80fd7bc2871ab738a922840aa025116f8335f",
+    "sha256:6c0a4b583bd97f7249f788d71aacb568e7c515ba29a4f5df5ed58f3750cc9146",
+    "sha256:8dca594ca921008ce0ac306cf6c8b9d69e2788dcd588d0acfec00abc4fed3a11",
+    "sha256:431d801af91ba22fec5b64cc93d8c3359189e295e86e36dfcd4d85cf991fdf9e",
+    "sha256:0da654e3710cb452e9542acb8a0d49fec92a66d8b0fa8345e959e6461d2c3bd8",
+    "sha256:dffca0f9120725a10ccd27d3cea0df1ff75d0250ef2023299cb435d1d6d3fcde",
+    "sha256:cb0f43dd66a81c7be1788c4b58ad28b1537c9b7388c84ee4f718a70fe5524480",
+    "sha256:be89631012a90a5823db7826dbfbf9c6ae29aef3bd9e015565fd0cb7f9db4f5c",
+    "sha256:2b99955e9be3024f3ab30e828a7b0cd76ffcd3f8e53d72f46f69c0a1d3fe2f78",
+    "sha256:4fbaaec90ab6090242f4b4a27083f43c4b7cf558c97d66d959ef53c7250336e6"
+  ],
+  "healthcheck": {
+    "Test": [
+      "CMD",
+      "python",
+      "-I",
+      "-S",
+      "-B",
+      "/app/video_viewer/healthcheck.py"
+    ],
+    "Interval": 15000000000,
+    "Timeout": 10000000000,
+    "StartPeriod": 20000000000
+  },
+  "archive": {
+    "name": "video-viewer-server-0.2.0-preview.7-linux-arm64.tar.gz",
+    "bytes": 222279935,
+    "sha256": "f5be4469d63102b0166f889b1462890af252afdecab59691b12f948939b5ac0b"
+  },
+  "nas_deployed": false
+}

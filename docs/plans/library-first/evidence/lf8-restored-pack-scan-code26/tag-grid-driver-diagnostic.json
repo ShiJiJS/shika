@@ -1,0 +1,8 @@
+{
+  "initial_selector": "recent-list title prefix used on grid card",
+  "actual_grid_card_label": "1 张\n在读 · 1\nRestore-read-tall\n1 张可读\n# Purge retained tag",
+  "initial_tool_assertion": "prefix not found after at most 20 swipes",
+  "correction": "unique clickable grid card containing title and readable count; no scan or app restart",
+  "source": "agent record of captured inline tool assertion and observed native request history",
+  "no_tall_open_or_new_scan_delete_restore_during_failed_grid_selection": true
+}

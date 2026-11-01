@@ -1,0 +1,140 @@
+{
+  "source": "82eacdbd58d38524050bcb20b442549e1a65276e",
+  "before_any_new_scan": true,
+  "same_original_three_identities": {
+    "1958716a-589a-4942-8a00-0a812b165e28": {
+      "id": "1958716a-589a-4942-8a00-0a812b165e28",
+      "root_id": "purge",
+      "path": "/media/Restore-partial",
+      "location_key": null,
+      "name": "Restore-partial",
+      "status": "missing",
+      "error": null,
+      "device": "36",
+      "inode": "18795",
+      "content_version": 3,
+      "page_count": 1,
+      "generation": 6,
+      "seen_scan": "19bf3d4a-5a5e-404c-adf8-4e50c797a657",
+      "created_at": 1793512812.8733397,
+      "directory_signature": "[\"36\", \"18795\", 224, \"1793512770538496705\", \"1793512770538496705\", null]"
+    },
+    "62d5fe84-0cc6-434b-b391-75da4740f722": {
+      "id": "62d5fe84-0cc6-434b-b391-75da4740f722",
+      "root_id": "purge",
+      "path": "/media/Restore-partial",
+      "location_key": "/media/Restore-partial",
+      "name": "Restore-partial",
+      "status": "available",
+      "error": null,
+      "device": "36",
+      "inode": "18795",
+      "content_version": 1,
+      "page_count": 1,
+      "generation": 1,
+      "seen_scan": "eddba141-684b-4aa8-bea7-65d1acce0a30",
+      "created_at": 1793519488.262261,
+      "directory_signature": "[\"36\", \"18795\", 160, \"1793516380110102673\", \"1793516380110102673\", null]"
+    },
+    "b7212acf-a7f2-4a9a-8127-b85d120d4868": {
+      "id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+      "root_id": "purge",
+      "path": "/media/Restore-read-tall",
+      "location_key": "/media/Restore-read-tall",
+      "name": "Restore-read-tall",
+      "status": "available",
+      "error": null,
+      "device": "36",
+      "inode": "18972",
+      "content_version": 3,
+      "page_count": 1,
+      "generation": 5,
+      "seen_scan": "eddba141-684b-4aa8-bea7-65d1acce0a30",
+      "created_at": 1793519489.0987656,
+      "directory_signature": "[\"36\", \"18972\", 224, \"1793519485190458669\", \"1793519485190458669\", null]"
+    }
+  },
+  "api_recent": {
+    "items": [
+      {
+        "title": "Restore-read-tall",
+        "author": null,
+        "number": null,
+        "id": "b7212acf-a7f2-4a9a-8127-b85d120d4868",
+        "root_id": "purge",
+        "path": "/media/Restore-read-tall",
+        "name": "Restore-read-tall",
+        "status": "available",
+        "error": null,
+        "page_count": 1,
+        "readable_count": 1,
+        "content_version": 3,
+        "tag_ids": [
+          "5df6382b-21b9-445d-b358-53cc3e9f6881"
+        ],
+        "tag_names": {
+          "5df6382b-21b9-445d-b358-53cc3e9f6881": "Purge retained tag"
+        },
+        "created_at": 1793519489.0987656,
+        "cover_url": "/api/v1/packs/b7212acf-a7f2-4a9a-8127-b85d120d4868/cover?v=3",
+        "progress": {
+          "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+          "page_index": 0,
+          "offset_ratio": 0.45,
+          "completed": false,
+          "revision": 4,
+          "updated_at": 1793520171.9529674
+        }
+      },
+      {
+        "title": "Keep-available",
+        "author": null,
+        "number": null,
+        "id": "f41dbd5c-e5d3-45e0-86ec-84b29edff6b9",
+        "root_id": "purge",
+        "path": "/media/Keep-available",
+        "name": "Keep-available",
+        "status": "available",
+        "error": null,
+        "page_count": 3,
+        "readable_count": 3,
+        "content_version": 1,
+        "tag_ids": [
+          "5df6382b-21b9-445d-b358-53cc3e9f6881"
+        ],
+        "tag_names": {
+          "5df6382b-21b9-445d-b358-53cc3e9f6881": "Purge retained tag"
+        },
+        "created_at": 1793512810.9105217,
+        "cover_url": "/api/v1/packs/f41dbd5c-e5d3-45e0-86ec-84b29edff6b9/cover?v=1",
+        "progress": {
+          "page_id": "e6bb326d-5ee4-4fde-9616-4ccd37fc4154",
+          "page_index": 2,
+          "offset_ratio": 0.5,
+          "completed": false,
+          "revision": 2,
+          "updated_at": 1793512813.2763453
+        }
+      }
+    ],
+    "total": 2,
+    "offset": 0,
+    "limit": 24,
+    "anchor_index": null
+  },
+  "new_available_tags": [],
+  "old_missing_tag_links": [
+    {
+      "pack_id": "1958716a-589a-4942-8a00-0a812b165e28",
+      "tag_id": "5df6382b-21b9-445d-b358-53cc3e9f6881"
+    }
+  ],
+  "tall_progress": {
+    "page_id": "508632ed-3b55-4791-9ebc-51f5a316ecc6",
+    "page_index": 0,
+    "offset_ratio": 0.45,
+    "completed": false,
+    "revision": 4,
+    "updated_at": 1793520171.9529674
+  }
+}
