@@ -4,6 +4,8 @@
 
 [安装与回退](../../nas-app-preview-2026-11-01-code27.md) · [NAS更新与完整备份](../../nas-preview-2026-11-01-service8.md) · [最新草稿PR #167](https://github.com/ShiJiJS/video_viewer/pull/167)
 
+[整体审阅草稿PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)汇总当前程序、规划及独立原型，保留main的命令行工具；历史证据通过固定原提交追溯，阶段分支完整保留。App/服务/原型与当前阶段源码逐文件一致，安装包和NAS未变，整合不代表正式验收完成。
+
 ## 已交付
 
 - 媒体库为主入口；视频和图包各自搜索、筛选、打标签和查看最近，从选定内容进入播放或阅读。

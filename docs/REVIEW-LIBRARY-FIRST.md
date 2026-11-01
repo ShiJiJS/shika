@@ -1,5 +1,7 @@
 # 媒体库与图包升级：整体审阅入口
 
+[整合草稿PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)，基于main；已交付版本继续使用第27版App和NAS服务preview.8。
+
 本分支汇总当前可用的第27版App、NAS服务preview.8对应的源码、规划、测试和独立原型，基于主分支`b690f508`，保留主分支新增的`apps/cli`命令行工具。
 
 ## 审阅范围
