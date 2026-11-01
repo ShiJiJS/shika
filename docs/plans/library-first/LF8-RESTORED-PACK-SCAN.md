@@ -1,5 +1,7 @@
 # 恢复后扫描仍保留原图包
 
+[草稿PR #165](https://github.com/ShiJiJS/video_viewer/pull/165)，基于[#164](https://github.com/ShiJiJS/video_viewer/pull/164)。#163为已验证的本机候选，等待审阅及后续部署。
+
 2026-11-01，继续 #163、#31/#33/#24/#133，基于 #164。产品源码 `7ddf20d4d3e057beb3bf1232b023a212c76160e9`，本机 runtime preview.7。普通原签名 preview.20/code26、客户端 `8416a3f7` 保持；没有新 APK、数据库迁移、原型变化或 NAS 访问。
 
 ## 问题与处理
