@@ -11,6 +11,7 @@
 | 当前安装、同号回退及已知边界 | [第28版安装说明](nas-app-preview-2026-11-01-code28.md) |
 | NAS服务、数据保持与完整备份 | [preview.8部署记录](nas-preview-2026-11-01-service8.md) |
 | 已交付能力和剩余事项 | [当前进度](plans/library-first/PROGRESS-CURRENT.md) |
+| 原45项的当前边界与具体下一步 | [收口核对](plans/library-first/CLOSING-CHECK.md) |
 | 原始方案及45项要求 | [方案](plans/library-first/PLAN.md)、[验收表](plans/library-first/ACCEPTANCE.md) |
 | Android程序 | [apps/mobile](../apps/mobile/) |
 | NAS服务 | [services/server](../services/server/) |

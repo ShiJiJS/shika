@@ -2,7 +2,7 @@
 
 更新于2026-11-01。可用版本是 **第28版App（preview.22/code28）+ NAS服务preview.8**。正常包、同号旧界面回退包和说明都在NAS原部署目录的 `packages/`。直接覆盖安装，不要卸载或清除数据；地址和口令保持。
 
-[安装与回退](../../nas-app-preview-2026-11-01-code28.md) · [NAS更新与完整备份](../../nas-preview-2026-11-01-service8.md) · [整体草稿PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)
+[安装与回退](../../nas-app-preview-2026-11-01-code28.md) · [NAS更新与完整备份](../../nas-preview-2026-11-01-service8.md) · [当前收口核对](CLOSING-CHECK.md) · [整体草稿PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)
 
 [整体审阅草稿PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)汇总当前程序、规划及独立原型，保留main的命令行工具；历史证据通过固定原提交追溯，阶段分支完整保留。第28版在该分支继续开发，服务和原型未变，整合不代表正式验收完成。
 
@@ -31,7 +31,7 @@
 
 1. **真实手机体验。** 覆盖安装、声音/解码、手势、横竖屏与大字号、系统/云盘文件选取，以及手机和NAS的完整性能尚未全部确认。当前本机没有连接Android设备，不能用模拟器结果代替。
 2. **三个历史偶发问题。** [#78](https://github.com/ShiJiJS/video_viewer/issues/78)视频绿边/模拟器退出、[#89](https://github.com/ShiJiJS/video_viewer/issues/89)备份上传失败、[#100](https://github.com/ShiJiJS/video_viewer/issues/100)图包连接失败的原因尚未全部查明。已有安全查询/恢复方式与诊断，后续未复现不代表根因已修复，不自动重发写操作。
-3. **完整原型验收与正式交付。** 原[45项要求](ACCEPTANCE.md)不变，阶段检查与目标环境条件分别保留。仍需按[剩余流程](LF8-ACCEPTANCE-AUDIT.md)补齐必要组合、整理累计PR和完成最终审阅。当前是试用版，未合并草稿或正式发布。
+3. **完整原型验收与正式交付。** 原[45项要求](ACCEPTANCE.md)不变，阶段检查与目标环境条件分别保留。[本次收口](CLOSING-CHECK.md)逐组列出证据边界，当前优先补L1视频范围末尾、L2深列表实际旋转/字号两条具体过程，再回到原表判断；不将完整范围缩为两条。整体草稿已整理，最终审阅/合并/发布尚未进行。
 
 后续优先处理实际反馈和有明确触发条件的问题，复用未变化部分的检查，不重复无关全套或扩展故障矩阵。可用版本与仍待验收的条件分别报告。
 
