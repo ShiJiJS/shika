@@ -1,0 +1,155 @@
+{
+  "id": "3bec9fc3-59c0-401a-b1da-957ee5115a56",
+  "kind": "scan",
+  "status": "completed",
+  "phase": "completed",
+  "created_at": 1793527309.5057886,
+  "finished_at": 1793527309.5758448,
+  "result": {
+    "imported": 0,
+    "unchanged": 0,
+    "deferred": 0,
+    "failed": 0,
+    "thumbnail_failed": 0,
+    "failure_reasons": {},
+    "warning_reasons": {},
+    "warnings": [],
+    "missing": 0,
+    "identity_matched": 0,
+    "identity_ambiguous": 0,
+    "scope": {
+      "all": false,
+      "root_ids": [
+        "main"
+      ]
+    },
+    "roots": [
+      {
+        "id": "main",
+        "kind": "pack",
+        "task_id": "3bec9fc3-59c0-401a-b1da-957ee5115a56",
+        "configuration": [
+          "/media",
+          "pack",
+          "main",
+          true,
+          "2310218b1d507641c4918b179bdac195235d0246623315c2708aae8e5df4c7f7"
+        ],
+        "status": "deferred",
+        "phase": "deferred",
+        "discovered": 1,
+        "processed": 1,
+        "progress": {
+          "discovered": 3,
+          "processed": 0,
+          "discovery_complete": false,
+          "packs_discovered": 1,
+          "packs_processed": 1,
+          "packs_discovery_complete": true
+        },
+        "counts": {
+          "imported": 0,
+          "updated": 0,
+          "failed_pages": 0,
+          "failed_packs": 0,
+          "protected_packs": 0,
+          "unchanged": 0,
+          "deferred": 1,
+          "failed": 0,
+          "missing": 0,
+          "identity_matched": 0,
+          "identity_ambiguous": 0,
+          "thumbnail_failed": 0,
+          "unsupported_files": 0,
+          "loose_images": 0,
+          "symlinks_skipped": 0
+        },
+        "updated_at": 1793527309.5575876,
+        "error": "files_changing",
+        "finished_at": 1793527309.5575902
+      }
+    ],
+    "issues": [],
+    "progress": {
+      "discovered": 0,
+      "processed": 0,
+      "bytes_total": 0,
+      "bytes_processed": 0,
+      "updated_at": 1793527309.5733426
+    },
+    "packs": {
+      "imported": 0,
+      "updated": 0,
+      "failed_pages": 0,
+      "failed_packs": 0,
+      "protected_packs": 0,
+      "unchanged": 0,
+      "deferred": 1,
+      "failed": 0,
+      "missing": 0,
+      "identity_matched": 0,
+      "identity_ambiguous": 0,
+      "thumbnail_failed": 0,
+      "unsupported_files": 0,
+      "loose_images": 0,
+      "symlinks_skipped": 0,
+      "failure_reasons": {},
+      "issues": [],
+      "progress": {
+        "discovered": 3,
+        "processed": 0,
+        "packs_discovered": 1,
+        "packs_processed": 1,
+        "peak_decoder_kib": 0,
+        "updated_at": 1793527309.571381
+      }
+    },
+    "root_scans": [
+      {
+        "id": "main",
+        "kind": "pack",
+        "task_id": "3bec9fc3-59c0-401a-b1da-957ee5115a56",
+        "configuration": [
+          "/media",
+          "pack",
+          "main",
+          true,
+          "2310218b1d507641c4918b179bdac195235d0246623315c2708aae8e5df4c7f7"
+        ],
+        "status": "deferred",
+        "phase": "deferred",
+        "discovered": 1,
+        "processed": 1,
+        "progress": {
+          "discovered": 3,
+          "processed": 0,
+          "discovery_complete": false,
+          "packs_discovered": 1,
+          "packs_processed": 1,
+          "packs_discovery_complete": true
+        },
+        "counts": {
+          "imported": 0,
+          "updated": 0,
+          "failed_pages": 0,
+          "failed_packs": 0,
+          "protected_packs": 0,
+          "unchanged": 0,
+          "deferred": 1,
+          "failed": 0,
+          "missing": 0,
+          "identity_matched": 0,
+          "identity_ambiguous": 0,
+          "thumbnail_failed": 0,
+          "unsupported_files": 0,
+          "loose_images": 0,
+          "symlinks_skipped": 0
+        },
+        "updated_at": 1793527309.5575876,
+        "error": "files_changing",
+        "finished_at": 1793527309.5575902
+      }
+    ]
+  },
+  "error": null
+}

@@ -564,6 +564,11 @@
           "evidence": "evidence/lf8-restored-pack-scan-code26/README.md",
           "scope": "原扫描第一次终态deferred属默认稳定等待，明确再扫一次后完成目标图片；App额外指定目录扫描一次。三个原任务分别记录，无超时重启或删除/恢复重放。初版脚本误比较扫描设置/seen_scan已保留，后续只查原任务；旧删除明确重试仍被恢复状态保护。#159/#160/#78保持开放。",
           "candidate_code": 26
+        },
+        {
+          "evidence": "evidence/lf8-backup-restore-finish-code26/README.md",
+          "scope": "普通26一次管理恢复后，在提交后清理暂停期间原生查看快照202排队，解除后同任务打开预览；取消保留当前两标签，实际原03页45%和3源文件保持。服务2de完整534/新增10覆盖v1/v2成功失败中断冷恢复与新占用保护，不替代目标手机或全部任务组合。",
+          "candidate_code": 26
         }
       ]
     },

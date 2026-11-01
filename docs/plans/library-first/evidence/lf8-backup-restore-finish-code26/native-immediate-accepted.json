@@ -1,0 +1,43 @@
+{
+  "restore_id": "b8394222-4343-4a7e-a448-c8716f378672",
+  "original_task_unchanged": true,
+  "accepted": {
+    "seq": 84,
+    "time": 1793528139.0193942,
+    "method": "POST",
+    "path": "/api/v1/management-backups/from-snapshot/3eacb87f-4803-417c-8cfe-4add5ab757c0",
+    "query": {},
+    "request_epoch_sha256": "a9788c0b611dcd481b6721ba5476c82194d791db05c9cc761f7e0231574bb9fb",
+    "request_bytes": 44,
+    "command": {
+      "request_id": "1793528138651011-2260513987"
+    },
+    "status": 202,
+    "response_bytes": 282,
+    "response_epoch_sha256": "a9788c0b611dcd481b6721ba5476c82194d791db05c9cc761f7e0231574bb9fb",
+    "response_task": {
+      "id": "458b2918-5403-45f4-be72-dd47537b6621",
+      "kind": "backup_inspect_v2",
+      "status": "queued",
+      "phase": "queued",
+      "error": null
+    },
+    "finished_at": 1793528139.086794
+  },
+  "queued_task": {
+    "id": "458b2918-5403-45f4-be72-dd47537b6621",
+    "kind": "backup_inspect_v2",
+    "status": "queued",
+    "phase": "queued",
+    "created_at": 1793528139.0738149,
+    "finished_at": null,
+    "result": {
+      "archive_version": 2,
+      "raw_sha256": "117172e746fd9f6388c14cf3a6ebe504048fc71c07adbbc56ef0739750d61f29"
+    },
+    "error": null
+  },
+  "same_container_healthy": true,
+  "restart_count": 0,
+  "hold_still_armed": true
+}

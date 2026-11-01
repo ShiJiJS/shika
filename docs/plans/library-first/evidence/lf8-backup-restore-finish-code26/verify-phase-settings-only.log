@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "[workspace]/.dev/lf8-backup-restore-finish26/verify-phase.py", line 46, in <module>
+    assert all(r['status']<400 and 'observer_error' not in r for r in trace)
+AssertionError
