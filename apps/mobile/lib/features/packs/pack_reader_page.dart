@@ -49,6 +49,9 @@ class PackReaderPageState extends State<PackReaderPage>
   bool controls = true, zoomed = false, leaving = false, _framePending = false;
   bool showingEnd = false;
   int jumpEpoch = 0, zoomReset = 0;
+  final _chromePointers = <int>{};
+  int? _swipePointer;
+  Offset? _swipeStart;
   final Set<String> _preparingRemoval = {};
   QuickPackCleanup? _quickCleanup;
   QuickPackCleanup get quickCleanup => _quickCleanup ??= QuickPackCleanup(
@@ -129,6 +132,39 @@ class PackReaderPageState extends State<PackReaderPage>
     _noticeTimer?.cancel();
     _notice = '';
     _noticeRequest = null;
+  }
+
+  void toggleControls() => setState(() => controls = !controls);
+
+  // Observe a completed single-finger upward gesture without competing with
+  // the image's scroll/scale recognizer or reflowing it while a finger is down.
+  void chromePointerDown(PointerDownEvent event) {
+    _chromePointers.add(event.pointer);
+    if (_chromePointers.length == 1 && quick && controls && !zoomed) {
+      _swipePointer = event.pointer;
+      _swipeStart = event.position;
+    } else {
+      _swipePointer = null;
+      _swipeStart = null;
+    }
+  }
+
+  void chromePointerUp(PointerUpEvent event) {
+    final start = _swipePointer == event.pointer ? _swipeStart : null;
+    _chromePointers.remove(event.pointer);
+    _swipePointer = null;
+    _swipeStart = null;
+    if (start == null || !quick || !controls || zoomed) return;
+    final delta = event.position - start;
+    if (delta.dy < -32 && -delta.dy > delta.dx.abs() * 1.2) {
+      setState(() => controls = false);
+    }
+  }
+
+  void chromePointerCancel(PointerCancelEvent event) {
+    _chromePointers.remove(event.pointer);
+    _swipePointer = null;
+    _swipeStart = null;
   }
 
   void showNotice(String message, {String? requestId}) {
@@ -475,7 +511,7 @@ class PackReaderPageState extends State<PackReaderPage>
         jumpEpoch++;
         zoomReset++;
         zoomed = false;
-        controls = true;
+        if (!quick) controls = true;
       });
     }
   }
@@ -912,7 +948,8 @@ class PackReaderPageState extends State<PackReaderPage>
     final darkBars =
         !controls || Theme.of(context).brightness == Brightness.dark;
     final window = MediaQuery.sizeOf(context);
-    final compact = window.width > window.height && window.height <= 500;
+    final compact =
+        !quick && window.width > window.height && window.height <= 500;
     final chromeButtonStyle = IconButton.styleFrom(
       minimumSize: const Size(44, 44),
       padding: EdgeInsets.zero,
@@ -1136,59 +1173,78 @@ class PackReaderPageState extends State<PackReaderPage>
                   Positioned.fill(
                     child: IgnorePointer(
                       ignoring: session.cleanupBusy || session.cleanupFrozen,
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final size = constraints.biggest;
-                          if (showingEnd) return end();
-                          return session.preferences.mode ==
-                                  ReaderMode.horizontal
-                              ? _HorizontalReader(
-                                  key: ValueKey(
-                                    'horizontal-${session.packEpoch}',
-                                  ),
-                                  session: session,
-                                  jumpEpoch: jumpEpoch,
-                                  resetZoom: zoomReset,
-                                  size: size,
-                                  picture: picture,
-                                  end: end,
-                                  tap: () => setState(() {
-                                    if (!quick) {
-                                      controls = !controls;
-                                    }
-                                  }),
-                                  onZoom: (value) {
-                                    if (mounted && zoomed != value) {
-                                      setState(() => zoomed = value);
-                                    }
-                                  },
-                                )
-                              : _VerticalReader(
-                                  key: ValueKey(
-                                    'vertical-${session.packEpoch}',
-                                  ),
-                                  session: session,
-                                  jumpEpoch: jumpEpoch,
-                                  resetZoom: zoomReset,
-                                  onZoom: (value) {
-                                    if (mounted && zoomed != value) {
-                                      setState(() => zoomed = value);
-                                    }
-                                  },
-                                  size: size,
-                                  picture: picture,
-                                  end: end,
-                                  tap: () => setState(() {
-                                    if (!quick) {
-                                      controls = !controls;
-                                    }
-                                  }),
-                                );
-                        },
+                      child: Listener(
+                        onPointerDown: chromePointerDown,
+                        onPointerUp: chromePointerUp,
+                        onPointerCancel: chromePointerCancel,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            final size = constraints.biggest;
+                            if (showingEnd) return end();
+                            return session.preferences.mode ==
+                                    ReaderMode.horizontal
+                                ? _HorizontalReader(
+                                    key: ValueKey(
+                                      'horizontal-${session.packEpoch}',
+                                    ),
+                                    session: session,
+                                    jumpEpoch: jumpEpoch,
+                                    resetZoom: zoomReset,
+                                    size: size,
+                                    picture: picture,
+                                    end: end,
+                                    tap: toggleControls,
+                                    onZoom: (value) {
+                                      if (mounted && zoomed != value) {
+                                        setState(() => zoomed = value);
+                                      }
+                                    },
+                                  )
+                                : _VerticalReader(
+                                    key: ValueKey(
+                                      'vertical-${session.packEpoch}',
+                                    ),
+                                    session: session,
+                                    jumpEpoch: jumpEpoch,
+                                    resetZoom: zoomReset,
+                                    onZoom: (value) {
+                                      if (mounted && zoomed != value) {
+                                        setState(() => zoomed = value);
+                                      }
+                                    },
+                                    size: size,
+                                    picture: picture,
+                                    end: end,
+                                    tap: toggleControls,
+                                  );
+                          },
+                        ),
                       ),
                     ),
                   ),
-                  if (!controls)
+                  if (quick && session.cleanupSupported)
+                    Positioned(
+                      right: 16,
+                      bottom: 16,
+                      child: FloatingActionButton.small(
+                        key: const Key('reader-trash-pack'),
+                        heroTag: null,
+                        tooltip: '移入回收站',
+                        backgroundColor: p.background,
+                        foregroundColor: p.danger,
+                        elevation: 3,
+                        shape: CircleBorder(side: BorderSide(color: p.line)),
+                        onPressed:
+                            session.inputBlocked ||
+                                !session.opened ||
+                                (_quickCleanup?.hiddenIds.contains(pack.id) ??
+                                    false)
+                            ? null
+                            : removeCurrent,
+                        child: const Icon(Icons.delete_outline, size: 22),
+                      ),
+                    ),
+                  if (!controls && !quick)
                     Positioned(
                       right: 16,
                       bottom: 12,
@@ -1230,61 +1286,63 @@ class PackReaderPageState extends State<PackReaderPage>
                 ),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          style: chromeButtonStyle,
-                          tooltip: '上一张',
-                          onPressed: !session.inputBlocked && session.index > 0
-                              ? () => jump(session.index - 1)
-                              : null,
-                          icon: const Icon(Icons.chevron_left, size: 20),
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            height: 44,
-                            child: SliderTheme(
-                              data: SliderTheme.of(context).copyWith(
-                                trackHeight: 3,
-                                thumbShape: const RoundSliderThumbShape(
-                                  enabledThumbRadius: 7.5,
+                    if (!quick)
+                      Row(
+                        children: [
+                          IconButton(
+                            style: chromeButtonStyle,
+                            tooltip: '上一张',
+                            onPressed:
+                                !session.inputBlocked && session.index > 0
+                                ? () => jump(session.index - 1)
+                                : null,
+                            icon: const Icon(Icons.chevron_left, size: 20),
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              height: 44,
+                              child: SliderTheme(
+                                data: SliderTheme.of(context).copyWith(
+                                  trackHeight: 3,
+                                  thumbShape: const RoundSliderThumbShape(
+                                    enabledThumbRadius: 7.5,
+                                  ),
+                                  overlayShape: const RoundSliderOverlayShape(
+                                    overlayRadius: 16,
+                                  ),
                                 ),
-                                overlayShape: const RoundSliderOverlayShape(
-                                  overlayRadius: 16,
+                                child: Slider(
+                                  // A fresh Slider state avoids reparenting its internal
+                                  // global-key semantics while a modal blocks this route
+                                  // (Flutter 3.47, flutter/flutter#193706).
+                                  key: ValueKey(
+                                    !session.inputBlocked && session.total > 1,
+                                  ),
+                                  value: session.index.toDouble(),
+                                  min: 0,
+                                  max: max(1, session.total - 1).toDouble(),
+                                  onChanged:
+                                      !session.inputBlocked && session.total > 1
+                                      ? (value) => jump(value.round())
+                                      : null,
                                 ),
-                              ),
-                              child: Slider(
-                                // A fresh Slider state avoids reparenting its internal
-                                // global-key semantics while a modal blocks this route
-                                // (Flutter 3.47, flutter/flutter#193706).
-                                key: ValueKey(
-                                  !session.inputBlocked && session.total > 1,
-                                ),
-                                value: session.index.toDouble(),
-                                min: 0,
-                                max: max(1, session.total - 1).toDouble(),
-                                onChanged:
-                                    !session.inputBlocked && session.total > 1
-                                    ? (value) => jump(value.round())
-                                    : null,
                               ),
                             ),
                           ),
-                        ),
-                        Text(
-                          '${session.index + 1} / ${session.total}',
-                          style: p.title.copyWith(fontSize: 14),
-                        ),
-                        IconButton(
-                          style: chromeButtonStyle,
-                          tooltip: '下一张',
-                          onPressed: !session.inputBlocked && !showingEnd
-                              ? () => jump(session.index + 1)
-                              : null,
-                          icon: const Icon(Icons.chevron_right, size: 20),
-                        ),
-                      ],
-                    ),
+                          Text(
+                            '${session.index + 1} / ${session.total}',
+                            style: p.title.copyWith(fontSize: 14),
+                          ),
+                          IconButton(
+                            style: chromeButtonStyle,
+                            tooltip: '下一张',
+                            onPressed: !session.inputBlocked && !showingEnd
+                                ? () => jump(session.index + 1)
+                                : null,
+                            icon: const Icon(Icons.chevron_right, size: 20),
+                          ),
+                        ],
+                      ),
                     if (!quick && !compact)
                       Row(
                         key: const Key('reader-tools'),
@@ -1316,82 +1374,8 @@ class PackReaderPageState extends State<PackReaderPage>
                             ),
                         ],
                       ),
-                    if (quick)
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: TextButton.icon(
-                          key: const Key('reader-quick-mode'),
-                          onPressed: session.inputBlocked ? null : settings,
-                          icon: PaperIcon(
-                            session.preferences.mode == ReaderMode.vertical
-                                ? PaperGlyph.vertical
-                                : PaperGlyph.horizontal,
-                            size: 18,
-                          ),
-                          label: Text(
-                            '阅读方式：${session.preferences.mode == ReaderMode.vertical ? '纵向拼接' : '横向翻页'}',
-                          ),
-                        ),
-                      ),
-                    if (quick)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 4, bottom: 4),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 10,
-                                  ),
-                                ),
-                                onPressed: session.inputBlocked
-                                    ? null
-                                    : () async {
-                                        if (await session.flush()) {
-                                          await widget.editTags(
-                                            session.range!.pack!,
-                                          );
-                                          if (session.live) {
-                                            await session.reload();
-                                          }
-                                        }
-                                      },
-                                child: const Text('图包标签'),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: FilledButton(
-                                key: const Key('reader-trash-pack'),
-                                style: FilledButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 10,
-                                  ),
-                                  backgroundColor: p.danger,
-                                  foregroundColor: Theme.of(context)
-                                      .colorScheme
-                                      .onError,
-                                ),
-                                onPressed:
-                                    session.inputBlocked ||
-                                        !session.opened ||
-                                        (_quickCleanup?.hiddenIds.contains(
-                                              pack.id,
-                                            ) ??
-                                            false)
-                                    ? null
-                                    : removeCurrent,
-                                child: const Text('移入回收站'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     if (!compact || quick) ...[
-                      Divider(height: 8, color: p.line),
+                      if (!quick) Divider(height: 8, color: p.line),
                       rangeNavigation(),
                     ],
                   ],
