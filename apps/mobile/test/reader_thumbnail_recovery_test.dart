@@ -140,9 +140,20 @@ void main() {
           await until(
             () =>
                 requests.isNotEmpty &&
-                (scenario == 'close-request' || retry.evaluate().isNotEmpty),
+                (scenario != 'unauthorized' || retry.evaluate().isNotEmpty),
             'first failure/request',
           );
+          if (scenario != 'unauthorized') {
+            expect(
+              retry,
+              findsNothing,
+              reason: 'waiting and automatic retry show loading',
+            );
+            expect(
+              find.descendant(of: sheet, matching: find.text('加载中')),
+              findsWidgets,
+            );
+          }
           if (scenario.startsWith('close-')) {
             Navigator.of(t.element(sheet)).pop();
             await t.pump(const Duration(milliseconds: 10));
@@ -163,16 +174,20 @@ void main() {
             expect(requests.length, 1);
           } else {
             if (scenario == 'manual') {
+              await until(
+                () => requests.length == 3 && retry.evaluate().isNotEmpty,
+                'manual retry after bounded automatic attempts',
+              );
               healthy = true;
               await t.tap(retry);
               await until(
-                () => retry.evaluate().isEmpty && requests.length == 2,
+                () => retry.evaluate().isEmpty && requests.length == 4,
                 'manual retry succeeds',
               );
               await t.pump(const Duration(seconds: 3));
               expect(
                 requests.length,
-                2,
+                4,
                 reason: 'manual retry consumes the pending automatic timer',
               );
             } else {

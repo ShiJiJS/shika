@@ -133,7 +133,7 @@ void main() {
         }
         await t.tap(find.text('跳过这一张').hitTestable());
         await until(
-          () => find.text('已到本包末尾').hitTestable().evaluate().length == 1,
+          () => find.text('已阅读到末尾').hitTestable().evaluate().length == 1,
         );
         expect(find.text('跳过这一张'), findsNothing);
         final state = t.state<PackReaderPageState>(find.byType(PackReaderPage));
@@ -148,7 +148,7 @@ void main() {
         await until(() => find.text('跳过这一张').evaluate().length == 1);
         await t.tap(find.byTooltip('下一张'));
         await until(() => find.text('跳过这一张').evaluate().isEmpty);
-        expect(find.text('已到本包末尾').hitTestable(), findsOneWidget);
+        expect(find.text('已阅读到末尾').hitTestable(), findsOneWidget);
         expect(repo.openedCount, 0);
         expect(repo.revisions, isEmpty);
         await t.tap(find.text('返回来源').hitTestable());

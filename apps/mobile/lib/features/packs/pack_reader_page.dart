@@ -14,6 +14,7 @@ import '../../ui/paper.dart';
 import '../../ui/paper_icons.dart';
 import 'pack_reading_session.dart';
 import 'pack_file_action.dart';
+import 'quick_pack_cleanup.dart';
 import 'reader_images.dart';
 
 class PackReaderPage extends StatefulWidget {
@@ -48,6 +49,16 @@ class PackReaderPageState extends State<PackReaderPage>
   bool controls = true, zoomed = false, leaving = false, _framePending = false;
   bool showingEnd = false;
   int jumpEpoch = 0, zoomReset = 0;
+  final Set<String> _preparingRemoval = {};
+  QuickPackCleanup? _quickCleanup;
+  QuickPackCleanup get quickCleanup => _quickCleanup ??= QuickPackCleanup(
+    session.cleanupFiles,
+    changedFiles: widget.repository.packFilesChanged,
+  );
+  Timer? _noticeTimer;
+  String _notice = '';
+  String? _noticeRequest;
+  int _noticeEpoch = 0, _observedEpoch = 0;
   @override
   void initState() {
     super.initState();
@@ -55,7 +66,12 @@ class PackReaderPageState extends State<PackReaderPage>
     // The library stays portrait; the reader already has a landscape layout.
     unawaited(SystemChrome.setPreferredOrientations(DeviceOrientation.values));
     session.addListener(changed);
-    unawaited(session.start(resumeSessionId: widget.resumeSessionId));
+    if (session.cleanupSupported) quickCleanup.addListener(quickCleanupChanged);
+    unawaited(
+      session.start(resumeSessionId: widget.resumeSessionId).then((_) {
+        if (mounted && quick) session.setQuickPreferences(true);
+      }),
+    );
   }
 
   String get scopeLabel {
@@ -92,6 +108,10 @@ class PackReaderPageState extends State<PackReaderPage>
 
   void changed() {
     if (!mounted) return;
+    if (_observedEpoch != session.packEpoch) {
+      _observedEpoch = session.packEpoch;
+      clearNotice();
+    }
     if (SchedulerBinding.instance.schedulerPhase ==
         SchedulerPhase.persistentCallbacks) {
       if (_framePending) return;
@@ -104,6 +124,176 @@ class PackReaderPageState extends State<PackReaderPage>
       setState(() {});
     }
   }
+
+  void clearNotice() {
+    _noticeTimer?.cancel();
+    _notice = '';
+    _noticeRequest = null;
+  }
+
+  void showNotice(String message, {String? requestId}) {
+    if (!mounted) return;
+    _noticeTimer?.cancel();
+    _notice = message;
+    _noticeRequest = requestId;
+    _noticeEpoch = session.packEpoch;
+    _noticeTimer = Timer(const Duration(seconds: 2), () {
+      if (mounted) setState(clearNotice);
+    });
+    changed();
+  }
+
+  void quickCleanupChanged() {
+    if (!mounted) return;
+    session.excludePacks(quickCleanup.hiddenIds);
+    if (_noticeRequest != null && _noticeEpoch == session.packEpoch) {
+      final item = quickCleanup.items
+          .where((x) => x.command.requestId == _noticeRequest)
+          .firstOrNull;
+      if (item?.state == QuickRemovalState.succeeded) {
+        showNotice('已移入回收站');
+      } else if (item?.error.isNotEmpty == true) {
+        showNotice('移除结果待核对，可在移除记录中查看');
+      }
+    }
+    changed();
+  }
+
+  void setQuick(bool enabled) {
+    session.setQuickPreferences(enabled);
+    setState(() {
+      quick = enabled;
+      controls = true;
+      jumpEpoch++;
+      zoomReset++;
+      zoomed = false;
+    });
+  }
+
+  Future<void> moveAdjacent(int direction) async {
+    if (session.inputBlocked) return;
+    final target = await session.findNeighbor(direction);
+    if (!mounted) return;
+    if (target != null) {
+      await move(target.packId);
+    } else if (direction > 0 && session.error.isEmpty) {
+      await close();
+    }
+  }
+
+  Future<void> removeQuick() async {
+    final pack = session.range?.pack;
+    if (pack == null ||
+        quickCleanup.hiddenIds.contains(pack.id) ||
+        !_preparingRemoval.add(pack.id)) {
+      return;
+    }
+    try {
+      if (!await session.flush() ||
+          !mounted ||
+          session.range?.pack?.id != pack.id) {
+        return;
+      }
+      final item = await quickCleanup.enqueue(pack);
+      if (!mounted || session.range?.pack?.id != pack.id) return;
+      showNotice(
+        item.state == QuickRemovalState.succeeded ? '已移入回收站' : '正在移入回收站…',
+        requestId: item.command.requestId,
+      );
+      final next = await session.findNeighbor(1);
+      if (!mounted || session.range?.pack?.id != pack.id) return;
+      if (next != null) {
+        await move(next.packId);
+      } else if (session.error.isEmpty) {
+        clearNotice();
+        await close();
+      }
+    } catch (failure) {
+      showNotice(packFileFailureMessage(failure));
+    } finally {
+      _preparingRemoval.remove(pack.id);
+    }
+  }
+
+  Future<void> undoQuick(QuickPackRemoval item) async {
+    final epoch = session.packEpoch;
+    if (await quickCleanup.undo(item) &&
+        mounted &&
+        session.packEpoch == epoch) {
+      await move(item.pack.id);
+      showNotice('已撤销移除');
+    }
+  }
+
+  Future<void> removalRecords() => paperSheet<void>(
+    context,
+    AnimatedBuilder(
+      animation: quickCleanup,
+      builder: (context, _) => SheetFrame(
+        title: '移除记录',
+        children: [
+          if (quickCleanup.items.isEmpty) const Text('暂无移除记录'),
+          for (final item in quickCleanup.items.reversed)
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Text(item.pack.displayTitle),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.restored
+                        ? '已撤销移除'
+                        : item.error.isNotEmpty
+                        ? item.error
+                        : switch (item.state) {
+                            QuickRemovalState.queued => '正在提交',
+                            QuickRemovalState.pending => '正在处理',
+                            QuickRemovalState.succeeded => '已移入回收站，源文件保留',
+                            QuickRemovalState.failed => '移除未完成',
+                            QuickRemovalState.unknown => '结果待核对',
+                          },
+                  ),
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      if (item.canUndo)
+                        TextButton(
+                          onPressed: item.working
+                              ? null
+                              : () => undoQuick(item),
+                          child: const Text('撤销移除'),
+                        ),
+                      if (!item.restored &&
+                          item.state != QuickRemovalState.succeeded)
+                        TextButton(
+                          onPressed: item.working
+                              ? null
+                              : () => quickCleanup.query(item),
+                          child: const Text('查询原结果'),
+                        ),
+                      if (item.undoCommand != null && !item.restored)
+                        TextButton(
+                          onPressed: item.working
+                              ? null
+                              : () => quickCleanup.undo(item),
+                          child: const Text('查询撤销结果'),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+              trailing: item.working
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : null,
+            ),
+        ],
+      ),
+    ),
+  );
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -129,6 +319,8 @@ class PackReaderPageState extends State<PackReaderPage>
           session.cleanupFrozen ||
           session.invalidated ||
           session.range?.pack == null ||
+          (_quickCleanup?.hiddenIds.contains(session.cursor?.packId) ??
+              false) ||
           await session.flush()) {
         return true;
       }
@@ -201,6 +393,10 @@ class PackReaderPageState extends State<PackReaderPage>
 
   Future<void> removeCurrent() async {
     if (session.inputBlocked || !session.cleanupSupported) return;
+    if (quick) {
+      await removeQuick();
+      return;
+    }
     if (!quick) {
       final confirmed = await paperSheet<bool>(
         context,
@@ -290,7 +486,7 @@ class PackReaderPageState extends State<PackReaderPage>
       AnimatedBuilder(
         animation: session,
         builder: (context, _) => SheetFrame(
-          title: '阅读设置',
+          title: quick ? '快速整理阅读方式' : '阅读设置',
           footer: FilledButton(
             key: const Key('reader-settings-done'),
             onPressed: () => Navigator.pop(context),
@@ -298,7 +494,9 @@ class PackReaderPageState extends State<PackReaderPage>
           ),
           children: [
             Text(
-              session.range?.pack?.displayTitle ?? '',
+              quick
+                  ? '此次整理使用相同设置，退出后恢复各图包的阅读设置。'
+                  : session.range?.pack?.displayTitle ?? '',
               style: TextStyle(fontSize: 13, color: Paper.of(context).muted),
             ),
             const SizedBox(height: 16),
@@ -535,9 +733,20 @@ class PackReaderPageState extends State<PackReaderPage>
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    subtitle: entry.available ? null : const Text('暂不可读取'),
+                    subtitle:
+                        _quickCleanup?.hiddenIds.contains(entry.pack.id) == true
+                        ? const Text('已从当前队列移除')
+                        : entry.available
+                        ? null
+                        : const Text('暂不可读取'),
                     onTap:
-                        entry.available && !session.busy && !session.hasPending
+                        entry.available &&
+                            !(_quickCleanup?.hiddenIds.contains(
+                                  entry.pack.id,
+                                ) ??
+                                false) &&
+                            !session.busy &&
+                            !session.hasPending
                         ? () async {
                             Navigator.pop(context);
                             await move(entry.pack.id);
@@ -690,9 +899,7 @@ class PackReaderPageState extends State<PackReaderPage>
   }
 
   Widget end() => _PackEnd(
-    next: session.range?.next == null
-        ? null
-        : () => move(session.range!.next!.packId),
+    next: session.range?.next == null ? null : () => moveAdjacent(1),
     back: close,
     previous: () => jump(max(0, session.total - 1)),
     enabled: !session.inputBlocked,
@@ -768,7 +975,7 @@ class PackReaderPageState extends State<PackReaderPage>
                         TextButton(
                           onPressed: session.inputBlocked
                               ? null
-                              : () => setState(() => quick = false),
+                              : () => setQuick(false),
                           child: const Text('完成'),
                         ),
                       PaperMenuButton<String>(
@@ -780,14 +987,11 @@ class PackReaderPageState extends State<PackReaderPage>
                             await removeCurrent();
                           }
                           if (value == 'quick') {
-                            setState(() {
-                              quick = !quick;
-                              controls = true;
-                            });
+                            setQuick(!quick);
                           }
                           if (value == 'details') await details();
                           if (value == 'previous') {
-                            await move(session.range!.previous!.packId);
+                            await moveAdjacent(-1);
                           }
                           if (value == 'tags' &&
                               session.range?.pack != null &&
@@ -797,11 +1001,34 @@ class PackReaderPageState extends State<PackReaderPage>
                           }
                           if (value == 'queue') await queue();
                           if (value == 'overview') await overview();
+                          if (value == 'settings') await settings();
+                          if (value == 'records') await removalRecords();
+                          if (value == 'undo' &&
+                              quickCleanup.undoable != null) {
+                            await undoQuick(quickCleanup.undoable!);
+                          }
                           if (value == 'immerse') {
                             setState(() => controls = false);
                           }
                         },
                         itemBuilder: (_) => [
+                          if (quick)
+                            const PopupMenuItem(
+                              value: 'settings',
+                              child: Text('阅读方式'),
+                            ),
+                          if (_quickCleanup?.items.isNotEmpty == true)
+                            PopupMenuItem(
+                              value: 'records',
+                              child: Text(
+                                '移除记录${quickCleanup.unresolved > 0 ? '（${quickCleanup.unresolved}）' : ''}',
+                              ),
+                            ),
+                          if (_quickCleanup?.undoable != null)
+                            const PopupMenuItem(
+                              value: 'undo',
+                              child: Text('撤销移除'),
+                            ),
                           if (compact && usable) ...[
                             const PopupMenuItem(
                               value: 'overview',
@@ -836,7 +1063,7 @@ class PackReaderPageState extends State<PackReaderPage>
                           if (session.range?.previous != null)
                             const PopupMenuItem(
                               value: 'previous',
-                              child: Text('上一包'),
+                              child: Text('上一个'),
                             ),
                           if (usable)
                             const PopupMenuItem(
@@ -856,6 +1083,20 @@ class PackReaderPageState extends State<PackReaderPage>
       mainAxisSize: MainAxisSize.min,
       children: [
         if (controls) ColoredBox(color: p.background, child: status(context)),
+        if (controls && _notice.isNotEmpty)
+          ColoredBox(
+            key: const Key('reader-cleanup-notice'),
+            color: p.background,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              child: Text(
+                _notice,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 12, color: p.olive),
+              ),
+            ),
+          ),
         if (session.recoveryReason != null && controls)
           ColoredBox(
             color: p.background,
@@ -1076,6 +1317,23 @@ class PackReaderPageState extends State<PackReaderPage>
                         ],
                       ),
                     if (quick)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton.icon(
+                          key: const Key('reader-quick-mode'),
+                          onPressed: session.inputBlocked ? null : settings,
+                          icon: PaperIcon(
+                            session.preferences.mode == ReaderMode.vertical
+                                ? PaperGlyph.vertical
+                                : PaperGlyph.horizontal,
+                            size: 18,
+                          ),
+                          label: Text(
+                            '阅读方式：${session.preferences.mode == ReaderMode.vertical ? '纵向拼接' : '横向翻页'}',
+                          ),
+                        ),
+                      ),
+                    if (quick)
                       Padding(
                         padding: const EdgeInsets.only(top: 4, bottom: 4),
                         child: Row(
@@ -1118,7 +1376,12 @@ class PackReaderPageState extends State<PackReaderPage>
                                       .onError,
                                 ),
                                 onPressed:
-                                    session.inputBlocked || !session.opened
+                                    session.inputBlocked ||
+                                        !session.opened ||
+                                        (_quickCleanup?.hiddenIds.contains(
+                                              pack.id,
+                                            ) ??
+                                            false)
                                     ? null
                                     : removeCurrent,
                                 child: const Text('移入回收站'),
@@ -1246,8 +1509,8 @@ class PackReaderPageState extends State<PackReaderPage>
     final previous = TextButton(
       onPressed: session.inputBlocked || session.range?.previous == null
           ? null
-          : () => move(session.range!.previous!.packId),
-      child: const Text('上一包', style: TextStyle(fontSize: 13)),
+          : () => moveAdjacent(-1),
+      child: const Text('上一个', style: TextStyle(fontSize: 13)),
     );
     final next = TextButton(
       style: TextButton.styleFrom(minimumSize: const Size(84, 44)),
@@ -1255,12 +1518,12 @@ class PackReaderPageState extends State<PackReaderPage>
           ? close
           : session.inputBlocked
           ? null
-          : () => move(session.range!.next!.packId),
+          : () => moveAdjacent(1),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            session.range?.next == null ? '返回来源' : '下一包',
+            session.range?.next == null ? '返回来源' : '下一个',
             style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w400),
           ),
           if (session.range?.next != null) ...[
@@ -1331,6 +1594,9 @@ class PackReaderPageState extends State<PackReaderPage>
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
     );
     session.removeListener(changed);
+    _noticeTimer?.cancel();
+    _quickCleanup?.removeListener(quickCleanupChanged);
+    _quickCleanup?.dispose();
     session.dispose();
     images.dispose();
     super.dispose();
@@ -1355,7 +1621,7 @@ class _PackEnd extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
-            '已到本包末尾',
+            '已阅读到末尾',
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           const SizedBox(height: 16),
@@ -1367,7 +1633,7 @@ class _PackEnd extends StatelessWidget {
               if (next != null)
                 FilledButton(
                   onPressed: enabled ? next : null,
-                  child: const Text('阅读下一包'),
+                  child: const Text('下一个'),
                 ),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(

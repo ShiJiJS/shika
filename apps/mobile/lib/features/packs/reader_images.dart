@@ -191,6 +191,27 @@ class _ReaderImageState extends State<ReaderImage> {
     final errorButtonStyle = widget.thumbnail
         ? null
         : TextButton.styleFrom(foregroundColor: Colors.white);
+    Widget loading() => Center(
+      key: Key('reader-image-loading-${widget.page.id}'),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(
+            width: 22,
+            height: 22,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '加载中',
+            style: TextStyle(
+              fontSize: widget.thumbnail ? 11 : 14,
+              color: widget.thumbnail ? null : Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
     Widget failure() => Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(12),
@@ -199,7 +220,7 @@ class _ReaderImageState extends State<ReaderImage> {
           children: [
             if (!widget.thumbnail)
               const Text(
-                '这一张暂时无法载入',
+                '图片加载失败',
                 style: TextStyle(color: Colors.white, fontSize: 14),
               ),
             TextButton.icon(
@@ -222,15 +243,7 @@ class _ReaderImageState extends State<ReaderImage> {
         ),
       ),
     );
-    if (!widget.active) {
-      return const Center(
-        child: SizedBox(
-          width: 22,
-          height: 22,
-          child: CircularProgressIndicator(strokeWidth: 2),
-        ),
-      );
-    }
+    if (!widget.active) return loading();
     if (widget.thumbnail && widget.page.thumbnail == null) {
       return const Center(child: Icon(Icons.image_not_supported_outlined));
     }
@@ -258,13 +271,7 @@ class _ReaderImageState extends State<ReaderImage> {
       gaplessPlayback: false,
       frameBuilder: (context, child, frame, synchronous) {
         if (frame == null) {
-          return const Center(
-            child: SizedBox(
-              width: 22,
-              height: 22,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          );
+          return loading();
         }
         if (widget.onFrame != null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -283,7 +290,7 @@ class _ReaderImageState extends State<ReaderImage> {
             error is HttpException ||
             error is TimeoutException ||
             (error is NetworkImageLoadException &&
-                [429, 503].contains(error.statusCode));
+                [408, 429, 500, 502, 503, 504].contains(error.statusCode));
         if (transient && attempt < 2 && retry == null && current()) {
           retry = Timer(Duration(milliseconds: 400 * (attempt + 1)), () {
             retry = null;
@@ -296,7 +303,7 @@ class _ReaderImageState extends State<ReaderImage> {
             if (current()) widget.onUnauthorized?.call();
           });
         }
-        return failure();
+        return transient && attempt < 2 ? loading() : failure();
       },
     );
   }
