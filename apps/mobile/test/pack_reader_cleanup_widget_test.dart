@@ -143,7 +143,8 @@ void main() {
             findsNothing,
             reason: 'moving to another pack clears its transient notice',
           );
-          expect(find.byKey(const Key('reader-quick-mode')), findsOneWidget);
+          expect(find.byKey(const Key('reader-quick-mode')), findsNothing);
+          expect(find.byType(Slider), findsNothing);
           if (scenario == 'unknown') {
             expect(state().quickCleanup.unresolved, 1);
             await tap(find.byTooltip('图包更多'));
@@ -265,7 +266,8 @@ void slowCleanupTests() {
       expect(state().session.cursor!.packId, 'p2');
       expect(repo.filePosts, hasLength(1));
       expect(find.byKey(const Key('reader-cleanup-notice')), findsNothing);
-      await tap(find.byKey(const Key('reader-quick-mode')));
+      await tap(find.byTooltip('图包更多'));
+      await tap(find.text('阅读方式'));
       await tap(find.text('横向翻页'));
       await until(
         () => state().session.preferences.mode == ReaderMode.horizontal,
