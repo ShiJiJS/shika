@@ -7,6 +7,12 @@ class PackPurgeSelection {
     : id = _id(raw['id']),
       createdAt = _integer(raw['created_at']),
       historical = _flag(raw['historical']),
+      reviewRequestId = raw['review_request_id'] == null
+          ? null
+          : _id(raw['review_request_id']),
+      reviewIds = List.unmodifiable(
+        ((raw['review_ids'] ?? <Object>[]) as List).map(_id),
+      ),
       ids = List.unmodifiable((raw['ids'] as List).map(_id)),
       batches = List.unmodifiable(
         (raw['batches'] as List).map((v) => PackPurgeBatch.fromJson(_map(v))),
@@ -17,11 +23,17 @@ class PackPurgeSelection {
         ids.length > 50000 ||
         ids.toSet().length != ids.length ||
         batches.length > 256 ||
+        (reviewRequestId == null) != reviewIds.isEmpty ||
+        reviewIds.length > 1000 ||
+        reviewIds.toSet().length != reviewIds.length ||
         batches.map((b) => b.command.requestId).toSet().length !=
             batches.length) {
       throw const LibraryFailure('本机删除选择记录不完整');
     }
     final original = ids.toSet(), claimed = <String>{};
+    if (reviewIds.any((id) => !original.contains(id))) {
+      throw const LibraryFailure('本机准备清单与原选择不一致');
+    }
     for (final batch in batches) {
       if (batch.command.purgeSelectionId != id ||
           batch.command.targets.any((v) => !original.contains(v)) ||
@@ -34,6 +46,8 @@ class PackPurgeSelection {
   final String id;
   final int createdAt;
   final bool historical;
+  final String? reviewRequestId;
+  final List<String> reviewIds;
   final List<String> ids;
   final List<PackPurgeBatch> batches;
   List<String> get remaining {
@@ -48,6 +62,8 @@ class PackPurgeSelection {
     'id': id,
     'created_at': createdAt,
     'historical': historical,
+    'review_request_id': reviewRequestId,
+    'review_ids': reviewIds,
     'ids': ids,
     'batches': batches.map((v) => v.toJson()).toList(),
   };
@@ -219,6 +235,42 @@ class PackPurgeSelections {
   Future<PackPurgeSelection> read(String id) async {
     final result = (await list()).where((v) => v.id == id).firstOrNull;
     if (result == null) throw const LibraryFailure('这份删除选择已移除，请返回重新读取');
+    return result;
+  }
+
+  /// Persist only a read-only preparation identity, never deletion permission.
+  Future<String> reviewRequest(
+    String id,
+    Iterable<String> selected, {
+    String? replace,
+  }) async {
+    _check();
+    if (files.readOnly) throw const LibraryFailure('历史选择不能准备新的删除清单');
+    final sorted = selected.toSet().toList()..sort();
+    final ids = sorted.take(1000).toList();
+    final result = await files.journal._edit(files.scope, (rows) {
+      _check();
+      final value = _purgeSelection(id, rows[id]);
+      if (value.historical ||
+          jsonEncode(value.remaining.take(1000).toList()) != jsonEncode(ids)) {
+        throw const LibraryFailure('剩余选择已变化，请重新读取后核对');
+      }
+      final same = jsonEncode(value.reviewIds) == jsonEncode(ids);
+      if (replace == null && same && value.reviewRequestId != null) {
+        return value.reviewRequestId!;
+      }
+      if (replace != null && (!same || value.reviewRequestId != replace)) {
+        throw const LibraryFailure('清单已有新的准备请求，请关闭后重新打开');
+      }
+      final key = packFileRequestId();
+      rows[id] = {
+        ...value.toJson(),
+        'review_request_id': key,
+        'review_ids': ids,
+      };
+      return key;
+    }, namespace: _purgeSelectionsNamespace);
+    _check();
     return result;
   }
 

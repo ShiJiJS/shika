@@ -42,10 +42,20 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
   void initState() {
     super.initState();
     try {
+      final selections = widget.selectionId == null
+          ? null
+          : PackPurgeSelections(widget.repository.createPackFiles());
       session = PackPurgeReviewSession(
         widget.repository.createPackPurge(),
         widget.ids,
         selectionId: widget.selectionId,
+        requestIdentity: selections == null
+            ? null
+            : (replace) => selections.reviewRequest(
+                widget.selectionId!,
+                widget.ids,
+                replace: replace,
+              ),
       )..addListener(changed);
       unawaited(session!.load(submit: true));
     } catch (failure) {
@@ -163,9 +173,9 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
           ),
           if (s != null && !s.busy && s.live && !s.canConfirm)
             TextButton(onPressed: () => s.load(), child: const Text('查询原清单')),
-          if (s != null && !s.busy && s.live && !s.canConfirm)
+          if (s?.canRenew == true)
             TextButton(
-              onPressed: () => s.load(renew: true),
+              onPressed: () => s!.load(renew: true),
               child: const Text('重新准备'),
             ),
           FilledButton(
@@ -205,13 +215,35 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
             '剩余 ${widget.ids.length} 个，本批核对1000个。其余选择已保存，后续批次仍需逐批核对确认。',
           ),
         if (s?.busy == true)
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
-            child: LinearProgressIndicator(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LinearProgressIndicator(
+                  value: s!.preparing ? s.processed / s.ids.length : null,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  s.preparing
+                      ? '${plan!.status == 'queued' ? '等待服务器核对' : '正在核对图片'} · 已核对 ${s.processed} / ${s.ids.length} 个图包'
+                      : '正在准备图片清单…',
+                  key: const Key('pack-purge-preparing'),
+                ),
+                const SizedBox(height: 6),
+                _note(context, '数量较多时可能需要较长时间。关闭后可从已保存的删除选择继续核对，不会自动删除。'),
+                if (s.waitingMessage.isNotEmpty) ...[
+                  const SizedBox(height: 6),
+                  _note(context, s.waitingMessage),
+                ],
+              ],
+            ),
           ),
         if (plan != null) ...[
           Text(
-            '${plan.members.length} 个图包 · ${plan.imageCount} 张图片',
+            s!.preparing
+                ? '已核对 ${plan.imageCount} 张图片'
+                : '${plan.members.length} 个图包 · ${plan.imageCount} 张图片',
             key: const Key('pack-purge-summary'),
             style: TextStyle(
               fontSize: 14,
@@ -221,11 +253,11 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
           ),
           _note(
             context,
-            '图片共 ${_bytes(plan.imageBytes)}，保留 ${plan.members.fold<int>(0, (n, m) => n + m.retainedEntries)} 项其他内容',
+            '${s.preparing ? '已核对图片' : '图片共'} ${_bytes(plan.imageBytes)}，保留 ${plan.members.fold<int>(0, (n, m) => n + m.retainedEntries)} 项其他内容',
           ),
           PaperActionRow(
             title: '查看图包和图片清单',
-            onTap: s!.busy || !s.live ? null : members,
+            onTap: s.busy || !s.live ? null : members,
             trailing: const Icon(Icons.chevron_right, size: 19),
           ),
           if (plan.operationId != null)
