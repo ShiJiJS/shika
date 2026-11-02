@@ -1,5 +1,7 @@
 # 媒体库与图包升级：整体审阅入口
 
+> 2026-11-02 图包反馈修复：当前已交付第29版（preview.23/code29），NAS服务preview.8不变。[更新与测试记录](nas-app-preview-2026-11-02-code29.md) · [PR #176](https://github.com/ShiJiJS/video_viewer/pull/176)。只推进 #171–#175，总体持续目标及其余验收保持暂停；下文第28版记录为历史。
+
 [整合PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)。2026-11-02按用户要求将当前源码合并到main，暂停后续开发；已交付版本继续使用第28版App和NAS服务preview.8。
 
 本分支汇总当前可用的第28版App、NAS服务preview.8对应的源码、规划、测试和独立原型，基于主分支`b690f508`，保留主分支新增的`apps/cli`命令行工具。
