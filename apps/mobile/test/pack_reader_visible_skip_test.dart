@@ -118,7 +118,7 @@ void main() {
           await t.tap(skip.hitTestable());
           await until(() => find.text('跳过这一张').evaluate().isEmpty);
           await t.pump(const Duration(seconds: 1));
-          expect(find.text('已到本包末尾').hitTestable(), findsOneWidget);
+          expect(find.text('已阅读到末尾').hitTestable(), findsOneWidget);
           expect(state.session.index, 2);
           expect(state.zoomed, false);
           expect(state.session.range!.pack!.id, 'p0');

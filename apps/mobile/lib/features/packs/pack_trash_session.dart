@@ -172,7 +172,7 @@ class PackTrashSession extends ChangeNotifier {
         failures.remove(item.trashId);
       } else {
         failures[item.trashId] = permanent
-            ? '本包已删 ${item.pagesDeleted}/${item.pagesTotal} 张，请核对原操作结果'
+            ? '已删 ${item.pagesDeleted}/${item.pagesTotal} 张，请核对原操作结果'
             : '未恢复，请重新读取图包状态后再试';
       }
     }

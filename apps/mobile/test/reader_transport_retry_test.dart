@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,7 +31,7 @@ class _TransportClient implements HttpClient {
 }
 
 void main() {
-  for (final scenario in ['recover', 'bounded', 'dispose']) {
+  for (final scenario in ['recover', 'bounded', 'dispose', 'slow']) {
     testWidgets('reader transport retry $scenario keeps the actual page', (
       t,
     ) async {
@@ -38,7 +39,9 @@ void main() {
         () => HttpServer.bind(InternetAddress.loopbackIPv4, 0),
       );
       final bytes = File('assets/media/flower-portrait.jpg').readAsBytesSync();
+      final release = Completer<void>();
       server!.listen((request) async {
+        if (scenario == 'slow') await release.future;
         request.response.persistentConnection = false;
         request.response.headers.contentType = ContentType('image', 'jpeg');
         request.response.add(bytes);
@@ -46,15 +49,17 @@ void main() {
       });
       final client = _TransportClient(
         HttpOverrides.runWithHttpOverrides(() => HttpClient(), _RealHttp()),
-        [
-          const SocketException('Synthetic temporary connection reset'),
-          if (scenario != 'dispose')
-            const HttpException(
-              'Connection closed before full header was received',
-            ),
-          if (scenario == 'bounded')
-            const SocketException('Synthetic still offline'),
-        ],
+        scenario == 'slow'
+            ? []
+            : [
+                const SocketException('Synthetic temporary connection reset'),
+                if (scenario != 'dispose')
+                  const HttpException(
+                    'Connection closed before full header was received',
+                  ),
+                if (scenario == 'bounded')
+                  const SocketException('Synthetic still offline'),
+              ],
       );
       debugNetworkImageHttpClientProvider = () => client;
       final repo = AssetReadingLibrary();
@@ -67,6 +72,7 @@ void main() {
       t.view.devicePixelRatio = 1;
       t.view.physicalSize = const Size(390, 844);
       addTearDown(() async {
+        if (!release.isCompleted) release.complete();
         await t.pumpWidget(const SizedBox());
         await t.pump();
         debugNetworkImageHttpClientProvider = null;
@@ -102,9 +108,21 @@ void main() {
           );
         }
 
-        await until(() => retry.evaluate().isNotEmpty);
+        await until(() => client.calls == 1);
+        expect(retry, findsNothing);
+        expect(
+          find.byKey(const Key('reader-image-loading-p0-0')),
+          findsOneWidget,
+        );
         expect(client.calls, 1);
         expect(repo.openedCount, 0);
+        if (scenario == 'slow') {
+          await t.pump(const Duration(seconds: 2));
+          expect(find.text('图片加载失败'), findsNothing);
+          expect(retry, findsNothing);
+          expect(find.text('加载中'), findsWidgets);
+          release.complete();
+        }
         if (scenario == 'dispose') {
           await t.pumpWidget(const SizedBox());
           await t.pump(const Duration(seconds: 3));
@@ -126,7 +144,14 @@ void main() {
           await t.tap(retry);
         }
         await until(() => repo.openedCount == 1);
-        expect(client.calls, scenario == 'bounded' ? 4 : 3);
+        expect(
+          client.calls,
+          scenario == 'bounded'
+              ? 4
+              : scenario == 'slow'
+              ? 1
+              : 3,
+        );
         expect(retry, findsNothing);
         final state = t.state<PackReaderPageState>(find.byType(PackReaderPage));
         expect(state.session.index, 0);

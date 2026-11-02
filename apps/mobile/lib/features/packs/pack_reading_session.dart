@@ -107,6 +107,123 @@ class PackReadingSession extends ChangeNotifier {
   PackReadingRange? range;
   ReaderCursor? cursor;
   ReaderPreferences preferences = const ReaderPreferences();
+  ReaderPreferences? _quickPreferences;
+  ReaderPreferences _packPreferences = const ReaderPreferences();
+  bool get quickPreferencesActive => _quickPreferences != null;
+  Set<String> _excludedPacks = {};
+  final SplayTreeMap<int, ReaderQueueEntry> _navigation = SplayTreeMap();
+  int _navigationRead = 0;
+  ReaderNeighbor? get previousPack => _neighbor(-1);
+  ReaderNeighbor? get nextPack => _neighbor(1);
+
+  ReaderNeighbor? _neighbor(int direction) {
+    final value = range;
+    final neighbor = direction < 0 ? value?.previous : value?.next;
+    if (neighbor == null || !_excludedPacks.contains(neighbor.packId)) {
+      return neighbor;
+    }
+    if (!_navigation.containsKey(neighbor.ordinal)) return null;
+    final ordinal = value!.cursor!;
+    final rows = direction < 0
+        ? _navigation.values.toList().reversed
+        : _navigation.values;
+    for (final row in rows) {
+      if ((direction < 0 ? row.ordinal < ordinal : row.ordinal > ordinal) &&
+          row.available &&
+          !_excludedPacks.contains(row.pack.id)) {
+        return ReaderNeighbor(row.pack.id, row.ordinal);
+      }
+    }
+    return null;
+  }
+
+  void excludePacks(Set<String> ids) {
+    if (setEquals(_excludedPacks, ids)) return;
+    _excludedPacks = {...ids};
+    if (cursor != null && ids.contains(cursor!.packId)) {
+      _saveTimer?.cancel();
+      _mark = null;
+      _shownId = null;
+      _dirty = _saved = 0;
+    }
+    _notify();
+    if (ids.isNotEmpty) unawaited(_refreshNavigation());
+  }
+
+  Future<void> _refreshNavigation() async {
+    final value = range;
+    if (!live || value?.cursor == null) return;
+    final generation = _generation, request = ++_navigationRead;
+    final first = max(0, value!.cursor! ~/ pageSize * pageSize - pageSize);
+    try {
+      final page = await reader.queue(
+        value.id,
+        offset: first,
+        limit: maximumPages,
+      );
+      if (!live || generation != _generation || request != _navigationRead) {
+        return;
+      }
+      _navigation.clear();
+      for (final row in page.entries) {
+        _navigation[row.ordinal] = row;
+      }
+      _notify();
+    } catch (_) {
+      // Optional neighbour metadata must not freeze reading or file work.
+    }
+  }
+
+  Future<ReaderNeighbor?> findNeighbor(int direction) async {
+    final known = direction < 0 ? previousPack : nextPack;
+    if (known != null) return known;
+    final value = range;
+    if (!live ||
+        value?.cursor == null ||
+        (direction < 0 ? value?.previous : value?.next) == null) {
+      return null;
+    }
+    final generation = _generation, ordinal = value!.cursor!;
+    var offset = direction < 0
+        ? max(0, (ordinal - 1) ~/ pageSize * pageSize)
+        : (ordinal + 1) ~/ pageSize * pageSize;
+    error = '';
+    try {
+      while (offset >= 0 && offset < value.candidateCount) {
+        final page = await reader.queue(
+          value.id,
+          offset: offset,
+          limit: pageSize,
+        );
+        if (!live || generation != _generation) return null;
+        final rows = direction < 0 ? page.entries.reversed : page.entries;
+        for (final row in rows) {
+          if ((direction < 0 ? row.ordinal < ordinal : row.ordinal > ordinal) &&
+              row.available &&
+              !_excludedPacks.contains(row.pack.id)) {
+            return ReaderNeighbor(row.pack.id, row.ordinal);
+          }
+        }
+        if (direction < 0 && offset == 0) break;
+        offset += direction * pageSize;
+      }
+    } catch (failure) {
+      if (live && generation == _generation) {
+        error = failure.toString();
+        _notify();
+      }
+    }
+    return null;
+  }
+
+  /// A sorting session has one viewing style, independent of saved pack choices.
+  void setQuickPreferences(bool enabled) {
+    if (enabled == quickPreferencesActive) return;
+    _quickPreferences = enabled ? preferences : null;
+    if (!enabled) preferences = _packPreferences;
+    _notify();
+  }
+
   ReaderQueuePage? queuePage;
   int index = 0, _generation = 0, _pageRead = 0, _queueRead = 0;
   double offsetRatio = 0;
@@ -175,6 +292,7 @@ class PackReadingSession extends ChangeNotifier {
   }
 
   void _install(PackReadingRange value) {
+    _navigation.clear();
     _generation++;
     _pageRead++;
     _queueRead++;
@@ -196,13 +314,15 @@ class PackReadingSession extends ChangeNotifier {
     final resume = value.resume;
     index = resume?.pageIndex ?? 0;
     offsetRatio = resume?.mark.offsetRatio ?? 0;
-    preferences = resume?.preferences ?? const ReaderPreferences();
+    _packPreferences = resume?.preferences ?? const ReaderPreferences();
+    preferences = _quickPreferences ?? _packPreferences;
     recoveryReason = resume?.recoveryReason;
     _completed = resume?.mark.completed ?? false;
     _atEnd = _completed;
     if (resume != null) _pages[index] = resume.page;
     _notify();
     if (cursor != null) unawaited(ensure(index, includeWindow: true));
+    if (_excludedPacks.isNotEmpty) unawaited(_refreshNavigation());
   }
 
   Future<bool> _run<T>(ReaderCommand<T> command, void Function(T) accept) {
@@ -389,6 +509,7 @@ class PackReadingSession extends ChangeNotifier {
         epoch != _generation ||
         pageIndex != index ||
         currentPage?.id != pageId ||
+        _excludedPacks.contains(cursor?.packId) ||
         currentPage?.readable != true) {
       return;
     }
@@ -436,7 +557,8 @@ class PackReadingSession extends ChangeNotifier {
         version: owner.version,
         progressRevision: value.revision,
       );
-      preferences = value.preferences;
+      _packPreferences = value.preferences;
+      preferences = _quickPreferences ?? _packPreferences;
       // The opened receipt clears the durable recovery marker. Keep its
       // explanation visible for this reading view; _install resets it per pack.
       recoveryReason = value.recoveryReason ?? recoveryReason;
@@ -489,16 +611,24 @@ class PackReadingSession extends ChangeNotifier {
 
   Future<bool> setPreferences(ReaderPreferences chosen) async {
     if (!await flush() || !live || cursor == null) return false;
+    if (quickPreferencesActive) {
+      _quickPreferences = chosen;
+      preferences = chosen;
+      _notify();
+      return true;
+    }
     preferences = chosen;
     _notify();
     return _run(WritePackPreferences(_nonce(), cursor!, chosen), (
       ReaderPreferences value,
     ) {
       preferences = value;
+      _packPreferences = value;
     });
   }
 
   Future<bool> move(String packId) async {
+    if (_excludedPacks.contains(packId)) return false;
     if (!await flush() || !live || cursor == null) return false;
     return _run(
       MovePackReading(

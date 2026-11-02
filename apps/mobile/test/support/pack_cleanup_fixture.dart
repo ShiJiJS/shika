@@ -134,7 +134,7 @@ class CleanupReaderLibrary extends AssetReadingLibrary {
         }
         final payload = Map<String, dynamic>.from(body!);
         filePosts.add({'path': path, ...payload});
-        fileStarted?.complete();
+        if (fileStarted?.isCompleted == false) fileStarted!.complete();
         await fileRelease?.future;
         if (loseBefore) {
           loseBefore = false;
@@ -150,16 +150,17 @@ class CleanupReaderLibrary extends AssetReadingLibrary {
         if (path == '/api/v1/packs/trash') {
           kind = 'trash';
           id = (payload['pack_ids'] as List).single;
-          final scene = payload['reading'] as Map;
-          if (scene['session_id'] != identity ||
-              scene['expected_session_revision'] != revision ||
-              scene['expected_progress_revision'] != revisions[id]) {
+          final scene = payload['reading'] as Map?;
+          if (scene != null &&
+              (scene['session_id'] != identity ||
+                  scene['expected_session_revision'] != revision ||
+                  scene['expected_progress_revision'] != revisions[id])) {
             throw const ApiFailure('阅读已变化', code: 'pack_changed', status: 409);
           }
           deleted[taskId] = (pack: id, cursor: cursor, revision: revision);
           unavailable.add(id);
-          revision++;
-          if (scene['advance'] != false) {
+          if (scene != null) revision++;
+          if (scene != null && scene['advance'] != false) {
             final next = [
               for (var i = cursor + 1; i < count; i++)
                 if (!unavailable.contains('p$i')) i,
@@ -183,7 +184,13 @@ class CleanupReaderLibrary extends AssetReadingLibrary {
           id = old.pack;
           unavailable.remove(id);
           restored = undoRestores;
-          if (restored) {
+          if (restored &&
+              filePosts.any(
+                (p) =>
+                    p['request_id'] ==
+                        Uri.decodeComponent(path.split('/')[4]).substring(3) &&
+                    p['reading'] != null,
+              )) {
             cursor = old.cursor;
             finished = false;
             revision++;

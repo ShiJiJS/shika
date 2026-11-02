@@ -139,6 +139,12 @@ void main() {
               3,
               reason: 'the remaining 21 cells wait without opening sockets',
             );
+            expect(find.text('重试'), findsNothing);
+            expect(
+              find.text('加载中'),
+              findsWidgets,
+              reason: 'queued and active cells are loading, not failing',
+            );
             update(() => active = false);
             await until(() => cancelled == 3, 'active transfers cancelled');
             await t.pump(const Duration(seconds: 4));
