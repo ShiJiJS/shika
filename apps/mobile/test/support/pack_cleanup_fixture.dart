@@ -37,6 +37,7 @@ class CleanupReaderLibrary extends AssetReadingLibrary {
       loseAfter = false,
       failMetadata = false,
       undoRestores = true;
+  bool rejectTrash = false;
   Completer<void>? fileStarted, fileRelease;
   String get selected {
     final after = [
@@ -139,6 +140,9 @@ class CleanupReaderLibrary extends AssetReadingLibrary {
         if (loseBefore) {
           loseBefore = false;
           throw const ApiFailure('结果尚未确认', code: 'response_lost', status: 503);
+        }
+        if (path == '/api/v1/packs/trash' && rejectTrash) {
+          throw const ApiFailure('无权移除此图包', code: 'forbidden', status: 403);
         }
         final key = payload['request_id'] as String;
         if (receipts.containsKey(key)) return receipts[key]!;

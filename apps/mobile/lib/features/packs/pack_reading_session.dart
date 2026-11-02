@@ -113,6 +113,27 @@ class PackReadingSession extends ChangeNotifier {
   Set<String> _excludedPacks = {};
   final SplayTreeMap<int, ReaderQueueEntry> _navigation = SplayTreeMap();
   int _navigationRead = 0;
+  int? _navigationLoadingGeneration;
+  final Map<String, int> _excludedOrdinals = {};
+  int get displayCount =>
+      max(0, (range?.candidateCount ?? 0) - _excludedPacks.length);
+  int get displayPosition {
+    final ordinal = range?.cursor;
+    if (ordinal == null || displayCount == 0) return 0;
+    final removedBefore = _excludedOrdinals.values
+        .where((i) => i <= ordinal)
+        .length;
+    return (ordinal + 1 - removedBefore).clamp(0, displayCount).toInt();
+  }
+
+  void _rememberExcludedOrdinals(Iterable<ReaderQueueEntry> entries) {
+    for (final row in entries) {
+      if (_excludedPacks.contains(row.pack.id)) {
+        _excludedOrdinals[row.pack.id] = row.ordinal;
+      }
+    }
+  }
+
   ReaderNeighbor? get previousPack => _neighbor(-1);
   ReaderNeighbor? get nextPack => _neighbor(1);
 
@@ -140,6 +161,13 @@ class PackReadingSession extends ChangeNotifier {
   void excludePacks(Set<String> ids) {
     if (setEquals(_excludedPacks, ids)) return;
     _excludedPacks = {...ids};
+    _excludedOrdinals.removeWhere((id, _) => !ids.contains(id));
+    if (range?.pack != null &&
+        ids.contains(range!.pack!.id) &&
+        range!.cursor != null) {
+      _excludedOrdinals[range!.pack!.id] = range!.cursor!;
+    }
+    _rememberExcludedOrdinals(_navigation.values);
     if (cursor != null && ids.contains(cursor!.packId)) {
       _saveTimer?.cancel();
       _mark = null;
@@ -152,8 +180,13 @@ class PackReadingSession extends ChangeNotifier {
 
   Future<void> _refreshNavigation() async {
     final value = range;
-    if (!live || value?.cursor == null) return;
+    if (!live ||
+        value?.cursor == null ||
+        _navigationLoadingGeneration == _generation) {
+      return;
+    }
     final generation = _generation, request = ++_navigationRead;
+    _navigationLoadingGeneration = generation;
     final first = max(0, value!.cursor! ~/ pageSize * pageSize - pageSize);
     try {
       final page = await reader.queue(
@@ -165,12 +198,17 @@ class PackReadingSession extends ChangeNotifier {
         return;
       }
       _navigation.clear();
+      _rememberExcludedOrdinals(page.entries);
       for (final row in page.entries) {
         _navigation[row.ordinal] = row;
       }
       _notify();
     } catch (_) {
       // Optional neighbour metadata must not freeze reading or file work.
+    } finally {
+      if (_navigationLoadingGeneration == generation) {
+        _navigationLoadingGeneration = null;
+      }
     }
   }
 
@@ -196,6 +234,7 @@ class PackReadingSession extends ChangeNotifier {
           limit: pageSize,
         );
         if (!live || generation != _generation) return null;
+        _rememberExcludedOrdinals(page.entries);
         final rows = direction < 0 ? page.entries.reversed : page.entries;
         for (final row in rows) {
           if ((direction < 0 ? row.ordinal < ordinal : row.ordinal > ordinal) &&
@@ -209,7 +248,9 @@ class PackReadingSession extends ChangeNotifier {
       }
     } catch (failure) {
       if (live && generation == _generation) {
-        error = failure.toString();
+        error = failure is RequestCancelled
+            ? '本次切换未完成，请重试'
+            : failure.toString();
         _notify();
       }
     }
@@ -883,7 +924,7 @@ class PackReadingSession extends ChangeNotifier {
   }
 
   Future<void> loadQueue({int offset = 0}) async {
-    if (!live || cursor == null) return;
+    if (!live || cursor == null || loadingQueue) return;
     final owner = cursor!, generation = _generation, request = ++_queueRead;
     loadingQueue = true;
     queueError = '';
@@ -898,6 +939,7 @@ class PackReadingSession extends ChangeNotifier {
       if (page.revision != owner.sessionRevision) {
         throw const LibraryFailure('本次范围位置已变化，请重新读取');
       }
+      _rememberExcludedOrdinals(page.entries);
       queuePage = page;
     } catch (failure) {
       if (live && generation == _generation && request == _queueRead) {

@@ -250,6 +250,7 @@ class WriteReaderDefaults extends ReaderCommand<ReaderPreferences> {
 }
 
 /// One connection-bound handle. Metadata, page and queue reads cancel separately;
+/// Queue consumers are independent until cancelQueue cancels them all.
 /// submit never retries. receipt is read-only and returns null only for unknown IDs.
 abstract class PackReader {
   bool get isCurrent;

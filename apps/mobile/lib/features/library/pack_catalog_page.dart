@@ -199,7 +199,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   double get listHeader => _geometry?.header ?? _listHeaderValue;
   double get _listHeaderValue => recent
       ? MediaLayout.historyHeader(context)
-      : MediaLayout.toolbar(context) +
+      : (selecting ? 0 : MediaLayout.toolbar(context)) +
             (hasContinuation ? continuationExtent : 0) +
             (entry.query.count > 0 || entry.query.search.isNotEmpty
                 ? MediaLayout.scope(context)
@@ -478,7 +478,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   }
 
   void toggleSelection() {
-    selection.cancel();
+    if (_detailsOpen || busy) return;
+    selection.cancel(clear: true);
     final oldHeader = listHeader;
     final pixels = scroll.hasClients ? scroll.offset : 0.0;
     final saved = position();
@@ -502,6 +503,13 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       }
       unawaited(load(restore: initialized));
     }
+  }
+
+  void selectFromCover(String id) {
+    if (_detailsOpen || busy) return;
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (!selecting) toggleSelection();
+    selection.toggle(id);
   }
 
   Future<({LibraryPack? pack, String error})> readContinuation() async {
@@ -843,29 +851,52 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     if (action == 'trash') await remove(pack);
   }
 
-  Future<void> remove(LibraryPack pack) async {
-    if (_detailsOpen || busy) return;
+  Future<void> remove(LibraryPack pack) => removePacks(
+    {pack.id},
+    label: pack.displayTitle,
+    description: '${pack.displayTitle} · ${pack.pageCount} 张',
+  );
+
+  Future<void> removePacks(
+    Set<String> ids, {
+    String? label,
+    String? description,
+  }) async {
+    if (_detailsOpen || busy || ids.isEmpty || selection.loading) return;
+    final targets = Set<String>.of(ids);
+    FocusManager.instance.primaryFocus?.unfocus();
     remember();
     _detailsOpen = true;
     try {
       final outcome = await showPackFileAction(
         context,
         files: repo.createPackFiles(),
-        command: PackFileCommand.trash(packFileRequestId(), [
-          pack.id,
-        ], label: pack.displayTitle),
+        command: PackFileCommand.trash(
+          packFileRequestId(),
+          targets,
+          label: label ?? '${targets.length} 个图包',
+        ),
         title: '移入回收站？',
-        description: '${pack.displayTitle} · ${pack.pageCount} 张',
+        description: description ?? '已选择 ${targets.length} 个图包。保留源文件，可在回收站恢复。',
       );
       if (outcome == null || !mounted || !outcome.files.isCurrent()) return;
       await outcome.files.acknowledge(outcome.command);
+      selected.removeAll(
+        outcome.task.result!.items
+            .where((x) => x.succeeded)
+            .map((x) => x.packId),
+      );
+      selection.cancel();
       repo.packFilesChanged();
       if (!mounted) return;
       if (outcome.task.result!.succeeded > 0) {
         showPackUndo(context, repo, outcome, onRestored: resumeRestored);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          PaperSnackBar(context: context, content: Text('图包未移除，请重新读取后再试')),
+          PaperSnackBar(
+            context: context,
+            content: const Text('图包未移除，请重新读取后再试'),
+          ),
         );
       }
     } catch (failure) {
@@ -1101,13 +1132,48 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       return Column(
         children: [
           if (!recent)
-            MediaCatalogSearch(
-              fieldKey: const Key('pack-search'),
-              controller: search,
-              hint: '搜索图包、作者、目录',
-              filterLabel: '筛选图包',
-              onFilter: filter,
-              onChanged: (value) => change(entry.query.copy(search: value)),
+            Row(
+              children: [
+                Expanded(
+                  child: selecting
+                      ? const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          child: Text('多选图包', style: TextStyle(fontSize: 13)),
+                        )
+                      : MediaCatalogSearch(
+                          fieldKey: const Key('pack-search'),
+                          controller: search,
+                          hint: '搜索图包、作者、目录',
+                          filterLabel: '筛选图包',
+                          onFilter: filter,
+                          onChanged: (value) =>
+                              change(entry.query.copy(search: value)),
+                        ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: TextButton(
+                    key: const Key('pack-multi-select'),
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(44, 44),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                    ),
+                    onPressed:
+                        busy ||
+                            _detailsOpen ||
+                            (!selecting && data.items.isEmpty)
+                        ? null
+                        : toggleSelection,
+                    child: Text(
+                      selecting ? '完成' : '多选',
+                      style: const TextStyle(fontSize: 13),
+                    ),
+                  ),
+                ),
+              ],
             ),
           if (error.isNotEmpty) note(error),
           if (pendingFiles.isNotEmpty)
@@ -1209,12 +1275,14 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                             count: '${data.total} 包',
                           ),
                         ),
-                      if (!recent)
+                      if (!recent && !selecting)
                         SliverToBoxAdapter(
                           child: MediaCatalogToolbar(
                             children: [
                               Text(
                                 '${data.total} 个图包',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 key: const Key('pack-count'),
                                 style: TextStyle(fontSize: 13, color: p.muted),
                               ),
@@ -1316,6 +1384,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                       children: [
                                         InkWell(
                                           key: Key('pack-tile-${pack.id}'),
+                                          onLongPress: () =>
+                                              selectFromCover(pack.id),
                                           onTap: () {
                                             if (selecting) {
                                               selection.toggle(pack.id);
@@ -1492,36 +1562,71 @@ class PackCatalogPageState extends State<PackCatalogPage> {
           if (selecting)
             SafeArea(
               top: false,
-              child: Row(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    child: TextButton(
-                      key: const Key('pack-select-all'),
-                      onPressed: selection.loading
-                          ? selection.cancel
-                          : () => selection.all(
-                              () => repo.selectPackIds(entry.query),
-                            ),
-                      child: Text(
-                        selection.loading ? '取消全选' : '全选匹配项',
-                        textAlign: TextAlign.center,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          key: const Key('pack-select-all'),
+                          onPressed: selection.loading
+                              ? selection.cancel
+                              : () => selection.all(
+                                  () => repo.selectPackIds(entry.query),
+                                ),
+                          child: Text(
+                            selection.loading ? '取消全选' : '全选匹配项',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          selection.loading ? '正在全选…' : '已选 ${selected.length}',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Expanded(
+                        child: TextButton(
+                          onPressed: selected.isEmpty || selection.loading
+                              ? null
+                              : () => tags({...selected}, appendOnly: true),
+                          child: const Text(
+                            '追加标签',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (repo.capabilities.packLogicalTrash)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: FilledButton.icon(
+                          key: const Key('pack-delete-selected'),
+                          style: FilledButton.styleFrom(
+                            backgroundColor: p.danger,
+                            foregroundColor: Theme.of(context)
+                                .colorScheme
+                                .onError,
+                          ),
+                          onPressed:
+                              selected.isEmpty ||
+                                  selected.length > 1000 ||
+                                  selection.loading ||
+                                  busy ||
+                                  _detailsOpen
+                              ? null
+                              : () => removePacks({...selected}),
+                          icon: const Icon(Icons.delete_outline),
+                          label: Text('移入回收站（${selected.length}）'),
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      selection.loading ? '正在全选…' : '已选 ${selected.length}',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: selected.isEmpty || selection.loading
-                          ? null
-                          : () => tags({...selected}, appendOnly: true),
-                      child: const Text('追加标签', textAlign: TextAlign.center),
-                    ),
-                  ),
+                  if (selected.length > 1000) note('每次最多移除1000个图包，请减少选择'),
                 ],
               ),
             ),

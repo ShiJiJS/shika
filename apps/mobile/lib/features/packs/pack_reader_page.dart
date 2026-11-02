@@ -60,8 +60,9 @@ class PackReaderPageState extends State<PackReaderPage>
   );
   Timer? _noticeTimer;
   String _notice = '';
-  String? _noticeRequest;
-  int _noticeEpoch = 0, _observedEpoch = 0;
+  QuickPackRemoval? _noticeUndo, _pendingRemovalNotice;
+  int _pendingRemovalEpoch = 0, _observedEpoch = 0;
+  bool _stepping = false;
   @override
   void initState() {
     super.initState();
@@ -131,7 +132,8 @@ class PackReaderPageState extends State<PackReaderPage>
   void clearNotice() {
     _noticeTimer?.cancel();
     _notice = '';
-    _noticeRequest = null;
+    _noticeUndo = null;
+    _pendingRemovalNotice = null;
   }
 
   void toggleControls() => setState(() => controls = !controls);
@@ -167,30 +169,34 @@ class PackReaderPageState extends State<PackReaderPage>
     _swipeStart = null;
   }
 
-  void showNotice(String message, {String? requestId}) {
+  void showNotice(String message, {QuickPackRemoval? undo}) {
     if (!mounted) return;
     _noticeTimer?.cancel();
     _notice = message;
-    _noticeRequest = requestId;
-    _noticeEpoch = session.packEpoch;
+    _noticeUndo = undo;
     _noticeTimer = Timer(const Duration(seconds: 2), () {
       if (mounted) setState(clearNotice);
     });
     changed();
   }
 
+  void offerRemovalNotice(QuickPackRemoval item) {
+    if (item.working) return;
+    if (item.canUndo) {
+      _pendingRemovalNotice = null;
+      showNotice('已移入回收站', undo: item);
+    } else if (item.state != QuickRemovalState.queued &&
+        item.state != QuickRemovalState.pending) {
+      _pendingRemovalNotice = null;
+    }
+  }
+
   void quickCleanupChanged() {
     if (!mounted) return;
     session.excludePacks(quickCleanup.hiddenIds);
-    if (_noticeRequest != null && _noticeEpoch == session.packEpoch) {
-      final item = quickCleanup.items
-          .where((x) => x.command.requestId == _noticeRequest)
-          .firstOrNull;
-      if (item?.state == QuickRemovalState.succeeded) {
-        showNotice('已移入回收站');
-      } else if (item?.error.isNotEmpty == true) {
-        showNotice('移除结果待核对，可在移除记录中查看');
-      }
+    final item = _pendingRemovalNotice;
+    if (item != null && _pendingRemovalEpoch == session.packEpoch) {
+      offerRemovalNotice(item);
     }
     changed();
   }
@@ -207,13 +213,19 @@ class PackReaderPageState extends State<PackReaderPage>
   }
 
   Future<void> moveAdjacent(int direction) async {
-    if (session.inputBlocked) return;
-    final target = await session.findNeighbor(direction);
-    if (!mounted) return;
-    if (target != null) {
-      await move(target.packId);
-    } else if (direction > 0 && session.error.isEmpty) {
-      await close();
+    if (session.inputBlocked || _stepping) return;
+    final epoch = session.packEpoch;
+    setState(() => _stepping = true);
+    try {
+      final target = await session.findNeighbor(direction);
+      if (!mounted || epoch != session.packEpoch) return;
+      if (target != null) {
+        await move(target.packId);
+      } else if (direction > 0 && session.error.isEmpty) {
+        await close();
+      }
+    } finally {
+      if (mounted) setState(() => _stepping = false);
     }
   }
 
@@ -232,17 +244,20 @@ class PackReaderPageState extends State<PackReaderPage>
       }
       final item = await quickCleanup.enqueue(pack);
       if (!mounted || session.range?.pack?.id != pack.id) return;
-      showNotice(
-        item.state == QuickRemovalState.succeeded ? '已移入回收站' : '正在移入回收站…',
-        requestId: item.command.requestId,
-      );
       final next = await session.findNeighbor(1);
       if (!mounted || session.range?.pack?.id != pack.id) return;
       if (next != null) {
         await move(next.packId);
+        if (mounted && session.range?.pack?.id == next.packId) {
+          _pendingRemovalNotice = item;
+          _pendingRemovalEpoch = session.packEpoch;
+          offerRemovalNotice(item);
+        }
       } else if (session.error.isEmpty) {
-        clearNotice();
-        await close();
+        setState(() => showingEnd = true);
+        _pendingRemovalNotice = item;
+        _pendingRemovalEpoch = session.packEpoch;
+        offerRemovalNotice(item);
       }
     } catch (failure) {
       showNotice(packFileFailureMessage(failure));
@@ -428,7 +443,7 @@ class PackReaderPageState extends State<PackReaderPage>
   }
 
   Future<void> removeCurrent() async {
-    if (session.inputBlocked || !session.cleanupSupported) return;
+    if (session.inputBlocked || _stepping || !session.cleanupSupported) return;
     if (quick) {
       await removeQuick();
       return;
@@ -743,7 +758,7 @@ class PackReaderPageState extends State<PackReaderPage>
               ),
               const SizedBox(height: 8),
               Text(
-                '${session.range?.candidateCount ?? 0} 个图包 · 只在这次范围内切换',
+                '${session.displayCount} 个图包 · 只在这次范围内切换',
                 style: const TextStyle(fontSize: 13),
               ),
               if (session.loadingQueue) const LinearProgressIndicator(),
@@ -799,6 +814,7 @@ class PackReaderPageState extends State<PackReaderPage>
   }
 
   Widget status(BuildContext context) {
+    if (_stepping) return const LinearProgressIndicator(minHeight: 2);
     if (session.cleanupBusy ||
         session.cleanupError.isNotEmpty ||
         session.hasCleanup) {
@@ -1017,7 +1033,7 @@ class PackReaderPageState extends State<PackReaderPage>
                         ),
                       PaperMenuButton<String>(
                         icon: const PaperIcon(PaperGlyph.more, size: 20),
-                        enabled: usable && !session.inputBlocked,
+                        enabled: usable && !session.inputBlocked && !_stepping,
                         tooltip: '图包更多',
                         onSelected: (value) async {
                           if (value == 'cleanup') {
@@ -1120,20 +1136,6 @@ class PackReaderPageState extends State<PackReaderPage>
       mainAxisSize: MainAxisSize.min,
       children: [
         if (controls) ColoredBox(color: p.background, child: status(context)),
-        if (controls && _notice.isNotEmpty)
-          ColoredBox(
-            key: const Key('reader-cleanup-notice'),
-            color: p.background,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              child: Text(
-                _notice,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 12, color: p.olive),
-              ),
-            ),
-          ),
         if (session.recoveryReason != null && controls)
           ColoredBox(
             color: p.background,
@@ -1148,6 +1150,39 @@ class PackReaderPageState extends State<PackReaderPage>
             ),
           ),
       ],
+    );
+    final cleanupNotice = Material(
+      key: const Key('reader-cleanup-notice'),
+      color: p.background,
+      elevation: 3,
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 12, right: 4),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                _notice,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 12, color: p.olive),
+              ),
+            ),
+            if (_noticeUndo?.canUndo == true)
+              TextButton(
+                key: const Key('reader-notice-undo'),
+                onPressed: () {
+                  final item = _noticeUndo!;
+                  setState(clearNotice);
+                  unawaited(undoQuick(item));
+                },
+                child: const Text('撤销'),
+              )
+            else
+              const SizedBox(height: 40),
+          ],
+        ),
+      ),
     );
     final canvas = Expanded(
       key: const Key('reader-stage-layout'),
@@ -1226,22 +1261,26 @@ class PackReaderPageState extends State<PackReaderPage>
                     Positioned(
                       right: 16,
                       bottom: 16,
-                      child: FloatingActionButton.small(
-                        key: const Key('reader-trash-pack'),
-                        heroTag: null,
-                        tooltip: '移入回收站',
-                        backgroundColor: p.background,
-                        foregroundColor: p.danger,
-                        elevation: 3,
-                        shape: CircleBorder(side: BorderSide(color: p.line)),
-                        onPressed:
-                            session.inputBlocked ||
-                                !session.opened ||
-                                (_quickCleanup?.hiddenIds.contains(pack.id) ??
-                                    false)
-                            ? null
-                            : removeCurrent,
-                        child: const Icon(Icons.delete_outline, size: 22),
+                      child: SizedBox.square(
+                        dimension: 80,
+                        child: FloatingActionButton(
+                          key: const Key('reader-trash-pack'),
+                          heroTag: null,
+                          tooltip: '移入回收站',
+                          backgroundColor: p.background,
+                          foregroundColor: p.danger,
+                          elevation: 3,
+                          shape: CircleBorder(side: BorderSide(color: p.line)),
+                          onPressed:
+                              session.inputBlocked ||
+                                  _stepping ||
+                                  !session.opened ||
+                                  (_quickCleanup?.hiddenIds.contains(pack.id) ??
+                                      false)
+                              ? null
+                              : removeCurrent,
+                          child: const Icon(Icons.delete_outline, size: 36),
+                        ),
                       ),
                     ),
                   if (!controls && !quick)
@@ -1446,6 +1485,13 @@ class PackReaderPageState extends State<PackReaderPage>
                         ),
                       ),
                     ),
+                  if (_notice.isNotEmpty)
+                    Positioned(
+                      top: 8,
+                      left: 56,
+                      right: 56,
+                      child: cleanupNotice,
+                    ),
                 ],
               ),
             ),
@@ -1458,7 +1504,7 @@ class PackReaderPageState extends State<PackReaderPage>
   Widget rangeNavigation() {
     final scope = TextButton(
       key: const Key('reader-scope'),
-      onPressed: session.inputBlocked ? null : queue,
+      onPressed: session.inputBlocked || _stepping ? null : queue,
       style: TextButton.styleFrom(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.zero,
@@ -1480,7 +1526,7 @@ class PackReaderPageState extends State<PackReaderPage>
           ),
           const SizedBox(width: 10),
           Text(
-            '${(session.range!.cursor ?? 0) + 1} / ${session.range!.candidateCount}',
+            '${session.displayPosition} / ${session.displayCount}',
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w400,
@@ -1491,7 +1537,8 @@ class PackReaderPageState extends State<PackReaderPage>
       ),
     );
     final previous = TextButton(
-      onPressed: session.inputBlocked || session.range?.previous == null
+      onPressed:
+          session.inputBlocked || _stepping || session.range?.previous == null
           ? null
           : () => moveAdjacent(-1),
       child: const Text('上一个', style: TextStyle(fontSize: 13)),
@@ -1500,7 +1547,7 @@ class PackReaderPageState extends State<PackReaderPage>
       style: TextButton.styleFrom(minimumSize: const Size(84, 44)),
       onPressed: session.range?.next == null
           ? close
-          : session.inputBlocked
+          : session.inputBlocked || _stepping
           ? null
           : () => moveAdjacent(1),
       child: Row(
