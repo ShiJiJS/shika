@@ -114,21 +114,40 @@ void main() {
             if (scenario == 'unknown') repo.loseAfter = true;
             await tap(find.byKey(const Key('reader-trash-pack')));
           }
-          if (scenario == 'normal' || scenario == 'tail') {
+          if (scenario == 'normal') {
             await until(
               () =>
                   find.byType(PackReaderPage).evaluate().isEmpty &&
-                  (scenario == 'tail' || returned != null),
+                  returned != null,
             );
-            if (scenario == 'normal') {
-              expect(returned!.command.readerContext!.quick, isFalse);
-              expect(returned!.command.readingSessionId, repo.identity);
-            } else {
-              expect(returned, isNull);
-              await until(() => repo.unavailable.contains(original));
-              expect(repo.filePosts.single.containsKey('reading'), isFalse);
-            }
+            expect(returned!.command.readerContext!.quick, isFalse);
+            expect(returned!.command.readingSessionId, repo.identity);
             expect(repo.marks[original]!.pageId, '$original-1');
+            return;
+          }
+          if (scenario == 'tail') {
+            await until(
+              () =>
+                  state().showingEnd &&
+                  !state().quickCleanup.items.single.working,
+            );
+            expect(state().session.displayCount, 2);
+            expect(state().session.displayPosition, 2);
+            expect(find.byKey(const Key('reader-notice-undo')), findsOneWidget);
+            await tap(find.byKey(const Key('reader-notice-undo')));
+            await until(
+              () =>
+                  state().session.opened &&
+                  !state().session.inputBlocked &&
+                  !state().showingEnd,
+            );
+            expect(state().session.range!.pack!.id, 'p2');
+            expect(state().session.displayCount, 3);
+            expect(state().session.displayPosition, 3);
+            expect(state().session.index, 1);
+            await tap(find.byTooltip('返回来源'));
+            await until(() => find.byType(PackReaderPage).evaluate().isEmpty);
+            expect(returned, isNull);
             return;
           }
           await until(
@@ -140,8 +159,8 @@ void main() {
           await until(() => !state().quickCleanup.items.single.working);
           expect(
             find.byKey(const Key('reader-cleanup-notice')),
-            findsNothing,
-            reason: 'moving to another pack clears its transient notice',
+            scenario == 'unknown' ? findsNothing : findsOneWidget,
+            reason: 'the automatic successor retains the short undo notice',
           );
           expect(find.byKey(const Key('reader-quick-mode')), findsNothing);
           expect(find.byType(Slider), findsNothing);

@@ -6,9 +6,8 @@ class _ServerPackReader implements PackReader {
   final ServerApi target;
   final int generation, epoch;
   bool disposed = false;
-  RequestScope metadata = RequestScope(),
-      manifest = RequestScope(),
-      entries = RequestScope();
+  RequestScope metadata = RequestScope(), manifest = RequestScope();
+  final Set<RequestScope> _entryReads = {};
   final RequestScope writes = RequestScope();
   final Map<String, Json> createScopes = {};
 
@@ -585,43 +584,49 @@ class _ServerPackReader implements PackReader {
     int limit = 40,
   }) async {
     current();
-    cancelQueue();
-    final scope = entries = RequestScope();
-    integer(offset);
-    if (limit < 1 || limit > 200) bad();
-    final data = await call(
-      'GET',
-      '/api/v1/pack-sessions/${segment(sessionId)}/entries',
-      scope,
-      query: {'offset': '$offset', 'limit': '$limit'},
-    );
-    current(scope);
-    final total = integer(data['total']), raw = items(data);
-    if (data['offset'] != offset ||
-        data['limit'] != limit ||
-        raw.length != min(limit, max(0, total - offset))) {
-      bad();
-    }
-    final values = <ReaderQueueEntry>[];
-    for (var i = 0; i < raw.length; i++) {
-      final item = raw[i];
-      if (integer(item['ordinal']) != offset + i) bad();
-      values.add(
-        ReaderQueueEntry(
-          offset + i,
-          pack(map(item['pack'])),
-          available: flag(item['available']),
-        ),
+    final scope = RequestScope();
+    _entryReads.add(scope);
+    try {
+      integer(offset);
+      if (limit < 1 || limit > 200) bad();
+      final data = await call(
+        'GET',
+        '/api/v1/pack-sessions/${segment(sessionId)}/entries',
+        scope,
+        query: {'offset': '$offset', 'limit': '$limit'},
       );
+      current(scope);
+      final total = integer(data['total']), raw = items(data);
+      if (data['offset'] != offset ||
+          data['limit'] != limit ||
+          raw.length != min(limit, max(0, total - offset))) {
+        bad();
+      }
+      final values = <ReaderQueueEntry>[];
+      for (var i = 0; i < raw.length; i++) {
+        final item = raw[i];
+        if (integer(item['ordinal']) != offset + i) bad();
+        values.add(
+          ReaderQueueEntry(
+            offset + i,
+            pack(map(item['pack'])),
+            available: flag(item['available']),
+          ),
+        );
+      }
+      if (values.map((row) => row.pack.id).toSet().length != values.length) {
+        bad();
+      }
+      return ReaderQueuePage(
+        entries: values,
+        total: total,
+        offset: offset,
+        limit: limit,
+        revision: integer(data['revision']),
+      );
+    } finally {
+      _entryReads.remove(scope);
     }
-    if (values.map((row) => row.pack.id).toSet().length != values.length) bad();
-    return ReaderQueuePage(
-      entries: values,
-      total: total,
-      offset: offset,
-      limit: limit,
-      revision: integer(data['revision']),
-    );
   }
 
   @override
@@ -639,7 +644,13 @@ class _ServerPackReader implements PackReader {
   @override
   void cancelPages() => manifest.cancel();
   @override
-  void cancelQueue() => entries.cancel();
+  void cancelQueue() {
+    for (final read in _entryReads.toList()) {
+      read.cancel();
+    }
+    _entryReads.clear();
+  }
+
   @override
   void dispose() {
     if (disposed) return;

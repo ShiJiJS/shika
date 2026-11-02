@@ -87,7 +87,7 @@ void main() {
           expect(t.getSize(chrome).height, lessThan(sample.$2 == 1 ? 80 : 150));
           final nav = t.getRect(chrome), button = t.getRect(trash);
           expect(button.overlaps(nav), isFalse);
-          expect(button.width, inInclusiveRange(40, 56));
+          expect(button.width, inInclusiveRange(80, 88));
           expect(trash.hitTestable(), findsOneWidget);
           final initialHeight = t.getSize(canvas).height;
           await tapImage();
