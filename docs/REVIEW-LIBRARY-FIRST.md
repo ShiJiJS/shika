@@ -1,5 +1,7 @@
 # 媒体库与图包升级：整体审阅入口
 
+> 第32版已交付（preview.26/code32）：修复大批量图包永久删除清单准备超时，持续显示进度并保存原请求以便续查。[安装及本次171项相关检查](nas-app-preview-2026-11-02-code32.md) · [PR #185](https://github.com/ShiJiJS/video_viewer/pull/185)。NAS服务preview.8不变，其余持续开发和验收仍暂停。
+
 > 第31版已交付（preview.25/code31）：修复前后切换取消，完善回收按钮/顶部撤销、即时数量位置及媒体库多选回收。[安装及本次308项相关检查](nas-app-preview-2026-11-02-code31.md)。NAS服务preview.8不变；其他持续开发和验收仍暂停，下文旧版记录为历史。
 
 > 第30版已交付（preview.24/code30）：按[#177](https://github.com/ShiJiJS/video_viewer/issues/177)精简快速整理并加入沉浸手势。[安装与本次44项测试](nas-app-preview-2026-11-02-code30.md)。NAS服务preview.8不变，其余持续开发与验收保持暂停。下文第29版及更早记录为历史。
