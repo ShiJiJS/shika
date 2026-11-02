@@ -9,6 +9,7 @@ import 'package:video_viewer/library/demo_repository.dart';
 import 'package:video_viewer/library/state_store.dart';
 import 'package:video_viewer/main.dart';
 import 'package:video_viewer/ui/device_controls.dart';
+import 'package:video_viewer/ui/paper_toggle.dart';
 import 'package:video_viewer/ui/preferences.dart';
 import 'package:video_viewer/ui/player.dart';
 
@@ -242,7 +243,12 @@ void main() {
       await tap(t, find.byKey(const Key('nav-settings')));
       expect(
         t
-            .widget<SwitchListTile>(find.byKey(const Key('dark-mode-setting')))
+            .widget<PaperToggle>(
+              find.descendant(
+                of: find.byKey(const Key('dark-mode-setting')),
+                matching: find.byType(PaperToggle),
+              ),
+            )
             .value,
         isTrue,
       );

@@ -223,7 +223,7 @@ void main() {
       await tap(t, find.byKey(const Key('tile-v2')));
       await textTap(t, '打标签');
       await textTap(t, '散步');
-      await textTap(t, '完成');
+      await tap(t, find.byKey(const Key('tag-assignment-save')));
       await until(
         t,
         () => find.byType(TagEditor).evaluate().isEmpty,
@@ -291,7 +291,7 @@ void main() {
       final original = repo.current!;
       await textTap(t, '打标签');
       await textTap(t, '庭院');
-      await textTap(t, '完成');
+      await tap(t, find.byKey(const Key('tag-assignment-save')));
       await until(t, () => find.byType(TagEditor).evaluate().isEmpty);
       expect(repo.current!.tags.contains('庭院'), isTrue);
       await tap(t, find.byKey(const Key('quick-delete')));

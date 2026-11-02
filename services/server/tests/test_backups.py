@@ -56,7 +56,7 @@ def inspect(client, raw):
     return wait_task(client, response.json()["id"])
 
 
-def restore(client, raw, mapping, *, request_id=None):
+def restore(client, raw, mapping, *, request_id=None, adopt=True):
     preview = inspect(client, raw)
     assert preview["status"] == "completed", preview
     body = {
@@ -67,7 +67,12 @@ def restore(client, raw, mapping, *, request_id=None):
     }
     response = client.post("/api/v1/backup-restores", json=body)
     assert response.status_code == 202, response.text
-    return wait_task(client, response.json()["id"]), body
+    task = wait_task(client, response.json()["id"])
+    if adopt and task["status"] == "completed":
+        # This helper represents a client acknowledging its confirmed restore.
+        # Dedicated authority tests keep old clients/header snapshots unchanged.
+        client.headers["X-Management-Epoch"] = client.get("/api/v1/info").json()["management_epoch"]
+    return task, body
 
 
 def resign(document):
@@ -130,6 +135,8 @@ def test_complete_snapshot_restore_replaces_data_preserves_auth_and_round(enviro
     client, _ = connect(settings, token=token)
     try:
         assert client.get("/api/v1/tags").json()["items"][0]["name"] == "原标签"
+        assert client.get("/api/v1/playback").json()["error"]["code"] == "management_changed"
+        client.headers["X-Management-Epoch"] = client.get("/api/v1/info").json()["management_epoch"]
         assert client.get("/api/v1/playback").json()["id"] == active["id"]
     finally:
         client.__exit__(None, None, None)

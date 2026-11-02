@@ -206,7 +206,7 @@ void main() {
     expect(find.byKey(const Key('quick-delete')), findsOneWidget);
     await ui.text('打标签');
     await ui.tagChip('快捷标记');
-    await ui.text('完成');
+    await ui.tap(find.byKey(const Key('tag-assignment-save')));
     await ui.until(
       () => find.byType(TagEditor).evaluate().isEmpty,
       'quick tag saved',
@@ -341,7 +341,8 @@ void main() {
     final beforePermanent = await files();
     final chosenTrashIds = listed
         .where((row) => [a, b].contains(row['video']['id']))
-        .map((row) => row['id'] as String).toList();
+        .map((row) => row['id'] as String)
+        .toList();
     await ui.text('永久删除');
     await ui.text('取消');
     expect(await trash(), hasLength(25));
@@ -355,10 +356,17 @@ void main() {
     final afterPermanent = await files();
     expect(afterPermanent, hasLength(25));
     final expectedFiles = Map<String, dynamic>.from(beforePermanent)
-      ..removeWhere((path, _) => chosenTrashIds.any((id) => path.contains('/.video-viewer-trash/$id/')));
+      ..removeWhere(
+        (path, _) => chosenTrashIds.any(
+          (id) => path.contains('/.video-viewer-trash/$id/'),
+        ),
+      );
     expect(beforePermanent.length - expectedFiles.length, 2);
     expect(afterPermanent, expectedFiles);
-    expect((await trash()).any((row) => [a, b].contains(row['video']['id'])), isFalse);
+    expect(
+      (await trash()).any((row) => [a, b].contains(row['video']['id'])),
+      isFalse,
+    );
     expect(
       afterPermanent.values.every(
         (v) => beforeFiles.values.any((old) => old['sha256'] == v['sha256']),

@@ -1,7 +1,7 @@
 """video-viewer 服务端 HTTP API 的薄封装。
 
 只做三件事：携带 Bearer token、把 ``{"error": {code, message}}`` 错误信封翻译成
-ApiError、在 token 失效且环境提供了口令时自动重新登录一次。业务参数与响应
+ApiError、在只读查询 token 失效且环境提供了口令时自动重新登录一次。业务参数与响应
 原样透传，不做字段改名——契约以服务端 openapi.json 为准。
 """
 
@@ -50,11 +50,13 @@ class RvClient:
         token: str | None = None,
         timeout: float = 30.0,
         passphrase: str | None = None,
+        auto_relogin: bool = True,
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
         self.token = token
         self.passphrase = passphrase
+        self.auto_relogin = auto_relogin
         # 自动重登录成功后回调（CLI 用它把新 token 写回 0600 文件）
         self.token_listener: Callable[[str, float], None] | None = None
         self._session = requests.Session()
@@ -73,7 +75,8 @@ class RvClient:
         stream: bool = False,
     ) -> requests.Response:
         response = self._send(method, path, params, json_body, auth, stream)
-        if response.status_code == 401 and auth and self.passphrase:
+        if (response.status_code == 401 and auth and self.passphrase
+                and self.auto_relogin and method.upper() in {"GET", "HEAD"}):
             refreshed = self._relogin()
             if refreshed:
                 response = self._send(method, path, params, json_body, auth, stream)

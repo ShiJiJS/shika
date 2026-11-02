@@ -1,6 +1,112 @@
 import 'dart:convert';
 
+enum MediaKind { video, pack }
+
+enum BrowseSource { library, tags, recent }
+
+enum VideoSort { path, name, newest, recent }
+
+/// Missing capabilities mean the original video-only protocol.
+class ServiceCapabilities {
+  const ServiceCapabilities.legacy()
+    : values = const {},
+      archiveMaximumBytes = null,
+      historyAvailable = null;
+  ServiceCapabilities(
+    Iterable<String> values, {
+    this.archiveMaximumBytes,
+    this.historyAvailable,
+  }) : values = Set.unmodifiable(values);
+  factory ServiceCapabilities.fromInfo(Map<String, dynamic> info) {
+    final values = (info['capabilities'] as List? ?? const [])
+        .whereType<String>()
+        .toSet();
+    final raw = info['management_backups'];
+    final historyAvailable = info['management_history_available'];
+    final valid =
+        raw is Map &&
+        raw['max_bytes'] is int &&
+        raw['max_bytes'] >= 4096 &&
+        raw['max_bytes'] <= 256 * 1024 * 1024 &&
+        raw['max_roots'] == 256 &&
+        raw['versions'] is List &&
+        (raw['versions'] as List).contains(2);
+    if (values.contains('backup_v2') &&
+        (!valid ||
+            !values.contains('management_authority') ||
+            !values.contains('management_history') ||
+            historyAvailable is! bool)) {
+      throw const LibraryFailure('服务端完整备份协议、管理代次或文件上限不完整，请升级服务后重新连接');
+    }
+    return ServiceCapabilities(
+      values,
+      archiveMaximumBytes: valid ? raw['max_bytes'] as int : null,
+      historyAvailable: historyAvailable is bool ? historyAvailable : null,
+    );
+  }
+  final int? archiveMaximumBytes;
+  final bool? historyAvailable;
+  bool get backupV2 =>
+      values.contains('backup_v2') && archiveMaximumBytes != null;
+  bool get managementHistory => values.contains('management_history');
+  bool get managementPurgeHistory =>
+      managementHistory && values.contains('management_purge_history');
+  final Set<String> values;
+  bool get typedRoots => values.contains('typed_roots');
+  bool get rootScanProgress => values.contains('root_scan_progress');
+  bool get scopedScans => values.contains('scoped_scans');
+  bool get packPresentation => values.contains('pack_presentation');
+  bool get videoNameOrder => values.contains('video_name_order');
+  bool get mediaCatalogCounts => values.contains('media_catalog_counts');
+  bool get packTags => values.contains('pack_tags');
+  bool get imagePacks => values.contains('image_packs');
+  bool get fixedVideoSessions => values.contains('fixed_video_sessions');
+  bool get versionedVideoQueue => values.contains('versioned_video_queue');
+  bool get videoEntryAnchors => values.contains('video_entry_anchors');
+  bool get catalogSelection => values.contains('catalog_selection');
+  bool get packTagNames => values.contains('pack_tag_names');
+  bool get packReadingSessions => values.contains('pack_reading_sessions');
+  bool get packEntryAnchors => values.contains('pack_entry_anchors');
+  bool get packLogicalTrash => values.contains('pack_logical_trash');
+  bool get packReaderCleanup => values.contains('pack_reader_cleanup');
+  bool get packPurgePreview => values.contains('pack_purge_preview');
+  bool get packPermanentDelete => values.contains('pack_permanent_delete');
+  bool get maintenanceTasks => values.contains('maintenance_tasks');
+  bool get packRestorePlans => values.contains('pack_restore_plans');
+  bool get managedPlaybackDefaults =>
+      values.contains('managed_playback_defaults');
+  bool get packMissingCleanup => values.contains('pack_missing_cleanup');
+  bool get managementAuthority => values.contains('management_authority');
+}
+
 enum VideoStatus { available, missing, trash }
+
+/// Unfiltered, simultaneously read totals of currently browsable media.
+/// Unknown or incomplete responses stay unknown rather than becoming zero.
+class MediaCatalogCounts {
+  const MediaCatalogCounts(this.videos, this.packs);
+  final int videos, packs;
+  static MediaCatalogCounts? fromLibraryState(Map<String, dynamic> data) {
+    final media = data['media'];
+    if (media is! Map) return null;
+    final video = media['video'], pack = media['pack'];
+    if (video is! Map || pack is! Map) return null;
+    final videos = video['indexed'], packs = pack['indexed'];
+    if (videos is! int || packs is! int || videos < 0 || packs < 0) {
+      return null;
+    }
+    return MediaCatalogCounts(videos, packs);
+  }
+
+  int forKind(MediaKind kind) => kind == MediaKind.video ? videos : packs;
+  @override
+  bool operator ==(Object other) =>
+      other is MediaCatalogCounts &&
+      other.videos == videos &&
+      other.packs == packs;
+  @override
+  int get hashCode => Object.hash(videos, packs);
+}
 
 enum PlayOrder { random, sequential }
 
@@ -50,6 +156,13 @@ class MediaSource {
   );
 }
 
+/// A label in the video namespace, with an authoritative catalog count.
+class VideoTag {
+  const VideoTag(this.id, this.name, this.count);
+  final String id, name;
+  final int count;
+}
+
 class LibraryVideo {
   LibraryVideo({
     required this.id,
@@ -63,6 +176,7 @@ class LibraryVideo {
     this.type = 'MP4',
     this.status = VideoStatus.available,
     this.originalPath,
+    this.createdAt = 0,
   }) : tags = Set.unmodifiable(tags);
   final String id, path, rootId, poster, type;
   final bool portrait;
@@ -71,7 +185,25 @@ class LibraryVideo {
   final Set<String> tags;
   final VideoStatus status;
   final String? originalPath;
+  final double createdAt;
   String get name => basename(path);
+  String get displayTitle {
+    final dot = name.lastIndexOf('.');
+    return dot > 0 &&
+            const {
+              '.mp4',
+              '.m4v',
+              '.mov',
+              '.mkv',
+              '.avi',
+              '.webm',
+            }.contains(name.substring(dot).toLowerCase())
+        ? name.substring(0, dot)
+        : name;
+  }
+
+  String get durationLabel =>
+      '${seconds ~/ 60}:${(seconds % 60).toString().padLeft(2, '0')}';
   LibraryVideo copy({
     String? path,
     Set<String>? tags,
@@ -89,6 +221,7 @@ class LibraryVideo {
     type: type,
     status: status ?? this.status,
     originalPath: originalPath ?? this.originalPath,
+    createdAt: createdAt,
   );
   Map<String, dynamic> toJson() => {
     'id': id,
@@ -102,6 +235,7 @@ class LibraryVideo {
     'type': type,
     'status': status.name,
     'originalPath': originalPath,
+    'createdAt': createdAt,
   };
   factory LibraryVideo.fromJson(Map<String, dynamic> j) => LibraryVideo(
     id: j['id'],
@@ -115,6 +249,7 @@ class LibraryVideo {
     type: j['type'],
     status: VideoStatus.values.byName(j['status']),
     originalPath: j['originalPath'],
+    createdAt: (j['createdAt'] as num?)?.toDouble() ?? 0,
   );
 }
 
@@ -124,18 +259,23 @@ class MediaRoot {
     this.name,
     this.path, {
     this.available = true,
+    this.kind = MediaKind.video,
+    this.enabled = true,
     this.lastScan = '今天 09:20',
     this.directoryId = '',
     this.error,
   });
   final String id, name, path, lastScan, directoryId;
   final String? error;
-  final bool available;
+  final bool available, enabled;
+  final MediaKind kind;
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
     'path': path,
     'available': available,
+    'kind': kind.name,
+    'enabled': enabled,
     'lastScan': lastScan,
     'directoryId': directoryId,
     'error': error,
@@ -145,9 +285,73 @@ class MediaRoot {
     j['name'],
     j['path'],
     available: j['available'],
+    kind: j['kind'] == 'pack' ? MediaKind.pack : MediaKind.video,
+    enabled: j['enabled'] as bool? ?? true,
     lastScan: j['lastScan'],
     directoryId: j['directoryId'] ?? '',
     error: j['error'],
+  );
+}
+
+enum PackReadState { all, unread, reading, completed }
+
+enum PackSort { name, newest, recent }
+
+/// Pack-only filters cannot accidentally carry video orientation/duration.
+class PackQuery {
+  PackQuery({
+    this.folder = '',
+    Iterable<String> tags = const [],
+    this.search = '',
+    this.readState = PackReadState.all,
+    this.source = BrowseSource.library,
+    PackSort? sort,
+  }) : sort =
+           sort ??
+           (source == BrowseSource.recent ? PackSort.recent : PackSort.name),
+       tags = Set.unmodifiable(tags) {
+    if (this.sort == PackSort.recent && source != BrowseSource.recent) {
+      throw ArgumentError('最近排序仅适用于最近图包');
+    }
+  }
+  final BrowseSource source;
+  final String folder, search;
+  final Set<String> tags;
+  final PackReadState readState;
+  final PackSort sort;
+  int get count =>
+      tags.length +
+      (folder.isEmpty ? 0 : 1) +
+      (readState == PackReadState.all ? 0 : 1);
+  Map<String, dynamic> toJson() => {
+    'folder': folder,
+    'tag_ids': tags.toList()..sort(),
+    'search': search,
+    'read_state': readState.name,
+    'source': source.name,
+    'sort': sort.name,
+  };
+  String get queryKey => jsonEncode(toJson());
+  PackQuery copy({
+    String? folder,
+    Set<String>? tags,
+    String? search,
+    PackReadState? readState,
+    PackSort? sort,
+    BrowseSource? source,
+  }) => PackQuery(
+    folder: folder ?? this.folder,
+    tags: tags ?? this.tags,
+    search: search ?? this.search,
+    readState: readState ?? this.readState,
+    source: source ?? this.source,
+    sort:
+        sort ??
+        (source != null &&
+                source != this.source &&
+                (source == BrowseSource.recent || this.sort == PackSort.recent)
+            ? null
+            : this.sort),
   );
 }
 
@@ -193,6 +397,108 @@ class VideoQuery {
   );
 }
 
+/// The complete entry selection; loading it never starts a viewing session.
+class VideoEntryScope {
+  VideoEntryScope({
+    VideoQuery? query,
+    this.search = '',
+    this.source = BrowseSource.library,
+    this.sort = VideoSort.path,
+  }) : query = query ?? VideoQuery();
+  final VideoQuery query;
+  final String search;
+  final BrowseSource source;
+  final VideoSort sort;
+  Map<String, dynamic> toJson() => {
+    'query': query.toJson(),
+    'search': search,
+    'source': source.name,
+    'sort': sort.name,
+  };
+  factory VideoEntryScope.fromJson(Map<String, dynamic> j) => VideoEntryScope(
+    query: VideoQuery.fromJson(Map<String, dynamic>.from(j['query'])),
+    search: j['search'] as String? ?? '',
+    source: BrowseSource.values.byName(j['source'] as String? ?? 'library'),
+    sort: VideoSort.values.byName(j['sort'] as String? ?? 'path'),
+  );
+}
+
+/// Demo persistence mirrors the server's baseline and current member ordering.
+class VideoPreviewData {
+  VideoPreviewData({
+    required this.id,
+    required this.entry,
+    required Iterable<String> sequence,
+    Iterable<String>? ordered,
+    this.finished = false,
+    this.ordering = 0,
+  }) : sequence = List.unmodifiable(sequence),
+       ordered = List.unmodifiable(ordered ?? sequence);
+  final String id;
+  final VideoEntryScope entry;
+  final List<String> sequence, ordered;
+  final bool finished;
+  final int ordering;
+  VideoPreviewData withOrder(
+    Iterable<String> ids, {
+    bool finished = false,
+    bool reordered = true,
+  }) => VideoPreviewData(
+    id: id,
+    entry: entry,
+    sequence: sequence,
+    ordered: ids,
+    finished: finished,
+    ordering: ordering + (reordered ? 1 : 0),
+  );
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'entry': entry.toJson(),
+    'sequence': sequence,
+    'ordered': ordered,
+    'finished': finished,
+    'ordering': ordering,
+  };
+  factory VideoPreviewData.fromJson(Map<String, dynamic> j) => VideoPreviewData(
+    id: j['id'],
+    entry: VideoEntryScope.fromJson(Map<String, dynamic>.from(j['entry'])),
+    sequence: List<String>.from(j['sequence']),
+    ordered: List<String>.from(j['ordered']),
+    finished: j['finished'] as bool? ?? false,
+    ordering: j['ordering'] as int? ?? 0,
+  );
+}
+
+bool videoIsAvailable(LibraryVideo video, Iterable<MediaRoot> roots) {
+  final owned = roots.where((root) => root.id == video.rootId).firstOrNull;
+  if (video.status != VideoStatus.available ||
+      owned == null ||
+      !owned.available ||
+      !owned.enabled ||
+      owned.kind != MediaKind.video) {
+    return false;
+  }
+  final policies = roots.where((root) => under(video.path, root.path)).toList()
+    ..sort((a, b) => b.path.length.compareTo(a.path.length));
+  final policy = policies.firstOrNull;
+  return policy != null &&
+      policy.available &&
+      policy.enabled &&
+      policy.kind == MediaKind.video;
+}
+
+bool videoMatchesSearch(
+  LibraryVideo video,
+  Iterable<MediaRoot> roots,
+  String search,
+) {
+  final root = roots.where((root) => root.id == video.rootId).firstOrNull;
+  final relative = root != null && under(video.path, root.path)
+      ? video.path.substring(root.path.length)
+      : video.name;
+  return relative.toLowerCase().contains(search.toLowerCase());
+}
+
 class DeleteOperation {
   DeleteOperation(
     this.id,
@@ -232,11 +538,14 @@ class LibrarySnapshot {
     this.connected = true,
     this.lastDelete,
     Iterable<String> completedRequests = const [],
+    this.preview,
+    Map<String, double> recentVideos = const {},
   }) : videos = List.unmodifiable(videos),
        roots = List.unmodifiable(roots),
        tags = List.unmodifiable(tags),
        round = List.unmodifiable(round),
-       completedRequests = List.unmodifiable(completedRequests);
+       completedRequests = List.unmodifiable(completedRequests),
+       recentVideos = Map.unmodifiable(recentVideos);
   final List<LibraryVideo> videos;
   final List<MediaRoot> roots;
   final List<String> tags, round, completedRequests;
@@ -246,6 +555,8 @@ class LibrarySnapshot {
   final String address;
   final bool connected;
   final DeleteOperation? lastDelete;
+  final VideoPreviewData? preview;
+  final Map<String, double> recentVideos;
   LibrarySnapshot copy({
     Iterable<LibraryVideo>? videos,
     Iterable<MediaRoot>? roots,
@@ -260,6 +571,9 @@ class LibrarySnapshot {
     DeleteOperation? lastDelete,
     bool clearDelete = false,
     Iterable<String>? completedRequests,
+    VideoPreviewData? preview,
+    bool clearPreview = false,
+    Map<String, double>? recentVideos,
   }) => LibrarySnapshot(
     videos: videos ?? this.videos,
     roots: roots ?? this.roots,
@@ -273,6 +587,8 @@ class LibrarySnapshot {
     connected: connected ?? this.connected,
     lastDelete: clearDelete ? null : lastDelete ?? this.lastDelete,
     completedRequests: completedRequests ?? this.completedRequests,
+    preview: clearPreview ? null : preview ?? this.preview,
+    recentVideos: recentVideos ?? this.recentVideos,
   );
   Map<String, dynamic> toJson({bool connection = true}) => {
     'videos': videos.map((v) => v.toJson()).toList(),
@@ -284,6 +600,8 @@ class LibrarySnapshot {
     'order': order.name,
     'lastDelete': lastDelete?.toJson(),
     'completedRequests': completedRequests,
+    if (preview != null) 'preview': preview!.toJson(),
+    'recentVideos': recentVideos,
     if (connection)
       'connection': {'address': address, 'port': port, 'connected': connected},
   };
@@ -310,6 +628,13 @@ class LibrarySnapshot {
               Map<String, dynamic>.from(j['lastDelete']),
             ),
       completedRequests: List<String>.from(j['completedRequests'] ?? []),
+      preview: j['preview'] == null
+          ? null
+          : VideoPreviewData.fromJson(Map<String, dynamic>.from(j['preview'])),
+      recentVideos: {
+        for (final e in (j['recentVideos'] as Map? ?? {}).entries)
+          e.key as String: (e.value as num).toDouble(),
+      },
     );
   }
 }
@@ -333,9 +658,11 @@ class VideoPage {
     required this.total,
     required this.offset,
     required this.limit,
+    this.anchorIndex,
   }) : items = List.unmodifiable(items);
   final List<LibraryVideo> items;
   final int total, offset, limit;
+  final int? anchorIndex;
 }
 
 class BackupPreview {
@@ -394,6 +721,69 @@ class BackupPreview {
   }
 }
 
+/// A root's last executed scan and its later queue entries are separate facts.
+class RootScanProgress {
+  RootScanProgress(Map<String, dynamic> detail)
+    : detail = Map.unmodifiable(detail),
+      scan = Map.unmodifiable(_scanMap(detail['scan']));
+  final Map<String, dynamic> detail, scan;
+  bool get known => scan.isNotEmpty;
+  String get status => _scanText(scan['status']) ?? 'unknown';
+  String? get taskId => _scanText(scan['task_id']);
+  bool get queued =>
+      detail['queued_task_ids'] is List &&
+      (detail['queued_task_ids'] as List).whereType<String>().isNotEmpty;
+  bool? get available =>
+      detail['available'] is bool ? detail['available'] as bool : null;
+  bool get active => const {
+    'queued',
+    'discovering',
+    'processing_media',
+    'waiting_for_stable_files',
+    'reconciling',
+  }.contains(status);
+  bool get needsAttention =>
+      active ||
+      queued ||
+      count('thumbnail_failed') > 0 ||
+      const {
+        'partial',
+        'deferred',
+        'unavailable',
+        'interrupted',
+        'failed',
+      }.contains(status);
+  bool get hasImageProgress => scan['progress'] is Map;
+  bool get totalKnown =>
+      _scanMap(scan['progress'])['discovery_complete'] == true;
+  bool get packTotalKnown =>
+      _scanMap(scan['progress'])['packs_discovery_complete'] == true;
+  int? get discovered => _scanCount(_scanMap(scan['progress'])['discovered']);
+  int? get processed => _scanCount(_scanMap(scan['progress'])['processed']);
+  int? get packsDiscovered =>
+      _scanCount(_scanMap(scan['progress'])['packs_discovered']);
+  int? get packsProcessed =>
+      _scanCount(_scanMap(scan['progress'])['packs_processed']);
+  int? get legacyDiscovered => _scanCount(scan['discovered']);
+  int? get legacyProcessed => _scanCount(scan['processed']);
+  int count(String key) => _scanCount(_scanMap(scan['counts'])[key]) ?? 0;
+  int get pageErrors => _scanCount(scan['page_errors']) ?? 0;
+  int get unreadablePacks => _scanCount(scan['unreadable_packs']) ?? 0;
+  String? get error => _scanText(scan['error']) ?? _scanText(detail['error']);
+  DateTime? get finishedAt => _scanTime(scan['finished_at']);
+  DateTime? get lastCompletedAt => _scanTime(detail['last_scan']);
+}
+
+Map<String, dynamic> _scanMap(Object? value) =>
+    value is Map ? Map<String, dynamic>.from(value) : const {};
+String? _scanText(Object? value) => value is String ? value : null;
+int? _scanCount(Object? value) =>
+    value is num && value.isFinite && value >= 0 ? value.toInt() : null;
+DateTime? _scanTime(Object? value) =>
+    value is num && value.isFinite && value > 0 && value <= 8640000000000
+    ? DateTime.fromMillisecondsSinceEpoch((value * 1000).round()).toLocal()
+    : null;
+
 /// Server-owned preparation state. Progress updates do not replace paged lists.
 class LibraryPreparation {
   const LibraryPreparation({
@@ -411,6 +801,7 @@ class LibraryPreparation {
     this.failureReasons = const {},
     this.deferred = 0,
     this.roots = const {},
+    this.media = const {},
     this.syncError,
   });
   final bool ready, scanning;
@@ -420,6 +811,43 @@ class LibraryPreparation {
   final int thumbnailFailed;
   final Map<String, int> failureReasons;
   final Map<String, Map<String, dynamic>> roots;
+  final Map<String, Map<String, dynamic>> media;
+  RootScanProgress rootProgress(String id) {
+    final facts = RootScanProgress(roots[id] ?? const {});
+    // Old services stopped only the round, leaving a root marked discovering.
+    // Their root entries all belong to that round and have no task_id.
+    if (!scanning &&
+        facts.active &&
+        facts.taskId == null &&
+        const {'failed', 'interrupted'}.contains(status)) {
+      return RootScanProgress({
+        ...facts.detail,
+        'scan': {
+          ...facts.scan,
+          'status': status,
+          'error': status == 'failed' ? 'scan_failed' : 'scan_interrupted',
+        },
+      });
+    }
+    return facts;
+  }
+
+  Map<String, dynamic> mediaProgress(MediaKind kind) =>
+      media[kind.name] ?? const {};
+  bool get legacyNeedsAttention {
+    final pack = _scanMap(mediaProgress(MediaKind.pack)['counts']);
+    return failed > 0 ||
+        thumbnailFailed > 0 ||
+        deferred > 0 ||
+        failureReasons.isNotEmpty ||
+        const [
+          'failed_pages',
+          'failed_packs',
+          'deferred',
+          'thumbnail_failed',
+        ].any((key) => (_scanCount(pack[key]) ?? 0) > 0);
+  }
+
   factory LibraryPreparation.fromJson(
     Map<String, dynamic> data, {
     bool? ready,
@@ -447,6 +875,10 @@ class LibraryPreparation {
         for (final root in data['roots'] as List? ?? [])
           root['id'] as String: Map<String, dynamic>.from(root as Map),
       },
+      media: {
+        for (final entry in _scanMap(data['media']).entries)
+          entry.key: _scanMap(entry.value),
+      },
     );
   }
   LibraryPreparation offline() => LibraryPreparation(
@@ -464,6 +896,7 @@ class LibraryPreparation {
     failureReasons: failureReasons,
     deferred: deferred,
     roots: roots,
+    media: media,
     syncError: '进度暂未同步，正在重试',
   );
   String get label => switch (phase) {
@@ -472,17 +905,21 @@ class LibraryPreparation {
     'waiting_for_stable_files' => '等待文件写入稳定',
     'processing_media' => '正在读取视频信息',
     'reconciling_identities' => '正在核对文件身份',
+    'pack_discovering' => '正在查找图包',
+    'pack_inspecting' => '正在读取图片',
+    'pack_reconciling' => '正在核对图包记录',
     'completed' => ready ? '扫描完成' : '部分目录未就绪，请检查媒体目录',
     'interrupted' => '扫描已中断',
     'failed' => '扫描失败',
     _ => ready ? '视频库已就绪' : '等待首次扫描',
   };
-  String get summary =>
-      '$label${discovered > 0
-          ? phase == 'discovering'
-                ? ' · 已发现 $discovered 个'
-                : ' · $processed / $discovered 个'
-          : ''}';
+  String get summary => phase.startsWith('pack_')
+      ? label
+      : '$label${discovered > 0
+            ? phase == 'discovering'
+                  ? ' · 已发现 $discovered 个'
+                  : ' · $processed / $discovered 个'
+            : ''}';
   String get failureDetail => failureReasons.entries
       .map((entry) {
         final label = switch (entry.key) {

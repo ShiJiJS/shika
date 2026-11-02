@@ -1,6 +1,7 @@
 from sqlalchemy import and_, case, delete, func, select
 
 from .errors import LibraryError
+from .media_roots import enabled_path
 from .models import PlaybackRound, Root, Setting, Tag, Video, VideoTag
 from .requests import once
 
@@ -24,6 +25,8 @@ class Tags:
                             Video.status == "available",
                             Video.error.is_(None),
                             Root.available.is_(True),
+                            Root.enabled.is_(True),
+                            enabled_path(session, Video.path),
                         ),
                         Video.id,
                     )
@@ -92,7 +95,11 @@ class Tags:
                 pointer = session.get(Setting, "active_round")
                 round = session.get(PlaybackRound, pointer.value) if pointer else None
                 replacement = None
-                if round and tag_id in round.scope.get("tag_ids", []):
+                if (
+                    round
+                    and round.membership != "fixed"
+                    and tag_id in round.scope.get("tag_ids", [])
+                ):
                     scope = {
                         **round.scope,
                         "tag_ids": [tag for tag in round.scope["tag_ids"] if tag != tag_id],

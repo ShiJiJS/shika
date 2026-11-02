@@ -56,16 +56,16 @@ def test_first_import_locks_playback_but_keeps_progress_and_survives_interruptio
         assert client.get(first["thumbnail_url"]).status_code == 200
         stream = client.get(first["media_url"], headers={"Range": "bytes=0-31"})
         assert stream.status_code == 409
-        state = client.get('/api/v1/library-state').json()
-        assert not state['ready'] and state['scanning']
-        assert state['progress']['discovered'] == 2
-        assert state['progress']['processed'] == 1
-        assert state['progress']['bytes_processed'] > 0
-        assert state['counts']['imported'] == 1
-        assert state['roots'][0]['last_scan'] is None
-        partial_round = client.get('/api/v1/playback').json()
-        assert partial_round['library_locked'] and partial_round['current'] is None
-        assert partial_round['total'] == 0
+        state = client.get("/api/v1/library-state").json()
+        assert not state["ready"] and state["scanning"]
+        assert state["progress"]["discovered"] == 2
+        assert state["progress"]["processed"] == 1
+        assert state["progress"]["bytes_processed"] > 0
+        assert state["counts"]["imported"] == 1
+        assert state["roots"][0]["last_scan"] is None
+        partial_round = client.get("/api/v1/playback").json()
+        assert partial_round["library_locked"] and partial_round["current"] is None
+        assert partial_round["total"] == 0
         tag = client.post(
             "/api/v1/tags", json={"request_id": "initial-tag", "name": "初次标记"}
         ).json()
@@ -87,18 +87,18 @@ def test_first_import_locks_playback_but_keeps_progress_and_survives_interruptio
     monkeypatch.setattr(scanner, "inspect_media", original)
     reopened, _ = connect(settings)
     try:
-        assert not reopened.get('/api/v1/library-state').json()['ready']
+        assert not reopened.get("/api/v1/library-state").json()["ready"]
         scan(reopened)
-        assert reopened.get('/api/v1/library-state').json()['ready']
-        full_round = reopened.get('/api/v1/playback').json()
-        assert full_round['total'] == 2 and full_round['id'] != partial_round['id']
+        assert reopened.get("/api/v1/library-state").json()["ready"]
+        full_round = reopened.get("/api/v1/playback").json()
+        assert full_round["total"] == 2 and full_round["id"] != partial_round["id"]
         videos = reopened.get("/api/v1/videos").json()
         assert videos["total"] == 2
         saved = next(v for v in videos["items"] if v["id"] == first["id"])
         assert saved["tag_ids"] == [tag["id"]]
         other = next(v for v in videos["items"] if v["id"] != first["id"])
         assert other["tag_ids"] == []
-        assert reopened.get(saved['media_url'], headers={'Range': 'bytes=0-31'}).status_code == 206
+        assert reopened.get(saved["media_url"], headers={"Range": "bytes=0-31"}).status_code == 206
     finally:
         reopened.__exit__(None, None, None)
 
@@ -114,7 +114,7 @@ def test_existing_library_waits_for_complete_identity_evidence(library, samples,
     try:
         job = client.post("/api/v1/scans").json()
         assert blocked.wait(10)
-        assert client.get('/api/v1/library-state').json()['ready']
+        assert client.get("/api/v1/library-state").json()["ready"]
         current = client.get("/api/v1/videos").json()["items"]
         assert len(current) == 1 and current[0]["id"] == old["id"]
         assert current[0]["name"] == "old.mp4"
@@ -132,27 +132,27 @@ def test_existing_library_waits_for_complete_identity_evidence(library, samples,
 
 def test_ready_index_tags_and_server_trash_survive_replacement(environment, samples):
     settings, media = environment
-    put(samples / 'portrait.mp4', media / 'keep.mp4')
-    put(samples / 'h264.mov', media / 'discard.mov')
+    put(samples / "portrait.mp4", media / "keep.mp4")
+    put(samples / "h264.mov", media / "discard.mov")
     client, token = connect(settings)
     try:
         scan(client)
-        videos = client.get('/api/v1/videos').json()['items']
-        marked = tag(client, '保留的标记')['id']
-        assign(client, [video['id'] for video in videos], [marked])
-        trash(client, [videos[0]['id']])
-        before = client.get('/api/v1/trash').json()['items']
-        remaining = client.get('/api/v1/videos').json()['items']
-        roots = client.get('/api/v1/roots').json()
+        videos = client.get("/api/v1/videos").json()["items"]
+        marked = tag(client, "保留的标记")["id"]
+        assign(client, [video["id"] for video in videos], [marked])
+        trash(client, [videos[0]["id"]])
+        before = client.get("/api/v1/trash").json()["items"]
+        remaining = client.get("/api/v1/videos").json()["items"]
+        roots = client.get("/api/v1/roots").json()
     finally:
         client.__exit__(None, None, None)
     reopened, _ = connect(settings, token=token)
     try:
-        assert reopened.get('/api/v1/library-state').json()['ready']
-        assert reopened.get('/api/v1/roots').json() == roots
-        assert reopened.get('/api/v1/videos').json()['items'] == remaining
-        assert reopened.get('/api/v1/trash').json()['items'] == before
-        assert remaining[0]['tag_ids'] == [marked]
+        assert reopened.get("/api/v1/library-state").json()["ready"]
+        assert reopened.get("/api/v1/roots").json() == roots
+        assert reopened.get("/api/v1/videos").json()["items"] == remaining
+        assert reopened.get("/api/v1/trash").json()["items"] == before
+        assert remaining[0]["tag_ids"] == [marked]
     finally:
         reopened.__exit__(None, None, None)
 
@@ -162,17 +162,17 @@ def test_preparation_after_restore_keeps_round_with_historical_trash(library, sa
 
     client, media = library
     for number in range(3):
-        put(samples / 'portrait.mp4', media / f'{number}.mp4')
+        put(samples / "portrait.mp4", media / f"{number}.mp4")
     scan(client)
-    active, _ = create_round(client, 'sequential')
-    trash(client, [active['current']['id']])
-    active = client.get('/api/v1/playback').json()
+    active, _ = create_round(client, "sequential")
+    trash(client, [active["current"]["id"]])
+    active = client.get("/api/v1/playback").json()
     raw, _ = export(client)
-    restored, _ = restore(client, raw, {'main': str(media)})
-    assert restored['status'] == 'completed'
-    assert not client.get('/api/v1/library-state').json()['ready']
+    restored, _ = restore(client, raw, {"main": str(media)})
+    assert restored["status"] == "completed"
+    assert not client.get("/api/v1/library-state").json()["ready"]
     scan(client)
-    current = client.get('/api/v1/playback').json()
-    assert current['id'] == active['id']
-    assert current['position'] == active['position']
-    assert current['current']['id'] == active['current']['id']
+    current = client.get("/api/v1/playback").json()
+    assert current["id"] == active["id"]
+    assert current["position"] == active["position"]
+    assert current["current"]["id"] == active["current"]["id"]

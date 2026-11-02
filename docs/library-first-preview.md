@@ -1,0 +1,47 @@
+# 媒体库安装候选：App preview.16 / 配套回退包
+
+> **当前请使用[第28版preview.22与同号回退包](nas-app-preview-2026-11-01-code28.md)，NAS服务现为[preview.8](nas-preview-2026-11-01-service8.md)。** 下文第22版/preview.16保留当时的验证和回退范围，不作为当前取包入口。
+
+> 2026-10-30已按授权部署到现有NAS，并将两份原签名APK放入NAS packages供体验。图包首次扫描进行中；完整原型、实际手机与NAS性能仍待验收。见[部署和安装说明](nas-preview-2026-10-30.md)。
+
+固定构建来源`12d6ca67ef3a8b307894468923dc08e612e02587`，两包同内部号 **22**，沿用原Windows包名/签名。含此前媒体库/图包、设置、统一文字图标与搜索焦点修复；本轮补媒体库摘要的方向、时长和格式，不改原筛选规则、阈值和两行高度。详见[实现与正常包记录](plans/library-first/LF8-CURRENT-FILTERS.md)。
+
+当前code22完整客户端791项已重新执行通过，见[覆盖核对](plans/library-first/LF8-ACCEPTANCE-AUDIT.md)。该包已有摘要/清除/14准确成员和三次覆盖记录；读取恢复另补视频/图包各三轮，前后35表、完整设置/令牌和偏好保持。原[筛选阶段](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-current-filters/README.md)分开code21三轮与code22修后27相关检查，本轮补齐当前完整套件，不改历史记录。此前搜索焦点/阅读/冷启动见[原版本记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-current-navigation/README.md)。
+
+此前preview.12/rollback.12(code18)和未交付预检preview.13/rollback.13(code19)及更早包保持。code19首次旧界面自动读取播放协议创建范围的两表/两键差量单独保留，不能称全程只读。原型独立可移除。本机阶段没有部署或手机安装；后续现已部署NAS供体验，尚未安装真实手机或正式发布。code18的[扫描详情三轮业务证据](plans/library-first/LF8-EXPANSION-PACKAGE.md)及完整45项要求仍按原范围保留。
+
+## 安装包
+
+文件位于项目 `tmp/releases/`，不进入 Git：
+
+| 文件 | 用途 | 字节数 | SHA256 |
+| --- | --- | ---: | --- |
+| `video-viewer-0.2.0-preview.16-arm64.apk` | 新媒体库候选 | 23242646 | `a0a6bb14615951ecc04329154ed15b2ede0c2c7b0ceb6a989d7bd7af05d86fb3` |
+| `video-viewer-0.1.4-rollback.16-arm64.apk` | 旧视频界面配套回退 | 21734394 | `89f4a21084c054e415e5d2da0b00e1e28a39f6a46f7e180cc6967e37ac385478` |
+| `video-viewer-server-0.2.0-preview.2-linux-arm64.tar.gz` | 配套服务（沿用，未重新构建） | 222497149 | `461af96196d4905c374fa86e82100be85d48efc2ab9221dcde745e275a7a79ff` |
+
+两包均为 Android ARM64、正常 `lib/main.dart`、非调试包，不含集成测试插件或原型资产。包名 `io.github.shijijs.video_viewer`，签名证书 SHA256：`f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161`。旧界面基于原 0.1.4 源码，附兼容偏好和操作日志的适配，不能管理图包及新版完整备份任务。
+
+直接覆盖安装，**不要先卸载或清除数据**。需要退回旧界面时覆盖安装 `rollback.16`，再升回时覆盖 `preview.16`；二者内部号同为22。原Windows 5及旧code8至21包不能直接覆盖code22；此前两包均保留。目标手机安装器行为尚待验证。
+
+## 配套服务与数据
+
+完整媒体库、图包和独立标签需要新版服务。连接原旧服务时沿用旧视频界面，可能自动播放，不会凭 App 升级获得图包接口。 正常code16实际连接原版0.1.4服务后的首页菜单已补[普通/减少动画与返回新版核对](plans/library-first/LF8-LEGACY-HOME-MENU.md)，不代表所有旧服务版本或目标NAS已验收。新版服务现已部署到你的NAS，图包目录只读接入并已开始首次扫描，具体状态见[部署记录](nas-preview-2026-10-30.md)。
+
+本轮服务生产树未改，沿用 `video-viewer-server:0.2.0-preview.2`，源码 `b79da7b9c4d2ab099c055b8eb855904e32abb0a5`，镜像 ID `sha256:886b79b72ecb9116087d892f230471943121f24ccef093113cc3197b4607fef4`。现有归档为 Linux ARM64，已在复核实际ARM64架构、原配置及停机备份后，按用户当次授权部署到现有NAS。NAS旧Docker实际config image ID为`sha256:ed6097199cf852dc8b3eeeee41fee55da9f3f24d280ea88e59844d814103b1ea`，与本机显示ID不同，但归档config、全部RootFS层和73运行文件一致；见[来源核对](nas-preview-2026-10-30.md)。不能当作通用NAS包。
+
+服务升级前停机并完整备份实际绑定的 `data` 目录，包含 WAL 等文件。回退服务时停止新服务，在原绑定目录内恢复完整旧快照，容器内核对数据库版本、完整性与 SHA 后再启动旧镜像；旧二进制不能直接读取迁移后的数据库，恢复旧快照会舍弃升级后的管理修改。App 回退与服务数据回退分别处理。管理备份不包含媒体原文件。
+
+切换 App 前在新版完成或核对管理任务。旧界面保留但不能接管新版 v2 备份任务；回新版核对原请求，避免重复提交。三轮服务回退、原 Windows 升级、原型移除及大图性能的既有证据继续有效，见[逐项记录](plans/library-first/RESULTS.md)；本轮没有重做未受影响的压力实验。
+
+## 实现与验收状态
+
+| 项目 | 状态 |
+| --- | --- |
+| 媒体库、视频/图包独立标签、横纵阅读/续读、整理、设置与备份主要功能 | 已实现，有分阶段记录；不等于所有条件正式验收通过 |
+| 本轮正常两包与覆盖安装/主要路径 | 详见[文字/图标正常包结果](plans/library-first/LF8-PAPER-SYMBOLS.md) |
+| #78 视频绿边/模拟器退出、#89 备份上传、#100 图包偶发连接失败 | 原原因未定位，保持 OPEN，恢复方式和候选判断见本轮结果 |
+| NAS部署与初步读取 | 已部署；598视频未变，首个40页图包目录/封面/原图分段可读，687图包首次扫描仍在进行 |
+| 真实手机、有声播放、云文档提供器、NAS完整性能、完整 UI-06 与正式发布 | 尚待验收 |
+
+原型继续独立保留在 `design/reference/library-first/`，树 `1cbf605af8f03fa067a4ce8e914bb809e3a487ca` 未改，可单独移除；正式 App 不引用它。

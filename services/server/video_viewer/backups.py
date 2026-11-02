@@ -7,16 +7,28 @@ import threading
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager
 
 from sqlalchemy import delete, select
 
-from .backup_format import SETTING_KEYS, TABLES, canonical, decode, snapshot, validate_relations
+from .authority import Authority
+from .backup_format import (
+    SETTING_KEYS,
+    TABLES,
+    canonical,
+    decode,
+    require_legacy_backup,
+    snapshot,
+    validate_relations,
+)
 from .backup_reconcile import mappings_for, recommended_mapping, reconcile
 from .errors import LibraryError
 from .file_state import reserved_steps
 from .file_transfer import rename_new, unlink_owned
+from .management_archives import KINDS, ManagementArchives
 from .models import FileOperation, Observation, RequestRecord, Setting, Task, uid
 from .paths import make_directory, open_regular, signature
+from .playback_defaults import PlaybackDefaults
 from .requests import once
 
 
@@ -32,6 +44,7 @@ class Backups:
         self.start_regular = None
         self.regular_started = False
         self.deferred = []
+        self.archives = ManagementArchives(self)
 
     def start(self, start_regular):
         self.start_regular = start_regular
@@ -40,13 +53,18 @@ class Backups:
                 session.scalars(
                     select(Task)
                     .where(
-                        Task.kind.in_(["backup_export", "backup_inspect", "backup_restore"]),
+                        Task.kind.in_(
+                            ["backup_export", "backup_inspect", "backup_restore", *KINDS]
+                        ),
+                        Task.error.is_distinct_from("restored_history"),
                         Task.status.in_(["queued", "running", "interrupted"]),
                     )
                     .order_by(Task.created_at)
                 )
             )
-        restoring = next((task for task in pending if task.kind == "backup_restore"), None)
+        restoring = next(
+            (task for task in pending if task.kind in ("backup_restore", "backup_restore_v2")), None
+        )
         if restoring:
             self.deferred = [task.id for task in pending if task.id != restoring.id]
             with self.db.write_lock:
@@ -56,7 +74,7 @@ class Backups:
         else:
             self.start_normal()
         for task in pending:
-            if task.kind != "backup_restore":
+            if task.kind not in ("backup_restore", "backup_restore_v2"):
                 with self.db.write() as session:
                     session.get(Task, task.id).status = "queued"
                 self.enqueue(task.id)
@@ -140,6 +158,8 @@ class Backups:
         with self.db.write() as session:
 
             def action():
+                if kind == "backup_export":
+                    require_legacy_backup(session)
                 task = Task(kind=kind, status="queued", result={"raw_sha256": fingerprint})
                 session.add(task)
                 session.flush()
@@ -150,6 +170,8 @@ class Backups:
             )
             task_id = result["id"]
             task = session.get(Task, task_id)
+            if task.error == "restored_history":
+                raise LibraryError("historical_request", "原备份任务为只读历史，请查询原结果", 409)
             if (
                 raw is not None
                 and task.status == "failed"
@@ -181,10 +203,17 @@ class Backups:
             ],
         }
 
-    def artifact(self, task_id, kinds=("backup_export", "backup_snapshot")):
+    def artifact(self, task_id, kinds=("backup_export", "backup_snapshot"), *, original=None):
         with self.db.read() as session:
             task = session.get(Task, task_id)
-            if not task or task.kind not in kinds or task.status != "completed":
+            metadata = {c.name: getattr(task, c.name) for c in Task.__table__.c} if task else None
+            if original is not None:
+                metadata = original
+            elif not metadata or metadata.get("error") == "restored_history":
+                from .management_history import historical_task
+
+                metadata = historical_task(session, task_id)
+            if not metadata or metadata["kind"] not in kinds or metadata["status"] != "completed":
                 raise LibraryError("backup_not_found", "备份尚未完成或不存在", 404)
         path = self.path(task_id)
         if not path.is_file():
@@ -193,7 +222,7 @@ class Backups:
             raw = self.read(task_id)
         except OSError:
             raise LibraryError("backup_not_found", "备份文件已不可用", 404) from None
-        if hashlib.sha256(raw).hexdigest() != task.result.get("file_sha256"):
+        if hashlib.sha256(raw).hexdigest() != metadata["result"].get("file_sha256"):
             raise LibraryError("backup_artifact_changed", "备份文件在校验后已变化，请重新导入", 409)
         return path
 
@@ -230,6 +259,7 @@ class Backups:
         mappings_for(document["payload"], mapping, self.settings)
         try:
             with self.db.write() as session:
+                require_legacy_backup(session)
                 busy = session.scalar(
                     select(Task.id)
                     .where(
@@ -292,6 +322,24 @@ class Backups:
             task.phase = phase
         if self.fault_hook:
             self.fault_hook(phase, task_id)
+
+    def release_restore(self, task_id):
+        with self.db.write_lock:
+            # Post-commit cleanup may outlive admission of the next restore.
+            if self.db.maintenance_task == task_id:
+                self.db.maintenance_task, self.db.maintenance_owner = None, None
+
+    @contextmanager
+    def completing_restore(self, task_id):
+        """Commit the terminal receipt and release its gate under one writer lock."""
+        with self.db.write_lock:
+            with self.db.write() as session:
+                yield session
+                task = session.get(Task, task_id)
+                pending = session.get(Setting, "maintenance_restore")
+                if task.status not in ("completed", "failed") or (pending and pending.value):
+                    raise RuntimeError("Terminal restore still has a durable reservation")
+            self.release_restore(task_id)
 
     @staticmethod
     def details(document, raw):
@@ -357,7 +405,7 @@ class Backups:
             "historical_operations_replayed": 0,
             "unmapped_roots": [root_id for root_id, value in mapping.items() if value is None],
         }
-        with self.db.write() as session:
+        with self.completing_restore(task_id) as session:
             for table in reversed(TABLES):
                 statement = table.delete()
                 if table.name == "tasks":
@@ -384,6 +432,17 @@ class Backups:
                     item.value = value
                 else:
                     session.add(Setting(key=key, value=value))
+            # v1 cannot contain explicit media defaults. Re-seed its implicit
+            # playback default from the imported round, not the replaced library.
+            session.execute(
+                delete(Setting).where(Setting.key.in_({"playback_defaults", "reader_defaults"}))
+            )
+            session.flush()
+            PlaybackDefaults.current(session)
+            # Same commit as library replacement. Never restore this value from
+            # the package or invalidate credentials needed for original GETs.
+            Authority.rotate(session)
+            session.flush()
             if self.fault_hook:
                 self.fault_hook("after_replace_before_commit", task_id)
             task = session.get(Task, task_id)
@@ -397,9 +456,9 @@ class Backups:
             with self.db.read() as session:
                 task = session.get(Task, task_id)
                 kind = task.kind
-                if task.status == "completed":
+                if task.status == "completed" or task.error == "restored_history":
                     return
-            is_restore = kind == "backup_restore"
+            is_restore = kind in ("backup_restore", "backup_restore_v2")
             if is_restore:
                 with self.db.write_lock:
                     self.db.maintenance_task, self.db.maintenance_owner = (
@@ -409,7 +468,19 @@ class Backups:
             with self.db.write() as session:
                 task = session.get(Task, task_id)
                 task.status, task.phase, task.error = "running", "processing_backup", None
-            if is_restore:
+            if kind == "backup_restore_v2":
+                self.archives.restore(task_id)
+            elif kind in ("backup_export_v2", "backup_inspect_v2"):
+                result = (
+                    self.archives.export(task_id)
+                    if kind == "backup_export_v2"
+                    else self.archives.inspect(task_id)
+                )
+                with self.db.write() as session:
+                    task = session.get(Task, task_id)
+                    task.status, task.phase, task.error = "completed", "completed", None
+                    task.finished_at, task.result = time.time(), result
+            elif is_restore:
                 self.restore(task_id)
             else:
                 raw = self.read(task_id) if kind == "backup_inspect" else None
@@ -442,21 +513,37 @@ class Backups:
         finally:
             if is_restore:
                 with self.db.write_lock:
-                    self.db.maintenance_task, self.db.maintenance_owner = None, None
-                if self.start_regular and not self.regular_started and not self.stop.is_set():
-                    self.start_normal()
+                    self.release_restore(task_id)
+                    if (
+                        not self.db.maintenance_task
+                        and self.start_regular
+                        and not self.regular_started
+                        and not self.stop.is_set()
+                    ):
+                        self.start_normal()
 
     def fail(self, task_id, error, status, is_restore):
-        with self.db.write() as session:
-            task = session.get(Task, task_id)
-            task.status, task.error, task.phase, task.finished_at = (
-                status,
-                error,
-                status,
-                time.time(),
+        with self.db.write_lock:
+            # Post-commit cleanup cannot rewrite an already committed restore
+            # into a failure, or attempt a write through a newer restore's gate.
+            with self.db.read() as session:
+                if session.get(Task, task_id).status == "completed":
+                    return
+            writer = (
+                self.completing_restore(task_id)
+                if is_restore and status != "interrupted"
+                else self.db.write()
             )
-            if is_restore and status != "interrupted":
-                session.get(Setting, "maintenance_restore").value = ""
+            with writer as session:
+                task = session.get(Task, task_id)
+                task.status, task.error, task.phase, task.finished_at = (
+                    status,
+                    error,
+                    status,
+                    time.time(),
+                )
+                if is_restore and status != "interrupted":
+                    session.get(Setting, "maintenance_restore").value = ""
 
     def close(self):
         self.stop.set()

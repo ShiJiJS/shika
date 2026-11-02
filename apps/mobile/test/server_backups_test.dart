@@ -21,6 +21,8 @@ void main() {
   var failDownload = false,
       failTask = false,
       loseRestore = false,
+      loseExport = false,
+      loseInspect = false,
       dropRestore = false,
       corruptDownload = false,
       failReadback = false;
@@ -65,6 +67,7 @@ void main() {
     failDownload = false;
     failTask = false;
     loseRestore = false;
+    loseExport = loseInspect = false;
     dropRestore = false;
     corruptDownload = false;
     failReadback = false;
@@ -146,8 +149,11 @@ void main() {
           },
         );
         response = tasks[id]!;
-        if (kind == 'restore' && loseRestore) {
+        if (kind == 'restore' && loseRestore ||
+            kind == 'export' && loseExport ||
+            kind == 'inspect' && loseInspect) {
           loseRestore = false;
+          loseExport = loseInspect = false;
           error(503, '恢复响应丢失');
         }
       } else if (path.startsWith('/api/v1/tasks/')) {
@@ -211,6 +217,44 @@ void main() {
     await server.close(force: true);
   });
 
+  test(
+    'task acknowledgement cannot replace or clear a newer export receipt',
+    () async {
+      store.value = jsonEncode({
+        'scope': 'server-1',
+        'export': {'key': 'new-key', 'task': 'new-task'},
+      });
+      await reopen();
+      final before = store.value;
+      expect(
+        await client.attachReceipt('export', 'old-key', 'old-task'),
+        isFalse,
+      );
+      await expectLater(
+        client.attachReceipt('export', 'new-key', 'wrong-task'),
+        throwsA(isA<LibraryFailure>()),
+      );
+      await client.markExportSaved('old-task');
+      expect(store.value, before);
+      expect(requests, isEmpty);
+      await client.markExportSaved('new-task');
+      expect(client.pendingReceipts, isEmpty);
+    },
+  );
+  test(
+    'stale restore reconciliation cannot query a newer restore command',
+    () async {
+      store.value = jsonEncode({
+        'scope': 'server-1',
+        'restore': {'key': 'new-restore', 'task': 'new-task'},
+      });
+      await reopen();
+      await client.reconcile(expectedRequestId: 'old-restore');
+      expect(requests, isEmpty);
+      expect(client.restorePending, isTrue);
+      expect(restored, 0);
+    },
+  );
   test(
     'failed download reopens its accepted export without making a new snapshot',
     () async {
@@ -355,7 +399,12 @@ void main() {
         throwsA(predicate((e) => e.toString().contains('没有补执行'))),
       );
       expect(restored, 0);
-      expect(client.restorePending, isFalse);
+      expect(client.restorePending, isTrue);
+      final original = jsonDecode(store.value!)['restore']['key'];
+      await reopen();
+      await expectLater(client.reconcile(), throwsA(isA<LibraryFailure>()));
+      expect(client.restorePending, isTrue);
+      expect(jsonDecode(store.value!)['restore']['key'], original);
       expect(
         requests.where(
           (r) =>
@@ -384,6 +433,87 @@ void main() {
         ),
         hasLength(1),
       );
+    },
+  );
+  test(
+    'lost accepted export is reopened only through its original GET',
+    () async {
+      loseExport = true;
+      await expectLater(client.export(), throwsA(isA<LibraryFailure>()));
+      final key = jsonDecode(store.value!)['export']['key'];
+      await reopen();
+      expect(await client.export(), text);
+      expect(
+        requests.where(
+          (r) => r['method'] == 'POST' && r['path'] == '/api/v1/backups',
+        ),
+        hasLength(1),
+      );
+      expect(
+        requests.any(
+          (r) =>
+              r['method'] == 'GET' &&
+              r['path'] == '/api/v1/backup-requests/export/$key',
+        ),
+        isTrue,
+      );
+    },
+  );
+  test(
+    'lost accepted inspection is reopened only through its original GET',
+    () async {
+      loseInspect = true;
+      await expectLater(client.inspect(text), throwsA(isA<LibraryFailure>()));
+      final key = jsonDecode(store.value!)['inspect']['key'];
+      await reopen();
+      expect((await client.inspect(text)).counts['videos'], 3);
+      expect(
+        requests.where(
+          (r) => r['method'] == 'POST' && r['path'] == '/api/v1/backup-imports',
+        ),
+        hasLength(1),
+      );
+      expect(
+        requests.any(
+          (r) =>
+              r['method'] == 'GET' &&
+              r['path'] == '/api/v1/backup-requests/inspect/$key',
+        ),
+        isTrue,
+      );
+    },
+  );
+  test(
+    'another file cannot overwrite an unknown original inspection',
+    () async {
+      loseInspect = true;
+      await expectLater(client.inspect(text), throwsA(isA<LibraryFailure>()));
+      final original = jsonDecode(store.value!)['inspect'];
+      receipts.clear();
+      final other = jsonEncode({
+        ...jsonDecode(text) as Map,
+        'payload': {'sample': 'another file'},
+      });
+      await reopen();
+      await expectLater(client.inspect(other), throwsA(isA<LibraryFailure>()));
+      expect(jsonDecode(store.value!)['inspect'], original);
+      expect(
+        requests.where(
+          (r) => r['method'] == 'POST' && r['path'] == '/api/v1/backup-imports',
+        ),
+        hasLength(1),
+      );
+    },
+  );
+  test(
+    'malformed saved receipts block writes and preserve their original bytes',
+    () async {
+      store.value = '{damaged';
+      final before = requests.length;
+      await expectLater(reopen(), throwsA(isA<LibraryFailure>()));
+      await expectLater(client.export(), throwsA(isA<LibraryFailure>()));
+      expect(store.value, '{damaged');
+      expect(requests.length, before);
     },
   );
 }

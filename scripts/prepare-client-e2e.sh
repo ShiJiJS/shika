@@ -1,20 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-export VV_E2E_HOME="$HOME/.local/share/video-viewer-e2e"
+export VV_E2E_HOME="${VV_E2E_HOME:-$HOME/.local/share/video-viewer-e2e}"
 export VV_E2E_ASSETS="$repo_dir/apps/mobile/assets/media"
 compose=(docker compose -f "$repo_dir/compose.client-e2e.yaml")
 if [[ "${1:-}" == "--reset" ]]; then
   "${compose[@]}" down
-  python3 - "$VV_E2E_HOME" <<'PY'
+  python3 - "$VV_E2E_HOME" "$repo_dir" <<'PY'
 import os
 import shutil
 import sys
 from pathlib import Path
 base = Path(sys.argv[1])
-expected = Path.home() / ".local/share/video-viewer-e2e"
-if base != expected or base.resolve() != expected:
+allowed = {Path.home() / ".local/share/video-viewer-e2e", Path(sys.argv[2]) / ".dev/e2e"}
+if base not in allowed or base.resolve() != base:
     raise SystemExit("Refusing reset outside the dedicated non-symlink fixture directory")
+expected = base
 for name in ("data", "media"):
     target = base / name
     if target.exists():

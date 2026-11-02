@@ -12,6 +12,8 @@ from pydantic import BaseModel, ConfigDict, Field, SecretStr, model_validator
 from sqlalchemy import select
 from starlette.concurrency import run_in_threadpool
 
+from .authority import HEADER as EPOCH_HEADER
+from .authority import Authority
 from .backups import Backups
 from .catalog import Catalog
 from .config import Settings
@@ -19,10 +21,27 @@ from .db import Database
 from .errors import LibraryError
 from .file_operations import FileOperations
 from .file_state import reserved_video_ids
+from .images import ImageStreams
 from .library_state import library_state
+from .maintenance_tasks import router as maintenance_tasks_router
+from .management_backup_api import router as management_backup_router
+from .management_history_api import router as management_history_router
 from .metadata_cleanup import forget_missing
 from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
+from .pack_api import router as pack_router
+from .pack_missing import PackMissing
+from .pack_operations import PackOperations
+from .pack_operations_api import router as pack_operations_router
+from .pack_purge import PackPurge
+from .pack_purge_plans import PackPurgePlans
+from .pack_restore_plans import PackRestorePlans
+from .pack_tags import PackTags
+from .pack_title_order import title_order_available
+from .packs import Packs
 from .playback import Playback
+from .playback_defaults import PlaybackDefaults
+from .reading import Reading
+from .reading_api import router as reading_router
 from .scanner import Scanner
 from .security import Authentication
 from .streaming import MediaStreams
@@ -38,6 +57,8 @@ class Login(Input):
 
 
 class RootInput(Input):
+    kind: Literal["video", "pack"] | None = None
+    enabled: bool | None = None
     name: str = Field(min_length=1, max_length=100)
     path: str = Field(min_length=1, max_length=4096)
 
@@ -48,6 +69,7 @@ class PlaybackScope(Input):
     duration: Literal["short", "long"] | None = None
     file_type: str | None = Field(default=None, max_length=16)
     tag_ids: list[str] = Field(default_factory=list, max_length=256)
+    search: str = Field(default="", max_length=200)
 
 
 class RoundInput(Input):
@@ -55,6 +77,47 @@ class RoundInput(Input):
     order: Literal["random", "sequential"] = "random"
     scope: PlaybackScope = Field(default_factory=PlaybackScope)
     anchor_video_id: str | None = None
+    membership: Literal["legacy", "fixed"] = "legacy"
+    source: Literal["library", "tags", "recent"] = "library"
+    sort: Literal["path", "name", "newest", "recent"] = "path"
+    name_locale: Literal["zh-CN"] | None = None
+
+    @model_validator(mode="after")
+    def compatible_context(self):
+        if self.membership == "legacy" and (
+            self.scope.search or self.source != "library" or self.sort != "path" or self.name_locale
+        ):
+            raise ValueError("Entry search/source/sort require fixed membership")
+        if self.sort == "recent" and self.source != "recent":
+            raise ValueError("Recent sorting requires the recent source")
+        if self.name_locale and self.sort != "name":
+            raise ValueError("Name locale requires name sorting")
+        return self
+
+
+def localized_video_sort(sort, name_locale):
+    if name_locale and sort != "name":
+        raise LibraryError("invalid_sort", "中文名称排序仅适用于名称顺序", 422)
+    return "name_zh" if name_locale else sort
+
+
+class PlaybackDefaultsInput(Input):
+    request_id: str = Field(min_length=1, max_length=128)
+    expected_revision: int = Field(ge=0)
+    order: Literal["random", "sequential"]
+
+
+class OrderInput(Input):
+    request_id: str = Field(min_length=1, max_length=128)
+    expected_revision: int = Field(ge=0)
+    order: Literal["random", "sequential"]
+    restart: bool = False
+
+
+class OpenedInput(Input):
+    request_id: str = Field(min_length=1, max_length=128)
+    expected_revision: int = Field(ge=0)
+    video_id: str = Field(min_length=1, max_length=128)
 
 
 class PositionInput(Input):
@@ -87,6 +150,33 @@ class TagAssignment(WriteInput):
     mode: Literal["add", "remove", "replace"] = "add"
 
 
+class PackTagAssignment(WriteInput):
+    pack_ids: list[Annotated[str, Field(min_length=1, max_length=128)]] = Field(
+        min_length=1, max_length=1000
+    )
+    tag_ids: list[Annotated[str, Field(min_length=1, max_length=128)]] = Field(
+        default_factory=list, max_length=256
+    )
+    mode: Literal["add", "remove", "replace"] = "add"
+
+
+class PackTagResponse(BaseModel):
+    id: str
+    name: str
+    kind: Literal["pack"] = "pack"
+
+
+class PackTagCount(PackTagResponse):
+    pack_count: int
+
+
+class PackTagPage(BaseModel):
+    items: list[PackTagCount]
+    total: int
+    offset: int
+    limit: int
+
+
 class DeleteInput(WriteInput):
     video_ids: list[Annotated[str, Field(min_length=1, max_length=128)]] = Field(
         min_length=1, max_length=1000
@@ -113,12 +203,21 @@ class RestoreInput(WriteInput):
     confirmed: Literal[True]
 
 
+class ScanInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    root_id: str | None = Field(default=None, min_length=1, max_length=128)
+
+
 def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fault_hook=None):
     @asynccontextmanager
     async def lifespan(app):
         configured = settings or Settings.from_env()
         db = Database(configured.data_dir)
         db.migrate()
+        # Private startup recovery may initialize authentication and scanners
+        # before the backup executor resumes the durable reservation. HTTP is
+        # not served until this bootstrap owner has been relinquished below.
+        db.maintenance_owner = threading.get_ident()
         auth = Authentication(db, configured)
         catalog = Catalog(db, configured)
         scanner = Scanner(db, configured, catalog)
@@ -126,7 +225,19 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         app.state.catalog, app.state.scanner = catalog, scanner
         app.state.streams = MediaStreams(db, configured)
         app.state.playback = Playback(db, catalog, app.state.streams)
+        app.state.playback_defaults = PlaybackDefaults(db)
         app.state.tags = Tags(db, app.state.playback)
+        app.state.pack_tags = PackTags(db)
+        app.state.packs, app.state.images = Packs(db), ImageStreams(db, configured)
+        app.state.reading = Reading(db, app.state.packs)
+        app.state.pack_files = PackOperations(db, app.state.packs, app.state.reading)
+        app.state.pack_purge_plans = PackPurgePlans(db, configured)
+        app.state.pack_purge = PackPurge(
+            app.state.pack_files, app.state.pack_purge_plans, configured
+        )
+        app.state.pack_files.purge = app.state.pack_purge
+        app.state.pack_restore_plans = PackRestorePlans(app.state.pack_files)
+        app.state.pack_missing = PackMissing(db)
         app.state.files = FileOperations(
             db, configured, catalog, app.state.playback, file_fault_hook
         )
@@ -136,15 +247,25 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
 
         def start_regular():
             app.state.files.start()
+            app.state.pack_files.start()
+            app.state.pack_restore_plans.start()
+            app.state.pack_purge_plans.start()
+            app.state.pack_missing.start()
             scanner.start()
 
         app.state.backups.start(start_regular)
+        if db.maintenance_owner == threading.get_ident():
+            db.maintenance_owner = None
         try:
             yield
         finally:
             app.state.backups.close()
             scanner.close()
             app.state.files.close()
+            app.state.pack_restore_plans.close()
+            app.state.pack_missing.close()
+            app.state.pack_files.close()
+            app.state.pack_purge_plans.close()
             db.close()
 
     app = FastAPI(title="Video Viewer", version="0.1.2", lifespan=lifespan)
@@ -171,10 +292,47 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             status_code=422,
         )
 
-    def authorized(request: Request, authorization: Annotated[str | None, Header()] = None):
-        return request.app.state.auth.require(authorization)
+    @app.middleware("http")
+    async def authority_header(request, call_next):
+        response = await call_next(request)
+        if getattr(request.state, "authenticated", False):
+
+            def current():
+                with request.app.state.db.read() as session:
+                    return Authority.current(session)
+
+            response.headers[EPOCH_HEADER] = await run_in_threadpool(current)
+        return response
+
+    async def authorized(
+        request: Request,
+        authorization: Annotated[str | None, Header()] = None,
+        management_epoch: Annotated[
+            str | None,
+            Header(alias=EPOCH_HEADER, min_length=32, max_length=32, pattern=r"^[a-f0-9]{32}$"),
+        ] = None,
+    ):
+        principal = await run_in_threadpool(request.app.state.auth.authenticate, authorization)
+        request.state.authenticated = True
+        if len(request.headers.getlist(EPOCH_HEADER)) > 1:
+            raise LibraryError("invalid_management_epoch", "管理数据代次请求头重复", 422)
+        # Revoking one's own token is independent of media generation. It never
+        # authorizes a media write or clears another connection's session.
+        if request.method == "DELETE" and request.url.path == "/api/v1/auth/session":
+            yield principal.digest
+            return
+        with request.app.state.db.authority.bind(principal, management_epoch):
+            if request.method not in {"GET", "HEAD", "OPTIONS"}:
+                await run_in_threadpool(request.app.state.db.check_authority)
+            yield principal.digest
 
     auth_required = [Depends(authorized)]
+    app.include_router(pack_router(auth_required))
+    app.include_router(reading_router(auth_required))
+    app.include_router(pack_operations_router(auth_required))
+    app.include_router(maintenance_tasks_router(auth_required))
+    app.include_router(management_backup_router(auth_required))
+    app.include_router(management_history_router(auth_required))
 
     @app.get("/health")
     def health():
@@ -207,7 +365,63 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     def info(request: Request):
         with request.app.state.db.read() as session:
             server_id = session.get(Setting, "server_id").value
-        return {"server_id": server_id, "api_version": 1, "sqlite_version": sqlite3.sqlite_version}
+            epoch = Authority.current(session)
+            history = session.get(Setting, "management_history_ref")
+            history_available = bool(history and history.value)
+        return {
+            "server_id": server_id,
+            "api_version": 1,
+            "sqlite_version": sqlite3.sqlite_version,
+            "schema_version": "0014",
+            "management_epoch": epoch,
+            "management_history_available": history_available,
+            "management_backups": {
+                "versions": [1, 2],
+                "max_bytes": request.app.state.settings.backup_max_bytes,
+                "max_roots": 256,
+            },
+            "capabilities": [
+                "typed_roots",
+                "root_scan_progress",
+                "scoped_scans",
+                "media_catalog_counts",
+                *(["pack_presentation"] if title_order_available() else []),
+                *(["video_name_order"] if title_order_available() else []),
+                "pack_tags",
+                "image_packs",
+                "fixed_video_sessions",
+                "versioned_video_queue",
+                "video_entry_anchors",
+                "catalog_selection",
+                "pack_tag_names",
+                "pack_entry_anchors",
+                "pack_reading_sessions",
+                "pack_logical_trash",
+                "pack_reader_cleanup",
+                "pack_purge_preview",
+                "pack_permanent_delete",
+                "maintenance_tasks",
+                "pack_restore_plans",
+                "managed_playback_defaults",
+                "pack_missing_cleanup",
+                "management_authority",
+                "management_history",
+                "management_purge_history",
+                "backup_v2",
+            ],
+        }
+
+    @app.get("/api/v1/playback-defaults", dependencies=auth_required)
+    def playback_defaults(request: Request):
+        return request.app.state.playback_defaults.read()
+
+    @app.patch("/api/v1/playback-defaults", dependencies=auth_required)
+    def set_playback_defaults(body: PlaybackDefaultsInput, request: Request):
+        return request.app.state.playback_defaults.write(**body.model_dump())
+
+    @app.get("/api/v1/playback-default-requests/{request_id}", dependencies=auth_required)
+    def playback_default_receipt(request_id: str, request: Request):
+        return request.app.state.playback_defaults.receipt(request_id)
 
     @app.get("/api/v1/mounts", dependencies=auth_required)
     def mounts(request: Request):
@@ -236,7 +450,9 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                     select(Video.id).where(Video.id.in_(reserved_video_ids())).limit(1)
                 ):
                     raise LibraryError("operation_busy", "文件操作进行中，请完成后再修改媒体目录")
-            return request.app.state.catalog.save_root(body.name, body.path, root_id)
+            return request.app.state.catalog.save_root(
+                body.name, body.path, root_id, kind=body.kind, enabled=body.enabled
+            )
 
     @app.post("/api/v1/roots", dependencies=auth_required, status_code=201)
     def add_root(body: RootInput, request: Request):
@@ -247,22 +463,71 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         return save_root(body, request, root_id)
 
     @app.get("/api/v1/directories", dependencies=auth_required)
-    def directories(request: Request, parent_id: str | None = None):
-        return {"items": request.app.state.catalog.directories(parent_id)}
+    def directories(
+        request: Request,
+        parent_id: str | None = None,
+        kind: Literal["video", "pack"] = "video",
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int | None, Query(ge=1, le=200)] = None,
+    ):
+        return request.app.state.catalog.directories(parent_id, kind, offset=offset, limit=limit)
 
     @app.get("/api/v1/directories/resolve", dependencies=auth_required)
     def resolve_directory(
-        request: Request, path: Annotated[str, Query(min_length=1, max_length=4096)]
+        request: Request,
+        path: Annotated[str, Query(min_length=1, max_length=4096)],
+        kind: Literal["video", "pack"] = "video",
     ):
-        return request.app.state.catalog.directory(path=path)
+        return request.app.state.catalog.directory(path=path, kind=kind)
 
     @app.get("/api/v1/directories/{directory_id}", dependencies=auth_required)
-    def directory(directory_id: str, request: Request):
-        return request.app.state.catalog.directory(directory_id=directory_id)
+    def directory(directory_id: str, request: Request, kind: Literal["video", "pack"] = "video"):
+        return request.app.state.catalog.directory(directory_id=directory_id, kind=kind)
+
+    @app.get("/api/v1/pack-tags", dependencies=auth_required, response_model=PackTagPage)
+    def pack_tags(
+        request: Request,
+        search: Annotated[str, Query(max_length=200)] = "",
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int, Query(ge=1, le=200)] = 50,
+    ):
+        return request.app.state.pack_tags.list(search, offset, limit)
+
+    @app.get("/api/v1/pack-tags/resolve", dependencies=auth_required)
+    def resolve_pack_tags(
+        request: Request,
+        tag_ids: Annotated[list[str], Query(min_length=1, max_length=256)],
+    ):
+        return request.app.state.pack_tags.resolve(tag_ids)
+
+    @app.post(
+        "/api/v1/pack-tags",
+        dependencies=auth_required,
+        status_code=201,
+        response_model=PackTagResponse,
+    )
+    def create_pack_tag(body: TagInput, request: Request):
+        return request.app.state.pack_tags.create(body.name, body.request_id)
+
+    @app.patch(
+        "/api/v1/pack-tags/{tag_id}", dependencies=auth_required, response_model=PackTagResponse
+    )
+    def rename_pack_tag(tag_id: str, body: TagInput, request: Request):
+        return request.app.state.pack_tags.rename(tag_id, body.name, body.request_id)
+
+    @app.delete("/api/v1/pack-tags/{tag_id}", dependencies=auth_required)
+    def delete_pack_tag(tag_id: str, body: WriteInput, request: Request):
+        return request.app.state.pack_tags.delete(tag_id, body.request_id)
+
+    @app.patch("/api/v1/pack-tag-links", dependencies=auth_required)
+    def assign_pack_tags(body: PackTagAssignment, request: Request):
+        return request.app.state.pack_tags.assign(
+            body.pack_ids, body.tag_ids, body.mode, body.request_id
+        )
 
     @app.post("/api/v1/scans", dependencies=auth_required, status_code=202)
-    def scan(request: Request):
-        return request.app.state.scanner.submit()
+    def scan(request: Request, body: ScanInput | None = None):
+        return request.app.state.scanner.submit(body.root_id if body else None)
 
     @app.get("/api/v1/tasks/{task_id}", dependencies=auth_required)
     def task(task_id: str, request: Request):
@@ -284,6 +549,10 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         duration: Literal["short", "long"] | None = None,
         file_type: Annotated[str | None, Query(max_length=16)] = None,
         tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
+        source: Literal["library", "tags", "recent"] = "library",
+        sort: Literal["path", "name", "newest", "recent"] = "path",
+        name_locale: Literal["zh-CN"] | None = None,
+        anchor_ids: Annotated[list[str] | None, Query(max_length=16)] = None,
     ):
         return request.app.state.catalog.videos(
             offset=offset,
@@ -295,6 +564,33 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             duration=duration,
             file_type=file_type,
             tag_ids=tag_ids or (),
+            source=source,
+            sort=localized_video_sort(sort, name_locale),
+            anchor_ids=anchor_ids or (),
+        )
+
+    @app.get("/api/v1/videos/selection", dependencies=auth_required)
+    def video_selection(
+        request: Request,
+        directory_id: str | None = None,
+        search: Annotated[str, Query(max_length=200)] = "",
+        orientation: Literal["portrait", "landscape"] | None = None,
+        duration: Literal["short", "long"] | None = None,
+        file_type: Annotated[str | None, Query(max_length=16)] = None,
+        tag_ids: Annotated[list[str] | None, Query(max_length=256)] = None,
+        source: Literal["library", "tags", "recent"] = "library",
+        sort: Literal["path", "name", "newest", "recent"] = "path",
+        name_locale: Literal["zh-CN"] | None = None,
+    ):
+        return request.app.state.catalog.selection(
+            directory_id=directory_id,
+            search=search,
+            orientation=orientation,
+            duration=duration,
+            file_type=file_type,
+            tag_ids=tag_ids or (),
+            source=source,
+            sort=localized_video_sort(sort, name_locale),
         )
 
     @app.get("/api/v1/videos/{video_id}/thumbnail", dependencies=auth_required)
@@ -322,16 +618,49 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         return request.app.state.streams.response(video_id)
 
     @app.get("/api/v1/playback", dependencies=auth_required)
-    def playback(request: Request):
-        return request.app.state.playback.current()
+    def playback(request: Request, create: bool = True):
+        return request.app.state.playback.current(create=create)
 
     @app.post("/api/v1/rounds", dependencies=auth_required, status_code=201)
     def create_round(body: RoundInput, request: Request):
+        scope = body.scope.model_dump(exclude_none=True)
+        if not scope["search"]:
+            scope.pop("search")
         return request.app.state.playback.create(
             body.order,
-            body.scope.model_dump(exclude_none=True),
+            scope,
             body.anchor_video_id,
             body.request_id,
+            membership=body.membership,
+            source=body.source,
+            sort=localized_video_sort(body.sort, body.name_locale),
+        )
+
+    @app.patch("/api/v1/rounds/{round_id}/order", dependencies=auth_required)
+    def reorder(round_id: str, body: OrderInput, request: Request):
+        return request.app.state.playback.reorder(
+            round_id, body.order, body.expected_revision, body.request_id, restart=body.restart
+        )
+
+    @app.post("/api/v1/rounds/{round_id}/opened", dependencies=auth_required)
+    def opened(round_id: str, body: OpenedInput, request: Request):
+        return request.app.state.playback.opened(
+            round_id, body.video_id, body.expected_revision, body.request_id
+        )
+
+    @app.get("/api/v1/recent", dependencies=auth_required)
+    def recent(
+        request: Request,
+        kind: Literal["video", "pack"] = "video",
+        offset: Annotated[int, Query(ge=0)] = 0,
+        limit: Annotated[int, Query(ge=1, le=200)] = 24,
+    ):
+        if kind == "pack":
+            return request.app.state.packs.list(
+                offset=offset, limit=limit, source="recent", sort="recent"
+            )
+        return request.app.state.catalog.videos(
+            offset=offset, limit=limit, source="recent", sort="recent"
         )
 
     @app.patch("/api/v1/rounds/{round_id}/position", dependencies=auth_required)
@@ -346,8 +675,9 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         request: Request,
         offset: Annotated[int, Query(ge=0)] = 0,
         limit: Annotated[int, Query(ge=1, le=200)] = 50,
+        v: Annotated[int | None, Query(ge=0)] = None,
     ):
-        return request.app.state.playback.entries(round_id, offset, limit)
+        return request.app.state.playback.entries(round_id, offset, limit, v)
 
     @app.get("/api/v1/tags", dependencies=auth_required)
     def tags(
@@ -428,13 +758,26 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
         return request.app.state.scanner.task(task_id)
 
     @app.get("/api/v1/backup-requests/{kind}/{request_id}", dependencies=auth_required)
-    def backup_request(kind: Literal["export", "inspect", "restore"], request_id: str, request: Request):
-        namespace = {"export": "backup.backup_export", "inspect": "backup.backup_inspect", "restore": "backup.restore"}[kind]
+    def backup_request(
+        kind: Literal["export", "inspect", "restore"], request_id: str, request: Request
+    ):
+        namespace = {
+            "export": "backup.backup_export",
+            "inspect": "backup.backup_inspect",
+            "restore": "backup.restore",
+        }[kind]
         with request.app.state.db.read() as session:
             record = session.get(RequestRecord, namespace + ":" + request_id)
-            if not record:
+            from .management_history import historical_receipt
+
+            retired = (
+                historical_receipt(session, "request_records", namespace + ":" + request_id)
+                if not record
+                else None
+            )
+            if not record and not retired:
                 raise LibraryError("backup_request_not_found", "未查询到已受理的备份任务", 404)
-            task_id = record.result["id"]
+            task_id = record.result["id"] if record else retired["record"]["result"]["id"]
         return request.app.state.scanner.task(task_id)
 
     def operation_task(request, operation_id):
@@ -455,6 +798,20 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     @app.post("/api/v1/videos/forget-missing", dependencies=auth_required)
     def forget_missing_videos(body: ForgetMissingInput, request: Request):
         return forget_missing(request.app.state.db, body.request_id)
+
+    @app.post("/api/v1/packs/forget-missing", dependencies=auth_required, status_code=202)
+    def forget_missing_packs(body: ForgetMissingInput, request: Request):
+        return {
+            **operation_task(request, request.app.state.pack_missing.submit(body.request_id)),
+            "request_id": body.request_id,
+        }
+
+    @app.get("/api/v1/pack-missing-requests/{request_id}", dependencies=auth_required)
+    def missing_pack_receipt(request_id: str, request: Request):
+        return {
+            **operation_task(request, request.app.state.pack_missing.receipt(request_id)),
+            "request_id": request_id,
+        }
 
     @app.post("/api/v1/trash/permanent", dependencies=auth_required, status_code=202)
     def permanent_trash(body: PermanentInput, request: Request):
@@ -479,7 +836,10 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     def operation(operation_id: str, request: Request):
         with request.app.state.db.read() as session:
             if not session.get(FileOperation, operation_id):
-                raise LibraryError("operation_not_found", "文件操作不存在", 404)
+                from .management_history import historical_operation
+
+                if historical_operation(session, "file_operations", identity=operation_id) is None:
+                    raise LibraryError("operation_not_found", "文件操作不存在", 404)
         return operation_task(request, operation_id)
 
     @app.get("/api/v1/file-requests/{request_id}", dependencies=auth_required)
@@ -490,9 +850,17 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             operation = session.scalar(
                 select(FileOperation).where(FileOperation.request_key == "files:" + request_id)
             )
-            if not operation:
+            if operation:
+                operation_id = operation.id
+            else:
+                from .management_history import historical_operation
+
+                retired = historical_operation(
+                    session, "file_operations", request_key="files:" + request_id
+                )
+                operation_id = retired["record"]["id"] if retired else None
+            if not operation_id:
                 raise LibraryError("operation_not_found", "未查询到已受理的文件操作", 404)
-            operation_id = operation.id
         return operation_task(request, operation_id)
 
     return app

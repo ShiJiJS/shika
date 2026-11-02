@@ -31,16 +31,23 @@ def test_mark_restore_and_scan_never_move_or_read_originals(library, samples, mo
     for path, previous in before.items():
         current = os.stat(path)
         assert (current.st_ino, current.st_size, current.st_mtime_ns, current.st_ctime_ns) == (
-            previous.st_ino, previous.st_size, previous.st_mtime_ns, previous.st_ctime_ns
+            previous.st_ino,
+            previous.st_size,
+            previous.st_mtime_ns,
+            previous.st_ctime_ns,
         )
     assert not (media / ".video-viewer-trash").exists()
     scan(client)
     assert client.get("/api/v1/videos").json()["total"] == 0
     rows = client.get("/api/v1/trash").json()["items"]
-    restored, _ = operation(client, "/api/v1/trash/restore", {"trash_ids": [row["id"] for row in rows]})
+    restored, _ = operation(
+        client, "/api/v1/trash/restore", {"trash_ids": [row["id"] for row in rows]}
+    )
     assert restored["result"]["succeeded"] == 4, restored
     assert {video["id"] for video in client.get("/api/v1/videos").json()["items"]} == set(ids)
-    assert all(video["tag_ids"] == [label["id"]] for video in client.get("/api/v1/videos").json()["items"])
+    assert all(
+        video["tag_ids"] == [label["id"]] for video in client.get("/api/v1/videos").json()["items"]
+    )
     assert client.get("/api/v1/trash").json()["total"] == 0
 
 
@@ -53,8 +60,16 @@ def test_permanent_delete_is_the_only_action_that_removes_logical_source(library
     trash(client, [video["id"]])
     assert path.exists()
     row = client.get("/api/v1/trash").json()["items"][0]
-    assert client.post("/api/v1/trash/permanent", json={"request_id": str(uuid.uuid4()), "trash_ids": [row["id"]]}).status_code == 422
-    done, _ = operation(client, "/api/v1/trash/permanent", {"trash_ids": [row["id"]], "confirmed": True})
+    assert (
+        client.post(
+            "/api/v1/trash/permanent",
+            json={"request_id": str(uuid.uuid4()), "trash_ids": [row["id"]]},
+        ).status_code
+        == 422
+    )
+    done, _ = operation(
+        client, "/api/v1/trash/permanent", {"trash_ids": [row["id"]], "confirmed": True}
+    )
     assert done["result"]["succeeded"] == 1, done
     assert not path.exists()
 
@@ -69,7 +84,9 @@ def test_permanent_delete_rejects_externally_replaced_marked_file(library, sampl
     path.unlink()
     path.write_bytes(b"replacement must survive")
     row = client.get("/api/v1/trash").json()["items"][0]
-    done, _ = operation(client, "/api/v1/trash/permanent", {"trash_ids": [row["id"]], "confirmed": True})
+    done, _ = operation(
+        client, "/api/v1/trash/permanent", {"trash_ids": [row["id"]], "confirmed": True}
+    )
     assert done["result"]["succeeded"] == 0
     assert path.read_bytes() == b"replacement must survive"
 

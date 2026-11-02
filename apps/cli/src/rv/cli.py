@@ -39,6 +39,10 @@ EXIT_CONFLICT = 6
 EXIT_API = 7
 EXIT_WAIT = 8
 
+# A write command can start with reads (for example resolving tag names).
+# Automatic login anywhere in that flow could move it to a restored library.
+READ_ONLY_COMMANDS = {"info", "tasks", "task", "dirs", "resolve", "videos", "find", "show", "tags"}
+
 
 class Context:
     def __init__(self, args: argparse.Namespace) -> None:
@@ -60,7 +64,8 @@ class Context:
                 token = record.access_token
         self.passphrase = args.passphrase or os.environ.get("RV_PASSPHRASE")
         self.client = RvClient(
-            self.base_url, token=token, timeout=self.timeout, passphrase=self.passphrase
+            self.base_url, token=token, timeout=self.timeout, passphrase=self.passphrase,
+            auto_relogin=args.command in READ_ONLY_COMMANDS,
         )
         self.client.token_listener = self._persist_token
 

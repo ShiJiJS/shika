@@ -13,6 +13,14 @@
 
 ## 操作语义
 
+LF4 新工作区的列表查询草稿与播放范围分离，固定预览从当前来源创建。批选“全选匹配项”调用声明 `catalog_selection` 的鉴权 `GET /api/v1/videos/selection` 或 `/api/v1/packs/selection`；沿用各自完整筛选，在一次数据库读取中返回 `{kind, ids, total}`，不创建播放、阅读或最近记录。视频同时保留来源和排序；图包使用独立标签和阅读状态。客户端只接受类型正确、ID唯一且数量完整的结果；超过五万项服务端明确拒绝并要求缩小范围，不截断后称全选。旧服务可继续手工选择，跨页全选明确提示升级。
+
+完整选择是读入时的ID快照，可单项排除。新查询、来源/类型退出、手工操作及连接变更取消迟到的全选；取消和普通错误保留原选择。批量标签按稳定顺序每1000项提交，继续使用幂等回执，每批核对原连接和恢复门禁；部分或不确定结果保留选择并显示已确认进度。列表批选即使只剩一项也按追加处理，卡片单项编辑保持精确替换。
+
+声明 `pack_tag_names` 时，图包摘要的 `tag_ids` 与 `tag_names` 来自同一读取，客户端要求名称完整对应这些ID。编辑/筛选原选择通过鉴权 `GET /api/v1/pack-tags/resolve?tag_ids=…` 精确读取，返回独立的 `kind=pack`、`items` 和 `missing_ids`；每次最多256项，需要时在同一连接下分批，不遍历整个标签库或借用视频标签名。名称与标签分页有独立取消范围，恢复发布前也取消旧名称请求。
+
+名称未确认或原选择已被删除时保留草稿并提示解决后保存；较早响应不能覆盖后来的名称，换连接清除旧名称并禁止沿用旧ID保存。成功编辑的ID/名称会更新仍打开的详情，再次进入编辑保留新选择；卡片由服务端读回。旧服务可以通过已读标签页确认名称，未确认项不会静默保存。
+
 | 能力 | 输入和结果 |
 | --- | --- |
 | 连接 | 地址、端口、口令；成功保存连接状态，错误保留输入。演示口令为 `demo`，不发送网络请求、不保存口令。 |
@@ -67,6 +75,8 @@ GET/HEAD 遇到传输中断时最多自动重试一次，两次尝试共用原�
 
 `GET /api/v1/library-state` 是建库准备与扫描进度的权威来源：`ready`、`scanning`、任务 ID/状态/阶段、`progress` 的发现/处理文件数和字节数、失败/暂缓计数，以及各目录的准备状态、最近完成时间和当前扫描情况。扫描线程按约一秒节流持久保存进度；客户端建库/扫描时约两秒查询，闲置时约十秒查询。断网保留最后一次状态并标明进度暂未同步；连接替换、失效、销毁或恢复期间不接受旧查询结果。
 
+具有 `media_catalog_counts` 能力时，`media.video.indexed` 和 `media.pack.indexed` 是同一只读SQLite快照中的两类全库可浏览总数，复用目录列表的启停、在线、类型、路径和可读性条件。媒体库类型栏只显示这对已确认整数，搜索、标签和分页不改写它；读取失败或内容不完整显示未确认，实际空库才显示零。顶层 `indexed` 及扫描 `counts` 保留兼容含义，不能代替类型总数。计数重试只GET状态，不提交扫描或创建阅读范围；旧服务无该能力时隐藏数量标记。
+
 首次连接到未准备的库时先锁定播放器，列表以“建库中”标明暂时数量。所有已映射目录完成扫描及身份核对后才就绪；`last_scan` 不在身份核对前提前写入。播放摘要在锁定时返回 `library_locked=true`、空窗口和零播放数量，原文件流返回 `409 library_preparing`。缩略图与目录/标签管理仍可读取。准备完成后自动读回完整轮次，避免早期几百条候选被当作全库；完整的恢复轮次不重排。普通增量扫描不重新锁定已准备的库，也不静默重排当前轮次。
 
 视频库接近底部自动请求下一页，整行小型旋转指示器显示加载状态；同页不重复请求，失败保留卡片和位置，重试使用原偏移。新筛选取消过期请求。进度通知不会触发列表重载。播放初始化允许前台 30 秒、相邻准备 20 秒；仅对超时或临时来源/连接错误做一次释放旧播放器后的延迟重试，不对已切走页面启动播放，最终失败仍可手动重试或滑走。
@@ -91,3 +101,32 @@ GET/HEAD 遇到传输中断时最多自动重试一次，两次尝试共用原�
 ## 0.1.4 行为修正
 
 文件结果查询只读一次状态，不进入全局 busy；不存在的旧任务清除本地回执但不重放。永久删除在后台进行，未变化的文件复用索引校验、按描述符及属性签名删除；变化或恢复中的文件继续核验。删除/撤销提示悬浮在视频顶部，不改变布局，本轮结束提示 3 秒消失。媒体目录新增同步外部变更及确认后清除失效元数据，详见 [验证与边界](purge-and-missing-validation.md)。
+
+## 图包入口稳定定位（LF4）
+
+声明 `pack_entry_anchors` 时，鉴权 `GET /api/v1/packs` 接受最多16个重复参数 `anchor_ids`，其余目录/标签交集/搜索/阅读状态/排序条件保持原查询。一次数据库读取确定总数、首个仍匹配候选的稳定排序索引和分页，响应增加可空 `anchor_index`；候选全部消失按传入offset收敛到有效末项。无匹配返回空页；目录不可用仍拒绝，不扩大范围。该读取不创建阅读会话、最近或进度。
+
+客户端 `restorePackEntry` 要求能力与合法定位元数据，并使用独立图包读取取消范围。页控制器最多保留120项，前补/丢页由页面补偿位置；定位、刷新、前补、追加各有原意图重试，失败或当前代次意外取消保留旧窗口。显式离开/改查询/换连接使旧代次失效。跨页全选仍走独立完整ID接口，不受这个窗口上限影响。正式备份v2的全域恢复代次隔离另由LF7完成。
+
+## 固定图包阅读（LF5）
+
+Schema0009声明 `pack_reading_sessions`。`POST /api/v1/pack-sessions` 带request_id、scope（directory_id/search/tag_ids/read_state）、source、sort、order及可选anchor_pack_id；返回固定范围id/revision、candidate_count、available_count、cursor、finished、current、resume与previous/next。成员在服务端完整求值并固定，entries按原ordinal分页；不可用成员标明available=false，新增包或改标签不会加入/重筛范围。只有明确position更新或实际打开回退候选才改变存储位置。
+
+`resume` 返回page/page_index、offset_ratio、completed、revision、content_version、recovery_reason和preferences。页清单/图像仍走LF2鉴权与版本读取。创建会话、摘要和分页读取不写进度、偏好或最近。只有首张实际显示后调用opened，带pack_id/page_id/content_version/expected_session_revision/expected_revision/request_id；成功回执返回新进度revision及session_revision，后续写入必须使用它们。若旧当前项不可用，opened同时提交回退位置并推进会话revision，原项恢复不会自动抢回当前阅读器。
+
+`PATCH /packs/{id}/progress` 带session_id、page_id、content_version、expected_session_revision、expected_revision、offset_ratio（0–1）、completed、request_id；只允许当前会话已实际打开的当前包。清单、会话或进度冲突先读取新状态，不能盲目用旧页/新revision覆盖。`PATCH position` 带会话expected_revision、request_id及pack_id或finish二选一；手动前后包均在固定成员内，纵向末页不自动调用。
+
+每包preferences使用独立expected_revision和当前会话归属，values完整包含mode(horizontal/vertical)、direction(ltr/rtl)、gap、fit(contain/width)。reading-defaults使用独立全局revision。首次实际打开时保存当时默认为本包偏好；后续默认改动不覆盖已读包。偏好操作本身不写最近。
+
+`GET /pack-reading-requests/{kind}/{request_id}` 只读查询session/position/opened/progress/preferences/defaults回执；未知返回404，没有隐式提交或激活旧会话。已完成操作复用原request_id返回回执，内容不同则409。新的入口会话替换当前阅读归属；迟到旧会话写入拒绝，旧回执只读仍可查。客户端PackReadingSession在每个异步结果和实际首帧处检查归属；原生阅读UI已接入。
+
+`recent?kind=pack` 只含实际opened并按包去重，视频仍为默认kind=video；packs及selection支持source=recent与sort=recent，并保留完整图包过滤。客户端PackQuery自身携带来源/排序，列表、定位、选择和PackReadingEntry共享同一查询；最近页不继承媒体库草稿。图包摘要progress增加可选零基page_index，由当前受控清单内的pageId位置计算；旧服务缺失或保存页已不在有效清单时为null，不猜ordinal/文件名页码，也不因GET改写进度。Schema0009保留旧pageId/比例/完成/revision，补当前清单版本与偏好revision；扫描删页选择最近可读页，记录page_removed，实际打开确认后清除说明。原页损坏读取时返回page_unreadable。完整备份v2与跨恢复代次隔离由LF7完成。
+
+客户端读取句柄由 `LibraryRepository.createPackReader()` 创建，绑定连接/代次/阅读元数据代次。`ReaderCommand<T>` 保留原request_id和版本，submit单次发送、receipt只读，不自动重发未知结果；范围/页/队列及写回执严格校验身份、数量、版本和媒体地址。确认恢复发布新状态前销毁旧句柄；连接对象相同也不能跨恢复代次回写。`isCurrent` 提供轻量归属检查，原生页面已在首帧、后台flush和离页处使用它；完整后台/恢复组合仍需原生验收。
+
+
+## 图包可选展示字段与中文标题排序（LF8）
+
+图包摘要新增派生字段 `title`、可空 `author` / `number`，不改变 `name` / `path` / `id` 或schema。明确编号目录才解析作者/标题，未知格式回退完整原名；数值前导零保留，原名依然是扫描和身份依据。客户端显示字段缺失/无效时沿用原名与既有元信息。
+
+能力 `pack_presentation` 存在时，新客户端名称排序在packs、selection、锚点与创建pack-session中统一映射为 `sort=title`；旧能力仍发name，原name/缺省调用、newest/recent和已建固定会话语义保留。title在SQLite内按同一ICU中文标题键及稳定ID排序，再分页或建立成员快照；不在客户端重排一页。ICU键不持久化，标准Docker显式固定运行库；缺依赖的裸开发环境不广告此能力，直接title请求明确503。解析范围、显示回退与验证边界见[设计约定](plans/library-first/LF8-PACK-PRESENTATION.md)。

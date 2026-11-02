@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 import 'package:video_viewer/library/credentials.dart';
 import 'package:video_viewer/library/server_repository.dart';
 import 'package:video_viewer/main.dart';
+import 'package:video_viewer/ui/paper_toggle.dart';
 import 'package:video_viewer/ui/preferences.dart';
 
 import 'support/fixture.dart';
@@ -80,7 +81,14 @@ void main() {
     expect(repo.current!.id, videoId);
     await ui.nav('settings');
     final toggle = find.byKey(const Key('dark-mode-setting'));
-    expect(t.widget<SwitchListTile>(toggle).value, isTrue);
+    expect(
+      t
+          .widget<PaperToggle>(
+            find.descendant(of: toggle, matching: find.byType(PaperToggle)),
+          )
+          .value,
+      isTrue,
+    );
     if (resume) {
       await ui.tap(toggle);
       await ui.until(() => !preferences.dark, 'settings updates appearance');

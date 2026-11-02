@@ -26,8 +26,30 @@ def create_backup_fault_app():
 
     def checkpoint(current, _task):
         if current == phase:
-            marker.write_text(current)
+            incoming = marker.with_suffix(".incoming")
+            incoming.write_text(current)
+            incoming.replace(marker)
             while True:
                 time.sleep(0.05)
 
     return create_app(backup_fault_hook=checkpoint)
+
+
+def create_archive_memory_app():
+    """Test-only allocation probe in an isolated subprocess, never production."""
+    import tracemalloc
+
+    app = create_app()
+
+    @app.post("/test-allocation/reset")
+    def reset():
+        tracemalloc.stop()
+        tracemalloc.start()
+        return {"measuring": "python_allocations"}
+
+    @app.get("/test-allocation/peak")
+    def peak():
+        current, maximum = tracemalloc.get_traced_memory()
+        return {"current_bytes": current, "peak_bytes": maximum}
+
+    return app

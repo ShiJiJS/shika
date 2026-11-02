@@ -1,0 +1,14 @@
+<section class="simple-page settings-page" x-show="tab==='settings'">
+<p class="settings-group">连接与文件</p>
+<button class="row" @click="openSettings('connection')"><span class="setting-icon" x-html="icon('link')"></span><span class="grow"><h3>服务连接</h3><p x-text="connection"></p></span><span x-html="icon('next')"></span></button>
+<button class="row" @click="openSettings('roots')"><span class="setting-icon" x-html="icon('folder')"></span><span class="grow"><h3>媒体目录</h3><p x-text="rootDefs.length+' 个目录 · '+missingRecords.length+' 个缺失内容'"></p></span><span x-html="icon('next')"></span></button>
+<p class="settings-group">数据维护</p>
+<button class="row" @click="openSettings('trash')"><span class="setting-icon" x-html="icon('trash')"></span><span class="grow"><h3>回收站</h3><p x-text="trashIds.length+' 个内容 · 不会自动清空'"></p></span><span x-html="icon('next')"></span></button>
+<button class="row" @click="openSettings('backup')"><span class="setting-icon" x-html="icon('backup')"></span><span class="grow"><h3>备份与恢复</h3><p>标签、目录映射、回收站与阅读记录</p></span><span x-html="icon('next')"></span></button>
+<button class="row" @click="openSettings('tasks')"><span class="setting-icon" x-html="icon('history')"></span><span class="grow"><h3>操作任务</h3><p x-text="pendingJobs?pendingJobs+' 项结果待确认':'扫描、恢复与删除结果'"></p></span><span class="task-dot" x-show="pendingJobs"></span><span x-html="icon('next')"></span></button>
+<p class="settings-group">偏好</p>
+<label class="row preference-toggle"><span class="setting-icon" x-html="icon('moon')"></span><span class="grow"><h3>暗黑模式</h3></span><input type="checkbox" role="switch" aria-label="暗黑模式" :checked="devicePrefs.dark" @change="setDevicePreference('dark',$event.target.checked)"></label>
+<label class="row preference-toggle"><span class="setting-icon" x-html="icon('play')"></span><span class="grow"><h3>准备相邻视频</h3><p>最多前后各一条，关闭可减少网络和解码占用</p></span><input type="checkbox" role="switch" aria-label="准备相邻视频" :checked="devicePrefs.preload" @change="setDevicePreference('preload',$event.target.checked)"></label>
+<button class="row" @click="openSettings('playback')"><span class="setting-icon" x-html="icon('shuffle')"></span><span class="grow"><h3>播放顺序</h3><p x-text="defaultOrder+'播放 · 新预览范围使用'"></p></span><span x-html="icon('next')"></span></button>
+<button class="row" @click="openSettings('defaults')"><span class="setting-icon" x-html="icon('book')"></span><span class="grow"><h3>阅读偏好</h3><p x-text="'默认'+(defaultMode==='horizontal'?'横向翻页':'纵向拼接')+' · 每包单独记忆'"></p></span><span x-html="icon('next')"></span></button>
+</section>

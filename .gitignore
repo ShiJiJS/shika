@@ -18,7 +18,10 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 *.egg-info/
+/apps/cli/build/
 .venv/
+.dev/
+*.code-workspace
 
 # Local editor and OS files
 .idea/
@@ -28,3 +31,8 @@ __pycache__/
 !.vscode/tasks.json
 Thumbs.db
 .DS_Store
+
+# Local exploration exports; the removable, shareable baseline is design/reference/
+/prototypes/image-packs/
+/prototypes/media-product/
+/prototypes/library-first/

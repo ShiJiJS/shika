@@ -76,6 +76,7 @@ def test_sigkill_restore_rolls_back_then_recovers_without_file_commands(
                 "/api/v1/auth/login", json={"passphrase": settings.passphrase}
             ).json()["access_token"]
             client.headers["Authorization"] = "Bearer " + token
+            epoch_before = client.get("/api/v1/info").json()["management_epoch"]
             scan(client)
             old = tag(client, "恢复目标")
             raw, _ = export(client)
@@ -100,11 +101,22 @@ def test_sigkill_restore_rolls_back_then_recovers_without_file_commands(
                 old["id"],
                 extra["id"],
             }
+            assert client.get("/api/v1/info").json()["management_epoch"] == epoch_before
             server.kill()
             server.communicate(timeout=5)
             server = start("video_viewer.app:create_app")
             result = wait_task(client, task_id)
             assert result["status"] == "completed", result
+            epoch_after = client.get("/api/v1/info").json()["management_epoch"]
+            assert epoch_after != epoch_before
+            # Old tokens remain valid for original read-only reconciliation.
+            stale = client.post("/api/v1/backup-restores", json=body)
+            assert (
+                stale.status_code == 409 and stale.json()["error"]["code"] == "management_changed"
+            )
+            found = client.get("/api/v1/backup-requests/restore/" + body["request_id"])
+            assert found.status_code == 200 and found.json()["id"] == task_id
+            client.headers["X-Management-Epoch"] = epoch_after
             assert client.post("/api/v1/backup-restores", json=body).json()["id"] == task_id
             assert [item["id"] for item in client.get("/api/v1/tags").json()["items"]] == [
                 old["id"]
@@ -122,6 +134,10 @@ def test_sigkill_restore_rolls_back_then_recovers_without_file_commands(
                         "restore_recovered": True,
                         "old_data_visible_before_commit": True,
                         "media_hash_preserved": True,
+                        "authority_unchanged_before_commit": True,
+                        "authority_changed_after_commit": True,
+                        "stale_post_rejected": True,
+                        "original_receipt_readable": True,
                         "historical_operations_replayed": result["result"][
                             "historical_operations_replayed"
                         ],

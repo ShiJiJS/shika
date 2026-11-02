@@ -163,6 +163,27 @@ void main() {
     }
   });
 
+  test('a refused connection retains its cause and phase without exposing it in the message', () async {
+    final unavailable = await ServerSocket.bind(
+      InternetAddress.loopbackIPv4,
+      0,
+    );
+    final port = unavailable.port;
+    await unavailable.close();
+    api.close();
+    api = ServerApi(Uri.parse('http://127.0.0.1:$port'));
+    await expectLater(
+      api.json('POST', '/write', body: {'request_id': 'original'}),
+      throwsA(
+        isA<ApiFailure>()
+            .having((e) => e.code, 'code', 'network_unavailable')
+            .having((e) => e.transportPhase, 'phase', ApiTransportPhase.opening)
+            .having((e) => e.transportCause, 'cause', isA<SocketException>())
+            .having((e) => e.message, 'safe message', '暂时无法连接服务，请检查地址和网络后重试'),
+      ),
+    );
+  });
+
   test(
     'scope cancellation ends obsolete work after response headers',
     () async {

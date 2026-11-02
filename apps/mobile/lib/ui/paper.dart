@@ -1,22 +1,75 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
-class PaperPalette {
-  const PaperPalette(this.dark);
-  final bool dark;
-  Color get background => dark ? const Color(0xff141914) : Paper.background;
-  Color get ink => dark ? const Color(0xffe4e9df) : Paper.ink;
-  Color get olive => dark ? const Color(0xffb1c5a0) : Paper.olive;
-  Color get soft => dark ? const Color(0xff293329) : Paper.soft;
-  Color get line => dark ? const Color(0xff354135) : Paper.line;
-  Color get danger => dark ? const Color(0xffeda699) : Paper.danger;
-  Color get muted => dark ? const Color(0xff9aa494) : const Color(0xff7a8172);
-  Color get videoSurface => dark ? Colors.black : const Color(0xffe6e4db);
+export 'paper_notice.dart';
+export 'paper_controls.dart';
+export 'paper_appearance.dart';
+export 'paper_menu.dart';
+export 'paper_dropdown.dart';
+export 'paper_checkbox.dart';
+export 'paper_expansion.dart';
+
+/// Keep failures visible when a form's submit action is outside its scroll body.
+void revealFormError(GlobalKey anchor) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    final context = anchor.currentContext;
+    if (context == null || !context.mounted) return;
+    unawaited(
+      Scrollable.ensureVisible(
+        context,
+        alignment: .5,
+        duration: MediaQuery.disableAnimationsOf(context)
+            ? Duration.zero
+            : const Duration(milliseconds: 160),
+      ),
+    );
+  });
+}
+
+class PaperPalette extends ThemeExtension<PaperPalette> {
+  const PaperPalette(bool dark) : _blend = dark ? 1 : 0;
+  const PaperPalette._(this._blend);
+  final double _blend;
+  bool get dark => _blend >= .5;
+  Color _color(Color light, Color dark) => Color.lerp(light, dark, _blend)!;
+  Color get background => _color(Paper.background, const Color(0xff141914));
+  Color get ink => _color(Paper.ink, const Color(0xffe4e9df));
+  Color get olive => _color(Paper.olive, const Color(0xffb1c5a0));
+  Color get soft => _color(Paper.soft, const Color(0xff293329));
+  Color get line => _color(Paper.line, const Color(0xff354135));
+  Color get danger => _color(Paper.danger, const Color(0xffeda699));
+  Color get muted => _color(const Color(0xff626e59), const Color(0xff9aa494));
+  Color get catalogMeta => muted;
+  Color get videoSurface => _color(const Color(0xffe6e4db), Colors.black);
+  Color get inputSurface =>
+      _color(Colors.white.withValues(alpha: .7), const Color(0xff141914));
   TextStyle get title => Paper.title.copyWith(color: ink);
+
+  @override
+  PaperPalette copyWith({bool? dark}) =>
+      dark == null ? this : PaperPalette(dark);
+
+  @override
+  PaperPalette lerp(covariant PaperPalette? other, double t) => other == null
+      ? this
+      : PaperPalette._(_blend + (other._blend - _blend) * t);
+
+  @override
+  bool operator ==(Object other) =>
+      other is PaperPalette && other._blend == _blend;
+
+  @override
+  int get hashCode => _blend.hashCode;
 }
 
 abstract final class Paper {
-  static PaperPalette of(BuildContext context) =>
-      PaperPalette(Theme.of(context).brightness == Brightness.dark);
+  static PaperPalette of(BuildContext context) {
+    final theme = Theme.of(context);
+    return theme.extension<PaperPalette>() ??
+        PaperPalette(theme.brightness == Brightness.dark);
+  }
+
   static const background = Color(0xfffaf8f3),
       ink = Color(0xff29332a),
       olive = Color(0xff53664a),
@@ -35,6 +88,7 @@ abstract final class Paper {
     final p = PaperPalette(dark);
     return ThemeData(
       useMaterial3: true,
+      extensions: [p],
       brightness: dark ? Brightness.dark : Brightness.light,
       scaffoldBackgroundColor: p.background,
       colorScheme: ColorScheme.fromSeed(
@@ -103,6 +157,7 @@ abstract final class Paper {
       ),
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: p.background,
+        constraints: const BoxConstraints(maxWidth: double.infinity),
         showDragHandle: false,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(21)),
@@ -144,7 +199,7 @@ class EmptyView extends StatelessWidget {
   final Widget? action;
   @override
   Widget build(BuildContext context) => Center(
-    child: Padding(
+    child: SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -159,25 +214,137 @@ class EmptyView extends StatelessWidget {
   );
 }
 
+/// Shared page timing; read the current preference again when navigating back.
+class PaperPageRoute<T> extends MaterialPageRoute<T> {
+  PaperPageRoute({required super.builder, super.settings}) : _fade = false;
+  PaperPageRoute.fade({required super.builder, super.settings}) : _fade = true;
+
+  final bool _fade;
+  bool get _reduced => MediaQuery.disableAnimationsOf(navigator!.context);
+
+  @override
+  Duration get transitionDuration =>
+      _reduced ? Duration.zero : const Duration(milliseconds: 240);
+  @override
+  Duration get reverseTransitionDuration =>
+      _reduced ? Duration.zero : const Duration(milliseconds: 160);
+
+  // Video previews previously used a standalone fade. Keep that page from
+  // acquiring the platform's coordinated outgoing-page zoom/slide as well.
+  @override
+  bool canTransitionFrom(TransitionRoute<dynamic> previousRoute) =>
+      !_fade && super.canTransitionFrom(previousRoute);
+  @override
+  bool canTransitionTo(TransitionRoute<dynamic> nextRoute) =>
+      !_fade && super.canTransitionTo(nextRoute);
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) => MediaQuery.disableAnimationsOf(context)
+      ? child
+      : _fade
+      ? FadeTransition(opacity: animation, child: child)
+      : super.buildTransitions(context, animation, secondaryAnimation, child);
+}
+
+// Popup routes keep their own controller. Refresh it before either direction,
+// including when the system preference changed while the popup was open.
+mixin _PaperPopupMotion<T> on TransitionRoute<T> {
+  bool get _reduced => MediaQuery.disableAnimationsOf(navigator!.context);
+
+  @override
+  Duration get transitionDuration =>
+      _reduced ? Duration.zero : const Duration(milliseconds: 240);
+  @override
+  Duration get reverseTransitionDuration =>
+      _reduced ? Duration.zero : const Duration(milliseconds: 160);
+
+  void _updateTiming() {
+    controller!
+      ..duration = transitionDuration
+      ..reverseDuration = reverseTransitionDuration;
+  }
+
+  @override
+  TickerFuture didPush() {
+    _updateTiming();
+    return super.didPush();
+  }
+
+  @override
+  bool didPop(T? result) {
+    _updateTiming();
+    return super.didPop(result);
+  }
+}
+
+class _PaperSheetRoute<T> extends ModalBottomSheetRoute<T>
+    with _PaperPopupMotion<T> {
+  _PaperSheetRoute({
+    required super.builder,
+    super.capturedThemes,
+    super.barrierLabel,
+    super.constraints,
+    super.isDismissible,
+    super.enableDrag,
+  }) : super(
+         isScrollControlled: true,
+         useSafeArea: true,
+         sheetAnimationStyle: const AnimationStyle(
+           duration: Duration(milliseconds: 240),
+           reverseDuration: Duration(milliseconds: 160),
+         ),
+       );
+}
+
+class _PaperDialogRoute<T> extends DialogRoute<T> with _PaperPopupMotion<T> {
+  _PaperDialogRoute({
+    required super.context,
+    required super.builder,
+    required super.themes,
+  }) : super(
+         barrierColor:
+             DialogTheme.of(context).barrierColor ??
+             Theme.of(context).dialogTheme.barrierColor ??
+             Colors.black54,
+         traversalEdgeBehavior: TraversalEdgeBehavior.closedLoop,
+       );
+}
+
+Future<T?> paperDialog<T>({
+  required BuildContext context,
+  required WidgetBuilder builder,
+}) {
+  final navigator = Navigator.of(context, rootNavigator: true);
+  return navigator.push(
+    _PaperDialogRoute<T>(
+      context: context,
+      builder: builder,
+      themes: InheritedTheme.capture(from: context, to: navigator.context),
+    ),
+  );
+}
+
 Future<T?> paperSheet<T>(
   BuildContext context,
   Widget child, {
   bool dismissible = true,
+  BoxConstraints? constraints,
 }) async {
   final navigator = Navigator.of(context);
-  final route = ModalBottomSheetRoute<T>(
+  final route = _PaperSheetRoute<T>(
     capturedThemes: InheritedTheme.capture(
       from: context,
       to: navigator.context,
     ),
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    isScrollControlled: true,
+    constraints: constraints,
     isDismissible: dismissible,
     enableDrag: dismissible,
-    useSafeArea: true,
-    sheetAnimationStyle: const AnimationStyle(
-      duration: Duration(milliseconds: 240),
-    ),
     builder: (context) => Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: child,
@@ -195,10 +362,12 @@ class SheetFrame extends StatelessWidget {
     required this.title,
     required this.children,
     this.closeEnabled = true,
+    this.footer,
   });
   final String title;
   final List<Widget> children;
   final bool closeEnabled;
+  final Widget? footer;
   @override
   Widget build(BuildContext context) => ConstrainedBox(
     constraints: BoxConstraints(
@@ -206,36 +375,58 @@ class SheetFrame extends StatelessWidget {
     ),
     child: SafeArea(
       top: false,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // A landscape IME can leave only about 114dp above the keyboard.
+          // Keep the focused fields mounted and let actions scroll with them.
+          final compact = constraints.maxHeight < 180;
+          final actions = footer == null
+              ? null
+              : Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: SizedBox(width: double.infinity, child: footer),
+                );
+          return Padding(
+            padding: EdgeInsets.fromLTRB(
+              20,
+              compact ? 4 : 10,
+              20,
+              compact ? 8 : 16,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: Paper.of(context).title.copyWith(fontSize: 21),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: Paper.of(context).title.copyWith(fontSize: 21),
+                      ),
+                    ),
+                    iconAction(
+                      '关闭面板',
+                      Icons.close,
+                      closeEnabled ? () => Navigator.pop(context) : null,
+                    ),
+                  ],
+                ),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ...children,
+                        if (compact && actions != null) actions,
+                      ],
+                    ),
                   ),
                 ),
-                iconAction(
-                  '关闭面板',
-                  Icons.close,
-                  closeEnabled ? () => Navigator.pop(context) : null,
-                ),
+                if (!compact && actions != null) actions,
               ],
             ),
-            Flexible(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: children,
-                ),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     ),
   );

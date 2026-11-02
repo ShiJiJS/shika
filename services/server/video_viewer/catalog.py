@@ -1,9 +1,13 @@
 from pathlib import Path
 
-from sqlalchemy import func, or_, select
+from sqlalchemy import func, or_, select, update
 
 from .errors import LibraryError
-from .models import Directory, Root, Setting, Video, VideoTag, uid
+from .file_state import reserved_video_ids
+from .media_roots import enabled_path, owner_for_path
+from .models import Directory, ImagePack, RecentEntry, Root, Setting, Video, VideoTag, uid
+from .pack_scanner import reserved_packs
+from .pack_title_order import title_order_available
 from .paths import beneath, excluded, validate_path
 
 
@@ -56,28 +60,49 @@ class Catalog:
             "name": root.name,
             "path": root.path,
             "directory_id": directory.id,
+            "kind": root.kind,
+            "enabled": root.enabled,
             "available": root.available,
             "error": root.error,
             "last_scan": root.last_scan,
         }
 
-    def save_root(self, name, path, root_id=None):
+    def save_root(self, name, path, root_id=None, *, kind=None, enabled=None):
         candidate, mount = validate_path(path, self.settings.mounts)
         if excluded(candidate, self.settings.data_dir):
             raise LibraryError("reserved_directory", "该目录保留给回收站或管理数据", 422)
         with self.db.write() as session:
+            # Check inside the write transaction: command acceptance cannot race root edits.
+            if session.scalar(reserved_packs().limit(1)) or session.scalar(
+                reserved_video_ids().limit(1)
+            ):
+                raise LibraryError("operation_busy", "文件操作进行中，请完成后再修改媒体目录")
             root = (
                 session.get(Root, root_id)
                 if root_id
                 else session.scalar(select(Root).where(Root.path == str(candidate)))
             )
+            previous_path = root.path if root else None
             if root_id and not root:
                 raise LibraryError("root_not_found", "媒体目录不存在", 404)
             occupied = session.scalar(select(Root).where(Root.path == str(candidate)))
             if occupied and root and occupied.id != root.id:
                 raise LibraryError("root_conflict", "该媒体目录已接入")
+            if root and kind is not None and root.kind != kind:
+                if session.scalar(
+                    select(Video.id).where(Video.root_id == root.id).limit(1)
+                ) or session.scalar(
+                    select(ImagePack.id).where(ImagePack.root_id == root.id).limit(1)
+                ):
+                    raise LibraryError(
+                        "root_kind_conflict",
+                        "已有内容的目录不能直接更改媒体类型，请新建接入目录",
+                        409,
+                    )
             if root and root.path != str(candidate):
-                other_roots = list(session.scalars(select(Root).where(Root.id != root.id)))
+                other_roots = list(
+                    session.scalars(select(Root).where(Root.id != root.id, Root.kind == "video"))
+                )
                 for video in session.scalars(select(Video).where(Video.root_id == root.id)):
                     if not beneath(Path(video.path), candidate):
                         replacement = next(
@@ -88,6 +113,9 @@ class Catalog:
                             video.root_id = replacement.id
                         elif video.status == "available":
                             video.status, video.location_key = "missing", None
+                for pack in session.scalars(select(ImagePack).where(ImagePack.root_id == root.id)):
+                    if not beneath(Path(pack.path), candidate) and pack.status == "available":
+                        pack.status, pack.location_key = "missing", None
                 root.path, root.available, root.last_scan = str(candidate), False, None
             if not root:
                 root = Root(name=name, path=str(candidate), mount_id=mount.id)
@@ -95,48 +123,85 @@ class Catalog:
                 root.id = uid()
                 session.add(root)
                 session.flush()
+            policy_changed = (
+                previous_path != str(candidate)
+                or (kind is not None and root.kind != kind)
+                or (enabled is not None and root.enabled != enabled)
+            )
+            if kind is not None and root.kind != kind:
+                root.last_scan, root.available, root.error = None, False, None
             root.name, root.mount_id = name, mount.id
+            root.kind = kind if kind is not None else root.kind
+            root.enabled = enabled if enabled is not None else root.enabled
+            if policy_changed:
+                scopes = {candidate, Path(previous_path)} if previous_path else {candidate}
+                affected = [
+                    identity
+                    for identity, pack_path in session.execute(select(ImagePack.id, ImagePack.path))
+                    if any(
+                        beneath(Path(pack_path), scope) or beneath(scope, Path(pack_path))
+                        for scope in scopes
+                    )
+                ]
+                if affected:
+                    session.execute(
+                        update(ImagePack)
+                        .where(ImagePack.id.in_(affected))
+                        .values(content_version=ImagePack.content_version + 1)
+                    )
             self.ensure_directory(session, candidate, root.id)
             return self.root_json(session, root)
 
-    def directories(self, parent_id=None):
+    def directories(self, parent_id=None, kind="video", *, offset=0, limit=None):
         with self.db.read() as session:
-            roots = list(session.scalars(select(Root)))
+            all_roots = list(session.scalars(select(Root)))
+            roots = [root for root in all_roots if root.kind == kind]
             if not parent_id:
-                return [
-                    {
-                        **self.root_json(session, r),
-                        "id": self.root_json(session, r)["directory_id"],
-                        "root_id": r.id,
-                    }
-                    for r in roots
-                ]
+                selected = roots[offset:] if limit is None else roots[offset : offset + limit]
+                items = []
+                for root in selected:
+                    data = self.root_json(session, root)
+                    items.append(
+                        {
+                            **data,
+                            "id": data["directory_id"],
+                            "root_id": root.id,
+                            "available": root.available and root.enabled,
+                        }
+                    )
+                return {"items": items, "total": len(roots), "offset": offset, "limit": limit}
             parent = session.get(Directory, parent_id)
             if not parent:
                 raise LibraryError("directory_not_found", "目录不存在", 404)
-            allowed_roots = [r for r in roots if beneath(Path(parent.path), Path(r.path))]
-            if not allowed_roots:
+            if not any(beneath(Path(parent.path), Path(root.path)) for root in roots):
                 raise LibraryError("directory_not_found", "目录不在接入范围内", 404)
-            if not any(r.available for r in allowed_roots):
+            owner = owner_for_path(parent.path, all_roots, kind)
+            if not owner or not owner.available:
                 raise LibraryError("root_unavailable", "媒体目录暂不可用")
-            statement = (
-                select(Directory)
-                .where(Directory.path.startswith(parent.path + "/", autoescape=True))
-                .order_by(Directory.path)
+            tail = func.substr(Directory.path, len(parent.path) + 2)
+            statement = select(Directory).where(
+                Directory.path.startswith(parent.path + "/", autoescape=True),
+                func.instr(tail, "/") == 0,
             )
-            return [
-                {
-                    "id": d.id,
-                    "root_id": d.root_id,
-                    "name": d.name,
-                    "path": d.path,
-                    "available": True,
-                }
-                for d in session.scalars(statement)
-                if Path(d.path).parent == Path(parent.path)
-            ]
+            total = session.scalar(select(func.count()).select_from(statement.subquery()))
+            statement = statement.order_by(Directory.path).offset(offset)
+            if limit is not None:
+                statement = statement.limit(limit)
+            items = []
+            for directory in session.scalars(statement):
+                owner = owner_for_path(directory.path, all_roots, kind)
+                items.append(
+                    {
+                        "id": directory.id,
+                        "root_id": owner.id if owner else directory.root_id,
+                        "name": directory.name,
+                        "path": directory.path,
+                        "available": bool(owner and owner.available),
+                    }
+                )
+            return {"items": items, "total": total, "offset": offset, "limit": limit}
 
-    def directory(self, *, directory_id=None, path=None):
+    def directory(self, *, directory_id=None, path=None, kind="video"):
         with self.db.read() as session:
             if path is not None:
                 validate_path(path, self.settings.mounts)
@@ -154,10 +219,11 @@ class Catalog:
             ]
             if not roots:
                 raise LibraryError("directory_not_found", "目录不在当前接入范围内", 404)
-            available = any(root.available for root in roots)
+            owner = owner_for_path(directory.path, roots, kind)
+            available = bool(owner and owner.available)
             return {
                 "id": directory.id,
-                "root_id": directory.root_id,
+                "root_id": owner.id if owner else directory.root_id,
                 "path": directory.path,
                 "name": directory.name,
                 "available": available,
@@ -166,8 +232,8 @@ class Catalog:
                 else next((root.error for root in roots if root.error), "root_unavailable"),
             }
 
+    @staticmethod
     def video_statement(
-        self,
         session,
         *,
         directory_id=None,
@@ -180,7 +246,13 @@ class Catalog:
     ):
         statement = select(Video).join(Root).where(Video.status == status)
         if status == "available":
-            statement = statement.where(Root.available.is_(True), Video.error.is_(None))
+            statement = statement.where(
+                Root.available.is_(True),
+                Root.enabled.is_(True),
+                Root.kind == "video",
+                Video.error.is_(None),
+                enabled_path(session, Video.path),
+            )
         if directory_id:
             directory = session.get(Directory, directory_id)
             if not directory:
@@ -192,7 +264,12 @@ class Catalog:
                 )
             )
         if search:
-            statement = statement.where(Video.name.contains(search, autoescape=True))
+            statement = statement.where(
+                Video.name.contains(search, autoescape=True)
+                | func.substr(Video.path, func.length(Root.path) + 1).contains(
+                    search, autoescape=True
+                )
+            )
         if orientation:
             statement = statement.where(
                 Video.height > Video.width
@@ -216,18 +293,90 @@ class Catalog:
             statement = statement.where(Video.id.in_(matching))
         return statement
 
-    def videos(self, *, offset=0, limit=50, **scope):
-        with self.db.read() as session:
-            query = self.video_statement(session, **scope)
-            total = session.scalar(select(func.count()).select_from(query.subquery()))
-            items = session.scalars(
-                query.order_by(Video.path, Video.id).offset(offset).limit(limit)
+    @staticmethod
+    def video_ordering(source, sort):
+        if sort == "name_zh":
+            if not title_order_available():
+                raise LibraryError(
+                    "video_name_order_unavailable", "服务尚不支持中文名称排序，请更新服务环境", 503
+                )
+            ordering = (func.vv_video_name_key(Video.name), Video.path, Video.id)
+        elif sort == "recent":
+            if source != "recent":
+                raise LibraryError("invalid_sort", "最近排序仅适用于最近入口", 422)
+            ordering = (RecentEntry.opened_at.desc(), Video.id)
+        elif sort == "name":
+            ordering = (func.lower(Video.name), Video.path, Video.id)
+        elif sort == "newest":
+            ordering = (Video.created_at.desc(), Video.id)
+        else:
+            ordering = (Video.path, Video.id)
+        return ordering
+
+    def ordered_videos(self, session, *, source="library", sort="path", **scope):
+        statement = self.video_statement(session, **scope)
+        if source == "recent":
+            statement = statement.join(
+                RecentEntry,
+                (RecentEntry.video_id == Video.id) & (RecentEntry.kind == "video"),
             )
+        return statement.order_by(*self.video_ordering(source, sort))
+
+    def selection(self, **scope):
+        from .catalog_selection import membership
+
+        with self.db.read() as session:
+            session.connection().exec_driver_sql("BEGIN")
+            return membership(session, self.ordered_videos(session, **scope), Video.id, "video")
+
+    def videos(self, *, offset=0, limit=50, source="library", sort="path", anchor_ids=(), **scope):
+        with self.db.read() as session:
+            session.connection().exec_driver_sql("BEGIN")
+            query = self.ordered_videos(session, source=source, sort=sort, **scope)
+            total = session.scalar(
+                select(func.count()).select_from(query.order_by(None).subquery())
+            )
+            anchor_index = None
+            if anchor_ids:
+                ranked = (
+                    query.order_by(None)
+                    .with_only_columns(
+                        Video.id.label("video_id"),
+                        (
+                            func.row_number().over(order_by=self.video_ordering(source, sort)) - 1
+                        ).label("position"),
+                    )
+                    .subquery()
+                )
+                positions = dict(
+                    session.execute(
+                        select(ranked.c.video_id, ranked.c.position).where(
+                            ranked.c.video_id.in_(anchor_ids)
+                        )
+                    ).all()
+                )
+                anchor_index = next(
+                    (positions[identity] for identity in anchor_ids if identity in positions),
+                    min(offset, max(0, total - 1)),
+                )
+                offset = anchor_index // limit * limit
+            items = session.scalars(query.offset(offset).limit(limit))
+            result = []
+            for video in items:
+                item = self.video_json(video)
+                if source == "recent":
+                    item["opened_at"] = session.scalar(
+                        select(RecentEntry.opened_at).where(
+                            RecentEntry.video_id == video.id, RecentEntry.kind == "video"
+                        )
+                    )
+                result.append(item)
             return {
-                "items": [self.video_json(v) for v in items],
+                "items": result,
                 "total": total,
                 "offset": offset,
                 "limit": limit,
+                **({"anchor_index": anchor_index} if anchor_ids else {}),
             }
 
     @staticmethod
@@ -240,6 +389,7 @@ class Catalog:
             "status": video.status,
             "error": video.error,
             "size": video.size,
+            "created_at": video.created_at,
             "duration": video.duration,
             "width": video.width,
             "height": video.height,

@@ -1,15 +1,126 @@
 import 'package:flutter/foundation.dart';
 
 import 'models.dart';
+import 'pack_models.dart';
+import 'pack_reading.dart';
+import 'pack_files.dart';
+import 'pack_trash.dart';
+import 'pack_purge.dart';
+import 'maintenance_tasks.dart';
+import 'playback_defaults.dart';
+import 'pack_missing.dart';
+export 'pack_missing.dart';
+export 'playback_defaults.dart';
+export 'maintenance_tasks.dart';
+export 'pack_purge.dart';
+export 'pack_trash.dart';
+export 'pack_files.dart';
+export 'pack_reading.dart';
+export 'pack_models.dart';
 
 /// This boundary describes client-visible behavior, independent of transport.
 /// A future network provider implements it; widgets never access NAS files.
 abstract class LibraryRepository extends ChangeNotifier {
+  PackMissingCatalog createPackMissing() =>
+      throw const LibraryFailure('当前服务尚不支持图包缺失管理，请升级服务端');
+  PlaybackDefaultsGateway createPlaybackDefaults() =>
+      throw const LibraryFailure('当前服务尚不支持服务端默认播放顺序，请升级服务端');
+  Future<PlayOrder> defaultVideoOrder(PlayOrder fallback) async => fallback;
+  PackRestorePlans createPackRestorePlans() =>
+      throw const LibraryFailure('当前服务尚不支持整份恢复计划，请升级服务端');
+  MaintenanceTaskCatalog createMaintenanceTasks() =>
+      throw const LibraryFailure('当前服务尚不支持操作任务，请升级服务端');
+  int? get maintenancePendingCount => null;
+  bool get maintenanceNeedsCheck =>
+      fileOperationPending || backupRestorePending;
+  PackPurgeGateway createPackPurge() =>
+      throw const LibraryFailure('当前服务尚不支持图包永久删除，请升级服务端');
+  PackTrashCatalog createPackTrash() =>
+      throw const LibraryFailure('当前服务尚不支持图包回收站，请升级服务端');
+  PackFiles createPackFiles() =>
+      throw const LibraryFailure('当前服务尚不支持图包回收，请升级服务端');
+  void packFilesChanged() => notifyListeners();
+  PackReader createPackReader() =>
+      throw const LibraryFailure('当前服务尚不支持图包阅读，请升级服务端');
+  Future<Set<String>> selectVideoIds(VideoEntryScope entry) =>
+      Future.error(const LibraryFailure('当前服务尚不支持跨页全选，请升级服务端'));
+  Future<Set<String>> selectPackIds(PackQuery query) =>
+      Future.error(const LibraryFailure('当前服务尚不支持跨页全选，请升级服务端'));
+  void cancelVideoSelection() {}
+  void cancelPackSelection() {}
+  Future<PackTagNames> resolvePackTags(Set<String> ids) =>
+      Future.error(const LibraryFailure('当前服务尚不支持按ID读取标签名称，请升级服务端'));
+  void cancelPackTagNamesRead() {}
+  Future<CatalogPage<LibraryPack>> restorePackEntry(
+    PackQuery query, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包原位返回，请升级服务端'));
+  Future<CatalogPage<VideoTag>> loadVideoTags({
+    String search = '',
+    int offset = 0,
+    int limit = 50,
+  }) async {
+    final all = snapshot.tags
+        .where((id) => tagName(id).contains(search))
+        .toList();
+    return CatalogPage(
+      items: all
+          .skip(offset)
+          .take(limit)
+          .map((id) => VideoTag(id, tagName(id), tagVideoCount(id))),
+      total: all.length,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  void cancelVideoTagRead() {}
+
+  /// Optional read-only summary of the latest available, actually opened pack.
+  /// Its read lifetime must not cancel catalog paging. Reading never opens it.
+  Future<LibraryPack?> loadPackContinuation() async => null;
+  Future<CatalogPage<LibraryPack>> loadPacks(
+    PackQuery query, {
+    int offset = 0,
+    int limit = 24,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包，请升级服务端'));
+  Future<CatalogPage<PackTag>> loadPackTags({
+    String search = '',
+    int offset = 0,
+    int limit = 50,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  Future<CatalogPage<FolderEntry>> loadPackDirectories(
+    String parent, {
+    int offset = 0,
+    int limit = 50,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包目录，请升级服务端'));
+  Future<void> editPackTag({
+    String? original,
+    String? name,
+    bool delete = false,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  Future<PackTag> createPackTag(String name) =>
+      Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  Future<void> setPackTags(
+    Set<String> ids,
+    Set<String> tags, {
+    bool replace = false,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持图包标签，请升级服务端'));
+  void cancelPackRead() {}
+  void cancelPackTagRead() {}
+  void cancelPackDirectoryRead() {}
   final ValueNotifier<String?> scanStatus = ValueNotifier(null);
   final libraryPreparation = ValueNotifier(const LibraryPreparation());
+  final catalogCounts = ValueNotifier<MediaCatalogCounts?>(null);
+  Future<void> refreshCatalogCounts() async {}
   Future<void> requestScan() => refresh();
+  Future<void> requestRootScan(String rootId) =>
+      Future.error(const LibraryFailure('当前服务不支持单独扫描目录，请升级服务端'));
   final ValueNotifier<String?> backupStatus = ValueNotifier(null);
   final ValueNotifier<String?> fileStatus = ValueNotifier(null);
+  ServiceCapabilities get capabilities => const ServiceCapabilities.legacy();
   bool get backupRestorePending => false;
   Object get connectionIdentity => this;
   Future<void> reconcileBackupRestore() async {}
@@ -17,6 +128,7 @@ abstract class LibraryRepository extends ChangeNotifier {
   void dispose() {
     scanStatus.dispose();
     libraryPreparation.dispose();
+    catalogCounts.dispose();
     backupStatus.dispose();
     fileStatus.dispose();
     super.dispose();
@@ -61,9 +173,49 @@ abstract class LibraryRepository extends ChangeNotifier {
             ),
           )
           .toList();
+  Future<VideoPage> loadVideoEntry(
+    VideoEntryScope entry, {
+    int offset = 0,
+    int limit = 24,
+  }) {
+    if (entry.source != BrowseSource.library || entry.sort != VideoSort.path) {
+      throw const LibraryFailure('当前服务尚不支持此入口，请升级服务端');
+    }
+    return loadVideos(
+      scope: entry.query,
+      search: entry.search,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  Future<void> beginPreview(
+    VideoEntryScope entry, {
+    String? anchor,
+    PlayOrder? order,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持固定预览范围，请升级服务端'));
+  Future<VideoPage> restoreVideoEntry(
+    VideoEntryScope entry, {
+    required List<String> anchors,
+    required int fallbackIndex,
+    int limit = 24,
+  }) => Future.error(const LibraryFailure('当前服务尚不支持返回位置恢复，请升级服务端'));
+  bool get fixedPreview => false;
+  VideoEntryScope? get savedPreviewEntry => null;
+  bool get supportsFixedPreviews =>
+      capabilities.fixedVideoSessions &&
+      capabilities.versionedVideoQueue &&
+      capabilities.videoEntryAnchors;
+  bool get previewFinished => false;
+  String get playbackSequenceIdentity => playbackIdentity;
+  Future<void> changePreviewOrder(PlayOrder order, {bool restart = false}) =>
+      Future.error(const LibraryFailure('请从媒体库选择范围开始预览'));
+  Future<void> recordVideoOpened(String id) async {}
+  Future<void> finishPreview() async {}
   int get playbackPosition => snapshot.position;
   int get playbackTotal => snapshot.round.length;
-  String get playbackIdentity => '${snapshot.query.toJson()}-${snapshot.order}';
+  String get playbackIdentity =>
+      snapshot.preview?.id ?? '${snapshot.query.toJson()}-${snapshot.order}';
   Future<VideoPage> loadPlaybackVideos({int offset = 0, int limit = 48}) async {
     final ids = snapshot.round.skip(offset).take(limit);
     return VideoPage(

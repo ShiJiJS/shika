@@ -4,6 +4,7 @@ import asyncio
 import hashlib
 import os
 import shutil
+import threading
 import time
 from collections import deque
 from pathlib import Path
@@ -11,15 +12,26 @@ from pathlib import Path
 from fastapi import Header, HTTPException
 from fastapi.responses import JSONResponse
 from sqlalchemy import select
+from starlette.concurrency import run_in_threadpool
 
 from video_viewer import scanner as scan_module
 from video_viewer.app import create_app
+from video_viewer.authority import HEADER as EPOCH_HEADER
+from video_viewer.authority import Authority
 from video_viewer.config import Settings
 from video_viewer.file_transfer import rename_new
 from video_viewer.media import MediaInspectionError
 from video_viewer.models import Root, Video
 
+from .client_authority_fixture import install as install_authority_fixture
 from .generate_media import encode, generate
+from .preview_fixture import install as install_preview_fixture
+from .reader_fixture import install as install_reader_fixture
+from .workspace_fixture import (
+    prepend_workspace_pack,
+    seed_recent_pack_history,
+    seed_workspace_packs,
+)
 
 FIXTURE_PASSPHRASE = "video-viewer-emulator-fixture-only"
 FIXTURE_KEY = "isolated-emulator-control"
@@ -50,9 +62,23 @@ def create_e2e_app():
         samples = generate(Path("/tmp/e2e-formats"))
         shutil.copyfile(samples / "h264.mov", camera / "相机片段.mov")
         marker.write_text("dedicated generated emulator fixture")
-    controls = {"slow": False, "lose_tag_response": False, "lose_file_response": False,
-                "fail_restore": False, "slow_restore": False, "slow_page": False,
-                "fail_streams": 0}
+    controls = {
+        "slow": False,
+        "lose_tag_response": False,
+        "lose_file_response": False,
+        "lose_default_response": False,
+        "fail_restore": False,
+        "slow_restore": False,
+        "slow_page": False,
+        "fail_streams": 0,
+        "busy_covers": 0,
+        "fail_tag_page": False,
+        "fail_tag_results": False,
+        "fail_pack_names": False,
+        "fail_pack_anchor": False,
+        "fail_pack_trash": False,
+        "lose_missing_response": False,
+    }
 
     def backup_fault(phase, _task_id):
         if controls["fail_restore"] and phase == "after_replace_before_commit":
@@ -62,8 +88,15 @@ def create_e2e_app():
             time.sleep(6)
 
     app = create_app(settings, backup_fault_hook=backup_fault)
-    trace = deque(maxlen=300)
+    install_authority_fixture(app, BASE, FIXTURE_KEY, FIXTURE_PASSPHRASE)
+    install_preview_fixture(app, BASE, PORTRAIT, FIXTURE_KEY)
+    install_reader_fixture(app, FIXTURE_KEY)
+    trace = deque(maxlen=2000)
     checkpoint = {"phase": "ready"}
+    restore_gate = threading.Event()
+    restore_gate.set()
+    purge_gate = threading.Event()
+    purge_gate.set()
 
     @app.middleware("http")
     async def observe(request, call_next):
@@ -74,26 +107,216 @@ def create_e2e_app():
                 "query": dict(request.query_params),
                 "authenticated": bool(request.headers.get("authorization")),
                 "range": request.headers.get("range"),
+                "management_epoch": request.headers.get("X-Management-Epoch"),
+                "fixture_actor": request.headers.get("X-Fixture-Actor"),
             }
-            if (request.method == "PATCH" and request.url.path == "/api/v1/video-tags") or (
-                request.method == "POST" and request.url.path in {
-                    "/api/v1/videos/trash", "/api/v1/trash/restore", "/api/v1/trash/permanent"
+            if (
+                request.method == "PATCH"
+                and request.url.path
+                in {
+                    "/api/v1/video-tags",
+                    "/api/v1/pack-tag-links",
+                    "/api/v1/playback-defaults",
+                    "/api/v1/reading-defaults",
+                }
+            ) or (
+                request.method == "POST"
+                and request.url.path
+                in {
+                    "/api/v1/videos/trash",
+                    "/api/v1/trash/restore",
+                    "/api/v1/trash/permanent",
+                    "/api/v1/packs/trash",
+                    "/api/v1/pack-trash/restore",
+                    "/api/v1/pack-trash/permanent",
+                    "/api/v1/pack-purge-plans",
+                    "/api/v1/packs/forget-missing",
+                    "/api/v1/pack-restore-plans",
                 }
             ):
                 body = await request.json()
                 entry["command_hash"] = hashlib.sha256(
                     str(body.get("request_id")).encode()
                 ).hexdigest()
+                if request.url.path in {"/api/v1/video-tags", "/api/v1/pack-tag-links"}:
+                    entry["assignment"] = {
+                        key: body.get(key) for key in ("video_ids", "pack_ids", "tag_ids", "mode")
+                    }
+                if request.url.path == "/api/v1/pack-purge-plans":
+                    entry["purge_members"] = sorted(body.get("trash_ids", []))
+                if request.url.path == "/api/v1/pack-trash/permanent":
+                    entry["purge_input"] = {
+                        key: body.get(key) for key in ("plan_id", "digest", "confirmed")
+                    }
+                if request.url.path == "/api/v1/pack-restore-plans":
+                    entry["restore_members"] = sorted(body.get("trash_ids", []))
+            if request.method in {"POST", "PATCH", "DELETE"} and any(
+                request.url.path == path or request.url.path.startswith(path + "/")
+                for path in ("/api/v1/tags", "/api/v1/pack-tags")
+            ):
+                body = await request.json()
+                entry["tag_input"] = {"name": body.get("name")}
+                entry["command_hash"] = hashlib.sha256(
+                    str(body.get("request_id")).encode()
+                ).hexdigest()
+            if (request.method == "POST" and request.url.path == "/api/v1/roots") or (
+                request.method == "PUT" and request.url.path.startswith("/api/v1/roots/")
+            ):
+                body = await request.json()
+                entry["root_input"] = {
+                    k: body[k] for k in ("name", "path", "kind", "enabled") if k in body
+                }
+            entry["query_lists"] = {
+                key: request.query_params.getlist(key)
+                for key in ("tag_ids", "anchor_ids")
+                if key in request.query_params
+            }
             trace.append(entry)
-            if controls["slow_page"] and request.url.path == "/api/v1/videos" and int(request.query_params.get("offset", "0")) > 0:
+            if controls["busy_covers"] and request.url.path.endswith("/cover"):
+                controls["busy_covers"] -= 1
+                entry["status"] = 503
+                return JSONResponse(
+                    {
+                        "error": {
+                            "code": "image_busy",
+                            "message": "Isolated transient cover failure",
+                        }
+                    },
+                    status_code=503,
+                )
+            if (
+                controls["fail_pack_trash"]
+                and request.method == "GET"
+                and request.url.path == "/api/v1/pack-trash"
+            ):
+                controls["fail_pack_trash"] = False
+                entry["status"] = 503
+                return JSONResponse(
+                    {
+                        "error": {
+                            "code": "fixture_trash_read",
+                            "message": "图包回收站暂时无法读取，请重试",
+                        }
+                    },
+                    status_code=503,
+                )
+            if (
+                controls["fail_pack_anchor"]
+                and request.method == "GET"
+                and request.url.path == "/api/v1/packs"
+                and request.query_params.get("anchor_ids")
+            ):
+                controls["fail_pack_anchor"] = False
+                entry["status"] = 503
+                return JSONResponse(
+                    {
+                        "error": {
+                            "code": "fixture_pack_anchor",
+                            "message": "Isolated pack location failure",
+                        }
+                    },
+                    status_code=503,
+                )
+            if (
+                controls["fail_pack_names"]
+                and request.method == "GET"
+                and request.url.path == "/api/v1/pack-tags/resolve"
+            ):
+                controls["fail_pack_names"] = False
+                entry["status"] = 503
+                return JSONResponse(
+                    {
+                        "error": {
+                            "code": "fixture_names",
+                            "message": "Isolated selected label lookup failure",
+                        }
+                    },
+                    status_code=503,
+                )
+            if (
+                controls["fail_tag_page"]
+                and request.method == "GET"
+                and request.url.path == "/api/v1/tags"
+                and request.query_params.get("offset") == "50"
+            ):
+                controls["fail_tag_page"] = False
+                entry["status"] = 503
+                return JSONResponse(
+                    {"error": {"code": "fixture_tag_page", "message": "Isolated tag page failure"}},
+                    status_code=503,
+                )
+            if (
+                controls["fail_tag_results"]
+                and request.method == "GET"
+                and request.url.path == "/api/v1/videos"
+                and request.query_params.get("source") == "tags"
+                and request.query_params.get("limit") == "24"
+            ):
+                controls["fail_tag_results"] = False
+                entry["status"] = 503
+
+                def current_epoch():
+                    with app.state.db.read() as session:
+                        return Authority.current(session)
+
+                return JSONResponse(
+                    {
+                        "error": {
+                            "code": "fixture_tag_results",
+                            "message": "标签结果暂时无法读取，请重试",
+                        }
+                    },
+                    status_code=503,
+                    headers={EPOCH_HEADER: await run_in_threadpool(current_epoch)},
+                )
+            if (
+                controls["slow_page"]
+                and request.url.path == "/api/v1/videos"
+                and int(request.query_params.get("offset", "0")) > 0
+            ):
                 await asyncio.sleep(3)
             if controls["fail_streams"] and request.url.path.endswith("/stream"):
                 controls["fail_streams"] -= 1
                 entry["status"] = 503
-                return JSONResponse({"error": {"code": "media_busy", "message": "Isolated transient stream failure"}}, status_code=503)
+                return JSONResponse(
+                    {
+                        "error": {
+                            "code": "media_busy",
+                            "message": "Isolated transient stream failure",
+                        }
+                    },
+                    status_code=503,
+                )
             if request.query_params.get("search") == "片":
                 await asyncio.sleep(0.75)
         response = await call_next(request)
+        if (
+            controls["lose_missing_response"]
+            and request.method == "POST"
+            and request.url.path == "/api/v1/packs/forget-missing"
+            and response.status_code == 202
+        ):
+            controls["lose_missing_response"] = False
+            response = JSONResponse(
+                {
+                    "error": {
+                        "code": "fixture_response_lost",
+                        "message": "清理结果待核对，请查询原请求",
+                    }
+                },
+                status_code=503,
+            )
+        if (
+            controls["lose_default_response"]
+            and request.method == "PATCH"
+            and request.url.path in {"/api/v1/playback-defaults", "/api/v1/reading-defaults"}
+            and response.status_code == 200
+        ):
+            controls["lose_default_response"] = False
+            response = JSONResponse(
+                {"error": {"code": "fixture_response_lost", "message": "默认设置结果待核对"}},
+                status_code=503,
+            )
         if (
             controls["lose_tag_response"]
             and request.method == "PATCH"
@@ -110,12 +333,33 @@ def create_e2e_app():
         if (
             controls["lose_file_response"]
             and request.method == "POST"
-            and request.url.path == "/api/v1/videos/trash"
+            and (
+                request.url.path
+                in {
+                    "/api/v1/videos/trash",
+                    "/api/v1/packs/trash",
+                    "/api/v1/pack-trash/restore",
+                    "/api/v1/pack-trash/permanent",
+                    "/api/v1/pack-purge-plans",
+                    "/api/v1/pack-restore-plans",
+                }
+                or request.url.path.startswith("/api/v1/pack-restore-plans/")
+                and request.url.path.endswith("/stop")
+            )
             and response.status_code == 202
         ):
             controls["lose_file_response"] = False
             response = JSONResponse(
-                {"error": {"code": "fixture_response_lost", "message": "删除结果待确认，请查询结果"}},
+                {
+                    "error": {
+                        "code": "fixture_response_lost",
+                        "message": "恢复或停止结果待确认，请查询原请求"
+                        if "pack-restore-plans" in request.url.path
+                        else "恢复结果待确认，请查询原结果"
+                        if request.url.path == "/api/v1/pack-trash/restore"
+                        else "删除结果待确认，请查询结果",
+                    }
+                },
                 status_code=503,
             )
             entry["status"] = 503
@@ -158,6 +402,10 @@ def create_e2e_app():
         controlled(x_fixture_key)
         if phase not in {
             "ready",
+            "authority-before",
+            "authority-history",
+            "authority-selection",
+            "authority-current",
             "library",
             "roots",
             "outage",
@@ -172,9 +420,188 @@ def create_e2e_app():
             "preparing",
             "loading-more",
             "prepared",
+            "workspace-video",
+            "workspace-packs",
+            "workspace-video-tags",
+            "workspace-pack-tags",
+            "workspace-settings",
+            "workspace-dark",
+            "tag-ui-assign-video-single",
+            "tag-ui-assign-video-dark",
+            "tag-ui-assign-video-error",
+            "tag-ui-assign-video-keyboard",
+            "tag-ui-assign-video-saved",
+            "tag-ui-assign-pack-single",
+            "tag-ui-assign-pack-error",
+            "tag-ui-assign-pack-keyboard",
+            "tag-ui-assign-pack-saved",
+            "tag-ui-assign-videos",
+            "tag-ui-assign-video-batch",
+            "tag-ui-assign-packs",
+            "tag-ui-assign-pack-batch",
+            "tag-ui-assign-verified",
+            "tag-ui-video",
+            "tag-ui-pack",
+            "tag-ui-dark",
+            "tag-ui-create-keyboard",
+            "tag-ui-create-error",
+            "tag-ui-created",
+            "tag-ui-rename-editor",
+            "tag-ui-rename-editor-dark",
+            "tag-ui-renamed",
+            "tag-ui-remove-confirm",
+            "tag-ui-removed",
+            "tag-ui-page-error",
+            "tag-ui-paged",
+            "tag-ui-results-error",
+            "tag-ui-results",
+            "tag-catalog-retry",
+            "tag-catalog-paged",
+            "tag-catalog-renamed",
+            "selection-videos",
+            "selection-packs",
+            "pack-names-card",
+            "pack-names-retry",
+            "pack-names-saved",
+            "pack-names-renamed",
+            "pack-anchor-before",
+            "pack-anchor-error",
+            "pack-anchor-return",
+            "pack-anchor-prepend",
+            "pack-anchor-inserted",
+            "reader-horizontal",
+            "reader-vertical",
+            "reader-reopen",
+            "reader-overview",
+            "reader-next",
+            "reader-return",
+            "recent-initial",
+            "recent-tail",
+            "recent-reading",
+            "recent-return",
+            "recent-library",
+            "controls-rtl",
+            "controls-zoom",
+            "controls-immersive",
+            "controls-width",
+            "controls-reopen",
+            "controls-vertical",
+            "controls-next",
+            "controls-return",
+            "trash-read-error",
+            "trash-reader",
+            "trash-selected",
+            "trash-unknown",
+            "trash-restored",
+            "trash-recent",
+            "trash-video",
+            "trash-packs",
+            "trash-empty",
+            "trash-paged",
+            "trash-confirm",
+            "trash-receipt",
+            "trash-single-confirm",
+            "trash-single-restored",
+            "trash-dark",
+            "trash-keyboard",
+            "purge-ui-video-confirm",
+            "purge-ui-selected",
+            "purge-ui-review",
+            "purge-ui-members",
+            "purge-ui-files",
+            "purge-ui-saved",
+            "purge-ui-saved-dark",
+            "purge-ui-saved-reopened",
+            "purge-ui-unknown",
+            "purge-ui-result",
+            "purge-ui-retry-confirm",
+            "purge-ui-finished",
+            "purge-selected",
+            "purge-review",
+            "purge-files",
+            "purge-saved",
+            "purge-saved-reopened",
+            "purge-unknown",
+            "purge-result",
+            "purge-finished",
+            "bulk-selected",
+            "bulk-review",
+            "bulk-unknown",
+            "bulk-receipt",
+            "bulk-paged",
+            "bulk-selection",
+            "bulk-next-review",
+            "defaults-video",
+            "defaults-reader",
+            "defaults-unknown",
+            "defaults-reopened",
+            "defaults-migration",
+            "roots-created",
+            "roots-disabled",
+            "roots-conflict",
+            "missing-empty-video",
+            "missing-first",
+            "missing-confirm-cancel",
+            "missing-dark",
+            "missing-paged",
+            "missing-preserved",
+            "missing-unknown",
+            "missing-reopened",
+            "missing-result",
+            "missing-task-paged",
+            "management-backup",
+            "management-backup-cancel",
+            "management-backup-saved",
+            "management-restore-preview",
+            "management-restore-keyboard",
+            "management-backup-error",
+            "management-pending",
+            "management-detail",
+            "management-list",
+            "management-paged",
+            "management-dark",
+            "management-historical",
+            "management-task-backup-saved",
+            "tasks-list",
+            "tasks-pending",
+            "tasks-detail",
+            "tasks-paged",
+            "tasks-historical",
+            "tasks-backup-saved",
+            "restore-selected",
+            "restore-unknown",
+            "restore-reopened",
+            "restore-paged",
+            "restore-stop-unknown",
+            "restore-stopped",
+            "cleanup-ready",
+            "cleanup-unknown",
+            "cleanup-next",
+            "cleanup-undo",
+            "cleanup-normal",
+            "cleanup-resumed",
+            "cleanup-tail",
+            "cleanup-return",
+            "recovery-image-error",
+            "recovery-image-ready",
+            "recovery-unknown",
+            "recovery-receipt",
+            "recovery-background",
+            "recovery-tags",
+            "recovery-queue",
+            "recovery-return",
         }:
             raise HTTPException(status_code=422)
         checkpoint["phase"] = phase
+        checkpoint.pop("captured", None)
+        return checkpoint
+
+    @app.post("/__fixture/captured/{phase}")
+    def captured(phase: str, x_fixture_key: str | None = Header(default=None)):
+        controlled(x_fixture_key)
+        if checkpoint["phase"] != phase:
+            raise HTTPException(status_code=409)
+        checkpoint["captured"] = phase
         return checkpoint
 
     @app.post("/__fixture/actions/{action}")
@@ -184,6 +611,318 @@ def create_e2e_app():
         if action == "reset-login-limit":
             with app.state.login_lock:
                 app.state.login_attempts.clear()
+        elif action == "reset-task-trace":
+            trace.clear()
+        elif action == "tag-management-stats":
+            from video_viewer.models import PackTag, PackTagLink, Tag, VideoTag
+
+            with app.state.db.read() as session:
+                return {
+                    "video_tags": [
+                        {"id": r.id, "name": r.name}
+                        for r in session.scalars(select(Tag).order_by(Tag.name, Tag.id).limit(200))
+                    ],
+                    "pack_tags": [
+                        {"id": r.id, "name": r.name}
+                        for r in session.scalars(
+                            select(PackTag).order_by(PackTag.name, PackTag.id).limit(200)
+                        )
+                    ],
+                    "video_links": [
+                        {"video_id": r.video_id, "tag_id": r.tag_id}
+                        for r in session.scalars(
+                            select(VideoTag).order_by(VideoTag.video_id, VideoTag.tag_id).limit(200)
+                        )
+                    ],
+                    "pack_links": [
+                        {"pack_id": r.pack_id, "tag_id": r.tag_id}
+                        for r in session.scalars(
+                            select(PackTagLink)
+                            .order_by(PackTagLink.pack_id, PackTagLink.tag_id)
+                            .limit(200)
+                        )
+                    ],
+                }
+        elif action == "hold-restore-plan":
+            restore_gate.clear()
+            app.state.pack_restore_plans.batch_size = 2
+
+            def hold_restore(phase, identity):
+                if phase == "restore_child_accepted":
+                    while not restore_gate.wait(0.1):
+                        if app.state.pack_restore_plans.stop.is_set():
+                            return
+
+            app.state.pack_restore_plans.fault_hook = hold_restore
+        elif action == "release-restore-plan":
+            restore_gate.set()
+        elif action == "restore-plan-stats":
+            from sqlalchemy import func
+
+            from video_viewer.models import (
+                ImagePack,
+                PackRestoreBatch,
+                PackRestoreMember,
+                PackRestorePlan,
+                Task,
+            )
+
+            with app.state.db.write_lock, app.state.db.read() as session:
+                identity = session.scalar(
+                    select(PackRestorePlan.id)
+                    .join(Task)
+                    .order_by(Task.created_at.desc(), Task.id.desc())
+                    .limit(1)
+                )
+                if not identity:
+                    return {"plan": None}
+                plan = app.state.pack_restore_plans.view(identity)
+                batches = list(
+                    session.scalars(
+                        select(PackRestoreBatch.operation_id).where(
+                            PackRestoreBatch.plan_id == identity
+                        )
+                    )
+                )
+                counts = dict(
+                    session.execute(
+                        select(PackRestoreMember.outcome, func.count())
+                        .where(PackRestoreMember.plan_id == identity)
+                        .group_by(PackRestoreMember.outcome)
+                    ).all()
+                )
+                packs = [
+                    {"id": p.id, "status": p.status, "generation": p.generation}
+                    for p in session.scalars(select(ImagePack).order_by(ImagePack.id))
+                ]
+            return {"plan": plan, "batches": batches, "member_counts": counts, "packs": packs}
+        elif action == "pack-anchor":
+            details = seed_workspace_packs(BASE, Path("/fixture-assets"), 73)
+        elif action == "recent-pack-history":
+            details = seed_recent_pack_history(app.state.db)
+        elif action == "pack-anchor-prepend":
+            details = prepend_workspace_pack(BASE, Path("/fixture-assets"))
+        elif action == "fail-pack-anchor":
+            controls["fail_pack_anchor"] = True
+        elif action == "workspace-packs":
+            details = seed_workspace_packs(BASE, Path("/fixture-assets"))
+            controls["busy_covers"] = 2
+        elif action == "missing-native-folders":
+            directory = BASE / "shorts" / "图包"
+            if str(directory) != "/media/shorts/图包" or directory.is_symlink():
+                raise RuntimeError("Unexpected missing fixture root")
+            for number in range(1, 26):
+                target = directory / f"图包{number:02d}"
+                if target.is_symlink() or target.resolve().parent != directory:
+                    raise RuntimeError("Unexpected missing fixture member")
+                shutil.rmtree(target)
+            details = {"missing": 25}
+        elif action == "return-native-missing-one":
+            target = BASE / "shorts" / "图包" / "图包25"
+            if str(target) != "/media/shorts/图包/图包25" or target.is_symlink():
+                raise RuntimeError("Unexpected returned fixture pack")
+            target.mkdir(exist_ok=True)
+            shutil.copyfile(Path("/fixture-assets/flower-portrait.jpg"), target / "1.jpg")
+        elif action == "lose-missing-response":
+            controls["lose_missing_response"] = True
+        elif action == "missing-native-stats":
+            from .pack_missing_fixture import missing_snapshot
+
+            details = missing_snapshot(app.state.db)
+        elif action == "purge-restart-packs":
+            details = seed_workspace_packs(BASE, Path("/fixture-assets"), 1003)
+        elif action == "hold-purge-restart":
+            purge_gate.clear()
+
+            def hold_purge(phase, identity):
+                if phase == "purge_claiming":
+                    while not purge_gate.wait(0.1):
+                        if app.state.pack_purge.stop.is_set():
+                            return
+
+            app.state.pack_purge.fault_hook = hold_purge
+        elif action == "release-purge-restart":
+            purge_gate.set()
+        elif action == "purge-restart-stats":
+            from sqlalchemy import func
+
+            from video_viewer.models import PackFileStep, PackTrashItem, Task
+
+            with app.state.db.read() as session:
+                task = session.scalar(
+                    select(Task)
+                    .where(Task.kind == "pack_permanent")
+                    .order_by(Task.created_at.desc())
+                    .limit(1)
+                )
+                original_ids = list(
+                    session.scalars(select(PackTrashItem.id).order_by(PackTrashItem.id))
+                )
+                if task is None:
+                    return {"task": None, "all_trash_ids": original_ids}
+                counts = dict(
+                    session.execute(
+                        select(PackFileStep.outcome, func.count())
+                        .where(PackFileStep.operation_id == task.id)
+                        .group_by(PackFileStep.outcome)
+                    ).all()
+                )
+                active = session.scalar(
+                    select(func.count())
+                    .select_from(PackTrashItem)
+                    .where(PackTrashItem.status == "active")
+                )
+                remaining = list(
+                    session.scalars(
+                        select(PackTrashItem.id)
+                        .where(PackTrashItem.status == "active")
+                        .order_by(PackTrashItem.id)
+                    )
+                )
+                submitted = list(
+                    session.execute(
+                        select(PackFileStep.requested_id, PackFileStep.original_path)
+                        .where(PackFileStep.operation_id == task.id)
+                        .order_by(PackFileStep.requested_id)
+                    )
+                )
+                return {
+                    "task": {"id": task.id, "status": task.status, "phase": task.phase},
+                    "members": counts,
+                    "active_trash": active,
+                    "remaining_ids": remaining,
+                    "all_trash_ids": original_ids,
+                    "submitted_ids": [row.requested_id for row in submitted],
+                    "submitted_paths": [row.original_path for row in submitted],
+                }
+        elif action == "purge-management-stats":
+            from video_viewer.models import (
+                PackFileStep,
+                PackPurgeEntry,
+                PackPurgeExecution,
+                PackPurgePlan,
+                PackPurgeStep,
+                Task,
+            )
+
+            with app.state.db.read() as session:
+                preview = session.scalar(
+                    select(Task)
+                    .where(Task.kind == "pack_purge_preview")
+                    .order_by(Task.created_at.desc())
+                    .limit(1)
+                )
+                task = session.scalar(
+                    select(Task)
+                    .where(Task.kind == "pack_permanent")
+                    .order_by(Task.created_at.desc())
+                    .limit(1)
+                )
+                plan = session.get(PackPurgePlan, preview.id) if preview else None
+                members = (
+                    list(
+                        session.scalars(
+                            select(PackPurgeEntry).where(PackPurgeEntry.plan_id == preview.id)
+                        )
+                    )
+                    if preview
+                    else []
+                )
+                execution = session.get(PackPurgeExecution, task.id) if task else None
+                steps = (
+                    list(
+                        session.execute(
+                            select(PackPurgeStep, PackFileStep.original_path)
+                            .join(PackFileStep, PackPurgeStep.parent_id == PackFileStep.id)
+                            .where(PackFileStep.operation_id == task.id)
+                        )
+                    )
+                    if task
+                    else []
+                )
+                return {
+                    "preview": {"id": preview.id, "status": preview.status, "digest": plan.digest}
+                    if preview
+                    else None,
+                    "members": [
+                        {
+                            "trash_id": row.trash_id,
+                            "path": row.path,
+                            "digest": row.digest,
+                            "images": row.image_count,
+                            "retained": row.retained_entries,
+                            "manifest": row.manifest,
+                        }
+                        for row in members
+                    ],
+                    "task": {
+                        "id": task.id,
+                        "status": task.status,
+                        "phase": task.phase,
+                        "result": task.result,
+                        "plan_id": execution.plan_id,
+                    }
+                    if task
+                    else None,
+                    "steps": [
+                        {
+                            "id": row.id,
+                            "path": path,
+                            "relative_path": row.relative_path,
+                            "kind": row.kind,
+                            "sha256": row.expected_hash,
+                            "phase": row.phase,
+                            "outcome": row.outcome,
+                        }
+                        for row, path in steps
+                    ],
+                }
+        elif action == "purge-pack-attachments":
+            folder = BASE / "shorts" / "图包"
+            if (
+                str(folder) != "/media/shorts/图包"
+                or folder.is_symlink()
+                or folder.resolve() != folder
+            ):
+                raise HTTPException(status_code=409, detail="Expected isolated flower directory")
+            for index in range(1, 28):
+                pack = folder / f"图包{index:02d}"
+                if pack.is_symlink() or not pack.is_dir():
+                    raise HTTPException(status_code=409, detail="Expected fixture pack directory")
+                (pack / "notes.txt").write_text("retain isolated attachment", encoding="utf-8")
+        elif action == "fail-pack-purge":
+
+            def fail_purge(phase, identity):
+                if phase == "purge_purging":
+                    from video_viewer.models import PackPurgeStep
+
+                    with app.state.db.read() as session:
+                        row = session.get(PackPurgeStep, identity)
+                        if row.relative_path == "2.jpg":
+                            raise PermissionError("Isolated fixture page failure")
+
+            app.state.pack_purge.fault_hook = fail_purge
+        elif action == "normal-pack-purge":
+            app.state.pack_purge.fault_hook = None
+        elif action == "fail-pack-trash-read":
+            controls["fail_pack_trash"] = True
+        elif action == "pack-trash-hashes":
+            folder = BASE / "shorts" / "图包"
+            if (
+                str(folder) != "/media/shorts/图包"
+                or folder.is_symlink()
+                or folder.resolve() != folder
+            ):
+                raise HTTPException(status_code=409, detail="Expected isolated flower directory")
+            hashes = {}
+            for item in sorted(folder.rglob("*")):
+                if item.is_symlink() or not item.resolve().is_relative_to(folder):
+                    raise HTTPException(status_code=409, detail="Unexpected fixture link")
+                if item.is_file():
+                    hashes[str(item.relative_to(folder))] = hashlib.sha256(
+                        item.read_bytes()
+                    ).hexdigest()
+            return {"hashes": hashes}
         elif action == "add":
             copy_new(PORTRAIT, BASE / "shorts" / "新增" / "新到片段.mp4")
         elif action == "disconnect":
@@ -211,8 +950,10 @@ def create_e2e_app():
             rename_new(str(source), str(destination))
         elif action == "move-many-out":
             sources = sorted(
-                p for root in [BASE / "shorts", BASE / "camera"]
-                for p in root.rglob("*") if p.is_file() and p.suffix.lower() in {".mp4", ".mov"}
+                p
+                for root in [BASE / "shorts", BASE / "camera"]
+                for p in root.rglob("*")
+                if p.is_file() and p.suffix.lower() in {".mp4", ".mov"}
             )[:25]
             if len(sources) != 25:
                 raise HTTPException(status_code=409, detail="Expected 25 disposable media files")
@@ -227,28 +968,40 @@ def create_e2e_app():
             with app.state.db.write() as session:
                 for root in session.scalars(select(Root)):
                     root.last_scan = None
-                video = session.scalar(select(Video).where(Video.status == 'available').order_by(Video.path).limit(1))
+                video = session.scalar(
+                    select(Video).where(Video.status == "available").order_by(Video.path).limit(1)
+                )
                 if video:
                     if video.thumbnail:
-                        (settings.data_dir / 'thumbnails' / video.thumbnail).unlink(missing_ok=True)
+                        (settings.data_dir / "thumbnails" / video.thumbnail).unlink(missing_ok=True)
                     video.thumbnail = None
-                    details['warning_video_id'] = video.id
+                    details["warning_video_id"] = video.id
             original_thumbnail = scan_module.make_thumbnail
+
             def optional_poster_failure(*args):
                 scan_module.make_thumbnail = original_thumbnail
-                raise MediaInspectionError('thumbnail_timeout')
+                raise MediaInspectionError("thumbnail_timeout")
+
             scan_module.make_thumbnail = optional_poster_failure
             scanner = app.state.scanner
             original = scanner.check_stop
             deadline = time.monotonic() + 15
+
             def preparation_check():
                 if time.monotonic() < deadline:
                     time.sleep(0.08)
                 else:
                     scanner.check_stop = original
                 original()
+
             scanner.check_stop = preparation_check
             scanner.submit()
+        elif action == "fail-pack-names":
+            controls["fail_pack_names"] = True
+        elif action == "fail-tag-results":
+            controls["fail_tag_results"] = True
+        elif action == "fail-tag-page":
+            controls["fail_tag_page"] = True
         elif action == "slow-pages":
             controls["slow_page"] = True
         elif action == "normal-pages":
@@ -279,6 +1032,8 @@ def create_e2e_app():
             controls["slow"] = False
         elif action == "lose-tag-response":
             controls["lose_tag_response"] = True
+        elif action == "lose-default-response":
+            controls["lose_default_response"] = True
         elif action == "lose-file-response":
             controls["lose_file_response"] = True
         elif action == "fail-next-restore":
@@ -294,9 +1049,7 @@ def create_e2e_app():
                 rename_new(str(source), str(destination / source.name))
             details["mapped_path"] = str(destination)
         elif action in {"lock-flower", "unlock-flower"}:
-            (BASE / "shorts" / "自然" / "花卉").chmod(
-                0o555 if action == "lock-flower" else 0o755
-            )
+            (BASE / "shorts" / "自然" / "花卉").chmod(0o555 if action == "lock-flower" else 0o755)
         elif action == "conflict-first":
             copy_new(LANDSCAPE, BASE / "shorts" / "自然" / "花卉" / "片段01.mp4")
         elif action == "clear-conflict-first":
