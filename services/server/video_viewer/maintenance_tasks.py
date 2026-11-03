@@ -114,6 +114,7 @@ class MaintenanceTasks:
                     "pack_restore",
                     "pack_undo",
                     "pack_permanent",
+                    "pack_directory_delete",
                     "pack_restore_plan",
                     "pack_forget_missing",
                 )

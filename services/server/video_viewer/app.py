@@ -29,6 +29,7 @@ from .management_history_api import router as management_history_router
 from .metadata_cleanup import forget_missing
 from .models import FileOperation, RequestRecord, Root, Setting, Video, uid
 from .pack_api import router as pack_router
+from .pack_directory_delete import PackDirectoryDelete
 from .pack_missing import PackMissing
 from .pack_operations import PackOperations
 from .pack_operations_api import router as pack_operations_router
@@ -236,6 +237,9 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             app.state.pack_files, app.state.pack_purge_plans, configured
         )
         app.state.pack_files.purge = app.state.pack_purge
+        app.state.pack_files.directory_delete = PackDirectoryDelete(
+            app.state.pack_files, configured
+        )
         app.state.pack_restore_plans = PackRestorePlans(app.state.pack_files)
         app.state.pack_missing = PackMissing(db)
         app.state.files = FileOperations(
@@ -399,6 +403,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "pack_logical_trash",
                 "pack_reader_cleanup",
                 "pack_purge_preview",
+                "pack_directory_delete",
                 "pack_permanent_delete",
                 "maintenance_tasks",
                 "pack_restore_plans",

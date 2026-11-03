@@ -9,6 +9,7 @@ import '../../ui/media_layout.dart';
 import '../../ui/trash_layout.dart';
 import 'pack_file_action.dart';
 import 'pack_trash_session.dart';
+import 'pack_directory_deletion.dart';
 import 'pack_purge_review.dart';
 import 'pack_purge_result.dart';
 import 'pack_purge_selection_page.dart';
@@ -257,6 +258,22 @@ class _PackTrashPageState extends State<PackTrashPage> {
       }
       final saved = await PackPurgeSelections(session.files).save(ids);
       if (!mounted || !session.live) return;
+      if (widget.repository.capabilities.packDirectoryDelete) {
+        await enqueueDirectoryDeletion(
+          widget.repository,
+          session.files,
+          saved.remaining,
+          notify: (message) {
+            if (mounted && session.live) {
+              session.message = message;
+              unawaited(session.load());
+            }
+          },
+        );
+        session.clearSelection();
+        session.message = '删除请求已保存，正在后台提交';
+        return;
+      }
       command = await showPackPurgeReview(
         context,
         widget.repository,
@@ -294,6 +311,25 @@ class _PackTrashPageState extends State<PackTrashPage> {
     try {
       final task = await session.files.task(identity);
       if (!mounted || !session.live) return;
+      if (task.kind == 'pack_directory_delete') {
+        final catalog = widget.repository.createMaintenanceTasks();
+        try {
+          final summary = await catalog.task(task.id);
+          if (!mounted || !session.live) return;
+          await Navigator.of(context).push<void>(
+            PaperPageRoute(
+              builder: (_) => MaintenanceTaskDetail(
+                repository: widget.repository,
+                catalog: catalog,
+                initial: summary,
+              ),
+            ),
+          );
+        } finally {
+          catalog.dispose();
+        }
+        return;
+      }
       if (task.kind != 'pack_permanent') {
         throw const LibraryFailure('原图包任务类型不一致');
       }
@@ -634,7 +670,9 @@ class _PackTrashPageState extends State<PackTrashPage> {
       ),
       children: [
         Text(
-          '普通移除保留源文件，永久删除不能恢复。恢复图包时保留剩余图片、图包标签和阅读进度。',
+          widget.repository.capabilities.packDirectoryDelete
+              ? '移入回收站保留源文件。永久删除会删除图包文件夹及其中全部内容，无法恢复。'
+              : '普通移除保留源文件，永久删除不能恢复。恢复图包时保留剩余图片、图包标签和阅读进度。',
           style: TextStyle(fontSize: 13, height: 1.7, color: p.catalogMeta),
         ),
         const SizedBox(height: 12),

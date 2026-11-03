@@ -8,6 +8,7 @@ import '../../ui/paper.dart';
 import '../../ui/paper_management.dart';
 import 'pack_file_action.dart';
 import 'pack_purge_review.dart';
+import 'pack_directory_deletion.dart';
 import '../settings/maintenance_task_detail.dart';
 
 /// The saved choice has its own home; opening it never prepares or deletes files.
@@ -87,6 +88,14 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
       if (latest.historical || latest.remaining.isEmpty) {
         throw const LibraryFailure('没有可继续核对的选择，请重新读取');
       }
+      if (widget.repository.capabilities.packDirectoryDelete) {
+        await enqueueDirectoryDeletion(
+          widget.repository,
+          selections!.files,
+          latest.remaining,
+        );
+        return;
+      }
       final command = await showPackPurgeReview(
         context,
         widget.repository,
@@ -121,7 +130,9 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
   }
 
   Future<void> showResult(PackFileTask task) async {
-    if (task.kind != 'pack_permanent') throw const LibraryFailure('原删除任务类型不一致');
+    if (!['pack_permanent', 'pack_directory_delete'].contains(task.kind)) {
+      throw const LibraryFailure('原删除任务类型不一致');
+    }
     if (!selections!.files.readOnly &&
         task.settled &&
         !task.result!.needsAttention) {
@@ -158,6 +169,8 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
           content: Text(
             task.result == null
                 ? '请在原操作查询结果'
+                : task.kind == 'pack_directory_delete'
+                ? '已删除 ${task.result!.succeeded} 个文件夹，${task.result!.failed} 个未完成'
                 : '已确认删除 ${task.result!.pagesDeleted}/${task.result!.pagesTotal} 张图片，${task.result!.failed} 个图包未完成',
           ),
         ),
@@ -177,7 +190,8 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
         if (!mounted || !current) return;
         if (task.result != null &&
             (task.result!.total != batch.command.targets.length ||
-                task.result!.pagesTotal != batch.command.expectedImages ||
+                (batch.command.expectedImages != null &&
+                    task.result!.pagesTotal != batch.command.expectedImages) ||
                 task.result!.items.any(
                   (v) => !batch.command.targets.contains(v.requestedId),
                 ))) {
@@ -306,7 +320,9 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      '选择会保存在本机。每批最多1000个，重新核对图片清单并明确确认后才会永久删除；打开或离开此页不会自动执行。',
+                      widget.repository.capabilities.packDirectoryDelete
+                          ? '点击删除后提交到服务器后台，删除图包文件夹及其中全部内容。打开此页不会自动删除。'
+                          : '选择会保存在本机。每批最多1000个，重新核对图片清单并明确确认后才会永久删除；打开或离开此页不会自动执行。',
                       style: TextStyle(
                         fontSize: 13,
                         height: 1.7,
@@ -358,7 +374,9 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
                             key: const Key('purge-selection-next'),
                             onPressed: busy ? null : nextBatch,
                             child: Text(
-                              '核对下一批 ${value.remaining.length.clamp(0, 1000)} 个',
+                              widget.repository.capabilities.packDirectoryDelete
+                                  ? '永久删除剩余 ${value.remaining.length} 个'
+                                  : '核对下一批 ${value.remaining.length.clamp(0, 1000)} 个',
                             ),
                           ),
                         TextButton(

@@ -221,6 +221,7 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         "pack_logical_trash",
         "pack_reader_cleanup",
         "pack_purge_preview",
+        "pack_directory_delete",
         "pack_permanent_delete",
         "maintenance_tasks",
         "pack_restore_plans",

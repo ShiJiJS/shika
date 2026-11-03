@@ -62,6 +62,7 @@ class _PackFileActionState extends State<PackFileAction> {
     'undo' => '撤销移除',
     'retry' => '重试未完成项',
     'permanent' => '永久删除',
+    'directory_delete' => '永久删除文件夹',
     _ => '移入回收站',
   };
   @override
@@ -156,7 +157,13 @@ class _PackFileActionState extends State<PackFileAction> {
             child: const Text('重新提交原请求'),
           ),
         FilledButton(
-          style: attempted || !['trash', 'permanent'].contains(command.kind)
+          style:
+              attempted ||
+                  ![
+                    'trash',
+                    'permanent',
+                    'directory_delete',
+                  ].contains(command.kind)
               ? null
               : FilledButton.styleFrom(
                   backgroundColor: Paper.of(context).danger,

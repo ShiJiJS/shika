@@ -1,5 +1,7 @@
 # 媒体库与图包升级：整体审阅入口
 
+> 第33版已交付（preview.27/code33）及NAS服务preview.9：图包回收站选中后直接后台删除文件夹及全部内容，取消图片核对清单与等待弹窗。图包挂载已可写，升级前后622条回收记录及用户管理数据一致。[交付及检查记录](nas-app-preview-2026-11-03-code33.md) · [PR #187](https://github.com/ShiJiJS/video_viewer/pull/187)。其他持续开发与旧验收仍暂停。
+
 > 第32版已交付（preview.26/code32）：修复大批量图包永久删除清单准备超时，持续显示进度并保存原请求以便续查。[安装及本次171项相关检查](nas-app-preview-2026-11-02-code32.md) · [PR #185](https://github.com/ShiJiJS/video_viewer/pull/185)。NAS服务preview.8不变，其余持续开发和验收仍暂停。
 
 > 第31版已交付（preview.25/code31）：修复前后切换取消，完善回收按钮/顶部撤销、即时数量位置及媒体库多选回收。[安装及本次308项相关检查](nas-app-preview-2026-11-02-code31.md)。NAS服务preview.8不变；其他持续开发和验收仍暂停，下文旧版记录为历史。

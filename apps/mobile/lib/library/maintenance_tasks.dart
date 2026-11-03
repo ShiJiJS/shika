@@ -159,6 +159,7 @@ class MaintenanceTask {
         'pack_restore': '恢复图包',
         'pack_undo': '撤销图包移除',
         'pack_permanent': '永久删除图包图片',
+        'pack_directory_delete': '永久删除图包文件夹',
         'pack_purge_preview': '核对图片删除清单',
         'pack_restore_plan': '批量恢复图包',
         'pack_forget_missing': '清除失效图包记录',

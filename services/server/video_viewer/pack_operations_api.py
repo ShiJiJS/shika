@@ -32,6 +32,16 @@ class Restore(Input):
     trash_ids: list[Identity] = Field(min_length=1, max_length=1000)
 
 
+class DirectoryDelete(Restore):
+    confirmed: bool = Field(strict=True)
+
+    @model_validator(mode="after")
+    def confirmed_delete(self):
+        if self.confirmed is not True:
+            raise ValueError("Explicit directory deletion confirmation is required")
+        return self
+
+
 class RestorePlan(Input):
     trash_ids: list[Identity] = Field(min_length=1, max_length=50000)
 
@@ -133,6 +143,11 @@ def router(auth_required):
         return state.pack_files.task(
             state.pack_purge.submit(body.plan_id, body.digest, body.request_id)
         )
+
+    @api.post("/pack-trash/directories/permanent", status_code=202)
+    def directory_delete(body: DirectoryDelete, request: Request):
+        ops = request.app.state.pack_files
+        return ops.task(ops.directory_delete.submit(body.trash_ids, body.request_id))
 
     @api.get("/pack-operations/{identity}/pages")
     def purge_pages(
