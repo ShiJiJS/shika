@@ -155,6 +155,47 @@ class ServerLibraryRepository extends LibraryRepository
     catalogCounts.value = null;
     super.packFilesChanged();
     unawaited(refreshCatalogCounts());
+    if (snapshot.connected) schedulePreparation(api, _generation);
+  }
+
+  bool _reconcilingPackDeletes = false;
+  Future<void> reconcilePackDeletes() async {
+    if (_reconcilingPackDeletes ||
+        _disposed ||
+        !snapshot.connected ||
+        !capabilities.packDirectoryDelete ||
+        _fileScope == null ||
+        backupRestorePending) {
+      return;
+    }
+    _reconcilingPackDeletes = true;
+    try {
+      final files = createPackFiles();
+      var changed = false;
+      for (final command in await files.pending()) {
+        if (!files.isCurrent()) return;
+        if (command.kind != 'directory_delete' &&
+            !(command.kind == 'retry' &&
+                command.expectedTaskKind == 'pack_directory_delete')) {
+          continue;
+        }
+        try {
+          final task = await files.receipt(command);
+          if (!files.isCurrent()) return;
+          if (task?.settled == true && !task!.result!.needsAttention) {
+            await files.acknowledgeTask(task);
+            changed = true;
+          }
+        } catch (_) {
+          // Retry the original receipt on the next normal refresh, never POST.
+        }
+      }
+      if (changed && files.isCurrent()) packFilesChanged();
+    } catch (_) {
+      // Network interruptions stay internal while the original request is kept.
+    } finally {
+      _reconcilingPackDeletes = false;
+    }
   }
 
   @override
@@ -863,7 +904,11 @@ class ServerLibraryRepository extends LibraryRepository
       rethrow;
     } finally {
       if (_connectingGeneration == generation) _connectingGeneration = null;
-      if (!identical(candidate, _api)) candidate.close();
+      if (identical(candidate, _api)) {
+        schedulePreparation(candidate, generation);
+      } else {
+        candidate.close();
+      }
     }
   }
 
@@ -915,7 +960,11 @@ class ServerLibraryRepository extends LibraryRepository
       await activateBackupWork(session);
     } finally {
       if (_connectingGeneration == generation) _connectingGeneration = null;
-      if (!identical(candidate, _api)) candidate.close();
+      if (identical(candidate, _api)) {
+        schedulePreparation(candidate, generation);
+      } else {
+        candidate.close();
+      }
     }
   }
 
@@ -1224,10 +1273,14 @@ class ServerLibraryRepository extends LibraryRepository
     if (_disposed || generation != _generation || !identical(target, _api)) {
       return;
     }
+    unawaited(reconcilePackDeletes());
     _preparationTimer = Timer(
       Duration(
         seconds:
-            libraryPreparation.value.scanning || !libraryPreparation.value.ready
+            libraryPreparation.value.scanning ||
+                !libraryPreparation.value.ready ||
+                (_fileScope != null &&
+                    packFileJournal.hasCachedCommands(_fileScope!))
             ? 2
             : 10,
       ),

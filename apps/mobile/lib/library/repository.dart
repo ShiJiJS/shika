@@ -39,7 +39,13 @@ abstract class LibraryRepository extends ChangeNotifier {
       throw const LibraryFailure('当前服务尚不支持图包回收站，请升级服务端');
   PackFiles createPackFiles() =>
       throw const LibraryFailure('当前服务尚不支持图包回收，请升级服务端');
-  void packFilesChanged() => notifyListeners();
+  int _packFilesRevision = 0;
+  int get packFilesRevision => _packFilesRevision;
+  void packFilesChanged() {
+    _packFilesRevision++;
+    notifyListeners();
+  }
+
   PackReader createPackReader() =>
       throw const LibraryFailure('当前服务尚不支持图包阅读，请升级服务端');
   Future<Set<String>> selectVideoIds(VideoEntryScope entry) =>

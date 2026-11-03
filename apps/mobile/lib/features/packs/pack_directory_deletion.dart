@@ -16,16 +16,21 @@ Future<List<PackFileCommand>> enqueueDirectoryDeletion(
       files.readOnly) {
     throw const LibraryFailure('请先升级服务端再删除图包文件夹');
   }
-  final selections = PackPurgeSelections(files);
-  final choice = await selections.save(ids);
   final commands = <PackFileCommand>[];
-  var remaining = choice.remaining;
+  final selected = ids.toSet().toList()..sort();
+  final pending = await files.pending();
+  final alreadyDeleting = {
+    for (final c in pending.where((c) => c.kind == 'directory_delete'))
+      ...c.targets,
+  };
+  var remaining = selected
+      .where((id) => !alreadyDeleting.contains(id))
+      .toList();
   while (remaining.isNotEmpty) {
     final batch = remaining.take(1000).toList();
     final command = PackFileCommand.deleteDirectories(
       packFileRequestId(),
       batch,
-      selectionId: choice.id,
     );
     await files.journal.remember(files.scope, command);
     commands.add(command);
@@ -42,17 +47,14 @@ Future<void> _submit(
   List<PackFileCommand> commands,
   void Function(String)? notify,
 ) async {
-  var accepted = 0;
   for (final command in commands) {
     if (!files.isCurrent()) return;
     try {
       final task = await files.send(command);
-      accepted += command.targets.length;
-      if (task.settled && !task.result!.needsAttention) {
-        await files.acknowledgeTask(task);
-      }
       repository.packFilesChanged();
-      notify?.call('已提交 $accepted 个图包，服务器正在后台删除，可在任务页查看结果');
+      if (task.settled) {
+        notify?.call(task.result!.failed == 0 ? '已永久删除' : '部分图包未删除，请重试');
+      }
     } catch (_) {
       if (!files.isCurrent()) return;
       // A lost response is queried by its original ID, never re-POSTed here.
@@ -60,18 +62,22 @@ Future<void> _submit(
         final task = await files.receipt(command);
         if (!files.isCurrent()) return;
         if (task != null) {
-          accepted += command.targets.length;
-          if (task.settled && !task.result!.needsAttention) {
-            await files.acknowledgeTask(task);
-          }
           repository.packFilesChanged();
-          notify?.call('已提交 $accepted 个图包，服务器正在后台删除，可在任务页查看结果');
+          if (task.settled) {
+            notify?.call(task.result!.failed == 0 ? '已永久删除' : '部分图包未删除，请重试');
+          }
           continue;
         }
       } catch (_) {
         // The original command stays available in pending operations.
       }
-      notify?.call('删除请求已保存，连接结果待确认，可在待处理操作中查询；不会重复提交');
+      if (!files.isCurrent()) return;
+      if (!(await files.pending()).any(
+        (c) => c.requestId == command.requestId,
+      )) {
+        continue;
+      }
+      notify?.call('网络连接不稳定，稍后会自动刷新');
     }
   }
 }

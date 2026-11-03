@@ -685,6 +685,12 @@ class PackFileJournal {
     }
   }
 
+  bool hasCachedCommands(String scope) {
+    if (_book == null) return false;
+    return _map(_map(_book!['scopes'])[scope] ?? <String, dynamic>{})
+        .isNotEmpty;
+  }
+
   Future<void> _tail = Future.value();
   Map<String, dynamic>? _book;
   Future<T> _edit<T>(
