@@ -1070,7 +1070,11 @@ class PackReaderPageState extends State<PackReaderPage>
                               value: 'settings',
                               child: Text('阅读方式'),
                             ),
-                          if (_quickCleanup?.items.isNotEmpty == true)
+                          if (!widget
+                                  .repository
+                                  .capabilities
+                                  .packDirectoryDelete &&
+                              _quickCleanup?.items.isNotEmpty == true)
                             PopupMenuItem(
                               value: 'records',
                               child: Text(

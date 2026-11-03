@@ -866,6 +866,24 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     final targets = Set<String>.of(ids);
     FocusManager.instance.primaryFocus?.unfocus();
     remember();
+    if (repo.capabilities.packDirectoryDelete) {
+      final files = repo.createPackFiles();
+      final command = PackFileCommand.trash(packFileRequestId(), targets);
+      try {
+        await files.journal.remember(files.scope, command);
+        if (!mounted || !files.isCurrent()) return;
+        selected.removeAll(targets);
+        selection.cancel();
+        unawaited(_removeLikeVideo(files, command));
+      } catch (_) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            PaperSnackBar(context: context, content: const Text('移除未完成，请重试')),
+          );
+        }
+      }
+      return;
+    }
     _detailsOpen = true;
     try {
       final outcome = await showPackFileAction(
@@ -908,6 +926,42 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     } finally {
       _detailsOpen = false;
       if (mounted && widget.active) await load(restore: initialized);
+    }
+  }
+
+  Future<void> _removeLikeVideo(
+    PackFiles files,
+    PackFileCommand command,
+  ) async {
+    try {
+      final task = await files.resolve(
+        command,
+        submit: true,
+        timeout: const Duration(minutes: 10),
+        keepWaiting: files.isCurrent,
+      );
+      if (!files.isCurrent() || task?.settled != true) return;
+      await files.acknowledge(command);
+      repo.packFilesChanged();
+      if (!mounted) return;
+      if (task!.result!.succeeded > 0) {
+        showPackUndo(
+          context,
+          repo,
+          PackFileOutcome(files, command, task),
+          onRestored: resumeRestored,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          PaperSnackBar(context: context, content: const Text('移除未完成，请重试')),
+        );
+      }
+    } catch (_) {
+      if (mounted && files.isCurrent()) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          PaperSnackBar(context: context, content: const Text('移除未完成，请重试')),
+        );
+      }
     }
   }
 
@@ -1176,7 +1230,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
               ],
             ),
           if (error.isNotEmpty) note(error),
-          if (pendingFiles.isNotEmpty)
+          if (!repo.capabilities.packDirectoryDelete && pendingFiles.isNotEmpty)
             Row(
               children: [
                 Expanded(child: note('${pendingFiles.length} 项图包操作待核对')),

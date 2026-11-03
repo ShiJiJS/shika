@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -14,6 +15,7 @@ class PackTrashSession extends ChangeNotifier {
     PackFiles? files,
   }) : files = files ?? repository.createPackFiles(),
        catalog = catalog ?? repository.createPackTrash() {
+    _filesRevision = repository.packFilesRevision;
     selection = CatalogSelection(
       connection: () => repository.connectionIdentity,
       cancelRead: this.catalog.cancelSelection,
@@ -35,6 +37,7 @@ class PackTrashSession extends ChangeNotifier {
   bool _disposed = false, active = true, loading = false, restoring = false;
   bool hasLoaded = false;
   int _read = 0, offset = 0, total = 0;
+  late int _filesRevision;
   String search = '', error = '', message = '';
   List<PackTrashItem> _items = const [];
   List<PackTrashItem> get items => _items;
@@ -49,7 +52,15 @@ class PackTrashSession extends ChangeNotifier {
   }
 
   void _ownerChanged() {
-    if (_disposed || live) return;
+    if (_disposed) return;
+    if (live) {
+      if (repository.capabilities.packDirectoryDelete &&
+          _filesRevision != repository.packFilesRevision) {
+        _filesRevision = repository.packFilesRevision;
+        if (active && !restoring) unawaited(load());
+      }
+      return;
+    }
     _read++;
     catalog.cancelPages();
     selection.cancel(clear: true);

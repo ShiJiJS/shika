@@ -2366,7 +2366,9 @@ class _LibraryHomeState extends State<LibraryHome> {
       settingRow(
         Icons.history,
         '操作任务',
-        (repo.maintenancePendingCount ?? 0) > 0
+        repo.capabilities.packDirectoryDelete
+            ? '扫描、恢复与删除结果'
+            : (repo.maintenancePendingCount ?? 0) > 0
             ? '${repo.maintenancePendingCount} 项结果待核对'
             : repo.maintenanceNeedsCheck
             ? '有操作记录需要核对'

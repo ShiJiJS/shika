@@ -250,6 +250,28 @@ class _PackTrashPageState extends State<PackTrashPage> {
       final ids = session.selection.ids.toList()..sort();
       await session.loadPending();
       if (!mounted || !session.live) return;
+      if (widget.repository.capabilities.packDirectoryDelete) {
+        await enqueueDirectoryDeletion(
+          widget.repository,
+          session.files,
+          ids,
+          notify: (message) {
+            if (mounted && session.live) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                PaperSnackBar(
+                  context: context,
+                  duration: const Duration(seconds: 2),
+                  content: Text(message),
+                ),
+              );
+            }
+          },
+        );
+        session.clearSelection();
+        session.message = '';
+        return;
+      }
+      if (!mounted || !session.live) return;
       final resources = ids.take(1000).map((id) => 'trash:$id').toSet();
       if (session.pending.any(
         (c) => c.resources.intersection(resources).isNotEmpty,
@@ -258,22 +280,6 @@ class _PackTrashPageState extends State<PackTrashPage> {
       }
       final saved = await PackPurgeSelections(session.files).save(ids);
       if (!mounted || !session.live) return;
-      if (widget.repository.capabilities.packDirectoryDelete) {
-        await enqueueDirectoryDeletion(
-          widget.repository,
-          session.files,
-          saved.remaining,
-          notify: (message) {
-            if (mounted && session.live) {
-              session.message = message;
-              unawaited(session.load());
-            }
-          },
-        );
-        session.clearSelection();
-        session.message = '删除请求已保存，正在后台提交';
-        return;
-      }
       command = await showPackPurgeReview(
         context,
         widget.repository,
@@ -576,25 +582,29 @@ class _PackTrashPageState extends State<PackTrashPage> {
               style: TextStyle(color: p.danger),
             ),
           ),
-        if (session.pending.isNotEmpty)
+        if (!widget.repository.capabilities.packDirectoryDelete &&
+            session.pending.isNotEmpty)
           TextButton(
             key: const Key('pack-trash-pending'),
             onPressed: locked ? null : checkPending,
             child: Text('${session.pending.length} 项图包操作待核对'),
           ),
-        if (session.pendingPlans.isNotEmpty)
+        if (!widget.repository.capabilities.packDirectoryDelete &&
+            session.pendingPlans.isNotEmpty)
           TextButton(
             key: const Key('pack-trash-plans-pending'),
             onPressed: locked ? null : () => restorePlan(pending: true),
             child: Text('${session.pendingPlans.length} 项恢复或停止请求待核对'),
           ),
-        if (session.purgeSelections.isNotEmpty)
+        if (!widget.repository.capabilities.packDirectoryDelete &&
+            session.purgeSelections.isNotEmpty)
           TextButton(
             key: const Key('pack-trash-saved-purge'),
             onPressed: locked ? null : savedSelection,
             child: Text('${session.purgeSelections.length} 份保存的删除选择'),
           ),
-        if (session.lastPlan != null)
+        if (!widget.repository.capabilities.packDirectoryDelete &&
+            session.lastPlan != null)
           TextButton(
             key: const Key('pack-trash-plan-result'),
             onPressed: locked ? null : restorePlan,
@@ -655,7 +665,8 @@ class _PackTrashPageState extends State<PackTrashPage> {
               '$uncertain 个图包恢复结果待核对，请先查询原请求。',
               style: TextStyle(fontSize: 13, height: 1.7, color: p.catalogMeta),
             ),
-          if (selected.length > 1000)
+          if (selected.length > 1000 &&
+              !widget.repository.capabilities.packDirectoryDelete)
             Text(
               '已选 ${selected.length} 个。恢复每批最多1000个；永久删除每批单独核对确认，其余保持选择。',
               style: TextStyle(fontSize: 12, height: 1.7, color: p.catalogMeta),

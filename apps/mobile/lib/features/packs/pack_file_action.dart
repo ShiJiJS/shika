@@ -248,17 +248,34 @@ void showPackUndo(
                       if (!context.mounted || !outcome.files.isCurrent()) {
                         return;
                       }
-                      final undone = await showPackFileAction(
-                        context,
-                        files: outcome.files,
-                        command: PackFileCommand.undo(
-                          packFileRequestId(),
-                          outcome.task.id,
-                          readerContext: outcome.command.readerContext,
-                        ),
-                        title: '撤销移除',
-                        confirm: false,
+                      final command = PackFileCommand.undo(
+                        packFileRequestId(),
+                        outcome.task.id,
+                        readerContext: outcome.command.readerContext,
                       );
+                      PackFileOutcome? undone;
+                      if (repository.capabilities.packDirectoryDelete) {
+                        final task = await outcome.files.resolve(
+                          command,
+                          submit: true,
+                          keepWaiting: outcome.files.isCurrent,
+                        );
+                        if (task?.settled == true) {
+                          undone = PackFileOutcome(
+                            outcome.files,
+                            command,
+                            task!,
+                          );
+                        }
+                      } else {
+                        undone = await showPackFileAction(
+                          context,
+                          files: outcome.files,
+                          command: command,
+                          title: '撤销移除',
+                          confirm: false,
+                        );
+                      }
                       if (undone == null) return;
                       await undone.files.acknowledge(undone.command);
                       repository.packFilesChanged();

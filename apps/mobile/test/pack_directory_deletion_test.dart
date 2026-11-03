@@ -110,6 +110,9 @@ void main() {
       await t.tap(find.byKey(const Key('pack-trash-permanent')));
       await t.pump();
       expect(find.byType(PackPurgeReview), findsNothing);
+      expect(find.textContaining('待核对'), findsNothing);
+      expect(find.textContaining('提交'), findsNothing);
+      expect(find.byKey(const Key('pack-trash-saved-purge')), findsNothing);
       expect(repo.preparations, isEmpty);
       expect(repo.directoryPosts.length, 1);
       expect(repo.directoryPosts.single['trash_ids'], ['trash-0']);
@@ -127,6 +130,35 @@ void main() {
     },
   );
 
+  testWidgets('deletion acceptance refreshes trash count without reopening', (
+    t,
+  ) async {
+    final repo = DirectoryLibrary(count: 2)..acceptance = Completer<void>();
+    await repo.initialize();
+    await t.pumpWidget(
+      MaterialApp(
+        theme: Paper.theme,
+        home: Scaffold(body: PackTrashPage(repository: repo, active: true)),
+      ),
+    );
+    await t.pumpAndSettle();
+    expect(find.text('共 2 个图包'), findsOneWidget);
+    await t.tap(find.byKey(const Key('pack-trash-item-trash-0')));
+    await t.pumpAndSettle();
+    await t.ensureVisible(find.byKey(const Key('pack-trash-permanent')));
+    await t.tap(find.byKey(const Key('pack-trash-permanent')));
+    await t.pump();
+    expect(find.byType(PackPurgeReview), findsNothing);
+    repo.acceptance!.complete();
+    await t.pumpAndSettle();
+    expect(find.text('共 1 个图包'), findsOneWidget);
+    expect(find.byKey(const Key('pack-trash-item-trash-0')), findsNothing);
+    expect(find.textContaining('待核对'), findsNothing);
+    expect(find.textContaining('提交'), findsNothing);
+    await t.pumpWidget(const SizedBox());
+    repo.dispose();
+  });
+
   test('all large-selection batches are persisted before network and submitted once', () async {
     final repo = DirectoryLibrary(count: 1027)..acceptance = Completer<void>();
     final files = repo.createPackFiles();
@@ -136,6 +168,7 @@ void main() {
       repo.records.keys.toList(),
     );
     expect(commands.map((c) => c.targets.length), [1000, 27]);
+    expect(await PackPurgeSelections(files).list(), isEmpty);
     expect((await files.pending()).length, 2);
     for (var i = 0; i < 50 && repo.directoryPosts.isEmpty; i++) {
       await Future<void>.delayed(const Duration(milliseconds: 5));

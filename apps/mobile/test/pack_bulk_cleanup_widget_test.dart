@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 import 'package:video_viewer/features/library/pack_catalog_page.dart';
+import 'package:video_viewer/features/packs/pack_file_action.dart';
 import 'package:video_viewer/library/models.dart';
 import 'package:video_viewer/library/repository.dart';
 import 'package:video_viewer/main.dart';
@@ -11,6 +12,13 @@ import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 import 'pack_cleanup_widget_test.dart' show CleanupLibrary;
 
 class BulkLibrary extends CleanupLibrary {
+  BulkLibrary({this.directoryDelete = false});
+  final bool directoryDelete;
+  @override
+  ServiceCapabilities get capabilities => ServiceCapabilities([
+    ...super.capabilities.values,
+    if (directoryDelete) 'pack_directory_delete',
+  ]);
   final submitted = <Set<String>>[];
   @override
   Future<Set<String>> selectPackIds(PackQuery query) async =>
@@ -33,6 +41,48 @@ class BulkLibrary extends CleanupLibrary {
 }
 
 void main() {
+  testWidgets(
+    'current service recycles and undoes selected packs without an operation sheet',
+    (t) async {
+      final previous = VideoPlayerPlatform.instance;
+      VideoPlayerPlatform.instance = UnreadyVideo();
+      final repo = BulkLibrary(directoryDelete: true);
+      t.view.physicalSize = const Size(390, 844);
+      t.view.devicePixelRatio = 1;
+      addTearDown(() async {
+        await t.pumpWidget(const SizedBox());
+        repo.dispose();
+        VideoPlayerPlatform.instance = previous;
+        t.view.resetPhysicalSize();
+        t.view.resetDevicePixelRatio();
+      });
+      await repo.initialize();
+      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await frames(t);
+      Future<void> tap(Finder finder) async {
+        await t.ensureVisible(finder);
+        await t.tap(finder);
+        await frames(t);
+      }
+
+      await tap(find.byKey(const Key('kind-pack')));
+      final state = t.state<PackCatalogPageState>(find.byType(PackCatalogPage));
+      await tap(find.byKey(const Key('pack-multi-select')));
+      await tap(find.byKey(const Key('pack-tile-p0')));
+      await tap(find.byKey(const Key('pack-delete-selected')));
+      expect(find.byType(PackFileAction), findsNothing);
+      expect(find.textContaining('待核对'), findsNothing);
+      expect(repo.submitted.single, {'p0'});
+      expect(state.data.total, 26);
+      expect(state.selected, isEmpty);
+      await tap(find.text('撤销'));
+      expect(find.byType(PackFileAction), findsNothing);
+      expect(state.data.total, 27);
+      expect(await repo.createPackFiles().pending(), isEmpty);
+      expect(t.takeException(), isNull);
+    },
+  );
+
   for (final sample in [
     (const Size(390, 844), 1.0),
     (const Size(360, 740), 2.0),
