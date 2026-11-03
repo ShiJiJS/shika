@@ -228,6 +228,8 @@ def test_directory_deletion_records_export_and_import_without_image_plan(library
 
 
 def test_retired_legacy_preparation_does_not_restart_hashing(library, monkeypatch):
+    from dataclasses import replace
+
     from .test_pack_purge_plans import prepare
 
     client, media = library
@@ -235,7 +237,7 @@ def test_retired_legacy_preparation_does_not_restart_hashing(library, monkeypatc
     plans = client.app.state.pack_purge_plans
     monkeypatch.setattr(plans, "enqueue", lambda _: None)
     old = prepare(client, [rows[0]["id"]])
-    monkeypatch.setattr(plans.settings, "legacy_purge_previews", False)
+    monkeypatch.setattr(plans, "settings", replace(plans.settings, legacy_purge_previews=False))
     plans.start()
     result = client.get("/api/v1/pack-purge-plans/" + old["id"]).json()
     assert result["status"] == "interrupted" and result["error"] == "preview_superseded"
