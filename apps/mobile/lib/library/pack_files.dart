@@ -166,7 +166,9 @@ class PackFileCommand {
     _id(requestId);
     if (purgeSelectionId != null) {
       _id(purgeSelectionId);
-      if (kind != 'permanent') throw const LibraryFailure('删除选择与操作类型不一致');
+      if (!['permanent', 'directory_delete'].contains(kind)) {
+        throw const LibraryFailure('删除选择与操作类型不一致');
+      }
     }
     if (this.targets.isNotEmpty) _ids(this.targets);
     if (expectedTaskKind != null &&
@@ -175,6 +177,7 @@ class PackFileCommand {
           'pack_restore',
           'pack_undo',
           'pack_permanent',
+          'pack_directory_delete',
         ].contains(expectedTaskKind)) {
       throw const LibraryFailure('图包操作类型不完整');
     }
@@ -273,6 +276,24 @@ class PackFileCommand {
       purgeSelectionId: selectionId,
     );
   }
+  factory PackFileCommand.deleteDirectories(
+    String requestId,
+    Iterable<String> trashIds, {
+    String? selectionId,
+    String? label,
+  }) {
+    final ids = _ids(trashIds);
+    return PackFileCommand._(
+      requestId,
+      'directory_delete',
+      '/api/v1/pack-trash/directories/permanent',
+      {'trash_ids': ids, 'confirmed': true},
+      targets: ids,
+      expectedTaskKind: 'pack_directory_delete',
+      purgeSelectionId: selectionId,
+      label: label ?? '永久删除 ${ids.length} 个图包文件夹',
+    );
+  }
   factory PackFileCommand.retry(
     String requestId,
     String operationId, {
@@ -365,6 +386,13 @@ class PackFileCommand {
       result = PackFileCommand.restore(
         requestId,
         (body['trash_ids'] as List).cast<String>(),
+      );
+    } else if (kind == 'directory_delete') {
+      if (body['confirmed'] != true) throw const LibraryFailure('目录删除尚未确认');
+      result = PackFileCommand.deleteDirectories(
+        requestId,
+        (body['trash_ids'] as List).cast<String>(),
+        selectionId: value['purge_selection_id'] as String?,
       );
     } else if (kind == 'permanent') {
       if (body['confirmed'] != true) throw const LibraryFailure('永久删除尚未明确确认');
@@ -488,7 +516,9 @@ class PackFileResult {
        pagesPending = permanent
            ? _integer(raw['pages_pending_reconciliation'])
            : 0,
-       needsAttention = permanent ? _flag(raw['needs_attention']) : false,
+       needsAttention = permanent
+           ? _flag(raw['needs_attention'])
+           : raw['needs_attention'] == true,
        readingRestored = _flag(raw['reading_restored']),
        transition = raw['reading_transition'] == null
            ? null
@@ -566,6 +596,7 @@ class PackFileTask {
           'pack_restore',
           'pack_undo',
           'pack_permanent',
+          'pack_directory_delete',
         ].contains(kind) ||
         ![
           'queued',
@@ -934,7 +965,7 @@ class PackFiles {
     _check();
     if (task.settled) {
       _settled[command.requestId] = task;
-      if (task.kind == 'pack_permanent') {
+      if (['pack_permanent', 'pack_directory_delete'].contains(task.kind)) {
         _verified[task] = {
           command.requestId,
           for (final entry in bindings.entries)
@@ -1017,7 +1048,7 @@ class PackFiles {
     if (result.id != identity) throw const LibraryFailure('图包任务身份不一致');
     if (result.settled) {
       _settled['task:$identity'] = result;
-      if (result.kind == 'pack_permanent') {
+      if (['pack_permanent', 'pack_directory_delete'].contains(result.kind)) {
         _verified[result] = {
           for (final entry in bindings.entries)
             if (entry.value == identity) entry.key,

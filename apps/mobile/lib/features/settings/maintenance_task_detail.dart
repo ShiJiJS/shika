@@ -203,6 +203,52 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
     }
   }
 
+  Future<void> retryDirectories() async {
+    if (acting || !current || task.historical) return;
+    setState(() {
+      acting = true;
+      error = '';
+    });
+    try {
+      final files = widget.repository.createPackFiles();
+      final original = await files.task(task.id);
+      if (!mounted ||
+          !current ||
+          original.kind != 'pack_directory_delete' ||
+          original.result == null) {
+        return;
+      }
+      final command = PackFileCommand.retry(
+        packFileRequestId(),
+        task.id,
+        targets: original.result!.items.map((i) => i.trashId),
+        expectedTaskKind: 'pack_directory_delete',
+        label: '重试未完成的图包文件夹',
+      );
+      await files.journal.remember(files.scope, command);
+      if (!mounted || !current) return;
+      unawaited(
+        files
+            .send(command)
+            .then((_) {
+              if (mounted && current) {
+                widget.repository.packFilesChanged();
+                unawaited(load(0));
+              }
+            })
+            .catchError((Object failure) {
+              if (mounted) {
+                setState(() => error = packFileFailureMessage(failure));
+              }
+            }),
+      );
+    } catch (failure) {
+      if (mounted) setState(() => error = packFileFailureMessage(failure));
+    } finally {
+      if (mounted) setState(() => acting = false);
+    }
+  }
+
   Future<void> images() async {
     if (acting || !current) return;
     setState(() {
@@ -478,6 +524,13 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
                     ),
                 ],
               ),
+            ),
+          if (task.kind == 'pack_directory_delete' &&
+              !task.historical &&
+              (task.failed ?? 0) > 0)
+            TextButton(
+              onPressed: busy || acting || !current ? null : retryDirectories,
+              child: const Text('重试未完成的文件夹'),
             ),
           if (task.kind == 'pack_permanent' && !task.historical)
             Align(

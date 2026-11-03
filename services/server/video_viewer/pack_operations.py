@@ -233,6 +233,9 @@ class PackOperations:
         with self.db.read() as session:
             operation = session.get(PackFileOperation, identity)
             if operation and operation.kind == "permanent":
+                if operation.session_snapshot.get("directory_delete"):
+                    self.directory_delete.run(identity)
+                    return
                 if self.purge is not None:
                     self.purge.run(identity)
                 else:
@@ -578,7 +581,20 @@ class PackOperations:
 
     @staticmethod
     def trash_statement(search):
-        statement = select(PackTrashItem).join(ImagePack).where(PackTrashItem.status == "active")
+        deleting = (
+            select(PackFileStep.requested_id)
+            .join(Task, Task.id == PackFileStep.operation_id)
+            .where(
+                Task.kind == "pack_directory_delete",
+                Task.status.in_(("queued", "running")),
+                PackFileStep.outcome != "succeeded",
+            )
+        )
+        statement = (
+            select(PackTrashItem)
+            .join(ImagePack)
+            .where(PackTrashItem.status == "active", PackTrashItem.id.not_in(deleting))
+        )
         if search:
             statement = statement.where(
                 ImagePack.name.contains(search, autoescape=True)

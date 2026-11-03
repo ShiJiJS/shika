@@ -158,7 +158,8 @@ class PackTrashSession extends ChangeNotifier {
   Future<void> accept(PackFileCommand command, PackFileTask task) async {
     if (!live || !task.settled) return;
     final permanent = task.kind == 'pack_permanent';
-    if (!permanent) {
+    final directory = task.kind == 'pack_directory_delete';
+    if (!permanent && !directory) {
       await files.acknowledge(command);
     } else if (!task.result!.needsAttention) {
       await files.acknowledgeTask(task);
@@ -171,12 +172,16 @@ class PackTrashSession extends ChangeNotifier {
         selection.ids.remove(item.trashId);
         failures.remove(item.trashId);
       } else {
-        failures[item.trashId] = permanent
+        failures[item.trashId] = directory
+            ? '文件夹未删除完成，请在任务页查询或重试原任务'
+            : permanent
             ? '已删 ${item.pagesDeleted}/${item.pagesTotal} 张，请核对原操作结果'
             : '未恢复，请重新读取图包状态后再试';
       }
     }
-    message = permanent
+    message = directory
+        ? '已删除 ${result.succeeded} 个图包文件夹，${result.failed} 个未完成'
+        : permanent
         ? '已确认删除 ${result.pagesDeleted} 张图片${result.needsAttention ? '，还有待核对内容，原操作已保留' : '，${result.failed} 个图包未完成'}'
         : task.kind == 'pack_trash'
         ? '已确认回收结果'

@@ -116,6 +116,8 @@ class PackPurgePlans:
         return plan.id if plan else None
 
     def submit(self, trash_ids, request_id):
+        if not self.settings.legacy_purge_previews:
+            raise LibraryError("preview_superseded", "请更新App后直接提交图包文件夹后台删除", 410)
         ids = sorted(set(trash_ids))
         if not 1 <= len(ids) <= 1000:
             raise LibraryError("invalid_pack_operation", "每次请选择1至1000个图包", 422)
@@ -166,6 +168,23 @@ class PackPurgePlans:
                 self.futures[identity] = self.executor.submit(self.run, identity)
 
     def start(self):
+        if not self.settings.legacy_purge_previews:
+            with self.db.write() as session:
+                session.execute(
+                    update(Task)
+                    .where(
+                        Task.kind == "pack_purge_preview",
+                        Task.id.in_(select(PackPurgePlan.id).where(PackPurgePlan.historical.is_(False))),
+                        Task.status.in_(("queued", "running", "interrupted")),
+                    )
+                    .values(
+                        status="interrupted",
+                        phase="interrupted",
+                        error="preview_superseded",
+                        finished_at=self.clock(),
+                    )
+                )
+            return
         with self.db.write() as session:
             ids = list(
                 session.scalars(

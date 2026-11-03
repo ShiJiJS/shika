@@ -70,6 +70,7 @@ class ServiceCapabilities {
   bool get packLogicalTrash => values.contains('pack_logical_trash');
   bool get packReaderCleanup => values.contains('pack_reader_cleanup');
   bool get packPurgePreview => values.contains('pack_purge_preview');
+  bool get packDirectoryDelete => values.contains('pack_directory_delete');
   bool get packPermanentDelete => values.contains('pack_permanent_delete');
   bool get maintenanceTasks => values.contains('maintenance_tasks');
   bool get packRestorePlans => values.contains('pack_restore_plans');

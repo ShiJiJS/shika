@@ -24,6 +24,7 @@ class Settings:
     media_streams: int = 4
     trash_dir: Path | None = None
     backup_max_bytes: int = 32 * 1024 * 1024
+    legacy_purge_previews: bool = True
 
     def __post_init__(self):
         if len(self.passphrase) < 8:
@@ -69,4 +70,6 @@ class Settings:
             media_streams=int(os.environ.get("VV_MEDIA_STREAMS", "4")),
             trash_dir=Path(os.environ["VV_TRASH_DIR"]) if os.environ.get("VV_TRASH_DIR") else None,
             backup_max_bytes=int(os.environ.get("VV_BACKUP_MAX_BYTES", str(32 * 1024 * 1024))),
+            legacy_purge_previews=os.environ.get("VV_LEGACY_PURGE_PREVIEWS", "true").lower()
+            not in ("false", "0"),
         )

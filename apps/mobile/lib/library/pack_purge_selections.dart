@@ -74,7 +74,7 @@ class PackPurgeBatch {
     : command = PackFileCommand.fromJson(_map(raw['command'])),
       taskId = raw['task_id'] == null ? null : _id(raw['task_id']),
       rejected = _flag(raw['rejected']) {
-    if (command.kind != 'permanent' ||
+    if (!['permanent', 'directory_delete'].contains(command.kind) ||
         command.purgeSelectionId == null ||
         rejected && taskId != null) {
       throw const LibraryFailure('本机删除批次记录不完整');
