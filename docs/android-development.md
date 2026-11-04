@@ -30,10 +30,10 @@ Flutter 下载与 Dart 包使用 Flutter 官方文档列出的 CFUG 镜像：`ht
 
 ## 在 VS Code 运行
 
-1. 打开仓库根目录 `C:\Project\video_viewer`。
+1. 打开仓库根目录 `C:\Project\shika`。
    首次打开时由用户信任这个项目文件夹；Restricted Mode 会禁用调试和工作区任务。
-2. 在“运行和调试”中选择 **Video Viewer (Android)**，按 **F5**。
-   默认连接 `10.0.2.2:8760`，需先启动 WSL 开发服务。离线试用原有素材可选择 **Video Viewer Demo (Android)**。
+2. 在“运行和调试”中选择 **Shika (Android)**，按 **F5**。
+   默认连接 `10.0.2.2:8760`，需先启动 WSL 开发服务。离线试用原有素材可选择 **Shika Demo (Android)**。
 3. 启动前任务会检查或启动 `video_viewer_api_36`，等待 Android 完成启动，然后在 `emulator-5554` 上调试。
 4. 修改 Dart 代码并保存，使用 Flutter 热重载；需要重置状态时使用热重启。
 
@@ -56,7 +56,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\start-android-
 在客户端目录执行：
 
 ```powershell
-cd C:\Project\video_viewer\apps\mobile
+cd C:\Project\shika\apps\mobile
 flutter doctor -v
 flutter devices
 flutter analyze

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/media_history.dart';
-import 'package:video_viewer/ui/player.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/media_history.dart';
+import 'package:shika/ui/player.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 
@@ -193,7 +193,7 @@ void main() {
   testWidgets(
     'four destinations keep library, tag results and actual recent video scopes independent',
     (t) async {
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
       expect(find.byKey(const Key('nav-browse')), findsNothing);
       for (final tab in ['library', 'tags', 'recent', 'settings']) {
@@ -248,7 +248,7 @@ void main() {
   testWidgets(
     'pack cards, per-type queries and same-name tag management stay separate from video',
     (t) async {
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
       await t.enterText(find.byKey(const Key('video-search')), '花间微风');
       await frames(t);
@@ -295,7 +295,7 @@ void main() {
   testWidgets(
     'tag dock opens the complete intersection directly and returns to its own results',
     (t) async {
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
       await t.enterText(find.byKey(const Key('video-search')), '花间微风');
       await frames(t);
@@ -332,7 +332,7 @@ void main() {
       final preferences = UiPreferences();
       addTearDown(preferences.dispose);
       await t.pumpWidget(
-        VideoViewerApp(repository: repo, preferences: preferences),
+        ShikaApp(repository: repo, preferences: preferences),
       );
       await frames(t);
       await tap(t, find.byKey(const Key('kind-pack')));
@@ -371,7 +371,7 @@ void main() {
         t.view.resetViewInsets();
         t.platformDispatcher.clearTextScaleFactorTestValue();
       });
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
       await nav(t, 'tags');
       await tap(t, find.byKey(const Key('kind-pack')));
@@ -406,7 +406,7 @@ void main() {
             t.view.resetViewPadding();
             t.platformDispatcher.clearTextScaleFactorTestValue();
           });
-          await t.pumpWidget(VideoViewerApp(repository: repo));
+          await t.pumpWidget(ShikaApp(repository: repo));
           await frames(t);
           if (kind == MediaKind.pack) {
             await tap(t, find.byKey(const Key('kind-pack')));
@@ -457,7 +457,7 @@ void main() {
           t.view.resetPhysicalSize();
           t.platformDispatcher.clearTextScaleFactorTestValue();
         });
-        await t.pumpWidget(VideoViewerApp(repository: repo));
+        await t.pumpWidget(ShikaApp(repository: repo));
         await frames(t);
         expect(t.takeException(), isNull);
         await tap(t, find.byKey(const Key('kind-pack')));

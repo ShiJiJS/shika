@@ -146,8 +146,8 @@ def main():
     artifacts = ROOT / "tmp/releases"
     artifacts.mkdir(parents=True, exist_ok=True)
     targets = {
-        "rollback": artifacts / ("video-viewer-" + rollback_version + "-arm64.apk"),
-        "forward": artifacts / ("video-viewer-" + forward_version + "-arm64.apk"),
+        "rollback": artifacts / ("shika-" + rollback_version + "-arm64.apk"),
+        "forward": artifacts / ("shika-" + forward_version + "-arm64.apk"),
     }
     assert all(not path.exists() for path in targets.values()), "Preview target already exists"
     save()
@@ -176,9 +176,21 @@ def main():
             "from": source + ":tools/rollback-client/" + template,
             "sha256": sha(old / destination),
         }
+    patch_once(old / "android/app/src/main/AndroidManifest.xml", 'android:label="Video Viewer"', 'android:label="拾刻 · shika（旧界面）"')
+    overlays["android/app/src/main/AndroidManifest.xml"] = {
+        "from": LEGACY + ":apps/mobile/android/app/src/main/AndroidManifest.xml",
+        "sha256": sha(old / "android/app/src/main/AndroidManifest.xml"),
+        "change": "Shika launcher label only",
+    }
+    for icon in current.glob("android/app/src/main/res/mipmap-*/ic_launcher.png"):
+        relative = str(icon.relative_to(current))
+        (old / relative).write_bytes(icon.read_bytes())
+        overlays[relative] = {"from": source + ":apps/mobile/" + relative,
+                              "sha256": sha(old / relative)}
+
     for name in ["preferences_test.dart", "scoped_journal_test.dart"]:
         destination = "test/rollback_compat_" + name
-        (old / destination).write_bytes(git("show", source + ":apps/mobile/test/" + name))
+        (old / destination).write_bytes(git("show", source + ":apps/mobile/test/" + name).replace(b"package:shika/", b"package:video_viewer/"))
         overlays[destination] = {
             "from": source + ":apps/mobile/test/" + name,
             "sha256": sha(old / destination),
@@ -211,6 +223,7 @@ def main():
         "        serverId: info['server_id'] as String,",
         "        serverId: info['server_id'] as String,\n        managementEpoch: info['management_epoch'] as String?,",
     )
+    patch_once(old / "lib/main.dart", "title: 'Video Viewer'", "title: '拾刻 · shika'")
     for name in ["lib/main.dart", "lib/library/server_repository.dart"]:
         overlays[name] = {
             "from": LEGACY + ":apps/mobile/" + name,
@@ -236,7 +249,7 @@ def main():
             mobile,
         )
         packages = json.loads((mobile / ".dart_tool/package_config.json").read_text())
-        package = next(p for p in packages["packages"] if p["name"] == "video_viewer")
+        package = next(p for p in packages["packages"] if p["name"] == ("video_viewer" if name == "rollback" else "shika"))
         package_uri = urljoin(
             (mobile / ".dart_tool/package_config.json").as_uri(), package["rootUri"]
         )

@@ -14,4 +14,4 @@
 
 本轮落地：PaperManagementHeader／PaperActionRow复用既有Paper变量，长恢复表单保留稳定ListView；不限行输入取消内部滚动，正文可以到达分页与确认。保存终态改为持续可读的已保存／已取消，主错误保留一次，关闭后可从正文查看。确认框前置，任务列表／详情同类筛选使用同一Paper填充与描边；不压缩真实状态、路径、原任务和原文件信息。
 
-原生取证的生产版本为e10bbbc；完整archive等待脚本30bc9d7只增加翻页后实际27/27就绪等待。37项相关检查连续三轮；旧备份／任务39点与完整archive24点分开核验。静态评审按2问题／2提升有限清单复核，未覆盖组合与动效边界如实保留，原始失败／中间结果独立归档。详见[本轮证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-backup-task-management/README.md)，不据本段勾选完整BAK、SET或UI验收。
+原生取证的生产版本为e10bbbc；完整archive等待脚本30bc9d7只增加翻页后实际27/27就绪等待。37项相关检查连续三轮；旧备份／任务39点与完整archive24点分开核验。静态评审按2问题／2提升有限清单复核，未覆盖组合与动效边界如实保留，原始失败／中间结果独立归档。详见[本轮证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-backup-task-management/README.md)，不据本段勾选完整BAK、SET或UI验收。

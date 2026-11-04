@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/settings/default_settings_sheet.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/features/settings/default_settings_sheet.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'pack_reader_widget_test.dart' show AssetReadingLibrary;
 import 'fixed_preview_widget_test.dart' show frames;

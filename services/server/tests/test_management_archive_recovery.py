@@ -112,7 +112,7 @@ def test_sigkill_v2_restore_preserves_one_commit_and_original_control_ledger(
                 finished_at = None
             server.kill()
             server.communicate(timeout=5)
-            server = start("video_viewer.app:create_app")
+            server = start("shika.app:create_app")
             recovered = wait_task(client, identity)
             assert recovered["status"] == "completed", recovered
             if finished_at is not None:

@@ -38,7 +38,7 @@ def test_real_http_backpressure_cancellation_and_bounded_memory(environment, sam
             sys.executable,
             "-m",
             "uvicorn",
-            "video_viewer.app:create_app",
+            "shika.app:create_app",
             "--factory",
             "--host",
             "127.0.0.1",

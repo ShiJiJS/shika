@@ -1,6 +1,6 @@
 # 跨页选择、分批恢复与原任务找回
 
-[草稿PR #157](https://github.com/ShiJiJS/video_viewer/pull/157)，基于#156。
+[草稿PR #157](https://github.com/ShiJiJS/shika/pull/157)，基于#156。
 
 2026-11-01，继续 #31/#33/#24/#133 的 R1。普通原签名 preview.20/code26，客户端 `8416a3f7359af94f1da802185b136770d6499986`；服务 `6a119b1c0c2022a2f9cc615679bc8aab790f122e` / runtime preview.4，77 份运行文件匹配。本轮没有修改 App 或服务逻辑，也没有新 APK；新增可复现的本机样本生成工具和当前普通包的实际操作证据。
 
@@ -24,7 +24,7 @@
 
 ## 证据、清理和剩余工作
 
-[本轮去敏记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-pack-bulk-code26/README.md)包含9张实际原生PNG/树、请求记录、3轮原任务完整成员、15份逐表摘要与安装/源文件/清理记录。主Agent已查看列出的9张图，无独立视觉评审；约390dp浅色竖屏，不代替暗色、大字、横屏及目标手机。客户端完整834项和服务491项复用其固定且未变源码的结果，核对日志SHA；本轮没有重新跑全集。
+[本轮去敏记录](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-pack-bulk-code26/README.md)包含9张实际原生PNG/树、请求记录、3轮原任务完整成员、15份逐表摘要与安装/源文件/清理记录。主Agent已查看列出的9张图，无独立视觉评审；约390dp浅色竖屏，不代替暗色、大字、横屏及目标手机。客户端完整834项和服务491项复用其固定且未变源码的结果，核对日志SHA；本轮没有重新跑全集。
 
 准备扫描使用默认稳定等待2秒，只有周期扫描间隔设0；首次启动的原视频根完成后，改为图包根并显式扫描一次。驱动240秒观察窗口到期时原任务仍running，继续跟踪同一编号至完成，没有重启/新提交扫描。不是NAS或大照片性能实验，未访问/改动真实NAS媒体。
 

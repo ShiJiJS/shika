@@ -200,7 +200,7 @@ def main():
         if ready:
             config = mobile / ".dart_tool/package_config.json"
             packages = json.loads(config.read_text())["packages"]
-            package = next(p for p in packages if p["name"] == "video_viewer")
+            package = next(p for p in packages if p["name"] == "shika")
             package_root = Path(
                 unquote(urlparse(urljoin(config.as_uri(), package["rootUri"])).path)
             ).resolve()

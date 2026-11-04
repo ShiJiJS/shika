@@ -8,8 +8,8 @@ from pathlib import Path
 
 from sqlalchemy import select
 
-from video_viewer.authority import Authority
-from video_viewer.models import ImagePack, PackPage, Root, Task, Video
+from shika.authority import Authority
+from shika.models import ImagePack, PackPage, Root, Task, Video
 
 from .conftest import connect, put, scan
 from .test_backups import wait_task
@@ -48,7 +48,7 @@ def completed(client, task):
 
 
 def test_live_two_roots_keep_distinct_pack_and_image_units(library, samples, monkeypatch):
-    from video_viewer.pack_scanner import inspect_image as inspect
+    from shika.pack_scanner import inspect_image as inspect
 
     client, media = library
     a, b = roots(client, media)
@@ -64,7 +64,7 @@ def test_live_two_roots_keep_distinct_pack_and_image_units(library, samples, mon
             assert release.wait(10)
         return inspect(fd, *args)
 
-    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", held)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", held)
     time.sleep(0.05)
     task = client.post("/api/v1/scans").json()
     try:
@@ -134,7 +134,7 @@ def test_scoped_scan_preserves_other_root_rows_and_last_facts(library):
 
 
 def test_scans_queue_once_and_execute_serially(library, monkeypatch):
-    from video_viewer.pack_scanner import inspect_image as inspect
+    from shika.pack_scanner import inspect_image as inspect
 
     client, media = library
     a, b = roots(client, media)
@@ -158,7 +158,7 @@ def test_scans_queue_once_and_execute_serially(library, monkeypatch):
             with lock:
                 live -= 1
 
-    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", held)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", held)
     time.sleep(0.05)
     first = start(client, a["id"])
     try:
@@ -224,7 +224,7 @@ def test_bad_pages_offline_and_disabled_roots_remain_distinct(library):
 
 
 def test_changed_page_is_deferred_without_fake_completion(library, monkeypatch):
-    from video_viewer.pack_scanner import inspect_image as inspect
+    from shika.pack_scanner import inspect_image as inspect
 
     client, media = library
     a, _ = roots(client, media)
@@ -236,7 +236,7 @@ def test_changed_page_is_deferred_without_fake_completion(library, monkeypatch):
         image(file, color="blue", size=(41, 61))
         return value
 
-    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", changing)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", changing)
     time.sleep(0.05)
     completed(client, start(client, a["id"]))
     value = state(client)[1][a["id"]]["scan"]
@@ -291,8 +291,8 @@ def test_scoped_pack_respects_nested_root_boundary(library):
 
 
 def test_partial_interruption_persists_and_restart_does_not_replay(environment, monkeypatch):
-    from video_viewer.pack_scanner import inspect_image as inspect
-    from video_viewer.root_scan_progress import entry
+    from shika.pack_scanner import inspect_image as inspect
+    from shika.root_scan_progress import entry
 
     settings, media = environment
     client, token = connect(settings)
@@ -308,7 +308,7 @@ def test_partial_interruption_persists_and_restart_does_not_replay(environment, 
             raise InterruptedError("test service stop")
         return inspect(fd, *args)
 
-    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", interrupted)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", interrupted)
     time.sleep(0.05)
     task = start(client, a["id"])
     result = wait_task(client, task["id"])
@@ -336,7 +336,7 @@ def test_partial_interruption_persists_and_restart_does_not_replay(environment, 
         # is intentionally left for next startup recovery.
     finally:
         client.__exit__(None, None, None)
-    from video_viewer.db import Database
+    from shika.db import Database
 
     db = Database(settings.data_dir)
     with db.write() as session:
@@ -422,8 +422,8 @@ def test_scoped_video_does_not_transfer_other_roots_missing_identity(library, sa
 def test_close_cancels_queued_scan_without_replacing_its_prior_completed_facts(
     library, monkeypatch
 ):
-    from video_viewer.pack_scanner import inspect_image as inspect
-    from video_viewer.root_scan_progress import entry
+    from shika.pack_scanner import inspect_image as inspect
+    from shika.root_scan_progress import entry
 
     client, media = library
     a, b = roots(client, media)
@@ -438,7 +438,7 @@ def test_close_cancels_queued_scan_without_replacing_its_prior_completed_facts(
         assert release.wait(10)
         return inspect(fd, *args)
 
-    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", held)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", held)
     time.sleep(0.05)
     first = start(client, a["id"])
     closer = None
@@ -496,7 +496,7 @@ def test_new_outer_root_invalidates_previous_inner_scope_facts(library, samples)
 
 
 def test_completed_root_in_active_full_scan_can_queue_a_real_rescan(library, monkeypatch):
-    from video_viewer.pack_scanner import inspect_image as inspect
+    from shika.pack_scanner import inspect_image as inspect
 
     client, media = library
     a, b = roots(client, media)
@@ -510,7 +510,7 @@ def test_completed_root_in_active_full_scan_can_queue_a_real_rescan(library, mon
             assert release.wait(10)
         return inspect(fd, *args)
 
-    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", held)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", held)
     time.sleep(0.05)
     full = client.post("/api/v1/scans").json()
     try:

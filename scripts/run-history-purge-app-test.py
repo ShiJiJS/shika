@@ -99,7 +99,7 @@ tracked = subprocess.check_output(
         "git",
         "ls-files",
         "apps/mobile/lib",
-        "services/server/video_viewer",
+        "services/server/shika",
         "apps/mobile/integration_test/server_purge_history_test.dart",
         "services/server/tests/history_purge_app_fixture.py",
         "scripts/run-history-purge-app-test.py",

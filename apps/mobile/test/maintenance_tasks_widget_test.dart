@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-import 'package:video_viewer/features/settings/maintenance_tasks_page.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/paper.dart';
+import 'package:shika/features/settings/maintenance_tasks_page.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/paper.dart';
 
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 import 'support/maintenance_fixture.dart';
@@ -172,7 +172,7 @@ void main() {
   testWidgets(
     'approved settings exposes the task entry with other preferences retained',
     (t) async {
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await t.pumpAndSettle();
       await tap(t, find.byKey(const Key('nav-settings')));
       await tap(t, find.text('操作任务'));

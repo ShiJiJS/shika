@@ -6,7 +6,7 @@
 
 固定构建来源`12d6ca67ef3a8b307894468923dc08e612e02587`，两包同内部号 **22**，沿用原Windows包名/签名。含此前媒体库/图包、设置、统一文字图标与搜索焦点修复；本轮补媒体库摘要的方向、时长和格式，不改原筛选规则、阈值和两行高度。详见[实现与正常包记录](plans/library-first/LF8-CURRENT-FILTERS.md)。
 
-当前code22完整客户端791项已重新执行通过，见[覆盖核对](plans/library-first/LF8-ACCEPTANCE-AUDIT.md)。该包已有摘要/清除/14准确成员和三次覆盖记录；读取恢复另补视频/图包各三轮，前后35表、完整设置/令牌和偏好保持。原[筛选阶段](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-current-filters/README.md)分开code21三轮与code22修后27相关检查，本轮补齐当前完整套件，不改历史记录。此前搜索焦点/阅读/冷启动见[原版本记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-current-navigation/README.md)。
+当前code22完整客户端791项已重新执行通过，见[覆盖核对](plans/library-first/LF8-ACCEPTANCE-AUDIT.md)。该包已有摘要/清除/14准确成员和三次覆盖记录；读取恢复另补视频/图包各三轮，前后35表、完整设置/令牌和偏好保持。原[筛选阶段](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-current-filters/README.md)分开code21三轮与code22修后27相关检查，本轮补齐当前完整套件，不改历史记录。此前搜索焦点/阅读/冷启动见[原版本记录](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-current-navigation/README.md)。
 
 此前preview.12/rollback.12(code18)和未交付预检preview.13/rollback.13(code19)及更早包保持。code19首次旧界面自动读取播放协议创建范围的两表/两键差量单独保留，不能称全程只读。原型独立可移除。本机阶段没有部署或手机安装；后续现已部署NAS供体验，尚未安装真实手机或正式发布。code18的[扫描详情三轮业务证据](plans/library-first/LF8-EXPANSION-PACKAGE.md)及完整45项要求仍按原范围保留。
 

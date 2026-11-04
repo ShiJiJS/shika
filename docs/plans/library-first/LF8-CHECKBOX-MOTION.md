@@ -1,6 +1,6 @@
 # LF8：复选框的选择反馈与实时减少动画
 
-[草稿PR #117](https://github.com/ShiJiJS/video_viewer/pull/117)按[#116](https://github.com/ShiJiJS/video_viewer/issues/116)承接菜单/下拉与原版服务首页补证，继续UI-06。固定基线683306d5的真实TrashEntryRow组件三项诊断均失败：普通140ms实际绘制进度约0.556（控制器200ms），减少动画首帧仍0，进行40ms后开启减少动画仍约0.063。回调即时且只有一次；这是组件FakeAccessibilityFeatures输入，不是Android系统证明。原始日志和诊断源文件保留，不把首次编排模板转义错误（命令未执行）计作测试。
+[草稿PR #117](https://github.com/ShiJiJS/shika/pull/117)按[#116](https://github.com/ShiJiJS/shika/issues/116)承接菜单/下拉与原版服务首页补证，继续UI-06。固定基线683306d5的真实TrashEntryRow组件三项诊断均失败：普通140ms实际绘制进度约0.556（控制器200ms），减少动画首帧仍0，进行40ms后开启减少动画仍约0.063。回调即时且只有一次；这是组件FakeAccessibilityFeatures输入，不是Android系统证明。原始日志和诊断源文件保留，不把首次编排模板转义错误（命令未执行）计作测试。
 
 范围清单为四处CheckboxListTile（图包/视频永久删除确认、v2/旧格式恢复确认）与共享回收行内一处Checkbox。调用点数不是缺陷数；当前只有真实回收行有上述失败证据。展开项另按自身契约核对，不与复选框混成同一问题。
 
@@ -18,4 +18,4 @@
 
 真实Android系统/输入已由[独立三轮补证](LF8-CHECKBOX-NATIVE.md)完成：90方向、24次真正中途切换、6次按住后禁用、6录像和恢复通过；普通正常包业务已由[code17配套段](LF8-CHECKBOX-PACKAGE.md)补齐本机检查。当前code16两APK不含本段源码，SHA不变；展开/其它自有过渡另核查，完整UI-06/45项与手机/NAS、有声等仍开放。
 
-固定源码2a4e9cd7，[13份原始输入与离线复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-checkbox-motion/README.md)已保存；本段源码/组件证据保持；后续原生项已补，#116整合包本机项现由code17配套段补齐，整体终验继续。
+固定源码2a4e9cd7，[13份原始输入与离线复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-checkbox-motion/README.md)已保存；本段源码/组件证据保持；后续原生项已补，#116整合包本机项现由code17配套段补齐，整体终验继续。

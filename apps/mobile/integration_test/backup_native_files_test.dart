@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/library/backup_file_picker.dart';
-import 'package:video_viewer/library/request_scope.dart';
-import 'package:video_viewer/library/models.dart';
+import 'package:shika/library/backup_file_picker.dart';
+import 'package:shika/library/request_scope.dart';
+import 'package:shika/library/models.dart';
 
 /// Driven with the real Android DocumentsUI; no method-channel or picker mock.
 /// Stage lines coordinate external UI actions. Uses an isolated private owner.

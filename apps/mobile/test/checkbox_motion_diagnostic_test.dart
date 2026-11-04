@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/trash_layout.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/trash_layout.dart';
 
 void main() {
   for (final mode in ['ordinary', 'reduced', 'live']) {

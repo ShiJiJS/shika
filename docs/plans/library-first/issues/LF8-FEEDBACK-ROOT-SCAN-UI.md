@@ -1,8 +1,8 @@
 # 扫描页面分别显示视频、图包及每个接入目录的进度
 
-跟踪：[139](https://github.com/ShiJiJS/video_viewer/issues/139)。
+跟踪：[139](https://github.com/ShiJiJS/shika/issues/139)。
 
-来自图包扫描进度不可见反馈，继续 #24/#32/#33。优先级：高；依赖[服务端#138](https://github.com/ShiJiJS/video_viewer/issues/138)。初始规划保留如下；页面已实现，验收未全部完成。
+来自图包扫描进度不可见反馈，继续 #24/#32/#33。优先级：高；依赖[服务端#138](https://github.com/ShiJiJS/shika/issues/138)。初始规划保留如下；页面已实现，验收未全部完成。
 
 当前核对：`LibraryPreparation.fromJson`在models.dart:723起只读取顶层视频progress/counts，未建立media.pack.counts的类型进度；label未识别pack_*阶段。home.dart:1412起准备卡仍显示视频数量/字节和视频失败描述，目录行虽有rootScanLabel但受到根数据缺失影响。因此后台扫描图片时，页面可能仍显示视频已就绪/598个视频。
 

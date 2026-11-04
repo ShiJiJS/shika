@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_viewer/ui/playback_session.dart';
+import 'package:shika/ui/playback_session.dart';
 
 /// Native commands are represented by delayed acknowledgements. The tests
 /// observe audible handover and resource ownership, not widget internals.

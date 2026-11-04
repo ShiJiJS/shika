@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/paper_toggle.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/paper_toggle.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'server_native_motion_test.dart' show host;
 
@@ -164,7 +164,7 @@ void main() {
 
     await configureApplicationWindow();
     await t.pumpWidget(
-      VideoViewerApp(repository: repo, preferences: preferences),
+      ShikaApp(repository: repo, preferences: preferences),
     );
     await t.pumpAndSettle();
     await t.tap(find.byKey(const Key('nav-settings')));

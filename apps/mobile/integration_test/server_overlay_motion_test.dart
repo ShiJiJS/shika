@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/features/packs/pack_reader_page.dart';
-import 'package:video_viewer/features/preview/video_preview_route.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/features/packs/pack_reader_page.dart';
+import 'package:shika/features/preview/video_preview_route.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'server_native_motion_test.dart' show host;
 import 'server_page_motion_test.dart' show PageMotionProbe;
@@ -176,7 +176,7 @@ void main() {
       await configureApplicationWindow();
       await repo.connect('http://10.0.2.2', 8777, 'native-motion-owned-only');
       await t.pumpWidget(
-        VideoViewerApp(
+        ShikaApp(
           repository: repo,
           preferences: preferences,
           navigatorObservers: [observer],

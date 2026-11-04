@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/packs/pack_file_action.dart';
-import 'package:video_viewer/library/file_command_store.dart';
-import 'package:video_viewer/library/pack_files.dart';
-import 'package:video_viewer/library/server_api.dart';
-import 'package:video_viewer/ui/paper.dart';
+import 'package:shika/features/packs/pack_file_action.dart';
+import 'package:shika/library/file_command_store.dart';
+import 'package:shika/library/pack_files.dart';
+import 'package:shika/library/server_api.dart';
+import 'package:shika/ui/paper.dart';
 
 import 'pack_files_test.dart' show FilesFixture;
 

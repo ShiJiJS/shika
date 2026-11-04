@@ -61,7 +61,7 @@
 - 已接：App从原回收站领取后台清单，展示准确包数、图片数/字节和可分页图片清单；说明保留附件、不可撤销及备份不能恢复图片。勾选明确确认后才提交第二次确认，保留原选择和返回路径。
 - 已接：plan/digest/request ID与本机确认范围保存到受保护命令日志，未知响应只查原回执；独立展示部分删除、待核对与失败项。purged_pages>0时明确“恢复仅剩余内容”，通过条目重新打开原操作结果。结果分页支持类型/未完成筛选和包名/图片路径。
 - 整合任务入口、重新核对/安全重试/外部冲突解除后继续，以及整份多批次计划后台续作；当前每批日志不能冒充完整后台计划。
-- 组件、真实HTTP协议与Android隔离文件流程分开取证，见[App检查点](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf6-purge-client/README.md)。其它来源/异常组合、真实安全存储强杀、手势录屏和完整原型比例验收仍须继续。
+- 组件、真实HTTP协议与Android隔离文件流程分开取证，见[App检查点](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf6-purge-client/README.md)。其它来源/异常组合、真实安全存储强杀、手势录屏和完整原型比例验收仍须继续。
 - 正式备份v2、管理恢复时的历史化/数据代次、真机/NAS和升级包继续由LF7/LF8完成。
 
 冻结原型仍单独存放，DEL-05/06与LF6 issue保持开放。测试中的SIGKILL与冷重建分别报告，不把组件、API或模拟中断冒充App原生通过。

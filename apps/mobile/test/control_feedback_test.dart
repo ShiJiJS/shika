@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/ui/paper.dart';
+import 'package:shika/ui/paper.dart';
 
 const legacy = bool.fromEnvironment('LEGACY_CONTROLS');
 const idle = Color(0xfffaf8f3), chosen = Color(0xff53664a);

@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/player.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/player.dart';
 
 import 'browsing_session_test.dart' show SlowLibrary;
 
@@ -71,7 +71,7 @@ void main() {
     t,
   ) async {
     repo.fileQuery = Completer<void>();
-    await t.pumpWidget(VideoViewerApp(repository: repo));
+    await t.pumpWidget(ShikaApp(repository: repo));
     await pump(t);
     await t.tap(find.text('查询结果'));
     await pump(t);
@@ -93,7 +93,7 @@ void main() {
         () => repo.setScope(VideoQuery(folder: '/videos/收集/花草/横版')),
       );
       expect(repo.snapshot.round, hasLength(1));
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await pump(t);
       final stage = find.byKey(const Key('video-stage'));
       final rect = t.getRect(stage);
@@ -115,7 +115,7 @@ void main() {
     (t) async {
       final ids = repo.snapshot.round;
       repo.navigation = Completer<void>();
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await pump(t);
       for (var i = 1; i <= 3; i++) {
         await t.drag(
@@ -138,7 +138,7 @@ void main() {
     'delete notice is at top, replaced by next deletion, and expires after eight seconds',
     (t) async {
       final ids = repo.snapshot.round;
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await pump(t);
       await t.tap(find.byTooltip('更多'));
       await pump(t);

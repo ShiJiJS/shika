@@ -4,9 +4,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 from sqlalchemy import select
 
-from video_viewer.models import RecentEntry, Root, Video
-from video_viewer.pack_title_order import name_sort_key, title_order_available
-from video_viewer.paths import signature
+from shika.models import RecentEntry, Root, Video
+from shika.pack_title_order import name_sort_key, title_order_available
+from shika.paths import signature
 
 from .conftest import put
 from .test_catalog_counts import video
@@ -135,7 +135,7 @@ def test_missing_icu_does_not_advertise_or_accept_new_order(library, monkeypatch
     client, media = library
     seed(client, media, ["水边", "风里"], samples / "portrait.mp4")
     with monkeypatch.context() as missing:
-        missing.setattr("video_viewer.pack_title_order.ctypes.util.find_library", lambda _: None)
+        missing.setattr("shika.pack_title_order.ctypes.util.find_library", lambda _: None)
         title_order_available.cache_clear()
         try:
             assert "video_name_order" not in client.get("/api/v1/info").json()["capabilities"]

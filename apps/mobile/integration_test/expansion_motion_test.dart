@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/main.dart' show configureApplicationWindow;
-import 'package:video_viewer/ui/home.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/main.dart' show configureApplicationWindow;
+import 'package:shika/ui/home.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/preferences.dart';
 
 import '../test/support/scan_details_fixture.dart';
 import 'server_native_motion_test.dart' show host;

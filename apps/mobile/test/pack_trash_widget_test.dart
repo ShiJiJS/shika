@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/main.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/main.dart';
 
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 import 'support/pack_trash_fixture.dart';
@@ -67,7 +67,7 @@ void main() {
           final videoCount = videoIds.length;
           repo.unavailable = scenario == 'gate';
           repo.failPage = scenario == 'page-error';
-          await t.pumpWidget(VideoViewerApp(repository: repo));
+          await t.pumpWidget(ShikaApp(repository: repo));
           Future<void> until(bool Function() done) async {
             for (var i = 0; i < 120; i++) {
               await t.pump(const Duration(milliseconds: 40));

@@ -4,7 +4,7 @@
 
 入口：**http://127.0.0.1:8766/p2/**。这是完整的 HTML 演示原型，用于试用界面与操作流程，不是 Flutter App，也未连接真实 NAS。
 
-用户于 2026-10-16 确认原型先定为本版，并要求进入 Flutter 客户端演示阶段。[P2 #3](https://github.com/ShiJiJS/video_viewer/issues/3) 已标记完成，D1 已解除该前置阻塞。
+用户于 2026-10-16 确认原型先定为本版，并要求进入 Flutter 客户端演示阶段。[P2 #3](https://github.com/ShiJiJS/shika/issues/3) 已标记完成，D1 已解除该前置阻塞。
 
 ## 先试这几条
 

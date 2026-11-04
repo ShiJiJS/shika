@@ -13,7 +13,7 @@ from dataclasses import replace
 
 import httpx
 
-from video_viewer.models import Task
+from shika.models import Task
 
 from .conftest import connect, put, scan
 from .test_management_archives import PREFIX, export

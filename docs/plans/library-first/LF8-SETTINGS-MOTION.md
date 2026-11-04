@@ -1,6 +1,6 @@
 # LF8：设置开关与主题切换
 
-2026-10-30，[草稿PR #109](https://github.com/ShiJiJS/video_viewer/pull/109)基于#108，继续 #24/#33 的 UI-06。源代码与所列本机检查完成，preview.9配套包及普通安装检查已交付；完整产品验收和目标手机检查仍开放。本段不新增产品功能，原型仍独立可移除。
+2026-10-30，[草稿PR #109](https://github.com/ShiJiJS/shika/pull/109)基于#108，继续 #24/#33 的 UI-06。源代码与所列本机检查完成，preview.9配套包及普通安装检查已交付；完整产品验收和目标手机检查仍开放。本段不新增产品功能，原型仍独立可移除。
 
 实际App原主题默认200ms，Material3开关300ms；二者在系统运行中开启“减少动画”后都不能立即完成已有动画。另发现共用标签底色会在主题变色后再走140ms，自定义Paper颜色只看brightness，导致过渡中途突然跳色。修改前主题5项、开关2项及单独的实际背景检查失败日志均保留。
 
@@ -12,7 +12,7 @@
 
 动画中途切换系统偏好、拖动中切换/取消、异步保存失败、草稿焦点和滚动保留由组件检查证明；本段原生观察没有覆盖这些组合，不跨层宣称全部真实设备验证。最初专用模拟器启动漏用项目环境，AVD未找到、没有创建设备；原日志保留，改用dev.sh后一次运行完整通过，无App失败或运行中重启。初期测试观察断言、编辑语法和开关取消/描边问题记录保留，未混入成功次数。
 
-自有模拟器精确恢复进入配置并关闭，原四服务ID及健康状态保留；未启动新媒体服务、未访问真实收藏或NAS。服务生产树与冻结原型树 `1cbf605af8f03fa067a4ce8e914bb809e3a487ca` 不变。原始帧、录屏、失败、源码和检查边界见[证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-settings-motion/README.md)。
+自有模拟器精确恢复进入配置并关闭，原四服务ID及健康状态保留；未启动新媒体服务、未访问真实收藏或NAS。服务生产树与冻结原型树 `1cbf605af8f03fa067a4ce8e914bb809e3a487ca` 不变。原始帧、录屏、失败、源码和检查边界见[证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-settings-motion/README.md)。
 
 ## 普通包交付（code15）
 
@@ -22,4 +22,4 @@
 
 初次读取安装前偏好时ADB为shell，权限不足，发生在任何覆盖安装前；失败日志与包/SQL基线保留，首次同名着陆截图在再次采集时被替换，不据后截图解释首次画面。仅对自有调试AVD临时提升ADB读取权限，在同一模拟器PID继续，未清除数据或因观察超时重启。结束后完整偏好恢复、临时权限撤回、系统配置恢复，模拟器关闭，专用容器移除，原四服务及inactive donor全部SHA保留。donor启动扫描在安装前增加一条扫描任务，比较基线取普通旧14启动后，不把扫描任务当作安装改动。
 
-[普通包证据与独立核对](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-settings-package/README.md)保留构建/签名/测试/安装/文件读回/SQL只读投影及失败。旧code14两包SHA不变，未覆写；服务生产树与独立原型不变。安装方法见[安装说明](../../library-first-preview.md)。其它控件/完整手势、真实手机/NAS/有声/云文档提供器、#78/#89/#100原因继续开放，本段不关闭总票。
+[普通包证据与独立核对](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-settings-package/README.md)保留构建/签名/测试/安装/文件读回/SQL只读投影及失败。旧code14两包SHA不变，未覆写；服务生产树与独立原型不变。安装方法见[安装说明](../../library-first-preview.md)。其它控件/完整手势、真实手机/NAS/有声/云文档提供器、#78/#89/#100原因继续开放，本段不关闭总票。

@@ -5,12 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/features/packs/pack_reader_page.dart';
-import 'package:video_viewer/features/packs/reader_images.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/features/packs/pack_reader_page.dart';
+import 'package:shika/features/packs/reader_images.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/preferences.dart';
 
 /// Diagnostic profile entry only. The normal App never sends these reports.
 Future<void> observe(Map<String, dynamic> value) async {
@@ -135,7 +135,7 @@ void main() {
         'reader-connection-owned-only',
       );
       await t.pumpWidget(
-        VideoViewerApp(
+        ShikaApp(
           repository: repo,
           preferences: prefs,
           initializeRepository: false,

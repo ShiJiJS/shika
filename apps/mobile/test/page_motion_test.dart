@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-import 'package:video_viewer/features/packs/pack_reader_page.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/features/packs/pack_reader_page.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 import 'pack_reader_widget_test.dart' show AssetReadingLibrary;
@@ -32,7 +32,7 @@ void main() {
         VideoPlayerPlatform.instance = original;
       });
       await t.pumpWidget(
-        VideoViewerApp(repository: repo, preferences: preferences),
+        ShikaApp(repository: repo, preferences: preferences),
       );
       await t.pumpAndSettle();
       await t.tap(find.byKey(const Key('kind-pack')));

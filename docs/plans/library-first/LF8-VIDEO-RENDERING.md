@@ -1,6 +1,6 @@
 # LF8：视频画面绿边与本地模拟器稳定性
 
-对应#78/#33/#24，基于PR #77，提交至[Draft PR #79](https://github.com/ShiJiJS/video_viewer/pull/79)。上一段在软件GPU、关闭宿主HardwareDecoder下行为三轮通过，但实际横屏有绿边；开启宿主视频解码的中间轮无绿边，却曾QEMU挂起并实际139退出。当前不预设SDK、插件、App或素材的责任。
+对应#78/#33/#24，基于PR #77，提交至[Draft PR #79](https://github.com/ShiJiJS/shika/pull/79)。上一段在软件GPU、关闭宿主HardwareDecoder下行为三轮通过，但实际横屏有绿边；开启宿主视频解码的中间轮无绿边，却曾QEMU挂起并实际139退出。当前不预设SDK、插件、App或素材的责任。
 
 先做同源隔离：最小Flutter VideoPlayer分别使用textureView/platformView；debug-only Android Activity以MediaPlayer分别显示SurfaceView/TextureView；另用MediaExtractor/MediaCodec在字节缓冲区模式读实际解码器、output format、Image crop及plane stride。都使用APK内原有公开flower-landscape.mp4，保留SHA、原始输出和实际截图，不裁边或改素材尺寸。字节缓冲区格式与Surface输出不同，不把其单独认作Surface根因证明。
 

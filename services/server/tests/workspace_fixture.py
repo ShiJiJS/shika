@@ -3,7 +3,7 @@
 from PIL import Image, ImageDraw
 from sqlalchemy import func, select
 
-from video_viewer.models import ImagePack, PackPage, PackProgress, RecentEntry, Root
+from shika.models import ImagePack, PackPage, PackProgress, RecentEntry, Root
 
 
 def seed_workspace_packs(base, assets, count=27):

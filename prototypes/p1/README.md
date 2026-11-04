@@ -1,6 +1,6 @@
 # P1：同内容、三种视觉风格
 
-对应 GitHub 任务：[P1 #2](https://github.com/ShiJiJS/video_viewer/issues/2)。用户已选 B 的视觉风格，当前按反馈调整 B 的日常浏览首屏，等待新版布局反馈。
+对应 GitHub 任务：[P1 #2](https://github.com/ShiJiJS/shika/issues/2)。用户已选 B 的视觉风格，当前按反馈调整 B 的日常浏览首屏，等待新版布局反馈。
 
 ## 当前版本：B 精简浏览
 

@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/packs/pack_reader_page.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/ui/paper.dart';
+import 'package:shika/features/packs/pack_reader_page.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/ui/paper.dart';
 
 import 'pack_reader_widget_test.dart' show AssetReadingLibrary;
 

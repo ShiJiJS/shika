@@ -1,6 +1,6 @@
 # 第33版：图包文件夹直接后台删除
 
-App：`0.2.0-preview.27` / code33。服务：`0.2.0-preview.9`。对应[#186](https://github.com/ShiJiJS/video_viewer/issues/186)，取代第32版针对图片核对等待的交互。
+App：`0.2.0-preview.27` / code33。服务：`0.2.0-preview.9`。对应[#186](https://github.com/ShiJiJS/shika/issues/186)，取代第32版针对图片核对等待的交互。
 
 在图包回收站选择后点击“永久删除”，App保存请求并异步提交，服务器删除对应图包文件夹和其中全部内容，包括附件与子目录。无需准备或阅读图片清单，不逐张散列，不等待实际删除完成。提交后可继续浏览，在设置任务页查看结果和重试未完成项。普通“移入回收站”仍保留原文件。
 
@@ -16,4 +16,4 @@ NAS升级前完整停机备份data/config/secrets/Compose并保留旧镜像。�
 
 正式升级前备份：NAS和Mac均保留完整停机data/config/secrets/Compose，压缩包1767624881字节，SHA256 `c2d935be886ae9102fb19fcab499ade38fbbe7fe5678767e587d5220b457ab11`。本地保留于私有`backups/deploy-preview9-2026-11-03/`，NAS位于原部署目录的同名backups子目录，不提交GitHub。这不包含媒体原图，不能恢复后来永久删除的图片。回退服务前先备份当时数据并处理未完成目录任务，不能自动覆盖升级后的管理数据。
 
-[PR #187](https://github.com/ShiJiJS/video_viewer/pull/187)。Mac只保留最新正常/回退APK、最新服务镜像包、源码与正式私人备份；清理临时构建/检查文件，保留SDK与原签名。其它暂停开发与旧验收不自动恢复。
+[PR #187](https://github.com/ShiJiJS/shika/pull/187)。Mac只保留最新正常/回退APK、最新服务镜像包、源码与正式私人备份；清理临时构建/检查文件，保留SDK与原签名。其它暂停开发与旧验收不自动恢复。

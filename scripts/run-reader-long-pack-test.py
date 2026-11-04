@@ -75,7 +75,7 @@ assert "video_viewer_api_36" in shell("getprop", "ro.boot.qemu.avd_name")
 original = {name: shell("wm", name) for name in ("size", "density")}
 font = shell("settings", "get", "system", "font_scale")
 source_paths = run(
-    "git", "ls-files", "apps/mobile/lib", "services/server/video_viewer"
+    "git", "ls-files", "apps/mobile/lib", "services/server/shika"
 ).splitlines()
 source_paths += [
     "scripts/run-reader-long-pack-test.py",

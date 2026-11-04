@@ -1,4 +1,4 @@
-# Flutter 客户端
+# 拾刻 · shika Android 客户端
 
 ## 当前媒体库版本
 
@@ -19,9 +19,9 @@
 
 ## 在模拟器试用
 
-在仓库根目录用 VS Code 的 **Video Viewer (Android)** 按 F5，默认地址为 `http://10.0.2.2:8760`，在连接页可修改并记住。先按 [服务端运行说明](../../services/server/README.md) 启动 WSL Docker。访问凭据使用 Android 加密存储；不保存个人口令，401 后重新输入，网络暂时中断保留连接配置供重试。服务启动不阻塞 Flutter 首帧。
+在仓库根目录用 VS Code 的 **拾刻 · shika (Android)** 按 F5，默认地址为 `http://10.0.2.2:8760`，在连接页可修改并记住。先按 [服务端运行说明](../../services/server/README.md) 启动 WSL Docker。访问凭据使用 Android 加密存储；不保存个人口令，401 后重新输入，网络暂时中断保留连接配置供重试。服务启动不阻塞 Flutter 首帧。
 
-选择 **Video Viewer Demo (Android)** 可直接试用演示版。命令行演示模式为 `flutter run -d emulator-5554 --dart-define=LIBRARY_MODE=demo`；真实模式默认启用，可通过 `--dart-define=SERVER_ADDRESS=10.0.2.2 --dart-define=SERVER_PORT=8760` 修改初始值。已保存的地址优先，地址不依赖临时端口转发。环境位置见 [Android 开发说明](../../docs/android-development.md)。
+选择 **拾刻 · shika Demo (Android)** 可直接试用演示版。命令行演示模式为 `flutter run -d emulator-5554 --dart-define=LIBRARY_MODE=demo`；真实模式默认启用，可通过 `--dart-define=SERVER_ADDRESS=10.0.2.2 --dart-define=SERVER_PORT=8760` 修改初始值。已保存的地址优先，地址不依赖临时端口转发。环境位置见 [Android 开发说明](../../docs/android-development.md)。
 
 下面保留第一版视频界面的路径。真实模式读写已连接服务的管理数据和允许写入的挂载文件；演示模式只操作独立本地记录。
 

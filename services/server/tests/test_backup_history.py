@@ -16,12 +16,12 @@ from pathlib import Path
 import pytest
 from sqlalchemy import insert, select
 
-import video_viewer.backup_history as history
-from video_viewer.backup_archive import freeze_graph, inspect_v2, write_v2
-from video_viewer.backup_history import HistoryArchive
-from video_viewer.backup_v2_schema import mounts_from
-from video_viewer.errors import LibraryError
-from video_viewer.models import PackFileOperation, PackRestoreBatch, RequestRecord, Task
+import shika.backup_history as history
+from shika.backup_archive import freeze_graph, inspect_v2, write_v2
+from shika.backup_history import HistoryArchive
+from shika.backup_v2_schema import mounts_from
+from shika.errors import LibraryError
+from shika.models import PackFileOperation, PackRestoreBatch, RequestRecord, Task
 
 from .conftest import put, scan
 from .test_backup_archive import MAXIMUM, archive
@@ -331,8 +331,8 @@ def test_process_kill_cannot_publish_a_partial_history_bundle(library, tmp_path,
     target = tmp_path / "history"
     script = """
 import os, signal, sys
-import video_viewer.backup_history as history
-from video_viewer.backup_archive import StagedArchive
+import shika.backup_history as history
+from shika.backup_archive import StagedArchive
 original = history.rename_new
 def publish(*args):
     if sys.argv[3] == 'before_publish':

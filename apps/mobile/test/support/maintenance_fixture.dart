@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
 
 import 'pack_purge_fixture.dart' show PurgeLibrary;
 

@@ -3,8 +3,8 @@ import subprocess
 
 import pytest
 
-from video_viewer import media as tools
-from video_viewer import scanner
+from shika import media as tools
+from shika import scanner
 
 from .conftest import put, scan
 from .test_tags import assign, tag

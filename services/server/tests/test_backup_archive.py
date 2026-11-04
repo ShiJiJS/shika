@@ -17,18 +17,18 @@ from pathlib import Path
 import pytest
 from sqlalchemy import create_engine, event, func, select
 
-import video_viewer.backup_archive as codec
-from video_viewer.backup_archive import (
+import shika.backup_archive as codec
+from shika.backup_archive import (
     StagedArchive,
     freeze_graph,
     inspect_backup,
     inspect_v2,
     write_v2,
 )
-from video_viewer.backup_format import canonical, package
-from video_viewer.backup_v2_schema import SETTING_KEYS, TABLE_NAMES, TABLES, mounts_from
-from video_viewer.errors import LibraryError
-from video_viewer.models import Base, ImagePack, PackPage, PackTagLink, Setting, Task, Video
+from shika.backup_format import canonical, package
+from shika.backup_v2_schema import SETTING_KEYS, TABLE_NAMES, TABLES, mounts_from
+from shika.errors import LibraryError
+from shika.models import Base, ImagePack, PackPage, PackTagLink, Setting, Task, Video
 
 from .conftest import put, scan
 from .test_backups import export as legacy_export

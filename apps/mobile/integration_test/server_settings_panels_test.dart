@@ -4,13 +4,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/features/settings/default_settings_sheet.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/features/settings/default_settings_sheet.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'prototype_fidelity_test.dart' show control;
 
@@ -46,7 +46,7 @@ void main() {
     final readerBefore = await repo.api.json('GET', '/api/v1/reading-defaults');
     final orderBefore = await repo.api.json('GET', '/api/v1/playback-defaults');
     await t.pumpWidget(
-      VideoViewerApp(
+      ShikaApp(
         repository: repo,
         preferences: preferences,
         initializeRepository: false,

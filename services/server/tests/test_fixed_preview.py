@@ -3,7 +3,7 @@
 import sqlite3
 import uuid
 
-from video_viewer.models import RecentEntry, Root
+from shika.models import RecentEntry, Root
 
 from .conftest import put, scan
 from .test_file_operations import operation, trash
@@ -334,7 +334,7 @@ def test_fixed_round_blocks_lossy_v1_backup_and_legacy_calls_remain_compatible(l
     legacy, _ = create_round(client)
     assert legacy["membership"] == "legacy" and "search" not in legacy["scope"]
     with client.app.state.db.read() as session:
-        from video_viewer.backup_format import require_legacy_backup
+        from shika.backup_format import require_legacy_backup
 
         require_legacy_backup(session)
     begin(client, {"search": "one"})

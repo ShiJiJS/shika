@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-import 'package:video_viewer/features/library/video_catalog_page.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/media_history.dart';
-import 'package:video_viewer/ui/media_layout.dart';
-import 'package:video_viewer/ui/player.dart';
+import 'package:shika/features/library/video_catalog_page.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/media_history.dart';
+import 'package:shika/ui/media_layout.dart';
+import 'package:shika/ui/player.dart';
 
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 import 'pack_recent_widget_test.dart' show RecentLayoutLibrary;
@@ -137,7 +137,7 @@ void main() {
 
         VideoCatalogPageState catalog() =>
             t.state(find.byType(VideoCatalogPage));
-        await t.pumpWidget(VideoViewerApp(repository: repo));
+        await t.pumpWidget(ShikaApp(repository: repo));
         await until(
           () => find.byKey(const Key('video-search')).evaluate().isNotEmpty,
         );

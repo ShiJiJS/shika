@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/paper_toggle.dart';
-import 'package:video_viewer/ui/preference_switch.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/paper_toggle.dart';
+import 'package:shika/ui/preference_switch.dart';
 
 void main() {
   testWidgets('whole-row pointer, switch and keyboard each toggle once', (

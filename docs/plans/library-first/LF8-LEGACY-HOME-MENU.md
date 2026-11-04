@@ -1,6 +1,6 @@
 # LF8：新版连接原版服务后的首页菜单
 
-[草稿PR #115](https://github.com/ShiJiJS/video_viewer/pull/115)承接[配套包 PR #114](https://github.com/ShiJiJS/video_viewer/pull/114)及[#110](https://github.com/ShiJiJS/video_viewer/issues/110)最后一个未补组合：原签名正常preview.10/code16连接没有capabilities的原版服务后，真实进入旧视频首页，再验证“更多”选择/取消、详情和快速整理返回。当前生产lib与正常APK均保持，不以旧源码rollback界面或现代连接页同一构造替代。
+[草稿PR #115](https://github.com/ShiJiJS/shika/pull/115)承接[配套包 PR #114](https://github.com/ShiJiJS/shika/pull/114)及[#110](https://github.com/ShiJiJS/shika/issues/110)最后一个未补组合：原签名正常preview.10/code16连接没有capabilities的原版服务后，真实进入旧视频首页，再验证“更多”选择/取消、详情和快速整理返回。当前生产lib与正常APK均保持，不以旧源码rollback界面或现代连接页同一构造替代。
 
 使用此前保留的原版服务镜像980c9a01及schema0004合成测试数据副本；不伪造能力响应，不触碰原四服务。复制前检查祖先/子路径均未被运行容器挂载；旧数据无WAL时才在宿主用只读immutable核对schema。新版donor仍有WAL，初始检查在复制前停止；后续完整复制已停用的data（含DB/WAL/SHM），不在宿主打开源SQLite，只让新拥有容器恢复自己的副本并mode=ro核对。原donor全部文件SHA保持。两个样本视频只读挂载，保留原数据与源文件SHA。
 
@@ -12,6 +12,6 @@
 
 结果（本机完成）：同一正常code16 APK连接原版服务，真实旧首页在普通比例1和减少比例0下分别完成取消、视频详情、快速整理进出；同一flower-portrait.mp4、第1/2条，原版14张明细表与设置/令牌摘要全部保持，菜单区间19个成功GET/HEAD。不存在图包/管理误请求。切回新版恢复2视频/1图包，35张明细表和设置保持；主动重新登录只增1个令牌，偏好与安装身份保持。
 
-[109份冻结输入与离线只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-legacy-home-menu/README.md)通过，原四服务、两份donor的数据/配置与所有样本媒体SHA保持；本轮实际进入的三种比例1、字体/旋转/显示与shell UID均恢复，仅关闭自有QEMU529及两个容器。App/服务/SDK生产源码、原型和正常新旧两包均未改。#110最后的普通包首页组合已补，仍保持草稿评审，不关闭总任务或完整UI-06。下一步核对其余勾选、展开和自有过渡；手机/NAS、有声/云提供器及原问题继续。
+[109份冻结输入与离线只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-legacy-home-menu/README.md)通过，原四服务、两份donor的数据/配置与所有样本媒体SHA保持；本轮实际进入的三种比例1、字体/旋转/显示与shell UID均恢复，仅关闭自有QEMU529及两个容器。App/服务/SDK生产源码、原型和正常新旧两包均未改。#110最后的普通包首页组合已补，仍保持草稿评审，不关闭总任务或完整UI-06。下一步核对其余勾选、展开和自有过渡；手机/NAS、有声/云提供器及原问题继续。
 
 证据提交3dfee394，109份输入已全部入Git；原始失败日志中的一处尾空格保留原样，其它文档/代码的差异空白检查通过。#110最后一项已更新为完成，票仍OPEN随草稿评审。

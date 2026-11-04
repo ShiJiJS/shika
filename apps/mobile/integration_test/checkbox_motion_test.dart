@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/main.dart' show configureApplicationWindow;
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/trash_layout.dart';
+import 'package:shika/main.dart' show configureApplicationWindow;
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/trash_layout.dart';
 
 import 'server_native_motion_test.dart' show host;
 

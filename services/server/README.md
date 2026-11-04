@@ -1,4 +1,4 @@
-# Video Viewer 服务端
+# 拾刻 · shika 服务端
 
 当前完成 S1–S6：口令认证、多媒体目录扫描、目录层级、媒体信息、缩略图、分页查询、持久化任务、授权原文件流、随机/顺序轮次、标签管理、真实回收站、外部文件变化识别及完整管理备份恢复。Flutter I1–I6 真实联调已完成。NAS 配置、Android 安装与日常使用见 [部署手册](../../docs/deployment.md)；已完成能力与证据见 [服务端验证记录](../../docs/server-validation.md) 和 [V1 待验项](../../docs/v1-validation.md)。
 
@@ -15,9 +15,9 @@
 在仓库根目录的 PowerShell 中执行：
 
 ```powershell
-wsl -d Ubuntu-24.04 -- bash /mnt/c/Project/video_viewer/scripts/prepare-server-dev.sh
-wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose up -d --build
-wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose ps
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Project/shika/scripts/prepare-server-dev.sh
+wsl -d Ubuntu-24.04 --cd /mnt/c/Project/shika -- docker compose up -d --build
+wsl -d Ubuntu-24.04 --cd /mnt/c/Project/shika -- docker compose ps
 ```
 
 准备脚本仅在文件不存在时建立专用开发目录、随机口令及被 Git 忽略的 `.env`，不会打印口令。数据、测试媒体、配置和口令保存在 WSL 的 `~/.local/share/video-viewer-dev/`。真实收藏不要放入这个开发测试目录。
@@ -29,8 +29,8 @@ wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose ps
 停止或重建：
 
 ```powershell
-wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose stop
-wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose up -d --force-recreate
+wsl -d Ubuntu-24.04 --cd /mnt/c/Project/shika -- docker compose stop
+wsl -d Ubuntu-24.04 --cd /mnt/c/Project/shika -- docker compose up -d --force-recreate
 ```
 
 这些命令保留数据和测试媒体。业务数据在 `library.sqlite3`，版本由 Alembic 管理；使用 SQLite WAL、FULL 同步、1000 页自动检查点及短事务串行写入，让后台扫描不阻塞普通读取。管理目录必须位于支持 WAL 的本地文件系统，运行中不能只复制数据库主文件而忽略 WAL；使用 App 逻辑备份或停机完整备份。依赖与镜像基础摘要已锁定，FFmpeg 版本在 Dockerfile 中固定。
@@ -163,7 +163,7 @@ NAS 部署时从 `.env.example` 设置 NAS 本地数据路径、视频挂载路�
 ## Docker 内验证
 
 ```powershell
-wsl -d Ubuntu-24.04 -- bash /mnt/c/Project/video_viewer/scripts/test-server.sh
+wsl -d Ubuntu-24.04 -- bash /mnt/c/Project/shika/scripts/test-server.sh
 ```
 
 测试镜像由同一 runtime 构建，使用非 root 用户和只读根文件系统，在容器临时目录生成媒体和数据库。覆盖 MP4、MOV、MKV、WebM、AVI，以及 H.264、HEVC、VP9、MPEG-4 Part 2、ProRes；MOV 另含旋转与 PCM 音频。生成器也可用于指定的可丢弃开发目录，固定样本名称会被重建，不要对个人视频目录运行。

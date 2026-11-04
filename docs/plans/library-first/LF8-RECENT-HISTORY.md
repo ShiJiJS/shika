@@ -18,7 +18,7 @@
 
 ## 验证边界
 
-组件测试覆盖180条历史中的跨页与窗口淘汰、页尾锚点重排、字号变化、选择状态、清空历史及独立媒体库搜索。真实AVD流程使用隔离8768、2个公开视频与4个公开图包，验证真实首帧、最近固定范围、返回、故障保留和只读重试。不会用NAS或生产8760制造故障。修后结果见[固定点证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-recent-history-final/README.md)：99个同源原生点、518项客户端及26项相关服务检查通过。LF8整体验收仍按RESULTS开放项推进。
+组件测试覆盖180条历史中的跨页与窗口淘汰、页尾锚点重排、字号变化、选择状态、清空历史及独立媒体库搜索。真实AVD流程使用隔离8768、2个公开视频与4个公开图包，验证真实首帧、最近固定范围、返回、故障保留和只读重试。不会用NAS或生产8760制造故障。修后结果见[固定点证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-recent-history-final/README.md)：99个同源原生点、518项客户端及26项相关服务检查通过。LF8整体验收仍按RESULTS开放项推进。
 
 ## 短横屏键盘与错误提示
 
@@ -30,4 +30,4 @@
 
 短横屏最近视频保留先前稳定ID时，实际scrollOffset=98、列表头52、步长111，新增条目位于先前条目前，首行上部在视口外是正常位置恢复，不强制回顶。原型/原生同状态顶部400dp等比对照与完整原图均留存；右侧真实总数仍属已说明的兼容差异。
 
-早期2e971ac的15点与101份输入原样保存在阶段目录；最新证据单独放在[lf8-recent-history-final](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-recent-history-final/README.md)。当前仅补最近/来源返回和键盘/错误组合，完整预览、阅读、管理、动作录屏、性能与目标设备仍待验证；未关闭REC/UI整项。
+早期2e971ac的15点与101份输入原样保存在阶段目录；最新证据单独放在[lf8-recent-history-final](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-recent-history-final/README.md)。当前仅补最近/来源返回和键盘/错误组合，完整预览、阅读、管理、动作录屏、性能与目标设备仍待验证；未关闭REC/UI整项。

@@ -1,6 +1,6 @@
 # LF8：按压与选择反馈
 
-> [草稿PR #108](https://github.com/ShiJiJS/video_viewer/pull/108)交付preview.8/rollback.8、同code14。code13保留为预检记录；实现与所列检查完成，完整正式验收仍开放。
+> [草稿PR #108](https://github.com/ShiJiJS/shika/pull/108)交付preview.8/rollback.8、同code14。code13保留为预检记录；实现与所列检查完成，完整正式验收仍开放。
 
 继续#24/#33既有UI-06，不新增产品功能。按钮、卡片和选择控件继续由原InkWell/Material处理点击、取消、焦点、键盘和语义；共用PaperControlTheme下的按压使用裁切在原轮廓内的静止色层，进入/退出100ms，不移动内容。减少动画时按下直接显示、松开/取消直接移除；已有色层也监听当前系统偏好，不等待动画执行业务。按钮原样式保留，Material状态过渡配置100ms/0；焦点/悬停保留平台行为，未据配置值宣称所有Material内部动画已经测过。
 
@@ -8,7 +8,7 @@
 
 针对检查：原框架8项全部失败，改后通过。另6项真实按钮Ink创建/按住/确认/取消/偏好切换检查，正常100ms达到可见目标，移除回调在下一调度帧完成；最初把精确100ms边界的controller状态也当作已完成的失败保留，未放宽可见目标断言。16组两类型/深浅/选中/禁用的静态布局和RGBA像素与原控件相同。既有标签/范围/返回测试只将精确类型查找改为子类查找，业务断言保留；修正后相关63项、完整721客户端与analyze通过。
 
-初次像素夹具在fake-async内等待真实引擎取图导致两个自有测试运行器停在该await，按框架golden matcher相同方式改用runAsync；中断PID、原因和原日志保留，不称App/模拟器失败，不重启设备。原始组件测试、原生观察与普通包分别记录，见[证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-control-feedback/README.md)。
+初次像素夹具在fake-async内等待真实引擎取图导致两个自有测试运行器停在该await，按框架golden matcher相同方式改用runAsync；中断PID、原因和原日志保留，不称App/模拟器失败，不重启设备。原始组件测试、原生观察与普通包分别记录，见[证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-control-feedback/README.md)。
 
 ## 预检记录（code13，单独保留）
 

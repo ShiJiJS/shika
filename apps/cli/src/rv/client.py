@@ -1,4 +1,4 @@
-"""video-viewer 服务端 HTTP API 的薄封装。
+"""拾刻 · shika 服务端 HTTP API 的薄封装。
 
 只做三件事：携带 Bearer token、把 ``{"error": {code, message}}`` 错误信封翻译成
 ApiError、在只读查询 token 失效且环境提供了口令时自动重新登录一次。业务参数与响应

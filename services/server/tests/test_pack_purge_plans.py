@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 from sqlalchemy import func, select
 
-from video_viewer.models import (
+from shika.models import (
     ImagePack,
     PackFileOperation,
     PackFileStep,
@@ -18,7 +18,7 @@ from video_viewer.models import (
     Root,
     Task,
 )
-from video_viewer.pack_purge_manifest import digest_json
+from shika.pack_purge_manifest import digest_json
 
 from .conftest import connect
 from .test_media_types import pack_root, pack_tag
@@ -322,7 +322,7 @@ def test_0009_upgrade_keeps_existing_column_values_and_adds_purge_journals(envir
     from alembic import command as migrate
     from alembic.config import Config
 
-    from video_viewer.db import Database
+    from shika.db import Database
 
     settings, media = environment
     client, _ = connect(settings)
@@ -377,7 +377,7 @@ def test_0009_upgrade_keeps_existing_column_values_and_adds_purge_journals(envir
 def test_index_and_authority_changes_are_not_sufficient_deletion_evidence(
     library, monkeypatch, change, code
 ):
-    from video_viewer.models import PackPage
+    from shika.models import PackPage
 
     client, media = library
     root, catalog, rows = fixture(client, media)

@@ -5,9 +5,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
-from video_viewer.db import Database
-from video_viewer.errors import LibraryError
-from video_viewer.models import Setting
+from shika.db import Database
+from shika.errors import LibraryError
+from shika.models import Setting
 
 from .conftest import connect, put, scan
 from .test_backups import export as export_v1

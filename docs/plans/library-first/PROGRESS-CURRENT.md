@@ -1,26 +1,28 @@
 # 当前进度
 
-> 第34版已交付（preview.28/code34），NAS服务preview.9保持：图包删除按视频方式直接执行及短提示，自动刷新列表和数量，旧版本完成请求自动收尾；正常流程移除待核对、操作提交和保存选择。[交付及检查记录](../../nas-app-preview-2026-11-03-code34.md) · [PR #189](https://github.com/ShiJiJS/video_viewer/pull/189)。其他持续开发与旧验收仍暂停。
+> 第35版已交付（preview.29/code35）：统一改名为「拾刻 · shika」，采用深绿底原创鹿娘图标，仓库、项目目录和README同步更新。[改名与交付记录](../../shika-branding-2026-11-04.md) · [PR #191](https://github.com/ShiJiJS/shika/pull/191)。NAS服务preview.9继续运行；其他功能开发与旧验收仍暂停。
 
-> 第32版已交付（preview.26/code32）：修复大批量图包永久删除清单准备超时，持续显示进度并保存原请求以便续查。[安装及本次171项相关检查](../../nas-app-preview-2026-11-02-code32.md) · [PR #185](https://github.com/ShiJiJS/video_viewer/pull/185)。NAS服务preview.8不变，其余持续开发和验收仍暂停。
+> 第34版已交付（preview.28/code34），NAS服务preview.9保持：图包删除按视频方式直接执行及短提示，自动刷新列表和数量，旧版本完成请求自动收尾；正常流程移除待核对、操作提交和保存选择。[交付及检查记录](../../nas-app-preview-2026-11-03-code34.md) · [PR #189](https://github.com/ShiJiJS/shika/pull/189)。其他持续开发与旧验收仍暂停。
+
+> 第32版已交付（preview.26/code32）：修复大批量图包永久删除清单准备超时，持续显示进度并保存原请求以便续查。[安装及本次171项相关检查](../../nas-app-preview-2026-11-02-code32.md) · [PR #185](https://github.com/ShiJiJS/shika/pull/185)。NAS服务preview.8不变，其余持续开发和验收仍暂停。
 
 > 第31版已交付（preview.25/code31）：修复前后切换取消，完善回收按钮/顶部撤销、即时数量位置及媒体库多选回收。[安装及本次308项相关检查](../../nas-app-preview-2026-11-02-code31.md)。NAS服务preview.8不变；其他持续开发和验收仍暂停，下文旧版记录为历史。
 
-> 第30版已交付（preview.24/code30）：按[#177](https://github.com/ShiJiJS/video_viewer/issues/177)精简快速整理并加入沉浸手势。[安装与本次44项测试](../../nas-app-preview-2026-11-02-code30.md)。NAS服务preview.8不变，其余持续开发与验收保持暂停。下文第29版及更早记录为历史。
+> 第30版已交付（preview.24/code30）：按[#177](https://github.com/ShiJiJS/shika/issues/177)精简快速整理并加入沉浸手势。[安装与本次44项测试](../../nas-app-preview-2026-11-02-code30.md)。NAS服务preview.8不变，其余持续开发与验收保持暂停。下文第29版及更早记录为历史。
 
-> 2026-11-02 图包反馈修复：当前已交付第29版（preview.23/code29），NAS服务preview.8不变。[更新与测试记录](../../nas-app-preview-2026-11-02-code29.md) · [PR #176](https://github.com/ShiJiJS/video_viewer/pull/176)。只推进 #171–#175，总体持续目标及其余验收保持暂停；下文第28版记录为历史。
+> 2026-11-02 图包反馈修复：当前已交付第29版（preview.23/code29），NAS服务preview.8不变。[更新与测试记录](../../nas-app-preview-2026-11-02-code29.md) · [PR #176](https://github.com/ShiJiJS/shika/pull/176)。只推进 #171–#175，总体持续目标及其余验收保持暂停；下文第28版记录为历史。
 
 2026-11-02：用户要求暂时停留当前版本，持续开发目标保持暂停。当前源码合并主分支，后续L1/L2检查停止，未记为通过。本机过程目录、旧安装包及测试容器已清理；最新第28版正常/同号回退包和NAS preview.8镜像保留，SDK/JDK、签名和开发配置保留。NAS运行服务、媒体和NAS上的备份未改。下文为已有交付与未完成验收的记录，不再自动推进。
 
 更新于2026-11-01。可用版本是 **第28版App（preview.22/code28）+ NAS服务preview.8**。正常包、同号旧界面回退包和说明都在NAS原部署目录的 `packages/`。直接覆盖安装，不要卸载或清除数据；地址和口令保持。
 
-[安装与回退](../../nas-app-preview-2026-11-01-code28.md) · [NAS更新与完整备份](../../nas-preview-2026-11-01-service8.md) · [当前收口核对](CLOSING-CHECK.md) · [整体草稿PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)
+[安装与回退](../../nas-app-preview-2026-11-01-code28.md) · [NAS更新与完整备份](../../nas-preview-2026-11-01-service8.md) · [当前收口核对](CLOSING-CHECK.md) · [整体草稿PR #168](https://github.com/ShiJiJS/shika/pull/168)
 
-[整体审阅草稿PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)汇总当前程序、规划及独立原型，保留main的命令行工具；历史证据通过固定原提交追溯，阶段分支完整保留。第28版在该分支继续开发，服务和原型未变，整合不代表正式验收完成。
+[整体审阅草稿PR #168](https://github.com/ShiJiJS/shika/pull/168)汇总当前程序、规划及独立原型，保留main的命令行工具；历史证据通过固定原提交追溯，阶段分支完整保留。第28版在该分支继续开发，服务和原型未变，整合不代表正式验收完成。
 
-第28版修复[#170](https://github.com/ShiJiJS/video_viewer/issues/170)：上次图片被移除后，正确打开附近图片时保留定位提示。旧代码两项检查失败，修复后21项相关检查通过；普通APK覆盖安装、关闭后从最近续读的画面对照通过，标签、偏好和剩余图片保持。测试仅用本机合成资料；两份新APK已交付，NAS服务无需更新。自有临时容器、代理、模拟器和构建导出已清理。
+第28版修复[#170](https://github.com/ShiJiJS/shika/issues/170)：上次图片被移除后，正确打开附近图片时保留定位提示。旧代码两项检查失败，修复后21项相关检查通过；普通APK覆盖安装、关闭后从最近续读的画面对照通过，标签、偏好和剩余图片保持。测试仅用本机合成资料；两份新APK已交付，NAS服务无需更新。自有临时容器、代理、模拟器和构建导出已清理。
 
-开发工具另补CLI 0.1.1（[#169](https://github.com/ShiJiJS/video_viewer/issues/169)）：修改命令及其前置查询遇到过期凭据后停止，要求显式重新登录，避免自动将旧命令写入恢复后的数据；只读查询保留原自动登录。旧代码本地样本2失败/1对照通过，修复后15项CLI检查和Ruff通过。VS Code新增`CLI: help`、`CLI: tests`，使用`.dev/cli`与锁定依赖，配置中的实际命令已执行通过。本机`rv`已更新0.1.1，旧工具源码/安装信息保留。
+开发工具另补CLI 0.1.1（[#169](https://github.com/ShiJiJS/shika/issues/169)）：修改命令及其前置查询遇到过期凭据后停止，要求显式重新登录，避免自动将旧命令写入恢复后的数据；只读查询保留原自动登录。旧代码本地样本2失败/1对照通过，修复后15项CLI检查和Ruff通过。VS Code新增`CLI: help`、`CLI: tests`，使用`.dev/cli`与锁定依赖，配置中的实际命令已执行通过。本机`rv`已更新0.1.1，旧工具源码/安装信息保留。
 
 长列表补核对：第28版在160项视频/图包中分别滑过120项窗口，打开第159项后系统返回，原卡片位置保持；继续向前翻页正常。两类最近仅记录实际打开项，320份样本字节保持，未改程序或再打包。[范围与画面](LF8-DEEP-CATALOG-RETURN.md)。
 
@@ -42,7 +44,7 @@
 ## 还需确认
 
 1. **真实手机体验。** 覆盖安装、声音/解码、手势、横竖屏与大字号、系统/云盘文件选取，以及手机和NAS的完整性能尚未全部确认。当前本机没有连接Android设备，不能用模拟器结果代替。
-2. **三个历史偶发问题。** [#78](https://github.com/ShiJiJS/video_viewer/issues/78)视频绿边/模拟器退出、[#89](https://github.com/ShiJiJS/video_viewer/issues/89)备份上传失败、[#100](https://github.com/ShiJiJS/video_viewer/issues/100)图包连接失败的原因尚未全部查明。已有安全查询/恢复方式与诊断，后续未复现不代表根因已修复，不自动重发写操作。
+2. **三个历史偶发问题。** [#78](https://github.com/ShiJiJS/shika/issues/78)视频绿边/模拟器退出、[#89](https://github.com/ShiJiJS/shika/issues/89)备份上传失败、[#100](https://github.com/ShiJiJS/shika/issues/100)图包连接失败的原因尚未全部查明。已有安全查询/恢复方式与诊断，后续未复现不代表根因已修复，不自动重发写操作。
 3. **完整原型验收与正式交付。** 原[45项要求](ACCEPTANCE.md)不变，阶段检查与目标环境条件分别保留。[本次收口](CLOSING-CHECK.md)逐组列出证据边界，当前优先补L1视频范围末尾、L2深列表实际旋转/字号两条具体过程，再回到原表判断；不将完整范围缩为两条。整体草稿已整理，最终审阅/合并/发布尚未进行。
 
 后续优先处理实际反馈和有明确触发条件的问题，复用未变化部分的检查，不重复无关全套或扩展故障矩阵。可用版本与仍待验收的条件分别报告。

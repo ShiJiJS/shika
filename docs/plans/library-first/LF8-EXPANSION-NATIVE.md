@@ -1,8 +1,8 @@
 # LF8：扫描详情展开的真实 Android 验证
 
-[草稿PR #122](https://github.com/ShiJiJS/video_viewer/pull/122)已提交并附在开发聊天中，基于源码PR #121。本段独立证明已完成；正常main真实服务/新包的本机项现由[配套包PR #123](LF8-EXPANSION-PACKAGE.md)补齐，总验收仍开放。
+[草稿PR #122](https://github.com/ShiJiJS/shika/pull/122)已提交并附在开发聊天中，基于源码PR #121。本段独立证明已完成；正常main真实服务/新包的本机项现由[配套包PR #123](LF8-EXPANSION-PACKAGE.md)补齐，总验收仍开放。
 
-承接[#120 / 源码PR #121](https://github.com/ShiJiJS/video_viewer/pull/121)，生产展开模块固定6af88978。本段不改生产lib，使用实际LibraryHome目录页、非DemoControls只读fixture，真实原生点击与系统三个动画比例；不注入无障碍替身，不执行扫描或文件命令。
+承接[#120 / 源码PR #121](https://github.com/ShiJiJS/shika/pull/121)，生产展开模块固定6af88978。本段不改生产lib，使用实际LibraryHome目录页、非DemoControls只读fixture，真实原生点击与系统三个动画比例；不注入无障碍替身，不执行扫描或文件命令。
 
 计划三轮，每轮普通/减少/运行中切换两方向，共18个完整展开/收起方向、6次真正中途切换；每轮再由fixture模拟扫描进行/失败/完成，检查替换正在展开的摘要和正确一份详情，共3次额外点击/9个状态，分开计数。每轮完整录屏，共3份，全部解码并独立审计。
 
@@ -12,7 +12,7 @@
 
 ## 本机完成（2026-10-30）
 
-固定测试源码0846cdec，生产lib与6af88978相同。native-4完整三轮：18方向、6次真实中途系统切换、136逐帧观测；另3次原生点击触发扫描中/失败/完成替换，9状态均符合实际画面。3份1170×2532录像完整解码、独立重解码通过，[155份固定输入与离线只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-expansion-native/README.md)通过。普通160ms保留中间态，减少首个原生标志帧高度和箭头到位，详情不重复。
+固定测试源码0846cdec，生产lib与6af88978相同。native-4完整三轮：18方向、6次真实中途系统切换、136逐帧观测；另3次原生点击触发扫描中/失败/完成替换，9状态均符合实际画面。3份1170×2532录像完整解码、独立重解码通过，[155份固定输入与离线只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-expansion-native/README.md)通过。普通160ms保留中间态，减少首个原生标志帧高度和箭头到位，详情不重复。
 
 前三次在宿主回复后错过中间态、异步回调测试断言作用域、benchmarkLive未等实际下一帧，均保留失败日志/局部录屏。最终观察函数纯读公开节点，生命周期等待实际画面字段；未改生产模块或放宽断言。全部同一QEMU60176、uid2000，原配置精确恢复，自有AVD已关闭，原四服务完整ID/健康保持。
 

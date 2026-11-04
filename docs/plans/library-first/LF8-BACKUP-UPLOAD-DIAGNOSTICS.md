@@ -1,6 +1,6 @@
 # LF8：上传失败原因与原请求找回
 
-[Draft PR #91](https://github.com/ShiJiJS/video_viewer/pull/91)基于[公开入口PR #90](https://github.com/ShiJiJS/video_viewer/pull/90)，继续[问题#89](https://github.com/ShiJiJS/video_viewer/issues/89)和#24／#33／#32。原失败只有“暂时无法连接服务”，底层IOException被归一化后丢失，服务trace没有导入POST；不能凭此认定完全没发出数据，或认定空闲连接就是原因。
+[Draft PR #91](https://github.com/ShiJiJS/shika/pull/91)基于[公开入口PR #90](https://github.com/ShiJiJS/shika/pull/90)，继续[问题#89](https://github.com/ShiJiJS/shika/issues/89)和#24／#33／#32。原失败只有“暂时无法连接服务”，底层IOException被归一化后丢失，服务trace没有导入POST；不能凭此认定完全没发出数据，或认定空闲连接就是原因。
 
 本段保留失败时的Dart操作阶段和原始IOException，仅在内存中的ApiFailure持有；用户提示、请求次数、写命令重试策略、协议与连接参数不变。阶段表示异常出现在哪个await操作，不证明服务已经／尚未接受请求。程序不自动输出或上传这些信息，头部／口令／文件内容不写诊断日志。
 
@@ -16,7 +16,7 @@
 
 主实现／完整客户端回归ed09749，最终原生与host驱动848a1b8，两者App生产／Android／单元与组件源码相同。完整客户端672项、相关28项、最终analyze／格式／Ruff通过。服务生产源码未变，不重复声称本轮跑过447项服务全集；上轮27个原有格式问题仍待处理。
 
-最终受控回复中断／真实双进程找回12点与关闭注入后的普通完整恢复14点，合计26点／28张PNG。受控样本实际捕获readingResponse阶段HttpException；停止活跃旧PID、移除指定输入副本后，新PID免口令找回同一任务，重开14次GET、零POST、27目录预览及确认关闭，原键／安全日志／SQL回执／旧管理代次相符；普通样本完整恢复及快照只预览通过。325输入只读复核通过，[原始材料与边界](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-backup-upload-diagnostics/README.md)包含所有中间与失败记录。
+最终受控回复中断／真实双进程找回12点与关闭注入后的普通完整恢复14点，合计26点／28张PNG。受控样本实际捕获readingResponse阶段HttpException；停止活跃旧PID、移除指定输入副本后，新PID免口令找回同一任务，重开14次GET、零POST、27目录预览及确认关闭，原键／安全日志／SQL回执／旧管理代次相符；普通样本完整恢复及快照只预览通过。325输入只读复核通过，[原始材料与边界](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-backup-upload-diagnostics/README.md)包含所有中间与失败记录。
 
 首个d22d6fc受控流程功能通过，但host错误复用原屏幕配置变量，归还显示失败；当时随后普通流程继承临时设置，两例都不计最终点数。修正变量并使归还失败导致host非零；先按原快照恢复显示，再以848a1b8重新验证两例，各自host退出0、显示前后相同。旧错误／两例材料单列，不靠删除失败或忽略归还来通过。
 

@@ -72,83 +72,83 @@
 
 ## 2026-10-25 整份恢复阶段证据
 
-[LF7 App记录](LF7.md)与[原生三轮](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-restore-client/README.md)补充DEL-04/06逻辑恢复、SET-05父任务与UI-03长详情/短确认的本阶段证据。真实SecureStorage强停、原请求GET和停止计数已覆盖；永久删除剩余选择、其它命令/来源、v2备份、全设置/暗色横屏及目标设备仍不得据此勾选。
+[LF7 App记录](LF7.md)与[原生三轮](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-restore-client/README.md)补充DEL-04/06逻辑恢复、SET-05父任务与UI-03长详情/短确认的本阶段证据。真实SecureStorage强停、原请求GET和停止计数已覆盖；永久删除剩余选择、其它命令/来源、v2备份、全设置/暗色横屏及目标设备仍不得据此勾选。
 
 ## 2026-10-25 删除剩余选择补充
 
-[选择设计](LF7-PURGE-SELECTION-DESIGN.md)及[本阶段证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-purge-selections/README.md)补充DEL-04/06的未提交选择持久化、每批明确核对、任务入口找回与UI-03大字号分页。1027/1000/27由协议/组件验证，单包真实文件异常/原任务重试由原生记录验证，两种范围分别记证。当前345项客户端/analyze通过；永久删除真实安全存储强停、v2历史化、全设置/暗色横屏及目标设备未全部证明，验收项仍不关闭。
+[选择设计](LF7-PURGE-SELECTION-DESIGN.md)及[本阶段证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-purge-selections/README.md)补充DEL-04/06的未提交选择持久化、每批明确核对、任务入口找回与UI-03大字号分页。1027/1000/27由协议/组件验证，单包真实文件异常/原任务重试由原生记录验证，两种范围分别记证。当前345项客户端/analyze通过；永久删除真实安全存储强停、v2历史化、全设置/暗色横屏及目标设备未全部证明，验收项仍不关闭。
 
 ## 2026-10-25 永久删除真实强停补证
 
-[PR #45](https://github.com/ShiJiJS/video_viewer/pull/45) 的 [三轮证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-purge-secure-restart/README.md) 补充DEL-04/05/06及SET-05：实际1003包、生产安全存储、宿主终止活PID，App缺席期间完成明确确认1000包，新PID只查询原回执；剩余3包默认未确认。独立校验精确1000删除路径、1003附件和3张保留图片SHA、原ID分区、单次永久删除POST及真实分页。该隔离开发机路径已证明，不能据此关闭其它命令/来源/部分失败重试、全设置与v2历史化、全原型暗色横屏、实际手机/NAS和兼容发布的完整验收。
+[PR #45](https://github.com/ShiJiJS/shika/pull/45) 的 [三轮证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-purge-secure-restart/README.md) 补充DEL-04/05/06及SET-05：实际1003包、生产安全存储、宿主终止活PID，App缺席期间完成明确确认1000包，新PID只查询原回执；剩余3包默认未确认。独立校验精确1000删除路径、1003附件和3张保留图片SHA、原ID分区、单次永久删除POST及真实分页。该隔离开发机路径已证明，不能据此关闭其它命令/来源/部分失败重试、全设置与v2历史化、全原型暗色横屏、实际手机/NAS和兼容发布的完整验收。
 
 ## 2026-10-25 默认值设置补证
 
-[PR #46](https://github.com/ShiJiJS/video_viewer/pull/46) / [契约与缺项审计](LF7-DEFAULTS-DESIGN.md) / [原生三轮证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-defaults/README.md) 补充SET-02和UI-03/04：服务端默认值、旧本机值明确迁移与连接隔离、草稿取消、冲突重读、未知只查原ID；旧视频范围和已读包偏好保持，新默认与未读包分离。完整354客户端/302服务端及analyze/Ruff通过，三轮81图片哈希保持。同进程App重建不作为强停证据，不覆盖三个视频入口全部新范围组合或v2恢复；目录类型/启停控件、图包缺失管理、v2全数据往返和完整UI状态仍待继续，不关闭整项验收。
+[PR #46](https://github.com/ShiJiJS/shika/pull/46) / [契约与缺项审计](LF7-DEFAULTS-DESIGN.md) / [原生三轮证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-defaults/README.md) 补充SET-02和UI-03/04：服务端默认值、旧本机值明确迁移与连接隔离、草稿取消、冲突重读、未知只查原ID；旧视频范围和已读包偏好保持，新默认与未读包分离。完整354客户端/302服务端及analyze/Ruff通过，三轮81图片哈希保持。同进程App重建不作为强停证据，不覆盖三个视频入口全部新范围组合或v2恢复；目录类型/启停控件、图包缺失管理、v2全数据往返和完整UI状态仍待继续，不关闭整项验收。
 
 
 ## 2026-10-25 目录与缺失管理补充（验收项保持开放）
 
-[PR #47](https://github.com/ShiJiJS/video_viewer/pull/47) / [契约](LF7-ROOTS-MISSING-DESIGN.md) / [证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-roots-missing/README.md)补充SET-04、SET-05和UI-03/04：真实类型/启停表单、类型冲突保留、分型24条缺失分页、固定成员持久清理、原安全日志重开只查原ID。成功扫描的本机根身份必须一致，根替换、停用/离线/返回等保留；源字节不修改，历史会话身份保留。369客户端/analyze/Ruff和15项新服务端针对检查通过；服务端全量316通过/1次扫描超时，同例原样独立复跑通过，分别记证。固定源码原生三轮通过，27检查点的窗口/请求/文件/数据库/源码独立核对通过。App/Repository同进程重建不是强停。新建根未扫描提示和任务编号截图缺字/裁剪仍需视觉复查；全目录/旧服务组合、完整暗色横屏/手势、v2及真机NAS仍不据此关闭整项。
+[PR #47](https://github.com/ShiJiJS/shika/pull/47) / [契约](LF7-ROOTS-MISSING-DESIGN.md) / [证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-roots-missing/README.md)补充SET-04、SET-05和UI-03/04：真实类型/启停表单、类型冲突保留、分型24条缺失分页、固定成员持久清理、原安全日志重开只查原ID。成功扫描的本机根身份必须一致，根替换、停用/离线/返回等保留；源字节不修改，历史会话身份保留。369客户端/analyze/Ruff和15项新服务端针对检查通过；服务端全量316通过/1次扫描超时，同例原样独立复跑通过，分别记证。固定源码原生三轮通过，27检查点的窗口/请求/文件/数据库/源码独立核对通过。App/Repository同进程重建不是强停。新建根未扫描提示和任务编号截图缺字/裁剪仍需视觉复查；全目录/旧服务组合、完整暗色横屏/手势、v2及真机NAS仍不据此关闭整项。
 
 ## 2026-10-25：管理恢复后的App代次与历史分册补证
 
-[PR #51](https://github.com/ShiJiJS/video_viewer/pull/51) / [契约](LF7-CLIENT-AUTHORITY-DESIGN.md) / [证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-client-authority/README.md)补充BAK-03和SET-05：398项客户端及固定源码三轮实际v1恢复，包含运行中免口令重连和两次真实安全存储强停/新PID重开；六类旧本机记录只读保留、五种原回执GET404不清除、不重发POST、27未提交选择不能继续删除，新代次导出可用。12窗口检查点/27源文件SHA及请求独立核对通过，已修复原生发现的连接表单未退出。图包本机意图为未受理合成ID，完整v2协调/正式历史路由、真实选择器与有界传输、其它强停/最终原型及目标设备仍未完成，不据此勾选整个验收项。
+[PR #51](https://github.com/ShiJiJS/shika/pull/51) / [契约](LF7-CLIENT-AUTHORITY-DESIGN.md) / [证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-client-authority/README.md)补充BAK-03和SET-05：398项客户端及固定源码三轮实际v1恢复，包含运行中免口令重连和两次真实安全存储强停/新PID重开；六类旧本机记录只读保留、五种原回执GET404不清除、不重发POST、27未提交选择不能继续删除，新代次导出可用。12窗口检查点/27源文件SHA及请求独立核对通过，已修复原生发现的连接表单未退出。图包本机意图为未受理合成ID，完整v2协调/正式历史路由、真实选择器与有界传输、其它强停/最终原型及目标设备仍未完成，不据此勾选整个验收项。
 
 
 ## 2026-10-25：完整管理恢复服务端补证（验收项保持开放）
 
-[PR #52](https://github.com/ShiJiJS/video_viewer/pull/52) / [恢复契约](LF7-RESTORE-V2-DESIGN.md) / [固定源码与证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-backup-restore/README.md)补充BAK-02/03和SET-05的服务端部分：33表完整替换、实际/null映射、前快照、正式历史及权威代次共同提交，连续恢复后原图与本机备份控制回执保留，旧任务不重放。三处真实进程SIGKILL、约39MiB网络文件和18,000行核对另有记录；Python分配量不作为Android/RSS结论。当前仍未开放backup_v2能力，系统选择器/有界文件、App统计/映射/历史页面与原生全流程继续，详见[下一步](LF7-APP-ARCHIVE-PLAN.md)，不能据服务端测试勾选完整BAK/UI验收。
+[PR #52](https://github.com/ShiJiJS/shika/pull/52) / [恢复契约](LF7-RESTORE-V2-DESIGN.md) / [固定源码与证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-backup-restore/README.md)补充BAK-02/03和SET-05的服务端部分：33表完整替换、实际/null映射、前快照、正式历史及权威代次共同提交，连续恢复后原图与本机备份控制回执保留，旧任务不重放。三处真实进程SIGKILL、约39MiB网络文件和18,000行核对另有记录；Python分配量不作为Android/RSS结论。当前仍未开放backup_v2能力，系统选择器/有界文件、App统计/映射/历史页面与原生全流程继续，详见[下一步](LF7-APP-ARCHIVE-PLAN.md)，不能据服务端测试勾选完整BAK/UI验收。
 
 
 ## 2026-10-25：App流式管理文件与原图历史（PR #53）
 
-[Draft PR #53](https://github.com/ShiJiJS/video_viewer/pull/53)基于#52。最终App/验收源码38ae54a，服务端树ff9699c不变：v2文件以私有文件ID、长度、SHA和所属服务代次传递，HTTP与Android SAF按块处理并协商真实上限。设置中分两类统计、24根分页映射、跨页草稿、默认关闭的完整替换确认和直接恢复前快照入口已接通。任务详情支持原导出/原快照流式下载，回执按原epoch、详情/成员按原graph；旧v1未知意图不改协议重发。
+[Draft PR #53](https://github.com/ShiJiJS/shika/pull/53)基于#52。最终App/验收源码38ae54a，服务端树ff9699c不变：v2文件以私有文件ID、长度、SHA和所属服务代次传递，HTTP与Android SAF按块处理并协商真实上限。设置中分两类统计、24根分页映射、跨页草稿、默认关闭的完整替换确认和直接恢复前快照入口已接通。任务详情支持原导出/原快照流式下载，回执按原epoch、详情/成员按原graph；旧v1未知意图不改协议重发。
 
 生产backup_v2仍关闭，8762只读源码夹具独立测试开放；没有改SDK、正式8760/NAS或发布APK。v2真实强停/新PID、完整历史专用清单与页细项接线、其它命令/来源组合、历史图片失败、暗色/横屏/手势、目标手机/NAS和原签名发布继续。原型树保持1cbf605且独立可移除；LF7/#32及总任务/#24保持开放。
 
 ## 2026-10-25：v2 App 三处真实强停与原日志重开（PR #54）
 
-[Draft PR #54](https://github.com/ShiJiJS/video_viewer/pull/54)基于#53，固定源码2839c5d。真实v2完整替换在snapshot_written、after_replace_before_commit、restore_committed三个服务位置扣留202，安全日志先落盘；宿主强停活跃PID并确认消失后，服务在App缺席时完成同一任务，新PID免口令自动重连新代次。六条旧本机意图、原私有文件和两个真实受理的图包任务/原graph成员都保留；重开只GET和既有启动扫描，不重发原写入。实际系统快照保存取消后不结算旧记录，历史未提交选择不能继续删除。
+[Draft PR #54](https://github.com/ShiJiJS/shika/pull/54)基于#53，固定源码2839c5d。真实v2完整替换在snapshot_written、after_replace_before_commit、restore_committed三个服务位置扣留202，安全日志先落盘；宿主强停活跃PID并确认消失后，服务在App缺席时完成同一任务，新PID免口令自动重连新代次。六条旧本机意图、原私有文件和两个真实受理的图包任务/原graph成员都保留；重开只GET和既有启动扫描，不重发原写入。实际系统快照保存取消后不结算旧记录，历史未提交选择不能继续删除。
 
-固定源码三轮（360双倍字号115.47秒、390普通79.17/81.29秒）通过，164份manifest输入已入库并独立核对；首段有意强停的非零退出和开发失败日志分开保留。analyze/Ruff/Python语法及24项服务端针对检查通过。App/服务端生产树未改，433/398项全集沿用#53且本轮未重跑；这里不是40MiB全路恢复、Android内存或整机断电验证。[契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-archive-restart/docs/plans/library-first/LF7-ARCHIVE-RESTART-DESIGN.md) / [固定源码、原始日志与独立核对](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-archive-restart/docs/plans/library-first/evidence/lf7-archive-restart/README.md)。
+固定源码三轮（360双倍字号115.47秒、390普通79.17/81.29秒）通过，164份manifest输入已入库并独立核对；首段有意强停的非零退出和开发失败日志分开保留。analyze/Ruff/Python语法及24项服务端针对检查通过。App/服务端生产树未改，433/398项全集沿用#53且本轮未重跑；这里不是40MiB全路恢复、Android内存或整机断电验证。[契约](https://github.com/ShiJiJS/shika/blob/codex/lf7-archive-restart/docs/plans/library-first/LF7-ARCHIVE-RESTART-DESIGN.md) / [固定源码、原始日志与独立核对](https://github.com/ShiJiJS/shika/blob/codex/lf7-archive-restart/docs/plans/library-first/evidence/lf7-archive-restart/README.md)。
 
 接下来继续历史专用永久删除精确清单/逐页结果及只读页面（原graph绑定、有界分页、不得借用当前投影或执行/结算接口），然后其它命令/来源强停、历史图片失败、暗色/横屏/手势、目标设备/NAS和原签名发布。生产backup_v2仍关闭；原型树1cbf605独立未改，未改SDK/正式8760/NAS或发布APK。LF7/#32、总任务/#24保持开放。
 
 ## 2026-10-26：原历史删除清单与逐项结果（PR #55）
 
-[Draft PR #55](https://github.com/ShiJiJS/video_viewer/pull/55) 基于 #54，固定源码 `cabbc68`，证据提交 `0e0c1a5`。设置→操作任务→历史详情现可查看原确认清单、包内精确文件及永久删除的原图片/目录结果。三个认证 GET 绑定原 graph、父任务、计划与包条目；缺失或无效关联不退回当前库。文件 manifest 在 SQLite 内分页，App 专用网关没有执行、重试删除或结算能力，旧服务及缺失原图明确说明。
+[Draft PR #55](https://github.com/ShiJiJS/shika/pull/55) 基于 #54，固定源码 `cabbc68`，证据提交 `0e0c1a5`。设置→操作任务→历史详情现可查看原确认清单、包内精确文件及永久删除的原图片/目录结果。三个认证 GET 绑定原 graph、父任务、计划与包条目；缺失或无效关联不退回当前库。文件 manifest 在 SQLite 内分页，App 专用网关没有执行、重试删除或结算能力，旧服务及缺失原图明确说明。
 
 原生隔离8763真实扫描27包/153图，0101.png权限失败后实际126图已删、27图未完成；完整恢复后读回原历史。27包末3包、127图末页、54项目录、查询503保留原页再同GET重试及原预览入口均通过。固定源码三轮（360双倍字号64.96秒、390普通55.14/58.00秒），21张实际窗口截图、54份剩余源文件、原历史SQLite与三份真实安全日志前后核对；274份manifest输入已入库并独立校验。Paper比例延续既有页面，两尺寸目录结果及“图包根目录”文案复核通过。
 
 完整客户端451项、服务端402项、analyze、Ruff lint和132份Python语法检查通过。服务端全集启动于9199f31、客户端全集于619033c，其完整服务端/客户端lib及test树均与固定源码相同。Ruff format继承23份、Dart format继承2份既有文件，未误报全量格式通过。实际43,806,720字节SQLite/18,000条manifest的分页Python分配峰值2,550,992字节，不能当作进程RSS、Android内存或NAS性能。首次Docker未加仓库规定shm参数的401通过/1失败、原生定位/等待失败和旧源码成功均单独留存。
 
-[契约](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-history-purge-details/docs/plans/library-first/LF7-PURGE-HISTORY-DESIGN.md) / [原始证据与独立核对](https://github.com/ShiJiJS/video_viewer/blob/codex/lf7-history-purge-details/docs/plans/library-first/evidence/lf7-purge-history/README.md)。本段补齐BAK-03、SET-05、DEL-04/06的历史读取部分；其它命令/来源强停、历史图片解码/资源不可用、全原型暗色/横屏/手势、目标手机/NAS及原签名发布仍继续。生产backup_v2仍关闭，冻结原型树1cbf605独立未改；未改正式8760/NAS/SDK或发布APK。LF7/#32及总任务/#24保持开放。
+[契约](https://github.com/ShiJiJS/shika/blob/codex/lf7-history-purge-details/docs/plans/library-first/LF7-PURGE-HISTORY-DESIGN.md) / [原始证据与独立核对](https://github.com/ShiJiJS/shika/blob/codex/lf7-history-purge-details/docs/plans/library-first/evidence/lf7-purge-history/README.md)。本段补齐BAK-03、SET-05、DEL-04/06的历史读取部分；其它命令/来源强停、历史图片解码/资源不可用、全原型暗色/横屏/手势、目标手机/NAS及原签名发布仍继续。生产backup_v2仍关闭，冻结原型树1cbf605独立未改；未改正式8760/NAS/SDK或发布APK。LF7/#32及总任务/#24保持开放。
 
 ## 2026-10-26：失败末张与横屏错误操作（PR #56）
 
-[Draft PR #56](https://github.com/ShiJiJS/video_viewer/pull/56) 基于 #55，固定源码 `e68f487`，证据提交 `fc97f17`。原型 advance(1) 越过末张会进入 finished；App 原来把“跳过这一张”截回失败末张，且禁用了末张“下一张”。现已接到原生现有本包末尾页，可返回末张/来源，只有明确点击下一包才切换原固定范围；失败图片没有首帧，不写opened、最近、进度或完成状态。
+[Draft PR #56](https://github.com/ShiJiJS/shika/pull/56) 基于 #55，固定源码 `e68f487`，证据提交 `fc97f17`。原型 advance(1) 越过末张会进入 finished；App 原来把“跳过这一张”截回失败末张，且禁用了末张“下一张”。现已接到原生现有本包末尾页，可返回末张/来源，只有明确点击下一包才切换原固定范围；失败图片没有首帧，不写opened、最近、进度或完成状态。
 
 沉浸中到达末尾显示工具，返回动作在黑色画布用白色保持可读。真实844横屏发现17像素溢出，失败/末尾区改为短视口可滚动，保留字体和操作。五项真实HTTP 404/HTTP200非图片解码及完整阅读路由检查回放旧生产代码全部失败，修正后通过。
 
 完整客户端456项、analyze和新夹具/脚本Ruff lint通过。客户端全集在bc3c9fb执行，lib/test树与最终源码相同，最后仅改取证滚动；服务端生产树未改，402项全集沿用#55且本段未重跑。固定源码三轮（360双倍字号37.84秒、390普通36.09秒、844横屏38.74秒）通过，18张实际前台截图、六张源PNG前后SHA、原始轨迹及独立SQL投影保存，253份manifest输入已复核。SQL证实异常包没有progress行、recent只有手动进入且真实显示首帧的正常包。旧源码成功、17像素溢出、测试等待/取证偏移等开发记录单独保留。
 
-[设计与边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-reader-image-errors/docs/plans/library-first/LF5-IMAGE-ERROR-DESIGN.md) / [固定源码及证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-reader-image-errors/docs/plans/library-first/evidence/lf5-image-errors/README.md)。本段补PKG-03、READ-01/02/04/05、UI-04/05的失败末张路径，不关闭整项。其余图片错误码/连接恢复/迟到图片、500页4K/8K性能、全原型与目标手机/NAS、原签名发布仍开放；本段使用MemoryCredentialStore，不作为强杀/安全存储证明。生产backup_v2仍关闭，冻结原型树1cbf605独立可移除；未改正式8760/NAS/SDK或发布APK。LF5/#30、LF8/#33及总任务/#24继续开放。
+[设计与边界](https://github.com/ShiJiJS/shika/blob/codex/lf5-reader-image-errors/docs/plans/library-first/LF5-IMAGE-ERROR-DESIGN.md) / [固定源码及证据](https://github.com/ShiJiJS/shika/blob/codex/lf5-reader-image-errors/docs/plans/library-first/evidence/lf5-image-errors/README.md)。本段补PKG-03、READ-01/02/04/05、UI-04/05的失败末张路径，不关闭整项。其余图片错误码/连接恢复/迟到图片、500页4K/8K性能、全原型与目标手机/NAS、原签名发布仍开放；本段使用MemoryCredentialStore，不作为强杀/安全存储证明。生产backup_v2仍关闭，冻结原型树1cbf605独立可移除；未改正式8760/NAS/SDK或发布APK。LF5/#30、LF8/#33及总任务/#24继续开放。
 
 ## 2026-10-26：按实际点中的可见末张跳过（PR #57）
 
-[Draft PR #57](https://github.com/ShiJiJS/video_viewer/pull/57) 基于 #56，固定源码 `07d1cad`，证据提交 `92f08b8`。纵向视口顶部仍在倒数第二张时，可以点击下方可见的失败末张。旧逻辑按顶部index拒绝该点击；现按所点图片进入原末尾页，不自动换包，不把失败图片记成首帧或完成进度。
+[Draft PR #57](https://github.com/ShiJiJS/shika/pull/57) 基于 #56，固定源码 `07d1cad`，证据提交 `92f08b8`。纵向视口顶部仍在倒数第二张时，可以点击下方可见的失败末张。旧逻辑按顶部index拒绝该点击；现按所点图片进入原末尾页，不自动换包，不把失败图片记成首帧或完成进度。
 
 新真实HTTP组件检查在旧逻辑失败，修正后与原五项图片检查共6项通过；完整客户端457项、analyze及夹具/脚本Ruff lint通过。服务端生产代码未改，402项全集沿用#55且本段未重跑。原生390×844普通字号三轮59.20/39.59/38.89秒，顶部index=1、点击图片index=2、比例约70.94%，关键点击没有先滚动对齐；进度前后完整对象相等，包含revision与更新时间，返回原失败末张、退出重开恢复原页/比例，明确下一包才推进。独立SQL仍是上一张真实图片、未完成。
 
 另按同源码跑既有末张/损坏图片844横屏回归一次35.93秒。三轮加兼容回归共21张实际窗口截图、6张源图前后SHA、原始HTTP与SQL投影已保存；119份manifest输入独立复核通过。普通字号三轮不冒充其它视口组合或安全存储强杀验收。
 
-[核查与修复说明](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-visible-page-skip/docs/plans/library-first/LF5-VISIBLE-PAGE-SKIP-AUDIT.md) / [固定源码与证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf5-visible-page-skip/docs/plans/library-first/evidence/lf5-visible-page-skip/README.md)。本段补READ-02/04/05与PKG-03的明确组合，不关闭整项。接下来推进整体原型对照；其它异常/连接恢复/迟到图片、500页4K/8K性能、目标手机/NAS及原签名发布仍开放。生产backup_v2仍关闭，冻结原型1cbf605独立可移除；未改正式8760/NAS/SDK或发布APK。LF5/#30、LF8/#33及总任务/#24保持开放。
+[核查与修复说明](https://github.com/ShiJiJS/shika/blob/codex/lf5-visible-page-skip/docs/plans/library-first/LF5-VISIBLE-PAGE-SKIP-AUDIT.md) / [固定源码与证据](https://github.com/ShiJiJS/shika/blob/codex/lf5-visible-page-skip/docs/plans/library-first/evidence/lf5-visible-page-skip/README.md)。本段补READ-02/04/05与PKG-03的明确组合，不关闭整项。接下来推进整体原型对照；其它异常/连接恢复/迟到图片、500页4K/8K性能、目标手机/NAS及原签名发布仍开放。生产backup_v2仍关闭，冻结原型1cbf605独立可移除；未改正式8760/NAS/SDK或发布APK。LF5/#30、LF8/#33及总任务/#24保持开放。
 
 
 ## 2026-10-26：共享原型比例与逐项收口台账（PR #58）
 
-[Draft PR #58](https://github.com/ShiJiJS/video_viewer/pull/58) / [差异审计](LF8-SHARED-GEOMETRY.md) / [固定源码证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-shared-geometry/README.md)补充UI-01/03/04/05的共享区域。固定a9da395的普通三轮、360双倍字号和844短横屏各一轮真实原生通过，40检查点；16项针对组件、analyze/Ruff通过。两轮独立现状视觉评审后复核，235份输入的只读校验通过；实际暗色由原始PNG像素和稳定主题共同检查。
+[Draft PR #58](https://github.com/ShiJiJS/shika/pull/58) / [差异审计](LF8-SHARED-GEOMETRY.md) / [固定源码证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-shared-geometry/README.md)补充UI-01/03/04/05的共享区域。固定a9da395的普通三轮、360双倍字号和844短横屏各一轮真实原生通过，40检查点；16项针对组件、analyze/Ruff通过。两轮独立现状视觉评审后复核，235份输入的只读校验通过；实际暗色由原始PNG像素和稳定主题共同检查。
 
 同公开素材/真实24页夹具，普通HTML390×844去掉12px假系统区，与Android390×905去掉实测49/24dp安全区后的390×832内容比较。搜索框、首封面/标题与导航主锚线对齐，设置三组密度接近参考，开关整行/轨道/键盘各一次及禁用语义有针对检查；并排/叠加/差异图不等于整个产品已还原。大字号实际窗口360×809（内容高度约739.67dp），短横屏844×442（内容高390dp），分别保存实测安全区；不能把它们改称参考完整窗口或目标手机性能。
 
@@ -156,33 +156,33 @@
 
 ## 2026-10-26：图包库真实继续阅读（PR #59）
 
-[Draft PR #59](https://github.com/ShiJiJS/video_viewer/pull/59)基于#58，固定源码c4aaf3b，证据提交daf1863。图包媒体库在无筛选/搜索且非多选时显示真实最近打开包与页码；摘要独立于24条分页和列表取消通道，只读且不创建历史。点击从该包续读，保持原媒体库完整范围，返回原位置。搜索、多选、最近来源不展示全库续读条；失败保留列表并就地重试。
+[Draft PR #59](https://github.com/ShiJiJS/shika/pull/59)基于#58，固定源码c4aaf3b，证据提交daf1863。图包媒体库在无筛选/搜索且非多选时显示真实最近打开包与页码；摘要独立于24条分页和列表取消通道，只读且不创建历史。点击从该包续读，保持原媒体库完整范围，返回原位置。搜索、多选、最近来源不展示全库续读条；失败保留列表并就地重试。
 
 普通三轮、360双倍字号及844短横屏共五轮同源码通过，每轮10个真实前台检查点，共50图；公开2视频/4包/24PNG，实际打开后从3/6翻到4/6，续读仍为完整4包范围。两次显式opened、SQL最近/进度/会话投影、只读区间、26个源文件SHA与设备配置恢复均核对。202份manifest输入只读校验通过。客户端471项、服务端续读/阅读16项、analyze/Ruff通过；不是服务端全集或目标设备性能证明。
 
 原生字体的实际行高取代估算，普通续读86dp（参考85）、双倍字号147dp，无裁切；共享“更多”菜单收起搜索键盘，修复短横屏进入多选时的4.7dp溢出。两轮独立存量视觉复核后无本段必须修正项；首轮材料、字体/键盘失败诊断与最终五轮分别保存。长标题/错误说明省略仍是已知显示边界，未缩字号或缩短压力输入。
 
-[设计与异步约定](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-continuation/docs/plans/library-first/LF8-PACK-CONTINUATION.md) / [原始证据与可重跑校验](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-continuation/docs/plans/library-first/evidence/lf8-pack-continuation/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-continuation/docs/plans/library-first/RESULTS.md)。本段补LIB-02、NAV-02、READ-04/05、REC-01与UI-01/04/05的明确组合，不关闭整项；使用MemoryCredentialStore，不新增强杀/安全存储或覆盖升级证明。
+[设计与异步约定](https://github.com/ShiJiJS/shika/blob/codex/lf8-pack-continuation/docs/plans/library-first/LF8-PACK-CONTINUATION.md) / [原始证据与可重跑校验](https://github.com/ShiJiJS/shika/blob/codex/lf8-pack-continuation/docs/plans/library-first/evidence/lf8-pack-continuation/README.md) / [逐项台账](https://github.com/ShiJiJS/shika/blob/codex/lf8-pack-continuation/docs/plans/library-first/RESULTS.md)。本段补LIB-02、NAV-02、READ-04/05、REC-01与UI-01/04/05的明确组合，不关闭整项；使用MemoryCredentialStore，不新增强杀/安全存储或覆盖升级证明。
 
 下一步继续权威两类总数、保守标题/作者与服务端排序，再核对完整预览/阅读/管理、键盘和手势；500页4K/8K、目标手机/NAS和原签名升级仍待验证。冻结原型1cbf605独立可移除，生产backup_v2仍关闭；未改正式8760/NAS/SDK或发布正式APK。LF8/#33与总任务/#24保持开放。
 
 
 ## 2026-10-26：媒体库权威分类总数（PR #60）
 
-[Draft PR #60](https://github.com/ShiJiJS/video_viewer/pull/60)基于#59，固定实现910cfb2、证据提交b927026。媒体库“视频 N / 图包 N”复用library-state中的同一SQLite只读快照，按实际完整可浏览目录计数；搜索零结果和分页不改写全库数，标签/最近隐藏标记。失败显示“—”并可点分类重试，旧服务隐藏；连接代次和请求顺序拒绝旧响应，图包操作后只读重取。
+[Draft PR #60](https://github.com/ShiJiJS/shika/pull/60)基于#59，固定实现910cfb2、证据提交b927026。媒体库“视频 N / 图包 N”复用library-state中的同一SQLite只读快照，按实际完整可浏览目录计数；搜索零结果和分页不改写全库数，标签/最近隐藏标记。失败显示“—”并可点分类重试，旧服务隐藏；连接代次和请求顺序拒绝旧响应，图包操作后只读重取。
 
 客户端485项、服务端相关75项、analyze/Ruff通过。普通三轮、大字、短横屏五轮同源码共45个库存检查点，真实逻辑回收/恢复2/4→2/3→2/4，完整进度不变、最近/阅读会话0；同源码另10个续读回归检查点通过。215份manifest输入核对源码、55个前台窗口/原始图、SQL投影、26个源SHA与设备恢复；并发提交测试证明两个总数来自同一快照。75项是相关服务回归，不是服务端全集或目标机性能。
 
 受影响147dp顶栏与4785a69已实际渲染的冻结参考同状态并排；图包正文历史、标题/作者与排序仍有差异，不宣称整页完全一致。横屏键盘过渡暴露非当前标签页61dp可用高度下的79dp溢出，改为按实际空间约束并滚动操作区；两类标签缩高/恢复与原生横屏通过。正式取证不忽略Flutter异常，早期失败日志单列；本段未新增独立视觉评审或手势录屏。
 
-[设计与异步约定](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-catalog-counts/docs/plans/library-first/LF8-CATALOG-COUNTS.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-catalog-counts/docs/plans/library-first/evidence/lf8-catalog-counts/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-catalog-counts/docs/plans/library-first/RESULTS.md)。本段补LIB-01/02、UI-01/04/05的明确组合，不关闭整项。管理网关用于验证计数更新，不替代删除确认UI验收；MemoryCredentialStore不新增强杀/安全存储证明。
+[设计与异步约定](https://github.com/ShiJiJS/shika/blob/codex/lf8-catalog-counts/docs/plans/library-first/LF8-CATALOG-COUNTS.md) / [原始证据与只读复核](https://github.com/ShiJiJS/shika/blob/codex/lf8-catalog-counts/docs/plans/library-first/evidence/lf8-catalog-counts/README.md) / [逐项台账](https://github.com/ShiJiJS/shika/blob/codex/lf8-catalog-counts/docs/plans/library-first/RESULTS.md)。本段补LIB-01/02、UI-01/04/05的明确组合，不关闭整项。管理网关用于验证计数更新，不替代删除确认UI验收；MemoryCredentialStore不新增强杀/安全存储证明。
 
 下一段继续保守标题/作者与服务端一致排序，随后完整预览/阅读/管理、键盘手势、500页4K/8K、目标手机/NAS和原签名覆盖升级。冻结原型1cbf605独立可移除，backup_v2保持关闭；未改正式8760/NAS/SDK或发布APK。LF8/#33与总任务/#24保持开放。
 
 
 ## 2026-10-26：图包标题、作者与完整范围排序（PR #61）
 
-[Draft PR #61](https://github.com/ShiJiJS/video_viewer/pull/61)基于#60，固定源码4e391a2、证据提交614b135。图包卡片分开标题/作者，未知格式回退原名；原name/path/ID保留。续读、阅读器、范围、详情和最近复用显示标题，阅读头显示作者/编号；阅读角标补实际页码并移到左上，多选隐藏。
+[Draft PR #61](https://github.com/ShiJiJS/shika/pull/61)基于#60，固定源码4e391a2、证据提交614b135。图包卡片分开标题/作者，未知格式回退原名；原name/path/ID保留。续读、阅读器、范围、详情和最近复用显示标题，阅读头显示作者/编号；阅读角标补实际页码并移到左上，多选隐藏。
 
 能力pack_presentation将App图包名称排序统一映射为title；SQLite内同一ICU中文标题键贯穿分页、锚点、完整全选和创建阅读范围。保留name/默认旧调用、旧固定会话及newest/recent；不在App只重排一页。Docker固定已有ICU运行库，裸环境缺依赖不广告能力；无schema迁移或重扫要求。双倍字号切最近加入曾向右溢出51dp，现大字操作行可横向滚动，保留字号与两端完整动作。
 
@@ -190,45 +190,45 @@
 
 实际浏览器和原生四包顺序一致；参考以未保存snapshot配置冷库history为空、保留第三张页码，加载的HTML/CSS/运行脚本与冻结Git字节核对。完整并排不挪列或拉伸，已明确保留差异：桌面滚动条使参考列167.5dp/原生173dp，共享标签仍11dp，参考12dp/1.6行高和4dp上距；标签顺序、次要文字颜色、菜单图标与横屏列数继续复核。视频中文排序及完整管理/阅读/预览、手势、500页4K/8K、目标手机/NAS和原签名升级也仍开放。
 
-[设计与兼容约定](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-presentation/docs/plans/library-first/LF8-PACK-PRESENTATION.md) / [原始证据及只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-presentation/docs/plans/library-first/evidence/lf8-pack-presentation/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-pack-presentation/docs/plans/library-first/RESULTS.md)。本段补LIB-02/03及UI-01/04/05局部组合，不关闭整项；未新增独立视觉评审或手势录屏，MemoryCredentialStore不新增强停/安全存储证明。早期验证预期、指标锚点/懒加载与真实大字溢出日志均单列，失败轮次不计正式图。
+[设计与兼容约定](https://github.com/ShiJiJS/shika/blob/codex/lf8-pack-presentation/docs/plans/library-first/LF8-PACK-PRESENTATION.md) / [原始证据及只读复核](https://github.com/ShiJiJS/shika/blob/codex/lf8-pack-presentation/docs/plans/library-first/evidence/lf8-pack-presentation/README.md) / [逐项台账](https://github.com/ShiJiJS/shika/blob/codex/lf8-pack-presentation/docs/plans/library-first/RESULTS.md)。本段补LIB-02/03及UI-01/04/05局部组合，不关闭整项；未新增独立视觉评审或手势录屏，MemoryCredentialStore不新增强停/安全存储证明。早期验证预期、指标锚点/懒加载与真实大字溢出日志均单列，失败轮次不计正式图。
 
 下一段继续共享卡片标签密度与横屏排布、视频中文排序，再收口完整页面和动作。原型1cbf605独立可移除，backup_v2保持关闭；未改正式8760/NAS/SDK或发布APK。LF8/#33及总任务/#24保持开放。
 
 
 ## 2026-10-26：卡片标签密度与短横屏网格（PR #62）
 
-[Draft PR #62](https://github.com/ShiJiJS/video_viewer/pull/62)基于#61，固定源码e53e173、证据提交8812d24。视频/图包标签统一12dp/1.6和元信息后4dp间距，作者/方向色对齐参考；卡片按实际字形测量高度。媒体库及标签结果短横屏四列，其余两列，键盘高度不改变列数；重排和返回共用实际几何，保存稳定成员与行内偏移，不重排或重查服务结果。最近视频完整形态继续核对。
+[Draft PR #62](https://github.com/ShiJiJS/shika/pull/62)基于#61，固定源码e53e173、证据提交8812d24。视频/图包标签统一12dp/1.6和元信息后4dp间距，作者/方向色对齐参考；卡片按实际字形测量高度。媒体库及标签结果短横屏四列，其余两列，键盘高度不改变列数；重排和返回共用实际几何，保存稳定成员与行内偏移，不重排或重查服务结果。最近视频完整形态继续核对。
 
 客户端501项、analyze/Ruff通过。普通三轮、大字和短横屏30个卡片点，另共享8点、排序10点、续读10点、库存9点，共67张同源码原生前台图；277份manifest输入只读核对通过。120项组件样本验证两类双向重排及真实查询次数不增加；原生固定视口不冒充深列表旋转。26个公开源SHA、进度/会话SQL和设备恢复均保留。服务生产树未改，本段未重跑服务端测试；续读显式refresh沿用一次扫描，其余场景无扫描。
 
 独立存量视觉评审一轮及修正复核一轮：作者/方向偏浅的唯一问题已修正，相邻标题/标签/网格未损坏。首轮大字续读脚本等屏外摘要挂载超时，现先核对真实返回锚点，再实际滚回顶部；失败与首轮图片单列，不忽略异常。并排复用已核对冻结字节的冷库浏览器参考，仅移除真实安全区并按DPR等比降采样，不挪列或拉伸。
 
-[设计与返回约定](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-card-layout/docs/plans/library-first/LF8-CARD-LAYOUT.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-card-layout/docs/plans/library-first/evidence/lf8-card-layout/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-card-layout/docs/plans/library-first/RESULTS.md)。本段补LIB-02及UI-01/04/05局部组合，不关闭整项。标签顺序/菜单图标、桌面滚动条列宽、视频中文排序、完整最近/预览/阅读/管理及手势、500页4K/8K、目标手机/NAS和原签名升级继续。冻结原型1cbf605独立可移除，backup_v2仍关闭；未改正式8760/NAS/SDK或发布APK。LF8/#33与总任务/#24保持开放。
+[设计与返回约定](https://github.com/ShiJiJS/shika/blob/codex/lf8-card-layout/docs/plans/library-first/LF8-CARD-LAYOUT.md) / [原始证据与只读复核](https://github.com/ShiJiJS/shika/blob/codex/lf8-card-layout/docs/plans/library-first/evidence/lf8-card-layout/README.md) / [逐项台账](https://github.com/ShiJiJS/shika/blob/codex/lf8-card-layout/docs/plans/library-first/RESULTS.md)。本段补LIB-02及UI-01/04/05局部组合，不关闭整项。标签顺序/菜单图标、桌面滚动条列宽、视频中文排序、完整最近/预览/阅读/管理及手势、500页4K/8K、目标手机/NAS和原签名升级继续。冻结原型1cbf605独立可移除，backup_v2仍关闭；未改正式8760/NAS/SDK或发布APK。LF8/#33与总任务/#24保持开放。
 
 
 ## 2026-10-26：视频中文名称顺序与预览退出（PR #63）
 
-[Draft PR #63](https://github.com/ShiJiJS/video_viewer/pull/63)基于#62。实现a769d28、固定取证a8e94b2，生产树相同；证据提交8d65cb0。视频名称顺序在服务端贯穿分页、锚点、完整全选和固定播放范围，公开样本为“风里的花园→水边的花”。新客户端附可选name_locale=zh-CN，公共sort仍为name，旧请求和旧App可解析性保留；已有范围不因改名/新增或随机后恢复而改变原序。
+[Draft PR #63](https://github.com/ShiJiJS/shika/pull/63)基于#62。实现a769d28、固定取证a8e94b2，生产树相同；证据提交8d65cb0。视频名称顺序在服务端贯穿分页、锚点、完整全选和固定播放范围，公开样本为“风里的花园→水边的花”。新客户端附可选name_locale=zh-CN，公共sort仍为name，旧请求和旧App可解析性保留；已有范围不因改名/新增或随机后恢复而改变原序。
 
 真实回归同时修复退出时先销毁播放器、退场页面仍绘制导致的“No active player with ID”。现先卸载原生视图、等待本帧结束，再释放和返回；界面/系统返回两项检查在旧源码均失败、修正后通过。完整客户端505项、9个相关服务文件88项、analyze/Ruff通过；普通三轮/大字/短横屏40个视频点，加卡片6、共享8、图包呈现10，共64张同版原生图、256份manifest输入复核通过。27项跨页/固定成员与序号、实际解码/队列跳转/原筛选返回/最近去重、公开源SHA和设备恢复均核对。
 
 首屏等真实ready及可用动作后与实际浏览器冷库参考并排，冻结源字节核对，不挪列或拉伸。旧销毁异常、末尾面板固定帧等待不足、原生空字符串输入未生效的诊断单列；最终通过可见“清除”按钮验证实际查询清空。未新增独立视觉评审或完整手势录屏，88项非服务端全集，2视频夹具非真机/NAS性能证明。
 
-[设计与兼容约定](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-name-order/docs/plans/library-first/LF8-VIDEO-NAME-ORDER.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-name-order/docs/plans/library-first/evidence/lf8-video-name-order/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-name-order/docs/plans/library-first/RESULTS.md)。本段补LIB-01/03、预览/返回和UI局部组合；完整最近形态、视频文件名/时长显示、其它完整页面/手势、500页4K/8K、目标手机/NAS及原签名升级继续。原型1cbf605独立未改，backup_v2仍关闭；未发布APK或改正式8760/NAS/SDK，LF8/#33与总任务/#24保持开放。
+[设计与兼容约定](https://github.com/ShiJiJS/shika/blob/codex/lf8-video-name-order/docs/plans/library-first/LF8-VIDEO-NAME-ORDER.md) / [原始证据与只读复核](https://github.com/ShiJiJS/shika/blob/codex/lf8-video-name-order/docs/plans/library-first/evidence/lf8-video-name-order/README.md) / [逐项台账](https://github.com/ShiJiJS/shika/blob/codex/lf8-video-name-order/docs/plans/library-first/RESULTS.md)。本段补LIB-01/03、预览/返回和UI局部组合；完整最近形态、视频文件名/时长显示、其它完整页面/手势、500页4K/8K、目标手机/NAS及原签名升级继续。原型1cbf605独立未改，backup_v2仍关闭；未发布APK或改正式8760/NAS/SDK，LF8/#33与总任务/#24保持开放。
 
 ## 2026-10-26：最近视频/图包历史行（PR #64，首次阶段记录；修后结果见下节）
 
-[Draft PR #64](https://github.com/ShiJiJS/video_viewer/pull/64)基于#63。最近记录初次固定点2e971ac，键盘/错误提示修正bd2b34f，阶段证据12a3a8d。视频与图包统一为单列历史行，64×78封面、18/13dp标题/说明、普通111dp行高；普通空态对齐原型。视频显示标题隐藏已知扩展名、时长按播放器整秒显示，原名/路径/ID保留。视频分页补24项/120项窗口、前补/淘汰补偿、页尾锚点及分页变化后的定位重试。
+[Draft PR #64](https://github.com/ShiJiJS/shika/pull/64)基于#63。最近记录初次固定点2e971ac，键盘/错误提示修正bd2b34f，阶段证据12a3a8d。视频与图包统一为单列历史行，64×78封面、18/13dp标题/说明、普通111dp行高；普通空态对齐原型。视频显示标题隐藏已知扩展名、时长按播放器整秒显示，原名/路径/ID保留。视频分页补24项/120项窗口、前补/淘汰补偿、页尾锚点及分页变化后的定位重试。
 
 客户端516项、相关服务26项、analyze/Ruff通过。2e971ac的15个真实普通字号点验证实际视频首帧与最近固定1项范围、两条历史、图包续读与最近2包范围、返回、两类503保留/重试、独立媒体库草稿；只读区间完整进度不变，26份源字节不变。101份manifest输入的只读复核通过；这只证明所列阶段边界。
 
 普通/双倍字号独立存量评审未见列表/空态/返回裁切重叠，仅提出错误提示边距/颜色不一致。最新实现已统一本轮错误提示，并针对短横屏键盘暂时收起标题/导航、保留分类/搜索，组件检查覆盖280dp键盘及恢复。修后原生复核尚未通过：最后测试Android的window/settings系统服务退出，ADB仍连接，自动配置恢复失败，专用8768容器已清理，未重启/卸载/清数据。不能以旧版15图或516项组件检查冒充新版普通三轮、大字/短横屏或手势验收。
 
-[设计与限制](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-recent-history/docs/plans/library-first/LF8-RECENT-HISTORY.md) / [阶段证据与只读校验](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-recent-history/docs/plans/library-first/evidence/lf8-recent-history/README.md)。继续先恢复本轮模拟器配置并补最新原生证据、同一问题复核，再推进其它完整页面/手势、500页4K/8K、目标手机/NAS和原签名升级。冻结原型1cbf605独立未改，backup_v2仍关闭；未改生产8760/NAS/SDK或发布APK，LF8/#33与总任务/#24保持开放。
+[设计与限制](https://github.com/ShiJiJS/shika/blob/codex/lf8-recent-history/docs/plans/library-first/LF8-RECENT-HISTORY.md) / [阶段证据与只读校验](https://github.com/ShiJiJS/shika/blob/codex/lf8-recent-history/docs/plans/library-first/evidence/lf8-recent-history/README.md)。继续先恢复本轮模拟器配置并补最新原生证据、同一问题复核，再推进其它完整页面/手势、500页4K/8K、目标手机/NAS和原签名升级。冻结原型1cbf605独立未改，backup_v2仍关闭；未改生产8760/NAS/SDK或发布APK，LF8/#33与总任务/#24保持开放。
 
 ## 2026-10-26：最近记录修后原生复核（PR #64）
 
-[Draft PR #64](https://github.com/ShiJiJS/video_viewer/pull/64)基于#63，最终取证源b2ce2a8、生产界面源01bf735，证据提交33b84f4。视频和图包均为111dp普通历史行；显示标题、时长、真实阅读位置和24项/120项视频窗口已补齐。最近分别使用各自真实打开记录及完整固定范围，返回保留来源位置和独立媒体库草稿。
+[Draft PR #64](https://github.com/ShiJiJS/shika/pull/64)基于#63，最终取证源b2ce2a8、生产界面源01bf735，证据提交33b84f4。视频和图包均为111dp普通历史行；显示标题、时长、真实阅读位置和24项/120项视频窗口已补齐。最近分别使用各自真实打开记录及完整固定范围，返回保留来源位置和独立媒体库草稿。
 
 客户端完整518项、相关服务26项、analyze及夹具/脚本Ruff通过。lib/test及本轮integration文件format通过；全量integration另有既存server_files_test.dart格式差异，诊断单列且未修改。普通三轮、大字、短横屏各17点共85点；同源视频顺序8点及卡片6点回归，共99个原生前台检查点。323份manifest输入的只读校验通过：原始图/窗口、源码、SQL成员/序号、503到重试只读与完整进度相等、26个媒体源SHA及七轮设备恢复均核对。26项不是服务端全集，小夹具不是目标机性能证明。
 
@@ -236,11 +236,11 @@
 
 此前Android系统服务退出后，按开发文档受控重启同一AVD并使用host图形后端，保留userdata、没有wipe/卸载/清数据；确认window/settings服务恢复及原显示配置，再完成七轮。Binder报错不能证明磁盘或GPU根因，恢复证据单列。旧101份阶段证据保持原样，不能代替本轮修后材料。
 
-[最终证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-recent-history/docs/plans/library-first/evidence/lf8-recent-history-final/README.md) / [设计与来源约定](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-recent-history/docs/plans/library-first/LF8-RECENT-HISTORY.md)。本段补REC-01、来源返回及UI-01/04/05的明确组合，不关闭整项。继续完整预览/阅读/管理同状态对照、手势录屏、其它异常/旧服务、500页4K/8K；目标手机/NAS、原签名覆盖升级仍待配合，按授权暂跳过。MemoryCredentialStore不新增强杀/安全存储证明。冻结原型1cbf605独立未改，backup_v2仍关闭；未改正式8760/NAS/SDK或发布APK。LF8/#33及总任务/#24保持开放。
+[最终证据与只读复核](https://github.com/ShiJiJS/shika/blob/codex/lf8-recent-history/docs/plans/library-first/evidence/lf8-recent-history-final/README.md) / [设计与来源约定](https://github.com/ShiJiJS/shika/blob/codex/lf8-recent-history/docs/plans/library-first/LF8-RECENT-HISTORY.md)。本段补REC-01、来源返回及UI-01/04/05的明确组合，不关闭整项。继续完整预览/阅读/管理同状态对照、手势录屏、其它异常/旧服务、500页4K/8K；目标手机/NAS、原签名覆盖升级仍待配合，按授权暂跳过。MemoryCredentialStore不新增强杀/安全存储证明。冻结原型1cbf605独立未改，backup_v2仍关闭；未改正式8760/NAS/SDK或发布APK。LF8/#33及总任务/#24保持开放。
 
 ## 2026-10-26：阅读画布、工具与固定面板操作区（PR #65）
 
-[Draft PR #65](https://github.com/ShiJiJS/video_viewer/pull/65)基于#64。
+[Draft PR #65](https://github.com/ShiJiJS/shika/pull/65)基于#64。
 
 短横屏采用冻结原型的完整画布、浮动顶栏与360dp窄底栏，快速整理最多430dp；隐藏的总览/沉浸从更多菜单可达。竖屏保留既有顺序，收拢页码/工具/来源比例；双倍字号来源与包切换分行，保留完整来源及自然字体。设置的“继续阅读”和范围分页固定在面板底部，正文独立滚动，普通/大字分组分别留16/24dp。
 
@@ -250,11 +250,11 @@
 
 独立存量视觉评审首轮及同清单复核：短横屏设置按钮裁切、大字标签边界冲突、大字来源省略、横屏分页收尾四项均在静态范围完成，没有新增必须修正项。正文超出时仍需滚动，不声称所有设置或四个成员均在横屏首屏显示。与实际浏览器冻结参考并排仅去真实安全区、按DPR等比降采样并补中性空白，不拉伸或挪动元素；真实平台行高差异保留。
 
-[设计与实现约束](LF8-READER-CHROME.md) / [固定源码、原图、诊断和只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-chrome/README.md)。本段补READ-01–05及UI-02/04/05的明确组合，不关闭完整验收项。继续完整预览、阅读其它异常/方向/手势、完整管理、500页4K/8K和目标手机/NAS及原签名覆盖升级；需用户配合部分按授权暂跳过。原型1cbf605独立可移除、backup_v2生产能力仍关闭，MemoryCredentialStore不新增强杀/安全存储证明；未改正式8760/NAS/SDK或发布APK。LF8/#33及总任务/#24保持开放。
+[设计与实现约束](LF8-READER-CHROME.md) / [固定源码、原图、诊断和只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-chrome/README.md)。本段补READ-01–05及UI-02/04/05的明确组合，不关闭完整验收项。继续完整预览、阅读其它异常/方向/手势、完整管理、500页4K/8K和目标手机/NAS及原签名覆盖升级；需用户配合部分按授权暂跳过。原型1cbf605独立可移除、backup_v2生产能力仍关闭，MemoryCredentialStore不新增强杀/安全存储证明；未改正式8760/NAS/SDK或发布APK。LF8/#33及总任务/#24保持开放。
 
 ## 2026-10-26：视频预览范围、播放控件与操作面板（PR #66）
 
-[Draft PR #66](https://github.com/ShiJiJS/video_viewer/pull/66)基于#65。
+[Draft PR #66](https://github.com/ShiJiJS/shika/pull/66)基于#65。
 
 控制条按实际文字宽度排布，空间不足时分行，保留至少88dp拖动轨道及原字号；短横屏中央播放按钮避让控制条，空间不足时保留明确的控制条播放入口。面板覆盖期间禁用播放/速度，关闭后恢复原播放意图。范围正文统一滚动，保留有界读取和当前项定位；补完整筛选来源、浅/暗色切换及大字整理动作排布。
 
@@ -264,11 +264,11 @@
 
 独立存量评审一轮、同清单三次追加；暗色取图等实际主题与图标颜色完成，稳定态低对比项关闭；大字结束计数和队列说明孤字项关闭。保留原始观察和全部修后材料，不外推动态结论。普通短队列83%固定高度留白、横屏640dp面板宽及工具图标仍与冻结原型不同，继续列入UI-02/05，不能以本次评审关闭代替整页一致。
 
-[实现约束](LF8-PREVIEW-PANELS.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-panels/README.md) / [逐项台账](RESULTS.md)。本段补PRE-01/02/04、来源返回及UI-02/04/05明确组合；完整预览其它异常/后台/全屏设备手势与录屏、完整管理、500页4K/8K、目标手机/NAS及原签名升级继续。固定视口不能冒充实际旋转，小型公开视频不能冒充目标机性能。原型1cbf605独立未改，backup_v2生产能力仍关闭；MemoryCredentialStore不新增强杀/安全存储证明，未发布APK或修改正式8760/NAS/SDK。LF8/#33与总任务/#24保持开放。
+[实现约束](LF8-PREVIEW-PANELS.md) / [原始证据与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-panels/README.md) / [逐项台账](RESULTS.md)。本段补PRE-01/02/04、来源返回及UI-02/04/05明确组合；完整预览其它异常/后台/全屏设备手势与录屏、完整管理、500页4K/8K、目标手机/NAS及原签名升级继续。固定视口不能冒充实际旋转，小型公开视频不能冒充目标机性能。原型1cbf605独立未改，backup_v2生产能力仍关闭；MemoryCredentialStore不新增强杀/安全存储证明，未发布APK或修改正式8760/NAS/SDK。LF8/#33与总任务/#24保持开放。
 
 ## 2026-10-26：范围面板尺寸、Paper轮廓与紧凑整理条（PR #67）
 
-[Draft PR #67](https://github.com/ShiJiJS/video_viewer/pull/67)基于#66。
+[Draft PR #67](https://github.com/ShiJiJS/shika/pull/67)基于#66。
 
 按上一段实际并排的残差继续对齐冻结原型：短队列随内容收缩、长队列上限后滚动，横屏预览范围改为可用全宽；恢复圆角描边选择、当前项边界、来源/说明层级与三个工具/方框播放轮廓。快速整理恢复浅绿紧凑条、文字动作和危险文字色，普通状态标题按原型保留，大字优先完整两动作。标题“范围”和视频数量按完整短语换行；新增真实滚到底部的完整说明和固定关闭检查。
 
@@ -278,22 +278,22 @@
 
 真实服务仍核对单项搜索返回、固定1/2候选与完整成员/序号、实际暂停/拖进度/倍速与长按恢复、面板/整理显隐和最近去重；26个源SHA与五轮设备显示配置恢复一致，无标签/删除/图包操作提交。服务生产/测试树同4bf060b，本段未重跑服务测试。完整预览其它异常/全屏/后台/手势录屏、完整管理、500页4K/8K、目标手机/NAS与原签名覆盖升级继续；需用户配合部分按授权暂跳过。原型1cbf605独立可移除且未改，backup_v2生产能力仍关闭，MemoryCredentialStore不新增强杀/安全存储证明；未改正式8760/NAS/SDK或发布APK。#33/#24保持开放。
 
-[实现约束](LF8-PREVIEW-GEOMETRY.md) / [固定源码证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-geometry/README.md) / [逐项台账](RESULTS.md)。
+[实现约束](LF8-PREVIEW-GEOMETRY.md) / [固定源码证据与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-geometry/README.md) / [逐项台账](RESULTS.md)。
 
 
 ## 2026-10-26：设置表单、媒体目录与真实键盘（PR #68）
 
-[Draft PR #68](https://github.com/ShiJiJS/video_viewer/pull/68)基于#67，最终源码81b598f（生产界面同57edbc8）。连接/目录保持全高度管理页，文字输入恢复外置标签与近白输入面，类型/方向/适配使用开放设置行；保留图片适配、显式保存和原请求核对。正常完成扫描收为可展开摘要，异常仍显示详情；错误滚入可见区，极短键盘窗口允许动作随正文滚动，当前值与焦点保持可见。共享Paper短面板全宽，修正短媒体库状态区消息/重试可达。
+[Draft PR #68](https://github.com/ShiJiJS/shika/pull/68)基于#67，最终源码81b598f（生产界面同57edbc8）。连接/目录保持全高度管理页，文字输入恢复外置标签与近白输入面，类型/方向/适配使用开放设置行；保留图片适配、显式保存和原请求核对。正常完成扫描收为可展开摘要，异常仍显示详情；错误滚入可见区，极短键盘窗口允许动作随正文滚动，当前值与焦点保持可见。共享Paper短面板全宽，修正短媒体库状态区消息/重试可达。
 
 完整客户端550项、analyze、181个Dart文件format与runner Ruff通过。普通三轮/大字/横屏105个设置点，另阅读13/预览20/最近17个短横屏回归，共155个同源码原生前台图。设置核对端口错误、真实目录类型409、草稿取消、默认值保存/重开读回/恢复；活动2成员视频范围、根记录和夹具原进度不变，阅读默认只两次写入/revision2、播放默认未写。八轮源SHA及显示配置恢复核对；阅读/最近回归产生的会话和进度按各自预期另核对。服务生产/测试树同8b68804，本段未重跑服务测试。
 
 独立存量首轮与同清单复核，2问题/2提升均关闭：横屏连接焦点遮挡、表单还原、大字时间行首分隔点、类型冲突重复说明。原始图与不拉伸的并排、先行不稳定截图、真实溢出修正及两次QEMU自身崩溃/恢复分开归档；中断不计最终通过。主题文件IO测试改为等待真实保存/错误，相关两分支连续三轮及最终550通过，不隐藏原失败。
 
-[设计与边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-settings-forms/docs/plans/library-first/LF8-SETTINGS-FORMS.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-settings-forms/docs/plans/library-first/evidence/lf8-settings-forms/README.md) / [逐项台账](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-settings-forms/docs/plans/library-first/RESULTS.md)。本段补SET-01/02/04与UI-03/04/05明确组合，完整其它管理、预览/阅读异常与手势录屏、500页4K/8K、目标手机/NAS及原签名升级继续；需配合部分按授权暂跳过。原型1cbf605独立未改且可移除，backup_v2仍关闭，MemoryCredentialStore不新增强停/安全存储证明；未改正式8760/NAS/SDK或发布APK。#33/#24保持开放。
+[设计与边界](https://github.com/ShiJiJS/shika/blob/codex/lf8-settings-forms/docs/plans/library-first/LF8-SETTINGS-FORMS.md) / [原始证据与只读复核](https://github.com/ShiJiJS/shika/blob/codex/lf8-settings-forms/docs/plans/library-first/evidence/lf8-settings-forms/README.md) / [逐项台账](https://github.com/ShiJiJS/shika/blob/codex/lf8-settings-forms/docs/plans/library-first/RESULTS.md)。本段补SET-01/02/04与UI-03/04/05明确组合，完整其它管理、预览/阅读异常与手势录屏、500页4K/8K、目标手机/NAS及原签名升级继续；需配合部分按授权暂跳过。原型1cbf605独立未改且可移除，backup_v2仍关闭，MemoryCredentialStore不新增强停/安全存储证明；未改正式8760/NAS/SDK或发布APK。#33/#24保持开放。
 
 ## 2026-10-26：缺失内容管理与待核对结果（PR #69）
 
-[Draft PR #69](https://github.com/ShiJiJS/video_viewer/pull/69)基于 #68，生产及主流程源码固定 2369f0d，证据提交 8813c78。缺失内容改为 Paper 全高度页，视频/图包继续分别读取；名称、完整路径、类型/标签、实际根目录状态分层，保留 24 条分页、刷新、原请求和任务详情。危险清理位于列表之后，短确认层保留完整风险说明；普通/大字标题为 52/72dp，正文 20dp，次级色与原型浅暗色一致。
+[Draft PR #69](https://github.com/ShiJiJS/shika/pull/69)基于 #68，生产及主流程源码固定 2369f0d，证据提交 8813c78。缺失内容改为 Paper 全高度页，视频/图包继续分别读取；名称、完整路径、类型/标签、实际根目录状态分层，保留 24 条分页、刷新、原请求和任务详情。危险清理位于列表之后，短确认层保留完整风险说明；普通/大字标题为 52/72dp，正文 20dp，次级色与原型浅暗色一致。
 
 修正两个真实长列表问题：底部提交后先揭示顶部错误/原请求入口，避免惰性项未挂载而滚动失效；显式翻页成功回到新页开头，读取失败仍保留原页、成员及偏移。通用联调的原型元数据改为可空，不再要求独立设计目录一定存在；未据此声称已完成删除原型后的构建演练。
 
@@ -301,12 +301,12 @@
 
 独立存量首轮、中间普通复核、最终三视口及页尾补充复核，冻结 1 问题/1 提升已关闭：次级色过浅和分页到清理的间距已处理，完整页尾与确认末句可读。保留原生字体/真实安全区差异，静态图不作为完整动效或手势证明。失败脚本前置、真实结果不可见、分页起点修正和两次 QEMU 崩溃/恢复均单列诊断，不计最终成功点。
 
-[实现与边界](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-missing-management/docs/plans/library-first/LF8-MISSING-MANAGEMENT.md) / [原图、固定源码与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-missing-management/docs/plans/library-first/evidence/lf8-missing-management/README.md)。本段补 SET-04、DEL-06 与 UI-03/04/05 的明确组合，完整其它管理、旧服务/扫描异常、预览/阅读手势、500 页 4K/8K、目标手机/NAS和原签名升级继续；需配合部分按授权暂跳过。冻结原型 1cbf605 独立未改且可移除，backup_v2 仍关闭，未发布 APK 或改正式 8760/NAS/SDK。#33/#24 保持开放。
+[实现与边界](https://github.com/ShiJiJS/shika/blob/codex/lf8-missing-management/docs/plans/library-first/LF8-MISSING-MANAGEMENT.md) / [原图、固定源码与只读复核](https://github.com/ShiJiJS/shika/blob/codex/lf8-missing-management/docs/plans/library-first/evidence/lf8-missing-management/README.md)。本段补 SET-04、DEL-06 与 UI-03/04/05 的明确组合，完整其它管理、旧服务/扫描异常、预览/阅读手势、500 页 4K/8K、目标手机/NAS和原签名升级继续；需配合部分按授权暂跳过。冻结原型 1cbf605 独立未改且可移除，backup_v2 仍关闭，未发布 APK 或改正式 8760/NAS/SDK。#33/#24 保持开放。
 
 
 ## 2026-10-26：双类型回收站、逐行恢复与待核对选择（PR #70）
 
-[Draft PR #70](https://github.com/ShiJiJS/video_viewer/pull/70)，证据提交f5493f4。本段基于#69，最终生产及主流程固定88a45ec。视频／图包回收站统一为Paper全高度管理页：20dp正文、名称／完整路径、左侧勾选、逐行恢复和底部选择动作。短列表动作跟随内容；长列表保留可见收尾，真实IME或极短高度时随正文滚动。24项分页、图包搜索、刷新、原请求与任务入口继续保留；成功翻页回到新页开头，读取失败保持成员、偏移和选择。
+[Draft PR #70](https://github.com/ShiJiJS/shika/pull/70)，证据提交f5493f4。本段基于#69，最终生产及主流程固定88a45ec。视频／图包回收站统一为Paper全高度管理页：20dp正文、名称／完整路径、左侧勾选、逐行恢复和底部选择动作。短列表动作跟随内容；长列表保留可见收尾，真实IME或极短高度时随正文滚动。24项分页、图包搜索、刷新、原请求与任务入口继续保留；成功翻页回到新页开头，读取失败保持成员、偏移和选择。
 
 原生核查修复两处实际状态问题：查询原请求成功后只释放对应26个选择，后来新选成员保留；ListView保持同一视口类型，避免键盘弹出切布局时丢失焦点。核实前显示“保留选择N／恢复结果待核对”，阻止相交内容的重叠恢复与删除；逐行确认写“恢复1个图包”，与批量选择区分。恢复确认和任务终态说明精简，真实停止结果仍保留。
 
@@ -314,51 +314,51 @@
 
 独立存量评审沿冻结2问题/1提升复核页签锚线与通栏细线、未知选择语义、单项确认及终态减字，三视口可见项已静态闭合。另同生产补横屏unknown页尾1图，确认保留选择／核对说明／禁用动作完整；补轮原生只提交一次26恢复、零原GET，源SHA与视频响应保持。原始基线首阶段通过但旧runner误启动第二阶段，整体失败；旧选择问题、键盘焦点及惰性列表脚本等待失败另归诊断，不计最终成功点。
 
-[实现与边界](LF8-TRASH-MANAGEMENT.md) / [原图、固定源码及只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-trash-management/README.md)。本段补DEL-04/06与UI-03/04/05明确组合，完整永久删除复核／部分失败、备份／任务管理、其它预览／阅读异常与手势、500页4K/8K、目标手机/NAS及原签名升级继续。MemoryCredentialStore不新增安全存储或真实强停证明；冻结原型1cbf605独立未改且可移除，backup_v2仍关闭，未发布APK或改正式8760/NAS/SDK。#33/#24保持开放。
+[实现与边界](LF8-TRASH-MANAGEMENT.md) / [原图、固定源码及只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-trash-management/README.md)。本段补DEL-04/06与UI-03/04/05明确组合，完整永久删除复核／部分失败、备份／任务管理、其它预览／阅读异常与手势、500页4K/8K、目标手机/NAS及原签名升级继续。MemoryCredentialStore不新增安全存储或真实强停证明；冻结原型1cbf605独立未改且可移除，backup_v2仍关闭，未发布APK或改正式8760/NAS/SDK。#33/#24保持开放。
 
 
 ## 2026-10-27：备份与操作任务（PR #71）
 
-[Draft PR #71](https://github.com/ShiJiJS/video_viewer/pull/71)补BAK-01/02/03、UI-03/04/05的明确组合：Paper备份／短长恢复预览／任务列表及详情，37项相关检查三轮、三视口63点，原请求、源SHA与完整恢复／快照独立核对。生产e10bbbc，archive等待脚本30bc9d7；证据b9ccf92及521份manifest输入已复核。
+[Draft PR #71](https://github.com/ShiJiJS/shika/pull/71)补BAK-01/02/03、UI-03/04/05的明确组合：Paper备份／短长恢复预览／任务列表及详情，37项相关检查三轮、三视口63点，原请求、源SHA与完整恢复／快照独立核对。生产e10bbbc，archive等待脚本30bc9d7；证据b9ccf92及521份manifest输入已复核。
 
-[逐项结果](RESULTS.md)和[原始证据／边界](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-backup-task-management/README.md)保留失败、中间版本及静态未覆盖组合。整体验收继续开放；下一段推进永久删除复核与部分失败，其它大文件／故障／系统选择器、手势、性能和需配合部分仍按台账推进。原型独立未改且可移除，backup_v2生产仍关闭，未发布APK。
+[逐项结果](RESULTS.md)和[原始证据／边界](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-backup-task-management/README.md)保留失败、中间版本及静态未覆盖组合。整体验收继续开放；下一段推进永久删除复核与部分失败，其它大文件／故障／系统选择器、手势、性能和需配合部分仍按台账推进。原型独立未改且可移除，backup_v2生产仍关闭，未发布APK。
 
 ## 2026-10-27：原型可移除构建演练与当前整合回归（PR #75）
 
-[Draft PR #75](https://github.com/ShiJiJS/video_viewer/pull/75)基于#74，固定源码7c70e59。将整个Git提交导出到新建副本，仅移除副本内72份`design/reference/`文件，12,145份保留文件与固定提交全部blob独立逐字节核对；App package root实际指向副本，Git discovery上界避免借用父仓库。构建后保留源码与原仓库参考文件SHA均未变，副本参考目录保持不存在。冻结原型树1cbf605在原仓库独立保留。
+[Draft PR #75](https://github.com/ShiJiJS/shika/pull/75)基于#74，固定源码7c70e59。将整个Git提交导出到新建副本，仅移除副本内72份`design/reference/`文件，12,145份保留文件与固定提交全部blob独立逐字节核对；App package root实际指向副本，Git discovery上界避免借用父仓库。构建后保留源码与原仓库参考文件SHA均未变，副本参考目录保持不存在。冻结原型树1cbf605在原仓库独立保留。
 
 同一副本Flutter analyze、完整643项客户端测试、debug/release APK构建、服务镜像Ruff check和完整Linux pytest 447项通过；初次pub解析离线且强制锁文件，构建使用标准Flutter模式注册。两包Flutter资产清单不含原型路径，Flutter引擎仅ARM64，JNI依赖另含armeabi-v7a/x86_64；release DEX无integration_test插件路径。APK仅本机构建，沿现有开发签名、未递增版本，不作为原签名升级包。服务格式检查仍有27份存量文件失败，单列保留，未误报全部门禁通过。
 
 首轮debug后错误复用`--no-pub`使release残留测试插件注册而失败，`complete:false`与原始日志保留；同副本标准release通过只作诊断，修正脚本后按7c70e59重新完整跑第二轮。未修改SDK或移除开发测试依赖。输出安全检查拒绝仓库根目录、整个.dev及已有目录；实际只删除一次性导出副本。
 
-[实施与边界](LF8-REFERENCE-ISOLATION.md) / [固定源码、原始日志与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reference-isolation/README.md)。此段证明实际移除参考目录后的构建/测试隔离，服务用例覆盖大于32MiB HTTP备份和500页4K/8K扫描，但不证明Android长包渲染、真机/NAS性能、系统选择器、完整手势或原签名覆盖升级。#24/#33及整体验收保持开放；需用户配合项按授权暂跳过。原型树独立未改，backup_v2生产仍关闭，未发布APK或修改正式8760/NAS。
+[实施与边界](LF8-REFERENCE-ISOLATION.md) / [固定源码、原始日志与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reference-isolation/README.md)。此段证明实际移除参考目录后的构建/测试隔离，服务用例覆盖大于32MiB HTTP备份和500页4K/8K扫描，但不证明Android长包渲染、真机/NAS性能、系统选择器、完整手势或原签名覆盖升级。#24/#33及整体验收保持开放；需用户配合项按授权暂跳过。原型树独立未改，backup_v2生产仍关闭，未发布APK或修改正式8760/NAS。
 
 ## 2026-10-27：图包瞬断重试与500页/大图阅读（PR #76）
 
-[Draft PR #76](https://github.com/ShiJiJS/video_viewer/pull/76)基于#75。真实大图响应头前连接关闭暴露自动恢复缺口，生产固定f8631ae：SocketException/HttpException沿现有400/800ms、最多两次自动重试；持续失败仍可手动重试/跳过，失败不记进度，离页取消定时器。布局、服务业务、SDK和冻结原型均未改。新增3项回归在修复前两项失败、修后通过；12项相关与完整646项客户端测试、analyze/格式/Ruff通过。服务447项全集仍归属#75，本段未重跑。
+[Draft PR #76](https://github.com/ShiJiJS/shika/pull/76)基于#75。真实大图响应头前连接关闭暴露自动恢复缺口，生产固定f8631ae：SocketException/HttpException沿现有400/800ms、最多两次自动重试；持续失败仍可手动重试/跳过，失败不记进度，离页取消定时器。布局、服务业务、SDK和冻结原型均未改。新增3项回归在修复前两项失败、修后通过；12项相关与完整646项客户端测试、analyze/格式/Ruff通过。服务447项全集仍归属#75，本段未重跑。
 
 最终驱动/采集固定df9d80c，生产与组件测试字节同f8631ae。同一API36 ARM64专用AVD、软件GPU/headless、390×844/DPR3/字号1、App无渲染覆盖，连续三轮均从媒体库进入500页，经730次实际拖动覆盖所有页；末页横纵切换、固定4包范围、三次4K/6K/8K实际解码往返、返回媒体库再续读及纵向偏好，均核对实际可见帧、HTTP与只读SQL。共39个前台点、6段原生录屏（全帧解码通过），源SHA相同，显示基线恢复。宿主GPU退出139、长扫描准备、旧图像传输失败及驱动/采样就绪问题分别留档，不拼为成功。
 
 元数据峰值120、provider 6项/估算24.4MiB、Flutter缓存约26.8MiB/待解码4；全部采样与检查点PSS最高480.8/631.4/462.9MiB。不同指标不互作上限，debug驱动节奏及高压缩纯色合成图不代表真实照片、SMB或目标手机/NAS性能。第一轮一次已处理离屏长包预读HttpException保留；没有原生当前大图故障注入，自动恢复/重试上限由组件检查证明。标准ARM64 release编译成功，资产无原型路径且release DEX无integration_test；仅本机构建、开发签名和原版本，不发布或冒称原签名升级。
 
-[实施与边界](LF8-READER-LONG-PACK.md) / [固定源码、原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-long-pack/README.md)。本段补READ-01..06、PKG-03与UI-02的明确组合，未据此关闭整项。目标手机/NAS峰值与30次p50/p95、其它方向/缩放/大字/手势及异常、系统选择器和原签名覆盖升级继续；需配合部分按授权暂跳过。原型树1cbf605独立未改且可移除，backup_v2生产仍关闭，未改正式8760/NAS。#24/#33保持开放。
+[实施与边界](LF8-READER-LONG-PACK.md) / [固定源码、原始证据与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-long-pack/README.md)。本段补READ-01..06、PKG-03与UI-02的明确组合，未据此关闭整项。目标手机/NAS峰值与30次p50/p95、其它方向/缩放/大字/手势及异常、系统选择器和原签名覆盖升级继续；需配合部分按授权暂跳过。原型树1cbf605独立未改且可移除，backup_v2生产仍关闭，未改正式8760/NAS。#24/#33保持开放。
 
 ## 2026-10-27：当前视频预览的全屏/后台原生链路（PR #77）
 
-[Draft PR #77](https://github.com/ShiJiJS/video_viewer/pull/77)基于#76，最终驱动/采集98507ea。生产App、组件测试及服务业务树与605badb相同；新增当前媒体库→二级预览→实际全屏/系统操作的演练，修正采集器录屏回收失败后仍应恢复设备并清理精确自建容器的问题，原型元数据可空。
+[Draft PR #77](https://github.com/ShiJiJS/shika/pull/77)基于#76，最终驱动/采集98507ea。生产App、组件测试及服务业务树与605badb相同；新增当前媒体库→二级预览→实际全屏/系统操作的演练，修正采集器录屏回收失败后仍应恢复设备并清理精确自建容器的问题，原型元数据可空。
 
 独立8768的公开三视频变体（第三项复用公开横屏字节，普通原型场景仍2项）、4包/24PNG，API36 ARM64专用AVD、software GPU/headless、关闭宿主HardwareDecoder、App无渲染覆盖。固定98507ea连续三轮行为通过：45个前台截图/焦点/内存点、21次1600逻辑px/s fling、6次实际Home往返、12段旋转分段录屏（全帧解码通过）。同一控制器/暂停位置跨真实旋转保持；1.5倍/临时2倍、左右原生亮度/音量、后台释放与前台暂停、系统返回先退全屏、当前±1共3控制器/仅当前playing且volume>0、真实设置关闭准备后1控制器及离页释放，分别分别核对实际UI暂停意图、可见VideoPlayer与原生值。两轮固定3成员/序号、最近3实际视频、27源SHA和显示/音量恢复经请求、API与只读SQL核对。
 
 15项相关客户端检查、App/最终驱动analyze、变更Dart格式和Python Ruff通过；完整646/447分别保留#76/#75源码归属，本段未重跑全集或构建release。早期随机默认/当前锚点假设、队列异步挂载、显示控件时重复切换的驱动失败、历史成功、QEMU实际139退出/恢复均分开留档，不计最终三轮。关闭宿主视频解码是本地启动条件，未改SDK；成功不证明旧宿主解码路径崩溃根因。
 
-**实际画面仍有未解决问题：**关闭宿主解码后的横屏右侧绿边已与源帧和相同生产树的宿主解码原图对照，登记[渲染/稳定性 #78](https://github.com/ShiJiJS/video_viewer/issues/78)。根因尚未证明，不能以行为通过或录屏可解码判定UI-02画面完整性通过；保留原图继续定位，不裁边或换素材掩盖。
+**实际画面仍有未解决问题：**关闭宿主解码后的横屏右侧绿边已与源帧和相同生产树的宿主解码原图对照，登记[渲染/稳定性 #78](https://github.com/ShiJiJS/shika/issues/78)。根因尚未证明，不能以行为通过或录屏可解码判定UI-02画面完整性通过；保留原图继续定位，不裁边或换素材掩盖。
 
-[实施范围](LF8-PREVIEW-LIFECYCLE.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-lifecycle/README.md)。本段补PRE-04/05、NAV-02及UI-02的明确行为组合；实际三个小视频不证明重叠初始化/迟到回执、全部格式/来源/主题/字体或目标手机/NAS性能。MemoryCredentialStore/内存偏好与Home不新增强停/凭据/落盘证明。原型1cbf605独立未改且可移除，backup_v2生产仍关闭，未改正式8760/NAS或发布APK。#24/#33/#78保持开放，需用户配合项按授权暂跳过。
+[实施范围](LF8-PREVIEW-LIFECYCLE.md) / [原始证据与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-lifecycle/README.md)。本段补PRE-04/05、NAV-02及UI-02的明确行为组合；实际三个小视频不证明重叠初始化/迟到回执、全部格式/来源/主题/字体或目标手机/NAS性能。MemoryCredentialStore/内存偏好与Home不新增强停/凭据/落盘证明。原型1cbf605独立未改且可移除，backup_v2生产仍关闭，未改正式8760/NAS或发布APK。#24/#33/#78保持开放，需用户配合项按授权暂跳过。
 
 
 ## 2026-10-27：本地视频画面与开发启动配置（PR #79）
 
-[Draft PR #79](https://github.com/ShiJiJS/video_viewer/pull/79)已创建并附于任务。
+[Draft PR #79](https://github.com/ShiJiJS/shika/pull/79)已创建并附于任务。
 
 对应#78/#33/#24，基于#77，当前完整App采集固定7740f4d。最小同源比较确认：关闭宿主解码时，Flutter textureView在Impeller/Skia均复现129列绿条；platformView与原生MediaPlayer两入口无该条。byte-buffer codec逻辑/裁切960×540、stride1024仅为独立路径数据，不证明Surface根因。选择software GPU、Vulkan关闭、GLDMA关闭、宿主解码开启的本地配置，保留产品播放器实现；实际AVC属性2、日志c2.goldfish.h264.decoder。
 
@@ -368,12 +368,12 @@
 
 flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX诊断Activity与integration_test排除、原型页面资产排除及原证书核对通过；仍0.1.4+5，只在本地构建。Flutter应用/引擎为ARM64，依赖另携带其它ABI的libdartjni.so辅助库，不当作完整跨ABI应用。相关15项组件与646/447全集沿用既有固定业务树证明，本段未重跑全集。
 
-[方案](LF8-VIDEO-RENDERING.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-video-rendering/README.md)。本地固定样本的画面通过不关闭完整UI-02/05、目标手机/NAS、其它格式/异常/迟到回执、完整主题字号与来源组合。短队列收高、横屏范围宽度和工具形态已由#67完成；本轮后续以当前源码/原生画面复核，转而推进标签变更与固定范围稳定性等剩余状态组合。原型树1cbf605独立未改可移除，backup_v2生产仍关闭；未改正式8760/NAS、SDK或发布APK。#24/#33/#78保持开放，需配合项按授权暂跳过。
+[方案](LF8-VIDEO-RENDERING.md) / [原始证据与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-video-rendering/README.md)。本地固定样本的画面通过不关闭完整UI-02/05、目标手机/NAS、其它格式/异常/迟到回执、完整主题字号与来源组合。短队列收高、横屏范围宽度和工具形态已由#67完成；本轮后续以当前源码/原生画面复核，转而推进标签变更与固定范围稳定性等剩余状态组合。原型树1cbf605独立未改可移除，backup_v2生产仍关闭；未改正式8760/NAS、SDK或发布APK。#24/#33/#78保持开放，需配合项按授权暂跳过。
 
 
 ## 2026-10-27：预览标签与固定范围、来源返回库存（PR #80）
 
-[Draft PR #80](https://github.com/ShiJiJS/video_viewer/pull/80)已建立并关联本任务。
+[Draft PR #80](https://github.com/ShiJiJS/shika/pull/80)已建立并关联本任务。
 
 基于#79，最终生产/驱动固定76a2f95。当前b94754f完整预览20点确认#67已完成的队列390×435dp与工具形态，修正最新段落将旧留白/640dp差异重新当余项的过时描述，不重复改已对齐布局。
 
@@ -383,33 +383,33 @@ flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX�
 
 原先26个源文件SHA不变，唯一新增文件为固定路径公开flower-landscape副本，SHA和scanner真实ID单列；不是伪称前后文件完全相同。三轮各两个固定范围的成员/序号/游标、精确标签写入／定义删除、返回结果与历史由API/SQL分别核对。源控制入口错误键403且只在专用场景标志下启用，生产服务无此测试入口。早期采集上下文／嵌套滚动错误、先行未核对库存的三轮与组件中间失败均保留，不计修后成功。
 
-[实施边界](LF8-PREVIEW-STATE-STABILITY.md) / [原图、请求、SQL、源码与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-state-stability/README.md)。本段补PRE-03及LIB-03/NAV-02/REC-01明确组合；阅读器返回同类修正有组件和相邻原生证明，不冒称新增图包的NAS场景。没有新视觉方向或布局变更，旧#67视觉评审保留源码边界，本段未重做独立视觉评审。未重复全集或release构建、未发布APK；其它格式/异常与目标手机/NAS及原签名升级继续。原型树1cbf605独立可移除未改，正式8760/NAS/SDK未改，#24/#33/#78仍开放。下一步继续视频标签定义真实改名／删除及失败读回等明确余项。
+[实施边界](LF8-PREVIEW-STATE-STABILITY.md) / [原图、请求、SQL、源码与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-state-stability/README.md)。本段补PRE-03及LIB-03/NAV-02/REC-01明确组合；阅读器返回同类修正有组件和相邻原生证明，不冒称新增图包的NAS场景。没有新视觉方向或布局变更，旧#67视觉评审保留源码边界，本段未重做独立视觉评审。未重复全集或release构建、未发布APK；其它格式/异常与目标手机/NAS及原签名升级继续。原型树1cbf605独立可移除未改，正式8760/NAS/SDK未改，#24/#33/#78仍开放。下一步继续视频标签定义真实改名／删除及失败读回等明确余项。
 
 ## 2026-10-27：视频标签定义与失败恢复（PR #81）
 
-[Draft PR #81](https://github.com/ShiJiJS/video_viewer/pull/81)基于#80，补视频标签目录真实创建／改名／移除及失败读回。生产6f7ce97增加计数入口mounted／active检查：关闭面板后列表迟到，已离开或销毁页面不继续计数。两类型×离开／销毁四项在旧码真实四败，修后与定义／分页／分配组件合计51项通过，analyze／格式／Ruff通过。
+[Draft PR #81](https://github.com/ShiJiJS/shika/pull/81)基于#80，补视频标签目录真实创建／改名／移除及失败读回。生产6f7ce97增加计数入口mounted／active检查：关闭面板后列表迟到，已离开或销毁页面不继续计数。两类型×离开／销毁四项在旧码真实四败，修后与定义／分页／分配组件合计51项通过，analyze／格式／Ruff通过。
 
 普通同驱动三轮45点；大字68ce0fb、短横屏a40dc0f各完整15点，共75点，生产和组件树相同。真实409保草稿、视频“和服”201与图包同名独立、改名503原请求重试保原ID／2关联、移除确认取消回原草稿／关闭零写、移除503重试200、重开目录／返回媒体库均补证。每轮7次UI写请求、3条成功命令，图包完整5定义／8关联和种子进度保留，26源文件SHA不变，无播放轮次／会话／最近写入。
 
 旁路取消域、惰性定位、未稳定IME图及外层字段留白检查失败均单列诊断，不计最终点；最终横屏亲看输入文字露出，不称键盘下所有动作同时可见。292项输入清单与只读复核通过，首批和追加AVD均恢复并关闭。未重跑全集或release、未发布APK。
 
-[实施范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/LF8-VIDEO-TAG-DEFINITIONS.md)／[固定源码、原图、API／SQL与只读复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/evidence/lf8-video-tag-definitions/README.md)。本段补TAG-01及相关UI组合；历史记录保留各自版本边界，当前验收表不再列视频定义真实CRUD为未做。原型1cbf605独立可移除未改；正式8760／NAS／SDK和签名／版本未改，#24/#33/#78及整体验收仍开放。后续继续合并后的完整来源／冷启组合、更多异常与目标手机／NAS及原签名升级；需用户配合部分按授权暂跳过。
+[实施范围](https://github.com/ShiJiJS/shika/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/LF8-VIDEO-TAG-DEFINITIONS.md)／[固定源码、原图、API／SQL与只读复核](https://github.com/ShiJiJS/shika/blob/codex/lf8-video-tag-definitions/docs/plans/library-first/evidence/lf8-video-tag-definitions/README.md)。本段补TAG-01及相关UI组合；历史记录保留各自版本边界，当前验收表不再列视频定义真实CRUD为未做。原型1cbf605独立可移除未改；正式8760／NAS／SDK和签名／版本未改，#24/#33/#78及整体验收仍开放。后续继续合并后的完整来源／冷启组合、更多异常与目标手机／NAS及原签名升级；需用户配合部分按授权暂跳过。
 
 ## 2026-10-27：六来源导航与三种真实冷启动（PR #82）
 
-[Draft PR #82](https://github.com/ShiJiJS/video_viewer/pull/82)基于#81，固定生产／驱动c994273，生产和组件树未改。当前整合分支两类型×媒体库／标签／最近六条路径均实际进入内容并返回；两类前两来源跨24分页点击index25、完整27成员／序号和原卡片位置，队列／总览第一次系统返回只关面板。搜索、同名独立标签、排序、手动选择及最近条件隔离均核对。
+[Draft PR #82](https://github.com/ShiJiJS/shika/pull/82)基于#81，固定生产／驱动c994273，生产和组件树未改。当前整合分支两类型×媒体库／标签／最近六条路径均实际进入内容并返回；两类前两来源跨24分页点击index25、完整27成员／序号和原卡片位置，队列／总览第一次系统返回只关面板。搜索、同名独立标签、排序、手动选择及最近条件隔离均核对。
 
 三轮最后保存来源分别library／tags／recent，均停在设置页后真实强停活PID、确认消失，新PID通过专属生产安全凭据键免口令初始化；媒体库只恢复所属范围，标签条件留在标签，最近不污染媒体库，不自动播放。普通390×844每轮28点共84点；25项相关组件、analyze／格式／Ruff通过。每轮189源SHA保持，重启只GET且无新登录／stream，播放／最近／阅读七表前后逐行相同；301项输入只读复核通过，显示配置恢复、专属AVD已关闭。
 
 首段有意强停导致工具失联／临时目录清理错误，不作普通绿灯；第二段完整通过。8次开发尝试的旁路参数／权威默认顺序／弱就绪／错误入口和过渡坐标均单列，不计最终点。没有重跑全集／release、大字／横屏，未发布APK。此段不是正式main发布包升级或正在播放／阅读中强停证明，其他目录／属性／故障组合及目标终验继续。
 
-原图另发现两张总览缩略图503后停在“重试”，已新建[#83](https://github.com/ShiJiJS/video_viewer/issues/83)补有界自动恢复、关闭后取消、持续失败与手动读回；本轮只通过面板返回，不把这些缩略图算成功解码。当前RESULTS.md已替换NAV旧待办并记录PKG-03这个具体缺口。
+原图另发现两张总览缩略图503后停在“重试”，已新建[#83](https://github.com/ShiJiJS/shika/issues/83)补有界自动恢复、关闭后取消、持续失败与手动读回；本轮只通过面板返回，不把这些缩略图算成功解码。当前RESULTS.md已替换NAV旧待办并记录PKG-03这个具体缺口。
 
-[实施范围](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-navigation-restart/docs/plans/library-first/LF8-NAVIGATION-RESTART.md)／[固定源码、原图、PID、接口／SQL与复核](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-navigation-restart/docs/plans/library-first/evidence/lf8-navigation-restart/README.md)。原型1cbf605独立可移除未改；正式8760／NAS、默认凭据键、SDK和签名／版本未改。#24/#33/#78及整体验收保持开放，下一步先处理#83这个实际图片加载缺口，再继续其它明确余项；需用户配合部分按授权暂跳过。
+[实施范围](https://github.com/ShiJiJS/shika/blob/codex/lf8-navigation-restart/docs/plans/library-first/LF8-NAVIGATION-RESTART.md)／[固定源码、原图、PID、接口／SQL与复核](https://github.com/ShiJiJS/shika/blob/codex/lf8-navigation-restart/docs/plans/library-first/evidence/lf8-navigation-restart/README.md)。原型1cbf605独立可移除未改；正式8760／NAS、默认凭据键、SDK和签名／版本未改。#24/#33/#78及整体验收保持开放，下一步先处理#83这个实际图片加载缺口，再继续其它明确余项；需用户配合部分按授权暂跳过。
 
 ## 2026-10-27：总览缩略图有界恢复与在途取消（PR #84）
 
-[草稿 PR #84](https://github.com/ShiJiJS/video_viewer/pull/84)基于#82，固定源码／驱动7dbf3fd，[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-overview-thumbnail-recovery/docs/plans/library-first/LF8-THUMBNAIL-RECOVERY.md)及[104输入只读证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-overview-thumbnail-recovery/docs/plans/library-first/evidence/lf8-thumbnail-recovery/README.md)。复查#82原始请求，旧代码已有两次退避，503后200发生于关闭阶段；修正此前“没有自动恢复”的初步判断。本段让缩略图单元格独立拥有可取消HTTP客户端，关闭动画、分页读取或地址／凭据／版本／图包变化时取消旧请求和计时器，手动重试重置预算，保留三列比例与重试入口。
+[草稿 PR #84](https://github.com/ShiJiJS/shika/pull/84)基于#82，固定源码／驱动7dbf3fd，[方案](https://github.com/ShiJiJS/shika/blob/codex/lf8-overview-thumbnail-recovery/docs/plans/library-first/LF8-THUMBNAIL-RECOVERY.md)及[104输入只读证据](https://github.com/ShiJiJS/shika/blob/codex/lf8-overview-thumbnail-recovery/docs/plans/library-first/evidence/lf8-thumbnail-recovery/README.md)。复查#82原始请求，旧代码已有两次退避，503后200发生于关闭阶段；修正此前“没有自动恢复”的初步判断。本段让缩略图单元格独立拥有可取消HTTP客户端，关闭动画、分页读取或地址／凭据／版本／图包变化时取消旧请求和计时器，手动重试重置预算，保留三列比例与重试入口。
 
 22项组件检查、分析／格式／Ruff通过；普通390×844原生8点：六张503后各2–3次内真实解码，持续失败恰3次后停止并实际手动恢复；真实Android返回取消6个未完成响应，3秒无额外请求，重开6张再次解码。固定范围、当前第3页、横向模式和API图包详情相同，总览无新增写请求，26公开源文件SHA不变；5张面板矩形一致。没有SQL七表快照，不把这项读回称SQL逐行验证。
 
@@ -417,13 +417,13 @@ flutter analyze与变更Python Ruff通过。正常release构建、manifest/DEX�
 
 ## 2026-10-27：总览容量与跨24页实际取消（PR #85）
 
-[草稿 PR #85](https://github.com/ShiJiJS/video_viewer/pull/85)基于#84，增加共享3许可的缩略图下载队列，等待时不创建socket，分页／关闭取消排队项、在途连接，完成／错误释放许可，保留原两次退避和三列比例。两个新增真实HTTP组件旧版基线失败（峰值24、63次仍未全解码），修正后24项相关检查通过；分析／格式／Ruff通过。
+[草稿 PR #85](https://github.com/ShiJiJS/shika/pull/85)基于#84，增加共享3许可的缩略图下载队列，等待时不创建socket，分页／关闭取消排队项、在途连接，完成／错误释放许可，保留原两次退避和三列比例。两个新增真实HTTP组件旧版基线失败（峰值24、63次仍未全解码），修正后24项相关检查通过；分析／格式／Ruff通过。
 
-[方案](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-overview-pagination/docs/plans/library-first/LF8-OVERVIEW-PAGINATION.md)／[207输入只读证据](https://github.com/ShiJiJS/video_viewer/blob/codex/lf8-overview-pagination/docs/plans/library-first/evidence/lf8-overview-pagination/README.md)。固定26aceab普通390×844同版连续三轮，各11点共33点：30页目标包实际24→6→24，清单等待阶段3下载取消、21排队无GET；真实Android返回取消未完成清单，重开仍第3页／横向／原范围，API详情及写请求相同。明确点第30页才新增一次正确进度写入，主图实际显示30/30。每轮50公开源文件SHA相同。
+[方案](https://github.com/ShiJiJS/shika/blob/codex/lf8-overview-pagination/docs/plans/library-first/LF8-OVERVIEW-PAGINATION.md)／[207输入只读证据](https://github.com/ShiJiJS/shika/blob/codex/lf8-overview-pagination/docs/plans/library-first/evidence/lf8-overview-pagination/README.md)。固定26aceab普通390×844同版连续三轮，各11点共33点：30页目标包实际24→6→24，清单等待阶段3下载取消、21排队无GET；真实Android返回取消未完成清单，重开仍第3页／横向／原范围，API详情及写请求相同。明确点第30页才新增一次正确进度写入，主图实际显示30/30。每轮50公开源文件SHA相同。
 
 随后只调整未被跨页路径使用的六图驱动pending预期，56b2a74再过8点：六图503自动／恰3次上限／手动恢复、3在途＋3排队取消及重开；26源SHA不变。两提交生产／跨页驱动／夹具相同，非docs差异仅六图驱动，复核脚本明确审计，共41原生点，不称同一完整源码提交。没有SQL快照／全集／release／大字／横屏／目标手机结论。
 
 一次footer滚动驱动失误和一次QEMU图形／主循环挂起退出均另存，不计成功；原配置重启恢复显示后完成三轮，最终AVD已恢复并关闭。原型树1cbf605继续独立可移除，未发布APK。#83跨页开发证据已补齐，issue保留草稿合并／终验状态；#24/#33继续其余验收，下一步内容页强停恢复与其它组合。
 
 
-2026-11-01：[本机删除重试修复](LF8-PACK-PURGE-RETRY.md)/[普通26证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-pack-purge-code26/README.md)补DEL-04/05/06、SET-05和REC-01明确组合：三轮原任务2/3→3/3、精确清单/附件保护和核对后变化0/3；剩余图片恢复保留管理数据、旧删除stale_pack_state。但#161的封面/原图/缩略图仍409，未证明恢复后阅读可用，不勾整项。497服务检查通过与原失败分记，App/原型不改，未访问或部署NAS。
+2026-11-01：[本机删除重试修复](LF8-PACK-PURGE-RETRY.md)/[普通26证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-pack-purge-code26/README.md)补DEL-04/05/06、SET-05和REC-01明确组合：三轮原任务2/3→3/3、精确清单/附件保护和核对后变化0/3；剩余图片恢复保留管理数据、旧删除stale_pack_state。但#161的封面/原图/缩略图仍409，未证明恢复后阅读可用，不勾整项。497服务检查通过与原失败分记，App/原型不改，未访问或部署NAS。

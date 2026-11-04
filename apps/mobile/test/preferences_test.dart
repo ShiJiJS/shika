@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/ui/preferences.dart';
-import 'package:video_viewer/library/models.dart';
+import 'package:shika/ui/preferences.dart';
+import 'package:shika/library/models.dart';
 
 void main() {
   test('default migration decisions survive reopening and stay separate per service', () async {

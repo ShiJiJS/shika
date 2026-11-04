@@ -8,6 +8,6 @@ PR #56 已验证“当前页已定位到末张”后的失败跳过与末尾操�
 
 浏览位置与保存进度仍分开：`session.show(last)` 不把失败图片当作实际首帧，先清掉旧页的显示身份；原 mark 仍保留上一张实际显示过的图片。原生核对点击前后完整进度对象相等（含revision/更新时间），返回最后一张仍是原失败图，退出重开恢复上一张页ID及原比例；明确下一包才进入正常包并记录其首帧。夹具只让最后一张返回404，前两张和正常包实际解码。
 
-测试夹具与运行脚本复用8764的合成图包、全新每轮数据库、6张PNG及现有AVD，新增 visible 场景；last 场景保留给PR #56路径回归。本段不修改服务端生产代码、NAS、SDK或冻结原型。固定源码、原始日志、SQL投影与运行结果见 [证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf5-visible-page-skip/README.md)。
+测试夹具与运行脚本复用8764的合成图包、全新每轮数据库、6张PNG及现有AVD，新增 visible 场景；last 场景保留给PR #56路径回归。本段不修改服务端生产代码、NAS、SDK或冻结原型。固定源码、原始日志、SQL投影与运行结果见 [证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf5-visible-page-skip/README.md)。
 
 本段只收口这条已复现的定向检查，不代表完整异常组合完成。接下来继续整体原型对照；连接/恢复/迟到图片、完整暗色/横屏/手势、500页4K/8K及目标手机/NAS范围仍按总验收表推进。

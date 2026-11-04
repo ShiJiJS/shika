@@ -4,7 +4,7 @@ from pathlib import Path
 
 from sqlalchemy import func, select
 
-from video_viewer.models import (
+from shika.models import (
     ImagePack,
     PackPage,
     PackPreferences,
@@ -512,7 +512,7 @@ def test_catalog_recent_page_index_uses_manifest_position_and_does_not_write(lib
 def test_vertical_default_preserves_existing_global_and_pack_choices(library):
     import json
 
-    from video_viewer.models import Setting
+    from shika.models import Setting
 
     client, media = library
     _, ids = setup(client, media, count=3)

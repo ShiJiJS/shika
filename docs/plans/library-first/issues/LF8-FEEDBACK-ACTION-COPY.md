@@ -1,6 +1,6 @@
 # 简化图包操作文案，去掉“整包”措辞且保持行为不变
 
-跟踪：[141](https://github.com/ShiJiJS/video_viewer/issues/141)。
+跟踪：[141](https://github.com/ShiJiJS/shika/issues/141)。
 
 用户明确要求操作说明更自然，例如“移入回收站”即可；操作对象和行为都不变。继续 #24/#31/#33。优先级：中，可随默认值调整一起交付。本轮仅规划。
 

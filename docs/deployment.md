@@ -136,7 +136,7 @@ flutter build apk --release --target-platform android-arm64,android-x64 --build-
 
 输出 `build/app/outputs/flutter-apk/app-release.apk`。未分 ABI 打包，避免 Flutter ABI 分包附加 versionCode 影响本机调试覆盖安装。少数插件包含 32 位辅助库不表示此包有 32 位 Flutter 引擎。
 
-VS Code 的 **Video Viewer (Android)** 继续 F5 调试真实服务；**Video Viewer Demo (Android)** 使用独立演示数据。演示模式也可通过 `--dart-define=LIBRARY_MODE=demo` 构建，不能在运行时把演示备份导入真实服务。环境和热重载步骤见 [Android 开发说明](android-development.md)。
+VS Code 的 **Shika (Android)** 继续 F5 调试真实服务；**Shika Demo (Android)** 使用独立演示数据。演示模式也可通过 `--dart-define=LIBRARY_MODE=demo` 构建，不能在运行时把演示备份导入真实服务。环境和热重载步骤见 [Android 开发说明](android-development.md)。
 
 ## 5. 日常新增、浏览和快速整理
 

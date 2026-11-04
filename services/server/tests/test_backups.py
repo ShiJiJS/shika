@@ -9,7 +9,7 @@ from dataclasses import replace
 
 import pytest
 
-from video_viewer.config import Mount
+from shika.config import Mount
 
 from .conftest import connect, put, scan, wait_phase
 from .test_file_operations import operation, trash

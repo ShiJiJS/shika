@@ -1,6 +1,6 @@
 """Pack catalogue return uses the same complete filtered order as its list."""
 
-from video_viewer.models import ImagePack, PackProgress, Root
+from shika.models import ImagePack, PackProgress, Root
 
 from .test_media_types import pack_root, pack_tag, seed_pack
 

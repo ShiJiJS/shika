@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/server_api.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/server_api.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'support/fixture.dart';
 import 'support/server_ui.dart';
@@ -69,7 +69,7 @@ void main() {
         final round = await observer.json('GET', '/api/v1/playback');
         final missing = await videos('missing');
         await t.pumpWidget(
-          VideoViewerApp(
+          ShikaApp(
             repository: repo,
             preferences: preferences,
             initializeRepository: true,
@@ -137,7 +137,7 @@ void main() {
       );
       await repo.refresh();
       await t.pumpWidget(
-        VideoViewerApp(repository: repo, preferences: preferences),
+        ShikaApp(repository: repo, preferences: preferences),
       );
       await ui.ready();
       await ui.nav('library');

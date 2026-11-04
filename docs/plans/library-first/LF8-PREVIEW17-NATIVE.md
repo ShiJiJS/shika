@@ -1,6 +1,6 @@
 # 第23版默认、文案与返回的原生检查
 
-跟踪[#137](https://github.com/ShiJiJS/video_viewer/issues/137)、[#140](https://github.com/ShiJiJS/video_viewer/issues/140)、[#141](https://github.com/ShiJiJS/video_viewer/issues/141)。基于实现[PR #145](https://github.com/ShiJiJS/video_viewer/pull/145)及[返回修复PR #144](https://github.com/ShiJiJS/video_viewer/pull/144)，本段只增加验证记录，不改产品代码、原型或NAS。
+跟踪[#137](https://github.com/ShiJiJS/shika/issues/137)、[#140](https://github.com/ShiJiJS/shika/issues/140)、[#141](https://github.com/ShiJiJS/shika/issues/141)。基于实现[PR #145](https://github.com/ShiJiJS/shika/pull/145)及[返回修复PR #144](https://github.com/ShiJiJS/shika/pull/144)，本段只增加验证记录，不改产品代码、原型或NAS。
 
 ## 实际完成
 
@@ -12,7 +12,7 @@
 
 C图包从媒体库菜单点击移入回收站并确认，再从通知点击撤销，显示恢复且可再次访问。13个公开源文件摘要相同。目标图包generation增加2、两项成功任务及操作/步骤、一条已恢复回收记录、精确的最后移除操作指针是预期变化；所有其它原有业务数据/设置/token保持。
 
-回退23旧UI在当前新服务上正常显示其旧浏览兼容入口；升回23回到媒体库。两次覆盖前后的35张业务表和设置/token保持；本地appearance文件原本不存在，缺省状态也保持。[固定记录、原始诊断和离线核对](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview17-native/README.md)明确保留检查工具最初对语义父节点、预期generation/指针和缺省文件的假设错误，没有通过重复业务操作修饰结果。
+回退23旧UI在当前新服务上正常显示其旧浏览兼容入口；升回23回到媒体库。两次覆盖前后的35张业务表和设置/token保持；本地appearance文件原本不存在，缺省状态也保持。[固定记录、原始诊断和离线核对](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview17-native/README.md)明确保留检查工具最初对语义父节点、预期generation/指针和缺省文件的假设错误，没有通过重复业务操作修饰结果。
 
 ## 尚未完成
 

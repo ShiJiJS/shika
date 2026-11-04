@@ -1,6 +1,6 @@
 # LF0：可运行骨架与可移除参考基线
 
-对应 [#25](https://github.com/ShiJiJS/video_viewer/issues/25)，总任务 [#24](https://github.com/ShiJiJS/video_viewer/issues/24)。本次只完成 LF0，LF1–LF8 继续开放。
+对应 [#25](https://github.com/ShiJiJS/shika/issues/25)，总任务 [#24](https://github.com/ShiJiJS/shika/issues/24)。本次只完成 LF0，LF1–LF8 继续开放。
 
 ## 已实施
 
@@ -32,4 +32,4 @@
 
 ## 2026-10-27：可移除边界的实际演练
 
-[PR #75](https://github.com/ShiJiJS/video_viewer/pull/75)按固定7c70e59导出完整源码，仅移除副本的72份参考文件后，通过643项客户端、447项Linux服务测试及debug/release构建。12,145份保留文件、原参考文件及APK资产清单经独立哈希复核。原型1cbf605在原仓库继续独立保留。服务格式仍有27份存量文件未过，不冒称全部门禁通过；开发签名构建不替代手机原签名升级。详见[实施记录](LF8-REFERENCE-ISOLATION.md)与[原始证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reference-isolation/README.md)。
+[PR #75](https://github.com/ShiJiJS/shika/pull/75)按固定7c70e59导出完整源码，仅移除副本的72份参考文件后，通过643项客户端、447项Linux服务测试及debug/release构建。12,145份保留文件、原参考文件及APK资产清单经独立哈希复核。原型1cbf605在原仓库继续独立保留。服务格式仍有27份存量文件未过，不冒称全部门禁通过；开发签名构建不替代手机原签名升级。详见[实施记录](LF8-REFERENCE-ISOLATION.md)与[原始证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reference-isolation/README.md)。

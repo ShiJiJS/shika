@@ -24,4 +24,4 @@
 
 ## 本段结果与边界
 
-固定0ab8a83（生产/组件测试树a00d12c），证据提交e86726b；客户端530项、原生65个阅读点加17个最近回归点通过，303份manifest输入只读核对通过。首轮四项视觉清单均完成定点静态复核。细节见[最终证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-chrome/README.md)和[逐项台账](RESULTS.md)；完整READ/UI、性能及发布仍开放。服务生产/测试树未改，本段未重跑服务测试。
+固定0ab8a83（生产/组件测试树a00d12c），证据提交e86726b；客户端530项、原生65个阅读点加17个最近回归点通过，303份manifest输入只读核对通过。首轮四项视觉清单均完成定点静态复核。细节见[最终证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-chrome/README.md)和[逐项台账](RESULTS.md)；完整READ/UI、性能及发布仍开放。服务生产/测试树未改，本段未重跑服务测试。

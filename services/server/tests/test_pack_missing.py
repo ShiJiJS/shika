@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 from sqlalchemy import func, select
 
-from video_viewer.models import (
+from shika.models import (
     ImagePack,
     PackMissingCleanup,
     PackMissingMember,
@@ -239,7 +239,7 @@ def test_same_path_replacement_preserves_metadata_until_successful_rescan(
 
 @pytest.mark.parametrize("evidence", ["absent", "corrupt", "mismatched"])
 def test_missing_or_untrusted_scan_evidence_requires_rescan(library, evidence):
-    from video_viewer.pack_root_evidence import key
+    from shika.pack_root_evidence import key
 
     client, media = library
     root, pack, _ = missing(client, media)

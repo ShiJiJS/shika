@@ -1,6 +1,6 @@
 # NAS 媒体库体验版
 
-2026-10-30 已按用户授权升级现有NAS服务，并交付可覆盖安装的App。跟踪[#135](https://github.com/ShiJiJS/video_viewer/issues/135) / [草稿PR #136](https://github.com/ShiJiJS/video_viewer/pull/136)，基于#134。当前是体验版，原45项完整验收继续。
+2026-10-30 已按用户授权升级现有NAS服务，并交付可覆盖安装的App。跟踪[#135](https://github.com/ShiJiJS/shika/issues/135) / [草稿PR #136](https://github.com/ShiJiJS/shika/pull/136)，基于#134。当前是体验版，原45项完整验收继续。
 
 ## 安装和开始体验
 
@@ -41,4 +41,4 @@ NAS原部署目录的`packages/`已有以下文件，附`体验版安装说明.t
 
 清理后Flutter/ADB可运行，原四个本地服务仍健康，45项来源索引复核通过；没有重跑与本次文件清理无关的完整套件。791客户端检查沿用同源码当前结果，462服务检查沿用未变服务树原结果。
 
-公开的[部署、迁移、镜像、图包读取与清理记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-nas-preview/README.md)不包含真实收藏名称、连接凭据、数据库或停机归档。
+公开的[部署、迁移、镜像、图包读取与清理记录](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-nas-preview/README.md)不包含真实收藏名称、连接凭据、数据库或停机归档。

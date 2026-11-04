@@ -1,8 +1,8 @@
 # LF8：扫描详情正常安装包与真实服务
 
-[草稿PR #123](https://github.com/ShiJiJS/video_viewer/pull/123)已提交，本机候选与真实服务检查完成，资源已归还。
+[草稿PR #123](https://github.com/ShiJiJS/shika/pull/123)已提交，本机候选与真实服务检查完成，资源已归还。
 
-承接[#120](https://github.com/ShiJiJS/video_viewer/issues/120)、源码PR #121和真实Android PR #122。生产lib继续固定6af88978，沿用789完整客户端、12针对（含32组RGBA/尺寸）和三轮真实Android18方向/6中途切换证明。正常候选preview.12与rollback.12同内部号18、原Windows签名/包名、ARM64正常main；旧code17两包保留，新文件不覆盖旧文件。
+承接[#120](https://github.com/ShiJiJS/shika/issues/120)、源码PR #121和真实Android PR #122。生产lib继续固定6af88978，沿用789完整客户端、12针对（含32组RGBA/尺寸）和三轮真实Android18方向/6中途切换证明。正常候选preview.12与rollback.12同内部号18、原Windows签名/包名、ARM64正常main；旧code17两包保留，新文件不覆盖旧文件。
 
 固定源码后使用既有构建器导出两套来源，执行双方分析、旧版兼容全集与新版偏好/连接相关检查，核对签名、版本、ABI、正常入口与原型/集成插件不打包。生产服务/SDK及原型不改。
 
@@ -18,7 +18,7 @@
 
 固定10bb0d34，13构建步骤、旧85/新14相关检查及双方分析通过。原签名preview.12/rollback.12同code18，生产lib与6af88978相同，789完整/12针对/32组RGBA及真实Android18方向沿用准确同树证据。实际17→新18→旧18→新18三次覆盖，身份、首次安装时间、完整偏好、35表及设置/令牌摘要相同；现代冷启免口令且无自动内容。安装后实际APK字节SHA与候选相同。
 
-同一QEMU73071最终三轮真实服务：普通/减少12方向，额外扫描前展开3次、恢复后6方向，扫描中/读取失败/修复完成9状态、六次实际扫描和33关键XML/PNG通过。[530份输入及离线复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-expansion-package/README.md)已固定。读取失败实际是completed且failed=1/probe_failed=1，不冒充整个任务失败；有效样本修复后failed=0，摘要折叠，重开无旧错误。
+同一QEMU73071最终三轮真实服务：普通/减少12方向，额外扫描前展开3次、恢复后6方向，扫描中/读取失败/修复完成9状态、六次实际扫描和33关键XML/PNG通过。[530份输入及离线复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-expansion-package/README.md)已固定。读取失败实际是completed且failed=1/probe_failed=1，不冒充整个任务失败；有效样本修复后failed=0，摘要折叠，重开无旧错误。
 
 首个采集器将活动卡合并语义误当单独标题，已保留失败并修正观察，不修改产品；重新准备一次后才计完整三轮。首个审计误要求扫描后的settings摘要整体不变，实际唯一变化为pack_root_scan_v1:packs；用实际目录身份和前后根扫描时间重建值，核对固定SHA，其余9键/token/用户偏好不变。最终仅扫描任务/根时间/观测/媒体扫描字段改变，专用文件同ID/内容返回，重建海报字节SHA相同；标签、阅读和管理记录保持。全trace登录2次/扫描8次含两次准备诊断，最终三轮六次单列，没有删除/恢复/备份命令。
 

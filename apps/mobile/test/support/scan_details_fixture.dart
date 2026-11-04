@@ -1,5 +1,5 @@
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
 
 /// Exercises the actual non-DemoControls settings path without file commands.
 class ScanDetailsLibrary extends LibraryRepository {

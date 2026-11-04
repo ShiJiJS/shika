@@ -99,7 +99,7 @@ def test_sigkill_real_http_file_operation_recovers_exact_request(environment, sa
             assert marker.read_text() == phase
             server.kill()
             server.communicate(timeout=5)
-            server = start("video_viewer.app:create_app")
+            server = start("shika.app:create_app")
             recovered = wait_operation(client, operation_id)
             assert recovered["status"] == "completed", recovered
             assert client.post(route, json=request).json()["id"] == operation_id

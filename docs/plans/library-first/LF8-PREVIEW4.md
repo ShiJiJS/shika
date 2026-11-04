@@ -24,7 +24,7 @@
 
 ## 本轮交付结果
 
-用户恢复后，复用上述已构建的同一对 APK，无重新构建、原生重跑或压力实验。正常入口源码固定 `f0ee0504e907a70d445c22311c7bd10027c07f87`；包路径、大小、签名、SHA 和配套服务见[安装说明](../../library-first-preview.md)。[原始记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview4/README.md)集中保存一份。
+用户恢复后，复用上述已构建的同一对 APK，无重新构建、原生重跑或压力实验。正常入口源码固定 `f0ee0504e907a70d445c22311c7bd10027c07f87`；包路径、大小、签名、SHA 和配套服务见[安装说明](../../library-first-preview.md)。[原始记录](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview4/README.md)集中保存一份。
 
 | 完成条件 | 结果 |
 | --- | --- |
@@ -39,4 +39,4 @@
 
 本轮到候选交付结束，不自动扩展剩余UI-06。当前无需用户配合；后续正式验收需连接测试手机，并恢复指定SMB/NAS可达环境。原型树继续独立未改。Goal工具仍显示旧项目paused且无恢复/改目标接口，未把整个旧目标标记complete。
 
-交付草稿：[PR #105](https://github.com/ShiJiJS/video_viewer/pull/105)，基于 #104；原完整任务保持开放。
+交付草稿：[PR #105](https://github.com/ShiJiJS/shika/pull/105)，基于 #104；原完整任务保持开放。

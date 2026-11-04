@@ -8,7 +8,7 @@
 
 | 位置 | 内容 |
 | --- | --- |
-| `Video Viewer.code-workspace` | 已生成的本机 VS Code 工作区，可直接打开 |
+| `Shika.code-workspace` | 已生成的本机 VS Code 工作区，可直接打开 |
 | `.vscode/settings.json` | 本机 SDK、Java、Python、Dart 和集成终端环境 |
 | `.vscode/launch.json`、`.vscode/tasks.json` | F5 运行配置与测试、打包、Docker 任务 |
 | `.dev/flutter` | Flutter stable 3.47.7 / Dart 3.13.5，Apple Silicon |
@@ -25,10 +25,10 @@
 
 ## 在 VS Code 开发
 
-1. 打开根目录的 `Video Viewer.code-workspace`。本次已对该项目建立工作区信任，并安装 Flutter、Dart、Python 扩展。
+1. 打开根目录的 `Shika.code-workspace`。本次已对该项目建立工作区信任，并安装 Flutter、Dart、Python 扩展。
 2. 先启动 OrbStack。普通 F5 配置会同时准备本地 Docker 服务和模拟器，也可单独运行任务 **Server: start local Docker**。
-3. 选择 **Video Viewer (Android)**，按 **F5**。启动前任务自动启动或复用 `video_viewer_api_36`，等待引导完成，在 `emulator-5554` 构建、安装和启动 App。模拟器访问 Mac 服务使用 `10.0.2.2:8760`。
-4. 无需服务时选择 **Video Viewer Demo (Android)**。修改 Dart 后保存可热重载，调试工具栏也提供热重载、热重启和停止。
+3. 选择 **Shika (Android)**，按 **F5**。启动前任务自动启动或复用 `video_viewer_api_36`，等待引导完成，在 `emulator-5554` 构建、安装和启动 App。模拟器访问 Mac 服务使用 `10.0.2.2:8760`。
+4. 无需服务时选择 **Shika Demo (Android)**。修改 Dart 后保存可热重载，调试工具栏也提供热重载、热重启和停止。
 5. **Terminal → Run Task** 中还提供静态分析、客户端测试、ARM64 APK 构建、服务端回归和真实服务联调任务。
 
 本机路径也写入工作区级设置，确保 Flutter 设备守护进程和调试器与终端使用相同的 Android SDK。移动整个项目后运行 `python3 scripts/configure-vscode.py`，再执行 **Developer: Reload Window**，并重建含绝对路径的 AVD、Python venv 和 Android `local.properties`。

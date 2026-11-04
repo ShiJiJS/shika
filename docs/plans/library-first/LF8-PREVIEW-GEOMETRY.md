@@ -14,7 +14,7 @@
 
 ## 2026-10-26：范围面板尺寸、Paper轮廓与紧凑整理条（PR #67）
 
-[Draft PR #67](https://github.com/ShiJiJS/video_viewer/pull/67)基于#66。
+[Draft PR #67](https://github.com/ShiJiJS/shika/pull/67)基于#66。
 
 按上一段实际并排的残差继续对齐冻结原型：短队列随内容收缩、长队列上限后滚动，横屏预览范围改为可用全宽；恢复圆角描边选择、当前项边界、来源/说明层级与三个工具/方框播放轮廓。快速整理恢复浅绿紧凑条、文字动作和危险文字色，普通状态标题按原型保留，大字优先完整两动作。标题“范围”和视频数量按完整短语换行；新增真实滚到底部的完整说明和固定关闭检查。
 
@@ -24,4 +24,4 @@
 
 真实服务仍核对单项搜索返回、固定1/2候选与完整成员/序号、实际暂停/拖进度/倍速与长按恢复、面板/整理显隐和最近去重；26个源SHA与五轮设备显示配置恢复一致，无标签/删除/图包操作提交。服务生产/测试树同4bf060b，本段未重跑服务测试。完整预览其它异常/全屏/后台/手势录屏、完整管理、500页4K/8K、目标手机/NAS与原签名覆盖升级继续；需用户配合部分按授权暂跳过。原型1cbf605独立可移除且未改，backup_v2生产能力仍关闭，MemoryCredentialStore不新增强杀/安全存储证明；未改正式8760/NAS/SDK或发布APK。#33/#24保持开放。
 
-[实现约束](LF8-PREVIEW-GEOMETRY.md) / [固定源码证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-geometry/README.md) / [逐项台账](RESULTS.md)。
+[实现约束](LF8-PREVIEW-GEOMETRY.md) / [固定源码证据与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-geometry/README.md) / [逐项台账](RESULTS.md)。

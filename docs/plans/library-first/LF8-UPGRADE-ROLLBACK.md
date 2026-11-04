@@ -1,6 +1,6 @@
 # LF8：真实旧服务数据升级与停机回退
 
-基于[预览包 PR #92](https://github.com/ShiJiJS/video_viewer/pull/92)，继续UP-01/02。使用已固定cf992025的正常release APK6及runtime镜像，实际旧8760服务镜像ID作为旧版；所有容器、数据副本与AVD均独立，不部署真实NAS。
+基于[预览包 PR #92](https://github.com/ShiJiJS/shika/pull/92)，继续UP-01/02。使用已固定cf992025的正常release APK6及runtime镜像，实际旧8760服务镜像ID作为旧版；所有容器、数据副本与AVD均独立，不部署真实NAS。
 
 先复用上一阶段已停止的schema0004独立旧服务数据副本。使用旧服务公开接口准备非空视频／原标签及关联／播放范围／逻辑回收站／文件请求回执；撤销准备凭据后，保留原App安全存储的登录凭据。正常App读取旧服务，停止App及服务，再完整备份独立data目录和配置；记录全目录哈希，不把只复制活动SQLite主文件当作可回退备份。
 
@@ -26,4 +26,4 @@ b79da7b9生产runtime `886b79b7…` 和同版test镜像完成构建，462项完�
 
 先前一次QEMU主循环挂起退出，确认PID和ADB消失后才重启；另一次在目录替换后旧容器报告0014而宿主恢复副本为0004，旧启动退出3，稍后独立读取容器看到0004。原因未完全确定，诊断不计入最终三轮。最终驱动明确关闭SQLite连接，恢复时保留绑定目录／数据库文件，增加容器侧核验后重新完整跑三轮；不宣称已证明缓存根因或修复#78。
 
-最终自有AVD关闭，11个本轮运行容器全部移除，原四服务身份／运行状态、上一阶段数据与两段媒体SHA未变。独立原型树1cbf605未改。新配套服务归档preview.2留在本机，未创建正式Release、未部署NAS。详见[原始记录与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-upgrade-rollback/README.md)及[用户安装说明](../../library-first-preview.md)。#93记录任务显示修正；#89原始故障、#78、目标手机／NAS、App回退与其余终验继续开放。
+最终自有AVD关闭，11个本轮运行容器全部移除，原四服务身份／运行状态、上一阶段数据与两段媒体SHA未变。独立原型树1cbf605未改。新配套服务归档preview.2留在本机，未创建正式Release、未部署NAS。详见[原始记录与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-upgrade-rollback/README.md)及[用户安装说明](../../library-first-preview.md)。#93记录任务显示修正；#89原始故障、#78、目标手机／NAS、App回退与其余终验继续开放。

@@ -7,8 +7,8 @@ import pytest
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
-from video_viewer.db import Database
-from video_viewer.models import ImagePack, PackPage, PackProgress, PackTagLink, RecentEntry, Root
+from shika.db import Database
+from shika.models import ImagePack, PackPage, PackProgress, PackTagLink, RecentEntry, Root
 
 from .conftest import put, scan
 from .test_backups import export, inspect
@@ -305,7 +305,7 @@ def test_failed_upgrade_restores_complete_private_snapshot(tmp_path, monkeypatch
             connection.execute("DELETE FROM settings WHERE key='wal-proof'")
         raise RuntimeError("injected migration failure")
 
-    monkeypatch.setattr("video_viewer.db.command.upgrade", fail)
+    monkeypatch.setattr("shika.db.command.upgrade", fail)
     with pytest.raises(RuntimeError, match="injected"):
         db.migrate()
     snapshot = db.last_migration_snapshot
@@ -360,7 +360,7 @@ def test_static_migration_matches_orm_schema(library):
     from alembic.autogenerate import compare_metadata
     from alembic.migration import MigrationContext
 
-    from video_viewer.models import Base
+    from shika.models import Base
 
     client, _ = library
     with client.app.state.db.engine.connect() as connection:

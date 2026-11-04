@@ -4,9 +4,9 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pytest
 
-from video_viewer.models import ImagePack
-from video_viewer.pack_presentation import presentation
-from video_viewer.pack_title_order import title_order_available, title_sort_key
+from shika.models import ImagePack
+from shika.pack_presentation import presentation
+from shika.pack_title_order import title_order_available, title_sort_key
 
 from .test_media_types import pack_root, seed_pack
 from .test_reading import create
@@ -54,7 +54,7 @@ def test_missing_runtime_is_not_advertised_and_legacy_catalog_stays_available(li
     root = pack_root(client, media)
     seed_pack(client, root, "作者 NO.1 - 夏日祭")
     with monkeypatch.context() as missing:
-        missing.setattr("video_viewer.pack_title_order.ctypes.util.find_library", lambda _: None)
+        missing.setattr("shika.pack_title_order.ctypes.util.find_library", lambda _: None)
         title_order_available.cache_clear()
         try:
             assert "pack_presentation" not in client.get("/api/v1/info").json()["capabilities"]

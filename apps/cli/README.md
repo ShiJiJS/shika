@@ -1,10 +1,10 @@
-# rv — video-viewer 命令行客户端
+# 拾刻 · shika 命令行客户端
 
-`rv`（resource viewer）是 video-viewer NAS 媒体库服务端的命令行客户端：登录换
+`rv`（resource viewer）是 shika NAS 媒体库服务端的命令行客户端：登录换
 token、触发扫描并等待完成、按路径定位视频、查/建标签、批量打标、创建和下载
 管理备份。
 
-当前0.1.1修复凭据过期时自动重新登录并继续旧修改命令的问题（[#169](https://github.com/ShiJiJS/video_viewer/issues/169)）。写命令（包括标签名称查询等前置读取）遇401即停止，先显式`rv login`，重新核对当前数据后再执行。不会自动把原修改命令带入恢复后的管理数据。手机App和NAS服务不受本次CLI更新影响。
+当前0.1.1修复凭据过期时自动重新登录并继续旧修改命令的问题（[#169](https://github.com/ShiJiJS/shika/issues/169)）。写命令（包括标签名称查询等前置读取）遇401即停止，先显式`rv login`，重新核对当前数据后再执行。不会自动把原修改命令带入恢复后的管理数据。手机App和NAS服务不受本次CLI更新影响。
 
 与主程序代码**分目录维护**（`apps/cli`，与 `apps/mobile`、`services/server`
 并列）：这里只有 HTTP API 的消费代码，不 import 服务端代码、不读写其数据库，
@@ -18,9 +18,9 @@ token、触发扫描并等待完成、按路径定位视频、查/建标签、�
 需要 Python 3.10+。
 
 ```bash
-uv tool install "git+ssh://git@github.com/ShiJiJS/video_viewer.git#subdirectory=apps/cli"
+uv tool install "git+ssh://git@github.com/ShiJiJS/shika.git#subdirectory=apps/cli"
 # 或
-pipx install "git+ssh://git@github.com/ShiJiJS/video_viewer.git#subdirectory=apps/cli"
+pipx install "git+ssh://git@github.com/ShiJiJS/shika.git#subdirectory=apps/cli"
 # 本地开发（在 apps/cli 目录内）
 python3 -m venv .venv && . .venv/bin/activate && pip install -e '.[dev]'
 ```

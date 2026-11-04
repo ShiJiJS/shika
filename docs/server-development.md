@@ -21,15 +21,15 @@ Mac 使用 OrbStack 原生 Docker，见 [Mac 开发与 VS Code 配置](macos-dev
 | Docker Compose | v5.6.0 |
 | Docker 服务 | systemd active、enabled；当前 WSL 用户可直接调用 |
 | 存储 | overlayfs，cgroup v2，Docker 数据位于 `/var/lib/docker` |
-| 项目挂载 | Windows `C:\Project\video_viewer` 对应 `/mnt/c/Project/video_viewer`，WSL 用户可读写 |
+| 项目挂载 | Windows `C:\Project\shika` 对应 `/mnt/c/Project/shika`，WSL 用户可读写 |
 | 调试设备 | Android 16 / API 36 模拟器 `emulator-5554` |
 | WSL 网络 | NAT；本轮无需新增端口转发或修改防火墙即可访问 |
 
 Windows 的 `docker` 不在 PATH，使用 WSL 内已有 Docker 即可，不需要另外安装 Docker Desktop。VS Code 继续编辑现有 Windows 项目，PowerShell 中通过以下方式调用 Linux 工具：
 
 ```powershell
-wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker version
-wsl -d Ubuntu-24.04 --cd /mnt/c/Project/video_viewer -- docker compose version
+wsl -d Ubuntu-24.04 --cd /mnt/c/Project/shika -- docker version
+wsl -d Ubuntu-24.04 --cd /mnt/c/Project/shika -- docker compose version
 ```
 
 用户已确认服务端使用 Python / FastAPI / Uvicorn、SQLite / SQLAlchemy / Alembic、FFmpeg / ffprobe；后台任务状态持久化，使用受控的服务内执行器。技术与联调计划见 [服务端方案](server-plan.md)。S1 负责锁定依赖版本、建立镜像和正式 Compose 文件，并实现首批真实 API。WSL 中没有预装 FFmpeg，不影响当前环境检查；所需运行依赖随服务镜像配置。

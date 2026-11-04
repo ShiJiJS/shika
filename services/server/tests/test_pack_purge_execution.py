@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from video_viewer.models import PackPurgeStep
+from shika.models import PackPurgeStep
 
 from .conftest import connect
 from .test_pack_operations import command, restore, tree, wait
@@ -468,7 +468,7 @@ def test_one_changed_pack_does_not_stop_independent_confirmed_pack(library):
 
 @pytest.mark.parametrize("change", ["disabled-root", "historical-plan"])
 def test_accepted_execution_rechecks_authority_before_any_file_work(library, monkeypatch, change):
-    from video_viewer.models import PackPurgePlan, Root
+    from shika.models import PackPurgePlan, Root
 
     client, media = library
     root, _, rows = fixture(client, media)

@@ -1,6 +1,6 @@
 # 图包切换、回收反馈和批量整理
 
-2026-11-02，按用户本轮连续反馈统一处理，对应 [#179](https://github.com/ShiJiJS/video_viewer/issues/179)、[#180](https://github.com/ShiJiJS/video_viewer/issues/180)、[#181](https://github.com/ShiJiJS/video_viewer/issues/181)、[#182](https://github.com/ShiJiJS/video_viewer/issues/182)。只推进这组问题，其他持续开发及验收仍暂停。
+2026-11-02，按用户本轮连续反馈统一处理，对应 [#179](https://github.com/ShiJiJS/shika/issues/179)、[#180](https://github.com/ShiJiJS/shika/issues/180)、[#181](https://github.com/ShiJiJS/shika/issues/181)、[#182](https://github.com/ShiJiJS/shika/issues/182)。只推进这组问题，其他持续开发及验收仍暂停。
 
 ## 行为
 

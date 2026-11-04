@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/player.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/player.dart';
 
 class DelayedEntryCatalog extends DemoLibraryRepository {
   DelayedEntryCatalog() : super(MemoryStateStore(), latency: Duration.zero);
@@ -88,7 +88,7 @@ void main() {
     testWidgets(
       'failed preview entry releases an overlapping return lookup and pagination; cancelled=$cancelled',
       (t) async {
-        await t.pumpWidget(VideoViewerApp(repository: repo));
+        await t.pumpWidget(ShikaApp(repository: repo));
         await frames(t);
         expect(find.text('72 个视频'), findsOneWidget);
         repo.metadataChanged();
@@ -127,7 +127,7 @@ void main() {
   testWidgets(
     'leaving the library cancels navigation from a late begin result',
     (t) async {
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
       await t.tap(find.text('预览此范围'));
       await frames(t);

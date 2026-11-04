@@ -4,7 +4,7 @@
 
 意图：按用户已确认原型验收当前完整产品，沿用Paper，禁止重新设计或把阶段测试累加成整版通过。北极星仍是从媒体库/独立标签选定范围，再进入视频或整包阅读，返回原来源。当前正常候选为preview.16/code22、构建来源12d6ca67，配套回退包同内部号；独立原型树1cbf605不参与运行且可移除。
 
-上一轮[搜索入口与来源返回](LF8-CONTENT-ENTRY-FOCUS.md)按[草稿PR #128](https://github.com/ShiJiJS/video_viewer/pull/128)补齐当前候选的局部观察，45项原要求保留。现已恢复，继续[#129筛选与空范围](LF8-CURRENT-FILTERS.md)。
+上一轮[搜索入口与来源返回](LF8-CONTENT-ENTRY-FOCUS.md)按[草稿PR #128](https://github.com/ShiJiJS/shika/pull/128)补齐当前候选的局部观察，45项原要求保留。现已恢复，继续[#129筛选与空范围](LF8-CURRENT-FILTERS.md)。
 
 [正常code22读取恢复](LF8-CATALOG-RECOVERY.md)补两类型各三轮分页失败/同页重试、首次读失败与新搜索优先，35表及设置/令牌/偏好保持。准备期故障注入器协议与模拟器APK缺失诊断单列，不能当App错误或标准成功组；不改变完整45项要求。
 
@@ -28,6 +28,6 @@
 
 ## 首轮阶段记录
 
-当前code18完成正常包三轮双指放大/平移/系统返回局部检查，九状态进度不变；[基线记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-integrated-baseline/README.md)。NAV/LIB首页等只有局部观察，READ-01未整项关闭，45项通过仍为0。首页与阅读文字/图标差异登记#124；底栏8dp保留原生触控要求，错误裁图结论已撤回。本段未修改生产代码、未新造APK，继续仍需完成原计划各组。资源已精确归还，下一轮按记录重新创建隔离资源。
+当前code18完成正常包三轮双指放大/平移/系统返回局部检查，九状态进度不变；[基线记录](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-integrated-baseline/README.md)。NAV/LIB首页等只有局部观察，READ-01未整项关闭，45项通过仍为0。首页与阅读文字/图标差异登记#124；底栏8dp保留原生触控要求，错误裁图结论已撤回。本段未修改生产代码、未新造APK，继续仍需完成原计划各组。资源已精确归还，下一轮按记录重新创建隔离资源。
 
 文字/图标修正已进入正常code20，新增浅/暗指定画面与三次覆盖记录见[本轮](LF8-PAPER-SYMBOLS.md)。索引更新当前候选，旧code18观察逐条标明原版本保留，不自动算成当前20已验；新增UI指定状态仍只是局部，不关闭整项。

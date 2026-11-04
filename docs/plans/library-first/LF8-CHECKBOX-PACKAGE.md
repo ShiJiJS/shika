@@ -1,8 +1,8 @@
 # LF8：复选框正常安装包与业务检查
 
-[草稿PR #119](https://github.com/ShiJiJS/video_viewer/pull/119)已提交，本机候选检查与证据归还完成。
+[草稿PR #119](https://github.com/ShiJiJS/shika/pull/119)已提交，本机候选检查与证据归还完成。
 
-承接[#116](https://github.com/ShiJiJS/video_viewer/issues/116)、源码PR #117与真实Android PR #118。生产lib继续固定4052a2cc，与777客户端/11针对/96组RGBA及三轮原生90方向相同。本段只升级候选版本、构建正常入口并检查实际业务；不以独立profile取代正常安装包。
+承接[#116](https://github.com/ShiJiJS/shika/issues/116)、源码PR #117与真实Android PR #118。生产lib继续固定4052a2cc，与777客户端/11针对/96组RGBA及三轮原生90方向相同。本段只升级候选版本、构建正常入口并检查实际业务；不以独立profile取代正常安装包。
 
 候选为preview.11与配套rollback.11，同内部号17、原Windows签名/包名、ARM64正常release。固定提交后由既有构建器导出两套源码，执行双方分析、旧界面兼容全集及新偏好/连接相关检查，核对签名/ABI/版本/正常main和不含原型资产/集成插件。旧code16及更早APK保持，所有输出使用全新目录。
 
@@ -22,6 +22,6 @@
 
 准备阶段逻辑标记两类各1项、导出两文件单列；图包确认两次准备只新增2核对计划/成员/任务，无执行步骤。v2选择新增一个校验任务，确认区间35表/摘要相同；旧格式两确认区间14表/摘要相同，重选复用原校验请求。切回现代服务仅主动登录令牌+1，其余35表/设置和最后偏好保持。前三确认在进入时实际三比例0，旧格式及视频追加为1；正常main图不称时序证据。
 
-[357份输入与离线复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-checkbox-package/README.md)包含39张原生PNG/146XML和全部25确认状态，三处观察错误另保留。恢复原物理显示/420、三比例0、字体/旋转/immersive和进入shell UID；自有模拟器及两容器关闭，原四服务全ID健康、donor数据/配置、样本媒体和旧APK保持。原型1cbf605独立未改，服务/SDK未改，无NAS/手机/正式发布。
+[357份输入与离线复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-checkbox-package/README.md)包含39张原生PNG/146XML和全部25确认状态，三处观察错误另保留。恢复原物理显示/420、三比例0、字体/旋转/immersive和进入shell UID；自有模拟器及两容器关闭，原四服务全ID健康、donor数据/配置、样本媒体和旧APK保持。原型1cbf605独立未改，服务/SDK未改，无NAS/手机/正式发布。
 
 本段补齐#116正常包本机项；草稿整合、完整45项、其它UI-06/手势与手机/NAS、有声/云提供器、#78/#89/#100仍继续。

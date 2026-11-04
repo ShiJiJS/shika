@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/player.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/player.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 
@@ -41,7 +41,7 @@ void main() {
       final oldIdentity = repo.playbackIdentity;
       final preferences = UiPreferences();
       await t.pumpWidget(
-        VideoViewerApp(repository: repo, preferences: preferences),
+        ShikaApp(repository: repo, preferences: preferences),
       );
       await frames(t);
       await t.tap(find.byKey(const Key('nav-settings')));
@@ -94,7 +94,7 @@ void main() {
   testWidgets(
     'an expired connection closes the secondary preview and reveals login',
     (t) async {
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
       await t.tap(find.text('预览此范围'));
       await frames(t);
@@ -103,7 +103,7 @@ void main() {
       await frames(t);
       expect(find.byKey(const Key('video-preview-route')), findsNothing);
       expect(find.byType(MovieStage), findsNothing);
-      expect(find.text('连接你的视频库'), findsOneWidget);
+      expect(find.text('连接拾刻媒体库'), findsOneWidget);
       await t.pumpWidget(const SizedBox());
       await frames(t);
       expect(t.takeException(), isNull);
@@ -124,7 +124,7 @@ void main() {
         ),
       );
       final identity = repo.playbackIdentity;
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
       expect(find.byType(MovieStage), findsNothing);
       expect(find.text('6 个视频'), findsOneWidget);
@@ -149,7 +149,7 @@ void main() {
   testWidgets(
     'library entry opens a secondary preview; end/restart/return retain the source search',
     (t) async {
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
       expect(find.byType(MovieStage), findsNothing);
       expect(repo.snapshot.recentVideos, isEmpty);
@@ -213,7 +213,7 @@ void main() {
   testWidgets(
     'tag edits keep the fixed preview current; return updates source matches',
     (t) async {
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
       await t.tap(find.byKey(const Key('nav-tags')));
       await frames(t);

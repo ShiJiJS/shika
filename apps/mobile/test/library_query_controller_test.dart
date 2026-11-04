@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/library/browse_context.dart';
-import 'package:video_viewer/features/library/library_query_controller.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/state_store.dart';
+import 'package:shika/features/library/browse_context.dart';
+import 'package:shika/features/library/library_query_controller.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/state_store.dart';
 
 class DelayedCatalog extends DemoLibraryRepository {
   DelayedCatalog() : super(MemoryStateStore(), latency: Duration.zero);

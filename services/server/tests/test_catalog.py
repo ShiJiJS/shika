@@ -4,7 +4,7 @@ import sqlite3
 import time
 from dataclasses import replace
 
-from video_viewer.config import Mount
+from shika.config import Mount
 
 from .conftest import connect, put, scan, wait_phase
 

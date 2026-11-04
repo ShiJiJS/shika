@@ -1,6 +1,6 @@
 # NAS体验反馈：下一轮 tickets 规划
 
-[规划草稿PR #143](https://github.com/ShiJiJS/video_viewer/pull/143)，基于部署PR #136。
+[规划草稿PR #143](https://github.com/ShiJiJS/shika/pull/143)，基于部署PR #136。
 
 2026-10-30。当前体验版preview.16/code22、App生产源码12d6ca67、NAS服务源码b79da7b9。本轮按用户“先做tickets规划”要求，只核对事实、建GitHub issue及保存方案，不修改App/服务源码、NAS设置、扫描任务或APK。
 
@@ -18,12 +18,12 @@
 
 | 票据 | 范围 | 状态 |
 | --- | --- | --- |
-| [#137](https://github.com/ShiJiJS/video_viewer/issues/137) 图包阅读默认使用纵向拼接，保留用户单独选择 | [细项](issues/LF8-FEEDBACK-READER-DEFAULT.md) | 代码/第23版原生基础流程通过，NAS默认读回/交付完成，待手机 |
-| [#138](https://github.com/ShiJiJS/video_viewer/issues/138) 扫描进度按接入目录独立记录，区分视频与图包 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-DATA.md) | 服务/页面已实现，完整478项与第25版排队/断线/旧服务通过，NAS更新/交付完成，待手机 |
-| [#139](https://github.com/ShiJiJS/video_viewer/issues/139) 扫描页面分别显示视频、图包及每个接入目录的进度 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-UI.md) | 第25版独立数字/排队/断线/旧服务通过，NAS更新/交付完成，待手机 |
-| [#140](https://github.com/ShiJiJS/video_viewer/issues/140) 修复新版返回操作可能进入旧浏览页的问题 | [细项](issues/LF8-FEEDBACK-LEGACY-RETURN.md) | 第23版及第25版旧服务返回/冷启通过，其余组合和手机待验 |
-| [#141](https://github.com/ShiJiJS/video_viewer/issues/141) 简化图包操作文案，去掉“整包”措辞且保持行为不变 | [细项](issues/LF8-FEEDBACK-ACTION-COPY.md) | 代码/第23版原生文案和撤销通过，服务已部署，待手机 |
-| [#142](https://github.com/ShiJiJS/video_viewer/issues/142) 纵向拼接阅读支持双指缩放和放大后移动 | [细项](issues/LF8-FEEDBACK-VERTICAL-ZOOM.md) | 代码/第25版双指、500实文件/坏图/整理/回退通过，旧服务续读/返回通过，NAS更新/交付完成，待手机及其余组合 |
+| [#137](https://github.com/ShiJiJS/shika/issues/137) 图包阅读默认使用纵向拼接，保留用户单独选择 | [细项](issues/LF8-FEEDBACK-READER-DEFAULT.md) | 代码/第23版原生基础流程通过，NAS默认读回/交付完成，待手机 |
+| [#138](https://github.com/ShiJiJS/shika/issues/138) 扫描进度按接入目录独立记录，区分视频与图包 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-DATA.md) | 服务/页面已实现，完整478项与第25版排队/断线/旧服务通过，NAS更新/交付完成，待手机 |
+| [#139](https://github.com/ShiJiJS/shika/issues/139) 扫描页面分别显示视频、图包及每个接入目录的进度 | [细项](issues/LF8-FEEDBACK-ROOT-SCAN-UI.md) | 第25版独立数字/排队/断线/旧服务通过，NAS更新/交付完成，待手机 |
+| [#140](https://github.com/ShiJiJS/shika/issues/140) 修复新版返回操作可能进入旧浏览页的问题 | [细项](issues/LF8-FEEDBACK-LEGACY-RETURN.md) | 第23版及第25版旧服务返回/冷启通过，其余组合和手机待验 |
+| [#141](https://github.com/ShiJiJS/shika/issues/141) 简化图包操作文案，去掉“整包”措辞且保持行为不变 | [细项](issues/LF8-FEEDBACK-ACTION-COPY.md) | 代码/第23版原生文案和撤销通过，服务已部署，待手机 |
+| [#142](https://github.com/ShiJiJS/shika/issues/142) 纵向拼接阅读支持双指缩放和放大后移动 | [细项](issues/LF8-FEEDBACK-VERTICAL-ZOOM.md) | 代码/第25版双指、500实文件/坏图/整理/回退通过，旧服务续读/返回通过，NAS更新/交付完成，待手机及其余组合 |
 
 所有票初始均未实施、未验收。扫描拆为服务端与客户端两票，是同一需求的前后依赖。
 

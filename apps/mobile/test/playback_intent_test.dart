@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_viewer/ui/player.dart';
+import 'package:shika/ui/player.dart';
 
 class BufferingPlayer extends VideoPlayerController {
   BufferingPlayer() : super.asset('isolated-test') {

@@ -11,7 +11,7 @@ import pytest
 from PIL import Image
 from sqlalchemy import select
 
-from video_viewer.models import PackFileOperation, PackPurgeStep
+from shika.models import PackFileOperation, PackPurgeStep
 
 from .test_pack_operations import command, tree, wait
 from .test_pack_purge_plans import fixture
@@ -172,7 +172,7 @@ def test_mutation_during_returned_image_hash_is_not_cached_or_served(library, mo
             remaining.write_bytes(data)
         return chunk
 
-    monkeypatch.setattr("video_viewer.rollback_images.os.pread", change_after_read)
+    monkeypatch.setattr("shika.rollback_images.os.pread", change_after_read)
     before = catalogue(client)
     response = client.get(page["image_url"])
     assert response.status_code == 409 and response.json()["error"]["code"] == "image_changed"

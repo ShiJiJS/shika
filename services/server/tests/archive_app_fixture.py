@@ -12,10 +12,10 @@ from fastapi import Header, HTTPException
 from fastapi.responses import Response
 from PIL import Image
 
-from video_viewer.app import create_app
-from video_viewer.authority import Authority
-from video_viewer.config import Settings
-from video_viewer.models import RequestRecord, Task
+from shika.app import create_app
+from shika.authority import Authority
+from shika.config import Settings
+from shika.models import RequestRecord, Task
 
 
 def create_archive_app():

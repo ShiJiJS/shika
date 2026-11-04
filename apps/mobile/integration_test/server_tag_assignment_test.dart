@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/features/library/pack_catalog_page.dart';
-import 'package:video_viewer/features/library/video_catalog_page.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/features/library/pack_catalog_page.dart';
+import 'package:shika/features/library/video_catalog_page.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/preferences.dart';
 
 import '../test/support/reveal_action.dart';
 
@@ -67,7 +67,7 @@ void main() {
       await repo.setVideoTags(videos, {kept});
       await repo.setPackTags(packs, {packKept.id});
       await t.pumpWidget(
-        VideoViewerApp(repository: repo, preferences: preferences),
+        ShikaApp(repository: repo, preferences: preferences),
       );
 
       Future<void> until(bool Function() done, String reason) async {

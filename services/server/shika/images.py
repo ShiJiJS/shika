@@ -35,7 +35,7 @@ def inspect_image(fd, cache, timeout, stop):
         except OSError:
             pass  # Metadata/original remain usable even without a writable cache.
         process = subprocess.Popen(
-            [sys.executable, "-m", "video_viewer.image_probe", str(fd), str(target)],
+            [sys.executable, "-m", "shika.image_probe", str(fd), str(target)],
             pass_fds=(fd,),
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,

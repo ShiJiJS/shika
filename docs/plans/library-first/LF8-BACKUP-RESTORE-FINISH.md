@@ -1,12 +1,12 @@
 # 备份恢复完成后可立即继续操作
 
-[草稿 PR #166](https://github.com/ShiJiJS/video_viewer/pull/166)，基于 #165。[后续 NAS preview.8 已交付](../../nas-preview-2026-11-01-service8.md)，现有第26版可直接使用。本页其余部分保留本机验证时的范围，未部署等描述属于该阶段。
+[草稿 PR #166](https://github.com/ShiJiJS/shika/pull/166)，基于 #165。[后续 NAS preview.8 已交付](../../nas-preview-2026-11-01-service8.md)，现有第26版可直接使用。本页其余部分保留本机验证时的范围，未部署等描述属于该阶段。
 
-2026-11-01，处理 [#159](https://github.com/ShiJiJS/video_viewer/issues/159)，基于草稿 [#165](https://github.com/ShiJiJS/video_viewer/pull/165)。固定产品源码 `2de02374e21567d72cc8bb94dde0bda43fde5a06`，本机 runtime preview.8。普通原签名 preview.20/code26、客户端 `8416a3f7` 保持；无需新 APK。本轮未访问 NAS、未修改原型、API、数据库结构或图包回收/恢复逻辑。
+2026-11-01，处理 [#159](https://github.com/ShiJiJS/shika/issues/159)，基于草稿 [#165](https://github.com/ShiJiJS/shika/pull/165)。固定产品源码 `2de02374e21567d72cc8bb94dde0bda43fde5a06`，本机 runtime preview.8。普通原签名 preview.20/code26、客户端 `8416a3f7` 保持；无需新 APK。本轮未访问 NAS、未修改原型、API、数据库结构或图包回收/恢复逻辑。
 
 ## 问题与实现
 
-这是管理数据备份恢复的问题。原失败发生于 cf9a 完整检查：恢复任务 completed、新管理代次和恢复前快照读取均成功，紧接着查看快照的 POST 却得到 503 / restore_in_progress。原日志继续保存在 [删除重试阶段](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-pack-purge-code26/full-server.log)，后续偶然全绿不作为修复证明。
+这是管理数据备份恢复的问题。原失败发生于 cf9a 完整检查：恢复任务 completed、新管理代次和恢复前快照读取均成功，紧接着查看快照的 POST 却得到 503 / restore_in_progress。原日志继续保存在 [删除重试阶段](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-pack-purge-code26/full-server.log)，后续偶然全绿不作为修复证明。
 
 原实现先在替换事务内发布完成记录、清除持久恢复标记，随后清理私有工作目录/历史，最后才释放内存里的恢复占用。现在由同一写锁保护“提交终态事务”和“释放该恢复的内存占用”，使下一条写请求看到的完成状态与实际许可一致。清理仍在提交之后；不会为了等待清理而把已提交的数据写成处理中，也不会提前放开尚未提交的替换。
 
@@ -30,7 +30,7 @@ App 既有逻辑会在管理代次变化后提交一次扫描，记录中单独�
 
 从“最近”打开原图包，原第 3 页实际图片接口 200、ROW13 中部画面对应 45%，两个标签/原偏好/页 ID 保留。源图片 3 份大小/SHA 全部保持，原导出及准备快照的归档字节保持。本轮没有文件永久删除或图包恢复 POST，也未重复测 App 强停；冷恢复与中断由上述服务测试证明，不能替代目标手机检查。
 
-11 张 1080×2400 原始截图由主 Agent 逐张查看，约 389dp、浅色竖屏，无独立视觉评审。[请求、逐表摘要、检查点、脚本与日志](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-backup-restore-finish-code26/README.md)同时保留中间观察断言：组合语义不是单独标题、首次扫描稳定等待、设置新增键和空视频播放 404。均从原任务/原页面继续读取，没有通过重试业务操作掩盖失败。
+11 张 1080×2400 原始截图由主 Agent 逐张查看，约 389dp、浅色竖屏，无独立视觉评审。[请求、逐表摘要、检查点、脚本与日志](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-backup-restore-finish-code26/README.md)同时保留中间观察断言：组合语义不是单独标题、首次扫描稳定等待、设置新增键和空视频播放 404。均从原任务/原页面继续读取，没有通过重试业务操作掩盖失败。
 
 ## 候选和范围
 

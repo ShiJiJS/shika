@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/features/packs/pack_reader_page.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
+import 'package:shika/features/packs/pack_reader_page.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
 
 import 'support/fixture.dart';
 
@@ -31,7 +31,7 @@ void main() {
     final catalog = await repo.loadPacks(PackQuery());
     final first = catalog.items.first, second = catalog.items[1];
     expect(catalog.total, 27);
-    await t.pumpWidget(VideoViewerApp(repository: repo));
+    await t.pumpWidget(ShikaApp(repository: repo));
     PackReaderPageState state() =>
         t.state<PackReaderPageState>(find.byType(PackReaderPage));
     Future<void> until(bool Function() done, String why) async {

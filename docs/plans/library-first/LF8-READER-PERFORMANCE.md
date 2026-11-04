@@ -2,7 +2,7 @@
 
 基于PR #95，继续READ-06及READ-01–05，#24/#33不关闭。现有三轮500页证据采用高压缩纯色图、debug构建，本段补充高细节/较大JPEG、profile模式实际UI操作的重复测量；不拿本机替代目标手机或SMB性能。
 
-当前冻结源码81a11a98：正式三轮已完整通过，每轮四组30次及全部500页，单App PID、同页切换/来源返回与采集收尾均通过。三轮PSS采样峰值255.491/254.464/255.510MiB，6图片provider/120元数据有界；506页全部SHA与生成清单相同。逐轮数据、慢样本与原始失败见[证据入口](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-performance/README.md)。测量源码/原型未改；下一步才整合PR #98和做普通release验证。三轮本机成功不代替手机/NAS验收，也不证明#78/#89已修复。
+当前冻结源码81a11a98：正式三轮已完整通过，每轮四组30次及全部500页，单App PID、同页切换/来源返回与采集收尾均通过。三轮PSS采样峰值255.491/254.464/255.510MiB，6图片provider/120元数据有界；506页全部SHA与生成清单相同。逐轮数据、慢样本与原始失败见[证据入口](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-performance/README.md)。测量源码/原型未改；下一步才整合PR #98和做普通release验证。三轮本机成功不代替手机/NAS验收，也不证明#78/#89已修复。
 
 配套打包脚本已改为读取冻结源码pubspec中的0.2.0-preview.N+CODE，生成同序号0.1.4-rollback.N并使用相同Android code；不再固定写入preview.2/rollback.2。仍拒绝覆盖既有产物，签名/正常入口/锁文件核查保留。当前8和下一次9的解析、缺失/重复/非法声明拒绝已检查，见packaging-version-check.json；测量结束后Ruff检查/格式也通过。尚未构建9，现有8包不变。
 

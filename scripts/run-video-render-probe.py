@@ -50,7 +50,7 @@ save("original.json", {"display": original, "font": font})
 paths = [
     "apps/mobile/integration_test/video_render_probe_test.dart",
     "apps/mobile/android/app/src/debug/AndroidManifest.xml",
-    "apps/mobile/android/app/src/debug/kotlin/io/github/shijijs/video_viewer/VideoRenderProbeActivity.kt",
+    "apps/mobile/android/app/src/debug/kotlin/io/github/shijijs/shika/VideoRenderProbeActivity.kt",
     "scripts/run-video-render-probe.py",
     "apps/mobile/assets/media/flower-landscape.mp4",
 ]
@@ -187,7 +187,7 @@ try:
                 "start",
                 "-W",
                 "-n",
-                APP + "/.VideoRenderProbeActivity",
+                APP + "/io.github.shijijs.shika.VideoRenderProbeActivity",
                 "--es",
                 "fixture",
                 "owned-public-video-probe",

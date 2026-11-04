@@ -3,7 +3,7 @@
 import pytest
 from sqlalchemy import event, select
 
-from video_viewer.models import ImagePack, PackPage, Root, Video
+from shika.models import ImagePack, PackPage, Root, Video
 
 from .test_media_types import pack_root, seed_pack
 

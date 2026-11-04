@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/library/backup_document.dart';
-import 'package:video_viewer/library/backup_file_picker.dart';
-import 'package:video_viewer/library/backup_work_store.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/file_command_store.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/library/server_api.dart';
-import 'package:video_viewer/library/management_archives.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/library/backup_document.dart';
+import 'package:shika/library/backup_file_picker.dart';
+import 'package:shika/library/backup_work_store.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/file_command_store.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/library/server_api.dart';
+import 'package:shika/library/management_archives.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/preferences.dart';
 
 import '../test/support/reveal_action.dart';
 
@@ -300,7 +300,7 @@ void main() {
 
     Future<void> show() async {
       await t.pumpWidget(
-        VideoViewerApp(
+        ShikaApp(
           key: UniqueKey(),
           repository: repo,
           preferences: preferences,

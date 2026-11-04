@@ -2,8 +2,8 @@
 
 from sqlalchemy import select
 
-from video_viewer import catalog_selection
-from video_viewer.models import PackProgress, RecentEntry, Root
+from shika import catalog_selection
+from shika.models import PackProgress, RecentEntry, Root
 
 from .conftest import put, scan
 from .test_media_types import pack_root, pack_tag

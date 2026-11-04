@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/player.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/player.dart';
 
 class PagedLibrary extends DemoLibraryRepository {
   @override
@@ -64,7 +64,7 @@ void main() {
         'failure_reasons': {'probe_timeout': 2},
       });
       repo.libraryPreparation.value = preparation.offline();
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await t.pump(const Duration(milliseconds: 200));
       expect(find.textContaining('2 个视频信息读取失败'), findsOneWidget);
       expect(find.textContaining('204 个缩略图待补充（不影响入库）'), findsOneWidget);
@@ -81,7 +81,7 @@ void main() {
     (t) async {
       final repo = PagedLibrary();
       await repo.initialize();
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await t.pump();
       expect(find.byType(MovieStage), findsNothing);
       expect(find.byKey(const Key('library-preparation')), findsOneWidget);
@@ -117,7 +117,7 @@ void main() {
       final failed = Completer<void>(), recovered = Completer<void>();
       repo.next.addAll([failed, recovered]);
       await repo.initialize();
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await t.tap(find.byKey(const Key('nav-library')));
       await t.pumpAndSettle();
       final grid = find.byKey(const Key('video-grid'));

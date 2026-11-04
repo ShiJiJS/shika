@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-import 'package:video_viewer/features/library/tag_catalog_page.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/main.dart';
+import 'package:shika/features/library/tag_catalog_page.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/main.dart';
 
 import 'media_workspace_widget_test.dart' show WorkspaceLibrary, frames;
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
@@ -69,7 +69,7 @@ void main() {
     ),
   );
   Future<void> start(WidgetTester t) async {
-    await t.pumpWidget(VideoViewerApp(repository: repo));
+    await t.pumpWidget(ShikaApp(repository: repo));
     await frames(t);
     await tap(t, find.byKey(const Key('nav-tags')));
   }

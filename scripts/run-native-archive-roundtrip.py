@@ -141,7 +141,7 @@ def main():
         "ls-files",
         "apps/mobile/lib",
         "apps/mobile/android",
-        "services/server/video_viewer",
+        "services/server/shika",
     ).splitlines()
     paths += [
         "apps/mobile/integration_test/server_archive_management_test.dart",
@@ -168,7 +168,7 @@ def main():
     events, errors, system_events = [], [], []
     before_trace = before_media = None
     created_name = None
-    unique_name = "video-viewer-backup-" + str(time.time_ns()) + ".vvbackup"
+    unique_name = "shika-backup-" + str(time.time_ns()) + ".vvbackup"
     before_downloads = download_names()
     save_descriptor = None
 
@@ -255,7 +255,7 @@ def main():
         names = download_names() - before_downloads
         assert len(names) == 1, names
         (name,) = names
-        assert name.startswith("video-viewer-backup") and name.endswith(".vvbackup")
+        assert name.startswith("shika-backup") and name.endswith(".vvbackup")
         assert all(c.isalnum() or c in " .()-_" for c in name), name
         assert name == unique_name, name
         return name
@@ -344,7 +344,7 @@ def main():
             "VV_STABILITY_SECONDS=0",
             "--entrypoint",
             "uvicorn",
-            "video-viewer-server:e2e",
+            "shika-server:e2e",
             "tests.archive_app_fixture:create_archive_app",
             "--factory",
             "--host",

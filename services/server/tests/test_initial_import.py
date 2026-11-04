@@ -1,7 +1,7 @@
 import threading
 import time
 
-from video_viewer import scanner
+from shika import scanner
 
 from .conftest import connect, put, scan
 from .test_file_operations import trash

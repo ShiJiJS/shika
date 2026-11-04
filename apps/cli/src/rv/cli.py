@@ -429,11 +429,11 @@ def build_parser() -> argparse.ArgumentParser:
     common = _common_parser(sub=False)
     common_sub = _common_parser(sub=True)
     parser = argparse.ArgumentParser(
-        prog="rv",
+        prog="shika",
         parents=[common],
-        description="video-viewer NAS 媒体库命令行客户端",
+        description="拾刻 · shika NAS 媒体库命令行客户端",
     )
-    parser.add_argument("--version", action="version", version=f"rv {__version__}")
+    parser.add_argument("--version", action="version", version=f"shika {__version__}")
     sub = parser.add_subparsers(dest="command", required=True, metavar="<命令>")
 
     def command(name: str, help_text: str, handler):

@@ -14,14 +14,14 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import select
 from starlette.concurrency import run_in_threadpool
 
-from video_viewer import scanner as scan_module
-from video_viewer.app import create_app
-from video_viewer.authority import HEADER as EPOCH_HEADER
-from video_viewer.authority import Authority
-from video_viewer.config import Settings
-from video_viewer.file_transfer import rename_new
-from video_viewer.media import MediaInspectionError
-from video_viewer.models import Root, Video
+from shika import scanner as scan_module
+from shika.app import create_app
+from shika.authority import HEADER as EPOCH_HEADER
+from shika.authority import Authority
+from shika.config import Settings
+from shika.file_transfer import rename_new
+from shika.media import MediaInspectionError
+from shika.models import Root, Video
 
 from .client_authority_fixture import install as install_authority_fixture
 from .generate_media import encode, generate
@@ -614,7 +614,7 @@ def create_e2e_app():
         elif action == "reset-task-trace":
             trace.clear()
         elif action == "tag-management-stats":
-            from video_viewer.models import PackTag, PackTagLink, Tag, VideoTag
+            from shika.models import PackTag, PackTagLink, Tag, VideoTag
 
             with app.state.db.read() as session:
                 return {
@@ -659,7 +659,7 @@ def create_e2e_app():
         elif action == "restore-plan-stats":
             from sqlalchemy import func
 
-            from video_viewer.models import (
+            from shika.models import (
                 ImagePack,
                 PackRestoreBatch,
                 PackRestoreMember,
@@ -746,7 +746,7 @@ def create_e2e_app():
         elif action == "purge-restart-stats":
             from sqlalchemy import func
 
-            from video_viewer.models import PackFileStep, PackTrashItem, Task
+            from shika.models import PackFileStep, PackTrashItem, Task
 
             with app.state.db.read() as session:
                 task = session.scalar(
@@ -796,7 +796,7 @@ def create_e2e_app():
                     "submitted_paths": [row.original_path for row in submitted],
                 }
         elif action == "purge-management-stats":
-            from video_viewer.models import (
+            from shika.models import (
                 PackFileStep,
                 PackPurgeEntry,
                 PackPurgeExecution,
@@ -894,7 +894,7 @@ def create_e2e_app():
 
             def fail_purge(phase, identity):
                 if phase == "purge_purging":
-                    from video_viewer.models import PackPurgeStep
+                    from shika.models import PackPurgeStep
 
                     with app.state.db.read() as session:
                         row = session.get(PackPurgeStep, identity)

@@ -6,12 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/ui/home.dart';
-import 'package:video_viewer/ui/sheets.dart';
+import 'package:shika/main.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/ui/home.dart';
+import 'package:shika/ui/sheets.dart';
 
 class TestBackupFiles implements BackupFiles {
   TestBackupFiles(this.file);
@@ -90,7 +90,7 @@ void main() {
       if (await directory.exists()) await directory.delete(recursive: true);
     });
     await repo.initialize();
-    await t.pumpWidget(VideoViewerApp(repository: repo, backupFiles: files));
+    await t.pumpWidget(ShikaApp(repository: repo, backupFiles: files));
     await t.pump(const Duration(milliseconds: 500));
   }
 
@@ -265,7 +265,7 @@ void main() {
       repo.dispose();
       repo = DemoLibraryRepository(store);
       await repo.initialize();
-      await t.pumpWidget(VideoViewerApp(repository: repo, backupFiles: files));
+      await t.pumpWidget(ShikaApp(repository: repo, backupFiles: files));
       await t.pump(const Duration(milliseconds: 500));
       await nav(t, 'library');
       expect(find.text('1 个视频'), findsOneWidget);

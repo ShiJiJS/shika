@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/packs/pack_trash_session.dart';
+import 'package:shika/features/packs/pack_trash_session.dart';
 
 import 'support/pack_trash_fixture.dart';
 

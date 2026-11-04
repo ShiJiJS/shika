@@ -7,7 +7,7 @@ from pathlib import Path
 from fastapi import Header, HTTPException
 from fastapi.responses import JSONResponse
 
-from video_viewer.models import ImagePack, PackPage, Root
+from shika.models import ImagePack, PackPage, Root
 
 
 def install(app, key):

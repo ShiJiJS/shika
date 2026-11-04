@@ -24,4 +24,4 @@
 
 实际测试结果在运行后写入阶段证据；设计中的验证项不能当作通过记录。公开v2能力保持关闭，LF7、总任务和LF8继续开放，冻结原型与真实NAS不修改。
 
-实际结果：ac4f4d1固定源码联合66项（本模块12项）/Ruff/编译通过，发布前后各一次真实SIGKILL。原始日志和量测边界见[证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-backup-history/README.md)。当前草稿[PR #49](https://github.com/ShiJiJS/video_viewer/pull/49)，恢复协调及完整目标保持开放。
+实际结果：ac4f4d1固定源码联合66项（本模块12项）/Ruff/编译通过，发布前后各一次真实SIGKILL。原始日志和量测边界见[证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-backup-history/README.md)。当前草稿[PR #49](https://github.com/ShiJiJS/shika/pull/49)，恢复协调及完整目标保持开放。

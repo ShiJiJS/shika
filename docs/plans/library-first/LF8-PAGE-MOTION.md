@@ -1,6 +1,6 @@
 # 页面进退场与系统减少动画
 
-对应 [#103](https://github.com/ShiJiJS/video_viewer/issues/103)、UI-06。当前实际图包入口原先使用默认 MaterialPageRoute，普通及减少动画的两个入口检查均读到 450ms，未落实页面进入 240ms、返回 160ms 和减少动画直接到位的约定；旧失败原样保留。
+对应 [#103](https://github.com/ShiJiJS/shika/issues/103)、UI-06。当前实际图包入口原先使用默认 MaterialPageRoute，普通及减少动画的两个入口检查均读到 450ms，未落实页面进入 240ms、返回 160ms 和减少动画直接到位的约定；旧失败原样保留。
 
 共享 PaperPageRoute 统一生产图包、任务详情、回收及历史清单、备份长页和视频全屏。它仍继承 MaterialPageRoute，保留默认页面状态、返回结果及平台过渡；正常进入 240ms、返回 160ms，减少动画为 0。进入／返回时从当前 Navigator 的 MediaQuery 读取偏好，Material 路由在 didPush／didPop 更新 controller 时长；页面内切换系统设置后返回使用新值。
 
@@ -12,4 +12,4 @@
 
 原生观察通过可选的标准 NavigatorObserver 在 didPush 绑定实际 route；正常入口的观察器仍为空。ModalRoute.animation 是布局代理，离场/预排版时可能被强制为完成值；原生记录同时保存真实 controller 进度与其实际 duration/reverseDuration、对外显示代理值和 offstage 状态，只读诊断访问 SDK protected getter并明确标注，未修改 controller。首两次只读到代理完成值的失败保留，不据此声称没有动画或已经通过。
 
-最终入口abbf2ca2在同一自有AVD／服务数据完整通过三轮48次实际过渡，18录屏全解码，详见[本段原始记录与边界](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-page-motion/README.md)。三次失败及读图前／旋转中的截图保留，不当作稳定视觉终验；正常code9尚未整合本段改动，后续须生成新的配套包。
+最终入口abbf2ca2在同一自有AVD／服务数据完整通过三轮48次实际过渡，18录屏全解码，详见[本段原始记录与边界](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-page-motion/README.md)。三次失败及读图前／旋转中的截图保留，不当作稳定视觉终验；正常code9尚未整合本段改动，后续须生成新的配套包。

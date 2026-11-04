@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/server_api.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/preferences.dart';
-import 'package:video_viewer/ui/sheets.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/server_api.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/preferences.dart';
+import 'package:shika/ui/sheets.dart';
 
 import 'support/fixture.dart';
 import 'support/server_ui.dart';
@@ -37,7 +37,7 @@ void main() {
       observer = ServerApi(Uri.parse(fixtureBase), token: saved!.token);
       final before = await observer.json('GET', '/api/v1/playback');
       await t.pumpWidget(
-        VideoViewerApp(
+        ShikaApp(
           repository: repo,
           preferences: preferences,
           initializeRepository: true,
@@ -73,7 +73,7 @@ void main() {
     );
     final beforeFiles = await fixture('/__fixture/files', method: 'GET');
     await t.pumpWidget(
-      VideoViewerApp(repository: repo, preferences: preferences),
+      ShikaApp(repository: repo, preferences: preferences),
     );
     await ui.ready();
 

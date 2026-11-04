@@ -1,6 +1,6 @@
 # 图包按文件夹后台删除
 
-对应[#186](https://github.com/ShiJiJS/video_viewer/issues/186)和[#188](https://github.com/ShiJiJS/video_viewer/issues/188)。用户明确纠正此前的图片核对方案：图包以目录为单位，选中后点击永久删除，服务器后台移除整个文件夹，不等待逐图清单。
+对应[#186](https://github.com/ShiJiJS/shika/issues/186)和[#188](https://github.com/ShiJiJS/shika/issues/188)。用户明确纠正此前的图片核对方案：图包以目录为单位，选中后点击永久删除，服务器后台移除整个文件夹，不等待逐图清单。
 
 ## 最终操作
 

@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/features/packs/pack_reader_page.dart';
-import 'package:video_viewer/features/packs/pack_reading_session.dart';
-import 'package:video_viewer/features/packs/reader_images.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/features/packs/pack_reader_page.dart';
+import 'package:shika/features/packs/pack_reading_session.dart';
+import 'package:shika/features/packs/reader_images.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/preferences.dart';
 
 Future<Map<String, dynamic>> control(
   String path, {
@@ -104,7 +104,7 @@ void main() {
       expect(long.pageCount, 500);
       expect(large.pageCount, 3);
       await t.pumpWidget(
-        VideoViewerApp(
+        ShikaApp(
           repository: repo,
           preferences: preferences,
           initializeRepository: false,

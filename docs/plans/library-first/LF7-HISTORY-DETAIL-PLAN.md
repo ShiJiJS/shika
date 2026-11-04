@@ -1,6 +1,6 @@
 # LF7 后续：永久删除原清单与逐页结果的历史读取
 
-这是 PR #54 后的原始审计与实施边界。历史专用读取、原清单/文件/逐项结果页面现已接线，见 [实现契约](LF7-PURGE-HISTORY-DESIGN.md) 与 [固定源码证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-purge-history/README.md)。下文的差距保留为实施前审计，不描述最新实现；正式 backup_v2 仍关闭。
+这是 PR #54 后的原始审计与实施边界。历史专用读取、原清单/文件/逐项结果页面现已接线，见 [实现契约](LF7-PURGE-HISTORY-DESIGN.md) 与 [固定源码证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-purge-history/README.md)。下文的差距保留为实施前审计，不描述最新实现；正式 backup_v2 仍关闭。
 
 ## 实施前实际差距（历史审计）
 

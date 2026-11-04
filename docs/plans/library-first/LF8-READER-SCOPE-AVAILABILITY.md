@@ -1,6 +1,6 @@
 # 第28版阅读范围与不可用图包
 
-2026-11-01，承接[#133](https://github.com/ShiJiJS/video_viewer/issues/133)的R4、READ-05及相关PKG-02/SET-04。使用已交付普通preview.22/code28、正常入口、App源码fc564a96与本机独立服务preview.8（2de02374）。生产程序、原型和安装包未改。
+2026-11-01，承接[#133](https://github.com/ShiJiJS/shika/issues/133)的R4、READ-05及相关PKG-02/SET-04。使用已交付普通preview.22/code28、正常入口、App源码fc564a96与本机独立服务preview.8（2de02374）。生产程序、原型和安装包未改。
 
 ## 实际操作
 
@@ -18,4 +18,4 @@
 
 本次不等于全部离线/唯一改名/空文件夹、标签或最近来源、目标手机/NAS和完整45项验收。读取/身份逻辑已有服务检查，此次补普通安装包的明确操作路径，没有重复服务全集、再打包或访问NAS。
 
-专用容器、代理、模拟器、合成资料和配置已清理；原四服务健康、常用AVD、SDK/JDK、原签名、安装包及备份保持。整体草稿仍为[#168](https://github.com/ShiJiJS/video_viewer/pull/168)，未合并或正式发布。
+专用容器、代理、模拟器、合成资料和配置已清理；原四服务健康、常用AVD、SDK/JDK、原签名、安装包及备份保持。整体草稿仍为[#168](https://github.com/ShiJiJS/shika/pull/168)，未合并或正式发布。

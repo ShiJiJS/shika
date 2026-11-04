@@ -1,8 +1,8 @@
 # NAS 健康检查开销与试用更新
 
-[草稿PR #156](https://github.com/ShiJiJS/video_viewer/pull/156)（基于#155）。
+[草稿PR #156](https://github.com/ShiJiJS/shika/pull/156)（基于#155）。
 
-2026-11-01，跟踪 [#154](https://github.com/ShiJiJS/video_viewer/issues/154)，关联 #135/#33。服务实现 `6a119b1c0c2022a2f9cc615679bc8aab790f122e`，运行镜像 `video-viewer-server:0.2.0-preview.4`，ARM64。客户端仍为 `8416a3f7` / preview.20 / code26；没有重新打包 App、改协议或迁移数据库。
+2026-11-01，跟踪 [#154](https://github.com/ShiJiJS/shika/issues/154)，关联 #135/#33。服务实现 `6a119b1c0c2022a2f9cc615679bc8aab790f122e`，运行镜像 `video-viewer-server:0.2.0-preview.4`，ARM64。客户端仍为 `8416a3f7` / preview.20 / code26；没有重新打包 App、改协议或迁移数据库。
 
 ## 修改原因与边界
 
@@ -37,7 +37,7 @@ NAS 是原生 aarch64 / CPython 3.13，不是架构模拟。繁忙时，12 次�
 
 首次健康后，在同一容器上连续观察 **378.34 秒 / 24 次实际定时检查**，24 次均退出 0，执行 0.235～0.352 秒；观察中的健康状态始终为 healthy，重启 0、OOM=false。另有 6 次业务接口采样：同一新扫描任务中视频保持 598/598 完成，图包 30→375、图片 2211→18249，扫描仍在进行；没有额外扫描请求。库状态接口这 6 次最大约 0.248 秒，视频列表最大约 0.078 秒、图包列表约 0.211 秒、身份接口约 0.061 秒。这些是本次有限样本，不是手机或整个 NAS 的性能保证；也不抹去旧服务的超时和新容器启动时的一次失败。
 
-临时凭据撤销与清理结果见[本轮证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-nas-healthcheck/README.md)。扫描活动数据允许正常变化；没有停止扫描来制造健康，也没有对真实媒体执行删除或恢复试验。
+临时凭据撤销与清理结果见[本轮证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-nas-healthcheck/README.md)。扫描活动数据允许正常变化；没有停止扫描来制造健康，也没有对真实媒体执行删除或恢复试验。
 
 ## 交付范围
 

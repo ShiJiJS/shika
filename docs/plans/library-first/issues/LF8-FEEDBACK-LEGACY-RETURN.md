@@ -1,6 +1,6 @@
 # 修复新版返回操作可能进入旧浏览页的问题
 
-跟踪：[140](https://github.com/ShiJiJS/video_viewer/issues/140)。
+跟踪：[140](https://github.com/ShiJiJS/shika/issues/140)。
 
 用户在preview.16/code22实际使用中反馈：偶尔按返回等操作会出现旧浏览页。继续 #24/#29/#33，关联历史返回/焦点票 #127，但不是同一问题。优先级：最高；先记录并复现真实路径。本轮仅规划。
 

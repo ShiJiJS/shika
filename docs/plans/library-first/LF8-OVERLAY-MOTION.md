@@ -14,8 +14,8 @@
 
 新正常包与旧界面回退包均原Windows证书、正常main、ARM64 release、code11，无integration插件/原型资产。85旧版/兼容、14现代相关及双方analyze通过，前述8例已包含在695全集中，不重复累加。相同普通AVD数据实际新10→新11→旧11→新11，三次install-r后首次安装时间、身份、21表、设置/登录摘要、完整偏好相同。普通包另补阅读设置与视频范围、打开后切换真实系统设置再关闭及返回来源9状态；该检查不是普通包帧计时。包SHA和服务版本见[安装说明](../../library-first-preview.md)。
 
-两套专用QEMU/容器均归还，原四服务和donor文件保留；原型树不变，旧code10两包保留，服务继续preview.2。初次运行命令的工作目录错误/输出路径错误均发生在启动前，不计产品失败；修复前7个时长断言失败按原样保留。原始记录集中在[evidence](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-overlays-motion/README.md)。
+两套专用QEMU/容器均归还，原四服务和donor文件保留；原型树不变，旧code10两包保留，服务继续preview.2。初次运行命令的工作目录错误/输出路径错误均发生在启动前，不计产品失败；修复前7个时长断言失败按原样保留。原始记录集中在[evidence](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-overlays-motion/README.md)。
 
 实现：本段缺口已修正并有可安装结果。正式验收：通知、按压/选择和其余UI-06、#78/#89/#100原因、真实手机/NAS、有声和云文件提供器仍待验，继续原任务，不关闭总票。本人配合最小项仍为连接测试手机及恢复SMB/NAS可达；不因此等待而停止其余开发。
 
-交付草稿：[PR #106](https://github.com/ShiJiJS/video_viewer/pull/106)。后续只读检查确认NAS旧视频服务健康且ARM64，指定图包目录可经现有SSH定位；未部署或写收藏，不能据此称新版NAS验收。手机仍未连接。
+交付草稿：[PR #106](https://github.com/ShiJiJS/shika/pull/106)。后续只读检查确认NAS旧视频服务健康且ARM64，指定图包目录可经现有SSH定位；未部署或写收藏，不能据此称新版NAS验收。手机仍未连接。

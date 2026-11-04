@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/packs/pack_directory_deletion.dart';
-import 'package:video_viewer/features/packs/pack_purge_review.dart';
-import 'package:video_viewer/features/packs/pack_trash_page.dart';
-import 'package:video_viewer/library/file_command_store.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/server_api.dart';
-import 'package:video_viewer/ui/paper.dart';
+import 'package:shika/features/packs/pack_directory_deletion.dart';
+import 'package:shika/features/packs/pack_purge_review.dart';
+import 'package:shika/features/packs/pack_trash_page.dart';
+import 'package:shika/library/file_command_store.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/server_api.dart';
+import 'package:shika/ui/paper.dart';
 
 import 'support/pack_purge_fixture.dart';
 

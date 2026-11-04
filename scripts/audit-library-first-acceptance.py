@@ -33,7 +33,7 @@ def tree(ref, path):
 
 FAMILIES = {
     'scanner': (SERVER, 'lf8-upgrade-rollback',
-                ['services/server/video_viewer/pack_scanner.py', 'services/server/video_viewer/images.py', 'services/server/video_viewer/pack_api.py'],
+                ['services/server/shika/pack_scanner.py', 'services/server/shika/images.py', 'services/server/shika/pack_api.py'],
                 ['services/server/tests/test_packs.py', 'services/server/tests/test_pack_continuation.py']),
     'navigation': ('a8d6180a', 'lf8-current-navigation',
                    ['app/media_workspace.dart', 'features/library/browse_context.dart', 'features/library/library_query_controller.dart', 'features/library/pack_query_controller.dart'],

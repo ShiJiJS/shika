@@ -19,7 +19,7 @@
 
 ## 2026-10-26：视频预览范围、播放控件与操作面板（PR #66）
 
-[Draft PR #66](https://github.com/ShiJiJS/video_viewer/pull/66)基于#65。
+[Draft PR #66](https://github.com/ShiJiJS/shika/pull/66)基于#65。
 
 控制条按实际文字宽度排布，空间不足时分行，保留至少88dp拖动轨道及原字号；短横屏中央播放按钮避让控制条，空间不足时保留明确的控制条播放入口。面板覆盖期间禁用播放/速度，关闭后恢复原播放意图。范围正文统一滚动，保留有界读取和当前项定位；补完整筛选来源、浅/暗色切换及大字整理动作排布。
 
@@ -29,4 +29,4 @@
 
 独立存量评审一轮、同清单三次追加；暗色取图等实际主题与图标颜色完成，稳定态低对比项关闭；大字结束计数和队列说明孤字项关闭。保留原始观察和全部修后材料，不外推动态结论。普通短队列83%固定高度留白、横屏640dp面板宽及工具图标仍与冻结原型不同，继续列入UI-02/05，不能以本次评审关闭代替整页一致。
 
-[实现约束](LF8-PREVIEW-PANELS.md) / [原始证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-panels/README.md) / [逐项台账](RESULTS.md)。本段补PRE-01/02/04、来源返回及UI-02/04/05明确组合；完整预览其它异常/后台/全屏设备手势与录屏、完整管理、500页4K/8K、目标手机/NAS及原签名升级继续。固定视口不能冒充实际旋转，小型公开视频不能冒充目标机性能。原型1cbf605独立未改，backup_v2生产能力仍关闭；MemoryCredentialStore不新增强杀/安全存储证明，未发布APK或修改正式8760/NAS/SDK。LF8/#33与总任务/#24保持开放。
+[实现约束](LF8-PREVIEW-PANELS.md) / [原始证据与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-panels/README.md) / [逐项台账](RESULTS.md)。本段补PRE-01/02/04、来源返回及UI-02/04/05明确组合；完整预览其它异常/后台/全屏设备手势与录屏、完整管理、500页4K/8K、目标手机/NAS及原签名升级继续。固定视口不能冒充实际旋转，小型公开视频不能冒充目标机性能。原型1cbf605独立未改，backup_v2生产能力仍关闭；MemoryCredentialStore不新增强杀/安全存储证明，未发布APK或修改正式8760/NAS/SDK。LF8/#33与总任务/#24保持开放。

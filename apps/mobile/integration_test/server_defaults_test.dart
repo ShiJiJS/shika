@@ -4,13 +4,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/features/settings/default_settings_sheet.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/features/settings/default_settings_sheet.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'support/fixture.dart';
 
@@ -81,7 +81,7 @@ void main() {
         query: {'create': 'false'},
       );
       await fixture('/__fixture/actions/reset-task-trace');
-      await t.pumpWidget(VideoViewerApp(repository: repo, preferences: local));
+      await t.pumpWidget(ShikaApp(repository: repo, preferences: local));
       Future<void> until(bool Function() done, String why) async {
         final deadline = DateTime.now().add(const Duration(seconds: 30));
         while (!done()) {
@@ -238,7 +238,7 @@ void main() {
         await repo.defaultVideoOrder(PlayOrder.random),
         PlayOrder.sequential,
       );
-      await t.pumpWidget(VideoViewerApp(repository: repo, preferences: local));
+      await t.pumpWidget(ShikaApp(repository: repo, preferences: local));
       await tap(find.byKey(const Key('nav-settings')));
       await open('阅读偏好');
       await shot('reopened');

@@ -5,13 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/device_controls.dart';
-import 'package:video_viewer/ui/paper_toggle.dart';
-import 'package:video_viewer/ui/preferences.dart';
-import 'package:video_viewer/ui/player.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/device_controls.dart';
+import 'package:shika/ui/paper_toggle.dart';
+import 'package:shika/ui/preferences.dart';
+import 'package:shika/ui/player.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -60,7 +60,7 @@ void main() {
     await repo.initialize();
     if (video != null) await repo.openVideo(video);
     await t.pumpWidget(
-      VideoViewerApp(repository: repo, preferences: preferences),
+      ShikaApp(repository: repo, preferences: preferences),
     );
     await until(
       t,

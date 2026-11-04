@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/packs/pack_trash_page.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/library/models.dart';
+import 'package:shika/features/packs/pack_trash_page.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/main.dart';
+import 'package:shika/library/models.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 
 import 'support/pack_trash_fixture.dart';
@@ -83,7 +83,7 @@ void main() {
         await t.pumpWidget(const SizedBox());
         VideoPlayerPlatform.instance = original;
       });
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await t.pump(const Duration(milliseconds: 500));
       Future<void> tap(Finder f) async {
         await revealAction(t, f);

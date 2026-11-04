@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/backup_document.dart';
-import 'package:video_viewer/library/backup_work_store.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/server_api.dart';
-import 'package:video_viewer/library/server_backups.dart';
+import 'package:shika/library/backup_document.dart';
+import 'package:shika/library/backup_work_store.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/server_api.dart';
+import 'package:shika/library/server_backups.dart';
 
 void main() {
   test('a real refused upload survives reopening and missing-original reads without any replay', () async {

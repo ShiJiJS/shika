@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/packs/pack_directory_deletion.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/file_command_store.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_repository.dart' hide Json;
+import 'package:shika/features/packs/pack_directory_deletion.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/file_command_store.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_repository.dart' hide Json;
 
 import 'server_pack_catalog_test.dart' show PackServer;
 import 'pack_directory_deletion_test.dart' show directoryTask;

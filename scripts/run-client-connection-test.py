@@ -50,7 +50,7 @@ stop = threading.Event()
 events = []
 errors = []
 PREFIX = "i1"
-APP_COMPONENT = "io.github.shijijs.video_viewer/.MainActivity"
+APP_COMPONENT = "io.github.shijijs.video_viewer/io.github.shijijs.shika.MainActivity"
 
 
 def docker(*args):
@@ -472,7 +472,7 @@ def main():
         PREFIX = "i1"
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     source_paths = subprocess.check_output(
-        ["git", "ls-files", "apps/mobile/lib", "services/server/video_viewer"],
+        ["git", "ls-files", "apps/mobile/lib", "services/server/shika"],
         cwd=ROOT, text=True,
     ).splitlines() + [
         "apps/mobile/integration_test/server_roots_missing_test.dart",
