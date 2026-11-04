@@ -1,5 +1,7 @@
 # 当前进度
 
+> 第35版已交付（preview.29/code35）：统一改名为「拾刻 · shika」，采用深绿底原创鹿娘图标，仓库、项目目录和README同步更新。[改名与交付记录](../../shika-branding-2026-11-04.md) · [PR #191](https://github.com/ShiJiJS/shika/pull/191)。NAS服务preview.9继续运行；其他功能开发与旧验收仍暂停。
+
 > 第34版已交付（preview.28/code34），NAS服务preview.9保持：图包删除按视频方式直接执行及短提示，自动刷新列表和数量，旧版本完成请求自动收尾；正常流程移除待核对、操作提交和保存选择。[交付及检查记录](../../nas-app-preview-2026-11-03-code34.md) · [PR #189](https://github.com/ShiJiJS/shika/pull/189)。其他持续开发与旧验收仍暂停。
 
 > 第32版已交付（preview.26/code32）：修复大批量图包永久删除清单准备超时，持续显示进度并保存原请求以便续查。[安装及本次171项相关检查](../../nas-app-preview-2026-11-02-code32.md) · [PR #185](https://github.com/ShiJiJS/shika/pull/185)。NAS服务preview.8不变，其余持续开发和验收仍暂停。
