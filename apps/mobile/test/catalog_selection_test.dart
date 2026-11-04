@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/library/catalog_selection.dart';
-import 'package:video_viewer/library/models.dart';
+import 'package:shika/features/library/catalog_selection.dart';
+import 'package:shika/library/models.dart';
 
 void main() {
   late CatalogSelection selection;

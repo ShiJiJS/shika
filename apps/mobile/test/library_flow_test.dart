@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/state_store.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/state_store.dart';
 
 void main() {
   late Directory directory;

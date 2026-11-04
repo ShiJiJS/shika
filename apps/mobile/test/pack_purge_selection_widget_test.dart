@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/packs/pack_trash_page.dart';
-import 'package:video_viewer/features/packs/pack_purge_selection_page.dart';
-import 'package:video_viewer/features/settings/maintenance_tasks_page.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/ui/paper.dart';
+import 'package:shika/features/packs/pack_trash_page.dart';
+import 'package:shika/features/packs/pack_purge_selection_page.dart';
+import 'package:shika/features/settings/maintenance_tasks_page.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/ui/paper.dart';
 
 import 'support/pack_purge_fixture.dart';
 import 'support/maintenance_fixture.dart';

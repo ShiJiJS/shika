@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/features/settings/media_root_sheet.dart';
-import 'package:video_viewer/features/settings/missing_media_page.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/file_command_store.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/features/settings/media_root_sheet.dart';
+import 'package:shika/features/settings/missing_media_page.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/file_command_store.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'support/fixture.dart';
 
@@ -56,7 +56,7 @@ void main() {
       );
       await fixture('/__fixture/actions/reset-task-trace');
       await t.pumpWidget(
-        VideoViewerApp(repository: repo, preferences: preferences),
+        ShikaApp(repository: repo, preferences: preferences),
       );
       Future<void> until(
         bool Function() done,
@@ -350,7 +350,7 @@ void main() {
       await repo.initialize();
       expect(repo.snapshot.connected, isTrue);
       await t.pumpWidget(
-        VideoViewerApp(repository: repo, preferences: preferences),
+        ShikaApp(repository: repo, preferences: preferences),
       );
       await tap(find.byKey(const Key('nav-settings')));
       await tap(find.text('媒体目录'));

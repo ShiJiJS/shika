@@ -6,14 +6,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg=${FFMPEG
 WORKDIR /app
 COPY requirements.lock ./
 RUN pip install --no-cache-dir --require-hashes -r requirements.lock
-COPY video_viewer ./video_viewer
+COPY shika ./shika
 COPY migrations ./migrations
 COPY alembic.ini ./
 RUN groupadd --gid 1000 viewer && useradd --uid 1000 --gid 1000 --no-create-home viewer && mkdir /data && chown 1000:1000 /data
 USER 1000:1000
 EXPOSE 8760
-HEALTHCHECK --interval=15s --timeout=10s --start-period=20s CMD ["python", "-I", "-S", "-B", "/app/video_viewer/healthcheck.py"]
-CMD ["uvicorn", "video_viewer.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8760", "--workers", "1", "--no-access-log"]
+HEALTHCHECK --interval=15s --timeout=10s --start-period=20s CMD ["python", "-I", "-S", "-B", "/app/shika/healthcheck.py"]
+CMD ["uvicorn", "shika.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8760", "--workers", "1", "--no-access-log"]
 
 FROM runtime AS test
 ENV PYTEST_ADDOPTS="-o cache_dir=/tmp/video-viewer-pytest-cache" RUFF_CACHE_DIR=/tmp/video-viewer-ruff-cache

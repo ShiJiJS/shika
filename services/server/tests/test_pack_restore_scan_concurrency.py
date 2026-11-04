@@ -3,8 +3,8 @@
 import pytest
 from sqlalchemy import select
 
-from video_viewer.models import ImagePack
-from video_viewer.pack_scanner import PackScanner
+from shika.models import ImagePack
+from shika.pack_scanner import PackScanner
 
 from .test_pack_purge_plans import fixture
 from .test_pack_restore_plans import wait

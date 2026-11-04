@@ -27,4 +27,4 @@
 
 [阅读画布与工具约束](LF8-READER-CHROME.md)更新实际布局：横向且窗口高度不超过500dp时，顶栏及360dp普通窄底栏浮在完整SafeArea画布上，快速整理最多430dp；总览/沉浸在更多菜单可达。普通竖屏仍按原顺序，页码14dp、工具20dp图标/12dp文字；大字来源与计数独立成行，包切换下一行，不缩字。设置与范围的主动作/分页固定底部，正文独立滚动，设置分组普通16dp/大字24dp。SheetFrame未提供footer的其它面板行为保留。
 
-本段已补真实原生短横屏和大字，不沿用上文历史widget路径冒充截图；[82点固定源码证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-chrome/README.md)明确普通三轮/大字/短横屏、只读进度、重开、范围和返回边界。组件新增双向旋转与长正文固定动作；原生仍为固定视口，没有手势录屏/真实手机或500页4K/8K性能结论。
+本段已补真实原生短横屏和大字，不沿用上文历史widget路径冒充截图；[82点固定源码证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-chrome/README.md)明确普通三轮/大字/短横屏、只读进度、重开、范围和返回边界。组件新增双向旋转与长正文固定动作；原生仍为固定视口，没有手势录屏/真实手机或500页4K/8K性能结论。

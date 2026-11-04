@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-import 'package:video_viewer/features/library/pack_catalog_page.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/main.dart';
+import 'package:shika/features/library/pack_catalog_page.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/main.dart';
 
 import 'media_workspace_widget_test.dart' show WorkspaceLibrary, frames;
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
@@ -34,7 +34,7 @@ void main() {
         addTearDown(t.view.resetDevicePixelRatio);
         t.platformDispatcher.textScaleFactorTestValue = 2;
         addTearDown(t.platformDispatcher.clearTextScaleFactorTestValue);
-        await t.pumpWidget(VideoViewerApp(repository: repo));
+        await t.pumpWidget(ShikaApp(repository: repo));
         await frames(t);
         await tap(find.byKey(const Key('kind-pack')));
         await tap(find.byTooltip('更多'));

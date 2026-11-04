@@ -3,16 +3,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/features/preview/video_preview_route.dart';
-import 'package:video_viewer/features/library/browse_context.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/media_layout.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/player.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/features/preview/video_preview_route.dart';
+import 'package:shika/features/library/browse_context.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/media_layout.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/player.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'player_lifecycle_test.dart' show ReadyVideo, frames;
 
@@ -51,7 +51,7 @@ void main() {
         t.platformDispatcher.clearTextScaleFactorTestValue();
       });
       await repo.initialize();
-      await t.pumpWidget(VideoViewerApp(repository: repo, preferences: prefs));
+      await t.pumpWidget(ShikaApp(repository: repo, preferences: prefs));
       await frames(t);
       await t.tap(find.text('预览此范围'));
       await frames(t);

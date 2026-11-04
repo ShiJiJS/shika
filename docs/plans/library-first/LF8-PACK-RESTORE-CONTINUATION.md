@@ -1,6 +1,6 @@
 # 图包恢复、最近续读与菜单输入
 
-[草稿PR #155](https://github.com/ShiJiJS/video_viewer/pull/155)（基于#152）。
+[草稿PR #155](https://github.com/ShiJiJS/shika/pull/155)（基于#152）。
 2026-11-01，承接#152与原45项的R1，跟踪#153/#33/#24/#133。客户端8416a3f7、普通原签名preview.20/code26，完整834项及分析通过；服务430fede5未变，原478项保持其原源码结果。本轮没有重跑服务全集，也没有把全部45项标成通过。
 
 ## 修正与实际操作
@@ -15,7 +15,7 @@
 
 ## 证据边界与诊断
 
-[固定记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-pack-restore-code26/README.md)包含10张实际原生画面、HTTP请求、原PID/新PID/原任务、逐表摘要、安装及构建记录。全表原始快照与驱动保留本机私有目录；SQLite仅在所属容器内mode=ro读取，未在宿主打开活动库。主Agent实际查看所列PNG；部分任务详情静态文字未导出到原生树，按真实PNG及实际成员接口核对，没有把不存在的树文本写成断言通过。没有独立视觉评审或新设计方向，冻结原型1cbf605保持。
+[固定记录](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-pack-restore-code26/README.md)包含10张实际原生画面、HTTP请求、原PID/新PID/原任务、逐表摘要、安装及构建记录。全表原始快照与驱动保留本机私有目录；SQLite仅在所属容器内mode=ro读取，未在宿主打开活动库。主Agent实际查看所列PNG；部分任务详情静态文字未导出到原生树，按真实PNG及实际成员接口核对，没有把不存在的树文本写成断言通过。没有独立视觉评审或新设计方向，冻结原型1cbf605保持。
 
 使用原522份公开样本只读挂载和独立管理数据。旧副本观察记录受前阶段ctime影响，最初两次准备扫描延后；不支持的VV_STARTUP_SCAN环境值没有禁用启动扫描，随后仅在此夹具设稳定等待0完成准备。本轮不证明默认2秒稳定策略或NAS性能。标签通过准备API种入，不冒称本轮原生标签创建。原文件字节SHA全部保持。
 
@@ -25,7 +25,7 @@
 
 preview.20与同号rollback.20已复制到NAS原packages，SHA一致，覆盖安装、不卸载。详情见[第26版说明](../../nas-app-preview-2026-11-01-code26.md)。本次只复制App和说明，未重启/迁移服务或改真实媒体，原备份和第25版保留。
 
-复制前发现Docker健康检查曾连续53次3秒超时，但直接健康接口与三次容器内请求均200，日志无异常栈、重启0/OOM=false；导入urllib本身耗时1.30–2.05秒，可能挤占预算，仍属待查推断。后续监测一度恢复healthy，复制前后也healthy，不能抹去此前失败。[#154](https://github.com/ShiJiJS/video_viewer/issues/154)继续定位监测与资源/IO影响，未盲目放宽超时。只读复核时视频598/598保持，图包106/687、图片6830推进，原非空管理记录仍在。
+复制前发现Docker健康检查曾连续53次3秒超时，但直接健康接口与三次容器内请求均200，日志无异常栈、重启0/OOM=false；导入urllib本身耗时1.30–2.05秒，可能挤占预算，仍属待查推断。后续监测一度恢复healthy，复制前后也healthy，不能抹去此前失败。[#154](https://github.com/ShiJiJS/shika/issues/154)继续定位监测与资源/IO影响，未盲目放宽超时。只读复核时视频598/598保持，图包106/687、图片6830推进，原非空管理记录仍在。
 
 自有测试容器/代理/AVD已停止，独立数据/配置及构建导出已清理；原522样本、原四服务ID/healthy、AVD用户数据、SDK/JDK、签名、安装包/构建记录及完整NAS备份保留。
 

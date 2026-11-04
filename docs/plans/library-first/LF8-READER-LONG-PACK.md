@@ -12,4 +12,4 @@
 
 当前生产修复固定f8631ae，12项相关检查及完整646项客户端测试通过：图片SocketException/HttpException沿原有两次上限自动重试，持续失败保留手动动作，失败不记进度，离页取消定时重试。最终采集/驱动固定df9d80c，生产及组件测试字节未变，普通390×844三轮已通过；实际使用同一API36专用AVD的软件GPU/headless启动，App无渲染参数覆盖。同源共39个前台检查点、2190次实际拖动，全部500页顺序、三次大图往返及重开末页/偏好经实际帧、请求和SQL核对；6段原生录屏完整解码通过。观察到的进程PSS最高分别480.8/631.4/462.9MiB，不与48MiB provider估算预算混同，也不作为目标手机性能门槛。标准ARM64 release编译通过，沿开发签名不发布。
 
-宿主GPU的QEMU 139、长扫描准备、当前大图连接关闭、测试完成后的PID采样及驱动未等实际翻页等中间失败分别留档，不计最终三轮。驱动新增保存就绪/启用按钮/目标页及可见RawImage检查；元数据通过可空Git tree读取，不要求参考目录始终存在。方案与原始日志见[证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-long-pack/README.md)。
+宿主GPU的QEMU 139、长扫描准备、当前大图连接关闭、测试完成后的PID采样及驱动未等实际翻页等中间失败分别留档，不计最终三轮。驱动新增保存就绪/启用按钮/目标页及可见RawImage检查；元数据通过可空Git tree读取，不要求参考目录始终存在。方案与原始日志见[证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-long-pack/README.md)。

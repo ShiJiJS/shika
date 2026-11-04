@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/settings/media_root_sheet.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/ui/paper.dart';
+import 'package:shika/features/settings/media_root_sheet.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/ui/paper.dart';
 
 import 'fixed_preview_widget_test.dart' show frames;
 

@@ -2,18 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/ui/preferences.dart';
 
 import '../test/support/reveal_action.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/home.dart' show BackupFiles;
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/home.dart' show BackupFiles;
 
 import 'support/fixture.dart';
 
@@ -76,7 +76,7 @@ void main() {
               as String;
       final picker = TaskBackupFiles()..selected = document;
       await t.pumpWidget(
-        VideoViewerApp(
+        ShikaApp(
           repository: repo,
           backupFiles: picker,
           preferences: preferences,

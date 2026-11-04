@@ -1,8 +1,8 @@
 # 纵向拼接阅读支持双指缩放和放大后移动
 
-跟踪：[142](https://github.com/ShiJiJS/video_viewer/issues/142)。
+跟踪：[142](https://github.com/ShiJiJS/shika/issues/142)。
 
-用户确认希望纵向拼接时也能缩放。继续 #24/#30/#33。优先级：高；[默认纵向#137](https://github.com/ShiJiJS/video_viewer/issues/137)后这是主要阅读路径。初始规划保留如下，现已进入实现与检查。
+用户确认希望纵向拼接时也能缩放。继续 #24/#30/#33。优先级：高；[默认纵向#137](https://github.com/ShiJiJS/shika/issues/137)后这是主要阅读路径。初始规划保留如下，现已进入实现与检查。
 
 当前核对：pack_reader_page.dart:923起传给_VerticalReader的没有resetZoom/onZoom；1843起仅ListView.builder和单击手势。缩放只存在于横向_ZoomPage（InteractiveViewer，1–4倍，双击2倍）。这是纵向分支实际缺失，不能用横向缩放的旧证据算已支持。
 

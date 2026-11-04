@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
 
 import 'server_client_authority_test.dart' show AuthorityFixture;
 import 'server_maintenance_tasks_test.dart' show Json;

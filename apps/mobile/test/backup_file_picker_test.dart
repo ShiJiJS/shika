@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/backup_document.dart';
-import 'package:video_viewer/library/backup_file_picker.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/request_scope.dart';
+import 'package:shika/library/backup_document.dart';
+import 'package:shika/library/backup_file_picker.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/request_scope.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

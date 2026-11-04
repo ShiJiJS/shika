@@ -16,13 +16,13 @@ from argon2 import PasswordHasher
 from sqlalchemy import event, func, select
 from sqlalchemy.orm import Session
 
-from video_viewer.authority import HEADER, KEY, Authority, valid_epoch
-from video_viewer.backup_archive import freeze_graph, write_v2
-from video_viewer.backup_v2_schema import mounts_from
-from video_viewer.db import Database
-from video_viewer.errors import LibraryError
-from video_viewer.models import AccessToken, Root, Setting, Task
-from video_viewer.security import Authentication
+from shika.authority import HEADER, KEY, Authority, valid_epoch
+from shika.backup_archive import freeze_graph, write_v2
+from shika.backup_v2_schema import mounts_from
+from shika.db import Database
+from shika.errors import LibraryError
+from shika.models import AccessToken, Root, Setting, Task
+from shika.security import Authentication
 
 from .conftest import put, scan
 from .test_backups import export, restore

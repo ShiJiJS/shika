@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/sheets.dart';
-import 'package:video_viewer/ui/player.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/sheets.dart';
+import 'package:shika/ui/player.dart';
 
 import 'support/fixture.dart';
 
@@ -33,7 +33,7 @@ void main() {
           repo.dispose();
         });
         await t.pumpWidget(
-          VideoViewerApp(repository: repo, initializeRepository: true),
+          ShikaApp(repository: repo, initializeRepository: true),
         );
         final deadline = DateTime.now().add(const Duration(seconds: 30));
         while (!repo.snapshot.connected ||
@@ -134,7 +134,7 @@ void main() {
     );
     Future<void> start() async {
       await t.pumpWidget(
-        VideoViewerApp(repository: repo, initializeRepository: true),
+        ShikaApp(repository: repo, initializeRepository: true),
       );
       await t.pump(const Duration(milliseconds: 500));
       await idle();

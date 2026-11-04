@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:video_viewer/library/models.dart';
+import 'package:shika/library/models.dart';
 
 const scanRoots = [
   MediaRoot('V', '视频收藏', '/media/video'),

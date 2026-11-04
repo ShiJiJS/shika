@@ -52,7 +52,7 @@ def main():
         (360, 740, "2.0") if args.profile == "large" else (844, 390, "1.0")
     )
     source_paths = subprocess.check_output(
-        ["git", "ls-files", "apps/mobile/lib", "services/server/video_viewer"],
+        ["git", "ls-files", "apps/mobile/lib", "services/server/shika"],
         cwd=ROOT,
         text=True,
     ).splitlines() + [

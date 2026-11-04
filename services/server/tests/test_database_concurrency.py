@@ -5,7 +5,7 @@ import threading
 
 from sqlalchemy import text
 
-from video_viewer.db import Database
+from shika.db import Database
 
 
 def test_wal_readers_see_committed_state_while_a_write_is_open(tmp_path):
@@ -49,7 +49,7 @@ def test_wal_recovers_committed_data_after_process_crash_and_checkpoints(tmp_pat
 import os, sys
 from pathlib import Path
 from sqlalchemy import text
-from video_viewer.db import Database
+from shika.db import Database
 db=Database(Path(sys.argv[1]))
 with db.engine.begin() as c:
     c.execute(text("CREATE TABLE probe (value TEXT)"))

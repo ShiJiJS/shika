@@ -12,4 +12,4 @@
 
 版本比较依据：[AOSP PackageManagerServiceUtils.checkDowngrade](https://android.googlesource.com/platform/frameworks/base/+/ce8e50cfcea0756066a739a6390907770949b1b0/services/core/java/com/android/server/pm/PackageManagerServiceUtils.java)。build-2/3的7→8临时包仅保留于私有诊断目录，未安装/交付。
 
-已完成本机组合：[PR #95](https://github.com/ShiJiJS/video_viewer/pull/95)，[两轮实际覆盖、99项检查及只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-app-rollback/README.md)。两份包实际code8、原签名；五次install -r覆盖、六次免口令冷启、偏好/标签/第2页纵向保留及旧回收撤销已核对。目标手机等边界继续按台账推进。
+已完成本机组合：[PR #95](https://github.com/ShiJiJS/shika/pull/95)，[两轮实际覆盖、99项检查及只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-app-rollback/README.md)。两份包实际code8、原签名；五次install -r覆盖、六次免口令冷启、偏好/标签/第2页纵向保留及旧回收撤销已核对。目标手机等边界继续按台账推进。

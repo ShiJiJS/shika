@@ -1,16 +1,16 @@
 # 媒体库与图包升级：整体审阅入口
 
-> 第34版已交付（preview.28/code34），NAS服务preview.9保持：图包删除按视频方式直接执行及短提示，自动刷新列表和数量，旧版本完成请求自动收尾；正常流程移除待核对、操作提交和保存选择。[交付及检查记录](nas-app-preview-2026-11-03-code34.md) · [PR #189](https://github.com/ShiJiJS/video_viewer/pull/189)。其他持续开发与旧验收仍暂停。
+> 第34版已交付（preview.28/code34），NAS服务preview.9保持：图包删除按视频方式直接执行及短提示，自动刷新列表和数量，旧版本完成请求自动收尾；正常流程移除待核对、操作提交和保存选择。[交付及检查记录](nas-app-preview-2026-11-03-code34.md) · [PR #189](https://github.com/ShiJiJS/shika/pull/189)。其他持续开发与旧验收仍暂停。
 
-> 第32版已交付（preview.26/code32）：修复大批量图包永久删除清单准备超时，持续显示进度并保存原请求以便续查。[安装及本次171项相关检查](nas-app-preview-2026-11-02-code32.md) · [PR #185](https://github.com/ShiJiJS/video_viewer/pull/185)。NAS服务preview.8不变，其余持续开发和验收仍暂停。
+> 第32版已交付（preview.26/code32）：修复大批量图包永久删除清单准备超时，持续显示进度并保存原请求以便续查。[安装及本次171项相关检查](nas-app-preview-2026-11-02-code32.md) · [PR #185](https://github.com/ShiJiJS/shika/pull/185)。NAS服务preview.8不变，其余持续开发和验收仍暂停。
 
 > 第31版已交付（preview.25/code31）：修复前后切换取消，完善回收按钮/顶部撤销、即时数量位置及媒体库多选回收。[安装及本次308项相关检查](nas-app-preview-2026-11-02-code31.md)。NAS服务preview.8不变；其他持续开发和验收仍暂停，下文旧版记录为历史。
 
-> 第30版已交付（preview.24/code30）：按[#177](https://github.com/ShiJiJS/video_viewer/issues/177)精简快速整理并加入沉浸手势。[安装与本次44项测试](nas-app-preview-2026-11-02-code30.md)。NAS服务preview.8不变，其余持续开发与验收保持暂停。下文第29版及更早记录为历史。
+> 第30版已交付（preview.24/code30）：按[#177](https://github.com/ShiJiJS/shika/issues/177)精简快速整理并加入沉浸手势。[安装与本次44项测试](nas-app-preview-2026-11-02-code30.md)。NAS服务preview.8不变，其余持续开发与验收保持暂停。下文第29版及更早记录为历史。
 
-> 2026-11-02 图包反馈修复：当前已交付第29版（preview.23/code29），NAS服务preview.8不变。[更新与测试记录](nas-app-preview-2026-11-02-code29.md) · [PR #176](https://github.com/ShiJiJS/video_viewer/pull/176)。只推进 #171–#175，总体持续目标及其余验收保持暂停；下文第28版记录为历史。
+> 2026-11-02 图包反馈修复：当前已交付第29版（preview.23/code29），NAS服务preview.8不变。[更新与测试记录](nas-app-preview-2026-11-02-code29.md) · [PR #176](https://github.com/ShiJiJS/shika/pull/176)。只推进 #171–#175，总体持续目标及其余验收保持暂停；下文第28版记录为历史。
 
-[整合PR #168](https://github.com/ShiJiJS/video_viewer/pull/168)。2026-11-02按用户要求将当前源码合并到main，暂停后续开发；已交付版本继续使用第28版App和NAS服务preview.8。
+[整合PR #168](https://github.com/ShiJiJS/shika/pull/168)。2026-11-02按用户要求将当前源码合并到main，暂停后续开发；已交付版本继续使用第28版App和NAS服务preview.8。
 
 本分支汇总当前可用的第28版App、NAS服务preview.8对应的源码、规划、测试和独立原型，基于主分支`b690f508`，保留主分支新增的`apps/cli`命令行工具。
 
@@ -28,7 +28,7 @@
 | 主分支命令行工具 | [apps/cli](../apps/cli/) |
 | 独立、可移除的参考原型 | [design/reference](../design/reference/README.md) |
 
-从主分支直接比较全部阶段分支会产生24,026个差异文件，其中23,300个是历史证据。这里将程序、规划和原型保留为本地文件，历史记录链接改为固定提交的GitHub地址，便于查看真正需要合并的改动。原始截图、录屏、日志、失败和中间结果完整保留在[原阶段分支的固定提交](https://github.com/ShiJiJS/video_viewer/tree/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence)，没有删除或改写原分支。
+从主分支直接比较全部阶段分支会产生24,026个差异文件，其中23,300个是历史证据。这里将程序、规划和原型保留为本地文件，历史记录链接改为固定提交的GitHub地址，便于查看真正需要合并的改动。原始截图、录屏、日志、失败和中间结果完整保留在[原阶段分支的固定提交](https://github.com/ShiJiJS/shika/tree/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence)，没有删除或改写原分支。
 
 历史记录里的文件路径、摘要和旧候选信息保留原意。需要运行依赖这些历史本地材料的审核脚本时，使用原阶段分支`codex/lf8-purge-selection-pending`；本分支供程序开发和整体审阅，日常构建不依赖这些截图/日志。
 

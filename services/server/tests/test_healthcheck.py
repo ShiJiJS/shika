@@ -5,7 +5,7 @@ from contextlib import contextmanager
 
 import pytest
 
-from video_viewer.healthcheck import healthy
+from shika.healthcheck import healthy
 
 
 @contextmanager

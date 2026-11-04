@@ -1,6 +1,6 @@
 # LF8：格式检查与正常入口预览安装包
 
-基于[PR #91](https://github.com/ShiJiJS/video_viewer/pull/91)，继续#24／#33的安装与配套检查。先处理27个旧Python格式文件，逐文件比较修改前后的AST，要求完全相同；不改变服务功能和测试要求。既有原型移除演练脚本将服务格式检查升为必需步骤，不再允许格式失败仍报告完整通过。
+基于[PR #91](https://github.com/ShiJiJS/shika/pull/91)，继续#24／#33的安装与配套检查。先处理27个旧Python格式文件，逐文件比较修改前后的AST，要求完全相同；不改变服务功能和测试要求。既有原型移除演练脚本将服务格式检查升为必需步骤，不再允许格式失败仍报告完整通过。
 
 版本从旧0.1.4+5递增为0.2.0-preview.1+6。保留包名和迁移来的原Windows签名，使用正常lib/main.dart构建，核对实际APK版本／签名／Flutter引擎ABI及不包含integration_test插件。只输出本机预览包，不创建正式GitHub发布，不部署8760或NAS。旧APK的公开证书SHA256为f5abd3bd11d94b3aaee66ab65e6a666a228a4d64edf4b86de9327ae9b8a59161，版本5；不把证书匹配本身当作数据保留证明。
 
@@ -16,4 +16,4 @@
 
 实际原服务镜像在独立8772启动（schema0004），新App显式连接后正常列出两个旧视频和LEGACY_ONLY标签，没有调用图包接口。该旧服务缺少新版固定会话，按既有兼容约定回到旧视频UI，可能自动播放；完整媒体库需要配套新服务。不是人为删除capabilities的模拟响应，也不伪称旧服务已支持图包。
 
-独立AVD已停止、两个本轮服务容器已移除，原四服务ID／运行状态相同。清理初次名称归属断言的失败和后续准确归属核对均记录，未混为首次成功。正常包、安装步骤、原始记录与只读复核见[预览说明](../../library-first-preview.md)和[本轮证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-package/README.md)。完整实际服务升级回退、App回退、目标手机／NAS、其它验收及#89/#78继续开放。
+独立AVD已停止、两个本轮服务容器已移除，原四服务ID／运行状态相同。清理初次名称归属断言的失败和后续准确归属核对均记录，未混为首次成功。正常包、安装步骤、原始记录与只读复核见[预览说明](../../library-first-preview.md)和[本轮证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-preview-package/README.md)。完整实际服务升级回退、App回退、目标手机／NAS、其它验收及#89/#78继续开放。

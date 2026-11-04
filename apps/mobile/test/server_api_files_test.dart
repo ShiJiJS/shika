@@ -4,9 +4,9 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/backup_document.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/server_api.dart';
+import 'package:shika/library/backup_document.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/server_api.dart';
 
 void main() {
   late Directory directory;

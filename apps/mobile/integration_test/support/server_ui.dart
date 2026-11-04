@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/ui/player.dart';
-import 'package:video_viewer/ui/sheets.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/ui/player.dart';
+import 'package:shika/ui/sheets.dart';
 
 /// Public controls shared by the real-service management tests.
 class ServerUi {

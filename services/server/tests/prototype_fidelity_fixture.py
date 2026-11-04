@@ -13,10 +13,10 @@ from fastapi import Header, HTTPException
 from fastapi.responses import JSONResponse, StreamingResponse
 from sqlalchemy import select
 
-from video_viewer.app import create_app
-from video_viewer.authority import Authority
-from video_viewer.config import Settings
-from video_viewer.models import (
+from shika.app import create_app
+from shika.authority import Authority
+from shika.config import Settings
+from shika.models import (
     ImagePack,
     PackPage,
     PackProgress,

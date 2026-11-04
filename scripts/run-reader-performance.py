@@ -63,7 +63,7 @@ def main():
     assert runtime["State"]["Running"] and runtime["Image"] == IMAGE
     assert runtime["Config"]["Labels"]["video-viewer.lab"] == "lf8-reader-performance"
     if not args.long_diagnostic:
-        assert "video_viewer.app:create_app" in runtime["Config"]["Cmd"], (
+        assert "shika.app:create_app" in runtime["Config"]["Cmd"], (
             "Final timings require the normal runtime entrypoint, without diagnostic middleware"
         )
     assert any(

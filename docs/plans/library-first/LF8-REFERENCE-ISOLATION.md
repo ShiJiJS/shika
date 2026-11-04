@@ -12,6 +12,6 @@
 
 ## 当前状态
 
-[Draft PR #75](https://github.com/ShiJiJS/video_viewer/pull/75)基于#74。修正后按固定7c70e59完整运行第二轮：移除副本72份参考文件，保留12,145份跟踪文件；Flutter analyze、643项完整客户端测试、debug/release APK构建、服务镜像Ruff check及447项Linux pytest通过（1项Starlette依赖弃用警告）。构建后保留文件、原参考文件字节未变；原型仍在原仓库独立保留。服务格式检查27份存量文件未过，另行记录，未批量重排服务。完整结果、APK资产清单及首轮诊断见[证据与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reference-isolation/README.md)。
+[Draft PR #75](https://github.com/ShiJiJS/shika/pull/75)基于#74。修正后按固定7c70e59完整运行第二轮：移除副本72份参考文件，保留12,145份跟踪文件；Flutter analyze、643项完整客户端测试、debug/release APK构建、服务镜像Ruff check及447项Linux pytest通过（1项Starlette依赖弃用警告）。构建后保留文件、原参考文件字节未变；原型仍在原仓库独立保留。服务格式检查27份存量文件未过，另行记录，未批量重排服务。完整结果、APK资产清单及首轮诊断见[证据与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reference-isolation/README.md)。
 
 首轮在 debug 后复用 `--no-pub` 构建 release，当前 Flutter 因跳过模式专用注册而残留 integration_test 插件，release 失败；同一副本改用标准 release 命令已通过。修正演练脚本后重新完整执行，保留首轮失败，不删除测试依赖或修改 SDK。release 额外检查 Flutter 引擎为 ARM64、DEX 无 integration_test 插件路径；各 JNI 依赖 ABI 另行列明。

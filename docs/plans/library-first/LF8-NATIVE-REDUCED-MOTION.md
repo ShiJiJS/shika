@@ -10,4 +10,4 @@ Android全局window/transition/animator动画比例由拥有该AVD的宿主设�
 
 各动作录屏和静态前后图配合逐帧参数，关键路径三轮；原始失败单列。其它100/140/240ms动作层级、完整手势/字号/主题组合以及真实手机/NAS继续，不能据本段关闭完整UI-06、#78或总验收。
 
-最终固定eee62f21，当前App12点与保留组件6点共18点三轮完整通过，证据见[原生记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-native-reduced-motion/README.md)。观察器先识别系统全屏说明并确认、等实际resumed，再在暂停覆盖层移除后的当前控件树绑定动画元素；请求真实基线帧，不使用模拟时钟。各段失败、空字符串设置恢复补证、原始录屏与帧间隔保留；不据此修改产品或关闭完整验收。
+最终固定eee62f21，当前App12点与保留组件6点共18点三轮完整通过，证据见[原生记录](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-native-reduced-motion/README.md)。观察器先识别系统全屏说明并确认、等实际resumed，再在暂停覆盖层移除后的当前控件树绑定动画元素；请求真实基线帧，不使用模拟时钟。各段失败、空字符串设置恢复补证、原始录屏与帧间隔保留；不据此修改产品或关闭完整验收。

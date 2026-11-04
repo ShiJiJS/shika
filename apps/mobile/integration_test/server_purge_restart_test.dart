@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/file_command_store.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/file_command_store.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
 
 import 'support/fixture.dart';
 
@@ -133,7 +133,7 @@ void main() {
         expect(draft.remaining.length, 3);
         debugPrint('VV_E2E_PURGE_REOPENED');
       }
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       Future<void> until(bool Function() done, String why) async {
         final deadline = DateTime.now().add(const Duration(seconds: 60));
         while (!done()) {

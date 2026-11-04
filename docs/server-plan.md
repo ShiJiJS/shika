@@ -33,12 +33,12 @@ FastAPI 的参数校验和接口文档用于明确 Flutter 网络契约。SQLite
 
 | 服务端任务 | 交付行为 | 随后的联调任务 |
 | --- | --- | --- |
-| [S1 #11](https://github.com/ShiJiJS/video_viewer/issues/11) | 认证、多目录扫描、目录层级、缩略图和分页列表 | [I1 #17](https://github.com/ShiJiJS/video_viewer/issues/17)：异步网络提供方、真实连接和列表 |
-| [S2 #12](https://github.com/ShiJiJS/video_viewer/issues/12) | 授权 Range 播放、随机/顺序轮次及持久位置 | [I2 #18](https://github.com/ShiJiJS/video_viewer/issues/18)：网络播放、手势、有限预加载和轮次恢复 |
-| [S3 #13](https://github.com/ShiJiJS/video_viewer/issues/13) | 标签、批量关联、目录和属性组合查询 | [I3 #19](https://github.com/ShiJiJS/video_viewer/issues/19)：真实标签及筛选播放 |
-| [S4 #14](https://github.com/ShiJiJS/video_viewer/issues/14) | 数据库标记回收站、精确撤销、批量取消标记及确认后永久删除（兼容旧版已移动记录） | [I4 #20](https://github.com/ShiJiJS/video_viewer/issues/20)：快速整理和真实文件操作 |
-| [S5 #15](https://github.com/ShiJiJS/video_viewer/issues/15) | 外部变化、稳定身份、缺失及目录可用性 | [I5 #21](https://github.com/ShiJiJS/video_viewer/issues/21)：真实外部改动与异常反馈 |
-| [S6 #16](https://github.com/ShiJiJS/video_viewer/issues/16) | 一致性备份、校验、目录映射及完整恢复 | [I6 #22](https://github.com/ShiJiJS/video_viewer/issues/22)：异步备份传输、校验和恢复任务 |
+| [S1 #11](https://github.com/ShiJiJS/shika/issues/11) | 认证、多目录扫描、目录层级、缩略图和分页列表 | [I1 #17](https://github.com/ShiJiJS/shika/issues/17)：异步网络提供方、真实连接和列表 |
+| [S2 #12](https://github.com/ShiJiJS/shika/issues/12) | 授权 Range 播放、随机/顺序轮次及持久位置 | [I2 #18](https://github.com/ShiJiJS/shika/issues/18)：网络播放、手势、有限预加载和轮次恢复 |
+| [S3 #13](https://github.com/ShiJiJS/shika/issues/13) | 标签、批量关联、目录和属性组合查询 | [I3 #19](https://github.com/ShiJiJS/shika/issues/19)：真实标签及筛选播放 |
+| [S4 #14](https://github.com/ShiJiJS/shika/issues/14) | 数据库标记回收站、精确撤销、批量取消标记及确认后永久删除（兼容旧版已移动记录） | [I4 #20](https://github.com/ShiJiJS/shika/issues/20)：快速整理和真实文件操作 |
+| [S5 #15](https://github.com/ShiJiJS/shika/issues/15) | 外部变化、稳定身份、缺失及目录可用性 | [I5 #21](https://github.com/ShiJiJS/shika/issues/21)：真实外部改动与异常反馈 |
+| [S6 #16](https://github.com/ShiJiJS/shika/issues/16) | 一致性备份、校验、目录映射及完整恢复 | [I6 #22](https://github.com/ShiJiJS/shika/issues/22)：异步备份传输、校验和恢复任务 |
 
 每张 S 任务以公开 API、真实临时文件及数据库结果验收；I 任务再以模拟器中的公开 UI 跑真实服务链路。V1 汇总完整回归并验证 NAS、目标手机和实际媒体样本。GitHub 原有任务与原生阻塞关系继续使用，环境探针和客户端演示不代替业务完成证据。
 

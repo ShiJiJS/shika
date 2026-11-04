@@ -1,4 +1,4 @@
-package io.github.shijijs.video_viewer
+package io.github.shijijs.shika
 
 import android.media.AudioManager
 import android.content.Intent

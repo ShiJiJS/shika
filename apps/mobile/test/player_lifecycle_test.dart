@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/ui/playback_session.dart';
-import 'package:video_viewer/ui/player.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/ui/playback_session.dart';
+import 'package:shika/ui/player.dart';
 
 class ReadyVideo extends VideoPlayerPlatform {
   var next = 0;

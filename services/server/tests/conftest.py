@@ -5,8 +5,8 @@ import time
 import pytest
 from fastapi.testclient import TestClient
 
-from video_viewer.app import create_app
-from video_viewer.config import Mount, Settings
+from shika.app import create_app
+from shika.config import Mount, Settings
 
 from .generate_media import generate
 

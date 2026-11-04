@@ -8,7 +8,7 @@ from unittest.mock import patch
 import pytest
 from sqlalchemy import select
 
-from video_viewer.models import (
+from shika.models import (
     ImagePack,
     PackFileOperation,
     PackPage,
@@ -19,7 +19,7 @@ from video_viewer.models import (
     PackTagLink,
     RecentEntry,
 )
-from video_viewer.pack_scanner import PackScanner
+from shika.pack_scanner import PackScanner
 
 from .test_media_types import pack_tag
 from .test_pack_operations import command, tree, wait
@@ -29,10 +29,10 @@ from .test_rolled_back_image_reads import restored
 
 
 def no_birth(monkeypatch):
-    from video_viewer.pack_scanner import directory_stamp
+    from shika.pack_scanner import directory_stamp
 
     monkeypatch.setattr(
-        "video_viewer.pack_scanner.directory_stamp", lambda fd: [*directory_stamp(fd)[:5], None]
+        "shika.pack_scanner.directory_stamp", lambda fd: [*directory_stamp(fd)[:5], None]
     )
 
 
@@ -195,13 +195,13 @@ def test_returned_scan_witness_does_not_absorb_external_replacements(library, mo
         folder.rename(moved)
         shutil.copytree(moved, folder)
     elif change == "birth":
-        from video_viewer.pack_scanner import directory_stamp
+        from shika.pack_scanner import directory_stamp
 
         with client.app.state.db.write() as session:
             pack = session.get(ImagePack, original["id"])
             pack.directory_signature = [*pack.directory_signature[:5], "1"]
         monkeypatch.setattr(
-            "video_viewer.pack_scanner.directory_stamp", lambda fd: [*directory_stamp(fd)[:5], "2"]
+            "shika.pack_scanner.directory_stamp", lambda fd: [*directory_stamp(fd)[:5], "2"]
         )
     else:
         with client.app.state.db.write() as session:

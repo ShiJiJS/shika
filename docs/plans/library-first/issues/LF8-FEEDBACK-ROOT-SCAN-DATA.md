@@ -1,8 +1,8 @@
 # 扫描进度按接入目录独立记录，区分视频与图包
 
-跟踪：[138](https://github.com/ShiJiJS/video_viewer/issues/138)。
+跟踪：[138](https://github.com/ShiJiJS/shika/issues/138)。
 
-来自用户“接入两个图包文件夹，应各自有进度”的反馈，继续 #24/#27/#32/#33。优先级：高。[进度页面#139](https://github.com/ShiJiJS/video_viewer/issues/139)依赖本票的数据契约。服务端实现及检查见[规则/边界](../LF8-ROOT-SCAN-DATA.md)与[草稿PR #147](https://github.com/ShiJiJS/video_viewer/pull/147)，客户端和NAS联调未完成，票保持开放。
+来自用户“接入两个图包文件夹，应各自有进度”的反馈，继续 #24/#27/#32/#33。优先级：高。[进度页面#139](https://github.com/ShiJiJS/shika/issues/139)依赖本票的数据契约。服务端实现及检查见[规则/边界](../LF8-ROOT-SCAN-DATA.md)与[草稿PR #147](https://github.com/ShiJiJS/shika/pull/147)，客户端和NAS联调未完成，票保持开放。
 
 原规划核对（code22/NAS当时快照）：`Scanner`是一轮Task、单工作线程，先视频再图包。`PackScanner`有整体packs.progress图片数/图包数，但每根目录条目只粗略计图包processed，discovered未正确填充，status也滞留discovering。NAS只读观察：图包整体已处理786张、11包，根条目却是discovering/discovered=0/processed=11；视频为598/598。现有root级数据不足，不能只改前端文字。
 

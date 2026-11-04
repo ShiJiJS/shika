@@ -1,6 +1,6 @@
 # LF8：下拉选择过渡
 
-[草稿PR #113](https://github.com/ShiJiJS/video_viewer/pull/113)按[问题 #112](https://github.com/ShiJiJS/video_viewer/issues/112)继续#24/#33的UI-06，承接菜单[草稿PR #111](https://github.com/ShiJiJS/video_viewer/pull/111)。本段保留现有下拉表单和列表布局；原型继续独立、可移除，不增加原型运行依赖，不重建现有code15两包。
+[草稿PR #113](https://github.com/ShiJiJS/shika/pull/113)按[问题 #112](https://github.com/ShiJiJS/shika/issues/112)继续#24/#33的UI-06，承接菜单[草稿PR #111](https://github.com/ShiJiJS/shika/pull/111)。本段保留现有下拉表单和列表布局；原型继续独立、可移除，不增加原型运行依赖，不重建现有code15两包。
 
 实际阅读偏好的“默认翻页方向”使用固定Flutter3.47.7的DropdownButtonFormField，普通/减少动画都报告300/300ms，打开60ms再开启减少动画的第一帧仍为0.2。三项实际表单组件反例均失败；其中系统标记由组件测试提供，不当作真实Android证明。固定SDK的下拉路由只使用300ms，未提供可覆盖进退场与实时偏好的公开参数。
 
@@ -12,7 +12,7 @@
 
 调试中的失败分别保留：初始写入命令用了错误工作目录及zsh保留变量，没有启动Flutter；一次私有初始化形参调用名导致编译失败，不计用例通过；一次在已释放路由上查询Navigator的测试改为在didPop记录时长，第一帧动画为0的断言保留。焦点滚动的首两次键盘尝试没有观察到进行中的动画，不能当作实时切换证明；后一次请求未挂载的惰性条目同样失败。最终使用已挂载项的公开Focus请求，先严格确认滚动进行中，再核对开启减少动画后到目标、不再移动。键盘上下/Enter是另外两项通过检查，不把Focus请求称为实际按键。所有失败均与最终结果分开保留。
 
-完整765客户端检查及analyze通过；[源码/诊断/组件证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-dropdown-motion/README.md)单独保留。当前源码与组件检查不等于真实Android系统或普通main业务验收。[真实Android模块三轮记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-dropdown-native/README.md)已补齐：72次过渡、12次实际运行中开启偏好、12选择更新/24取消结果及24完整解码录屏通过，独立核对和配置恢复完成。该独立profile入口不是普通main或真实服务业务；后续仍需随新配套普通包验证相关实际业务。现有preview.9/rollback.9同code15不包含菜单或本段下拉修复；服务、NAS、真实收藏及原型不改。其余勾选/展开/自有显隐、完整手势、目标手机/NAS/有声/云文件和#78/#89/#100原因保持开放。
+完整765客户端检查及analyze通过；[源码/诊断/组件证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-dropdown-motion/README.md)单独保留。当前源码与组件检查不等于真实Android系统或普通main业务验收。[真实Android模块三轮记录](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-dropdown-native/README.md)已补齐：72次过渡、12次实际运行中开启偏好、12选择更新/24取消结果及24完整解码录屏通过，独立核对和配置恢复完成。该独立profile入口不是普通main或真实服务业务；后续仍需随新配套普通包验证相关实际业务。现有preview.9/rollback.9同code15不包含菜单或本段下拉修复；服务、NAS、真实收藏及原型不改。其余勾选/展开/自有显隐、完整手势、目标手机/NAS/有声/云文件和#78/#89/#100原因保持开放。
 
 
 2026-10-30 后续交付：[正常App preview.10/rollback.10 code16](LF8-MENU-DROPDOWN-PACKAGE.md)已完成构建、覆盖保留数据、实际业务和环境恢复；code15仍不包含本段。原分段时序证据保持，完整验收继续。

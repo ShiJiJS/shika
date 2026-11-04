@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/ui/media_layout.dart';
-import 'package:video_viewer/ui/paper.dart';
+import 'package:shika/ui/media_layout.dart';
+import 'package:shika/ui/paper.dart';
 
 void main() {
   for (final scale in [1.0, 2.0]) {

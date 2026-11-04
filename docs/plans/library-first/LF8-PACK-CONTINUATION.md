@@ -35,4 +35,4 @@
 
 原生检查使用已有 emulator-5554、完整 App 与真实服务适配器，新建8768隔离服务与DB，公开2视频/4包/24PNG；预置页码但不伪造最近打开。实际从卡片打开、翻一页、返回，续读后核对完整4包范围，再检查搜索/多选隐藏、长错误重试和最近页隔离。每次保留请求、进度前后值、源码SHA、窗口/安全区、ADB截图与26个源文件SHA；结束恢复设备配置并仅移除本次容器。正式8760与NAS不参与。
 
-固定源码c4aaf3b，普通三轮/大字/短横屏共50个原生检查点、客户端471项及服务端16项通过。两轮独立视觉复核与202份输入校验见[证据目录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-pack-continuation/README.md)，已提交[Draft PR #59](https://github.com/ShiJiJS/video_viewer/pull/59)；LF8/#33与总任务#24保持开放。
+固定源码c4aaf3b，普通三轮/大字/短横屏共50个原生检查点、客户端471项及服务端16项通过。两轮独立视觉复核与202份输入校验见[证据目录](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-pack-continuation/README.md)，已提交[Draft PR #59](https://github.com/ShiJiJS/shika/pull/59)；LF8/#33与总任务#24保持开放。

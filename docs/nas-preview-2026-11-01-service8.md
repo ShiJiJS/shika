@@ -14,4 +14,4 @@
 
 回退界面可用同号 rollback.20 覆盖安装。服务回退需先备份当时数据，再配对使用本次停机快照和原镜像；快照之后的管理修改不会自动保留。完整新旧备份和镜像保留，临时中转和核对副本清理，临时探测登录撤销，原登录保持。
 
-[部署与读取结果](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-nas-preview8/verification-public.json) · [收尾结果](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-nas-preview8/final-public.json) · [草稿PR #166](https://github.com/ShiJiJS/video_viewer/pull/166)。原型仍独立可移除。#160空选择记录和其余验收继续，不阻塞本次浏览体验；没有合并PR或正式发布。
+[部署与读取结果](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-nas-preview8/verification-public.json) · [收尾结果](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-nas-preview8/final-public.json) · [草稿PR #166](https://github.com/ShiJiJS/shika/pull/166)。原型仍独立可移除。#160空选择记录和其余验收继续，不阻塞本次浏览体验；没有合并PR或正式发布。

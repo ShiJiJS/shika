@@ -10,10 +10,10 @@ from fastapi.responses import JSONResponse, Response
 from PIL import Image
 from sqlalchemy import select
 
-from video_viewer.app import create_app
-from video_viewer.authority import Authority
-from video_viewer.config import Settings
-from video_viewer.models import ImagePack, PackPage
+from shika.app import create_app
+from shika.authority import Authority
+from shika.config import Settings
+from shika.models import ImagePack, PackPage
 
 KEY = "reader-image-errors-owned-control"
 

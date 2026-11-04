@@ -1,8 +1,8 @@
 # LF8：复选框真实Android补证
 
-[草稿PR #118](https://github.com/ShiJiJS/video_viewer/pull/118)承接源码PR #117，真实Android项已完成，正常包本机项已由[code17配套段](LF8-CHECKBOX-PACKAGE.md)补齐。
+[草稿PR #118](https://github.com/ShiJiJS/shika/pull/118)承接源码PR #117，真实Android项已完成，正常包本机项已由[code17配套段](LF8-CHECKBOX-PACKAGE.md)补齐。
 
-承接[#116 / PR #117](https://github.com/ShiJiJS/video_viewer/pull/117)的固定2a4e9cd7生产复选模块，源码组件已通过777检查，本段不改生产lib。独立profile入口使用实际TrashEntryRow和PaperCheckboxListTile，fixture只控制选值/禁用与计数，不启动服务或文件操作；不注入accessibility替身。
+承接[#116 / PR #117](https://github.com/ShiJiJS/shika/pull/117)的固定2a4e9cd7生产复选模块，源码组件已通过777检查，本段不改生产lib。独立profile入口使用实际TrashEntryRow和PaperCheckboxListTile，fixture只控制选值/禁用与计数，不启动服务或文件操作；不注入accessibility替身。
 
 三轮、两种形式，每组正常/减少下选择与反向、按住与取消；选择/反向及按压/取消进行中开启真实系统减少动画；另原生按住后由fixture模拟异步变更禁用，再抬起，核对无额外回调或异常。计划每组15个方向，共90个方向；其中24次实际运行中切换；6份按组完整录屏，不借用其它控件的72次计数。
 
@@ -14,6 +14,6 @@
 
 固定测试源码1ad6f35e，生产lib树4052a2cc与2a4e9cd7完全相同。唯一完整成功轮native-5：三轮90方向、24次真实中途切换、6次按住后禁用、605帧、36回调、6份1170×2532录像完整解码通过。普通140/100ms保留中间帧，减少0ms；原生标志首帧实际绘制到位。实际原生点位的录像像素可见稳定白色勾号，但不冒称录像与原生标志绝对时间同步。
 
-[161份原始输入与离线只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-checkbox-native/README.md)已冻结。前四次命令参数、换行转义、中途触发过早和tester采样冲突分别保留；未混入成功计数。最终公开Element遍历不使用tester守护查询，未改生产模块。设置恢复进入时原值，缺失比例恢复缺失；自有QEMU20034关闭、原四服务完整ID健康保持，未操作真实媒体/服务/SDK/原型或原code16两包。
+[161份原始输入与离线只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-checkbox-native/README.md)已冻结。前四次命令参数、换行转义、中途触发过早和tester采样冲突分别保留；未混入成功计数。最终公开Element遍历不使用tester守护查询，未改生产模块。设置恢复进入时原值，缺失比例恢复缺失；自有QEMU20034关闭、原四服务完整ID健康保持，未操作真实媒体/服务/SDK/原型或原code16两包。
 
 本段完成#116真实Android项。普通main中的四确认页面及回收行真实业务、新原签名配套包现由[code17配套段](LF8-CHECKBOX-PACKAGE.md)补齐本机检查；此profile组件证明不替代手机/NAS/有声/云文档和完整UI-05/06或45项终验。

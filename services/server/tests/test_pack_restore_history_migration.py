@@ -7,15 +7,15 @@ from alembic import command
 from alembic.config import Config
 from sqlalchemy import select
 
-from video_viewer.db import Database
-from video_viewer.models import (
+from shika.db import Database
+from shika.models import (
     ImagePack,
     PackFileOperation,
     PackRestoreBatch,
     PackRestorePlan,
     Task,
 )
-from video_viewer.pack_scanner import reserved_packs
+from shika.pack_scanner import reserved_packs
 
 from .conftest import connect
 from .test_pack_purge_plans import fixture

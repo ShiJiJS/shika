@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/models.dart';
+import 'package:shika/library/models.dart';
 
 Map<String, dynamic> completeInfo() => {
   'capabilities': ['backup_v2', 'management_authority', 'management_history'],

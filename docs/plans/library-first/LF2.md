@@ -1,6 +1,6 @@
 # LF2：图包目录与授权图片服务
 
-对应 [#27](https://github.com/ShiJiJS/video_viewer/issues/27) / [PR #36](https://github.com/ShiJiJS/video_viewer/pull/36)，实现提交 `9aff732`，基于 LF1 / [PR #35](https://github.com/ShiJiJS/video_viewer/pull/35)。本阶段提供真实图包数据和读取能力；原生媒体库、阅读器、阅读会话及整理操作继续由 LF3–LF7 接入。
+对应 [#27](https://github.com/ShiJiJS/shika/issues/27) / [PR #36](https://github.com/ShiJiJS/shika/pull/36)，实现提交 `9aff732`，基于 LF1 / [PR #35](https://github.com/ShiJiJS/shika/pull/35)。本阶段提供真实图包数据和读取能力；原生媒体库、阅读器、阅读会话及整理操作继续由 LF3–LF7 接入。
 
 ## 已实施
 
@@ -23,7 +23,7 @@
 
 ## 验证与边界
 
-验证结果、环境和源文件哈希分别保存在 [结果记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf2-results.json) 与 [源文件清单](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf2-source-sha256.json)。服务端使用冻结 Docker 镜像，无实时源目录挂载；全部源变更/取消/损坏测试使用临时生成的可丢弃数据。
+验证结果、环境和源文件哈希分别保存在 [结果记录](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf2-results.json) 与 [源文件清单](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf2-source-sha256.json)。服务端使用冻结 Docker 镜像，无实时源目录挂载；全部源变更/取消/损坏测试使用临时生成的可丢弃数据。
 
 - 服务端全量测试覆盖旧视频/迁移/回收/备份和新增图包行为，包括目录 inode 重用、重复副本、扫描中变更、中断恢复、冷扫逐包可读、权限失败、读取快照、授权与路径替换。
 - LF0 标准四包夹具逐页通过公开 HTTP 校验：508 张有效原图 SHA-256、508 张缩略图、500 页自然排序、4K/6K/8K 尺寸和损坏 JPEG 的明确失败；扫描与读取后所有源文件哈希不变。生成器固定为 `video-viewer-lf0-synthetic-v1`，验证器只接受自建临时目录。

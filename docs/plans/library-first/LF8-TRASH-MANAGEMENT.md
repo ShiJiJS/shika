@@ -16,4 +16,4 @@
 
 大字真实IME暴露ListView在shrinkWrap切换时重建视口并丢失焦点，现保持同一种视口及内容身份；组件实际聚焦再切换IME约束，原生截图要求稳定IME高度大于0。分页先等实际读取结束再滚到真实页码；末项恢复后等待列表异步重读再定位刷新按钮，失败脚本不计成功。
 
-独立视觉冻结2问题/1提升：页签可见文字／下划线锚线校回x20／约73及页头节奏，保留44dp触控；页头细线补实际通栏宽度。未知选择语义与单项确认、终态减字按上述真实状态处理。最终三视口的静态复核与完整证据单列，见[证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-trash-management/README.md)；不因此关闭完整手势或动效验收。
+独立视觉冻结2问题/1提升：页签可见文字／下划线锚线校回x20／约73及页头节奏，保留44dp触控；页头细线补实际通栏宽度。未知选择语义与单项确认、终态减字按上述真实状态处理。最终三视口的静态复核与完整证据单列，见[证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-trash-management/README.md)；不因此关闭完整手势或动效验收。

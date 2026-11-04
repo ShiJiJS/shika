@@ -63,7 +63,7 @@ def main():
     (runner.EVIDENCE / "capture-source.py.txt").write_text(Path(__file__).read_text())
     (runner.EVIDENCE / "tail-source.dart.txt").write_text(tail)
     source_paths = subprocess.check_output(
-        ["git", "ls-files", "apps/mobile/lib", "services/server/video_viewer"],
+        ["git", "ls-files", "apps/mobile/lib", "services/server/shika"],
         cwd=ROOT,
         text=True,
     ).splitlines() + [

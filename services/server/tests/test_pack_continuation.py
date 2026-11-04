@@ -3,7 +3,7 @@
 import pytest
 from sqlalchemy import select
 
-from video_viewer.models import ImagePack, PackPage, PackProgress, RecentEntry, Root
+from shika.models import ImagePack, PackPage, PackProgress, RecentEntry, Root
 
 from .test_reading import create, opened, progress_body, setup
 

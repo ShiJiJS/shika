@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/features/packs/pack_sheets.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
+import 'package:shika/features/packs/pack_sheets.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
 
 import 'support/fixture.dart';
 
@@ -42,7 +42,7 @@ void main() {
       await repo.editTag(name: '名称60');
       final pack = (await repo.loadPacks(PackQuery())).items.first;
       await repo.setPackTags({pack.id}, {ids.last});
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
 
       Future<void> until(bool Function() done, String reason) async {
         final deadline = DateTime.now().add(const Duration(seconds: 35));

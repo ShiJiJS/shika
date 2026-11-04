@@ -5,11 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/paper_toggle.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/paper_toggle.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'support/fixture.dart';
 import 'support/server_ui.dart';
@@ -47,7 +47,7 @@ void main() {
       await repo.connect('10.0.2.2', 8761, fixturePassword);
     }
     await t.pumpWidget(
-      VideoViewerApp(
+      ShikaApp(
         repository: repo,
         preferences: preferences,
         initializeRepository: resume,

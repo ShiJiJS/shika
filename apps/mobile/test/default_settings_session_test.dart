@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/settings/default_settings_session.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/pack_reading.dart';
-import 'package:video_viewer/library/server_api.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/features/settings/default_settings_session.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/pack_reading.dart';
+import 'package:shika/library/server_api.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'server_pack_reading_test.dart' show ReadingServer;
 

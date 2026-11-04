@@ -174,7 +174,9 @@ class PackPurgePlans:
                     update(Task)
                     .where(
                         Task.kind == "pack_purge_preview",
-                        Task.id.in_(select(PackPurgePlan.id).where(PackPurgePlan.historical.is_(False))),
+                        Task.id.in_(
+                            select(PackPurgePlan.id).where(PackPurgePlan.historical.is_(False))
+                        ),
                         Task.status.in_(("queued", "running", "interrupted")),
                     )
                     .values(

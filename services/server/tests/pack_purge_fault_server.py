@@ -6,8 +6,8 @@ from contextlib import asynccontextmanager
 from dataclasses import replace
 from pathlib import Path
 
-from video_viewer.app import create_app
-from video_viewer.config import Settings
+from shika.app import create_app
+from shika.config import Settings
 
 
 def create_fault_app():

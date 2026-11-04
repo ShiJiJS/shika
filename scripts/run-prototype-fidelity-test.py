@@ -209,7 +209,7 @@ video_frames = {}
 landscape_video_states = {"lifecycle-fullscreen-paused", "lifecycle-fullscreen-playing", "lifecycle-device-levels", "lifecycle-boost", "lifecycle-fullscreen-recovered"}
 record_process = record_path = record_shape = None
 paths = run(
-    "git", "ls-files", "apps/mobile/lib", "apps/mobile/android", "apps/mobile/assets", "services/server/video_viewer"
+    "git", "ls-files", "apps/mobile/lib", "apps/mobile/android", "apps/mobile/assets", "services/server/shika"
 ).splitlines()
 paths += [
     "apps/mobile/pubspec.yaml",
@@ -303,7 +303,7 @@ def watch():
                 if name == "lifecycle-device-home":
                     command = ["input", "keyevent", "3"]
                 elif name == "lifecycle-device-foreground":
-                    command = ["am", "start", "-n", "io.github.shijijs.video_viewer/.MainActivity"]
+                    command = ["am", "start", "-n", "io.github.shijijs.video_viewer/io.github.shijijs.shika.MainActivity"]
                 elif name == "lifecycle-device-back":
                     command = ["input", "keyevent", "4"]
                 else:
@@ -552,7 +552,7 @@ try:
         "VV_STABILITY_SECONDS=0",
         "--entrypoint",
         "uvicorn",
-        "video-viewer-server:e2e",
+        "shika-server:e2e",
         "tests.prototype_fidelity_fixture:create_fidelity_app",
         "--factory",
         "--host",

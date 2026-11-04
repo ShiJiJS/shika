@@ -5,7 +5,7 @@ import subprocess
 import threading
 import zlib
 
-from video_viewer.images import inspect_image
+from shika.images import inspect_image
 
 from .test_packs import image
 
@@ -21,7 +21,7 @@ def test_probe_timeout_and_stop_reap_decoder_and_remove_partial_cache(tmp_path, 
         spawned.append(child)
         return child
 
-    monkeypatch.setattr("video_viewer.images.subprocess.Popen", tracked)
+    monkeypatch.setattr("shika.images.subprocess.Popen", tracked)
     with source.open("rb") as source_file:
         result = inspect_image(source_file.fileno(), tmp_path / "cache", 0.001, threading.Event())
         assert result["error"] == "image_probe_timeout"

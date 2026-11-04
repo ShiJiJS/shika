@@ -55,7 +55,7 @@ settings.setdefault("files.watcherExclude", {}).update(
 settings.setdefault("search.exclude", {}).update({".dev": True, "**/build": True})
 settings_file.parent.mkdir(exist_ok=True)
 settings_file.write_text(json.dumps(settings, indent=2) + "\n")
-workspace = root / "Video Viewer.code-workspace"
+workspace = root / "Shika.code-workspace"
 workspace_data = (
     json.loads(workspace.read_text())
     if workspace.exists()

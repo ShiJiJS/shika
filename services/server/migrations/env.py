@@ -1,6 +1,6 @@
 from alembic import context
 
-from video_viewer.models import Base
+from shika.models import Base
 
 connection = context.config.attributes["connection"]
 context.configure(connection=connection, target_metadata=Base.metadata, render_as_batch=True)

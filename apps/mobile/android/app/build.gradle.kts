@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "io.github.shijijs.video_viewer"
+    namespace = "io.github.shijijs.shika"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 

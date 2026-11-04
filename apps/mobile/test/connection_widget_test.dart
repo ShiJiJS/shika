@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/state_store.dart';
+import 'package:shika/main.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/state_store.dart';
 
 class ReconnectingLibrary extends DemoLibraryRepository {
   ReconnectingLibrary() : super(MemoryStateStore(), latency: Duration.zero);
@@ -22,7 +22,7 @@ void main() {
     (tester) async {
       final repo = ReconnectingLibrary();
       await repo.initialize();
-      await tester.pumpWidget(VideoViewerApp(repository: repo));
+      await tester.pumpWidget(ShikaApp(repository: repo));
       await tester.pumpAndSettle();
       expect(find.text('个人口令'), findsNothing);
       repo.connection(false);
@@ -45,7 +45,7 @@ void main() {
       latency: Duration.zero,
     );
     await repo.initialize();
-    await tester.pumpWidget(VideoViewerApp(repository: repo));
+    await tester.pumpWidget(ShikaApp(repository: repo));
     await tester.enterText(find.byType(TextField).at(0), 'my-nas');
     await tester.enterText(find.byType(TextField).at(1), '70000');
     await tester.tap(find.widgetWithText(FilledButton, '连接'));

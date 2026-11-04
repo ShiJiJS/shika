@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/scoped_journal.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/scoped_journal.dart';
 
 void main() {
   final legacy = jsonEncode(['http://127.0.0.1:9876', 'server']);

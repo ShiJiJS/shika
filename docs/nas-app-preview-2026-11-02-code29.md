@@ -1,6 +1,6 @@
 # 第29版 App 已交付
 
-2026-11-02，修复用户反馈的图包阅读与快速整理问题，见 [PR #176](https://github.com/ShiJiJS/video_viewer/pull/176) 和 [五张工单及验证说明](plans/library-first/PACK-READER-EXPERIENCE-FIXES.md)。
+2026-11-02，修复用户反馈的图包阅读与快速整理问题，见 [PR #176](https://github.com/ShiJiJS/shika/pull/176) 和 [五张工单及验证说明](plans/library-first/PACK-READER-EXPERIENCE-FIXES.md)。
 
 NAS：`SATA存储11/docker/video-viewer/packages/`。安装正常包 `video-viewer-0.2.0-preview.23-arm64.apk`，直接覆盖现有 App，不要卸载或清除数据。需要旧视频界面时可覆盖安装同号 `video-viewer-0.1.4-rollback.23-arm64.apk`。原服务地址、口令保持；NAS 服务仍为 preview.8，本次没有重启或改动服务、媒体及数据库。
 

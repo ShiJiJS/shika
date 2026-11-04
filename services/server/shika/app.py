@@ -272,7 +272,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             app.state.pack_purge_plans.close()
             db.close()
 
-    app = FastAPI(title="Video Viewer", version="0.1.2", lifespan=lifespan)
+    app = FastAPI(title="拾刻 · shika", version="0.1.2", lifespan=lifespan)
 
     @app.exception_handler(LibraryError)
     async def library_error(_request, error):
@@ -732,7 +732,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     def download_backup(backup_id: str, request: Request):
         path = request.app.state.backups.artifact(backup_id)
         return FileResponse(
-            path, media_type="application/json", filename=f"video-viewer-backup-{path.stem}.json"
+            path, media_type="application/json", filename=f"shika-backup-{path.stem}.json"
         )
 
     @app.post("/api/v1/backup-imports", dependencies=auth_required, status_code=202)

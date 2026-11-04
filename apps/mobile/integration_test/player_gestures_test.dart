@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/player.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/player.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +53,7 @@ void main() {
     repo = DemoLibraryRepository(MemoryStateStore(), scenario: scenario);
     await repo.initialize();
     if (video != null) await repo.openVideo(video);
-    await t.pumpWidget(VideoViewerApp(repository: repo));
+    await t.pumpWidget(ShikaApp(repository: repo));
     await ready(t);
     addTearDown(() async {
       await t.pumpWidget(const SizedBox());

@@ -1,6 +1,6 @@
 # 默认纵向与操作文案：源码阶段
 
-跟踪[#137](https://github.com/ShiJiJS/video_viewer/issues/137)及[#141](https://github.com/ShiJiJS/video_viewer/issues/141)，[草稿PR #145](https://github.com/ShiJiJS/video_viewer/pull/145)，基于返回修复PR #144。本轮改实现并执行隔离检查，不更新NAS、参考原型或已交付code22两包。
+跟踪[#137](https://github.com/ShiJiJS/shika/issues/137)及[#141](https://github.com/ShiJiJS/shika/issues/141)，[草稿PR #145](https://github.com/ShiJiJS/shika/pull/145)，基于返回修复PR #144。本轮改实现并执行隔离检查，不更新NAS、参考原型或已交付code22两包。
 
 ## 默认值与兼容
 
@@ -20,7 +20,7 @@
 
 修前Linux旧测试镜像加载新默认检查，因实际横向与预期纵向不符而失败。最早Mac本机尝试因Linux renameat2不可用而在导入阶段退出，不能算成产品基线；后续全部服务检查使用隔离Docker。
 
-初轮客户端完整检查12例依赖隐含横向：横向拖动/缩放、设置下拉/模式切换等改为显式加载横向偏好；未知整理场景改为验证默认纵向拖动仍被阻断，并加入默认纵向/显式横向均保留原位置的两例。未改生产逻辑去迎合旧预期。最终原始结果及检查来源见[证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-default-copy/README.md)。
+初轮客户端完整检查12例依赖隐含横向：横向拖动/缩放、设置下拉/模式切换等改为显式加载横向偏好；未知整理场景改为验证默认纵向拖动仍被阻断，并加入默认纵向/显式横向均保留原位置的两例。未改生产逻辑去迎合旧预期。最终原始结果及检查来源见[证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-reader-default-copy/README.md)。
 
 仍需正常Android包实际进入阅读/设置、返回和弹层文案检查，视频旧服务/回退包及实际NAS默认读回。#137/#141保持开放，不以源码和组件通过替代用户可安装更新。#138/#139分目录进度与#142纵向缩放仍待实现，#140原生检查继续。
 

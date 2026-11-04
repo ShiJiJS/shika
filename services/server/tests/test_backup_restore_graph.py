@@ -8,11 +8,11 @@ from pathlib import Path
 import pytest
 from sqlalchemy import select
 
-from video_viewer.backup_archive import _readonly, file_hash, freeze_graph, inspect_v2
-from video_viewer.backup_restore_graph import prepare_graph
-from video_viewer.backup_v2_schema import TABLE_MAP, mounts_from, settings_from, validate_graph
-from video_viewer.errors import LibraryError
-from video_viewer.models import PackPurgeStep
+from shika.backup_archive import _readonly, file_hash, freeze_graph, inspect_v2
+from shika.backup_restore_graph import prepare_graph
+from shika.backup_v2_schema import TABLE_MAP, mounts_from, settings_from, validate_graph
+from shika.errors import LibraryError
+from shika.models import PackPurgeStep
 
 from .conftest import put, scan
 from .test_backup_archive import MAXIMUM, archive

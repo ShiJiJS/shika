@@ -5,7 +5,7 @@ import tempfile
 from dataclasses import replace
 from pathlib import Path
 
-from video_viewer.config import Mount
+from shika.config import Mount
 
 from .conftest import connect, put, scan
 from .test_file_operations import operation, trash

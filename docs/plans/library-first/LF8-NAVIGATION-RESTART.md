@@ -1,6 +1,6 @@
 # LF8：完整来源导航与真实冷启动
 
-当前交付：[Draft PR #82](https://github.com/ShiJiJS/video_viewer/pull/82)。总览缩略图503的后续修复见[#83](https://github.com/ShiJiJS/video_viewer/issues/83)。
+当前交付：[Draft PR #82](https://github.com/ShiJiJS/shika/pull/82)。总览缩略图503的后续修复见[#83](https://github.com/ShiJiJS/shika/issues/83)。
 
 基于PR #81，在当前整合分支继续NAV-01/02/03及相关LIB/REC组合。沿用LF4既有契约：冷启动默认媒体库、不自动播放；只把媒体库来源保存范围恢复到媒体库，标签来源留在标签中，最近来源不污染媒体库。运行中的各类型／来源草稿和选择互相隔离；不把跨进程持久保存所有未提交草稿当作既有要求。
 
@@ -10,7 +10,7 @@
 
 原生收集前冻结生产与驱动。发现产品问题先补回归并修复后再冻结，失败尝试与最终证据分开；大字／横屏或其它专项如果未执行就明确不作本段结论。用实际可丢弃目录，不操作正式8760、NAS、私人收藏或默认凭据键，不发布APK／改签名与版本；原型独立可移除且不变。整体验收和目标手机／NAS终验仍开放，需配合部分按授权暂跳过。
 
-最终生产／驱动c994273与#81的生产／组件树相同，没有更改App行为。普通390×844、字号1三轮分别以library／tags／recent结束，每轮23个强停前点、5个新进程点，共84点；25项既有导航／返回组件检查、最终驱动analyze／格式／Ruff通过。[固定源码、原图、七表快照与只读复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-navigation-restart/README.md)覆盖301份输入，189源文件逐轮SHA保持。三组新旧PID均实际取得并确认不同，恢复期间仅GET、无stream或新鉴权登录，播放／最近／阅读七表逐行相同。AVD显示配置恢复后已关闭。
+最终生产／驱动c994273与#81的生产／组件树相同，没有更改App行为。普通390×844、字号1三轮分别以library／tags／recent结束，每轮23个强停前点、5个新进程点，共84点；25项既有导航／返回组件检查、最终驱动analyze／格式／Ruff通过。[固定源码、原图、七表快照与只读复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-navigation-restart/README.md)覆盖301份输入，189源文件逐轮SHA保持。三组新旧PID均实际取得并确认不同，恢复期间仅GET、无stream或新鉴权登录，播放／最近／阅读七表逐行相同。AVD显示配置恢复后已关闭。
 
 开发阶段旁路空参数、服务权威默认顺序、旧新总数相同导致的弱就绪条件、错误竖屏总览入口及未等滚动／返回过渡稳定的坐标均保留诊断，未计最终点，未为它们修改生产代码或放宽位置门槛。首段被有意强停的工具失联／监听目录清理错误不作普通绿灯，第二段完整通过另存。没有复跑全集／release或大字／横屏；正在播放／阅读中强停、更多目录／属性／异常组合及目标终验继续。
 

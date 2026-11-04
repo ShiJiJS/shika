@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/packs/reader_images.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
+import 'package:shika/features/packs/reader_images.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
 
 class _RealHttp extends HttpOverrides {}
 

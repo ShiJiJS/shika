@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/main.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/preferences.dart';
 
 void main() {
   testWidgets(
@@ -22,7 +22,7 @@ void main() {
         preferences.dispose();
       });
       await t.pumpWidget(
-        VideoViewerApp(repository: repo, preferences: preferences),
+        ShikaApp(repository: repo, preferences: preferences),
       );
       await t.pumpAndSettle();
       await preferences.setDark(true);
@@ -68,7 +68,7 @@ void main() {
           scroll.dispose();
         });
         await t.pumpWidget(
-          VideoViewerApp(repository: repo, preferences: preferences),
+          ShikaApp(repository: repo, preferences: preferences),
         );
         await t.pumpAndSettle();
         final navigator = t.state<NavigatorState>(find.byType(Navigator).first);
@@ -144,7 +144,7 @@ void main() {
         preferences.dispose();
       });
       await t.pumpWidget(
-        VideoViewerApp(repository: repo, preferences: preferences),
+        ShikaApp(repository: repo, preferences: preferences),
       );
       await t.pumpAndSettle();
       Color color() =>

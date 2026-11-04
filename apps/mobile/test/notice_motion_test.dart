@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/features/packs/pack_file_action.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/file_command_store.dart';
-import 'package:video_viewer/library/pack_files.dart';
-import 'package:video_viewer/library/state_store.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/features/packs/pack_file_action.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/file_command_store.dart';
+import 'package:shika/library/pack_files.dart';
+import 'package:shika/library/state_store.dart';
 
 import 'pack_files_test.dart' show FilesFixture;
 

@@ -28,4 +28,4 @@
 
 真实 Android 流程另行检查取消后保存/重开入口、精确清单、响应丢失、部分删除和原任务重试，使用隔离8761合成文件。该路径与1027组件测试分别计证，不把组件存储重建当作 Android 进程强停，不把单包原生流程当作1000包物理性能。
 
-后续 [PR #45](https://github.com/ShiJiJS/video_viewer/pull/45) 已补齐真实1003包、生产安全存储适配器和宿主强停的完整三轮：仅确认1000包，App缺席期间完成，重开只GET原回执，剩余3包新清单默认未确认；1003份附件及3张未提交图片哈希保持，见 [证据与独立复核](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-purge-secure-restart/README.md)。该开发机流程不替代其它命令/来源/部分失败重试的强停组合，v2备份、全原型/真机NAS和原签名发布仍需继续。
+后续 [PR #45](https://github.com/ShiJiJS/shika/pull/45) 已补齐真实1003包、生产安全存储适配器和宿主强停的完整三轮：仅确认1000包，App缺席期间完成，重开只GET原回执，剩余3包新清单默认未确认；1003份附件及3张未提交图片哈希保持，见 [证据与独立复核](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf7-purge-secure-restart/README.md)。该开发机流程不替代其它命令/来源/部分失败重试的强停组合，v2备份、全原型/真机NAS和原签名发布仍需继续。

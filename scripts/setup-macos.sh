@@ -57,4 +57,4 @@ if [[ -x "$code_cli" ]]; then
 fi
 (cd "$repo_dir/apps/mobile" && "$FLUTTER_ROOT/bin/flutter" pub get)
 bash "$repo_dir/scripts/prepare-server-dev.sh"
-echo 'Ready. Open Video Viewer.code-workspace in VS Code; see docs/macos-development.md.'
+echo 'Ready. Open Shika.code-workspace in VS Code; see docs/macos-development.md.'

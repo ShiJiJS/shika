@@ -1,6 +1,6 @@
 # LF8：菜单与下拉选择配套安装包
 
-承接[菜单 #110 / PR #111](https://github.com/ShiJiJS/video_viewer/pull/111)和[下拉选择 #112 / PR #113](https://github.com/ShiJiJS/video_viewer/pull/113)，继续#24/#33。两段源码、组件和独立Android模块记录已完成；本段将它们纳入正常App入口，核对实际业务和兼容覆盖。原型继续独立可移除，服务源码不改。
+承接[菜单 #110 / PR #111](https://github.com/ShiJiJS/shika/pull/111)和[下拉选择 #112 / PR #113](https://github.com/ShiJiJS/shika/pull/113)，继续#24/#33。两段源码、组件和独立Android模块记录已完成；本段将它们纳入正常App入口，核对实际业务和兼容覆盖。原型继续独立可移除，服务源码不改。
 
 候选为preview.10与配套rollback.10，同内部号16、原包名/Windows签名、ARM64正常release。固定提交后从Git分别导出新源码与旧界面兼容源码，使用既有构建器，核对依赖锁、签名/版本/ABI、正常main入口及不含集成测试插件/原型资产。只写全新输出目录与文件名，保留preview.9/rollback.9和更早安装包。候选构建完成不等于安装或业务通过。
 
@@ -22,7 +22,7 @@
 
 此前对SDK结果回调“立即移除退出菜单”的解释已更正：isActive保护本来有效，新增等待保存检查补证，生产lib未因此修改。选择模式标签及视频控制条的脚本观察错误保留；任务/历史下拉的原生语义合并标题仍属完整UI-05待验，此次依据实际截图触摸，不冒称语义已独立。
 
-[219份冻结输入、只读核查与环境恢复](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-menu-dropdown-package/README.md)已完成；显示/动画恢复、root归还、自有模拟器/两容器关闭，原四服务健康和donor12文件SHA保持。更新[安装说明](../../library-first-preview.md)，[草稿PR #114](https://github.com/ShiJiJS/video_viewer/pull/114)承接#110/#112。原型树1cbf605独立可移除，服务源码和已有归档不改；没有部署NAS/安装手机/正式发布，完整原型、其它UI-06、有声/云提供器与#78/#89/#100继续。
+[219份冻结输入、只读核查与环境恢复](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-menu-dropdown-package/README.md)已完成；显示/动画恢复、root归还、自有模拟器/两容器关闭，原四服务健康和donor12文件SHA保持。更新[安装说明](../../library-first-preview.md)，[草稿PR #114](https://github.com/ShiJiJS/shika/pull/114)承接#110/#112。原型树1cbf605独立可移除，服务源码和已有归档不改；没有部署NAS/安装手机/正式发布，完整原型、其它UI-06、有声/云提供器与#78/#89/#100继续。
 
 仍待补的兼容组合：新16实际连接旧协议后首页“更多”尚未单独实测；现代连接页的同一旧壳构造与旧源码rollback菜单已分别验证，但不能据此冒充该组合。#110最后一项因此保持未勾选，下一段补此组合；未观察到兼容故障。
 

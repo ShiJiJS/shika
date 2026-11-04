@@ -7,8 +7,8 @@ from concurrent.futures import ThreadPoolExecutor
 import pytest
 from sqlalchemy import func, select
 
-from video_viewer.errors import LibraryError
-from video_viewer.models import (
+from shika.errors import LibraryError
+from shika.models import (
     ImagePack,
     PackFileOperation,
     PackRestoreBatch,
@@ -17,7 +17,7 @@ from video_viewer.models import (
     PackTrashItem,
     Task,
 )
-from video_viewer.pack_scanner import reserved_packs
+from shika.pack_scanner import reserved_packs
 
 from .conftest import connect
 from .test_media_types import pack_root

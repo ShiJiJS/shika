@@ -1,4 +1,4 @@
-package io.github.shijijs.video_viewer
+package io.github.shijijs.shika
 
 import android.app.Activity
 import android.content.Intent
@@ -76,7 +76,7 @@ class BackupFileBridge(private val activity: Activity, messenger: BinaryMessenge
                 job.bytes = call.argument<Number>("bytes")?.toLong() ?: 0
                 job.hash = call.argument<String>("sha256") ?: ""
                 require(job.bytes in 1..MAXIMUM && job.hash.matches(Regex("[a-f0-9]{64}")))
-                val name = call.argument<String>("name") ?: "video-viewer-backup.vvbackup"
+                val name = call.argument<String>("name") ?: "shika-backup.vvbackup"
                 require(name.length in 1..128 && !name.contains('/') && !name.contains('\\'))
                 current = job
                 work(job, {

@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 from sqlalchemy import event, select
 
-from video_viewer.models import ImagePack, PackPurgePlan, PackTrashItem, Root
+from shika.models import ImagePack, PackPurgePlan, PackTrashItem, Root
 
 from .test_pack_purge_plans import fixture
 

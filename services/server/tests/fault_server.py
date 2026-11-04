@@ -4,7 +4,7 @@ import os
 import time
 from pathlib import Path
 
-from video_viewer.app import create_app
+from shika.app import create_app
 
 
 def create_fault_app():

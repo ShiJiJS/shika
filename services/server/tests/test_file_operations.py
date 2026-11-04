@@ -19,8 +19,8 @@ def legacy_move_receipts(monkeypatch):
     """Exercise recovery of pre-0.1.3 physical intents, not new trash marks."""
     from sqlalchemy import select
 
-    from video_viewer.file_operations import FileOperations
-    from video_viewer.models import FileStep
+    from shika.file_operations import FileOperations
+    from shika.models import FileStep
 
     prepare = FileOperations.prepare_step
 

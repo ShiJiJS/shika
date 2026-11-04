@@ -1,6 +1,6 @@
 # 图包阅读默认使用纵向拼接，保留用户单独选择
 
-跟踪：[137](https://github.com/ShiJiJS/video_viewer/issues/137)。
+跟踪：[137](https://github.com/ShiJiJS/shika/issues/137)。
 
 来自preview.16/code22首次NAS体验反馈，继续 #24/#30/#33。优先级：中；小改动，可优先随修复版交付。本轮仅规划，尚未实施。
 

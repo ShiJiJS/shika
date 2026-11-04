@@ -4,7 +4,7 @@ import hashlib
 
 from sqlalchemy import func, select
 
-from video_viewer.models import (
+from shika.models import (
     ImagePack,
     PackMissingCleanup,
     PackMissingMember,

@@ -3,10 +3,10 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:video_viewer/ui/paper.dart';
+import 'package:shika/ui/paper.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'media_workspace_widget_test.dart' show WorkspaceLibrary;
 
@@ -36,7 +36,7 @@ void main() {
         preferences.dispose();
       });
       await t.pumpWidget(
-        VideoViewerApp(
+        ShikaApp(
           repository: repo,
           preferences: preferences,
           navigatorObservers: [observer],
@@ -75,7 +75,7 @@ void main() {
         preferences.dispose();
       });
       await t.pumpWidget(
-        VideoViewerApp(
+        ShikaApp(
           repository: repo,
           preferences: preferences,
           navigatorObservers: [observer],

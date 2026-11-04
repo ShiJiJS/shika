@@ -1,6 +1,6 @@
 # 新版返回旧页：首轮源码修复
 
-跟踪[#140](https://github.com/ShiJiJS/video_viewer/issues/140) / [草稿PR #144](https://github.com/ShiJiJS/video_viewer/pull/144)，基于[反馈规划#143](https://github.com/ShiJiJS/video_viewer/pull/143)。本段处理已复现的返回路径，Android正常包、手势/预测返回及其它组合仍待核对，issue不关闭。
+跟踪[#140](https://github.com/ShiJiJS/shika/issues/140) / [草稿PR #144](https://github.com/ShiJiJS/shika/pull/144)，基于[反馈规划#143](https://github.com/ShiJiJS/shika/pull/143)。本段处理已复现的返回路径，Android正常包、手势/预测返回及其它组合仍待核对，issue不关闭。
 
 ## 复现和修复
 
@@ -19,4 +19,4 @@
 - NAS服务、真实媒体、服务源码和原型未改。已交付的preview.16/rollback.16保持；本段尚未生成新的手机更新。
 - 其它五张反馈票继续按规划推进；不把#140的局部修复当六票全部完成。
 
-[固定测试日志](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-return-navigation/README.md)保存修前失败、修后相关检查及本段完整客户端结果；没有修改旧历史manifest。
+[固定测试日志](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-return-navigation/README.md)保存修前失败、修后相关检查及本段完整客户端结果；没有修改旧历史manifest。

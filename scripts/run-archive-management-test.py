@@ -61,7 +61,7 @@ def main():
     before_trace = control("/trace")["items"]
     before_media = media()
     save("media-before.json", before_media)
-    paths = subprocess.check_output(["git", "ls-files", "apps/mobile/lib", "services/server/video_viewer"], cwd=ROOT, text=True).splitlines() + [
+    paths = subprocess.check_output(["git", "ls-files", "apps/mobile/lib", "services/server/shika"], cwd=ROOT, text=True).splitlines() + [
         "apps/mobile/integration_test/server_archive_management_test.dart", "apps/mobile/test/support/reveal_action.dart",
         "scripts/run-archive-management-test.py", "scripts/run-client-connection-test.py", "services/server/tests/archive_app_fixture.py",
     ]

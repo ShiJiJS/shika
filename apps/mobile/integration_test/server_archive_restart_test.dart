@@ -4,16 +4,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/features/settings/archive_backup_page.dart';
-import 'package:video_viewer/library/backup_file_picker.dart';
-import 'package:video_viewer/library/backup_work_store.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/file_command_store.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/features/settings/archive_backup_page.dart';
+import 'package:shika/library/backup_file_picker.dart';
+import 'package:shika/library/backup_work_store.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/file_command_store.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/preferences.dart';
 
 Future<Map<String, dynamic>> control(
   String path, {
@@ -311,7 +311,7 @@ void main() {
         expect(original['phase'], phase);
         expect((await credentials.read())!.managementEpoch, original['epoch']);
         await t.pumpWidget(
-          VideoViewerApp(
+          ShikaApp(
             repository: repo,
             preferences: preferences,
             initializeRepository: true,

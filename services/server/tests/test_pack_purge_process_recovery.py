@@ -104,7 +104,7 @@ def test_sigkill_recovers_exact_confirmed_purge_without_replaying_deleted_pages(
             server.kill()
             server.communicate(timeout=5)
             assert server.returncode == -9
-            server = start("video_viewer.app:create_app")
+            server = start("shika.app:create_app")
             receipt = client.get("/api/v1/pack-file-requests/kill-result-unknown")
             assert receipt.status_code == 200 and receipt.json()["id"] == identity
             result = wait(client, identity)

@@ -8,8 +8,8 @@ from pathlib import Path
 
 from fastapi import Header, HTTPException, Request
 
-from video_viewer.app import create_app
-from video_viewer.config import Settings
+from shika.app import create_app
+from shika.config import Settings
 
 KEY = "reader-long-pack-owned-control"
 PASSWORD = "reader-long-pack-owned-only"

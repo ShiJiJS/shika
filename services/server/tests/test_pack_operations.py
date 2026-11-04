@@ -8,11 +8,11 @@ from pathlib import Path
 import pytest
 from sqlalchemy import func, select
 
-from video_viewer.models import (
+from shika.models import (
     ImagePack,
     PackTrashItem,
 )
-from video_viewer.pack_scanner import PackScanner
+from shika.pack_scanner import PackScanner
 
 from .conftest import connect
 from .test_media_types import pack_root, pack_tag
@@ -434,7 +434,7 @@ def test_quick_cleanup_requires_actual_open_and_rechecks_queued_progress(library
 def test_queued_undo_is_fenced_by_new_delete_and_historical_work_never_executes(
     library, monkeypatch
 ):
-    from video_viewer.models import PackFileOperation
+    from shika.models import PackFileOperation
 
     client, media = library
     _, ids = setup(client, media)
@@ -461,7 +461,7 @@ def test_queued_undo_is_fenced_by_new_delete_and_historical_work_never_executes(
 
 
 def test_undo_restores_content_without_overwriting_newer_progress_or_preferences(library):
-    from video_viewer.models import PackPreferences, PackProgress
+    from shika.models import PackPreferences, PackProgress
 
     client, media = library
     _, ids = setup(client, media)
@@ -483,7 +483,7 @@ def test_undo_restores_content_without_overwriting_newer_progress_or_preferences
 
 
 def test_random_fixed_range_skips_unavailable_members_and_does_not_refilter(library):
-    from video_viewer.models import Root
+    from shika.models import Root
 
     client, media = library
     root, ids = setup(client, media, count=27)
@@ -528,7 +528,7 @@ def test_cross_page_trash_selection_is_complete_and_escaped_search_is_literal(li
 
 
 def test_reader_normal_trash_returns_without_advancing_and_undo_keeps_original_range(library):
-    from video_viewer.models import PackSession
+    from shika.models import PackSession
 
     client, media = library
     _, ids = setup(client, media, count=3)

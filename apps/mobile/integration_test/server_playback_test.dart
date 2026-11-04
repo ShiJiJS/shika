@@ -6,16 +6,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/server_api.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/device_controls.dart';
-import 'package:video_viewer/ui/playback_session.dart';
-import 'package:video_viewer/ui/player.dart';
-import 'package:video_viewer/ui/preferences.dart';
-import 'package:video_viewer/ui/sheets.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/server_api.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/device_controls.dart';
+import 'package:shika/ui/playback_session.dart';
+import 'package:shika/ui/player.dart';
+import 'package:shika/ui/preferences.dart';
+import 'package:shika/ui/sheets.dart';
 
 import 'support/fixture.dart';
 
@@ -83,7 +83,7 @@ void main() {
           observer.close();
         });
         await t.pumpWidget(
-          VideoViewerApp(
+          ShikaApp(
             repository: repo,
             preferences: preferences,
             initializeRepository: true,
@@ -342,7 +342,7 @@ void main() {
 
   Future<void> show(WidgetTester t) async {
     await t.pumpWidget(
-      VideoViewerApp(repository: repo, preferences: preferences),
+      ShikaApp(repository: repo, preferences: preferences),
     );
     await t.pump(const Duration(milliseconds: 300));
     expect(

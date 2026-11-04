@@ -73,7 +73,7 @@ try:
             button = next(n for n in nodes if n.get('resource-id') == 'android:id/button1' and n.get('text') == 'SAVE')
             tap(button)
         else:
-            file = next(n for n in nodes if n.get('text', '').startswith('video-viewer-backup') and n.get('text', '').endswith('.vvbackup'))
+            file = next(n for n in nodes if n.get('text', '').startswith('shika-backup') and n.get('text', '').endswith('.vvbackup'))
             tap(file)
     code = process.wait(timeout=15)
     expected = ['cancel-save', 'save-large', 'cancel-pick', 'pick-large', 'pick-over-limit', 'programmatic-cancel']
@@ -81,7 +81,7 @@ try:
     text = (args.output / 'flutter.log').read_text()
     assert 'SAF_VERIFIED:bytes=42008576,sha256=' in text and 'All tests passed!' in text
     created = download_names() - before_downloads
-    assert len(created) == 1 and all(n.startswith('video-viewer-backup') and n.endswith('.vvbackup') for n in created), created
+    assert len(created) == 1 and all(n.startswith('shika-backup') and n.endswith('.vvbackup') for n in created), created
     # Quote the known generated provider filename for Android's shell.
     filename = next(iter(created))
     assert all(c.isalnum() or c in ' .()-_' for c in filename), filename

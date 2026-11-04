@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/file_command_store.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/features/packs/pack_trash_session.dart';
+import 'package:shika/library/file_command_store.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/features/packs/pack_trash_session.dart';
 
 import 'support/restore_plan_fixture.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/models.dart';
+import 'package:shika/library/models.dart';
 
 void main() {
   LibraryVideo video(String name, [int seconds = 5]) => LibraryVideo(

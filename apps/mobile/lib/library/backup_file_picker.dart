@@ -112,7 +112,7 @@ class NativeBackupArchiveFiles implements BackupArchiveFiles {
       'path': document.path,
       'bytes': document.bytes,
       'sha256': document.sha256,
-      'name': 'video-viewer-backup.vvbackup',
+      'name': 'shika-backup.vvbackup',
     }, scope);
     if (scope?.cancelled == true) throw const RequestCancelled();
     return saved == true;

@@ -1,6 +1,6 @@
 # 分目录扫描页面
 
-跟踪[#139](https://github.com/ShiJiJS/video_viewer/issues/139)，依赖[#138](https://github.com/ShiJiJS/video_viewer/issues/138)，[草稿PR #148](https://github.com/ShiJiJS/video_viewer/pull/148)基于#147。实现源码`430fede546fe7649bdffeb7f399c6d86b6bbb212`。页面和指定目录请求已实现，普通安装包与真实服务的连续操作、NAS及手机检查仍待完成，票保持开放。
+跟踪[#139](https://github.com/ShiJiJS/shika/issues/139)，依赖[#138](https://github.com/ShiJiJS/shika/issues/138)，[草稿PR #148](https://github.com/ShiJiJS/shika/pull/148)基于#147。实现源码`430fede546fe7649bdffeb7f399c6d86b6bbb212`。页面和指定目录请求已实现，普通安装包与真实服务的连续操作、NAS及手机检查仍待完成，票保持开放。
 
 媒体库有扫描或需要检查的目录时，点“查看进度”一次进入媒体目录；平时沿用“设置→媒体目录”两次点击入口。活动进度直接展开，完成后可展开“查看扫描记录”。返回仍经设置回媒体库，不进入旧浏览页。
 
@@ -14,7 +14,7 @@
 
 接页面时修正了服务队列的一个边界：运行中的全扫只有尚未完成的根能覆盖新的指定根请求；已经完成的A可以排队新尝试，重复请求再合并到排队A。新增真实路由/Scanner回归用例先在旧镜像失败，修正后检查A新增的第二张图片确实入库、B上次结果不变。仍是单工作线程，不增加并发负载。
 
-[固定检查记录](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-root-scan-ui/README.md)包含客户端完整822项、23项新增检查连续三轮、分析，以及Linux完整478项服务检查通过。组件画面使用公开合成的V+A+B响应和Mac中文字体，在实际Flutter组件中渲染；不是普通APK操作，也不是NAS扫描数字或性能测试。界面假数据与真实服务用例分开记录。
+[固定检查记录](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-root-scan-ui/README.md)包含客户端完整822项、23项新增检查连续三轮、分析，以及Linux完整478项服务检查通过。组件画面使用公开合成的V+A+B响应和Mac中文字体，在实际Flutter组件中渲染；不是普通APK操作，也不是NAS扫描数字或性能测试。界面假数据与真实服务用例分开记录。
 
 页面首轮检查未生成APK或启动模拟器。后续已随[#142的code25候选](LF8-VERTICAL-STRIP-ZOOM.md)接入普通包并做真实V+A+B结果与A单根重扫：A从509变510、B完整事实不变，实际任务scope只有A。NAS仍code22，没有本页面；持续扫描画面、断网/排队、新旧服务完整原生组合及手机仍待验。后续检查不改写首轮430fede5/822项的版本边界。
 

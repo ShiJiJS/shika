@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/library/backup_work_store.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/file_command_store.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_api.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
+import 'package:shika/library/backup_work_store.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/file_command_store.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_api.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
 
 import 'support/fixture.dart';
 
@@ -122,7 +122,7 @@ void main() {
       }
       await repo.initialize();
       expect(repo.snapshot.connected, isTrue);
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
 
       Future<void> until(bool Function() done, String why) async {
         final end = DateTime.now().add(const Duration(seconds: 40));

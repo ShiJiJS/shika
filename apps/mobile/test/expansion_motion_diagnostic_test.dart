@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/ui/home.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/ui/home.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/preferences.dart';
 
 import 'support/scan_details_fixture.dart';
 

@@ -10,10 +10,10 @@ from pathlib import Path
 import pytest
 from sqlalchemy import select
 
-from video_viewer.backup_history import HistoryArchive
-from video_viewer.errors import LibraryError
-from video_viewer.models import ImagePack, PackPurgeEntry, PackPurgePlan, PackPurgeStep, Task
-from video_viewer.pack_purge_manifest import digest_json
+from shika.backup_history import HistoryArchive
+from shika.errors import LibraryError
+from shika.models import ImagePack, PackPurgeEntry, PackPurgePlan, PackPurgeStep, Task
+from shika.pack_purge_manifest import digest_json
 
 from .test_backup_history import hashes, stage
 from .test_management_archives import export, inspect, restore

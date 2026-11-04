@@ -3,16 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_repository.dart';
-import 'package:video_viewer/main.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_repository.dart';
+import 'package:shika/main.dart';
 
 import 'support/fixture.dart';
 import '../test/support/reveal_action.dart';
 
-import 'package:video_viewer/ui/preferences.dart';
+import 'package:shika/ui/preferences.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -56,7 +56,7 @@ void main() {
               as Map;
       expect(originalHashes.length, 108);
       await t.pumpWidget(
-        VideoViewerApp(repository: repo, preferences: preferences),
+        ShikaApp(repository: repo, preferences: preferences),
       );
       Future<void> until(bool Function() done, String why) async {
         final deadline = DateTime.now().add(const Duration(seconds: 45));

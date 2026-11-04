@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from video_viewer.models import Setting
+from shika.models import Setting
 
 from .conftest import connect
 from .test_backups import export, restore

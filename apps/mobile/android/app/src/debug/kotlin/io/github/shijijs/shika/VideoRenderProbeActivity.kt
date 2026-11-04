@@ -1,4 +1,4 @@
-package io.github.shijijs.video_viewer
+package io.github.shijijs.shika
 
 import android.app.Activity
 import android.content.pm.ActivityInfo

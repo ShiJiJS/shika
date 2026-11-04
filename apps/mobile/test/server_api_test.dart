@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/server_api.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/server_api.dart';
 
 void main() {
   late HttpServer server;

@@ -5,12 +5,12 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/backup_document.dart';
-import 'package:video_viewer/library/backup_work_store.dart';
-import 'package:video_viewer/library/management_archives.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/server_api.dart';
-import 'package:video_viewer/library/server_backups.dart';
+import 'package:shika/library/backup_document.dart';
+import 'package:shika/library/backup_work_store.dart';
+import 'package:shika/library/management_archives.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/server_api.dart';
+import 'package:shika/library/server_backups.dart';
 
 class _WriteUnknown extends MemoryBackupWorkStore {
   bool fail = false;

@@ -1,6 +1,6 @@
 # 大批量图包删除清单：等待、进度与续查
 
-对应 [#184](https://github.com/ShiJiJS/video_viewer/issues/184)。本次只修复已交付功能，不恢复其他暂停中的开发和验收。
+对应 [#184](https://github.com/ShiJiJS/shika/issues/184)。本次只修复已交付功能，不恢复其他暂停中的开发和验收。
 
 ## 问题与结果
 

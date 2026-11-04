@@ -6,7 +6,7 @@ import pytest
 from sqlalchemy import event, func, select
 from sqlalchemy.orm import Session
 
-from video_viewer.models import FileOperation, FileStep, PackFileOperation, Task
+from shika.models import FileOperation, FileStep, PackFileOperation, Task
 
 from .test_pack_operations import command, wait
 from .test_pack_purge_execution import execute, plan

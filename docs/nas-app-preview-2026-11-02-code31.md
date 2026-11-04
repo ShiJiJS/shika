@@ -1,6 +1,6 @@
 # 第31版 App 已交付
 
-2026-11-02，统一处理[#179](https://github.com/ShiJiJS/video_viewer/issues/179)、[#180](https://github.com/ShiJiJS/video_viewer/issues/180)、[#181](https://github.com/ShiJiJS/video_viewer/issues/181)、[#182](https://github.com/ShiJiJS/video_viewer/issues/182)。[根因、行为与测试范围](plans/library-first/PACK-CLEANUP-FEEDBACK.md)。
+2026-11-02，统一处理[#179](https://github.com/ShiJiJS/shika/issues/179)、[#180](https://github.com/ShiJiJS/shika/issues/180)、[#181](https://github.com/ShiJiJS/shika/issues/181)、[#182](https://github.com/ShiJiJS/shika/issues/182)。[根因、行为与测试范围](plans/library-first/PACK-CLEANUP-FEEDBACK.md)。
 
 NAS：`SATA存储11/docker/video-viewer/packages/`。正常包 `video-viewer-0.2.0-preview.25-arm64.apk`，直接覆盖安装，不要卸载或清数据；同号旧界面回退包 `video-viewer-0.1.4-rollback.25-arm64.apk`。原签名、包名、地址和口令保持。服务仍为preview.8，本次无服务重启、数据库迁移或实际收藏文件操作。
 

@@ -32,7 +32,7 @@ LF1 (#26)
 - [x] 分页真实总数，未授权/路径越界拒绝，原图/缩略图版本可核对。
 - [x] 500页和大图样本可逐页访问，后台扫描有进度；记录资源基线，不宣称未经实测性能。
 
-实现提交：`9aff732`；[PR #36](https://github.com/ShiJiJS/video_viewer/pull/36)；[交付说明与证据](../LF2.md)。标准 LF0 四包夹具通过真实 HTTP 核对全部 508 张有效原图哈希及缩略图，源文件不变；现有视频的 Android I1 连接/重开回归通过。原型仍独立保存于 `design/reference/`，没有改动。
+实现提交：`9aff732`；[PR #36](https://github.com/ShiJiJS/shika/pull/36)；[交付说明与证据](../LF2.md)。标准 LF0 四包夹具通过真实 HTTP 核对全部 508 张有效原图哈希及缩略图，源文件不变；现有视频的 Android I1 连接/重开回归通过。原型仍独立保存于 `design/reference/`，没有改动。
 
 验收 ID：LIB-02/03、PKG-01–03、SET-04
 

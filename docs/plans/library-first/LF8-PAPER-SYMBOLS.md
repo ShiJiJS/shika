@@ -1,6 +1,6 @@
 # LF8：共享文字色阶与图标统一
 
-意图：在已确认Paper方向内整理，处理[#124](https://github.com/ShiJiJS/video_viewer/issues/124)，不改变流程与结构。阶段：正常code19预检与独立定点复核完成，补齐暗色视频播放标记后生成最终code20候选。依据为[正常code18基线](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-integrated-baseline/README.md)的首页/阅读对照和独立评审；不重新探索风格。
+意图：在已确认Paper方向内整理，处理[#124](https://github.com/ShiJiJS/shika/issues/124)，不改变流程与结构。阶段：正常code19预检与独立定点复核完成，补齐暗色视频播放标记后生成最终code20候选。依据为[正常code18基线](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-integrated-baseline/README.md)的首页/阅读对照和独立评审；不重新探索风格。
 
 ## 决定
 
@@ -19,4 +19,4 @@
 
 code19覆盖和升回时35表/设置/登录/偏好保持；旧界面首次冷启的GET playback按旧协议创建一轮播放范围，新增playback_rounds/round_entries、active_round指针并移除library_round_refresh。其余33表、令牌和偏好保持，原失败的全表不变断言与逐项差量保留；不称旧界面全程只读，也不改真实数据去通过断言。
 
-最终code20正常包同公开样本完成浅/暗首页与阅读，阅读更多取消保持3/6；三次19→新20→旧20→新20覆盖保留35表/完整设置/令牌/偏好及身份。相同评审者再次确认暗色播放标记与原清单无明显回退。153份公开输入、逐项原始记录和只读复核见[本轮证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-paper-symbols/README.md)。环境已归还，原四服务保持；这不替代完整45项终验。
+最终code20正常包同公开样本完成浅/暗首页与阅读，阅读更多取消保持3/6；三次19→新20→旧20→新20覆盖保留35表/完整设置/令牌/偏好及身份。相同评审者再次确认暗色播放标记与原清单无明显回退。153份公开输入、逐项原始记录和只读复核见[本轮证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-paper-symbols/README.md)。环境已归还，原四服务保持；这不替代完整45项终验。

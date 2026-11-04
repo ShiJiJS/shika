@@ -5,7 +5,7 @@ import json
 import sqlite3
 from pathlib import Path
 
-from video_viewer.db import Database
+from shika.db import Database
 
 
 def test_frozen_0004_preserves_identity_round_trash_and_pending_command(tmp_path):

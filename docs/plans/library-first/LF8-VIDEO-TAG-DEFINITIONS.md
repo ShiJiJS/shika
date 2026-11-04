@@ -1,6 +1,6 @@
 # LF8：视频标签定义的真实操作与失败恢复
 
-当前交付：[Draft PR #81](https://github.com/ShiJiJS/video_viewer/pull/81)。
+当前交付：[Draft PR #81](https://github.com/ShiJiJS/shika/pull/81)。
 
 基于 PR #80，关联 TAG-01/#33/#24。沿用已确认的 Paper 标签目录及短表单，本段补原生视频侧定义创建、改名和移除，而非重新设计界面。图包侧既有#73证据保留原源码归属，原型1cbf605独立可移除且不修改。
 

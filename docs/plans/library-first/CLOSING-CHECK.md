@@ -2,7 +2,7 @@
 
 2026-11-02：按用户要求暂停在当前版本并合并源码到主分支。L1末尾操作仅开始准备，尚未完成；L2未继续，两者都不记通过。下文保留11月1日收口时的状态，关于Draft/main提交号及“下一步”的描述属于当时记录。
 
-2026-11-01，跟踪[#133](https://github.com/ShiJiJS/video_viewer/issues/133)及[整体草稿#168](https://github.com/ShiJiJS/video_viewer/pull/168)。本页整理当前证据和下一步，不代替[原45项要求](ACCEPTANCE.md)，不将“已交付试用”写成“完整终验通过”。历史固定版本的原始记录继续保留。
+2026-11-01，跟踪[#133](https://github.com/ShiJiJS/shika/issues/133)及[整体草稿#168](https://github.com/ShiJiJS/shika/pull/168)。本页整理当前证据和下一步，不代替[原45项要求](ACCEPTANCE.md)，不将“已交付试用”写成“完整终验通过”。历史固定版本的原始记录继续保留。
 
 ## 当前交付事实
 

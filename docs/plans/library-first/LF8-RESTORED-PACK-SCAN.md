@@ -1,6 +1,6 @@
 # 恢复后扫描仍保留原图包
 
-[草稿PR #165](https://github.com/ShiJiJS/video_viewer/pull/165)，基于[#164](https://github.com/ShiJiJS/video_viewer/pull/164)。#163为已验证的本机候选，等待审阅及后续部署。
+[草稿PR #165](https://github.com/ShiJiJS/shika/pull/165)，基于[#164](https://github.com/ShiJiJS/shika/pull/164)。#163为已验证的本机候选，等待审阅及后续部署。
 
 2026-11-01，继续 #163、#31/#33/#24/#133，基于 #164。产品源码 `7ddf20d4d3e057beb3bf1232b023a212c76160e9`，本机 runtime preview.7。普通原签名 preview.20/code26、客户端 `8416a3f7` 保持；没有新 APK、数据库迁移、原型变化或 NAS 访问。
 
@@ -38,7 +38,7 @@ App实际点击“扫描此目录”一次，原生请求root_id=purge、服务�
 
 在操作任务找到原Tall永久删除任务d4b047ca...，明确确认一次“重试未完成项”。仍返回stale_pack_state，结果2/3、49文件与剩余图片/附件保持；除任务/请求记录外33张表、设置、凭据相同。该结果截图显示2/3；具体拒绝原因由同一任务API确认。本轮没有新永久删除或恢复POST。
 
-12张原始截图由主Agent逐张查看，约389dp、浅色竖屏，无独立视觉评审。数据、请求和中间失败见[本轮证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-restored-pack-scan-code26/README.md)。
+12张原始截图由主Agent逐张查看，约389dp、浅色竖屏，无独立视觉评审。数据、请求和中间失败见[本轮证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-restored-pack-scan-code26/README.md)。
 
 ## 候选与清理
 

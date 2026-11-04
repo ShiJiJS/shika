@@ -27,9 +27,9 @@ HTML参考窗口390×844含底部12px的模拟系统区。实际Android录入窗
 | 设置分组 | 正常字号连接/维护/偏好分组实测68/251/503dp，参考68/251.30/504.99dp。可见开关已收回约40×24且文字锚线x55统一；大字体仍可自然增高，完整内容可滚动到达。 |
 | 图包继续阅读 | a9da395阶段缺少参考的独立续读区，夹具只种已有进度、不伪造最近打开。后续c4aaf3b已接入真实最近摘要并保留原范围，见[续读阶段约定](LF8-PACK-CONTINUATION.md)与独立证据；不能用本轮无历史的图替代后续实际打开验证。 |
 | 图包标题/作者 | a9da395阶段尚缺；后续4e391a2/PR #61已按明确编号规则派生标题/作者，未知原名回退，不硬写样例作者。列表/续读/阅读/范围/最近复用显示信息，见[呈现约定](LF8-PACK-PRESENTATION.md)。 |
-| 排序 | 4e391a2增加图包title中文排序；后续a769d28/a8e94b2增加视频可选区域排序，两类分别贯穿服务端分页/锚点/全选/范围。视频公共枚举不变，旧调用保留；公开样本顺序与参考一致，见[约定](LF8-VIDEO-NAME-ORDER.md)和[64点证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-video-name-order/README.md)。标签排列仍待核对。 |
-| 卡片剩余差异 | a9da395阶段共享11dp且无额外上距；后续e53e173已对齐参考12dp/1.6和4dp上距、作者/方向色及短横屏四列，见[卡片约定](LF8-CARD-LAYOUT.md)与[67点证据](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-card-layout/README.md)。原生自然步长313dp，参考312.2；桌面参考滚动条占位使列167.5dp，原生173dp。阅读角标在4e391a2补齐；标签顺序与菜单图标仍需核对。 |
-| 分类计数 | a9da395阶段尚缺；后续910cfb2/PR #60已按同一服务端可浏览目录快照补齐两类总数，失败未知/旧服务隐藏，不用缓存或筛选数代替。见[计数约定](LF8-CATALOG-COUNTS.md)与[45图及续读回归](https://github.com/ShiJiJS/video_viewer/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-catalog-counts/README.md)。 |
+| 排序 | 4e391a2增加图包title中文排序；后续a769d28/a8e94b2增加视频可选区域排序，两类分别贯穿服务端分页/锚点/全选/范围。视频公共枚举不变，旧调用保留；公开样本顺序与参考一致，见[约定](LF8-VIDEO-NAME-ORDER.md)和[64点证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-video-name-order/README.md)。标签排列仍待核对。 |
+| 卡片剩余差异 | a9da395阶段共享11dp且无额外上距；后续e53e173已对齐参考12dp/1.6和4dp上距、作者/方向色及短横屏四列，见[卡片约定](LF8-CARD-LAYOUT.md)与[67点证据](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-card-layout/README.md)。原生自然步长313dp，参考312.2；桌面参考滚动条占位使列167.5dp，原生173dp。阅读角标在4e391a2补齐；标签顺序与菜单图标仍需核对。 |
+| 分类计数 | a9da395阶段尚缺；后续910cfb2/PR #60已按同一服务端可浏览目录快照补齐两类总数，失败未知/旧服务隐藏，不用缓存或筛选数代替。见[计数约定](LF8-CATALOG-COUNTS.md)与[45图及续读回归](https://github.com/ShiJiJS/shika/blob/c9c6363ab1ca3bb7d72c96499432a289de33f187/docs/plans/library-first/evidence/lf8-catalog-counts/README.md)。 |
 | 视频样例文字 | 实际文件名有.mp4、真实时长向上取整显示00:06；参考标题无扩展名、示例0:05。素材相同，文字不是同一份生产事实；本轮没有改真实文件/时长来迁就截图。 |
 | 标签状态 | 参考和原生均通过实际点击户外、读取交集匹配2项后采集，未直接修改业务状态；大字体需要滚动，不能等待屏外懒加载条目自行出现。 |
 | 其它页面 | 阅读器/预览/管理长页、键盘、手势录屏、500页4K/8K、真实手机/NAS与原签名覆盖安装继续。UI-01至UI-06和LF8/#33整项不关闭。 |

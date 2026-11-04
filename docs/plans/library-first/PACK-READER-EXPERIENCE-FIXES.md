@@ -4,11 +4,11 @@
 
 | 工单 | 修正后的行为 |
 | --- | --- |
-| [#171](https://github.com/ShiJiJS/video_viewer/issues/171) | 导航统一为“上一个 / 下一个”，末尾显示“已阅读到末尾”。 |
-| [#172](https://github.com/ShiJiJS/video_viewer/issues/172) | 主图和总览缩略图在等待网络、排队及自动重试时显示“加载中”；重试耗尽或明确不可读取后才显示失败和手动重试。 |
-| [#173](https://github.com/ShiJiJS/video_viewer/issues/173) | 快速整理沿用进入时的阅读方式，后续切换不再被各图包的旧设置覆盖。底部有“阅读方式”入口，更多菜单也可调整。退出快速整理恢复当前图包自己的设置。 |
-| [#174](https://github.com/ShiJiJS/video_viewer/issues/174) | 移除先记录本地请求，再后台提交逻辑回收。阅读可立即继续，跳过本次已移除项；迟到的结果不改变当前选择。不移动、重命名或删除源文件。 |
-| [#175](https://github.com/ShiJiJS/video_viewer/issues/175) | 提示位于顶部，不覆盖底部切换按钮；两秒后或切换图包时消失。未确认操作可从“移除记录”查询，已确认操作在服务允许的期限内可撤销。 |
+| [#171](https://github.com/ShiJiJS/shika/issues/171) | 导航统一为“上一个 / 下一个”，末尾显示“已阅读到末尾”。 |
+| [#172](https://github.com/ShiJiJS/shika/issues/172) | 主图和总览缩略图在等待网络、排队及自动重试时显示“加载中”；重试耗尽或明确不可读取后才显示失败和手动重试。 |
+| [#173](https://github.com/ShiJiJS/shika/issues/173) | 快速整理沿用进入时的阅读方式，后续切换不再被各图包的旧设置覆盖。底部有“阅读方式”入口，更多菜单也可调整。退出快速整理恢复当前图包自己的设置。 |
+| [#174](https://github.com/ShiJiJS/shika/issues/174) | 移除先记录本地请求，再后台提交逻辑回收。阅读可立即继续，跳过本次已移除项；迟到的结果不改变当前选择。不移动、重命名或删除源文件。 |
+| [#175](https://github.com/ShiJiJS/shika/issues/175) | 提示位于顶部，不覆盖底部切换按钮；两秒后或切换图包时消失。未确认操作可从“移除记录”查询，已确认操作在服务允许的期限内可撤销。 |
 
 ## 操作与兼容
 
@@ -27,4 +27,4 @@
 
 本机 macOS 不提供现有服务文件执行器依赖的 `renameat2`，因此服务测试使用 Linux 容器；本次未操作 NAS 服务、实际资源或数据库。
 
-[第29版安装与产物记录](../../nas-app-preview-2026-11-02-code29.md) · [修复PR #176](https://github.com/ShiJiJS/video_viewer/pull/176)。未进行实体手机试用，不把自动化检查作为手机手势、性能或原45项全部验收的结论。
+[第29版安装与产物记录](../../nas-app-preview-2026-11-02-code29.md) · [修复PR #176](https://github.com/ShiJiJS/shika/pull/176)。未进行实体手机试用，不把自动化检查作为手机手势、性能或原45项全部验收的结论。

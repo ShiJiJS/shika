@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/ui/paper.dart';
+import 'package:shika/ui/paper.dart';
 
 Future<String?> openDialog(BuildContext context, WidgetBuilder builder) =>
     paperDialog<String>(context: context, builder: builder);

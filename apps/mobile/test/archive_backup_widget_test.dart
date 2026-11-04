@@ -2,16 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/settings/archive_backup_page.dart';
-import 'package:video_viewer/library/backup_document.dart';
-import 'package:video_viewer/library/backup_file_picker.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/management_archives.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/request_scope.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/ui/paper_management.dart';
+import 'package:shika/features/settings/archive_backup_page.dart';
+import 'package:shika/library/backup_document.dart';
+import 'package:shika/library/backup_file_picker.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/management_archives.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/request_scope.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/ui/paper_management.dart';
 
 import 'support/reveal_action.dart';
 

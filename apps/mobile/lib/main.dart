@@ -64,7 +64,7 @@ Future<void> main() async {
     }
   }
   runApp(
-    VideoViewerApp(
+    ShikaApp(
       repository: repository,
       initializeRepository: !demo,
       initialError: error,
@@ -73,8 +73,8 @@ Future<void> main() async {
   );
 }
 
-class VideoViewerApp extends StatefulWidget {
-  const VideoViewerApp({
+class ShikaApp extends StatefulWidget {
+  const ShikaApp({
     super.key,
     required this.repository,
     this.initialError,
@@ -92,10 +92,10 @@ class VideoViewerApp extends StatefulWidget {
   final bool initializeRepository;
   final List<NavigatorObserver> navigatorObservers;
   @override
-  State<VideoViewerApp> createState() => _VideoViewerAppState();
+  State<ShikaApp> createState() => _ShikaAppState();
 }
 
-class _VideoViewerAppState extends State<VideoViewerApp> {
+class _ShikaAppState extends State<ShikaApp> {
   late final preferences = widget.preferences ?? UiPreferences();
   @override
   void dispose() {
@@ -107,7 +107,7 @@ class _VideoViewerAppState extends State<VideoViewerApp> {
   Widget build(BuildContext context) => ListenableBuilder(
     listenable: preferences,
     builder: (context, _) => MaterialApp(
-      title: 'Video Viewer',
+      title: '拾刻 · shika',
       debugShowCheckedModeBanner: false,
       navigatorObservers: widget.navigatorObservers,
       theme: Paper.theme,

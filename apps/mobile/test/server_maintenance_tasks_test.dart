@@ -4,12 +4,12 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/backup_work_store.dart';
-import 'package:video_viewer/library/credentials.dart';
-import 'package:video_viewer/library/file_command_store.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/library/server_repository.dart' hide Json;
+import 'package:shika/library/backup_work_store.dart';
+import 'package:shika/library/credentials.dart';
+import 'package:shika/library/file_command_store.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/library/server_repository.dart' hide Json;
 
 import 'pack_files_test.dart' show FilesFixture;
 import 'server_pack_catalog_test.dart' show PackServer;

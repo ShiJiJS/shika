@@ -9,7 +9,7 @@ import pytest
 from PIL import Image
 from sqlalchemy import select
 
-from video_viewer.models import ImagePack, PackPage, PackProgress
+from shika.models import ImagePack, PackPage, PackProgress
 
 from .conftest import scan
 from .test_media_types import pack_root, pack_tag
@@ -132,7 +132,7 @@ def test_rename_pack_and_pages_preserves_ids_tags_progress_and_avoids_reprobe(li
     def unexpected(*args, **kwargs):
         raise AssertionError("unchanged image must not decode or hash again")
 
-    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", unexpected)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", unexpected)
     job = sync(client)
     assert job["result"]["packs"]["unchanged"] == 1, job
 
@@ -424,7 +424,7 @@ def test_jpeg_exif_dimensions_and_unchanged_source_bytes(library):
 def test_pack_first_scan_keeps_ready_video_playable(library, samples, monkeypatch):
     import threading
 
-    from video_viewer.pack_scanner import inspect_image as original
+    from shika.pack_scanner import inspect_image as original
 
     from .conftest import put
     from .test_backups import wait_task
@@ -442,7 +442,7 @@ def test_pack_first_scan_keeps_ready_video_playable(library, samples, monkeypatc
         assert release.wait(10)
         return original(*args)
 
-    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", held)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", held)
     time.sleep(0.04)
     task = client.post("/api/v1/scans").json()
     try:
@@ -490,7 +490,7 @@ def test_500_pages_4k_8k_pagination_and_cached_rescan(library, monkeypatch):
     def unexpected(*args):
         raise AssertionError("cached 502-page corpus must not decode again")
 
-    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", unexpected)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", unexpected)
     cached_started = time.monotonic()
     cached = sync(client, timeout=30)
     assert cached["result"]["packs"]["unchanged"] == 2
@@ -509,7 +509,7 @@ def test_500_pages_4k_8k_pagination_and_cached_rescan(library, monkeypatch):
 
 
 def test_directory_mutation_defers_publication_until_a_complete_manifest(library, monkeypatch):
-    from video_viewer.pack_scanner import inspect_image as original
+    from shika.pack_scanner import inspect_image as original
 
     client, media = library
     root = pack_root(client, media)
@@ -527,7 +527,7 @@ def test_directory_mutation_defers_publication_until_a_complete_manifest(library
             injected = True
         return original(*args)
 
-    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", mutate)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", mutate)
     time.sleep(0.04)
     job = scan(client)
     assert job["result"]["packs"]["deferred"] == 1
@@ -555,7 +555,7 @@ def test_interrupted_staging_is_not_visible_and_recovers_after_restart(environme
             raise InterruptedError("injected stop before reconciliation")
 
         with monkeypatch.context() as patch:
-            patch.setattr("video_viewer.pack_scanner.PackScanner.reconcile", interrupted)
+            patch.setattr("shika.pack_scanner.PackScanner.reconcile", interrupted)
             time.sleep(0.04)
             task = client.post("/api/v1/scans").json()
             assert wait_task(client, task["id"])["status"] == "interrupted"
@@ -587,7 +587,7 @@ def test_interrupted_staging_is_not_visible_and_recovers_after_restart(environme
 def test_cold_catalog_exposes_completed_pack_while_later_pack_is_inspecting(library, monkeypatch):
     import threading
 
-    from video_viewer.pack_scanner import inspect_image as original
+    from shika.pack_scanner import inspect_image as original
 
     from .test_backups import wait_task
 
@@ -607,7 +607,7 @@ def test_cold_catalog_exposes_completed_pack_while_later_pack_is_inspecting(libr
             assert release.wait(10)
         return original(*args)
 
-    monkeypatch.setattr("video_viewer.pack_scanner.inspect_image", held)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", held)
     time.sleep(0.04)
     task = client.post("/api/v1/scans").json()
     try:
@@ -681,11 +681,11 @@ def test_directory_pagination_and_retyping_keeps_legacy_directory_ids(library):
 def test_recycled_directory_inode_does_not_adopt_unrelated_pack(
     library, monkeypatch, birth_supported
 ):
-    from video_viewer.directory_identity import directory_stamp
-    from video_viewer.paths import open_directory
+    from shika.directory_identity import directory_stamp
+    from shika.paths import open_directory
 
     if not birth_supported:
-        monkeypatch.setattr("video_viewer.directory_identity._statx", None)
+        monkeypatch.setattr("shika.directory_identity._statx", None)
     client, media = library
     root = pack_root(client, media)
     base = Path(root["path"])
@@ -776,10 +776,10 @@ def test_pack_summary_version_and_counts_share_one_read_snapshot(library):
 
 
 def test_protected_cached_pages_are_not_evidence_for_a_replacement(library, monkeypatch):
-    from video_viewer.directory_identity import directory_stamp
-    from video_viewer.paths import open_directory
+    from shika.directory_identity import directory_stamp
+    from shika.paths import open_directory
 
-    monkeypatch.setattr("video_viewer.directory_identity._statx", None)
+    monkeypatch.setattr("shika.directory_identity._statx", None)
     client, media = library
     root = pack_root(client, media)
     base = Path(root["path"])
@@ -855,7 +855,7 @@ def test_disabled_duplicate_is_ambiguity_evidence_not_a_tag_donor(library):
 
 @pytest.mark.parametrize("unmapped", [False, True])
 def test_inaccessible_pack_root_does_not_poison_parent_video_root(library, samples, unmapped):
-    from video_viewer.models import Root
+    from shika.models import Root
 
     from .conftest import put
 

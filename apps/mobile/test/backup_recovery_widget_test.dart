@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/library/demo_repository.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/state_store.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/ui/paper_management.dart';
+import 'package:shika/library/demo_repository.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/state_store.dart';
+import 'package:shika/main.dart';
+import 'package:shika/ui/paper_management.dart';
 
 class _PendingRestore extends DemoLibraryRepository {
   _PendingRestore() : super(MemoryStateStore(), scenario: DemoScenario.empty);
@@ -24,7 +24,7 @@ void main() {
     (t) async {
       final repo = _PendingRestore();
       await repo.initialize();
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await t.pumpAndSettle();
       expect(
         t.widget<TextButton>(find.byKey(const Key('backup-query'))).onPressed,

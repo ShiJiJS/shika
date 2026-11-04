@@ -50,7 +50,7 @@ def main():
                 sys.executable,
                 "-m",
                 "uvicorn",
-                "video_viewer.app:create_app",
+                "shika.app:create_app",
                 "--factory",
                 "--host",
                 "127.0.0.1",

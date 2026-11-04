@@ -95,7 +95,7 @@ def test_sigkill_resumes_original_plan_without_replaying_a_committed_child(
             server.kill()
             server.communicate(timeout=5)
             assert server.returncode == -9
-            server = start("video_viewer.app:create_app")
+            server = start("shika.app:create_app")
             # Reopen is GET-only; the complete seven-member selection survived.
             original = client.get("/api/v1/pack-restore-requests/process-unknown")
             assert original.status_code == 200 and original.json()["id"] == identity

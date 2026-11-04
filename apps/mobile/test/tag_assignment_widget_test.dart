@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/features/packs/pack_sheets.dart';
-import 'package:video_viewer/ui/paper.dart';
-import 'package:video_viewer/library/models.dart';
-import 'package:video_viewer/library/repository.dart';
-import 'package:video_viewer/ui/sheets.dart';
-import 'package:video_viewer/main.dart';
-import 'package:video_viewer/features/library/video_catalog_page.dart';
+import 'package:shika/features/packs/pack_sheets.dart';
+import 'package:shika/ui/paper.dart';
+import 'package:shika/library/models.dart';
+import 'package:shika/library/repository.dart';
+import 'package:shika/ui/sheets.dart';
+import 'package:shika/main.dart';
+import 'package:shika/features/library/video_catalog_page.dart';
 
 import 'fixed_preview_widget_test.dart' as fixed;
 
@@ -156,7 +156,7 @@ void main() {
       final repo = AssignmentLibrary();
       await repo.initialize();
       addTearDown(repo.dispose);
-      await t.pumpWidget(VideoViewerApp(repository: repo));
+      await t.pumpWidget(ShikaApp(repository: repo));
       await fixed.frames(t);
       final page = t.state<VideoCatalogPageState>(
         find.byType(VideoCatalogPage),

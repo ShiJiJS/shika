@@ -3,9 +3,9 @@
 import hashlib
 import threading
 
-from video_viewer.authority import Authority
-from video_viewer.db import Database
-from video_viewer.models import Setting
+from shika.authority import Authority
+from shika.db import Database
+from shika.models import Setting
 
 from .test_backup_restore_graph import seed
 from .test_backups import wait_task
@@ -183,7 +183,7 @@ def test_reservation_is_seen_by_another_database_connection(library, samples):
         try:
             import pytest
 
-            from video_viewer.errors import LibraryError
+            from shika.errors import LibraryError
 
             with pytest.raises(LibraryError, match="管理数据正在恢复"):
                 with other.write() as session:
@@ -199,7 +199,7 @@ def test_reservation_is_seen_by_another_database_connection(library, samples):
 def test_complete_33_table_restore_and_continuous_epochs_keep_original_graphs(library, samples):
     from sqlalchemy import func, select
 
-    from video_viewer.backup_v2_schema import TABLES
+    from shika.backup_v2_schema import TABLES
 
     from .test_backup_archive import seed_complete_graph
     from .test_pack_operations import trash
@@ -383,7 +383,7 @@ def test_imported_pending_jobs_remain_retired_after_cold_start(environment, samp
 
     from sqlalchemy import delete
 
-    from video_viewer.models import Task
+    from shika.models import Task
 
     from .conftest import connect
     from .test_pack_operations import trash
@@ -443,7 +443,7 @@ def test_upload_bad_digest_over_limit_cancel_and_disk_fault_leave_no_incoming_fi
 
     import pytest
 
-    import video_viewer.management_backup_api as api
+    import shika.management_backup_api as api
 
     client, media = library
     archives = client.app.state.backups.archives
@@ -536,7 +536,7 @@ def test_bare_sqlite_writer_enables_persistent_reservation_after_migration(tmp_p
     import pytest
     from sqlalchemy import text
 
-    from video_viewer.errors import LibraryError
+    from shika.errors import LibraryError
 
     database = Database(tmp_path / "initialization")
     try:

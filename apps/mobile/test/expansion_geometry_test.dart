@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:video_viewer/ui/paper.dart';
+import 'package:shika/ui/paper.dart';
 
 void main() {
   testWidgets(

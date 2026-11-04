@@ -6,8 +6,8 @@ from contextlib import asynccontextmanager
 from dataclasses import replace
 from pathlib import Path
 
-from video_viewer.app import create_app
-from video_viewer.config import Settings
+from shika.app import create_app
+from shika.config import Settings
 
 
 def create_fault_app():
@@ -24,7 +24,7 @@ def create_fault_app():
                     return
                 if phase == "logical_committed":
                     with current.state.db.read() as session:
-                        from video_viewer.models import Task
+                        from shika.models import Task
 
                         if session.get(Task, identity).kind != "pack_restore":
                             return

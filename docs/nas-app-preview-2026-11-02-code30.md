@@ -1,6 +1,6 @@
 # 第30版 App 已交付
 
-2026-11-02，按用户截图精简图包快速整理，修复 [#177](https://github.com/ShiJiJS/video_viewer/issues/177)。[调整与测试范围](plans/library-first/QUICK-READER-IMMERSIVE.md)。
+2026-11-02，按用户截图精简图包快速整理，修复 [#177](https://github.com/ShiJiJS/shika/issues/177)。[调整与测试范围](plans/library-first/QUICK-READER-IMMERSIVE.md)。
 
 NAS目录：`SATA存储11/docker/video-viewer/packages/`。正常包 `video-viewer-0.2.0-preview.24-arm64.apk`，直接覆盖原App，不要卸载或清除数据。同号旧视频界面回退包为 `video-viewer-0.1.4-rollback.24-arm64.apk`。原Windows签名、包名、服务地址和口令保持；NAS服务仍为preview.8，本次没有重启服务或操作实际媒体及数据库。
 

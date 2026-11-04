@@ -104,7 +104,7 @@ def test_sigkill_restore_rolls_back_then_recovers_without_file_commands(
             assert client.get("/api/v1/info").json()["management_epoch"] == epoch_before
             server.kill()
             server.communicate(timeout=5)
-            server = start("video_viewer.app:create_app")
+            server = start("shika.app:create_app")
             result = wait_task(client, task_id)
             assert result["status"] == "completed", result
             epoch_after = client.get("/api/v1/info").json()["management_epoch"]

@@ -44,7 +44,7 @@ class NativeBackupFiles implements BackupFiles {
   Future<bool> save(String text) async =>
       await FilePicker.saveFile(
         dialogTitle: '导出管理数据备份',
-        fileName: 'video-viewer-backup.json',
+        fileName: 'shika-backup.json',
         type: FileType.custom,
         allowedExtensions: ['json'],
         bytes: Uint8List.fromList(utf8.encode(text)),
@@ -2437,7 +2437,7 @@ class _LibraryHomeState extends State<LibraryHome> {
   Widget connection() => ListView(
     padding: const EdgeInsets.all(20),
     children: [
-      if (!data.connected) Text('连接你的视频库', style: Paper.of(context).title),
+      if (!data.connected) Text('连接拾刻媒体库', style: Paper.of(context).title),
       note('视频和图包共用同一媒体服务。'),
       const SizedBox(height: 12),
       PaperField(
