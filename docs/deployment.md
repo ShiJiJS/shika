@@ -1,6 +1,6 @@
 # 部署与日常使用
 
-> 2026-10-30：现有NAS已升级至媒体库体验服务，当前App为preview.16/code22，支持图包和独立标签。当前安装、首次扫描和回退以[本次部署说明](nas-preview-2026-10-30.md)及[安装候选](library-first-preview.md)为准；下文保留V1部署和历史行为说明。
+> 2026-11-06：当前服务已迁移到飞牛x86 NAS，项目、容器及部署目录采用shika命名；使用fnos-cli维护。当前部署以[飞牛迁移说明](fnos-migration-2026-11-06.md)和[Compose模板](../deploy/fnos/compose.yaml)为准；下文保留旧极空间ARM NAS及V1历史记录。
 
 适用于第一版测试交付：FastAPI 单容器、单端口、SQLite 持久化，Android Flutter 客户端。S1–S6 与 I1–I6 已完成，并已部署极空间 ARM64 NAS；首次建库、目标手机和性能仍按 [V1 状态](v1-validation.md) 验收。下面的 NAS 路径是通用示例；实际个人连接配置保存在私有 infos。
 
