@@ -9,6 +9,9 @@ from .paths import beneath
 
 
 def owner_for_path(path, roots, kind="video"):
+    # A disabled, unmapped or differently typed nested root is a boundary, not
+    # a hole that its parent may scan through. Packs use the nearest owner;
+    # videos retain outermost ownership for existing overlapping-root records.
     owners = []
     for root in sorted(roots, key=lambda r: len(r.path)):
         if not beneath(Path(path), Path(root.path)):

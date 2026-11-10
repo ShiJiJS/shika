@@ -19,7 +19,10 @@ export 'pack_reading.dart';
 export 'pack_models.dart';
 
 /// This boundary describes client-visible behavior, independent of transport.
-/// A future network provider implements it; widgets never access NAS files.
+/// Server and demo providers implement it; widgets never access NAS files.
+/// A server snapshot is a cache of visited pages, not the complete catalog:
+/// use paged reads and server totals, and keep list queries separate from the
+/// explicit commands that create playback/reading sessions or record opens.
 abstract class LibraryRepository extends ChangeNotifier {
   PackMissingCatalog createPackMissing() =>
       throw const LibraryFailure('当前服务尚不支持图包缺失管理，请升级服务端');

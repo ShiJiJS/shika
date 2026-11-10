@@ -5,7 +5,8 @@ import '../../library/models.dart';
 export '../../library/models.dart' show MediaKind, BrowseSource, VideoSort;
 
 /// An entry page's selection, independent of the active viewing session.
-/// Pack-specific queries will be added with the LF1 data contract.
+/// Scroll anchors belong to the view, not query identity: returning to a card
+/// must not create a new playback range or record another open.
 class VideoBrowseContext {
   VideoBrowseContext({
     VideoQuery? query,
@@ -63,6 +64,8 @@ class VideoBrowseContext {
 }
 
 /// A pack entry page keeps its own filters and return position.
+/// Pack and video tag IDs are separate namespaces, even for equal names;
+/// switching media kind must not reuse the other kind's query or selection.
 class PackBrowseContext {
   PackBrowseContext({
     PackQuery? query,

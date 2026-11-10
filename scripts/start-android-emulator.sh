@@ -5,10 +5,14 @@ avd_name="${VV_AVD_NAME:-video_viewer_api_36}"
 port="${VV_EMULATOR_PORT:-5554}"
 device="emulator-$port"
 timeout_seconds="${VV_EMULATOR_TIMEOUT:-240}"
-# Validated local video profile. Explicit overrides are for separate experiments.
+# Local video profile: host decoding with GLDMA disabled avoided the observed
+# green edge; software rendering alone did not. Root cause/stability: GitHub #78.
+# Explicit overrides isolate diagnostics and do not change the product decoder.
 gpu_mode="${VV_EMULATOR_GPU:-software}"
 gldma="${VV_EMULATOR_GLDMA:-off}"
 host_video="${VV_EMULATOR_HOST_VIDEO:-on}"
+# Disabling audio is useful for reader diagnostics around CoreAudio startup
+# waits, but cannot validate audible playback or establish the cause of #100.
 audio_mode="${VV_EMULATOR_AUDIO:-on}"
 case "$gldma" in on) dma_feature=GLDMA ;; off) dma_feature=-GLDMA ;; *) echo 'VV_EMULATOR_GLDMA must be on or off.' >&2; exit 2 ;; esac
 case "$host_video" in on) codec_feature=HardwareDecoder ;; off) codec_feature=-HardwareDecoder ;; *) echo 'VV_EMULATOR_HOST_VIDEO must be on or off.' >&2; exit 2 ;; esac

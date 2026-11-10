@@ -13,7 +13,7 @@
 
 ## 运行、检查与重新生成
 
-在仓库根目录运行 `python3 design/reference/serve.py`。打开 http://127.0.0.1:8767/library-first/ ，实际交互页是 `app.html`。可用 `?state=settings/packs/reader/pack-quick/roots/trash/backup`，详见设置对照和验收表。
+在仓库根目录运行 `python3 design/reference/serve.py`。打开 http://127.0.0.1:8767/library-first/ ，实际交互页是 `app.html`。可用 `?state=settings/packs/reader/pack-quick/roots/trash/backup`，剩余验收见 [GitHub #133](https://github.com/ShiJiJS/shika/issues/133)。
 
 页面生成使用 `python3 design/reference/library-first/build_app.py`（Python 3.10+）。验证脚本只依赖此原型：
 
@@ -27,4 +27,4 @@ npm run capture
 
 也可设置 `VIDEO_VIEWER_PLAYWRIGHT` 为已有 Playwright 模块绝对路径，`VIDEO_VIEWER_BROWSER` 为 Chrome 路径，`REFERENCE_URL` 覆盖 app.html 地址。本机复用已有运行时，不修改项目正式依赖。
 
-`baseline-sha256.json` 锁定隔离后的源码与合成素材；原素材版哈希保留在 `docs/plans/library-first/baseline.json` 作为历史映射，不上传私人原图截图。`shots/` 为使用合成素材重新生成的参考截图。原型修改需同时说明验收影响并更新基线，不能为贴合实现而静默改稿。
+`baseline-sha256.json` 锁定隔离后的源码与合成素材；[原素材版哈希](https://github.com/ShiJiJS/shika/blob/8486f597/docs/plans/library-first/baseline.json)仅作为历史映射。`shots/` 为使用合成素材重新生成的参考截图。原型修改需同时说明验收影响并更新基线，不能为贴合实现而静默改稿。

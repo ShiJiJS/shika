@@ -252,6 +252,10 @@ class WriteReaderDefaults extends ReaderCommand<ReaderPreferences> {
 /// One connection-bound handle. Metadata, page and queue reads cancel separately;
 /// Queue consumers are independent until cancelQueue cancels them all.
 /// submit never retries. receipt is read-only and returns null only for unknown IDs.
+/// A handle also belongs to the current management-data epoch: restoring a
+/// backup invalidates it even if the server address and credentials stay equal.
+/// Opening and progress are explicit writes after a real displayed frame;
+/// fetching metadata, pages or queue entries must not mark anything as read.
 abstract class PackReader {
   bool get isCurrent;
   Future<T> submit<T>(ReaderCommand<T> command);

@@ -1,8 +1,8 @@
 # Android 开发与模拟器
 
-Mac 环境已经独立适配，见 [Mac 开发与 VS Code 配置](macos-development.md)。下列本机路径和工具表为原 Windows 环境记录。
+Mac 环境已经独立适配，见 [Mac 开发与 VS Code 配置](macos-development.md)。下列路径和工具表用于 Windows 开发，其他设备按实际安装位置设置。
 
-本项目使用 Flutter，Android 为第一版开发与验收平台。P2 原型和客户端演示已确认，I1–I6 真实服务联调已完成；默认连接 WSL Docker，仍可单独运行演示模式。最终 NAS 与目标手机验证属于 V1，进度见 [联调记录](integration-validation.md)。本机可安装测试包及复现命令见 [部署手册](deployment.md#4-安装与开发调试)。
+本项目使用 Flutter，Android 为开发平台。VS Code 可连接本机服务或运行独立演示模式；部署和安装见 [部署说明](deployment.md#安装与使用)。待办与设备验收在 [GitHub issues](https://github.com/ShiJiJS/shika/issues) 跟踪。
 
 ## 本机配置
 
@@ -67,11 +67,11 @@ flutter run -d emulator-5554
 
 `client_demo_test` 会构建、安装客户端到模拟器，验证真实播放/全屏、标签与目录组合、快速整理删除撤销、备份恢复及失败状态；使用隔离的演示数据目录。它已经替换最初的计数器环境冒烟测试，不能代替真实 NAS 服务验收。
 
-集成测试保留安装的参数取决于命令：`flutter test integration_test/... --no-uninstall`；`flutter drive` 不支持该参数，须使用 `--keep-app-running`，否则 drive 默认清理会停止并卸载应用、清空加密连接存储。后者还会保留运行进程，需由测试结束流程关闭自己拥有的资源。各测试使用独立存储命名空间。真实网络播放及格式测试通过仓库根目录 `python scripts/run-client-connection-test.py --playback` 运行，详细范围及结果见 [联调记录](integration-validation.md)。
+集成测试保留安装的参数取决于命令：`flutter test integration_test/... --no-uninstall`；`flutter drive` 不支持该参数，须使用 `--keep-app-running`，否则 drive 默认清理会停止并卸载应用、清空加密连接存储。后者还会保留运行进程，需由测试结束流程关闭自己拥有的资源。各测试使用独立存储命名空间。真实网络播放及格式测试通过仓库根目录 `python scripts/run-client-connection-test.py --playback` 运行；脚本使用独立可丢弃服务。
 
 `flutter run` 中按 `r` 热重载、按 `R` 热重启，按 `q` 结束调试。也可以在 VS Code 中使用对应调试按钮。
 
-Android 模拟器使用 `10.0.2.2:8760` 访问当前 WSL 开发服务。地址和端口可在 App 中修改并记住，不依赖 `adb reverse`。端到端测试另用 8761 的独立实例，见 [联调复现说明](integration-validation.md)。
+Android 模拟器使用 `10.0.2.2:8760` 访问当前 WSL 开发服务。地址和端口可在 App 中修改并记住，不依赖 `adb reverse`。端到端测试另用 8761 的独立实例，步骤见 [Mac 开发说明](macos-development.md#回归与联调)。
 
 ## 首次构建与边界
 
@@ -82,15 +82,6 @@ Android 模拟器使用 `10.0.2.2:8760` 访问当前 WSL 开发服务。地址�
 客户端插件首次构建按依赖安装了 Android API 35 和 CMake 3.22.1；API 36 模拟器继续沿用，无需重新配置。
 
 本机自动图形模式出现过 `Failed to import external memory object`、OpenGL 纹理错误和快照恢复失败。因此启动脚本固定 `-gpu software -feature -Vulkan -no-snapshot`，并将此 AVD 设为软件图形和冷启动。相较快照恢复，启动需要完整等待 Android 引导；软件渲染也不适合用来评估真实手机图形性能。
-
-## 已完成的验证
-
-- 2026-10-16：Android 36 模拟器中的 `environment_smoke_test` 构建、安装、启动和计数交互全部通过。
-- 静态分析与基础组件测试已通过。
-- 普通 App 已通过 Flutter debug 模式构建、安装和启动；调试服务返回正常视口及页面文字。修改文字后热重载成功，渲染树确认已使用新文字。
-- 这些结果验证开发工具链，不能代替真实视频库业务验收；本次排查未使用 computer-use。
-
-环境验证尚不能证明 NAS 视频的编码兼容性、真实手机解码能力或家中网络性能，后续按规格进行目标环境测试。
 
 ## 参考
 
