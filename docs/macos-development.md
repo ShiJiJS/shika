@@ -14,7 +14,7 @@ Mac 使用 OrbStack Docker 和 ARM64 Android 模拟器；工具链、缓存及�
 | `.dev/flutter` | Flutter stable 3.47.7 / Dart 3.13.5，Apple Silicon |
 | `.dev/jdk` | 复制本机既有 Microsoft JDK 17.0.20.1，供 Android 构建 |
 | `.dev/android-sdk` | API 35/36、Build Tools 36.0.0、NDK 28.2.13676358、CMake 3.22.1、模拟器 |
-| `.dev/avd`、`.dev/android-user` | API 36 / Google APIs / ARM64 Pixel 7 AVD，以及原 Windows 调试签名 |
+| `.dev/avd`、`.dev/android-user` | API 36 / Google APIs / ARM64 Pixel 7 AVD，以及既有 Android 调试签名 |
 | `.dev/pub-cache`、`.dev/gradle`、`.dev/pip-cache` | Dart、Gradle、Python 缓存 |
 | `.dev/venv` | Python 本地编辑环境；正式回归使用 Docker 的 Python 3.13 |
 | `.dev/server`、`.dev/e2e` | 普通开发服务和可复位联调实例的独立数据、测试媒体和口令 |
@@ -65,13 +65,13 @@ bash scripts/test-server.sh
 bash scripts/dev.sh python3 scripts/run-client-connection-test.py
 ```
 
-联调脚本现支持 Mac/Linux 原生 Docker，并保留 Windows WSL 路径。先启动模拟器；VS Code 联调任务已设置该依赖。它只复位 `.dev/e2e` 的可丢弃数据，使用 8761 端口；普通 8760 和 NAS 实例独立。可追加 `--playback`、`--tags`、`--files`、`--external`、`--backups`、`--preparation` 或 `--interactions`，对应原有各阶段流程；LF3 另有 `--preview` 和 `--anchor`，分别验证固定预览与来源位置恢复。
+联调脚本现支持 Mac/Linux 原生 Docker，并保留 Windows WSL 路径。先启动模拟器；VS Code 联调任务已设置该依赖。它只复位 `.dev/e2e` 的可丢弃数据，使用 8761 端口；普通 8760 和 NAS 实例独立。可追加 `--playback`、`--tags`、`--files`、`--external`、`--backups`、`--preparation` 或 `--interactions`，用于对应验证场景。另外，`--preview` 和 `--anchor` 分别验证固定预览与来源位置恢复。
 
 OrbStack 默认共享内存容量较大，因此服务端回归容器显式指定 `--shm-size=64m`，使磁盘满故障测试与 Windows 一致。测试脚本即使格式检查失败也继续执行测试，最终保留失败退出码。
 
 ## NAS 维护和交付
 
-命令行工具`rv`也已迁入当前整合分支。VS Code的`CLI: help`及`CLI: tests`任务使用`.dev/cli`隔离环境和锁定依赖；命令行和凭据重登录边界见[CLI说明](../apps/cli/README.md)。这些任务不重启NAS，不使用真实库做修改试验。
+命令行工具`shika`和兼容入口`rv`位于`apps/cli`。VS Code的`CLI: help`及`CLI: tests`任务使用`.dev/cli`隔离环境和锁定依赖；命令行和凭据重登录边界见[CLI说明](../apps/cli/README.md)。这些任务不重启NAS，不使用真实库做修改试验。
 
 ```bash
 python3 scripts/nas-status.py

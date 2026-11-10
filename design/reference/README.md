@@ -6,4 +6,4 @@
 
 本地运行 `python3 design/reference/serve.py`，打开 http://127.0.0.1:8767/library-first/ 。只在本机监听。
 
-早期 `prototypes/p1`、`prototypes/p2` 是历史探索，不能覆盖本轮验收基线；本机尚保留的其他探索目录不作为实现依赖或发布产物。
+此目录是保留的媒体库验收参考；其他本机探索目录不作为实现依赖或发布产物。公开演示素材的来源和许可独立保存在 [App 素材说明](../../apps/mobile/assets/SOURCES.md)。
