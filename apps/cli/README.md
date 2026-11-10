@@ -1,10 +1,8 @@
 # 拾刻 · shika 命令行客户端
 
-`rv`（resource viewer）是 shika NAS 媒体库服务端的命令行客户端：登录换
-token、触发扫描并等待完成、按路径定位视频、查/建标签、批量打标、创建和下载
-管理备份。
+`shika` 与兼容命令 `rv` 使用同一入口，版本和 Python 要求见 [pyproject.toml](pyproject.toml)。CLI 支持登录、扫描、视频查询、视频标签及旧视频管理备份；图包阅读和完整管理备份使用 App。
 
-当前0.1.1修复凭据过期时自动重新登录并继续旧修改命令的问题（[#169](https://github.com/ShiJiJS/shika/issues/169)）。写命令（包括标签名称查询等前置读取）遇401即停止，先显式`rv login`，重新核对当前数据后再执行。不会自动把原修改命令带入恢复后的管理数据。手机App和NAS服务不受本次CLI更新影响。
+修改命令（包括标签名称查询等前置读取）遇401即停止；先显式 `rv login`，核对当前数据后再执行。只读命令可自动重登录一次，不会把旧修改命令自动带入恢复后的管理数据。
 
 与主程序代码**分目录维护**（`apps/cli`，与 `apps/mobile`、`services/server`
 并列）：这里只有 HTTP API 的消费代码，不 import 服务端代码、不读写其数据库，
@@ -15,7 +13,7 @@ token、触发扫描并等待完成、按路径定位视频、查/建标签、�
 
 ## 安装
 
-需要 Python 3.10+。
+Python 版本要求以 `pyproject.toml` 为准。
 
 ```bash
 uv tool install "git+ssh://git@github.com/ShiJiJS/shika.git#subdirectory=apps/cli"
@@ -33,7 +31,7 @@ rv scan                                           # 触发扫描并等待完成
 rv find /media/shorts/真人/abc.mp4                # 服务端路径 → 视频 ID
 rv tag add <VIDEO_ID> 真人 黑发                    # 标签名不存在会自动创建
 rv show <VIDEO_ID>                                # 读回核对标签
-rv backup --download backup.json                  # 打标前先做管理备份
+rv backup --download backup.json                  # 视频管理备份，不包含图包
 ```
 
 注意 `find` / `resolve` 用的是**服务端容器内路径**（mounts.json 声明的范围，
@@ -54,7 +52,7 @@ rv backup --download backup.json                  # 打标前先做管理备份
 | `rv tags [--search]` | 标签列表 |
 | `rv tag add/remove/replace <VIDEO_ID> <TAG>...` | 打标；标签写名称（自动 ensure）或 `@id`；`--video` 可重复追加批量视频 |
 | `rv tag-rename <TAG_ID> --name` / `rv tag-delete <TAG_ID>` | 标签维护 |
-| `rv backup [--download FILE]` | 创建管理备份任务并等待，可选下载（文件写 0600） |
+| `rv backup [--download FILE]` | 创建旧 v1 视频管理备份并等待，可选下载（文件写 0600）；完整视频/图包备份请使用 App |
 
 全局选项（子命令前后都可以）：`--base-url`、`--config-dir`、`--timeout`、
 `--token`、`--passphrase`、`--json`、`--quiet`。
@@ -79,9 +77,7 @@ token 缓存在 `~/.config/rv/token.json`，权限 0600，并绑定 base_url：�
 
 自动重登录仅适用于`info/tasks/task/dirs/resolve/videos/find/show/tags`等只读命令。扫描、备份、标签修改和退出登录不会自动重新登录；修改流程中的前置GET也遵守同一限制。底层HTTP客户端不自动重放POST/PATCH/DELETE。
 
-服务端写操作要求 `request_id`。`rv` 每次默认生成新的随机 ID；打标类命令的
-`add`/`remove` 语义本身幂等，网络失败后直接重跑即可。想要精确重放同一响应时，
-用 `--request-id` 复用上次的 ID（命令的人类输出和 `--json` 里都会带上）。
+服务端写操作使用 `request_id`。`rv` 未指定时会生成新 ID；需要可核对的重试时，事先通过 `--request-id` 指定并保留该值，在同一服务和相同内容下复用。响应不确定时先读回标签或任务结果，不把重新执行命令当作查询；401后仍须先显式登录并核对数据。
 
 ## 退出码
 
@@ -98,14 +94,14 @@ token 缓存在 `~/.config/rv/token.json`，权限 0600，并绑定 base_url：�
 
 ## 开发
 
-本机VS Code任务新增`CLI: help`和`CLI: tests`，使用项目的`.dev/cli`隔离环境及`uv.lock`，不改变服务端Python环境。终端对应命令：
+VS Code任务`CLI: help`和`CLI: tests`，使用项目的`.dev/cli`隔离环境及`uv.lock`，不改变服务端Python环境。终端对应命令：
 
 ```bash
 UV_PROJECT_ENVIRONMENT="$PWD/.dev/cli" uv --directory apps/cli run --locked --extra dev rv --help
 UV_PROJECT_ENVIRONMENT="$PWD/.dev/cli" uv --directory apps/cli run --locked --extra dev pytest -q
 ```
 
-测试只连接本机临时HTTP样本服务，并使用临时凭据目录，不连接NAS。原pip开发方式仍可使用：
+测试只连接本机临时HTTP样本服务，并使用临时凭据目录，不连接NAS。也可在 `apps/cli` 目录使用 pip 开发环境：
 
 ```bash
 pip install -e '.[dev]'
