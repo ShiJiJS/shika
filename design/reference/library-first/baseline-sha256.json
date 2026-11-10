@@ -4,7 +4,7 @@
   "reference_only": true,
   "production_dependency": false,
   "private_media": false,
-  "original_baseline": "docs/plans/library-first/baseline.json",
+  "original_baseline": "https://github.com/ShiJiJS/shika/blob/8486f597/docs/plans/library-first/baseline.json",
   "notes": [
     "Private photos replaced by generated SVGs and example authors; visual layout and behavior preserved.",
     "All own runtime source is in this directory; /_shared/ maps only to existing app assets without symlinks.",
@@ -13,8 +13,8 @@
   "files": [
     {
       "path": "design/reference/README.md",
-      "bytes": 747,
-      "sha256": "000a88b398de2320622c040fed32eeef981ae3a8944003744d6d87862bddf3e4"
+      "bytes": 735,
+      "sha256": "271e2bdb0e91c5b8fe44f8765a980f542dbc8fc72e2ca0ebc3d48713d60cda35"
     },
     {
       "path": "design/reference/REFERENCE_ONLY.json",
@@ -28,13 +28,13 @@
     },
     {
       "path": "design/reference/library-first/README.md",
-      "bytes": 2149,
-      "sha256": "1200adbca193a7c25a0cac146969d9d8f8df451efd070dd1c93e2b9f19fb80b8"
+      "bytes": 2204,
+      "sha256": "444e047010c9d997fe636b088c37617fedff85c4f7c2953e32d0cb8a8047e9f4"
     },
     {
       "path": "design/reference/library-first/SETTINGS-AUDIT.md",
-      "bytes": 4688,
-      "sha256": "5764bdfdddb3ba7e2ed842f84a4f42b859dbdd63f2c0a4b6f9802105d86ccfc5"
+      "bytes": 4758,
+      "sha256": "a1e05b90b5f9694a6d2461414034fe71167cc7e44945e30e20f0ce3ca4dfe223"
     },
     {
       "path": "design/reference/library-first/app.html",

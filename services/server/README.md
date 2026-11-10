@@ -1,6 +1,6 @@
 # 拾刻 · shika 服务端
 
-当前完成 S1–S6：口令认证、多媒体目录扫描、目录层级、媒体信息、缩略图、分页查询、持久化任务、授权原文件流、随机/顺序轮次、标签管理、真实回收站、外部文件变化识别及完整管理备份恢复。Flutter I1–I6 真实联调已完成。NAS 配置、Android 安装与日常使用见 [部署手册](../../docs/deployment.md)；已完成能力与证据见 [服务端验证记录](../../docs/server-validation.md) 和 [V1 待验项](../../docs/v1-validation.md)。
+服务为视频和图包提供口令认证、目录扫描、分页查询、授权媒体读取、固定浏览范围、独立标签、回收站及管理数据备份恢复。NAS 配置与日常操作见 [部署手册](../../docs/deployment.md)，Mac 开发见 [开发说明](../../docs/macos-development.md)。接口以运行服务的 `/openapi.json` 和 `/api/v1/info` 能力为准；待办与剩余验收在 [GitHub issues](https://github.com/ShiJiJS/shika/issues) 跟踪。
 
 ## 完整备份与兼容
 

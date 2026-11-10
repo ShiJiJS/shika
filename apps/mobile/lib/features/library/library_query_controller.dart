@@ -32,6 +32,9 @@ class VideoLibraryState {
 
 /// Owns pagination, cancellation and stale responses behind one read interface.
 /// Loading a page never changes the repository's active playback round.
+/// This generation protects page intent independently of HTTP cancellation:
+/// an already completed response can still arrive after the user leaves.
+/// The controller owns neither the repository nor its connection lifetime.
 class LibraryQueryController extends ChangeNotifier {
   LibraryQueryController(this.repository)
     : _state = VideoLibraryState(context: VideoBrowseContext());

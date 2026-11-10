@@ -182,6 +182,9 @@ class PackScanner:
                     )
                 )
             )
+        # With no historical identities, completed packs can be published while
+        # other roots keep scanning. Existing identities require reconciliation
+        # first; partial/failed traversal must not turn unseen packs into missing.
         initial_catalog = not old
         initial_generations = {pack.id: pack.generation for pack in old}
         by_inode = defaultdict(list)

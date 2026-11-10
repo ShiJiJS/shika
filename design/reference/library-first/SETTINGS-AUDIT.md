@@ -1,6 +1,6 @@
 # 与当前客户端的功能对照
 
-依据：当前工作区 `apps/mobile/pubspec.yaml` 为 0.1.4+5，Mac 迁移记录说明它与 Windows 原 0.1.4 同源。逐项读取 `apps/mobile/lib/ui/home.dart` 的 settings/connection/roots/trash/backup，`preferences.dart`、`paper.dart`，并交叉核对 `docs/v1-spec.md`。这是源码功能对照，未声称本轮操作了用户手机上的安装包。
+历史对照依据：当时工作区 `apps/mobile/pubspec.yaml` 为 0.1.4+5，与 Windows 原 0.1.4 同源。逐项读取当时 `apps/mobile/lib/ui/home.dart` 的 settings/connection/roots/trash/backup，`preferences.dart`、`paper.dart`，并交叉核对[旧版规格](https://github.com/ShiJiJS/shika/blob/8486f597/docs/v1-spec.md)。此表是原型形成时的源码功能对照，不表示当前 App 版本或手机验收状态。
 
 | 当前客户端能力 | 上轮原型 | 判断与本轮处理 |
 | --- | --- | --- |

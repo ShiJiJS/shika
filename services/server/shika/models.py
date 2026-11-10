@@ -222,6 +222,9 @@ class ImagePack(Base):
     __tablename__ = "packs"
     id: Mapped[str] = mapped_column(String, primary_key=True, default=uid)
     root_id: Mapped[str] = mapped_column(ForeignKey("roots.id"), index=True)
+    # Paths may be reused by a replacement while the old missing ID keeps its
+    # tags/progress. Only location_key reserves the current physical location;
+    # a matching path alone must never transfer the old pack's identity.
     path: Mapped[str] = mapped_column(Text, index=True)
     location_key: Mapped[str | None] = mapped_column(Text, unique=True, nullable=True)
     name: Mapped[str] = mapped_column(String)
