@@ -15,6 +15,7 @@ Start with [what Shika does](../README.en.md#features), then choose a guide belo
 | Back up, update, move to another NAS, or roll back | [Backups, updates, and migration](deployment.en.md#backups-updates-and-migration) |
 | Troubleshoot connection, scanning, playback, or deletion | [Troubleshooting](deployment.en.md#troubleshooting) |
 | Report a problem or check remaining work | [GitHub Issues](https://github.com/ShiJiJS/shika/issues) |
+| Generate video tags in batches or import existing tags | [Video tagging Skill and CLI (optional)](video-tagging.en.md) |
 
 ## Development and APIs
 

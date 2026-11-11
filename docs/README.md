@@ -15,6 +15,7 @@
 | 备份、升级、换 NAS 或回退 | [备份、升级与迁移](deployment.md#备份升级与迁移) |
 | 排查连接、扫描、播放或删除问题 | [常见问题](deployment.md#常见问题) |
 | 反馈问题或查看待办 | [GitHub Issues](https://github.com/ShiJiJS/shika/issues) |
+| 批量生成视频标签或导入已有标签 | [视频打标 Skill 与 CLI（选装）](video-tagging.md) |
 
 ## 开发与接口
 

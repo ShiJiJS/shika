@@ -56,6 +56,18 @@ The [deployment guide](docs/deployment.en.md) covers initial setup, image builds
 - Storage: persistent `data/` holds the database and management records, `config/` holds configuration, and `secrets/` holds the personal passphrase.
 - Existing libraries: preserve the full management data, root IDs, and container-side mount paths during updates or migration to keep tags and reading records.
 
+## Optional: video tagging Skill and CLI
+
+The [video-tagging Skill](skills/video-tagging/SKILL.md) extracts frames, generates Chinese tag files, and synchronizes them to Shika when requested. The [shika CLI](apps/cli/README.md) supports video queries and batch tag operations. Both are optional; the app and NAS service work independently.
+
+From a source checkout, install the Skill and its isolated CLI together (Python 3.10+ and configured Skillshare):
+
+```bash
+python3 skills/video-tagging/scripts/install.py --skillshare
+```
+
+See the [video tagging guide](docs/video-tagging.en.md) for other assistants, model dependencies, and the workflow.
+
 ## Documentation and development
 
 | Document | Contents |
@@ -65,6 +77,7 @@ The [deployment guide](docs/deployment.en.md) covers initial setup, image builds
 | [Development guide](docs/development.md) (Chinese) | Flutter, VS Code, local service, APK builds, and tests |
 | [Server guide](services/server/README.md) (Chinese) | Configuration, APIs, scanning, file operations, and backup behavior |
 | [Command-line client](apps/cli/README.md) (Chinese) | Login, scanning, video queries, and video tag automation |
+| [Video tagging Skill (optional)](docs/video-tagging.en.md) | Install the Skill and CLI, generate tag files, and synchronize |
 
 The client lives in `apps/mobile`, the server in `services/server`, and the CLI in `apps/cli`. The app version is defined in [pubspec.yaml](apps/mobile/pubspec.yaml). Remaining work and device validation are tracked in [GitHub Issues](https://github.com/ShiJiJS/shika/issues).
 
