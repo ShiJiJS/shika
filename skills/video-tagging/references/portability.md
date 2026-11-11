@@ -44,6 +44,8 @@ python skills/video-tagging/scripts/install.py --skills-dir /path/to/agent/skill
 ```
 已经由其他管理器维护的目录使用其管理器；直接安装器遇同名内容会停止，明确更新时加 `--update`，旧手动副本会备份到私人运行目录。
 
+Skillshare 更新沿用已登记的来源。同名旧技能登记在其他仓库时，先备份并通过管理器卸载旧登记，再安装本仓库版本；不通过覆盖审计的选项改来源。
+
 通过 Agent 自带安装器或 Skillshare 单独取得技能文件后，执行包内安装器补齐 CLI：
 ```
 python "$skill_dir/scripts/install.py" --cli-only
