@@ -1,40 +1,38 @@
+[项目首页](../README.md) · [文档导航](README.md) · **简体中文** · [English](deployment.en.md)
+
 # 部署与日常使用
 
-拾刻使用一个 Docker 服务和一个 Android App。部署使用 [飞牛 Compose 模板](../deploy/fnos/compose.yaml)及[环境变量示例](../deploy/fnos/.env.example)；镜像版本以模板为准，App 版本以 [pubspec.yaml](../apps/mobile/pubspec.yaml) 为准。真实地址、口令和路径保存在私有 infos 的 `shika.connection`，不提交到仓库。
+拾刻由 Android App 和一个 Docker 服务组成。服务运行在自己的 NAS 上，App 使用 NAS 局域网地址、端口和个人口令连接。下面以[现有 Compose 模板](../deploy/fnos/compose.yaml)为基础，从首次安装讲到备份和迁移；开发调试另见 [Mac / VS Code](macos-development.md) 与 [Windows / Android](android-development.md)。
 
-## 配置目录与权限
+## 部署前准备
 
-将模板和环境文件放到 NAS 的应用目录（例如 `/vol1/1000/docker/shika`），根据实际存储位置修改环境变量：
+- **NAS**：支持 Docker Engine 与 Compose v2，具有可持久化的本地存储。镜像架构必须匹配 `linux/amd64` 或 `linux/arm64`。
+- **媒体**：准备实际的视频和图包目录。图包以文件夹为单位组织；视频播放依赖 Android 设备支持的编码，服务不实时转码。
+- **网络**：手机能访问 NAS 的局域网地址。默认服务端口为 `8760`，模板绑定指定的 NAS 地址。
+- **权限**：选定容器 UID/GID，默认 `1000:1000`；它需要读写管理数据、读取配置和口令，并按需要获得媒体写权限。
 
-| 配置 | 用途 |
-| --- | --- |
-| `SHIKA_DEPLOY_DIR` | 应用目录，包含 `data/`、`config/`、`secrets/` |
-| `SHIKA_VIDEO_DIR` | 视频目录，挂载到容器 `/media` |
-| `SHIKA_PACK_DIR` | 图包目录，挂载到容器 `/packs-cos` |
-| `SHIKA_BIND_ADDRESS`、`SHIKA_PORT` | NAS 局域网地址与服务端口，默认端口8760 |
-| `SHIKA_UID`、`SHIKA_GID` | 服务运行身份，须能读写管理数据和获授权的媒体目录 |
-| `SHIKA_IMAGE` | 已导入且架构匹配的服务镜像 |
+本文的 `/srv/shika`、`/srv/media/videos`、`/srv/media/packs` 和 `192.168.1.100` 都是示例。飞牛通常使用 `/vol1/1000/...` 形式的实际路径；其他 NAS 使用其真实卷路径。个人口令及私人路径只放在本机配置中。
 
-`data/` 必须完整持久化，保存 SQLite、缓存、任务、导出及恢复前快照。使用支持 SQLite WAL 的 NAS 本地文件系统。容器保留只读根文件系统、丢弃 capabilities 和 `no-new-privileges`；不要挂载 Docker socket。
+## 首次部署
 
-在 `secrets/passphrase` 安全保存至少8字符的个人口令；已有文件沿用原值。限制文件读取权限，并确保容器 UID 能读取。修改口令后重建容器，旧登录凭据失效，App 需要重新登录。
+已有实例升级或换 NAS 时，先看[备份、升级与迁移](#备份升级与迁移)，不要用示例覆盖已有口令或目录 ID。
 
-`config/mounts.json` 声明容器内允许接入的目录，例如：
+### 1. 构建与 CPU 匹配的镜像
 
-```json
-[
-  {"id": "videos", "name": "视频", "path": "/media"},
-  {"id": "packs", "name": "图包", "path": "/packs-cos"}
-]
+在有 Git 和 Docker 的主机上取得源码：
+
+```bash
+git clone https://github.com/ShiJiJS/shika.git
+cd shika
 ```
 
-已有实例沿用原配置及稳定目录 ID，不重新生成。允许范围不是完整媒体目录清单；App 在其中接入目录并选择视频或图包类型。服务不访问未挂载路径，也不跟随符号链接。存储位置改变时修改对应 bind mount，保留原容器内路径和完整管理数据。
+如果直接在目标 NAS 上构建，镜像默认使用该主机架构：
 
-移入回收站只记录标记，不修改媒体文件；永久删除及旧版物理回收记录的恢复需要相应目录写权限。旧 `.video-viewer-trash`、`.video-viewer-tmp` 或独立回收卷仍可能包含待恢复文件，不手动清除或重命名。
+```bash
+docker build --target runtime -t shika-server:local services/server
+```
 
-## 构建与启动
-
-先确认 NAS 的 CPU 架构。以下在仓库根目录导出 x86 NAS 镜像；ARM NAS 将平台改为 `linux/arm64`，并使用独立镜像标签：
+如果在另一台电脑构建并传到 NAS，显式指定架构。例如为 x86 NAS 导出：
 
 ```bash
 mkdir -p tmp/releases
@@ -43,9 +41,106 @@ docker buildx build --platform linux/amd64 --target runtime \
   --output type=docker,dest=tmp/releases/server-amd64.tar services/server
 ```
 
-飞牛通过已授权的 `fnos-cli` 上传归档和配置。以下为命令格式示例，路径和 profile 必须对应实际设备；先导入并查询镜像，再创建尚不存在的 Compose 项目：
+ARM NAS 将平台改为 `linux/arm64`，并对应修改标签和归档文件名。在 NAS 导入归档后，查询镜像确认架构；有 Docker CLI 时可使用：
 
 ```bash
+docker load -i /path/to/server-amd64.tar
+docker image inspect shika-server:local-amd64 --format '{{.Os}}/{{.Architecture}}'
+```
+
+随后将环境文件的 `SHIKA_IMAGE` 设置成**实际构建或导入的标签**。模板中的默认标签不代表镜像已经发布到公共镜像仓库。飞牛也可通过 Docker 界面或已授权的 CLI 导入，见下文。
+
+### 2. 准备持久化目录
+
+在 NAS 上创建下面的结构，可使用文件管理器；下面的 Bash 示例仅用于首次部署，路径需要替换为自己的位置：
+
+```text
+shika/
+├── compose.yaml
+├── .env
+├── data/                 # SQLite、任务、缓存、导出与恢复前快照
+├── config/
+│   └── mounts.json       # 允许访问的容器内媒体范围
+└── secrets/
+    └── passphrase        # 个人口令
+```
+
+模板从源码目录复制，已有文件不覆盖：
+
+```bash
+mkdir -p /srv/shika/data /srv/shika/config /srv/shika/secrets
+cp -n deploy/fnos/compose.yaml /srv/shika/compose.yaml
+cp -n deploy/fnos/.env.example /srv/shika/.env
+cp -n deploy/fnos/mounts.json.example /srv/shika/config/mounts.json
+```
+
+`data/` 使用支持 SQLite WAL 的 NAS 本地文件系统，不放在电脑挂载的 SMB/NFS 客户端目录中。不要递归修改整个媒体收藏的所有者；只给服务所需的目录授权。
+
+### 3. 设置路径与个人口令
+
+编辑 NAS 应用目录中的 `.env`。在 NAS 原生构建镜像时，例如：
+
+```dotenv
+SHIKA_IMAGE=shika-server:local
+SHIKA_BIND_ADDRESS=192.168.1.100
+SHIKA_PORT=8760
+SHIKA_UID=1000
+SHIKA_GID=1000
+SHIKA_DEPLOY_DIR=/srv/shika
+SHIKA_VIDEO_DIR=/srv/media/videos
+SHIKA_PACK_DIR=/srv/media/packs
+```
+
+跨架构导入示例则使用 `SHIKA_IMAGE=shika-server:local-amd64`。两个媒体源目录必须已经存在。配置与容器实际挂载的对应关系是：
+
+| NAS 路径或设置 | 容器内位置 / 用途 |
+| --- | --- |
+| `SHIKA_DEPLOY_DIR/data` | `/data`，完整持久化的管理数据 |
+| `SHIKA_DEPLOY_DIR/config` | `/config`，只读配置 |
+| `SHIKA_DEPLOY_DIR/secrets/passphrase` | `/run/secrets/passphrase`，只读口令文件 |
+| `SHIKA_VIDEO_DIR` | `/media`，允许接入的视频范围 |
+| `SHIKA_PACK_DIR` | `/packs-cos`，允许接入的图包范围 |
+| `SHIKA_BIND_ADDRESS`、`SHIKA_PORT` | 手机访问的 NAS 局域网地址与端口 |
+| `SHIKA_UID`、`SHIKA_GID` | 服务读取文件和写入管理数据的身份 |
+
+新建 `secrets/passphrase` 纯文本文件，写入一行至少 **8 个字符**的个人口令。不要把口令写入 `.env` 或提交到仓库。限制其读取权限，并确保上述容器 UID 能读取；有终端时可将该文件权限设为 `600`。
+
+`config/mounts.json` 可以使用复制的示例：
+
+```json
+[
+  {"id": "main", "name": "视频", "path": "/media"},
+  {"id": "cos-packs", "name": "图包", "path": "/packs-cos"}
+]
+```
+
+这是**允许访问的范围**，不是所有媒体目录的清单。App 可以在范围内接入多个目录，选择视频或图包类型。新增其他媒体范围时，同时增加 Compose 的 bind mount 和这里的配置。服务不访问未挂载路径，也不跟随符号链接。
+
+模板中的媒体挂载可写，以支持永久删除；移入回收站和普通恢复只改变管理记录。只读媒体挂载也能浏览和标记，但无法执行需要写文件的操作。保留模板的只读根文件系统、capabilities 移除和 `no-new-privileges`，不挂载 Docker socket。
+
+### 4. 启动与检查
+
+在 NAS 应用目录运行；示例健康检查地址需要与 `.env` 的地址、端口一致：
+
+```bash
+cd /srv/shika
+docker compose --env-file .env -f compose.yaml config --quiet
+docker compose --env-file .env -f compose.yaml up -d --no-build --wait --wait-timeout 120
+docker compose ps
+curl --fail http://192.168.1.100:8760/health
+```
+
+健康检查返回 `{"status":"ok","api_version":1}` 后，继续在 App 中登录并检查媒体目录。健康状态表示进程可响应，不等于所有媒体已扫描完成。保持一个服务进程，不增加 Uvicorn worker。
+
+## 飞牛 fnOS 部署
+
+应用目录可以放在 `/vol1/1000/docker/shika`；媒体必须使用当前实际位置。把准备好的 `compose.yaml`、`.env`、配置和口令放在该目录，**先导入架构匹配的镜像**，再通过 Docker 管理界面选择已有 Compose 文件创建项目并启动。已有项目更新时重建原项目，不重复创建。
+
+也可使用已授权的 `fnos-cli`。下面的 profile、路径和标签是命令格式示例；使用前确认对应设备和授权，上传镜像与配置后执行：
+
+```bash
+fnos-cli --profile home-fnos --allow-insecure-http docker image ls
+fnos-cli --profile home-fnos --allow-insecure-http docker container ls --all
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.imageLoad --json '{"filePath":"/vol1/1000/docker/shika/image-archives/server-amd64.tar"}' --yes
 fnos-cli --profile home-fnos --allow-insecure-http docker image inspect shika-server:local-amd64
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeCreate --json '{"auto_build":false,"file":"compose.yaml","folder":"/vol1/1000/docker/shika","project_name":"shika"}' --yes
@@ -53,37 +148,79 @@ fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockerm
 fnos-cli --profile home-fnos --allow-insecure-http docker container inspect shika-server
 ```
 
-使用示例镜像时将环境文件的 `SHIKA_IMAGE` 设为 `shika-server:local-amd64`。命令超时后先查询实际镜像或容器状态，不重复创建或导入。已有项目直接更新其配置并重建，不再调用创建。具有 Docker CLI 的主机可在部署目录运行 `docker compose up -d --wait`；只运行一个服务进程。
+`--allow-insecure-http` 仅在已保存的连接采用局域网 HTTP 时需要；HTTPS 配置使用对应连接选项。命令超时后先查询实际镜像、项目或容器状态，再决定下一步，不重复导入或创建。部署不要求额外开启 SSH。
 
-只读检查可在本机运行 `python3 scripts/nas-status.py`，通过 infos 选择飞牛连接；旧 SSH 配置仍兼容。不要把凭据写入 Compose、日志或仓库。
+本仓库维护者也可运行 `python3 scripts/nas-status.py`：它依赖本机私有 infos 的连接登记，不属于通用部署的前置条件。
 
-## 安装与使用
+## 安装与连接 App
 
-手机安装使用原签名构建的 APK，填写 NAS 局域网 IP、端口和个人口令。`10.0.2.2:8760` 仅供 Android 模拟器连接本机开发服务。覆盖安装保留 App 数据；不要卸载来代替升级。构建与 VS Code 调试见 [Mac 开发](macos-development.md) 和 [Android 开发](android-development.md)。
+使用维护者提供的 APK，或按[客户端开发说明](../apps/mobile/README.md)配置 Flutter / Android 后自行构建。以下在 `apps/mobile` 中执行：
 
-- 在媒体库选择视频或图包，按目录、独立标签和搜索条件查找，再进入播放或阅读。返回保留原来源；空结果不扩大到全库。
-- 图包默认纵向拼接，支持横向翻页、缩放、总览和续读；已保存偏好继续生效。快速整理及媒体库多选可移入回收站，短提示提供撤销。
-- 设置中管理媒体目录、各目录扫描进度、默认值、外观、操作任务、回收站和备份。把媒体复制完成后可手动扫描，也可等待定时扫描；关闭 App 不会中断后台任务。
-- 回收站支持多选恢复和永久删除。图包永久删除以所选图包目录为单位在服务端后台处理；查看任务结果了解失败项。管理备份不能找回已永久删除的媒体。
+```bash
+bash ../../scripts/dev.sh flutter build apk --release \
+  --target-platform android-arm64 --dart-define=LIBRARY_MODE=server
+```
 
-## 备份、升级与回退
+产物位于 `apps/mobile/build/app/outputs/flutter-apk/app-release.apk`。首次安装使用自己的构建签名或提供安装包的签名；以后覆盖升级必须沿用同一签名。版本以 [pubspec.yaml](../apps/mobile/pubspec.yaml) 为准。
 
-设置 → 备份与恢复，创建管理备份后通过手机系统文件选择器保存到 App 外。完整备份包含视频与图包的管理数据、标签、阅读位置、偏好和历史，不包含原媒体、缓存、口令或 App 外观设置。新服务使用 v2 NDJSON，旧 v1 文件仍可校验转换；演示/HTML 原型格式不能混用。文件上限由服务能力公布，配置见 [服务端说明](../services/server/README.md#完整备份与兼容)。
+打开 App，填写：
 
-恢复先选择文件、校验并核对目录映射，再明确确认替换；服务自动建立恢复前快照。断线后查询原任务，不重复提交恢复。恢复不会重放历史删除，也不能还原真实媒体文件，媒体及旧物理回收文件须另做 NAS 备份。
+| 项目 | 示例 |
+| --- | --- |
+| 服务器地址 | `192.168.1.100` |
+| 端口 | `8760` |
+| 个人口令 | `secrets/passphrase` 中自己设置的内容 |
 
-更新前保存管理备份。需要完整实例回退时，停止服务后备份整个 `data/`、`config/` 并安全保留口令和原镜像；不能在运行中只复制 SQLite 主文件而漏掉 WAL。重建容器保留 bind mount。旧镜像不保证能打开新数据库，回退须配对还原原镜像与停机快照。
+手机需能访问这个 NAS 地址。`10.0.2.2:8760` 仅供 Android 模拟器访问本机开发服务，不能用于真机连接 NAS。App 登录后保存访问凭据，不保存个人口令。
 
-## 排查
+在设置中接入媒体目录，选择视频或图包类型，检查启用状态和扫描进度。允许范围、实际接入目录和 Docker 挂载需要对应。
+
+## 日常使用
+
+- **媒体库与标签**：视频和图包分别查询、筛选和管理标签，选择内容后进入播放或阅读；返回保留原来源，空结果不会自动扩大到全库。
+- **图包阅读**：默认纵向拼接，支持横向翻页、缩放、总览和续读；已保存偏好继续生效。
+- **快速整理**：在选定范围连续查看，快捷移入回收站并撤销；媒体库支持多选整理。
+- **扫描**：复制完成后可手动扫描，也可等待定时扫描。各目录进度由服务端同步，关闭 App 不会中断后台任务。模板默认扫描间隔为900秒。
+- **回收站**：移入回收站保留源文件。永久删除才会移除对应媒体；图包按所选文件夹及其中内容在服务端后台删除。查看任务结果了解失败项。
+
+## 备份、升级与迁移
+
+### 管理备份与媒体备份
+
+在 App 设置 → 备份与恢复创建管理备份，并通过手机系统文件选择器保存到 App 外。完整备份包含视频与图包身份、标签、目录、阅读位置、偏好和历史；**不包含源视频、图片、缓存、个人口令或 App 外观设置**。源媒体及旧物理回收文件需要独立的 NAS 备份。
+
+完整备份使用 v2 NDJSON，旧 v1 文件仍可校验转换。CLI 的旧视频备份不能当作包含图包的完整备份。文件上限由服务能力公布，具体规则见[服务端说明](../services/server/README.md#完整备份与兼容)。
+
+恢复时选择备份文件，校验并核对目录映射，再确认替换。服务会保存恢复前快照。恢复不会重放历史删除，也不能找回已永久删除的媒体。断线后查询原任务，避免重复提交。
+
+### 升级与回退
+
+1. 先导出管理备份，保存当前 Compose、环境配置和镜像信息。
+2. 需要完整实例回退时，停止服务后备份完整 `data/`、`config/`，安全保留口令和原镜像；不要在运行中只复制 SQLite 主文件而漏掉 WAL。
+3. 构建或导入新镜像，修改 `SHIKA_IMAGE`，重建**原** Compose 项目，保留 bind mount。
+4. 检查容器健康、App 登录、目录状态与任务结果。App 更新保持签名一致并覆盖安装。
+
+回退旧服务须配对恢复兼容的原镜像与停机快照，旧镜像不保证能读取新数据库。修改个人口令后也需重建容器，App 使用新口令重新登录。
+
+### 换 NAS 或移动存储
+
+- 保留完整管理数据、口令、稳定目录 ID，以及容器内的 `/media`、`/packs-cos` 等路径；只调整外部 bind mount 的源路径。
+- 为新 NAS 重新构建或导入匹配 CPU 的镜像，不把 ARM 镜像改标签当作 x86 镜像。
+- 同一份管理数据只由一个服务实例访问。确认新服务可用后再处理原部署；不要同时启动两份服务写同一数据库。
+- 迁移改变文件身份信息后，服务会重新核对媒体；尚未核对的内容需等待对应目录扫描。
+- 旧 `.video-viewer-trash`、`.video-viewer-tmp` 或自定义回收卷可能承载旧物理回收记录，不随产品改名清除或重命名。
+
+## 常见问题
 
 | 现象 | 检查 |
 | --- | --- |
-| 手机连接失败 | NAS IP、端口、防火墙、容器健康状态；手机不能使用模拟器地址 |
-| 401 / 需要重连 | 重新输入口令，检查口令是否变更或凭据已过期 |
-| 看不到新增内容 | bind mount、允许范围、接入目录类型/启用状态、复制完成情况、扫描任务 |
-| 删除失败 | 目录写权限、剩余空间、外部替换或路径变化、原任务的失败结果 |
-| 视频无法播放 | 手机实际支持的编码、音频和分辨率；服务不实时转码 |
-| 扫描或切换慢 | 网络及 NAS 负载，尝试关闭相邻视频准备；按实际测量调整资源 |
-| 备份不能导入 | 格式、版本、完整性与服务公布的大小限制；检查原任务结果 |
+| 手机连接失败 | NAS IP、端口、防火墙、手机网络和容器健康状态 |
+| 401 / 需要重新连接 | 口令是否变更、凭据是否过期；重新输入口令 |
+| 看不到新增内容 | bind mount、允许范围、接入目录类型/启用状态、复制完成情况与扫描任务 |
+| 迁移后图片暂时不能打开 | 对应图包目录的重新核对进度；保留原目录 ID 和容器内路径 |
+| 删除失败 | 目录写权限、剩余空间、路径变化或外部替换、原任务失败结果 |
+| 视频不能播放 | 手机支持的编码、音频与分辨率；服务不实时转码 |
+| 扫描或切换慢 | 网络、NAS 负载及相邻视频准备设置；按测量调整资源 |
+| 备份无法导入 | 格式、版本、完整性、服务公布的大小限制与原任务结果 |
 
-未解决问题和目标设备验收在 [GitHub issues](https://github.com/ShiJiJS/shika/issues) 更新；完整原型验收见 [#133](https://github.com/ShiJiJS/shika/issues/133)。
+仍未解决时，在 [GitHub Issues](https://github.com/ShiJiJS/shika/issues) 附上复现步骤、App 版本、手机型号及部署方式。更多开发与接口说明从[文档导航](README.md)进入。

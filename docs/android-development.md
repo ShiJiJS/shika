@@ -1,6 +1,8 @@
+[项目首页](../README.md) · [文档导航](README.md) · [部署手册](deployment.md)
+
 # Android 开发与模拟器
 
-Mac 按 [Mac 与 VS Code 配置](macos-development.md) 设置工具链；下面说明 Windows 开发入口。App 版本由 [pubspec.yaml](../apps/mobile/pubspec.yaml) 管理，部署与安装见 [部署说明](deployment.md#安装与使用)。
+Mac 按 [Mac 与 VS Code 配置](macos-development.md) 设置工具链；下面说明 Windows 开发入口。App 版本由 [pubspec.yaml](../apps/mobile/pubspec.yaml) 管理，部署与安装见 [部署说明](deployment.md#安装与连接-app)。
 
 ## Windows 环境
 

@@ -1,3 +1,5 @@
+[项目首页](../README.md) · [文档导航](README.md) · [部署手册](deployment.md)
+
 # Mac 开发环境与操作
 
 Mac 使用 OrbStack Docker 和 ARM64 Android 模拟器；工具链、缓存及开发数据放在本仓库的 `.dev/`，不加入 Git。未解决问题与验证进度在 [GitHub issues](https://github.com/ShiJiJS/shika/issues) 更新。
