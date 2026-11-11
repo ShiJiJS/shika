@@ -24,6 +24,8 @@ python3 skills/video-tagging/scripts/install.py --skills-dir ~/.agents/skills
 
 This directory is an example; use your assistant's configuration. Update directories maintained by Skillshare or another manager through that manager. Direct installation stops on an existing skill; after reviewing it, add `--update` to back it up and replace it. Backups remain in the private runtime directory.
 
+Keep the same `--skill-source` when updating through Skillshare. If a skill with this name belongs to another source, back it up and uninstall its old registration through the manager before installing from this repository. Ordinary `--update` does not change that source, and the installer preserves the manager's audit checks.
+
 If the repository requires access, use your own existing Git authentication. For example, select the SSH source for Skillshare:
 
 ```bash
