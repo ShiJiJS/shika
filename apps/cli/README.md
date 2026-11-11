@@ -1,3 +1,5 @@
+[项目首页](../../README.md) · [文档导航](../../docs/README.md) · [部署手册](../../docs/deployment.md)
+
 # 拾刻 · shika 命令行客户端
 
 `shika` 与兼容命令 `rv` 使用同一入口，版本和 Python 要求见 [pyproject.toml](pyproject.toml)。CLI 支持登录、扫描、视频查询、视频标签及旧视频管理备份；图包阅读和完整管理备份使用 App。

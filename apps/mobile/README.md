@@ -1,3 +1,5 @@
+[项目首页](../../README.md) · [文档导航](../../docs/README.md) · [部署手册](../../docs/deployment.md)
+
 # 拾刻 · shika Android 客户端
 
 Flutter 客户端以媒体库为入口，视频和图包分别搜索、筛选和管理标签。选择内容后进入播放或阅读，返回保留来源。版本由 [pubspec.yaml](pubspec.yaml) 管理，待办及验收在 [GitHub issues](https://github.com/ShiJiJS/shika/issues) 跟踪。
