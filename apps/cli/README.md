@@ -25,6 +25,10 @@ pipx install "git+ssh://git@github.com/ShiJiJS/shika.git#subdirectory=apps/cli"
 python3 -m venv .venv && . .venv/bin/activate && pip install -e '.[dev]'
 ```
 
+## 配套 Skill（选装）
+
+[video-tagging](../../skills/video-tagging/SKILL.md) 可生成标准标签文件，并在要求同步时通过本 CLI 或服务端 API 写入视频标签。安装 Skill 时可同时配置隔离 CLI，命令与依赖说明见[视频打标指南](../../docs/video-tagging.md)。CLI 也可按上面的方式独立安装，App 与 NAS 服务不依赖这些选装工具。
+
 ## 快速开始
 
 ```bash

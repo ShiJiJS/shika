@@ -1,0 +1,25 @@
+{
+  "batch_size": 50,
+  "ollama_url": "http://127.0.0.1:11434",
+  "local_model": "qwen3.5:9b",
+  "num_ctx": 16384,
+  "num_predict": 4096,
+  "image_models": {
+    "真人": "joytag",
+    "动画": "wd-swinv2-v3"
+  },
+  "image_thresholds": {
+    "joytag": 0.4,
+    "wd-swinv2-v3": 0.35,
+    "character": 0.85
+  },
+  "image_max_candidates_per_frame": 100,
+  "extractor": "",
+  "model_root": "",
+  "model_revision": "",
+  "online_model": "",
+  "allow_online_images": false,
+  "agent_may_read_images": false,
+  "agent_may_read_tags": false,
+  "media_roots": {}
+}

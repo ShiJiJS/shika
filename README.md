@@ -56,6 +56,18 @@
 - 数据位置：数据库与管理记录保存在持久化的 `data/`，配置在 `config/`，个人口令在 `secrets/`。
 - 已有媒体库：迁移或升级时保留完整管理数据、原目录 ID 和容器内挂载路径，继续使用已有标签和阅读记录。
 
+## 选装：视频打标 Skill 与 CLI
+
+[video-tagging Skill](skills/video-tagging/SKILL.md) 可抽帧识别视频、生成中文标签文件，并按要求同步到拾刻。[shika CLI](apps/cli/README.md) 提供视频查询和标签批量操作。两者是选装工具，普通 App 与 NAS 服务无需安装。
+
+在源码仓库中可一次配置 Skill 和隔离的 CLI（Python 3.10+，Skillshare 已配置）：
+
+```bash
+python3 skills/video-tagging/scripts/install.py --skillshare
+```
+
+其他助手的安装方式、模型依赖与使用流程见[视频打标指南](docs/video-tagging.md)。
+
 ## 文档与开发
 
 | 文档 | 内容 |
@@ -65,6 +77,7 @@
 | [开发指南](docs/development.md) | Flutter、VS Code、本地服务、APK 构建与测试 |
 | [服务端说明](services/server/README.md) | 配置、接口、扫描、文件操作与备份规则 |
 | [命令行客户端](apps/cli/README.md) | 登录、扫描、视频查询和视频标签自动化 |
+| [视频打标 Skill（选装）](docs/video-tagging.md) | Skill 与 CLI 安装、生成标签文件和同步 |
 
 客户端在 `apps/mobile`，服务端在 `services/server`，CLI 在 `apps/cli`。App 版本以 [pubspec.yaml](apps/mobile/pubspec.yaml) 为准，未完成工作与设备验收在 [GitHub Issues](https://github.com/ShiJiJS/shika/issues) 跟踪。
 
