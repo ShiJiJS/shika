@@ -13,7 +13,7 @@ import 'package:shika/ui/media_tag_editor.dart';
 import 'package:shika/ui/player.dart';
 import 'package:shika/ui/preferences.dart';
 
-import 'prototype_fidelity_test.dart' show control;
+import 'native_workspace_test.dart' show control;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +31,7 @@ void main() {
     await repo.connect(
       'http://10.0.2.2',
       8768,
-      'prototype-fidelity-owned-only',
+      'client-ui-owned-only',
     );
     await t.pumpWidget(
       ShikaApp(
@@ -142,7 +142,7 @@ void main() {
           ? null
           : t.widget<MovieStage>(find.byType(MovieStage)).session!.debugPlayers;
       debugPrint(
-        'FIDELITY_METRICS:${jsonEncode({
+        'WORKSPACE_METRICS:${jsonEncode({
           'state': state,
           'physical': [media.size.width * media.devicePixelRatio, media.size.height * media.devicePixelRatio],
           'dpr': media.devicePixelRatio,
@@ -387,6 +387,6 @@ void main() {
     debugPrint(
       'PREVIEW_STABILITY_VERIFIED:${jsonEncode({'original': original, 'outdoor_tag': outdoor, 'liked_tag': liked, 'first_round': firstRound, 'first_members': firstMembers, 'first_cursor': firstCursor, 'second_round': secondRound, 'second_members': secondMembers, 'second_cursor': secondCursor, 'new_video': newId, 'addition': added, 'refreshed': refreshed, 'final_ids': allIds.toList(), 'recent': recent})}',
     );
-    debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
+    debugPrint('WORKSPACE_VERIFIED');
   });
 }

@@ -12,7 +12,7 @@ import 'package:shika/main.dart';
 import 'package:shika/ui/paper.dart';
 import 'package:shika/ui/preferences.dart';
 
-import 'prototype_fidelity_test.dart' show control;
+import 'native_workspace_test.dart' show control;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +36,7 @@ void main() {
     await repo.connect(
       'http://10.0.2.2',
       8768,
-      'prototype-fidelity-owned-only',
+      'client-ui-owned-only',
     );
     await repo.beginPreview(VideoEntryScope(), order: PlayOrder.sequential);
     Future<Map<String, dynamic>> active() =>
@@ -173,7 +173,7 @@ void main() {
         });
       }
       debugPrint(
-        'FIDELITY_METRICS:${jsonEncode({
+        'WORKSPACE_METRICS:${jsonEncode({
           'state': state,
           'size': [media.size.width, media.size.height],
           'dpr': media.devicePixelRatio,
@@ -412,6 +412,6 @@ void main() {
     debugPrint(
       'SETTINGS_PANELS_VERIFIED:${jsonEncode({'round_before': roundBefore, 'round_after': after, 'roots_before': rootsBefore, 'roots_after': repo.snapshot.roots.map((r) => r.toJson()).toList(), 'reader_before': readerBefore, 'reader_saved': saved, 'reader_restored': restored, 'order_before': orderBefore, 'order_after': await repo.api.json('GET', '/api/v1/playback-defaults')})}',
     );
-    debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
+    debugPrint('WORKSPACE_VERIFIED');
   });
 }

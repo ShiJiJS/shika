@@ -11,7 +11,7 @@ import 'package:shika/library/server_repository.dart';
 import 'package:shika/main.dart';
 import 'package:shika/ui/preferences.dart';
 
-import 'prototype_fidelity_test.dart' show control;
+import 'native_workspace_test.dart' show control;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +35,7 @@ void main() {
       await repo.connect(
         'http://10.0.2.2',
         8768,
-        'prototype-fidelity-owned-only',
+        'client-ui-owned-only',
       );
       final all = await repo.loadPacks(PackQuery(), limit: 24);
       expect(all.total, 4);
@@ -124,7 +124,7 @@ void main() {
           if (f.evaluate().length == 1) keys[key] = rect(t.getRect(f));
         }
         debugPrint(
-          'FIDELITY_METRICS:${jsonEncode({
+          'WORKSPACE_METRICS:${jsonEncode({
             'state': name,
             'size': [media.size.width, media.size.height],
             'dpr': media.devicePixelRatio,
@@ -319,7 +319,7 @@ void main() {
       debugPrint(
         'PACK_CONTINUATION_VERIFIED:${jsonEncode({'pack': summer.id, 'seed_progress': initial, 'before_summary': before, 'after_summary': stable, 'final_progress': await progress(), 'range': range.id, 'source': range.source.name, 'candidate_count': range.candidateCount, 'return_anchor': origin.scrollAnchor, 'return_offset': returnedOffset, 'expected_return_offset': expectedReturn})}',
       );
-      debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
+      debugPrint('WORKSPACE_VERIFIED');
       expect(t.takeException(), isNull);
     },
   );

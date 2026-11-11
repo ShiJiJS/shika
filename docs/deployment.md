@@ -2,7 +2,7 @@
 
 # 部署与日常使用
 
-拾刻由 Android App 和一个 Docker 服务组成。服务运行在自己的 NAS 上，App 使用 NAS 局域网地址、端口和个人口令连接。下面以[现有 Compose 模板](../deploy/fnos/compose.yaml)为基础，从首次安装讲到备份和迁移；开发调试另见 [Mac / VS Code](macos-development.md) 与 [Windows / Android](android-development.md)。
+拾刻由 Android App 和一个 Docker 服务组成。服务运行在自己的 NAS 上，App 使用 NAS 局域网地址、端口和个人口令连接。下面以[现有 Compose 模板](../deploy/fnos/compose.yaml)为基础，从首次安装讲到备份和迁移；开发调试另见 [开发指南](development.md)。
 
 ## 部署前准备
 
@@ -150,14 +150,12 @@ fnos-cli --profile home-fnos --allow-insecure-http docker container inspect shik
 
 `--allow-insecure-http` 仅在已保存的连接采用局域网 HTTP 时需要；HTTPS 配置使用对应连接选项。命令超时后先查询实际镜像、项目或容器状态，再决定下一步，不重复导入或创建。部署不要求额外开启 SSH。
 
-本仓库维护者也可运行 `python3 scripts/nas-status.py`：它依赖本机私有 infos 的连接登记，不属于通用部署的前置条件。
-
 ## 安装与连接 App
 
-使用维护者提供的 APK，或按[客户端开发说明](../apps/mobile/README.md)配置 Flutter / Android 后自行构建。以下在 `apps/mobile` 中执行：
+使用维护者提供的 APK，或按[客户端开发说明](development.md)配置 Flutter / Android 后自行构建。以下在 `apps/mobile` 中执行：
 
 ```bash
-bash ../../scripts/dev.sh flutter build apk --release \
+flutter build apk --release \
   --target-platform android-arm64 --dart-define=LIBRARY_MODE=server
 ```
 

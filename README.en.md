@@ -42,7 +42,7 @@ Moving an item to the recycle bin preserves its source files. Permanent deletion
 ## Getting started
 
 1. **Deploy the service**: prepare your NAS media folders, then follow the [deployment guide](docs/deployment.en.md) to build an image, configure persistent storage, and start the Docker service.
-2. **Install the Android app**: use an APK supplied by the maintainer, or [build it from source](apps/mobile/README.md) (Chinese). Keep the same signing key when installing updates over an existing app.
+2. **Install the Android app**: use an APK supplied by the maintainer, or [build it from source](docs/development.md) (Chinese). Keep the same signing key when installing updates over an existing app.
 3. **Connect the library**: enter the NAS LAN address, port (`8760` by default), and your personal passphrase. Add video or image pack roots in the app.
 4. **Browse and organize**: check scan progress, select content in the library or tags view, and start playback, reading, or quick cleanup.
 
@@ -62,12 +62,9 @@ The [deployment guide](docs/deployment.en.md) covers initial setup, image builds
 | --- | --- |
 | [Documentation index](docs/README.en.md) | Find the right guide for setup, use, maintenance, or development |
 | [Deployment guide](docs/deployment.en.md) | Initial NAS setup, app connection, and routine maintenance |
-| [Android client](apps/mobile/README.md) (Chinese) | Run the app, build APKs, use demo mode, and validate the client |
-| [Mac and VS Code](docs/macos-development.md) · [Windows / Android](docs/android-development.md) (Chinese) | Local development and debugging setup |
+| [Development guide](docs/development.md) (Chinese) | Flutter, VS Code, local service, APK builds, and tests |
 | [Server guide](services/server/README.md) (Chinese) | Configuration, APIs, scanning, file operations, and backup behavior |
 | [Command-line client](apps/cli/README.md) (Chinese) | Login, scanning, video queries, and video tag automation |
-| [Domain glossary](GLOSSARY.md) (Chinese) | Library, image pack, browsing scope, and management backup terminology |
-| [Icon assets](assets/branding/README.md) (Chinese) | Original artwork, rounded icon, and Android icon export |
 
 The client lives in `apps/mobile`, the server in `services/server`, and the CLI in `apps/cli`. The app version is defined in [pubspec.yaml](apps/mobile/pubspec.yaml). Remaining work and device validation are tracked in [GitHub Issues](https://github.com/ShiJiJS/shika/issues).
 

@@ -4,10 +4,4 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- Owned-emulator public-media diagnostic; excluded from release. -->
-    <application>
-        <activity android:name=".VideoRenderProbeActivity" android:exported="true"
-            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen"
-            android:configChanges="orientation|screenSize|screenLayout|density" />
-    </application>
 </manifest>

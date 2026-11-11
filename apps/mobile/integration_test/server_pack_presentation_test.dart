@@ -11,7 +11,7 @@ import 'package:shika/library/server_repository.dart';
 import 'package:shika/main.dart';
 import 'package:shika/ui/preferences.dart';
 
-import 'prototype_fidelity_test.dart' show control;
+import 'native_workspace_test.dart' show control;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +35,7 @@ void main() {
       await repo.connect(
         'http://10.0.2.2',
         8768,
-        'prototype-fidelity-owned-only',
+        'client-ui-owned-only',
       );
       final initial = repo.catalogCounts.value;
       expect(initial, const MediaCatalogCounts(2, 4));
@@ -159,7 +159,7 @@ void main() {
           }
         }
         debugPrint(
-          'FIDELITY_METRICS:${jsonEncode({
+          'WORKSPACE_METRICS:${jsonEncode({
             'state': name,
             'size': [media.size.width, media.size.height],
             'dpr': media.devicePixelRatio,
@@ -329,7 +329,7 @@ void main() {
       debugPrint(
         'PACK_PRESENTATION_VERIFIED:${jsonEncode({'title_ids': expectedIds, 'titles': all.items.map((p) => p.displayTitle).toList(), 'raw_names': all.items.map((p) => p.name).toList(), 'authors': all.items.map((p) => p.author).toList(), 'newest_ids': newestIds, 'queue_ids': queueIds, 'filtered_range': filteredRange, 'newest_range': newestRange, 'before_read': before, 'recent_total': catalog().data.total})}',
       );
-      debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
+      debugPrint('WORKSPACE_VERIFIED');
     },
   );
 }

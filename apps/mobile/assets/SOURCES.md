@@ -9,9 +9,9 @@
 - [原始文件](https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4)
 - [MDN video 示例说明](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/video)
 
-原片曾在软件模拟器中出现块状解码残影，因此演示横版 `media/flower-landscape.mp4` 使用 H.264 Baseline 衍生编码；`media/flower-portrait.mp4` 是同一素材的竖版衍生。这些处理只针对打包演示素材，NAS 服务不会自动转码。
+`media/flower-landscape.mp4` 为 H.264 Baseline 衍生编码，`media/flower-portrait.mp4` 是同一素材的竖版衍生。
 
-`media/flower-landscape.jpg`、`media/flower-portrait.jpg` 是对应视频约1.2秒处的封面；`media/landscape-early.jpg`、`media/landscape-late.jpg`、`media/portrait-early.jpg`、`media/portrait-late.jpg` 分别取对应横/竖视频约0.1秒和4.2秒的帧。封面沿用同一 CC0 素材来源，没有使用参考产品的图片。
+`media/flower-landscape.jpg`、`media/flower-portrait.jpg` 是对应视频约1.2秒处的封面；`media/landscape-early.jpg`、`media/landscape-late.jpg`、`media/portrait-early.jpg`、`media/portrait-late.jpg` 分别取对应横/竖视频约0.1秒和4.2秒的帧，沿用同一 CC0 素材来源。
 
 ## 字体
 
