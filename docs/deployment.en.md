@@ -2,7 +2,7 @@
 
 # Deployment and everyday use
 
-Shika consists of an Android app and one Docker service. The service runs on your NAS; the app connects using its LAN address, port, and a personal passphrase. This guide uses the [existing Compose template](../deploy/fnos/compose.yaml) and covers initial setup through backups and migration. Local development is documented separately for [Mac / VS Code](macos-development.md) and [Windows / Android](android-development.md) (Chinese).
+Shika consists of an Android app and one Docker service. The service runs on your NAS; the app connects using its LAN address, port, and a personal passphrase. This guide uses the [existing Compose template](../deploy/fnos/compose.yaml) and covers initial setup through backups and migration. Local development is covered in the [development guide](development.md) (Chinese).
 
 ## Prerequisites
 
@@ -150,14 +150,12 @@ fnos-cli --profile home-fnos --allow-insecure-http docker container inspect shik
 
 `--allow-insecure-http` is needed only for a saved connection using LAN HTTP; use the appropriate connection options for HTTPS. After a timeout, inspect the actual image, project, or container state before continuing, rather than repeating an import or creation request. Deployment does not require enabling SSH.
 
-The repository maintainer can also run `python3 scripts/nas-status.py`. It depends on local private infos registration and is not a prerequisite for a general installation.
-
 ## Install and connect the app
 
-Use an APK supplied by the maintainer, or configure Flutter / Android and [build the client](../apps/mobile/README.md) (Chinese). Run the following in `apps/mobile`:
+Use an APK supplied by the maintainer, or configure Flutter / Android and [build the client](development.md) (Chinese). Run the following in `apps/mobile`:
 
 ```bash
-bash ../../scripts/dev.sh flutter build apk --release \
+flutter build apk --release \
   --target-platform android-arm64 --dart-define=LIBRARY_MODE=server
 ```
 

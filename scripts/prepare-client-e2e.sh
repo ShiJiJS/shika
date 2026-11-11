@@ -3,7 +3,7 @@ set -euo pipefail
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export VV_E2E_HOME="${VV_E2E_HOME:-$HOME/.local/share/video-viewer-e2e}"
 export VV_E2E_ASSETS="$repo_dir/apps/mobile/assets/media"
-compose=(docker compose -f "$repo_dir/compose.client-e2e.yaml")
+compose=(docker compose -f "$repo_dir/deploy/tests/compose.yaml")
 if [[ "${1:-}" == "--reset" ]]; then
   "${compose[@]}" down
   python3 - "$VV_E2E_HOME" "$repo_dir" <<'PY'

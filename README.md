@@ -42,7 +42,7 @@
 ## 开始使用
 
 1. **部署服务端**：准备 NAS 媒体目录，按[部署手册](docs/deployment.md)构建镜像、配置持久化目录并启动 Docker 服务。
-2. **安装 Android App**：使用维护者提供的 APK，或按[客户端开发说明](apps/mobile/README.md)从源码构建。升级时保持相同签名并覆盖安装。
+2. **安装 Android App**：使用维护者提供的 APK，或按[客户端开发说明](docs/development.md)从源码构建。升级时保持相同签名并覆盖安装。
 3. **连接媒体库**：填写 NAS 局域网 IP、端口（默认 `8760`）和自己设置的个人口令，在 App 中接入视频或图包目录。
 4. **浏览与整理**：查看扫描进度，在媒体库或标签中选择内容，再进入播放、阅读或快速整理。
 
@@ -62,12 +62,9 @@
 | --- | --- |
 | [文档导航](docs/README.md) | 根据安装、使用、维护或开发任务选择入口 |
 | [部署手册](docs/deployment.md) | NAS 首次部署、App 连接和日常维护 |
-| [Android 客户端](apps/mobile/README.md) | 运行、构建 APK、演示模式与客户端验证 |
-| [Mac 与 VS Code](docs/macos-development.md) · [Windows / Android](docs/android-development.md) | 本机开发环境与调试配置 |
+| [开发指南](docs/development.md) | Flutter、VS Code、本地服务、APK 构建与测试 |
 | [服务端说明](services/server/README.md) | 配置、接口、扫描、文件操作与备份规则 |
 | [命令行客户端](apps/cli/README.md) | 登录、扫描、视频查询和视频标签自动化 |
-| [领域术语](GLOSSARY.md) | 媒体库、图包、浏览范围和管理备份的含义 |
-| [图标素材](assets/branding/README.md) | 原图、圆角展示图与 Android 图标导出 |
 
 客户端在 `apps/mobile`，服务端在 `services/server`，CLI 在 `apps/cli`。App 版本以 [pubspec.yaml](apps/mobile/pubspec.yaml) 为准，未完成工作与设备验收在 [GitHub Issues](https://github.com/ShiJiJS/shika/issues) 跟踪。
 

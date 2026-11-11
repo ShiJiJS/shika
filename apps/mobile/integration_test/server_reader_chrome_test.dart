@@ -12,7 +12,7 @@ import 'package:shika/library/server_repository.dart';
 import 'package:shika/main.dart';
 import 'package:shika/ui/preferences.dart';
 
-import 'prototype_fidelity_test.dart' show control;
+import 'native_workspace_test.dart' show control;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +36,7 @@ void main() {
     await repo.connect(
       'http://10.0.2.2',
       8768,
-      'prototype-fidelity-owned-only',
+      'client-ui-owned-only',
     );
     final catalog = await repo.loadPacks(PackQuery());
     final summer = catalog.items.singleWhere((p) => p.name.contains('034'));
@@ -129,7 +129,7 @@ void main() {
         });
       }
       debugPrint(
-        'FIDELITY_METRICS:${jsonEncode({
+        'WORKSPACE_METRICS:${jsonEncode({
           'state': name,
           'size': [media.size.width, media.size.height],
           'dpr': media.devicePixelRatio,
@@ -383,7 +383,7 @@ void main() {
     debugPrint(
       'READER_CHROME_VERIFIED:${jsonEncode({'pack': summer.id, 'range': range.id, 'candidate_count': range.candidateCount, 'expected_ids': expectedIds, 'seed_progress': initial, 'partial': partial, 'after_panels': afterPanels, 'before_return': finalPosition, 'final_progress': await saved(), 'page_id': pageId, 'ratio': ratio, 'compact': compact, 'return_anchor': origin.scrollAnchor, 'expected_return_offset': expectedOffset, 'return_offset': returnedOffset})}',
     );
-    debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
+    debugPrint('WORKSPACE_VERIFIED');
     expect(t.takeException(), isNull);
   });
 }

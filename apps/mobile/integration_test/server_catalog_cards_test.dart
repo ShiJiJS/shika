@@ -11,7 +11,7 @@ import 'package:shika/library/server_repository.dart';
 import 'package:shika/main.dart';
 import 'package:shika/ui/preferences.dart';
 
-import 'prototype_fidelity_test.dart' show control;
+import 'native_workspace_test.dart' show control;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +35,7 @@ void main() {
     await repo.connect(
       'http://10.0.2.2',
       8768,
-      'prototype-fidelity-owned-only',
+      'client-ui-owned-only',
     );
     final initial = repo.catalogCounts.value;
     expect(initial, const MediaCatalogCounts(2, 4));
@@ -165,7 +165,7 @@ void main() {
         }
       }
       debugPrint(
-        'FIDELITY_METRICS:${jsonEncode({
+        'WORKSPACE_METRICS:${jsonEncode({
           'state': name,
           'size': [media.size.width, media.size.height],
           'dpr': media.devicePixelRatio,
@@ -262,6 +262,6 @@ void main() {
     debugPrint(
       'CATALOG_CARDS_VERIFIED:${jsonEncode({'expected_columns': expectedColumns, 'video_ids': videos.map((v) => v.id).toList(), 'pack_ids': identities, 'before_progress': before, 'after_progress': await progress(), 'recent': recent['total']})}',
     );
-    debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
+    debugPrint('WORKSPACE_VERIFIED');
   });
 }

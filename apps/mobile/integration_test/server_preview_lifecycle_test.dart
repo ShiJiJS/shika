@@ -15,7 +15,7 @@ import 'package:shika/ui/playback_session.dart';
 import 'package:shika/ui/player.dart';
 import 'package:shika/ui/preferences.dart';
 
-import 'prototype_fidelity_test.dart' show control;
+import 'native_workspace_test.dart' show control;
 
 class _LifecycleLog extends WidgetsBindingObserver {
   final events = <String>[];
@@ -123,7 +123,7 @@ void main() {
         final view = t.view;
         final players = session?.debugPlayers ?? <VideoPlayerController>[];
         debugPrint(
-          'FIDELITY_METRICS:${jsonEncode({
+          'WORKSPACE_METRICS:${jsonEncode({
             'state': name,
             'physical': [view.physicalSize.width, view.physicalSize.height],
             'dpr': view.devicePixelRatio,
@@ -280,7 +280,7 @@ void main() {
       await repo.connect(
         'http://10.0.2.2',
         8768,
-        'prototype-fidelity-owned-only',
+        'client-ui-owned-only',
       );
       await t.pumpWidget(
         ShikaApp(
@@ -474,7 +474,7 @@ void main() {
       debugPrint(
         'PREVIEW_LIFECYCLE_RESULT:${jsonEncode({'rounds': rounds, 'members': members, 'catalog_ids': catalogIds, 'peak_players': peakPlayers, 'swipes': swipes, 'home_count': homeCount, 'events': lifecycle.events, 'original_levels': originalLevels})}',
       );
-      debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
+      debugPrint('WORKSPACE_VERIFIED');
     },
   );
 }

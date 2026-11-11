@@ -8,22 +8,15 @@ NAS 使用 [飞牛部署模板](../../deploy/fnos/compose.yaml)，安装、权�
 
 ## 本机开发
 
-Mac 的工具链与 VS Code 入口见 [Mac 开发说明](../../docs/macos-development.md)。在仓库根目录运行：
+工具链与客户端调试见 [开发指南](../../docs/development.md)。在仓库根目录运行（Windows 使用 WSL2）：
 
 ```bash
-bash scripts/dev.sh bash scripts/prepare-server-dev.sh
-docker compose up -d --build --wait --wait-timeout 120
-docker compose ps
+bash scripts/prepare-server-dev.sh
+docker compose --env-file .env -f deploy/local/compose.yaml up -d --build --wait --wait-timeout 120
+docker compose --env-file .env -f deploy/local/compose.yaml ps
 ```
 
-Windows 使用 WSL2，在仓库根目录的 PowerShell 执行：
-
-```powershell
-wsl -d Ubuntu-24.04 -- bash /mnt/c/Project/shika/scripts/prepare-server-dev.sh
-wsl -d Ubuntu-24.04 --cd /mnt/c/Project/shika -- docker compose up -d --build --wait
-```
-
-路径按实际检出位置调整。准备脚本只在文件不存在时创建口令、配置和被 Git 忽略的 `.env`，保留已有值。通过 `dev.sh` 启动时默认使用项目 `.dev/server/`；直接在 WSL 运行时默认使用 `~/.local/share/video-viewer-dev/`，也可通过 `VV_SERVER_DEV_HOME` 指定。这些目录仅供可丢弃测试数据使用。
+准备脚本只在文件不存在时创建口令、配置和被 Git 忽略的 `.env`，保留已有值。可通过 `VV_SERVER_DEV_HOME` 指定本地数据目录，默认 `~/.local/share/video-viewer-dev/`。测试和联调只使用独立的可丢弃媒体。
 
 本机健康检查地址为 `http://127.0.0.1:8760/health`，Android 模拟器访问宿主机使用 `10.0.2.2:8760`。服务默认启动扫描，定时扫描间隔、稳定观察时间、媒体读取并发和备份大小上限由 Compose 环境配置控制；飞牛模板与本地开发模板可以采用不同值。
 
@@ -81,4 +74,4 @@ bash scripts/test-server.sh
 
 Windows 可通过 WSL 执行同一脚本。它构建测试镜像并运行 Ruff、格式检查和服务端测试，容器使用非 root 用户、只读根文件系统、64 MiB 共享内存及临时 `/tmp`。测试只使用合成媒体和临时数据库，不对真实收藏运行文件操作实验。
 
-待办与实际设备验收在 [GitHub issues](https://github.com/ShiJiJS/shika/issues) 跟踪，完整原型验收见 [#133](https://github.com/ShiJiJS/shika/issues/133)。
+待办与实际设备验收在 [GitHub issues](https://github.com/ShiJiJS/shika/issues) 跟踪。

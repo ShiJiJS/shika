@@ -21,7 +21,7 @@ import 'package:shika/ui/playback_session.dart';
 import 'package:shika/ui/player.dart';
 import 'package:shika/ui/preferences.dart';
 
-import 'prototype_fidelity_test.dart' show control;
+import 'native_workspace_test.dart' show control;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -63,7 +63,7 @@ void main() {
         await repo.connect(
           'http://10.0.2.2',
           8768,
-          'prototype-fidelity-owned-only',
+          'client-ui-owned-only',
         );
         if (contentCase != 'reader') {
           final defaults = repo.createPlaybackDefaults();
@@ -231,7 +231,7 @@ void main() {
             ? reader().session
             : null;
         debugPrint(
-          'FIDELITY_METRICS:${jsonEncode({
+          'WORKSPACE_METRICS:${jsonEncode({
             'state': name,
             'case': contentCase,
             'size': [media.size.width, media.size.height],
@@ -349,7 +349,7 @@ void main() {
         debugPrint(
           'CONTENT_RESTART_VERIFIED:${jsonEncode({'case': contentCase, 'original': original, 'auto_opened': false, 'explicit_reopened': true})}',
         );
-        debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
+        debugPrint('WORKSPACE_VERIFIED');
         await credentials.clear();
         await book.delete();
         await appearance.delete();

@@ -14,7 +14,7 @@ import 'package:shika/main.dart';
 import 'package:shika/ui/preferences.dart';
 import 'package:shika/ui/paper.dart';
 
-import 'prototype_fidelity_test.dart' show control;
+import 'native_workspace_test.dart' show control;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ void main() {
     await repo.connect(
       'http://10.0.2.2',
       8768,
-      'prototype-fidelity-owned-only',
+      'client-ui-owned-only',
     );
     final initialVideo = await repo.loadVideoTags();
     final initialPack = await repo.loadPackTags();
@@ -219,7 +219,7 @@ void main() {
           ? state()
           : null;
       debugPrint(
-        'FIDELITY_METRICS:${jsonEncode({
+        'WORKSPACE_METRICS:${jsonEncode({
           'state': name,
           'physical': [media.size.width * media.devicePixelRatio, media.size.height * media.devicePixelRatio],
           'dpr': media.devicePixelRatio,
@@ -427,6 +427,6 @@ void main() {
     debugPrint(
       'VIDEO_TAG_DEFINITIONS_VERIFIED:${jsonEncode({'video_tag': videoId, 'pack_tag': packId, 'created_tag': created, 'pack_kimono_tag': packKimonoId, 'linked_videos': linkedVideos.map((v) => v['id']).toList(), 'linked_packs': linkedPacks.map((v) => v['id']).toList(), 'playback_before': playbackBefore, 'playback_after': playbackAfter})}',
     );
-    debugPrint('PROTOTYPE_FIDELITY_VERIFIED');
+    debugPrint('WORKSPACE_VERIFIED');
   });
 }

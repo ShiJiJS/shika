@@ -96,7 +96,7 @@ token 缓存在 `~/.config/rv/token.json`，权限 0600，并绑定 base_url：�
 
 ## 开发
 
-VS Code任务`CLI: help`和`CLI: tests`，使用项目的`.dev/cli`隔离环境及`uv.lock`，不改变服务端Python环境。终端对应命令：
+在仓库根目录使用独立环境及 `uv.lock` 运行（客户端和服务端环境见[开发指南](../../docs/development.md)）：
 
 ```bash
 UV_PROJECT_ENVIRONMENT="$PWD/.dev/cli" uv --directory apps/cli run --locked --extra dev rv --help

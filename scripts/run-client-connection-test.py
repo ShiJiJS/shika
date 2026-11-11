@@ -165,7 +165,7 @@ def fresh_instance():
                 "docker",
                 "compose",
                 "-f",
-                str(ROOT / "compose.client-e2e.yaml"),
+                str(ROOT / "deploy/tests/compose.yaml"),
                 "up",
                 "-d",
                 "--no-build",
@@ -389,7 +389,7 @@ def main():
         EVIDENCE.mkdir(parents=True, exist_ok=False)
     if not Path(ADB).is_file() or not Path(FLUTTER).is_file():
         parser.error(
-            "Flutter or ADB missing. On Mac use: bash scripts/dev.sh python3 scripts/run-client-connection-test.py"
+            "Flutter or ADB missing. Configure FLUTTER_ROOT and ANDROID_HOME first."
         )
     # Only Windows needs a keepalive for its WSL VM.
     if WINDOWS:
@@ -483,12 +483,8 @@ def main():
         "apps/mobile/integration_test/server_tag_assignment_test.dart",
         "scripts/run-client-connection-test.py", "services/server/tests/e2e_server.py",
     ]
-    prototype_entry = subprocess.check_output(
-        ["git", "ls-tree", "HEAD", "design/reference/library-first"], cwd=ROOT, text=True,
-    ).split()
     (EVIDENCE / "source.json").write_text(json.dumps({
         "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
-        "prototype_tree": prototype_entry[2] if prototype_entry else None,
         "files": {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in source_paths},
     }, indent=2) + "\n", encoding="utf-8")
     prepare_emulator()
