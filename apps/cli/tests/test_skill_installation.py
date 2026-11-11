@@ -105,6 +105,17 @@ def test_failed_dependency_install_does_not_install_skill(tmp_path, monkeypatch)
     copy.assert_not_called()
 
 
+def test_skillshare_update_uses_the_registered_source(monkeypatch):
+    monkeypatch.setattr(installer.shutil, "which", lambda name: "/bin/skillshare")
+    monkeypatch.setattr(installer, "setup_cli", Mock(return_value=Path("isolated/shika")))
+    run = Mock()
+    monkeypatch.setattr(installer.subprocess, "run", run)
+    monkeypatch.setattr(installer.sys, "argv", ["install.py", "--skillshare", "--update"])
+    assert installer.main() == 0
+    assert run.call_args_list[0].args[0] == ["skillshare", "update", "video-tagging", "-g"]
+    assert run.call_args_list[1].args[0] == ["skillshare", "sync", "-g"]
+
+
 def test_symlinked_skill_is_left_to_its_manager(tmp_path):
     original = tmp_path / "managed"
     original.mkdir()

@@ -24,7 +24,7 @@ python3 skills/video-tagging/scripts/install.py --skills-dir ~/.agents/skills
 
 上面的目录是示例，按助手配置调整。由 Skillshare 或其他管理器维护的目录应通过对应管理器更新。直接安装遇同名技能会停止；检查旧内容后加 `--update` 可以先备份再更新。备份位于私人运行目录。
 
-Skillshare 更新时沿用原来的 `--skill-source`。同名技能登记在其他来源时，先通过管理器备份、卸载旧登记，再从本仓库安装；普通 `--update` 不会切换来源，安装器保留其审计检查。
+Skillshare 更新时运行安装器的 `--skillshare --update`，它调用正式的 `skillshare update video-tagging` 并沿用已登记来源。`--skill-source` 仅用于首次安装。同名技能登记在其他来源时，先通过管理器备份、卸载旧登记，再从本仓库安装；更新不会切换来源，安装器保留其审计检查。
 
 仓库需要访问权限时使用自己已有的 Git 认证。例如 Skillshare 使用 SSH 来源：
 
