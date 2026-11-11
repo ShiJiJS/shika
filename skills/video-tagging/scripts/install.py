@@ -189,11 +189,16 @@ def main():
         "--cli-source", help="Local apps/cli directory or Git package source"
     )
     parser.add_argument(
-        "--skill-source", default=SKILL_SOURCE, help="Skillshare upstream source"
+        "--skill-source",
+        help="Skillshare source for a new installation; updates use the registered source",
     )
     args = parser.parse_args()
     if sys.version_info < (3, 10):  # noqa: UP036 - check system Python before creating the CLI environment
         parser.error("Python 3.10 or newer is required")
+    if args.skillshare and args.update and args.skill_source:
+        parser.error(
+            "Skillshare updates use the registered source; omit --skill-source"
+        )
     if args.check:
         version = installed_version()
         ready = compatible_cli(version)
@@ -219,9 +224,11 @@ def main():
         )
     cli = setup_cli(args.cli_source or default_cli_source(), args.update)
     if args.skillshare:
-        command = ["skillshare", "install", args.skill_source, "-g"]
-        if args.update:
-            command.append("--update")
+        command = (
+            ["skillshare", "update", "video-tagging", "-g"]
+            if args.update
+            else ["skillshare", "install", args.skill_source or SKILL_SOURCE, "-g"]
+        )
         subprocess.run(command, check=True)
         subprocess.run(["skillshare", "sync", "-g"], check=True)
     elif destination:
