@@ -691,12 +691,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                       onPressed: disabled || browsing.position == 0
                           ? null
                           : () => step(-1),
-                      child: const Row(
-                        children: [
-                          Icon(Icons.keyboard_arrow_up, size: 18),
-                          Text('上一条'),
-                        ],
-                      ),
+                      child: const Text('上一条'),
                     ),
                     Expanded(
                       child: Text(
@@ -710,15 +705,10 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                     TextButton(
                       key: const Key('preview-next'),
                       onPressed: disabled ? null : () => step(1),
-                      child: Row(
-                        children: [
-                          Text(
-                            browsing.position + 1 >= repo.playbackTotal
-                                ? '结束'
-                                : '下一条',
-                          ),
-                          const Icon(Icons.keyboard_arrow_down, size: 18),
-                        ],
+                      child: Text(
+                        browsing.position + 1 >= repo.playbackTotal
+                            ? '结束'
+                            : '下一条',
                       ),
                     ),
                   ],

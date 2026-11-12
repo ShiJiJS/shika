@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../library/models.dart';
 import '../library/repository.dart';
 import 'paper.dart';
-import 'paper_form.dart';
 import 'media_layout.dart';
 
 /// One assignment workflow; every repository operation stays in its namespace.
@@ -343,48 +342,50 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
     final enabled = !saving && writable;
     final size = MediaQuery.sizeOf(context);
     final wide = size.width >= 600 && size.height < 500;
-    final searchField = PaperField(
-      label: '搜索$type标签',
-      child: TextField(
-        key: const Key('tag-assignment-search'),
-        controller: search,
-        enabled: enabled,
-        decoration: const InputDecoration(
-          hintText: '输入标签名称',
-          border: OutlineInputBorder(borderSide: BorderSide.none),
-          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+    final searchField = TextField(
+      key: const Key('tag-assignment-search'),
+      controller: search,
+      enabled: enabled,
+      style: const TextStyle(fontSize: 14),
+      decoration: InputDecoration(
+        hintText: '搜索$type标签',
+        prefixIcon: const Icon(Icons.search, size: 18),
+        prefixIconConstraints: const BoxConstraints(
+          minWidth: 36,
+          minHeight: 40,
         ),
-        onChanged: (_) => load(),
-        textInputAction: TextInputAction.search,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        border: const OutlineInputBorder(borderSide: BorderSide.none),
+        enabledBorder: const OutlineInputBorder(borderSide: BorderSide.none),
       ),
+      onChanged: (_) => load(),
+      textInputAction: TextInputAction.search,
     );
     final createField = Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Expanded(
-          child: PaperField(
-            label: '新增$type标签',
-            child: TextField(
-              key: const Key('tag-assignment-new'),
-              controller: newName,
-              enabled: enabled,
-              maxLength: 100,
-              textInputAction: TextInputAction.done,
-              decoration: InputDecoration(
-                hintText: '输入新标签名称',
-                counterText: '',
-                filled: false,
-                border: const UnderlineInputBorder(),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: p.line),
-                ),
+          child: TextField(
+            key: const Key('tag-assignment-new'),
+            controller: newName,
+            enabled: enabled,
+            maxLength: 100,
+            style: const TextStyle(fontSize: 16),
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+              hintText: '新建标签',
+              counterText: '',
+              filled: false,
+              contentPadding: const EdgeInsets.symmetric(vertical: 8),
+              border: const UnderlineInputBorder(),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: p.line),
               ),
-              onChanged: (_) => setState(() {}),
-              onSubmitted: (_) => create(),
             ),
+            onChanged: (_) => setState(() {}),
+            onSubmitted: (_) => create(),
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 12),
         TextButton(
           key: const Key('tag-assignment-add'),
           onPressed: enabled && newName.text.trim().isNotEmpty ? create : null,
@@ -403,41 +404,41 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
             ? '添加标签'
             : '批量标签',
         closeEnabled: !saving,
-        footer: Wrap(
-          alignment: WrapAlignment.end,
-          spacing: 8,
-          runSpacing: 8,
+        footer: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
               onPressed: saving ? null : () => Navigator.pop(context),
               child: const Text('取消'),
             ),
-            TextButton(
-              key: const Key('tag-assignment-save'),
-              onPressed:
-                  enabled &&
-                      !unresolved &&
-                      !removed &&
-                      widget.initialKnown &&
-                      (single ||
-                          widget.selectionOnly ||
-                          chosen.isNotEmpty ||
-                          newName.text.trim().isNotEmpty) &&
-                      (widget.selectionOnly || targets.isNotEmpty)
-                  ? save
-                  : null,
-              child: Text(
-                saving
-                    ? '正在保存…'
-                    : widget.selectionOnly
-                    ? '使用所选标签'
-                    : single
-                    ? (pack ? '保存图包标签' : '保存视频标签')
-                    : remove
-                    ? '移除所选标签'
-                    : chosen.isEmpty
-                    ? '添加所选标签'
-                    : '添加 ${chosen.length} 个标签',
+            Flexible(
+              child: TextButton(
+                key: const Key('tag-assignment-save'),
+                onPressed:
+                    enabled &&
+                        !unresolved &&
+                        !removed &&
+                        widget.initialKnown &&
+                        (single ||
+                            widget.selectionOnly ||
+                            chosen.isNotEmpty ||
+                            newName.text.trim().isNotEmpty) &&
+                        (widget.selectionOnly || targets.isNotEmpty)
+                    ? save
+                    : null,
+                child: Text(
+                  saving
+                      ? '正在保存…'
+                      : widget.selectionOnly
+                      ? '使用所选标签'
+                      : single
+                      ? (pack ? '保存图包标签' : '保存视频标签')
+                      : remove
+                      ? '移除所选标签'
+                      : chosen.isEmpty
+                      ? '添加所选标签'
+                      : '添加 ${chosen.length} 个标签',
+                ),
               ),
             ),
           ],
@@ -450,8 +451,8 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
                 ? (pack ? '标签应用于整个图包。' : '只修改这个视频的标签。')
                 : remove
                 ? '从 ${targets.length} 个视频移除所选标签，保留其他标签。'
-                : '将标签追加到 ${targets.length} 个$type，保留原有标签。',
-            style: TextStyle(fontSize: 13, height: 1.7, color: p.catalogMeta),
+                : '添加到 ${targets.length} 个$type，保留原有标签。',
+            style: TextStyle(fontSize: 14, height: 1.65, color: p.catalogMeta),
           ),
           if (!widget.initialKnown) note('当前视频未载入，请关闭后重新打开。'),
           if (widget.allowRemoval && !single)

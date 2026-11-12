@@ -94,7 +94,7 @@ void main() {
         final s = state(t, kind), item = state(t, kind).data.items.first;
         final tag = find.byKey(Key('${kind.name}-tag-names-${item.id}'));
         final text = t.widget<Text>(tag);
-        expect(text.style!.fontSize, 12);
+        expect(text.style!.fontSize, 13);
         expect(text.style!.height, 1.6);
         final title = find.text(item.displayTitle as String);
         expect(

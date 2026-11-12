@@ -6,15 +6,17 @@ import 'paper.dart';
 
 /// Library geometry, excluding the platform's safe areas.
 abstract final class MediaLayout {
-  static const header = 52.0, navigation = 49.0, kindBar = 40.0;
-  static const side = 16.0, columnGap = 12.0, rowGap = 18.0;
+  static const header = 52.0, navigation = 65.0, kindBar = 48.0;
+  // The caption retains a 48dp menu target; subtract its extra 10dp from
+  // the row gap so the cover-to-cover rhythm matches the 38dp HTML caption.
+  static const side = 16.0, columnGap = 12.0, rowGap = 8.0;
   static double headerExtent(BuildContext context) =>
       max(header, MediaQuery.textScalerOf(context).scale(24) * 1.25 + 12);
   static double kindExtent(BuildContext context) =>
-      max(kindBar, MediaQuery.textScalerOf(context).scale(15) * 1.5 + 16);
-  static double cover(double width) => width <= 380 ? 185 : 211;
+      max(kindBar, MediaQuery.textScalerOf(context).scale(17) * 1.5 + 16);
+  static double cover(double width) => width < 375 ? 192 : 211;
   static final cardTitle = Paper.title.copyWith(fontSize: 16, height: 1.5);
-  static const cardTags = TextStyle(fontSize: 12, height: 1.6);
+  static const cardTags = TextStyle(fontSize: 13, height: 1.6);
   static const cardMeta = TextStyle(fontSize: 12, height: 1.5);
   static final historyTitle = Paper.title.copyWith(fontSize: 18);
   static const historyMeta = TextStyle(fontSize: 13);
@@ -66,7 +68,7 @@ abstract final class MediaLayout {
     line(context, '信息 Aa', cardMeta) + 4 + line(context, '标签 Aa', cardTags),
   );
   static double search(BuildContext context) =>
-      max(55, MediaQuery.textScalerOf(context).scale(16) * 1.5 + 31);
+      max(56, MediaQuery.textScalerOf(context).scale(16) * 1.5 + 32);
   static double scope(BuildContext context) =>
       max(48, MediaQuery.textScalerOf(context).scale(12) * 3.4);
   static const continuationMeta = TextStyle(fontSize: 12, height: 1.5);
@@ -181,7 +183,7 @@ class MediaCatalogSearch extends StatelessWidget {
     return SizedBox(
       height: MediaLayout.search(context),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 5, 16, 2),
+        padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -206,7 +208,15 @@ class MediaCatalogSearch extends StatelessWidget {
                             icon: const Icon(Icons.close, size: 18),
                           ),
                   ),
-                  hintStyle: TextStyle(color: p.muted),
+                  hintStyle: TextStyle(color: p.muted, fontSize: 14),
+                  prefixIconConstraints: const BoxConstraints(
+                    minWidth: 36,
+                    minHeight: 40,
+                  ),
+                  suffixIconConstraints: const BoxConstraints(
+                    maxWidth: 40,
+                    minHeight: 40,
+                  ),
                   isDense: true,
                   filled: true,
                   fillColor: p.soft.withValues(alpha: .45),
@@ -230,14 +240,21 @@ class MediaCatalogSearch extends StatelessWidget {
                 onChanged: onChanged,
               ),
             ),
-            const SizedBox(width: 8),
-            Tooltip(
-              message: filterLabel,
-              child: MediaCatalogAction(
-                key: ValueKey(filterLabel),
-                onPressed: onFilter,
-                icon: Icons.filter_list,
-                label: '筛选',
+            const SizedBox(width: 10),
+            SizedBox(
+              width: max(
+                60,
+                MediaQuery.textScalerOf(context).scale(14) * 2 + 29,
+              ),
+              child: Tooltip(
+                message: filterLabel,
+                child: MediaCatalogAction(
+                  key: ValueKey(filterLabel),
+                  onPressed: onFilter,
+                  icon: Icons.filter_list,
+                  label: '筛选',
+                  fontSize: 14,
+                ),
               ),
             ),
           ],
@@ -393,8 +410,10 @@ class MediaCatalogAction extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.onPressed,
+    this.fontSize = 13,
   });
   final String label;
+  final double fontSize;
   final IconData icon;
   final VoidCallback? onPressed;
   @override
@@ -403,7 +422,7 @@ class MediaCatalogAction extends StatelessWidget {
     style: TextButton.styleFrom(
       minimumSize: const Size(48, 48),
       padding: const EdgeInsets.symmetric(horizontal: 4),
-      textStyle: const TextStyle(fontSize: 13),
+      textStyle: TextStyle(fontSize: fontSize),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
     ),
     child: Row(
@@ -426,7 +445,10 @@ class MediaTagChoice extends StatelessWidget {
   final ValueChanged<bool>? onSelected;
   @override
   Widget build(BuildContext context) => PaperFilterChip(
-    label: Text(label),
+    label: Text(
+      label,
+      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+    ),
     selected: selected,
     onSelected: onSelected,
     showCheckmark: false,
@@ -460,7 +482,11 @@ class MediaTagChoices extends StatelessWidget {
         spacing: 8,
         runSpacing: 6,
         children: [
-          for (final child in children) SizedBox(width: width, child: child),
+          for (final child in children)
+            SizedBox(
+              width: width,
+              child: Align(alignment: Alignment.centerLeft, child: child),
+            ),
         ],
       );
     },

@@ -40,9 +40,7 @@ void main() {
       );
       final oldIdentity = repo.playbackIdentity;
       final preferences = UiPreferences();
-      await t.pumpWidget(
-        ShikaApp(repository: repo, preferences: preferences),
-      );
+      await t.pumpWidget(ShikaApp(repository: repo, preferences: preferences));
       await frames(t);
       await t.tap(find.byKey(const Key('nav-settings')));
       await frames(t);
@@ -67,7 +65,7 @@ void main() {
       expect(repo.snapshot.order, PlayOrder.random);
       await t.tap(find.byKey(const Key('nav-library')));
       await frames(t);
-      await t.tap(find.text('预览此范围'));
+      await t.tap(find.byKey(const Key('video-quick-cleanup')));
       await frames(t);
       expect(repo.playbackIdentity, isNot(oldIdentity));
       expect(repo.snapshot.order, PlayOrder.sequential);
@@ -81,7 +79,7 @@ void main() {
       await frames(t);
       await t.tap(find.byKey(const Key('preview-back')));
       await frames(t);
-      await t.tap(find.text('预览此范围'));
+      await t.tap(find.byKey(const Key('video-quick-cleanup')));
       await frames(t);
       expect(repo.snapshot.order, PlayOrder.sequential);
       await t.pumpWidget(const SizedBox());
@@ -96,7 +94,7 @@ void main() {
     (t) async {
       await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
-      await t.tap(find.text('预览此范围'));
+      await t.tap(find.byKey(const Key('video-quick-cleanup')));
       await frames(t);
       expect(find.byKey(const Key('video-preview-route')), findsOneWidget);
       await t.runAsync(() => repo.reset(scenario: DemoScenario.offline));
@@ -158,11 +156,16 @@ void main() {
       expect(find.text('1 个视频'), findsOneWidget);
       expect(
         t
-            .widget<FilledButton>(find.widgetWithText(FilledButton, '预览此范围'))
+            .widget<TextButton>(
+              find.descendant(
+                of: find.byKey(const Key('video-quick-cleanup')),
+                matching: find.byType(TextButton),
+              ),
+            )
             .onPressed,
         isNotNull,
       );
-      await t.tap(find.text('预览此范围'));
+      await t.tap(find.byKey(const Key('video-quick-cleanup')));
       await frames(t);
       expect(
         find.byKey(const Key('video-preview-route')),
@@ -222,11 +225,11 @@ void main() {
       await t.tap(find.byKey(const Key('tag-view-results')));
       await frames(t);
       expect(find.text('3 个视频'), findsOneWidget);
-      await t.tap(find.text('预览此范围'));
+      await t.tap(find.byKey(const Key('video-quick-cleanup')));
       await frames(t);
       final selected = repo.current!.id;
       expect(repo.snapshot.round, hasLength(3));
-      await t.tap(find.text('视频标签'));
+      await t.tap(find.text('打标签'));
       await frames(t);
       await t.tap(
         find.ancestor(

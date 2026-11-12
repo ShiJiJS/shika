@@ -226,7 +226,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
       child: AppShell(
         showNavigation: !selecting,
         navigationExtent: MediaLayout.navigation,
-        navigationWidth: 300,
+        navigationWidth: 320,
         selected: widget.destination,
         onNavigate: navigate,
         destinations: const [
@@ -385,14 +385,18 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                     builder: (context, counts, _) => SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           for (final value in MediaKind.values)
                             Padding(
-                              padding: const EdgeInsets.only(right: 22),
+                              padding: const EdgeInsets.only(right: 24),
                               child: InkWell(
                                 key: Key('kind-${value.name}'),
                                 onTap: () => kindChanged(value),
                                 child: AnimatedContainer(
+                                  constraints: const BoxConstraints(
+                                    minWidth: 56,
+                                  ),
                                   duration: MediaLayout.motion(context, 160),
                                   padding: const EdgeInsets.only(
                                     top: 8,
@@ -414,7 +418,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                                       Text(
                                         value == MediaKind.video ? '视频' : '图包',
                                         style: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 17,
                                           fontWeight: kind == value
                                               ? FontWeight.w600
                                               : FontWeight.w400,
@@ -440,7 +444,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                                               'catalog-count-${value.name}',
                                             ),
                                             style: TextStyle(
-                                              fontSize: 12,
+                                              fontSize: 13,
                                               color: p.muted,
                                               fontWeight: FontWeight.w400,
                                             ),

@@ -160,7 +160,7 @@ abstract final class Paper {
         constraints: const BoxConstraints(maxWidth: double.infinity),
         showDragHandle: false,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(21)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
         ),
       ),
     );
@@ -291,6 +291,7 @@ class _PaperSheetRoute<T> extends ModalBottomSheetRoute<T>
     super.constraints,
     super.isDismissible,
     super.enableDrag,
+    super.modalBarrierColor,
   }) : super(
          isScrollControlled: true,
          useSafeArea: true,
@@ -343,6 +344,9 @@ Future<T?> paperSheet<T>(
     ),
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
     constraints: constraints,
+    modalBarrierColor: Paper.of(context).dark
+        ? Colors.black54
+        : const Color(0x5c1c251d),
     isDismissible: dismissible,
     enableDrag: dismissible,
     builder: (context) => Padding(
@@ -401,7 +405,7 @@ class SheetFrame extends StatelessWidget {
                     Expanded(
                       child: Text(
                         title,
-                        style: Paper.of(context).title.copyWith(fontSize: 21),
+                        style: Paper.of(context).title.copyWith(fontSize: 22),
                       ),
                     ),
                     iconAction(

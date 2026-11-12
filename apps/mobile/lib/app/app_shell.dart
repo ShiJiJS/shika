@@ -67,7 +67,7 @@ class AppShell extends StatelessWidget {
         width: navigationWidth,
         height: max(
           navigationExtent,
-          MediaQuery.textScalerOf(context).scale(10) * 1.6 + 26,
+          MediaQuery.textScalerOf(context).scale(12) * 1.6 + 30,
         ),
         child: Row(
           children: [
@@ -95,13 +95,13 @@ class AppShell extends StatelessWidget {
                               ? Paper.of(context).olive
                               : Paper.of(context).muted,
                         ),
-                      const SizedBox(height: 2),
+                      const SizedBox(height: 4),
                       Text(
                         tab.label,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           fontWeight: selected == tab.id
                               ? FontWeight.w600
                               : FontWeight.w400,

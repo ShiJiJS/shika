@@ -1431,7 +1431,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: columns,
                                   crossAxisSpacing: 12,
-                                  mainAxisSpacing: 18,
+                                  mainAxisSpacing: MediaLayout.rowGap,
                                   mainAxisExtent: stride - MediaLayout.rowGap,
                                 ),
                             itemCount: data.items.length,
