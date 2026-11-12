@@ -15,6 +15,57 @@ class _RealHttp extends HttpOverrides {}
 
 void main() {
   identityTests();
+  testWidgets(
+    'missing preview remains selectable in the real overview and opens its original',
+    (t) async {
+      final repo = AssetReadingLibrary()..missingThumbnails.add(1);
+      addTearDown(() async {
+        await t.pumpWidget(const SizedBox());
+        repo.dispose();
+      });
+      await t.pumpWidget(
+        MaterialApp(
+          theme: Paper.theme,
+          home: PackReaderPage(
+            repository: repo,
+            entry: PackReadingEntry(PackQuery(), anchorId: 'p0'),
+            editTags: (_) async {},
+          ),
+        ),
+      );
+      final state = t.state<PackReaderPageState>(find.byType(PackReaderPage));
+      Future<void> until(bool Function() ready) async {
+        for (var i = 0; i < 180; i++) {
+          await t.pump(const Duration(milliseconds: 40));
+          await t.runAsync(
+            () => Future<void>.delayed(const Duration(milliseconds: 3)),
+          );
+          expect(t.takeException(), isNull);
+          if (ready()) return;
+        }
+        fail('overview/original did not become ready');
+      }
+
+      await until(() => state.session.opened);
+      unawaited(state.overview());
+      await until(() => find.text('暂无缩略图').evaluate().isNotEmpty);
+      await t.pump(const Duration(milliseconds: 300));
+      expect(find.text('暂无缩略图'), findsOneWidget);
+      expect(find.text('图片不可读取'), findsNothing);
+      await t.tap(find.byKey(const Key('reader-overview-page-1')));
+      await until(
+        () =>
+            find.byKey(const Key('reader-overview-sheet')).evaluate().isEmpty &&
+            state.session.index == 1,
+      );
+      expect(find.byKey(const Key('reader-overview-sheet')), findsNothing);
+      expect(state.session.index, 1);
+      expect(state.session.currentPage!.readable, isTrue);
+      expect(find.text('图片加载失败'), findsNothing);
+      expect(t.takeException(), isNull);
+    },
+  );
+
   for (final scenario in [
     'recover',
     'bounded',

@@ -281,7 +281,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             app.state.pack_purge_plans.close()
             db.close()
 
-    app = FastAPI(title="拾刻 · shika", version="1.0.0", lifespan=lifespan)
+    app = FastAPI(title="拾刻 · shika", version="1.0.1", lifespan=lifespan)
 
     @app.exception_handler(LibraryError)
     async def library_error(_request, error):

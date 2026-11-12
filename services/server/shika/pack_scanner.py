@@ -586,23 +586,27 @@ class PackScanner:
                 old = cached.get(relative)
                 if old and old.signature == observed:
                     metadata = {key: getattr(old, key) for key in PAGE_FIELDS}
-                    if (old.error == "image_too_large" and old.format == "JPEG") or (
+                    if old.error in (
+                        "image_too_large",
+                        "image_probe_timeout",
+                        "image_probe_failed",
+                        "image_probe_unavailable",
+                    ) or (
                         not old.error
                         and (not old.thumbnail or not (self.cache / old.thumbnail).is_file())
                     ):
                         inspected = inspect_image(
                             fd, self.cache, self.settings.probe_timeout, self.scanner.stop
                         )
-                        if not inspected.get("error"):
-                            metadata.update(
-                                width=inspected["width"],
-                                height=inspected["height"],
-                                format=inspected["format"],
-                                error=None,
-                            )
-                            metadata["thumbnail"] = inspected.get("thumbnail")
-                            if inspected.get("thumbnail_warning"):
-                                summary["thumbnail_failed"] += 1
+                        metadata.update(
+                            width=inspected.get("width", old.width),
+                            height=inspected.get("height", old.height),
+                            format=inspected.get("format", old.format),
+                            error=inspected.get("error"),
+                            thumbnail=inspected.get("thumbnail"),
+                        )
+                        if inspected.get("thumbnail_warning"):
+                            summary["thumbnail_failed"] += 1
                 else:
                     digest = hashlib.sha256()
                     os.lseek(fd, 0, os.SEEK_SET)

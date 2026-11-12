@@ -4,38 +4,45 @@ import json
 import os
 import resource
 import sys
-import warnings
 
 from PIL import Image, ImageOps, UnidentifiedImageError
 
-MAX_PIXELS = 80_000_000
-MAX_SOURCE_PIXELS = 512_000_000
+# This budget applies only to thumbnail working pixels, never to source admission.
+MAX_PREVIEW_PIXELS = 80_000_000
 
 
-def decode(fd, target):
-    # JPEG can reduce pixels inside the decoder before allocating a full frame.
-    # Keep a separate header ceiling; enforce the working-size budget after draft.
-    Image.MAX_IMAGE_PIXELS = MAX_SOURCE_PIXELS
-    warnings.simplefilter("error", Image.DecompressionBombWarning)
+def decode(fd, target, metadata_ready):
+    # Header inspection must not reject a source solely for its dimensions.
+    # Memory/CPU limits still contain decoder allocations, including open().
+    Image.MAX_IMAGE_PIXELS = None
     with os.fdopen(os.dup(fd), "rb") as stream:
         stream.seek(0)
         with Image.open(stream, formats=("JPEG", "PNG", "WEBP")) as image:
             if getattr(image, "n_frames", 1) != 1:
                 return {"error": "animated_image_unsupported"}
             width, height = image.size
-            if width * height > MAX_PIXELS and image.format != "JPEG":
-                return {"error": "image_too_large"}
             metadata = {"width": width, "height": height, "format": image.format}
+            # PNG.getexif() may load the entire image. Read only metadata already
+            # available in its header before publishing the fallback receipt.
+            exif = Image.Exif()
+            if image.info.get("exif"):
+                exif.load(image.info["exif"])
+            if exif.get(274, 1) in (5, 6, 7, 8):
+                metadata["width"], metadata["height"] = height, width
+            metadata_ready(metadata)
             image.verify()
         stream.seek(0)
         with Image.open(stream, formats=("JPEG", "PNG", "WEBP")) as image:
+            image.draft("RGB", (768, 768))
+            if image.width * image.height > MAX_PREVIEW_PIXELS:
+                return {**metadata, "thumbnail_warning": "thumbnail_resource_limit"}
+            # Decoding errors still identify genuinely unreadable sources. A
+            # resource failure instead leaves the original available to readers.
+            image.load()
             if image.getexif().get(274, 1) in (5, 6, 7, 8):
                 metadata["width"], metadata["height"] = height, width
-            # Fully decode once so truncated JPEGs do not enter a reading manifest.
-            image.draft("RGB", (768, 768))
-            if image.width * image.height > MAX_PIXELS:
-                return {"error": "image_too_large"}
-            image.load()
+            # Resize first to avoid copying a full-resolution rotated frame.
+            image.thumbnail((768, 768), Image.Resampling.LANCZOS, reducing_gap=3)
             ImageOps.exif_transpose(image, in_place=True)
             image.thumbnail((512, 768), Image.Resampling.LANCZOS, reducing_gap=3)
             try:
@@ -54,17 +61,28 @@ def decode(fd, target):
 
 
 def main():
-    # Decoding a corrupt/huge image must not take down the HTTP process.
-    resource.setrlimit(resource.RLIMIT_AS, (1200 * 1024**2, 1200 * 1024**2))
+    # Stay below the 768 MiB service container budget, leaving room for HTTP and
+    # authentication. The parent can recover a header receipt if this worker dies.
+    resource.setrlimit(resource.RLIMIT_AS, (512 * 1024**2, 512 * 1024**2))
     resource.setrlimit(resource.RLIMIT_CPU, (15, 16))
+    metadata = {}
+
+    def ready(value):
+        metadata.update(value)
+        print(json.dumps({"metadata": value}), flush=True)
+
     try:
-        result = decode(int(sys.argv[1]), sys.argv[2])
+        result = decode(int(sys.argv[1]), sys.argv[2], ready)
     except (Image.DecompressionBombError, Image.DecompressionBombWarning, MemoryError):
-        result = {"error": "image_too_large"}
+        result = (
+            {**metadata, "thumbnail_warning": "thumbnail_resource_limit"}
+            if metadata
+            else {"error": "image_probe_failed"}
+        )
     except (UnidentifiedImageError, OSError, ValueError, SyntaxError, RuntimeError):
         result = {"error": "invalid_image"}
     result["peak_rss_kib"] = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    print(json.dumps(result))
+    print(json.dumps(result), flush=True)
 
 
 if __name__ == "__main__":

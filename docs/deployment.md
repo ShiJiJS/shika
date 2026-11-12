@@ -29,7 +29,7 @@ cd shika
 如果直接在目标 NAS 上构建，镜像默认使用该主机架构：
 
 ```bash
-docker build --target runtime -t shika-server:1.0.0 services/server
+docker build --target runtime -t shika-server:1.0.1 services/server
 ```
 
 如果在另一台电脑构建并传到 NAS，显式指定架构。例如为 x86 NAS 导出：
@@ -37,7 +37,7 @@ docker build --target runtime -t shika-server:1.0.0 services/server
 ```bash
 mkdir -p tmp/releases
 docker buildx build --platform linux/amd64 --target runtime \
-  -t shika-server:1.0.0-amd64 \
+  -t shika-server:1.0.1-amd64 \
   --output type=docker,dest=tmp/releases/server-amd64.tar services/server
 ```
 
@@ -45,7 +45,7 @@ ARM NAS 将平台改为 `linux/arm64`，并对应修改标签和归档文件名�
 
 ```bash
 docker load -i /path/to/server-amd64.tar
-docker image inspect shika-server:1.0.0-amd64 --format '{{.Os}}/{{.Architecture}}'
+docker image inspect shika-server:1.0.1-amd64 --format '{{.Os}}/{{.Architecture}}'
 ```
 
 随后将环境文件的 `SHIKA_IMAGE` 设置成**实际构建或导入的标签**。模板中的默认标签不代表镜像已经发布到公共镜像仓库。飞牛也可通过 Docker 界面或已授权的 CLI 导入，见下文。
@@ -79,7 +79,7 @@ cp -n deploy/fnos/mounts.json.example /srv/shika/config/mounts.json
 编辑 NAS 应用目录中的 `.env`。在 NAS 原生构建镜像时，例如：
 
 ```dotenv
-SHIKA_IMAGE=shika-server:1.0.0
+SHIKA_IMAGE=shika-server:1.0.1
 SHIKA_BIND_ADDRESS=192.168.1.100
 SHIKA_PORT=8760
 SHIKA_UID=1000
@@ -89,7 +89,7 @@ SHIKA_VIDEO_DIR=/srv/media/videos
 SHIKA_PACK_DIR=/srv/media/packs
 ```
 
-跨架构导入示例则使用 `SHIKA_IMAGE=shika-server:1.0.0-amd64`。两个媒体源目录必须已经存在。配置与容器实际挂载的对应关系是：
+跨架构导入示例则使用 `SHIKA_IMAGE=shika-server:1.0.1-amd64`。两个媒体源目录必须已经存在。配置与容器实际挂载的对应关系是：
 
 | NAS 路径或设置 | 容器内位置 / 用途 |
 | --- | --- |
@@ -139,7 +139,7 @@ curl --fail http://192.168.1.100:8760/health
 fnos-cli --profile home-fnos --allow-insecure-http docker image ls
 fnos-cli --profile home-fnos --allow-insecure-http docker container ls --all
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.imageLoad --json '{"filePath":"/vol1/1000/docker/shika/image-archives/server-amd64.tar"}' --yes
-fnos-cli --profile home-fnos --allow-insecure-http docker image inspect shika-server:1.0.0-amd64
+fnos-cli --profile home-fnos --allow-insecure-http docker image inspect shika-server:1.0.1-amd64
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeCreate --json '{"auto_build":false,"file":"compose.yaml","folder":"/vol1/1000/docker/shika","project_name":"shika"}' --yes
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeBuild --json '{"project_name":"shika"}' --yes
 fnos-cli --profile home-fnos --allow-insecure-http docker container inspect shika-server

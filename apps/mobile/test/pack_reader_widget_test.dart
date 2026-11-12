@@ -12,6 +12,7 @@ import 'media_workspace_widget_test.dart' show WorkspaceLibrary;
 
 class AssetReadingLibrary extends WorkspaceLibrary {
   int totalPages = 3;
+  final missingThumbnails = <int>{};
   Size Function(int index)? pageDimensions;
   final commands = <ReaderCommand>[];
   final manifestRequests = <({int offset, int limit})>[];
@@ -54,9 +55,13 @@ class _AssetReader implements PackReader {
     image:
         repo.pageImage?.call(selected, index) ??
         const MediaSource('assets/media/flower-portrait.jpg', asset: true),
-    thumbnail:
-        repo.pageThumbnail?.call(selected, index) ??
-        const MediaSource('assets/media/flower-portrait.jpg', asset: true),
+    thumbnail: repo.missingThumbnails.contains(index)
+        ? null
+        : repo.pageThumbnail?.call(selected, index) ??
+              const MediaSource(
+                'assets/media/flower-portrait.jpg',
+                asset: true,
+              ),
   );
   ReaderState get state {
     final mark = repo.marks[selected] ?? ReaderMark('$selected-0');

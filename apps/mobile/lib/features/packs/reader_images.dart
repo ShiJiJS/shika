@@ -218,11 +218,13 @@ class _ReaderImageState extends State<ReaderImage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (!widget.thumbnail)
-              const Text(
-                '图片加载失败',
-                style: TextStyle(color: Colors.white, fontSize: 14),
+            Text(
+              widget.thumbnail ? '缩略图加载失败' : '图片加载失败',
+              style: TextStyle(
+                color: widget.thumbnail ? null : Colors.white,
+                fontSize: widget.thumbnail ? 11 : 14,
               ),
+            ),
             TextButton.icon(
               style: errorButtonStyle,
               key: Key('reader-image-retry-${widget.page.id}'),
@@ -245,7 +247,20 @@ class _ReaderImageState extends State<ReaderImage> {
     );
     if (!widget.active) return loading();
     if (widget.thumbnail && widget.page.thumbnail == null) {
-      return const Center(child: Icon(Icons.image_not_supported_outlined));
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.image_outlined),
+            const SizedBox(height: 6),
+            Text(
+              widget.page.readable ? '暂无缩略图' : '图片不可读取',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 11),
+            ),
+          ],
+        ),
+      );
     }
     if (!widget.page.readable) return failure();
     final media = source(widget);

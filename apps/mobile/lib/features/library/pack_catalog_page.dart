@@ -79,7 +79,19 @@ class _PackCoverState extends State<PackCover> {
     if (source == null) {
       return ColoredBox(
         color: Paper.of(context).soft,
-        child: const Center(child: Icon(Icons.collections_outlined)),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.collections_outlined),
+              const SizedBox(height: 6),
+              Text(
+                '暂无封面',
+                style: TextStyle(fontSize: 11, color: Paper.of(context).muted),
+              ),
+            ],
+          ),
+        ),
       );
     }
     Widget failure(BuildContext context, Object error, StackTrace? trace) {

@@ -59,6 +59,7 @@ class PageSummary(BaseModel):
     content_version: int
     image_url: str | None
     thumbnail_url: str | None
+    thumbnail_warning: str | None = None
 
 
 class PageList(BaseModel):

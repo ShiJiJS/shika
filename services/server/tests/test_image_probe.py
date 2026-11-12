@@ -1,16 +1,14 @@
 """Decoder limits are enforced by real subprocesses, independent of HTTP."""
 
-import struct
 import subprocess
 import sys
 import threading
-import zlib
 
 from PIL import Image
 
 from shika.images import inspect_image
 
-from .test_packs import image
+from .test_packs import image, large_png
 
 
 def test_probe_timeout_and_stop_reap_decoder_and_remove_partial_cache(tmp_path, monkeypatch):
@@ -39,25 +37,60 @@ def test_probe_timeout_and_stop_reap_decoder_and_remove_partial_cache(tmp_path, 
     assert all(child.poll() is not None for child in spawned)
 
 
-def test_pixel_limit_rejects_header_before_allocating_full_image(tmp_path):
-    def chunk(kind, value):
-        return (
-            struct.pack(">I", len(value))
-            + kind
-            + value
-            + struct.pack(">I", zlib.crc32(kind + value))
-        )
-
-    source = tmp_path / "oversized.png"
-    source.write_bytes(
-        b"\x89PNG\r\n\x1a\n"
-        + chunk(b"IHDR", struct.pack(">IIBBBBB", 10000, 10000, 8, 2, 0, 0, 0))
-        + chunk(b"IDAT", zlib.compress(b"\0"))
-        + chunk(b"IEND", b"")
-    )
+def test_source_beyond_old_pixel_ceiling_is_kept_without_decoding_a_full_frame(tmp_path):
+    source = tmp_path / "576-megapixels.png"
+    large_png(source, (24000, 24000))
     with source.open("rb") as file:
         result = inspect_image(file.fileno(), tmp_path / "cache", 20, threading.Event())
-    assert result["error"] == "image_too_large"
+    assert not result.get("error"), result
+    assert (result["width"], result["height"]) == (24000, 24000)
+    assert result["thumbnail_warning"] == "thumbnail_resource_limit"
+    assert not list((tmp_path / "cache").iterdir())
+
+
+def test_timeout_or_crash_after_header_keeps_original_and_removes_partial_preview(
+    tmp_path, monkeypatch
+):
+    import json
+
+    source = tmp_path / "source.png"
+    image(source)
+    original = subprocess.Popen
+    for fail in ("timeout", "crash"):
+        children = []
+
+        def worker(args, fail=fail, children=children, **kwargs):
+            code = (
+                "import json,os,sys,time; from pathlib import Path; "
+                "from PIL import Image; "
+                "im=Image.open(os.fdopen(os.dup(int(sys.argv[1])), 'rb')); "
+                "print(json.dumps({'metadata': {'width':im.width,'height':im.height,'format':im.format}}),flush=True); "
+                "Path(sys.argv[2]).write_bytes(b'partial'); "
+                + ("time.sleep(60)" if fail == "timeout" else "print('{',flush=True); os._exit(1)")
+            )
+            child = original([sys.executable, "-c", code, *args[-2:]], **kwargs)
+            children.append(child)
+            return child
+
+        monkeypatch.setattr("shika.images.subprocess.Popen", worker)
+        with source.open("rb") as file:
+            result = inspect_image(file.fileno(), tmp_path / "cache", 1, threading.Event())
+        assert not result.get("error"), json.dumps(result)
+        assert (result["width"], result["height"]) == (40, 60)
+        assert result["thumbnail_warning"] == (
+            "thumbnail_timeout" if fail == "timeout" else "thumbnail_resource_limit"
+        )
+        assert all(child.poll() is not None for child in children)
+        assert not list((tmp_path / "cache").iterdir())
+
+
+def test_confirmed_decode_error_does_not_fall_back_to_a_valid_header(tmp_path):
+    source = tmp_path / "truncated.jpg"
+    image(source, size=(256, 256))
+    source.write_bytes(source.read_bytes()[:-50])
+    with source.open("rb") as file:
+        result = inspect_image(file.fileno(), tmp_path / "cache", 20, threading.Event())
+    assert result["error"] == "invalid_image"
     assert not list((tmp_path / "cache").iterdir())
 
 
