@@ -9,7 +9,7 @@
 
 ![Android](https://img.shields.io/badge/App-Android-3DDC84?logo=android&logoColor=white)
 ![Docker](https://img.shields.io/badge/Server-Docker-2496ED?logo=docker&logoColor=white)
-![Status](https://img.shields.io/badge/Version-1.0.1-526B52)
+![Status](https://img.shields.io/badge/Version-1.0.3-526B52)
 
 [开始使用](#开始使用) · [部署手册](docs/deployment.md) · [文档导航](docs/README.md) · [反馈问题](https://github.com/ShiJiJS/shika/issues)
 
@@ -23,7 +23,7 @@
 
 图包以**文件夹为单位**组织，提供类似漫画阅读的纵向拼接、横向翻页、缩放和续读。视频与图包各自管理标签和最近记录，适合一边看、一边整理自己的收藏。
 
-当前正式版为 **1.0.1**，App 界面为简体中文。中文和英文 README、部署手册分别维护，语言入口位于每页顶部。
+当前正式版为 **1.0.3**，App 界面为简体中文。中文和英文 README、部署手册分别维护，语言入口位于每页顶部。
 
 ## 主要功能
 
@@ -41,9 +41,9 @@
 
 ## 开始使用
 
-1. **准备 Docker 与目录**：NAS 需要 Docker，准备视频、图包目录，以及保存数据库的本地 `data/`。按[部署手册](docs/deployment.md#首次部署)构建与 NAS CPU 匹配的 `shika-server:1.0.1` 镜像。
+1. **准备 Docker 与目录**：NAS 需要 Docker，准备视频、图包目录，以及保存数据库的本地 `data/`。从 [1.0.3 正式版](https://github.com/ShiJiJS/shika/releases/tag/v1.0.3)下载并导入与 NAS CPU 匹配的服务端镜像，或按[部署手册](docs/deployment.md#首次部署)自行构建。
 2. **配置并启动服务**：复制 `deploy/fnos/` 的 Compose、`.env.example` 和 `mounts.json.example`，填写实际 NAS IP、媒体路径、UID/GID。启动 Compose，访问 `http://NAS地址:8760/health`，应返回 `status: ok`。完整命令和挂载示例见[部署手册](docs/deployment.md)。
-3. **安装 App**：从 [1.0.1 正式版](https://github.com/ShiJiJS/shika/releases/tag/v1.0.1)下载并安装 `shika-1.0.1-arm64.apk`，也可按[开发指南](docs/development.md)从源码构建。更新时覆盖安装并保持相同签名。
+3. **安装 App**：从 [1.0.3 正式版](https://github.com/ShiJiJS/shika/releases/tag/v1.0.3)下载并安装 `shika-1.0.3-arm64.apk`，也可按[开发指南](docs/development.md)从源码构建。更新时覆盖安装并保持相同签名。
 4. **首次连接并设置口令**：手机与 NAS 网络互通，在引导页点“连接我的媒体库”，填写 NAS IP 和端口 `8760`，点“连接服务器”。App 自动判断服务状态：新服务显示“设置个人口令”，输入两次 8–1024 个字符的口令，点“设置口令并进入”；已有服务输入原口令，点“连接并进入”。全新部署没有默认口令。
 5. **接入媒体目录**：在设置中添加视频或图包目录，使用容器内路径，例如 `/media`、`/packs-cos`；检查各目录扫描进度，完成后从媒体库浏览。
 

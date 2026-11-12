@@ -17,7 +17,22 @@ Shika consists of an Android app and one Docker service. The service runs on you
 
 For an existing library, read [Backups, updates, and migration](#backups-updates-and-migration) first. Do not replace existing root IDs or the passphrase with sample values.
 
-### 1. Build an image for the NAS CPU
+### 1. Get an image for the NAS CPU
+
+Download prebuilt images and deployment templates from the [1.0.3 release](https://github.com/ShiJiJS/shika/releases/tag/v1.0.3):
+
+- x86 NAS: `shika-server-1.0.3-linux-amd64.tar.gz`.
+- ARM64 NAS: `shika-server-1.0.3-linux-arm64.tar.gz`.
+- Configuration templates: `shika-deploy-1.0.3.zip`; fill in your actual paths and address as described below.
+
+Import only the image matching your NAS CPU. Both archives use the tag `shika-server:1.0.3`, for example:
+
+```bash
+docker load -i shika-server-1.0.3-linux-amd64.tar.gz
+docker image inspect shika-server:1.0.3 --format '{{.Os}}/{{.Architecture}}'
+```
+
+On fnOS, use Docker's image import interface. `SHA256SUMS.txt` contains checksums for the APK, images, and templates. To build from source instead, continue below.
 
 On a machine with Git and Docker, get the source:
 
@@ -29,7 +44,7 @@ cd shika
 When building directly on the target NAS, Docker uses that machine's architecture by default:
 
 ```bash
-docker build --target runtime -t shika-server:1.0.1 services/server
+docker build --target runtime -t shika-server:1.0.3 services/server
 ```
 
 When building on another computer for transfer to the NAS, specify the architecture explicitly. For an x86 NAS:
@@ -37,7 +52,7 @@ When building on another computer for transfer to the NAS, specify the architect
 ```bash
 mkdir -p tmp/releases
 docker buildx build --platform linux/amd64 --target runtime \
-  -t shika-server:1.0.1-amd64 \
+  -t shika-server:1.0.3-amd64 \
   --output type=docker,dest=tmp/releases/server-amd64.tar services/server
 ```
 
@@ -45,7 +60,7 @@ For an ARM NAS, use `linux/arm64` and change the tag and archive filename accord
 
 ```bash
 docker load -i /path/to/server-amd64.tar
-docker image inspect shika-server:1.0.1-amd64 --format '{{.Os}}/{{.Architecture}}'
+docker image inspect shika-server:1.0.3-amd64 --format '{{.Os}}/{{.Architecture}}'
 ```
 
 Set `SHIKA_IMAGE` to the **tag you actually built or imported**. The template's default tag does not indicate a published public registry image. On fnOS, importing is also possible through its Docker interface or an authorized CLI, as described below.
@@ -79,7 +94,7 @@ Store `data/` on a NAS-local filesystem supporting SQLite WAL, rather than an SM
 Edit `.env` in the NAS application directory. For an image built natively on the NAS:
 
 ```dotenv
-SHIKA_IMAGE=shika-server:1.0.1
+SHIKA_IMAGE=shika-server:1.0.3
 SHIKA_BIND_ADDRESS=192.168.1.100
 SHIKA_PORT=8760
 SHIKA_UID=1000
@@ -89,7 +104,7 @@ SHIKA_VIDEO_DIR=/srv/media/videos
 SHIKA_PACK_DIR=/srv/media/packs
 ```
 
-For the cross-built image above, use `SHIKA_IMAGE=shika-server:1.0.1-amd64`. Both media source directories must already exist. The configuration maps to the running container as follows:
+For the cross-built image above, use `SHIKA_IMAGE=shika-server:1.0.3-amd64`. Both media source directories must already exist. The configuration maps to the running container as follows:
 
 | NAS path or setting | Container path / purpose |
 | --- | --- |
@@ -139,7 +154,7 @@ An authorized `fnos-cli` can also perform these operations. The following profil
 fnos-cli --profile home-fnos --allow-insecure-http docker image ls
 fnos-cli --profile home-fnos --allow-insecure-http docker container ls --all
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.imageLoad --json '{"filePath":"/vol1/1000/docker/shika/image-archives/server-amd64.tar"}' --yes
-fnos-cli --profile home-fnos --allow-insecure-http docker image inspect shika-server:1.0.1-amd64
+fnos-cli --profile home-fnos --allow-insecure-http docker image inspect shika-server:1.0.3-amd64
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeCreate --json '{"auto_build":false,"file":"compose.yaml","folder":"/vol1/1000/docker/shika","project_name":"shika"}' --yes
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeBuild --json '{"project_name":"shika"}' --yes
 fnos-cli --profile home-fnos --allow-insecure-http docker container inspect shika-server
