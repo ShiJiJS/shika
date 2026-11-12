@@ -10,20 +10,30 @@
 并列）：这里只有 HTTP API 的消费代码，不 import 服务端代码、不读写其数据库，
 也不感知部署形态。接口契约以服务端 `/openapi.json` 为准，本目录不复制契约定义。
 
-主要用途有两个：手动排查库状态，以及作为自动流水线（Telegram 收集 → 下载 →
-打标 → 落 NAS → 标签同步）的执行入口。`--json` 输出专为脚本消费设计。
+主要用途是查询媒体库状态、扫描和批量维护视频标签，也可接入用户自己的自动化脚本。`--json` 输出便于脚本处理。
 
 ## 安装
 
-Python 版本要求以 `pyproject.toml` 为准。
+CLI 源码就在本仓库的 `apps/cli`，独立于 App、Docker 服务和 Skill。Python 版本要求以 `pyproject.toml` 为准；使用 uv 或 pipx 安装到隔离环境。在仓库根目录执行：
 
 ```bash
-uv tool install "git+ssh://git@github.com/ShiJiJS/shika.git#subdirectory=apps/cli"
+uv tool install ./apps/cli
 # 或
-pipx install "git+ssh://git@github.com/ShiJiJS/shika.git#subdirectory=apps/cli"
-# 本地开发（在 apps/cli 目录内）
-python3 -m venv .venv && . .venv/bin/activate && pip install -e '.[dev]'
+pipx install ./apps/cli
+shika --help
 ```
+
+未检出源码时，也可从 HTTPS Git 地址安装，不需要维护者的 SSH 配置：
+
+```bash
+uv tool install "git+https://github.com/ShiJiJS/shika.git#subdirectory=apps/cli"
+```
+
+若仓库访问受限，使用自己的 GitHub 授权；凭据不要写进 URL。当前文档按源码安装，不假设已上传到 PyPI。安装后若终端找不到 `shika`，按 uv 或 pipx 的提示将其工具目录加入 PATH。Windows 可使用同样的 uv/pipx 命令。
+
+没有 uv/pipx 时也可以创建标准 Python 虚拟环境，在其中执行 `python -m pip install ./apps/cli`；macOS/Linux 的命令入口是该环境的 `bin/shika`，Windows 为 `Scripts/shika.exe`。更新源码后重新安装时，uv 使用 `uv tool install --reinstall ./apps/cli`，pipx 使用 `pipx install --force ./apps/cli`。
+
+App 和 Docker 安装不会自动在电脑上安装 CLI；只使用 App 时无需安装。CLI 本身无需 Skill、Skillshare、Flutter、FFmpeg 或 AI 模型，访问的是你自己部署的拾刻 HTTP 服务。
 
 ## 配套 Skill（选装）
 
@@ -31,13 +41,17 @@ python3 -m venv .venv && . .venv/bin/activate && pip install -e '.[dev]'
 
 ## 快速开始
 
+CLI 连接已初始化的服务。全新服务先按[部署引导](../../docs/deployment.md#安装与连接-app)设置个人口令，再用 CLI 登录；CLI 当前没有首次设置口令命令。将下面的 `NAS_ADDRESS` 和 `VIDEO_ID` 换成自己的地址与实际视频 ID。
+
 ```bash
-rv login --base-url http://192.168.1.10:8760     # 口令走 RV_PASSPHRASE 或交互输入
-rv scan                                           # 触发扫描并等待完成
-rv find /media/shorts/真人/abc.mp4                # 服务端路径 → 视频 ID
-rv tag add <VIDEO_ID> 真人 黑发                    # 标签名不存在会自动创建
-rv show <VIDEO_ID>                                # 读回核对标签
-rv backup --download backup.json                  # 视频管理备份，不包含图包
+shika login --base-url http://NAS_ADDRESS:8760  # 换成自己的地址，口令交互输入
+shika info                                    # 查询服务与连接状态
+shika scan                                    # 触发扫描并等待完成
+shika videos                                  # 查询视频
+shika find /media/clips/example.mp4            # 服务端路径 → 视频 ID
+shika tag add VIDEO_ID 风景                    # 标签名不存在会自动创建
+shika show VIDEO_ID                           # 读回核对标签
+shika backup --download backup.json            # 视频管理备份，不包含图包
 ```
 
 注意 `find` / `resolve` 用的是**服务端容器内路径**（mounts.json 声明的范围，
@@ -108,6 +122,8 @@ UV_PROJECT_ENVIRONMENT="$PWD/.dev/cli" uv --directory apps/cli run --locked --ex
 ```
 
 测试只连接本机临时HTTP样本服务，并使用临时凭据目录，不连接NAS。也可在 `apps/cli` 目录使用 pip 开发环境：
+
+Skill 抽帧检查另用 FFmpeg 合成临时视频，验证移动后的技能、分页总览和源文件保留；未安装 FFmpeg/ffprobe 时会跳过这些检查。Pillow 只加入开发测试依赖，CLI 的日常运行依赖仍只有 requests。
 
 ```bash
 pip install -e '.[dev]'

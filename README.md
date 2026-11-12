@@ -11,7 +11,7 @@
 ![Docker](https://img.shields.io/badge/Server-Docker-2496ED?logo=docker&logoColor=white)
 ![Status](https://img.shields.io/badge/Version-1.0.3-526B52)
 
-[开始使用](#开始使用) · [部署手册](docs/deployment.md) · [文档导航](docs/README.md) · [反馈问题](https://github.com/ShiJiJS/shika/issues)
+[开始使用](#开始使用) · [媒体目录格式](docs/media-layout.md) · [部署手册](docs/deployment.md) · [文档导航](docs/README.md) · [反馈问题](https://github.com/ShiJiJS/shika/issues)
 
 </div>
 
@@ -45,7 +45,7 @@
 2. **配置并启动服务**：复制 `deploy/fnos/` 的 Compose、`.env.example` 和 `mounts.json.example`，填写实际 NAS IP、媒体路径、UID/GID。启动 Compose，访问 `http://NAS地址:8760/health`，应返回 `status: ok`。完整命令和挂载示例见[部署手册](docs/deployment.md)。
 3. **安装 App**：从 [1.0.3 正式版](https://github.com/ShiJiJS/shika/releases/tag/v1.0.3)下载并安装 `shika-1.0.3-arm64.apk`，也可按[开发指南](docs/development.md)从源码构建。更新时覆盖安装并保持相同签名。
 4. **首次连接并设置口令**：手机与 NAS 网络互通，在引导页点“连接我的媒体库”，填写 NAS IP 和端口 `8760`，点“连接服务器”。App 自动判断服务状态：新服务显示“设置个人口令”，输入两次 8–1024 个字符的口令，点“设置口令并进入”；已有服务输入原口令，点“连接并进入”。全新部署没有默认口令。
-5. **接入媒体目录**：在设置中添加视频或图包目录，使用容器内路径，例如 `/media`、`/packs-cos`；检查各目录扫描进度，完成后从媒体库浏览。
+5. **接入媒体目录**：按[媒体目录格式](docs/media-layout.md)存放文件，在设置中添加视频或图包目录，使用容器内路径，例如 `/media`、`/packs-cos`。图包根目录下每个一级子文件夹是一个图包，图片按相对路径自然排序；检查各目录扫描进度，完成后从媒体库浏览。
 
 后续修改口令：**设置 → 修改个人口令**，填写当前口令和两次新口令。保存后本机继续连接，其他设备需重新登录，无需重建容器。App 自动管理登录凭据，不需要手动填写会话 token。初次设置前请仅开放给自己可信的局域网；忘记口令时按[口令恢复说明](docs/deployment.md#修改与找回口令)操作。
 
@@ -65,13 +65,21 @@
 
 [video-tagging Skill](skills/video-tagging/SKILL.md) 可抽帧识别视频、生成中文标签文件，并按要求同步到拾刻。[shika CLI](apps/cli/README.md) 提供视频查询和标签批量操作。两者是选装工具，普通 App 与 NAS 服务无需安装。
 
-在源码仓库中可一次配置 Skill 和隔离的 CLI（Python 3.10+，Skillshare 已配置）：
+**只安装 CLI**：准备 Python 3.10+ 和 uv，在源码仓库根目录运行（也可使用 pipx）：
 
 ```bash
-python3 skills/video-tagging/scripts/install.py --skillshare
+uv tool install ./apps/cli
+shika login --base-url http://NAS_ADDRESS:8760
+shika info
 ```
 
-其他助手的安装方式、模型依赖与使用流程见[视频打标指南](docs/video-tagging.md)。
+**安装 Skill 和隔离 CLI**：使用支持 Skills 的助手，在仓库根目录指定它实际使用的技能父目录：
+
+```bash
+python3 skills/video-tagging/scripts/install.py --skills-dir /path/to/agent/skills
+```
+
+将示例目录换成自己的目录；需要更新已有手动安装时加 `--update`。CLI 与 Skill 都在本仓库内，不依赖维护者的电脑、NAS 配置、其他个人 Skill 或 Skillshare。Skillshare 仅作为已有用户可选择的安装方式。详细安装、独立 CLI 用法和 AI 模型依赖见[视频打标指南](docs/video-tagging.md)及[CLI 说明](apps/cli/README.md)。
 
 ## 文档与开发
 
@@ -79,6 +87,7 @@ python3 skills/video-tagging/scripts/install.py --skillshare
 | --- | --- |
 | [文档导航](docs/README.md) | 根据安装、使用、维护或开发任务选择入口 |
 | [部署手册](docs/deployment.md) | NAS 首次部署、App 连接和日常维护 |
+| [媒体目录格式](docs/media-layout.md) | 视频与图包存放示例、图包边界、图片排序和支持格式 |
 | [开发指南](docs/development.md) | Flutter、VS Code、本地服务、APK 构建与测试 |
 | [服务端说明](services/server/README.md) | 配置、接口、扫描、文件操作与备份规则 |
 | [命令行客户端](apps/cli/README.md) | 登录、扫描、视频查询和视频标签自动化 |

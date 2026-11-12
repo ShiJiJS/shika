@@ -2,42 +2,25 @@
 
 # 视频打标 Skill 与 CLI（选装）
 
-普通浏览、播放、阅读和手动标签只需要 App 与 NAS 服务。需要用 AI 批量补充视频标签时，可以另外安装 [video-tagging Skill](../skills/video-tagging/SKILL.md)；需要脚本查询和修改媒体库时，也可以单独使用 [shika CLI](../apps/cli/README.md)。
+普通浏览、播放、阅读和手动标签只需要 App 与 NAS 服务。CLI 的代码在本仓库 `apps/cli`，可按 [CLI 说明](../apps/cli/README.md#安装)独立安装；它用于登录、扫描、视频查询和视频标签操作，不需要 Skill 或 AI 模型，也不会随 App/Docker 自动安装。
 
-Skill 在支持 Skills 的助手中运行，负责抽帧、调用用户选择的模型、整理中文标签和按需同步。CLI 连接与 App 相同的 NAS 服务，执行视频查询和标签操作。模型运行在执行 Skill 的电脑或用户选择的服务上，标签写回后可在 App 中使用。
+Skill 在本仓库 `skills/video-tagging`，交给支持 Skills 的助手使用：抽帧、调用用户选定的模型、整理中文标签，并按要求通过 CLI 同步到同一个服务。**Skillshare 不是前置依赖**。
 
-## 一次安装 Skill 和 CLI
+## 安装 Skill 和隔离 CLI
 
-准备 Python 3.10+、Git，以及一个支持 Skills 的助手。使用 Skillshare 时，先完成它的安装与目标配置。在本仓库根目录执行：
-
-```bash
-python3 skills/video-tagging/scripts/install.py --skillshare
-```
-
-安装器先从同一检出的 `apps/cli` 配置隔离 CLI，再通过 Skillshare 安装和同步技能。Windows 可用 `python` 替代 `python3`，选择符合版本要求的 Python。
-
-没有使用 Skillshare 时，指定助手实际使用的技能父目录：
+准备 Python 3.10+，在仓库根目录指定助手实际使用的技能父目录：
 
 ```bash
-python3 skills/video-tagging/scripts/install.py --skills-dir ~/.agents/skills
+python3 skills/video-tagging/scripts/install.py --skills-dir /path/to/agent/skills
 ```
 
-上面的目录是示例，按助手配置调整。由 Skillshare 或其他管理器维护的目录应通过对应管理器更新。直接安装遇同名技能会停止；检查旧内容后加 `--update` 可以先备份再更新。备份位于私人运行目录。
+将示例路径换成自己的目录。安装器从同一检出的 `apps/cli` 创建独立 Python 环境，再复制 Skill。Windows 可以使用符合版本要求的 `python`。遇到同名技能时会停止，检查后可加 `--update`，先备份旧手动副本再更新；由其他管理器维护的目录通过其管理器更新。
 
-Skillshare 更新时运行安装器的 `--skillshare --update`，它调用正式的 `skillshare update video-tagging` 并沿用已登记来源。`--skill-source` 仅用于首次安装。同名技能登记在其他来源时，先通过管理器备份、卸载旧登记，再从本仓库安装；更新不会切换来源，安装器保留其审计检查。
+安装器不修改 shell PATH、系统 Python、App 或 Docker 设置。CLI 环境、安装日志和手动更新备份保存在用户数据目录的 `shika/video-tagging` 下，Windows 为 `%LOCALAPPDATA%/shika/video-tagging`。可通过 `SHIKA_TAGGING_HOME` 指定位置，安装与运行时保持一致。
 
-仓库需要访问权限时使用自己已有的 Git 认证。例如 Skillshare 使用 SSH 来源：
+## 使用助手自己的 Skill 安装方式
 
-```bash
-python3 skills/video-tagging/scripts/install.py --skillshare \
-  --skill-source git@github.com:ShiJiJS/shika.git//skills/video-tagging
-```
-
-安装器不修改 shell PATH、系统 Python、App 或 Docker 配置。CLI 环境、安装日志及手动更新备份位于用户数据目录下的 `shika/video-tagging`；Windows 使用 `%LOCALAPPDATA%/shika/video-tagging`。可通过 `SHIKA_TAGGING_HOME` 改变位置，安装与运行时使用相同值。
-
-## 通过其他安装器取得 Skill
-
-技能包位于本仓库的 `skills/video-tagging`，可交给助手自己的 Skill 安装工具。单纯复制技能文件不会自动安装 Python 工具；在安装或首次使用时，让助手执行包内的配置与检查：
+将本仓库的 `skills/video-tagging` 交给助手安装，也可以复制完整目录。只取得技能文件后，再补齐 CLI：
 
 ```bash
 python3 <技能目录>/scripts/install.py --cli-only
@@ -45,7 +28,18 @@ python3 <技能目录>/scripts/install.py --check
 python3 <技能目录>/scripts/shika.py --help
 ```
 
-单独技能包默认从本仓库主分支取得 CLI，安装需要 Git 和依赖下载。已有源码时可追加 `--cli-source <检出目录>/apps/cli`。安装器不读取服务口令，不登录 NAS，也不会下载模型或开始处理视频。
+单独取得的 Skill 默认从本仓库的 HTTPS Git 地址下载 CLI，需 Git 和依赖下载；已有源码时可加 `--cli-source <检出目录>/apps/cli`。仓库受限时使用自己的 GitHub 授权，凭据不写入 URL。安装不读取口令、不登录 NAS、不下载模型、不处理视频。
+
+## 已有 Skillshare 用户的可选方式
+
+只有已经使用并配置了 Skillshare 的用户才需要这一入口，与普通目录安装二选一：
+
+```bash
+python3 skills/video-tagging/scripts/install.py --skillshare
+python3 skills/video-tagging/scripts/install.py --skillshare --update
+```
+
+此方式使用管理器的安装、审计和同步。`--skill-source` 只用于首次指定来源，更新沿用已登记来源；同名旧来源通过管理器处理。
 
 ## 使用方式
 
@@ -57,7 +51,19 @@ python3 <技能目录>/scripts/shika.py --help
 
 实际流程是：准备清单 → 选择本地或线上识别 → 保存原始回答 → 生成 `standard.json` / `standard.md` → 按要求匹配视频、生成同步计划并写入拾刻。也支持只整理已有结果或只同步，不必重新识别。
 
-新识别需要 FFmpeg/ffprobe、抽帧用的 `video-understanding` 及其 Python 依赖。本地路线还需要 Ollama、ONNX Runtime 和用户选择的模型权重；线上路线需要用户选定的视觉服务。它们不包含在 CLI 安装中，具体依赖见[声明](../skills/video-tagging/assets/dependencies.json)。线上入口目前准备任务和导入回答，服务调用由执行 Skill 的助手接入；长视频自动分段仍需按模型能力处理。
+新识别使用随包抽帧器，需要 FFmpeg/ffprobe 和 Pillow，不依赖其他 Skill。本地路线还需要 Ollama、ONNX Runtime 和用户选择的模型权重；线上路线需要用户选定的视觉服务。它们不包含在 CLI 安装中，具体依赖见[声明](../skills/video-tagging/assets/dependencies.json)。线上入口目前准备任务和导入回答，服务调用由执行 Skill 的助手接入；长视频自动分段仍需按模型能力处理。
+
+### 抽帧环境
+
+只整理已有标签或同步时可跳过。新识别先安装系统 FFmpeg（同时提供 ffprobe），再在仓库根目录准备自己的 Python 环境：
+
+```bash
+python3 -m venv .venv-tagging
+.venv-tagging/bin/python -m pip install -r skills/video-tagging/assets/requirements-extract.txt
+.venv-tagging/bin/python skills/video-tagging/scripts/extract_keyframes.py --help
+```
+
+Windows 将 `.venv-tagging/bin/python` 换为 `.venv-tagging\Scripts\python.exe`，后续用同一环境执行 `infer.py`。默认约每 2 秒采样一帧，最多 200 帧，均匀覆盖整段视频并生成多张总览图；不是逐帧分析或镜头检测。私人配置的 `extractor` 可以显式指定兼容脚本。原视频只读，输出放在独立的空目录。本地路线还需在该环境安装 numpy/onnxruntime，并配置自己的 Ollama 与模型权重；线上模型由用户选择。
 
 ## 连接与数据
 

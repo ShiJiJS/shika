@@ -148,19 +148,7 @@ After the health check returns `{"status":"ok","api_version":1}`, log in through
 
 An application directory can be `/vol1/1000/docker/shika`; media paths must reflect their current location. Place `compose.yaml`, `.env`, and configuration there. **Import the matching architecture image first**, then select the existing Compose file in the Docker interface, create the project, and start it. For updates, recreate the existing project instead of creating another one.
 
-An authorized `fnos-cli` can also perform these operations. The following profile, paths, and tag are examples. Verify the target device and authorization, upload the archive and configuration, then run:
-
-```bash
-fnos-cli --profile home-fnos --allow-insecure-http docker image ls
-fnos-cli --profile home-fnos --allow-insecure-http docker container ls --all
-fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.imageLoad --json '{"filePath":"/vol1/1000/docker/shika/image-archives/server-amd64.tar"}' --yes
-fnos-cli --profile home-fnos --allow-insecure-http docker image inspect shika-server:1.0.3-amd64
-fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeCreate --json '{"auto_build":false,"file":"compose.yaml","folder":"/vol1/1000/docker/shika","project_name":"shika"}' --yes
-fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeBuild --json '{"project_name":"shika"}' --yes
-fnos-cli --profile home-fnos --allow-insecure-http docker container inspect shika-server
-```
-
-`--allow-insecure-http` is needed only for a saved connection using LAN HTTP; use the appropriate connection options for HTTPS. After a timeout, inspect the actual image, project, or container state before continuing, rather than repeating an import or creation request. Deployment does not require enabling SSH.
+Alternatively, use the standard `docker compose` commands above in a NAS terminal. Either the graphical manager or Docker Compose is sufficient; installation requires no Skillshare, maintainer NAS profile, or extra management CLI.
 
 ## Install and connect the app
 
@@ -196,6 +184,8 @@ Existing servers keep their passphrase. Use Settings → 修改个人口令, ent
 For administrator recovery, create or change `secrets/passphrase` to a new value different from the original seed. Restrict access but allow the container UID to read it. Add a read-only bind mount to `/run/secrets/passphrase` (or set `VV_PASSPHRASE_FILE` to its container path), then recreate the existing container. A changed seed resets the passphrase and revokes old sessions. An unchanged seed does not undo later app changes. Never delete the database to reset authentication.
 
 ## Everyday use
+
+See [media layout](media-layout.en.md) for folder examples, immediate-child pack boundaries, and page ordering.
 
 - **Library and tags**: query and filter videos and image packs separately. Select content to start playback or reading, then return to the original view. An empty result does not expand to the entire library.
 - **Image pack reading**: continuous vertical scrolling is the default. Horizontal paging, zoom, overview, and resume are supported; saved preferences remain in effect.

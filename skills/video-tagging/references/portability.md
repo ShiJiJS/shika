@@ -13,10 +13,10 @@
 {
   "media_roots": {"main": "${VIDEO_MEDIA_ROOT}"},
   "model_root": "models/image-tagging",
-  "extractor": "tools/extract_keyframes.py"
+  "extractor": ""
 }
 ```
-以上是需要合并进随包默认配置的路径部分。环境变量在当前设备设置。`extractor` 也可留空，由安装位置寻找相邻 video-understanding；否则明确指定本机安装的抽帧脚本。该外部技能是依赖，不是对原项目目录的依赖。不会复制或改写它的设备配置。
+以上是需要合并进随包默认配置的路径部分。环境变量在当前设备设置。`extractor` 留空使用本包的 `scripts/extract_keyframes.py`，无需另装 Skill；已有工作区显式指定的兼容脚本仍可继续使用，不会改写其配置。
 
 manifest 使用 `root_id + relative_path`；它与软件中的根编号建立明确映射，但本机根路径和服务端根路径可以不同。兼容旧 source_path：相对值以 manifest 所在目录为基准，绝对值必须在本机有效。模型与 extractor 相对值以 config.json 为基准；线上回答 task_path 相对值以 answers.json 为基准；事实 source_ref 相对于 facts.json；保护文件内部路径相对于保护文件。CLI 输出位置由本次命令指定。
 
@@ -32,26 +32,20 @@ manifest 使用 `root_id + relative_path`；它与软件中的根编号建立明
 
 ## 选装安装入口
 
-先准备 Python 3.10+。在拾刻源码仓库根目录执行：
-```
-python skills/video-tagging/scripts/install.py --skillshare
-```
-这会从同一检出的 `apps/cli` 安装 CLI 到独立环境，再通过已配置的 Skillshare 安装并同步本技能。普通 App / Docker 部署无需运行。Skillshare 来源默认 `ShiJiJS/shika/skills/video-tagging`；私有仓库使用现有 Git 认证，可显式传 `--skill-source git@github.com:ShiJiJS/shika.git//skills/video-tagging`，凭据不写入 URL。
-
-未使用 Skillshare 时，显式选择 Agent 的技能父目录：
+准备 Python 3.10+。完整源码中可指定助手实际使用的技能父目录，一次安装 Skill 与隔离 CLI：
 ```
 python skills/video-tagging/scripts/install.py --skills-dir /path/to/agent/skills
 ```
-已经由其他管理器维护的目录使用其管理器；直接安装器遇同名内容会停止，明确更新时加 `--update`，旧手动副本会备份到私人运行目录。
+已有手动安装更新时加 `--update`，安装器会先备份。由管理器维护的目录使用对应管理器更新。只有已经配置 Skillshare 的用户才选择 `--skillshare`；它是可选方式，更新用 `--skillshare --update` 并沿用已登记来源。
 
-Skillshare 更新沿用已登记的来源。同名旧技能登记在其他仓库时，先备份并通过管理器卸载旧登记，再安装本仓库版本；不通过覆盖审计的选项改来源。
-
-通过 Agent 自带安装器或 Skillshare 单独取得技能文件后，执行包内安装器补齐 CLI：
+通过助手自带安装器或手动复制取得完整技能后，执行包内入口补齐 CLI：
 ```
 python "$skill_dir/scripts/install.py" --cli-only
 python "$skill_dir/scripts/install.py" --check
 python "$skill_dir/scripts/shika.py" --help
 ```
-CLI 源码在完整检出中读取本地 `apps/cli`；单独技能包默认从拾刻 GitHub 主分支取得，可用 `--cli-source` 指定已检出的 `apps/cli` 或用户授权的 Git 来源。安装器需要联网取得 CLI 的 Python 依赖；不安装模型、不运行识别、不连接媒体库、不修改 shell 配置。
+CLI 源码优先使用同一检出的 `apps/cli`；单独技能包从本仓库的 HTTPS Git 地址获取，也可用 `--cli-source` 指定自己的本地源码或授权来源。需要联网取得 Python 依赖，受限仓库使用自己的 GitHub 授权。安装不配置模型、不运行识别、不连接媒体库、不修改 shell 配置。
+
+抽帧使用本包工具及 FFmpeg/ffprobe、Pillow；在执行识别的 Python 环境安装 `assets/requirements-extract.txt`。仅同步标签无需这些依赖。本地模型路线按识别参考再准备 numpy/onnxruntime、Ollama、模型权重及实际 `local_model` 与 `model_revision`。
 
 独立运行目录默认 macOS/Linux 的用户数据目录下 `shika/video-tagging`，Windows 为 `%LOCALAPPDATA%/shika/video-tagging`。用 `SHIKA_TAGGING_HOME` 可指定本机位置，安装和运行时保持相同值；此目录包含 CLI 环境、安装日志和手动更新备份，不随技能同步。CLI 的服务地址和令牌仍由其用户配置管理。

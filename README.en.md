@@ -11,7 +11,7 @@
 ![Docker](https://img.shields.io/badge/Server-Docker-2496ED?logo=docker&logoColor=white)
 ![Status](https://img.shields.io/badge/Version-1.0.3-526B52)
 
-[Getting started](#getting-started) · [Deployment guide](docs/deployment.en.md) · [Documentation](docs/README.en.md) · [Report an issue](https://github.com/ShiJiJS/shika/issues)
+[Getting started](#getting-started) · [Media layout](docs/media-layout.en.md) · [Deployment guide](docs/deployment.en.md) · [Documentation](docs/README.en.md) · [Report an issue](https://github.com/ShiJiJS/shika/issues)
 
 </div>
 
@@ -46,7 +46,7 @@ Version **1.0.3** is the stable release. Download and import the server image fo
 1. **Deploy the service**: prepare your NAS media folders, then follow the [deployment guide](docs/deployment.en.md) to build an image, configure persistent storage, and start the Docker service.
 2. **Install the Android app**: download the APK from the [1.0.3 release](https://github.com/ShiJiJS/shika/releases/tag/v1.0.3), or [build it from source](docs/development.md) (Chinese). Keep the same signing key when installing updates over an existing app.
 3. **Connect the library**: complete the connection guide with the NAS LAN address and port (`8760` by default), then set or enter the personal passphrase. Add video or image pack roots after authentication. Later launches verify the saved session before opening the library; connection failures offer retry or another server. Logging out preserves the address and requires the passphrase again.
-4. **Browse and organize**: check scan progress, select content in the library or tags view, and start playback, reading, or quick cleanup.
+4. **Add media and browse**: follow the [media layout guide](docs/media-layout.en.md). Every immediate child folder of an image-pack root is one pack; images use natural sorting of their relative paths. Check scan progress, select content, and start playback, reading, or quick cleanup.
 
 Build the service image for `linux/amd64` or `linux/arm64` to match your NAS CPU. Videos stream directly from the NAS without live transcoding; playback support depends on the formats your Android device can decode.
 
@@ -62,13 +62,21 @@ The [deployment guide](docs/deployment.en.md) covers initial setup, image builds
 
 The [video-tagging Skill](skills/video-tagging/SKILL.md) extracts frames, generates Chinese tag files, and synchronizes them to Shika when requested. The [shika CLI](apps/cli/README.md) supports video queries and batch tag operations. Both are optional; the app and NAS service work independently.
 
-From a source checkout, install the Skill and its isolated CLI together (Python 3.10+ and configured Skillshare):
+**CLI only:** with Python 3.10+ and uv, run from the repository root (pipx is also supported):
 
 ```bash
-python3 skills/video-tagging/scripts/install.py --skillshare
+uv tool install ./apps/cli
+shika login --base-url http://NAS_ADDRESS:8760
+shika info
 ```
 
-See the [video tagging guide](docs/video-tagging.en.md) for other assistants, model dependencies, and the workflow.
+**Skill and isolated CLI:** choose the actual skill parent directory used by your assistant:
+
+```bash
+python3 skills/video-tagging/scripts/install.py --skills-dir /path/to/agent/skills
+```
+
+Replace the example directory; add `--update` to back up and update an existing manual installation. The CLI and Skill are included in this repository. They do not require the maintainer's computer, NAS configuration, other personal Skills, or Skillshare. Skillshare is an optional integration for people already using it. See the [video tagging guide](docs/video-tagging.en.md) and [CLI guide](apps/cli/README.md) for installation, dependencies, and usage.
 
 ## Documentation and development
 
@@ -76,6 +84,7 @@ See the [video tagging guide](docs/video-tagging.en.md) for other assistants, mo
 | --- | --- |
 | [Documentation index](docs/README.en.md) | Find the right guide for setup, use, maintenance, or development |
 | [Deployment guide](docs/deployment.en.md) | Initial NAS setup, app connection, and routine maintenance |
+| [Media layout](docs/media-layout.en.md) | Folder examples, pack boundaries, page ordering, and supported formats |
 | [Development guide](docs/development.md) (Chinese) | Flutter, VS Code, local service, APK builds, and tests |
 | [Server guide](services/server/README.md) (Chinese) | Configuration, APIs, scanning, file operations, and backup behavior |
 | [Command-line client](apps/cli/README.md) (Chinese) | Login, scanning, video queries, and video tag automation |

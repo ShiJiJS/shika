@@ -11,6 +11,8 @@ Start with [what Shika does](../README.en.md#features), then choose a guide belo
 | Install Shika on a NAS for the first time | [Initial deployment](deployment.en.md#initial-deployment) |
 | Create the service in fnOS | [fnOS deployment](deployment.en.md#fnos-deployment) |
 | Install the app and connect to the service | [Install and connect the app](deployment.en.md#install-and-connect-the-app) |
+| Organize image packs and videos | [Media layout](media-layout.en.md) |
+| Install and use the CLI independently | [Command-line client](../apps/cli/README.md#安装) (Chinese) |
 | Understand browsing, reading, and cleanup | [Everyday use](deployment.en.md#everyday-use) |
 | Back up, update, move to another NAS, or roll back | [Backups, updates, and migration](deployment.en.md#backups-updates-and-migration) |
 | Troubleshoot connection, scanning, playback, or deletion | [Troubleshooting](deployment.en.md#troubleshooting) |

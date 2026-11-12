@@ -92,6 +92,21 @@ def test_skillshare_install_keeps_the_audit_and_runs_sync(monkeypatch):
     assert run.call_args_list[1].args[0] == ["skillshare", "sync", "-g"]
 
 
+def test_direct_skill_install_does_not_require_a_skill_manager(monkeypatch, tmp_path):
+    manager = Mock(side_effect=AssertionError("No global Skillshare access expected"))
+    monkeypatch.setattr(installer.shutil, "which", manager)
+    monkeypatch.setattr(installer, "setup_cli", Mock(return_value=Path("isolated/shika")))
+    monkeypatch.setattr(
+        installer.sys, "argv", ["install.py", "--skills-dir", str(tmp_path / "agent")]
+    )
+    assert installer.main() == 0
+    manager.assert_not_called()
+    copied = tmp_path / "agent/video-tagging"
+    assert (copied / "SKILL.md").is_file()
+    assert (copied / "scripts/extract_keyframes.py").is_file()
+    assert (copied / "assets/requirements-extract.txt").is_file()
+
+
 def test_failed_dependency_install_does_not_install_skill(tmp_path, monkeypatch):
     setup = Mock(side_effect=RuntimeError("install failed"))
     copy = Mock()

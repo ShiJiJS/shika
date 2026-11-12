@@ -5,7 +5,7 @@
 ## 分层文件
 
 - `manifest.json`：`[{"video_id":"V000001","root_id":"main","relative_path":"目录/视频.mp4","pool_hint":"真人/动画/不确定","sha256":"可选强校验散列"}]`。编号唯一且跨移动保留，另存旧路径→新路径映射。文件名相同不足以证明相同视频。
-- `config.json`：复制随包默认配置；每机设置 `media_roots`、抽帧器 `extractor`、模型目录 `model_root`、Ollama 地址与隐私选择。路径支持相对于配置文件的值和环境变量；不相对于启动目录。extractor 留空时只尝试发现相邻已安装的 video-understanding，仍不存在则明确缺项。线上 `online_model` 是实际执行方的型号，不用历史内部名猜 API 名。
+- `config.json`：复制随包默认配置；每机设置 `media_roots`、模型目录 `model_root`、实际 `local_model` 或 `online_model`、Ollama 地址与隐私选择。路径支持相对于配置文件的值和环境变量；不相对于启动目录。`extractor` 留空使用随包脚本，显式配置时使用该兼容抽帧器。模型字段需填写实际执行方的型号，不用历史内部名猜 API 名。
 - `runs/<配置指纹>/<编号>/`：输入签名、抽帧、任务、模型原答、解析结果。原答即使解析失败也保留；更改提示词/模型/视频签名会生成新版本。
 - `facts.json`：只从已有原始结构化标签、明确目录类别提取，格式见归并参考。记录原文件、字段、原词、来源类型和状态；这是适配层而不是新增识图结论。
 - `standard.json`、`standard.md`：可重复生成的标准层；变更前先另存版本。JSON 是导入依据，MD 是展示。
@@ -15,7 +15,7 @@
 
 ## 依赖与定位
 
-识别入口需 Python 3.10+；抽帧另需 FFmpeg/ffprobe、numpy、Pillow 和 video-understanding 的 `scripts/extract_keyframes.py`。本地图片模型另需 onnxruntime，视觉模型需 Ollama。先检查现有环境和脚本 `--help`，不假定其他技能里写死的设备路径已安装。
+识别入口需 Python 3.10+；随包抽帧器另需 FFmpeg/ffprobe 和 Pillow，使用执行 `infer.py` 的同一个 Python 安装 `assets/requirements-extract.txt`。本地图片模型另需 numpy、onnxruntime，视觉模型需 Ollama。先检查现有环境和脚本 `--help`；所有路径与模型以当前用户的配置为准。
 
 本地示例权重布局：
 ```

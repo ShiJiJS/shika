@@ -11,6 +11,8 @@
 | 第一次在 NAS 安装拾刻 | [部署手册：准备与部署](deployment.md#首次部署) |
 | 在飞牛中创建服务 | [飞牛部署](deployment.md#飞牛-fnos-部署) |
 | 安装 App 并连接服务 | [安装与连接-app](deployment.md#安装与连接-app) |
+| 图包、视频应该怎么摆放 | [媒体目录格式](media-layout.md) |
+| 单独安装和使用 CLI | [命令行客户端](../apps/cli/README.md#安装) |
 | 理解媒体库、阅读和整理操作 | [开始使用](deployment.md#日常使用) |
 | 备份、升级、换 NAS 或回退 | [备份、升级与迁移](deployment.md#备份升级与迁移) |
 | 排查连接、扫描、播放或删除问题 | [常见问题](deployment.md#常见问题) |

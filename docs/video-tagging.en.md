@@ -2,42 +2,25 @@
 
 # Video tagging Skill and CLI (optional)
 
-The app and NAS service provide browsing, playback, reading, and manual tags. Optionally install the [video-tagging Skill](../skills/video-tagging/SKILL.md) to supplement video tags with AI, or use the [shika CLI](../apps/cli/README.md) independently for scripted library queries and tag changes.
+The app and NAS service provide browsing, playback, reading, and manual tags. The CLI lives in this repository at `apps/cli` and supports login, scanning, video queries, and video tag operations. [Install it independently](../apps/cli/README.md#安装) (Chinese). It requires neither Skills nor AI models and is not installed by the app or Docker.
 
-The Skill runs in an assistant that supports Skills. It extracts frames, uses the model selected by the user, organizes Chinese tags, and synchronizes them when requested. The CLI connects to the same NAS service as the app. Models run on the computer executing the Skill or a service selected by the user; imported tags become available in the app.
+The Skill lives at `skills/video-tagging`. In a compatible assistant, it extracts frames, uses a user-selected model, prepares Chinese tags, and synchronizes them to the same service through the CLI when requested. **Skillshare is not a prerequisite.**
 
-## Install the Skill and CLI together
+## Install the Skill and isolated CLI
 
-Prepare Python 3.10+, Git, and an assistant supporting Skills. For Skillshare, first install it and configure its targets. Run from this repository's root:
-
-```bash
-python3 skills/video-tagging/scripts/install.py --skillshare
-```
-
-The installer sets up an isolated CLI from the same checkout's `apps/cli`, then installs and synchronizes the Skill through Skillshare. On Windows, use `python` instead of `python3` if appropriate.
-
-Without Skillshare, explicitly choose the skill parent directory used by your assistant:
+With Python 3.10+, run from a source checkout and choose the actual skill parent directory used by your assistant:
 
 ```bash
-python3 skills/video-tagging/scripts/install.py --skills-dir ~/.agents/skills
+python3 skills/video-tagging/scripts/install.py --skills-dir /path/to/agent/skills
 ```
 
-This directory is an example; use your assistant's configuration. Update directories maintained by Skillshare or another manager through that manager. Direct installation stops on an existing skill; after reviewing it, add `--update` to back it up and replace it. Backups remain in the private runtime directory.
+Replace the example path. The installer creates an isolated Python environment from this checkout's `apps/cli` and copies the Skill. On Windows, use an appropriate `python` executable. An existing skill stops direct installation; after reviewing it, add `--update` to back up and replace a manual copy. Use the owning manager for managed directories.
 
-Use the installer's `--skillshare --update` to update through the official `skillshare update video-tagging` command and its registered source. `--skill-source` is only for a new installation. If this name belongs to another source, back it up and uninstall its old registration through the manager before installing from this repository. Updates do not change that source, and the installer preserves the manager's audit checks.
+The installer does not modify shell PATH, system Python, app, or Docker settings. The CLI environment, logs, and manual backups live under `shika/video-tagging` in the user data directory, or `%LOCALAPPDATA%/shika/video-tagging` on Windows. Set `SHIKA_TAGGING_HOME` to customize it consistently for installation and execution.
 
-If the repository requires access, use your own existing Git authentication. For example, select the SSH source for Skillshare:
+## Use your assistant's Skill installer
 
-```bash
-python3 skills/video-tagging/scripts/install.py --skillshare \
-  --skill-source git@github.com:ShiJiJS/shika.git//skills/video-tagging
-```
-
-The installer does not change shell PATH, system Python, app, or Docker settings. Its CLI environment, installation log, and manual update backups live under `shika/video-tagging` in the user data directory, or `%LOCALAPPDATA%/shika/video-tagging` on Windows. Set `SHIKA_TAGGING_HOME` to customize this location and retain that value for installation and execution.
-
-## Use another Skill installer
-
-Point your assistant's installer at `skills/video-tagging` in this repository. Copying Skill files alone cannot install Python tools. During installation or first use, have the assistant run the bundled setup and readiness check:
+Point the assistant's installer at `skills/video-tagging`, or copy the complete directory. After obtaining only the Skill files, configure its CLI:
 
 ```bash
 python3 <skill-directory>/scripts/install.py --cli-only
@@ -45,7 +28,18 @@ python3 <skill-directory>/scripts/install.py --check
 python3 <skill-directory>/scripts/shika.py --help
 ```
 
-A standalone Skill package fetches the CLI from this repository's main branch, requiring Git and dependency downloads. To use an existing checkout, add `--cli-source <checkout>/apps/cli`. Setup does not read a passphrase, log in to a NAS, download models, or process videos.
+A standalone Skill fetches the CLI over HTTPS Git, requiring Git and dependency downloads. Add `--cli-source <checkout>/apps/cli` for local source. If repository access is restricted, use your own GitHub authentication; keep credentials out of URLs. Setup does not read a passphrase, log in to a NAS, download models, or process videos.
+
+## Optional integration for existing Skillshare users
+
+If you already use and have configured Skillshare, choose this instead of direct directory installation:
+
+```bash
+python3 skills/video-tagging/scripts/install.py --skillshare
+python3 skills/video-tagging/scripts/install.py --skillshare --update
+```
+
+This uses the manager's installation, audit, and synchronization. `--skill-source` selects a new installation's source; updates preserve the registered source. Handle conflicting registrations through the manager.
 
 ## Use the Skill
 
@@ -57,7 +51,19 @@ Example requests:
 
 The workflow prepares a manifest, selects local or online inference, retains raw answers, generates `standard.json` / `standard.md`, and optionally matches videos, plans changes, and writes them to Shika. Existing results can be normalized or synchronized without repeating inference.
 
-New inference needs FFmpeg/ffprobe, `video-understanding` for frame extraction, and its Python dependencies. Local inference also requires Ollama, ONNX Runtime, and user-selected model weights. Online inference needs a vision service selected by the user. These are separate from CLI installation; see the [dependency declaration](../skills/video-tagging/assets/dependencies.json). The online entry currently prepares tasks and imports answers; the assistant supplies the authorized service call. Long videos still require segmentation appropriate for the model.
+New inference uses the bundled extractor and requires FFmpeg/ffprobe and Pillow, with no other Skill dependency. Local inference also requires Ollama, ONNX Runtime, and user-selected model weights. Online inference needs a vision service selected by the user. These are separate from CLI installation; see the [dependency declaration](../skills/video-tagging/assets/dependencies.json). The online entry currently prepares tasks and imports answers; the assistant supplies the authorized service call. Long videos still require segmentation appropriate for the model.
+
+### Frame extraction environment
+
+Skip this when only normalizing or synchronizing existing tags. For new inference, install system FFmpeg (including ffprobe), then create your own Python environment from the repository root:
+
+```bash
+python3 -m venv .venv-tagging
+.venv-tagging/bin/python -m pip install -r skills/video-tagging/assets/requirements-extract.txt
+.venv-tagging/bin/python skills/video-tagging/scripts/extract_keyframes.py --help
+```
+
+On Windows, use `.venv-tagging\Scripts\python.exe`. Execute `infer.py` in the same environment. Sampling covers the video uniformly at approximately one frame per two seconds, capped at 200 frames, with multiple contact sheets. It does not analyze every frame or detect scene changes. An explicit compatible `extractor` overrides this default. Source media stays read-only and output uses a separate empty directory. Local inference additionally needs numpy/onnxruntime in this environment, Ollama, and configured model weights; choose your own online model.
 
 ## Connection and data
 

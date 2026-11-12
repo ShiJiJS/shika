@@ -5,8 +5,8 @@
   "cli_source": "git+https://github.com/ShiJiJS/shika.git@main#subdirectory=apps/cli",
   "minimum_cli_version": "0.1.1",
   "inference": {
-    "common": ["ffmpeg", "ffprobe", "numpy", "Pillow", "video-understanding"],
-    "local": ["onnxruntime", "Ollama", "user-selected model weights"],
+    "common": ["ffmpeg", "ffprobe", "Pillow"],
+    "local": ["numpy", "onnxruntime", "Ollama", "user-selected model weights"],
     "online": ["user-selected vision service"]
   }
 }

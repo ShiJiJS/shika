@@ -24,6 +24,8 @@ docker compose --env-file .env -f deploy/local/compose.yaml ps
 
 `config/mounts.json` 声明容器内允许访问的媒体范围。保留已有挂载 ID，App 在允许范围内添加或编辑视频/图包目录；未挂载的 NAS 路径不会自动变得可访问。图包目录需在 NAS Compose 中额外挂载，具体见部署模板。服务不跟随符号链接。
 
+图包根目录下的每个一级子文件夹作为一个图包，其子目录中的图片会加入同一个图包；直接位于根目录的零散图片不会组成图包。推荐目录树、分类层级和支持格式见[媒体目录格式](../../docs/media-layout.md)。
+
 完整请求参数、分页上限与返回类型以运行实例的 `/openapi.json`（或 `/docs`）为准；`GET /api/v1/info` 返回实例身份、当前 schema、能力和备份限制。客户端按能力决定入口，不能只按版本号猜测功能。业务接口和媒体读取需要登录返回的 Bearer token，缩略图也需要授权。
 
 | 功能 | 主要入口 |

@@ -148,19 +148,7 @@ curl --fail http://192.168.1.100:8760/health
 
 应用目录可以放在 `/vol1/1000/docker/shika`；媒体必须使用当前实际位置。把准备好的 `compose.yaml`、`.env`、配置放在该目录，**先导入架构匹配的镜像**，再通过 Docker 管理界面选择已有 Compose 文件创建项目并启动。已有项目更新时重建原项目，不重复创建。
 
-也可使用已授权的 `fnos-cli`。下面的 profile、路径和标签是命令格式示例；使用前确认对应设备和授权，上传镜像与配置后执行：
-
-```bash
-fnos-cli --profile home-fnos --allow-insecure-http docker image ls
-fnos-cli --profile home-fnos --allow-insecure-http docker container ls --all
-fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.imageLoad --json '{"filePath":"/vol1/1000/docker/shika/image-archives/server-amd64.tar"}' --yes
-fnos-cli --profile home-fnos --allow-insecure-http docker image inspect shika-server:1.0.3-amd64
-fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeCreate --json '{"auto_build":false,"file":"compose.yaml","folder":"/vol1/1000/docker/shika","project_name":"shika"}' --yes
-fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeBuild --json '{"project_name":"shika"}' --yes
-fnos-cli --profile home-fnos --allow-insecure-http docker container inspect shika-server
-```
-
-`--allow-insecure-http` 仅在已保存的连接采用局域网 HTTP 时需要；HTTPS 配置使用对应连接选项。命令超时后先查询实际镜像、项目或容器状态，再决定下一步，不重复导入或创建。部署不要求额外开启 SSH。
+也可以在 NAS 终端按上文的标准 `docker compose` 命令启动。图形管理界面与 Docker Compose 二选一即可，安装不需要 Skillshare、维护者的 NAS profile 或额外的管理 CLI。
 
 ## 安装与连接 App
 
@@ -196,6 +184,8 @@ App 自动判断新服务或已有服务，验证通过后才进入媒体库；�
 忘记口令时，由 NAS 管理员新建或修改一个 `secrets/passphrase` 文件，写入与原种子不同的新口令（8–1024 个字符），限制文件读取权限并允许容器 UID 读取。在 Compose 增加只读 bind mount，将该文件挂到 `/run/secrets/passphrase`（或用 `VV_PASSPHRASE_FILE` 指定容器内位置），重建原容器。服务检测到文件值变化后重置口令并使旧登录失效，之后用新口令连接。不要删除数据库来重置口令。未变化的旧种子文件不会覆盖 App 后来设置的新口令。
 
 ## 日常使用
+
+视频与图包的推荐存放方式、一级子文件夹规则和图片排序见[媒体目录格式](media-layout.md)。
 
 - **媒体库与标签**：视频和图包分别查询、筛选和管理标签，选择内容后进入播放或阅读；返回保留原来源，空结果不会自动扩大到全库。
 - **图包阅读**：默认纵向拼接，支持横向翻页、缩放、总览和续读；已保存偏好继续生效。

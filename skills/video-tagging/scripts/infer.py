@@ -47,11 +47,10 @@ def resolve_path(value, base):
 def load_config(path):
     path = path.resolve()
     cfg = read(path)
-    # External tools may be installed anywhere; blank means discover the sibling skill.
+    # The distributed skill is self-contained; an explicit extractor remains
+    # supported for existing workspaces with their own sampling policy.
     if not cfg.get('extractor'):
-        candidate = Path(__file__).resolve().parents[2] / 'video-understanding/scripts/extract_keyframes.py'
-        if candidate.is_file():
-            cfg['extractor'] = str(candidate)
+        cfg['extractor'] = str(Path(__file__).with_name('extract_keyframes.py'))
     for key in ('extractor', 'model_root'):
         if cfg.get(key):
             cfg[key] = str(resolve_path(cfg[key], path.parent))
@@ -207,8 +206,8 @@ def main():
     output = a.output.resolve()
     if a.mode in ('prepare', 'import') and (not cfg.get('allow_online_images') or not cfg.get('online_model')):
         raise ValueError('Online selection and actual model required')
-    if a.mode == 'local' and not cfg.get('model_revision'):
-        raise ValueError('Record installed model revisions before local execution')
+    if a.mode == 'local' and (not cfg.get('local_model') or not cfg.get('model_revision')):
+        raise ValueError('Choose a local model and record its installed revisions before execution')
     data = read(a.answers if a.mode == 'import' else a.manifest)
     if not isinstance(data, list):
         raise ValueError('Input must be array')
