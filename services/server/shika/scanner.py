@@ -1,3 +1,4 @@
+import logging
 import os
 import subprocess
 import threading
@@ -17,6 +18,9 @@ from .models import Directory, Observation, Root, Setting, Task, Video
 from .pack_scanner import PackScanner
 from .paths import VIDEO_EXTENSIONS, beneath, excluded, open_directory, open_video, signature
 from .root_scan_progress import ACTIVE, entry, publish, stage, terminate
+from .thumbnail_cache import GRACE_SECONDS, collect_thumbnails
+
+logger = logging.getLogger(__name__)
 
 
 class Scanner:
@@ -29,6 +33,7 @@ class Scanner:
         self.executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="media-scan")
         self.future = None
         self.active_id = None
+        self.last_cache_cleanup = None
         with db.write() as session:
             for task in session.scalars(
                 select(Task).where(Task.kind == "scan", Task.status.in_(["queued", "running"]))
@@ -50,18 +55,42 @@ class Scanner:
     def start(self):
         if self.settings.startup_scan:
             self.submit()
+        else:
+            self.executor.submit(self.clean_cache)
         self.scheduler.start()
 
     def schedule(self):
         interval = self.settings.scan_interval
-        if interval <= 0:
-            return
-        while not self.stop.wait(interval):
+        next_scan = time.monotonic() + interval
+        while not self.stop.wait(min(interval or GRACE_SECONDS, GRACE_SECONDS)):
             try:
-                self.submit()
+                if interval > 0 and time.monotonic() >= next_scan:
+                    self.submit()
+                    next_scan = time.monotonic() + interval
+                with self.lock:
+                    if not self.stop.is_set() and (not self.future or self.future.done()):
+                        self.executor.submit(self.clean_cache)
             except LibraryError as error:
                 if error.code != "restore_in_progress":
                     raise
+
+    def clean_cache(self):
+        now = time.monotonic()
+        if self.stop.is_set() or (
+            self.last_cache_cleanup is not None and now - self.last_cache_cleanup < GRACE_SECONDS
+        ):
+            return
+        try:
+            result = collect_thumbnails(self.db, self.settings.data_dir, self.stop)
+            self.last_cache_cleanup = now
+            if result["files"] or result["errors"]:
+                logger.info("Thumbnail cache cleanup: %s", result)
+        except LibraryError as error:
+            if error.code != "restore_in_progress":
+                logger.warning("Thumbnail cache cleanup skipped: %s", error.code)
+        except Exception:
+            # Optional cache maintenance must never fail a scan or HTTP request.
+            logger.warning("Thumbnail cache cleanup failed; will retry")
 
     def submit(self, root_id=None):
         with self.lock:
@@ -284,6 +313,8 @@ class Scanner:
                 result=result,
                 finished_at=time.time(),
             )
+        finally:
+            self.clean_cache()
 
     def check_stop(self):
         if self.stop.is_set():

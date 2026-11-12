@@ -529,6 +529,38 @@ class PackScanner:
             walk(fd, path)
         summary["progress"]["discovered"] += len(inventory)
         item["progress"]["discovered"] += len(inventory)
+        # Observe the entire manifest before deferring or decoding. Returning at
+        # the first changed page advanced only one page per scan after a remount;
+        # already decoded previews were abandoned and regenerated on every retry.
+        stable = True
+        now = time.time()
+        for start in range(0, len(inventory), 256):
+            self.scanner.check_stop()
+            batch = inventory[start : start + 256]
+            with self.db.write() as session:
+                prior = {
+                    row.path: row
+                    for row in session.scalars(
+                        select(Observation).where(
+                            Observation.path.in_([str(full) for full, _ in batch])
+                        )
+                    )
+                }
+                for full, observed in batch:
+                    record = prior.get(str(full))
+                    if record is None:
+                        record = Observation(
+                            path=str(full),
+                            signature=observed,
+                            stable_since=min(now, max(int(observed[3]), int(observed[4])) / 1e9),
+                        )
+                        session.add(record)
+                    elif record.signature != observed:
+                        record.signature, record.stable_since = observed, now
+                    stable &= now - record.stable_since >= self.settings.stability_seconds
+        if not stable:
+            item["phase"] = "waiting_for_stable_files"
+            raise PackDeferred()
         with self.db.read() as session:
             cached = (
                 {
@@ -548,23 +580,6 @@ class PackScanner:
         ):
             self.tick(task_id, result)
             relative = str(full.relative_to(path))
-            with self.db.write() as session:
-                prior = session.get(Observation, str(full))
-                if not prior:
-                    prior = Observation(
-                        path=str(full),
-                        signature=observed,
-                        stable_since=min(
-                            time.time(), max(int(observed[3]), int(observed[4])) / 1e9
-                        ),
-                    )
-                    session.add(prior)
-                elif prior.signature != observed:
-                    prior.signature, prior.stable_since = observed, time.time()
-                stable_since = prior.stable_since
-            if time.time() - stable_since < self.settings.stability_seconds:
-                item["phase"] = "waiting_for_stable_files"
-                raise PackDeferred()
             with open_regular(full) as fd:
                 if signature(os.fstat(fd)) != observed:
                     raise PackDeferred()
@@ -588,34 +603,46 @@ class PackScanner:
                         self.scanner.check_stop()
                         digest.update(chunk)
                     os.lseek(fd, 0, os.SEEK_SET)
-                    inspected = inspect_image(
-                        fd, self.cache, self.settings.probe_timeout, self.scanner.stop
-                    )
-                    metadata = {
-                        "width": inspected.get("width", 0),
-                        "height": inspected.get("height", 0),
-                        "format": inspected.get(
-                            "format",
-                            {".png": "PNG", ".webp": "WEBP"}.get(full.suffix.lower(), "JPEG"),
-                        ),
-                        "sha256": digest.hexdigest(),
-                        "error": inspected.get("error"),
-                        "thumbnail": inspected.get("thumbnail"),
-                    }
-                    if inspected.get("thumbnail_warning"):
-                        summary["thumbnail_failed"] += 1
-                    summary["progress"]["peak_decoder_kib"] = max(
-                        summary["progress"]["peak_decoder_kib"], inspected.get("peak_rss_kib", 0)
-                    )
-                    if inspected.get("error"):
-                        summary["failed_pages"] += 1
-                        summary["failed"] += 1
-                        self.issue(
-                            result,
-                            inspected["error"],
-                            root_id=root.id,
-                            name=f"{path.name}/{relative}",
+                    if (
+                        old
+                        and not old.error
+                        and old.sha256 == digest.hexdigest()
+                        and old.thumbnail
+                        and (self.cache / old.thumbnail).is_file()
+                    ):
+                        # Device/ctime changes alone do not change decoded pixels.
+                        # Reuse only after hashing the currently opened original.
+                        metadata = {key: getattr(old, key) for key in PAGE_FIELDS}
+                    else:
+                        inspected = inspect_image(
+                            fd, self.cache, self.settings.probe_timeout, self.scanner.stop
                         )
+                        metadata = {
+                            "width": inspected.get("width", 0),
+                            "height": inspected.get("height", 0),
+                            "format": inspected.get(
+                                "format",
+                                {".png": "PNG", ".webp": "WEBP"}.get(full.suffix.lower(), "JPEG"),
+                            ),
+                            "sha256": digest.hexdigest(),
+                            "error": inspected.get("error"),
+                            "thumbnail": inspected.get("thumbnail"),
+                        }
+                        if inspected.get("thumbnail_warning"):
+                            summary["thumbnail_failed"] += 1
+                        summary["progress"]["peak_decoder_kib"] = max(
+                            summary["progress"]["peak_decoder_kib"],
+                            inspected.get("peak_rss_kib", 0),
+                        )
+                        if inspected.get("error"):
+                            summary["failed_pages"] += 1
+                            summary["failed"] += 1
+                            self.issue(
+                                result,
+                                inspected["error"],
+                                root_id=root.id,
+                                name=f"{path.name}/{relative}",
+                            )
                 if signature(os.fstat(fd)) != observed:
                     raise PackDeferred()
             with open_regular(full) as fresh:
