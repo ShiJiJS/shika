@@ -20,6 +20,7 @@ import 'paper_management.dart';
 import '../features/settings/default_settings_sheet.dart';
 import '../features/settings/media_root_sheet.dart';
 import '../features/settings/scan_progress_card.dart';
+import '../features/settings/scan_issues_page.dart';
 import '../features/settings/missing_media_page.dart';
 import '../features/settings/change_passphrase_sheet.dart';
 import '../library/repository.dart';
@@ -172,6 +173,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     'tags': '标签',
     'settings': '设置',
     'roots': '媒体目录',
+    'scan': '扫描进度与问题',
     'trash': '回收站',
     'backup': '备份与恢复',
     'tasks': '操作任务',
@@ -1268,6 +1270,10 @@ class _LibraryHomeState extends State<LibraryHome> {
             'tags' => tags(),
             'settings' => settings(),
             'roots' => roots(),
+            'scan' => ListView(
+              padding: const EdgeInsets.all(20),
+              children: [preparationCard()],
+            ),
             'trash' => trash(),
             'backup' => backup(),
             'tasks' => MaintenanceTasksPage(
@@ -1449,6 +1455,19 @@ class _LibraryHomeState extends State<LibraryHome> {
             repo.capabilities.scopedScans && repo.capabilities.rootScanProgress,
         showAll: locked || rootScanNeedsAttention,
         busy: busy,
+        onDetails: (root) => Navigator.of(context).push<void>(
+          PaperPageRoute(
+            builder: (_) => ScanIssuesPage(
+              repository: repo,
+              root: root,
+              initial: state.rootProgress(root.id),
+              // A root can retain an older scoped scan than the current round.
+              taskId:
+                  state.rootProgress(root.id).taskId ??
+                  (repo.capabilities.rootScanProgress ? null : state.taskId),
+            ),
+          ),
+        ),
         onScanAll: () async {
           if (await perform(repo.requestScan)) notice('扫描请求已提交，进度会自动同步');
         },
@@ -2344,6 +2363,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     ),
   );
   Widget settings() => ListView(
+    key: const Key('settings-list'),
     padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
     children: [
       settingsHeading('连接与文件', first: true),
@@ -2372,6 +2392,13 @@ class _LibraryHomeState extends State<LibraryHome> {
       ),
       settingsHeading('数据维护'),
       settingRow(
+        Icons.fact_check_outlined,
+        '扫描进度与问题',
+        '按视频、图包目录查看进度和问题原因',
+        () => go('scan'),
+        allowDuringRestore: true,
+      ),
+      settingRow(
         Icons.delete_outline,
         '回收站',
         repo.capabilities.packLogicalTrash
@@ -2399,7 +2426,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         () => go('tasks'),
         allowDuringRestore: true,
       ),
-      settingsHeading('偏好'),
+      settingsHeading('通用偏好'),
       PaperPreferenceSwitch(
         key: const Key('dark-mode-setting'),
         icon: Icons.dark_mode_outlined,
@@ -2410,6 +2437,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             : (value) => perform(() => widget.preferences.setDark(value)),
       ),
       const Divider(height: 1),
+      settingsHeading('视频偏好'),
       PaperPreferenceSwitch(
         key: const Key('preload-setting'),
         icon: Icons.slow_motion_video,
@@ -2432,11 +2460,12 @@ class _LibraryHomeState extends State<LibraryHome> {
             : '顺序播放',
         order,
       ),
-      if (repo.capabilities.packReadingSessions)
+      if (repo.capabilities.packReadingSessions) ...[
+        settingsHeading('图包偏好'),
         settingRow(
           Icons.menu_book_outlined,
-          '阅读偏好',
-          '默认阅读方式 · 每包单独记忆',
+          '图包阅读偏好',
+          '默认阅读方式 · 每个图包单独记忆',
           () => sheet<void>(
             DefaultSettingsSheet(
               repository: repo,
@@ -2445,6 +2474,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             ),
           ),
         ),
+      ],
       if (kDebugMode && repo is DemoControls) ...[
         const SizedBox(height: 26),
         note('开发工具'),

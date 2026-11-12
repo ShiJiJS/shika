@@ -61,7 +61,7 @@ class _DefaultSettingsSheetState extends State<DefaultSettingsSheet> {
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: session,
     builder: (context, _) => SheetFrame(
-      title: widget.video ? '默认播放顺序' : '阅读偏好',
+      title: widget.video ? '默认播放顺序' : '图包阅读偏好',
       footer: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,

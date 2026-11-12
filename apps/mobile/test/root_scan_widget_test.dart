@@ -320,7 +320,7 @@ void main() {
       body['media']['pack']['scanning'] = false;
       await host(t, card(LibraryPreparation.fromJson(body)));
       expect(find.text('1 张图片无法读取'), findsOneWidget);
-      expect(find.text('目录无法访问，请检查挂载或连接。'), findsOneWidget);
+      expect(find.text('目录无法访问，请检查挂载、连接和读取权限。'), findsOneWidget);
       expect(find.text('已核对 40 / 40 张图片'), findsOneWidget);
       expect(find.text('已核对 63 张图片 · 已发现 180 张'), findsOneWidget);
       expect(find.text('已核对 600 / 600 个视频'), findsOneWidget);

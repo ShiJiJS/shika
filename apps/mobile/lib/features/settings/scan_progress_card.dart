@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../library/models.dart';
+import '../../library/scan_report.dart';
 import '../../ui/paper.dart';
 
 String scanActivityLabel(
@@ -45,12 +46,14 @@ class ScanProgressCard extends StatelessWidget {
     required this.onScanAll,
     required this.onScanRoot,
     this.showAll = true,
+    this.onDetails,
   });
   final LibraryPreparation state;
   final List<MediaRoot> roots;
   final bool precise, scoped, busy, showAll;
   final VoidCallback onScanAll;
   final ValueChanged<String> onScanRoot;
+  final ValueChanged<MediaRoot>? onDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -295,6 +298,13 @@ class ScanProgressCard extends StatelessWidget {
               _reason(facts.error!),
               style: TextStyle(fontSize: 12, height: 1.7, color: p.muted),
             ),
+          if (onDetails != null)
+            TextButton.icon(
+              key: Key('scan-root-details-${root.id}'),
+              onPressed: () => onDetails!(root),
+              icon: const Icon(Icons.info_outline, size: 18),
+              label: const Text('查看扫描详情'),
+            ),
           if (completed != null)
             Text(
               '上次完成 ${_date(completed)}',
@@ -423,12 +433,4 @@ String scanRootLabel(MediaRoot root, RootScanProgress facts) {
 
 String _date(DateTime value) =>
     '${value.month.toString().padLeft(2, '0')}/${value.day.toString().padLeft(2, '0')} ${value.hour.toString().padLeft(2, '0')}:${value.minute.toString().padLeft(2, '0')}';
-String _reason(String code) => switch (code) {
-  'root_unmapped' => '此目录未连接，请检查媒体目录设置。',
-  'root_unavailable' => '目录无法访问，请检查挂载或连接。',
-  'pack_scan_incomplete' => '部分图包读取失败，原有记录保留。',
-  'files_changing' => '文件仍在变化，稍后可重新扫描。',
-  'service_restarted' || 'scan_interrupted' => '扫描中断，可重新扫描此目录。',
-  'scan_failed' => '未完成本次扫描，可以重试。',
-  _ => '目录读取遇到问题，请检查连接后重试。',
-};
+String _reason(String code) => scanIssueReason(code);

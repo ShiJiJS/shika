@@ -121,7 +121,7 @@ class _ArchiveBackupPageState extends State<ArchiveBackupPage> {
         const Text('保存你的整理成果', style: TextStyle(fontSize: 14, height: 1.6)),
         const SizedBox(height: 12),
         Text(
-          '包含两套标签与关联、目录映射、回收站、预览轮次、图包进度和阅读偏好。不包含媒体文件、个人口令与本机外观偏好。',
+          '包含两套标签与关联、目录映射、回收站、预览轮次、图包进度和图包阅读偏好。不包含媒体文件、个人口令与本机外观偏好。',
           style: TextStyle(fontSize: 13, height: 1.7, color: p.catalogMeta),
         ),
         ValueListenableBuilder<String?>(

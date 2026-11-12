@@ -1443,6 +1443,31 @@ class ServerLibraryRepository extends LibraryRepository
   }
 
   @override
+  Future<ScanReport> loadScanReport(
+    String taskId, {
+    RequestScope? cancel,
+  }) async {
+    final target = api, generation = _generation;
+    final data = await call(
+      'GET',
+      '/api/v1/tasks/${Uri.encodeComponent(taskId)}',
+      using: target,
+      cancel: cancel,
+    );
+    if (_disposed ||
+        generation != _generation ||
+        !identical(target, _api) ||
+        cancel?.cancelled == true) {
+      throw const RequestCancelled();
+    }
+    final report = ScanReport(data);
+    if (report.id != taskId) {
+      throw const LibraryFailure('扫描记录不一致，请重新读取');
+    }
+    return report;
+  }
+
+  @override
   Future<void> requestScan() async {
     ensureNotRestoring();
     final target = api, generation = _generation;

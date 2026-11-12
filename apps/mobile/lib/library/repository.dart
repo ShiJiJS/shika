@@ -8,6 +8,9 @@ import 'pack_trash.dart';
 import 'pack_purge.dart';
 import 'maintenance_tasks.dart';
 import 'playback_defaults.dart';
+import 'scan_report.dart';
+import 'request_scope.dart';
+export 'scan_report.dart';
 import 'pack_missing.dart';
 export 'pack_missing.dart';
 export 'playback_defaults.dart';
@@ -127,6 +130,8 @@ abstract class LibraryRepository extends ChangeNotifier {
   Future<void> requestScan() => refresh();
   Future<void> requestRootScan(String rootId) =>
       Future.error(const LibraryFailure('当前服务不支持单独扫描目录，请升级服务端'));
+  Future<ScanReport> loadScanReport(String taskId, {RequestScope? cancel}) =>
+      Future.error(const LibraryFailure('当前服务未提供扫描问题明细'));
   final ValueNotifier<String?> backupStatus = ValueNotifier(null);
   final ValueNotifier<String?> fileStatus = ValueNotifier(null);
   ServiceCapabilities get capabilities => const ServiceCapabilities.legacy();
