@@ -922,20 +922,107 @@ class ServerLibraryRepository extends LibraryRepository
   }
 
   @override
-  Future<void> connect(String address, int port, String passphrase) async {
+  Future<bool> connectionNeedsSetup(String address, int port) async {
+    final candidate = ServerApi(endpoint(address, port));
+    try {
+      final status = await candidate.json('GET', '/api/v1/auth/status');
+      if (status['initialized'] is! bool) {
+        throw const LibraryFailure('服务返回的初始化状态不完整');
+      }
+      return status['initialized'] == false;
+    } on ApiFailure catch (error) {
+      if (error.status == 404) {
+        return false; // Older servers still accept login.
+      }
+      rethrow;
+    } finally {
+      candidate.close();
+    }
+  }
+
+  @override
+  Future<void> connect(String address, int port, String passphrase) =>
+      _connect(address, port, passphrase);
+
+  @override
+  Future<void> setupConnection(String address, int port, String passphrase) =>
+      _connect(address, port, passphrase, initialSetup: true);
+
+  @override
+  Future<void> changePassphrase(String current, String replacement) {
+    if (!capabilities.credentialManagement) {
+      throw const LibraryFailure('当前服务不支持修改口令，请升级服务端');
+    }
+    if (_connectingGeneration != null) {
+      throw const LibraryFailure('连接正在更新，请稍后再修改口令');
+    }
+    return _connect(
+      snapshot.address,
+      snapshot.port,
+      replacement,
+      currentPassphrase: current,
+      authorizationToken: api.token,
+    );
+  }
+
+  Future<void> _connect(
+    String address,
+    int port,
+    String passphrase, {
+    bool initialSetup = false,
+    String? currentPassphrase,
+    String authorizationToken = '',
+  }) async {
     final location = endpoint(address, port);
     if (passphrase.isEmpty || passphrase.length > 1024) {
       throw const LibraryFailure('请填写个人口令');
     }
-    final candidate = ServerApi(location);
-    final generation = ++_generation;
+    final candidate = ServerApi(location, token: authorizationToken);
+    var generation = currentPassphrase == null ? ++_generation : _generation;
     _connectingGeneration = generation;
     try {
-      final login = await candidate.json(
-        'POST',
-        '/api/v1/auth/login',
-        body: {'passphrase': passphrase},
-      );
+      Json login;
+      try {
+        login = await candidate.json(
+          'POST',
+          initialSetup
+              ? '/api/v1/auth/setup'
+              : currentPassphrase != null
+              ? '/api/v1/auth/passphrase'
+              : '/api/v1/auth/login',
+          body: currentPassphrase != null
+              ? {
+                  'current_passphrase': currentPassphrase,
+                  'new_passphrase': passphrase,
+                }
+              : {'passphrase': passphrase},
+        );
+      } on ApiFailure catch (error) {
+        if ((!initialSetup && currentPassphrase == null) ||
+            error.status != null) {
+          rethrow;
+        }
+        // A lost reply may follow a committed credential change. Authenticate
+        // with the new secret once; never blindly repeat setup or rotation.
+        candidate.token = '';
+        try {
+          login = await candidate.json(
+            'POST',
+            '/api/v1/auth/login',
+            body: {'passphrase': passphrase},
+          );
+        } catch (_) {
+          throw error;
+        }
+      }
+      if (currentPassphrase != null) {
+        // A rejected old password must not invalidate current reader gateways.
+        if (_disposed || generation != _generation) {
+          throw const RequestCancelled();
+        }
+        generation = ++_generation;
+        _connectingGeneration = generation;
+      }
       candidate.token = login['access_token'] as String;
       final info = await candidate.json('GET', '/api/v1/info');
       if (info['api_version'] != 1) throw const LibraryFailure('服务版本不兼容');

@@ -46,6 +46,14 @@ docker compose --env-file .env -f deploy/local/compose.yaml ps
 
 外部改名或移动有充分身份依据时保留原 ID、标签和阅读数据；同路径替换或身份不唯一时不猜测继承。目录不可用、扫描失败或未完整遍历时不据此清理旧记录。缩略图是可重建缓存，生成失败与原媒体损坏分开反馈。
 
+## 个人口令
+
+`GET /api/v1/auth/status` 返回是否已初始化。新数据库未挂载种子口令时，App 通过 `POST /api/v1/auth/setup` 设置口令（8–1024 字符），仅首次成功；已有实例使用 `POST /api/v1/auth/login`。已登录设备通过 `POST /api/v1/auth/passphrase` 提交 `current_passphrase` 和 `new_passphrase`，收到替代访问凭据，全部旧会话失效。接口返回相同的登录凭据结构，`credential_management` 能力用于 App 展示入口。
+
+数据库保存 Argon2 哈希。可选的 `VV_PASSPHRASE_FILE` 兼容原部署并提供管理员恢复入口；未变化的种子不会撤销 App 修改，主动改变种子后重启会重置口令并撤销旧凭据。恢复步骤见部署手册。管理备份不导出口令或其种子哈希。
+
+大尺寸 JPEG 在解码器内缩小后生成预览，保留原始尺寸元数据，读取原图不会改写文件。非 JPEG 的工作像素上限为 8000 万；JPEG 另有 5.12 亿源像素上限及缩小后的工作像素检查，子进程仍受内存、CPU 和超时限制。重新扫描会重试旧的 JPEG 尺寸超限记录。
+
 ## 回收站与文件操作
 
 视频和图包移入回收站只记录标记，保留源文件；恢复取消标记。旧版已物理移动的视频回收记录仍可恢复，遇同名冲突不覆盖。旧 `.video-viewer-trash`、`.video-viewer-tmp` 和自定义 `VV_TRASH_DIR` 可能仍承载这些记录，不随改名或升级清除。

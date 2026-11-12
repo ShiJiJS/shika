@@ -9,7 +9,7 @@
 
 ![Android](https://img.shields.io/badge/App-Android-3DDC84?logo=android&logoColor=white)
 ![Docker](https://img.shields.io/badge/Server-Docker-2496ED?logo=docker&logoColor=white)
-![Status](https://img.shields.io/badge/Status-开发预览-526B52)
+![Status](https://img.shields.io/badge/Version-1.0.0-526B52)
 
 [开始使用](#开始使用) · [部署手册](docs/deployment.md) · [文档导航](docs/README.md) · [反馈问题](https://github.com/ShiJiJS/shika/issues)
 
@@ -23,7 +23,7 @@
 
 图包以**文件夹为单位**组织，提供类似漫画阅读的纵向拼接、横向翻页、缩放和续读。视频与图包各自管理标签和最近记录，适合一边看、一边整理自己的收藏。
 
-当前为开发预览，App 界面为简体中文。中文和英文 README、部署手册分别维护，语言入口位于每页顶部。
+当前正式版为 **1.0.0**，App 界面为简体中文。中文和英文 README、部署手册分别维护，语言入口位于每页顶部。
 
 ## 主要功能
 
@@ -41,10 +41,13 @@
 
 ## 开始使用
 
-1. **部署服务端**：准备 NAS 媒体目录，按[部署手册](docs/deployment.md)构建镜像、配置持久化目录并启动 Docker 服务。
-2. **安装 Android App**：使用维护者提供的 APK，或按[客户端开发说明](docs/development.md)从源码构建。升级时保持相同签名并覆盖安装。
-3. **连接媒体库**：填写 NAS 局域网 IP、端口（默认 `8760`）和自己设置的个人口令，在 App 中接入视频或图包目录。
-4. **浏览与整理**：查看扫描进度，在媒体库或标签中选择内容，再进入播放、阅读或快速整理。
+1. **准备 Docker 与目录**：NAS 需要 Docker，准备视频、图包目录，以及保存数据库的本地 `data/`。按[部署手册](docs/deployment.md#首次部署)构建与 NAS CPU 匹配的 `shika-server:1.0.0` 镜像。
+2. **配置并启动服务**：复制 `deploy/fnos/` 的 Compose、`.env.example` 和 `mounts.json.example`，填写实际 NAS IP、媒体路径、UID/GID。启动 Compose，访问 `http://NAS地址:8760/health`，应返回 `status: ok`。完整命令和挂载示例见[部署手册](docs/deployment.md)。
+3. **安装 App**：从 [1.0.0 正式版](https://github.com/ShiJiJS/shika/releases/tag/v1.0.0)下载并安装 `shika-1.0.0-arm64.apk`，也可按[开发指南](docs/development.md)从源码构建。更新时覆盖安装并保持相同签名。
+4. **首次连接并设置口令**：手机与 NAS 网络互通，在 App 输入 NAS IP 和端口 `8760`，点“连接”。新服务会显示“首次连接 · 设置个人口令”，输入两次至少 8 个字符的口令，点“设置口令并连接”。已有服务直接使用原口令登录。
+5. **接入媒体目录**：在设置中添加视频或图包目录，使用容器内路径，例如 `/media`、`/packs-cos`；检查各目录扫描进度，完成后从媒体库浏览。
+
+后续修改口令：**设置 → 修改个人口令**，填写当前口令和两次新口令。保存后本机继续连接，其他设备需重新登录，无需重建容器。App 自动管理登录凭据，不需要手动填写会话 token。初次设置前请仅开放给自己可信的局域网；忘记口令时按[口令恢复说明](docs/deployment.md#修改与找回口令)操作。
 
 服务端支持为 `linux/amd64` 或 `linux/arm64` 构建镜像，需与 NAS 的 CPU 架构匹配。视频直接从 NAS 读取，不实时转码，播放能力取决于 Android 设备支持的格式。
 
@@ -53,7 +56,7 @@
 [部署手册](docs/deployment.md)包含首次安装、镜像构建、目录权限、视频与图包挂载、飞牛部署、App 连接、备份、升级、迁移和常见问题。
 
 - 服务模板：[Compose](deploy/fnos/compose.yaml) · [环境变量](deploy/fnos/.env.example) · [允许访问的媒体范围](deploy/fnos/mounts.json.example)
-- 数据位置：数据库与管理记录保存在持久化的 `data/`，配置在 `config/`，个人口令在 `secrets/`。
+- 数据位置：数据库与管理记录保存在持久化的 `data/`，配置在 `config/`。App 设置的口令只在数据库保存哈希；旧版可继续挂载 `secrets/passphrase`。
 - 已有媒体库：迁移或升级时保留完整管理数据、原目录 ID 和容器内挂载路径，继续使用已有标签和阅读记录。
 
 ## 选装：视频打标 Skill 与 CLI

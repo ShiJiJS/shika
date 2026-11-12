@@ -29,7 +29,7 @@ cd shika
 When building directly on the target NAS, Docker uses that machine's architecture by default:
 
 ```bash
-docker build --target runtime -t shika-server:local services/server
+docker build --target runtime -t shika-server:1.0.0 services/server
 ```
 
 When building on another computer for transfer to the NAS, specify the architecture explicitly. For an x86 NAS:
@@ -37,7 +37,7 @@ When building on another computer for transfer to the NAS, specify the architect
 ```bash
 mkdir -p tmp/releases
 docker buildx build --platform linux/amd64 --target runtime \
-  -t shika-server:local-amd64 \
+  -t shika-server:1.0.0-amd64 \
   --output type=docker,dest=tmp/releases/server-amd64.tar services/server
 ```
 
@@ -45,7 +45,7 @@ For an ARM NAS, use `linux/arm64` and change the tag and archive filename accord
 
 ```bash
 docker load -i /path/to/server-amd64.tar
-docker image inspect shika-server:local-amd64 --format '{{.Os}}/{{.Architecture}}'
+docker image inspect shika-server:1.0.0-amd64 --format '{{.Os}}/{{.Architecture}}'
 ```
 
 Set `SHIKA_IMAGE` to the **tag you actually built or imported**. The template's default tag does not indicate a published public registry image. On fnOS, importing is also possible through its Docker interface or an authorized CLI, as described below.
@@ -59,16 +59,14 @@ shika/
 ├── compose.yaml
 ├── .env
 ├── data/                 # SQLite, tasks, cache, exports, pre-restore snapshots
-├── config/
-│   └── mounts.json       # Allowed container-side media paths
-└── secrets/
-    └── passphrase        # Personal passphrase
+└── config/
+    └── mounts.json       # Allowed container-side media paths
 ```
 
 Copy the templates from the source checkout without replacing existing files:
 
 ```bash
-mkdir -p /srv/shika/data /srv/shika/config /srv/shika/secrets
+mkdir -p /srv/shika/data /srv/shika/config
 cp -n deploy/fnos/compose.yaml /srv/shika/compose.yaml
 cp -n deploy/fnos/.env.example /srv/shika/.env
 cp -n deploy/fnos/mounts.json.example /srv/shika/config/mounts.json
@@ -76,12 +74,12 @@ cp -n deploy/fnos/mounts.json.example /srv/shika/config/mounts.json
 
 Store `data/` on a NAS-local filesystem supporting SQLite WAL, rather than an SMB/NFS client mount on another computer. Grant access to the directories the service needs; avoid recursively changing ownership of the entire media collection.
 
-### 3. Set paths and the personal passphrase
+### 3. Set paths
 
 Edit `.env` in the NAS application directory. For an image built natively on the NAS:
 
 ```dotenv
-SHIKA_IMAGE=shika-server:local
+SHIKA_IMAGE=shika-server:1.0.0
 SHIKA_BIND_ADDRESS=192.168.1.100
 SHIKA_PORT=8760
 SHIKA_UID=1000
@@ -91,19 +89,18 @@ SHIKA_VIDEO_DIR=/srv/media/videos
 SHIKA_PACK_DIR=/srv/media/packs
 ```
 
-For the cross-built image above, use `SHIKA_IMAGE=shika-server:local-amd64`. Both media source directories must already exist. The configuration maps to the running container as follows:
+For the cross-built image above, use `SHIKA_IMAGE=shika-server:1.0.0-amd64`. Both media source directories must already exist. The configuration maps to the running container as follows:
 
 | NAS path or setting | Container path / purpose |
 | --- | --- |
 | `SHIKA_DEPLOY_DIR/data` | `/data`: complete persistent management data |
 | `SHIKA_DEPLOY_DIR/config` | `/config`: read-only configuration |
-| `SHIKA_DEPLOY_DIR/secrets/passphrase` | `/run/secrets/passphrase`: read-only passphrase file |
 | `SHIKA_VIDEO_DIR` | `/media`: allowed video scope |
 | `SHIKA_PACK_DIR` | `/packs-cos`: allowed image pack scope |
 | `SHIKA_BIND_ADDRESS`, `SHIKA_PORT` | NAS LAN address and port used by the phone |
 | `SHIKA_UID`, `SHIKA_GID` | Identity used to read files and write management data |
 
-Create the plain text file `secrets/passphrase` with a personal passphrase of at least **8 characters** on one line. Keep it out of `.env` and Git. Restrict file access while ensuring the container UID can read it; with terminal access, file mode `600` can be used.
+Fresh installations do not need a passphrase file. Set the passphrase in the app on first connection; the database stores only an Argon2 hash. Keep existing deployments’ seed files and mounts: unchanged seeds will not undo later in-app changes after a restart.
 
 The copied `config/mounts.json` example is:
 
@@ -134,7 +131,7 @@ After the health check returns `{"status":"ok","api_version":1}`, log in through
 
 ## fnOS deployment
 
-An application directory can be `/vol1/1000/docker/shika`; media paths must reflect their current location. Place `compose.yaml`, `.env`, configuration, and the passphrase there. **Import the matching architecture image first**, then select the existing Compose file in the Docker interface, create the project, and start it. For updates, recreate the existing project instead of creating another one.
+An application directory can be `/vol1/1000/docker/shika`; media paths must reflect their current location. Place `compose.yaml`, `.env`, and configuration there. **Import the matching architecture image first**, then select the existing Compose file in the Docker interface, create the project, and start it. For updates, recreate the existing project instead of creating another one.
 
 An authorized `fnos-cli` can also perform these operations. The following profile, paths, and tag are examples. Verify the target device and authorization, upload the archive and configuration, then run:
 
@@ -142,7 +139,7 @@ An authorized `fnos-cli` can also perform these operations. The following profil
 fnos-cli --profile home-fnos --allow-insecure-http docker image ls
 fnos-cli --profile home-fnos --allow-insecure-http docker container ls --all
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.imageLoad --json '{"filePath":"/vol1/1000/docker/shika/image-archives/server-amd64.tar"}' --yes
-fnos-cli --profile home-fnos --allow-insecure-http docker image inspect shika-server:local-amd64
+fnos-cli --profile home-fnos --allow-insecure-http docker image inspect shika-server:1.0.0-amd64
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeCreate --json '{"auto_build":false,"file":"compose.yaml","folder":"/vol1/1000/docker/shika","project_name":"shika"}' --yes
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeBuild --json '{"project_name":"shika"}' --yes
 fnos-cli --profile home-fnos --allow-insecure-http docker container inspect shika-server
@@ -167,11 +164,19 @@ Open the app and enter:
 | --- | --- |
 | Server address | `192.168.1.100` |
 | Port | `8760` |
-| Personal passphrase | The value you put in `secrets/passphrase` |
+| Personal passphrase | Set on first connection, or the existing server’s passphrase |
 
 The phone must be able to reach that NAS address. `10.0.2.2:8760` is only for an Android emulator reaching a local development service, not a physical phone reaching a NAS. After login, the app saves access credentials, not the personal passphrase.
 
 In settings, add media roots, choose video or image pack type, and check enabled status and scan progress. The allowed scopes, added roots, and Docker mounts must correspond.
+
+### Set, change, or recover the passphrase
+
+For a fresh server, enter the NAS address and port and tap Connect. The app displays first-time setup: enter and confirm an **8–1024 character** passphrase and tap 设置口令并连接. Keep the unclaimed service accessible only from your trusted LAN.
+
+Existing servers keep their passphrase. Use Settings → 修改个人口令, enter the current passphrase and confirm the new one. This device automatically adopts a replacement access token; all old tokens are revoked and other devices must sign in again. The app stores access credentials, not the plain text passphrase. Management backups exclude authentication secrets.
+
+For administrator recovery, create or change `secrets/passphrase` to a new value different from the original seed. Restrict access but allow the container UID to read it. Add a read-only bind mount to `/run/secrets/passphrase` (or set `VV_PASSPHRASE_FILE` to its container path), then recreate the existing container. A changed seed resets the passphrase and revokes old sessions. An unchanged seed does not undo later app changes. Never delete the database to reset authentication.
 
 ## Everyday use
 
@@ -199,7 +204,7 @@ To restore, select and validate a backup, review root mappings, then confirm rep
 3. Build or import the new image, change `SHIKA_IMAGE`, and recreate the **existing** Compose project while preserving bind mounts.
 4. Check container health, app login, root availability, and task results. Keep the same signing key when updating the app in place.
 
-Rollback requires a compatible pair of the original image and stopped-instance snapshot; an old image may not read a newer database. Changing the personal passphrase also requires recreating the container and logging in again with the new value.
+Rollback requires a compatible pair of the original image and stopped-instance snapshot; an old image may not read a newer database. In-app passphrase changes do not require container recreation; other devices must log in with the new value.
 
 ### Moving to another NAS or storage location
 

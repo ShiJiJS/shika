@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shika/main.dart';
+import 'package:shika/features/settings/change_passphrase_sheet.dart';
+import 'package:shika/ui/paper.dart';
 import 'package:shika/library/demo_repository.dart';
 import 'package:shika/library/models.dart';
 import 'package:shika/library/state_store.dart';
@@ -27,7 +29,122 @@ class ReconnectingLibrary extends DemoLibraryRepository {
   }
 }
 
+class CredentialLibrary extends ReconnectingLibrary {
+  int setups = 0, changes = 0;
+  @override
+  Future<bool> connectionNeedsSetup(String address, int port) async => true;
+  @override
+  Future<void> setupConnection(
+    String address,
+    int port,
+    String passphrase,
+  ) async {
+    setups++;
+    connection(true);
+  }
+
+  @override
+  Future<void> changePassphrase(String current, String replacement) async {
+    changes++;
+    if (current != 'old-secret') throw const LibraryFailure('当前口令不正确');
+  }
+}
+
 void main() {
+  testWidgets(
+    'first connection reveals setup and rejects mismatched confirmation',
+    (tester) async {
+      final repo = CredentialLibrary();
+      await repo.initialize();
+      repo.connection(false);
+      await tester.pumpWidget(ShikaApp(repository: repo));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byKey(const Key('connection-address')),
+        'my-nas',
+      );
+      await tester.tap(find.byKey(const Key('connection-save')));
+      await tester.pumpAndSettle();
+      expect(find.text('首次连接 · 设置个人口令'), findsOneWidget);
+      expect(repo.setups, 0);
+      await tester.enterText(
+        find.byKey(const Key('connection-passphrase')),
+        'new-secret',
+      );
+      await tester.enterText(
+        find.byKey(const Key('connection-confirm-passphrase')),
+        'different',
+      );
+      await tester.ensureVisible(find.byKey(const Key('connection-save')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('connection-save')));
+      await tester.pumpAndSettle();
+      expect(find.text('两次输入的口令不一致'), findsOneWidget);
+      expect(repo.setups, 0);
+      await tester.enterText(
+        find.byKey(const Key('connection-confirm-passphrase')),
+        'new-secret',
+      );
+      await tester.ensureVisible(find.byKey(const Key('connection-save')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('connection-save')));
+      await tester.pumpAndSettle();
+      expect(repo.setups, 1);
+      expect(find.text('首次连接 · 设置个人口令'), findsNothing);
+      await tester.pumpWidget(const SizedBox());
+      repo.dispose();
+    },
+  );
+
+  testWidgets(
+    'change form validates confirmation and retains a rejected draft',
+    (tester) async {
+      final repo = CredentialLibrary();
+      await repo.initialize();
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: Paper.theme,
+          home: Scaffold(body: ChangePassphraseSheet(repository: repo)),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byKey(const Key('change-current-passphrase')),
+        'wrong',
+      );
+      await tester.enterText(
+        find.byKey(const Key('change-new-passphrase')),
+        'new-secret',
+      );
+      await tester.enterText(
+        find.byKey(const Key('change-confirm-passphrase')),
+        'different',
+      );
+      await tester.tap(find.byKey(const Key('change-passphrase-save')));
+      await tester.pumpAndSettle();
+      expect(find.text('两次输入的新口令不一致'), findsOneWidget);
+      expect(repo.changes, 0);
+      await tester.enterText(
+        find.byKey(const Key('change-confirm-passphrase')),
+        'new-secret',
+      );
+      await tester.tap(find.byKey(const Key('change-passphrase-save')));
+      await tester.pumpAndSettle();
+      expect(find.text('当前口令不正确'), findsOneWidget);
+      expect(repo.changes, 1);
+      expect(
+        tester
+            .widget<TextField>(find.byKey(const Key('change-new-passphrase')))
+            .controller!
+            .text,
+        'new-secret',
+      );
+      expect(find.widgetWithText(FilledButton, '保存新口令'), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+      repo.dispose();
+    },
+  );
+
   testWidgets(
     'first connection has no emulator IP and saved endpoints fill the form',
     (tester) async {

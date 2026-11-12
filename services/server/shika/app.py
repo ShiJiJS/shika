@@ -57,6 +57,15 @@ class Login(Input):
     passphrase: SecretStr = Field(min_length=1, max_length=1024)
 
 
+class SetupPassphrase(Input):
+    passphrase: SecretStr = Field(min_length=8, max_length=1024)
+
+
+class ChangePassphrase(Input):
+    current_passphrase: SecretStr = Field(min_length=1, max_length=1024)
+    new_passphrase: SecretStr = Field(min_length=8, max_length=1024)
+
+
 class RootInput(Input):
     kind: Literal["video", "pack"] | None = None
     enabled: bool | None = None
@@ -272,7 +281,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
             app.state.pack_purge_plans.close()
             db.close()
 
-    app = FastAPI(title="拾刻 · shika", version="0.1.2", lifespan=lifespan)
+    app = FastAPI(title="拾刻 · shika", version="1.0.0", lifespan=lifespan)
 
     @app.exception_handler(LibraryError)
     async def library_error(_request, error):
@@ -342,8 +351,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
     def health():
         return {"status": "ok", "api_version": 1}
 
-    @app.post("/api/v1/auth/login")
-    def login(body: Login, request: Request):
+    def check_login_rate(request):
         state = request.app.state
         address = request.client.host if request.client else "local"
         # Bounded, expiring per-address attempts; nothing logs the supplied secret.
@@ -359,6 +367,27 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 raise LibraryError("login_rate_limited", "尝试过于频繁，请稍后重试", 429)
             attempts.append(now)
             state.login_attempts[address] = attempts
+
+    @app.get("/api/v1/auth/status")
+    def authentication_status(request: Request):
+        return {"initialized": request.app.state.auth.initialized()}
+
+    @app.post("/api/v1/auth/setup", status_code=201)
+    def setup_passphrase(body: SetupPassphrase, request: Request):
+        check_login_rate(request)
+        return request.app.state.auth.setup(body.passphrase.get_secret_value())
+
+    @app.post("/api/v1/auth/passphrase", dependencies=auth_required)
+    def change_passphrase(body: ChangePassphrase, request: Request):
+        check_login_rate(request)
+        return request.app.state.auth.change(
+            body.current_passphrase.get_secret_value(), body.new_passphrase.get_secret_value()
+        )
+
+    @app.post("/api/v1/auth/login")
+    def login(body: Login, request: Request):
+        check_login_rate(request)
+        state = request.app.state
         return state.auth.login(body.passphrase.get_secret_value())
 
     @app.delete("/api/v1/auth/session", status_code=204)
@@ -385,6 +414,7 @@ def create_app(settings: Settings | None = None, file_fault_hook=None, backup_fa
                 "max_roots": 256,
             },
             "capabilities": [
+                "credential_management",
                 "typed_roots",
                 "root_scan_progress",
                 "scoped_scans",

@@ -27,7 +27,7 @@ class Settings:
     legacy_purge_previews: bool = True
 
     def __post_init__(self):
-        if len(self.passphrase) < 8:
+        if self.passphrase and len(self.passphrase) < 8:
             raise ValueError("The service passphrase must contain at least 8 characters")
         if not self.data_dir.is_absolute():
             raise ValueError("data_dir must be absolute")
@@ -58,7 +58,10 @@ class Settings:
     @classmethod
     def from_env(cls):
         secret_file = os.environ.get("VV_PASSPHRASE_FILE", "/run/secrets/passphrase")
-        secret = Path(secret_file).read_text().strip()
+        try:
+            secret = Path(secret_file).read_text().strip()
+        except FileNotFoundError:
+            secret = ""  # A fresh instance is claimed through the first-connection form.
         raw = json.loads(Path(os.environ.get("VV_MOUNTS_FILE", "/config/mounts.json")).read_text())
         return cls(
             data_dir=Path(os.environ.get("VV_DATA_DIR", "/data")),

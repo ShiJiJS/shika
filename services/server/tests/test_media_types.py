@@ -228,6 +228,7 @@ def test_nested_type_barriers_and_typed_directory_contract(library, samples):
         "managed_playback_defaults",
         "pack_missing_cleanup",
         "management_authority",
+        "credential_management",
         "management_history",
         "management_purge_history",
         "backup_v2",

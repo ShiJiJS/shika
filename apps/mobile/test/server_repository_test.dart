@@ -22,6 +22,11 @@ void main() {
   final rootBodies = <Map<String, dynamic>>[];
   List<String>? capabilities;
   var typedRoot = false, delayRoot = false;
+  bool? initialized;
+  var dropCredentialReply = false;
+  final authWrites = <String>[];
+  var lastBearer = '';
+
   late Completer<void> delayedRootStarted, releaseRoot;
   final submittedRounds = <Map<String, dynamic>>[];
   Map<String, dynamic> scope = {'tag_ids': <String>[]};
@@ -50,6 +55,10 @@ void main() {
     'media_url': '/api/v1/videos/$id/stream',
   };
   setUp(() async {
+    initialized = null;
+    dropCredentialReply = false;
+    authWrites.clear();
+    lastBearer = '';
     videoDuration = 1.0;
     scope = {'tag_ids': <String>[]};
     dropRoundResponse = false;
@@ -73,7 +82,42 @@ void main() {
       final path = request.uri.path;
       final query = request.uri.queryParameters;
       Object response;
-      if (path == '/api/v1/info') {
+      if (path == '/api/v1/auth/status' && initialized != null) {
+        response = {'initialized': initialized};
+      } else if (path.startsWith('/api/v1/auth/') && request.method == 'POST') {
+        final body = jsonDecode(await utf8.decoder.bind(request).join()) as Map;
+        authWrites.add(path);
+        lastBearer =
+            request.headers.value(HttpHeaders.authorizationHeader) ?? '';
+        if (path.endsWith('/passphrase') &&
+            body['current_passphrase'] != 'old-secret') {
+          request.response.statusCode = 422;
+          response = {
+            'error': {
+              'code': 'current_passphrase_incorrect',
+              'message': '当前口令不正确',
+            },
+          };
+        } else {
+          initialized = true;
+          response = {
+            'access_token': 'replacement-token',
+            'expires_at':
+                DateTime.now()
+                    .add(const Duration(days: 30))
+                    .millisecondsSinceEpoch /
+                1000,
+          };
+          if (dropCredentialReply) {
+            dropCredentialReply = false;
+            final socket = await request.response.detachSocket(
+              writeHeaders: false,
+            );
+            socket.destroy();
+            return;
+          }
+        }
+      } else if (path == '/api/v1/info') {
         response = {
           'api_version': 1,
           'server_id': 'fixture',
@@ -238,6 +282,58 @@ void main() {
   tearDown(() async {
     repo.dispose();
     await server.close(force: true);
+  });
+
+  test(
+    'first setup detects an unclaimed server and adopts only the access token',
+    () async {
+      initialized = false;
+      expect(await repo.connectionNeedsSetup('127.0.0.1', server.port), isTrue);
+      await repo.setupConnection('127.0.0.1', server.port, 'new-secret');
+      expect(repo.snapshot.connected, isTrue);
+      expect((await credentials.read())!.token, 'replacement-token');
+      expect(
+        await repo.connectionNeedsSetup('127.0.0.1', server.port),
+        isFalse,
+      );
+      expect(authWrites, ['/api/v1/auth/setup']);
+    },
+  );
+
+  test('old servers without a setup endpoint still use normal login', () async {
+    expect(await repo.connectionNeedsSetup('127.0.0.1', server.port), isFalse);
+  });
+
+  test('wrong current password keeps the existing connection usable', () async {
+    capabilities = ['credential_management'];
+    await repo.initialize();
+    await expectLater(
+      repo.changePassphrase('wrong', 'new-secret'),
+      throwsA(isA<Exception>()),
+    );
+    expect(repo.snapshot.connected, isTrue);
+    expect((await credentials.read())!.token, 'test-only');
+    expect(
+      (await repo.loadVideoEntry(VideoEntryScope())).items.single.id,
+      'new',
+    );
+    await repo.changePassphrase('old-secret', 'new-secret');
+    expect(lastBearer, 'Bearer test-only');
+    expect((await credentials.read())!.token, 'replacement-token');
+    expect(
+      (await repo.loadVideoEntry(VideoEntryScope())).items.single.id,
+      'new',
+    );
+  });
+
+  test('lost credential receipts recover through login without repeating the change', () async {
+    capabilities = ['credential_management'];
+    await repo.initialize();
+    dropCredentialReply = true;
+    await repo.changePassphrase('old-secret', 'new-secret');
+    expect(authWrites, ['/api/v1/auth/passphrase', '/api/v1/auth/login']);
+    expect(repo.snapshot.connected, isTrue);
+    expect((await credentials.read())!.token, 'replacement-token');
   });
 
   test(

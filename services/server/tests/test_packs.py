@@ -961,3 +961,21 @@ def test_inaccessible_pack_root_does_not_poison_parent_video_root(library, sampl
         assert packs(client)["total"] == 0
     finally:
         Path(root["path"]).chmod(0o700)
+
+
+def test_unchanged_jpeg_retries_previous_pixel_limit_without_losing_identity(library):
+    client, media = library
+    root = pack_root(client, media)
+    image(Path(root["path"]) / "recover" / "1.jpg")
+    sync(client)
+    pack = packs(client)["items"][0]
+    page = pages(client, pack["id"])["items"][0]
+    with client.app.state.db.write() as session:
+        old = session.get(PackPage, page["id"])
+        old.error, old.thumbnail = "image_too_large", None
+    sync(client)
+    restored = pages(client, pack["id"])["items"][0]
+    assert restored["id"] == page["id"]
+    assert not restored.get("error"), restored
+    assert client.get(restored["thumbnail_url"]).status_code == 200
+    assert client.get(restored["image_url"]).status_code == 200

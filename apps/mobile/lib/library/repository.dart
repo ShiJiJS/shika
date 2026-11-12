@@ -283,6 +283,11 @@ abstract class LibraryRepository extends ChangeNotifier {
   Future<void> mediaUnauthorized(MediaSource source) async {}
   LibraryVideo? get current;
   Future<void> connect(String address, int port, String passphrase);
+  Future<bool> connectionNeedsSetup(String address, int port) async => false;
+  Future<void> setupConnection(String address, int port, String passphrase) =>
+      Future.error(const LibraryFailure('当前服务不支持首次设置口令，请升级服务端'));
+  Future<void> changePassphrase(String current, String replacement) =>
+      Future.error(const LibraryFailure('当前服务不支持修改口令，请升级服务端'));
   Future<void> setScope(VideoQuery scope, {PlayOrder? order});
   Future<void> newRound();
   Future<void> step(int delta);

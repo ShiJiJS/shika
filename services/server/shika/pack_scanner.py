@@ -586,13 +586,20 @@ class PackScanner:
                 old = cached.get(relative)
                 if old and old.signature == observed:
                     metadata = {key: getattr(old, key) for key in PAGE_FIELDS}
-                    if not old.error and (
-                        not old.thumbnail or not (self.cache / old.thumbnail).is_file()
+                    if (old.error == "image_too_large" and old.format == "JPEG") or (
+                        not old.error
+                        and (not old.thumbnail or not (self.cache / old.thumbnail).is_file())
                     ):
                         inspected = inspect_image(
                             fd, self.cache, self.settings.probe_timeout, self.scanner.stop
                         )
                         if not inspected.get("error"):
+                            metadata.update(
+                                width=inspected["width"],
+                                height=inspected["height"],
+                                format=inspected["format"],
+                                error=None,
+                            )
                             metadata["thumbnail"] = inspected.get("thumbnail")
                             if inspected.get("thumbnail_warning"):
                                 summary["thumbnail_failed"] += 1

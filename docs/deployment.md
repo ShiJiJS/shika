@@ -9,7 +9,7 @@
 - **NAS**：支持 Docker Engine 与 Compose v2，具有可持久化的本地存储。镜像架构必须匹配 `linux/amd64` 或 `linux/arm64`。
 - **媒体**：准备实际的视频和图包目录。图包以文件夹为单位组织；视频播放依赖 Android 设备支持的编码，服务不实时转码。
 - **网络**：手机能访问 NAS 的局域网地址。默认服务端口为 `8760`，模板绑定指定的 NAS 地址。
-- **权限**：选定容器 UID/GID，默认 `1000:1000`；它需要读写管理数据、读取配置和口令，并按需要获得媒体写权限。
+- **权限**：选定容器 UID/GID，默认 `1000:1000`；它需要读写管理数据、读取配置，并按需要获得媒体写权限。
 
 本文的 `/srv/shika`、`/srv/media/videos`、`/srv/media/packs` 和 `192.168.1.100` 都是示例。飞牛通常使用 `/vol1/1000/...` 形式的实际路径；其他 NAS 使用其真实卷路径。个人口令及私人路径只放在本机配置中。
 
@@ -29,7 +29,7 @@ cd shika
 如果直接在目标 NAS 上构建，镜像默认使用该主机架构：
 
 ```bash
-docker build --target runtime -t shika-server:local services/server
+docker build --target runtime -t shika-server:1.0.0 services/server
 ```
 
 如果在另一台电脑构建并传到 NAS，显式指定架构。例如为 x86 NAS 导出：
@@ -37,7 +37,7 @@ docker build --target runtime -t shika-server:local services/server
 ```bash
 mkdir -p tmp/releases
 docker buildx build --platform linux/amd64 --target runtime \
-  -t shika-server:local-amd64 \
+  -t shika-server:1.0.0-amd64 \
   --output type=docker,dest=tmp/releases/server-amd64.tar services/server
 ```
 
@@ -45,7 +45,7 @@ ARM NAS 将平台改为 `linux/arm64`，并对应修改标签和归档文件名�
 
 ```bash
 docker load -i /path/to/server-amd64.tar
-docker image inspect shika-server:local-amd64 --format '{{.Os}}/{{.Architecture}}'
+docker image inspect shika-server:1.0.0-amd64 --format '{{.Os}}/{{.Architecture}}'
 ```
 
 随后将环境文件的 `SHIKA_IMAGE` 设置成**实际构建或导入的标签**。模板中的默认标签不代表镜像已经发布到公共镜像仓库。飞牛也可通过 Docker 界面或已授权的 CLI 导入，见下文。
@@ -59,16 +59,14 @@ shika/
 ├── compose.yaml
 ├── .env
 ├── data/                 # SQLite、任务、缓存、导出与恢复前快照
-├── config/
-│   └── mounts.json       # 允许访问的容器内媒体范围
-└── secrets/
-    └── passphrase        # 个人口令
+└── config/
+    └── mounts.json       # 允许访问的容器内媒体范围
 ```
 
 模板从源码目录复制，已有文件不覆盖：
 
 ```bash
-mkdir -p /srv/shika/data /srv/shika/config /srv/shika/secrets
+mkdir -p /srv/shika/data /srv/shika/config
 cp -n deploy/fnos/compose.yaml /srv/shika/compose.yaml
 cp -n deploy/fnos/.env.example /srv/shika/.env
 cp -n deploy/fnos/mounts.json.example /srv/shika/config/mounts.json
@@ -76,12 +74,12 @@ cp -n deploy/fnos/mounts.json.example /srv/shika/config/mounts.json
 
 `data/` 使用支持 SQLite WAL 的 NAS 本地文件系统，不放在电脑挂载的 SMB/NFS 客户端目录中。不要递归修改整个媒体收藏的所有者；只给服务所需的目录授权。
 
-### 3. 设置路径与个人口令
+### 3. 设置路径
 
 编辑 NAS 应用目录中的 `.env`。在 NAS 原生构建镜像时，例如：
 
 ```dotenv
-SHIKA_IMAGE=shika-server:local
+SHIKA_IMAGE=shika-server:1.0.0
 SHIKA_BIND_ADDRESS=192.168.1.100
 SHIKA_PORT=8760
 SHIKA_UID=1000
@@ -91,19 +89,18 @@ SHIKA_VIDEO_DIR=/srv/media/videos
 SHIKA_PACK_DIR=/srv/media/packs
 ```
 
-跨架构导入示例则使用 `SHIKA_IMAGE=shika-server:local-amd64`。两个媒体源目录必须已经存在。配置与容器实际挂载的对应关系是：
+跨架构导入示例则使用 `SHIKA_IMAGE=shika-server:1.0.0-amd64`。两个媒体源目录必须已经存在。配置与容器实际挂载的对应关系是：
 
 | NAS 路径或设置 | 容器内位置 / 用途 |
 | --- | --- |
 | `SHIKA_DEPLOY_DIR/data` | `/data`，完整持久化的管理数据 |
 | `SHIKA_DEPLOY_DIR/config` | `/config`，只读配置 |
-| `SHIKA_DEPLOY_DIR/secrets/passphrase` | `/run/secrets/passphrase`，只读口令文件 |
 | `SHIKA_VIDEO_DIR` | `/media`，允许接入的视频范围 |
 | `SHIKA_PACK_DIR` | `/packs-cos`，允许接入的图包范围 |
 | `SHIKA_BIND_ADDRESS`、`SHIKA_PORT` | 手机访问的 NAS 局域网地址与端口 |
 | `SHIKA_UID`、`SHIKA_GID` | 服务读取文件和写入管理数据的身份 |
 
-新建 `secrets/passphrase` 纯文本文件，写入一行至少 **8 个字符**的个人口令。不要把口令写入 `.env` 或提交到仓库。限制其读取权限，并确保上述容器 UID 能读取；有终端时可将该文件权限设为 `600`。
+新安装无需创建口令文件。首次连接时在 App 设置口令，服务仅在 `data/` 数据库保存 Argon2 哈希。已有部署保留原口令文件及其挂载，升级不会要求重新初始化，也不会因重启撤销在 App 修改的口令。
 
 `config/mounts.json` 可以使用复制的示例：
 
@@ -134,7 +131,7 @@ curl --fail http://192.168.1.100:8760/health
 
 ## 飞牛 fnOS 部署
 
-应用目录可以放在 `/vol1/1000/docker/shika`；媒体必须使用当前实际位置。把准备好的 `compose.yaml`、`.env`、配置和口令放在该目录，**先导入架构匹配的镜像**，再通过 Docker 管理界面选择已有 Compose 文件创建项目并启动。已有项目更新时重建原项目，不重复创建。
+应用目录可以放在 `/vol1/1000/docker/shika`；媒体必须使用当前实际位置。把准备好的 `compose.yaml`、`.env`、配置放在该目录，**先导入架构匹配的镜像**，再通过 Docker 管理界面选择已有 Compose 文件创建项目并启动。已有项目更新时重建原项目，不重复创建。
 
 也可使用已授权的 `fnos-cli`。下面的 profile、路径和标签是命令格式示例；使用前确认对应设备和授权，上传镜像与配置后执行：
 
@@ -142,7 +139,7 @@ curl --fail http://192.168.1.100:8760/health
 fnos-cli --profile home-fnos --allow-insecure-http docker image ls
 fnos-cli --profile home-fnos --allow-insecure-http docker container ls --all
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.imageLoad --json '{"filePath":"/vol1/1000/docker/shika/image-archives/server-amd64.tar"}' --yes
-fnos-cli --profile home-fnos --allow-insecure-http docker image inspect shika-server:local-amd64
+fnos-cli --profile home-fnos --allow-insecure-http docker image inspect shika-server:1.0.0-amd64
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeCreate --json '{"auto_build":false,"file":"compose.yaml","folder":"/vol1/1000/docker/shika","project_name":"shika"}' --yes
 fnos-cli --profile home-fnos --allow-insecure-http docker request appcgi.dockermgr.composeBuild --json '{"project_name":"shika"}' --yes
 fnos-cli --profile home-fnos --allow-insecure-http docker container inspect shika-server
@@ -167,11 +164,19 @@ flutter build apk --release \
 | --- | --- |
 | 服务器地址 | `192.168.1.100` |
 | 端口 | `8760` |
-| 个人口令 | `secrets/passphrase` 中自己设置的内容 |
+| 个人口令 | 新服务首次连接时设置；已有服务使用原口令 |
 
 手机需能访问这个 NAS 地址。`10.0.2.2:8760` 仅供 Android 模拟器访问本机开发服务，不能用于真机连接 NAS。App 登录后保存访问凭据，不保存个人口令。
 
 在设置中接入媒体目录，选择视频或图包类型，检查启用状态和扫描进度。允许范围、实际接入目录和 Docker 挂载需要对应。
+
+### 修改与找回口令
+
+新服务：输入 NAS IP 和端口，点“连接”后出现首次设置提示。填写两次 **8–1024 个字符**的个人口令，点“设置口令并连接”。首次设置前只允许自己的可信局域网访问服务。
+
+已有服务：继续使用原口令。修改入口为 **设置 → 修改个人口令**，需要当前口令并确认两次新口令。成功后本机自动保存新的登录凭据，所有旧凭据立即失效，其他设备需重新连接。App 保存访问凭据，不保存明文个人口令；口令不进入管理备份。
+
+忘记口令时，由 NAS 管理员新建或修改一个 `secrets/passphrase` 文件，写入与原种子不同的新口令（8–1024 个字符），限制文件读取权限并允许容器 UID 读取。在 Compose 增加只读 bind mount，将该文件挂到 `/run/secrets/passphrase`（或用 `VV_PASSPHRASE_FILE` 指定容器内位置），重建原容器。服务检测到文件值变化后重置口令并使旧登录失效，之后用新口令连接。不要删除数据库来重置口令。未变化的旧种子文件不会覆盖 App 后来设置的新口令。
 
 ## 日常使用
 
@@ -199,7 +204,7 @@ flutter build apk --release \
 3. 构建或导入新镜像，修改 `SHIKA_IMAGE`，重建**原** Compose 项目，保留 bind mount。
 4. 检查容器健康、App 登录、目录状态与任务结果。App 更新保持签名一致并覆盖安装。
 
-回退旧服务须配对恢复兼容的原镜像与停机快照，旧镜像不保证能读取新数据库。修改个人口令后也需重建容器，App 使用新口令重新登录。
+回退旧服务须配对恢复兼容的原镜像与停机快照，旧镜像不保证能读取新数据库。在 App 修改个人口令无需重建容器，其他设备使用新口令重新登录。
 
 ### 换 NAS 或移动存储
 
