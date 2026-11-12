@@ -86,6 +86,47 @@ class ServerLibraryRepository extends LibraryRepository
     packFileJournal.onChanged = publish;
   }
   final Set<_ServerPackReader> _readers = {};
+  ServerApi? _connectionAttempt;
+
+  @override
+  void cancelConnection() {
+    final attempt = _connectionAttempt;
+    // synchronize has already installed this candidate: do not close a verified
+    // session merely because its connection screen is being removed.
+    if (attempt != null && identical(attempt, _api)) return;
+    if (attempt != null || !snapshot.connected) {
+      if (!snapshot.connected) _generation++;
+      _connectingGeneration = null;
+      _connectionAttempt = null;
+      attempt?.close();
+    }
+  }
+
+  @override
+  bool get canDisconnect => true;
+
+  @override
+  Future<void> disconnect() async {
+    final target = _api;
+    final revocation = target == null
+        ? null
+        : ServerApi(target.endpoint, token: target.token);
+    cancelConnection();
+    // Close the local boundary immediately, also when the NAS is offline.
+    await expire(message: '');
+    if (revocation != null) {
+      unawaited(() async {
+        try {
+          await revocation.json('DELETE', '/api/v1/auth/session');
+        } catch (_) {
+          // Local credentials are already gone; remote expiry remains bounded.
+        } finally {
+          revocation.close();
+        }
+      }());
+    }
+  }
+
   final Set<_ServerPackTrash> _trashReaders = {};
   final Set<_ServerPackPurge> _purgeReaders = {};
   final Set<_ServerMaintenanceTasks> _taskReaders = {};
@@ -871,6 +912,7 @@ class ServerLibraryRepository extends LibraryRepository
     if (generation != _generation) throw const RequestCancelled();
     if (saved == null || !saved.expiresAt.isAfter(DateTime.now())) {
       if (saved != null) {
+        _connectionError = '登录已失效，请重新输入个人口令';
         await writeCredentials(credentials.clear, generation: generation);
       }
       publish();
@@ -881,6 +923,7 @@ class ServerLibraryRepository extends LibraryRepository
       publish();
     }
     final candidate = ServerApi(saved.endpoint, token: saved.token);
+    _connectionAttempt = candidate;
     _connectingGeneration = generation;
     try {
       final info = await candidate.json('GET', '/api/v1/info');
@@ -912,6 +955,7 @@ class ServerLibraryRepository extends LibraryRepository
       }
       rethrow;
     } finally {
+      if (identical(_connectionAttempt, candidate)) _connectionAttempt = null;
       if (_connectingGeneration == generation) _connectingGeneration = null;
       if (identical(candidate, _api)) {
         schedulePreparation(candidate, generation);
@@ -924,8 +968,13 @@ class ServerLibraryRepository extends LibraryRepository
   @override
   Future<bool> connectionNeedsSetup(String address, int port) async {
     final candidate = ServerApi(endpoint(address, port));
+    if (!identical(_connectionAttempt, _api)) _connectionAttempt?.close();
+    _connectionAttempt = candidate;
     try {
       final status = await candidate.json('GET', '/api/v1/auth/status');
+      if (!identical(_connectionAttempt, candidate)) {
+        throw const RequestCancelled();
+      }
       if (status['initialized'] is! bool) {
         throw const LibraryFailure('服务返回的初始化状态不完整');
       }
@@ -936,6 +985,7 @@ class ServerLibraryRepository extends LibraryRepository
       }
       rethrow;
     } finally {
+      if (identical(_connectionAttempt, candidate)) _connectionAttempt = null;
       candidate.close();
     }
   }
@@ -978,7 +1028,9 @@ class ServerLibraryRepository extends LibraryRepository
       throw const LibraryFailure('请填写个人口令');
     }
     final candidate = ServerApi(location, token: authorizationToken);
-    var generation = currentPassphrase == null ? ++_generation : _generation;
+    if (!identical(_connectionAttempt, _api)) _connectionAttempt?.close();
+    _connectionAttempt = candidate;
+    var generation = _generation;
     _connectingGeneration = generation;
     try {
       Json login;
@@ -998,6 +1050,9 @@ class ServerLibraryRepository extends LibraryRepository
               : {'passphrase': passphrase},
         );
       } on ApiFailure catch (error) {
+        if (!identical(_connectionAttempt, candidate)) {
+          throw const RequestCancelled();
+        }
         if ((!initialSetup && currentPassphrase == null) ||
             error.status != null) {
           rethrow;
@@ -1015,6 +1070,11 @@ class ServerLibraryRepository extends LibraryRepository
           throw error;
         }
       }
+      if (_disposed ||
+          generation != _generation ||
+          !identical(_connectionAttempt, candidate)) {
+        throw const RequestCancelled();
+      }
       if (currentPassphrase != null) {
         // A rejected old password must not invalidate current reader gateways.
         if (_disposed || generation != _generation) {
@@ -1026,6 +1086,17 @@ class ServerLibraryRepository extends LibraryRepository
       candidate.token = login['access_token'] as String;
       final info = await candidate.json('GET', '/api/v1/info');
       if (info['api_version'] != 1) throw const LibraryFailure('服务版本不兼容');
+      if (_disposed ||
+          generation != _generation ||
+          !identical(_connectionAttempt, candidate)) {
+        throw const RequestCancelled();
+      }
+      if (currentPassphrase == null) {
+        // A failed/cancelled server change must leave the active connection's
+        // readers usable. Change ownership only once the new login is verified.
+        generation = ++_generation;
+        _connectingGeneration = generation;
+      }
       candidate.bindAuthority(info);
       final session = await currentCredentials(
         ConnectionCredentials(
@@ -1055,6 +1126,7 @@ class ServerLibraryRepository extends LibraryRepository
       await activateFileCommands(session);
       await activateBackupWork(session);
     } finally {
+      if (identical(_connectionAttempt, candidate)) _connectionAttempt = null;
       if (_connectingGeneration == generation) _connectingGeneration = null;
       if (identical(candidate, _api)) {
         schedulePreparation(candidate, generation);
@@ -2947,6 +3019,8 @@ class ServerLibraryRepository extends LibraryRepository
   @override
   void dispose() {
     _disposed = true;
+    _connectionAttempt?.close();
+    _connectionAttempt = null;
     _clearCatalogCounts();
     packFileJournal.onChanged = null;
     _preparationTimer?.cancel();

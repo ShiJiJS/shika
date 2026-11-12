@@ -13,12 +13,14 @@ class UiPreferences extends ChangeNotifier {
     bool preloadAdjacent = true,
     PlayOrder? videoOrder,
     Set<String> migratedDefaults = const {},
+    bool onboardingComplete = false,
   }) => UiPreferences._(
     file,
     dark,
     preloadAdjacent,
     videoOrder,
     migratedDefaults,
+    onboardingComplete,
   );
   UiPreferences._(
     this._file,
@@ -26,10 +28,13 @@ class UiPreferences extends ChangeNotifier {
     this._preloadAdjacent,
     this._videoOrder,
     Set<String> migratedDefaults,
+    this._onboardingComplete,
   ) : _migratedDefaults = Set.of(migratedDefaults);
   final File? _file;
   bool _dark;
   bool get dark => _dark;
+  bool _onboardingComplete;
+  bool get onboardingComplete => _onboardingComplete;
   bool _preloadAdjacent;
   bool get preloadAdjacent => _preloadAdjacent;
   PlayOrder? _videoOrder;
@@ -46,12 +51,14 @@ class UiPreferences extends ChangeNotifier {
     var preload = true;
     PlayOrder? order;
     Set<String> migrated = {};
+    var onboardingComplete = false;
     try {
       if (await file.exists()) {
         final saved = jsonDecode(await file.readAsString());
         dark = saved is Map && saved['dark'] == true;
         preload = saved is! Map || saved['preloadAdjacent'] != false;
         if (saved is Map) {
+          onboardingComplete = saved['onboardingComplete'] == true;
           migrated = (saved['defaultMigrations'] is List
               ? (saved['defaultMigrations'] as List).whereType<String>().toSet()
               : <String>{});
@@ -71,10 +78,12 @@ class UiPreferences extends ChangeNotifier {
       preloadAdjacent: preload,
       videoOrder: order,
       migratedDefaults: migrated,
+      onboardingComplete: onboardingComplete,
     );
   }
 
   Future<void> setDark(bool value) => _update(dark: value);
+  Future<void> completeOnboarding() => _update(onboarding: true);
 
   Future<void> setPreloadAdjacent(bool value) => _update(preload: value);
   Future<void> setVideoOrder(PlayOrder value) => _update(videoOrder: value);
@@ -88,6 +97,7 @@ class UiPreferences extends ChangeNotifier {
     PlayOrder? videoOrder,
     bool onlyIfMissing = false,
     String? migration,
+    bool? onboarding,
   }) {
     final work = _changes.then((_) async {
       final nextDark = dark ?? _dark, nextPreload = preload ?? _preloadAdjacent;
@@ -95,10 +105,12 @@ class UiPreferences extends ChangeNotifier {
           ? _videoOrder ?? videoOrder
           : videoOrder ?? _videoOrder;
       final nextMigrations = {..._migratedDefaults, ?migration};
+      final nextOnboarding = onboarding ?? _onboardingComplete;
       if (nextDark == _dark &&
           nextPreload == _preloadAdjacent &&
           nextOrder == _videoOrder &&
-          setEquals(nextMigrations, _migratedDefaults)) {
+          setEquals(nextMigrations, _migratedDefaults) &&
+          nextOnboarding == _onboardingComplete) {
         return;
       }
       await _file?.writeAsString(
@@ -107,6 +119,7 @@ class UiPreferences extends ChangeNotifier {
           'preloadAdjacent': nextPreload,
           if (nextOrder != null) 'videoOrder': nextOrder.name,
           'defaultMigrations': nextMigrations.toList()..sort(),
+          'onboardingComplete': nextOnboarding,
         }),
         flush: true,
       );
@@ -114,6 +127,7 @@ class UiPreferences extends ChangeNotifier {
       _preloadAdjacent = nextPreload;
       _videoOrder = nextOrder;
       _migratedDefaults = nextMigrations;
+      _onboardingComplete = nextOnboarding;
       notifyListeners();
     });
     _changes = work.catchError((Object _) {});

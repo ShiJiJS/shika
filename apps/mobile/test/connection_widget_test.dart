@@ -65,7 +65,7 @@ void main() {
       );
       await tester.tap(find.byKey(const Key('connection-save')));
       await tester.pumpAndSettle();
-      expect(find.text('首次连接 · 设置个人口令'), findsOneWidget);
+      expect(find.text('设置个人口令'), findsOneWidget);
       expect(repo.setups, 0);
       await tester.enterText(
         find.byKey(const Key('connection-passphrase')),
@@ -90,7 +90,7 @@ void main() {
       await tester.tap(find.byKey(const Key('connection-save')));
       await tester.pumpAndSettle();
       expect(repo.setups, 1);
-      expect(find.text('首次连接 · 设置个人口令'), findsNothing);
+      expect(find.text('设置个人口令'), findsNothing);
       await tester.pumpWidget(const SizedBox());
       repo.dispose();
     },
@@ -224,7 +224,8 @@ void main() {
       expect(find.text('个人口令'), findsNothing);
       repo.connection(false);
       await tester.pumpAndSettle();
-      expect(find.text('个人口令'), findsOneWidget);
+      expect(find.text('服务器地址'), findsOneWidget);
+      expect(find.byKey(const Key('app-navigation')), findsNothing);
       repo.connection(true);
       await tester.pumpAndSettle();
       expect(find.text('个人口令'), findsNothing);
@@ -245,7 +246,7 @@ void main() {
     await tester.pumpWidget(ShikaApp(repository: repo));
     await tester.enterText(find.byType(TextField).at(0), 'my-nas');
     await tester.enterText(find.byType(TextField).at(1), '70000');
-    await tester.tap(find.widgetWithText(FilledButton, '连接'));
+    await tester.tap(find.byKey(const Key('connection-save')));
     await tester.pumpAndSettle();
     expect(find.text('请填写地址和 1–65535 之间的端口'), findsOneWidget);
     expect(find.text('my-nas'), findsOneWidget);

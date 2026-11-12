@@ -162,7 +162,7 @@ void main() {
   );
 
   testWidgets(
-    'connection replacement clears old names, rejects late resolution and disables saving',
+    'connection replacement closes the old editor and rejects late resolution',
     (t) async {
       repo.delayedNames = Completer();
       await start(t);
@@ -172,10 +172,11 @@ void main() {
       await frames(t);
       repo.delayedNames!.complete(PackTagNames(names: {'t60': '旧服务名称'}));
       await frames(t);
-      expect(find.textContaining('服务连接已变化'), findsOneWidget);
+      // The top-level authentication boundary now removes every old route.
+      // An editor from the previous connection must not remain actionable.
       expect(find.text('旧服务名称'), findsNothing);
-      expect(t.widget<ButtonStyleButton>(save()).onPressed, isNull);
-      await close(t);
+      expect(save(), findsNothing);
+      expect(find.byKey(const Key('nav-settings')), findsOneWidget);
     },
   );
 

@@ -23,6 +23,7 @@ import '../features/settings/scan_progress_card.dart';
 import '../features/settings/scan_issues_page.dart';
 import '../features/settings/missing_media_page.dart';
 import '../features/settings/change_passphrase_sheet.dart';
+import '../features/connection/connection_flow.dart';
 import '../library/repository.dart';
 import 'trash_layout.dart';
 import 'paper.dart';
@@ -143,30 +144,6 @@ class _LibraryHomeState extends State<LibraryHome> {
   bool missingLoading = false;
   String missingError = '';
   late final BackupFiles files = widget.backupFiles ?? NativeBackupFiles();
-  final address = TextEditingController(),
-      port = TextEditingController(),
-      passphrase = TextEditingController(),
-      confirmPassphrase = TextEditingController();
-  (String, int)? _connectionFormEndpoint;
-  bool _settingUpConnection = false;
-
-  void resetConnectionSetup() {
-    if (!_settingUpConnection) return;
-    setState(() => _settingUpConnection = false);
-    confirmPassphrase.clear();
-  }
-
-  void syncConnectionFields() {
-    final endpoint = (data.address, data.port);
-    if (_connectionFormEndpoint == endpoint) return;
-    _connectionFormEndpoint = endpoint;
-    _settingUpConnection = false;
-    confirmPassphrase.clear();
-    // Ordinary refreshes must not overwrite a server address being edited.
-    address.text = data.address;
-    port.text = '${data.port}';
-  }
-
   String get title => {
     'browse': review ? '快速整理' : '浏览',
     'library': '视频库',
@@ -210,16 +187,13 @@ class _LibraryHomeState extends State<LibraryHome> {
     _library.addListener(libraryChanged);
     repo.libraryPreparation.addListener(preparationChanged);
     libraryScroll.addListener(loadNearBottom);
-    syncConnectionFields();
     previousScope = jsonEncode(data.query.toJson());
     restoreEntryForConnection();
-    if (repo is DemoControls) passphrase.text = 'demo';
     if (widget.initializeRepository) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (!mounted) return;
         final connected = await perform(repo.initialize);
         if (!mounted) return;
-        syncConnectionFields();
         if (connected && data.connected) {
           go(repo.backupRestorePending ? 'backup' : landing);
         }
@@ -234,7 +208,6 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   void changed() {
     if (!mounted) return;
-    syncConnectionFields();
     final message = _browsing.message;
     if (message != null) {
       _browsing.message = null;
@@ -570,10 +543,6 @@ class _LibraryHomeState extends State<LibraryHome> {
     _browsing.dispose();
     repo.libraryPreparation.removeListener(preparationChanged);
     libraryScroll.dispose();
-    address.dispose();
-    port.dispose();
-    passphrase.dispose();
-    confirmPassphrase.dispose();
     videoSearch.dispose();
     super.dispose();
   }
@@ -1047,7 +1016,8 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   @override
   Widget build(BuildContext context) {
-    if (!data.connected || !libraryFirst) return legacyBuild(context);
+    if (!data.connected || page == 'connection') return connection();
+    if (!libraryFirst) return legacyBuild(context);
     final primary = ['library', 'tags', 'recent', 'settings'].contains(page);
     final media = MediaQuery.of(context);
     final covered = ModalRoute.of(context)?.isCurrent == false;
@@ -2426,6 +2396,13 @@ class _LibraryHomeState extends State<LibraryHome> {
         () => go('tasks'),
         allowDuringRestore: true,
       ),
+      if (repo.canDisconnect)
+        settingRow(
+          Icons.logout,
+          '退出登录',
+          '保留服务器地址，下次连接需要输入个人口令',
+          () => perform(repo.disconnect),
+        ),
       settingsHeading('通用偏好'),
       PaperPreferenceSwitch(
         key: const Key('dark-mode-setting'),
@@ -2487,131 +2464,11 @@ class _LibraryHomeState extends State<LibraryHome> {
       ],
     ],
   );
-  Widget connection() => ListView(
-    padding: const EdgeInsets.all(20),
-    children: [
-      if (!data.connected)
-        Text(
-          _settingUpConnection ? '首次连接 · 设置个人口令' : '连接拾刻媒体库',
-          style: Paper.of(context).title,
-        ),
-      note(
-        _settingUpConnection
-            ? '这个服务尚未设置口令。请设置8–1024个字符的个人口令，并妥善保存。'
-            : '视频和图包共用同一媒体服务。',
-      ),
-      const SizedBox(height: 12),
-      PaperField(
-        label: '服务地址',
-        child: TextField(
-          key: const Key('connection-address'),
-          controller: address,
-          onChanged: (_) => resetConnectionSetup(),
-          enabled: !_busy,
-          keyboardType: TextInputType.url,
-          textInputAction: TextInputAction.next,
-          autocorrect: false,
-          decoration: const InputDecoration(hintText: 'NAS 的 IP 或域名'),
-        ),
-      ),
-      const SizedBox(height: 20),
-      PaperField(
-        label: '端口',
-        child: TextField(
-          key: const Key('connection-port'),
-          controller: port,
-          onChanged: (_) => resetConnectionSetup(),
-          enabled: !_busy,
-          keyboardType: TextInputType.number,
-          textInputAction: TextInputAction.next,
-          decoration: const InputDecoration(),
-        ),
-      ),
-      const SizedBox(height: 20),
-      PaperField(
-        label: '个人口令',
-        child: TextField(
-          key: const Key('connection-passphrase'),
-          controller: passphrase,
-          enabled: !_busy,
-          obscureText: true,
-          autocorrect: false,
-          enableSuggestions: false,
-          decoration: const InputDecoration(),
-        ),
-      ),
-      if (_settingUpConnection) ...[
-        const SizedBox(height: 20),
-        PaperField(
-          label: '再次输入口令',
-          child: TextField(
-            key: const Key('connection-confirm-passphrase'),
-            controller: confirmPassphrase,
-            enabled: !_busy,
-            obscureText: true,
-            autocorrect: false,
-            enableSuggestions: false,
-          ),
-        ),
-      ],
-      note('口令不进入管理数据备份。'),
-      const SizedBox(height: 8),
-      FilledButton(
-        key: const Key('connection-save'),
-        onPressed: _busy
-            ? null
-            : () async {
-                var connected = false;
-                final completed = await perform(() async {
-                  final connectionPort = int.tryParse(port.text) ?? 0;
-                  final setup = await repo.connectionNeedsSetup(
-                    address.text,
-                    connectionPort,
-                  );
-                  if (setup && !_settingUpConnection) {
-                    if (mounted) setState(() => _settingUpConnection = true);
-                    return;
-                  }
-                  if (setup) {
-                    if (passphrase.text.length < 8 ||
-                        passphrase.text.length > 1024) {
-                      throw const LibraryFailure('个人口令需要8–1024个字符');
-                    }
-                    if (passphrase.text != confirmPassphrase.text) {
-                      throw const LibraryFailure('两次输入的口令不一致');
-                    }
-                    await repo.setupConnection(
-                      address.text,
-                      connectionPort,
-                      passphrase.text,
-                    );
-                  } else {
-                    await repo.connect(
-                      address.text,
-                      connectionPort,
-                      passphrase.text,
-                    );
-                  }
-                  connected = true;
-                }, allowMaintenance: true);
-                if (completed && connected) {
-                  passphrase.clear();
-                  confirmPassphrase.clear();
-                  _settingUpConnection = false;
-                  go(repo.backupRestorePending ? 'backup' : landing);
-                }
-              },
-        child: Text(
-          _busy
-              ? '正在连接…'
-              : _settingUpConnection
-              ? '设置口令并连接'
-              : data.connected
-              ? '连接并保存'
-              : '连接',
-        ),
-      ),
-    ],
+  Widget connection() => ConnectionFlow(
+    repository: repo,
+    preferences: widget.preferences,
+    onCancel: data.connected ? () => go('settings') : null,
+    onConnected: () => go(landing),
   );
   bool get groupedScanProgress =>
       repo.capabilities.imagePacks || repo.capabilities.rootScanProgress;

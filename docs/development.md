@@ -61,6 +61,8 @@ bash scripts/test-server.sh
 flutter test integration_test/client_demo_test.dart -d emulator-5554 --no-uninstall
 ```
 
+首次引导与认证检查使用 `integration_test/onboarding_flow_test.dart`。它需要模拟器可访问的独立空白服务（默认宿主机 `127.0.0.1:8781`，模拟器地址 `10.0.2.2`），每次使用新的临时数据目录且不挂载口令文件。测试会设置固定测试口令、退出、重新登录并撤销测试登录；只允许本机测试地址，不能连接个人 NAS。它覆盖连接失败后修改端口、口令确认、空库入口、保存登录验证及登录失效后的页面拦截。
+
 与真实服务实现联调时，在仓库根目录运行 `python3 scripts/run-client-connection-test.py`，可追加 `--playback`、`--tags`、`--files`、`--external` 或 `--backups`。该脚本通过 [测试 Compose](../deploy/tests/compose.yaml) 启动独立服务，并核对专用 AVD 名称（默认 `video_viewer_api_36`，可通过 `VV_AVD_NAME` 设置）。`FLUTTER_ROOT`、`ANDROID_HOME` 应指向本机 SDK。
 
 界面场景测试使用 `scripts/test-client-ui.py`，只依赖当前 App、合成图片和公开演示视频：

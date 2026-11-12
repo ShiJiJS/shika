@@ -459,93 +459,138 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
               ),
           ],
         ),
-        content: IndexedStack(
-          index: index,
-          children: [
-            VideoCatalogPage(
-              key: libraryVideo,
-              repository: widget.repository,
-              preferences: widget.preferences,
-              entry: initialLibrary,
-              onSelectionChanged: selectionChanged,
-              active: active(0),
-              defaultOrder: widget.defaultOrder,
-            ),
-            PackCatalogPage(
-              key: libraryPack,
-              onResumeReading: resumePack,
-              repository: widget.repository,
-              entry: PackBrowseContext(),
-              onSelectionChanged: selectionChanged,
-              active: active(1),
-            ),
-            TagCatalogPage(
-              key: videoTags,
-              repository: widget.repository,
-              kind: MediaKind.video,
-              active: active(2),
-              initial: saved?.source == BrowseSource.tags
-                  ? saved!.query.tags
-                  : const {},
-              onView: (tags) => setState(() {
-                tagResultsVideo = VideoBrowseContext(
-                  query: VideoQuery(tags: tags),
-                  source: BrowseSource.tags,
-                  sort: VideoSort.name,
-                );
-                showingTagResults = true;
-              }),
-            ),
-            TagCatalogPage(
-              key: packTags,
-              repository: widget.repository,
-              kind: MediaKind.pack,
-              active: active(3),
-              onView: (tags) => setState(() {
-                tagResultsPack = PackBrowseContext(
-                  query: PackQuery(tags: tags),
-                  source: BrowseSource.tags,
-                );
-                showingTagResults = true;
-              }),
-            ),
-            VideoCatalogPage(
-              key: tagsVideo,
-              repository: widget.repository,
-              preferences: widget.preferences,
-              entry: tagResultsVideo,
-              onSelectionChanged: selectionChanged,
-              active: active(4),
-              defaultOrder: widget.defaultOrder,
-            ),
-            PackCatalogPage(
-              key: tagsPack,
-              onResumeReading: resumePack,
-              repository: widget.repository,
-              entry: tagResultsPack,
-              onSelectionChanged: selectionChanged,
-              active: active(5),
-            ),
-            VideoCatalogPage(
-              key: recentVideo,
-              repository: widget.repository,
-              preferences: widget.preferences,
-              entry: initialRecent,
-              onSelectionChanged: selectionChanged,
-              active: active(6),
-              defaultOrder: widget.defaultOrder,
-            ),
-            PackCatalogPage(
-              key: recentPack,
-              onResumeReading: resumePack,
-              repository: widget.repository,
-              entry: PackBrowseContext(source: BrowseSource.recent),
-              onSelectionChanged: selectionChanged,
-              active: active(7),
-            ),
-            widget.settings,
-          ],
-        ),
+        content:
+            index < 2 &&
+                widget.repository.capabilities.typedRoots &&
+                widget.repository.catalogCounts.value ==
+                    const MediaCatalogCounts(0, 0)
+            ? Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(32),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.folder_outlined, size: 40),
+                      const SizedBox(height: 18),
+                      Text(
+                        widget.repository.snapshot.roots.isEmpty
+                            ? '媒体库准备好了'
+                            : '媒体库还是空的',
+                        style: Paper.of(context).title.copyWith(fontSize: 23),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        widget.repository.snapshot.roots.isEmpty
+                            ? '添加视频或图包目录，扫描后就能在这里浏览。'
+                            : '检查媒体目录和扫描进度，或添加其他目录。',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          height: 1.8,
+                          color: Paper.of(context).muted,
+                        ),
+                      ),
+                      const SizedBox(height: 28),
+                      FilledButton(
+                        key: const Key('first-media-root'),
+                        onPressed: () => widget.onNavigate('roots'),
+                        child: Text(
+                          widget.repository.snapshot.roots.isEmpty
+                              ? '添加媒体目录'
+                              : '管理媒体目录',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : IndexedStack(
+                index: index,
+                children: [
+                  VideoCatalogPage(
+                    key: libraryVideo,
+                    repository: widget.repository,
+                    preferences: widget.preferences,
+                    entry: initialLibrary,
+                    onSelectionChanged: selectionChanged,
+                    active: active(0),
+                    defaultOrder: widget.defaultOrder,
+                  ),
+                  PackCatalogPage(
+                    key: libraryPack,
+                    onResumeReading: resumePack,
+                    repository: widget.repository,
+                    entry: PackBrowseContext(),
+                    onSelectionChanged: selectionChanged,
+                    active: active(1),
+                  ),
+                  TagCatalogPage(
+                    key: videoTags,
+                    repository: widget.repository,
+                    kind: MediaKind.video,
+                    active: active(2),
+                    initial: saved?.source == BrowseSource.tags
+                        ? saved!.query.tags
+                        : const {},
+                    onView: (tags) => setState(() {
+                      tagResultsVideo = VideoBrowseContext(
+                        query: VideoQuery(tags: tags),
+                        source: BrowseSource.tags,
+                        sort: VideoSort.name,
+                      );
+                      showingTagResults = true;
+                    }),
+                  ),
+                  TagCatalogPage(
+                    key: packTags,
+                    repository: widget.repository,
+                    kind: MediaKind.pack,
+                    active: active(3),
+                    onView: (tags) => setState(() {
+                      tagResultsPack = PackBrowseContext(
+                        query: PackQuery(tags: tags),
+                        source: BrowseSource.tags,
+                      );
+                      showingTagResults = true;
+                    }),
+                  ),
+                  VideoCatalogPage(
+                    key: tagsVideo,
+                    repository: widget.repository,
+                    preferences: widget.preferences,
+                    entry: tagResultsVideo,
+                    onSelectionChanged: selectionChanged,
+                    active: active(4),
+                    defaultOrder: widget.defaultOrder,
+                  ),
+                  PackCatalogPage(
+                    key: tagsPack,
+                    onResumeReading: resumePack,
+                    repository: widget.repository,
+                    entry: tagResultsPack,
+                    onSelectionChanged: selectionChanged,
+                    active: active(5),
+                  ),
+                  VideoCatalogPage(
+                    key: recentVideo,
+                    repository: widget.repository,
+                    preferences: widget.preferences,
+                    entry: initialRecent,
+                    onSelectionChanged: selectionChanged,
+                    active: active(6),
+                    defaultOrder: widget.defaultOrder,
+                  ),
+                  PackCatalogPage(
+                    key: recentPack,
+                    onResumeReading: resumePack,
+                    repository: widget.repository,
+                    entry: PackBrowseContext(source: BrowseSource.recent),
+                    onSelectionChanged: selectionChanged,
+                    active: active(7),
+                  ),
+                  widget.settings,
+                ],
+              ),
       ),
     );
   }

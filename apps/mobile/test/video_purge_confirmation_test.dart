@@ -100,22 +100,10 @@ void main() {
       await tap(t, find.byKey(const Key('video-purge-confirm')));
       repo.invalidate();
       await t.pumpAndSettle();
-      expect(find.byKey(const Key('video-purge-stale')), findsOneWidget);
-      expect(
-        t
-            .widget<CheckboxListTile>(
-              find.byKey(const Key('video-purge-confirm')),
-            )
-            .value,
-        isFalse,
-      );
-      expect(
-        t
-            .widget<FilledButton>(find.byKey(const Key('video-purge-submit')))
-            .onPressed,
-        isNull,
-      );
-      await tap(t, find.text('取消'));
+      // Connection replacement closes the whole old management route rather
+      // than retaining its formerly approved deletion confirmation.
+      expect(find.byKey(const Key('video-purge-confirm')), findsNothing);
+      expect(find.byKey(const Key('video-purge-submit')), findsNothing);
       expect(repo.calls, isEmpty);
     },
   );

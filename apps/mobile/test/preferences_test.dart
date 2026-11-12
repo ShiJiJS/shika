@@ -5,6 +5,28 @@ import 'package:shika/ui/preferences.dart';
 import 'package:shika/library/models.dart';
 
 void main() {
+  test(
+    'first-use completion survives reopening and later appearance writes',
+    () async {
+      final directory = await Directory.systemTemp.createTemp(
+        'shika-onboarding-',
+      );
+      try {
+        final file = File('${directory.path}/appearance.json');
+        final preferences = UiPreferences(file: file);
+        expect(preferences.onboardingComplete, isFalse);
+        await preferences.completeOnboarding();
+        await preferences.setDark(true);
+        final reopened = await UiPreferences.load(file: file);
+        expect(reopened.onboardingComplete, isTrue);
+        expect(reopened.dark, isTrue);
+        preferences.dispose();
+        reopened.dispose();
+      } finally {
+        await directory.delete(recursive: true);
+      }
+    },
+  );
   test('default migration decisions survive reopening and stay separate per service', () async {
     final directory = await Directory.systemTemp.createTemp(
       'vv-default-migration-',

@@ -101,7 +101,8 @@ void main() {
       await frames(t);
       expect(find.byKey(const Key('video-preview-route')), findsNothing);
       expect(find.byType(MovieStage), findsNothing);
-      expect(find.text('连接拾刻媒体库'), findsOneWidget);
+      expect(find.text('连接媒体库'), findsOneWidget);
+      expect(find.byTooltip('更多'), findsNothing);
       await t.pumpWidget(const SizedBox());
       await frames(t);
       expect(t.takeException(), isNull);

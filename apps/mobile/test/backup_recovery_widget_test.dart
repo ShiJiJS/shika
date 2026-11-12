@@ -66,7 +66,7 @@ void main() {
             .every((field) => field.enabled == true),
         isTrue,
       );
-      await t.tap(find.byTooltip('返回设置'));
+      await t.tap(find.byKey(const Key('connection-back')));
       await t.pumpAndSettle();
       await t.tap(find.text('备份与恢复'));
       await t.pumpAndSettle();

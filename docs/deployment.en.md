@@ -172,7 +172,9 @@ In settings, add media roots, choose video or image pack type, and check enabled
 
 ### Set, change, or recover the passphrase
 
-For a fresh server, enter the NAS address and port and tap Connect. The app displays first-time setup: enter and confirm an **8–1024 character** passphrase and tap 设置口令并连接. Keep the unclaimed service accessible only from your trusted LAN.
+A fresh server has no default passphrase. On first use, tap 连接我的媒体库 in the welcome screen, enter the NAS address and port, and tap 连接服务器. The app detects first-time setup: enter and confirm an **8–1024 character** passphrase and tap 设置口令并进入. Keep the unclaimed service accessible only from your trusted LAN.
+
+The library and business navigation appear only after authentication. Later launches verify the saved session first. Network failures retain connection details and offer retry or another server; expired sessions require the passphrase again. Settings → 退出登录 clears this device’s credential while keeping its server address. Back cannot reopen authenticated pages after logout.
 
 Existing servers keep their passphrase. Use Settings → 修改个人口令, enter the current passphrase and confirm the new one. This device automatically adopts a replacement access token; all old tokens are revoked and other devices must sign in again. The app stores access credentials, not the plain text passphrase. Management backups exclude authentication secrets.
 

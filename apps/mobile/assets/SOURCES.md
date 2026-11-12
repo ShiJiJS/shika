@@ -2,6 +2,10 @@
 
 这里独立记录正式 App 演示素材的来源；同一素材被多条演示记录复用，不代表独立拍摄内容。
 
+## 品牌
+
+`branding/icon.png` 复用仓库的拾刻图标，用于首次连接和登录验证页面。
+
 ## 视频与封面
 
 原始视频为 MDN Interactive Examples 的 CC0 `flower.mp4`：

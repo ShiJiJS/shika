@@ -137,6 +137,12 @@ abstract class LibraryRepository extends ChangeNotifier {
   ServiceCapabilities get capabilities => const ServiceCapabilities.legacy();
   bool get backupRestorePending => false;
   Object get connectionIdentity => this;
+
+  /// Only cancel an in-flight connection, without changing the active library.
+  void cancelConnection() {}
+  bool get canDisconnect => false;
+  Future<void> disconnect() =>
+      Future.error(const LibraryFailure('当前连接不支持退出登录'));
   Future<void> reconcileBackupRestore() async {}
   @override
   void dispose() {
