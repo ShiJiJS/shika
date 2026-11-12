@@ -41,6 +41,8 @@ flutter build apk --release --target-platform android-arm64 --dart-define=LIBRAR
 
 APK 位于 `build/app/outputs/flutter-apk/app-release.apk`。覆盖升级必须沿用原签名，安全保管 keystore；不要通过卸载或清空数据绕过签名差异。当前 Gradle 配置使用开发环境的 debug 签名，分发前检查实际签名配置。
 
+日常调整先同步代码、完成验证并更新 issue，积累一批改动后再集中打包和发布版本，不为每个小改动单独创建 GitHub Release。
+
 `SERVER_ADDRESS` / `SERVER_PORT` 构建参数可修改初始连接值，App 已保存的地址优先；没有保存地址且未设置参数时，服务地址输入框留空。Debug 设置中的演示场景可模拟空库、连接失败和保存失败，使用独立演示数据。
 
 ## 测试
