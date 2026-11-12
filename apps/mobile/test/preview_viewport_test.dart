@@ -97,6 +97,35 @@ void main() {
       expect(t.takeException(), isNull);
       await t.tap(find.byKey(const Key('preview-quick')));
       await frames(t);
+      await t.tap(find.byKey(const Key('preview-order')));
+      await frames(t);
+      expect(find.text('预览顺序'), findsOneWidget);
+      expect(find.byKey(const Key('preview-queue')), findsNothing);
+      final order = find.byKey(const Key('preview-order-sequential'));
+      await t.ensureVisible(order);
+      expect(order.hitTestable(), findsOneWidget);
+      expect(
+        t
+            .widget<MovieStage>(find.byType(MovieStage))
+            .session!
+            .debugPlayers
+            .every((player) => !player.value.isPlaying),
+        isTrue,
+      );
+      await t.tap(order);
+      await frames(t);
+      expect(find.text('预览顺序'), findsNothing);
+      expect(repo.snapshot.order, PlayOrder.sequential);
+      expect(repo.current!.id, current);
+      expect(repo.playbackIdentity, identity);
+      expect(
+        t
+            .widget<MovieStage>(find.byType(MovieStage))
+            .session!
+            .debugPlayers
+            .where((player) => player.value.isPlaying),
+        hasLength(1),
+      );
       await t.tap(find.byKey(const Key('preview-scope')));
       await frames(t);
       expect(find.byKey(const Key('preview-queue')), findsOneWidget);

@@ -69,12 +69,50 @@ void main() {
       await frames(t);
       expect(repo.playbackIdentity, isNot(oldIdentity));
       expect(repo.snapshot.order, PlayOrder.sequential);
+      final range = repo.playbackIdentity;
+      final current = repo.current!.id;
+      final members = repo.snapshot.round.toSet();
+      await t.tap(find.byKey(const Key('preview-order')));
+      await frames(t);
+      expect(find.text('预览顺序'), findsOneWidget);
+      expect(find.byKey(const Key('preview-queue')), findsNothing);
+      expect(
+        t
+            .widget<ListTile>(find.byKey(const Key('preview-order-sequential')))
+            .selected,
+        isTrue,
+      );
+      await t.tap(find.byKey(const Key('preview-order-random')));
+      await frames(t);
+      expect(find.text('预览顺序'), findsNothing);
+      expect(repo.snapshot.order, PlayOrder.random);
+      expect(repo.playbackIdentity, range);
+      expect(repo.current!.id, current);
+      expect(repo.snapshot.round.toSet(), members);
+      expect(preferences.videoOrder, PlayOrder.sequential);
+      // Dismissing the chooser and selecting its current mode are both no-ops.
+      final sequence = repo.playbackSequenceIdentity;
+      await t.tap(find.byKey(const Key('preview-order')));
+      await frames(t);
+      await t.tap(find.byTooltip('关闭面板'));
+      await frames(t);
+      await t.tap(find.byKey(const Key('preview-order')));
+      await frames(t);
+      await t.tap(find.byKey(const Key('preview-order-random')));
+      await frames(t);
+      expect(repo.playbackSequenceIdentity, sequence);
+      await t.tap(find.byKey(const Key('preview-order')));
+      await frames(t);
+      await t.tap(find.byKey(const Key('preview-order-sequential')));
+      await frames(t);
+      expect(repo.snapshot.order, PlayOrder.sequential);
+      expect(repo.current!.id, current);
+      expect(repo.playbackIdentity, range);
+      expect(repo.snapshot.round.toSet(), members);
+      // The range entry remains independent and still opens the video queue.
       await t.tap(find.byKey(const Key('preview-scope')));
       await frames(t);
-      await t.tap(find.byKey(const Key('queue-order-random')));
-      await frames(t);
-      expect(repo.snapshot.order, PlayOrder.random);
-      expect(preferences.videoOrder, PlayOrder.sequential);
+      expect(find.text('本次预览范围'), findsOneWidget);
       await t.tap(find.byTooltip('关闭面板'));
       await frames(t);
       await t.tap(find.byKey(const Key('preview-back')));

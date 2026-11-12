@@ -181,6 +181,38 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
     constraints: const BoxConstraints(maxWidth: double.infinity),
   );
 
+  Future<void> chooseOrder() async {
+    if (busy || obscured) return;
+    final selected = await sheet<PlayOrder>(
+      SheetFrame(
+        title: '预览顺序',
+        children: [
+          for (final order in [PlayOrder.sequential, PlayOrder.random])
+            ListTile(
+              key: Key('preview-order-${order.name}'),
+              contentPadding: EdgeInsets.zero,
+              leading: Icon(
+                order == PlayOrder.random
+                    ? Icons.shuffle
+                    : Icons.format_list_numbered,
+              ),
+              title: Text(order == PlayOrder.random ? '随机预览' : '顺序预览'),
+              subtitle: Text(
+                order == PlayOrder.random ? '在当前范围内随机排列' : '沿用入口列表的排序',
+              ),
+              selected: data.order == order,
+              trailing: data.order == order ? const Icon(Icons.check) : null,
+              onTap: () => Navigator.pop(context, order),
+            ),
+        ],
+      ),
+    );
+    if (!mounted || selected == null || selected == data.order) return;
+    // Change this session's order without starting another range or replacing
+    // the currently selected video. The default for new previews stays intact.
+    await run(() => browsing.changeOrder(selected));
+  }
+
   Future<bool> step(int delta) async {
     if (busy || obscured || browsing.current == null) return false;
     if (delta > 0 && browsing.position + 1 >= repo.playbackTotal) {
@@ -635,7 +667,8 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                     tool(
                       PaperGlyph.shuffle,
                       data.order == PlayOrder.random ? '随机预览' : '顺序预览',
-                      queue,
+                      chooseOrder,
+                      key: const Key('preview-order'),
                     ),
                     if (!quick) tool(PaperGlyph.tag, '视频标签', tags),
                     tool(
