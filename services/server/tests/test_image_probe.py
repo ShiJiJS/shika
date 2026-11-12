@@ -2,8 +2,11 @@
 
 import struct
 import subprocess
+import sys
 import threading
 import zlib
+
+from PIL import Image
 
 from shika.images import inspect_image
 
@@ -56,3 +59,26 @@ def test_pixel_limit_rejects_header_before_allocating_full_image(tmp_path):
         result = inspect_image(file.fileno(), tmp_path / "cache", 20, threading.Event())
     assert result["error"] == "image_too_large"
     assert not list((tmp_path / "cache").iterdir())
+
+
+def test_large_jpeg_uses_decoder_downsampling_and_keeps_original_dimensions(tmp_path):
+    source = tmp_path / "101-megapixels.jpg"
+    # Generate the source outside pytest: the decoder's inherited high-water
+    # RSS must not include the test fixture's full-size image allocation.
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            "from PIL import Image; import sys; "
+            "Image.new('RGB', (11648, 8736), 'blue').save(sys.argv[1], 'JPEG', quality=70)",
+            str(source),
+        ],
+        check=True,
+        timeout=20,
+    )
+    with source.open("rb") as file:
+        result = inspect_image(file.fileno(), tmp_path / "cache", 20, threading.Event())
+    assert not result.get("error"), result
+    assert (result["width"], result["height"]) == (11648, 8736)
+    with Image.open(tmp_path / "cache" / result["thumbnail"]) as preview:
+        assert preview.width <= 512 and preview.height <= 768

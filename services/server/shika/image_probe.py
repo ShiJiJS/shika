@@ -9,10 +9,13 @@ import warnings
 from PIL import Image, ImageOps, UnidentifiedImageError
 
 MAX_PIXELS = 80_000_000
+MAX_SOURCE_PIXELS = 512_000_000
 
 
 def decode(fd, target):
-    Image.MAX_IMAGE_PIXELS = MAX_PIXELS
+    # JPEG can reduce pixels inside the decoder before allocating a full frame.
+    # Keep a separate header ceiling; enforce the working-size budget after draft.
+    Image.MAX_IMAGE_PIXELS = MAX_SOURCE_PIXELS
     warnings.simplefilter("error", Image.DecompressionBombWarning)
     with os.fdopen(os.dup(fd), "rb") as stream:
         stream.seek(0)
@@ -20,7 +23,7 @@ def decode(fd, target):
             if getattr(image, "n_frames", 1) != 1:
                 return {"error": "animated_image_unsupported"}
             width, height = image.size
-            if width * height > MAX_PIXELS:
+            if width * height > MAX_PIXELS and image.format != "JPEG":
                 return {"error": "image_too_large"}
             metadata = {"width": width, "height": height, "format": image.format}
             image.verify()
@@ -30,6 +33,8 @@ def decode(fd, target):
                 metadata["width"], metadata["height"] = height, width
             # Fully decode once so truncated JPEGs do not enter a reading manifest.
             image.draft("RGB", (768, 768))
+            if image.width * image.height > MAX_PIXELS:
+                return {"error": "image_too_large"}
             image.load()
             ImageOps.exif_transpose(image, in_place=True)
             image.thumbnail((512, 768), Image.Resampling.LANCZOS, reducing_gap=3)

@@ -78,6 +78,7 @@ class ServiceCapabilities {
       values.contains('managed_playback_defaults');
   bool get packMissingCleanup => values.contains('pack_missing_cleanup');
   bool get managementAuthority => values.contains('management_authority');
+  bool get credentialManagement => values.contains('credential_management');
 }
 
 enum VideoStatus { available, missing, trash }

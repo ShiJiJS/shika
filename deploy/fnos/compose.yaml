@@ -1,7 +1,7 @@
 name: shika
 services:
   server:
-    image: ${SHIKA_IMAGE:-shika-server:0.2.0-preview.10}
+    image: ${SHIKA_IMAGE:-shika-server:1.0.0}
     container_name: shika-server
     user: "${SHIKA_UID:-1000}:${SHIKA_GID:-1000}"
     ports:
@@ -9,7 +9,6 @@ services:
     environment:
       VV_DATA_DIR: /data
       VV_MOUNTS_FILE: /config/mounts.json
-      VV_PASSPHRASE_FILE: /run/secrets/passphrase
       VV_SCAN_INTERVAL: "900"
       VV_STABILITY_SECONDS: "2"
       VV_MEDIA_STREAMS: "3"
@@ -22,10 +21,6 @@ services:
       - type: bind
         source: ${SHIKA_DEPLOY_DIR}/config
         target: /config
-        read_only: true
-      - type: bind
-        source: ${SHIKA_DEPLOY_DIR}/secrets/passphrase
-        target: /run/secrets/passphrase
         read_only: true
       - type: bind
         source: ${SHIKA_VIDEO_DIR:?Set the video directory}

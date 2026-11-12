@@ -21,6 +21,7 @@ import '../features/settings/default_settings_sheet.dart';
 import '../features/settings/media_root_sheet.dart';
 import '../features/settings/scan_progress_card.dart';
 import '../features/settings/missing_media_page.dart';
+import '../features/settings/change_passphrase_sheet.dart';
 import '../library/repository.dart';
 import 'trash_layout.dart';
 import 'paper.dart';
@@ -143,13 +144,23 @@ class _LibraryHomeState extends State<LibraryHome> {
   late final BackupFiles files = widget.backupFiles ?? NativeBackupFiles();
   final address = TextEditingController(),
       port = TextEditingController(),
-      passphrase = TextEditingController();
+      passphrase = TextEditingController(),
+      confirmPassphrase = TextEditingController();
   (String, int)? _connectionFormEndpoint;
+  bool _settingUpConnection = false;
+
+  void resetConnectionSetup() {
+    if (!_settingUpConnection) return;
+    setState(() => _settingUpConnection = false);
+    confirmPassphrase.clear();
+  }
 
   void syncConnectionFields() {
     final endpoint = (data.address, data.port);
     if (_connectionFormEndpoint == endpoint) return;
     _connectionFormEndpoint = endpoint;
+    _settingUpConnection = false;
+    confirmPassphrase.clear();
     // Ordinary refreshes must not overwrite a server address being edited.
     address.text = data.address;
     port.text = '${data.port}';
@@ -560,6 +571,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     address.dispose();
     port.dispose();
     passphrase.dispose();
+    confirmPassphrase.dispose();
     videoSearch.dispose();
     super.dispose();
   }
@@ -2349,6 +2361,14 @@ class _LibraryHomeState extends State<LibraryHome> {
         () => go('connection'),
         allowDuringRestore: true,
       ),
+      if (repo.capabilities.credentialManagement)
+        settingRow(Icons.key_outlined, '修改个人口令', '修改后其他设备需重新连接', () async {
+          final saved = await sheet<bool>(
+            ChangePassphraseSheet(repository: repo),
+            dismissible: false,
+          );
+          if (saved == true && mounted) notice('个人口令已修改');
+        }),
       settingRow(
         Icons.folder_outlined,
         '媒体目录',
@@ -2447,14 +2467,23 @@ class _LibraryHomeState extends State<LibraryHome> {
   Widget connection() => ListView(
     padding: const EdgeInsets.all(20),
     children: [
-      if (!data.connected) Text('连接拾刻媒体库', style: Paper.of(context).title),
-      note('视频和图包共用同一媒体服务。'),
+      if (!data.connected)
+        Text(
+          _settingUpConnection ? '首次连接 · 设置个人口令' : '连接拾刻媒体库',
+          style: Paper.of(context).title,
+        ),
+      note(
+        _settingUpConnection
+            ? '这个服务尚未设置口令。请设置8–1024个字符的个人口令，并妥善保存。'
+            : '视频和图包共用同一媒体服务。',
+      ),
       const SizedBox(height: 12),
       PaperField(
         label: '服务地址',
         child: TextField(
           key: const Key('connection-address'),
           controller: address,
+          onChanged: (_) => resetConnectionSetup(),
           enabled: !_busy,
           keyboardType: TextInputType.url,
           textInputAction: TextInputAction.next,
@@ -2468,6 +2497,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         child: TextField(
           key: const Key('connection-port'),
           controller: port,
+          onChanged: (_) => resetConnectionSetup(),
           enabled: !_busy,
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.next,
@@ -2487,6 +2517,20 @@ class _LibraryHomeState extends State<LibraryHome> {
           decoration: const InputDecoration(),
         ),
       ),
+      if (_settingUpConnection) ...[
+        const SizedBox(height: 20),
+        PaperField(
+          label: '再次输入口令',
+          child: TextField(
+            key: const Key('connection-confirm-passphrase'),
+            controller: confirmPassphrase,
+            enabled: !_busy,
+            obscureText: true,
+            autocorrect: false,
+            enableSuggestions: false,
+          ),
+        ),
+      ],
       note('口令不进入管理数据备份。'),
       const SizedBox(height: 8),
       FilledButton(
@@ -2494,21 +2538,51 @@ class _LibraryHomeState extends State<LibraryHome> {
         onPressed: _busy
             ? null
             : () async {
-                if (await perform(
-                  () => repo.connect(
+                var connected = false;
+                final completed = await perform(() async {
+                  final connectionPort = int.tryParse(port.text) ?? 0;
+                  final setup = await repo.connectionNeedsSetup(
                     address.text,
-                    int.tryParse(port.text) ?? 0,
-                    passphrase.text,
-                  ),
-                  allowMaintenance: true,
-                )) {
+                    connectionPort,
+                  );
+                  if (setup && !_settingUpConnection) {
+                    if (mounted) setState(() => _settingUpConnection = true);
+                    return;
+                  }
+                  if (setup) {
+                    if (passphrase.text.length < 8 ||
+                        passphrase.text.length > 1024) {
+                      throw const LibraryFailure('个人口令需要8–1024个字符');
+                    }
+                    if (passphrase.text != confirmPassphrase.text) {
+                      throw const LibraryFailure('两次输入的口令不一致');
+                    }
+                    await repo.setupConnection(
+                      address.text,
+                      connectionPort,
+                      passphrase.text,
+                    );
+                  } else {
+                    await repo.connect(
+                      address.text,
+                      connectionPort,
+                      passphrase.text,
+                    );
+                  }
+                  connected = true;
+                }, allowMaintenance: true);
+                if (completed && connected) {
                   passphrase.clear();
+                  confirmPassphrase.clear();
+                  _settingUpConnection = false;
                   go(repo.backupRestorePending ? 'backup' : landing);
                 }
               },
         child: Text(
           _busy
               ? '正在连接…'
+              : _settingUpConnection
+              ? '设置口令并连接'
               : data.connected
               ? '连接并保存'
               : '连接',
