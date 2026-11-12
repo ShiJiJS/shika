@@ -144,6 +144,17 @@ class _LibraryHomeState extends State<LibraryHome> {
   final address = TextEditingController(),
       port = TextEditingController(),
       passphrase = TextEditingController();
+  (String, int)? _connectionFormEndpoint;
+
+  void syncConnectionFields() {
+    final endpoint = (data.address, data.port);
+    if (_connectionFormEndpoint == endpoint) return;
+    _connectionFormEndpoint = endpoint;
+    // Ordinary refreshes must not overwrite a server address being edited.
+    address.text = data.address;
+    port.text = '${data.port}';
+  }
+
   String get title => {
     'browse': review ? '快速整理' : '浏览',
     'library': '视频库',
@@ -186,8 +197,7 @@ class _LibraryHomeState extends State<LibraryHome> {
     _library.addListener(libraryChanged);
     repo.libraryPreparation.addListener(preparationChanged);
     libraryScroll.addListener(loadNearBottom);
-    address.text = data.address;
-    port.text = '${data.port}';
+    syncConnectionFields();
     previousScope = jsonEncode(data.query.toJson());
     restoreEntryForConnection();
     if (repo is DemoControls) passphrase.text = 'demo';
@@ -196,8 +206,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         if (!mounted) return;
         final connected = await perform(repo.initialize);
         if (!mounted) return;
-        address.text = data.address;
-        port.text = '${data.port}';
+        syncConnectionFields();
         if (connected && data.connected) {
           go(repo.backupRestorePending ? 'backup' : landing);
         }
@@ -212,6 +221,7 @@ class _LibraryHomeState extends State<LibraryHome> {
 
   void changed() {
     if (!mounted) return;
+    syncConnectionFields();
     final message = _browsing.message;
     if (message != null) {
       _browsing.message = null;
@@ -2449,7 +2459,7 @@ class _LibraryHomeState extends State<LibraryHome> {
           keyboardType: TextInputType.url,
           textInputAction: TextInputAction.next,
           autocorrect: false,
-          decoration: const InputDecoration(),
+          decoration: const InputDecoration(hintText: 'NAS 的 IP 或域名'),
         ),
       ),
       const SizedBox(height: 20),
