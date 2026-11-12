@@ -1,6 +1,7 @@
 """Whole-pack scan/query/read contracts over disposable generated images."""
 
 import hashlib
+import os
 import shutil
 import time
 from pathlib import Path
@@ -9,7 +10,7 @@ import pytest
 from PIL import Image
 from sqlalchemy import select
 
-from shika.models import ImagePack, PackPage, PackProgress
+from shika.models import ImagePack, Observation, PackPage, PackProgress
 
 from .conftest import scan
 from .test_media_types import pack_root, pack_tag
@@ -535,6 +536,86 @@ def test_directory_mutation_defers_publication_until_a_complete_manifest(library
     assert current["page_count"] == 1 and current["content_version"] == pack["content_version"]
     sync(client)
     assert packs(client)["items"][0]["page_count"] == 3
+
+
+def test_changed_pages_stabilize_together_instead_of_one_page_per_scan(library):
+    client, media = library
+    root = pack_root(client, media)
+    base = Path(root["path"]) / "changed"
+    for index in range(4):
+        image(base / f"{index}.png")
+    sync(client)
+    for index in range(4):
+        image(base / f"{index}.png", color="blue")
+
+    assert scan(client)["result"]["packs"]["deferred"] == 1
+    time.sleep(0.04)
+    completed = scan(client)
+    assert completed["result"]["packs"]["deferred"] == 0
+    assert completed["result"]["packs"]["updated"] == 1
+    assert all(
+        page["sha256"] == hashlib.sha256((base / page["relative_path"]).read_bytes()).hexdigest()
+        for page in pages(client, packs(client)["items"][0]["id"])["items"]
+    )
+
+
+def test_metadata_only_changes_reuse_verified_image_thumbnails(library, monkeypatch):
+    client, media = library
+    root = pack_root(client, media)
+    path = Path(root["path"]) / "same-content" / "1.png"
+    image(path)
+    sync(client)
+    pack = packs(client)["items"][0]
+    cached = set((client.app.state.settings.data_dir / "image-thumbnails").iterdir())
+    os.utime(path, ns=(path.stat().st_atime_ns, path.stat().st_mtime_ns + 1_000_000))
+
+    def unexpected(*args, **kwargs):
+        raise AssertionError("identical verified bytes must reuse their thumbnail")
+
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", unexpected)
+    sync(client)
+    assert pages(client, pack["id"])["total"] == 1
+    assert set((client.app.state.settings.data_dir / "image-thumbnails").iterdir()) == cached
+    assert client.get(packs(client)["items"][0]["cover_url"]).status_code == 200
+
+
+def test_remounted_device_converges_without_redecoding_or_losing_pack_metadata(
+    library, monkeypatch
+):
+    client, media = library
+    root = pack_root(client, media)
+    for index in range(4):
+        image(Path(root["path"]) / "remounted" / f"{index}.png")
+    sync(client)
+    before = packs(client)["items"][0]
+    first = pages(client, before["id"])["items"][0]
+    tag = label(client, before["id"])
+    with client.app.state.db.write() as session:
+        pack = session.get(ImagePack, before["id"])
+        pack.device = "previous-device"
+        pack.directory_signature = ["previous-device", *pack.directory_signature[1:]]
+        session.add(PackProgress(pack_id=pack.id, page_id=first["id"], offset_ratio=0.4))
+        for page in session.scalars(select(PackPage).where(PackPage.pack_id == pack.id)):
+            page.signature = ["previous-device", *page.signature[1:]]
+            observation = session.get(Observation, page.path)
+            observation.signature = ["previous-device", *observation.signature[1:]]
+    cache = client.app.state.settings.data_dir / "image-thumbnails"
+    previous_files = set(cache.iterdir())
+
+    def unexpected(*args, **kwargs):
+        raise AssertionError("a remount must not regenerate identical pixels")
+
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", unexpected)
+    assert scan(client)["result"]["packs"]["deferred"] == 1
+    time.sleep(0.04)
+    completed = scan(client)
+    assert completed["result"]["packs"]["deferred"] == 0
+    current = packs(client)["items"][0]
+    assert current["id"] == before["id"] and current["tag_ids"] == [tag["id"]]
+    assert current["progress"]["page_id"] == first["id"]
+    assert current["progress"]["offset_ratio"] == 0.4
+    assert set(cache.iterdir()) == previous_files
+    assert sync(client)["result"]["packs"]["unchanged"] == 1
 
 
 def test_interrupted_staging_is_not_visible_and_recovers_after_restart(environment, monkeypatch):

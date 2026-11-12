@@ -180,6 +180,7 @@ In settings, add media roots, choose video or image pack type, and check enabled
 - **Quick cleanup**: browse a selected scope, move items to the recycle bin, and undo; multi-select is available in the library.
 - **Scanning**: scan manually after file copying finishes, or wait for a scheduled scan. Per-root progress comes from the server, and closing the app does not stop background work. The template's scan interval is 900 seconds.
 - **Recycle bin**: moving an item preserves source files. Permanent deletion removes media; an image pack is deleted as its selected folder and contents in the background. Check task results for failed items.
+- **Thumbnail cache**: the service checks for cleanup at startup and after scans, with hourly idle checks. Unreferenced previews, and previews referenced only by permanently deleted records, are removed in small batches once both their modification time and filesystem change time are over an hour old. References from active, recycled, missing, and unpublished scan records remain protected; source media and management backups are excluded. Cleanup runs serially with thumbnail generation, pauses during management restore, and reports results in service logs.
 
 ## Backups, updates, and migration
 
