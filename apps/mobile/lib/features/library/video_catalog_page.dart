@@ -311,8 +311,15 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   }
 
   void toggleSelection() {
-    selection.cancel();
+    selection.cancel(clear: true);
     setState(() => selecting = !selecting);
+  }
+
+  void selectFromCover(String id) {
+    if (busy || viewing || !widget.active || repo.backupRestorePending) return;
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (!selecting) toggleSelection();
+    selection.toggle(id);
   }
 
   Future<void> openFolder() async {
@@ -697,6 +704,8 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                       children: [
                                         InkWell(
                                           key: Key('tile-${video.id}'),
+                                          onLongPress: () =>
+                                              selectFromCover(video.id),
                                           onTap: busy
                                               ? null
                                               : () {
@@ -901,10 +910,11 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                   ),
                   Expanded(
                     child: TextButton(
+                      key: const Key('video-add-selected-tags'),
                       onPressed: selected.isEmpty || selection.loading
                           ? null
                           : () => editTags({...selected}, appendOnly: true),
-                      child: const Text('追加标签', textAlign: TextAlign.center),
+                      child: const Text('添加标签', textAlign: TextAlign.center),
                     ),
                   ),
                 ],

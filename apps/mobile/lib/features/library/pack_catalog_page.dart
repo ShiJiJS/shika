@@ -1655,11 +1655,12 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                       ),
                       Expanded(
                         child: TextButton(
+                          key: const Key('pack-add-selected-tags'),
                           onPressed: selected.isEmpty || selection.loading
                               ? null
                               : () => tags({...selected}, appendOnly: true),
                           child: const Text(
-                            '追加标签',
+                            '添加标签',
                             textAlign: TextAlign.center,
                           ),
                         ),

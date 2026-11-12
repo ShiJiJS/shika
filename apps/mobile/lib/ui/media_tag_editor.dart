@@ -419,7 +419,7 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
                     ? (pack ? '保存图包标签' : '保存视频标签')
                     : remove
                     ? '移除所选标签'
-                    : '追加所选标签',
+                    : '添加所选标签',
               ),
             ),
           ],
