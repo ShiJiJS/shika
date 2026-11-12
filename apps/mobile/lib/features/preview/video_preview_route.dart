@@ -312,10 +312,6 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
             onTap: () => Navigator.pop(context, 'quick'),
           ),
           ListTile(
-            title: const Text('视频标签'),
-            onTap: () => Navigator.pop(context, 'tags'),
-          ),
-          ListTile(
             title: Text(
               '移入回收站',
               style: TextStyle(color: Paper.of(context).danger),
@@ -641,7 +637,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                       data.order == PlayOrder.random ? '随机预览' : '顺序预览',
                       queue,
                     ),
-                    tool(PaperGlyph.tag, '视频标签', tags),
+                    if (!quick) tool(PaperGlyph.tag, '视频标签', tags),
                     tool(
                       PaperGlyph.filter,
                       '快速整理',

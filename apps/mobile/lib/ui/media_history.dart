@@ -65,13 +65,14 @@ class MediaHistoryRow extends StatelessWidget {
     required this.subtitle,
     required this.cover,
     required this.onTap,
+    this.onLongPress,
     this.subtitleKey,
     this.selecting = false,
     this.selected = false,
   });
   final String title, subtitle;
   final Widget cover;
-  final VoidCallback? onTap;
+  final VoidCallback? onTap, onLongPress;
   final Key? subtitleKey;
   final bool selecting, selected;
   @override
@@ -82,6 +83,7 @@ class MediaHistoryRow extends StatelessWidget {
       selected: selecting ? selected : null,
       child: InkWell(
         onTap: onTap,
+        onLongPress: onLongPress,
         child: Container(
           decoration: BoxDecoration(
             border: Border(bottom: BorderSide(color: p.line)),

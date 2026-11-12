@@ -104,14 +104,51 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
     7 => recentPack.currentState,
     _ => null,
   };
+  bool selectionFramePending = false;
+  bool get selecting =>
+      currentPack?.selecting ?? currentVideo?.selecting ?? false;
+  int get selectedCount =>
+      currentPack?.selected.length ?? currentVideo?.selected.length ?? 0;
+  bool get selectingAll =>
+      currentPack?.selection.loading ??
+      currentVideo?.selection.loading ??
+      false;
+
+  void selectionChanged() {
+    // Child activation can clear a selection during layout. Refresh the shared
+    // header after the frame, never setState on an ancestor during its build.
+    if (selectionFramePending) return;
+    selectionFramePending = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      selectionFramePending = false;
+      if (mounted) setState(() {});
+    });
+  }
+
+  void toggleSelection() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    pack ? currentPack?.toggleSelection() : currentVideo?.toggleSelection();
+    selectionChanged();
+  }
+
+  void endSelection() {
+    if (selecting) toggleSelection();
+  }
+
+  void selectAll() {
+    pack ? currentPack?.selectAll() : currentVideo?.selectAll();
+  }
+
   void navigate(String destination) {
     FocusScope.of(context).unfocus();
+    if (destination != widget.destination) endSelection();
     if (destination != 'tags') showingTagResults = false;
     widget.onNavigate(destination);
   }
 
   void kindChanged(MediaKind value) {
     FocusScope.of(context).unfocus();
+    if (value != kind) endSelection();
     setState(() => kinds[widget.destination] = value);
     if (widget.destination == 'library' &&
         widget.repository.catalogCounts.value == null) {
@@ -148,29 +185,6 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
     await page?.resumeFromCleanup(origin, identity);
   }
 
-  Future<void> previewTags(Set<String> tags) async {
-    final target = VideoBrowseContext(
-      query: VideoQuery(tags: tags),
-      source: BrowseSource.tags,
-      sort: VideoSort.name,
-    );
-    setState(() {
-      tagResultsVideo = target;
-      showingTagResults = true;
-    });
-    await WidgetsBinding.instance.endOfFrame;
-    final page = tagsVideo.currentState;
-    if (!mounted || index != 4 || page == null) return;
-    await page.load();
-    if (!mounted ||
-        index != 4 ||
-        page.entry.queryKey != target.queryKey ||
-        page.data.items.isEmpty) {
-      return;
-    }
-    await page.open(anchor: page.data.items.first.id);
-  }
-
   @override
   Widget build(BuildContext context) {
     final p = Paper.of(context);
@@ -193,19 +207,21 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
     return PopScope<void>(
       canPop:
           !widget.active ||
-          (widget.destination == 'library' && !showingTagResults),
+          (widget.destination == 'library' && !showingTagResults && !selecting),
       onPopInvokedWithResult: (didPop, result) {
         // Offstage preserves catalogue state, but must not handle a management
         // page's return or mutate its destination before that page handles it.
         if (didPop || !widget.active) return;
-        if (showingTagResults) {
+        if (selecting) {
+          endSelection();
+        } else if (showingTagResults) {
           setState(() => showingTagResults = false);
         } else {
           navigate('library');
         }
       },
       child: AppShell(
-        showNavigation: true,
+        showNavigation: !selecting,
         navigationExtent: MediaLayout.navigation,
         navigationWidth: 300,
         selected: widget.destination,
@@ -248,18 +264,37 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                 ),
                 child: Row(
                   children: [
-                    if (widget.destination == 'tags' && showingTagResults)
+                    if (selecting)
+                      TextButton(
+                        key: const Key('catalog-selection-cancel'),
+                        onPressed: endSelection,
+                        child: const Text('取消'),
+                      ),
+                    if (!selecting &&
+                        widget.destination == 'tags' &&
+                        showingTagResults)
                       iconAction(
                         '返回标签选择',
                         Icons.arrow_back,
                         () => setState(() => showingTagResults = false),
                       ),
                     Expanded(
-                      child: Text(
-                        title,
-                        style: p.title.copyWith(fontSize: 24),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      child: Align(
+                        alignment: selecting
+                            ? Alignment.center
+                            : Alignment.centerLeft,
+                        child: AnimatedSwitcher(
+                          duration: MediaLayout.motion(context, 160),
+                          child: Text(
+                            key: ValueKey(selecting),
+                            selecting ? '已选 $selectedCount' : title,
+                            style: selecting
+                                ? const TextStyle(fontSize: 16)
+                                : p.title.copyWith(fontSize: 24),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ),
                     ),
                     if (widget.destination == 'tags' && !showingTagResults)
@@ -271,55 +306,22 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                             : () => (pack ? packTags : videoTags).currentState
                                   ?.form(),
                       ),
-                    if (index == 0 ||
-                        index == 1 ||
-                        index == 4 ||
-                        index == 5) ...[
-                      iconAction(
-                        '选择文件夹',
-                        Icons.folder_outlined,
-                        () => pack
-                            ? currentPack?.openFolder()
-                            : currentVideo?.openFolder(),
+                    if ([0, 1, 4, 5, 6, 7].contains(index))
+                      OutlinedButton(
+                        key: selecting
+                            ? ValueKey(
+                                pack ? 'pack-select-all' : 'video-select-all',
+                              )
+                            : const Key('catalog-select'),
+                        onPressed: widget.repository.backupRestorePending
+                            ? null
+                            : selecting
+                            ? selectAll
+                            : toggleSelection,
+                        child: Text(
+                          selecting ? (selectingAll ? '取消全选' : '全选') : '选择',
+                        ),
                       ),
-                      PaperMenuButton<String>(
-                        tooltip: '更多',
-                        icon: const PaperIcon(PaperGlyph.more, size: 20),
-                        onOpened: () =>
-                            FocusManager.instance.primaryFocus?.unfocus(),
-                        onSelected: (value) {
-                          if (value == 'select') {
-                            pack
-                                ? currentPack?.toggleSelection()
-                                : currentVideo?.toggleSelection();
-                          }
-                          if (value == 'quick') {
-                            pack
-                                ? currentPack?.open(quick: true)
-                                : currentVideo?.open(quick: true);
-                          }
-                        },
-                        itemBuilder: (_) => [
-                          const PopupMenuItem(
-                            value: 'select',
-                            child: Text('多选内容'),
-                          ),
-                          if (!pack ||
-                              (widget
-                                      .repository
-                                      .capabilities
-                                      .packReaderCleanup &&
-                                  widget
-                                      .repository
-                                      .capabilities
-                                      .packLogicalTrash))
-                            const PopupMenuItem(
-                              value: 'quick',
-                              child: Text('快速整理'),
-                            ),
-                        ],
-                      ),
-                    ],
                   ],
                 ),
               ),
@@ -371,7 +373,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                   );
                 },
               ),
-            if (widget.destination != 'settings')
+            if (widget.destination != 'settings' && !selecting)
               SizedBox(
                 width: double.infinity,
                 height: MediaLayout.kindExtent(context),
@@ -465,6 +467,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
               repository: widget.repository,
               preferences: widget.preferences,
               entry: initialLibrary,
+              onSelectionChanged: selectionChanged,
               active: active(0),
               defaultOrder: widget.defaultOrder,
             ),
@@ -473,6 +476,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
               onResumeReading: resumePack,
               repository: widget.repository,
               entry: PackBrowseContext(),
+              onSelectionChanged: selectionChanged,
               active: active(1),
             ),
             TagCatalogPage(
@@ -480,7 +484,6 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
               repository: widget.repository,
               kind: MediaKind.video,
               active: active(2),
-              onPreview: (tags) => unawaited(previewTags(tags)),
               initial: saved?.source == BrowseSource.tags
                   ? saved!.query.tags
                   : const {},
@@ -511,6 +514,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
               repository: widget.repository,
               preferences: widget.preferences,
               entry: tagResultsVideo,
+              onSelectionChanged: selectionChanged,
               active: active(4),
               defaultOrder: widget.defaultOrder,
             ),
@@ -519,6 +523,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
               onResumeReading: resumePack,
               repository: widget.repository,
               entry: tagResultsPack,
+              onSelectionChanged: selectionChanged,
               active: active(5),
             ),
             VideoCatalogPage(
@@ -526,6 +531,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
               repository: widget.repository,
               preferences: widget.preferences,
               entry: initialRecent,
+              onSelectionChanged: selectionChanged,
               active: active(6),
               defaultOrder: widget.defaultOrder,
             ),
@@ -534,6 +540,7 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
               onResumeReading: resumePack,
               repository: widget.repository,
               entry: PackBrowseContext(source: BrowseSource.recent),
+              onSelectionChanged: selectionChanged,
               active: active(7),
             ),
             widget.settings,

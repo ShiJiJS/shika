@@ -200,8 +200,7 @@ void main() {
         await t.pumpWidget(ShikaApp(repository: repo));
         await frames(t);
         await tap(find.byKey(const Key('kind-pack')));
-        await tap(find.byTooltip('更多'));
-        await tap(find.text('多选内容'));
+        await tap(find.byKey(const Key('catalog-select')));
         await tap(find.byKey(const Key('pack-select-all')));
         final state = t.state<PackCatalogPageState>(
           find.byType(PackCatalogPage),

@@ -20,7 +20,6 @@ class TagCatalogPage extends StatefulWidget {
     required this.kind,
     required this.active,
     required this.onView,
-    this.onPreview,
     this.initial = const {},
   });
   final LibraryRepository repository;
@@ -28,7 +27,6 @@ class TagCatalogPage extends StatefulWidget {
   final bool active;
   final Set<String> initial;
   final void Function(Set<String>) onView;
-  final void Function(Set<String>)? onPreview;
   @override
   State<TagCatalogPage> createState() => TagCatalogPageState();
 }
@@ -474,7 +472,7 @@ class TagCatalogPageState extends State<TagCatalogPage> {
           width: 20,
           height: 20,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
+            borderRadius: BorderRadius.circular(4),
             color: selected.contains(tag.id) ? Paper.of(context).olive : null,
             border: Border.all(
               color: Paper.of(context).olive.withValues(alpha: .7),
@@ -559,25 +557,12 @@ class TagCatalogPageState extends State<TagCatalogPage> {
                     style: const TextStyle(fontSize: 15),
                   ),
                 ),
-                if (!pack)
-                  TextButton(
-                    key: const Key('tag-view-results'),
-                    onPressed: matching == null
-                        ? null
-                        : () => widget.onView({...selected}),
-                    style: TextButton.styleFrom(
-                      minimumSize: const Size(44, 32),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      textStyle: const TextStyle(fontSize: 13),
-                    ),
-                    child: const Text('查看结果 →'),
-                  ),
               ],
             ),
           ),
           const SizedBox(height: 6),
           FilledButton(
-            key: Key(pack ? 'tag-view-results' : 'tag-preview-results'),
+            key: const Key('tag-view-results'),
             style: FilledButton.styleFrom(
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
@@ -586,16 +571,8 @@ class TagCatalogPageState extends State<TagCatalogPage> {
                     matching == 0 ||
                     (!pack && repo.backupRestorePending)
                 ? null
-                : () => !pack && widget.onPreview != null
-                      ? widget.onPreview!({...selected})
-                      : widget.onView({...selected}),
-            child: Text(
-              matching == null
-                  ? '正在统计…'
-                  : pack
-                  ? '查看 $matching 个图包'
-                  : '预览这 $matching 个视频',
-            ),
+                : () => widget.onView({...selected}),
+            child: Text(matching == null ? '正在统计…' : '查看 $matching 个$type'),
           ),
         ],
       ),

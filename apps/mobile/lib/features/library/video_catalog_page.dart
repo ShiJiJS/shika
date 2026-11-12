@@ -25,11 +25,13 @@ class VideoCatalogPage extends StatefulWidget {
     required this.preferences,
     required this.entry,
     required this.active,
+    this.onSelectionChanged,
     required this.defaultOrder,
   });
   final LibraryRepository repository;
   final UiPreferences preferences;
   final VideoBrowseContext entry;
+  final VoidCallback? onSelectionChanged;
   final bool active;
   final PlayOrder defaultOrder;
   @override
@@ -79,10 +81,8 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   double get listHeader => _geometry?.header ?? _listHeaderValue;
   double get _listHeaderValue => recent
       ? MediaLayout.historyHeader(context)
-      : MediaLayout.toolbar(context) +
-            (entry.query.count > 0 || entry.search.isNotEmpty
-                ? MediaLayout.scope(context)
-                : 0);
+      : (selecting ? 12 : MediaLayout.toolbar(context)) +
+            (entry.query.count > 0 ? MediaLayout.scope(context) : 0);
 
   void layoutGrid(BuildContext context, double nextWidth) {
     final next = MediaGridGeometry(
@@ -141,7 +141,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
     super.initState();
     query.addListener(changed);
     repo.addListener(repositoryChanged);
-    selection.addListener(changed);
+    selection.addListener(selectionChanged);
     scroll.addListener(nearEdge);
     if (widget.active) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -162,7 +162,8 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
     } else if (oldWidget.active != widget.active) {
       generation++;
       if (!widget.active) {
-        selection.cancel();
+        selecting = false;
+        selection.cancel(clear: true);
         query.cancel();
       } else if (!viewing) {
         scheduleLoad(restore: initialized);
@@ -310,9 +311,23 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
     await load();
   }
 
+  void selectionChanged() {
+    changed();
+    widget.onSelectionChanged?.call();
+  }
+
+  void selectAll() {
+    if (selection.loading) {
+      selection.cancel();
+    } else {
+      unawaited(selection.all(() => repo.selectVideoIds(entry.entry)));
+    }
+  }
+
   void toggleSelection() {
     selection.cancel(clear: true);
     setState(() => selecting = !selecting);
+    widget.onSelectionChanged?.call();
   }
 
   void selectFromCover(String id) {
@@ -352,6 +367,134 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
       dismissible: false,
     );
     if (mounted && widget.active) await load(restore: true);
+  }
+
+  Future<void> actions(LibraryVideo video) async {
+    if (busy || viewing || selecting) return;
+    final action = await paperSheet<String>(
+      context,
+      SheetFrame(
+        title: video.displayTitle,
+        children: [
+          ListTile(
+            title: const Text('从这里开始整理'),
+            trailing: const Icon(Icons.playlist_play),
+            onTap: () => Navigator.pop(context, 'quick'),
+          ),
+          ListTile(
+            title: const Text('视频标签'),
+            trailing: const Icon(Icons.sell_outlined),
+            onTap: () => Navigator.pop(context, 'tags'),
+          ),
+          ListTile(
+            title: const Text('视频详情'),
+            trailing: const Icon(Icons.info_outline),
+            onTap: () => Navigator.pop(context, 'details'),
+          ),
+          ListTile(
+            title: Text(
+              '移入回收站',
+              style: TextStyle(color: Paper.of(context).danger),
+            ),
+            trailing: const Icon(Icons.delete_outline),
+            onTap: () => Navigator.pop(context, 'trash'),
+          ),
+        ],
+      ),
+    );
+    if (!mounted || !widget.active) return;
+    switch (action) {
+      case 'quick':
+        await open(anchor: video.id, quick: true);
+      case 'tags':
+        await editTags({video.id});
+      case 'details':
+        await paperSheet<void>(
+          context,
+          SheetFrame(
+            title: '视频详情',
+            children: [
+              Text(
+                video.displayTitle,
+                style: Paper.of(context).title.copyWith(fontSize: 18),
+              ),
+              note('${video.durationLabel} · ${video.portrait ? '竖版' : '横版'}'),
+              SelectableText(video.path),
+            ],
+          ),
+        );
+      case 'trash':
+        await removeVideos({video.id});
+    }
+  }
+
+  Future<void> removeVideos(Set<String> ids) async {
+    if (busy || ids.isEmpty || ids.length > 1000 || repo.backupRestorePending) {
+      return;
+    }
+    final connection = repo.connectionIdentity;
+    final targets = Set<String>.of(ids);
+    final previous = repo.snapshot.lastDelete?.id;
+    final saved = position();
+    setState(() {
+      busy = true;
+      error = '';
+    });
+    try {
+      // Reuse the existing logical-trash operation and its undo receipt. Media
+      // files are never physically deleted by catalogue batch actions.
+      await repo.deleteVideos(
+        targets,
+        requestId: 'catalog-${DateTime.now().microsecondsSinceEpoch}',
+      );
+      if (!mounted || !identical(connection, repo.connectionIdentity)) return;
+      selected.removeAll(targets);
+      selection.cancel();
+      final operation = repo.snapshot.lastDelete;
+      ScaffoldMessenger.of(context).showSnackBar(
+        PaperSnackBar(
+          context: context,
+          content: const Text('已移入回收站'),
+          duration: const Duration(seconds: 2),
+          persist: false,
+          action: operation == null || operation.id == previous
+              ? null
+              : SnackBarAction(
+                  label: '撤销',
+                  onPressed: () async {
+                    if (!identical(connection, repo.connectionIdentity)) return;
+                    try {
+                      await repo.undoDelete(operationId: operation.id);
+                      if (mounted &&
+                          widget.active &&
+                          identical(connection, repo.connectionIdentity)) {
+                        await load(restore: true);
+                      }
+                    } catch (failure) {
+                      if (mounted &&
+                          identical(connection, repo.connectionIdentity)) {
+                        setState(() => error = failure.toString());
+                      }
+                    }
+                  },
+                ),
+        ),
+      );
+    } catch (failure) {
+      if (mounted && identical(connection, repo.connectionIdentity)) {
+        setState(() => error = failure.toString());
+      }
+    } finally {
+      if (mounted) {
+        setState(() => busy = false);
+        if (widget.active && identical(connection, repo.connectionIdentity)) {
+          pendingReturn = saved.context;
+          returnIds = saved.ids;
+          await load(restore: true);
+          unawaited(repo.refreshCatalogCounts());
+        }
+      }
+    }
   }
 
   Future<void> open({String? anchor, bool quick = false}) async {
@@ -430,7 +573,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   void dispose() {
     generation++;
     repo.removeListener(repositoryChanged);
-    selection.removeListener(changed);
+    selection.removeListener(selectionChanged);
     selection.dispose();
     query.removeListener(changed);
     query.dispose();
@@ -446,7 +589,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
       final p = Paper.of(context), recent = entry.source == BrowseSource.recent;
       return Column(
         children: [
-          if (!recent)
+          if (!recent && !selecting)
             MediaCatalogSearch(
               fieldKey: const Key('video-search'),
               controller: search,
@@ -502,61 +645,70 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                     controller: scroll,
                     physics: const AlwaysScrollableScrollPhysics(),
                     slivers: [
-                      if (!recent &&
-                          (entry.query.count > 0 || entry.search.isNotEmpty))
+                      if (!recent && entry.query.count > 0)
                         SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: MediaLayout.scope(context),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 16,
-                                right: 8,
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      [
-                                        if (entry.query.folder.isNotEmpty)
-                                          entry.query.folder,
-                                        ...entry.query.tags.map(
-                                          (id) => '# ${repo.tagName(id)}',
-                                        ),
-                                        if (entry.search.isNotEmpty)
-                                          '“${entry.search}”',
-                                        if (entry.query.orientation.isNotEmpty)
-                                          entry.query.orientation == 'portrait'
-                                              ? '竖版'
-                                              : '横版',
-                                        if (entry.query.duration.isNotEmpty)
-                                          entry.query.duration == 'short'
-                                              ? '10 秒以内'
-                                              : '10 秒以上',
-                                        if (entry.query.type.isNotEmpty)
-                                          entry.query.type,
-                                      ].join(' · '),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: p.olive,
-                                        fontSize: 12,
+                          child: MediaFilterSummary(
+                            filters: [
+                              if (entry.query.folder.isNotEmpty)
+                                (
+                                  id: 'video-clear-folder',
+                                  label: entry.query.folder.split('/').last,
+                                  remove: () => changeEntry(
+                                    entry.copyWith(
+                                      query: entry.query.copy(folder: ''),
+                                    ),
+                                  ),
+                                ),
+                              for (final tag in entry.query.tags)
+                                (
+                                  id: 'video-clear-tag-$tag',
+                                  label: repo.tagName(tag),
+                                  remove: () => changeEntry(
+                                    entry.copyWith(
+                                      query: entry.query.copy(
+                                        tags: {...entry.query.tags}
+                                          ..remove(tag),
                                       ),
                                     ),
                                   ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      search.clear();
-                                      await changeEntry(
-                                        entry.copyWith(
-                                          query: VideoQuery(),
-                                          search: '',
-                                        ),
-                                      );
-                                    },
-                                    child: const Text('清除'),
+                                ),
+                              if (entry.query.orientation.isNotEmpty)
+                                (
+                                  id: 'video-clear-orientation',
+                                  label: entry.query.orientation == 'portrait'
+                                      ? '竖版'
+                                      : '横版',
+                                  remove: () => changeEntry(
+                                    entry.copyWith(
+                                      query: entry.query.copy(orientation: ''),
+                                    ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              if (entry.query.duration.isNotEmpty)
+                                (
+                                  id: 'video-clear-duration',
+                                  label: entry.query.duration == 'short'
+                                      ? '10 秒以内'
+                                      : '10 秒以上',
+                                  remove: () => changeEntry(
+                                    entry.copyWith(
+                                      query: entry.query.copy(duration: ''),
+                                    ),
+                                  ),
+                                ),
+                              if (entry.query.type.isNotEmpty)
+                                (
+                                  id: 'video-clear-type',
+                                  label: entry.query.type,
+                                  remove: () => changeEntry(
+                                    entry.copyWith(
+                                      query: entry.query.copy(type: ''),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                            clear: () => changeEntry(
+                              entry.copyWith(query: VideoQuery()),
                             ),
                           ),
                         ),
@@ -567,7 +719,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                             count: '${data.total} 个视频',
                           ),
                         ),
-                      if (!recent)
+                      if (!recent && !selecting)
                         SliverToBoxAdapter(
                           child: MediaCatalogToolbar(
                             children: [
@@ -592,41 +744,34 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                       child: Text('最近加入'),
                                     ),
                                   ],
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                    ),
-                                    child: Text(
-                                      entry.sort == VideoSort.newest
-                                          ? '最近加入 ↓'
-                                          : '名称 ↓',
-                                      style: const TextStyle(fontSize: 13),
-                                    ),
+                                  child: MediaSortLabel(
+                                    entry.sort == VideoSort.newest
+                                        ? '最近加入'
+                                        : '名称排序',
                                   ),
                                 ),
-                              if (!selecting)
-                                FilledButton.icon(
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: OutlinedButton(
+                                  key: const Key('video-quick-cleanup'),
+                                  style: OutlinedButton.styleFrom(
+                                    minimumSize: const Size(0, 48),
+                                  ),
                                   onPressed:
                                       busy ||
                                           data.items.isEmpty ||
                                           !repo.libraryPreparation.value.ready
                                       ? null
-                                      : () => open(anchor: data.items.first.id),
-                                  style: FilledButton.styleFrom(
-                                    minimumSize: const Size(44, 40),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                    ),
-                                  ),
-                                  icon: const Icon(
-                                    Icons.smart_display_outlined,
-                                    size: 16,
-                                  ),
-                                  label: const Text(
-                                    '预览此范围',
+                                      : () => open(
+                                          anchor: data.items.first.id,
+                                          quick: true,
+                                        ),
+                                  child: const Text(
+                                    '快速整理',
                                     style: TextStyle(fontSize: 13),
                                   ),
                                 ),
+                              ),
                             ],
                           ),
                         ),
@@ -653,6 +798,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                             itemBuilder: (context, index) {
                               final video = data.items[index];
                               return MediaHistoryRow(
+                                onLongPress: () => selectFromCover(video.id),
                                 key: Key('recent-video-${video.id}'),
                                 title: video.displayTitle,
                                 subtitle: video.durationLabel,
@@ -679,8 +825,11 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                         ),
                       if (!recent)
                         SliverPadding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: MediaLayout.side,
+                          padding: EdgeInsets.fromLTRB(
+                            MediaLayout.side,
+                            selecting ? 12 : 0,
+                            MediaLayout.side,
+                            0,
                           ),
                           sliver: SliverGrid.builder(
                             gridDelegate:
@@ -769,15 +918,8 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                             top: 6,
                                             left: 6,
                                             child: IgnorePointer(
-                                              child: Icon(
-                                                selected.contains(video.id)
-                                                    ? Icons.check_circle
-                                                    : Icons
-                                                          .radio_button_unchecked,
-                                                color:
-                                                    selected.contains(video.id)
-                                                    ? p.olive
-                                                    : Colors.white,
+                                              child: MediaSelectionMark(
+                                                selected.contains(video.id),
                                               ),
                                             ),
                                           ),
@@ -817,48 +959,19 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                       height: 1.5,
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: MediaLayout.meta(context),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            video.portrait ? '竖屏' : '横屏',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: p.catalogMeta,
-                                            ),
-                                          ),
-                                        ),
-                                        IconButton(
-                                          tooltip: '编辑标签 ${video.name}',
-                                          padding: EdgeInsets.zero,
-                                          constraints: const BoxConstraints(
-                                            minWidth: 32,
-                                            minHeight: 28,
-                                          ),
-                                          iconSize: 18,
-                                          onPressed: repo.backupRestorePending
-                                              ? null
-                                              : () => editTags({video.id}),
-                                          icon: const Icon(Icons.more_horiz),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    key: Key('video-tag-names-${video.id}'),
-                                    video.tags
+                                  MediaCardCaption(
+                                    tagKey: Key('video-tag-names-${video.id}'),
+                                    metadata: video.portrait ? '竖屏' : '横屏',
+                                    tags: video.tags
                                         .map((id) => '# ${repo.tagName(id)}')
                                         .join('  '),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: MediaLayout.cardTags.copyWith(
-                                      color: p.olive,
-                                    ),
+                                    menuLabel: '视频操作 ${video.name}',
+                                    onMenu:
+                                        selecting ||
+                                            busy ||
+                                            repo.backupRestorePending
+                                        ? null
+                                        : () => actions(video),
                                   ),
                                 ],
                               );
@@ -884,42 +997,21 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
           ),
           if (selection.error.isNotEmpty) note(selection.error),
           if (selecting)
-            SafeArea(
-              top: false,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      key: const Key('video-select-all'),
-                      onPressed: selection.loading
-                          ? selection.cancel
-                          : () => selection.all(
-                              () => repo.selectVideoIds(entry.entry),
-                            ),
-                      child: Text(
-                        selection.loading ? '取消全选' : '全选匹配项',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      selection.loading ? '正在全选…' : '已选 ${selected.length}',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Expanded(
-                    child: TextButton(
-                      key: const Key('video-add-selected-tags'),
-                      onPressed: selected.isEmpty || selection.loading
-                          ? null
-                          : () => editTags({...selected}, appendOnly: true),
-                      child: const Text('添加标签', textAlign: TextAlign.center),
-                    ),
-                  ),
-                ],
-              ),
+            MediaSelectionActions(
+              kind: 'video',
+              addTags: selected.isEmpty || selection.loading || busy
+                  ? null
+                  : () => editTags({...selected}, appendOnly: true),
+              trash:
+                  selected.isEmpty ||
+                      selected.length > 1000 ||
+                      selection.loading ||
+                      busy
+                  ? null
+                  : () => removeVideos({...selected}),
             ),
+          if (selecting && selected.length > 1000)
+            note('每次最多移除 1000 个视频，请减少选择'),
         ],
       );
     },

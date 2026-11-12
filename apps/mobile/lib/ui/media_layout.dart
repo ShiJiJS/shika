@@ -15,6 +15,7 @@ abstract final class MediaLayout {
   static double cover(double width) => width <= 380 ? 185 : 211;
   static final cardTitle = Paper.title.copyWith(fontSize: 16, height: 1.5);
   static const cardTags = TextStyle(fontSize: 12, height: 1.6);
+  static const cardMeta = TextStyle(fontSize: 12, height: 1.5);
   static final historyTitle = Paper.title.copyWith(fontSize: 18);
   static const historyMeta = TextStyle(fontSize: 13);
   static double historyRow(
@@ -51,12 +52,7 @@ abstract final class MediaLayout {
   }
 
   static double tile(BuildContext context, double width) =>
-      cover(width) +
-      8 +
-      line(context, '标题 Aa', cardTitle) +
-      meta(context) +
-      4 +
-      line(context, '# 标签 Aa', cardTags);
+      cover(width) + 8 + line(context, '标题 Aa', cardTitle) + meta(context);
   static int columns(BuildContext context) {
     // Keyboard insets must not turn a portrait grid into a landscape grid.
     final media = MediaQuery.of(context);
@@ -65,12 +61,14 @@ abstract final class MediaLayout {
     return width > height && height <= 500 ? 4 : 2;
   }
 
-  static double meta(BuildContext context) =>
-      max(28, MediaQuery.textScalerOf(context).scale(12) * 1.5);
+  static double meta(BuildContext context) => max(
+    48,
+    line(context, '信息 Aa', cardMeta) + 4 + line(context, '标签 Aa', cardTags),
+  );
   static double search(BuildContext context) =>
       max(55, MediaQuery.textScalerOf(context).scale(16) * 1.5 + 31);
   static double scope(BuildContext context) =>
-      max(44, MediaQuery.textScalerOf(context).scale(12) * 3.4);
+      max(48, MediaQuery.textScalerOf(context).scale(12) * 3.4);
   static const continuationMeta = TextStyle(fontSize: 12, height: 1.5);
   static final continuationTitle = Paper.title.copyWith(
     fontSize: 16,
@@ -112,7 +110,7 @@ abstract final class MediaLayout {
       MediaQuery.textScalerOf(context).scale(13) > 17;
   static double toolbar(BuildContext context) => largeText(context)
       ? max(44, MediaQuery.textScalerOf(context).scale(13) * 1.5 + 16) * 2 + 16
-      : 60;
+      : 64;
   static Duration motion(BuildContext context, int milliseconds) =>
       MediaQuery.disableAnimationsOf(context)
       ? Duration.zero
@@ -183,15 +181,10 @@ class MediaCatalogSearch extends StatelessWidget {
     return SizedBox(
       height: MediaLayout.search(context),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 5, 16, 8),
+        padding: const EdgeInsets.fromLTRB(16, 5, 16, 2),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              width: 44,
-              child: iconAction(filterLabel, Icons.filter_list, onFilter),
-            ),
-            const SizedBox(width: 4),
             Expanded(
               child: TextField(
                 key: fieldKey,
@@ -199,6 +192,20 @@ class MediaCatalogSearch extends StatelessWidget {
                 style: const TextStyle(fontSize: 16, height: 1.5),
                 decoration: InputDecoration(
                   hintText: hint,
+                  prefixIcon: const Icon(Icons.search, size: 20),
+                  suffixIcon: ValueListenableBuilder<TextEditingValue>(
+                    valueListenable: controller,
+                    builder: (context, value, _) => value.text.isEmpty
+                        ? const SizedBox.shrink()
+                        : IconButton(
+                            tooltip: '清除搜索',
+                            onPressed: () {
+                              controller.clear();
+                              onChanged('');
+                            },
+                            icon: const Icon(Icons.close, size: 18),
+                          ),
+                  ),
                   hintStyle: TextStyle(color: p.muted),
                   isDense: true,
                   fillColor: Colors.transparent,
@@ -214,11 +221,213 @@ class MediaCatalogSearch extends StatelessWidget {
                 onChanged: onChanged,
               ),
             ),
+            const SizedBox(width: 8),
+            Tooltip(
+              message: filterLabel,
+              child: OutlinedButton(
+                key: ValueKey(filterLabel),
+                onPressed: onFilter,
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(64, 48),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                ),
+                child: const Text('筛选'),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+/// Keep metadata, tags and the action target in one compact caption row.
+class MediaCardCaption extends StatelessWidget {
+  const MediaCardCaption({
+    super.key,
+    required this.tagKey,
+    required this.tags,
+    required this.menuLabel,
+    this.metadata = '',
+    this.onMenu,
+  });
+  final Key tagKey;
+  final String metadata, tags, menuLabel;
+  final VoidCallback? onMenu;
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    height: MediaLayout.meta(context),
+    child: Row(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (metadata.isNotEmpty)
+                Text(
+                  metadata,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: MediaLayout.cardMeta.copyWith(
+                    color: Paper.of(context).catalogMeta,
+                  ),
+                ),
+              if (metadata.isNotEmpty && tags.isNotEmpty)
+                const SizedBox(height: 4),
+              Text(
+                tags,
+                key: tagKey,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: MediaLayout.cardTags.copyWith(
+                  color: Paper.of(context).olive,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (onMenu != null)
+          IconButton(
+            tooltip: menuLabel,
+            onPressed: onMenu,
+            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+            padding: EdgeInsets.zero,
+            iconSize: 18,
+            icon: const Icon(Icons.more_horiz),
+          ),
+      ],
+    ),
+  );
+}
+
+class MediaSelectionMark extends StatelessWidget {
+  const MediaSelectionMark(this.selected, {super.key});
+  final bool selected;
+  @override
+  Widget build(BuildContext context) => AnimatedContainer(
+    duration: MediaLayout.motion(context, 160),
+    width: 24,
+    height: 24,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: selected ? Paper.of(context).olive : Paper.of(context).background,
+      border: Border.all(color: Paper.of(context).background, width: 2),
+      boxShadow: const [BoxShadow(color: Color(0x33000000), blurRadius: 3)],
+    ),
+    child: selected
+        ? Icon(Icons.check, size: 16, color: Paper.of(context).background)
+        : null,
+  );
+}
+
+/// Filters describe the current result and can be removed independently.
+/// The fixed-height horizontal row also keeps catalogue return geometry stable.
+class MediaFilterSummary extends StatelessWidget {
+  const MediaFilterSummary({
+    super.key,
+    required this.filters,
+    required this.clear,
+  });
+  final List<({String id, String label, VoidCallback remove})> filters;
+  final VoidCallback clear;
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    height: MediaLayout.scope(context),
+    child: SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          for (final filter in filters)
+            Padding(
+              padding: const EdgeInsets.only(right: 6),
+              child: InputChip(
+                key: ValueKey(filter.id),
+                materialTapTargetSize: MaterialTapTargetSize.padded,
+                label: Text(filter.label),
+                onDeleted: filter.remove,
+                deleteButtonTooltipMessage: '取消${filter.label}',
+              ),
+            ),
+          TextButton(onPressed: clear, child: const Text('清除全部')),
+        ],
+      ),
+    ),
+  );
+}
+
+class MediaSortLabel extends StatelessWidget {
+  const MediaSortLabel(this.label, {super.key});
+  final String label;
+  @override
+  Widget build(BuildContext context) => Container(
+    constraints: const BoxConstraints(minHeight: 48),
+    padding: const EdgeInsets.symmetric(horizontal: 10),
+    decoration: BoxDecoration(
+      border: Border.all(color: Paper.of(context).line),
+      borderRadius: BorderRadius.circular(7),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 13)),
+        const SizedBox(width: 4),
+        const Icon(Icons.expand_more, size: 18),
+      ],
+    ),
+  );
+}
+
+/// Batch actions replace navigation while selecting, with identical geometry
+/// for videos and packs. The selected IDs remain owned by each catalogue.
+class MediaSelectionActions extends StatelessWidget {
+  const MediaSelectionActions({
+    super.key,
+    required this.kind,
+    required this.addTags,
+    required this.trash,
+    this.canTrash = true,
+  });
+  final String kind;
+  final VoidCallback? addTags, trash;
+  final bool canTrash;
+  @override
+  Widget build(BuildContext context) => SafeArea(
+    top: false,
+    child: Container(
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: Paper.of(context).line)),
+      ),
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+      child: Row(
+        children: [
+          Expanded(
+            child: OutlinedButton.icon(
+              key: ValueKey('$kind-add-selected-tags'),
+              onPressed: addTags,
+              icon: const Icon(Icons.sell_outlined, size: 18),
+              label: const Text('添加标签', textAlign: TextAlign.center),
+            ),
+          ),
+          if (canTrash) ...[
+            const SizedBox(width: 10),
+            Expanded(
+              child: OutlinedButton.icon(
+                key: ValueKey('$kind-delete-selected'),
+                onPressed: trash,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Paper.of(context).danger,
+                ),
+                icon: const Icon(Icons.delete_outline, size: 18),
+                label: const Text('移入回收站', textAlign: TextAlign.center),
+              ),
+            ),
+          ],
+        ],
+      ),
+    ),
+  );
 }
 
 /// Keeps P2's compact row at ordinary type sizes and gives controls their own

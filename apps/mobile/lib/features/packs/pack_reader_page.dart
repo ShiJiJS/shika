@@ -1112,12 +1112,14 @@ class PackReaderPageState extends State<PackReaderPage>
                               value: 'details',
                               child: Text('图包详情'),
                             ),
-                          if (usable)
+                          if (usable && (quick || compact))
                             const PopupMenuItem(
                               value: 'tags',
                               child: Text('图包标签'),
                             ),
-                          if (session.range?.previous != null)
+                          if (compact &&
+                              !quick &&
+                              session.range?.previous != null)
                             const PopupMenuItem(
                               value: 'previous',
                               child: Text('上一个'),

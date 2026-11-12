@@ -141,11 +141,13 @@ class PackCatalogPage extends StatefulWidget {
     required this.repository,
     required this.entry,
     required this.active,
+    this.onSelectionChanged,
     this.onResumeReading,
   });
   final Future<void> Function(PackCleanupContext, String)? onResumeReading;
   final LibraryRepository repository;
   final PackBrowseContext entry;
+  final VoidCallback? onSelectionChanged;
   final bool active;
   @override
   State<PackCatalogPage> createState() => PackCatalogPageState();
@@ -211,11 +213,9 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   double get listHeader => _geometry?.header ?? _listHeaderValue;
   double get _listHeaderValue => recent
       ? MediaLayout.historyHeader(context)
-      : (selecting ? 0 : MediaLayout.toolbar(context)) +
+      : (selecting ? 12 : MediaLayout.toolbar(context)) +
             (hasContinuation ? continuationExtent : 0) +
-            (entry.query.count > 0 || entry.query.search.isNotEmpty
-                ? MediaLayout.scope(context)
-                : 0);
+            (entry.query.count > 0 ? MediaLayout.scope(context) : 0);
 
   void layoutGrid(BuildContext context, double nextWidth) {
     final next = MediaGridGeometry(
@@ -274,7 +274,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     super.initState();
     catalog.addListener(changed);
     repo.addListener(repositoryChanged);
-    selection.addListener(changed);
+    selection.addListener(selectionChanged);
     scroll.addListener(nearBottom);
     if (widget.active) scheduleLoad();
   }
@@ -306,7 +306,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       if (!widget.active) {
         generation++;
         remember();
-        selection.cancel();
+        selecting = false;
+        selection.cancel(clear: true);
         catalog.cancel();
       } else if (!initialized || dirty || pendingReturn != null) {
         scheduleLoad(restore: initialized);
@@ -489,6 +490,19 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     await load();
   }
 
+  void selectionChanged() {
+    changed();
+    widget.onSelectionChanged?.call();
+  }
+
+  void selectAll() {
+    if (selection.loading) {
+      selection.cancel();
+    } else {
+      unawaited(selection.all(() => repo.selectPackIds(entry.query)));
+    }
+  }
+
   void toggleSelection() {
     if (_detailsOpen || busy) return;
     selection.cancel(clear: true);
@@ -496,6 +510,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
     final pixels = scroll.hasClients ? scroll.offset : 0.0;
     final saved = position();
     setState(() => selecting = !selecting);
+    widget.onSelectionChanged?.call();
     if (pixels >= oldHeader) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted && scroll.hasClients) {
@@ -820,15 +835,15 @@ class PackCatalogPageState extends State<PackCatalogPage> {
           children: [
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('阅读图包'),
-              trailing: const Icon(Icons.chrome_reader_mode_outlined),
-              onTap: () => Navigator.pop(context, 'read'),
+              title: const Text('图包详情'),
+              trailing: const Icon(Icons.info_outline),
+              onTap: () => Navigator.pop(context, 'info'),
             ),
             if (repo.capabilities.packReaderCleanup &&
                 repo.capabilities.packLogicalTrash)
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('从这包开始快速整理'),
+                title: const Text('从这里开始整理'),
                 trailing: const Icon(Icons.playlist_play),
                 onTap: () => Navigator.pop(context, 'quick'),
               ),
@@ -855,7 +870,22 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       _detailsOpen = false;
     }
     if (!mounted || !widget.active) return;
-    if (action == 'read') await details(pack);
+    if (action == 'info') {
+      await paperSheet<void>(
+        context,
+        SheetFrame(
+          title: '图包详情',
+          children: [
+            Text(
+              pack.displayTitle,
+              style: Paper.of(context).title.copyWith(fontSize: 18),
+            ),
+            note('${pack.pageCount} 张 · ${pack.readableCount} 张可读'),
+            SelectableText(pack.path),
+          ],
+        ),
+      );
+    }
     if (action == 'quick') await open(quick: true, anchor: pack.id);
     if (action == 'tags') {
       await tags({pack.id}, initial: pack.tags, initialNames: pack.tagNames);
@@ -1171,6 +1201,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   Widget recentRow(LibraryPack pack) {
     final label = historyPosition(pack);
     return MediaHistoryRow(
+      onLongPress: () => selectFromCover(pack.id),
       key: Key('recent-pack-${pack.id}'),
       title: pack.displayTitle,
       subtitle: label,
@@ -1197,49 +1228,14 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       final p = Paper.of(context), recent = entry.source == BrowseSource.recent;
       return Column(
         children: [
-          if (!recent)
-            Row(
-              children: [
-                Expanded(
-                  child: selecting
-                      ? const Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          child: Text('多选图包', style: TextStyle(fontSize: 13)),
-                        )
-                      : MediaCatalogSearch(
-                          fieldKey: const Key('pack-search'),
-                          controller: search,
-                          hint: '搜索图包、作者、目录',
-                          filterLabel: '筛选图包',
-                          onFilter: filter,
-                          onChanged: (value) =>
-                              change(entry.query.copy(search: value)),
-                        ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: TextButton(
-                    key: const Key('pack-multi-select'),
-                    style: TextButton.styleFrom(
-                      minimumSize: const Size(44, 44),
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                    ),
-                    onPressed:
-                        busy ||
-                            _detailsOpen ||
-                            (!selecting && data.items.isEmpty)
-                        ? null
-                        : toggleSelection,
-                    child: Text(
-                      selecting ? '完成' : '多选',
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                  ),
-                ),
-              ],
+          if (!recent && !selecting)
+            MediaCatalogSearch(
+              fieldKey: const Key('pack-search'),
+              controller: search,
+              hint: '搜索图包、作者、目录',
+              filterLabel: '筛选图包',
+              onFilter: filter,
+              onChanged: (value) => change(entry.query.copy(search: value)),
             ),
           if (error.isNotEmpty) note(error),
           if (!repo.capabilities.packDirectoryDelete && pendingFiles.isNotEmpty)
@@ -1287,49 +1283,45 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                     slivers: [
                       if (hasContinuation)
                         SliverToBoxAdapter(child: continuationHeader()),
-                      if (!recent &&
-                          (entry.query.count > 0 ||
-                              entry.query.search.isNotEmpty))
+                      if (!recent && entry.query.count > 0)
                         SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: MediaLayout.scope(context),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 16),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      [
-                                        if (entry.query.folder.isNotEmpty)
-                                          entry.query.folder,
-                                        if (entry.query.tags.isNotEmpty)
-                                          '${entry.query.tags.length} 个图包标签',
-                                        if (entry.query.search.isNotEmpty)
-                                          '“${entry.query.search}”',
-                                        if (entry.query.readState !=
-                                            PackReadState.all)
-                                          {
-                                            PackReadState.unread: '未读',
-                                            PackReadState.reading: '在读',
-                                            PackReadState.completed: '已读',
-                                          }[entry.query.readState]!,
-                                      ].join(' · '),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: p.olive,
-                                      ),
+                          child: MediaFilterSummary(
+                            filters: [
+                              if (entry.query.folder.isNotEmpty)
+                                (
+                                  id: 'pack-clear-folder',
+                                  label: entry.query.folder.split('/').last,
+                                  remove: () =>
+                                      change(entry.query.copy(folder: '')),
+                                ),
+                              if (entry.query.tags.isNotEmpty)
+                                (
+                                  id: 'pack-clear-tags',
+                                  label: '${entry.query.tags.length} 个图包标签',
+                                  remove: () =>
+                                      change(entry.query.copy(tags: {})),
+                                ),
+                              if (entry.query.readState != PackReadState.all)
+                                (
+                                  id: 'pack-clear-read-state',
+                                  label: switch (entry.query.readState) {
+                                    PackReadState.unread => '未读',
+                                    PackReadState.reading => '在读',
+                                    PackReadState.completed => '已读',
+                                    PackReadState.all => '全部',
+                                  },
+                                  remove: () => change(
+                                    entry.query.copy(
+                                      readState: PackReadState.all,
                                     ),
                                   ),
-                                  TextButton(
-                                    onPressed: () {
-                                      search.clear();
-                                      unawaited(change(PackQuery()));
-                                    },
-                                    child: const Text('清除'),
-                                  ),
-                                ],
+                                ),
+                            ],
+                            clear: () => change(
+                              entry.query.copy(
+                                folder: '',
+                                tags: {},
+                                readState: PackReadState.all,
                               ),
                             ),
                           ),
@@ -1352,25 +1344,6 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                 key: const Key('pack-count'),
                                 style: TextStyle(fontSize: 13, color: p.muted),
                               ),
-                              TextButton(
-                                onPressed: () => change(
-                                  entry.query.copy(
-                                    readState:
-                                        PackReadState.values[(entry
-                                                    .query
-                                                    .readState
-                                                    .index +
-                                                1) %
-                                            PackReadState.values.length],
-                                  ),
-                                ),
-                                child: Text(switch (entry.query.readState) {
-                                  PackReadState.all => '阅读状态',
-                                  PackReadState.unread => '未读',
-                                  PackReadState.reading => '在读',
-                                  PackReadState.completed => '已读',
-                                }, style: const TextStyle(fontSize: 13)),
-                              ),
                               PaperMenuButton<PackSort>(
                                 tooltip: '图包排序',
                                 initialValue: entry.query.sort,
@@ -1386,24 +1359,34 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                     child: Text('最近加入'),
                                   ),
                                 ],
-                                child: Text(switch (entry.query.sort) {
-                                  PackSort.name => '名称 ↓',
-                                  PackSort.newest => '最近加入 ↓',
-                                  PackSort.recent => '最近阅读 ↓',
-                                }, style: const TextStyle(fontSize: 13)),
+                                child: MediaSortLabel(
+                                  switch (entry.query.sort) {
+                                    PackSort.name => '名称排序',
+                                    PackSort.newest => '最近加入',
+                                    PackSort.recent => '最近阅读',
+                                  },
+                                ),
                               ),
                               if (repo.capabilities.packReaderCleanup &&
                                   repo.capabilities.packLogicalTrash &&
                                   !selecting)
-                                TextButton(
-                                  key: const Key('pack-quick-cleanup'),
-                                  onPressed:
-                                      data.items.isEmpty || busy || data.loading
-                                      ? null
-                                      : () => open(quick: true),
-                                  child: const Text(
-                                    '快速整理',
-                                    style: TextStyle(fontSize: 13),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: OutlinedButton(
+                                    key: const Key('pack-quick-cleanup'),
+                                    style: OutlinedButton.styleFrom(
+                                      minimumSize: const Size(0, 48),
+                                    ),
+                                    onPressed:
+                                        data.items.isEmpty ||
+                                            busy ||
+                                            data.loading
+                                        ? null
+                                        : () => open(quick: true),
+                                    child: const Text(
+                                      '快速整理',
+                                      style: TextStyle(fontSize: 13),
+                                    ),
                                   ),
                                 ),
                             ],
@@ -1428,7 +1411,12 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                         ),
                       if (!recent)
                         SliverPadding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          padding: EdgeInsets.fromLTRB(
+                            16,
+                            selecting ? 12 : 0,
+                            16,
+                            0,
+                          ),
                           sliver: SliverGrid.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
@@ -1531,15 +1519,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                             top: 6,
                                             left: 6,
                                             child: IgnorePointer(
-                                              child: Icon(
-                                                selected.contains(pack.id)
-                                                    ? Icons.check_circle
-                                                    : Icons
-                                                          .radio_button_unchecked,
-                                                color:
-                                                    selected.contains(pack.id)
-                                                    ? p.olive
-                                                    : Colors.white,
+                                              child: MediaSelectionMark(
+                                                selected.contains(pack.id),
                                               ),
                                             ),
                                           ),
@@ -1556,39 +1537,15 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                       height: 1.5,
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: MediaLayout.meta(context),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            pack.catalogSubtitle,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: p.catalogMeta,
-                                            ),
-                                          ),
-                                        ),
-                                        IconButton(
-                                          tooltip: '图包操作 ${pack.displayTitle}',
-                                          onPressed: () => actions(pack),
-                                          constraints: const BoxConstraints(
-                                            minWidth: 32,
-                                            minHeight: 28,
-                                          ),
-                                          padding: EdgeInsets.zero,
-                                          iconSize: 18,
-                                          icon: const Icon(Icons.more_horiz),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    key: Key('pack-tag-names-${pack.id}'),
-                                    pack.tags.isEmpty
+                                  MediaCardCaption(
+                                    tagKey: Key('pack-tag-names-${pack.id}'),
+                                    metadata:
+                                        pack.author?.trim().isNotEmpty ==
+                                                true ||
+                                            pack.readableCount != pack.pageCount
+                                        ? pack.catalogSubtitle
+                                        : '',
+                                    tags: pack.tags.isEmpty
                                         ? ''
                                         : pack.tagNames.isEmpty
                                         ? '${pack.tags.length} 个标签'
@@ -1596,11 +1553,10 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                                 ..sort())
                                               .map((name) => '# $name')
                                               .join('  '),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: MediaLayout.cardTags.copyWith(
-                                      color: p.olive,
-                                    ),
+                                    menuLabel: '图包操作 ${pack.displayTitle}',
+                                    onMenu: selecting
+                                        ? null
+                                        : () => actions(pack),
                                   ),
                                 ],
                               );
@@ -1626,77 +1582,23 @@ class PackCatalogPageState extends State<PackCatalogPage> {
           ),
           if (selection.error.isNotEmpty) note(selection.error),
           if (selecting)
-            SafeArea(
-              top: false,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextButton(
-                          key: const Key('pack-select-all'),
-                          onPressed: selection.loading
-                              ? selection.cancel
-                              : () => selection.all(
-                                  () => repo.selectPackIds(entry.query),
-                                ),
-                          child: Text(
-                            selection.loading ? '取消全选' : '全选匹配项',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          selection.loading ? '正在全选…' : '已选 ${selected.length}',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Expanded(
-                        child: TextButton(
-                          key: const Key('pack-add-selected-tags'),
-                          onPressed: selected.isEmpty || selection.loading
-                              ? null
-                              : () => tags({...selected}, appendOnly: true),
-                          child: const Text(
-                            '添加标签',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (repo.capabilities.packLogicalTrash)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: FilledButton.icon(
-                          key: const Key('pack-delete-selected'),
-                          style: FilledButton.styleFrom(
-                            backgroundColor: p.danger,
-                            foregroundColor: Theme.of(context)
-                                .colorScheme
-                                .onError,
-                          ),
-                          onPressed:
-                              selected.isEmpty ||
-                                  selected.length > 1000 ||
-                                  selection.loading ||
-                                  busy ||
-                                  _detailsOpen
-                              ? null
-                              : () => removePacks({...selected}),
-                          icon: const Icon(Icons.delete_outline),
-                          label: Text('移入回收站（${selected.length}）'),
-                        ),
-                      ),
-                    ),
-                  if (selected.length > 1000) note('每次最多移除1000个图包，请减少选择'),
-                ],
-              ),
+            MediaSelectionActions(
+              kind: 'pack',
+              canTrash: repo.capabilities.packLogicalTrash,
+              addTags: selected.isEmpty || selection.loading || busy
+                  ? null
+                  : () => tags({...selected}, appendOnly: true),
+              trash:
+                  selected.isEmpty ||
+                      selected.length > 1000 ||
+                      selection.loading ||
+                      busy ||
+                      _detailsOpen
+                  ? null
+                  : () => removePacks({...selected}),
             ),
+          if (selecting && selected.length > 1000)
+            note('每次最多移除 1000 个图包，请减少选择'),
         ],
       );
     },

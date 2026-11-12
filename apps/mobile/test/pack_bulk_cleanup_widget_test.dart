@@ -67,7 +67,7 @@ void main() {
 
       await tap(find.byKey(const Key('kind-pack')));
       final state = t.state<PackCatalogPageState>(find.byType(PackCatalogPage));
-      await tap(find.byKey(const Key('pack-multi-select')));
+      await tap(find.byKey(const Key('catalog-select')));
       await tap(find.byKey(const Key('pack-tile-p0')));
       await tap(find.byKey(const Key('pack-delete-selected')));
       expect(find.byType(PackFileAction), findsNothing);
@@ -124,12 +124,23 @@ void main() {
         final state = t.state<PackCatalogPageState>(
           find.byType(PackCatalogPage),
         );
-        await tap(find.byKey(const Key('pack-multi-select')));
+        await tap(find.byKey(const Key('catalog-select')));
         expect(state.selecting, isTrue);
         await tap(find.byKey(const Key('pack-tile-p0')));
         expect(state.selected, {'p0'});
-        await tap(find.byKey(const Key('pack-multi-select')));
+        await tap(find.byKey(const Key('catalog-selection-cancel')));
         expect(state.selected, isEmpty);
+        await t.scrollUntilVisible(
+          find.byKey(const Key('pack-tile-p0')),
+          80,
+          scrollable: find
+              .descendant(
+                of: find.byKey(const Key('pack-grid')),
+                matching: find.byType(Scrollable),
+              )
+              .first,
+        );
+        await frames(t);
         final tile = t.getRect(find.byKey(const Key('pack-tile-p0')));
         final viewport = t.getRect(find.byKey(const Key('pack-grid')));
         expect(tile.intersect(viewport).height, greaterThan(24));
@@ -142,7 +153,7 @@ void main() {
         expect(find.text('已选 2'), findsOneWidget);
         await tap(find.byKey(const Key('pack-delete-selected')));
         expect(find.text('已选择 2 个图包。保留源文件，可在回收站恢复。'), findsOneWidget);
-        await tap(find.text('取消'));
+        await tap(find.text('取消').hitTestable());
         expect(repo.submitted, isEmpty);
         expect(state.selected, {'p0', 'p1'});
         await tap(find.byKey(const Key('pack-delete-selected')));
@@ -244,7 +255,7 @@ void main() {
       }
 
       await tap(find.byKey(const Key('kind-pack')));
-      await tap(find.byKey(const Key('pack-multi-select')));
+      await tap(find.byKey(const Key('catalog-select')));
       await tap(find.byKey(const Key('pack-select-all')));
       final state = t.state<PackCatalogPageState>(find.byType(PackCatalogPage));
       expect(state.selected, hasLength(27));
@@ -255,11 +266,13 @@ void main() {
       expect(state.selected, isEmpty);
       expect(
         t
-            .widget<TextButton>(find.byKey(const Key('pack-multi-select')))
+            .widget<TextButton>(
+              find.byKey(const Key('catalog-selection-cancel')),
+            )
             .onPressed,
         isNotNull,
       );
-      await tap(find.byKey(const Key('pack-multi-select')));
+      await tap(find.byKey(const Key('catalog-selection-cancel')));
       expect(state.selecting, isFalse);
       expect(find.byKey(const Key('pack-search')), findsOneWidget);
       expect(t.takeException(), isNull);

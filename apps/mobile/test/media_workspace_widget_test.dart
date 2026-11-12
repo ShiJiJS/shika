@@ -209,7 +209,17 @@ void main() {
       expect(find.text('匹配 3 个视频'), findsOneWidget);
       await tap(t, find.byKey(const Key('tag-view-results')));
       expect(find.text('3 个视频'), findsOneWidget);
-      await tap(t, find.text('预览此范围'));
+      await tap(
+        t,
+        find
+            .byWidgetPredicate(
+              (w) =>
+                  w is InkWell &&
+                  w.key is ValueKey<String> &&
+                  (w.key as ValueKey<String>).value.startsWith('tile-'),
+            )
+            .first,
+      );
       expect(repo.savedPreviewEntry!.source, BrowseSource.tags);
       expect(repo.savedPreviewEntry!.query.tags, {'自然', '花卉'});
       expect(find.byKey(const Key('app-navigation')), findsNothing);
@@ -293,7 +303,7 @@ void main() {
   );
 
   testWidgets(
-    'tag dock opens the complete intersection directly and returns to its own results',
+    'tag dock opens results before preview and returns to its own results',
     (t) async {
       await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
@@ -304,7 +314,19 @@ void main() {
       await tap(t, find.byKey(const Key('video-tag-花卉')));
       expect(find.text('同时包含 2 个标签'), findsOneWidget);
       expect(find.text('匹配 3 个视频'), findsOneWidget);
-      await tap(t, find.byKey(const Key('tag-preview-results')));
+      await tap(t, find.byKey(const Key('tag-view-results')));
+      expect(find.byType(MovieStage), findsNothing);
+      await tap(
+        t,
+        find
+            .byWidgetPredicate(
+              (w) =>
+                  w is InkWell &&
+                  w.key is ValueKey<String> &&
+                  (w.key as ValueKey<String>).value.startsWith('tile-'),
+            )
+            .first,
+      );
       expect(find.byType(MovieStage), findsOneWidget);
       expect(repo.savedPreviewEntry!.source, BrowseSource.tags);
       expect(repo.savedPreviewEntry!.query.tags, {'自然', '花卉'});
@@ -331,9 +353,7 @@ void main() {
     (t) async {
       final preferences = UiPreferences();
       addTearDown(preferences.dispose);
-      await t.pumpWidget(
-        ShikaApp(repository: repo, preferences: preferences),
-      );
+      await t.pumpWidget(ShikaApp(repository: repo, preferences: preferences));
       await frames(t);
       await tap(t, find.byKey(const Key('kind-pack')));
       await t.enterText(find.byKey(const Key('pack-search')), '春日');
@@ -419,9 +439,7 @@ void main() {
           expect(find.text('媒体库'), findsNothing);
           expect(t.takeException(), isNull);
           if (keyboard.$2 > 1) {
-            final action = find.text(
-              kind == MediaKind.video ? '预览此范围' : '名称 ↓',
-            );
+            final action = find.text('名称排序');
             expect(action.hitTestable(), findsOneWidget);
             expect(
               t.getRect(action).bottom,

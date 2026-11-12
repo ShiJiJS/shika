@@ -60,7 +60,7 @@ class LibraryPack {
     if (value.completed) return '已读';
     final index = value.pageIndex;
     return index != null && index >= 0 && index < pageCount
-        ? '在读 · ${index + 1}'
+        ? '读到第 ${index + 1} 张'
         : '在读';
   }
 

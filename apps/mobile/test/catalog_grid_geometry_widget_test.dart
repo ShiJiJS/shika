@@ -87,29 +87,42 @@ void main() {
       find.byKey(Key('${kind == MediaKind.pack ? 'pack-tile' : 'tile'}-$id'));
 
   for (final kind in MediaKind.values) {
-    testWidgets('${kind.name} card uses reference tag type and 4dp gap', (
-      t,
-    ) async {
-      await start(t, kind);
-      final s = state(t, kind), item = state(t, kind).data.items.first;
-      final tag = find.byKey(Key('${kind.name}-tag-names-${item.id}'));
-      final text = t.widget<Text>(tag);
-      expect(text.style!.fontSize, 12);
-      expect(text.style!.height, 1.6);
-      final title = find.text(item.displayTitle as String);
-      expect(
-        t.getRect(title).top - t.getRect(tile(kind, item.id as String)).bottom,
-        closeTo(8, .01),
-      );
-      expect(
-        t.getRect(tag).top - t.getRect(title).bottom - 28,
-        closeTo(4, .01),
-      );
-      expect(s.columns, 2);
-      expect(t.takeException(), isNull);
-      await t.pumpWidget(const SizedBox());
-      await frames(t);
-    });
+    testWidgets(
+      '${kind.name} compact caption keeps readable tags and a full action target',
+      (t) async {
+        await start(t, kind);
+        final s = state(t, kind), item = state(t, kind).data.items.first;
+        final tag = find.byKey(Key('${kind.name}-tag-names-${item.id}'));
+        final text = t.widget<Text>(tag);
+        expect(text.style!.fontSize, 12);
+        expect(text.style!.height, 1.6);
+        final title = find.text(item.displayTitle as String);
+        expect(
+          t.getRect(title).top -
+              t.getRect(tile(kind, item.id as String)).bottom,
+          closeTo(8, .01),
+        );
+        final caption = find.byWidgetPredicate(
+          (w) =>
+              w is MediaCardCaption &&
+              w.tagKey == Key('${kind.name}-tag-names-${item.id}'),
+        );
+        final button = find.descendant(
+          of: caption,
+          matching: find.byType(IconButton),
+        );
+        expect(t.getSize(button).width, greaterThanOrEqualTo(48));
+        expect(t.getSize(button).height, greaterThanOrEqualTo(48));
+        expect(
+          t.getRect(tag).bottom,
+          lessThanOrEqualTo(t.getRect(caption).bottom),
+        );
+        expect(s.columns, 2);
+        expect(t.takeException(), isNull);
+        await t.pumpWidget(const SizedBox());
+        await frames(t);
+      },
+    );
 
     testWidgets(
       '${kind.name} rotation preserves the anchored member without a new query',

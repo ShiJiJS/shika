@@ -169,11 +169,13 @@ void main() {
       expect(find.byKey(const Key('library-return-retry')), findsOneWidget);
       final edit = find
           .byWidgetPredicate(
-            (w) => w is Tooltip && w.message?.startsWith('编辑标签 ') == true,
+            (w) => w is Tooltip && w.message?.startsWith('视频操作 ') == true,
           )
           .first;
       await revealAction(t, edit);
       await t.tap(edit);
+      await fixed.frames(t);
+      await t.tap(find.text('视频标签'));
       await fixed.frames(t);
       expect(find.byKey(const Key('tag-assignment-new')), findsOneWidget);
       t.view.viewInsets = const FakeViewPadding(bottom: 248);
