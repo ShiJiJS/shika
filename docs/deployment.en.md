@@ -206,6 +206,8 @@ To restore, select and validate a backup, review root mappings, then confirm rep
 3. Build or import the new image, change `SHIKA_IMAGE`, and recreate the **existing** Compose project while preserving bind mounts.
 4. Check container health, app login, root availability, and task results. Keep the same signing key when updating the app in place.
 
+When recreating the container, keep the same `data/`, `config/`, and media mounts. Existing previews are reused; scans rebuild missing previews, and unused cache is collected as described above. Deleting `data/` or replacing it with an empty directory loses tags, reading progress, and other management records. Rescanning rebuilds media indexes and previews; management records require a backup.
+
 Rollback requires a compatible pair of the original image and stopped-instance snapshot; an old image may not read a newer database. In-app passphrase changes do not require container recreation; other devices must log in with the new value.
 
 ### Moving to another NAS or storage location

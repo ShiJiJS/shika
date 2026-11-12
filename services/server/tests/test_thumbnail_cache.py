@@ -2,6 +2,7 @@ import os
 import threading
 import time
 from contextlib import contextmanager
+from dataclasses import replace
 from types import SimpleNamespace
 
 import pytest
@@ -266,3 +267,67 @@ def test_cache_io_failure_does_not_fail_the_scan(library, monkeypatch):
     scanner.future.result(timeout=5)
     assert scanner.last_cache_cleanup is None
     assert client.get("/api/v1/info").status_code == 200
+
+
+def test_restart_reuses_live_cache_and_cleans_orphans_without_losing_metadata(
+    environment, samples, monkeypatch
+):
+    from shika.models import PackProgress
+
+    from .conftest import connect, put, scan
+    from .test_media_types import pack_root
+    from .test_packs import image, label, packs, pages
+    from .test_tags import assign, tag
+
+    settings, media = environment
+    client, token = connect(settings)
+    try:
+        put(samples / "portrait.mp4", media / "keep.mp4")
+        pack_root(client, media)
+        image(media / "packs" / "keep" / "1.png")
+        image(media / "packs" / "keep" / "2.png", color="blue")
+        time.sleep(0.04)
+        scan(client)
+        video = client.get("/api/v1/videos").json()["items"][0]
+        video_tag = tag(client, "重启保留")
+        assign(client, [video["id"]], [video_tag["id"]])
+        pack = packs(client)["items"][0]
+        page = pages(client, pack["id"])["items"][0]
+        pack_tag = label(client, pack["id"])
+        with client.app.state.db.write() as session:
+            session.add(PackProgress(pack_id=pack["id"], page_id=page["id"], offset_ratio=0.4))
+        live = {
+            path: path.read_bytes()
+            for folder in ("thumbnails", "image-thumbnails")
+            for path in (settings.data_dir / folder).iterdir()
+        }
+        assert len(live) == 3
+    finally:
+        client.__exit__(None, None, None)
+
+    orphans = [cached(settings, folder) for folder in ("thumbnails", "image-thumbnails")]
+    age_cache(monkeypatch)
+
+    def no_regeneration(*args, **kwargs):
+        raise AssertionError("A restart must reuse existing previews")
+
+    monkeypatch.setattr("shika.scanner.make_thumbnail", no_regeneration)
+    monkeypatch.setattr("shika.pack_scanner.inspect_image", no_regeneration)
+    client, _ = connect(replace(settings, startup_scan=True), token=token)
+    try:
+        client.app.state.scanner.future.result(timeout=15)
+        assert client.app.state.scanner.tasks(1)[0]["status"] == "completed"
+        assert all(path.read_bytes() == data for path, data in live.items())
+        assert not any(path.exists() for path in orphans)
+        current_video = client.get("/api/v1/videos").json()["items"][0]
+        current_pack = packs(client)["items"][0]
+        assert current_video["id"] == video["id"]
+        assert current_video["tag_ids"] == [video_tag["id"]]
+        assert current_pack["id"] == pack["id"]
+        assert current_pack["tag_ids"] == [pack_tag["id"]]
+        assert current_pack["progress"]["page_id"] == page["id"]
+        assert current_pack["progress"]["offset_ratio"] == 0.4
+        assert client.get(current_video["thumbnail_url"]).status_code == 200
+        assert client.get(current_pack["cover_url"]).status_code == 200
+    finally:
+        client.__exit__(None, None, None)
