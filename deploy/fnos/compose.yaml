@@ -1,7 +1,7 @@
 name: shika
 services:
   server:
-    image: ${SHIKA_IMAGE:-shika-server:1.0.0}
+    image: ${SHIKA_IMAGE:-shika-server:1.0.1}
     container_name: shika-server
     user: "${SHIKA_UID:-1000}:${SHIKA_GID:-1000}"
     ports:

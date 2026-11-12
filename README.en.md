@@ -9,7 +9,7 @@
 
 ![Android](https://img.shields.io/badge/App-Android-3DDC84?logo=android&logoColor=white)
 ![Docker](https://img.shields.io/badge/Server-Docker-2496ED?logo=docker&logoColor=white)
-![Status](https://img.shields.io/badge/Version-1.0.0-526B52)
+![Status](https://img.shields.io/badge/Version-1.0.1-526B52)
 
 [Getting started](#getting-started) · [Deployment guide](docs/deployment.en.md) · [Documentation](docs/README.en.md) · [Report an issue](https://github.com/ShiJiJS/shika/issues)
 
@@ -23,7 +23,7 @@ Shika is a media browser and organizer for collections stored on your NAS. It co
 
 An **image pack is a folder of images**, treated as one item. Its reader offers comic-style vertical scrolling, horizontal paging, zoom, and reading progress. Videos and image packs have separate tags and recent history, so each collection stays easy to browse and organize.
 
-The current stable version is **1.0.0**. The app UI currently uses Simplified Chinese; the README and deployment guide are available in Chinese and English through the links at the top of each page.
+The current stable version is **1.0.1**. The app UI currently uses Simplified Chinese; the README and deployment guide are available in Chinese and English through the links at the top of each page.
 
 ## Features
 
@@ -41,10 +41,10 @@ Moving an item to the recycle bin preserves its source files. Permanent deletion
 
 ## Getting started
 
-Version **1.0.0** is the stable release. Build the server image for your NAS CPU, configure the Compose mounts and LAN address, and install the Android APK. Follow the [deployment guide](docs/deployment.en.md) for commands. On a fresh server, tap Connect, then enter and confirm a new personal passphrase (8–1024 characters). Existing servers keep their current passphrase. Change it later in Settings → 修改个人口令; this device remains connected and other devices must sign in again. No container recreation is needed.
+Version **1.0.1** is the stable release. Build the server image for your NAS CPU, configure the Compose mounts and LAN address, and install the Android APK. Follow the [deployment guide](docs/deployment.en.md) for commands. On a fresh server, tap Connect, then enter and confirm a new personal passphrase (8–1024 characters). Existing servers keep their current passphrase. Change it later in Settings → 修改个人口令; this device remains connected and other devices must sign in again. No container recreation is needed.
 
 1. **Deploy the service**: prepare your NAS media folders, then follow the [deployment guide](docs/deployment.en.md) to build an image, configure persistent storage, and start the Docker service.
-2. **Install the Android app**: download the APK from the [1.0.0 release](https://github.com/ShiJiJS/shika/releases/tag/v1.0.0), or [build it from source](docs/development.md) (Chinese). Keep the same signing key when installing updates over an existing app.
+2. **Install the Android app**: download the APK from the [1.0.1 release](https://github.com/ShiJiJS/shika/releases/tag/v1.0.1), or [build it from source](docs/development.md) (Chinese). Keep the same signing key when installing updates over an existing app.
 3. **Connect the library**: enter the NAS LAN address, port (`8760` by default), and your personal passphrase. Add video or image pack roots in the app.
 4. **Browse and organize**: check scan progress, select content in the library or tags view, and start playback, reading, or quick cleanup.
 

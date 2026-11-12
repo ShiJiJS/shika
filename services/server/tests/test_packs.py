@@ -3,7 +3,9 @@
 import hashlib
 import os
 import shutil
+import struct
 import time
+import zlib
 from pathlib import Path
 
 import pytest
@@ -19,6 +21,32 @@ from .test_media_types import pack_root, pack_tag
 def image(path, *, color="red", size=(40, 60), format=None):
     path.parent.mkdir(parents=True, exist_ok=True)
     Image.new("RGB", size, color).save(path, format=format)
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def large_png(path, size=(10000, 10000)):
+    """Real large pixels compressed row by row, without a full fixture frame."""
+
+    def chunk(kind, value):
+        return (
+            struct.pack(">I", len(value))
+            + kind
+            + value
+            + struct.pack(">I", zlib.crc32(kind + value))
+        )
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    width, height = size
+    compressor = zlib.compressobj(level=1)
+    row = b"\0" + b"\x22\x44\x66" * width
+    with path.open("wb") as output:
+        output.write(b"\x89PNG\r\n\x1a\n")
+        output.write(chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)))
+        for _ in range(height):
+            if block := compressor.compress(row):
+                output.write(chunk(b"IDAT", block))
+        output.write(chunk(b"IDAT", compressor.flush()))
+        output.write(chunk(b"IEND", b""))
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
@@ -978,4 +1006,82 @@ def test_unchanged_jpeg_retries_previous_pixel_limit_without_losing_identity(lib
     assert restored["id"] == page["id"]
     assert not restored.get("error"), restored
     assert client.get(restored["thumbnail_url"]).status_code == 200
+    assert client.get(restored["image_url"]).status_code == 200
+
+
+def test_large_source_survives_preview_budget_and_cover_uses_another_page(library):
+    client, media = library
+    root = pack_root(client, media)
+    base = Path(root["path"]) / "large"
+    digest = large_png(base / "1.png")
+    image(base / "2.jpg")
+    job = sync(client)
+    assert job["result"]["packs"]["thumbnail_failed"] == 1
+    assert job["result"]["packs"]["failed_pages"] == 0
+    pack = packs(client)["items"][0]
+    assert pack["readable_count"] == 2 and pack["error"] is None
+    first, second = pages(client, pack["id"])["items"]
+    assert first["error"] is None and first["thumbnail_url"] is None
+    assert first["thumbnail_warning"] == "thumbnail_unavailable"
+    original = client.get(first["image_url"])
+    assert original.status_code == 200
+    assert hashlib.sha256(original.content).hexdigest() == digest
+    assert (
+        client.get(first["image_url"], headers={"Range": "bytes=0-31"}).content
+        == original.content[:32]
+    )
+    cover = client.get(pack["cover_url"])
+    assert cover.status_code == 200
+    assert cover.content == client.get(second["thumbnail_url"]).content
+    # Removing the only thumbnail leaves the entire pack readable, with a
+    # deliberate missing-preview response rather than a server exception.
+    with client.app.state.db.write() as session:
+        session.get(PackPage, second["id"]).thumbnail = None
+    assert packs(client)["items"][0]["cover_url"] is None
+    assert client.get(pack["cover_url"]).status_code == 404
+
+
+def test_unchanged_png_recovers_legacy_size_error_preserving_progress(library):
+    client, media = library
+    root = pack_root(client, media)
+    large_png(Path(root["path"]) / "large" / "1.png")
+    sync(client)
+    pack = packs(client)["items"][0]
+    page = pages(client, pack["id"])["items"][0]
+    with client.app.state.db.write() as session:
+        session.get(PackPage, page["id"]).error = "image_too_large"
+        session.add(PackProgress(pack_id=pack["id"], page_id=page["id"], offset_ratio=0.4))
+    sync(client)
+    recovered = packs(client)["items"][0]
+    assert recovered["id"] == pack["id"] and recovered["readable_count"] == 1
+    assert recovered["progress"]["page_id"] == page["id"]
+    assert recovered["progress"]["offset_ratio"] == 0.4
+    restored = pages(client, pack["id"])["items"][0]
+    assert restored["id"] == page["id"] and restored["error"] is None
+    assert client.get(restored["image_url"]).status_code == 200
+
+
+@pytest.mark.parametrize("metadata_changed", [False, True])
+def test_missing_preview_worker_failure_keeps_previously_verified_original(
+    library, monkeypatch, metadata_changed
+):
+    client, media = library
+    root = pack_root(client, media)
+    source = Path(root["path"]) / "known" / "1.png"
+    image(source)
+    sync(client)
+    pack = packs(client)["items"][0]
+    page = pages(client, pack["id"])["items"][0]
+    for cache in (client.app.state.settings.data_dir / "image-thumbnails").iterdir():
+        cache.unlink()
+    if metadata_changed:
+        os.utime(source, ns=(source.stat().st_atime_ns, source.stat().st_mtime_ns + 1_000_000))
+    monkeypatch.setattr(
+        "shika.pack_scanner.inspect_image", lambda *args: {"error": "image_probe_unavailable"}
+    )
+    job = sync(client)
+    restored = pages(client, pack["id"])["items"][0]
+    assert restored["id"] == page["id"] and restored["error"] is None
+    assert restored["thumbnail_url"] is None
+    assert job["result"]["packs"]["thumbnail_failed"] == 1
     assert client.get(restored["image_url"]).status_code == 200

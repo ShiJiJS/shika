@@ -118,7 +118,11 @@ class Packs:
         count = session.scalar(select(func.count()).select_from(pages.subquery()))
         readable = pages.where(PackPage.error.is_(None))
         readable_count = session.scalar(select(func.count()).select_from(readable.subquery()))
-        cover = session.scalar(readable.order_by(PackPage.ordinal, PackPage.id).limit(1))
+        cover = session.scalar(
+            readable.where(PackPage.thumbnail.is_not(None))
+            .order_by(PackPage.ordinal, PackPage.id)
+            .limit(1)
+        )
         progress = session.get(PackProgress, pack.id)
         page_index = None
         if progress and progress.page_id:
@@ -243,6 +247,9 @@ class Packs:
             "thumbnail_url": f"/api/v1/pages/{page.id}/thumbnail{suffix}"
             if page.thumbnail and not page.error
             else None,
+            "thumbnail_warning": "thumbnail_unavailable"
+            if not page.thumbnail and not page.error
+            else None,
         }
 
     def pages(self, pack_id, *, offset=0, limit=100, version=None):
@@ -280,8 +287,10 @@ class Packs:
                 raise LibraryError("pack_changed", "图包页清单已变化，请重新读取", 409)
             page = session.scalar(
                 self.page_statement(session, pack.id)
-                .where(PackPage.error.is_(None))
+                .where(PackPage.error.is_(None), PackPage.thumbnail.is_not(None))
                 .order_by(PackPage.ordinal, PackPage.id)
                 .limit(1)
             )
+            if not page:
+                raise LibraryError("thumbnail_unavailable", "缩略图尚未生成，可以打开原图", 404)
             return page.id

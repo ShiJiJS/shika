@@ -21,6 +21,12 @@ from .streaming import DescriptorResponse
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 IMAGE_MIME = {"JPEG": "image/jpeg", "PNG": "image/png", "WEBP": "image/webp"}
+IMAGE_RESOURCE_ERRORS = {
+    "image_too_large",
+    "image_probe_timeout",
+    "image_probe_failed",
+    "image_probe_unavailable",
+}
 
 
 def inspect_image(fd, cache, timeout, stop):
@@ -42,15 +48,39 @@ def inspect_image(fd, cache, timeout, stop):
         )
         deadline = time.monotonic() + timeout
         try:
+            warning = "thumbnail_resource_limit"
             while process.poll() is None:
                 if stop.wait(0.02):
                     raise InterruptedError("scan_stopped")
                 if time.monotonic() >= deadline:
-                    return {"error": "image_probe_timeout"}
+                    process.kill()
+                    warning = "thumbnail_timeout"
+                    break
             raw, _ = process.communicate(timeout=2)
-            if process.returncode != 0 or len(raw) > 4096:
+            if len(raw) > 4096:
                 return {"error": "image_probe_failed"}
-            result = json.loads(raw)
+            receipts = []
+            for line in raw.splitlines():
+                try:
+                    receipts.append(json.loads(line))
+                except ValueError:
+                    if process.returncode == 0:
+                        raise
+                    # A killed worker can leave its final JSON line incomplete.
+            if process.returncode != 0:
+                # A valid header was published before preview work. A timeout or
+                # killed worker must not turn that original into an unreadable page.
+                metadata = next((r["metadata"] for r in receipts if "metadata" in r), None)
+                if metadata:
+                    return {**metadata, "thumbnail": None, "thumbnail_warning": warning}
+                return {
+                    "error": "image_probe_timeout"
+                    if warning == "thumbnail_timeout"
+                    else "image_probe_failed"
+                }
+            if not receipts or "metadata" in receipts[-1]:
+                return {"error": "image_probe_failed"}
+            result = receipts[-1]
             if result.get("thumbnail") and target.is_file():
                 result["thumbnail"] = filename
                 keep_thumbnail = True

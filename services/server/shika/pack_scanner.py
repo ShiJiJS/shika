@@ -12,7 +12,7 @@ from sqlalchemy import and_, delete, literal, or_, select, update
 
 from . import pack_root_evidence
 from .directory_identity import directory_stamp
-from .images import IMAGE_EXTENSIONS, inspect_image
+from .images import IMAGE_EXTENSIONS, IMAGE_RESOURCE_ERRORS, inspect_image
 from .media_roots import owned_path, owner_for_path
 from .models import (
     ImagePack,
@@ -586,23 +586,30 @@ class PackScanner:
                 old = cached.get(relative)
                 if old and old.signature == observed:
                     metadata = {key: getattr(old, key) for key in PAGE_FIELDS}
-                    if (old.error == "image_too_large" and old.format == "JPEG") or (
+                    if old.error in IMAGE_RESOURCE_ERRORS or (
                         not old.error
                         and (not old.thumbnail or not (self.cache / old.thumbnail).is_file())
                     ):
                         inspected = inspect_image(
                             fd, self.cache, self.settings.probe_timeout, self.scanner.stop
                         )
-                        if not inspected.get("error"):
-                            metadata.update(
-                                width=inspected["width"],
-                                height=inspected["height"],
-                                format=inspected["format"],
-                                error=None,
-                            )
-                            metadata["thumbnail"] = inspected.get("thumbnail")
-                            if inspected.get("thumbnail_warning"):
-                                summary["thumbnail_failed"] += 1
+                        if not old.error and inspected.get("error") in IMAGE_RESOURCE_ERRORS:
+                            # Even a worker failing before its header receipt must
+                            # not invalidate previously verified, unchanged bytes.
+                            inspected = {
+                                **metadata,
+                                "thumbnail": None,
+                                "thumbnail_warning": "thumbnail_unavailable",
+                            }
+                        metadata.update(
+                            width=inspected.get("width", old.width),
+                            height=inspected.get("height", old.height),
+                            format=inspected.get("format", old.format),
+                            error=inspected.get("error"),
+                            thumbnail=inspected.get("thumbnail"),
+                        )
+                        if inspected.get("thumbnail_warning"):
+                            summary["thumbnail_failed"] += 1
                 else:
                     digest = hashlib.sha256()
                     os.lseek(fd, 0, os.SEEK_SET)
@@ -624,6 +631,17 @@ class PackScanner:
                         inspected = inspect_image(
                             fd, self.cache, self.settings.probe_timeout, self.scanner.stop
                         )
+                        if (
+                            old
+                            and not old.error
+                            and old.sha256 == digest.hexdigest()
+                            and inspected.get("error") in IMAGE_RESOURCE_ERRORS
+                        ):
+                            inspected = {
+                                **{key: getattr(old, key) for key in PAGE_FIELDS},
+                                "thumbnail": None,
+                                "thumbnail_warning": "thumbnail_unavailable",
+                            }
                         metadata = {
                             "width": inspected.get("width", 0),
                             "height": inspected.get("height", 0),
