@@ -91,6 +91,11 @@ class PaperFilterChip extends FilterChip {
     super.backgroundColor,
     super.side,
     super.focusNode,
+    super.avatar,
+    super.showCheckmark,
+    super.shape,
+    super.selectedColor,
+    super.materialTapTargetSize,
   });
 
   @override
@@ -172,6 +177,7 @@ class _ChipFillState extends AnimatedWidgetBaseState<_ChipFill> {
     final fill = _fill?.evaluate(animation);
     return RawChip(
       defaultProperties: c.defaultProperties,
+      avatar: c.avatar,
       label: c.label,
       labelStyle: c.labelStyle,
       labelPadding: c.labelPadding,

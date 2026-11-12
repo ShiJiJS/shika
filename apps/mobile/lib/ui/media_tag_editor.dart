@@ -6,6 +6,7 @@ import '../library/models.dart';
 import '../library/repository.dart';
 import 'paper.dart';
 import 'paper_form.dart';
+import 'media_layout.dart';
 
 /// One assignment workflow; every repository operation stays in its namespace.
 /// The public video/pack wrappers retain their existing typed route results.
@@ -348,7 +349,11 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
         key: const Key('tag-assignment-search'),
         controller: search,
         enabled: enabled,
-        decoration: const InputDecoration(hintText: '输入标签名称'),
+        decoration: const InputDecoration(
+          hintText: '输入标签名称',
+          border: OutlineInputBorder(borderSide: BorderSide.none),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+        ),
         onChanged: (_) => load(),
         textInputAction: TextInputAction.search,
       ),
@@ -365,9 +370,14 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
               enabled: enabled,
               maxLength: 100,
               textInputAction: TextInputAction.done,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: '输入新标签名称',
                 counterText: '',
+                filled: false,
+                border: const UnderlineInputBorder(),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: p.line),
+                ),
               ),
               onChanged: (_) => setState(() {}),
               onSubmitted: (_) => create(),
@@ -389,6 +399,8 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
             ? '选择图包标签'
             : single
             ? (pack ? '图包标签' : '视频标签')
+            : widget.appendOnly
+            ? '添加标签'
             : '批量标签',
         closeEnabled: !saving,
         footer: Wrap(
@@ -400,13 +412,17 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
               onPressed: saving ? null : () => Navigator.pop(context),
               child: const Text('取消'),
             ),
-            FilledButton(
+            TextButton(
               key: const Key('tag-assignment-save'),
               onPressed:
                   enabled &&
                       !unresolved &&
                       !removed &&
                       widget.initialKnown &&
+                      (single ||
+                          widget.selectionOnly ||
+                          chosen.isNotEmpty ||
+                          newName.text.trim().isNotEmpty) &&
                       (widget.selectionOnly || targets.isNotEmpty)
                   ? save
                   : null,
@@ -419,7 +435,9 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
                     ? (pack ? '保存图包标签' : '保存视频标签')
                     : remove
                     ? '移除所选标签'
-                    : '添加所选标签',
+                    : chosen.isEmpty
+                    ? '添加所选标签'
+                    : '添加 ${chosen.length} 个标签',
               ),
             ),
           ],
@@ -501,13 +519,11 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
               child: const Text('重试读取名称'),
             ),
           ],
-          Wrap(
-            spacing: 8,
-            runSpacing: 6,
+          MediaTagChoices(
             children: [
               for (final tag in items)
-                PaperFilterChip(
-                  label: Text(tag.name),
+                MediaTagChoice(
+                  label: tag.name,
                   selected: chosen.contains(tag.id),
                   onSelected: enabled
                       ? (value) {

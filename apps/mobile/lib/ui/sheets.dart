@@ -6,6 +6,7 @@ import '../library/models.dart';
 import '../library/repository.dart';
 import 'paper.dart';
 import 'media_tag_editor.dart';
+import 'media_layout.dart';
 
 class FolderPicker extends StatefulWidget {
   const FolderPicker({
@@ -177,7 +178,14 @@ class _ScopeSheetState extends State<ScopeSheet> {
     child: PaperDropdownButtonFormField<String>(
       initialValue: value,
       key: ValueKey('$label-$value'),
-      decoration: InputDecoration(labelText: label),
+      decoration: InputDecoration(
+        labelText: label,
+        filled: false,
+        border: const UnderlineInputBorder(),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Paper.of(context).line),
+        ),
+      ),
       items: options.entries
           .map((e) => DropdownMenuItem(value: e.key, child: Text(e.value)))
           .toList(),
@@ -187,6 +195,19 @@ class _ScopeSheetState extends State<ScopeSheet> {
   @override
   Widget build(BuildContext context) => SheetFrame(
     title: widget.review ? '筛选整理范围' : '筛选视频',
+    footer: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        TextButton(
+          onPressed: () => setState(() => draft = VideoQuery()),
+          child: const Text('清除条件'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, draft),
+          child: const Text('应用筛选'),
+        ),
+      ],
+    ),
     children: [
       note('只查看同时满足条件的视频。'),
       Container(
@@ -224,11 +245,9 @@ class _ScopeSheetState extends State<ScopeSheet> {
         runSpacing: 6,
         children: widget.repository.snapshot.tags
             .map(
-              (tag) => PaperFilterChip(
-                label: Text(widget.repository.tagName(tag)),
+              (tag) => MediaTagChoice(
+                label: widget.repository.tagName(tag),
                 selected: draft.tags.contains(tag),
-                backgroundColor: Paper.of(context).soft,
-                side: BorderSide.none,
                 onSelected: (yes) => setState(() {
                   final tags = {...draft.tags};
                   yes ? tags.add(tag) : tags.remove(tag);
@@ -263,20 +282,6 @@ class _ScopeSheetState extends State<ScopeSheet> {
         'MPEG': 'MPEG',
         '3GP': '3GP',
       }, (v) => draft = draft.copy(type: v)),
-      const SizedBox(height: 20),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TextButton(
-            onPressed: () => setState(() => draft = VideoQuery()),
-            child: const Text('清除条件'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, draft),
-            child: const Text('应用筛选'),
-          ),
-        ],
-      ),
     ],
   );
 }

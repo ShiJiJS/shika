@@ -113,6 +113,9 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
       currentPack?.selection.loading ??
       currentVideo?.selection.loading ??
       false;
+  bool get fullySelected =>
+      selectedCount > 0 &&
+      selectedCount == (currentPack?.data.total ?? currentVideo?.data.total);
 
   void selectionChanged() {
     // Child activation can clear a selection during layout. Refresh the shared
@@ -260,7 +263,9 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                 height: MediaLayout.headerExtent(context),
                 padding: const EdgeInsets.only(left: 20, right: 12),
                 decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: p.line)),
+                  border: selecting
+                      ? Border(bottom: BorderSide(color: p.line))
+                      : null,
                 ),
                 child: Row(
                   children: [
@@ -306,20 +311,16 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                             : () => (pack ? packTags : videoTags).currentState
                                   ?.form(),
                       ),
-                    if ([0, 1, 4, 5, 6, 7].contains(index))
-                      OutlinedButton(
-                        key: selecting
-                            ? ValueKey(
-                                pack ? 'pack-select-all' : 'video-select-all',
-                              )
-                            : const Key('catalog-select'),
+                    if (selecting)
+                      TextButton(
+                        key: ValueKey(
+                          pack ? 'pack-select-all' : 'video-select-all',
+                        ),
                         onPressed: widget.repository.backupRestorePending
                             ? null
-                            : selecting
-                            ? selectAll
-                            : toggleSelection,
+                            : selectAll,
                         child: Text(
-                          selecting ? (selectingAll ? '取消全选' : '全选') : '选择',
+                          selectingAll || fullySelected ? '取消全选' : '全选',
                         ),
                       ),
                   ],

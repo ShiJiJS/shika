@@ -345,7 +345,7 @@ void main() {
             find.byKey(const Key('chosen-video-tag-分页00')),
             findsOneWidget,
           );
-          expect(t.widget<FilledButton>(save).onPressed, isNotNull);
+          expect(t.widget<ButtonStyleButton>(save).onPressed, isNotNull);
           await tap(t, save);
           expect(repo.writes.single.tags, {'自然', '分页60', '分页00'});
           for (var i = 0; i < 100 && result == null; i++) {
@@ -464,14 +464,14 @@ void main() {
       'pending save prevents duplicate/stale actions and back navigation pack=$pack',
       (t) async {
         await host(t);
-        final callback = t.widget<FilledButton>(save).onPressed!;
+        final callback = t.widget<ButtonStyleButton>(save).onPressed!;
         repo.pending = Completer<void>();
         callback();
         await t.pump();
         callback();
         await t.pump();
         expect(repo.writes, hasLength(1));
-        expect(t.widget<FilledButton>(save).onPressed, isNull);
+        expect(t.widget<ButtonStyleButton>(save).onPressed, isNull);
         await t.binding.handlePopRoute();
         await t.pump();
         expect(save, findsOneWidget);
@@ -484,7 +484,7 @@ void main() {
       'stale save callbacks cannot write after connection or restore change pack=$pack',
       (t) async {
         await host(t);
-        final callback = t.widget<FilledButton>(save).onPressed!;
+        final callback = t.widget<ButtonStyleButton>(save).onPressed!;
         repo.restoring = true;
         repo.notifyListeners();
         callback();
@@ -496,7 +496,7 @@ void main() {
         callback();
         await t.pumpAndSettle();
         expect(repo.writes, isEmpty);
-        expect(t.widget<FilledButton>(save).onPressed, isNull);
+        expect(t.widget<ButtonStyleButton>(save).onPressed, isNull);
       },
     );
   }

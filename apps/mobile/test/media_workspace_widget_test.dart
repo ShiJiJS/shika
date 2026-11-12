@@ -439,7 +439,7 @@ void main() {
           expect(find.text('媒体库'), findsNothing);
           expect(t.takeException(), isNull);
           if (keyboard.$2 > 1) {
-            final action = find.text('名称排序');
+            final action = find.text('名称');
             expect(action.hitTestable(), findsOneWidget);
             expect(
               t.getRect(action).bottom,

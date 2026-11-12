@@ -216,7 +216,7 @@ void main() {
             matching: find.bySubtype<FilterChip>(),
           ),
         );
-        await tap(find.text('添加所选标签'));
+        await tap(find.byKey(const Key('tag-assignment-save')));
         expect(repo.packLinks['p1'], {'自然', '收藏'});
         expect(repo.packLinks['p2'], {'收藏'});
         expect(state.selected, {'p1'});

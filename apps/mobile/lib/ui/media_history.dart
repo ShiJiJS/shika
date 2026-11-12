@@ -26,13 +26,15 @@ class MediaHistoryHeader extends StatelessWidget {
     super.key,
     required this.label,
     required this.count,
+    this.onSelect,
   });
   final String label, count;
+  final VoidCallback? onSelect;
   @override
   Widget build(BuildContext context) => SizedBox(
     height: MediaLayout.historyHeader(context),
     child: Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+      padding: const EdgeInsets.fromLTRB(20, 2, 16, 2),
       child: Row(
         children: [
           Expanded(
@@ -52,6 +54,15 @@ class MediaHistoryHeader extends StatelessWidget {
               color: Paper.of(context).catalogMeta,
             ),
           ),
+          if (onSelect != null) ...[
+            const SizedBox(width: 8),
+            MediaCatalogAction(
+              key: const Key('catalog-select'),
+              label: '选择',
+              icon: Icons.check_box_outlined,
+              onPressed: onSelect,
+            ),
+          ],
         ],
       ),
     ),

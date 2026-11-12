@@ -4,7 +4,7 @@ import 'dart:math';
 
 import 'paper.dart';
 
-/// Frozen library-first P2 dimensions, excluding the platform's safe areas.
+/// Library geometry, excluding the platform's safe areas.
 abstract final class MediaLayout {
   static const header = 52.0, navigation = 49.0, kindBar = 40.0;
   static const side = 16.0, columnGap = 12.0, rowGap = 18.0;
@@ -110,7 +110,7 @@ abstract final class MediaLayout {
       MediaQuery.textScalerOf(context).scale(13) > 17;
   static double toolbar(BuildContext context) => largeText(context)
       ? max(44, MediaQuery.textScalerOf(context).scale(13) * 1.5 + 16) * 2 + 16
-      : 64;
+      : 52;
   static Duration motion(BuildContext context, int milliseconds) =>
       MediaQuery.disableAnimationsOf(context)
       ? Duration.zero
@@ -183,7 +183,7 @@ class MediaCatalogSearch extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 5, 16, 2),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: TextField(
@@ -208,14 +208,23 @@ class MediaCatalogSearch extends StatelessWidget {
                   ),
                   hintStyle: TextStyle(color: p.muted),
                   isDense: true,
-                  fillColor: Colors.transparent,
+                  filled: true,
+                  fillColor: p.soft.withValues(alpha: .45),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 8,
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: BorderSide(color: p.line),
+                  border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: BorderSide(color: p.olive, width: 1),
                   ),
                 ),
                 onChanged: onChanged,
@@ -224,14 +233,11 @@ class MediaCatalogSearch extends StatelessWidget {
             const SizedBox(width: 8),
             Tooltip(
               message: filterLabel,
-              child: OutlinedButton(
+              child: MediaCatalogAction(
                 key: ValueKey(filterLabel),
                 onPressed: onFilter,
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(64, 48),
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                ),
-                child: const Text('筛选'),
+                icon: Icons.filter_list,
+                label: '筛选',
               ),
             ),
           ],
@@ -345,6 +351,11 @@ class MediaFilterSummary extends StatelessWidget {
               child: InputChip(
                 key: ValueKey(filter.id),
                 materialTapTargetSize: MaterialTapTargetSize.padded,
+                backgroundColor: Paper.of(context).soft,
+                side: BorderSide.none,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
                 label: Text(filter.label),
                 onDeleted: filter.remove,
                 deleteButtonTooltipMessage: '取消${filter.label}',
@@ -363,11 +374,7 @@ class MediaSortLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     constraints: const BoxConstraints(minHeight: 48),
-    padding: const EdgeInsets.symmetric(horizontal: 10),
-    decoration: BoxDecoration(
-      border: Border.all(color: Paper.of(context).line),
-      borderRadius: BorderRadius.circular(7),
-    ),
+    padding: const EdgeInsets.symmetric(horizontal: 4),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -376,6 +383,87 @@ class MediaSortLabel extends StatelessWidget {
         const Icon(Icons.expand_more, size: 18),
       ],
     ),
+  );
+}
+
+/// Compact visual controls retain a full Android touch target without a frame.
+class MediaCatalogAction extends StatelessWidget {
+  const MediaCatalogAction({
+    super.key,
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+  });
+  final String label;
+  final IconData icon;
+  final VoidCallback? onPressed;
+  @override
+  Widget build(BuildContext context) => TextButton(
+    onPressed: onPressed,
+    style: TextButton.styleFrom(
+      minimumSize: const Size(48, 48),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      textStyle: const TextStyle(fontSize: 13),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [Icon(icon, size: 17), const SizedBox(width: 4), Text(label)],
+    ),
+  );
+}
+
+/// Assignment and filter sheets share a quiet, explicit checkbox treatment.
+class MediaTagChoice extends StatelessWidget {
+  const MediaTagChoice({
+    super.key,
+    required this.label,
+    required this.selected,
+    required this.onSelected,
+  });
+  final String label;
+  final bool selected;
+  final ValueChanged<bool>? onSelected;
+  @override
+  Widget build(BuildContext context) => PaperFilterChip(
+    label: Text(label),
+    selected: selected,
+    onSelected: onSelected,
+    showCheckmark: false,
+    avatar: Icon(
+      selected ? Icons.check_box : Icons.check_box_outline_blank,
+      size: 18,
+      color: Paper.of(context).olive,
+    ),
+    materialTapTargetSize: MaterialTapTargetSize.padded,
+    backgroundColor: Colors.transparent,
+    selectedColor: Paper.of(context).soft,
+    side: BorderSide.none,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+  );
+}
+
+/// Regular checkbox columns at ordinary sizes, fewer columns for large text.
+class MediaTagChoices extends StatelessWidget {
+  const MediaTagChoices({super.key, required this.children});
+  final List<Widget> children;
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final scale = MediaQuery.textScalerOf(context).scale(14) / 14;
+      final columns = (constraints.maxWidth / (100 * scale)).floor().clamp(
+        1,
+        6,
+      );
+      final width = (constraints.maxWidth - (columns - 1) * 8) / columns;
+      return Wrap(
+        spacing: 8,
+        runSpacing: 6,
+        children: [
+          for (final child in children) SizedBox(width: width, child: child),
+        ],
+      );
+    },
   );
 }
 
@@ -403,20 +491,26 @@ class MediaSelectionActions extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: OutlinedButton.icon(
+            child: TextButton.icon(
               key: ValueKey('$kind-add-selected-tags'),
               onPressed: addTags,
+              style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
               icon: const Icon(Icons.sell_outlined, size: 18),
               label: const Text('添加标签', textAlign: TextAlign.center),
             ),
           ),
           if (canTrash) ...[
-            const SizedBox(width: 10),
+            SizedBox(
+              width: 1,
+              height: 20,
+              child: ColoredBox(color: Paper.of(context).line),
+            ),
             Expanded(
-              child: OutlinedButton.icon(
+              child: TextButton.icon(
                 key: ValueKey('$kind-delete-selected'),
                 onPressed: trash,
-                style: OutlinedButton.styleFrom(
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(48, 48),
                   foregroundColor: Paper.of(context).danger,
                 ),
                 icon: const Icon(Icons.delete_outline, size: 18),
@@ -439,7 +533,7 @@ class MediaCatalogToolbar extends StatelessWidget {
   Widget build(BuildContext context) => SizedBox(
     height: MediaLayout.toolbar(context),
     child: Padding(
-      padding: const EdgeInsets.fromLTRB(16, 2, 16, 14),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
       child: MediaLayout.largeText(context)
           ? Column(
               children: [

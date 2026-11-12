@@ -82,7 +82,9 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   double get _listHeaderValue => recent
       ? MediaLayout.historyHeader(context)
       : (selecting ? 12 : MediaLayout.toolbar(context)) +
-            (entry.query.count > 0 ? MediaLayout.scope(context) : 0);
+            (!selecting && entry.query.count > 0
+                ? MediaLayout.scope(context)
+                : 0);
 
   void layoutGrid(BuildContext context, double nextWidth) {
     final next = MediaGridGeometry(
@@ -319,6 +321,8 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
   void selectAll() {
     if (selection.loading) {
       selection.cancel();
+    } else if (selected.isNotEmpty && selected.length == data.total) {
+      selection.cancel(clear: true);
     } else {
       unawaited(selection.all(() => repo.selectVideoIds(entry.entry)));
     }
@@ -645,7 +649,73 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                     controller: scroll,
                     physics: const AlwaysScrollableScrollPhysics(),
                     slivers: [
-                      if (!recent && entry.query.count > 0)
+                      if (recent)
+                        SliverToBoxAdapter(
+                          child: MediaHistoryHeader(
+                            label: '最近预览的视频',
+                            count: '${data.total} 个视频',
+                            onSelect:
+                                selecting || busy || repo.backupRestorePending
+                                ? null
+                                : toggleSelection,
+                          ),
+                        ),
+                      if (!recent && !selecting)
+                        SliverToBoxAdapter(
+                          child: MediaCatalogToolbar(
+                            children: [
+                              Text(
+                                '${data.total} 个视频',
+                                key: const Key('library-count'),
+                                style: TextStyle(fontSize: 13, color: p.muted),
+                              ),
+                              if (!recent)
+                                PaperMenuButton<VideoSort>(
+                                  tooltip: '视频排序',
+                                  initialValue: entry.sort,
+                                  onSelected: (value) =>
+                                      changeEntry(entry.copyWith(sort: value)),
+                                  itemBuilder: (_) => const [
+                                    PopupMenuItem(
+                                      value: VideoSort.name,
+                                      child: Text('名称'),
+                                    ),
+                                    PopupMenuItem(
+                                      value: VideoSort.newest,
+                                      child: Text('最近加入'),
+                                    ),
+                                  ],
+                                  child: MediaSortLabel(
+                                    entry.sort == VideoSort.newest
+                                        ? '最近加入'
+                                        : '名称',
+                                  ),
+                                ),
+                              MediaCatalogAction(
+                                key: const Key('video-quick-cleanup'),
+                                icon: Icons.playlist_play,
+                                label: '快速整理',
+                                onPressed:
+                                    busy ||
+                                        data.loading ||
+                                        data.items.isEmpty ||
+                                        repo.backupRestorePending ||
+                                        !repo.libraryPreparation.value.ready
+                                    ? null
+                                    : () => open(quick: true),
+                              ),
+                              MediaCatalogAction(
+                                key: const Key('catalog-select'),
+                                icon: Icons.check_box_outlined,
+                                label: '选择',
+                                onPressed: busy || repo.backupRestorePending
+                                    ? null
+                                    : toggleSelection,
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (!recent && !selecting && entry.query.count > 0)
                         SliverToBoxAdapter(
                           child: MediaFilterSummary(
                             filters: [
@@ -710,69 +780,6 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                             clear: () => changeEntry(
                               entry.copyWith(query: VideoQuery()),
                             ),
-                          ),
-                        ),
-                      if (recent)
-                        SliverToBoxAdapter(
-                          child: MediaHistoryHeader(
-                            label: '最近预览的视频',
-                            count: '${data.total} 个视频',
-                          ),
-                        ),
-                      if (!recent && !selecting)
-                        SliverToBoxAdapter(
-                          child: MediaCatalogToolbar(
-                            children: [
-                              Text(
-                                '${data.total} 个视频',
-                                key: const Key('library-count'),
-                                style: TextStyle(fontSize: 13, color: p.muted),
-                              ),
-                              if (!recent)
-                                PaperMenuButton<VideoSort>(
-                                  tooltip: '视频排序',
-                                  initialValue: entry.sort,
-                                  onSelected: (value) =>
-                                      changeEntry(entry.copyWith(sort: value)),
-                                  itemBuilder: (_) => const [
-                                    PopupMenuItem(
-                                      value: VideoSort.name,
-                                      child: Text('名称'),
-                                    ),
-                                    PopupMenuItem(
-                                      value: VideoSort.newest,
-                                      child: Text('最近加入'),
-                                    ),
-                                  ],
-                                  child: MediaSortLabel(
-                                    entry.sort == VideoSort.newest
-                                        ? '最近加入'
-                                        : '名称排序',
-                                  ),
-                                ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8),
-                                child: OutlinedButton(
-                                  key: const Key('video-quick-cleanup'),
-                                  style: OutlinedButton.styleFrom(
-                                    minimumSize: const Size(0, 48),
-                                  ),
-                                  onPressed:
-                                      busy ||
-                                          data.items.isEmpty ||
-                                          !repo.libraryPreparation.value.ready
-                                      ? null
-                                      : () => open(
-                                          anchor: data.items.first.id,
-                                          quick: true,
-                                        ),
-                                  child: const Text(
-                                    '快速整理',
-                                    style: TextStyle(fontSize: 13),
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       if (recent && data.items.isEmpty && !data.loading)
@@ -963,8 +970,8 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                     tagKey: Key('video-tag-names-${video.id}'),
                                     metadata: video.portrait ? '竖屏' : '横屏',
                                     tags: video.tags
-                                        .map((id) => '# ${repo.tagName(id)}')
-                                        .join('  '),
+                                        .map(repo.tagName)
+                                        .join(' · '),
                                     menuLabel: '视频操作 ${video.name}',
                                     onMenu:
                                         selecting ||

@@ -215,7 +215,9 @@ class PackCatalogPageState extends State<PackCatalogPage> {
       ? MediaLayout.historyHeader(context)
       : (selecting ? 12 : MediaLayout.toolbar(context)) +
             (hasContinuation ? continuationExtent : 0) +
-            (entry.query.count > 0 ? MediaLayout.scope(context) : 0);
+            (!selecting && entry.query.count > 0
+                ? MediaLayout.scope(context)
+                : 0);
 
   void layoutGrid(BuildContext context, double nextWidth) {
     final next = MediaGridGeometry(
@@ -498,6 +500,8 @@ class PackCatalogPageState extends State<PackCatalogPage> {
   void selectAll() {
     if (selection.loading) {
       selection.cancel();
+    } else if (selected.isNotEmpty && selected.length == data.total) {
+      selection.cancel(clear: true);
     } else {
       unawaited(selection.all(() => repo.selectPackIds(entry.query)));
     }
@@ -1283,7 +1287,78 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                     slivers: [
                       if (hasContinuation)
                         SliverToBoxAdapter(child: continuationHeader()),
-                      if (!recent && entry.query.count > 0)
+                      if (recent)
+                        SliverToBoxAdapter(
+                          child: MediaHistoryHeader(
+                            label: '最近阅读的图包',
+                            count: '${data.total} 包',
+                            onSelect:
+                                selecting || busy || repo.backupRestorePending
+                                ? null
+                                : toggleSelection,
+                          ),
+                        ),
+                      if (!recent && !selecting)
+                        SliverToBoxAdapter(
+                          child: MediaCatalogToolbar(
+                            children: [
+                              Text(
+                                '${data.total} 个图包',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                key: const Key('pack-count'),
+                                style: TextStyle(fontSize: 13, color: p.muted),
+                              ),
+                              PaperMenuButton<PackSort>(
+                                tooltip: '图包排序',
+                                initialValue: entry.query.sort,
+                                onSelected: (value) =>
+                                    change(entry.query.copy(sort: value)),
+                                itemBuilder: (_) => const [
+                                  PopupMenuItem(
+                                    value: PackSort.name,
+                                    child: Text('名称'),
+                                  ),
+                                  PopupMenuItem(
+                                    value: PackSort.newest,
+                                    child: Text('最近加入'),
+                                  ),
+                                ],
+                                child: MediaSortLabel(
+                                  switch (entry.query.sort) {
+                                    PackSort.name => '名称',
+                                    PackSort.newest => '最近加入',
+                                    PackSort.recent => '最近阅读',
+                                  },
+                                ),
+                              ),
+                              if (repo.capabilities.packReaderCleanup &&
+                                  repo.capabilities.packLogicalTrash &&
+                                  !selecting)
+                                MediaCatalogAction(
+                                  key: const Key('pack-quick-cleanup'),
+                                  icon: Icons.playlist_play,
+                                  label: '快速整理',
+                                  onPressed:
+                                      busy ||
+                                          data.loading ||
+                                          data.items.isEmpty ||
+                                          repo.backupRestorePending
+                                      ? null
+                                      : () => open(quick: true),
+                                ),
+                              MediaCatalogAction(
+                                key: const Key('catalog-select'),
+                                icon: Icons.check_box_outlined,
+                                label: '选择',
+                                onPressed: busy || repo.backupRestorePending
+                                    ? null
+                                    : toggleSelection,
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (!recent && !selecting && entry.query.count > 0)
                         SliverToBoxAdapter(
                           child: MediaFilterSummary(
                             filters: [
@@ -1324,72 +1399,6 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                 readState: PackReadState.all,
                               ),
                             ),
-                          ),
-                        ),
-                      if (recent)
-                        SliverToBoxAdapter(
-                          child: MediaHistoryHeader(
-                            label: '最近阅读的图包',
-                            count: '${data.total} 包',
-                          ),
-                        ),
-                      if (!recent && !selecting)
-                        SliverToBoxAdapter(
-                          child: MediaCatalogToolbar(
-                            children: [
-                              Text(
-                                '${data.total} 个图包',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                key: const Key('pack-count'),
-                                style: TextStyle(fontSize: 13, color: p.muted),
-                              ),
-                              PaperMenuButton<PackSort>(
-                                tooltip: '图包排序',
-                                initialValue: entry.query.sort,
-                                onSelected: (value) =>
-                                    change(entry.query.copy(sort: value)),
-                                itemBuilder: (_) => const [
-                                  PopupMenuItem(
-                                    value: PackSort.name,
-                                    child: Text('名称'),
-                                  ),
-                                  PopupMenuItem(
-                                    value: PackSort.newest,
-                                    child: Text('最近加入'),
-                                  ),
-                                ],
-                                child: MediaSortLabel(
-                                  switch (entry.query.sort) {
-                                    PackSort.name => '名称排序',
-                                    PackSort.newest => '最近加入',
-                                    PackSort.recent => '最近阅读',
-                                  },
-                                ),
-                              ),
-                              if (repo.capabilities.packReaderCleanup &&
-                                  repo.capabilities.packLogicalTrash &&
-                                  !selecting)
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: OutlinedButton(
-                                    key: const Key('pack-quick-cleanup'),
-                                    style: OutlinedButton.styleFrom(
-                                      minimumSize: const Size(0, 48),
-                                    ),
-                                    onPressed:
-                                        data.items.isEmpty ||
-                                            busy ||
-                                            data.loading
-                                        ? null
-                                        : () => open(quick: true),
-                                    child: const Text(
-                                      '快速整理',
-                                      style: TextStyle(fontSize: 13),
-                                    ),
-                                  ),
-                                ),
-                            ],
                           ),
                         ),
                       if (recent && data.items.isEmpty)
@@ -1551,8 +1560,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                         ? '${pack.tags.length} 个标签'
                                         : (pack.tagNames.values.toList()
                                                 ..sort())
-                                              .map((name) => '# $name')
-                                              .join('  '),
+                                              .join(' · '),
                                     menuLabel: '图包操作 ${pack.displayTitle}',
                                     onMenu: selecting
                                         ? null

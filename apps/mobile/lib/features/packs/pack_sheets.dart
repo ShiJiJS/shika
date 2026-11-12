@@ -6,6 +6,7 @@ import '../../library/models.dart';
 import '../../library/repository.dart';
 import '../../ui/paper.dart';
 import '../../ui/media_tag_editor.dart';
+import '../../ui/media_layout.dart';
 
 class PackFolderPicker extends StatefulWidget {
   const PackFolderPicker({
@@ -157,9 +158,49 @@ class PackFilterSheet extends StatefulWidget {
 
 class _PackFilterSheetState extends State<PackFilterSheet> {
   late PackQuery draft = widget.initial;
+  late final owner = widget.repository.connectionIdentity;
+  List<PackTag> choices = [];
+  @override
+  void initState() {
+    super.initState();
+    unawaited(loadChoices());
+  }
+
+  Future<void> loadChoices() async {
+    try {
+      final page = await widget.repository.loadPackTags();
+      if (mounted && identical(owner, widget.repository.connectionIdentity)) {
+        setState(() => choices = page.items.take(6).toList());
+      }
+    } catch (_) {
+      // The searchable picker remains available if this bounded preview fails.
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.repository.cancelPackTagRead();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) => SheetFrame(
     title: '图包筛选',
+    footer: Row(
+      children: [
+        TextButton(
+          onPressed: () => setState(
+            () => draft = PackQuery(search: draft.search, sort: draft.sort),
+          ),
+          child: const Text('重置'),
+        ),
+        const Spacer(),
+        TextButton(
+          onPressed: () => Navigator.pop(context, draft),
+          child: const Text('应用筛选'),
+        ),
+      ],
+    ),
     children: [
       ListTile(
         contentPadding: EdgeInsets.zero,
@@ -179,23 +220,47 @@ class _PackFilterSheetState extends State<PackFilterSheet> {
           }
         },
       ),
-      PaperDropdownButtonFormField<PackReadState>(
-        initialValue: draft.readState,
-        key: ValueKey(draft.readState),
-        decoration: const InputDecoration(labelText: '阅读状态'),
-        items: const [
-          DropdownMenuItem(value: PackReadState.all, child: Text('全部')),
-          DropdownMenuItem(value: PackReadState.unread, child: Text('未读')),
-          DropdownMenuItem(value: PackReadState.reading, child: Text('在读')),
-          DropdownMenuItem(value: PackReadState.completed, child: Text('已读')),
+      const SizedBox(height: 8),
+      const Text('阅读状态'),
+      Wrap(
+        spacing: 8,
+        children: [
+          for (final state in PackReadState.values)
+            TextButton(
+              key: ValueKey('pack-read-state-${state.name}'),
+              style: TextButton.styleFrom(
+                minimumSize: const Size(64, 48),
+                shape: const RoundedRectangleBorder(),
+                side: BorderSide.none,
+              ),
+              onPressed: () =>
+                  setState(() => draft = draft.copy(readState: state)),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: draft.readState == state
+                          ? Paper.of(context).olive
+                          : Colors.transparent,
+                      width: 2,
+                    ),
+                  ),
+                ),
+                child: Text(switch (state) {
+                  PackReadState.all => '全部',
+                  PackReadState.unread => '未读',
+                  PackReadState.reading => '在读',
+                  PackReadState.completed => '已读',
+                }),
+              ),
+            ),
         ],
-        onChanged: (value) =>
-            setState(() => draft = draft.copy(readState: value)),
       ),
       ListTile(
         contentPadding: EdgeInsets.zero,
-        title: const Text('标签'),
-        subtitle: Text('已选 ${draft.tags.length} 个条件 · 同时满足'),
+        title: const Text('标签 · 同时满足'),
+        subtitle: Text('已选 ${draft.tags.length} 个标签'),
         trailing: const Icon(Icons.chevron_right),
         onTap: () async {
           final tags = await paperSheet<Set<String>>(
@@ -212,20 +277,18 @@ class _PackFilterSheetState extends State<PackFilterSheet> {
           }
         },
       ),
-      if (draft.tags.isNotEmpty) Text('已选 ${draft.tags.length} 个图包标签'),
-      Row(
+      MediaTagChoices(
         children: [
-          TextButton(
-            onPressed: () => setState(
-              () => draft = PackQuery(search: draft.search, sort: draft.sort),
+          for (final tag in choices)
+            MediaTagChoice(
+              label: tag.name,
+              selected: draft.tags.contains(tag.id),
+              onSelected: (yes) => setState(() {
+                final tags = {...draft.tags};
+                yes ? tags.add(tag.id) : tags.remove(tag.id);
+                draft = draft.copy(tags: tags);
+              }),
             ),
-            child: const Text('重置'),
-          ),
-          const Spacer(),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, draft),
-            child: const Text('应用筛选'),
-          ),
         ],
       ),
     ],

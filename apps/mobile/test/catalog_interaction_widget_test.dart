@@ -11,6 +11,12 @@ import 'media_workspace_widget_test.dart' show frames;
 import 'nonblocking_widgets_test.dart' show UnreadyVideo;
 
 class InteractionLibrary extends TrackingSelectionWorkspace {
+  @override
+  ServiceCapabilities get capabilities => ServiceCapabilities([
+    ...super.capabilities.values,
+    'pack_reader_cleanup',
+    'pack_logical_trash',
+  ]);
   bool rejectTrash = false;
   final removals = <Set<String>>[];
   @override
@@ -59,6 +65,27 @@ void main() {
 
   for (final kind in MediaKind.values) {
     testWidgets(
+      '${kind.name} selection follows sort and cleanup below search',
+      (t) async {
+        await start(t);
+        final pack = kind == MediaKind.pack;
+        if (pack) await tap(t, find.byKey(const Key('kind-pack')));
+        final sort = t.getRect(find.byTooltip(pack ? '图包排序' : '视频排序'));
+        final quick = t.getRect(find.byKey(Key('${kind.name}-quick-cleanup')));
+        final select = t.getRect(find.byKey(const Key('catalog-select')));
+        final search = t.getRect(find.byKey(Key('${kind.name}-search')));
+        expect(sort.right, lessThanOrEqualTo(quick.left));
+        expect(quick.right, lessThanOrEqualTo(select.left));
+        expect(select.top, greaterThanOrEqualTo(search.bottom));
+        expect(select.height, greaterThanOrEqualTo(48));
+        await tap(t, find.byKey(const Key('catalog-select')));
+        expect(find.byKey(const Key('catalog-select')), findsNothing);
+        expect(find.text('已选 0'), findsOneWidget);
+        expect(find.byKey(const Key('app-navigation')), findsNothing);
+      },
+    );
+
+    testWidgets(
       '${kind.name} back exits selection before leaving the library',
       (t) async {
         await start(t);
@@ -84,6 +111,34 @@ void main() {
       },
     );
   }
+
+  testWidgets('pack filter keeps checkbox choices local until applied', (
+    t,
+  ) async {
+    await start(t);
+    await tap(t, find.byKey(const Key('kind-pack')));
+    final page = t.state<PackCatalogPageState>(find.byType(PackCatalogPage));
+    await tap(t, find.byTooltip('筛选图包'));
+    expect(find.byIcon(Icons.check_box_outline_blank), findsWidgets);
+    await tap(t, find.byKey(const Key('pack-read-state-reading')));
+    await tap(
+      t,
+      find.ancestor(
+        of: find.text('自然'),
+        matching: find.bySubtype<FilterChip>(),
+      ),
+    );
+    expect(find.byIcon(Icons.check_box), findsOneWidget);
+    await tap(t, find.byTooltip('关闭面板'));
+    expect(page.entry.query.readState, PackReadState.all);
+    expect(page.entry.query.tags, isEmpty);
+    await tap(t, find.byTooltip('筛选图包'));
+    await tap(t, find.byKey(const Key('pack-read-state-reading')));
+    await tap(t, find.text('应用筛选'));
+    expect(page.entry.query.readState, PackReadState.reading);
+    await tap(t, find.byTooltip('取消在读'));
+    expect(page.entry.query.readState, PackReadState.all);
+  });
 
   testWidgets(
     'clearing reading status preserves search, folder, tags and sort',
