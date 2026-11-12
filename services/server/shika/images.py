@@ -21,6 +21,12 @@ from .streaming import DescriptorResponse
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 IMAGE_MIME = {"JPEG": "image/jpeg", "PNG": "image/png", "WEBP": "image/webp"}
+IMAGE_RESOURCE_ERRORS = {
+    "image_too_large",
+    "image_probe_timeout",
+    "image_probe_failed",
+    "image_probe_unavailable",
+}
 
 
 def inspect_image(fd, cache, timeout, stop):

@@ -1059,3 +1059,29 @@ def test_unchanged_png_recovers_legacy_size_error_preserving_progress(library):
     restored = pages(client, pack["id"])["items"][0]
     assert restored["id"] == page["id"] and restored["error"] is None
     assert client.get(restored["image_url"]).status_code == 200
+
+
+@pytest.mark.parametrize("metadata_changed", [False, True])
+def test_missing_preview_worker_failure_keeps_previously_verified_original(
+    library, monkeypatch, metadata_changed
+):
+    client, media = library
+    root = pack_root(client, media)
+    source = Path(root["path"]) / "known" / "1.png"
+    image(source)
+    sync(client)
+    pack = packs(client)["items"][0]
+    page = pages(client, pack["id"])["items"][0]
+    for cache in (client.app.state.settings.data_dir / "image-thumbnails").iterdir():
+        cache.unlink()
+    if metadata_changed:
+        os.utime(source, ns=(source.stat().st_atime_ns, source.stat().st_mtime_ns + 1_000_000))
+    monkeypatch.setattr(
+        "shika.pack_scanner.inspect_image", lambda *args: {"error": "image_probe_unavailable"}
+    )
+    job = sync(client)
+    restored = pages(client, pack["id"])["items"][0]
+    assert restored["id"] == page["id"] and restored["error"] is None
+    assert restored["thumbnail_url"] is None
+    assert job["result"]["packs"]["thumbnail_failed"] == 1
+    assert client.get(restored["image_url"]).status_code == 200
