@@ -55,7 +55,7 @@ class ServerLibraryRepository extends LibraryRepository
     FileCommandStore? packCommands,
     BackupWorkStore? backupWork,
     Future<BackupFileStore> Function(String owner)? archiveFileStore,
-    String address = '10.0.2.2',
+    String address = '',
     int port = 8760,
   }) : fileCommands = fileCommands ?? MemoryFileCommandStore(),
        packFileJournal = PackFileJournal(
@@ -861,7 +861,12 @@ class ServerLibraryRepository extends LibraryRepository
     final generation = ++_generation;
     final savedEndpoint = await credentials.readEndpoint();
     if (generation != _generation) throw const RequestCancelled();
-    if (savedEndpoint != null) rememberAddress(savedEndpoint);
+    if (savedEndpoint != null) {
+      rememberAddress(savedEndpoint);
+      // The connection form must show the saved endpoint while network reads
+      // are still pending, including when the NAS is offline or a token expires.
+      publish();
+    }
     final saved = await credentials.read();
     if (generation != _generation) throw const RequestCancelled();
     if (saved == null || !saved.expiresAt.isAfter(DateTime.now())) {
@@ -870,6 +875,10 @@ class ServerLibraryRepository extends LibraryRepository
       }
       publish();
       return;
+    }
+    if (savedEndpoint != saved.endpoint) {
+      rememberAddress(saved.endpoint);
+      publish();
     }
     final candidate = ServerApi(saved.endpoint, token: saved.token);
     _connectingGeneration = generation;

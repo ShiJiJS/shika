@@ -240,6 +240,44 @@ void main() {
     await server.close(force: true);
   });
 
+  test(
+    'saved endpoint is published before the connection finishes loading',
+    () async {
+      final published = <String>[];
+      repo.addListener(() => published.add(repo.snapshot.address));
+      delayRoot = true;
+      final loading = repo.initialize();
+      await delayedRootStarted.future;
+      expect(repo.snapshot.connected, isFalse);
+      expect(published, contains('http://127.0.0.1'));
+      expect(repo.snapshot.port, server.port);
+      releaseRoot.complete();
+      await loading;
+      expect(repo.snapshot.connected, isTrue);
+    },
+  );
+
+  test(
+    'expired credentials keep the remembered address without connecting',
+    () async {
+      final endpoint = Uri.parse('https://remembered.example:9443');
+      await credentials.save(
+        ConnectionCredentials(
+          endpoint: endpoint,
+          token: 'expired-test-only',
+          serverId: 'old-instance',
+          expiresAt: DateTime.now().subtract(const Duration(days: 1)),
+        ),
+      );
+      await repo.initialize();
+      expect(repo.snapshot.connected, isFalse);
+      expect(repo.snapshot.address, 'https://remembered.example');
+      expect(repo.snapshot.port, 9443);
+      expect(await credentials.read(), isNull);
+      expect(await credentials.readEndpoint(), endpoint);
+    },
+  );
+
   test('fractional duration follows the player whole-second clock', () async {
     videoDuration = 5.98;
     await repo.initialize();

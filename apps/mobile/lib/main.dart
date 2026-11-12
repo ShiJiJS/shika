@@ -49,10 +49,7 @@ Future<void> main() async {
             key: 'video_viewer.pack_commands.v1',
           ),
           backupWork: SecureBackupWorkStore(),
-          address: const String.fromEnvironment(
-            'SERVER_ADDRESS',
-            defaultValue: '10.0.2.2',
-          ),
+          address: const String.fromEnvironment('SERVER_ADDRESS'),
           port: const int.fromEnvironment('SERVER_PORT', defaultValue: 8760),
         );
   String? error;
@@ -107,7 +104,7 @@ class _ShikaAppState extends State<ShikaApp> {
   Widget build(BuildContext context) => ListenableBuilder(
     listenable: preferences,
     builder: (context, _) => MaterialApp(
-      title: '拾刻 · shika',
+      title: '拾刻',
       debugShowCheckedModeBanner: false,
       navigatorObservers: widget.navigatorObservers,
       theme: Paper.theme,
