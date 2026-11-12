@@ -636,7 +636,9 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                   ),
                   Center(
                     child: _error == null
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const PaperCircularProgressIndicator(
+                            color: Colors.white,
+                          )
                         : Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -728,7 +730,7 @@ class _MoviePageState extends State<_MoviePage> with WidgetsBindingObserver {
                           widget.onUnauthorized?.call(widget.video.source),
                     ),
                     const Center(
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                      child: PaperCircularProgressIndicator(strokeWidth: 2),
                     ),
                   ],
                 )
@@ -809,18 +811,24 @@ class _PlayerSurfaceState extends State<PlayerSurface>
   Timer? _hideTimer, _feedbackTimer;
   late bool _controls = widget.fullscreen || widget.inlineControls;
   bool _seeking = false, _resumeAfterSeek = false, _deviceEnabled = true;
+  int _seekGeneration = 0, _levelGeneration = 0;
+  bool? _seekPlayIntent;
   double _seekStart = 0, _seekMs = 0, _seekDx = 0;
   Map<String, double>? _levels;
   String? _levelKind, _feedback;
   double _levelStart = 0, _levelDy = 0;
-  double? _pendingLevel;
+  ({String kind, double value, int generation})? _pendingLevel;
   bool _writingLevel = false;
   VideoPlayerController get controller => widget.controller;
   bool get _playRequested =>
-      widget.isPlayRequested?.call() ?? controller.value.isPlaying;
+      widget.isPlayRequested?.call() ??
+      _seekPlayIntent ??
+      controller.value.isPlaying;
 
   void _togglePlayback() {
     final playing = !_playRequested;
+    _seekGeneration++;
+    _seekPlayIntent = null;
     widget.onPlayRequested?.call(playing);
     if (!playing) _endBoost();
     unawaited(playing ? controller.play() : controller.pause());
@@ -845,13 +853,16 @@ class _PlayerSurfaceState extends State<PlayerSurface>
   }
 
   Future<void> _readLevels() async {
+    final generation = _levelGeneration;
+    bool current() =>
+        mounted && _deviceEnabled && generation == _levelGeneration;
     try {
       final levels = await _device.levels();
-      if (mounted) _levels = levels;
+      if (current()) _levels = levels;
     } on PlatformException {
-      if (mounted) _message('无法读取音量或亮度');
+      if (current()) _message('无法读取音量或亮度');
     } on MissingPluginException {
-      if (mounted) _message('此设备暂不支持音量和亮度手势');
+      if (current()) _message('此设备暂不支持音量和亮度手势');
     }
   }
 
@@ -908,12 +919,14 @@ class _PlayerSurfaceState extends State<PlayerSurface>
   }
 
   void _startSeek() {
-    if (!widget.interactionsEnabled || _seeking) return;
+    if (!widget.interactionsEnabled || !_deviceEnabled || _seeking) return;
+    _seekGeneration++;
     _endBoost();
     _hideTimer?.cancel();
     _seekStart = controller.value.position.inMilliseconds.toDouble();
     _seekDx = 0;
     _resumeAfterSeek = _playRequested;
+    _seekPlayIntent = _resumeAfterSeek;
     unawaited(controller.pause());
     setState(() {
       _seeking = true;
@@ -946,23 +959,45 @@ class _PlayerSurfaceState extends State<PlayerSurface>
 
   Future<void> _finishSeek({bool cancel = false}) async {
     if (!_seeking) return;
+    final generation = _seekGeneration;
+    final player = controller;
+    bool current() =>
+        mounted && generation == _seekGeneration && player == controller;
     final resume = _resumeAfterSeek;
     final target = cancel ? _seekStart : _seekMs;
     _resumeAfterSeek = false;
     setState(() => _seeking = false);
     try {
-      await controller.seekTo(Duration(milliseconds: target.round()));
-      if (mounted && widget.interactionsEnabled && _deviceEnabled && resume) {
-        await controller.play();
+      await player.seekTo(Duration(milliseconds: target.round()));
+      if (current() &&
+          widget.interactionsEnabled &&
+          _deviceEnabled &&
+          resume &&
+          _playRequested) {
+        await player.play();
       }
     } catch (_) {
-      if (mounted) _message('调整进度失败，请重试');
+      if (current()) _message('调整进度失败，请重试');
     }
-    if (mounted) _scheduleHide();
+    if (current()) {
+      _seekPlayIntent = null;
+      _scheduleHide();
+    }
+  }
+
+  void _interruptSeek() {
+    if (_seeking) unawaited(_finishSeek(cancel: true));
+    // A native seek may finish after a new gesture or a return to foreground.
+    _seekGeneration++;
+    _seekPlayIntent = null;
   }
 
   void _startLevel(DragStartDetails details) {
-    if (!widget.fullscreen || !widget.interactionsEnabled) return;
+    if (!widget.fullscreen || !widget.interactionsEnabled || !_deviceEnabled) {
+      return;
+    }
+    _levelGeneration++;
+    _pendingLevel = null;
     _endBoost();
     _feedbackTimer?.cancel();
     _levelKind = details.localPosition.dx < context.size!.width / 2
@@ -974,7 +1009,9 @@ class _PlayerSurfaceState extends State<PlayerSurface>
   }
 
   void _moveLevel(DragUpdateDetails details) {
-    if (_levelKind == null) return;
+    if (_levelKind == null || !widget.interactionsEnabled || !_deviceEnabled) {
+      return;
+    }
     _levelDy -= details.delta.dy;
     final value = (_levelStart + _levelDy / (context.size!.height * .7)).clamp(
       0.0,
@@ -984,7 +1021,11 @@ class _PlayerSurfaceState extends State<PlayerSurface>
       () => _feedback =
           '${_levelKind == 'brightness' ? '亮度' : '音量'} ${(value * 100).round()}%',
     );
-    _pendingLevel = value;
+    _pendingLevel = (
+      kind: _levelKind!,
+      value: value,
+      generation: _levelGeneration,
+    );
     unawaited(_writeLevel());
   }
 
@@ -992,27 +1033,49 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     if (_writingLevel) return;
     _writingLevel = true;
     try {
-      while (_pendingLevel != null && mounted && _deviceEnabled) {
-        final value = _pendingLevel!;
-        final kind = _levelKind;
+      while (_pendingLevel != null &&
+          mounted &&
+          _deviceEnabled &&
+          widget.interactionsEnabled) {
+        final pending = _pendingLevel!;
         _pendingLevel = null;
-        if (kind == null) break;
-        _levels = kind == 'brightness'
-            ? await _device.setBrightness(value)
-            : await _device.setVolume(value);
+        bool current() =>
+            mounted &&
+            _deviceEnabled &&
+            widget.interactionsEnabled &&
+            pending.generation == _levelGeneration;
+        if (!current()) continue;
+        try {
+          final levels = pending.kind == 'brightness'
+              ? await _device.setBrightness(pending.value)
+              : await _device.setVolume(pending.value);
+          if (current()) _levels = levels;
+        } on PlatformException {
+          if (current()) {
+            _message('无法调整${pending.kind == 'brightness' ? '亮度' : '音量'}');
+          }
+        } on MissingPluginException {
+          if (current()) _message('此设备暂不支持这项手势');
+        }
       }
-    } on PlatformException {
-      if (mounted) _message('无法调整${_levelKind == 'brightness' ? '亮度' : '音量'}');
-    } on MissingPluginException {
-      if (mounted) _message('此设备暂不支持这项手势');
     } finally {
       _writingLevel = false;
     }
   }
 
   void _finishLevel() {
+    if (_levelKind == null) return;
+    _levelKind = null;
     if (_feedback != null) _message(_feedback!);
     if (_controls) _scheduleHide();
+  }
+
+  void _cancelLevel() {
+    _levelGeneration++;
+    _levelKind = null;
+    _pendingLevel = null;
+    _feedbackTimer?.cancel();
+    if (mounted) setState(() => _feedback = null);
   }
 
   ({bool stacked, bool separateSpeed, double height}) _inlineLayout(
@@ -1154,7 +1217,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
       height: layout.height,
       child: IgnorePointer(
         ignoring: !_controls,
-        child: AnimatedOpacity(
+        child: PaperAnimatedOpacity(
           opacity: _controls ? 1 : 0,
           duration: MediaLayout.motion(context, 160),
           child: Container(
@@ -1206,9 +1269,16 @@ class _PlayerSurfaceState extends State<PlayerSurface>
   @override
   void didUpdateWidget(PlayerSurface oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != controller) {
+      _seekGeneration++;
+      _seeking = false;
+      _seekPlayIntent = null;
+      _cancelLevel();
+    }
     if (!widget.interactionsEnabled) {
       _endBoost();
-      if (_seeking) unawaited(_finishSeek(cancel: true));
+      _interruptSeek();
+      _cancelLevel();
     }
   }
 
@@ -1217,8 +1287,8 @@ class _PlayerSurfaceState extends State<PlayerSurface>
     _deviceEnabled = state == AppLifecycleState.resumed;
     if (!_deviceEnabled) {
       _endBoost();
-      if (_seeking) unawaited(_finishSeek(cancel: true));
-      _pendingLevel = null;
+      _interruptSeek();
+      _cancelLevel();
       if (widget.fullscreen) unawaited(_device.restoreBrightness());
     } else if (widget.fullscreen) {
       unawaited(_readLevels());
@@ -1227,6 +1297,8 @@ class _PlayerSurfaceState extends State<PlayerSurface>
 
   @override
   void dispose() {
+    _seekGeneration++;
+    _levelGeneration++;
     _deviceEnabled = false;
     _pendingLevel = null;
     _hideTimer?.cancel();
@@ -1262,7 +1334,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                     onPointerCancel: (_) {
                       _endBoost();
                       if (_seeking) unawaited(_finishSeek(cancel: true));
-                      _finishLevel();
+                      _cancelLevel();
                     },
                     child: GestureDetector(
                       key: const Key('video-gesture-surface'),
@@ -1299,7 +1371,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                           ? (_) => _finishLevel()
                           : null,
                       onVerticalDragCancel: widget.fullscreen
-                          ? _finishLevel
+                          ? _cancelLevel
                           : null,
                       child: Center(
                         child: AspectRatio(
@@ -1348,8 +1420,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                     ),
                   ),
                 if (widget.footer != null)
-                  AnimatedPositioned(
-                    duration: MediaLayout.motion(context, 160),
+                  Positioned(
                     left: 16,
                     right: widget.onFullscreen == null ? 16 : 82,
                     bottom: _controls ? 62 : 28,
@@ -1427,7 +1498,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                       bottom: false,
                       child: IgnorePointer(
                         ignoring: !_controls,
-                        child: AnimatedOpacity(
+                        child: PaperAnimatedOpacity(
                           opacity: _controls ? 1 : 0,
                           duration: MediaLayout.motion(context, 160),
                           child: Row(
@@ -1477,7 +1548,7 @@ class _PlayerSurfaceState extends State<PlayerSurface>
                           maxHeight: 56,
                           child: IgnorePointer(
                             ignoring: !_controls,
-                            child: AnimatedOpacity(
+                            child: PaperAnimatedOpacity(
                               opacity: _controls ? 1 : 0,
                               duration: MediaLayout.motion(context, 160),
                               child: Container(

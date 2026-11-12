@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'paper_motion.dart';
+
 /// Keep the same Theme/child elements while completing live reduced motion.
 class PaperAppearanceTheme extends ImplicitlyAnimatedWidget {
   const PaperAppearanceTheme({
@@ -7,9 +9,7 @@ class PaperAppearanceTheme extends ImplicitlyAnimatedWidget {
     required this.data,
     required this.reduced,
     required this.child,
-  }) : super(
-         duration: reduced ? Duration.zero : const Duration(milliseconds: 140),
-       );
+  }) : super(duration: reduced ? Duration.zero : PaperMotion.selection);
 
   final ThemeData data;
   final bool reduced;

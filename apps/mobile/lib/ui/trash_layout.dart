@@ -31,11 +31,11 @@ class TrashLayout extends StatelessWidget {
           constraints.maxHeight >= (MediaLayout.largeText(context) ? 360 : 220);
       return Column(
         children: [
-          if (loading) const LinearProgressIndicator(),
+          if (loading) const PaperLinearProgressIndicator(),
           Flexible(
             key: const ValueKey('trash-content'),
             fit: pinned ? FlexFit.loose : FlexFit.tight,
-            child: RefreshIndicator(
+            child: PaperRefreshIndicator(
               onRefresh: onRefresh,
               child: ListView(
                 key: listKey,

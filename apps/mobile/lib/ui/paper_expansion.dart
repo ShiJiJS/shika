@@ -8,6 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
+import 'paper_motion.dart';
+
 /// The scan summary's existing ExpansionTile presentation with owned motion.
 /// Only the three arguments used by the scan page are supported; this is not a
 /// replacement for ExpansionTile's controller or its other parameter interfaces.
@@ -38,13 +40,14 @@ class _PaperExpansionTileState extends State<PaperExpansionTile>
   @override
   void initState() {
     super.initState();
-    _motion = AnimationController(
-      duration: const Duration(milliseconds: 160),
-      vsync: this,
-    )..addStatusListener(_finished);
-    _height = CurvedAnimation(parent: _motion, curve: Curves.easeIn);
+    _motion = AnimationController(duration: PaperMotion.transition, vsync: this)
+      ..addStatusListener(_finished);
+    _height = CurvedAnimation(parent: _motion, curve: PaperMotion.response);
     _turns = _motion.drive(
-      Tween<double>(begin: 0, end: .5).chain(CurveTween(curve: Curves.easeIn)),
+      Tween<double>(
+        begin: 0,
+        end: .5,
+      ).chain(CurveTween(curve: PaperMotion.response)),
     );
   }
 
@@ -58,11 +61,9 @@ class _PaperExpansionTileState extends State<PaperExpansionTile>
       _initialized = true;
     }
     _reduced = MediaQuery.disableAnimationsOf(context);
-    _motion.duration = _reduced
-        ? Duration.zero
-        : const Duration(milliseconds: 160);
+    _motion.duration = _reduced ? Duration.zero : PaperMotion.transition;
     final style = ExpansionTileTheme.of(context).expansionAnimationStyle;
-    _height.curve = style?.curve ?? Curves.easeIn;
+    _height.curve = style?.curve ?? PaperMotion.response;
     _height.reverseCurve = style?.reverseCurve;
     if (_reduced) _motion.value = _expanded ? 1 : 0;
   }
@@ -126,7 +127,7 @@ class _PaperExpansionTileState extends State<PaperExpansionTile>
 
   Widget _header(ThemeData theme, ExpansionTileThemeData tileTheme) {
     final defaults = theme.useMaterial3;
-    final t = Curves.easeIn.transform(_motion.value);
+    final t = PaperMotion.response.transform(_motion.value);
     final iconColor = Color.lerp(
       tileTheme.collapsedIconColor ??
           (defaults

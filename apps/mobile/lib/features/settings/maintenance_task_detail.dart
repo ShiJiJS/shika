@@ -708,7 +708,7 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
                 ),
               ],
             ),
-            if (busy || acting) const LinearProgressIndicator(),
+            if (busy || acting) const PaperLinearProgressIndicator(),
             if (!current)
               const Expanded(
                 child: Center(
@@ -720,7 +720,7 @@ class _MaintenanceTaskDetailState extends State<MaintenanceTaskDetail> {
               )
             else
               Expanded(
-                child: RefreshIndicator(
+                child: PaperRefreshIndicator(
                   onRefresh: () => load(page?.offset ?? 0),
                   child: ListView.builder(
                     key: const PageStorageKey('maintenance-task-detail'),

@@ -7,6 +7,9 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'paper_motion.dart';
+
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
@@ -183,7 +186,7 @@ class _DropdownMenuItemButtonState<T>
         widget.scrollController.animateTo(
           menuLimits.scrollOffset,
           curve: Curves.easeInOut,
-          duration: const Duration(milliseconds: 100),
+          duration: PaperMotion.press,
         );
       }
     }
@@ -559,11 +562,11 @@ class _DropdownRoute<T> extends PopupRoute<_DropdownRouteResult<T>> {
 
   @override
   Duration get transitionDuration =>
-      reduced ? Duration.zero : const Duration(milliseconds: 240);
+      reduced ? Duration.zero : PaperMotion.enter;
 
   @override
   Duration get reverseTransitionDuration =>
-      reduced ? Duration.zero : const Duration(milliseconds: 160);
+      reduced ? Duration.zero : PaperMotion.transition;
 
   late final motionObserver = _DropdownMotionObserver(finishMotion);
   ScrollController? focusScrollController;

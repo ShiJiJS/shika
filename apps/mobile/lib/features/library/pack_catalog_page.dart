@@ -663,7 +663,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                               SizedBox(
                                 width: double.infinity,
                                 height: 2,
-                                child: LinearProgressIndicator(
+                                child: PaperLinearProgressIndicator(
                                   value: index == null || pack.pageCount == 0
                                       ? 0
                                       : (index + 1) / pack.pageCount,
@@ -1254,7 +1254,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
               ],
             ),
           if (data.loading && data.items.isNotEmpty)
-            const LinearProgressIndicator(minHeight: 2),
+            const PaperLinearProgressIndicator(minHeight: 2),
           if (data.error.isNotEmpty && data.items.isNotEmpty)
             MediaCatalogFailure(
               message: data.error,
@@ -1272,7 +1272,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
             child:
                 (data.loading && data.items.isEmpty) ||
                     (!initialized && continuationLoading)
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: PaperCircularProgressIndicator())
                 : data.error.isNotEmpty && data.items.isEmpty
                 ? EmptyView(
                     data.error,
@@ -1445,26 +1445,43 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                                     child: Stack(
                                       fit: StackFit.expand,
                                       children: [
-                                        InkWell(
-                                          key: Key('pack-tile-${pack.id}'),
-                                          onLongPress: () =>
-                                              selectFromCover(pack.id),
-                                          onTap: () {
-                                            if (selecting) {
-                                              selection.toggle(pack.id);
-                                            } else {
-                                              unawaited(details(pack));
-                                            }
-                                          },
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              3,
-                                            ),
-                                            child: PackCover(
-                                              pack: pack,
-                                              repository: repo,
-                                              active: widget.active,
-                                            ),
+                                        MergeSemantics(
+                                          child: Stack(
+                                            fit: StackFit.expand,
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(3),
+                                                child: PackCover(
+                                                  pack: pack,
+                                                  repository: repo,
+                                                  active: widget.active,
+                                                ),
+                                              ),
+                                              // Paint feedback above the opaque cover without moving it.
+                                              Material(
+                                                type: MaterialType.transparency,
+                                                borderRadius:
+                                                    BorderRadius.circular(3),
+                                                clipBehavior: Clip.antiAlias,
+                                                child: InkWell(
+                                                  key: Key(
+                                                    'pack-tile-${pack.id}',
+                                                  ),
+                                                  onLongPress: () =>
+                                                      selectFromCover(pack.id),
+                                                  onTap: () {
+                                                    if (selecting) {
+                                                      selection.toggle(pack.id);
+                                                    } else {
+                                                      unawaited(details(pack));
+                                                    }
+                                                  },
+                                                  child:
+                                                      const SizedBox.expand(),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                         Positioned(
@@ -1576,7 +1593,7 @@ class PackCatalogPageState extends State<PackCatalogPage> {
                           child: Padding(
                             padding: EdgeInsets.all(12),
                             child: Center(
-                              child: CircularProgressIndicator(
+                              child: PaperCircularProgressIndicator(
                                 key: Key('pack-loading-more'),
                               ),
                             ),

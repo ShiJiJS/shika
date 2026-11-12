@@ -328,8 +328,7 @@ class MediaSelectionMark extends StatelessWidget {
   const MediaSelectionMark(this.selected, {super.key});
   final bool selected;
   @override
-  Widget build(BuildContext context) => AnimatedContainer(
-    duration: MediaLayout.motion(context, 160),
+  Widget build(BuildContext context) => Container(
     width: 24,
     height: 24,
     decoration: BoxDecoration(
@@ -427,7 +426,13 @@ class MediaCatalogAction extends StatelessWidget {
     ),
     child: Row(
       mainAxisSize: MainAxisSize.min,
-      children: [Icon(icon, size: 17), const SizedBox(width: 4), Text(label)],
+      children: [
+        Icon(icon, size: 17),
+        const SizedBox(width: 4),
+        Flexible(
+          child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+        ),
+      ],
     ),
   );
 }

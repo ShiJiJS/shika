@@ -281,7 +281,7 @@ class _PackPurgeSelectionPageState extends State<PackPurgeSelectionPage> {
               closeLabel: '返回回收站',
               onClose: () => Navigator.pop(context),
             ),
-            if (loading) const LinearProgressIndicator(),
+            if (loading) const PaperLinearProgressIndicator(),
             Expanded(
               child: ListView(
                 controller: scroll,

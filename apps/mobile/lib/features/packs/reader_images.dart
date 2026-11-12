@@ -3,6 +3,9 @@ import 'dart:io' show HttpException, SocketException;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+
+import '../../ui/paper_progress.dart';
+
 import 'package:flutter/foundation.dart' show mapEquals;
 
 import '../../library/repository.dart';
@@ -199,7 +202,7 @@ class _ReaderImageState extends State<ReaderImage> {
           const SizedBox(
             width: 22,
             height: 22,
-            child: CircularProgressIndicator(strokeWidth: 2),
+            child: PaperCircularProgressIndicator(strokeWidth: 2),
           ),
           const SizedBox(height: 8),
           Text(

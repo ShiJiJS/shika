@@ -288,17 +288,13 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                         alignment: selecting
                             ? Alignment.center
                             : Alignment.centerLeft,
-                        child: AnimatedSwitcher(
-                          duration: MediaLayout.motion(context, 160),
-                          child: Text(
-                            key: ValueKey(selecting),
-                            selecting ? '已选 $selectedCount' : title,
-                            style: selecting
-                                ? const TextStyle(fontSize: 16)
-                                : p.title.copyWith(fontSize: 24),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                        child: Text(
+                          selecting ? '已选 $selectedCount' : title,
+                          style: selecting
+                              ? const TextStyle(fontSize: 16)
+                              : p.title.copyWith(fontSize: 24),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
@@ -393,11 +389,10 @@ class _MediaWorkspaceState extends State<MediaWorkspace> {
                               child: InkWell(
                                 key: Key('kind-${value.name}'),
                                 onTap: () => kindChanged(value),
-                                child: AnimatedContainer(
+                                child: Container(
                                   constraints: const BoxConstraints(
                                     minWidth: 56,
                                   ),
-                                  duration: MediaLayout.motion(context, 160),
                                   padding: const EdgeInsets.only(
                                     top: 8,
                                     bottom: 6,

@@ -73,7 +73,7 @@ void main() {
     await frames(t);
     await tap(t, find.byKey(const Key('kind-pack')));
     final card = t.widget<Text>(find.byKey(const Key('pack-tag-names-p1')));
-    expect(card.data, '# ${repo.packNames['t60']}');
+    expect(card.data, repo.packNames['t60']);
   }
 
   Future<void> edit(WidgetTester t) async {
@@ -84,7 +84,7 @@ void main() {
 
   Finder chosen() => find.byKey(const Key('chosen-pack-tag-t60'));
   Finder input() => find.byKey(const Key('tag-assignment-search'));
-  Finder save() => find.widgetWithText(FilledButton, '保存图包标签');
+  Finder save() => find.byKey(const Key('tag-assignment-save'));
   Future<void> close(WidgetTester t) async {
     expect(t.takeException(), isNull);
     await t.pumpWidget(const SizedBox());
@@ -97,7 +97,7 @@ void main() {
       repo.failNames = true;
       await start(t);
       await edit(t);
-      expect(t.widget<FilledButton>(save()).onPressed, isNull);
+      expect(t.widget<ButtonStyleButton>(save()).onPressed, isNull);
       expect(find.textContaining('原选择已保留'), findsOneWidget);
       repo.failNames = false;
       await tap(t, find.text('重试读取名称'));
@@ -105,7 +105,7 @@ void main() {
         t.widget<InputChip>(chosen()).label,
         isA<Text>().having((w) => w.data, 'name', '标签60'),
       );
-      expect(t.widget<FilledButton>(save()).onPressed, isNotNull);
+      expect(t.widget<ButtonStyleButton>(save()).onPressed, isNotNull);
       await t.enterText(input(), '标签00');
       await frames(t);
       await tap(
@@ -152,7 +152,7 @@ void main() {
       repo.packNames.remove('t60');
       await edit(t);
       expect(find.text('已移除的标签'), findsOneWidget);
-      expect(t.widget<FilledButton>(save()).onPressed, isNull);
+      expect(t.widget<ButtonStyleButton>(save()).onPressed, isNull);
       t.widget<InputChip>(chosen()).onDeleted!();
       await frames(t);
       await tap(t, save());
@@ -174,7 +174,7 @@ void main() {
       await frames(t);
       expect(find.textContaining('服务连接已变化'), findsOneWidget);
       expect(find.text('旧服务名称'), findsNothing);
-      expect(t.widget<FilledButton>(save()).onPressed, isNull);
+      expect(t.widget<ButtonStyleButton>(save()).onPressed, isNull);
       await close(t);
     },
   );
@@ -192,7 +192,7 @@ void main() {
       await start(t);
       await edit(t);
       expect(t.getRect(chosen()).width, lessThanOrEqualTo(320));
-      expect(t.widget<FilledButton>(save()).onPressed, isNotNull);
+      expect(t.widget<ButtonStyleButton>(save()).onPressed, isNotNull);
       await close(t);
     },
   );
@@ -209,7 +209,7 @@ void main() {
         t,
         find.descendant(
           of: find.byType(PackFilterSheet),
-          matching: find.text('标签'),
+          matching: find.text('标签 · 同时满足'),
         ),
       );
       expect(repo.lookups.last, {'t60'});

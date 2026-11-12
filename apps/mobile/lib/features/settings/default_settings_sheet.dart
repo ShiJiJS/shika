@@ -98,7 +98,7 @@ class _DefaultSettingsSheetState extends State<DefaultSettingsSheet> {
           ),
         ),
         const SizedBox(height: 16),
-        if (session.busy) const LinearProgressIndicator(),
+        if (session.busy) const PaperLinearProgressIndicator(),
         if (session.ready) ...[
           if (widget.video) ...[
             for (final value in [PlayOrder.sequential, PlayOrder.random])

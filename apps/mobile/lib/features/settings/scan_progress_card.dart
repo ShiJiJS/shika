@@ -273,7 +273,7 @@ class ScanProgressCard extends StatelessWidget {
               !MediaQuery.disableAnimationsOf(context))
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8),
-              child: const LinearProgressIndicator(minHeight: 3),
+              child: const PaperLinearProgressIndicator(minHeight: 3),
             ),
           if (facts.queued && facts.known)
             Text(

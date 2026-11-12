@@ -4,6 +4,8 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 
+import 'paper_motion.dart';
+
 /// Material checkbox with Paper motion; keep the standard named interface.
 class PaperCheckbox extends Checkbox {
   const PaperCheckbox({
@@ -45,10 +47,8 @@ class _PaperCheckboxState extends State<Checkbox>
   void _motion() {
     positionController.duration = _reduced
         ? Duration.zero
-        : const Duration(milliseconds: 140);
-    reactionController.duration = _reduced
-        ? Duration.zero
-        : const Duration(milliseconds: 100);
+        : PaperMotion.selection;
+    reactionController.duration = _reduced ? Duration.zero : PaperMotion.press;
     final hover = reactionHoverFade.parent as AnimationController;
     final focus = reactionFocusFade.parent as AnimationController;
     hover.duration = focus.duration = _reduced

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -40,7 +42,239 @@ class BufferingPlayer extends VideoPlayerController {
   }
 }
 
+class DelayedSeekPlayer extends BufferingPlayer {
+  final seeks = <Completer<void>>[];
+  @override
+  Future<void> seekTo(Duration position) async {
+    commands.add('seek');
+    final pending = Completer<void>();
+    seeks.add(pending);
+    await pending.future;
+    value = value.copyWith(position: position);
+  }
+}
+
 void main() {
+  for (final externalIntent in [false, true]) {
+    testWidgets(
+      'pause supersedes a pending seek; external intent=$externalIntent',
+      (t) async {
+        final controller = DelayedSeekPlayer();
+        var requested = true;
+        await controller.play();
+        await t.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: PlayerSurface(
+                controller: controller,
+                name: 'delayed seek',
+                isPlayRequested: externalIntent ? () => requested : null,
+                onPlayRequested: externalIntent
+                    ? (value) => requested = value
+                    : null,
+              ),
+            ),
+          ),
+        );
+        final surface = find.byKey(const Key('video-gesture-surface'));
+        await t.drag(surface, const Offset(120, 0));
+        await t.pump();
+        expect(controller.seeks, hasLength(1));
+        await t.tap(surface);
+        await t.pump();
+        final playCount = controller.commands.where((e) => e == 'play').length;
+        controller.seeks.single.complete();
+        await t.pump();
+        expect(
+          controller.commands.where((e) => e == 'play'),
+          hasLength(playCount),
+        );
+        expect(controller.value.isPlaying, isFalse);
+        if (externalIntent) expect(requested, isFalse);
+        await t.pumpWidget(const SizedBox());
+        await controller.dispose();
+      },
+    );
+
+    testWidgets(
+      'only the latest seek resumes playback; external intent=$externalIntent',
+      (t) async {
+        final controller = DelayedSeekPlayer();
+        await controller.play();
+        await t.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: PlayerSurface(
+                controller: controller,
+                name: 'consecutive seeks',
+                isPlayRequested: externalIntent ? () => true : null,
+              ),
+            ),
+          ),
+        );
+        final surface = find.byKey(const Key('video-gesture-surface'));
+        await t.drag(surface, const Offset(120, 0));
+        await t.pump();
+        await t.drag(surface, const Offset(80, 0));
+        await t.pump();
+        expect(controller.seeks, hasLength(2));
+        final playCount = controller.commands.where((e) => e == 'play').length;
+        controller.seeks.first.complete();
+        await t.pump();
+        expect(
+          controller.commands.where((e) => e == 'play'),
+          hasLength(playCount),
+        );
+        expect(controller.value.isPlaying, isFalse);
+        controller.seeks.last.complete();
+        await t.pump();
+        expect(
+          controller.commands.where((e) => e == 'play'),
+          hasLength(playCount + 1),
+        );
+        expect(controller.value.isPlaying, isTrue);
+        await t.pumpWidget(const SizedBox());
+        await controller.dispose();
+      },
+    );
+  }
+
+  for (final background in [false, true]) {
+    testWidgets(
+      'pending seek cannot resume after an interruption; background=$background',
+      (t) async {
+        final controller = DelayedSeekPlayer();
+        await controller.play();
+        Future<void> show(bool enabled) => t.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: PlayerSurface(
+                controller: controller,
+                name: 'interrupted seek',
+                interactionsEnabled: enabled,
+                isPlayRequested: () => true,
+              ),
+            ),
+          ),
+        );
+        await show(true);
+        await t.drag(
+          find.byKey(const Key('video-gesture-surface')),
+          const Offset(120, 0),
+        );
+        await t.pump();
+        if (background) {
+          t.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+          await t.pump();
+          t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+          await t.pump();
+        } else {
+          await show(false);
+          await show(true);
+        }
+        final playCount = controller.commands.where((e) => e == 'play').length;
+        controller.seeks.single.complete();
+        await t.pump();
+        expect(
+          controller.commands.where((e) => e == 'play'),
+          hasLength(playCount),
+        );
+        expect(controller.value.isPlaying, isFalse);
+        await t.pumpWidget(const SizedBox());
+        await controller.dispose();
+      },
+    );
+  }
+
+  for (final interrupt in [
+    'disabled',
+    'background',
+    'pointer cancel',
+    'release',
+  ]) {
+    testWidgets(
+      'device level write respects $interrupt with a native write pending',
+      (t) async {
+        final controller = BufferingPlayer();
+        const channel = MethodChannel('video_viewer/playback');
+        final messenger =
+            TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+        final firstWrite = Completer<void>();
+        final writes = <double>[];
+        messenger.setMockMethodCallHandler(channel, (call) async {
+          if (call.method == 'restoreBrightness') return null;
+          if (call.method == 'brightness' || call.method == 'volume') {
+            writes.add((call.arguments['value'] as num).toDouble());
+            if (writes.length == 1) {
+              await firstWrite.future;
+              if (interrupt != 'release') {
+                throw PlatformException(code: 'interrupted-write');
+              }
+            }
+          }
+          return {'brightness': .5, 'volume': .5, 'windowBrightness': -1.0};
+        });
+        addTearDown(() => messenger.setMockMethodCallHandler(channel, null));
+        Future<void> show(bool enabled) => t.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: PlayerSurface(
+                controller: controller,
+                name: 'device gesture',
+                fullscreen: true,
+                interactionsEnabled: enabled,
+              ),
+            ),
+          ),
+        );
+        await show(true);
+        await t.pump();
+        final rect = t.getRect(find.byKey(const Key('video-gesture-surface')));
+        final gesture = await t.startGesture(
+          Offset(rect.left + 30, rect.center.dy),
+        );
+        await gesture.moveBy(const Offset(0, -40));
+        await t.pump();
+        await gesture.moveBy(const Offset(0, -30));
+        await t.pump();
+        expect(writes, hasLength(1));
+        await gesture.moveBy(const Offset(0, -30));
+        await t.pump();
+        if (interrupt == 'disabled') {
+          await show(false);
+          await gesture.moveBy(const Offset(0, -30));
+          await t.pump();
+          await show(true);
+        } else if (interrupt == 'background') {
+          t.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+          await t.pump();
+          t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+          await t.pump();
+          await gesture.moveBy(const Offset(0, -30));
+          await t.pump();
+        } else if (interrupt == 'pointer cancel') {
+          await gesture.cancel();
+          await t.pump();
+        } else {
+          await gesture.up();
+          await t.pump();
+        }
+        firstWrite.complete();
+        await t.pump();
+        await t.pump();
+        expect(writes, hasLength(interrupt == 'release' ? 2 : 1));
+        if (interrupt != 'release') {
+          expect(find.byKey(const Key('device-level-hint')), findsNothing);
+        }
+        if (interrupt == 'disabled' || interrupt == 'background') {
+          await gesture.up();
+        }
+        await t.pumpWidget(const SizedBox());
+        await controller.dispose();
+      },
+    );
+  }
+
   testWidgets(
     'a transient device hint disappearing does not discard an open speed menu',
     (t) async {

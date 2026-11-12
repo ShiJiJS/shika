@@ -511,7 +511,7 @@ class _MediaTagEditorState extends State<MediaTagEditor> {
           else
             searchField,
           const SizedBox(height: 12),
-          if (loading || namesLoading) const LinearProgressIndicator(),
+          if (loading || namesLoading) const PaperLinearProgressIndicator(),
           if (removed) note('部分已选标签已被移除，请取消这些选择后再保存。'),
           if (unresolved && namesError.isNotEmpty) ...[
             note(namesError),

@@ -57,7 +57,7 @@ void main() {
             await frames(t);
             await t.tap(find.byKey(const Key('pack-tile-p1')));
           } else {
-            await t.tap(find.text('预览此范围'));
+            await t.tap(find.byKey(const Key('video-quick-cleanup')));
           }
           await frames(t);
           final gate = delayed ? Completer<void>() : null;

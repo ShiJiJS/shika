@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'paper_motion.dart';
+
 import 'paper_press.dart';
 
 /// Read the live system preference below MaterialApp's MediaQuery. Keep the
@@ -33,7 +35,7 @@ class _PaperControlThemeState extends State<PaperControlTheme> {
     final theme = Theme.of(context);
     final duration = MediaQuery.disableAnimationsOf(context)
         ? Duration.zero
-        : const Duration(milliseconds: 100);
+        : PaperMotion.press;
     ButtonStyle style(ButtonStyle? original) =>
         (original ?? const ButtonStyle()).copyWith(animationDuration: duration);
     return Theme(
@@ -127,7 +129,7 @@ Widget _feedback(BuildContext context, RawChip chip) {
     fill: fill,
     duration: MediaQuery.disableAnimationsOf(context)
         ? Duration.zero
-        : const Duration(milliseconds: 140),
+        : PaperMotion.selection,
   );
 }
 

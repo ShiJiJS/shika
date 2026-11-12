@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 import 'package:shika/features/library/video_catalog_page.dart';
@@ -228,6 +229,15 @@ void main() {
           () =>
               find.byKey(const Key('video-search')).evaluate().isNotEmpty &&
               !catalog().data.loading,
+        );
+        final filterLabel = find.descendant(
+          of: find.byKey(const ValueKey('筛选视频')),
+          matching: find.text('筛选'),
+        );
+        expect(
+          t.renderObject<RenderParagraph>(filterLabel).didExceedMaxLines,
+          isFalse,
+          reason: 'The enlarged filter label remains fully visible',
         );
         expect(catalog().search.text, '花间微风');
         expect(catalog().data.total, 1);

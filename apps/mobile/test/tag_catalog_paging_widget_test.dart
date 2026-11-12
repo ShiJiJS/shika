@@ -106,11 +106,7 @@ void main() {
         );
         await frames(t);
         expect(t.takeException(), isNull);
-        final action = find.byKey(
-          Key(
-            kind == MediaKind.pack ? 'tag-view-results' : 'tag-preview-results',
-          ),
-        );
+        final action = find.byKey(const Key('tag-view-results'));
         final scroll = find.byKey(Key('${kind.name}-tag-actions-scroll'));
         await t.drag(scroll, const Offset(0, -200));
         await frames(t);

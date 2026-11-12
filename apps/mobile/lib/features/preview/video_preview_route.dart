@@ -648,11 +648,7 @@ class _VideoPreviewRouteState extends State<VideoPreviewRoute>
                   ],
                 ),
               ),
-              AnimatedSize(
-                duration: MediaQuery.disableAnimationsOf(context)
-                    ? Duration.zero
-                    : const Duration(milliseconds: 160),
-                alignment: Alignment.topCenter,
+              SizedBox(
                 child: quick
                     ? Container(
                         key: const Key('preview-cleanup'),
@@ -1021,7 +1017,7 @@ class _PreviewQueueSheetState extends State<PreviewQueueSheet> {
                                   ? const SizedBox(
                                       width: 18,
                                       height: 18,
-                                      child: CircularProgressIndicator(
+                                      child: PaperCircularProgressIndicator(
                                         strokeWidth: 2,
                                       ),
                                     )

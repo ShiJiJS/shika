@@ -53,10 +53,15 @@ void main() {
       await repo.initialize();
       await t.pumpWidget(ShikaApp(repository: repo, preferences: prefs));
       await frames(t);
-      await t.tap(find.text('预览此范围'));
+      await t.tap(find.byKey(const Key('video-quick-cleanup')));
       await frames(t);
       expect(find.byType(MovieStage), findsOneWidget);
       expect(t.takeException(), isNull);
+      // The catalog entry now starts in quick cleanup. Return to ordinary
+      // preview before exercising the existing open/close and layout checks.
+      expect(find.byKey(const Key('preview-cleanup')), findsOneWidget);
+      await t.tap(find.byKey(const Key('preview-quick')));
+      await frames(t);
       final controls = find.byKey(const Key('playback-controls'));
       final play = find
           .descendant(of: controls, matching: find.byType(TextButton))

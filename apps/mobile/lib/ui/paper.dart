@@ -2,7 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'paper_motion.dart';
+
 export 'paper_notice.dart';
+export 'paper_motion.dart';
+export 'paper_progress.dart';
 export 'paper_controls.dart';
 export 'paper_appearance.dart';
 export 'paper_menu.dart';
@@ -21,7 +25,7 @@ void revealFormError(GlobalKey anchor) {
         alignment: .5,
         duration: MediaQuery.disableAnimationsOf(context)
             ? Duration.zero
-            : const Duration(milliseconds: 160),
+            : PaperMotion.transition,
       ),
     );
   });
@@ -215,20 +219,11 @@ class EmptyView extends StatelessWidget {
 }
 
 /// Shared page timing; read the current preference again when navigating back.
-class PaperPageRoute<T> extends MaterialPageRoute<T> {
+class PaperPageRoute<T> extends MaterialPageRoute<T> with PaperRouteMotion<T> {
   PaperPageRoute({required super.builder, super.settings}) : _fade = false;
   PaperPageRoute.fade({required super.builder, super.settings}) : _fade = true;
 
   final bool _fade;
-  bool get _reduced => MediaQuery.disableAnimationsOf(navigator!.context);
-
-  @override
-  Duration get transitionDuration =>
-      _reduced ? Duration.zero : const Duration(milliseconds: 240);
-  @override
-  Duration get reverseTransitionDuration =>
-      _reduced ? Duration.zero : const Duration(milliseconds: 160);
-
   // Video previews previously used a standalone fade. Keep that page from
   // acquiring the platform's coordinated outgoing-page zoom/slide as well.
   @override
@@ -251,39 +246,8 @@ class PaperPageRoute<T> extends MaterialPageRoute<T> {
       : super.buildTransitions(context, animation, secondaryAnimation, child);
 }
 
-// Popup routes keep their own controller. Refresh it before either direction,
-// including when the system preference changed while the popup was open.
-mixin _PaperPopupMotion<T> on TransitionRoute<T> {
-  bool get _reduced => MediaQuery.disableAnimationsOf(navigator!.context);
-
-  @override
-  Duration get transitionDuration =>
-      _reduced ? Duration.zero : const Duration(milliseconds: 240);
-  @override
-  Duration get reverseTransitionDuration =>
-      _reduced ? Duration.zero : const Duration(milliseconds: 160);
-
-  void _updateTiming() {
-    controller!
-      ..duration = transitionDuration
-      ..reverseDuration = reverseTransitionDuration;
-  }
-
-  @override
-  TickerFuture didPush() {
-    _updateTiming();
-    return super.didPush();
-  }
-
-  @override
-  bool didPop(T? result) {
-    _updateTiming();
-    return super.didPop(result);
-  }
-}
-
 class _PaperSheetRoute<T> extends ModalBottomSheetRoute<T>
-    with _PaperPopupMotion<T> {
+    with PaperRouteMotion<T> {
   _PaperSheetRoute({
     required super.builder,
     super.capturedThemes,
@@ -296,13 +260,13 @@ class _PaperSheetRoute<T> extends ModalBottomSheetRoute<T>
          isScrollControlled: true,
          useSafeArea: true,
          sheetAnimationStyle: const AnimationStyle(
-           duration: Duration(milliseconds: 240),
-           reverseDuration: Duration(milliseconds: 160),
+           duration: PaperMotion.enter,
+           reverseDuration: PaperMotion.transition,
          ),
        );
 }
 
-class _PaperDialogRoute<T> extends DialogRoute<T> with _PaperPopupMotion<T> {
+class _PaperDialogRoute<T> extends DialogRoute<T> with PaperRouteMotion<T> {
   _PaperDialogRoute({
     required super.context,
     required super.builder,

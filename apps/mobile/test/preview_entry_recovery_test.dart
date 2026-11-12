@@ -94,7 +94,9 @@ void main() {
         repo.metadataChanged();
         await frames(t);
         expect(repo.restores, hasLength(1));
-        await t.tap(find.text('预览此范围'));
+        // Scope actions are disabled while restoring; visible media can still
+        // enter preview, preserving this overlapping-read recovery scenario.
+        await t.tap(find.byKey(const Key('tile-entry-0')));
         await frames(t);
         expect(repo.begins, hasLength(1));
         repo.begins.single.completeError(
@@ -129,7 +131,7 @@ void main() {
     (t) async {
       await t.pumpWidget(ShikaApp(repository: repo));
       await frames(t);
-      await t.tap(find.text('预览此范围'));
+      await t.tap(find.byKey(const Key('video-quick-cleanup')));
       await frames(t);
       expect(repo.begins, hasLength(1));
       await t.tap(find.byKey(const Key('nav-settings')));

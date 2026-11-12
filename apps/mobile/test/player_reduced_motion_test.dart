@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_player_platform_interface/video_player_platform_interface.dart';
 import 'package:shika/ui/player.dart';
+import 'package:shika/ui/paper_motion.dart';
 
 import 'player_lifecycle_test.dart' as fixture;
 
@@ -56,7 +57,7 @@ void main() {
         final control = find.byKey(const Key('playback-controls'));
         expect(control, findsOneWidget);
         final opacity = find
-            .ancestor(of: control, matching: find.byType(AnimatedOpacity))
+            .ancestor(of: control, matching: find.byType(PaperAnimatedOpacity))
             .first;
         final fade = find
             .descendant(of: opacity, matching: find.byType(FadeTransition))
@@ -90,7 +91,7 @@ void main() {
         if (fullscreen) {
           final exit = find.byKey(const Key('fullscreen-exit'));
           final outer = find
-              .ancestor(of: exit, matching: find.byType(AnimatedOpacity))
+              .ancestor(of: exit, matching: find.byType(PaperAnimatedOpacity))
               .first;
           final transition = find
               .descendant(of: outer, matching: find.byType(FadeTransition))

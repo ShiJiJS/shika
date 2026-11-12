@@ -166,9 +166,10 @@ class _MaintenanceTasksPageState extends State<MaintenanceTasksPage> {
     );
     return Column(
       children: [
-        if (s.loading || s.querying != null) const LinearProgressIndicator(),
+        if (s.loading || s.querying != null)
+          const PaperLinearProgressIndicator(),
         Expanded(
-          child: RefreshIndicator(
+          child: PaperRefreshIndicator(
             onRefresh: () => s.load(),
             child: ListView.builder(
               key: const PageStorageKey('maintenance-task-list'),

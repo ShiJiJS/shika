@@ -406,9 +406,9 @@ class _MissingMediaPageState extends State<MissingMediaPage> {
                 ],
               ),
             ),
-            if (loading || acting) const LinearProgressIndicator(),
+            if (loading || acting) const PaperLinearProgressIndicator(),
             Expanded(
-              child: RefreshIndicator(
+              child: PaperRefreshIndicator(
                 onRefresh: () async {
                   if (!acting && current) await load(at: offset);
                 },

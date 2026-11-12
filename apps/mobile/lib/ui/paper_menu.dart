@@ -7,6 +7,8 @@ import 'dart:ui' show SemanticsRole;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'paper_motion.dart';
+
 /// Native menu entries and button behavior with an owned 240/160ms route.
 class PaperMenuButton<T> extends PopupMenuButton<T> {
   const PaperMenuButton({
@@ -211,10 +213,10 @@ class _PaperMenuRoute<T> extends PopupRoute<T> {
   bool get reduced => MediaQuery.disableAnimationsOf(navigator!.context);
   @override
   Duration get transitionDuration =>
-      reduced ? Duration.zero : const Duration(milliseconds: 240);
+      reduced ? Duration.zero : PaperMotion.enter;
   @override
   Duration get reverseTransitionDuration =>
-      reduced ? Duration.zero : const Duration(milliseconds: 160);
+      reduced ? Duration.zero : PaperMotion.transition;
   @override
   bool get barrierDismissible => true;
   @override

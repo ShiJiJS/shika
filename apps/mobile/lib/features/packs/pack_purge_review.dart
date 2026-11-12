@@ -220,7 +220,7 @@ class _PackPurgeReviewState extends State<PackPurgeReview> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                LinearProgressIndicator(
+                PaperLinearProgressIndicator(
                   value: s!.preparing ? s.processed / s.ids.length : null,
                 ),
                 const SizedBox(height: 10),
@@ -388,7 +388,7 @@ class _PurgeImagesState extends State<_PurgeImages> {
               closeLabel: '返回图包清单',
               onClose: () => Navigator.pop(context),
             ),
-            if (busy) const LinearProgressIndicator(minHeight: 2),
+            if (busy) const PaperLinearProgressIndicator(minHeight: 2),
             Expanded(
               child: ListView.builder(
                 controller: scroll,

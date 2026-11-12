@@ -199,7 +199,7 @@ class _PackFileActionState extends State<PackFileAction> {
       if (busy)
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
-          child: LinearProgressIndicator(),
+          child: PaperLinearProgressIndicator(),
         ),
       if (error.isNotEmpty)
         Padding(

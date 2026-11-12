@@ -943,7 +943,7 @@ class _LibraryHomeState extends State<LibraryHome> {
           height: page == 'trash' && !_busy ? 1 : 2,
           width: page == 'trash' ? double.infinity : null,
           child: _busy
-              ? const LinearProgressIndicator(
+              ? const PaperLinearProgressIndicator(
                   key: Key('management-loading'),
                   minHeight: 2,
                 )
@@ -1263,14 +1263,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         fit: StackFit.expand,
         children: [
           switch (page) {
-            'browse' => TweenAnimationBuilder<double>(
-              key: ValueKey(repo.libraryPreparation.value.ready),
-              tween: Tween(begin: 0, end: 1),
-              duration: const Duration(milliseconds: 180),
-              child: browsing(),
-              builder: (_, opacity, child) =>
-                  Opacity(opacity: opacity, child: child),
-            ),
+            'browse' => browsing(),
             'library' => library(),
             'tags' => tags(),
             'settings' => settings(),
@@ -1506,7 +1499,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                 const SizedBox(
                   width: 16,
                   height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 1.8),
+                  child: PaperCircularProgressIndicator(strokeWidth: 1.8),
                 ),
             ],
           ),
@@ -1519,7 +1512,7 @@ class _LibraryHomeState extends State<LibraryHome> {
           if (active)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12),
-              child: LinearProgressIndicator(
+              child: PaperLinearProgressIndicator(
                 minHeight: 3,
                 borderRadius: BorderRadius.circular(3),
               ),
@@ -1848,7 +1841,7 @@ class _LibraryHomeState extends State<LibraryHome> {
         if ((_pendingReturn != null || _library.state.beforeFailure) &&
             results.isNotEmpty)
           libraryLoading
-              ? const LinearProgressIndicator(minHeight: 2)
+              ? const PaperLinearProgressIndicator(minHeight: 2)
               : libraryError.isNotEmpty
               ? Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -1871,7 +1864,7 @@ class _LibraryHomeState extends State<LibraryHome> {
               : const SizedBox.shrink(),
         Expanded(
           child: libraryLoading && results.isEmpty
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(child: PaperCircularProgressIndicator())
               : libraryError.isNotEmpty && results.isEmpty
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1901,7 +1894,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                     ),
                   ],
                 )
-              : RefreshIndicator(
+              : PaperRefreshIndicator(
                   onRefresh: () => perform(repo.requestScan),
                   child: CustomScrollView(
                     key: const Key('video-grid'),
@@ -2074,7 +2067,7 @@ class _LibraryHomeState extends State<LibraryHome> {
                                         key: Key('library-loading-more'),
                                         width: 16,
                                         height: 16,
-                                        child: CircularProgressIndicator(
+                                        child: PaperCircularProgressIndicator(
                                           strokeWidth: 1.8,
                                         ),
                                       ),
@@ -2750,7 +2743,7 @@ class _LibraryHomeState extends State<LibraryHome> {
             child: const Text('加载更多缺失视频'),
           ),
       ],
-      if (missingLoading) const LinearProgressIndicator(),
+      if (missingLoading) const PaperLinearProgressIndicator(),
       if (missingError.isNotEmpty) ...[
         note(missingError),
         TextButton(

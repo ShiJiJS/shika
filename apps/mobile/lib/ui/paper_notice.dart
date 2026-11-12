@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'paper_motion.dart';
+
 /// Keep ScaffoldMessenger's queue, timeout, actions and close reasons intact.
 /// Its public withAnimation hook supplies the shared controller before paint;
 /// this widget borrows that controller and never owns or disposes it.
@@ -58,10 +60,8 @@ class _NoticeTiming {
     final value = controller;
     if (value == null) return;
     value
-      ..duration = const Duration(milliseconds: 160)
-      ..reverseDuration = reduced
-          ? Duration.zero
-          : const Duration(milliseconds: 160);
+      ..duration = PaperMotion.transition
+      ..reverseDuration = reduced ? Duration.zero : PaperMotion.transition;
   }
 }
 
@@ -87,7 +87,10 @@ class _NoticePreferenceState extends State<_NoticePreference> {
   }
 
   void _status(AnimationStatus status) {
-    if (!_reduced || status != AnimationStatus.forward || _entryScheduled) {
+    if (!_reduced ||
+        (status != AnimationStatus.forward &&
+            status != AnimationStatus.reverse) ||
+        _entryScheduled) {
       return;
     }
     _entryScheduled = true;
@@ -97,8 +100,14 @@ class _NoticePreferenceState extends State<_NoticePreference> {
     scheduleMicrotask(() {
       _entryScheduled = false;
       final value = _controller;
-      if (mounted && _reduced && value?.status == AnimationStatus.forward) {
-        value!.value = 1;
+      if (!mounted || !_reduced || value == null) return;
+      if (value.status == AnimationStatus.forward) {
+        value.value = 1;
+      } else if (value.status == AnimationStatus.reverse) {
+        // ScaffoldMessenger awaits this reverse TickerFuture to complete the
+        // close reason. Complete it before snapping, rather than cancel it.
+        value.stop(canceled: false);
+        value.value = 0;
       }
     });
   }

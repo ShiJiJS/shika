@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'paper_motion.dart';
+
 /// A still, clipped state layer; InkWell continues to own all gestures.
 class PaperPressFactory extends InteractiveInkFeatureFactory {
   const PaperPressFactory(this.reduced);
@@ -44,7 +46,7 @@ class PaperPressInk extends InteractiveInkFeature {
     super.onRemoved,
   }) {
     _animation = AnimationController(
-      duration: const Duration(milliseconds: 100),
+      duration: PaperMotion.press,
       animationBehavior: AnimationBehavior.preserve,
       vsync: controller.vsync,
     )..addListener(controller.markNeedsPaint);

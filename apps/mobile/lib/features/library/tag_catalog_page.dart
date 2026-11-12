@@ -583,7 +583,7 @@ class TagCatalogPageState extends State<TagCatalogPage> {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) => Column(
       children: [
-        if (loading) const LinearProgressIndicator(minHeight: 2),
+        if (loading) const PaperLinearProgressIndicator(minHeight: 2),
         if (error.isNotEmpty)
           Row(
             children: [

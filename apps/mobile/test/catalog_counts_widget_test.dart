@@ -136,7 +136,7 @@ void main() {
       await t.tap(find.byKey(Key('nav-$destination')));
       await frames(t);
     }
-    await t.tap(find.text('清除'));
+    await t.tap(find.byTooltip('清除搜索'));
     await frames(t);
     final page = t.state<PackCatalogPageState>(find.byType(PackCatalogPage));
     expect(page.data.total, 2);

@@ -94,7 +94,7 @@ class _PackFolderPickerState extends State<PackFolderPicker> {
           trailing: const Icon(Icons.chevron_right),
           onTap: () => navigate(item.path),
         ),
-      if (loading) const LinearProgressIndicator(),
+      if (loading) const PaperLinearProgressIndicator(),
       if (error.isNotEmpty) ...[
         note(error),
         TextButton(onPressed: () => load(), child: const Text('重试')),

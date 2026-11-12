@@ -113,7 +113,7 @@ class _FolderPickerState extends State<FolderPicker> {
         if (loading)
           const Padding(
             padding: EdgeInsets.all(20),
-            child: Center(child: CircularProgressIndicator()),
+            child: Center(child: PaperCircularProgressIndicator()),
           ),
         if (error.isNotEmpty) ...[
           note(error),

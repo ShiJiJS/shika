@@ -603,7 +603,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
               onChanged: (value) => changeEntry(entry.copyWith(search: value)),
             ),
           if (busy || (data.loading && data.items.isNotEmpty))
-            const LinearProgressIndicator(minHeight: 2),
+            const PaperLinearProgressIndicator(minHeight: 2),
           if (error.isNotEmpty)
             Row(
               children: [
@@ -635,7 +635,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
             ),
           Expanded(
             child: data.loading && data.items.isEmpty
-                ? const Center(child: CircularProgressIndicator())
+                ? const Center(child: PaperCircularProgressIndicator())
                 : data.error.isNotEmpty && data.items.isEmpty
                 ? EmptyView(
                     data.error,
@@ -858,37 +858,60 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                                     child: Stack(
                                       fit: StackFit.expand,
                                       children: [
-                                        InkWell(
-                                          key: Key('tile-${video.id}'),
-                                          onLongPress: () =>
-                                              selectFromCover(video.id),
-                                          onTap: busy
-                                              ? null
-                                              : () {
-                                                  if (selecting) {
-                                                    selection.toggle(video.id);
-                                                  } else {
-                                                    unawaited(
-                                                      open(anchor: video.id),
-                                                    );
-                                                  }
-                                                },
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              3,
-                                            ),
-                                            child: ColoredBox(
-                                              color: const Color(0xff20261f),
-                                              child: MediaPoster(
-                                                video: video,
-                                                fit: BoxFit.contain,
-                                                onUnauthorized: () => unawaited(
-                                                  repo.mediaUnauthorized(
-                                                    video.source,
+                                        MergeSemantics(
+                                          child: Stack(
+                                            fit: StackFit.expand,
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(3),
+                                                child: ColoredBox(
+                                                  color: const Color(
+                                                    0xff20261f,
+                                                  ),
+                                                  child: MediaPoster(
+                                                    video: video,
+                                                    fit: BoxFit.contain,
+                                                    onUnauthorized: () =>
+                                                        unawaited(
+                                                          repo.mediaUnauthorized(
+                                                            video.source,
+                                                          ),
+                                                        ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                              // Paint feedback above the opaque cover without moving it.
+                                              Material(
+                                                type: MaterialType.transparency,
+                                                borderRadius:
+                                                    BorderRadius.circular(3),
+                                                clipBehavior: Clip.antiAlias,
+                                                child: InkWell(
+                                                  key: Key('tile-${video.id}'),
+                                                  onLongPress: () =>
+                                                      selectFromCover(video.id),
+                                                  onTap: busy
+                                                      ? null
+                                                      : () {
+                                                          if (selecting) {
+                                                            selection.toggle(
+                                                              video.id,
+                                                            );
+                                                          } else {
+                                                            unawaited(
+                                                              open(
+                                                                anchor:
+                                                                    video.id,
+                                                              ),
+                                                            );
+                                                          }
+                                                        },
+                                                  child:
+                                                      const SizedBox.expand(),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                         if (!selecting)
@@ -990,7 +1013,7 @@ class VideoCatalogPageState extends State<VideoCatalogPage> {
                           child: Padding(
                             padding: EdgeInsets.all(12),
                             child: Center(
-                              child: CircularProgressIndicator(
+                              child: PaperCircularProgressIndicator(
                                 key: Key('library-loading-more'),
                               ),
                             ),

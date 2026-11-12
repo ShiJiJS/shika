@@ -43,7 +43,7 @@ void main() {
         ),
       );
       await t.pumpAndSettle();
-      await t.tap(find.byTooltip('更多'));
+      await t.tap(find.byTooltip('视频排序'));
       await t.pump();
       final route = observer.menu!;
       debugPrint(
@@ -82,7 +82,7 @@ void main() {
         ),
       );
       await t.pumpAndSettle();
-      await t.tap(find.byTooltip('更多'));
+      await t.tap(find.byTooltip('视频排序'));
       await t.pump();
       await t.pump(const Duration(milliseconds: 60));
       final route = observer.menu!;

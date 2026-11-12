@@ -33,7 +33,7 @@ void main() {
         find.descendant(of: search, matching: find.byType(EditableText)),
       );
       expect(editable.focusNode.hasFocus, isTrue);
-      await t.tap(find.text('预览此范围'));
+      await t.tap(find.byKey(const Key('video-quick-cleanup')));
       await frames(t);
       expect(find.byKey(const Key('preview-back')), findsOneWidget);
       await t.tap(find.byKey(const Key('preview-back')));

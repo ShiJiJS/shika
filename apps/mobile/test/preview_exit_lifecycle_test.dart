@@ -45,7 +45,7 @@ void main() {
           ShikaApp(repository: repo, preferences: preferences),
         );
         await frames(t);
-        await t.tap(find.text('预览此范围'));
+        await t.tap(find.byKey(const Key('video-quick-cleanup')));
         await frames(t);
         final session = t.widget<MovieStage>(find.byType(MovieStage)).session!;
         expect(session.debugPlayers.single.value.isInitialized, isTrue);

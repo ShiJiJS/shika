@@ -126,10 +126,7 @@ class _ArchiveBackupPageState extends State<ArchiveBackupPage> {
         ),
         ValueListenableBuilder<String?>(
           valueListenable: widget.repository.backupStatus,
-          builder: (_, status, _) => AnimatedSize(
-            duration: MediaQuery.disableAnimationsOf(context)
-                ? Duration.zero
-                : const Duration(milliseconds: 140),
+          builder: (_, status, _) => SizedBox(
             child: status == null
                 ? const SizedBox.shrink()
                 : Text(
@@ -480,7 +477,7 @@ class _ArchiveRestorePageState extends State<ArchiveRestorePage> {
       if (loading)
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
-          child: LinearProgressIndicator(),
+          child: PaperLinearProgressIndicator(),
         ),
       for (final root in roots)
         Padding(

@@ -307,7 +307,7 @@ class _PurgeHistoryPageState extends State<PurgeHistoryPage> {
                 ],
               ),
             ),
-            if (busy) const LinearProgressIndicator(),
+            if (busy) const PaperLinearProgressIndicator(),
             if (error.isNotEmpty && current)
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -328,7 +328,7 @@ class _PurgeHistoryPageState extends State<PurgeHistoryPage> {
                         child: Text('服务连接或管理数据已变化，请返回后重新打开原任务'),
                       ),
                     )
-                  : RefreshIndicator(
+                  : PaperRefreshIndicator(
                       onRefresh: () => load(offset),
                       child: ListView.builder(
                         key: PageStorageKey(

@@ -132,7 +132,7 @@ class _PackPurgeResultState extends State<PackPurgeResult> {
               closeLabel: '关闭删除结果',
               onClose: () => Navigator.pop(context),
             ),
-            if (busy) const LinearProgressIndicator(minHeight: 2),
+            if (busy) const PaperLinearProgressIndicator(minHeight: 2),
             Expanded(
               child: PaperManagementForm(
                 controller: scroll,

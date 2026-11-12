@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'paper_motion.dart';
+
 /// Pointer surface for PaperPreferenceSwitch. Its row owns keyboard/focus and
 /// accessibility, so the thumb never becomes a second activation target.
 class PaperToggle extends StatefulWidget {
@@ -26,12 +28,12 @@ class _PaperToggleState extends State<PaperToggle>
     with TickerProviderStateMixin {
   late final position = AnimationController(
     value: widget.value ? 1 : 0,
-    duration: const Duration(milliseconds: 140),
+    duration: PaperMotion.selection,
     animationBehavior: AnimationBehavior.preserve,
     vsync: this,
   );
   late final reaction = AnimationController(
-    duration: const Duration(milliseconds: 100),
+    duration: PaperMotion.press,
     animationBehavior: AnimationBehavior.preserve,
     vsync: this,
   );
