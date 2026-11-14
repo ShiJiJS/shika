@@ -193,8 +193,6 @@ def main():
         help="Skillshare source for a new installation; updates use the registered source",
     )
     args = parser.parse_args()
-    if sys.version_info < (3, 10):  # noqa: UP036 - check system Python before creating the CLI environment
-        parser.error("Python 3.10 or newer is required")
     if args.skillshare and args.update and args.skill_source:
         parser.error(
             "Skillshare updates use the registered source; omit --skill-source"
@@ -215,6 +213,12 @@ def main():
             )
         )
         return 0 if ready else 1
+    # Checks use the existing runtime; only installs need this interpreter.
+    if sys.version_info < (3, 10):  # noqa: UP036
+        parser.error(
+            "Installation needs Python 3.10+; use the existing CLI environment's "
+            "Python or your own supported interpreter"
+        )
     destination = (
         validate_destination(args.skills_dir, args.update) if args.skills_dir else None
     )

@@ -35,6 +35,8 @@ uv tool install "git+https://github.com/ShiJiJS/shika.git#subdirectory=apps/cli"
 
 App 和 Docker 安装不会自动在电脑上安装 CLI；只使用 App 时无需安装。CLI 本身无需 Skill、Skillshare、Flutter、FFmpeg 或 AI 模型，访问的是你自己部署的拾刻 HTTP 服务。
 
+`shika` 和兼容命令 `rv` 都由同一安装提供。升级旧 `rv-cli` 安装时，uv 提示 `rv` 已存在，可在核对旧入口后用 `uv tool install --force ./apps/cli` 将两个命令统一到新包。CLI 的独立 Python 环境不会替换系统 Python；系统 `python3` 过旧时，安装命令用 `--python` 指定已安装的 Python 3.10+。Skill 的 `install.py --check` 只检查已安装环境，不要求系统 Python 也升级。
+
 ## 配套 Skill（选装）
 
 [video-tagging](../../skills/video-tagging/SKILL.md) 可生成标准标签文件，并在要求同步时通过本 CLI 或服务端 API 写入视频标签。安装 Skill 时可同时配置隔离 CLI，命令与依赖说明见[视频打标指南](../../docs/video-tagging.md)。CLI 也可按上面的方式独立安装，App 与 NAS 服务不依赖这些选装工具。

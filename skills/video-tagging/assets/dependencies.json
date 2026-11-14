@@ -3,7 +3,7 @@
   "setup": {"entry": "scripts/install.py", "args": ["--cli-only"]},
   "python": ">=3.10",
   "cli_source": "git+https://github.com/ShiJiJS/shika.git@main#subdirectory=apps/cli",
-  "minimum_cli_version": "0.1.1",
+  "minimum_cli_version": "0.1.2",
   "inference": {
     "common": ["ffmpeg", "ffprobe", "Pillow"],
     "local": ["numpy", "onnxruntime", "Ollama", "user-selected model weights"],

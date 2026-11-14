@@ -1,6 +1,7 @@
 """The optional skill installer must isolate dependencies and preserve existing installs."""
 
 import importlib.util
+import json
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -35,12 +36,20 @@ def test_token_in_dependency_url_is_rejected_before_install():
     assert not installer.runtime_home().exists()
 
 
-@pytest.mark.parametrize("version", [None, "0.1.0", "0.1.1rc1"])
+@pytest.mark.parametrize("version", [None, "0.1.0", "0.1.1", "0.1.1rc1"])
 def test_unavailable_or_old_cli_does_not_pass_readiness_check(version, monkeypatch, capsys):
     monkeypatch.setattr(installer, "installed_version", lambda: version)
     monkeypatch.setattr(installer.sys, "argv", ["install.py", "--check"])
     assert installer.main() == 1
     assert '"status": "ready"' not in capsys.readouterr().out
+
+
+def test_readiness_uses_the_installed_runtime_even_with_old_system_python(monkeypatch, capsys):
+    monkeypatch.setattr(installer.sys, "version_info", (3, 9, 6))
+    monkeypatch.setattr(installer, "installed_version", lambda: "0.1.2")
+    monkeypatch.setattr(installer.sys, "argv", ["install.py", "--check"])
+    assert installer.main() == 0
+    assert json.loads(capsys.readouterr().out)["status"] == "ready"
 
 
 def test_skill_conflict_does_not_replace_existing_content(tmp_path):

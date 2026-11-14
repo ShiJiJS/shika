@@ -44,6 +44,8 @@ python "$skill_dir/scripts/install.py" --cli-only
 python "$skill_dir/scripts/install.py" --check
 python "$skill_dir/scripts/shika.py" --help
 ```
+
+`shika` 与旧命令 `rv` 指向同一套 CLI。先检查当前执行设备的 `shika --version` 或 `rv --version`；PATH 中没有入口时可用上述随包入口，不据此断言工具未安装。`install.py --check` 可由旧系统 Python 检查已经安装的独立环境；实际安装和更新仍需 Python 3.10+。优先用已有 CLI 环境内的 Python，或本机配置的合格解释器，不替换操作系统 Python。另一台设备离线时，在当前执行设备检查或按角色保留待补状态，不把不可访问当作没有安装。
 CLI 源码优先使用同一检出的 `apps/cli`；单独技能包从本仓库的 HTTPS Git 地址获取，也可用 `--cli-source` 指定自己的本地源码或授权来源。需要联网取得 Python 依赖，受限仓库使用自己的 GitHub 授权。安装不配置模型、不运行识别、不连接媒体库、不修改 shell 配置。
 
 抽帧使用本包工具及 FFmpeg/ffprobe、Pillow；在执行识别的 Python 环境安装 `assets/requirements-extract.txt`。仅同步标签无需这些依赖。本地模型路线按识别参考再准备 numpy/onnxruntime、Ollama、模型权重及实际 `local_model` 与 `model_revision`。
